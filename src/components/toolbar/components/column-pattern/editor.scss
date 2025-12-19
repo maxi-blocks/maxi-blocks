@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__column-pattern__popover {
 	min-width: 392px;
 
@@ -25,13 +26,13 @@
 			&--toolbar {
 				&:hover {
 					svg path {
-						fill: var(--maxi-white);
+						fill: $w;
 					}
 				}
 
 				&[aria-pressed='true'] {
 					svg path {
-						fill: var(--maxi-white);
+						fill: $w;
 					}
 				}
 
@@ -47,7 +48,7 @@
 	.toolbar-item__icon {
 		path {
 			&:nth-child(2) {
-				fill: transparent !important;
+				fill: $tr !important;
 			}
 		}
 	}

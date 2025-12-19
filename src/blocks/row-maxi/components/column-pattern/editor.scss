@@ -1,11 +1,12 @@
+@import '../../../../../src/css/backend-variables.scss';
 .components-column-pattern {
 	&__icon {
 		width: 100%;
 		height: 100%;
 		overflow: visible;
 		path {
-			fill: var(--maxi-white);
-			stroke: var(--maxi-grey-dark);
+			fill: $w;
+			stroke: $gd;
 			stroke-width: 1.5px !important;
 		}
 	}
@@ -15,7 +16,7 @@
 	&__templates {
 		margin-bottom: 5px;
 		& .components-column-pattern-apply_settings {
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			justify-content: center;
 		}
 	}
@@ -24,35 +25,35 @@
 		padding: 0 5px;
 
 		&:active {
-			color: var(--maxi-primary-color) !important;
+			color: $pc !important;
 		}
 
 		&:hover {
-			border-color: var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
+			border-color: $pc;
+			color: $pc;
 			svg path {
-				stroke: var(--maxi-primary-color) !important;
+				stroke: $pc !important;
 			}
 		}
 
 		&[aria-pressed='true'] {
-			color: var(--maxi-primary-color);
-			border-color: var(--maxi-primary-color);
+			color: $pc;
+			border-color: $pc;
 			svg path {
-				stroke: var(--maxi-primary-color);
+				stroke: $pc;
 			}
 		}
 
 		&--toolbar {
 			&:hover {
 				svg path {
-					fill: var(--maxi-primary-color);
+					fill: $pc;
 				}
 			}
 
 			&[aria-pressed='true'] {
 				svg path {
-					fill: var(--maxi-primary-color);
+					fill: $pc;
 				}
 			}
 
@@ -66,9 +67,9 @@
 			margin-bottom: 10px;
 			margin-top: -10px;
 			&:hover {
-				background-color: var(--maxi-mid-green);
-				color: var(--maxi-white);
-				border-color: var(--maxi-primary-color);
+				background-color: $mg;
+				color: $w;
+				border-color: $pc;
 			}
 		}
 	}

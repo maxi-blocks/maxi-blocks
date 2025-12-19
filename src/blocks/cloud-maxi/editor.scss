@@ -1,8 +1,9 @@
+@import '../../../src/css/backend-variables.scss';
 /**
  * Editor styles for the admin
  */
 
-$white: var(--maxi-white);
+$white: $w;
 
 .maxi-block-library__modal {
 	width: 80%;
@@ -10,11 +11,11 @@ $white: var(--maxi-white);
 	max-width: 90%;
 
 	.components-modal__content {
-		background: var(--maxi-cloud-primary-whisper);
+		background: $cpw;
 		padding: 0;
 		overflow-x: hidden;
 		min-height: 100%;
-		position: absolute;
+		position: $pa;
 		width: 100%;
 	}
 
@@ -32,7 +33,7 @@ $white: var(--maxi-white);
 	.components-tab-panel__tab-content {
 		background: $white;
 		padding: 35px;
-		border-top: 1px solid var(--maxi-grey-light);
+		border-top: $bl;
 	}
 
 	.components-tab-panel__tabs {
@@ -47,7 +48,7 @@ $white: var(--maxi-white);
 
 			&:hover {
 				background: $white;
-				cursor: pointer;
+				cursor: $ptr;
 			}
 		}
 	}
@@ -55,7 +56,7 @@ $white: var(--maxi-white);
 	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
 		font-weight: 600;
 		background: $white;
-		border: 1px solid var(--maxi-grey-light);
+		border: $bl;
 		border-bottom: none;
 	}
 
@@ -68,7 +69,7 @@ $white: var(--maxi-white);
 	}
 
 	.maxi-block-library__modal-header {
-		background: var(--maxi-grey-light);
+		background: $gl;
 		padding: 20px;
 		margin-bottom: 20px;
 		display: grid;
@@ -132,7 +133,7 @@ $white: var(--maxi-white);
 	.maxi-cloud-design {
 		text-align: center;
 		margin-bottom: 40px;
-		position: relative;
+		position: $pr;
 
 		img {
 			max-width: 100%;
@@ -147,24 +148,24 @@ $white: var(--maxi-white);
 			border-bottom: none;
 			padding: 0;
 			z-index: 5;
-			position: relative;
+			position: $pr;
 		}
 	}
 
 	.maxi-cloud-design-inside {
 		transition: 0.2s ease;
-		border: solid 1px var(--maxi-grey-light);
+		border: solid 1px $gl;
 
 		&:hover {
-			box-shadow: 0px 0px 0px 8px var(--maxi-grey-light);
+			box-shadow: 0px 0px 0px 8px $gl;
 		}
 	}
 
 	.maxi-cloud-design-info {
 		background: $white;
-		border-top: solid 1px var(--maxi-grey-light);
+		border-top: solid 1px $gl;
 		text-align: left;
-		position: relative;
+		position: $pr;
 		padding: 12px;
 
 		button {
@@ -195,24 +196,24 @@ $white: var(--maxi-white);
 	button.maxi-cloud-favorite-button:hover {
 		background: $white;
 		border: none;
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px $gl,
 			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 	}
 
 	.components-button-group
 		.components-button.maxi-cloud-favorite-button:focus {
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px $gl,
 			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 		background: $white;
 	}
 
 	button.components-button.is-default:active:enabled {
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px $gl,
 			inset 0 0 0 2px $white;
 	}
 
 	.maxi-cloud-icon-favorite {
-		fill: var(--maxi-grey);
+		fill: $g;
 	}
 
 	.maxi-cloud-icon-favorite-active {
@@ -220,7 +221,7 @@ $white: var(--maxi-white);
 	}
 
 	.maxi-cloud-zoom-button {
-		position: absolute;
+		position: $pa;
 		top: 15px;
 		right: 15px;
 		background: $white;
@@ -245,7 +246,7 @@ $white: var(--maxi-white);
 	}
 
 	.maxi-block-library__modal__loading_message {
-		position: absolute;
+		position: $pa;
 		top: 0;
 		bottom: 0;
 		left: 0;
@@ -274,10 +275,10 @@ $white: var(--maxi-white);
 	justify-content: center;
 	width: 100%;
 	min-height: 120px;
-	color: var(--maxi-grey-dark);
-	background-color: var(--maxi-cloud-primary-whisper);
+	color: $gd;
+	background-color: $cpw;
 	font-size: 13px;
-	border: 1px solid var(--maxi-cloud-primary-light);
+	border: 1px solid $cpl;
 	border-radius: 10px;
 	box-shadow: none !important;
 	.components-placeholder__instructions {
@@ -290,13 +291,13 @@ $white: var(--maxi-white);
 
 	button.maxi-block-library__modal-button__placeholder {
 		overflow: hidden;
-		color: var(--maxi-white);
-		background: var(--maxi-cloud-primary);
+		color: $w;
+		background: $cp;
 		font-family: Inter, sans-serif;
 		font-size: 12px;
 		font-weight: 800;
 		padding: 22px 22px 22px 20px;
-		border: 1px solid var(--maxi-grey-light);
+		border: $bl;
 		transition: all 0.1s;
 		border-radius: 30px;
 		display: flex;
@@ -308,7 +309,7 @@ $white: var(--maxi-white);
 		}
 
 		&:hover {
-			background: var(--maxi-white) !important;
+			background: $w !important;
 			color: var(--maxi-cloud-primary-contrast) !important;
 			border-color: var(--maxi-tertiary-color);
 		}

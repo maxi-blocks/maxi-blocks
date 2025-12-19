@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-prompt-control-history-tab {
 	.maxi-prompt-control__buttons {
 		margin: 8px 0;
@@ -7,8 +8,8 @@
 		position: sticky;
 		bottom: 0;
 		padding: 8px 0;
-		border-top: 2px solid var(--maxi-grey);
-		background: var(--maxi-white);
+		border-top: 2px solid $g;
+		background: $w;
 		justify-content: center;
 		width: 100%;
 	}

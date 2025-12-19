@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-mediauploader-control {
-	position: relative;
+	position: $pr;
 	margin-bottom: 8px;
 	&__image,
 	&__video {
@@ -17,24 +18,24 @@
 		display: block;
 		text-align: center;
 		box-shadow: none !important;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: $bg;
 		border-radius: 5px;
-		color: var(--maxi-grey-dark);
+		color: $gd;
 		transition: all 0.5s;
 		&:hover {
-			border: 1.5px solid var(--maxi-primary-color);
-			color: var(--maxi-black);
-			background-color: var(--maxi-pastel-green);
+			border: 1.5px solid $pc;
+			color: $bk;
+			background-color: $pg;
 		}
 	}
 	&__toggle {
 		display: block;
 		width: 100%;
 		min-height: 90px;
-		background: var(--maxi-whisper-green);
-		border: 1.5px dashed var(--maxi-grey-light);
+		background: $wg;
+		border: 1.5px dashed $gl;
 		border-radius: 10px;
-		color: var(--maxi-grey-dark) !important;
+		color: $gd !important;
 		line-height: 20px;
 		padding: 8px 0;
 		text-align: center;

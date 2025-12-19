@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 // Main container for the toolbar popup
 .toolbar-item__popover {
 	// Container for font-related options
@@ -8,7 +9,7 @@
 		&__wrap {
 			display: flex; // Makes children align horizontally
 			align-items: center; // Vertically centers items in container
-			border-top: 1px solid var(--maxi-grey-light); // Adds separator line
+			border-top: $bl; // Adds separator line
 
 			// Styles for base control elements
 			.maxi-base-control {
@@ -19,7 +20,7 @@
 
 			// Default SVG icon styling
 			svg {
-				fill: none; // Makes SVG icons transparent by default
+				fill: none; // Makes SVG icons $tr by default
 				&:hover {
 					fill: none !important; // Maintains transparency on hover
 				}
@@ -43,11 +44,11 @@
 
 					// Active button state
 					&[aria-pressed='true'] {
-						color: var(--maxi-primary-color);
+						color: $pc;
 						// Changes text color when active
-						background-color: var(--maxi-white) !important;
+						background-color: $w !important;
 						fill: none !important;
-						border-bottom: 3px solid var(--maxi-primary-color) !important; // Adds highlight bar
+						border-bottom: 3px solid $pc !important; // Adds highlight bar
 					}
 				}
 
@@ -57,14 +58,14 @@
 					fill: none !important;
 
 					path {
-						stroke: var(--maxi-black); // Default icon color
+						stroke: $bk; // Default icon color
 					}
 				}
 				&:hover {
-					transition: all 0.4s ease !important;
+					transition: $t !important;
 					svg {
 						path {
-							stroke: var(--maxi-secondary-color) !important;
+							stroke: $sc !important;
 						}
 					}
 				}
@@ -78,7 +79,7 @@
 				margin: 0;
 
 				&__button {
-					border-color: var(--maxi-grey-light);
+					border-color: $gl;
 					border-style: solid;
 					border-width: 0 1px 0 0;
 
@@ -110,7 +111,7 @@
 						svg {
 							width: 14px;
 							path {
-								stroke: var(--maxi-black);
+								stroke: $bk;
 								transition: stroke 0.2s ease;
 							}
 						}
@@ -124,7 +125,7 @@
 			}
 
 			.maxi-font-family-selector__control__control {
-				// border-color: var(--maxi-grey-light);
+				// border-color: $gl;
 				border-style: solid;
 				border-width: 0 1px 0 0;
 				height: 36px;
@@ -173,8 +174,8 @@
 				}
 
 				&__button {
-					color: var(--maxi-white);
-					border-color: var(--maxi-grey);
+					color: $w;
+					border-color: $g;
 				}
 			}
 
@@ -196,8 +197,8 @@
 					margin-bottom: 0;
 
 					.maxi-font-family-selector__control__control:hover {
-						background-color: var(--maxi-white);
-						cursor: pointer;
+						background-color: $w;
+						cursor: $ptr;
 					}
 				}
 			}
@@ -222,7 +223,7 @@
 					margin-right: 3px;
 
 					path {
-						// stroke: var(--maxi-black);
+						// stroke: $bk;
 					}
 				}
 			}

@@ -1,6 +1,7 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-text-block {
 	.rich-text:focus * {
-		background-color: transparent !important;
+		background-color: $tr !important;
 	}
 	> ol,
 	> ul {
@@ -11,7 +12,7 @@
 	&__content,
 	> ol,
 	> ul {
-		outline: 1.5px dashed var(--maxi-pastel-green) !important;
+		outline: 1.5px dashed $pg !important;
 
 		a.maxi-text-block--link {
 			text-decoration-skip-ink: auto;
@@ -27,7 +28,7 @@
 			.maxi-text-block__content,
 			> ol,
 			> ul {
-				outline: 1.5px dashed var(--maxi-grey-dark) !important;
+				outline: 1.5px dashed $gd !important;
 			}
 		}
 		&.is-selected {
@@ -40,7 +41,7 @@
 		.maxi-text-block__content,
 		> ol,
 		> ul {
-			outline: 1.5px dashed transparent !important;
+			outline: 1.5px dashed $tr !important;
 		}
 	}
 	&::after {

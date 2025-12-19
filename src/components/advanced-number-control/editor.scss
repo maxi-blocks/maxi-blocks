@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 /*===============================================
    ADVANCED NUMBER CONTROL COMPONENT
 ===============================================*/
@@ -15,7 +16,7 @@
 			border: none !important;
 			outline: none !important;
 			box-shadow: none !important;
-			background: transparent !important;
+			background: $tr !important;
 		}
 	}
 
@@ -32,13 +33,13 @@
 	}
 
 	&__input-wrapper {
-		position: relative;
+		position: $pr;
 		flex: none;
 		width: 55px !important;
 
 		// Focus state (Keyboard Accessibility)
 		&:focus-within {
-			outline: 2px solid var(--maxi-primary-color);
+			outline: 2px solid $pc;
 			outline-offset: 2px;
 		}
 	}
@@ -62,14 +63,14 @@
 
 		// Focus state (Keyboard Accessibility)
 		&:focus-visible {
-			outline: 2px solid var(--maxi-primary-color);
+			outline: 2px solid $pc;
 			outline-offset: 2px;
 		}
 	}
 
 	/*--- Spinner Controls ---*/
 	&__spinner-container {
-		position: absolute;
+		position: $pa;
 		right: 2px;
 		top: 50%;
 		transform: translateY(-48%);
@@ -80,13 +81,13 @@
 		// Divider line
 		&::before {
 			content: '';
-			position: absolute;
+			position: $pa;
 			left: -3px;
 			top: 50%;
 			transform: translateY(-50%);
 			width: 1px;
 			height: 18px;
-			background-color: var(--maxi-grey-light);
+			background-color: $gl;
 			pointer-events: none;
 		}
 	}
@@ -96,14 +97,14 @@
 		height: 12px;
 		padding: 0;
 		justify-content: center;
-		position: relative;
+		position: $pr;
 
-		background: transparent;
+		background: $tr;
 		border: none;
 		border-radius: 2px;
 
-		color: var(--maxi-grey);
-		cursor: pointer;
+		color: $g;
+		cursor: $ptr;
 		transition: all 200ms ease;
 
 		svg {
@@ -112,20 +113,20 @@
 		}
 
 		&--down {
-			border-top: 1px solid var(--maxi-grey);
+			border-top: 1px solid $g;
 		}
 
 		// Interactive States
 		&:focus-visible,
 		&:hover {
 			outline: none;
-			background: var(--maxi-whisper-green);
+			background: $wg;
 		}
 
 		&:hover {
-			color: var(--maxi-primary-color);
+			color: $pc;
 			svg {
-				color: var(--maxi-primary-color);
+				color: $pc;
 				border: none;
 			}
 		}
@@ -135,10 +136,10 @@
 		}
 
 		&:disabled {
-			color: var(--maxi-grey);
+			color: $g;
 			cursor: not-allowed;
 			&:hover {
-				background: transparent;
+				background: $tr;
 			}
 		}
 	}
@@ -146,7 +147,7 @@
 	/*--- Variants ---*/
 	&__second-style {
 		.maxi-base-control__field {
-			position: relative;
+			position: $pr;
 		}
 		.maxi-base-control__label,
 		.maxi-select-control__input {
@@ -206,7 +207,7 @@
 .maxi-advanced-number-control__controls-group {
 	display: flex;
 	align-items: center;
-	border: 1px solid var(--maxi-grey-light);
+	border: $bl;
 	border-radius: 5px;
 }
 

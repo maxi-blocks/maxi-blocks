@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-block__resizer {
 	.maxi-resizable {
 		&__handle {
@@ -5,19 +6,19 @@ body.maxi-blocks--active .maxi-block__resizer {
 			width: 20px;
 			height: 20px;
 			z-index: 20;
-			position: absolute;
+			position: $pa;
 			&--show {
 				display: block;
 			}
 			&:after {
 				content: '';
 				display: block;
-				position: absolute;
+				position: $pa;
 				width: 20px;
 				height: 20px;
-				border: 2px solid var(--maxi-white);
+				border: 2px solid $w;
 				border-radius: 50%;
-				background: var(--maxi-primary-color);
+				background: $pc;
 				cursor: inherit;
 			}
 			&--repeater:after {
@@ -28,8 +29,8 @@ body.maxi-blocks--active .maxi-block__resizer {
 				content: '';
 				display: block;
 				cursor: inherit;
-				position: absolute;
-				background: var(--maxi-primary-color);
+				position: $pa;
+				background: $pc;
 			}
 
 			&-right {

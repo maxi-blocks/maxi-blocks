@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-dropdown__text-generator-child-content {
 	.components-popover__content {
 		width: 230px !important;
@@ -13,8 +14,8 @@
 		clear: both;
 	}
 	.components-button {
-		border: 1px solid var(--maxi-grey-light) !important;
-		color: var(--maxi-black) !important;
+		border: $bl !important;
+		color: $bk !important;
 		border-radius: 0;
 		height: 30px;
 		width: 72px !important;
@@ -30,11 +31,11 @@
 		}
 
 		&:hover {
-			background-color: var(--maxi-grey-dark);
+			background-color: $gd;
 		}
 
 		&:active {
-			background-color: var(--maxi-grey-dark);
+			background-color: $gd;
 		}
 	}
 	.maxi-base-control__label {

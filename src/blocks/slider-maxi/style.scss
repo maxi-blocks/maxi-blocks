@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-slider-block {
-	position: relative;
+	position: $pr;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -22,7 +23,7 @@ body.maxi-blocks--active .maxi-slider-block {
 		height: 100%;
 		padding: 0;
 		margin: 0;
-		position: relative;
+		position: $pr;
 
 		&--edit-view {
 			flex-direction: column;
@@ -39,7 +40,7 @@ body.maxi-blocks--active .maxi-slider-block {
 				&:not([data-slide-active='true']) {
 					opacity: 0;
 					pointer-events: none;
-					position: absolute;
+					position: $pa;
 					top: 0;
 					left: 0;
 					z-index: 0;
@@ -48,7 +49,7 @@ body.maxi-blocks--active .maxi-slider-block {
 				&[data-slide-active='true'] {
 					opacity: 1;
 					pointer-events: auto;
-					position: relative;
+					position: $pr;
 					z-index: 1;
 				}
 			}
@@ -56,7 +57,7 @@ body.maxi-blocks--active .maxi-slider-block {
 	}
 
 	&__arrow {
-		position: absolute;
+		position: $pa;
 		top: 50%;
 		transform: translateY(-50%);
 
@@ -68,18 +69,18 @@ body.maxi-blocks--active .maxi-slider-block {
 			left: 0px;
 		}
 		&:hover {
-			cursor: pointer;
+			cursor: $ptr;
 		}
 	}
 	.maxi-slider-block__dots {
 		display: flex;
-		position: absolute;
+		position: $pa;
 		transform: translateX(-50%);
 		svg {
-			position: absolute;
+			position: $pa;
 		}
 		.maxi-slider-block__dot:not(.maxi-slider-block__dot--active):hover {
-			cursor: pointer;
+			cursor: $ptr;
 		}
 	}
 }

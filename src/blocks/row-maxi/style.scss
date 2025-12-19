@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-row-block {
-	position: relative;
+	position: $pr;
 	display: flex;
 	flex-direction: row;
 

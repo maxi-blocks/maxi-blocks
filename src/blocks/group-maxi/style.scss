@@ -1,7 +1,8 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-group-block {
 	display: flex;
 	flex-direction: column;
-	position: relative;
+	position: $pr;
 	margin-top: 0;
 	margin-bottom: 0;
 	padding: 0;

@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__popover {
 	.toolbar-item__context-loop__popover {
 		min-width: 280px;
@@ -23,32 +24,32 @@
 		input[type='text'],
 		input[type='number'],
 		select {
-			border: 2px solid var(--maxi-grey-light);
-			color: var(--maxi-grey-light);
+			border: 2px solid $gl;
+			color: $gl;
 		}
 	}
 	.maxi-axis-control {
-		color: var(--maxi-white);
+		color: $w;
 		&__content {
 			&__item {
 				&__checkbox {
 					input {
-						border: 2px solid var(--maxi-grey-light);
-						background-color: var(--maxi-grey-dark);
+						border: 2px solid $gl;
+						background-color: $gd;
 						&:focus {
-							border-color: var(--maxi-grey-light);
+							border-color: $gl;
 						}
 					}
 				}
 				&__sync {
 					margin-top: 35px;
-					border-color: var(--maxi-grey-light);
+					border-color: $gl;
 					button {
 						&[aria-pressed='true'] {
-							background: var(--maxi-grey-dark) !important;
+							background: $gd !important;
 						}
 						svg {
-							fill: var(--maxi-white);
+							fill: $w;
 						}
 					}
 				}

@@ -1,13 +1,14 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-prompt-control-results-card {
 	padding: 20px;
-	border: 1.5px solid var(--maxi-grey-light);
+	border: $bg;
 	border-radius: 10px;
 	background: var(--maxi-off-white);
-	cursor: pointer;
+	cursor: $ptr;
 	transition: background-color 0.2s ease-in-out, border 0.2s ease-in-out;
 
 	& > * {
-		color: var(--maxi-black) !important;
+		color: $bk !important;
 	}
 	& &__variant {
 		font-weight: bold;
@@ -18,17 +19,17 @@
 		height: auto;
 		padding: 4px 8px;
 		width: auto;
-		border: 1.5px solid var(--maxi-secondary-color);
-		color: var(--maxi-secondary-color) !important;
-		background: var(--maxi-whisper-green);
+		border: 1.5px solid $sc;
+		color: $sc !important;
+		background: $wg;
 		font-size: 12px !important;
 		font-weight: 600 !important;
 		border-radius: 30px;
 		text-align: center;
-		cursor: pointer;
+		cursor: $ptr;
 
 		&:hover {
-			background-color: var(--maxi-secondary-color);
+			background-color: $sc;
 		}
 
 		&:focus {
@@ -47,12 +48,12 @@
 		&__select-row {
 			display: flex;
 			justify-content: space-between;
-			cursor: pointer;
+			cursor: $ptr;
 
 			& &__select-text_output,
 			& &__from-previous-session,
 			& &__id_output {
-				color: var(--maxi-secondary-color) !important;
+				color: $sc !important;
 			}
 
 			& &__select-text,
@@ -62,14 +63,14 @@
 			}
 
 			& &__from-previous-session {
-				color: var(--maxi-grey-light);
+				color: $gl;
 			}
 		}
 	}
 
 	&__modificator {
 		&:has(&__id) {
-			cursor: pointer;
+			cursor: $ptr;
 		}
 
 		& &__id {
@@ -78,10 +79,10 @@
 	}
 
 	&__scroll-to {
-		position: relative;
+		position: $pr;
 
 		&__inner {
-			position: absolute;
+			position: $pa;
 			top: -80px;
 		}
 	}
@@ -93,15 +94,15 @@
 	}
 
 	& &__content-length {
-		color: var(--maxi-grey-dark);
+		color: $gd;
 		text-align: end;
 	}
 
 	&__end-of-content {
-		position: relative;
+		position: $pr;
 
 		&__inner {
-			position: absolute;
+			position: $pa;
 			bottom: -120px;
 		}
 	}
@@ -116,20 +117,20 @@
 			padding: 0;
 
 			&:hover {
-				color: var(--maxi-primary-color);
+				color: $pc;
 			}
 		}
 	}
 
 	&--selected {
 		background: var(--maxi-off-white);
-		border-color: var(--maxi-secondary-color);
+		border-color: $sc;
 		cursor: default;
 
 		.maxi-prompt-control-results-card__top-bar {
 			&__select-row {
 				cursor: default;
-				border-top: 1px solid var(--maxi-mid-green);
+				border-top: 1px solid $mg;
 				padding-top: 10px;
 			}
 		}

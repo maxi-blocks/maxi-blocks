@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-base-control {
 	&__disable {
 		opacity: 0.3;
@@ -17,7 +18,7 @@
 		flex: 1;
 		min-height: 18px;
 		margin: 0;
-		color: var(--maxi-grey-dark);
+		color: $gd;
 	}
 
 	&__help {

@@ -1,16 +1,17 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-map-block {
 	&__not-found {
 		padding: 5% 8%;
-		border: 1px solid var(--maxi-grey-light);
-		background-color: var(--maxi-whisper-green);
+		border: $bl;
+		background-color: $wg;
 		p {
 			max-width: 820px;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 			font-size: 16px;
 			font-family: Inter, sans-serif;
 			line-height: 1.5em;
 			a {
-				color: var(--maxi-secondary-color);
+				color: $sc;
 			}
 		}
 	}
@@ -21,7 +22,7 @@
 	}
 
 	&__alert {
-		position: absolute;
+		position: $pa;
 		bottom: 16px;
 		width: calc(100% - 32px);
 		left: 16px;
@@ -29,8 +30,8 @@
 		font-size: 13px;
 		padding: 0.5em;
 		text-align: center;
-		background: rgba(var(--maxi-black), 0.6);
-		color: var(--maxi-white);
+		background: rgba($bk, 0.6);
+		color: $w;
 		z-index: 9999;
 	}
 
@@ -66,22 +67,22 @@
 	&__popup {
 		&__content {
 			&__marker-remove {
-				position: absolute;
+				position: $pa;
 				right: 0;
 				bottom: -16px;
-				background: var(--maxi-primary-color);
+				background: $pc;
 				border-radius: 50%;
 				text-align: center;
-				transition: all 0.4s ease !important;
+				transition: $t !important;
 
 				span.dashicon {
 					&::before {
-						color: var(--maxi-white);
+						color: $w;
 					}
 				}
 				&:hover {
-					background: var(--maxi-black);
-					transition: all 0.4s ease !important;
+					background: $bk;
+					transition: $t !important;
 				}
 			}
 		}
@@ -90,13 +91,13 @@
 	&__search-box {
 		display: flex;
 		align-items: center;
-		background: var(--maxi-white);
-		color: var(--maxi-grey-dark);
-		position: absolute;
+		background: $w;
+		color: $gd;
+		position: $pa;
 		z-index: 999;
 		top: 0.5rem;
 		right: 0.5rem;
-		border: 1px solid var(--maxi-grey-dark);
+		border: 1px solid $gd;
 		padding: 0 0 0 0.5rem;
 		width: 280px;
 		max-width: calc(100% - 5rem);
@@ -111,9 +112,9 @@
 		}
 
 		.maxi-text-input[type='text'] {
-			background: transparent;
+			background: $tr;
 			border: none;
-			color: var(--maxi-black);
+			color: $bk;
 			box-shadow: none;
 			font-family: inherit;
 			padding: 0;
@@ -121,26 +122,26 @@
 		}
 
 		svg.dashicon {
-			fill: var(--maxi-black);
+			fill: $bk;
 		}
 
 		&__button {
-			border-top: 1px solid var(--maxi-grey-light);
+			border-top: $bl;
 			display: flex;
 			padding: 0.7rem 0;
 			margin: 0 0.5rem;
 		}
 
 		&-results {
-			position: absolute;
+			position: $pa;
 			z-index: 999;
-			background: var(--maxi-white);
+			background: $w;
 			top: 0;
 			transition: all 200ms ease-in-out;
 			max-width: calc(100% - 5rem);
 			top: 48px;
 			right: 0.5rem;
-			border: 1px solid var(--maxi-grey-dark);
+			border: 1px solid $gd;
 			width: 280px;
 			max-height: calc(100% - 70px);
 			overflow-y: auto;

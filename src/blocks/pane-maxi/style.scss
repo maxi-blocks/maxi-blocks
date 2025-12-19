@@ -1,6 +1,7 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-pane-block {
 	&__header {
-		position: relative;
+		position: $pr;
 	}
 
 	&__header-content {
@@ -13,7 +14,7 @@ body.maxi-blocks--active .maxi-pane-block {
 	}
 
 	&__icon {
-		cursor: pointer;
+		cursor: $ptr;
 	}
 
 	&__line-container {

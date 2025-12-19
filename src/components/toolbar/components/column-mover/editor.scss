@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item-move__horizontally {
 	display: flex;
 	align-items: center;
@@ -20,7 +21,7 @@
 		}
 		&:hover {
 			path {
-				fill: var(--maxi-secondary-color) !important;
+				fill: $sc !important;
 			}
 		}
 	}

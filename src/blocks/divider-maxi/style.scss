@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-divider-block {
 	display: flex;
 	justify-content: center;
@@ -16,7 +17,7 @@ body.maxi-blocks--active .maxi-divider-block {
 	}
 	hr {
 		border: 0;
-		position: relative;
+		position: $pr;
 		background: none;
 
 		&:before,

@@ -1,6 +1,7 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active {
 	.maxi-block-style-preview {
-		position: relative;
+		position: $pr;
 	}
 	.maxi-block-style-control {
 		.maxi-select-control__input {
@@ -12,13 +13,13 @@ body.maxi-blocks--active {
 		display: flex;
 
 		&__light {
-			background: var(--maxi-pastel-green);
-			color: var(--maxi-grey-dark) !important;
+			background: $pg;
+			color: $gd !important;
 			border-radius: 5px;
 		}
 		&__dark {
-			background: var(--maxi-grey-dark);
-			color: var(--maxi-white) !important;
+			background: $gd;
+			color: $w !important;
 		}
 		span {
 			padding: 5px 8px;

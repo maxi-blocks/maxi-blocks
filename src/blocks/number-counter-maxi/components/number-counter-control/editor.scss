@@ -1,6 +1,7 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-number-counter-control {
 	&__alert-warning {
-		color: var(--maxi-grey-dark) !important;
+		color: $gd !important;
 		background: var(--maxi-light-yellow);
 		border: 1px solid var(--maxi-deep-golden);
 		padding: 0.5rem;

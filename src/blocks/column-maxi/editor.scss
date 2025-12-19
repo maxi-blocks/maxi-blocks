@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-column-size-control {
 	.components-base-control__field {
 		flex-direction: column;
@@ -16,7 +17,7 @@
 		&.has-child-selected {
 			&::after {
 				opacity: 1;
-				border-color: var(--maxi-primary-color) !important;
+				border-color: $pc !important;
 			}
 		}
 

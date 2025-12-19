@@ -1,11 +1,12 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-block--backend {
 	.maxi-editor-url-input__button {
-		position: absolute;
+		position: $pa;
 		top: 43px;
 		right: 0;
 		width: 40px;
 		height: 40px;
-		background: var(--maxi-grey-dark);
+		background: $gd;
 
 		.components-button.has-icon {
 			min-width: 40px;
@@ -18,12 +19,12 @@
 		}
 		form,
 		button {
-			background: var(--maxi-white);
+			background: $w;
 		}
 		button {
 			&:hover {
 				svg {
-					fill: var(--maxi-primary-color);
+					fill: $pc;
 				}
 			}
 		}
@@ -31,13 +32,13 @@
 			.block-editor-url-input,
 			button {
 				box-shadow: none;
-				border: 1px solid var(--maxi-grey-light);
+				border: $bl;
 			}
 		}
 		svg {
 			width: 20px;
 			height: 20px;
-			fill: var(--maxi-primary-color);
+			fill: $pc;
 		}
 		.components-base-control__field {
 			margin-bottom: 0;
@@ -54,9 +55,9 @@
 			margin-top: 0px;
 			margin-bottom: 3px;
 			margin-left: -301px;
-			color: var(--maxi-primary-color);
+			color: $pc;
 			padding-left: 8px;
-			background: var(--maxi-white);
+			background: $w;
 		}
 		.maxi-editor-url-input__button-modal-line {
 			display: flex;

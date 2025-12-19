@@ -1,23 +1,24 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-icon-styles-control {
 	.maxi-tabs-control__button {
 		&--selected {
 			path {
-				fill: var(--maxi-secondary-color);
-				stroke: transparent;
+				fill: $sc;
+				stroke: $tr;
 			}
 		}
 	}
 	.maxi-tabs-control__button-color {
 		path {
 			&:first-child {
-				fill: var(--maxi-white) !important;
+				fill: $w !important;
 			}
 		}
 	}
 	.maxi-tabs-control__button-border.maxi-tabs-control__button--selected {
 		path {
-			fill: transparent;
-			stroke: var(--maxi-secondary-color);
+			fill: $tr;
+			stroke: $sc;
 		}
 	}
 }

@@ -1,3 +1,4 @@
+@import '../../src/css/backend-variables.scss';
 @import './variables';
 
 body.toplevel_page_maxi-blocks-dashboard {
@@ -30,12 +31,12 @@ body.toplevel_page_maxi-blocks-dashboard {
 			margin: 30px auto 0;
 			border-radius: 25px;
 			& * {
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: $f !important;
 			}
 		}
 	}
 	.maxi-dashboard_header {
-		position: relative;
+		position: $pr;
 		z-index: 1;
 		display: flex;
 		justify-content: flex-start;
@@ -53,7 +54,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 		}
 
 		.nav-tab-wrapper {
-			position: relative;
+			position: $pr;
 			z-index: 1;
 			padding: 12px 39px 10px;
 			margin-top: 0;
@@ -62,15 +63,15 @@ body.toplevel_page_maxi-blocks-dashboard {
 			margin-right: auto;
 
 			.maxi-dashboard_nav-tab {
-				position: relative;
-				background: transparent;
+				position: $pr;
+				background: $tr;
 				border: none;
 				font-size: 20px;
 				margin: 0;
 				padding: 8px 16px;
 				color: var(--maxi-admin-black-text);
 				font-weight: 400;
-				transition: all 0.5s ease;
+				transition: $t;
 				outline: none;
 				box-shadow: none;
 
@@ -80,7 +81,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 				&:hover {
 					color: var(--maxi-admin-pink-hover);
-					background: transparent;
+					background: $tr;
 					border: none;
 				}
 
@@ -168,7 +169,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				&__validation-message {
 					width: 100%;
 					&.api-loading {
-						color: var(--maxi-secondary-color);
+						color: $sc;
 					}
 					&.api-error {
 						color: var(--maxi-orange-red);
@@ -257,7 +258,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				a {
 					color: var(--maxi-admin-green);
-					transition: all 0.4s ease;
+					transition: $t;
 					&:hover {
 						color: var(--maxi-admin-purple-hover);
 					}
@@ -347,7 +348,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 			}
 			.maxi-dashboard_main-content_accordion {
-				position: relative;
+				position: $pr;
 				z-index: 2;
 				// max-width: clamp(280px, 95%, 1000px);
 				width: 95%;
@@ -392,10 +393,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 						padding: 22px 22px 22px 32px;
 						margin-bottom: -1px;
 						font-weight: 700;
-						cursor: pointer;
+						cursor: $ptr;
 						background: var(--maxi-admin-white);
 						border-radius: 8px;
-						transition: all 0.3s ease;
+						transition: $t;
 
 						h3 {
 							font-size: 20px !important;
@@ -457,7 +458,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								border-color: var(--maxi-admin-border-light);
 								max-height: 10000vh;
 								padding: 25px 25px 20px 34px;
-								transition: all 0.5s ease-in-out;
+								transition: $t;
 							}
 						}
 					}
@@ -532,11 +533,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 								}
 							}
 							&__toggle {
-								position: relative;
-								cursor: pointer;
+								position: $pr;
+								cursor: $ptr;
 
 								input[type='checkbox'] {
-									position: absolute;
+									position: $pa;
 									z-index: 1;
 									top: 0;
 									left: 0;
@@ -550,8 +551,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 									&:focus
 										+ .maxi-toggle-switch__toggle__track {
 										border-radius: 12px;
-										box-shadow: 0 0 0 1px var(--maxi-grey);
-										outline: 2px solid transparent;
+										box-shadow: 0 0 0 1px $g;
+										outline: 2px solid $tr;
 									}
 
 									&:checked
@@ -573,18 +574,18 @@ body.toplevel_page_maxi-blocks-dashboard {
 									vertical-align: top;
 									width: 44px;
 									height: 24px;
-									background-color: var(--maxi-white);
+									background-color: $w;
 									background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.8 8"><path d="M8.43.22A1 1 0 0 0 7 .37L2.93 5.48 1.72 4.21a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l2 2.1h.05a.83.83 0 0 0 .16.09l.1.06A1.15 1.15 0 0 0 3 8a.93.93 0 0 0 .4-.09l.11-.07a.71.71 0 0 0 .18-.12s0 0 0-.06l4.8-6A1 1 0 0 0 8.43.22Z"/></svg>'),
 										url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="m5.6 4 2.55-2.55A.85.85 0 1 0 7 .25L4.4 2.8 1.85.25a.85.85 0 0 0-1.2 1.2L3.2 4 .65 6.55a.85.85 0 0 0 0 1.2.83.83 0 0 0 .6.25.82.82 0 0 0 .6-.25.82.82 0 0 0 .6-.25L4.4 5.2 7 7.75a.82.82 0 0 0 .6.25.83.83 0 0 0 .6-.25.85.85 0 0 0 0-1.2Z" transform="translate(-.4)"/></svg>');
 									background-repeat: no-repeat, no-repeat;
 									background-position: 8px center, 24px center;
 									background-size: 10px auto, 10px auto;
-									border: 1px solid var(--maxi-grey-light);
+									border: $bl;
 									border-radius: 12px;
 									transition: 0.2s background ease;
 								}
 								&__thumb {
-									position: absolute;
+									position: $pa;
 									top: 3px;
 									left: 3px;
 									display: block;
@@ -592,7 +593,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									width: 18px;
 									height: 18px;
 									background-color: var(--maxi-admin-white);
-									border: 1px solid var(--maxi-grey-light);
+									border: $bl;
 									border-radius: 50%;
 									transition: 0.1s transform ease;
 								}
@@ -649,7 +650,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 					.header-row td {
 						font-weight: bold;
-						background: var(--maxi-primary-color);
+						background: $pc;
 					}
 
 					.status-ok span {
@@ -660,7 +661,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						font-weight: 700;
 						border-radius: 26px;
 						text-decoration: none;
-						position: relative;
+						position: $pr;
 
 						&::before {
 							content: '\2713'; /* Unicode for check mark */
@@ -678,7 +679,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						border-radius: 3px;
 						font-size: 14px;
 						font-weight: 700;
-						position: relative;
+						position: $pr;
 
 						&::before {
 							content: '✖'; /* Unicode for cross mark */
@@ -713,9 +714,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 					margin: 0;
 					line-height: 136%;
 					a {
-						color: var(--maxi-primary-color);
+						color: $pc;
 						&:hover {
-							transition: all 0.4s ease;
+							transition: $t;
 							opacity: 0.5;
 						}
 					}
@@ -896,13 +897,13 @@ body.site-editor-php
 	text-decoration: none;
 	border-radius: 26px;
 	font-weight: 500;
-	transition: all 0.4s ease;
+	transition: $t;
 }
 
 .maxi-dashboard_setup-wizard-button:hover {
 	background-color: var(--maxi-admin-black-text);
 	color: var(--maxi-admin-white);
-	transition: all 0.4s ease;
+	transition: $t;
 }
 
 .maxi-dashboard_setup-wizard-button:focus {
@@ -952,7 +953,7 @@ body.site-editor-php
 				// Universal hover for all .button variants
 				&:hover {
 					background: var(--maxi-admin-green) !important;
-					transition: all 0.5s ease;
+					transition: $t;
 				}
 
 				&.quick-start {
@@ -967,11 +968,11 @@ body.site-editor-php
 					border: none;
 					padding: 5px 25px;
 					transition: background 0.1s ease, transform 0.3s ease;
-					transition: all 0.5s ease;
+					transition: $t;
 
 					&:hover {
 						background: var(--maxi-admin-light-orange) !important;
-						transition: all 0.5s ease;
+						transition: $t;
 					}
 				}
 			}
@@ -1009,14 +1010,14 @@ body.site-editor-php
 			grid-template-columns: repeat(3, 1fr);
 			gap: 24px 24px;
 			margin: 30px 0;
-			position: relative;
+			position: $pr;
 
 			// &::before {
 			// }
 
 			.video-item {
 				text-align: left;
-				position: relative;
+				position: $pr;
 				z-index: 2;
 				transition: border 0.3s ease;
 				border: 2px solid var(--maxi-admin-border-light);
@@ -1077,12 +1078,12 @@ body.site-editor-php
 				box-shadow: none;
 				overflow: hidden;
 				transition: background 0.3s ease, transform 0.2s ease;
-				transition: all 0.5s ease;
+				transition: $t;
 
 				&:hover {
 					background: var(--maxi-admin-green) !important;
 					color: var(--maxi-admin-white);
-					transition: all 0.5s ease;
+					transition: $t;
 				}
 			}
 		}
@@ -1132,7 +1133,7 @@ body.site-editor-php
 				transition: background 0.3s ease, transform 0.2s ease;
 
 				&:hover {
-					background: var(--maxi-primary-color) !important;
+					background: $pc !important;
 					color: var(--maxi-admin-white);
 				}
 			}
@@ -1643,7 +1644,7 @@ p.maxi-license-help-text {
 		input[type='file'] {
 			padding: 8px 0;
 			font-size: 13px;
-			cursor: pointer;
+			cursor: $ptr;
 
 			&::file-selector-button {
 				padding: 6px 12px;
@@ -1652,7 +1653,7 @@ p.maxi-license-help-text {
 				border: 1px solid var(--maxi-admin-grey);
 				border-radius: 4px;
 				font-size: 13px;
-				cursor: pointer;
+				cursor: $ptr;
 				transition: background 0.15s ease, border-color 0.15s ease;
 
 				&:hover {
@@ -1809,7 +1810,7 @@ p.maxi-license-help-text {
 		.button-link-delete {
 			color: var(--maxi-admin-orange-hover);
 			text-decoration: none;
-			cursor: pointer;
+			cursor: $ptr;
 			background: none;
 			border: none;
 			padding: 4px 8px;

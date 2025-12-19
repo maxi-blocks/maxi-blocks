@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__popover {
 	.toolbar-item__dynamic-content__popover {
 		min-width: 280px;
@@ -28,8 +29,8 @@
 		input[type='text'],
 		input[type='number'],
 		select {
-			border: 2px solid var(--maxi-grey-light);
-			color: var(--maxi-grey-light);
+			border: 2px solid $gl;
+			color: $gl;
 		}
 	}
 	.maxi-axis-control {

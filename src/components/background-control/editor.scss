@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body .maxi-background-control {
 	padding-top: 8px;
 	.maxi-tabs-control__full-width {
@@ -9,16 +10,16 @@ body .maxi-background-control {
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
 		.maxi-tabs-control__button-gradient {
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $gd;
+			background-color: $w;
 			
 
 			&.maxi-tabs-control__button--selected {
-				border: 1px solid var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green);
+				border: 1px solid $pc;
+				color: $pc;
+				background-color: $wg;
 			}
 		}
 	}
@@ -39,19 +40,19 @@ body .maxi-background-control {
 
 	.parallax-direction {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			border-radius: 3px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $gd;
+			background-color: $w;
 			width: 48px;
-			transition: all 0.4s ease !important;
+			transition: $t !important;
 
 			&[aria-pressed='true'],
 			&:active,
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				color: var(--maxi-secondary-color);
-				border: 1px solid var(--maxi-primary-color);
+				background-color: $wg;
+				color: $sc;
+				border: 1px solid $pc;
 			}
 		}
 	}
@@ -66,7 +67,7 @@ body .maxi-background-control {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
 			margin-bottom: 8px !important;
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			border-radius: 4px;
 		}
 	}
@@ -76,7 +77,7 @@ body .maxi-background-control {
 			width: 20px;
 			height: 20px;
 			margin: 3px 4px 0 0 !important;
-			border: 1px solid var(--maxi-black);
+			border: 1px solid $bk;
 			opacity: 1;
 			float: left;
 			border-radius: 0;
@@ -94,7 +95,7 @@ body .maxi-background-control {
 			margin: 0 0 8px;
 			display: flex;
 			align-items: center;
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $sc;
 			z-index: 0;
 
 			.maxi-background-layer__title__text {
@@ -105,7 +106,7 @@ body .maxi-background-control {
 		}
 
 		&__content {
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $sc;
 			border-radius: 0;
 			padding: 22px 8px 0;
 			margin: -23px -8px 8px;
@@ -127,7 +128,7 @@ body .maxi-background-control {
 				margin-bottom: 0;
 
 				.components-input-control__container:hover {
-					border-color: var(--maxi-primary-color) !important;
+					border-color: $pc !important;
 				}
 			}
 		}
@@ -147,7 +148,7 @@ body .maxi-background-control {
 					width: 15px;
 					height: 15px;
 					path {
-						fill: var(--maxi-black);
+						fill: $bk;
 					}
 				}
 			}
@@ -156,9 +157,9 @@ body .maxi-background-control {
 				width: 22px;
 				height: 22px;
 				margin: auto 5px auto 5px;
-				cursor: pointer;
-				position: relative;
-				transition: all 0.4s ease;
+				cursor: $ptr;
+				position: $pr;
+				transition: $t;
 
 				&:hover {
 					transform: scale(1.1);
@@ -171,16 +172,16 @@ body .maxi-background-control {
 
 				&--block {
 					path {
-						stroke: var(--maxi-black);
+						stroke: $bk;
 					}
 				}
 				&:after {
 					content: '';
 					display: block;
-					background-color: var(--maxi-grey-dark);
+					background-color: $gd;
 					width: 0;
 					height: 1px;
-					position: absolute;
+					position: $pa;
 					top: 50%;
 					left: 50%;
 					transform: translate(-50%, -50%) rotate(-45deg);
@@ -192,7 +193,7 @@ body .maxi-background-control {
 						width: 23px;
 					}
 					path {
-						stroke: var(--maxi-grey-dark);
+						stroke: $gd;
 					}
 				}
 			}
@@ -203,13 +204,13 @@ body .maxi-background-control {
 		width: 25px;
 		-webkit-transition: 0.3s ease all;
 		transition: 0.3s ease all;
-		cursor: pointer;
+		cursor: $ptr;
 		-webkit-transform-origin: center;
 		-ms-transform-origin: center;
 		transform-origin: center;
 		padding: 6px 0px;
-		border-right: 1px solid var(--maxi-secondary-color);
-		background-color: var(--maxi-white);
+		border-right: 1px solid $sc;
+		background-color: $w;
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
 
@@ -218,17 +219,17 @@ body .maxi-background-control {
 			height: 16px;
 			transform: rotate(-90deg);
 			path {
-				fill: var(--maxi-black);
+				fill: $bk;
 			}
 		}
 	}
 
 	.maxi-list-item-control__title__id:before {
 		content: counter(list-items-counter);
-		background: var(--maxi-whisper-green);
+		background: $wg;
 		display: block;
 		padding: 7px 6px 7px 6px !important;
-		border-right: 1px solid var(--maxi-secondary-color);
+		border-right: 1px solid $sc;
 		margin-right: 5px !important;
 		counter-increment: list-items-counter 1;
 		font-size: 14px;
@@ -238,18 +239,18 @@ body .maxi-background-control {
 }
 
 .parallax-direction .maxi-tabs-control__button {
-	position: relative;
+	position: $pr;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	height: auto;
 	padding: 8px 30px !important;
-	border-bottom: 1px solid var(--maxi-grey-light);
-	border-top: 1px solid var(--maxi-grey-light);
-	border-right: 1px solid var(--maxi-grey-light);
+	border-bottom: $bl;
+	border-top: $bl;
+	border-right: $bl;
 	border-radius: 0;
-	color: var(--maxi-grey-dark);
-	background-color: var(--maxi-white);
+	color: $gd;
+	background-color: $w;
 	text-align: center;
 }
 
@@ -261,31 +262,31 @@ body .maxi-background-control {
 	margin-right: 4px !important;
 }
 .parallax-direction .maxi-tabs-control__button hover {
-	background-color: var(--maxi-grey-light);
-	cursor: pointer;
+	background-color: $gl;
+	cursor: $ptr;
 }
 .parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
 	box-shadow: none;
 	outline: none;
 }
 .parallax-direction .maxi-tabs-control__button active {
-	background-color: var(--maxi-grey-light);
+	background-color: $gl;
 }
 
 body.maxi-blocks--active .components-popover__fallback-container {
 	button.components-button.is-link {
 		height: 30px;
-		border: 1.5px solid var(--maxi-secondary-color);
-		color: var(--maxi-secondary-color) !important;
-		background: var(--maxi-whisper-green);
+		border: 1.5px solid $sc;
+		color: $sc !important;
+		background: $wg;
 		border-radius: 30px;
 		text-decoration: none;
 		padding: 0 10px;
-		transition: all 0.5s ease-in-out;
+		transition: $t;
 
 		&:hover {
-			border-color: var(--maxi-primary-color) !important;
-			background: var(--maxi-mid-green);
+			border-color: $pc !important;
+			background: $mg;
 		}
 	}
 }

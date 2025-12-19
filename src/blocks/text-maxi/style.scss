@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-text-block {
 	& * {
 		border-color: inherit;
@@ -25,7 +26,7 @@ body.maxi-blocks--active .maxi-text-block {
 				// Old text-maxi support
 				&:not(:has(.maxi-list-item-block__content))::before {
 					content: '';
-					position: relative;
+					position: $pr;
 					display: inline-block;
 					line-height: 0.5;
 					vertical-align: middle;
@@ -78,7 +79,7 @@ body.maxi-blocks--active .maxi-text-block {
 		}
 	}
 	&__content {
-		position: relative;
+		position: $pr;
 		display: block;
 		margin: 0;
 	}

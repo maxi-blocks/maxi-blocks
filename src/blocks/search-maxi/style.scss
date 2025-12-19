@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-search-block {
-	position: relative;
+	position: $pr;
 	display: flex;
 	align-items: center;
 	height: auto;
@@ -73,7 +74,7 @@ body.maxi-blocks--active .maxi-search-block {
 		display: flex;
 		align-items: center;
 		z-index: 1;
-		cursor: pointer;
+		cursor: $ptr;
 		height: 100%;
 		aspect-ratio: 1 / 1;
 		justify-content: center;

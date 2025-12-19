@@ -1,28 +1,29 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-settingstab-control {
 	width: 100%;
-	transition: all 0.5s ease;
+	transition: $t;
 
 	&.maxi-axis-control__sync {
 		.maxi-tabs-control__button {
 			margin-left: 7px;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $bg;
 			border-radius: 4px;
-			transition: all 0.5s ease;
+			transition: $t;
 			padding: 4px 6px;
 
 			svg {
-				fill: var(--maxi-secondary-color);
-				transition: all 0.5s ease;
+				fill: $sc;
+				transition: $t;
 			}
 
 			&[aria-pressed='true'],
 			&:hover {
-				background-color: var(--maxi-pastel-green);
-				border: 1.5px solid var(--maxi-secondary-color);
+				background-color: $pg;
+				border: 1.5px solid $sc;
 				font-weight: 700;
 
 				svg {
-					fill: var(--maxi-primary-color) !important;
+					fill: $pc !important;
 				}
 			}
 		}
@@ -34,14 +35,14 @@
 				background: var(--maxi-admin-black);
 				color: var(--maxi-admin-white);
 				border: none;
-				transition: all 0.5s ease;
+				transition: $t;
 			}
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
-				transition: all 0.5s ease;
+				transition: $t;
 
 				&[aria-pressed='true'] {
-					border-bottom: 1.5px solid var(--maxi-black) !important;
-					background-color: var(--maxi-whisper-green);
+					border-bottom: 1.5px solid $bk !important;
+					background-color: $wg;
 				}
 			}
 		}
@@ -55,20 +56,20 @@
 			margin-bottom: -18px;
 
 			.maxi-tabs-control__button {
-				transition: all 0.5s ease;
+				transition: $t;
 				&:hover {
-					background-color: var(--maxi-pastel-green);
+					background-color: $pg;
 				}
 				&:focus:not(:disabled) {
-					background-color: var(--maxi-white);
+					background-color: $w;
 				}
 			}
 		}
 
 		&__sidebar-settings-tabs {
 			.maxi-tabs-control__button[aria-pressed='true'] {
-				transition: all 0.5s ease;
-				color: var(--maxi-black);
+				transition: $t;
+				color: $bk;
 			}
 		}
 		&:not(.maxi-tabs-control--disable-padding) {
@@ -78,49 +79,49 @@
 			margin-bottom: 8px !important;
 		}
 		&__button {
-			position: relative;
+			position: $pr;
 			display: flex;
 			flex-direction: column;
 			width: 100%;
 			height: auto;
 			padding: 12px 8px;
-			border-bottom: 1.5px solid var(--maxi-grey-light);
-			border-top: 1.5px solid var(--maxi-grey-light);
-			border-right: 1.5px solid var(--maxi-grey-light);
+			border-bottom: 1.5px solid $gl;
+			border-top: 1.5px solid $gl;
+			border-right: 1.5px solid $gl;
 			border-radius: 0;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $gd;
+			background-color: $w;
 			text-align: center;
 			white-space: nowrap;
-			transition: all 0.5s ease;
+			transition: $t;
 
 			&:last-child {
 				border-right: none;
-				transition: all 0.5s ease;
+				transition: $t;
 			}
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				cursor: pointer;
-				color: var(--maxi-black);
+				background-color: $wg;
+				cursor: $ptr;
+				color: $bk;
 			}
 			&:focus:not(:disabled) {
 				box-shadow: none;
 				outline: none;
-				transition: all 0.5s ease;
+				transition: $t;
 			}
 			&:active {
-				background-color: var(--maxi-whisper-green) !important;
-				transition: all 0.5s ease;
+				background-color: $wg !important;
+				transition: $t;
 			}
 			&[aria-pressed='true'] {
-				color: var(--maxi-primary-color) !important;
+				color: $pc !important;
 				font-weight: 700 !important;
-				background-color: var(--maxi-whisper-green) !important;
-				transition: all 0.5s ease;
+				background-color: $wg !important;
+				transition: $t;
 			}
 			&--active:before {
 				content: '';
-				position: absolute;
+				position: $pa;
 				top: 5px !important;
 				left: -2px !important;
 				z-index: 1;
@@ -130,66 +131,66 @@
 				background-color: var(--maxi-light-blue-alt);
 				margin-left: 5px;
 				transform: translateY(-50%);
-				transition: all 0.5s ease;
+				transition: $t;
 			}
 
 			&.maxi-accordion-control__item__button {
 				padding-left: 25px;
-				transition: all 0.5s ease;
+				transition: $t;
 			}
 
 			&.maxi-clip-path-control__handles-button {
-				transition: all 0.5s ease;
+				transition: $t;
 				&[aria-pressed='true'] {
-					background-color: var(--maxi-pastel-green);
-					border-color: var(--maxi-mid-green);
-					color: var(--maxi-black);
+					background-color: $pg;
+					border-color: $mg;
+					color: $bk;
 					border-radius: 6px !important;
 				}
 				&:hover {
-					background-color: var(--maxi-whisper-green);
+					background-color: $wg;
 					border-radius: 6px !important;
 				}
 			}
 
 			&.maxi-tabs-control__button-visual,
 			&.maxi-tabs-control__button-edit.points {
-				border: 1.5px solid var(--maxi-grey-light) !important;
-				transition: all 0.5s ease;
+				border: $bg !important;
+				transition: $t;
 				&[aria-pressed='true'] {
-					background-color: var(--maxi-pastel-green) !important;
-					border-color: var(--maxi-primary-green) !important;
-					color: var(--maxi-black) !important;
+					background-color: $pg !important;
+					border-color: $pgr !important;
+					color: $bk !important;
 					font-weight: 700;
 					border-radius: 6px !important;
 				}
 				&:hover {
-					background-color: var(--maxi-whisper-green) !important;
+					background-color: $wg !important;
 				}
 				&:last-child {
-					border: 1.5px solid var(--maxi-grey-light) !important;
+					border: $bg !important;
 					border-radius: 6px !important;
-					transition: all 0.5s ease;
+					transition: $t;
 				}
 				&:first-child {
 					border-radius: 6px !important;
-					transition: all 0.5s ease;
+					transition: $t;
 				}
 			}
 
 			&.maxi-tabs-control__button-edit.points[aria-pressed='true'],
 			&.maxi-tabs-control__button-visual[aria-pressed='true'] {
-				background-color: var(--maxi-whisper-green) !important;
-				border-color: var(--maxi-primary-color) !important;
-				color: var(--maxi-primary-color) !important;
+				background-color: $wg !important;
+				border-color: $pc !important;
+				color: $pc !important;
 				font-weight: 700;
 				border-radius: 6px !important;
 			}
 		}
 
 		&__notification {
-			transition: all 0.5s ease;
-			position: absolute;
+			transition: $t;
+			position: $pa;
 			z-index: 8;
 			top: 0;
 			right: 0;
@@ -197,8 +198,8 @@
 			height: 0;
 			border-style: solid;
 			border-width: 0 8px 8px 0;
-			border-color: transparent var(--maxi-primary-color) transparent
-				transparent;
+			border-color: $tr $pc $tr
+				$tr;
 		}
 
 		.maxi-base-control {
@@ -230,12 +231,12 @@
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
 			padding: 0px 8px 0px;
-			background-color: var(--maxi-white);
+			background-color: $w;
 		}
 
 		&--nested {
-			background: var(--maxi-white);
-			border: 1.5px solid var(--maxi-secondary-color);
+			background: $w;
+			border: 1.5px solid $sc;
 			padding: 25px 0 0;
 			margin-bottom: 8px;
 			border-radius: 5px;
@@ -244,23 +245,23 @@
 
 		.maxi-tab-content {
 			display: none;
-			background: var(--maxi-white);
+			background: $w;
 
 			&__box {
-				position: relative;
+				position: $pr;
 				padding: 8px;
-				border-top: 1.5px solid var(--maxi-grey-light);
-				border-bottom: 1.5px solid var(--maxi-grey-light);
-				background-color: var(--maxi-white);
+				border-top: 1.5px solid $gl;
+				border-bottom: 1.5px solid $gl;
+				background-color: $w;
 
 				&:after {
 					content: '';
-					position: absolute;
+					position: $pa;
 					bottom: 0;
 					left: 0;
 					width: 100%;
 					height: 1px;
-					background: var(--maxi-grey-light);
+					background: $gl;
 				}
 				& > *:last-child {
 					.maxi-base-control__field {
@@ -281,10 +282,10 @@
 	&_has-border-left-right {
 		.maxi-tabs-control__button {
 			&:last-child {
-				border-right: 1.5px solid var(--maxi-grey-light);
+				border-right: 1.5px solid $gl;
 			}
 			&:first-child {
-				border-left: 1.5px solid var(--maxi-grey-light);
+				border-left: 1.5px solid $gl;
 			}
 		}
 	}
@@ -293,72 +294,72 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	background-color: var(--maxi-white);
+	background-color: $w;
 	padding-left: 5px;
 
 	.maxi-text-control__input {
 		padding-left: 10px !important;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 
 	.maxi-custom-label {
 		width: 100%;
-		position: relative;
-		transition: all 0.5s ease;
+		position: $pr;
+		transition: $t;
 	}
 	.maxi-base-control.maxi-block-style-control {
-		position: relative;
+		position: $pr;
 		min-width: 75px;
 		margin: 0 5px;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 	.maxi-block-style-preview {
-		position: relative;
+		position: $pr;
 		min-width: 100px;
 		margin-left: 10px;
 		height: 32px;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 	.block-style-label-2,
 	.maxi-base-control__label {
-		position: absolute;
+		position: $pa;
 		top: -8px;
 		left: 8px;
 		font-size: 8px;
-		color: var(--maxi-grey-dark);
+		color: $gd;
 		font-style: italic;
-		background: var(--maxi-white);
+		background: $w;
 		padding: 0 5px;
 		pointer-events: none;
 		box-sizing: border-box;
 		-webkit-box-sizing: border-box;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 }
 .block-info-icon {
-	position: absolute;
+	position: $pa;
 	right: 5px;
-	border: 2px solid var(--maxi-grey-light);
+	border: 2px solid $gl;
 	border-radius: 50%;
 	height: 16px;
 	width: 16px;
 	text-align: center;
 	top: 9px;
-	cursor: pointer;
+	cursor: $ptr;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	transition: all 0.5s ease;
+	transition: $t;
 
 	&:hover {
-		border-color: var(--maxi-primary-color);
-		color: var(--maxi-grey-dark);
-		transition: all 0.5s ease;
+		border-color: $pc;
+		color: $gd;
+		transition: $t;
 	}
 
 	span {
 		font-size: 10px;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 }
 /*******************************
@@ -370,8 +371,8 @@ html[dir='rtl'] {
 		left: 5px;
 	}
 	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
-		border-left: 1.5px solid var(--maxi-grey-light);
-		border-right: 1.5px solid var(--maxi-grey-light);
+		border-left: 1.5px solid $gl;
+		border-right: 1.5px solid $gl;
 	}
 	.maxi-block-style-preview {
 		margin-left: unset;

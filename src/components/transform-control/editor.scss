@@ -1,10 +1,11 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-transform-control {
 	input[type='range'] {
 		-webkit-appearance: none;
 		width: 100%;
 		height: 2px;
 		border-radius: 0;
-		background: var(--maxi-grey-light);
+		background: $gl;
 		outline: none;
 		-webkit-transition: 0.2s;
 		transition: opacity 0.2s;
@@ -15,87 +16,87 @@
 			width: 16px;
 			height: 16px;
 			border-radius: 50%;
-			background: var(--maxi-black);
-			cursor: pointer;
-			box-shadow: inset 0 0 0 2px var(--maxi-black),
-				inset 0 0 0 4px var(--maxi-white);
+			background: $bk;
+			cursor: $ptr;
+			box-shadow: inset 0 0 0 2px $bk,
+				inset 0 0 0 4px $w;
 		}
 
 		&::-moz-range-thumb {
 			width: 16px;
 			height: 16px;
 			border-radius: 50%;
-			background: var(--maxi-black);
-			cursor: pointer;
-			box-shadow: inset 0 0 0 2px var(--maxi-black),
-				inset 0 0 0 4px var(--maxi-white);
+			background: $bk;
+			cursor: $ptr;
+			box-shadow: inset 0 0 0 2px $bk,
+				inset 0 0 0 4px $w;
 		}
 	}
 
 	&__square-control {
 		display: flex;
 		flex-wrap: wrap;
-		position: relative;
+		position: $pr;
 
 		&__canvas {
-			position: relative;
+			position: $pr;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			width: 170px;
 			height: 170px;
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			border-radius: 5px;
 			overflow: hidden;
 
 			&:before {
 				content: '';
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				left: 0%;
 				transform: translateY(-50%);
 				width: 100%;
 				height: 1px;
-				border: 1px solid var(--maxi-grey-light);
+				border: $bl;
 			}
 
 			&:after {
 				content: '';
 				display: block;
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
 				width: 10px;
 				height: 10px;
-				border: 2px solid var(--maxi-white);
+				border: 2px solid $w;
 				border-radius: 50%;
-				background: var(--maxi-primary-color);
+				background: $pc;
 				cursor: inherit;
 			}
 
 			&__placeholder,
 			&__origin {
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
 				width: 40px;
 				height: 40px;
-				border: 1px solid var(--maxi-grey-light);
+				border: $bl;
 				border-radius: 5px;
 				transition: none !important;
 				&__button {
 					&[aria-pressed='active'] {
-						background: var(--maxi-grey-dark) !important;
-						border-color: var(--maxi-grey-dark) !important;
+						background: $gd !important;
+						border-color: $gd !important;
 					}
 				}
 			}
 
 			&__resizer {
 				z-index: 1;
-				border: 1px solid var(--maxi-grey-light);
+				border: $bl;
 				transition: none !important;
 			}
 
@@ -104,9 +105,9 @@
 				cursor: move;
 				width: 40px;
 				height: 40px;
-				border: 2px solid var(--maxi-grey);
+				border: 2px solid $g;
 				border-radius: 5px;
-				background-color: rgba(var(--maxi-black), 0.3);
+				background-color: rgba($bk, 0.3);
 				transition: none !important;
 			}
 
@@ -115,12 +116,12 @@
 				transition: none !important;
 
 				&__button {
-					position: absolute;
+					position: $pa;
 					transform: translate(-50%, -50%);
 					width: 8px;
 					height: 8px;
 					padding: 0;
-					background-color: var(--maxi-grey-light);
+					background-color: $gl;
 					border-radius: 100%;
 				}
 
@@ -145,7 +146,7 @@
 			}
 		}
 		&__y-control {
-			position: absolute;
+			position: $pa;
 			top: 55px;
 			right: -20px;
 			width: 168px;
@@ -156,7 +157,7 @@
 			}
 
 			input[type='range'] {
-				position: relative;
+				position: $pr;
 				right: 18px;
 				top: 18px;
 				margin-left: 4px;
@@ -172,7 +173,7 @@
 			}
 
 			&__value {
-				position: relative;
+				position: $pr;
 				top: -6px;
 				right: -85px;
 
@@ -226,7 +227,7 @@
 			}
 		}
 		&__sync {
-			position: absolute;
+			position: $pa;
 			top: 185px;
 			right: 0;
 			display: flex;
@@ -241,12 +242,12 @@
 				width: 14px;
 				height: 14px;
 				path {
-					fill: var(--maxi-grey);
+					fill: $g;
 				}
 			}
 
 			button[type='button'] {
-				background: var(--maxi-white);
+				background: $w;
 				border-radius: 4px;
 				width: 32px;
 				height: 32px;
@@ -257,14 +258,14 @@
 				transition: all 0.2s;
 
 				&:focus {
-					border-color: transparent;
+					border-color: $tr;
 				}
 
 				&[aria-pressed='true'] {
-					background: var(--maxi-pastel-green) !important;
+					background: $pg !important;
 					svg {
 						path {
-							fill: var(--maxi-secondary-color);
+							fill: $sc;
 						}
 					}
 				}
@@ -349,13 +350,13 @@
 		flex: 1;
 
 		.maxi-tabs-control__button--selected svg path {
-			fill: var(--maxi-secondary-color);
+			fill: $sc;
 		}
 
 		.maxi-tabs-control__button {
 			padding: 8px 8px;
 			margin-right: 5px;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $bg;
 			border-radius: 4px;
 			transition: all 0.5s;
 			&:last-child {
@@ -364,14 +365,14 @@
 		}
 
 		.maxi-tabs-control__button[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green) !important;
-			border-color: var(--maxi-secondary-color) !important;
+			background-color: $wg !important;
+			border-color: $sc !important;
 		}
 
 		.maxi-tabs-control__button {
 			&--selected {
 				font-weight: 700;
-				color: var(--maxi-secondary-color) !important;
+				color: $sc !important;
 			}
 		}
 	}

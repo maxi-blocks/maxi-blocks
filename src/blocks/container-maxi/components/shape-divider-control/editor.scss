@@ -1,13 +1,14 @@
+@import '../../../../../src/css/backend-variables.scss';
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-shape-divider-control {
 		&__shape-selector {
 			&__display {
-				border-color: var(--maxi-grey);
+				border-color: $g;
 
 				&:focus {
-					border-color: var(--maxi-secondary-color);
-					box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-					outline: 2px solid transparent;
+					border-color: $sc;
+					box-shadow: 0 0 0 1px $sc;
+					outline: 2px solid $tr;
 				}
 			}
 		}
@@ -33,12 +34,12 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			&:focus,
 			&--selected {
 				border: none;
-				background-color: var(--maxi-white) !important;
+				background-color: $w !important;
 				box-shadow: none;
 				outline: none;
 
 				svg {
-					fill: var(--maxi-secondary-color);
+					fill: $sc;
 				}
 			}
 		}
@@ -51,15 +52,15 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			display: block;
 			width: 100%;
 			padding: 18px 0;
-			border: 1px solid var(--maxi-mid-green);
+			border: 1px solid $mg;
 			border-radius: 4px !important;
-			background-color: var(--maxi-whisper-green);
+			background-color: $wg;
 			text-align: center;
 			transition: all 0.5s;
-			cursor: pointer;
+			cursor: $ptr;
 
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: $g;
 			}
 		}
 	}

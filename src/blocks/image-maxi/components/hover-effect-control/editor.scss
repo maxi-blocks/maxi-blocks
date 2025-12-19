@@ -1,11 +1,12 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-hover-effect-control__tabs {
 	.maxi-tabs-control__button {
 		padding: 0;
 		height: 40px;
 		width: 40px;
 		min-width: 40px;
-		background: var(--maxi-white);
-		border: 1.5px solid var(--maxi-grey-light);
+		background: $w;
+		border: $bg;
 		border-radius: 3px;
 		box-shadow: none;
 		line-height: 1;
@@ -24,30 +25,30 @@
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
 			background: var(--maxi-mid-color);
-			border-color: var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color);
+			border-color: $sc;
+			color: $sc;
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: $sc;
 				}
 				stroke {
-					stroke: var(--maxi-secondary-color);
+					stroke: $sc;
 				}
 			}
 		}
 
 		&:hover {
-			background: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color);
+			background: $wg;
+			border-color: $sc;
+			color: $sc;
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: $sc;
 				}
 				stroke {
-					stroke: var(--maxi-secondary-color);
+					stroke: $sc;
 				}
 			}
 		}
@@ -73,7 +74,7 @@
 	.maxi-tabs-control__button {
 		border-radius: 3px;
 		margin: 0; // Spacing handled by container gap
-		border: 1.5px solid var(--maxi-grey-light) !important;
+		border: $bg !important;
 		padding: 0; // Match top icons
 		height: 40px; // Uniform size
 		width: 40px; // Uniform size
@@ -91,12 +92,12 @@
 		// Active state: emphasize with secondary color border
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: $sc !important;
 		}
 
 		// Hover state: emphasize with secondary color border
 		&:hover {
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: $sc !important;
 		}
 
 		svg {

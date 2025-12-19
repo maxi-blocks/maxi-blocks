@@ -1,7 +1,8 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active div.maxi-column-block {
 	display: inline-flex;
 	flex-direction: column;
-	position: relative;
+	position: $pr;
 	height: auto;
 	margin: 0;
 	box-sizing: border-box;

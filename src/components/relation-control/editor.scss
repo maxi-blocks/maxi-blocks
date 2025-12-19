@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-relation-control {
 		margin-top: 10px;
 	&__button {
@@ -41,10 +42,10 @@
 	width: fit-content;
 	margin: 10px auto; // Changed from margin-top to center horizontally
 	padding: 8px 12px;
-	background-color: var(--maxi-pastel-green);
-	border: 1px solid var(--maxi-mid-green);
+	background-color: $pg;
+	border: 1px solid $mg;
 	border-radius: 30px;
-	color: var(--maxi-grey-dark);
+	color: $gd;
 	text-align: center;
 	text-decoration: none;
 	transition: background-color 0.3s ease, color 0.3s ease,
@@ -57,6 +58,6 @@
 	background-color: var(
 		--maxi-primary-color
 	) !important; // Changed to primary color
-	color: var(--maxi-white) !important;
-	border-color: var(--maxi-primary-color) !important;
+	color: $w !important;
+	border-color: $pc !important;
 }

@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item {
 	&__text-margin {
 		// Fix button sizing issues - prevent 100% width problems
@@ -18,8 +19,8 @@
 
 			line,
 			path {
-				fill: transparent !important;
-				stroke: var(--maxi-black) !important;
+				fill: $tr !important;
+				stroke: $bk !important;
 			}
 		}
 	}

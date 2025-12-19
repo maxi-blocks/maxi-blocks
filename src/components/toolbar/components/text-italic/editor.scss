@@ -1,7 +1,8 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__italic {
 	&[aria-pressed='true'] {
 		svg path {
-			fill: var(--maxi-primary-color);
+			fill: $pc;
 		}
 	}
 }

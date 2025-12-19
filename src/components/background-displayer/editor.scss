@@ -1,7 +1,8 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-block .maxi-background-displayer {
 	&__parallax {
 		img {
-			position: relative;
+			position: $pr;
 		}
 	}
 }

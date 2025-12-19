@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-default-styles-control:not(.maxi-button-default-styles) {
 	display: flex;
 	flex-wrap: wrap;
@@ -9,43 +10,43 @@
 		justify-content: center;
 		height: 32px;
 		width: 22.5%;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: $bg;
 		border-radius: 4px;
 		transition: all 0.5s;
 
 		&--active {
-			background-color: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
+			background-color: $wg;
+			border-color: $sc;
 
 			path {
-				fill: var(--maxi-secondary-color);
-				//stroke: var(--maxi-secondary-color);
+				fill: $sc;
+				//stroke: $sc;
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
-						fill: var(--maxi-secondary-color);
-						//stroke: var(--maxi-secondary-color);
+						fill: $sc;
+						//stroke: $sc;
 					}
 				}
 			}
 			// &:nth-child(3),
 			// &:nth-child(4) {
 			// 	path {
-			// 		stroke: var(--maxi-secondary-color);
+			// 		stroke: $sc;
 			// 	}
 			// }
 		}
 
 		&:hover {
-			background-color: var(--maxi-pastel-green);
-			stroke: var(--maxi-secondary-color);
+			background-color: $pg;
+			stroke: $sc;
 
 			svg {
 				path {
-					//stroke: var(--maxi-secondary-color) !important;
-					fill: var(--maxi-secondary-color) !important;
+					//stroke: $sc !important;
+					fill: $sc !important;
 				}
 			}
 		}

@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-text-control {
 	.maxi-base-control__field {
 		flex-wrap: wrap;
@@ -9,14 +10,14 @@ body.maxi-blocks--active .maxi-text-control {
 		padding: 2px 8px;
 		border-radius: 5px;
 		background-color: rgba(33, 141, 250, 0);
-		border: 1px solid var(--maxi-grey-light);
+		border: $bl;
 		font-size: 13px;
-		color: var(--maxi-grey-dark);
+		color: $gd;
 		font-weight: 500;
 		flex: 1;
 
 		&:focus {
-			border-color: var(--maxi-grey);
+			border-color: $g;
 		}
 	}
 
@@ -39,17 +40,17 @@ body.maxi-blocks--active .maxi-text-control {
 	}
 	&__second-style {
 		.maxi-base-control__field {
-			position: relative;
+			position: $pr;
 			margin-top: 12px;
 		}
 		.maxi-base-control__label {
-			position: absolute;
+			position: $pa;
 			top: -8px;
 			left: 8px;
 			font-size: 10px !important;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 			font-style: normal;
-			background: var(--maxi-white);
+			background: $w;
 			padding: 0 5px;
 			pointer-events: none;
 			box-sizing: border-box;

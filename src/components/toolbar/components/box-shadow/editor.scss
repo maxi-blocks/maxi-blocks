@@ -1,10 +1,11 @@
+@import '../../../../../src/css/backend-variables.scss';
 // Box shadow toolbar item styles
 .toolbar-item__box-shadow {
 	// Ensure proper toolbar button dimensions
 	width: var(--mx-toolbar-size) !important;
 	height: var(--mx-toolbar-size) !important;
-	background-color: var(--maxi-white);
-	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
+	background-color: $w;
+	border-right: var(--maxi-border-1px) solid $gl;
 
 	// Icon alignment specific to box shadow
 	.toolbar-item__icon {
@@ -18,7 +19,7 @@
 	// Hover states for box shadow icon
 	&:hover,
 	&[aria-expanded='true'] {
-		background-color: var(--maxi-pastel-green);
+		background-color: $pg;
 
 		svg,
 		.toolbar-item__icon {
@@ -28,8 +29,8 @@
 			rect,
 			polyline,
 			path {
-				stroke: var(--maxi-secondary-color);
-				fill: var(--maxi-secondary-color);
+				stroke: $sc;
+				fill: $sc;
 			}
 		}
 	}

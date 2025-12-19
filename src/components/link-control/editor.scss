@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-link-control {
 	&--dc {
 		.block-editor-link-control__search-item,
@@ -32,7 +33,7 @@
 	}
 
 	.components-form-toggle {
-		position: relative;
+		position: $pr;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
@@ -43,12 +44,12 @@
 				margin-bottom: 0;
 			}
 			&__label {
-				cursor: pointer;
+				cursor: $ptr;
 			}
 		}
 
 		input[type='checkbox'] {
-			position: absolute;
+			position: $pa;
 			z-index: 1;
 			top: 0;
 			left: 0;
@@ -61,8 +62,8 @@
 
 			&:focus + .components-form-toggle__track {
 				border-radius: 12px;
-				box-shadow: 0 0 0 1px var(--maxi-grey);
-				outline: 2px solid transparent;
+				box-shadow: 0 0 0 1px $g;
+				outline: 2px solid $tr;
 			}
 		}
 		&__track {
@@ -72,54 +73,54 @@
 			vertical-align: top;
 			width: 44px;
 			height: 24px;
-			background-color: var(--maxi-white) !important;
+			background-color: $w !important;
 			background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.8 8"><path d="M8.43.22A1 1 0 0 0 7 .37L2.93 5.48 1.72 4.21a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l2 2.1h.05a.83.83 0 0 0 .16.09l.1.06A1.15 1.15 0 0 0 3 8a.93.93 0 0 0 .4-.09l.11-.07a.71.71 0 0 0 .18-.12s0 0 0-.06l4.8-6A1 1 0 0 0 8.43.22Z"/></svg>'),
 				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="m5.6 4 2.55-2.55A.85.85 0 1 0 7 .25L4.4 2.8 1.85.25a.85.85 0 0 0-1.2 1.2L3.2 4 .65 6.55a.85.85 0 0 0 0 1.2.83.83 0 0 0 .6.25.82.82 0 0 0 .6-.25L4.4 5.2 7 7.75a.82.82 0 0 0 .6.25.83.83 0 0 0 .6-.25.85.85 0 0 0 0-1.2Z" transform="translate(-.4)"/></svg>');
 			background-repeat: no-repeat, no-repeat;
 			background-position: 8px center, 24px center;
 			background-size: 10px auto, 10px auto;
-			border: 1px solid var(--maxi-grey-light) !important;
+			border: $bl !important;
 			border-radius: 12px;
 			transition: 0.2s background ease;
 		}
 		&__thumb {
-			position: absolute;
+			position: $pa;
 			top: 3px;
 			left: 3px;
 			display: block;
 			box-sizing: border-box;
 			width: 18px;
 			height: 18px;
-			background-color: var(--maxi-white);
-			border: 1px solid var(--maxi-grey-light);
+			background-color: $w;
+			border: $bl;
 			border-radius: 50%;
 			transition: 0.1s transform ease;
 		}
 
 		&.is-checked {
 			.components-form-toggle__thumb {
-				background-color: var(--maxi-primary-color);
-				border-color: var(--maxi-primary-color);
+				background-color: $pc;
+				border-color: $pc;
 				transform: translateX(20px);
 			}
 		}
 		&.is-checked {
 			.components-form-toggle__track {
-				background-color: var(--maxi-grey);
+				background-color: $g;
 			}
 		}
 		.components-form-toggle__track {
 			border: 0;
-			background-color: var(--maxi-white);
+			background-color: $w;
 		}
 	}
 	.block-editor-url-input__input {
-		background-color: transparent;
-		color: var(--maxi-white);
-		border: 2px solid var(--maxi-grey) !important;
+		background-color: $tr;
+		color: $w;
+		border: 2px solid $g !important;
 
 		&::placeholder {
-			color: var(--maxi-grey);
+			color: $g;
 		}
 	}
 	.block-editor-link-control {
@@ -137,14 +138,14 @@
 			input {
 				margin: 0 !important;
 				width: 100% !important;
-				border-color: var(--maxi-grey-light) !important;
+				border-color: $gl !important;
 				border-radius: 10px !important;
 				min-height: 0;
 				height: 28px;
 				font-weight: 400;
 				padding: 8px !important;
 				box-shadow: none !important;
-				color: var(--maxi-black) !important;
+				color: $bk !important;
 				border-width: 2px !important;
 			}
 		}
@@ -152,14 +153,14 @@
 			align-items: center;
 
 			.components-button.is-tertiary {
-				color: var(--maxi-primary-color);
-				border: 1px solid var(--maxi-grey-light) !important;
+				color: $pc;
+				border: $bl !important;
 				border-radius: 60px !important;
 			}
 
 			// WP 6.2.2 and lower support
 			&:has(.block-editor-link-control__search-submit.has-icon) {
-				position: absolute;
+				position: $pa;
 				top: 2px;
 				right: 2px;
 			}
@@ -183,36 +184,36 @@
 			}
 		}
 		&__search-item {
-			background-color: var(--maxi-whisper-green) !important;
-			border: 1px solid var(--maxi-grey-light);
+			background-color: $wg !important;
+			border: $bl;
 			border-radius: 10px;
 			padding: 8px;
 			transition: background-color 0.4s ease;
 
 			&:hover {
-				background-color: var(--maxi-pastel-green) !important;
+				background-color: $pg !important;
 			}
 
 			&-action {
-				background-color: var(--maxi-primary-color);
+				background-color: $pc;
 				box-shadow: none !important;
 				padding: 4px 17px;
 				height: 24px;
 				border-radius: 0;
-				transition: all 0.4s ease;
+				transition: $t;
 				&:hover {
-					background-color: var(--maxi-pastel-green) !important;
-					color: var(--maxi-primary-color);
+					background-color: $pg !important;
+					color: $pc;
 				}
 			}
 
 			&-error-notice {
-				color: var(--maxi-primary-color);
+				color: $pc;
 			}
 
 			.components-menu-item__info-wrapper {
 				.components-menu-item__item {
-					color: var(--maxi-black);
+					color: $bk;
 				}
 			}
 		}
@@ -223,11 +224,11 @@
 			overflow-x: hidden;
 			max-width: 100%;
 			.block-editor-link-control__search-item-type {
-				transition: all 0.4s ease;
+				transition: $t;
 			}
 			&:hover {
 				.block-editor-link-control__search-item-type {
-					background-color: var(--maxi-black);
+					background-color: $bk;
 				}
 			}
 			.components-menu-item__button {
@@ -241,14 +242,14 @@
 			margin-bottom: 0;
 		}
 		&__search-item-type {
-			background-color: var(--maxi-primary-color);
+			background-color: $pc;
 			padding: 5px 17px;
 			height: 24px;
 			border-radius: 0;
 		}
 		&__search-item-icon {
-			fill: var(--maxi-primary-color);
-			background-color: transparent !important;
+			fill: $pc;
+			background-color: $tr !important;
 		}
 		&__tools {
 			border: none;
@@ -267,15 +268,15 @@
 	&__link-destroyer,
 	.block-editor-link-control__search-actions
 		.components-button.block-editor-link-control__search-submit.is-primary {
-		background-color: var(--maxi-primary-color) !important;
+		background-color: $pc !important;
 		border-radius: 60px !important;
 		text-align: center;
-		color: var(--maxi-white);
+		color: $w;
 		display: block;
-		transition: all 0.4s ease !important;
+		transition: $t !important;
 		&:hover {
-			color: var(--maxi-white) !important;
-			background-color: var(--maxi-secondary-color) !important;
+			color: $w !important;
+			background-color: $sc !important;
 		}
 	}
 
@@ -300,5 +301,5 @@
 
 .maxi-toolbar__popover
 	.components-button.maxi-link-control__link-destroyer:hover {
-	color: var(--maxi-white) !important;
+	color: $w !important;
 }

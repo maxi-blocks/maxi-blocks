@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-prompt-control-generate-tab {
 	&__textarea {
 		.maxi-base-control__field {
@@ -16,22 +17,22 @@
 		justify-content: space-between;
 		margin-bottom: 12px;
 		margin-top: -15px;
-		border-bottom: 1px solid var(--maxi-grey-light) !important;
+		border-bottom: $bl !important;
 
 		span {
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 	}
 
 	&__ai-model {
 		p {
 			font-size: small;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 
 		p strong {
 			font-weight: 600;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 	}
 }

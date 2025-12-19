@@ -19,9 +19,9 @@
 	}
 	.block-editor-block-inspector {
 		.block-editor-block-card {
-			position: relative;
+			position: $pr;
 			padding: 8px;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 			letter-spacing: 0;
 
 			&__content,
@@ -39,7 +39,7 @@
 				display: none;
 				width: 100%;
 				margin: 0;
-				position: relative;
+				position: $pr;
 				left: -25px;
 				padding-top: 5px;
 			}

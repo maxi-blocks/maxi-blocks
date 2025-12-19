@@ -1,8 +1,9 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__popover .maxi-font-level-control {
 	&__button {
 		&:hover,
 		&[aria-pressed='true'] {
-			color: var(--maxi-secondary-color);
+			color: $sc;
 		}
 	}
 }

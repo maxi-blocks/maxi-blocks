@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-dropdown__alignment-content {
 	z-index: 99999999;
 	margin: -33px 0 0 98px !important;
@@ -15,10 +16,10 @@
 					display: block;
 					align-items: flex-start;
 					&:hover {
-						background-color: var(--maxi-grey-light);
+						background-color: $gl;
 					}
 					&:focus:not(:disabled) {
-						background-color: var(--maxi-white);
+						background-color: $w;
 					}
 				}
 			}

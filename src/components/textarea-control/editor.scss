@@ -1,11 +1,12 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-textarea-control__input {
 	width: 100%;
 	padding: 6px 8px;
 
-	box-shadow: 0 0 0 transparent;
+	box-shadow: 0 0 0 $tr;
 	transition: box-shadow 0.1s linear;
 	border-radius: 2px;
-	border: 1px solid var(--maxi-grey-light);
+	border: $bl;
 	transition-duration: 0ms;
 
 	/* Fonts smaller than 16px causes mobile safari to zoom. */
@@ -20,18 +21,18 @@
 	}
 
 	&:focus {
-		border-color: var(--maxi-grey-light);
+		border-color: $gl;
 	}
 	// Use opacity to work in various editor styles.
 	&::-webkit-input-placeholder {
-		color: rgba(var(--maxi-grey-dark), 0.62);
+		color: rgba($gd, 0.62);
 	}
 	&::-moz-placeholder {
 		opacity: 1; // Necessary because Firefox reduces this from 1.
-		color: rgba(var(--maxi-grey-dark), 0.62);
+		color: rgba($gd, 0.62);
 	}
 	&:-ms-input-placeholder {
-		color: rgba(var(--maxi-grey-dark), 0.62);
+		color: rgba($gd, 0.62);
 	}
 
 	&--disable-resize {

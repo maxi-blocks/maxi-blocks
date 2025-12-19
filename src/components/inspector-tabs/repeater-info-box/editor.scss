@@ -1,11 +1,12 @@
+@import '../../../../src/css/backend-variables.scss';
 .maxi-repeater-info-box {
 	background: var(--maxi-tertiary-color);
-	color: var(--maxi-white) !important;
+	color: $w !important;
 
 	a {
 		&,
 		&:hover {
-			color: var(--maxi-white) !important;
+			color: $w !important;
 		}
 	}
 }

@@ -1,15 +1,13 @@
-// At the top of your file:
-$standard-margin: 8px;
-$border-light: 1px solid var(--maxi-grey-light);
+@import '../../../src/css/backend-variables.scss';
 
 .maxi-library-modal {
 	width: 85%;
 	min-height: 90%;
 	max-width: 90%;
 	overflow-y: auto;
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	font-family: $f;
 	font-weight: 600;
-	transition: transform 0.3s ease;
+	transition: $t;
 
 	@keyframes fadeIn {
 		0% {
@@ -23,77 +21,67 @@ $border-light: 1px solid var(--maxi-grey-light);
 	}
 
 	&__action-section {
-		// Main container layout
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
 		width: 100%;
 
-		// Full width label
 		& &__label {
 			flex-basis: 100%;
 		}
 
 		&__buttons {
-			// Button container layout
 			width: 100%;
 			flex: 5;
 			display: flex;
 			align-items: center;
-			transition: all 0.4s ease; // Add transition
+			transition: $t; // Add transition
 
-			// Add button hover styles
 			.maxi-cloud-masonry-card__button {
 				&:hover {
-					// border-color: var(--maxi-cloud-primary);
-					// background-color: var(--maxi-cloud-primary-whisper);
 				}
 			}
 
 			&__load-library {
-				// Load library button styles
 				width: 100%;
 				padding: 2rem;
-				background: var(--maxi-whisper-green);
-				border: 1.5px solid var(--maxi-mid-green);
-				color: var(--maxi-black);
-				transition: all 0.3s ease;
+				background: $wg;
+				border: 1.5px solid $mg;
+				color: $bk;
+				transition: $t;
 				display: flex; // Simplified from separate align/justify
 				justify-content: center;
 				align-items: center;
 
 				&:hover {
-					background: var(--maxi-pastel-green) !important;
-					border-color: var(--maxi-secondary-color);
-					color: var(--maxi-black) !important;
+					background: $pg !important;
+					border-color: $sc;
+					color: $bk !important;
 					font-weight: 800;
 				}
 			}
 
 			&__item {
-				// Individual button item styles
 				width: calc(16.6666666667% - 5px);
 				margin: 0 5px 5px 0;
 				padding: 0;
 				height: auto;
-				border: 2px solid var(--maxi-grey-light);
+				border: 2px solid $gl;
 				border-radius: 5px;
-				cursor: pointer;
-				transition: all 0.4s ease; // Add transition
+				cursor: $ptr;
+				transition: $t; // Add transition
 
-				// States
 				&--active,
 				&:hover {
-					background: var(--maxi-cloud-primary-whisper);
-					border-left: 1px solid var(--maxi-white) !important;
+					background: $cpw;
+					border-left: 1px solid $w !important;
 				}
 
 				&:last-child {
 					margin-right: 0;
 				}
 
-				// Button SVG styles
 				svg {
 					width: 100%;
 					height: 100%;
@@ -102,55 +90,50 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 		}
 		&__preview {
-			// Preview container layout
-			position: relative;
+			position: $pr;
 			width: 100%;
 			height: 66px;
 			flex: 1;
 			margin: 0 5px;
 			padding: 5px;
 
-			// Preview theme styles
-			background: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-mid-green);
-			color: var(--maxi-black);
-			transition: background-color 0.3s ease, border-color 0.3s ease;
+			background: $wg;
+			border: 1.5px solid $mg;
+			color: $bk;
+			transition: $t;
 
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border-color: var(--maxi-primary-color);
+				background: $pg;
+				border-color: $pc;
 			}
 
-			// SVG styles in preview
 			&__shape svg {
 				max-height: 100%;
-				fill: var(--maxi-black);
+				fill: $bk;
 
 				* {
 					fill: inherit;
 				}
 			}
 
-			// Remove button
 			&--remove {
-				position: absolute;
+				position: $pa;
 				top: -8px;
 				right: -8px;
 				width: 16px;
-				cursor: pointer;
+				cursor: $ptr;
 				z-index: 8400000;
-				background: var(--maxi-white);
+				background: $w;
 				border-radius: 100%;
 				height: 16px;
 				&:hover {
-					background: var(--maxi-primary-color);
+					background: $pc;
 					path {
-						fill: var(--maxi-white);
+						fill: $w;
 					}
 				}
 			}
 
-			// Preview content container
 			& > div {
 				display: flex;
 				align-items: center;
@@ -167,8 +150,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				-45deg,
 				var(--maxi-cloud-preview-gradient),
 				var(--maxi-cloud-preview-gradient) 20px,
-				var(--maxi-white) 0,
-				var(--maxi-white) 40px
+				$w 0,
+				$w 40px
 			) !important;
 			.maxi-cloud-container {
 				&::-webkit-scrollbar {
@@ -176,18 +159,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&::-webkit-scrollbar-track {
-					background: var(--maxi-cloud-primary-whisper);
+					background: $cpw;
 				}
 
 				&::-webkit-scrollbar-thumb {
-					background: var(--maxi-grey-light);
+					background: $gl;
 				}
 
 				&::-webkit-scrollbar-thumb:hover {
-					background: var(--maxi-grey-light);
+					background: $gl;
 				}
 				&__patterns {
-					position: relative;
+					position: $pr;
 					grid-template-columns: none;
 					align-content: unset;
 				}
@@ -195,7 +178,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		}
 		.maxi-cloud-toolbar {
 			height: 50px !important;
-			background-color: var(--maxi-white);
+			background-color: $w;
 			padding: 5px 8px !important;
 			z-index: 999;
 			&__fullwidth {
@@ -206,29 +189,29 @@ $border-light: 1px solid var(--maxi-grey-light);
 				justify-content: center;
 				flex-direction: column;
 				align-items: center;
-				color: var(--maxi-grey-dark);
-				background-color: var(--maxi-cloud-primary-whisper);
+				color: $gd;
+				background-color: $cpw;
 				border: 0;
 				border-radius: 30px;
 				padding: 8px 6px 4px;
-				cursor: pointer;
+				cursor: $ptr;
 				outline: none;
-				transition: all 0.4s ease; // Add transition
+				transition: $t; // Add transition
 				&_active {
 					svg {
 						path {
-							fill: var(--maxi-cloud-primary);
+							fill: $cp;
 						}
 					}
 					span {
-						color: var(--maxi-cloud-primary);
+						color: $cp;
 					}
 				}
 				&-fullwidth {
 					&.maxi-cloud-toolbar__button_active {
 						svg {
 							path {
-								stroke: var(--maxi-cloud-primary);
+								stroke: $cp;
 							}
 						}
 					}
@@ -240,13 +223,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 					height: 16px;
 				}
 				span {
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: $f !important;
 					font-size: 9px;
 					line-height: 100%;
 				}
 				&_active,
 				&:hover {
-					box-shadow: inset 0 0 0px 1px var(--maxi-cloud-primary);
+					box-shadow: inset 0 0 0px 1px $cp;
 				}
 			}
 			&__responsive-buttons {
@@ -255,7 +238,6 @@ $border-light: 1px solid var(--maxi-grey-light);
 				column-gap: 10px;
 				width: 33.33%;
 
-				// Target buttons directly inside responsive-buttons
 				.maxi-cloud-toolbar__button {
 					border-radius: 8px;
 				}
@@ -265,9 +247,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 				align-items: center;
 				column-gap: 17px;
 				width: 33.33%;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: $f !important;
 				h2 {
-					color: var(--maxi-grey-dark);
+					color: $gd;
 					font-size: 16px;
 					font-weight: 700;
 					letter-spacing: -0.5px;
@@ -277,14 +259,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 					span {
 						font-size: 16px;
 						font-weight: 700;
-						color: var(--maxi-grey-dark);
+						color: $gd;
 					}
 				}
 				& > .maxi-cloud-toolbar__line {
 					width: 2px;
 					height: 16px;
 					margin: 0 -8px;
-					background-color: var(--maxi-grey-light);
+					background-color: $gl;
 					font-size: 0;
 				}
 			}
@@ -304,7 +286,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					span {
 						font-size: 16px;
 						font-weight: 700;
-						color: var(--maxi-grey-dark);
+						color: $gd;
 					}
 				}
 			}
@@ -312,11 +294,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 	}
 
 	.components-modal__content {
-		position: relative;
+		position: $pr;
 		width: 100%;
 		min-height: 100%;
 		max-height: calc(100% - 120px);
-		background: var(--maxi-white);
+		background: $w;
 		margin-top: 0;
 		padding: 46px 0 0;
 		overflow: hidden;
@@ -325,7 +307,6 @@ $border-light: 1px solid var(--maxi-grey-light);
 			margin: 0;
 		}
 
-		// Gutenberg adds div without classname that wraps the modal content
 		> div:last-child {
 			height: 100%;
 		}
@@ -344,7 +325,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				font-size: 1rem;
 			}
 			.components-button {
-				position: absolute;
+				position: $pa;
 				right: 10px;
 				left: auto;
 				top: 10px !important;
@@ -356,19 +337,19 @@ $border-light: 1px solid var(--maxi-grey-light);
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--maxi-black);
+				background-color: $bk;
 				border-radius: 50%;
-				transition: background-color 0.3s ease, color 0.3s ease;
+				transition: $t;
 				font-size: 14px;
 				font-weight: bold;
-				color: var(--maxi-white);
+				color: $w;
 				text-decoration: none;
-				transition: all 0.4s ease; // Add transition
+				transition: $t; // Add transition
 
 				&::before {
 					content: '×';
 					font-size: 20px;
-					position: relative;
+					position: $pr;
 					left: 0;
 					top: 1px;
 					padding-bottom: 5px; /* Added padding instead of line-height */
@@ -390,20 +371,20 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 	.spinner {
 		display: none; // TEMPORARY
-		position: relative;
+		position: $pr;
 		height: 100px;
 		width: 100px;
 
 		&:before,
 		&:after {
 			content: '';
-			border-left: 6px solid transparent;
+			border-left: 6px solid $tr;
 			border-radius: 50%;
 			bottom: 0;
 			box-sizing: border-box;
 			left: 0;
 			margin: auto;
-			position: absolute;
+			position: $pa;
 			right: 0;
 			top: 0;
 			transform-origin: center center;
@@ -423,7 +404,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 	}
 
 	.maxi-cloud-toolbar {
-		position: absolute;
+		position: $pa;
 		top: 0;
 		display: flex;
 		align-items: center;
@@ -431,8 +412,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 		width: 100%;
 		height: 46px;
 		padding: 7px 43px 5px 14px;
-		background-color: var(--maxi-white);
-		border-bottom: 1px solid var(--maxi-grey-light);
+		background-color: $w;
+		border-bottom: $bl;
 		margin: 0;
 		font-size: 16px;
 		line-height: 1;
@@ -442,7 +423,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			position: absolute;
+			position: $pa;
 			right: 100px;
 			column-gap: 15px;
 		}
@@ -456,36 +437,36 @@ $border-light: 1px solid var(--maxi-grey-light);
 			align-items: center;
 			justify-content: center;
 			padding: 0;
-			background-color: transparent;
-			color: var(--maxi-cloud-primary);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			background-color: $tr;
+			color: $cp;
+			font-family: $f !important;
 			text-decoration: none;
 			font-size: 14px;
-			cursor: pointer;
-			transition: all 0.4s ease; // Add transition
+			cursor: $ptr;
+			transition: $t; // Add transition
 
 			svg {
 				width: 12px;
 				height: 12px;
 				padding: 2px;
-				background-color: var(--maxi-cloud-primary);
+				background-color: $cp;
 				border-radius: 50%;
 				margin-right: 5px;
-				transition: background-color 0.3s ease;
+				transition: $t;
 
 				path {
-					fill: var(--maxi-cloud-primary);
-					stroke: var(--maxi-white);
-					transition: all 0.4s ease !important;
+					fill: $cp;
+					stroke: $w;
+					transition: $t !important;
 				}
 			}
 
 			&:hover {
-				color: var(--maxi-grey-dark);
+				color: $gd;
 				svg {
-					background-color: var(--maxi-grey-dark);
+					background-color: $gd;
 					path {
-						fill: var(--maxi-grey-dark);
+						fill: $gd;
 					}
 				}
 			}
@@ -493,7 +474,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 		&__logo {
 			display: flex;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: $f !important;
 			font-size: 18px;
 			word-spacing: 0;
 			text-decoration: none;
@@ -516,7 +497,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		height: 100%;
 		margin: 0;
 		overflow: hidden;
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+		font-family: $f;
 
 		.use-placeholder-all-images,
 		.use-sc-styles {
@@ -539,18 +520,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 						height: 20px;
 						display: flex;
 						padding: 2px 0 0 2px;
-						color: var(--maxi-white);
+						color: $w;
 					}
 				}
 
 				&__input[type='checkbox'] {
-					background: var(--maxi-grey-light);
+					background: $gl;
 					padding: 9px !important;
 					border: none;
 				}
 
 				&__input[type='checkbox']:checked {
-					background: var(--maxi-cloud-primary);
+					background: $cp;
 					border: none;
 
 					border-radius: 4px;
@@ -585,26 +566,26 @@ $border-light: 1px solid var(--maxi-grey-light);
 		.ais-InfiniteHits-loadMore,
 		.ais-ClearRefinements-button {
 			padding: 7px;
-			border: 1px solid var(--maxi-cloud-primary-light);
+			border: 1px solid $cpl;
 			border-radius: 30px;
 			margin: 8px;
-			background-color: var(--maxi-cloud-primary-whisper);
-			color: var(--maxi-grey-dark);
+			background-color: $cpw;
+			color: $gd;
 			font-size: 14px;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			font-family: $f;
 			font-weight: 400;
-			cursor: pointer;
-			transition: all 0.4s ease; // Add transition
+			cursor: $ptr;
+			transition: $t; // Add transition
 			outline: 0;
 
 			&:not(&--disabled):hover {
 				background-color: var(--maxi-cloud-hover);
-				color: var(--maxi-white);
+				color: $w;
 			}
 
 			&--disabled {
-				background-color: var(--maxi-cloud-primary-whisper);
-				color: var(--maxi-grey-dark);
+				background-color: $cpw;
+				color: $gd;
 				cursor: not-allowed;
 			}
 		}
@@ -618,7 +599,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			width: 10px;
 			bottom: 0;
 			right: 0;
-			position: absolute;
+			position: $pa;
 		}
 
 		&__preview-iframe {
@@ -629,12 +610,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 		&__preview-iframe_wrap > div {
 			height: 100%;
 			width: 100%;
-			position: relative;
-			background-color: var(--maxi-white);
+			position: $pr;
+			background-color: $w;
 		}
 
 		&__preview-iframe_main-wrap {
-			position: relative;
+			position: $pr;
 			top: 0;
 			width: 100%;
 			height: 100%;
@@ -647,21 +628,21 @@ $border-light: 1px solid var(--maxi-grey-light);
 		}
 
 		&__accordion {
-			background-color: var(--maxi-white);
-			border-top: 1px solid var(--maxi-grey-light);
-			border-bottom: 1px solid var(--maxi-grey-light);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			background-color: $w;
+			border-top: $bl;
+			border-bottom: $bl;
+			font-family: $f;
 
 			&__title {
-				position: relative;
-				background: var(--maxi-white);
+				position: $pr;
+				background: $w;
 				font-weight: 400;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: $bl;
 				border-radius: 0;
 				padding: 10px;
 				box-shadow: none;
 				margin-bottom: 0;
-				cursor: pointer;
+				cursor: $ptr;
 				font-size: 12px;
 
 				&:after {
@@ -671,12 +652,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					background-repeat: no-repeat;
 					width: 6px;
 					height: 13px;
-					position: absolute;
+					position: $pa;
 					top: 50%;
 					right: 12px;
 					transform: translateY(-50%) rotate(0);
 					transform-origin: center;
-					transition: all 0.4s ease; // Add transition
+					transition: $t; // Add transition
 				}
 			}
 
@@ -699,9 +680,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 						.ais-HierarchicalMenu-link,
 						.ais-Menu-link {
 							text-decoration: none;
-							color: var(--maxi-grey-dark);
+							color: $gd;
 							font-weight: bold;
-							transition: all 0.4s ease; // Add transition
+							transition: $t; // Add transition
 
 							.ais-HierarchicalMenu-count,
 							.ais-Menu-count {
@@ -741,7 +722,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				grid-column: span 3;
 
 				.top-Menu {
-					position: absolute;
+					position: $pa;
 					left: 230px;
 					width: calc(100% - 230px);
 					margin-top: -38px;
@@ -749,13 +730,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					.maxi-cloud-container__content-svg-shape__button {
 						width: auto;
-						color: var(--maxi-black);
-						background-color: var(--maxi-white);
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						color: $bk;
+						background-color: $w;
+						font-family: $f;
 						font-size: 12px;
 						font-weight: normal;
-						border: 1px solid var(--maxi-grey-light);
+						border: $bl;
 						border-radius: 0;
 						text-align: center;
 						height: 31px;
@@ -763,42 +743,42 @@ $border-light: 1px solid var(--maxi-grey-light);
 						padding: 6px 18px;
 						text-decoration: none;
 						box-shadow: none;
-						cursor: pointer;
-						position: relative;
+						cursor: $ptr;
+						position: $pr;
 						z-index: 1;
 
 						&::before {
 							content: '';
 							display: block;
-							position: absolute;
+							position: $pa;
 							left: -1px;
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
-							background-color: var(--maxi-cloud-primary-light);
+							background-color: $cpl;
 							z-index: -1;
-							transition: all 0.4s ease; // Add transition
+							transition: $t; // Add transition
 							opacity: 0;
 							border-radius: inherit; /* Add border radius to match parent */
 						}
 
 						&:after {
 							content: '';
-							position: absolute;
+							position: $pa;
 							z-index: 1;
 							left: -1px;
 							top: -1px;
 							bottom: -1px;
 							width: 1px;
 							display: block;
-							background-color: var(--maxi-white);
+							background-color: $w;
 							opacity: 0;
 						}
 
 						&:hover,
 						&___pressed {
 							font-weight: 700;
-							color: var(--maxi-black);
+							color: $bk;
 
 							&::before {
 								opacity: 1;
@@ -832,13 +812,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 					overflow: hidden;
 
 					.ais-SearchBox-form {
-						position: relative;
+						position: $pr;
 						overflow: hidden;
 
 						.ais-SearchBox-input {
-							color: var(--maxi-grey-dark);
+							color: $gd;
 							font-weight: bold;
-							border: 1px solid var(--maxi-grey-light);
+							border: $bl;
 							border-radius: 0;
 							box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 							padding: 0.3rem 1rem;
@@ -846,32 +826,32 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 
 						.ais-SearchBox-loadingIndicator {
-							position: relative;
+							position: $pr;
 							top: 10px;
 						}
 
 						.ais-SearchBox-reset {
-							position: absolute;
+							position: $pa;
 							border: none;
 							background: none;
 							top: 50%;
 							right: 70px;
 							transform: translateY(-50%);
-							cursor: pointer;
+							cursor: $ptr;
 						}
 
 						.ais-SearchBox-submit {
-							position: absolute;
-							background: var(--maxi-grey-dark);
-							color: var(--maxi-white);
+							position: $pa;
+							background: $gd;
+							color: $w;
 							font-weight: bold;
 							border: none;
-							transition: all 0.4s ease; // Add transition
+							transition: $t; // Add transition
 							top: 0;
 							right: 0;
 							height: 100%;
 							padding: 11px 1rem;
-							cursor: pointer;
+							cursor: $ptr;
 
 							&:hover {
 								opacity: 0.8;
@@ -886,7 +866,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					strong {
 						margin-right: 3px;
-						color: var(--maxi-cloud-primary);
+						color: $cp;
 					}
 				}
 			}
@@ -910,14 +890,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 				grid-template-columns: repeat(10, 1fr);
 
 				.ais-InfiniteHits-item {
-					position: relative;
+					position: $pr;
 					border: none !important;
 					box-shadow: none !important;
-					//pattern card
 					.maxi-cloud-masonry-card {
-						position: relative;
+						position: $pr;
 						z-index: 1;
-						transition: all 0.4s ease; // Add transition
+						transition: $t; // Add transition
 						padding: 12px 12px 20px 12px;
 						height: 100%;
 						overflow: hidden;
@@ -928,42 +907,38 @@ $border-light: 1px solid var(--maxi-grey-light);
 								height: 50px;
 							}
 						}
-						//svg card
 						&__svg-container {
-							position: relative;
+							position: $pr;
 							z-index: 1;
 							display: flex;
 							align-items: center;
 							flex-direction: column;
-							cursor: pointer;
-							transition: all 0.4s ease !important;
+							cursor: $ptr;
+							transition: $t !important;
 							transform: translateY(19px);
 
 							&__title {
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: $f;
 								font-weight: 800;
 								text-align: center;
 								font-size: 12px;
 								margin-bottom: 4px;
-								transition: all 0.4s ease; // Add transition
+								transition: $t; // Add transition
 							}
 
 							&__code {
-								background-color: transparent !important;
+								background-color: $tr !important;
 								text-align: center;
 								width: 64px;
 								margin-bottom: 12px;
 							}
 
-							//span to show button on hover
-
 							&:hover {
 								span {
 									opacity: 1;
-									transition: all 0.4s ease !important;
-									color: var(--maxi-white);
-									background-color: var(--maxi-black);
+									transition: $t !important;
+									color: $w;
+									background-color: $bk;
 
 									&::before {
 										opacity: 1;
@@ -971,25 +946,24 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 							}
 							span {
-								position: relative;
-								border: 1.5px solid var(--maxi-black);
+								position: $pr;
+								border: 1.5px solid $bk;
 								border-radius: 20px;
-								color: var(--maxi-grey-dark);
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								color: $gd;
+								font-family: $f;
 								font-weight: 600;
 								line-height: 100%;
 								padding: 8px 35px;
-								transition: all 0.4s ease !important;
+								transition: $t !important;
 								opacity: 0;
 								margin-top: -5px;
 								margin-bottom: -5px;
 
 								&:before {
 									content: '';
-									position: absolute;
+									position: $pa;
 									display: block;
-									transition: all 0.4s ease; // Add transition
+									transition: $t; // Add transition
 									opacity: 0;
 									top: 0;
 									left: 0;
@@ -999,11 +973,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 
 								&:hover {
-									transition: all 0.4s ease; // Add transition
-									color: var(--maxi-white);
-									background-color: var(--maxi-black);
+									transition: $t; // Add transition
+									color: $w;
+									background-color: $bk;
 									opacity: 1;
-									transition: all 0.4s ease !important;
+									transition: $t !important;
 									&::before {
 										opacity: 1;
 									}
@@ -1015,21 +989,21 @@ $border-light: 1px solid var(--maxi-grey-light);
 							g[data-stroke],
 							path[data-stroke],
 							svg[data-stroke] {
-								stroke: var(--maxi-black);
+								stroke: $bk;
 							}
 						}
 					}
 
 					&:after {
 						content: '';
-						position: absolute;
+						position: $pa;
 						left: 0;
 						right: 0;
 						top: 0;
 						bottom: 0;
 						display: block;
-						border: 1px solid var(--maxi-grey-light);
-						transition: all 0.4s ease; // Add transition
+						border: $bl;
+						transition: $t; // Add transition
 						z-index: 0;
 						border-radius: 10px;
 					}
@@ -1046,16 +1020,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 								}
 
 								span {
-									transition: all 0.4s ease; // Add transition
+									transition: $t; // Add transition
 								}
 							}
 						}
-						//hidden icon hover
 						&::after {
 							background-color: var(--maxi-off-white);
-							border-color: var(--maxi-cloud-primary-light);
+							border-color: $cpl;
 							box-shadow: 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								$cpl;
 							transform: scale(1.03);
 						}
 					}
@@ -1085,15 +1058,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&::-webkit-scrollbar-track {
-					background: var(--maxi-white);
+					background: $w;
 				}
 
 				&::-webkit-scrollbar-thumb {
-					background: var(--maxi-grey-light);
+					background: $gl;
 				}
 
 				&::-webkit-scrollbar-thumb:hover {
-					background: var(--maxi-grey-light);
+					background: $gl;
 				}
 			}
 		}
@@ -1111,7 +1084,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 			.maxi-cloud-container__preview-tablet__label,
 			.maxi-cloud-container__preview-mobile__label {
-				position: absolute;
+				position: $pa;
 				z-index: 1000;
 				top: 25px;
 				left: 0;
@@ -1119,7 +1092,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				max-width: 400px;
 				border-radius: 5px;
 				margin: 0 auto;
-				color: var(--maxi-white);
+				color: $w;
 				background: var(--maxi-cloud-iframe-border);
 				font-size: 15px;
 				text-align: center;
@@ -1128,7 +1101,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			.maxi-cloud-container__patterns__top-menu {
 				display: flex;
 				grid-column: span 3;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: $bl;
 				& > div {
 					&:not(.ais-Menu) {
 						width: 230px;
@@ -1138,31 +1111,30 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&__sidebar {
-				border-right: 1px solid var(--maxi-grey-light);
-				border-left: 1px solid var(--maxi-grey-light);
-				background-color: var(--maxi-white);
-				transition: transform 0.3s ease;
+				border-right: $bl;
+				border-left: $bl;
+				background-color: $w;
+				transition: $t;
 				.top-Menu {
 					display: flex;
 					margin-bottom: 8px;
 					.maxi-cloud-container__content-svg-shape__button {
-						position: relative;
+						position: $pr;
 						z-index: 1;
 						width: 100%;
 						height: 31px;
 						padding: 6px 18px;
 						border: none;
-						border-bottom: 1px solid var(--maxi-grey-light);
-						border-right: 1px solid var(--maxi-grey-light);
+						border-bottom: $bl;
+						border-right: $bl;
 						border-radius: 0;
 						margin-right: 0;
-						color: var(--maxi-grey-dark);
-						background-color: transparent;
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						color: $gd;
+						background-color: $tr;
+						font-family: $f;
 						font-size: 12px;
 						font-weight: normal;
-						cursor: pointer;
+						cursor: $ptr;
 						outline: 0;
 						&:last-child {
 							margin-right: 0;
@@ -1173,27 +1145,27 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&::before {
 							content: '';
-							position: absolute;
+							position: $pa;
 							z-index: -1;
 							left: -1px;
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
 							display: block;
-							background-color: var(--maxi-cloud-primary-light);
-							transition: all 0.4s ease !important;
+							background-color: $cpl;
+							transition: $t !important;
 							opacity: 0;
 						}
 						&:after {
 							content: '';
-							position: absolute;
+							position: $pa;
 							z-index: 1;
 							left: -1px;
 							top: -1px;
 							bottom: -1px;
 							display: block;
 							width: 1px;
-							background-color: var(--maxi-white);
+							background-color: $w;
 							opacity: 0;
 						}
 						&:first-child {
@@ -1202,7 +1174,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 						}
 						&___pressed {
-							color: var(--maxi-black);
+							color: $bk;
 							font-weight: 700;
 							border-bottom: 1px solid;
 							&::after {
@@ -1214,19 +1186,19 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&___inactive {
 							pointer-events: none !important;
-							color: var(--maxi-grey-light);
+							color: $gl;
 							&:after {
 								top: 50%;
 								left: 50%;
 								width: 109%;
 								height: 1px;
-								background-color: var(--maxi-grey-light);
+								background-color: $gl;
 								transform: translate(-50%, -50%) rotate(-21deg);
 								opacity: 1;
 							}
 						}
 						&:hover {
-							color: var(--maxi-black);
+							color: $bk;
 							&::before {
 								opacity: 1;
 							}
@@ -1243,28 +1215,28 @@ $border-light: 1px solid var(--maxi-grey-light);
 					.ais-SearchBox-form {
 						width: auto;
 						margin: 8px 8px;
-						position: relative;
+						position: $pr;
 
 						.ais-SearchBox-submit {
 							display: none;
 						}
 						.ais-SearchBox-reset {
-							position: absolute;
+							position: $pa;
 							top: 50%;
 							right: 5px;
 							display: block;
 							padding: 2px 6px;
 							border: none;
-							color: var(--maxi-grey-dark);
-							background-color: var(--maxi-white) !important;
+							color: $gd;
+							background-color: $w !important;
 							background: none;
 							font-size: 18px;
 							font-weight: 500;
 							transform: translateY(-50%);
-							cursor: pointer;
+							cursor: $ptr;
 							outline: 0;
 							&:hover {
-								color: var(--maxi-cloud-primary);
+								color: $cp;
 							}
 						}
 						.ais-SearchBox-input {
@@ -1272,17 +1244,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 							width: 100%;
 							min-height: 36px;
 							padding: 5px 10px;
-							border: 1px solid var(--maxi-grey-light);
+							border: $bl;
 							border-radius: 20px;
-							background: var(--maxi-white);
-							color: var(--maxi-grey-dark);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							background: $w;
+							color: $gd;
+							font-family: $f;
 							font-size: 12px;
 							transition: all 0.5s;
 							&:hover,
 							&:focus {
-								border-color: var(--maxi-cloud-primary-light);
+								border-color: $cpl;
 								box-shadow: none;
 								outline: none;
 							}
@@ -1290,12 +1261,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 				}
 				.components-checkbox-control {
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+					font-family: $f;
 					font-size: 11px;
 					font-weight: 400;
 					&__input {
 						border-radius: 0;
-						border-color: var(--maxi-grey-light);
+						border-color: $gl;
 						margin: 0;
 					}
 					&__input-container {
@@ -1316,14 +1287,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 						box-shadow: none;
 					}
 					&__label {
-						color: var(--maxi-grey-dark);
+						color: $gd;
 						margin-top: -1px;
 						margin-bottom: 5px;
 					}
 					.components-base-control__help {
 						margin: 0 8px 8px;
 						font-size: 12px;
-						color: var(--maxi-grey-dark);
+						color: $gd;
 					}
 					&.use-placeholder-all-images,
 					&.use-sc-styles {
@@ -1341,12 +1312,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					margin: 0;
 					padding: 0;
 					align-items: center;
-					transition: all 0.4s ease !important; // Added transition here
+					transition: $t !important; // Added transition here
 
 					&--selected {
 						a {
-							background-color: var(--maxi-cloud-primary-whisper);
-							color: var(--maxi-white);
+							background-color: $cpw;
+							color: $w;
 						}
 					}
 					a {
@@ -1355,24 +1326,23 @@ $border-light: 1px solid var(--maxi-grey-light);
 						padding-top: 3px;
 						padding: 8px;
 						box-shadow: none;
-						color: var(--maxi-grey-dark);
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						color: $gd;
+						font-family: $f;
 						font-weight: 500;
 						font-size: 13px;
-						transition: all 0.4s ease !important;
+						transition: $t !important;
 						text-decoration: none;
 						outline: none;
 
 						&:focus {
 							box-shadow: inset 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								$cpl;
 						}
 
 						&:hover {
-							background-color: var(--maxi-cloud-primary-whisper);
+							background-color: $cpw;
 							box-shadow: none;
-							transition: all 0.4s ease !important;
+							transition: $t !important;
 						}
 						.ais-RefinementList-checkbox {
 							display: none;
@@ -1389,7 +1359,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							&.ais-HierarchicalMenu-item-arrow {
 								display: inline-block;
 								margin-left: -15.78px;
-								transition: all 0.4s ease !important;
+								transition: $t !important;
 								opacity: 0;
 							}
 							&[visible='visible'] {
@@ -1418,12 +1388,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 							a {
 								&:hover {
-									background-color: var(--maxi-white);
+									background-color: $w;
 								}
 							}
 							&--selected {
 								a {
-									background-color: var(--maxi-white);
+									background-color: $w;
 
 									&:hover {
 										background-color: var(
@@ -1436,10 +1406,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					& > ul {
 						clear: both;
-						background-color: var(--maxi-white);
+						background-color: $w;
 						margin: 8px -6px 0;
 						padding: 8px 6px 0;
-						border-top: 1px solid var(--maxi-grey-light);
+						border-top: $bl;
 						.ais-HierarchicalMenu-item {
 							border: none;
 							padding: 0;
@@ -1451,7 +1421,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					& > ul {
 						clear: both;
-						background-color: var(--maxi-grey-light);
+						background-color: $gl;
 						margin: 0;
 						padding: 0;
 						border-top: 0;
@@ -1459,7 +1429,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							border: none;
 							padding: 0;
 							margin-bottom: 0;
-							position: relative;
+							position: $pr;
 							& > a {
 								padding: 4px 15px !important;
 							}
@@ -1471,7 +1441,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					.sub_menu-wrapper {
 						transform: scaleY(0);
 						transform-origin: top center;
-						transition: all 0.4s ease !important;
+						transition: $t !important;
 					}
 					&--selected {
 						.sub_menu-wrapper {
@@ -1480,12 +1450,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 						a {
 							&:focus {
 								box-shadow: inset 0 0 0 1px
-									var(--maxi-cloud-primary-light);
+									$cpl;
 							}
 						}
 					}
 				}
-				//hack to fix issue #3930: top level tags resetting when we choose a second-level tag
 				ul.maxi__hide-top-tags
 					li.ais-HierarchicalMenu-item__firstLevel:not(.maxi__show-top-tag) {
 					display: none;
@@ -1499,19 +1468,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					&-item {
 						display: flex;
-						position: relative;
+						position: $pr;
 						flex-direction: column;
 						width: 100%;
 						margin-bottom: 0;
 						margin-top: -1px;
 						a {
-							color: var(--maxi-black);
-							background-color: var(--maxi-cloud-primary-whisper);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							color: $bk;
+							background-color: $cpw;
+							font-family: $f;
 							font-size: 12px;
 							font-weight: normal;
-							border: 1px solid transparent;
+							border: 1px solid $tr;
 							border-radius: 5px;
 							text-align: center;
 							width: 100%;
@@ -1519,14 +1487,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 							padding: 6px 8px;
 							text-decoration: none;
 							box-shadow: none;
-							position: relative;
+							position: $pr;
 							z-index: 1;
-							transition: all 0.4s ease !important;
+							transition: $t !important;
 							&:hover {
 								background-color: var(
 									--maxi-cloud-primary-light
 								);
-								transition: all 0.4s ease !important;
+								transition: $t !important;
 							}
 						}
 						&--selected {
@@ -1542,33 +1510,32 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 			&__top-menu {
 				.ais-Menu {
-					transition: all 0.4s ease !important;
+					transition: $t !important;
 					&-list {
 						display: flex;
 						margin: 0;
 					}
 					&-item {
 						display: flex;
-						position: relative;
+						position: $pr;
 						flex-direction: column;
 						width: 100%;
 						margin-bottom: 0;
 						margin-top: -1px;
 						a {
-							position: relative;
+							position: $pr;
 							z-index: 1;
 							width: 100%;
 							height: 31px;
 							padding: 6px 8px;
-							border-bottom: 1px solid var(--maxi-grey-light);
-							border-top: 1px solid var(--maxi-grey-light);
-							border-right: 1px solid var(--maxi-grey-light);
+							border-bottom: $bl;
+							border-top: $bl;
+							border-right: $bl;
 							border-radius: 0;
 							box-shadow: none;
-							color: var(--maxi-black);
-							background-color: var(--maxi-white);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							color: $bk;
+							background-color: $w;
+							font-family: $f;
 							font-size: 12px;
 							font-weight: normal;
 							text-align: center;
@@ -1577,7 +1544,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							&:before {
 								content: '';
 								display: block;
-								position: absolute;
+								position: $pa;
 								left: -1px;
 								right: -1px;
 								top: -1px;
@@ -1586,25 +1553,25 @@ $border-light: 1px solid var(--maxi-grey-light);
 									--maxi-cloud-primary-light
 								);
 								z-index: -1;
-								transition: all 0.4s ease !important;
+								transition: $t !important;
 								opacity: 0;
 								border-radius: inherit; /* Inherit border radius from parent */
 							}
 							&:after {
 								content: '';
-								position: absolute;
+								position: $pa;
 								z-index: 1;
 								left: -1px;
 								top: -1px;
 								bottom: -1px;
 								width: 1px;
 								display: block;
-								background-color: var(--maxi-white);
+								background-color: $w;
 								opacity: 0;
 							}
 							&:hover {
-								color: var(--maxi-black);
-								transition: all 0.4s ease !important;
+								color: $bk;
+								transition: $t !important;
 								&::before {
 									opacity: 1;
 								}
@@ -1632,7 +1599,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						&--selected {
 							a {
 								font-weight: 700;
-								color: var(--maxi-black);
+								color: $bk;
 
 								&::before {
 									opacity: 1;
@@ -1646,16 +1613,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 			}
 			.ais-InfiniteHits-list {
-				position: relative;
+				position: $pr;
 				grid-template-columns: repeat(3, 1fr);
 				margin-top: 0;
 
 				.ais-InfiniteHits-item {
-					background: var(--maxi-white);
-					border: 1px solid var(--maxi-grey-light);
+					background: $w;
+					border: $bl;
 					padding: 0;
-					cursor: pointer;
-					transition: transform 0.3s ease, box-shadow 0.3s ease;
+					cursor: $ptr;
+					transition: $t;
 					animation: 1s ease-out 0s 1 fadeIn;
 					border-radius: 8px;
 
@@ -1668,14 +1635,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&__patterns {
 							padding: 10px;
-							//button for patterns preview and go pro base
 							.maxi-cloud-masonry-card__button {
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: $f;
 								font-weight: 600;
 								margin-right: 0;
-								border: 1px solid var(--maxi-grey-light);
-								color: var(--maxi-grey-dark);
+								border: $bl;
+								color: $gd;
 								border-radius: 30px;
 								min-width: 90px;
 								padding: 5px 10px;
@@ -1683,22 +1648,21 @@ $border-light: 1px solid var(--maxi-grey-light);
 								display: flex !important;
 								justify-content: center !important;
 								align-items: center !important;
-								transition: all 0.3s ease; // Add transition
+								transition: $t; // Add transition
 
 								&:hover {
 									background-color: var(
 										--maxi-cloud-primary-light
 									);
 									border: 1px solid
-										var(--maxi-cloud-primary-light);
-									color: var(--maxi-black);
-									transition: all 0.4s ease !important;
+										$cpl;
+									color: $bk;
+									transition: $t !important;
 								}
 							}
 						}
 						/* Common button styles for both buttons */
 
-						// aligmnent of the patterns 2 buttons
 						&__buttons {
 							display: flex;
 							align-items: center;
@@ -1710,12 +1674,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 					}
 
-					//Button hover on card
 					&:hover {
-						box-shadow: 0 0 0 1px var(--maxi-cloud-primary-light);
+						box-shadow: 0 0 0 1px $cpl;
 						.maxi-cloud-masonry-card__button {
 							box-shadow: 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								$cpl;
 						}
 					}
 				}
@@ -1725,11 +1688,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
 					.maxi-cloud-masonry-card {
-						// Add button styles for SC content section
 						&__button {
 							margin-right: 0;
-							border: 1px solid var(--maxi-grey-light);
-							color: var(--maxi-grey-dark);
+							border: $bl;
+							color: $gd;
 							font-weight: bold;
 							border-radius: 30px;
 							min-width: 90px;
@@ -1738,20 +1700,19 @@ $border-light: 1px solid var(--maxi-grey-light);
 							display: flex !important;
 							justify-content: center !important;
 							align-items: center !important;
-							transition: all 0.4s ease;
+							transition: $t;
 
 							&:hover {
 								background-color: var(
 									--maxi-cloud-primary-light
 								);
 								border: 1px solid
-									var(--maxi-cloud-primary-light);
-								color: var(--maxi-black);
-								transition: all 0.4s ease !important;
+									$cpl;
+								color: $bk;
+								transition: $t !important;
 							}
 						}
 
-						// Add button container styles if needed
 						&__buttons {
 							display: flex;
 							align-items: center;
@@ -1777,9 +1738,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 			&__sidebar {
 				.ais-RefinementList-item,
 				.ais-HierarchicalMenu-item {
-					border-bottom: 1px solid var(--maxi-grey-light);
+					border-bottom: $bl;
 					&:first-child {
-						border-top: 1px solid var(--maxi-grey-light);
+						border-top: $bl;
 					}
 					.maxi-toggle-switch {
 						margin-bottom: 8px;
@@ -1804,7 +1765,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		&__svg-shape,
 		&__svg-icon {
 			.ais-InfiniteHits-list {
-				position: relative;
+				position: $pr;
 				grid-template-columns: repeat(8, 1fr);
 			}
 		}
@@ -1812,10 +1773,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
 					/* Card base styles */
-					background: var(--maxi-white);
+					background: $w;
 					border-radius: 10px;
 					overflow: hidden;
-					transition: all 0.4s ease !important;
+					transition: $t !important;
 
 					/* Pro version card style */
 					&-pro {
@@ -1825,13 +1786,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 					/* Card hover state */
 					&:hover {
 						background: var(--maxi-off-white) !important;
-						transition: all 0.4s ease !important;
+						transition: $t !important;
 					}
 				}
 				.maxi-cloud-masonry-card__image {
 					padding: 0;
-					background: var(--maxi-white);
-					border: 1px solid var(--maxi-grey-light);
+					background: $w;
+					border: $bl;
 				}
 			}
 			&__content-patterns {
@@ -1847,7 +1808,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			height: 10px;
 			.ais-Menu {
 				display: block;
-				position: absolute;
+				position: $pa;
 				left: 230px;
 				max-width: 450px;
 				margin-top: -38px;
@@ -1861,12 +1822,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					&:first-child {
 						a {
-							border-left: 1px solid var(--maxi-grey-light);
+							border-left: $bl;
 						}
 					}
 					&:last-child {
 						a {
-							border-right: 1px solid var(--maxi-grey-light);
+							border-right: $bl;
 						}
 					}
 				}
@@ -1877,18 +1838,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 				height: 31px;
 				padding: 6px 18px;
 				border-radius: 30px;
-				background-color: var(--maxi-cloud-primary-whisper);
-				color: var(--maxi-grey-dark);
-				border: 1px solid var(--maxi-cloud-primary);
+				background-color: $cpw;
+				color: $gd;
+				border: 1px solid $cp;
 				z-index: 100000;
 				line-height: 100%;
-				transition: all 0.3s ease;
+				transition: $t;
 
 				&:hover {
-					background-color: var(--maxi-cloud-primary);
-					color: var(--maxi-black);
-					border-color: var(--maxi-cloud-primary);
-					transition: all 0.4s ease !important;
+					background-color: $cp;
+					color: $bk;
+					border-color: $cp;
+					transition: $t !important;
 				}
 			}
 			&__button-connect-pro {
@@ -1897,14 +1858,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 			&__text_pro {
 				margin: 0;
 				.maxi-username:hover {
-					cursor: pointer;
+					cursor: $ptr;
 				}
 				.maxi-network-license-notice {
 					a {
-						color: var(--maxi-cloud-primary);
-						transition: all 0.4s ease;
+						color: $cp;
+						transition: $t;
 						&:hover {
-							color: var(--maxi-grey-dark);
+							color: $gd;
 						}
 					}
 				}
@@ -1916,23 +1877,23 @@ $border-light: 1px solid var(--maxi-grey-light);
 					margin-top: 10px;
 					margin-right: -15px;
 					padding: 1px 20px 2px 8px !important;
-					border: 1px solid var(--maxi-grey-light) !important;
+					border: $bl !important;
 					border-radius: 0 !important;
 					border-top-left-radius: 30px !important;
 					border-bottom-left-radius: 30px !important;
-					transition: all 0.4s ease !important;
+					transition: $t !important;
 					&:focus,
 					&:active,
 					&:hover {
-						border-color: var(--maxi-cloud-primary) !important;
+						border-color: $cp !important;
 					}
 				}
 				span {
-					position: absolute;
+					position: $pa;
 					bottom: -14px;
 					padding: 5px;
 					color: #f2a600;
-					background: var(--maxi-white);
+					background: $w;
 					font-style: italic;
 					font-size: 12px;
 				}
@@ -1948,8 +1909,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 	.ais-InfiniteHits-item {
 		margin: 0 0 0.6rem;
-		background-color: var(--maxi-white);
-		position: relative;
+		background-color: $w;
+		position: $pr;
 		border-radius: 8px;
 
 		.maxi-cloud-masonry-card {
@@ -1970,7 +1931,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					align-items: center;
 					margin-bottom: 8px;
 					.maxi-cloud-masonry__serial-tag {
-						color: var(--maxi-grey-dark);
+						color: $gd;
 						font-weight: 700;
 						font-size: 14px;
 					}
@@ -1986,15 +1947,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			&__tags {
 				display: flex;
 				justify-content: space-between;
-				position: absolute;
+				position: $pa;
 				top: 6px;
 				right: 8px;
 
 				&__tag {
-					position: relative;
+					position: $pr;
 					display: inline-block;
 					padding: 0;
-					color: var(--maxi-grey-dark);
+					color: $gd;
 					font-size: 14px;
 					font-weight: bold;
 					text-transform: capitalize;
@@ -2032,15 +1993,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&::-webkit-scrollbar-track {
-				background: var(--maxi-white);
+				background: $w;
 			}
 
 			&::-webkit-scrollbar-thumb {
-				background: var(--maxi-grey-light);
+				background: $gl;
 			}
 
 			&::-webkit-scrollbar-thumb:hover {
-				background: var(--maxi-grey-light);
+				background: $gl;
 			}
 		}
 	}
@@ -2066,15 +2027,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&::-webkit-scrollbar-track {
-				background: var(--maxi-white);
+				background: $w;
 			}
 
 			&::-webkit-scrollbar-thumb {
-				background: var(--maxi-grey-light);
+				background: $gl;
 			}
 
 			&::-webkit-scrollbar-thumb:hover {
-				background: var(--maxi-grey-light);
+				background: $gl;
 			}
 		}
 	}
@@ -2090,15 +2051,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 		margin: 0;
 		.ais-Stats {
 			margin-bottom: 0;
-			border-bottom: 1px solid var(--maxi-grey-light);
+			border-bottom: $bl;
 		}
 		.ais-Stats-text {
-			color: var(--maxi-grey-dark);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			color: $gd;
+			font-family: $f;
 			font-weight: 500;
 			font-size: 12px;
 			strong {
-				color: var(--maxi-cloud-primary);
+				color: $cp;
 			}
 		}
 	}
@@ -2472,7 +2433,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				display: block !important;
 				height: auto;
 				margin: 0;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: $bl;
 			}
 			&__patterns {
 				&__top-menu {
@@ -2701,7 +2662,7 @@ html[dir='rtl'] {
 		transform: scaleX(-1);
 	}
 	.maxi-responsive-selector .action-buttons__button.style-card-button {
-		border-left: 1px solid var(--maxi-grey-light);
+		border-left: $bl;
 	}
 	.maxi-responsive-selector .action-buttons__help {
 		margin-left: 0;
@@ -2750,7 +2711,7 @@ html[dir='rtl'] {
 		}
 	}
 	.maxi-style-card-settings .maxi-tabs-control__button:first-child {
-		border-right: 1px solid var(--maxi-grey-light) !important;
+		border-right: $bl !important;
 	}
 	.maxi-style-cards__quick-color-presets__reset {
 		left: 8px;
@@ -2779,11 +2740,10 @@ html[dir='rtl'] {
 		.ais-InfiniteHits-list {
 			.ais-InfiniteHits-item {
 				.maxi-cloud-masonry-card {
-					// Add button styles for SC content section
 					&__button {
 						margin-right: 0;
-						border: 1px solid var(--maxi-grey-light);
-						color: var(--maxi-grey-dark);
+						border: $bl;
+						color: $gd;
 						font-weight: bold;
 						border-radius: 30px;
 						min-width: 90px;
@@ -2792,16 +2752,15 @@ html[dir='rtl'] {
 						display: flex !important;
 						justify-content: center !important;
 						align-items: center !important;
-						transition: all 0.3s ease;
+						transition: $t;
 
 						&:hover {
-							background-color: var(--maxi-cloud-primary);
-							border: 1px solid var(--maxi-cloud-primary);
-							color: var(--maxi-white);
+							background-color: $cp;
+							border: 1px solid $cp;
+							color: $w;
 						}
 					}
 
-					// Add button container styles if needed
 					&__buttons {
 						display: flex;
 						align-items: center;
@@ -2828,32 +2787,32 @@ html[dir='rtl'] {
 			a {
 				&:before {
 					content: '';
-					position: absolute;
+					position: $pa;
 					left: -1px;
 					right: -1px;
 					top: -1px;
 					bottom: -1px;
 					display: block;
-					background-color: var(--maxi-cloud-primary-light);
+					background-color: $cpl;
 					z-index: -1;
-					transition: all 0.4s ease !important;
+					transition: $t !important;
 					opacity: 0;
 				}
 				&:after {
 					content: '';
-					position: absolute;
+					position: $pa;
 					z-index: 1;
 					left: -1px;
 					top: -1px;
 					bottom: -1px;
 					width: 1px;
 					display: block;
-					background-color: var(--maxi-white);
+					background-color: $w;
 					opacity: 0;
 				}
 				&:hover {
-					color: var(--maxi-black);
-					transition: all 0.4s ease !important;
+					color: $bk;
+					transition: $t !important;
 					&::before {
 						opacity: 1;
 					}
@@ -2871,15 +2830,13 @@ html[dir='rtl'] {
 		&__sidebar {
 			.ais-RefinementList-item,
 			.ais-HierarchicalMenu-item {
-				// Add transition for background hover
-				transition: all 0.4s ease !important;
+				transition: $t !important;
 
 				a {
-					// Existing styles...
 					&:hover {
-						background-color: var(--maxi-cloud-primary-whisper);
+						background-color: $cpw;
 						box-shadow: none;
-						transition: all 0.4s ease !important;
+						transition: $t !important;
 					}
 				}
 			}

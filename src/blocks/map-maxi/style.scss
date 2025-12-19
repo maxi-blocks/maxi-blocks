@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 @import '~leaflet/dist/leaflet.css';
 
 body.maxi-blocks--active .maxi-map-block {
@@ -21,8 +22,8 @@ body.maxi-blocks--active .maxi-map-block {
 	}
 
 	.leaflet-div-icon {
-		background-color: transparent;
-		border: transparent;
+		background-color: $tr;
+		border: $tr;
 		animation: animate-marker 400ms ease-in-out;
 	}
 
@@ -33,7 +34,7 @@ body.maxi-blocks--active .maxi-map-block {
 		display: block;
 		width: 17px;
 		height: 17px;
-		background-color: var(--maxi-white);
+		background-color: $w;
 		border-radius: 50%;
 		transition: 0.1s;
 		span {
@@ -42,9 +43,9 @@ body.maxi-blocks--active .maxi-map-block {
 			transition: 0.1s;
 		}
 		&:hover {
-			background-color: var(--maxi-grey-dark);
+			background-color: $gd;
 			span {
-				color: var(--maxi-white);
+				color: $w;
 			}
 		}
 	}
@@ -55,7 +56,7 @@ body.maxi-blocks--active .maxi-map-block {
 
 	.leaflet-popup-content-wrapper {
 		text-align: center;
-		background: transparent;
+		background: $tr;
 		box-shadow: none;
 	}
 
@@ -69,13 +70,13 @@ body.maxi-blocks--active .maxi-map-block {
 	&__popup {
 		width: 100%;
 		height: 100%;
-		position: relative;
+		position: $pr;
 		box-sizing: content-box !important;
 		left: 5px;
 		border-radius: 16px;
 
 		&__background {
-			position: absolute;
+			position: $pa;
 			width: 100%;
 			height: 100%;
 			z-index: -1;
@@ -86,7 +87,7 @@ body.maxi-blocks--active .maxi-map-block {
 		&__content {
 			min-width: 100px;
 			padding: 32px;
-			position: relative;
+			position: $pr;
 			z-index: 10;
 
 			&__title {
@@ -99,11 +100,11 @@ body.maxi-blocks--active .maxi-map-block {
 
 		&::before {
 			content: '';
-			position: absolute;
+			position: $pa;
 			width: 0;
 			height: 0;
 			border-style: solid;
-			border-color: transparent;
+			border-color: $tr;
 			bottom: 0;
 			left: 50%;
 			transform: translate(-50%, 100%);

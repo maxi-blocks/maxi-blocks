@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-svg-icon-block {
 	display: flex;
 
@@ -6,7 +7,7 @@ body.maxi-blocks--active .maxi-svg-icon-block {
 		z-index: 20;
 
 		svg {
-			position: relative;
+			position: $pr;
 			z-index: 20;
 			display: block;
 			width: 100%;

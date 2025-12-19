@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-color-control {
 	&__wrap {
 		display: flex;
@@ -48,13 +49,13 @@
 		input {
 			width: 90% !important;
 			height: 27px !important;
-			border: 1.5px solid var(--maxi-grey-light) !important;
+			border: $bg !important;
 			border-radius: 5px !important;
 			font-size: 12px !important;
 			box-shadow: none !important;
 
 			&:focus {
-				border-color: var(--maxi-grey-dark) !important;
+				border-color: $gd !important;
 				box-shadow: none !important;
 				outline: 0;
 			}
@@ -62,24 +63,24 @@
 	}
 
 	&--disabled {
-		position: relative;
+		position: $pr;
 
 		&:before {
 			content: '';
-			position: absolute;
+			position: $pa;
 			z-index: 2;
 			top: 0;
 			left: 0;
 			width: 100%;
 			height: 100%;
 			cursor: not-allowed;
-			background-color: var(--maxi-white);
+			background-color: $w;
 			background: repeating-linear-gradient(
 				-45deg,
-				var(--maxi-grey-dark),
-				var(--maxi-grey-dark) 2px,
-				var(--maxi-white) 2px,
-				var(--maxi-white) 10px
+				$gd,
+				$gd 2px,
+				$w 2px,
+				$w 10px
 			);
 			opacity: 0.1;
 		}
@@ -101,7 +102,7 @@
 		&-custom {
 			width: 100%;
 			margin-top: 15px;
-			border-top: 1px solid var(--maxi-grey-light);
+			border-top: $bl;
 			padding-top: 10px;
 
 			&-header {
@@ -114,7 +115,7 @@
 
 		&-label {
 			.maxi-base-control__field {
-				position: relative;
+				position: $pr;
 				flex-direction: column;
 
 				& > * {
@@ -124,8 +125,8 @@
 					margin-bottom: 10px;
 				}
 				.components-maxi-control__reset-button {
-					position: absolute;
-					background-color: transparent;
+					position: $pa;
+					background-color: $tr;
 					border-width: 0 0 0 2px;
 					width: auto;
 					top: 0;
@@ -133,7 +134,7 @@
 					padding: 1px 1px 1px 8px;
 					&:hover {
 						svg {
-							fill: var(--maxi-primary-color);
+							fill: $pc;
 						}
 					}
 				}
@@ -157,10 +158,10 @@
 			height: 30px;
 			padding: 0;
 			border: none !important;
-			box-shadow: 0 0 0 1px var(--maxi-grey);
+			box-shadow: 0 0 0 1px $g;
 			margin: 0;
-			background-color: var(--maxi-white);
-			cursor: pointer;
+			background-color: $w;
+			cursor: $ptr;
 			transition: all 0.5s;
 			border-radius: 50%;
 
@@ -170,7 +171,7 @@
 
 			&:hover {
 				border: none !important;
-				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 2px $sc;
 			}
 
 			&:nth-child(n + 9) {
@@ -178,14 +179,14 @@
 			}
 
 			&--active {
-				background: var(--maxi-pastel-green);
+				background: $pg;
 				border: none;
-				box-shadow: 0 0 0 2px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 2px $sc;
 				outline: none;
 
 				&:hover {
-					background: var(--maxi-pastel-green) !important;
-					box-shadow: 0 0 0 2px var(--maxi-secondary-color) !important;
+					background: $pg !important;
+					box-shadow: 0 0 0 2px $sc !important;
 				}
 			}
 		}
@@ -234,7 +235,7 @@
 				display: block;
 				width: 18px;
 				height: 18px;
-				border: 1.5px solid var(--maxi-grey-light);
+				border: $bg;
 				border-radius: 50%;
 				margin: auto;
 				opacity: 1;
@@ -242,7 +243,7 @@
 			}
 
 			.components-maxi-control__reset-button {
-				border-color: var(--maxi-grey-light);
+				border-color: $gl;
 			}
 		}
 	}

@@ -1,13 +1,14 @@
+@import '../../../../../src/css/backend-variables.scss';
 body .toolbar-item__popover {
 	.components-form-toggle {
 		&.is-checked {
 			.components-form-toggle__track {
-				background-color: var(--maxi-grey-dark);
+				background-color: $gd;
 			}
 		}
 		.components-form-toggle__track {
 			border: 0;
-			background-color: var(--maxi-white);
+			background-color: $w;
 		}
 	}
 	.block-editor-url-input {
@@ -19,27 +20,27 @@ body .toolbar-item__popover {
 		}
 	}
 	.block-editor-url-input__input {
-		background-color: transparent;
-		color: var(--maxi-white);
-		border: 1.5px solid var(--maxi-grey) !important;
+		background-color: $tr;
+		color: $w;
+		border: 1.5px solid $g !important;
 
 		&::placeholder {
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 	}
 	.block-editor-link-control__search-item-title {
-		color: var(--maxi-grey);
+		color: $g;
 	}
 	.block-editor-link-control__search-submit {
 		&.has-icon {
 			padding: 0 !important;
 		}
 		svg {
-			fill: var(--maxi-grey-dark) !important;
+			fill: $gd !important;
 			transition: fill 0.4s ease;
 
 			&:hover {
-				fill: var(--maxi-primary-color) !important;
+				fill: $pc !important;
 			}
 		}
 	}
@@ -48,7 +49,7 @@ body .toolbar-item__popover {
 		padding: 0 18px 15px;
 	}
 	.toolbar-popover-link-destroyer {
-		background: var(--maxi-white);
+		background: $w;
 	}
 	input[type='text'].components-input-control__input:hover {
 		border: none !important;

@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-search-block {
 	align-items: center;
 	overflow: hidden;
@@ -30,15 +31,15 @@
 
 .maxi-skin-control__reveal-action-tabs {
 	.components-button {
-		background: var(--maxi-white);
+		background: $w;
 		border: none;
 		border-radius: 10px;
 		padding: 6px 12px;
 		margin: 0;
 		min-width: 70px;
 		height: 30px;
-		box-shadow: 0 0 0 1px var(--maxi-grey-light);
-		color: var(--maxi-grey-dark);
+		box-shadow: 0 0 0 1px $gl;
+		color: $gd;
 		transition: all 0.2s ease;
 
 		&:first-child {
@@ -49,16 +50,16 @@
 		}
 
 		&:hover {
-			background: var(--maxi-white);
-			box-shadow: 0 0 0 1px var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
+			background: $w;
+			box-shadow: 0 0 0 1px $pc;
+			color: $pc;
 		}
 
 		&:active,
 		&[aria-pressed='true'] {
-			background: var(--maxi-whisper-green) !important;
-			box-shadow: 0 0 0 1px var(--maxi-mid-green) !important;
-			color: var(--maxi-grey-dark) !important;
+			background: $wg !important;
+			box-shadow: 0 0 0 1px $mg !important;
+			color: $gd !important;
 			font-weight: 700;
 		}
 	}

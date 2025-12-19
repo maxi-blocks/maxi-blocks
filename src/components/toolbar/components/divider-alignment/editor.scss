@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__popover {
 	.toolbar-item__divider-alignment__popover {
 		min-width: 270px;
@@ -5,18 +6,18 @@
 
 	.maxi-alignment-control {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			padding: 5px 30px;
 
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				border-color: var(--maxi-primary-color) !important;
+				background-color: $wg;
+				border-color: $pc !important;
 			}
 
 			&[aria-pressed='true'] {
-				background-color: var(--maxi-whisper-green) !important;
-				border-color: var(--maxi-primary-color) !important;
-				color: var(--maxi-black) !important;
+				background-color: $wg !important;
+				border-color: $pc !important;
+				color: $bk !important;
 			}
 		}
 		.maxi-tabs-control {

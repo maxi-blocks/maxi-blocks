@@ -1,10 +1,11 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-accordion-control__item {
 	&[data-name='position'] {
 		.maxi-tabs-control {
 			.maxi-components-button {
 				&[aria-pressed='true'] {
-					background: var(--maxi-whisper-green);
-					color: var(--maxi-secondary-color);
+					background: $wg;
+					color: $sc;
 				}
 			}
 		}
@@ -17,7 +18,7 @@
 	justify-content: center;
 	height: 32px !important;
 	width: 40% !important;
-	border: 1.5px solid var(--maxi-grey-light) !important;
+	border: $bg !important;
 	border-radius: 4px !important;
 	transition: all 0.5s !important;
 	padding: 10px 15px !important;
@@ -25,13 +26,13 @@
 	left: auto;
 
 	&[aria-pressed='true'] {
-		background-color: var(--maxi-whisper-green);
-		border-color: var(--maxi-secondary-color);
+		background-color: $wg;
+		border-color: $sc;
 	}
 
 	&:hover {
-		background-color: var(--maxi-pastel-green);
-		stroke: var(--maxi-secondary-color);
+		background-color: $pg;
+		stroke: $sc;
 	}
 }
 

@@ -1,10 +1,11 @@
+@import '../../../src/css/backend-variables.scss';
 $arrow-triangle-base-size: 14px;
 $border-width: 1px;
-$white: var(--maxi-white);
-$gray-400: var(--maxi-grey-light);
-$gray-900: var(--maxi-grey-dark);
-$shadow-popover: 0 0 0 1px rgba(var(--maxi-black), 0.2),
-	0 4px 11px rgba(var(--maxi-black), 0.1);
+$white: $w;
+$gray-400: $gl;
+$gray-900: $gd;
+$shadow-popover: 0 0 0 1px rgba($bk, 0.2),
+	0 4px 11px rgba($bk, 0.1);
 $radius-block-ui: 3px;
 $panel-header-height: 32px;
 $grid-unit-20: 20px;
@@ -36,11 +37,11 @@ $grid-unit-20: 20px;
 	border-radius: $radius-block-ui;
 	box-sizing: border-box;
 	width: min-content;
-	position: relative !important;
-	transition: all 0.4s ease;
+	position: $pr !important;
+	transition: $t;
 
 	&:hover {
-		background-color: var(--maxi-pastel-green);
+		background-color: $pg;
 	}
 
 	// Alternate treatment for popovers that put them at elevation zero with high contrast.
@@ -81,7 +82,7 @@ $grid-unit-20: 20px;
 }
 
 .maxi-components-popover__arrow {
-	position: absolute;
+	position: $pa;
 	width: $arrow-triangle-base-size;
 	height: $arrow-triangle-base-size;
 	pointer-events: none;
@@ -92,7 +93,7 @@ $grid-unit-20: 20px;
 	// arrow
 	&::before {
 		content: '';
-		position: absolute;
+		position: $pa;
 		top: -1px;
 		left: 1px;
 		height: 2px;
@@ -135,7 +136,7 @@ $grid-unit-20: 20px;
 
 .maxi-components-popover__triangle-border {
 	// Stroke colors are the same as the .components-popover__content's outline
-	fill: transparent;
+	fill: $tr;
 	stroke-width: $border-width;
 	stroke: $gray-400;
 

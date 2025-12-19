@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-dialog-box {
 	position: fixed;
 	left: 0;
@@ -16,7 +17,7 @@
 }
 
 .maxi-dialog-box__content {
-	position: relative;
+	position: $pr;
 	z-index: 2;
 	display: flex;
 	box-sizing: border-box;
@@ -26,13 +27,13 @@
 	width: 400px;
 	height: auto;
 	padding: 25px 30px;
-	border: 1px solid var(--maxi-grey-light);
+	border: $bl;
 	border-radius: 3px;
 	margin: auto;
-	background: var(--maxi-white);
+	background: $w;
 	animation: scale 0.2s ease-in-out;
 	.maxi-dialog-close-button {
-		position: absolute;
+		position: $pa;
 		top: -10px;
 		right: -10px;
 		.maxi-components-button {
@@ -42,10 +43,10 @@
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
 			&:hover {
-				background-color: var(--maxi-black);
+				background-color: $bk;
 			}
 			path {
-				stroke: var(--maxi-white);
+				stroke: $w;
 			}
 		}
 	}
@@ -70,8 +71,8 @@
 	align-items: center;
 	height: calc(100% - 50px);
 	padding: 10px 0;
-	color: var(--maxi-black);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	color: $bk;
+	font-family: $f !important;
 	font-size: 12px;
 	text-align: center;
 }
@@ -82,16 +83,16 @@
 
 	button {
 		height: auto !important;
-		border: 1.5px solid var(--maxi-grey-light) !important;
+		border: $bg !important;
 		border-radius: 5px !important;
-		color: var(--maxi-black);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		color: $bk;
+		font-family: $f !important;
 		font-size: 12px;
 		transition: all 0.1s;
 
 		&:hover {
 			background-color: rgba(var(--maxi-active-sc-color), 1);
-			color: var(--maxi-white);
+			color: $w;
 			border: 1px solid rgba(var(--maxi-active-sc-color), 1);
 		}
 	}

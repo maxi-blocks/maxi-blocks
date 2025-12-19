@@ -1,28 +1,29 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-sidebar {
 	.maxi-button-default-styles {
 		display: flex;
 		flex-wrap: wrap;
 
 		.maxi-default-styles-control__button {
-			position: relative;
+			position: $pr;
 			width: calc(100% / 3);
 			height: auto !important;
 			padding: 6px;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $bg;
 			border-radius: 10px;
 			margin-bottom: 10px;
-			transition: all 0.4s ease;
+			transition: $t;
 
 			&:focus {
-				background: var(--maxi-grey);
+				background: $g;
 			}
 			&:hover {
-				border: 1.5px solid var(--maxi-primary-color);
-				background: var(--maxi-whisper-green);
+				border: 1.5px solid $pc;
+				background: $wg;
 
 				&::after {
 					content: '';
-					position: absolute;
+					position: $pa;
 					bottom: 0;
 					left: 0;
 					width: 100%;
@@ -31,7 +32,7 @@ body.maxi-blocks--active .maxi-sidebar {
 			&:nth-child(6) {
 				svg {
 					border-radius: 10px;
-					box-shadow: 0 0 8px 0 var(--maxi-grey);
+					box-shadow: 0 0 8px 0 $g;
 				}
 			}
 			&:nth-child(n + 7) {

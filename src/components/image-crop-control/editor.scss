@@ -1,7 +1,8 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-image-crop-control {
 	margin-bottom: 8px;
 	.ReactCrop__crop-selection {
-		background: transparent;
+		background: $tr;
 	}
 	&__options {
 		display: flex;

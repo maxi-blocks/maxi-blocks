@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__popover {
 	.maxi-button-group-control {
 		.maxi-base-control__field {
@@ -14,7 +15,7 @@
 			background-color: rgba(33, 141, 250, 0);
 			font-size: 13px;
 			line-height: 13px;
-			color: var(--maxi-white);
+			color: $w;
 			font-weight: 500;
 			flex: 1;
 			border-bottom: none;
@@ -50,11 +51,11 @@
 			input {
 				display: none;
 				&:checked ~ label {
-					background-color: var(--maxi-grey);
-					position: relative;
+					background-color: $g;
+					position: $pr;
 					z-index: 1;
-					border: 2px solid var(--maxi-grey-light);
-					border-bottom: 2px solid var(--maxi-primary-color);
+					border: 2px solid $gl;
+					border-bottom: 2px solid $pc;
 				}
 			}
 			label {
@@ -62,7 +63,7 @@
 				height: 100%;
 				text-align: center;
 				line-height: 26px;
-				border: 2px solid var(--maxi-grey);
+				border: 2px solid $g;
 			}
 		}
 	}
@@ -73,18 +74,18 @@
 				margin-bottom: 10px;
 			}
 			&-box {
-				background-color: var(--maxi-white);
+				background-color: $w;
 				width: 32px;
 				height: 32px;
 
 				&__active,
 				&:hover {
-					border-color: var(--maxi-mid-green);
-					background-color: var(--maxi-pastel-green);
+					border-color: $mg;
+					background-color: $pg;
 				}
 			}
 			&-item {
-				border: 1.5px solid var(--maxi-grey-light) !important;
+				border: $bg !important;
 			}
 		}
 	}
@@ -92,12 +93,12 @@
 		border: 0;
 
 		svg {
-			fill: var(--maxi-white);
+			fill: $w;
 		}
 	}
 	.maxi-color-control__color {
 		.chrome-picker {
-			background-color: transparent !important;
+			background-color: $tr !important;
 			& > div:last-of-type {
 				padding-bottom: 0 !important;
 			}

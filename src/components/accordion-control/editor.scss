@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-accordion-control {
 	margin: 0px 0 1px;
 
@@ -20,7 +21,7 @@
 			&:after {
 				content: '';
 				z-index: 1;
-				position: absolute;
+				position: $pa;
 				width: 100%;
 				height: 1px;
 			}
@@ -38,35 +39,35 @@
 
 		&:last-child {
 			.maxi-accordion-control__item__button {
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: $bl;
 			}
 		}
 		&__button {
-			position: relative;
+			position: $pr;
 			z-index: 2;
 			display: flex;
 			align-items: center;
 			padding: 8px;
-			border-top: 1.5px solid var(--maxi-grey-light);
+			border-top: 1.5px solid $gl;
 			margin-bottom: 0px;
-			background: var(--maxi-white);
+			background: $w;
 			transition: background-color 0.5s, color 0.5s;
 
 			&:hover {
-				background: var(--maxi-whisper-green);
-				cursor: pointer;
-				color: var(--maxi-black);
+				background: $wg;
+				cursor: $ptr;
+				color: $bk;
 			}
 			&:active,
 			&:focus {
-				background: var(--maxi-pastel-green);
+				background: $pg;
 			}
 			&:before {
 				margin-right: 8px;
 			}
 			&:after {
 				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path fill="rgba(180, 180, 180, 0.9)" d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				right: 10px;
 				width: 6px;
@@ -80,7 +81,7 @@
 				}
 			}
 			&[aria-expanded='true'] {
-				background: var(--maxi-white);
+				background: $w;
 
 				&:after {
 					transform: translateY(-50%) rotate(90deg);
@@ -90,7 +91,7 @@
 		&--active {
 			&:before {
 				content: '';
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				left: 6px;
 				z-index: 1;
@@ -115,9 +116,9 @@
 			}
 		}
 		.maxi-accordion-control__item__button {
-			background: var(--maxi-white);
+			background: $w;
 			&:hover {
-				background: var(--maxi-pastel-green);
+				background: $pg;
 			}
 		}
 	}

@@ -1,9 +1,10 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-list-item-block {
 	& * {
 		border-color: inherit;
 	}
 	&__content {
-		position: relative;
+		position: $pr;
 		margin: 0;
 	}
 	p:not([class*='__content']):not(.maxi-pane-block__title):not(.wp-block):not(.maxi-block--use-sc) {

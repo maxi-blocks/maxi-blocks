@@ -1,9 +1,10 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-font-level-control {
 	display: flex;
 	flex-wrap: nowrap;
 	margin-bottom: 8px;
 	justify-content: space-between;
-	border-top: 1.5px solid var(--maxi-grey-light);
+	border-top: 1.5px solid $gl;
 	padding-top: 8px;
 
 	&__button {
@@ -12,22 +13,22 @@
 		justify-content: center;
 		width: calc(100% / 8.5);
 		height: 26px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: $bg;
 		border-radius: 5px;
-		color: var(--maxi-grey-dark) !important;
-		background-color: var(--maxi-white);
+		color: $gd !important;
+		background-color: $w;
 		transition: all 0.5s;
 		font-weight: 700;
 		margin-right: 6px;
 
 		&:hover {
-			background-color: var(--maxi-pastel-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
+			background-color: $pg;
+			border: 1.5px solid $sc !important;
 		}
 		&[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
-			color: var(--maxi-secondary-color) !important;
+			background-color: $wg;
+			border: 1.5px solid $sc !important;
+			color: $sc !important;
 			font-weight: 700 !important;
 		}
 		&:first-child {

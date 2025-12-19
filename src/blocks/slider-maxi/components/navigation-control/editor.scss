@@ -1,21 +1,22 @@
+@import '../../../../../src/css/backend-variables.scss';
 .maxi-icon-styles-control {
 	.maxi-tabs-control__button {
 		&--selected {
 			path {
-				fill: var(--maxi-secondary-color);
-				stroke: transparent;
+				fill: $sc;
+				stroke: $tr;
 			}
 			&[aria-label='color'] {
 				path {
 					&:first-child {
-						fill: var(--maxi-grey-light);
+						fill: $gl;
 					}
 				}
 			}
 			&[aria-label='border'] {
 				path {
-					fill: transparent;
-					stroke: var(--maxi-secondary-color);
+					fill: $tr;
+					stroke: $sc;
 				}
 			}
 		}
@@ -29,16 +30,16 @@
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
 		.maxi-tabs-control__button-gradient {
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $gd;
+			background-color: $w;
 			
 
 			&.maxi-tabs-control__button--selected {
-				border: 1px solid var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green);
+				border: 1px solid $pc;
+				color: $pc;
+				background-color: $wg;
 			}
 		}
 	}

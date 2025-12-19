@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-toolbar-layout {
 	&__button {
 		display: flex;
@@ -5,12 +6,12 @@
 		font-family: Inter, sans-serif;
 		font-size: 14px;
 		letter-spacing: 0.5px;
-		color: var(--maxi-black);
-		background-color: var(--maxi-white);
+		color: $bk;
+		background-color: $w;
 		margin-left: 10px;
 		border-radius: 10px;
 		float: right;
-		border: 2px solid var(--maxi-grey-light);
+		border: 2px solid $gl;
 		box-shadow: none !important;
 		padding: 10px 7px;
 		justify-content: center;
@@ -25,7 +26,7 @@
 		}
 		&:hover,
 		&[aria-pressed='true'] {
-			border-color: var(--maxi-primary-color);
+			border-color: $pc;
 		}
 	}
 }
@@ -48,7 +49,7 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 		}
 	}
 	.maxi-toolbar-layout__button {
-		position: absolute;
+		position: $pa;
 		left: 280px;
 		top: 7px;
 		margin-left: 0;

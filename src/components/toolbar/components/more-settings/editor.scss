@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item {
 	&__more-settings {
 		width: auto !important;
@@ -21,7 +22,7 @@
 		margin-left: 0 !important;
 		margin-top: 15px;
 		transform: translate(3px, -13px);
-		background-color: var(--maxi-white);
+		background-color: $w;
 		font-family: 'Inter', sans-serif !important;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
@@ -35,8 +36,8 @@
 					height: 1px;
 					left: 12px;
 					right: 12px;
-					background-color: var(--maxi-grey-light);
-					position: absolute;
+					background-color: $gl;
+					position: $pa;
 					bottom: 0;
 				}
 			}
@@ -56,7 +57,7 @@
 			display: block;
 			width: 100%;
 			text-align: left;
-			position: relative;
+			position: $pr;
 			transition: 0.3s;
 			height: 30px !important;
 			padding: 6px 12px !important;
@@ -64,8 +65,8 @@
 				float: right;
 			}
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				color: var(--maxi-primary-color) !important;
+				background-color: $wg;
+				color: $pc !important;
 			}
 			&::after {
 				content: '';
@@ -74,8 +75,8 @@
 				left: 0;
 				right: 0;
 				width: 0;
-				background-color: var(--maxi-secondary-color);
-				position: absolute;
+				background-color: $sc;
+				position: $pa;
 				bottom: 0;
 				margin: auto;
 				transition: 0.3s;

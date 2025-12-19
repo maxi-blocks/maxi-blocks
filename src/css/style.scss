@@ -17,7 +17,7 @@
 }
 
 .maxi-block {
-	position: relative;
+	position: $pr;
 	z-index: 0;
 
 	// To not break pages full-width which wasn't updated after #3269
@@ -27,7 +27,7 @@
 	}
 
 	span.maxi-block-anchor {
-		position: absolute;
+		position: $pa;
 		top: 0;
 	}
 
@@ -38,7 +38,7 @@
 		opacity: 0.7;
 	}
 	&__disabled {
-		position: absolute;
+		position: $pa;
 		top: 0;
 		left: 0;
 		width: 100%;
@@ -48,13 +48,13 @@
 		align-items: center;
 		justify-content: center;
 		background-color: rgba(0, 0, 0, 0.5);
-		box-shadow: inset 0 0 0px 1px var(--maxi-white);
+		box-shadow: inset 0 0 0px 1px $w;
 
 		p {
 			padding: 10px;
 			margin: auto;
-			color: var(--maxi-white);
-			background-color: var(--maxi-black);
+			color: $w;
+			background-color: $bk;
 			font-family: Inter, sans-serif;
 			font-size: 14px;
 			text-align: center;
@@ -100,7 +100,7 @@
 
 	// Override the default button style that makes cursor default for links
 	button {
-		cursor: pointer;
+		cursor: $ptr;
 	}
 }
 
@@ -133,6 +133,6 @@ body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
 	}
 
 	&:active:not(:disabled) {
-		background: var(--maxi-grey-light) !important;
+		background: $gl !important;
 	}
 }

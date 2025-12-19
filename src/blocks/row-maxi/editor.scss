@@ -1,6 +1,7 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-row-block {
 	.editor-styles-wrapper & {
-		position: relative;
+		position: $pr;
 		flex-wrap: wrap;
 		z-index: 2;
 		width: 100%;
@@ -16,7 +17,7 @@
 
 			span {
 				font-size: 16px;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: $f !important;
 				font-weight: 700;
 			}
 		}
@@ -33,7 +34,7 @@
 			max-width: 1170px;
 			margin: 0 auto;
 			padding: 16px 1rem 36px 1rem;
-			background-color: transparent;
+			background-color: $tr;
 		}
 
 		&__button {
@@ -45,8 +46,8 @@
 
 				&:hover {
 					svg {
-						stroke: var(--maxi-primary-color);
-						fill: var(--maxi-white);
+						stroke: $pc;
+						fill: $w;
 						filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
 					}
 				}
@@ -81,7 +82,7 @@
 	}
 
 	button svg {
-		transition: all 0.3s ease;
+		transition: $t;
 	}
 }
 

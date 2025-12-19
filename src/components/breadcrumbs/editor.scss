@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-breadcrumbs__popover {
 	z-index: 10;
 }
@@ -5,13 +6,13 @@
 .maxi-breadcrumbs {
 	font-family: 'Inter', sans-serif !important;
 	display: flex;
-	position: absolute;
+	position: $pa;
 	bottom: -22px;
 	left: 25px;
 	border-radius: 3px;
 	margin: 0 !important;
 	padding: 0 10px 0 5px !important;
-	background: var(--maxi-primary-color);
+	background: $pc;
 	z-index: 9;
 	transition: 0.3s;
 	transform: scaleX(0);
@@ -44,20 +45,20 @@
 		.maxi-breadcrumbs__item__content {
 			text-decoration: underline;
 			text-underline-offset: 3px;
-			text-decoration-color: rgba(var(--maxi-white), 0.6);
+			text-decoration-color: rgba($w, 0.6);
 			top: -1px;
-			position: relative;
+			position: $pr;
 		}
 
 		&:not(:last-child):after {
 			content: '>';
 			padding: 0 4px;
-			color: var(--maxi-white);
+			color: $w;
 		}
 		&__content {
 			text-decoration: underline;
-			cursor: pointer;
-			color: var(--maxi-white);
+			cursor: $ptr;
+			color: $w;
 			text-decoration: none;
 			transition: all 0.5s;
 

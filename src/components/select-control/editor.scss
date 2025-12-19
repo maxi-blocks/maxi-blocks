@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active {
 	select.maxi-select-control__input {
 		flex: 1;
@@ -7,9 +8,9 @@ body.maxi-blocks--active {
 		min-height: unset;
 		max-height: unset !important;
 		padding: 8px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: $bg;
 		margin: 0;
-		color: var(--maxi-grey);
+		color: $g;
 		background-size: 9px 9px;
 		font-size: 12px;
 		line-height: 14px;
@@ -17,12 +18,12 @@ body.maxi-blocks--active {
 		-webkit-appearance: none;
 		appearance: none;
 		-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
-		cursor: pointer;
+		cursor: $ptr;
 		opacity: 1;
 		outline: 0;
 		background-image: linear-gradient(
-				var(--maxi-grey-light),
-				var(--maxi-grey-light)
+				$gl,
+				$gl
 			),
 			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
 		background-repeat: no-repeat, no-repeat !important;
@@ -32,18 +33,18 @@ body.maxi-blocks--active {
 		&:focus,
 		&:active {
 			background-image: linear-gradient(
-					var(--maxi-grey-light),
-					var(--maxi-grey-light)
+					$gl,
+					$gl
 				),
 				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
 		}
 		svg {
-			fill: var(--maxi-grey);
+			fill: $g;
 		}
 	}
 	.maxi-select-control__input {
 		padding-left: 12px !important;
-		transition: all 0.5s ease;
+		transition: $t;
 	}
 	// Consolidate hover rule to avoid empty ruleset warning
 	.maxi-select-control__input:hover,
@@ -70,21 +71,21 @@ body.maxi-blocks--active {
 				}
 			}
 			.maxi-base-control__field {
-				position: relative;
+				position: $pr;
 				margin-top: 12px;
-				background-color: var(--maxi-white);
-				border: 1px solid var(--maxi-grey-light) !important;
+				background-color: $w;
+				border: $bl !important;
 				border-radius: 5px;
 				margin-right: -3px;
 			}
 			.maxi-base-control__label {
-				position: absolute;
+				position: $pa;
 				top: -8px;
 				left: 8px;
 				font-size: 10px !important;
-				color: var(--maxi-grey-dark);
+				color: $gd;
 				font-style: normal;
-				background: var(--maxi-white);
+				background: $w;
 				padding: 0 5px;
 				pointer-events: none;
 				box-sizing: border-box;
@@ -94,10 +95,10 @@ body.maxi-blocks--active {
 				padding: 10px 11px;
 				border: none !important;
 				/* Short right divider + chevron */
-				background-color: var(--maxi-white) !important;
+				background-color: $w !important;
 				background-image: linear-gradient(
-						var(--maxi-grey-light),
-						var(--maxi-grey-light)
+						$gl,
+						$gl
 					),
 					url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
 				background-repeat: no-repeat, no-repeat !important;
@@ -107,8 +108,8 @@ body.maxi-blocks--active {
 				&:focus,
 				&:active {
 					background-image: linear-gradient(
-							var(--maxi-grey-light),
-							var(--maxi-grey-light)
+							$gl,
+							$gl
 						),
 						url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
 				}

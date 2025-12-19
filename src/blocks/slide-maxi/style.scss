@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active .maxi-slide-block {
 	display: inline-flex;
 	flex-direction: column;
@@ -5,7 +6,7 @@ body.maxi-blocks--active .maxi-slide-block {
 	justify-content: stretch;
 	box-sizing: border-box;
 	align-items: center;
-	position: relative;
+	position: $pr;
 	width: 100%;
 	height: 100%;
 	margin: 0;

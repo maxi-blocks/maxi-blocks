@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-overflow-control {
-	position: relative;
+	position: $pr;
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
@@ -14,15 +15,15 @@
 	}
 
 	.sync-wrapper {
-		position: absolute;
+		position: $pa;
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
 		margin-top: 2px;
 
 		button {
-			background: var(--maxi-white);
-			border: 1.5px solid var(--maxi-grey-light);
+			background: $w;
+			border: $bg;
 			border-radius: 4px;
 			width: 24px;
 			height: 24px;
@@ -41,27 +42,27 @@
 			transition: all 0.2s;
 
 			&:focus {
-				border-color: transparent;
+				border-color: $tr;
 			}
 
 			&[aria-pressed='true'] {
-				background: var(--maxi-whisper-green) !important;
-				border: 1.5px solid var(--maxi-secondary-color);
+				background: $wg !important;
+				border: 1.5px solid $sc;
 
 				&:hover {
-					background: var(--maxi-pastel-green) !important;
-					border: 1px solid var(--maxi-primary-color);
+					background: $pg !important;
+					border: 1px solid $pc;
 
 					svg {
 						path {
-							fill: var(--maxi-primary-color);
+							fill: $pc;
 						}
 					}
 				}
 
 				svg {
 					path {
-						fill: var(--maxi-secondary-color);
+						fill: $sc;
 					}
 				}
 			}
@@ -70,7 +71,7 @@
 				width: 14px;
 				height: 14px;
 				path {
-					fill: var(--maxi-grey);
+					fill: $g;
 				}
 			}
 		}

@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__slide__popover {
 	display: flex;
 	padding-bottom: 10px;
@@ -5,7 +6,7 @@
 	padding-left: 0;
 	margin-left: -9px;
 	.maxi-slider-toolbar__slide {
-		position: relative;
+		position: $pr;
 		margin: 0 7px;
 		span {
 			display: block;
@@ -19,12 +20,12 @@
 		&:hover,
 		&--active {
 			span {
-				border-color: var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
+				border-color: $pc;
+				color: $pc;
 			}
 		}
 		.maxi-slider-toolbar__slide-remove {
-			position: absolute;
+			position: $pa;
 			right: -9px;
 			top: -9px;
 			padding: 0;
@@ -39,8 +40,8 @@
 			}
 			&:hover {
 				svg {
-					background-color: var(--maxi-primary-color);
-					border-color: var(--maxi-primary-color);
+					background-color: $pc;
+					border-color: $pc;
 					path {
 						fill: white;
 					}

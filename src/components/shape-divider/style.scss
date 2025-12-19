@@ -1,5 +1,6 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-shape-divider {
-	position: relative;
+	position: $pr;
 	z-index: 1;
 	transition: all 1s;
 	overflow: hidden;

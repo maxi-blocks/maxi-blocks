@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-prompt-control {
 	&__buttons {
 		display: flex;
@@ -16,7 +17,7 @@
 			.maxi-components-button {
 				height: auto;
 				padding: 0;
-				color: var(--maxi-black);
+				color: $bk;
 			}
 		}
 	}
@@ -31,30 +32,30 @@
 			}
 			& > div > div {
 				z-index: 10000;
-				border-color: var(--maxi-grey-light);
+				border-color: $gl;
 			}
 		}
 		.maxi-prompt-control__buttons {
 			.maxi-components-button {
 				justify-content: center;
 				width: 100%;
-				border: 1.5px solid var(--maxi-secondary-color);
-				color: var(--maxi-secondary-color) !important;
-				background: var(--maxi-whisper-green);
+				border: 1.5px solid $sc;
+				color: $sc !important;
+				background: $wg;
 				font-size: 16px !important;
 				font-weight: 700 !important;
 				border-radius: 30px;
 				text-align: center;
 				&:hover {
-					border-color: var(--maxi-primary-color) !important;
-					background: var(--maxi-mid-green);
+					border-color: $pc !important;
+					background: $mg;
 				}
 				&:disabled {
 					opacity: 0.6;
 					cursor: not-allowed;
-					border-color: var(--maxi-grey) !important;
-					color: var(--maxi-grey-dark) !important;
-					background: var(--maxi-grey-light);
+					border-color: $g !important;
+					color: $gd !important;
+					background: $gl;
 				}
 			}
 		}
@@ -65,23 +66,23 @@
 			height: auto;
 			padding: 4px 8px !important;
 			width: auto;
-			border: 1.5px solid var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color) !important;
-			background: var(--maxi-whisper-green);
+			border: 1.5px solid $sc;
+			color: $sc !important;
+			background: $wg;
 			font-size: 12px !important;
 			font-weight: 600 !important;
 			border-radius: 30px;
 			text-align: center;
-			cursor: pointer;
+			cursor: $ptr;
 
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border-color: var(--maxi-secondary-color);
+				background: $pg;
+				border-color: $sc;
 			}
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 2px var(--maxi-cloud-primary-light);
+				box-shadow: 0 0 0 2px $cpl;
 			}
 		}
 	}

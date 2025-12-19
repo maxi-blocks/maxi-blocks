@@ -1,3 +1,4 @@
+@import '../../src/css/backend-variables.scss';
 /**
  * #.# Common SCSS
  *
@@ -17,7 +18,7 @@
 	&__sidebar {
 		overflow-x: hidden;
 		.interface-complementary-area__fill {
-			position: relative !important;
+			position: $pr !important;
 			width: auto !important;
 			.editor-sidebar {
 				min-width: 295px;
@@ -52,9 +53,9 @@ h2.gx_error {
 		*):not([class*='maxi-transform-control']):not([class*='maxi-transform-control']
 		*):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor *),
 .maxi-popover *:not(i) {
-	transition: all 0.5s ease;
-	color: var(--maxi-grey-dark);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	transition: $t;
+	color: $gd;
+	font-family: $f !important;
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -62,8 +63,8 @@ h2.gx_error {
 }
 
 .maxi-sidebar .block-editor-block-card *:not(i) {
-	color: var(--maxi-grey-dark);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	color: $gd;
+	font-family: $f !important;
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -75,15 +76,15 @@ h2.gx_error {
 }
 
 .block-editor-inserter {
-	transition: all 0.5s ease;
-	color: var(--maxi-white) !important;
+	transition: $t;
+	color: $w !important;
 	height: 100%;
 
 	&__toggle {
-		transition: all 0.5s ease;
+		transition: $t;
 		svg {
-			transition: all 0.5s ease;
-			fill: var(--maxi-white) !important;
+			transition: $t;
+			fill: $w !important;
 		}
 	}
 }
@@ -125,16 +126,16 @@ body {
 	}
 }
 .maxi-block {
-	transition: all 0.5s ease;
+	transition: $t;
 
 	.block-editor-block-list__layout {
-		transition: all 0.5s ease;
+		transition: $t;
 		&:focus:after {
 			box-shadow: none !important;
 		}
 	}
 	&:hover {
-		transition: all 0.5s ease;
+		transition: $t;
 		& > .block-editor-block-list__layout {
 			& > .block-list-appender {
 				.block-editor-button-block-appender {
@@ -146,7 +147,7 @@ body {
 		}
 	}
 	.block-list-appender.wp-block {
-		position: relative;
+		position: $pr;
 		width: 100%;
 		max-width: none;
 		pointer-events: auto !important;
@@ -172,18 +173,18 @@ body {
 			height: 30px;
 			box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 			border-radius: 0;
-			background: var(--maxi-white);
+			background: $w;
 			visibility: visible;
 			transition: 0.3s;
 
 			svg {
-				fill: var(--maxi-secondary-color);
+				fill: $sc;
 				width: 15px;
 				height: 15px;
 			}
 			&:hover {
 				svg {
-					fill: var(--maxi-primary-color);
+					fill: $pc;
 				}
 			}
 		}
@@ -220,21 +221,21 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		border-color: var(--maxi-accessibility-grey);
 
 		&:focus {
-			border-color: var(--maxi-secondary-color);
-			box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-			outline: 2px solid transparent;
+			border-color: $sc;
+			box-shadow: 0 0 0 1px $sc;
+			outline: 2px solid $tr;
 		}
 
 		&:hover {
-			border-color: var(--maxi-secondary-color);
-			box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-			outline: 2px solid transparent;
+			border-color: $sc;
+			box-shadow: 0 0 0 1px $sc;
+			outline: 2px solid $tr;
 		}
 	}
 	button.maxi-color-control__palette-box,
 	button.maxi-tabs-control__button,
 	.maxi-components-button {
-		border-color: var(--maxi-grey-light);
+		border-color: $gl;
 	}
 	button.maxi-color-control__palette-box--active,
 	button.maxi-color-control__palette-box:focus,
@@ -242,12 +243,12 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	button.maxi-tabs-control__button:focus,
 	.maxi-components-button:focus:not(:disabled) {
 		z-index: 2;
-		border-color: var(--maxi-secondary-color);
-		box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-		outline: 2px solid transparent;
+		border-color: $sc;
+		box-shadow: 0 0 0 1px $sc;
+		outline: 2px solid $tr;
 	}
 	.maxi-base-control .components-maxi-control__reset-button {
-		border-color: var(--maxi-grey-light);
+		border-color: $gl;
 	}
 }
 
@@ -258,14 +259,14 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea:not(.w-tc-editor-text),
 	select {
-		transition: all 0.5s ease;
+		transition: $t;
 		flex: 1;
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
 		border-radius: 5px !important;
-		color: var(--maxi-grey-dark);
-		background-color: var(--maxi-white);
+		color: $gd;
+		background-color: $w;
 		font-size: 13px;
 		line-height: normal;
 
@@ -274,12 +275,12 @@ body .toolbar-item__popover {
 			outline: none;
 		}
 		// &:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor) {
-		// 	color: var(--maxi-grey-dark) !important;
-		// 	border: 1.5px solid var(--maxi-primary-color) !important;
-		// 	transition: all 0.4s ease;
+		// 	color: $gd !important;
+		// 	border: 1.5px solid $pc !important;
+		// 	transition: $t;
 		// }
 		&:active {
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 	}
 	input[type='number'] {
@@ -307,21 +308,21 @@ body .toolbar-item__popover {
 			width: 14px;
 			height: 14px;
 			margin: auto;
-			color: var(--maxi-grey-dark);
+			color: $gd;
 		}
 		&:hover {
-			transition: all 0.5s ease;
+			transition: $t;
 			&:before {
 				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5" role="img" aria-hidden="true" focusable="false"><path fill="rgba(99,186,121, 0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"></path></svg>') !important;
 			}
 		}
 	}
 	.components-panel {
-		background: transparent;
+		background: $tr;
 		border: none;
 	}
 	.components-simple-tooltip {
-		color: var(--maxi-white);
+		color: $w;
 	}
 }
 
@@ -342,7 +343,7 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea,
 	select {
-		border-color: var(--maxi-grey);
+		border-color: $g;
 	}
 	input[type='number'] {
 		padding-right: 0;
@@ -350,11 +351,11 @@ body .toolbar-item__popover {
 	.components-range-control__number {
 		.components-input-control {
 			&__container {
-				background-color: transparent;
+				background-color: $tr;
 			}
 			&__input {
-				color: var(--maxi-grey-dark);
-				border-color: var(--maxi-grey-light);
+				color: $gd;
+				border-color: $gl;
 			}
 		}
 	}
@@ -365,13 +366,13 @@ body .toolbar-item__popover {
 		.components-select-control {
 			&__input {
 				&:disabled {
-					background-color: var(--maxi-pastel-green) !important;
-					color: var(--maxi-black) !important;
+					background-color: $pg !important;
+					color: $bk !important;
 					font-weight: 700 !important;
 
 					&:hover {
-						background-color: var(--maxi-mid-green) !important;
-						color: var(--maxi-white) !important;
+						background-color: $mg !important;
+						color: $w !important;
 					}
 				}
 			}
@@ -411,14 +412,14 @@ body.maxi-blocks--active {
 		max-width: 60px !important;
 		min-width: 55px !important;
 		padding: 8px 6px !important;
-		background-color: var(--maxi-white) !important;
+		background-color: $w !important;
 		/* Draw shorter vertical lines using layered backgrounds */
 		/* Short dividers on LEFT and RIGHT plus chevron */
 		// background-image: linear-gradient(
-		// 		var(--maxi-grey-light),
-		// 		var(--maxi-grey-light)
+		// 		$gl,
+		// 		$gl
 		// 	),
-		// 	linear-gradient(var(--maxi-grey-light), var(--maxi-grey-light)),
+		// 	linear-gradient($gl, $gl),
 		// 	url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>');
 		// background-repeat: no-repeat, no-repeat, no-repeat !important;
 		// /* Set the short line heights here */
@@ -445,13 +446,13 @@ svg path#styleCardBoat_a {
 svg path#styleCardMenu_b,
 svg path#styleCardBoat_b,
 #styleCardBoat_b {
-	stroke: var(--maxi-grey-dark);
+	stroke: $gd;
 }
 .maxi-responsive-close {
 	background-color: rgba(var(--maxi-active-sc-color), 1);
 }
 .maxi-responsive-close:hover svg g {
-	stroke: var(--maxi-white);
+	stroke: $w;
 }
 
 /*******************************
@@ -460,9 +461,9 @@ svg path#styleCardBoat_b,
 
 .maxi-block {
 	&::after {
-		transition: all 0.5s ease;
+		transition: $t;
 		content: '';
-		position: absolute;
+		position: $pa;
 		pointer-events: none;
 		top: -1px !important;
 		right: -3px !important;
@@ -484,10 +485,10 @@ svg path#styleCardBoat_b,
 
 	&:not(.is-selected) {
 		&:hover {
-			transition: all 0.5s ease;
+			transition: $t;
 			&::after {
 				content: '';
-				position: absolute;
+				position: $pa;
 				pointer-events: none;
 				opacity: 1;
 			}
@@ -499,7 +500,7 @@ svg path#styleCardBoat_b,
 			opacity: 1;
 
 			&:not(.maxi-block--is-repeater) {
-				border-color: var(--maxi-primary-color);
+				border-color: $pc;
 			}
 		}
 		&:focus {
@@ -515,11 +516,11 @@ svg path#styleCardBoat_b,
 			left: 0px !important;
 		}
 		.maxi-block-indicators__padding--left {
-			position: absolute;
+			position: $pa;
 			left: 4px;
 		}
 		.maxi-block-indicators__padding--right {
-			position: absolute;
+			position: $pa;
 			right: 4px;
 		}
 	}
@@ -626,22 +627,22 @@ html[dir='rtl'] {
 		height: 30px;
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		border-radius: 0;
-		background: var(--maxi-white);
+		background: $w;
 		visibility: visible;
-		transition: all 0.4s ease !important; // Updated transition to include all properties
+		transition: $t !important; // Updated transition to include all properties
 
 		svg {
-			fill: var(--maxi-primary-color);
+			fill: $pc;
 			width: 15px;
 			height: 15px;
 			transition: fill 0.3s ease; // Added transition for svg fill
 		}
 		&:hover {
-			background-color: var(--maxi-pastel-green) !important;
-			transition: all 0.4s ease !important;
-			border-color: var(--maxi-primary-color);
+			background-color: $pg !important;
+			transition: $t !important;
+			border-color: $pc;
 			svg {
-				fill: var(--maxi-primary-color);
+				fill: $pc;
 			}
 		}
 	}
@@ -726,41 +727,41 @@ body.maxi-blocks--active
 	&-none {
 		svg path {
 			transition: fill 0.5s ease;
-			fill: var(--maxi-grey-dark);
+			fill: $gd;
 		}
 		&.maxi-tabs-control__button--selected {
 			svg path {
-				fill: var(--maxi-secondary-color);
+				fill: $sc;
 			}
 		}
 	}
 
 	&-color {
 		svg path {
-			fill: var(--maxi-grey-dark);
+			fill: $gd;
 		}
 		&.maxi-tabs-control__button--selected {
 			svg path {
-				fill: var(--maxi-secondary-color);
+				fill: $sc;
 			}
 		}
 	}
 
 	&-gradient {
 		svg path {
-			stroke: var(--maxi-grey-dark);
+			stroke: $gd;
 			fill: none;
 		}
 		&.maxi-tabs-control__button--selected {
 			svg path {
-				stroke: var(--maxi-secondary-color);
+				stroke: $sc;
 			}
 			svg linearGradient stop {
 				&:first-child {
-					stop-color: var(--maxi-white);
+					stop-color: $w;
 				}
 				&:last-child {
-					stop-color: var(--maxi-secondary-color);
+					stop-color: $sc;
 				}
 			}
 		}
@@ -768,22 +769,22 @@ body.maxi-blocks--active
 
 	&-image {
 		svg path {
-			fill: var(--maxi-grey-dark);
+			fill: $gd;
 		}
 		&.maxi-tabs-control__button--selected {
 			svg path {
-				fill: var(--maxi-secondary-color);
+				fill: $sc;
 			}
 		}
 	}
 
 	&-video {
 		svg path {
-			fill: var(--maxi-grey-dark);
+			fill: $gd;
 		}
 		&.maxi-tabs-control__button--selected {
 			svg path {
-				fill: var(--maxi-secondary-color);
+				fill: $sc;
 			}
 		}
 	}
@@ -792,19 +793,19 @@ body.maxi-blocks--active
 // Number input field
 // input.maxi-advanced-number-control_value,
 // input.maxi-advanced-number-control__value {
-// 	transition: all 0.3s ease;
-// 	border: 1.5px solid var(--maxi-grey-light) !important;
+// 	transition: $t;
+// 	border: $bg !important;
 // 	border-radius: 5px 0 0 5px !important;
 // 	height: 31px !important;
 // 	padding: 0 0 0 8px !important;
 // 	width: 55px !important;
 
 // 	&:hover {
-// 		border-color: var(--maxi-grey-dark) !important;
+// 		border-color: $gd !important;
 // 	}
 
 // 	&:focus {
-// 		border-color: var(--maxi-secondary-color) !important;
+// 		border-color: $sc !important;
 // 		outline: none !important;
 // 	}
 // }
@@ -812,20 +813,20 @@ body.maxi-blocks--active
 // Unit selector
 // .maxi-base-control.maxi-dimensions-control__units {
 // 	select {
-// 		transition: all 0.3s ease;
-// 		border: 1.5px solid var(--maxi-grey-light) !important;
+// 		transition: $t;
+// 		border: $bg !important;
 // 		border-radius: 0 5px 5px 0px !important;
 // 		height: 31px !important;
 // 		padding: 0 8px !important;
 // 		min-width: 45px !important;
-// 		cursor: pointer !important;
+// 		cursor: $ptr !important;
 
 // 		&:hover {
-// 			border-color: var(--maxi-primary-color) !important;
+// 			border-color: $pc !important;
 // 		}
 
 // 		&:focus {
-// 			border-color: var(--maxi-secondary-color) !important;
+// 			border-color: $sc !important;
 // 			outline: none !important;
 // 		}
 // 	}
@@ -833,7 +834,7 @@ body.maxi-blocks--active
 
 // Reset button
 .maxi-components-button.maxi-reset-button {
-	transition: all 0.3s ease;
+	transition: $t;
 	width: 9px !important;
 	height: 31px !important;
 	padding: 0 !important;
@@ -844,13 +845,13 @@ body.maxi-blocks--active
 	svg {
 		width: 10px !important;
 		height: 10px !important;
-		fill: var(--maxi-grey) !important;
+		fill: $g !important;
 	}
 
 	&:hover {
-		border-color: var(--maxi-grey-dark) !important;
+		border-color: $gd !important;
 		svg {
-			fill: var(--maxi-secondary-color) !important;
+			fill: $sc !important;
 		}
 	}
 }
@@ -867,7 +868,7 @@ body.maxi-blocks--active
 // Accordion icon
 .maxi-accordion-icon,
 .maxi-video-block-icon {
-	fill: var(--maxi-primary-color) !important;
+	fill: $pc !important;
 }
 
 // Transitions
@@ -875,7 +876,7 @@ body {
 	.maxi-settingstab-control {
 		button,
 		input {
-			transition: all 0.3s ease;
+			transition: $t;
 		}
 	}
 }

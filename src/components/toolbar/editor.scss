@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 // Maxi Toolbar Styles - Optimized & Refactored
 // =============================================
 
@@ -16,7 +17,7 @@
 	*,
 	*:before,
 	*:after {
-		transition: all 0.4s ease;
+		transition: $t;
 	}
 
 	&-caption,
@@ -30,9 +31,9 @@
 
 	.toolbar-more-indicator {
 		margin-left: 10px;
-		position: absolute;
+		position: $pa;
 		right: -16px;
-		background: var(--maxi-primary-color);
+		background: $pc;
 		border-radius: 0 3px 3px 0px;
 		height: 20px;
 		top: 0;
@@ -47,7 +48,7 @@
 	}
 	.components-popover__content {
 		overflow: visible !important;
-		background-color: transparent;
+		background-color: $tr;
 		border: none;
 		box-shadow: none;
 		outline: none;
@@ -55,15 +56,15 @@
 
 		.toolbar-wrapper {
 			display: flex;
-			background-color: var(--maxi-white);
+			background-color: $w;
 			width: min-content;
-			position: relative;
+			position: $pr;
 			top: -23px;
 			left: 50%;
 			transform: translateX(-50%);
 			box-shadow: 0px 6px 8px 0 rgba(0, 0, 0, 0.08);
 			border-radius: 0;
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 
 			&.pinned--true .maxi-breadcrumbs {
 				transform: scaleX(1);
@@ -75,13 +76,13 @@
 			}
 
 			.breadcrumbs-pin-tooltip {
-				position: absolute;
+				position: $pa;
 				top: -24px;
 				left: 0;
 				background-color: rgba(0, 0, 0, 0.85);
 				padding: 7px 8px;
 				text-align: center;
-				color: var(--maxi-white);
+				color: $w;
 				visibility: none;
 				z-index: 5;
 				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
@@ -107,13 +108,13 @@
 			.toolbar-block-custom-label {
 				display: inline-block;
 				width: auto;
-				position: absolute;
+				position: $pa;
 				bottom: -22px;
 				left: 0;
 				padding: 4px 10px;
-				background: var(--maxi-primary-color);
+				background: $pc;
 				border-radius: 3px 0 0 3px;
-				color: var(--maxi-white);
+				color: $w;
 				font-size: 10px !important;
 				font-weight: 400;
 				font-family: 'Inter', sans-serif !important;
@@ -133,7 +134,7 @@
 				.breadcrumbs-pin {
 					display: inline-block;
 					padding-right: 10px;
-					cursor: pointer;
+					cursor: $ptr;
 				}
 			}
 
@@ -146,15 +147,15 @@
 			> button {
 				display: flex;
 				justify-content: center;
-				position: relative;
+				position: $pr;
 				width: 2rem;
 				height: 2rem;
 				padding: 0;
 				padding-right: 0;
-				background-color: var(--maxi-white);
+				background-color: $w;
 				border-radius: 0;
-				border-right: 1px solid var(--maxi-grey-light);
-				cursor: pointer;
+				border-right: $bl;
+				cursor: $ptr;
 
 				&.toolbar-item__more-settings {
 					border-right: none;
@@ -181,7 +182,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color) !important;
+								stroke: $sc !important;
 							}
 						}
 					}
@@ -198,7 +199,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color) !important;
+								stroke: $sc !important;
 							}
 						}
 					}
@@ -208,7 +209,7 @@
 					&--active {
 						.toolbar-item__icon {
 							path {
-								fill: var(--maxi-primary-color);
+								fill: $pc;
 							}
 						}
 					}
@@ -235,26 +236,26 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: $t;
 					border-radius: 0;
-					background-color: transparent;
-					fill: var(--maxi-black) !important;
+					background-color: $tr;
+					fill: $bk !important;
 
 					&::after {
 						content: '';
 						display: block;
-						background-color: var(--maxi-secondary-color);
+						background-color: $sc;
 						height: 0;
-						position: absolute;
+						position: $pa;
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: $t;
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green) !important;
+						background-color: $pg !important;
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -262,7 +263,7 @@
 							rect,
 							polyline,
 							path {
-								fill: var(--maxi-secondary-color);
+								fill: $sc;
 							}
 						}
 					}
@@ -281,24 +282,24 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: $t;
 					border-radius: 0;
 
 					&::after {
 						content: '';
 						display: block;
-						background-color: var(--maxi-secondary-color);
+						background-color: $sc;
 						height: 0;
-						position: absolute;
+						position: $pa;
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: $t;
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green);
+						background-color: $pg;
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -306,7 +307,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color);
+								stroke: $sc;
 							}
 						}
 					}
@@ -321,7 +322,7 @@
 				&__bold,
 				&__italic {
 					&:hover path {
-						stroke: var(--maxi-secondary-color);
+						stroke: $sc;
 					}
 				}
 
@@ -345,9 +346,9 @@
 					rect,
 					polyline,
 					path {
-						transition: all 0.5s ease;
-						// fill: var(--maxi-black);
-						// stroke: transparent;
+						transition: $t;
+						// fill: $bk;
+						// stroke: $tr;
 					}
 				}
 
@@ -357,8 +358,8 @@
 
 				&__bold path,
 				&__italic path {
-					fill: var(--maxi-white);
-					stroke: var(--maxi-black);
+					fill: $w;
+					stroke: $bk;
 				}
 			}
 		}
@@ -368,8 +369,8 @@
 		font-family: 'Inter', sans-serif !important;
 
 		&:hover {
-			color: var(--maxi-primary-color) !important;
-			transition: all 0.4s ease !important;
+			color: $pc !important;
+			transition: $t !important;
 		}
 	}
 	.maxi-responsive-tabs-control {
@@ -383,7 +384,7 @@
 				}
 
 				&:last-child {
-					border-right: 1px solid var(--maxi-grey-light);
+					border-right: $bl;
 					border-radius: 0 10px 10px 0;
 				}
 			}
@@ -392,7 +393,7 @@
 
 	.maxi-color-control__palette-box {
 		&--active {
-			background-color: var(--maxi-pastel-green) !important;
+			background-color: $pg !important;
 		}
 	}
 }
@@ -421,10 +422,10 @@ body .toolbar-item__popover {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
-			background-color: var(--maxi-black);
+			background-color: $bk;
 			font-size: 13px;
 			line-height: 13px;
-			color: var(--maxi-white);
+			color: $w;
 			font-weight: 500;
 			flex: 1;
 			border-bottom: none;
@@ -463,11 +464,11 @@ body .toolbar-item__popover {
 			input {
 				display: none;
 				&:checked ~ label {
-					background-color: var(--maxi-pastel-green);
-					position: relative;
+					background-color: $pg;
+					position: $pr;
 					z-index: 1;
-					border: 2px solid var(--maxi-grey-light);
-					border-bottom: 2px solid var(--maxi-primary-color);
+					border: 2px solid $gl;
+					border-bottom: 2px solid $pc;
 				}
 			}
 
@@ -476,16 +477,16 @@ body .toolbar-item__popover {
 				height: 100%;
 				text-align: center;
 				line-height: 26px;
-				border: 2px solid var(--maxi-grey);
+				border: 2px solid $g;
 			}
 		}
 	}
 
 	&:before,
 	&:after {
-		border-color: var(--maxi-grey-dark) !important;
-		// border-left-color: transparent !important;
-		// border-right-color: transparent !important;
+		border-color: $gd !important;
+		// border-left-color: $tr !important;
+		// border-right-color: $tr !important;
 		z-index: -1;
 		display: none;
 	}
@@ -497,55 +498,55 @@ body .toolbar-item__popover {
 		}
 
 		&__field {
-			color: var(--maxi-black);
+			color: $bk;
 
 			.components-range-control__track {
 				& + span {
 					span {
-						background-color: var(--maxi-white) !important;
+						background-color: $w !important;
 						&:before {
-							border-color: var(--maxi-grey-dark) !important;
+							border-color: $gd !important;
 						}
 					}
 				}
 			}
 
 			.components-range-control__number {
-				background-color: transparent;
-				color: var(--maxi-black);
-				border-color: var(--maxi-grey) !important;
+				background-color: $tr;
+				color: $bk;
+				border-color: $g !important;
 			}
 
 			.maxi-select-control__input {
 				option {
-					color: var(--maxi-black) !important;
+					color: $bk !important;
 				}
 			}
 
 			.components-button {
 				&.is-secondary {
-					background-color: transparent;
-					border-color: var(--maxi-grey) !important;
+					background-color: $tr;
+					border-color: $g !important;
 
 					&:hover {
-						background-color: transparent !important;
+						background-color: $tr !important;
 					}
 
 					svg {
-						fill: var(--maxi-black) !important;
+						fill: $bk !important;
 					}
 				}
 			}
 		}
 
 		&__label {
-			color: var(--maxi-black);
+			color: $bk;
 		}
 	}
 
 	.components-popover__content {
-		background-color: var(--maxi-white) !important;
-		border: 1px solid var(--maxi-grey-light);
+		background-color: $w !important;
+		border: $bl;
 		border-radius: 0;
 		min-width: auto;
 		padding: 12px 11px 0 14px;
@@ -560,7 +561,7 @@ body .toolbar-item__popover {
 
 		.maxi-color-control {
 			margin-bottom: 10px;
-			color: var(--maxi-white);
+			color: $w;
 
 			button.maxi-components-button.maxi-reset-button {
 				margin-top: -4px !important;
@@ -574,7 +575,7 @@ body .toolbar-item__popover {
 				.components-angle-picker-control {
 					&__angle-circle-indicator,
 					&__angle-circle {
-						border-color: var(--maxi-grey);
+						border-color: $g;
 					}
 				}
 
@@ -582,12 +583,12 @@ body .toolbar-item__popover {
 					background: none;
 
 					button.components-toolbar__control {
-						border-color: var(--maxi-grey);
+						border-color: $g;
 
 						&.is-pressed,
 						&:hover {
-							background-color: var(--maxi-grey) !important;
-							border-color: var(--maxi-grey) !important;
+							background-color: $g !important;
+							border-color: $g !important;
 							& > svg {
 								background: none;
 							}
@@ -596,28 +597,28 @@ body .toolbar-item__popover {
 				}
 			}
 			&__items {
-				color: var(--maxi-white);
+				color: $w;
 
 				.maxi-tabs-control__button {
-					border-color: var(--maxi-grey);
-					background-color: var(--maxi-grey);
+					border-color: $g;
+					background-color: $g;
 				}
 
 				input {
 					&:checked ~ label {
-						background-color: var(--maxi-grey);
+						background-color: $g;
 					}
 				}
 
 				svg {
-					fill: var(--maxi-white) !important;
+					fill: $w !important;
 					path {
-						stroke: var(--maxi-white);
+						stroke: $w;
 					}
 				}
 			}
 			&__display {
-				color: var(--maxi-white);
+				color: $w;
 			}
 		}
 
@@ -634,60 +635,60 @@ body .toolbar-item__popover {
 	}
 
 	input[type='number'] {
-		border: 1px solid var(--maxi-grey-light) !important;
-		color: var(--maxi-grey) !important;
+		border: $bl !important;
+		color: $g !important;
 		flex: 2;
 
 		&::placeholder {
-			color: var(--maxi-grey);
+			color: $g;
 			opacity: 0.8;
 		}
 	}
 
 	.maxi-dimensions-control {
-		color: var(--maxi-white);
+		color: $w;
 
 		&_sync {
-			border-color: var(--maxi-grey) !important;
-			background-color: transparent !important;
+			border-color: $g !important;
+			background-color: $tr !important;
 			width: 36px !important;
 
 			&:hover {
-				background-color: transparent !important;
+				background-color: $tr !important;
 			}
 
 			&[aria-pressed='true'] {
-				border-color: var(--maxi-white);
+				border-color: $w;
 
 				svg {
-					fill: var(--maxi-white);
+					fill: $w;
 				}
 			}
 		}
 
 		&__mobile-controls-item {
 			height: 36px;
-			border-color: var(--maxi-grey) !important;
+			border-color: $g !important;
 
 			svg {
 				fill: currentColor;
-				color: var(--maxi-white);
+				color: $w;
 			}
 		}
 
 		&__number {
-			background-color: transparent;
-			border-color: var(--maxi-grey) !important;
-			color: var(--maxi-white);
+			background-color: $tr;
+			border-color: $g !important;
+			color: $w;
 		}
 	}
 
 	&__advanced-button {
-		position: absolute;
+		position: $pa;
 		top: -10px !important;
 		right: -10px !important;
 		transform: translate(0, 0);
-		background-color: var(--maxi-primary-color);
+		background-color: $pc;
 		border-radius: 50%;
 		min-width: 22px !important;
 		padding: 0 !important;
@@ -695,11 +696,11 @@ body .toolbar-item__popover {
 		left: auto !important;
 
 		&:hover {
-			background-color: var(--maxi-secondary-color);
+			background-color: $sc;
 		}
 
 		svg {
-			fill: var(--maxi-white);
+			fill: $w;
 			width: 16px;
 		}
 	}
@@ -708,7 +709,7 @@ body .toolbar-item__popover {
 		display: flex;
 		&__button {
 			display: block;
-			background: var(--maxi-white);
+			background: $w;
 			width: 100%;
 			margin: 0 4px;
 
@@ -728,17 +729,17 @@ body .toolbar-item__popover {
 
 	.maxi-tabs-control {
 		&__button {
-			background: transparent;
-			color: var(--maxi-grey-dark);
-			border: 1px solid var(--maxi-grey-light);
+			background: $tr;
+			color: $gd;
+			border: $bl;
 			border-right: none;
 			padding-top: 8px;
 			padding-bottom: 8px;
 			font-weight: 400;
 
 			&[aria-pressed='true'] {
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green) !important;
+				color: $pc;
+				background-color: $wg !important;
 				font-weight: 700;
 			}
 		}
@@ -813,7 +814,7 @@ body.rtl .toolbar-item__popover {
 html[dir='rtl'] {
 	.toolbar-item__more-settings {
 		border-left: unset !important;
-		border-right: 1px solid var(--maxi-grey-light) !important;
+		border-right: $bl !important;
 	}
 	.toolbar-block-custom-label {
 		left: unset !important;
@@ -836,13 +837,13 @@ html[dir='rtl'] {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	transition: all 0.5s ease;
+	transition: $t;
 	border-radius: 0;
-	background-color: transparent;
-	fill: var(--maxi-black) !important;
+	background-color: $tr;
+	fill: $bk !important;
 }
 
 // Target the SVG fill when hovering over the button
 .components-button:hover .st0 {
-	fill: var(--maxi-primary-color) !important;
+	fill: $pc !important;
 }

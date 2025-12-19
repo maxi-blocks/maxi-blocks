@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__icon-color__popover {
 	min-width: 300px;
 
@@ -6,7 +7,7 @@
 		font-style: italic;
 		margin-bottom: 8px;
 		margin-top: 0;
-		border-left: 2px solid var(--maxi-primary-color);
+		border-left: 2px solid $pc;
 		padding: 4px 0 4px 9px;
 		border-radius: 0;
 		color: #151617;

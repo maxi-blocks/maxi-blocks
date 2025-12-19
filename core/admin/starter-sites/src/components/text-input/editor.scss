@@ -1,3 +1,4 @@
+@import '../../../../../../src/css/backend-variables.scss';
 body.maxi-blocks--active {
 	.maxi-text-input {
 		border: none;
@@ -6,7 +7,7 @@ body.maxi-blocks--active {
 		padding: 0;
 		margin: 0;
 		width: 100%;
-		background-color: transparent;
+		background-color: $tr;
 
 		&:focus {
 			border: none;

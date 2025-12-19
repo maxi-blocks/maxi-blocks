@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-sidebar .maxi-radio-control {
 	display: inline-flex;
 	justify-content: space-between;
@@ -23,27 +24,27 @@
 			flex: 1;
 			min-width: 35px;
 			height: 32px;
-			border: 1px solid var(--maxi-grey-light);
+			border: $bl;
 			margin-bottom: 0;
-			color: var(--maxi-grey);
-			background-color: var(--maxi-white);
+			color: $g;
+			background-color: $w;
 			opacity: 1 !important;
 			transition: all 0.5s;
 
 			&:hover {
-				background-color: var(--maxi-grey);
+				background-color: $g;
 			}
 			&:focus {
-				background-color: var(--maxi-grey);
+				background-color: $g;
 			}
 			input {
 				display: none;
 
 				&:checked ~ label {
-					position: relative;
+					position: $pr;
 					z-index: 1;
-					border-bottom: 2px solid var(--maxi-secondary-color);
-					background-color: var(--maxi-white);
+					border-bottom: 2px solid $sc;
+					background-color: $w;
 				}
 			}
 			label {
@@ -57,7 +58,7 @@
 				width: 20px;
 				height: 100%;
 				margin: 0;
-				fill: var(--maxi-black);
+				fill: $bk;
 			}
 		}
 	}

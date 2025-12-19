@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 @import './components/hover-effect-control/editor';
 
 body.maxi-blocks--active .maxi-image-block {
@@ -23,16 +24,16 @@ body.maxi-blocks--active .maxi-image-block {
 	&__caption {
 		width: 100% !important;
 		padding-left: 1px;
-		border: 1.5px dashed transparent;
+		border: 1.5px dashed $tr;
 
 		&:hover,
 		&:focus {
-			border-color: var(--maxi-whisper-green);
+			border-color: $wg;
 		}
 	}
 
 	&__placeholder {
-		position: relative;
+		position: $pr;
 
 		.components-placeholder__label {
 			margin: 0;

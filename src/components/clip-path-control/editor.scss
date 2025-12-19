@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 // Remove padding from accordion panel for clip-path control
 .maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding):has(.maxi-clip-path-control__wrapper) {
 	padding: 0;
@@ -30,44 +31,44 @@
 		}
 
 		&__items {
-			position: relative;
+			position: $pr;
 			width: 28px;
 			height: 30px;
 			display: flex;
 			justify-content: center;
 			margin: 0;
 			padding: 3px;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $bg;
 			border-radius: 4px;
-			cursor: pointer;
-			transition: all 0.4s ease;
+			cursor: $ptr;
+			transition: $t;
 
 			.clip-path-defaults__clip-path {
-				background-color: var(--maxi-grey-light);
-				transition: all 0.4s ease;
+				background-color: $gl;
+				transition: $t;
 			}
 
 			path {
-				fill: var(--maxi-grey-light);
-				transition: all 0.4s ease;
+				fill: $gl;
+				transition: $t;
 			}
 
 			&[aria-pressed='true'],
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border: 1px solid var(--maxi-primary-color) !important;
+				background: $pg;
+				border: 1px solid $pc !important;
 
 				.clip-path-defaults__clip-path {
-					background-color: var(--maxi-secondary-color);
+					background-color: $sc;
 				}
 
 				path {
-					fill: var(--maxi-secondary-color) !important;
+					fill: $sc !important;
 				}
 			}
 		}
 		&__clip-path {
-			background-color: var(--maxi-grey-light);
+			background-color: $gl;
 			width: 18px;
 			height: 18px;
 			transform: translateZ(0);
@@ -78,14 +79,14 @@
 			width: 18px;
 			height: 18px;
 			path {
-				fill: var(--maxi-grey-light);
+				fill: $gl;
 			}
 		}
 	}
 
 	.maxi-clip-path-controller {
 		display: flex;
-		position: relative;
+		position: $pr;
 		&__handle {
 			display: flex;
 			align-items: center;
@@ -106,17 +107,17 @@
 			}
 
 			&.maxi-clip-path-delete-handle {
-				position: absolute;
+				position: $pa;
 				left: 0;
 				bottom: 0;
 
 				span {
-					position: relative;
+					position: $pr;
 					width: 1rem;
 					height: 1rem;
 					background-color: var(--maxi-orange-red);
-					cursor: pointer;
-					transition: all 0.4s ease; // Added transition
+					cursor: $ptr;
+					transition: $t; // Added transition
 
 					&:hover {
 						background-color: var(
@@ -127,14 +128,14 @@
 
 					&:before {
 						content: '';
-						position: absolute;
+						position: $pa;
 						top: 50%;
 						left: 50%;
 						transform: translate(-50%, -50%);
 						width: 50%;
 						height: 0.1rem;
-						background-color: var(--maxi-white);
-						transition: all 0.3s ease; // Added transition
+						background-color: $w;
+						transition: $t; // Added transition
 					}
 				}
 			}
@@ -160,22 +161,22 @@
 	}
 
 	.maxi-clip-path-visual-editor-wrapper {
-		border: 2px solid var(--maxi-secondary-color) !important;
+		border: 2px solid $sc !important;
 		border-radius: 5px;
 	}
 	.maxi-clip-path-visual-editor {
-		background-color: var(--maxi-white) !important;
-		position: relative;
+		background-color: $w !important;
+		position: $pr;
 		width: 100%;
 		margin: 10px 10px 10px 0;
 		min-height: 291px;
 		overflow: visible;
-		border: 1px solid var(--maxi-grey-light);
+		border: $bl;
 		border-radius: 6px;
 
 		&__preview {
-			background-color: var(--maxi-pastel-green) !important;
-			position: absolute;
+			background-color: $pg !important;
+			position: $pa;
 			top: 0px;
 			left: 0px;
 			width: 100%;
@@ -184,8 +185,8 @@
 	}
 
 	.maxi-clip-path-button {
-		background-color: var(--maxi-secondary-color);
-		position: absolute;
+		background-color: $sc;
+		position: $pa;
 		transform: translate(-50%, -50%);
 		width: 0.5rem;
 		height: 0.5rem;
@@ -197,7 +198,7 @@
 			clip-path: circle(50% at 50% 50%);
 
 			&__hidden {
-				position: absolute;
+				position: $pa;
 				transform: translate(-50%, -50%);
 				border-radius: 50%;
 				z-index: 1;
@@ -216,17 +217,17 @@
 }
 
 .maxi-clip-path-add-point-button {
-	background-color: var(--maxi-white) !important;
-	border-color: var(--maxi-grey-light) !important;
-	border: 1.5px solid var(--maxi-grey-light) !important;
-	color: var(--maxi-black) !important;
+	background-color: $w !important;
+	border-color: $gl !important;
+	border: $bg !important;
+	color: $bk !important;
 	font-weight: 700;
 	border-radius: 6px;
 	margin-bottom: 20px !important;
 
 	&:hover {
-		background-color: var(--maxi-whisper-green) !important;
-		border-color: var(--maxi-secondary-color) !important;
+		background-color: $wg !important;
+		border-color: $sc !important;
 	}
 }
 

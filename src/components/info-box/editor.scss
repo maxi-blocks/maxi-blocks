@@ -1,8 +1,9 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-warning-box {
-	position: relative;
+	position: $pr;
 	padding: 0.5rem;
 	background: var(--maxi-light-yellow);
-	color: var(--maxi-grey-dark) !important;
+	color: $gd !important;
 	line-height: 1.3em;
 
 	&__links {
@@ -15,8 +16,8 @@
 		a {
 			text-decoration: underline;
 			font-size: 13px !important;
-			cursor: pointer;
-			color: var(--maxi-grey-dark) !important;
+			cursor: $ptr;
+			color: $gd !important;
 			transition: all 0.5s;
 
 			&:last-child {
@@ -29,10 +30,10 @@
 	}
 
 	&__close-button {
-		position: absolute;
+		position: $pa;
 		top: 5px;
 		right: 5px;
-		cursor: pointer;
+		cursor: $ptr;
 	}
 }
 .maxi-accordion-control__item__panel {

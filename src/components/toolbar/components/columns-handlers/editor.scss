@@ -1,9 +1,10 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item__columns-handler {
 	&[aria-pressed='true'] {
 		svg {
 			ellipse,
 			path {
-				fill: var(--maxi-primary-color) !important;
+				fill: $pc !important;
 			}
 		}
 	}

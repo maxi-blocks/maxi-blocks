@@ -1,3 +1,4 @@
+@import '../../../../../src/css/backend-variables.scss';
 .toolbar-item-move__vertically {
 	display: flex;
 	align-items: center;
@@ -19,16 +20,16 @@
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: $sc !important;
 
 			path {
-				fill: var(--maxi-secondary-color) !important;
+				fill: $sc !important;
 			}
 		}
 	}
 
 	.components-button:nth-child(1) {
-		border-top: 2px solid transparent;
+		border-top: 2px solid $tr;
 
 		svg {
 			margin-top: auto !important;
@@ -40,7 +41,7 @@
 	}
 
 	.components-button:nth-child(2) {
-		border-bottom: 2px solid transparent;
+		border-bottom: 2px solid $tr;
 
 		svg {
 			margin-bottom: auto !important;
@@ -57,20 +58,20 @@
 	}
 
 	.components-button:nth-child(1) {
-		border-left: 2px solid transparent;
+		border-left: 2px solid $tr;
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color);
+			border-color: $sc;
 		}
 	}
 	.components-button:nth-child(2) {
-		border-right: 2px solid transparent;
+		border-right: 2px solid $tr;
 		z-index: 1;
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color);
+			border-color: $sc;
 		}
 	}
 }

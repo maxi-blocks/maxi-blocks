@@ -1,9 +1,10 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-accordion-control__item {
 	&__flexbox {
 		.maxi-tabs-control:first-child {
 			.maxi-tabs-control__button {
 				&[aria-pressed='true'] {
-					color: var(--maxi-black);
+					color: $bk;
 				}
 			}
 		}
@@ -12,7 +13,7 @@
 				.maxi-tabs-control {
 					column-gap: 5px;
 					&__button {
-						border: 1px solid var(--maxi-grey-light);
+						border: $bl;
 						border-radius: 4px;
 						padding: 6px 3px;
 						transition: all 0.5s;
@@ -20,23 +21,23 @@
 						svg {
 							width: 18px;
 							height: 18px;
-							fill: var(--maxi-grey) !important;
+							fill: $g !important;
 						}
 
 						&:hover {
-							background-color: var(--maxi-pastel-green);
+							background-color: $pg;
 							border-color: var(
 								--maxi-secondary-color
 							) !important;
 						}
 
 						&--selected {
-							background-color: var(--maxi-whisper-green);
-							border-color: var(--maxi-primary-color);
+							background-color: $wg;
+							border-color: $pc;
 
 							svg {
 								path {
-									fill: var(--maxi-secondary-color);
+									fill: $sc;
 								}
 							}
 						}
@@ -54,7 +55,7 @@
 		.maxi-tabs-control {
 			column-gap: 5px;
 			&__button {
-				border: 1px solid var(--maxi-grey-light);
+				border: $bl;
 				border-radius: 4px;
 				padding: 6px 3px;
 				transition: all 0.5s;
@@ -63,15 +64,15 @@
 					height: 18px;
 				}
 				&:hover {
-					background-color: var(--maxi-whisper-green);
-					border-color: var(--maxi-secondary-color) !important;
+					background-color: $wg;
+					border-color: $sc !important;
 				}
 				&--selected {
-					background-color: var(--maxi-pastel-green);
-					border-color: var(--maxi-secondary-color);
+					background-color: $pg;
+					border-color: $sc;
 					svg {
 						path {
-							fill: var(--maxi-secondary-color);
+							fill: $sc;
 						}
 					}
 				}

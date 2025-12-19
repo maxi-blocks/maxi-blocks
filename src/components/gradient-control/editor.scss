@@ -1,8 +1,9 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-gradient-control {
-	position: relative;
+	position: $pr;
 
 	.components-custom-gradient-picker__control-point-button {
-		border: 1px solid var(--maxi-grey-dark);
+		border: 1px solid $gd;
 	}
 
 	.components-angle-picker-control {
@@ -14,7 +15,7 @@
 			margin: 0;
 			padding: 0 8px;
 			line-height: 20px;
-			position: relative;
+			position: $pr;
 			top: 2px;
 			left: -1px;
 		}
@@ -25,7 +26,7 @@
 			line-height: 2 !important;
 		}
 		&__backdrop {
-			border: 1.5px solid var(--maxi-grey-light) !important;
+			border: $bg !important;
 			border-radius: 5px !important;
 		}
 	}
@@ -34,7 +35,7 @@
 		flex-direction: column-reverse;
 
 		&__custom-clear-wrapper {
-			position: absolute;
+			position: $pa;
 			top: -2px;
 			right: 31px;
 			margin-top: 0;
@@ -45,11 +46,11 @@
 			padding: 0;
 			height: 31px;
 			width: 31px;
-			transition: all 0.4s ease !important;
+			transition: $t !important;
 
 			&:hover {
-				fill: var(--maxi-primary-color) !important;
-				background-color: var(--maxi-white) !important;
+				fill: $pc !important;
+				background-color: $w !important;
 			}
 			&:focus {
 				box-shadow: none !important;
@@ -75,13 +76,13 @@
 				width: 25px;
 				height: 25px;
 				margin: auto;
-				border: 1.5px solid var(--maxi-grey-light);
+				border: $bg;
 				opacity: 1;
 				float: left;
 				border-radius: 50%;
 			}
 			.components-maxi-control__reset-button {
-				border-color: var(--maxi-grey-light);
+				border-color: $gl;
 			}
 		}
 	}
@@ -96,13 +97,13 @@
 				width: 100%;
 				gap: 0;
 				label {
-					position: absolute;
+					position: $pa;
 					top: -5px;
 					left: 8px;
 					font-size: 10px !important;
 					color: var(--maxi-accessibility-grey);
 					font-style: italic;
-					background: var(--maxi-white);
+					background: $w;
 					padding: 0 5px;
 					pointer-events: none;
 					box-sizing: border-box;

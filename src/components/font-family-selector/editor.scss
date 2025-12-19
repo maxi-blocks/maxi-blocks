@@ -1,11 +1,12 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-font-family-selector {
 		.maxi-font-family-selector__control {
 			&--is-focused,
 			&:focus {
-				border-color: var(--maxi-secondary-color);
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
-				outline: 2px solid transparent;
+				border-color: $sc;
+				box-shadow: 0 0 0 1px $sc;
+				outline: 2px solid $tr;
 			}
 		}
 	}
@@ -18,7 +19,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	flex: 1 1 auto;
 
 	&__container {
-		position: relative;
+		position: $pr;
 		display: flex;
 		align-items: center;
 		gap: 5px;
@@ -28,7 +29,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $bg;
 			border-radius: 0;
 			box-shadow: none;
 		}
@@ -38,14 +39,14 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__option {
 			&--is-focused,
 			&--is-selected {
-				background-color: var(--maxi-pastel-green);
-				color: var(--maxi-black) !important;
+				background-color: $pg;
+				color: $bk !important;
 				font-weight: 700 !important;
-				cursor: pointer;
+				cursor: $ptr;
 			}
 		}
 		&__control {
-			border-color: var(--maxi-grey-light);
+			border-color: $gl;
 			padding: 8px 2px 8px 8px;
 			border-radius: 5px;
 			min-height: unset;
@@ -57,17 +58,17 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 			&:focus,
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: $g;
 			}
 			&--is-focused {
-				border-color: var(--maxi-grey);
+				border-color: $g;
 				box-shadow: none;
 				outline: none;
 			}
 		}
 		&__single-value {
 			margin: 0;
-			color: var(--maxi-black);
+			color: $bk;
 
 			& + div {
 				margin: 0;
@@ -76,48 +77,48 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		}
 		&__value-container {
 			padding: 0;
-			cursor: pointer;
+			cursor: $ptr;
 		}
 		&__clear-indicator {
 			width: 16px;
 			height: 16px;
 			padding: 0;
-			cursor: pointer;
+			cursor: $ptr;
 			transition: 0.5s all;
 
 			&:hover {
-				color: var(--maxi-black) !important;
+				color: $bk !important;
 				font-weight: 700 !important;
 				svg {
-					fill: var(--maxi-black);
+					fill: $bk;
 				}
 			}
 			svg {
 				width: 100%;
 				height: 100%;
-				fill: var(--maxi-grey);
+				fill: $g;
 			}
 		}
 		&__dropdown-indicator {
 			width: 20px;
 			height: 20px;
 			padding: 0;
-			cursor: pointer;
+			cursor: $ptr;
 			transition: 0.5s all;
 
 			&:hover {
-				color: var(--maxi-black) !important;
+				color: $bk !important;
 				font-weight: 700 !important;
 			}
 			svg {
-				fill: var(--maxi-grey);
+				fill: $g;
 			}
 		}
 		&__indicator-separator {
 			width: 2px;
 			height: 80%;
 			margin: auto 2px;
-			background-color: var(--maxi-grey-light);
+			background-color: $gl;
 		}
 	}
 
@@ -132,6 +133,6 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 // Position reset button relative to BaseControl field for font family selector
 .maxi-font-family-selector-control {
 	.maxi-base-control__field {
-		position: relative;
+		position: $pr;
 	}
 }

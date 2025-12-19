@@ -1,3 +1,30 @@
+// Global short variables for size reduction
+$bl: 1px solid var(--maxi-grey-light); // border-light
+
+$t: all 0.3s ease; // standard transition
+$f: 'Inter', Helvetica, Arial, Lucida, sans-serif; // font
+
+// Short color aliases
+$w: var(--maxi-white);
+$gd: var(--maxi-grey-dark);
+$bk: var(--maxi-black);
+$cp: var(--maxi-cloud-primary);
+$gl: var(--maxi-grey-light);
+$cpl: var(--maxi-cloud-primary-light);
+$cpw: var(--maxi-cloud-primary-whisper);
+$pc: var(--maxi-primary-color);
+$sc: var(--maxi-secondary-color);
+$pg: var(--maxi-pastel-green);
+$wg: var(--maxi-whisper-green);
+$pgr: var(--maxi-primary-green);
+$mg: var(--maxi-mid-green);
+$g: var(--maxi-grey);
+$tr: transparent;
+$pa: absolute;
+$pr: relative;
+$ptr: pointer;
+$bg: 1.5px solid $gl; // border-grey
+
 :root {
 	/* Core Builder */
 	--maxi-primary-color: #2c8a46; /* Fresh lime green */

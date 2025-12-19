@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 .maxi-block-inserter {
 	width: 100%;
 	height: 100%;
@@ -26,15 +27,15 @@
 	&__button,
 	&__button.components-button.is-next-40px-default-size {
 		display: block;
-		position: relative;
+		position: $pr;
 		width: 16px;
 		height: 16px;
 		margin: auto;
 		padding: 0 !important;
-		background: var(--maxi-primary-color) !important;
+		background: $pc !important;
 		box-shadow: none;
 		border-radius: 0;
-		transition: all 0.4s ease !important;
+		transition: $t !important;
 
 		&--repeater {
 			background: var(--maxi-tertiary-color) !important;
@@ -44,28 +45,28 @@
 		&:focus {
 			box-shadow: none;
 			outline: none;
-			background: var(--maxi-black) !important;
+			background: $bk !important;
 		}
 
 		svg {
 			display: block;
 			width: 16px;
 			height: 16px;
-			fill: var(--maxi-white);
+			fill: $w;
 		}
 	}
 
 	&__dropdown {
 		&-selector {
-			background: var(--maxi-primary-color);
-			border: 2px solid var(--maxi-black);
+			background: $pc;
+			border: 2px solid $bk;
 		}
 
 		&-content {
 			z-index: 99999;
 			.block-editor-inserter {
 				.components-button {
-					position: relative;
+					position: $pr;
 					display: block;
 					width: 100%;
 					height: 30px !important;
@@ -73,26 +74,26 @@
 					box-shadow: none !important;
 					text-align: left;
 					text-transform: capitalize;
-					transition: all 0.4s ease;
+					transition: $t;
 					&::after,
 					&::before {
 						content: '';
-						position: absolute;
+						position: $pa;
 						bottom: 0;
 						left: 0;
 						right: 0;
 						display: block;
 						height: 1px;
-						background-color: var(--maxi-grey-light);
+						background-color: $gl;
 					}
 					&::after {
 						width: 0;
 						margin: auto;
-						background-color: var(--maxi-secondary-color);
-						transition: all 0.4s ease;
+						background-color: $sc;
+						transition: $t;
 					}
 					&:hover {
-						background-color: var(--maxi-whisper-green);
+						background-color: $wg;
 						&::after {
 							width: 100%;
 						}
@@ -121,15 +122,15 @@
 	// 		width: 25px;
 	// 		height: 25px;
 	// 		margin: auto;
-	// 		background: var(--maxi-black) !important;
-	// 		border: 1px solid var(--maxi-white);
+	// 		background: $bk !important;
+	// 		border: 1px solid $w;
 	// 		svg {
 	// 			width: 24px;
 	// 			height: 24px;
 	// 		}
 	// 		&:hover,
 	// 		&:focus {
-	// 			background: var(--maxi-secondary-color) !important;
+	// 			background: $sc !important;
 	// 		}
 	// 	}
 	// }
@@ -141,14 +142,14 @@
 
 	.components-popover__content {
 		height: auto;
-		background: transparent;
+		background: $tr;
 		border: none;
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
 
 		.components-dropdown {
-			background-color: var(--maxi-white);
+			background-color: $w;
 		}
 	}
 
@@ -162,14 +163,14 @@
 
 		&:before {
 			content: '';
-			position: absolute;
+			position: $pa;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
 			width: 0;
 			height: 5px;
-			background-color: var(--maxi-primary-color);
-			transition: all 0.4s ease;
+			background-color: $pc;
+			transition: $t;
 		}
 
 		&:hover:before {
@@ -183,13 +184,13 @@
 
 	.components-popover__content {
 		border: none;
-		background: transparent;
+		background: $tr;
 		border-radius: 0;
 		box-shadow: none;
 		outline: none;
 
 		.components-dropdown {
-			background-color: transparent;
+			background-color: $tr;
 		}
 
 		> div:first-of-type {
@@ -199,12 +200,12 @@
 		.maxi-inter-blocks-inserter__toggle {
 			opacity: 0;
 			height: 10px;
-			cursor: pointer;
-			transition: all 0.4s ease;
+			cursor: $ptr;
+			transition: $t;
 
 			&::before {
 				content: '';
-				position: absolute;
+				position: $pa;
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
@@ -214,7 +215,7 @@
 			&--is-hovered {
 				opacity: 1;
 				height: 10px;
-				fill: var(--maxi-white) !important;
+				fill: $w !important;
 
 				.maxi-inter-blocks-inserter__content-item {
 					width: 20px;
@@ -223,13 +224,13 @@
 				}
 
 				svg {
-					fill: var(--maxi-white);
+					fill: $w;
 				}
 
 				&::before {
 					width: 100%;
 					height: 5px;
-					background-color: var(--maxi-primary-color);
+					background-color: $pc;
 					margin-top: 0;
 				}
 			}
@@ -237,19 +238,19 @@
 	}
 
 	&__content-item {
-		position: absolute;
+		position: $pa;
 		top: 50%;
 		left: 66%;
 		transform: translate(-50%, -50%);
 		width: 20px;
 		height: 20px;
 		padding: 0 !important;
-		background: var(--maxi-primary-color);
+		background: $pc;
 		border-radius: 100%;
-		color: var(--maxi-white);
+		color: $w;
 
 		&:hover {
-			color: var(--maxi-white);
+			color: $w;
 		}
 	}
 }

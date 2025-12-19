@@ -1,3 +1,4 @@
+@import '../../../src/css/backend-variables.scss';
 body.maxi-blocks--active figure.maxi-image-block {
 	display: flex;
 	justify-content: center;
@@ -24,7 +25,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	}
 	.maxi-image-block-wrapper {
 		display: flex;
-		position: relative;
+		position: $pr;
 		width: auto;
 		max-width: 100%;
 		max-height: inherit;
@@ -36,7 +37,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 			overflow: hidden;
 
 			.maxi-image-block__image {
-				position: absolute;
+				position: $pa;
 				top: 0;
 				left: 0;
 				max-width: none;
@@ -54,7 +55,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 	}
 	.maxi-image-block {
 		&__caption {
-			position: relative;
+			position: $pr;
 			margin: 0;
 			text-align: left;
 		}
@@ -63,7 +64,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 		background-color: #000;
 
 		&:not(.maxi-hover-effect__text__flip-horiz) {
-			position: absolute;
+			position: $pa;
 			top: 0;
 			left: 0;
 			right: 0;
@@ -544,7 +545,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 					);
 				}
 				.maxi-hover-details {
-					position: absolute;
+					position: $pa;
 					left: 0;
 					top: 0;
 					bottom: 0;
@@ -702,7 +703,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__shine {
 				&:before {
 					content: '';
-					position: absolute;
+					position: $pa;
 					top: 0;
 					left: -75%;
 					z-index: 2;
@@ -725,7 +726,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 			&__circle-shine {
 				&:before {
 					content: '';
-					position: absolute;
+					position: $pa;
 					top: 50%;
 					left: 50%;
 					z-index: 2;

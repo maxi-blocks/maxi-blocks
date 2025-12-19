@@ -292,19 +292,15 @@ const propagateNewUniqueID = (
 					isArray(Object.values(attributes.relations))));
 
 		const blockEditorStore = select('core/block-editor');
+		const maxiBlocksStore = select('maxiBlocks/blocks');
 
 		// Check if the old uniqueID still exists elsewhere (copy-paste) or not (pattern import)
+		// O(1) lookup using Redux store instead of tree traversal
 		let originalBlockStillExists = false;
-		goThroughMaxiBlocks(block => {
-			if (
-				block.attributes.uniqueID === oldUniqueID &&
-				block.clientId !== clientId
-			) {
-				originalBlockStillExists = true;
-				return true; // Stop searching
-			}
-			return false;
-		});
+		const existingBlock = maxiBlocksStore.getBlock(oldUniqueID);
+		if (existingBlock && existingBlock.clientId !== clientId) {
+			originalBlockStillExists = true;
+		}
 
 		// ENHANCED: Additional safety check for view mode switches
 		// If we're in a view mode switch scenario, be more aggressive about updating relations
@@ -449,6 +445,22 @@ const propagateNewUniqueID = (
 	updateRelations();
 	updateBGLayers();
 	updateGlobalRelations();
+
+	// Update relations store to keep it in sync with uniqueID changes
+	// This ensures the maxiBlocks/relations store (which tracks trigger→target mappings)
+	// stays synchronized when blocks are copied/pasted
+	try {
+		dispatch('maxiBlocks/relations').updateRelation(
+			oldUniqueID,
+			newUniqueID
+		);
+	} catch (error) {
+		// eslint-disable-next-line no-console
+		console.warn(
+			'[Relations Store] ⚠️ Failed to update relations store:',
+			JSON.stringify(error)
+		);
+	}
 
 	if (!isEmpty(blockAttributesUpdate)) {
 		// Optimization 2: Block Existence Check & Update Batching

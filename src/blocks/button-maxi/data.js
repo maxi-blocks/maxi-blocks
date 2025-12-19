@@ -41,6 +41,7 @@ import transitionDefault from '@extensions/styles/transitions/transitionDefault'
  */
 const buttonWrapperClass = ' .maxi-button-block';
 const buttonClass = `${buttonWrapperClass}__button`;
+const buttonLinkClass = `${buttonClass} a`;
 const iconClass = `${buttonWrapperClass}__icon`;
 const contentClass = `${buttonWrapperClass}__content`;
 
@@ -177,6 +178,11 @@ const transition = {
 			target: contentClass,
 			property: false,
 			hoverProp: 'typography-status-hover',
+		},
+		'text link': {
+			title: __('Text link', 'maxi-blocks'),
+			target: buttonLinkClass,
+			property: 'color',
 		},
 		'button background': {
 			title: __('Button background', 'maxi-blocks'),

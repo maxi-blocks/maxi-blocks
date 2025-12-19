@@ -478,8 +478,8 @@ class MaxiRowCarouselEditor {
 		// Add active class to enable carousel CSS
 		this._container.classList.add('maxi-row-carousel--active');
 
-		this.setColumnSizes();
-		this.setWrapperSize();
+		// Set column widths, tracker width, and wrapper width
+		this.setColumnWidths();
 		this.columnAction();
 		this.updateDots();
 
@@ -494,36 +494,56 @@ class MaxiRowCarouselEditor {
 		});
 	}
 
-	setColumnSizes() {
-		const containerWidth = this._container.offsetWidth;
-		const totalGap = this.columnGap * (this.slidesPerView - 1);
-		const availableWidth = containerWidth - totalGap - this.peekOffset * 2;
-		const columnWidth = availableWidth / this.slidesPerView;
+	/**
+	 * Set column widths and tracker width
+	 * This method is critical for proper carousel display
+	 */
+	setColumnWidths() {
+		if (this._columns.length === 0) return;
 
-		this._columns.forEach((column, index) => {
-			// In editor, column._column IS the resizer div
-			const el = column._column;
-			if (el) {
-				el.style.width = `${columnWidth}px`;
-				el.style.minWidth = `${columnWidth}px`;
-				el.style.marginRight =
-					index < this._columns.length - 1
-						? `${this.columnGap}px`
-						: '0px';
-			}
+		// Get the actual width of each column from the ORIGINAL row
+		// In editor, columns are wrapped in .maxi-block__resizer
+		const firstColumn = this._columns[0]._column;
+		const firstColumnWidth = firstColumn.getBoundingClientRect().width;
+		const carouselGap = this.columnGap || 0;
+
+		// Calculate tracker width (the visible viewport):
+		// - Show slidesPerView columns at their original width
+		// - Add gaps BETWEEN visible columns (slidesPerView - 1 gaps)
+		// - Add peek offset to show a bit of the next column
+		const trackerWidth =
+			firstColumnWidth * this.slidesPerView +
+			carouselGap * (this.slidesPerView - 1) +
+			this.peekOffset;
+
+		// Set tracker width
+		this._tracker.style.width = `${trackerWidth}px`;
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarouselEditor: setColumnWidths', {
+			firstColumnWidth,
+			carouselGap,
+			slidesPerView: this.slidesPerView,
+			peekOffset: this.peekOffset,
+			trackerWidth,
 		});
-	}
 
-	setWrapperSize() {
-		if (!this._wrapper) return;
+		// Set each column to its original width explicitly
+		this._columns.forEach(column => {
+			column._column.style.width = `${firstColumnWidth}px`;
+			column._column.style.minWidth = `${firstColumnWidth}px`;
+			column._column.style.flexBasis = `${firstColumnWidth}px`;
+		});
 
-		const containerWidth = this._container.offsetWidth;
-		const totalWidth = this._columns.reduce((acc, column) => {
-			const el = column._column.closest('.maxi-block__resizer');
-			return acc + (el ? el.offsetWidth + this.columnGap : 0);
-		}, 0);
+		// Set wrapper gap to the carousel gap (overrides row's gap)
+		this._wrapper.style.columnGap = `${carouselGap}px`;
 
-		this._wrapper.style.width = `${totalWidth}px`;
+		// Calculate wrapper width to contain all columns with gaps
+		const totalChildren = this._columns.length;
+		const wrapperWidth =
+			firstColumnWidth * totalChildren +
+			carouselGap * (totalChildren - 1);
+		this._wrapper.style.width = `${wrapperWidth}px`;
 		this._wrapper.style.transition = `transform ${this.transitionSpeed}s ease`;
 	}
 
@@ -674,8 +694,7 @@ class MaxiRowCarouselEditor {
 
 		if (breakpointChanged && this.carouselActive) {
 			this.loadBreakpointSettings();
-			this.setColumnSizes();
-			this.setWrapperSize();
+			this.setColumnWidths();
 			this.columnAction();
 		}
 

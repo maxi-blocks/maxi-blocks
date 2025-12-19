@@ -156,7 +156,6 @@ class edit extends MaxiBlockComponent {
 		};
 		const showDCContent =
 			dcStatus && dcField !== 'static_text' && subField !== 'static_text';
-		// const isDCHtml = dcStatus && dcField === 'tags';
 
 		return [
 			<Inspector

@@ -278,7 +278,7 @@ const NavigationIconControl = props => {
 											attributes: props,
 											isHover,
 										})}
-										onChangeValue={val => {
+										onChangeValue={(val, meta) => {
 											onChange({
 												[getAttributeKey(
 													'spacing-horizontal',
@@ -290,6 +290,7 @@ const NavigationIconControl = props => {
 													val !== ''
 														? val
 														: '',
+												meta,
 											});
 										}}
 										onReset={() =>
@@ -329,7 +330,7 @@ const NavigationIconControl = props => {
 											attributes: props,
 											isHover,
 										})}
-										onChangeValue={val => {
+										onChangeValue={(val, meta) => {
 											onChange({
 												[getAttributeKey(
 													'spacing-vertical',
@@ -341,6 +342,7 @@ const NavigationIconControl = props => {
 													val !== ''
 														? val
 														: '',
+												meta,
 											});
 										}}
 										onReset={() =>
@@ -379,7 +381,7 @@ const NavigationIconControl = props => {
 												attributes: props,
 												isHover,
 											})}
-											onChangeValue={val => {
+											onChangeValue={(val, meta) => {
 												onChange({
 													[getAttributeKey(
 														'spacing-between',
@@ -391,6 +393,7 @@ const NavigationIconControl = props => {
 														val !== ''
 															? val
 															: '',
+													meta,
 												});
 											}}
 											onReset={() =>

@@ -253,9 +253,11 @@ const Inspector = props => {
 												}
 												onChange={obj => {
 													maxiSetAttributes(obj);
-													cleanInlineStyles(
-														inlineStylesTargets.dividerColor
-													);
+													if (!obj.meta?.inline) {
+														cleanInlineStyles(
+															inlineStylesTargets.dividerColor
+														);
+													}
 												}}
 												breakpoint={deviceType}
 												clientId={clientId}

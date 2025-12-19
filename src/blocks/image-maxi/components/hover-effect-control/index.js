@@ -129,10 +129,11 @@ const HoverEffectControl = props => {
 					<AdvancedNumberControl
 						label={__('Duration(s)', 'maxi-blocks')}
 						value={props['hover-transition-duration']}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							onChange({
 								'hover-transition-duration':
 									val !== undefined && val !== '' ? val : '',
+								meta,
 							});
 						}}
 						min={0}
@@ -302,12 +303,13 @@ const HoverEffectControl = props => {
 										`hover-basic-${props['hover-basic-effect-type']}-value`
 									]
 								}
-								onChangeValue={val => {
+								onChangeValue={(val, meta) => {
 									onChange({
 										[`hover-basic-${props['hover-basic-effect-type']}-value`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
+										meta,
 									});
 								}}
 								min={0}

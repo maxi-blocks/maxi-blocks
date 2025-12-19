@@ -52,10 +52,11 @@ const ColumnSizeControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
-					onChangeValue={val => {
+					onChangeValue={(val, meta) => {
 						onChange({
 							[`column-size-${breakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
+							meta,
 						});
 					}}
 					min={0}

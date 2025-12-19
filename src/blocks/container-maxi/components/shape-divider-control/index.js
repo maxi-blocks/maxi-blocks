@@ -378,10 +378,14 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
-													onChangeValue={val =>
+													onChangeValue={(
+														val,
+														meta
+													) =>
 														onChange({
 															[`shape-divider-top-height-${breakpoint}`]:
 																val,
+															meta,
 														})
 													}
 													onReset={() =>
@@ -594,10 +598,14 @@ const ShapeDividerControl = props => {
 															attributes: props,
 														}
 													)}
-													onChangeValue={val =>
+													onChangeValue={(
+														val,
+														meta
+													) =>
 														onChange({
 															[`shape-divider-bottom-height-${breakpoint}`]:
 																val,
+															meta,
 														})
 													}
 													onReset={() =>

@@ -17,7 +17,7 @@
 	*,
 	*:before,
 	*:after {
-		transition: $t;
+		@include transit;
 	}
 
 	&-caption,
@@ -168,9 +168,7 @@
 				}
 			}
 			.toolbar-item {
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				@include flex-center;
 
 				&__dynamic-content {
 					&:hover,
@@ -218,9 +216,7 @@
 				&__text-options,
 				&__border {
 					.toolbar-item__icon {
-						display: flex;
-						justify-content: center;
-						align-items: center;
+						@include flex-center;
 					}
 				}
 				&__more-settings .components-button,
@@ -236,7 +232,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: $t;
+					@include transit;
 					border-radius: 0;
 					background-color: $tr;
 					fill: $bk !important;
@@ -250,7 +246,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: $t;
+						@include transit;
 					}
 
 					&:hover,
@@ -282,7 +278,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: $t;
+					@include transit;
 					border-radius: 0;
 
 					&::after {
@@ -294,7 +290,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: $t;
+						@include transit;
 					}
 
 					&:hover,
@@ -346,7 +342,7 @@
 					rect,
 					polyline,
 					path {
-						transition: $t;
+						@include transit;
 						// fill: $bk;
 						// stroke: $tr;
 					}
@@ -837,7 +833,7 @@ html[dir='rtl'] {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	transition: $t;
+	@include transit;
 	border-radius: 0;
 	background-color: $tr;
 	fill: $bk !important;

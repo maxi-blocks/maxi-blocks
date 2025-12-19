@@ -25,6 +25,40 @@ $pr: relative;
 $ptr: pointer;
 $bg: 1.5px solid $gl; // border-grey
 
+@mixin transit {
+	transition: $t;
+}
+
+@mixin flex-center($important: false) {
+	@if $important {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	} @else {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+@mixin scrollbar($width: 5px, $track: $w, $thumb: $gl) {
+	&::-webkit-scrollbar {
+		width: $width;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: $track;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: $thumb;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: $thumb;
+	}
+}
+
 :root {
 	/* Core Builder */
 	--maxi-primary-color: #2c8a46; /* Fresh lime green */

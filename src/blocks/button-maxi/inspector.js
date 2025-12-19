@@ -248,6 +248,18 @@ const Inspector = props => {
 											},
 										}),
 									}),
+									...inspectorTabs.linkSettings({
+										props,
+										customLabel: __(
+											'Text link',
+											'maxi-blocks'
+										),
+										styleCardPrefix: '',
+										prefix: '',
+										classNamePanel:
+											'maxi-link-settings-panel',
+										disableCustomFormats: true,
+									}),
 									...inspectorTabs.background({
 										label: 'Button',
 										props,

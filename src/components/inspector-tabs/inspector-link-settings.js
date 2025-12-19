@@ -16,11 +16,13 @@ import { getGroupAttributes } from '@extensions/styles';
  */
 const linkSettings = ({
 	props,
+	customLabel,
 	styleCardPrefix = '',
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
 	prefix = '',
 	classNamePanel,
+	disableCustomFormats,
 }) => {
 	const {
 		attributes,
@@ -33,10 +35,11 @@ const linkSettings = ({
 	} = props;
 
 	const { blockStyle, isList } = attributes;
+	const label = customLabel ?? __('Link', 'maxi-blocks');
 
 	return [
 		{
-			label: __('Link', 'maxi-blocks'),
+			label,
 			disablePadding: true,
 			content: (
 				<TypographyControl
@@ -53,6 +56,7 @@ const linkSettings = ({
 						maxiSetAttributes(obj);
 						cleanInlineStyles(target);
 					}}
+					disableCustomFormats={disableCustomFormats}
 					setShowLoader={setShowLoader}
 					breakpoint={deviceType}
 					clientId={clientId}

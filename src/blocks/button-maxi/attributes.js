@@ -69,6 +69,7 @@ const attributes = {
 		},
 	},
 	...attributesData.typographyHover,
+	...attributesData.link,
 	...prefixAttributesCreator({
 		obj: attributesData.background,
 		prefix,

@@ -1,19 +1,19 @@
 @import '../../../src/css/backend-variables.scss';
 .maxi-settingstab-control {
 	width: 100%;
-	transition: $t;
+	@include transit;
 
 	&.maxi-axis-control__sync {
 		.maxi-tabs-control__button {
 			margin-left: 7px;
 			border: $bg;
 			border-radius: 4px;
-			transition: $t;
+			@include transit;
 			padding: 4px 6px;
 
 			svg {
 				fill: $sc;
-				transition: $t;
+				@include transit;
 			}
 
 			&[aria-pressed='true'],
@@ -35,10 +35,10 @@
 				background: var(--maxi-admin-black);
 				color: var(--maxi-admin-white);
 				border: none;
-				transition: $t;
+				@include transit;
 			}
 			.maxi-tabs-control__button:not(.maxi-tabs-control__button--nested) {
-				transition: $t;
+				@include transit;
 
 				&[aria-pressed='true'] {
 					border-bottom: 1.5px solid $bk !important;
@@ -56,7 +56,7 @@
 			margin-bottom: -18px;
 
 			.maxi-tabs-control__button {
-				transition: $t;
+				@include transit;
 				&:hover {
 					background-color: $pg;
 				}
@@ -68,7 +68,7 @@
 
 		&__sidebar-settings-tabs {
 			.maxi-tabs-control__button[aria-pressed='true'] {
-				transition: $t;
+				@include transit;
 				color: $bk;
 			}
 		}
@@ -93,11 +93,11 @@
 			background-color: $w;
 			text-align: center;
 			white-space: nowrap;
-			transition: $t;
+			@include transit;
 
 			&:last-child {
 				border-right: none;
-				transition: $t;
+				@include transit;
 			}
 			&:hover {
 				background-color: $wg;
@@ -107,17 +107,17 @@
 			&:focus:not(:disabled) {
 				box-shadow: none;
 				outline: none;
-				transition: $t;
+				@include transit;
 			}
 			&:active {
 				background-color: $wg !important;
-				transition: $t;
+				@include transit;
 			}
 			&[aria-pressed='true'] {
 				color: $pc !important;
 				font-weight: 700 !important;
 				background-color: $wg !important;
-				transition: $t;
+				@include transit;
 			}
 			&--active:before {
 				content: '';
@@ -131,16 +131,16 @@
 				background-color: var(--maxi-light-blue-alt);
 				margin-left: 5px;
 				transform: translateY(-50%);
-				transition: $t;
+				@include transit;
 			}
 
 			&.maxi-accordion-control__item__button {
 				padding-left: 25px;
-				transition: $t;
+				@include transit;
 			}
 
 			&.maxi-clip-path-control__handles-button {
-				transition: $t;
+				@include transit;
 				&[aria-pressed='true'] {
 					background-color: $pg;
 					border-color: $mg;
@@ -156,7 +156,7 @@
 			&.maxi-tabs-control__button-visual,
 			&.maxi-tabs-control__button-edit.points {
 				border: $bg !important;
-				transition: $t;
+				@include transit;
 				&[aria-pressed='true'] {
 					background-color: $pg !important;
 					border-color: $pgr !important;
@@ -170,11 +170,11 @@
 				&:last-child {
 					border: $bg !important;
 					border-radius: 6px !important;
-					transition: $t;
+					@include transit;
 				}
 				&:first-child {
 					border-radius: 6px !important;
-					transition: $t;
+					@include transit;
 				}
 			}
 
@@ -189,7 +189,7 @@
 		}
 
 		&__notification {
-			transition: $t;
+			@include transit;
 			position: $pa;
 			z-index: 8;
 			top: 0;
@@ -299,26 +299,26 @@
 
 	.maxi-text-control__input {
 		padding-left: 10px !important;
-		transition: $t;
+		@include transit;
 	}
 
 	.maxi-custom-label {
 		width: 100%;
 		position: $pr;
-		transition: $t;
+		@include transit;
 	}
 	.maxi-base-control.maxi-block-style-control {
 		position: $pr;
 		min-width: 75px;
 		margin: 0 5px;
-		transition: $t;
+		@include transit;
 	}
 	.maxi-block-style-preview {
 		position: $pr;
 		min-width: 100px;
 		margin-left: 10px;
 		height: 32px;
-		transition: $t;
+		@include transit;
 	}
 	.block-style-label-2,
 	.maxi-base-control__label {
@@ -333,7 +333,7 @@
 		pointer-events: none;
 		box-sizing: border-box;
 		-webkit-box-sizing: border-box;
-		transition: $t;
+		@include transit;
 	}
 }
 .block-info-icon {
@@ -346,20 +346,18 @@
 	text-align: center;
 	top: 9px;
 	cursor: $ptr;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: $t;
+	@include flex-center;
+	@include transit;
 
 	&:hover {
 		border-color: $pc;
 		color: $gd;
-		transition: $t;
+		@include transit;
 	}
 
 	span {
 		font-size: 10px;
-		transition: $t;
+		@include transit;
 	}
 }
 /*******************************

@@ -27,7 +27,6 @@ $transition: all 0.3s ease;
 }
 
 body .maxi-background-control {
-
 	padding-top: 8px;
 
 	// Hide MediaUploader preview when FocalPointPicker is present
@@ -40,22 +39,18 @@ body .maxi-background-control {
 
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
-		.maxi-tabs-control__button {
-		}
 
 		// Unique classes for each background type button
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
 		.maxi-tabs-control__button-gradient {
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			@include wordpress-input-reset;
+			color: $grey-dark;
 			
-
-			&.maxi-tabs-control__button--selected {
-				border: 1px solid var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
+			&.maxi-tabs-control__button--selected,
+			&[aria-pressed='true'] {
+				border-color: $primary;
+				color: $primary;
 				background-color: var(--maxi-whisper-green);
 			}
 		}
@@ -77,22 +72,33 @@ body .maxi-background-control {
 
 	.parallax-direction {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid $grey-light;
 			border-radius: 3px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $grey-dark;
+			background-color: $white;
 			width: 48px;
 			transition: all 0.4s ease !important;
+
+			// Fix syntax: added missing colons
+			&:first-child { margin-right: 4px !important; }
+			&:last-child { border-right: none; margin-left: 8px !important; }
 
 			&[aria-pressed='true'],
 			&:active,
 			&:hover {
 				background-color: var(--maxi-whisper-green);
-				color: var(--maxi-secondary-color);
-				border: 1px solid var(--maxi-primary-color);
+				color: $secondary;
+				border: 1px solid $primary;
+				cursor: pointer;
+			}
+
+			&:focus:not(:disabled) {
+				box-shadow: none;
+				outline: none;
 			}
 		}
 	}
+	
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {
@@ -100,14 +106,15 @@ body .maxi-background-control {
 			}
 		}
 	}
+	
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
 			margin-bottom: 8px !important;
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
+			@include wordpress-input-reset;
 		}
 	}
+	
 	.maxi-background-layer {
 		&__preview {
 			width: 20px;
@@ -115,6 +122,7 @@ body .maxi-background-control {
 			margin-right: 8px;
 			border: 1px solid $black;
 			background-size: cover !important;
+			flex-shrink: 0; 
 
 			svg {
 				display: block;
@@ -191,7 +199,7 @@ body .maxi-background-control {
 				margin: auto 5px auto 5px;
 				cursor: pointer;
 				position: relative;
-				transition: all 0.4s ease;
+				transition: $transition;
 
 				&:hover {
 					transform: scale(1.1);
@@ -234,15 +242,12 @@ body .maxi-background-control {
 
 	.maxi-list-item-control__arrow {
 		width: 25px;
-		-webkit-transition: 0.3s ease all;
-		transition: 0.3s ease all;
+		transition: $transition;
 		cursor: pointer;
-		-webkit-transform-origin: center;
-		-ms-transform-origin: center;
 		transform-origin: center;
 		padding: 6px 0px;
-		border-right: 1px solid var(--maxi-secondary-color);
-		background-color: var(--maxi-white);
+		border-right: 1px solid $secondary;
+		background-color: $white;
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
 
@@ -261,7 +266,7 @@ body .maxi-background-control {
 		background: var(--maxi-whisper-green);
 		display: block;
 		padding: 7px 6px 7px 6px !important;
-		border-right: 1px solid var(--maxi-secondary-color);
+		border-right: 1px solid $secondary;
 		margin-right: 5px !important;
 		counter-increment: list-items-counter 1;
 		font-size: 14px;
@@ -270,46 +275,12 @@ body .maxi-background-control {
 	}
 }
 
-.parallax-direction .maxi-tabs-control__button {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: auto;
-	padding: 8px 30px !important;
-	border-bottom: 1px solid var(--maxi-grey-light);
-	border-top: 1px solid var(--maxi-grey-light);
-	border-right: 1px solid var(--maxi-grey-light);
-	border-radius: 0;
-	color: var(--maxi-grey-dark);
-	background-color: var(--maxi-white);
-	text-align: center;
-}
-
-.parallax-direction .maxi-tabs-control__button last-child {
-	border-right: none;
-	margin-left: 8px !important;
-}
-.parallax-direction .maxi-tabs-control__button:first-child {
-	margin-right: 4px !important;
-}
-.parallax-direction .maxi-tabs-control__button hover {
-	background-color: var(--maxi-grey-light);
-	cursor: pointer;
-}
-.parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
-	box-shadow: none;
-	outline: none;
-}
-.parallax-direction .maxi-tabs-control__button active {
-	background-color: var(--maxi-grey-light);
-}
-
+// Global fallback container fix
 body.maxi-blocks--active .components-popover__fallback-container {
 	button.components-button.is-link {
 		height: 30px;
-		border: 1.5px solid var(--maxi-secondary-color);
-		color: var(--maxi-secondary-color) !important;
+		border: 1.5px solid $secondary;
+		color: $secondary !important;
 		background: var(--maxi-whisper-green);
 		border-radius: 30px;
 		text-decoration: none;
@@ -317,7 +288,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		transition: all 0.5s ease-in-out;
 
 		&:hover {
-			border-color: var(--maxi-primary-color) !important;
+			border-color: $primary !important;
 			background: var(--maxi-mid-green);
 		}
 	}
@@ -326,26 +297,18 @@ body.maxi-blocks--active .components-popover__fallback-container {
 // FocalPointPicker styling for background image layer
 .maxi-background-control__image-layer {
 	.maxi-focal-point-picker {
-		width: 100%;
+		@include stacking-context;
 		margin-bottom: 8px;
-
-		// Force vertical stacking layout
-		display: flex;
-		flex-direction: column;
 
 		// Target the WordPress FocalPointPicker with unique class
 		.maxi-background-position-picker {
-			display: flex;
-			flex-direction: column;
-			width: 100%;
+			@include stacking-context;
 		}
 
 		// The label/title should be on top
 		.components-base-control__field {
-			display: flex !important;
-			flex-direction: column !important;
+			@include stacking-context;
 			align-items: stretch !important;
-			width: 100%;
 
 			// Label styling - order -1 ensures it's always first
 			.components-base-control__label {
@@ -358,9 +321,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			// Image picker container - stack in middle
 			.components-focal-point-picker {
 				order: 1;
-				display: flex;
-				flex-direction: column;
-				width: 100%;
+				@include stacking-context;
 
 				// The media preview with focal point
 				.components-focal-point-picker__icon_container {
@@ -370,7 +331,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			}
 		}
 
-		// Value fields container (LEFT/TOP inputs) - correct class from HTML
+		// Value fields container (LEFT/TOP inputs)
 		.focal-point-picker__controls {
 			display: flex;
 			flex-direction: row;
@@ -378,18 +339,9 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			width: 100%;
 			margin-top: 0px;
 			margin-bottom: -30px;
-			
 
 			// Each input control (Left and Top)
 			.focal-point-picker__controls-position-unit-control {
-			
-
-				// Fix alignment - target the field wrapper
-				.components-base-control__field {
-			
-			
-				}
-
 				// The input base container - make it column layout
 				.components-input-base {
 					flex-direction: column !important;
@@ -415,7 +367,6 @@ body.maxi-blocks--active .components-popover__fallback-container {
 					// Input container should be full width
 					.components-input-control__container {
 						width: 100%;
-					
 					}
 				}
 			}
@@ -432,7 +383,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			width: 30px !important;
 			height: 30px !important;
 			border-radius: 50% !important;
-			border: 2px solid #fff !important;
+			border: 2px solid $white !important;
 			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
 			background: transparent !important;
 			cursor: grab;

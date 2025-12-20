@@ -27,7 +27,7 @@ import { isEmpty } from 'lodash';
 /**
  * Icons
  */
-import { arrowDownIcon } from '@maxi-icons';
+import { arrowIcon } from '@maxi-icons';
 
 /**
  * Styles
@@ -148,7 +148,7 @@ const PositionControl = props => {
 							showAdvanced ? '--expanded' : ''
 						}`}
 					>
-						{arrowDownIcon}
+						{arrowIcon}
 					</span>
 				</Button>
 			</div>

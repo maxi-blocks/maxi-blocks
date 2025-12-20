@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useState, useRef, useCallback } from '@wordpress/element';
+import { useState, useRef, useCallback, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -24,6 +24,8 @@ const VisualPositionPicker = ({
 }) => {
 	const containerRef = useRef(null);
 	const pointRef = useRef(null);
+	const isDraggingRef = useRef(false);
+	const cleanupRef = useRef(null);
 	const [isDragging, setIsDragging] = useState(false);
 
 	// Convert percentage to position object for onChange
@@ -57,27 +59,19 @@ const VisualPositionPicker = ({
 		[]
 	);
 
-	// Mouse event handlers
-	const handleMouseDown = useCallback(
-		e => {
-			if (disabled) return;
-			e.preventDefault();
-			setIsDragging(true);
-
-			const pos = getPositionFromEvent(e);
-			if (pos && pointRef.current) {
-				// Direct DOM update for instant feedback
-				pointRef.current.style.left = `${pos.x}%`;
-				pointRef.current.style.top = `${pos.y}%`;
-				handlePositionChange(pos.x, pos.y);
+	// Cleanup listeners on unmount
+	useEffect(() => {
+		return () => {
+			if (cleanupRef.current) {
+				cleanupRef.current();
 			}
-		},
-		[disabled, getPositionFromEvent, handlePositionChange]
-	);
+		};
+	}, []);
 
+	// Mouse event handlers
 	const handleMouseMove = useCallback(
 		e => {
-			if (disabled) return;
+			if (disabled || !isDraggingRef.current) return;
 
 			const pos = getPositionFromEvent(e);
 			if (pos && pointRef.current) {
@@ -91,10 +85,29 @@ const VisualPositionPicker = ({
 	);
 
 	const handleMouseUp = useCallback(() => {
+		isDraggingRef.current = false;
 		setIsDragging(false);
 	}, []);
 
-	// Add global mouse listeners when dragging
+	const handleMouseDown = useCallback(
+		e => {
+			if (disabled) return;
+			e.preventDefault();
+			
+			isDraggingRef.current = true;
+			setIsDragging(true);
+
+			const pos = getPositionFromEvent(e);
+			if (pos && pointRef.current) {
+				// Direct DOM update for instant feedback
+				pointRef.current.style.left = `${pos.x}%`;
+				pointRef.current.style.top = `${pos.y}%`;
+				handlePositionChange(pos.x, pos.y);
+			}
+		},
+		[disabled, getPositionFromEvent, handlePositionChange]
+	);
+
 	const handleMouseDownWrapper = useCallback(
 		e => {
 			handleMouseDown(e);
@@ -104,8 +117,10 @@ const VisualPositionPicker = ({
 				handleMouseUp();
 				document.removeEventListener('mousemove', onMouseMove);
 				document.removeEventListener('mouseup', onMouseUp);
+				cleanupRef.current = null;
 			};
 
+			cleanupRef.current = onMouseUp;
 			document.addEventListener('mousemove', onMouseMove);
 			document.addEventListener('mouseup', onMouseUp);
 		},

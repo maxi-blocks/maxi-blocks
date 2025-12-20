@@ -78,16 +78,16 @@
 	// Draggable point
 	&__point {
 		position: absolute;
-		width: 20px;
-		height: 20px;
+		width: 12px;
+		height: 12px;
 		border-radius: 50%;
 		background: var(--maxi-primary-color);
-		border: 2px solid var(--maxi-white);
+		border: 2px solid #fff;
 		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 		transform: translate(-50%, -50%);
 		cursor: grab;
-		transition: transform 0.1s ease, box-shadow 0.1s ease;
-		z-index: 1;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		z-index: 10;
 
 		&:hover {
 			transform: translate(-50%, -50%) scale(1.1);
@@ -111,13 +111,15 @@
 
 	// States
 	&--dragging {
+		user-select: none;
+		
 		.maxi-visual-position-picker__container {
 			cursor: grabbing;
 		}
 		.maxi-visual-position-picker__point {
 			cursor: grabbing;
-			transform: translate(-50%, -50%) scale(1.2);
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+			transform: translate(-50%, -50%) scale(1.5);
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
 		}
 	}
 

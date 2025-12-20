@@ -10,7 +10,7 @@
  * @param {string} params.maxUnit
  * @param {number} params.viewportWidth
  * @param {number} [params.remToPx=16]
- * @return {string} Calculated font size in px
+ * @return {string|null} Calculated font size in px or null on validation failure
  */
 const calculateEditorFontSize = ({
 	minSize,
@@ -27,14 +27,18 @@ const calculateEditorFontSize = ({
 		return null;
 	}
 
-	let min = parseFloat(minSize);
-	if (!Number.isFinite(min)) min = 0;
+	const min = parseFloat(minSize);
+	const max = parseFloat(maxSize);
+	
+	if (!Number.isFinite(min) || !Number.isFinite(max)) {
+		console.warn('calculateEditorFontSize: Invalid min or max values', { minSize, maxSize });
+		return null;
+	}
 
 	let preferred = parseFloat(preferredSize);
-	if (!Number.isFinite(preferred)) preferred = 0;
-
-	let max = parseFloat(maxSize);
-	if (!Number.isFinite(max)) max = 9999;
+	if (!Number.isFinite(preferred)) {
+		preferred = min;
+	}
 
 	const toPx = (val, unit) => {
 		if (unit === 'px') return val;
@@ -47,6 +51,14 @@ const calculateEditorFontSize = ({
 
 	if (minPx === null || maxPx === null) {
 		console.warn('calculateEditorFontSize: Unsupported min/max unit', minUnit, maxUnit); 
+		return null;
+	}
+
+	if (minPx > maxPx) {
+		console.warn(
+			'calculateEditorFontSize: minSize > maxSize',
+			{ minPx, maxPx, minSize, minUnit, maxSize, maxUnit }
+		);
 		return null;
 	}
 

@@ -755,7 +755,7 @@ body .maxi-style-cards__popover {
 		// Ensure the dropdown menu appears above everything
 		.maxi-font-family-selector__control__menu {
 			position: absolute;
-			z-index: 99999 !important;
+			z-index: 100 !important;
 			background: var(--maxi-white);
 		}
 	}

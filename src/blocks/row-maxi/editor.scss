@@ -20,6 +20,13 @@
 				font-weight: 700;
 			}
 		}
+
+		// Dark mode support - when parent container has maxi-dark class
+		.maxi-dark & {
+			span {
+				color: var(--maxi-white);
+			}
+		}
 	}
 
 	&__template {

@@ -105,32 +105,26 @@ const PositionControl = props => {
 	};
 
 	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates
-	const normalizeCoordinate = raw => {
-		if (raw === null || raw === undefined) return 0;
-		if (typeof raw === 'number' && Number.isNaN(raw)) return 0;
-
-		let val = raw;
-		
-		// Handle strings
-		if (typeof raw === 'string') {
-			val = raw.trim();
-			// Explicit percentage
-			if (val.endsWith('%')) {
-				const parsed = parseFloat(val);
-				if (!Number.isFinite(parsed)) return 0;
-				return Math.max(0, Math.min(1, parsed / 100));
-			}
-			// Parse string to number for heuristic check
-			val = parseFloat(val);
+	// Now uses the explicit unit to prevent misinterpreting small pixel values
+	const normalizeCoordinate = (raw, unit) => {
+		if (raw === null || raw === undefined || Number.isNaN(parseFloat(raw))) {
+			return 0.5; // Default to center if invalid
 		}
 
-		if (!Number.isFinite(val)) return 0;
+		let val = typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
 
-		// Heuristic: if 0-1, assume normalized. Otherwise assume percent/pixel-like and divide by 100.
-		// Note: This treats '1.5' as '1.5%' (0.015), and '50' as '50%' (0.5).
-		if (val >= 0 && val <= 1) return val;
-		
-		return Math.max(0, Math.min(1, val / 100));
+		// If a specific non-percentage unit is provided, we avoid guessing.
+		// If the value happens to be 0-1, we use it; otherwise we default to 0/0.5
+		if (unit && unit !== '%') {
+			if (val >= 0 && val <= 1) return val;
+			return 0.5; // Default to center if unit is px/em/vw and value > 1
+		}
+
+		// If the unit is percentage-based or undefined, apply percentage logic
+		if (val > 1 || val < -1) {
+			return Math.max(0, Math.min(1, val / 100));
+		}
+		return Math.max(0, Math.min(1, val));
 	};
 
 	// Reusable component for the position picker and advanced settings
@@ -145,11 +139,21 @@ const PositionControl = props => {
 								target: `${prefix}position-left`,
 								breakpoint,
 								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-left-unit`,
+								breakpoint,
+								attributes: props,
 							})
 						),
 						y: normalizeCoordinate(
 							getLastBreakpointAttribute({
 								target: `${prefix}position-top`,
+								breakpoint,
+								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-top-unit`,
 								breakpoint,
 								attributes: props,
 							})

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  * External dependencies
  */
 import classnames from 'classnames';
+import { throttle } from 'lodash';
 import './editor.scss';
 
 /**
@@ -28,17 +29,48 @@ const VisualPositionPicker = ({
 	const cleanupRef = useRef(null);
 	const [isDragging, setIsDragging] = useState(false);
 
-	// Convert percentage to position object for onChange
+	// Ref pattern ensures throttle doesn't recreate on every render if onChange changes
+	const onChangeRef = useRef(onChange);
+	useEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
+
+	const throttledOnChange = useMemo(
+		() =>
+			throttle(
+				(x, y) => {
+					if (onChangeRef.current) {
+						onChangeRef.current({
+							x: Math.round(x),
+							y: Math.round(y),
+						});
+					}
+				},
+				50, // 50ms throttle for smooth updates
+				{ leading: true, trailing: true }
+			),
+		[]
+	);
+
+	// Cleanup throttle on unmount
+	useEffect(() => {
+		return () => throttledOnChange.cancel();
+	}, [throttledOnChange]);
+
+	// Direct immediate update
 	const handlePositionChange = useCallback(
-		(xPercent, yPercent) => {
-			if (onChange) {
+		(xPercent, yPercent, isThrottled = false) => {
+			if (isThrottled) {
+				throttledOnChange(xPercent, yPercent);
+			} else if (onChange) {
+				throttledOnChange.cancel(); // Cancel pending throttles if immediate update happens
 				onChange({
 					x: Math.round(xPercent),
 					y: Math.round(yPercent),
 				});
 			}
 		},
-		[onChange]
+		[onChange, throttledOnChange]
 	);
 
 	// Calculate position from mouse event
@@ -75,10 +107,11 @@ const VisualPositionPicker = ({
 
 			const pos = getPositionFromEvent(e);
 			if (pos && pointRef.current) {
-				// Direct DOM update for instant feedback - bypasses React render
+				// Direct DOM update for instant visual feedback
 				pointRef.current.style.left = `${pos.x}%`;
 				pointRef.current.style.top = `${pos.y}%`;
-				handlePositionChange(pos.x, pos.y);
+				// Use throttled update for React state/attributes
+				handlePositionChange(pos.x, pos.y, true);
 			}
 		},
 		[disabled, getPositionFromEvent, handlePositionChange]
@@ -87,7 +120,8 @@ const VisualPositionPicker = ({
 	const handleMouseUp = useCallback(() => {
 		isDraggingRef.current = false;
 		setIsDragging(false);
-	}, []);
+		throttledOnChange.flush(); // Ensure final position is saved
+	}, [throttledOnChange]);
 
 	const handleMouseDown = useCallback(
 		e => {
@@ -99,10 +133,11 @@ const VisualPositionPicker = ({
 
 			const pos = getPositionFromEvent(e);
 			if (pos && pointRef.current) {
-				// Direct DOM update for instant feedback
+				// Direct DOM update
 				pointRef.current.style.left = `${pos.x}%`;
 				pointRef.current.style.top = `${pos.y}%`;
-				handlePositionChange(pos.x, pos.y);
+				// Immediate update on start
+				handlePositionChange(pos.x, pos.y, false);
 			}
 		},
 		[disabled, getPositionFromEvent, handlePositionChange]
@@ -151,7 +186,8 @@ const VisualPositionPicker = ({
 					return;
 			}
 			e.preventDefault();
-			handlePositionChange(newX, newY);
+			// Immediate update for keys
+			handlePositionChange(newX, newY, false);
 		},
 		[disabled, left, top, handlePositionChange]
 	);

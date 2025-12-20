@@ -18,6 +18,9 @@ const ClampControl = ({
     isClampAutoEnabled,
     ...props
 }) => {
+    // Helper to avoid repeating prefix/valueKey logic
+    const getAttrKey = (suffix) => `${prefix}${valueKey}${suffix}`;
+
     const clampStatus = isClampEnabled !== undefined ? !!isClampEnabled : !!getValue(`${valueKey}-clamp-status`);
     const clampAutoStatus = isClampAutoEnabled !== undefined ? !!isClampAutoEnabled : !!getValue(`${valueKey}-clamp-auto-status`);
 
@@ -30,9 +33,9 @@ const ClampControl = ({
 
     // 2. Centralized update handler
     const updateValue = (suffix, val, unit = null) => {
-        const updates = { [`${prefix}${valueKey}${suffix}`]: val };
+        const updates = { [getAttrKey(suffix)]: val };
         if (unit) {
-            updates[`${prefix}${valueKey}${suffix}-unit`] = unit;
+            updates[getAttrKey(`${suffix}-unit`)] = unit;
         }
         onChangeFormat(updates);
     };
@@ -40,14 +43,14 @@ const ClampControl = ({
     // 3. Centralized reset handler
     const handleReset = (suffix) => {
         onChangeFormat({
-            [`${prefix}${valueKey}${suffix}-unit`]: getDefault(`${valueKey}${suffix}-unit`),
-            [`${prefix}${valueKey}${suffix}`]: getDefault(`${valueKey}${suffix}`),
+            [getAttrKey(`${suffix}-unit`)]: getDefault(`${valueKey}${suffix}-unit`),
+            [getAttrKey(suffix)]: getDefault(`${valueKey}${suffix}`),
         }, { isReset: true });
     };
 
     return (
         <div className={className}>
-            {clampStatus && <hr />}
+            {clampStatus && <hr className="maxi-clamp-divider" />}
             
             {clampStatus && fields.map(({ id, suffix, label: fieldLabel, hide }) => {
                 if (hide) return null;
@@ -55,6 +58,7 @@ const ClampControl = ({
                 return (
                     <AdvancedNumberControl
                         key={id}
+                        data-clamp-field="true"
                         label={fieldLabel}
                         enableUnit
                         unit={getUnitValue(`${valueKey}${suffix}-unit`)}
@@ -74,7 +78,7 @@ const ClampControl = ({
                 <ToggleSwitch
                     label={__('Auto-adjust scaling', 'maxi-blocks')}
                     selected={clampAutoStatus}
-                    onChange={val => onChangeFormat({ [`${prefix}${valueKey}-clamp-auto-status`]: val })}
+                    onChange={val => onChangeFormat({ [getAttrKey('-clamp-auto-status')]: val })}
                 />
             )}
 
@@ -97,10 +101,10 @@ const ClampControl = ({
             <ToggleSwitch
                 label={sprintf(__('Clamp %s', 'maxi-blocks'), lowerCase(label))}
                 selected={clampStatus}
-                onChange={val => onChangeFormat({ [`${prefix}${valueKey}-clamp-status`]: val })}
+                onChange={val => onChangeFormat({ [getAttrKey('-clamp-status')]: val })}
             />
             
-            {clampStatus && <hr />}
+            {clampStatus && <hr className="maxi-clamp-divider" />}
         </div>
     );
 };

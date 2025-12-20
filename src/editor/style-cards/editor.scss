@@ -1,7 +1,36 @@
-// Fix z-index for font-family dropdown menu in style cards
-// React-select can portal menu to body, so we need a global rule
-[class*="menu"][class*="css-"] {
-	z-index: 999999 !important;
+// ============================================
+// Variables & Mixins
+// ============================================
+$grey-light: var(--maxi-grey-light);
+$grey-dark: var(--maxi-grey-dark);
+$white: var(--maxi-white);
+$primary: var(--maxi-primary-color);
+$border-style: 1.5px solid $grey-light;
+$radius-pill: 20px;
+$transition-fast: all 0.2s ease;
+$transition: all 0.3s ease;
+
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin action-button {
+	@include flex-center;
+	border: $border-style;
+	border-radius: $radius-pill;
+	padding: 8px;
+	color: $grey-dark;
+	transition: $transition;
+}
+
+// Placeholder for shared button styles
+%card-button-base {
+	@include action-button;
+	&:disabled {
+		opacity: 0.3;
+	}
 }
 
 .has-tooltip {
@@ -40,9 +69,7 @@
 	.maxi-responsive-close {
 		position: absolute;
 		right: 10px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		@include flex-center;
 		height: 20px !important;
 		width: 20px !important;
 		padding: 0 0 1px !important;
@@ -213,7 +240,6 @@ body .maxi-style-cards__popover {
 					& > div {
 						&:not(.flexbox-fix) {
 							margin-right: 0 !important;
-							//justify-content: end;
 							svg {
 								border-radius: 0 !important;
 							}
@@ -248,19 +274,16 @@ body .maxi-style-cards__popover {
 		margin-bottom: 8px;
 
 		&__box {
-			display: flex;
+			@include flex-center;
 			width: 32px;
 			height: 32px;
 			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $border-style;
 			margin: 0;
 			border-radius: 50% !important;
-			background-color: var(--maxi-white);
+			background-color: $white;
 			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
-			cursor: pointer;
+			transition: $transition-fast;
 
 			&:hover {
 				background: var(--maxi-white);
@@ -286,17 +309,15 @@ body .maxi-style-cards__popover {
 
 		&__box {
 			position: relative;
-			display: flex;
+			@include flex-center;
 			width: 32px;
 			height: 32px;
 			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: $border-style;
 			border-radius: 50% !important;
 			background-color: #fff;
 			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
+			transition: $transition-fast;
 
 			&:hover {
 				background: var(--maxi-white);
@@ -350,7 +371,6 @@ body .maxi-style-cards__popover {
 			display: none;
 			align-items: center;
 			justify-content: center;
-			border: none !important;
 			font-size: 20px;
 			font-weight: bold;
 			line-height: 24px;
@@ -414,10 +434,9 @@ body .maxi-style-cards__popover {
 			height: 24px;
 			padding: 0;
 			display: flex;
-			justify-content: center;
+			justify-content: space-around;
 			border-radius: 50%;
 			transition: all 0.3s;
-			justify-content: space-around;
 
 			&:hover:not(:disabled) {
 				background: var(--maxi-white);
@@ -470,17 +489,8 @@ body .maxi-style-cards__popover {
 			position: relative;
 			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button),
 			a.components-button {
-				&:disabled {
-					opacity: 0.3;
-				}
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				@extend %card-button-base;
 				transition: all 0.5s;
-				border: 1.5px solid var(--maxi-grey-light);
-				border-radius: 20px;
-				padding: 8px;
-				color: var(--maxi-grey-dark);
 				line-height: 90%;
 			}
 		}
@@ -587,9 +597,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__actions {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
 			column-gap: 8px;
 
@@ -602,9 +610,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__ie {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 0;
 			width: calc(35% - 13px);
 
@@ -618,9 +624,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__save {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
 
 			button {

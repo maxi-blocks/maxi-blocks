@@ -1,3 +1,88 @@
+// ============================================
+// Variables & Mixins
+// ============================================
+$grey-light: var(--maxi-grey-light);
+$grey-dark: var(--maxi-grey-dark);
+$white: var(--maxi-white);
+$primary: var(--maxi-primary-color);
+$black: var(--maxi-black);
+$border-val: 1.5px;
+$border-style: $border-val solid $grey-light;
+$radius-pill: 20px;
+$radius-sm: 5px;
+$transition-fast: all 0.2s ease;
+$transition: all 0.3s ease;
+$control-spacing: 8px;
+
+// Breakpoint map - single source of truth
+$breakpoints: (
+	'xs': 347px,
+	'sm': 768px,
+	'md': 782px,
+	'xxl': 2500px
+);
+
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin respond-to($breakpoint) {
+	$width: map-get($breakpoints, $breakpoint);
+	@if $breakpoint == 'xxl' {
+		@media only screen and (min-width: $width) { @content; }
+	} @else {
+		@media only screen and (max-width: $width) { @content; }
+	}
+}
+
+@mixin rtl {
+	html[dir='rtl'] & { @content; }
+}
+
+@mixin control-row {
+	margin-bottom: $control-spacing;
+	display: flex;
+	flex-direction: column;
+}
+
+@mixin action-button {
+	@include flex-center;
+	border: $border-style;
+	border-radius: $radius-pill;
+	padding: 8px;
+	color: $grey-dark;
+	transition: $transition;
+}
+
+// Preset box mixin for color presets
+@mixin preset-box-base {
+	@include flex-center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: $border-style;
+	border-radius: 50% !important;
+	background-color: $white;
+	cursor: pointer;
+	transition: $transition-fast;
+	
+	&:hover {
+		background: $white;
+		border-color: var(--maxi-grey);
+	}
+}
+
+// Placeholder for shared button styles
+%card-button-base {
+	@include action-button;
+	&:disabled {
+		opacity: 0.3;
+	}
+}
+
+
 .has-tooltip {
 	.tooltip {
 		display: none;
@@ -34,9 +119,7 @@
 	.maxi-responsive-close {
 		position: absolute;
 		right: 10px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		@include flex-center;
 		height: 20px !important;
 		width: 20px !important;
 		padding: 0 0 1px !important;
@@ -106,7 +189,7 @@
 	display: flex;
 }
 .maxi-style-cards__settings {
-	padding: 0 !important;
+	padding: 0;
 
 	.maxi-style-cards__sc-cancel-save {
 		display: flex;
@@ -125,7 +208,7 @@
 		margin: 0 0 5px 0;
 
 		b {
-			font-weight: 700 !important;
+			font-weight: 700;
 		}
 	}
 }
@@ -165,7 +248,7 @@ body .maxi-style-cards__popover {
 		background-color: var(--maxi-whisper-green) !important;
 		opacity: 1;
 		color: var(--maxi-primary-color) !important;
-		transition: all 0.3s ease !important;
+		transition: $transition;
 	}
 
 	.maxi-accordion-control__item {
@@ -207,7 +290,6 @@ body .maxi-style-cards__popover {
 					& > div {
 						&:not(.flexbox-fix) {
 							margin-right: 0 !important;
-							//justify-content: end;
 							svg {
 								border-radius: 0 !important;
 							}
@@ -242,24 +324,9 @@ body .maxi-style-cards__popover {
 		margin-bottom: 8px;
 
 		&__box {
-			display: flex;
-			width: 32px;
-			height: 32px;
-			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
+			@include preset-box-base;
 			margin: 0;
-			border-radius: 50% !important;
-			background-color: var(--maxi-white);
-			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
-			cursor: pointer;
 
-			&:hover {
-				background: var(--maxi-white);
-				border-color: var(--maxi-grey);
-			}
 			&--active {
 				border: 1.5px solid var(--maxi-primary-color);
 			}
@@ -279,23 +346,9 @@ body .maxi-style-cards__popover {
 		margin-bottom: 8px;
 
 		&__box {
+			@include preset-box-base;
 			position: relative;
-			display: flex;
-			width: 32px;
-			height: 32px;
-			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
-			border-radius: 50% !important;
-			background-color: #fff;
-			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
-
-			&:hover {
-				background: var(--maxi-white);
-				border-color: var(--maxi-grey);
-			}
+			background-color: #fff; // Override for custom presets
 
 			&--active {
 				border: 2px solid var(--maxi-primary-color);
@@ -344,7 +397,6 @@ body .maxi-style-cards__popover {
 			display: none;
 			align-items: center;
 			justify-content: center;
-			border: none !important;
 			font-size: 20px;
 			font-weight: bold;
 			line-height: 24px;
@@ -408,10 +460,9 @@ body .maxi-style-cards__popover {
 			height: 24px;
 			padding: 0;
 			display: flex;
-			justify-content: center;
+			justify-content: space-around;
 			border-radius: 50%;
 			transition: all 0.3s;
-			justify-content: space-around;
 
 			&:hover:not(:disabled) {
 				background: var(--maxi-white);
@@ -464,17 +515,8 @@ body .maxi-style-cards__popover {
 			position: relative;
 			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button),
 			a.components-button {
-				&:disabled {
-					opacity: 0.3;
-				}
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				@extend %card-button-base;
 				transition: all 0.5s;
-				border: 1.5px solid var(--maxi-grey-light);
-				border-radius: 20px;
-				padding: 8px;
-				color: var(--maxi-grey-dark);
 				line-height: 90%;
 			}
 		}
@@ -581,9 +623,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__actions {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
 			column-gap: 8px;
 
@@ -596,9 +636,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__ie {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 0;
 			width: calc(35% - 13px);
 
@@ -612,9 +650,7 @@ body .maxi-style-cards__popover {
 			}
 		}
 		&__save {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
 
 			button {
@@ -674,7 +710,7 @@ body .maxi-style-cards__popover {
 		outline: none;
 		box-shadow: none;
 		&-bigger {
-			overflow: scroll !important;
+			overflow: scroll;
 			padding-bottom: 7px;
 		}
 		> * {
@@ -700,11 +736,11 @@ body .maxi-style-cards__popover {
 		&__decoration,
 		&__orientation,
 		&__direction {
-			margin-bottom: 8px;
+			@include control-row;
 		}
 		&__word-spacing,
 		&__size {
-			margin-top: 8px;
+			margin-top: $control-spacing;
 		}
 	}
 	.maxi-toggle-switch {
@@ -713,7 +749,15 @@ body .maxi-style-cards__popover {
 		}
 	}
 	.maxi-font-family-selector {
-		z-index: 1;
+		z-index: 10;
+		position: relative;
+
+		// Ensure the dropdown menu appears above everything
+		.maxi-font-family-selector__control__menu {
+			position: absolute;
+			z-index: 100 !important;
+			background: var(--maxi-white);
+		}
 	}
 	.components-range-control
 		.components-base-control__field
@@ -778,34 +822,24 @@ body .maxi-style-cards__popover {
 		border-radius: 5px !important;
 	}
 }
-@media only screen and (max-width: 768px) {
-	body {
-		.maxi-responsive-selector {
-			.maxi-style-cards__popover {
-				max-height: 90vh !important;
-			}
-		}
+@include respond-to('sm') {
+	body .maxi-responsive-selector .maxi-style-cards__popover {
+		max-height: 90vh !important;
 	}
 }
-@media only screen and (max-width: 782px) {
-	body {
-		&:not(.is-fullscreen-mode, .folded)
-			.maxi-responsive-selector
-			.maxi-style-cards__popover {
-			margin: 148px 0 0 25px;
-		}
+
+@include respond-to('md') {
+	body:not(.is-fullscreen-mode):not(.folded) .maxi-responsive-selector .maxi-style-cards__popover {
+		margin: 148px 0 0 25px;
 	}
 }
-@media only screen and (max-width: 347px) {
-	.maxi-responsive-selector {
-		.maxi-style-cards__popover {
-			.components-popover__content {
-				margin-left: -25px;
-				left: 100%;
-				transform: none;
-				min-width: 309px;
-			}
-		}
+
+@include respond-to('xs') {
+	.maxi-responsive-selector .maxi-style-cards__popover .components-popover__content {
+		margin-left: -25px;
+		left: 100%;
+		transform: none;
+		min-width: 309px;
 	}
 }
 /*******************************
@@ -840,18 +874,18 @@ html[dir='rtl'] {
 	width: 100%;
 	margin-top: 8px;
 	padding: 8px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--maxi-grey-light) !important;
 	border-radius: 4px;
 	font-size: 13px;
 
 	&:focus {
 		outline: none;
-		border-color: #007cba;
-		box-shadow: 0 0 0 1px #007cba;
+		border-color: var(--maxi-primary-color);
+		box-shadow: 0 0 0 1px var(--maxi-primary-color);
 	}
 
 	&::placeholder {
-		color: #757575;
+		color: var(--maxi-grey-dark);
 	}
 }
 .maxi-style-cards__sc__more-sc--delete {
@@ -868,4 +902,61 @@ html[dir='rtl'] {
 	&:hover svg {
 		stroke: var(--maxi-primary-color) !important;
 	}
+}
+.maxi-style-cards-headings-tabs {
+	.maxi-tabs-control {
+		display: flex;
+		gap: 4px;
+		padding: 0;
+		margin-bottom: 8px;
+
+		.maxi-tabs-control__button {
+			flex: 1;
+			min-width: 52px;
+			padding: 4px 8px;
+			border: 1.5px solid var(--maxi-grey-light) !important;
+			border-radius: 5px;
+			background-color: var(--maxi-white);
+			color: var(--maxi-grey-dark);
+			font-size: 14px;
+			font-weight: 400;
+			text-align: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			&:hover {
+				background-color: var(--maxi-whisper-green);
+				border: 1.5px solid var(--maxi-primary-color) !important;
+				color: var(--maxi-primary-color);
+			}
+
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-pastel-green);
+				border: 1.5px solid var(--maxi-primary-color) !important;
+				color: var(--maxi-primary-color);
+				font-weight: 700;
+			}
+		}
+	}
+
+	.maxi-tabs-content {
+		padding: 0;
+		
+		.maxi-tab-content__box {
+			padding: 0;
+			border: none;
+			
+			&:after {
+				display: none;
+			}
+		}
+	}
+}
+
+// Fix z-index for font-family dropdown menu in style cards
+// React-select can portal menu to body, so we need a global rule
+// Scoped to maxi-blocks context to avoid affecting other libraries
+body.maxi-blocks--active [class*="menu"][class*="css-"],
+.maxi-style-cards__popover [class*="menu"][class*="css-"] {
+	z-index: 100 !important;
 }

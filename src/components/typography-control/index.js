@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useContext } from '@wordpress/element';
+import { useState, useContext, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -338,6 +338,7 @@ const TypographyControl = props => {
 		isStyleCards = false,
 		disablePalette = false,
 		disableFontFamily = false,
+		disableResponsiveTabs = false,
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
@@ -689,8 +690,11 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
+	const Wrapper = disableResponsiveTabs ? Fragment : ResponsiveTabsControl;
+	const wrapperProps = disableResponsiveTabs ? {} : { breakpoint };
+
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
+		<Wrapper {...wrapperProps}>
 			<div className={classes}>
 				{/* When linkOnly is enabled, render only LinkOptions */}
 				{linkOnly && allowLink && (
@@ -1921,7 +1925,7 @@ const TypographyControl = props => {
 					</>
 				)}
 			</div>
-		</ResponsiveTabsControl>
+		</Wrapper>
 	);
 };
 

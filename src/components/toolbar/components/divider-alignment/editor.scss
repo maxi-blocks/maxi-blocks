@@ -5,18 +5,18 @@
 
 	.maxi-alignment-control {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			padding: 5px 30px;
 
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				border-color: var(--maxi-primary-color) !important;
+				background-color: var(--mwg);
+				border-color: var(--mpc) !important;
 			}
 
 			&[aria-pressed='true'] {
-				background-color: var(--maxi-whisper-green) !important;
-				border-color: var(--maxi-primary-color) !important;
-				color: var(--maxi-black) !important;
+				background-color: var(--mwg) !important;
+				border-color: var(--mpc) !important;
+				color: var(--mb) !important;
 			}
 		}
 		.maxi-tabs-control {

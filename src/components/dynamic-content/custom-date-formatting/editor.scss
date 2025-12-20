@@ -31,12 +31,12 @@
 			min-width: 20px;
 			font-size: 12px !important;
 			border-radius: 50%;
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			padding-top: 2px;
 			padding-right: 1px;
 
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 			}
 		}
 	}
@@ -48,8 +48,8 @@
 			flex: 1;
 			min-height: unset;
 			max-height: unset !important;
-			border: 1px solid var(--maxi-grey-light);
-			color: var(--maxi-grey);
+			border: 1px solid var(--mgl);
+			color: var(--mg);
 			font-size: 12px;
 			line-height: 14px;
 			width: 100%;

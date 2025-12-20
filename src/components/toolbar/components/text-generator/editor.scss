@@ -13,14 +13,14 @@
 		clear: both;
 	}
 	.components-button {
-		border: 1px solid var(--maxi-grey-light) !important;
-		color: var(--maxi-black) !important;
+		border: 1px solid var(--mgl) !important;
+		color: var(--mb) !important;
 		border-radius: 0;
 		height: 30px;
 		width: 72px !important;
 		margin-left: 2% !important;
 		justify-content: center;
-		background: var(--maxi-light-blue);
+		background: var(--mlb);
 		display: block !important;
 		float: right;
 		text-align: center !important;
@@ -30,11 +30,11 @@
 		}
 
 		&:hover {
-			background-color: var(--maxi-grey-dark);
+			background-color: var(--mdg);
 		}
 
 		&:active {
-			background-color: var(--maxi-grey-dark);
+			background-color: var(--mdg);
 		}
 	}
 	.maxi-base-control__label {

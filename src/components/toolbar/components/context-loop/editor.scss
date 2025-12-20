@@ -23,32 +23,32 @@
 		input[type='text'],
 		input[type='number'],
 		select {
-			border: 2px solid var(--maxi-grey-light);
-			color: var(--maxi-grey-light);
+			border: 2px solid var(--mgl);
+			color: var(--mgl);
 		}
 	}
 	.maxi-axis-control {
-		color: var(--maxi-white);
+		color: var(--mw);
 		&__content {
 			&__item {
 				&__checkbox {
 					input {
-						border: 2px solid var(--maxi-grey-light);
-						background-color: var(--maxi-grey-dark);
+						border: 2px solid var(--mgl);
+						background-color: var(--mdg);
 						&:focus {
-							border-color: var(--maxi-grey-light);
+							border-color: var(--mgl);
 						}
 					}
 				}
 				&__sync {
 					margin-top: 35px;
-					border-color: var(--maxi-grey-light);
+					border-color: var(--mgl);
 					button {
 						&[aria-pressed='true'] {
-							background: var(--maxi-grey-dark) !important;
+							background: var(--mdg) !important;
 						}
 						svg {
-							fill: var(--maxi-white);
+							fill: var(--mw);
 						}
 					}
 				}

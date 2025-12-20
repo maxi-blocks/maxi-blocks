@@ -1,8 +1,8 @@
 .maxi-warning-box {
 	position: relative;
 	padding: 0.5rem;
-	background: var(--maxi-light-yellow);
-	color: var(--maxi-grey-dark) !important;
+	background: var(--mly);
+	color: var(--mdg) !important;
 	line-height: 1.3em;
 
 	&__links {
@@ -16,14 +16,14 @@
 			text-decoration: underline;
 			font-size: 13px !important;
 			cursor: pointer;
-			color: var(--maxi-grey-dark) !important;
+			color: var(--mdg) !important;
 			transition: all 0.5s;
 
 			&:last-child {
 				margin-right: 0;
 			}
 			&:hover {
-				color: var(--maxi-tertiary-color) !important;
+				color: var(--mtc) !important;
 			}
 		}
 	}
@@ -37,7 +37,7 @@
 }
 .maxi-accordion-control__item__panel {
 	.maxi-warning-box {
-		border: 1px solid var(--maxi-bright-yellow);
+		border: 1px solid var(--mby);
 		margin-bottom: 8px;
 		border-radius: 7px !important;
 	}

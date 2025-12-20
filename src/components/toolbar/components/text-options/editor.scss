@@ -8,7 +8,7 @@
 		&__wrap {
 			display: flex; // Makes children align horizontally
 			align-items: center; // Vertically centers items in container
-			border-top: 1px solid var(--maxi-grey-light); // Adds separator line
+			border-top: 1px solid var(--mgl); // Adds separator line
 
 			// Styles for base control elements
 			.maxi-base-control {
@@ -43,11 +43,11 @@
 
 					// Active button state
 					&[aria-pressed='true'] {
-						color: var(--maxi-primary-color);
+						color: var(--mpc);
 						// Changes text color when active
-						background-color: var(--maxi-white) !important;
+						background-color: var(--mw) !important;
 						fill: none !important;
-						border-bottom: 3px solid var(--maxi-primary-color) !important; // Adds highlight bar
+						border-bottom: 3px solid var(--mpc) !important; // Adds highlight bar
 					}
 				}
 
@@ -57,14 +57,14 @@
 					fill: none !important;
 
 					path {
-						stroke: var(--maxi-black); // Default icon color
+						stroke: var(--mb); // Default icon color
 					}
 				}
 				&:hover {
 					transition: all 0.4s ease !important;
 					svg {
 						path {
-							stroke: var(--maxi-secondary-color) !important;
+							stroke: var(--msc) !important;
 						}
 					}
 				}
@@ -78,7 +78,7 @@
 				margin: 0;
 
 				&__button {
-					border-color: var(--maxi-grey-light);
+					border-color: var(--mgl);
 					border-style: solid;
 					border-width: 0 1px 0 0;
 
@@ -110,7 +110,7 @@
 						svg {
 							width: 14px;
 							path {
-								stroke: var(--maxi-black);
+								stroke: var(--mb);
 								transition: stroke 0.2s ease;
 							}
 						}
@@ -124,7 +124,7 @@
 			}
 
 			.maxi-font-family-selector__control__control {
-				// border-color: var(--maxi-grey-light);
+				// border-color: var(--mgl);
 				border-style: solid;
 				border-width: 0 1px 0 0;
 				height: 36px;
@@ -162,19 +162,19 @@
 				// Add specific SVG styling for font selector
 				svg {
 					fill: var(
-						--maxi-black
+						--mb
 					) !important; // Add fill for font selector icons
 
 					&:hover {
 						fill: var(
-							--maxi-primary-color
+							--mpc
 						) !important; // Change fill color on hover
 					}
 				}
 
 				&__button {
-					color: var(--maxi-white);
-					border-color: var(--maxi-grey);
+					color: var(--mw);
+					border-color: var(--mg);
 				}
 			}
 
@@ -196,7 +196,7 @@
 					margin-bottom: 0;
 
 					.maxi-font-family-selector__control__control:hover {
-						background-color: var(--maxi-white);
+						background-color: var(--mw);
 						cursor: pointer;
 					}
 				}
@@ -222,7 +222,7 @@
 					margin-right: 3px;
 
 					path {
-						// stroke: var(--maxi-black);
+						// stroke: var(--mb);
 					}
 				}
 			}

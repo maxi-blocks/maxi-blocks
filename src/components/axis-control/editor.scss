@@ -20,7 +20,7 @@
 		min-width: 32px;
 		height: 32px;
 		padding: 0;
-		border: 1px solid var(--maxi-grey-light);
+		border: 1px solid var(--mgl);
 		border-radius: 0;
 		margin-bottom: 0;
 		opacity: 1 !important;
@@ -31,12 +31,12 @@
 	.maxi-tabs-control__button {
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
-			stroke: var(--maxi-grey-dark);
+			stroke: var(--mdg);
 			transition: stroke 0.3s ease;
 		}
 
 		&:hover svg:not(.maxi-tabs-control__notification) path {
-			stroke: var(--maxi-secondary-color);
+			stroke: var(--msc);
 		}
 	}
 
@@ -44,7 +44,7 @@
 	.maxi-tabs-control__button--selected {
 		svg:not(.maxi-tabs-control__notification) path {
 			fill: transparent;
-			stroke: var(--maxi-secondary-color);
+			stroke: var(--msc);
 		}
 	}
 }

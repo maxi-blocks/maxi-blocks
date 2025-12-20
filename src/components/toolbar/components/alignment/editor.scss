@@ -15,10 +15,10 @@
 					display: block;
 					align-items: flex-start;
 					&:hover {
-						background-color: var(--maxi-grey-light);
+						background-color: var(--mgl);
 					}
 					&:focus:not(:disabled) {
-						background-color: var(--maxi-white);
+						background-color: var(--mw);
 					}
 				}
 			}

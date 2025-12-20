@@ -8,7 +8,7 @@ const priceList = (
 		<defs>
 			<Path
 				id='price_list__a'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -17,7 +17,7 @@ const priceList = (
 			/>
 			<Path
 				id='price_list__b'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -26,7 +26,7 @@ const priceList = (
 			/>
 			<Path
 				id='price_list__c'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -35,7 +35,7 @@ const priceList = (
 			/>
 			<Path
 				id='price_list__d'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

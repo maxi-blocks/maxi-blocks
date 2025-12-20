@@ -4,7 +4,7 @@
 	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:none;}
-	.st1{fill:var(--maxi-primary-color);}
+	.st1{fill:var(--mpc);}
 </style>
 <path class="st0" d="M19.8606,5.9425c-1.1253-0.4376-2.4382-0.4376-3.5635-0.0625c-4.3762,1.6254-5.1889,6.6893-2.3756,9.5651
 	c2.1881,2.2506,5.8766,2.3131,8.1272,0.0625C24.9245,12.7568,24.2368,7.6305,19.8606,5.9425z"/>

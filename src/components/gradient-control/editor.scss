@@ -2,7 +2,7 @@
 	position: relative;
 
 	.components-custom-gradient-picker__control-point-button {
-		border: 1px solid var(--maxi-grey-dark);
+		border: 1px solid var(--mdg);
 	}
 
 	.components-angle-picker-control {
@@ -25,7 +25,7 @@
 			line-height: 2 !important;
 		}
 		&__backdrop {
-			border: 1.5px solid var(--maxi-grey-light) !important;
+			border: 1.5px solid var(--mgl) !important;
 			border-radius: 5px !important;
 		}
 	}
@@ -48,8 +48,8 @@
 			transition: all 0.4s ease !important;
 
 			&:hover {
-				fill: var(--maxi-primary-color) !important;
-				background-color: var(--maxi-white) !important;
+				fill: var(--mpc) !important;
+				background-color: var(--mw) !important;
 			}
 			&:focus {
 				box-shadow: none !important;
@@ -75,13 +75,13 @@
 				width: 25px;
 				height: 25px;
 				margin: auto;
-				border: 1.5px solid var(--maxi-grey-light);
+				border: 1.5px solid var(--mgl);
 				opacity: 1;
 				float: left;
 				border-radius: 50%;
 			}
 			.components-maxi-control__reset-button {
-				border-color: var(--maxi-grey-light);
+				border-color: var(--mgl);
 			}
 		}
 	}
@@ -100,9 +100,9 @@
 					top: -5px;
 					left: 8px;
 					font-size: 10px !important;
-					color: var(--maxi-accessibility-grey);
+					color: var(--magy);
 					font-style: italic;
-					background: var(--maxi-white);
+					background: var(--mw);
 					padding: 0 5px;
 					pointer-events: none;
 					box-sizing: border-box;

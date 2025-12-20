@@ -168,10 +168,10 @@ body.toplevel_page_maxi-blocks-dashboard {
 				&__validation-message {
 					width: 100%;
 					&.api-loading {
-						color: var(--maxi-secondary-color);
+						color: var(--msc);
 					}
 					&.api-error {
-						color: var(--maxi-orange-red);
+						color: var(--mor);
 					}
 				}
 			}
@@ -550,7 +550,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									&:focus
 										+ .maxi-toggle-switch__toggle__track {
 										border-radius: 12px;
-										box-shadow: 0 0 0 1px var(--maxi-grey);
+										box-shadow: 0 0 0 1px var(--mg);
 										outline: 2px solid transparent;
 									}
 
@@ -573,13 +573,13 @@ body.toplevel_page_maxi-blocks-dashboard {
 									vertical-align: top;
 									width: 44px;
 									height: 24px;
-									background-color: var(--maxi-white);
+									background-color: var(--mw);
 									background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.8 8"><path d="M8.43.22A1 1 0 0 0 7 .37L2.93 5.48 1.72 4.21a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l2 2.1h.05a.83.83 0 0 0 .16.09l.1.06A1.15 1.15 0 0 0 3 8a.93.93 0 0 0 .4-.09l.11-.07a.71.71 0 0 0 .18-.12s0 0 0-.06l4.8-6A1 1 0 0 0 8.43.22Z"/></svg>'),
 										url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path d="m5.6 4 2.55-2.55A.85.85 0 1 0 7 .25L4.4 2.8 1.85.25a.85.85 0 0 0-1.2 1.2L3.2 4 .65 6.55a.85.85 0 0 0 0 1.2.83.83 0 0 0 .6.25.82.82 0 0 0 .6-.25.82.82 0 0 0 .6-.25L4.4 5.2 7 7.75a.82.82 0 0 0 .6.25.83.83 0 0 0 .6-.25.85.85 0 0 0 0-1.2Z" transform="translate(-.4)"/></svg>');
 									background-repeat: no-repeat, no-repeat;
 									background-position: 8px center, 24px center;
 									background-size: 10px auto, 10px auto;
-									border: 1px solid var(--maxi-grey-light);
+									border: 1px solid var(--mgl);
 									border-radius: 12px;
 									transition: 0.2s background ease;
 								}
@@ -592,7 +592,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									width: 18px;
 									height: 18px;
 									background-color: var(--maxi-admin-white);
-									border: 1px solid var(--maxi-grey-light);
+									border: 1px solid var(--mgl);
 									border-radius: 50%;
 									transition: 0.1s transform ease;
 								}
@@ -649,7 +649,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 					.header-row td {
 						font-weight: bold;
-						background: var(--maxi-primary-color);
+						background: var(--mpc);
 					}
 
 					.status-ok span {
@@ -713,7 +713,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					margin: 0;
 					line-height: 136%;
 					a {
-						color: var(--maxi-primary-color);
+						color: var(--mpc);
 						&:hover {
 							transition: all 0.4s ease;
 							opacity: 0.5;
@@ -1132,7 +1132,7 @@ body.site-editor-php
 				transition: background 0.3s ease, transform 0.2s ease;
 
 				&:hover {
-					background: var(--maxi-primary-color) !important;
+					background: var(--mpc) !important;
 					color: var(--maxi-admin-white);
 				}
 			}

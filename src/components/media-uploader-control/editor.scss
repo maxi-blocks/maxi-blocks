@@ -17,24 +17,24 @@
 		display: block;
 		text-align: center;
 		box-shadow: none !important;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--mgl);
 		border-radius: 5px;
-		color: var(--maxi-grey-dark);
+		color: var(--mdg);
 		transition: all 0.5s;
 		&:hover {
-			border: 1.5px solid var(--maxi-primary-color);
-			color: var(--maxi-black);
-			background-color: var(--maxi-pastel-green);
+			border: 1.5px solid var(--mpc);
+			color: var(--mb);
+			background-color: var(--mpg);
 		}
 	}
 	&__toggle {
 		display: block;
 		width: 100%;
 		min-height: 90px;
-		background: var(--maxi-whisper-green);
-		border: 1.5px dashed var(--maxi-grey-light);
+		background: var(--mwg);
+		border: 1.5px dashed var(--mgl);
 		border-radius: 10px;
-		color: var(--maxi-grey-dark) !important;
+		color: var(--mdg) !important;
 		line-height: 20px;
 		padding: 8px 0;
 		text-align: center;

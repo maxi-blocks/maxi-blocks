@@ -3,8 +3,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		.maxi-font-family-selector__control {
 			&--is-focused,
 			&:focus {
-				border-color: var(--maxi-secondary-color);
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+				border-color: var(--msc);
+				box-shadow: 0 0 0 1px var(--msc);
 				outline: 2px solid transparent;
 			}
 		}
@@ -28,7 +28,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
-			border: 1.5px solid var(--maxi-grey-light);
+			border: 1.5px solid var(--mgl);
 			border-radius: 0;
 			box-shadow: none;
 		}
@@ -38,14 +38,14 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__option {
 			&--is-focused,
 			&--is-selected {
-				background-color: var(--maxi-pastel-green);
-				color: var(--maxi-black) !important;
+				background-color: var(--mpg);
+				color: var(--mb) !important;
 				font-weight: 700 !important;
 				cursor: pointer;
 			}
 		}
 		&__control {
-			border-color: var(--maxi-grey-light);
+			border-color: var(--mgl);
 			padding: 8px 2px 8px 8px;
 			border-radius: 5px;
 			min-height: unset;
@@ -57,17 +57,17 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 			&:focus,
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 			}
 			&--is-focused {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 				box-shadow: none;
 				outline: none;
 			}
 		}
 		&__single-value {
 			margin: 0;
-			color: var(--maxi-black);
+			color: var(--mb);
 
 			& + div {
 				margin: 0;
@@ -86,16 +86,16 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				color: var(--maxi-black) !important;
+				color: var(--mb) !important;
 				font-weight: 700 !important;
 				svg {
-					fill: var(--maxi-black);
+					fill: var(--mb);
 				}
 			}
 			svg {
 				width: 100%;
 				height: 100%;
-				fill: var(--maxi-grey);
+				fill: var(--mg);
 			}
 		}
 		&__dropdown-indicator {
@@ -106,18 +106,18 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.5s all;
 
 			&:hover {
-				color: var(--maxi-black) !important;
+				color: var(--mb) !important;
 				font-weight: 700 !important;
 			}
 			svg {
-				fill: var(--maxi-grey);
+				fill: var(--mg);
 			}
 		}
 		&__indicator-separator {
 			width: 2px;
 			height: 80%;
 			margin: auto 2px;
-			background-color: var(--maxi-grey-light);
+			background-color: var(--mgl);
 		}
 	}
 

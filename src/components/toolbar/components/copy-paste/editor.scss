@@ -10,24 +10,24 @@
 
 			/* Track */
 			&::-webkit-scrollbar-track {
-				background: var(--maxi-white);
+				background: var(--mw);
 			}
 
 			/* Handle */
 			&::-webkit-scrollbar-thumb {
-				background: var(--maxi-grey-light);
+				background: var(--mgl);
 				border-radius: 0;
 				cursor: pointer;
 			}
 
 			/* Handle on hover */
 			&::-webkit-scrollbar-thumb:hover {
-				background: var(--maxi-primary-color);
+				background: var(--mpc);
 			}
 		}
 
 		&__item {
-			border-top: 1px solid var(--maxi-grey-light);
+			border-top: 1px solid var(--mgl);
 			position: relative;
 			cursor: pointer;
 			margin: 0;
@@ -35,7 +35,7 @@
 			display: flex;
 			align-items: center;
 			&:hover {
-				background-color: var(--maxi-grey-light);
+				background-color: var(--mgl);
 			}
 			&[data-copy_paste_group] {
 				padding: 3px 7px 3px 15px;
@@ -56,31 +56,31 @@
 			}
 
 			&:last-child {
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: 1px solid var(--mgl);
 			}
 
 			.maxi-axis-control__content__item__checkbox {
 				display: flex;
 				align-items: center;
-				color: var(--maxi-black);
+				color: var(--mb);
 				margin-top: 0;
 				width: 100%;
 			}
 
 			input[type='checkbox'] {
-				border-color: var(--maxi-grey-light);
+				border-color: var(--mgl);
 				border-radius: 0;
 				margin: 0;
 				box-shadow: none;
 				&:hover {
-					border-color: var(--maxi-black);
+					border-color: var(--mb);
 				}
 				&:focus {
 					box-shadow: none;
 				}
 
 				&:checked {
-					border-color: var(--maxi-black);
+					border-color: var(--mb);
 					&::before {
 						content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M14.83 4.89l1.34.94-5.81 8.38H9.02L5.78 9.67l1.34-1.25 2.57 2.4z' fill='%2380828a'/%3E%3C/svg%3E");
 						margin: -3px 0 0 -5px;
@@ -88,7 +88,7 @@
 				}
 				& + span {
 					padding-left: 5px;
-					color: var(--maxi-black);
+					color: var(--mb);
 				}
 			}
 			&__group {
@@ -101,7 +101,7 @@
 		&__button {
 			display: flex;
 			width: 100%;
-			color: var(--maxi-black);
+			color: var(--mb);
 			text-align: left;
 			border-radius: 0;
 			box-shadow: none;
@@ -117,7 +117,7 @@
 					width: 100%;
 					height: 1px;
 					margin: 0;
-					background-color: var(--maxi-grey-light);
+					background-color: var(--mgl);
 				}
 			}
 
@@ -128,9 +128,9 @@
 			&--special {
 				display: block;
 				height: 30px;
-				background: var(--maxi-primary-color) !important;
+				background: var(--mpc) !important;
 				border-radius: 0;
-				color: var(--maxi-white);
+				color: var(--mw);
 				font-size: 12px;
 				text-align: center !important;
 				padding-top: 4px !important;
@@ -146,7 +146,7 @@
 			}
 
 			&:hover {
-				color: var(--maxi-secondary-color);
+				color: var(--msc);
 			}
 		}
 	}
@@ -169,8 +169,8 @@
 		}
 	}
 	&[aria-expanded='true'] {
-		border-bottom: 1px solid var(--maxi-grey-light);
-		background: var(--maxi-white);
+		border-bottom: 1px solid var(--mgl);
+		background: var(--mw);
 
 		&:after {
 			transform: translateY(-50%) rotate(90deg);
@@ -189,25 +189,25 @@
 
 		/* Track */
 		&::-webkit-scrollbar-track {
-			background: var(--maxi-white);
+			background: var(--mw);
 		}
 
 		/* Handle */
 		&::-webkit-scrollbar-thumb {
-			background: var(--maxi-grey-light);
+			background: var(--mgl);
 			border-radius: 0;
 			cursor: pointer;
 		}
 
 		/* Handle on hover */
 		&::-webkit-scrollbar-thumb:hover {
-			background: var(--maxi-primary-color);
+			background: var(--mpc);
 		}
 		.maxi-settingstab-control {
 			.maxi-tabs-control {
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: 1px solid var(--mgl);
 				.components-button {
-					border-right: 1px solid var(--maxi-grey-light);
+					border-right: 1px solid var(--mgl);
 					text-align: center;
 					display: flex;
 					padding-left: 0;
@@ -216,7 +216,7 @@
 					border-bottom: 2px solid transparent;
 					font-weight: 400 !important;
 					&:last-child {
-						background-color: var(--maxi-white);
+						background-color: var(--mw);
 						border-right: none !important;
 					}
 					&::before {

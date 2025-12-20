@@ -9,14 +9,14 @@ const ReactSelectControl = ({ labelText, ...props }) => {
 			...base,
 			padding: '8px',
 			whiteSpace: 'wrap',
-			borderBottom: '1px solid var(--maxi-grey-light)',
+			borderBottom: '1px solid var(--mgl)',
 			backgroundColor: `${
 				state.isFocused
 					? 'rgba(229, 242, 248, 0.7)'
-					: 'var(--maxi-white)'
+					: 'var(--mw)'
 			} !important`,
 			color: `${
-				state.isFocused ? 'var(--maxi-black)' : 'var(--maxi-grey)'
+				state.isFocused ? 'var(--mb)' : 'var(--mg)'
 			} !important`,
 			width: 'auto',
 			cursor: 'pointer',
@@ -27,9 +27,9 @@ const ReactSelectControl = ({ labelText, ...props }) => {
 			height: '32px',
 			marginBottom: '8px',
 			borderRadius: '5px',
-			border: '1px solid var(--maxi-grey-light)',
+			border: '1px solid var(--mgl)',
 			cursor: 'pointer',
-			background: 'var(--maxi-white)',
+			background: 'var(--mw)',
 		}),
 		menu: base => ({
 			...base,

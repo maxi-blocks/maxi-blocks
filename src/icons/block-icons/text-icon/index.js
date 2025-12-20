@@ -7,7 +7,7 @@ const textIcon = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<Path
 			fill='none'
-			stroke='var(--maxi-primary-color)'
+			stroke='var(--mpc)'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth='1.5'

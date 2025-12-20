@@ -1,14 +1,14 @@
 .maxi-list-item-block {
-	outline: 2px dashed var(--maxi-mid-green) !important;
+	outline: 2px dashed var(--mmg) !important;
 
 	&__has-text {
 		outline: 2px dashed transparent !important;
 
 		&:hover {
-			outline: 1.5px solid var(--maxi-mid-green) !important;
+			outline: 1.5px solid var(--mmg) !important;
 		}
 		&.is-selected {
-			outline: 1.5px solid var(--maxi-whisper-green) !important;
+			outline: 1.5px solid var(--mwg) !important;
 		}
 	}
 
@@ -32,18 +32,18 @@
 
 .maxi-block {
 	&.is-selected {
-		outline: 1.5px dashed var(--maxi-light-blue-alt) !important;
+		outline: 1.5px dashed var(--mlb-a) !important;
 
 		&:hover {
 			border-radius: 0 !important;
-			outline: 1.5px solid var(--maxi-mid-green) !important;
+			outline: 1.5px solid var(--mmg) !important;
 		}
 	}
 
 	&--backend {
 		&:hover {
 			border-radius: 0 !important;
-			outline: 1.5px solid var(--maxi-mid-green) !important;
+			outline: 1.5px solid var(--mmg) !important;
 		}
 	}
 }
@@ -53,10 +53,10 @@
 		outline: 1.5px dashed transparent !important;
 
 		&:hover {
-			outline: 1.5px dashed var(--maxi-primary-color) !important;
+			outline: 1.5px dashed var(--mpc) !important;
 		}
 		&.is-selected {
-			outline: 1.5px dashed var(--maxi-primary-color) !important;
+			outline: 1.5px dashed var(--mpc) !important;
 		}
 	}
 

@@ -1,11 +1,11 @@
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-toggle-switch__toggle {
 		&__track {
-			border-color: var(--maxi-accessibility-grey);
+			border-color: var(--magy);
 		}
 		input[type='checkbox'] {
 			&:focus + .maxi-toggle-switch__toggle__track {
-				box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+				box-shadow: 0 0 0 1px var(--msc);
 			}
 		}
 	}
@@ -21,8 +21,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	&--is-checked {
 		.maxi-toggle-switch__toggle__thumb {
-			background-color: var(--maxi-primary-color);
-			border-color: var(--maxi-primary-color);
+			background-color: var(--mpc);
+			border-color: var(--mpc);
 			transform: translateX(20px);
 		}
 	}
@@ -63,13 +63,13 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			vertical-align: top;
 			width: 44px;
 			height: 24px;
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			background-image: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.8 8"><path fill="rgb(147, 147, 147)" d="M8.43.22A1 1 0 0 0 7 .37L2.93 5.48 1.72 4.21a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l2 2.1h.05a.83.83 0 0 0 .16.09l.1.06A1.15 1.15 0 0 0 3 8a.93.93 0 0 0 .4-.09l.11-.07a.71.71 0 0 0 .18-.12s0 0 0-.06l4.8-6A1 1 0 0 0 8.43.22Z"/></svg>'),
 				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path fill="rgb(147, 147, 147)" d="m5.6 4 2.55-2.55A.85.85 0 1 0 7 .25L4.4 2.8 1.85.25a.85.85 0 0 0-1.2 1.2L3.2 4 .65 6.55a.85.85 0 0 0 0 1.2.83.83 0 0 0 .6.25.82.82 0 0 0 .6-.25L4.4 5.2 7 7.75a.82.82 0 0 0 .6.25.83.83 0 0 0 .6-.25.85.85 0 0 0 0-1.2Z" transform="translate(-.4)"/></svg>');
 			background-repeat: no-repeat, no-repeat;
 			background-position: 8px center, 24px center;
 			background-size: 10px auto, 10px auto;
-			border: 1px solid var(--maxi-grey);
+			border: 1px solid var(--mg);
 			border-radius: 12px;
 			outline: 0;
 			transition: 0.2s background ease;
@@ -82,8 +82,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			box-sizing: border-box;
 			width: 18px;
 			height: 18px;
-			background-color: var(--maxi-white);
-			border: 1px solid var(--maxi-grey);
+			background-color: var(--mw);
+			border: 1px solid var(--mg);
 			border-radius: 50%;
 			transition: 0.1s transform ease;
 		}

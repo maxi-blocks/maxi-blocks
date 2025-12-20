@@ -9,43 +9,43 @@
 		justify-content: center;
 		height: 32px;
 		width: 22.5%;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--mgl);
 		border-radius: 4px;
 		transition: all 0.5s;
 
 		&--active {
-			background-color: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
+			background-color: var(--mwg);
+			border-color: var(--msc);
 
 			path {
-				fill: var(--maxi-secondary-color);
-				//stroke: var(--maxi-secondary-color);
+				fill: var(--msc);
+				//stroke: var(--msc);
 			}
 			&:first-child,
 			&:nth-child-4 {
 				svg {
 					path {
-						fill: var(--maxi-secondary-color);
-						//stroke: var(--maxi-secondary-color);
+						fill: var(--msc);
+						//stroke: var(--msc);
 					}
 				}
 			}
 			// &:nth-child(3),
 			// &:nth-child(4) {
 			// 	path {
-			// 		stroke: var(--maxi-secondary-color);
+			// 		stroke: var(--msc);
 			// 	}
 			// }
 		}
 
 		&:hover {
-			background-color: var(--maxi-pastel-green);
-			stroke: var(--maxi-secondary-color);
+			background-color: var(--mpg);
+			stroke: var(--msc);
 
 			svg {
 				path {
-					//stroke: var(--maxi-secondary-color) !important;
-					fill: var(--maxi-secondary-color) !important;
+					//stroke: var(--msc) !important;
+					fill: var(--msc) !important;
 				}
 			}
 		}

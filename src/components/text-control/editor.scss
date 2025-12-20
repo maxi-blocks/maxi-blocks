@@ -9,19 +9,19 @@ body.maxi-blocks--active .maxi-text-control {
 		padding: 2px 8px;
 		border-radius: 5px;
 		background-color: rgba(33, 141, 250, 0);
-		border: 1px solid var(--maxi-grey-light);
+		border: 1px solid var(--mgl);
 		font-size: 13px;
-		color: var(--maxi-grey-dark);
+		color: var(--mdg);
 		font-weight: 500;
 		flex: 1;
 
 		&:focus {
-			border-color: var(--maxi-grey);
+			border-color: var(--mg);
 		}
 	}
 
 	&__validation-text {
-		color: var(--maxi-orange-red);
+		color: var(--mor);
 		width: 100%;
 		text-align: right;
 	}
@@ -47,9 +47,9 @@ body.maxi-blocks--active .maxi-text-control {
 			top: -8px;
 			left: 8px;
 			font-size: 10px !important;
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 			font-style: normal;
-			background: var(--maxi-white);
+			background: var(--mw);
 			padding: 0 5px;
 			pointer-events: none;
 			box-sizing: border-box;

@@ -3,8 +3,8 @@
 		.maxi-tabs-control {
 			.maxi-components-button {
 				&[aria-pressed='true'] {
-					background: var(--maxi-whisper-green);
-					color: var(--maxi-secondary-color);
+					background: var(--mwg);
+					color: var(--msc);
 				}
 			}
 		}
@@ -17,7 +17,7 @@
 	justify-content: center;
 	height: 32px !important;
 	width: 40% !important;
-	border: 1.5px solid var(--maxi-grey-light) !important;
+	border: 1.5px solid var(--mgl) !important;
 	border-radius: 4px !important;
 	transition: all 0.5s !important;
 	padding: 10px 15px !important;
@@ -25,13 +25,13 @@
 	left: auto;
 
 	&[aria-pressed='true'] {
-		background-color: var(--maxi-whisper-green);
-		border-color: var(--maxi-secondary-color);
+		background-color: var(--mwg);
+		border-color: var(--msc);
 	}
 
 	&:hover {
-		background-color: var(--maxi-pastel-green);
-		stroke: var(--maxi-secondary-color);
+		background-color: var(--mpg);
+		stroke: var(--msc);
 	}
 }
 

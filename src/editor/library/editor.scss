@@ -1,6 +1,6 @@
 // At the top of your file:
 $standard-margin: 8px;
-$border-light: 1px solid var(--maxi-grey-light);
+$border-light: 1px solid var(--mgl);
 
 .maxi-library-modal {
 	width: 85%;
@@ -46,8 +46,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 			// Add button hover styles
 			.maxi-cloud-masonry-card__button {
 				&:hover {
-					// border-color: var(--maxi-cloud-primary);
-					// background-color: var(--maxi-cloud-primary-whisper);
+					// border-color: var(--mcp);
+					// background-color: var(--mcp-w);
 				}
 			}
 
@@ -55,18 +55,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 				// Load library button styles
 				width: 100%;
 				padding: 2rem;
-				background: var(--maxi-whisper-green);
-				border: 1.5px solid var(--maxi-mid-green);
-				color: var(--maxi-black);
+				background: var(--mwg);
+				border: 1.5px solid var(--mmg);
+				color: var(--mb);
 				transition: all 0.3s ease;
 				display: flex; // Simplified from separate align/justify
 				justify-content: center;
 				align-items: center;
 
 				&:hover {
-					background: var(--maxi-pastel-green) !important;
-					border-color: var(--maxi-secondary-color);
-					color: var(--maxi-black) !important;
+					background: var(--mpg) !important;
+					border-color: var(--msc);
+					color: var(--mb) !important;
 					font-weight: 800;
 				}
 			}
@@ -77,7 +77,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				margin: 0 5px 5px 0;
 				padding: 0;
 				height: auto;
-				border: 2px solid var(--maxi-grey-light);
+				border: 2px solid var(--mgl);
 				border-radius: 5px;
 				cursor: pointer;
 				transition: all 0.4s ease; // Add transition
@@ -85,8 +85,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				// States
 				&--active,
 				&:hover {
-					background: var(--maxi-cloud-primary-whisper);
-					border-left: 1px solid var(--maxi-white) !important;
+					background: var(--mcp-w);
+					border-left: 1px solid var(--mw) !important;
 				}
 
 				&:last-child {
@@ -111,20 +111,20 @@ $border-light: 1px solid var(--maxi-grey-light);
 			padding: 5px;
 
 			// Preview theme styles
-			background: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-mid-green);
-			color: var(--maxi-black);
+			background: var(--mwg);
+			border: 1.5px solid var(--mmg);
+			color: var(--mb);
 			transition: background-color 0.3s ease, border-color 0.3s ease;
 
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border-color: var(--maxi-primary-color);
+				background: var(--mpg);
+				border-color: var(--mpc);
 			}
 
 			// SVG styles in preview
 			&__shape svg {
 				max-height: 100%;
-				fill: var(--maxi-black);
+				fill: var(--mb);
 
 				* {
 					fill: inherit;
@@ -139,13 +139,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: 16px;
 				cursor: pointer;
 				z-index: 8400000;
-				background: var(--maxi-white);
+				background: var(--mw);
 				border-radius: 100%;
 				height: 16px;
 				&:hover {
-					background: var(--maxi-primary-color);
+					background: var(--mpc);
 					path {
-						fill: var(--maxi-white);
+						fill: var(--mw);
 					}
 				}
 			}
@@ -165,10 +165,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 			overflow-y: clip;
 			background: repeating-linear-gradient(
 				-45deg,
-				var(--maxi-cloud-preview-gradient),
-				var(--maxi-cloud-preview-gradient) 20px,
-				var(--maxi-white) 0,
-				var(--maxi-white) 40px
+				var(--mpcg),
+				var(--mpcg) 20px,
+				var(--mw) 0,
+				var(--mw) 40px
 			) !important;
 			.maxi-cloud-container {
 				&::-webkit-scrollbar {
@@ -176,15 +176,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&::-webkit-scrollbar-track {
-					background: var(--maxi-cloud-primary-whisper);
+					background: var(--mcp-w);
 				}
 
 				&::-webkit-scrollbar-thumb {
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 				}
 
 				&::-webkit-scrollbar-thumb:hover {
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 				}
 				&__patterns {
 					position: relative;
@@ -195,7 +195,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		}
 		.maxi-cloud-toolbar {
 			height: 50px !important;
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			padding: 5px 8px !important;
 			z-index: 999;
 			&__fullwidth {
@@ -206,8 +206,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				justify-content: center;
 				flex-direction: column;
 				align-items: center;
-				color: var(--maxi-grey-dark);
-				background-color: var(--maxi-cloud-primary-whisper);
+				color: var(--mdg);
+				background-color: var(--mcp-w);
 				border: 0;
 				border-radius: 30px;
 				padding: 8px 6px 4px;
@@ -217,18 +217,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 				&_active {
 					svg {
 						path {
-							fill: var(--maxi-cloud-primary);
+							fill: var(--mcp);
 						}
 					}
 					span {
-						color: var(--maxi-cloud-primary);
+						color: var(--mcp);
 					}
 				}
 				&-fullwidth {
 					&.maxi-cloud-toolbar__button_active {
 						svg {
 							path {
-								stroke: var(--maxi-cloud-primary);
+								stroke: var(--mcp);
 							}
 						}
 					}
@@ -246,7 +246,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 				&_active,
 				&:hover {
-					box-shadow: inset 0 0 0px 1px var(--maxi-cloud-primary);
+					box-shadow: inset 0 0 0px 1px var(--mcp);
 				}
 			}
 			&__responsive-buttons {
@@ -267,7 +267,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: 33.33%;
 				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 				h2 {
-					color: var(--maxi-grey-dark);
+					color: var(--mdg);
 					font-size: 16px;
 					font-weight: 700;
 					letter-spacing: -0.5px;
@@ -277,14 +277,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 					span {
 						font-size: 16px;
 						font-weight: 700;
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 					}
 				}
 				& > .maxi-cloud-toolbar__line {
 					width: 2px;
 					height: 16px;
 					margin: 0 -8px;
-					background-color: var(--maxi-grey-light);
+					background-color: var(--mgl);
 					font-size: 0;
 				}
 			}
@@ -304,7 +304,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					span {
 						font-size: 16px;
 						font-weight: 700;
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 					}
 				}
 			}
@@ -316,7 +316,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 		width: 100%;
 		min-height: 100%;
 		max-height: calc(100% - 120px);
-		background: var(--maxi-white);
+		background: var(--mw);
 		margin-top: 0;
 		padding: 46px 0 0;
 		overflow: hidden;
@@ -356,12 +356,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				background-color: var(--maxi-black);
+				background-color: var(--mb);
 				border-radius: 50%;
 				transition: background-color 0.3s ease, color 0.3s ease;
 				font-size: 14px;
 				font-weight: bold;
-				color: var(--maxi-white);
+				color: var(--mw);
 				text-decoration: none;
 				transition: all 0.4s ease; // Add transition
 
@@ -382,7 +382,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&:hover {
-					background-color: var(--maxi-cloud-hover);
+					background-color: var(--mch);
 				}
 			}
 		}
@@ -431,8 +431,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 		width: 100%;
 		height: 46px;
 		padding: 7px 43px 5px 14px;
-		background-color: var(--maxi-white);
-		border-bottom: 1px solid var(--maxi-grey-light);
+		background-color: var(--mw);
+		border-bottom: 1px solid var(--mgl);
 		margin: 0;
 		font-size: 16px;
 		line-height: 1;
@@ -457,7 +457,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			justify-content: center;
 			padding: 0;
 			background-color: transparent;
-			color: var(--maxi-cloud-primary);
+			color: var(--mcp);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			text-decoration: none;
 			font-size: 14px;
@@ -468,24 +468,24 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: 12px;
 				height: 12px;
 				padding: 2px;
-				background-color: var(--maxi-cloud-primary);
+				background-color: var(--mcp);
 				border-radius: 50%;
 				margin-right: 5px;
 				transition: background-color 0.3s ease;
 
 				path {
-					fill: var(--maxi-cloud-primary);
-					stroke: var(--maxi-white);
+					fill: var(--mcp);
+					stroke: var(--mw);
 					transition: all 0.4s ease !important;
 				}
 			}
 
 			&:hover {
-				color: var(--maxi-grey-dark);
+				color: var(--mdg);
 				svg {
-					background-color: var(--maxi-grey-dark);
+					background-color: var(--mdg);
 					path {
-						fill: var(--maxi-grey-dark);
+						fill: var(--mdg);
 					}
 				}
 			}
@@ -539,18 +539,18 @@ $border-light: 1px solid var(--maxi-grey-light);
 						height: 20px;
 						display: flex;
 						padding: 2px 0 0 2px;
-						color: var(--maxi-white);
+						color: var(--mw);
 					}
 				}
 
 				&__input[type='checkbox'] {
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 					padding: 9px !important;
 					border: none;
 				}
 
 				&__input[type='checkbox']:checked {
-					background: var(--maxi-cloud-primary);
+					background: var(--mcp);
 					border: none;
 
 					border-radius: 4px;
@@ -585,11 +585,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 		.ais-InfiniteHits-loadMore,
 		.ais-ClearRefinements-button {
 			padding: 7px;
-			border: 1px solid var(--maxi-cloud-primary-light);
+			border: 1px solid var(--mcp-l);
 			border-radius: 30px;
 			margin: 8px;
-			background-color: var(--maxi-cloud-primary-whisper);
-			color: var(--maxi-grey-dark);
+			background-color: var(--mcp-w);
+			color: var(--mdg);
 			font-size: 14px;
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
 			font-weight: 400;
@@ -598,13 +598,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 			outline: 0;
 
 			&:not(&--disabled):hover {
-				background-color: var(--maxi-cloud-hover);
-				color: var(--maxi-white);
+				background-color: var(--mch);
+				color: var(--mw);
 			}
 
 			&--disabled {
-				background-color: var(--maxi-cloud-primary-whisper);
-				color: var(--maxi-grey-dark);
+				background-color: var(--mcp-w);
+				color: var(--mdg);
 				cursor: not-allowed;
 			}
 		}
@@ -630,7 +630,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			height: 100%;
 			width: 100%;
 			position: relative;
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 		}
 
 		&__preview-iframe_main-wrap {
@@ -647,16 +647,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 		}
 
 		&__accordion {
-			background-color: var(--maxi-white);
-			border-top: 1px solid var(--maxi-grey-light);
-			border-bottom: 1px solid var(--maxi-grey-light);
+			background-color: var(--mw);
+			border-top: 1px solid var(--mgl);
+			border-bottom: 1px solid var(--mgl);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
 
 			&__title {
 				position: relative;
-				background: var(--maxi-white);
+				background: var(--mw);
 				font-weight: 400;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: 1px solid var(--mgl);
 				border-radius: 0;
 				padding: 10px;
 				box-shadow: none;
@@ -699,7 +699,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						.ais-HierarchicalMenu-link,
 						.ais-Menu-link {
 							text-decoration: none;
-							color: var(--maxi-grey-dark);
+							color: var(--mdg);
 							font-weight: bold;
 							transition: all 0.4s ease; // Add transition
 
@@ -749,13 +749,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					.maxi-cloud-container__content-svg-shape__button {
 						width: auto;
-						color: var(--maxi-black);
-						background-color: var(--maxi-white);
+						color: var(--mb);
+						background-color: var(--mw);
 						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif;
 						font-size: 12px;
 						font-weight: normal;
-						border: 1px solid var(--maxi-grey-light);
+						border: 1px solid var(--mgl);
 						border-radius: 0;
 						text-align: center;
 						height: 31px;
@@ -775,7 +775,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							right: -1px;
 							top: -1px;
 							bottom: -1px;
-							background-color: var(--maxi-cloud-primary-light);
+							background-color: var(--mcp-l);
 							z-index: -1;
 							transition: all 0.4s ease; // Add transition
 							opacity: 0;
@@ -791,14 +791,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 							bottom: -1px;
 							width: 1px;
 							display: block;
-							background-color: var(--maxi-white);
+							background-color: var(--mw);
 							opacity: 0;
 						}
 
 						&:hover,
 						&___pressed {
 							font-weight: 700;
-							color: var(--maxi-black);
+							color: var(--mb);
 
 							&::before {
 								opacity: 1;
@@ -836,9 +836,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 						overflow: hidden;
 
 						.ais-SearchBox-input {
-							color: var(--maxi-grey-dark);
+							color: var(--mdg);
 							font-weight: bold;
-							border: 1px solid var(--maxi-grey-light);
+							border: 1px solid var(--mgl);
 							border-radius: 0;
 							box-shadow: 0 5px 15px 0 rgba(119, 119, 119, 0.1);
 							padding: 0.3rem 1rem;
@@ -862,8 +862,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 						.ais-SearchBox-submit {
 							position: absolute;
-							background: var(--maxi-grey-dark);
-							color: var(--maxi-white);
+							background: var(--mdg);
+							color: var(--mw);
 							font-weight: bold;
 							border: none;
 							transition: all 0.4s ease; // Add transition
@@ -886,7 +886,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					strong {
 						margin-right: 3px;
-						color: var(--maxi-cloud-primary);
+						color: var(--mcp);
 					}
 				}
 			}
@@ -962,8 +962,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 								span {
 									opacity: 1;
 									transition: all 0.4s ease !important;
-									color: var(--maxi-white);
-									background-color: var(--maxi-black);
+									color: var(--mw);
+									background-color: var(--mb);
 
 									&::before {
 										opacity: 1;
@@ -972,9 +972,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 							span {
 								position: relative;
-								border: 1.5px solid var(--maxi-black);
+								border: 1.5px solid var(--mb);
 								border-radius: 20px;
-								color: var(--maxi-grey-dark);
+								color: var(--mdg);
 								font-family: 'Inter', Helvetica, Arial, Lucida,
 									sans-serif;
 								font-weight: 600;
@@ -1000,8 +1000,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 								&:hover {
 									transition: all 0.4s ease; // Add transition
-									color: var(--maxi-white);
-									background-color: var(--maxi-black);
+									color: var(--mw);
+									background-color: var(--mb);
 									opacity: 1;
 									transition: all 0.4s ease !important;
 									&::before {
@@ -1015,7 +1015,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							g[data-stroke],
 							path[data-stroke],
 							svg[data-stroke] {
-								stroke: var(--maxi-black);
+								stroke: var(--mb);
 							}
 						}
 					}
@@ -1028,7 +1028,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						top: 0;
 						bottom: 0;
 						display: block;
-						border: 1px solid var(--maxi-grey-light);
+						border: 1px solid var(--mgl);
 						transition: all 0.4s ease; // Add transition
 						z-index: 0;
 						border-radius: 10px;
@@ -1053,9 +1053,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 						//hidden icon hover
 						&::after {
 							background-color: var(--maxi-off-white);
-							border-color: var(--maxi-cloud-primary-light);
+							border-color: var(--mcp-l);
 							box-shadow: 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								var(--mcp-l);
 							transform: scale(1.03);
 						}
 					}
@@ -1085,15 +1085,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 
 				&::-webkit-scrollbar-track {
-					background: var(--maxi-white);
+					background: var(--mw);
 				}
 
 				&::-webkit-scrollbar-thumb {
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 				}
 
 				&::-webkit-scrollbar-thumb:hover {
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 				}
 			}
 		}
@@ -1119,8 +1119,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				max-width: 400px;
 				border-radius: 5px;
 				margin: 0 auto;
-				color: var(--maxi-white);
-				background: var(--maxi-cloud-iframe-border);
+				color: var(--mw);
+				background: var(--mcib);
 				font-size: 15px;
 				text-align: center;
 			}
@@ -1128,7 +1128,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			.maxi-cloud-container__patterns__top-menu {
 				display: flex;
 				grid-column: span 3;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: 1px solid var(--mgl);
 				& > div {
 					&:not(.ais-Menu) {
 						width: 230px;
@@ -1138,9 +1138,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&__sidebar {
-				border-right: 1px solid var(--maxi-grey-light);
-				border-left: 1px solid var(--maxi-grey-light);
-				background-color: var(--maxi-white);
+				border-right: 1px solid var(--mgl);
+				border-left: 1px solid var(--mgl);
+				background-color: var(--mw);
 				transition: transform 0.3s ease;
 				.top-Menu {
 					display: flex;
@@ -1152,11 +1152,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 						height: 31px;
 						padding: 6px 18px;
 						border: none;
-						border-bottom: 1px solid var(--maxi-grey-light);
-						border-right: 1px solid var(--maxi-grey-light);
+						border-bottom: 1px solid var(--mgl);
+						border-right: 1px solid var(--mgl);
 						border-radius: 0;
 						margin-right: 0;
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 						background-color: transparent;
 						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif;
@@ -1180,7 +1180,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							top: -1px;
 							bottom: -1px;
 							display: block;
-							background-color: var(--maxi-cloud-primary-light);
+							background-color: var(--mcp-l);
 							transition: all 0.4s ease !important;
 							opacity: 0;
 						}
@@ -1193,7 +1193,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							bottom: -1px;
 							display: block;
 							width: 1px;
-							background-color: var(--maxi-white);
+							background-color: var(--mw);
 							opacity: 0;
 						}
 						&:first-child {
@@ -1202,7 +1202,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 						}
 						&___pressed {
-							color: var(--maxi-black);
+							color: var(--mb);
 							font-weight: 700;
 							border-bottom: 1px solid;
 							&::after {
@@ -1214,19 +1214,19 @@ $border-light: 1px solid var(--maxi-grey-light);
 						}
 						&___inactive {
 							pointer-events: none !important;
-							color: var(--maxi-grey-light);
+							color: var(--mgl);
 							&:after {
 								top: 50%;
 								left: 50%;
 								width: 109%;
 								height: 1px;
-								background-color: var(--maxi-grey-light);
+								background-color: var(--mgl);
 								transform: translate(-50%, -50%) rotate(-21deg);
 								opacity: 1;
 							}
 						}
 						&:hover {
-							color: var(--maxi-black);
+							color: var(--mb);
 							&::before {
 								opacity: 1;
 							}
@@ -1255,8 +1255,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 							display: block;
 							padding: 2px 6px;
 							border: none;
-							color: var(--maxi-grey-dark);
-							background-color: var(--maxi-white) !important;
+							color: var(--mdg);
+							background-color: var(--mw) !important;
 							background: none;
 							font-size: 18px;
 							font-weight: 500;
@@ -1264,7 +1264,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							cursor: pointer;
 							outline: 0;
 							&:hover {
-								color: var(--maxi-cloud-primary);
+								color: var(--mcp);
 							}
 						}
 						.ais-SearchBox-input {
@@ -1272,17 +1272,17 @@ $border-light: 1px solid var(--maxi-grey-light);
 							width: 100%;
 							min-height: 36px;
 							padding: 5px 10px;
-							border: 1px solid var(--maxi-grey-light);
+							border: 1px solid var(--mgl);
 							border-radius: 20px;
-							background: var(--maxi-white);
-							color: var(--maxi-grey-dark);
+							background: var(--mw);
+							color: var(--mdg);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;
 							font-size: 12px;
 							transition: all 0.5s;
 							&:hover,
 							&:focus {
-								border-color: var(--maxi-cloud-primary-light);
+								border-color: var(--mcp-l);
 								box-shadow: none;
 								outline: none;
 							}
@@ -1295,7 +1295,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					font-weight: 400;
 					&__input {
 						border-radius: 0;
-						border-color: var(--maxi-grey-light);
+						border-color: var(--mgl);
 						margin: 0;
 					}
 					&__input-container {
@@ -1316,14 +1316,14 @@ $border-light: 1px solid var(--maxi-grey-light);
 						box-shadow: none;
 					}
 					&__label {
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 						margin-top: -1px;
 						margin-bottom: 5px;
 					}
 					.components-base-control__help {
 						margin: 0 8px 8px;
 						font-size: 12px;
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 					}
 					&.use-placeholder-all-images,
 					&.use-sc-styles {
@@ -1345,8 +1345,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					&--selected {
 						a {
-							background-color: var(--maxi-cloud-primary-whisper);
-							color: var(--maxi-white);
+							background-color: var(--mcp-w);
+							color: var(--mw);
 						}
 					}
 					a {
@@ -1355,7 +1355,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						padding-top: 3px;
 						padding: 8px;
 						box-shadow: none;
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 						font-family: 'Inter', Helvetica, Arial, Lucida,
 							sans-serif;
 						font-weight: 500;
@@ -1366,11 +1366,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 						&:focus {
 							box-shadow: inset 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								var(--mcp-l);
 						}
 
 						&:hover {
-							background-color: var(--maxi-cloud-primary-whisper);
+							background-color: var(--mcp-w);
 							box-shadow: none;
 							transition: all 0.4s ease !important;
 						}
@@ -1418,16 +1418,16 @@ $border-light: 1px solid var(--maxi-grey-light);
 							}
 							a {
 								&:hover {
-									background-color: var(--maxi-white);
+									background-color: var(--mw);
 								}
 							}
 							&--selected {
 								a {
-									background-color: var(--maxi-white);
+									background-color: var(--mw);
 
 									&:hover {
 										background-color: var(
-											--maxi-light-blue
+											--mlb
 										);
 									}
 								}
@@ -1436,10 +1436,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					& > ul {
 						clear: both;
-						background-color: var(--maxi-white);
+						background-color: var(--mw);
 						margin: 8px -6px 0;
 						padding: 8px 6px 0;
-						border-top: 1px solid var(--maxi-grey-light);
+						border-top: 1px solid var(--mgl);
 						.ais-HierarchicalMenu-item {
 							border: none;
 							padding: 0;
@@ -1451,7 +1451,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					& > ul {
 						clear: both;
-						background-color: var(--maxi-grey-light);
+						background-color: var(--mgl);
 						margin: 0;
 						padding: 0;
 						border-top: 0;
@@ -1480,7 +1480,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						a {
 							&:focus {
 								box-shadow: inset 0 0 0 1px
-									var(--maxi-cloud-primary-light);
+									var(--mcp-l);
 							}
 						}
 					}
@@ -1505,8 +1505,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 						margin-bottom: 0;
 						margin-top: -1px;
 						a {
-							color: var(--maxi-black);
-							background-color: var(--maxi-cloud-primary-whisper);
+							color: var(--mb);
+							background-color: var(--mcp-w);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;
 							font-size: 12px;
@@ -1524,7 +1524,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							transition: all 0.4s ease !important;
 							&:hover {
 								background-color: var(
-									--maxi-cloud-primary-light
+									--mcp-l
 								);
 								transition: all 0.4s ease !important;
 							}
@@ -1532,7 +1532,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						&--selected {
 							a {
 								background-color: var(
-									--maxi-cloud-primary-light
+									--mcp-l
 								);
 								font-weight: 700;
 							}
@@ -1560,13 +1560,13 @@ $border-light: 1px solid var(--maxi-grey-light);
 							width: 100%;
 							height: 31px;
 							padding: 6px 8px;
-							border-bottom: 1px solid var(--maxi-grey-light);
-							border-top: 1px solid var(--maxi-grey-light);
-							border-right: 1px solid var(--maxi-grey-light);
+							border-bottom: 1px solid var(--mgl);
+							border-top: 1px solid var(--mgl);
+							border-right: 1px solid var(--mgl);
 							border-radius: 0;
 							box-shadow: none;
-							color: var(--maxi-black);
-							background-color: var(--maxi-white);
+							color: var(--mb);
+							background-color: var(--mw);
 							font-family: 'Inter', Helvetica, Arial, Lucida,
 								sans-serif;
 							font-size: 12px;
@@ -1583,7 +1583,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 								top: -1px;
 								bottom: -1px;
 								background-color: var(
-									--maxi-cloud-primary-light
+									--mcp-l
 								);
 								z-index: -1;
 								transition: all 0.4s ease !important;
@@ -1599,11 +1599,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 								bottom: -1px;
 								width: 1px;
 								display: block;
-								background-color: var(--maxi-white);
+								background-color: var(--mw);
 								opacity: 0;
 							}
 							&:hover {
-								color: var(--maxi-black);
+								color: var(--mb);
 								transition: all 0.4s ease !important;
 								&::before {
 									opacity: 1;
@@ -1632,7 +1632,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 						&--selected {
 							a {
 								font-weight: 700;
-								color: var(--maxi-black);
+								color: var(--mb);
 
 								&::before {
 									opacity: 1;
@@ -1651,8 +1651,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				margin-top: 0;
 
 				.ais-InfiniteHits-item {
-					background: var(--maxi-white);
-					border: 1px solid var(--maxi-grey-light);
+					background: var(--mw);
+					border: 1px solid var(--mgl);
 					padding: 0;
 					cursor: pointer;
 					transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1674,8 +1674,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 									sans-serif;
 								font-weight: 600;
 								margin-right: 0;
-								border: 1px solid var(--maxi-grey-light);
-								color: var(--maxi-grey-dark);
+								border: 1px solid var(--mgl);
+								color: var(--mdg);
 								border-radius: 30px;
 								min-width: 90px;
 								padding: 5px 10px;
@@ -1687,11 +1687,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 								&:hover {
 									background-color: var(
-										--maxi-cloud-primary-light
+										--mcp-l
 									);
 									border: 1px solid
-										var(--maxi-cloud-primary-light);
-									color: var(--maxi-black);
+										var(--mcp-l);
+									color: var(--mb);
 									transition: all 0.4s ease !important;
 								}
 							}
@@ -1712,10 +1712,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 					//Button hover on card
 					&:hover {
-						box-shadow: 0 0 0 1px var(--maxi-cloud-primary-light);
+						box-shadow: 0 0 0 1px var(--mcp-l);
 						.maxi-cloud-masonry-card__button {
 							box-shadow: 0 0 0 1px
-								var(--maxi-cloud-primary-light);
+								var(--mcp-l);
 						}
 					}
 				}
@@ -1728,8 +1728,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 						// Add button styles for SC content section
 						&__button {
 							margin-right: 0;
-							border: 1px solid var(--maxi-grey-light);
-							color: var(--maxi-grey-dark);
+							border: 1px solid var(--mgl);
+							color: var(--mdg);
 							font-weight: bold;
 							border-radius: 30px;
 							min-width: 90px;
@@ -1742,11 +1742,11 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 							&:hover {
 								background-color: var(
-									--maxi-cloud-primary-light
+									--mcp-l
 								);
 								border: 1px solid
-									var(--maxi-cloud-primary-light);
-								color: var(--maxi-black);
+									var(--mcp-l);
+								color: var(--mb);
 								transition: all 0.4s ease !important;
 							}
 						}
@@ -1777,9 +1777,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 			&__sidebar {
 				.ais-RefinementList-item,
 				.ais-HierarchicalMenu-item {
-					border-bottom: 1px solid var(--maxi-grey-light);
+					border-bottom: 1px solid var(--mgl);
 					&:first-child {
-						border-top: 1px solid var(--maxi-grey-light);
+						border-top: 1px solid var(--mgl);
 					}
 					.maxi-toggle-switch {
 						margin-bottom: 8px;
@@ -1812,7 +1812,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 			.ais-InfiniteHits-list {
 				.ais-InfiniteHits-item {
 					/* Card base styles */
-					background: var(--maxi-white);
+					background: var(--mw);
 					border-radius: 10px;
 					overflow: hidden;
 					transition: all 0.4s ease !important;
@@ -1830,8 +1830,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 				.maxi-cloud-masonry-card__image {
 					padding: 0;
-					background: var(--maxi-white);
-					border: 1px solid var(--maxi-grey-light);
+					background: var(--mw);
+					border: 1px solid var(--mgl);
 				}
 			}
 			&__content-patterns {
@@ -1861,12 +1861,12 @@ $border-light: 1px solid var(--maxi-grey-light);
 					}
 					&:first-child {
 						a {
-							border-left: 1px solid var(--maxi-grey-light);
+							border-left: 1px solid var(--mgl);
 						}
 					}
 					&:last-child {
 						a {
-							border-right: 1px solid var(--maxi-grey-light);
+							border-right: 1px solid var(--mgl);
 						}
 					}
 				}
@@ -1877,17 +1877,17 @@ $border-light: 1px solid var(--maxi-grey-light);
 				height: 31px;
 				padding: 6px 18px;
 				border-radius: 30px;
-				background-color: var(--maxi-cloud-primary-whisper);
-				color: var(--maxi-grey-dark);
-				border: 1px solid var(--maxi-cloud-primary);
+				background-color: var(--mcp-w);
+				color: var(--mdg);
+				border: 1px solid var(--mcp);
 				z-index: 100000;
 				line-height: 100%;
 				transition: all 0.3s ease;
 
 				&:hover {
-					background-color: var(--maxi-cloud-primary);
-					color: var(--maxi-black);
-					border-color: var(--maxi-cloud-primary);
+					background-color: var(--mcp);
+					color: var(--mb);
+					border-color: var(--mcp);
 					transition: all 0.4s ease !important;
 				}
 			}
@@ -1901,10 +1901,10 @@ $border-light: 1px solid var(--maxi-grey-light);
 				}
 				.maxi-network-license-notice {
 					a {
-						color: var(--maxi-cloud-primary);
+						color: var(--mcp);
 						transition: all 0.4s ease;
 						&:hover {
-							color: var(--maxi-grey-dark);
+							color: var(--mdg);
 						}
 					}
 				}
@@ -1916,7 +1916,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					margin-top: 10px;
 					margin-right: -15px;
 					padding: 1px 20px 2px 8px !important;
-					border: 1px solid var(--maxi-grey-light) !important;
+					border: 1px solid var(--mgl) !important;
 					border-radius: 0 !important;
 					border-top-left-radius: 30px !important;
 					border-bottom-left-radius: 30px !important;
@@ -1924,7 +1924,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					&:focus,
 					&:active,
 					&:hover {
-						border-color: var(--maxi-cloud-primary) !important;
+						border-color: var(--mcp) !important;
 					}
 				}
 				span {
@@ -1932,7 +1932,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					bottom: -14px;
 					padding: 5px;
 					color: #f2a600;
-					background: var(--maxi-white);
+					background: var(--mw);
 					font-style: italic;
 					font-size: 12px;
 				}
@@ -1948,7 +1948,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 
 	.ais-InfiniteHits-item {
 		margin: 0 0 0.6rem;
-		background-color: var(--maxi-white);
+		background-color: var(--mw);
 		position: relative;
 		border-radius: 8px;
 
@@ -1970,7 +1970,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					align-items: center;
 					margin-bottom: 8px;
 					.maxi-cloud-masonry__serial-tag {
-						color: var(--maxi-grey-dark);
+						color: var(--mdg);
 						font-weight: 700;
 						font-size: 14px;
 					}
@@ -1994,7 +1994,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 					position: relative;
 					display: inline-block;
 					padding: 0;
-					color: var(--maxi-grey-dark);
+					color: var(--mdg);
 					font-size: 14px;
 					font-weight: bold;
 					text-transform: capitalize;
@@ -2032,15 +2032,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&::-webkit-scrollbar-track {
-				background: var(--maxi-white);
+				background: var(--mw);
 			}
 
 			&::-webkit-scrollbar-thumb {
-				background: var(--maxi-grey-light);
+				background: var(--mgl);
 			}
 
 			&::-webkit-scrollbar-thumb:hover {
-				background: var(--maxi-grey-light);
+				background: var(--mgl);
 			}
 		}
 	}
@@ -2066,15 +2066,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 			}
 
 			&::-webkit-scrollbar-track {
-				background: var(--maxi-white);
+				background: var(--mw);
 			}
 
 			&::-webkit-scrollbar-thumb {
-				background: var(--maxi-grey-light);
+				background: var(--mgl);
 			}
 
 			&::-webkit-scrollbar-thumb:hover {
-				background: var(--maxi-grey-light);
+				background: var(--mgl);
 			}
 		}
 	}
@@ -2090,15 +2090,15 @@ $border-light: 1px solid var(--maxi-grey-light);
 		margin: 0;
 		.ais-Stats {
 			margin-bottom: 0;
-			border-bottom: 1px solid var(--maxi-grey-light);
+			border-bottom: 1px solid var(--mgl);
 		}
 		.ais-Stats-text {
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
 			font-weight: 500;
 			font-size: 12px;
 			strong {
-				color: var(--maxi-cloud-primary);
+				color: var(--mcp);
 			}
 		}
 	}
@@ -2472,7 +2472,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 				display: block !important;
 				height: auto;
 				margin: 0;
-				border-bottom: 1px solid var(--maxi-grey-light);
+				border-bottom: 1px solid var(--mgl);
 			}
 			&__patterns {
 				&__top-menu {
@@ -2701,7 +2701,7 @@ html[dir='rtl'] {
 		transform: scaleX(-1);
 	}
 	.maxi-responsive-selector .action-buttons__button.style-card-button {
-		border-left: 1px solid var(--maxi-grey-light);
+		border-left: 1px solid var(--mgl);
 	}
 	.maxi-responsive-selector .action-buttons__help {
 		margin-left: 0;
@@ -2750,7 +2750,7 @@ html[dir='rtl'] {
 		}
 	}
 	.maxi-style-card-settings .maxi-tabs-control__button:first-child {
-		border-right: 1px solid var(--maxi-grey-light) !important;
+		border-right: 1px solid var(--mgl) !important;
 	}
 	.maxi-style-cards__quick-color-presets__reset {
 		left: 8px;
@@ -2782,8 +2782,8 @@ html[dir='rtl'] {
 					// Add button styles for SC content section
 					&__button {
 						margin-right: 0;
-						border: 1px solid var(--maxi-grey-light);
-						color: var(--maxi-grey-dark);
+						border: 1px solid var(--mgl);
+						color: var(--mdg);
 						font-weight: bold;
 						border-radius: 30px;
 						min-width: 90px;
@@ -2795,9 +2795,9 @@ html[dir='rtl'] {
 						transition: all 0.3s ease;
 
 						&:hover {
-							background-color: var(--maxi-cloud-primary);
-							border: 1px solid var(--maxi-cloud-primary);
-							color: var(--maxi-white);
+							background-color: var(--mcp);
+							border: 1px solid var(--mcp);
+							color: var(--mw);
 						}
 					}
 
@@ -2834,7 +2834,7 @@ html[dir='rtl'] {
 					top: -1px;
 					bottom: -1px;
 					display: block;
-					background-color: var(--maxi-cloud-primary-light);
+					background-color: var(--mcp-l);
 					z-index: -1;
 					transition: all 0.4s ease !important;
 					opacity: 0;
@@ -2848,11 +2848,11 @@ html[dir='rtl'] {
 					bottom: -1px;
 					width: 1px;
 					display: block;
-					background-color: var(--maxi-white);
+					background-color: var(--mw);
 					opacity: 0;
 				}
 				&:hover {
-					color: var(--maxi-black);
+					color: var(--mb);
 					transition: all 0.4s ease !important;
 					&::before {
 						opacity: 1;
@@ -2877,7 +2877,7 @@ html[dir='rtl'] {
 				a {
 					// Existing styles...
 					&:hover {
-						background-color: var(--maxi-cloud-primary-whisper);
+						background-color: var(--mcp-w);
 						box-shadow: none;
 						transition: all 0.4s ease !important;
 					}

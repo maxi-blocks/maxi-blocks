@@ -4,7 +4,7 @@
 	.components-column-pattern {
 		&__icon {
 			path {
-				fill: var(--maxi-light-blue-alt);
+				fill: var(--mlb-a);
 			}
 		}
 
@@ -25,13 +25,13 @@
 			&--toolbar {
 				&:hover {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mw);
 					}
 				}
 
 				&[aria-pressed='true'] {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mw);
 					}
 				}
 

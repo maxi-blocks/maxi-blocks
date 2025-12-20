@@ -7,8 +7,8 @@ import React from 'react';
 const library = (
 	<SVG xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'>
 		<G
-			fill='var(--maxi-black-main-color)'
-			stroke='var(--maxi-black-main-color)'
+			fill='var(--mb-main-color)'
+			stroke='var(--mb-main-color)'
 			strokeMiterlimit='10'
 			strokeWidth='.5'
 		>

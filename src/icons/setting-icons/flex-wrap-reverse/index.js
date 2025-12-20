@@ -5,7 +5,7 @@ import { SVG, Path, G } from '@wordpress/primitives';
 
 const flexWrapReverse = (
 	<SVG width={17.863} height={18.381} viewBox='0 0 17.863 18.381'>
-		<G fill='var(--maxi-black)'>
+		<G fill='var(--mb)'>
 			<Path
 				d='M1 8.863a1 1 0 001-1V1a1 1 0 10-2 0v6.863a1 1 0 001 1'
 				transform='translate(15.863)'

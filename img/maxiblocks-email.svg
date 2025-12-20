@@ -19,7 +19,7 @@
       }
 
       .st3 {
-        fill: var(--maxi-primary-color);
+        fill: var(--mpc);
       }
     </style>
   </defs>

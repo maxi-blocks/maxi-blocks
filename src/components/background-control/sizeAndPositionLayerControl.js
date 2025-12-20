@@ -61,7 +61,7 @@ const Size = ({
 		);
 	};
 
-    const updateDimension = (dimension, value, unit) => {
+    const updateDimension = (dimension, value, unit, extras = {}) => {
         const valKey = getAttributeKey(dimension, isHover, prefix, breakpoint);
         const unitKey = getAttributeKey(`${dimension}-unit`, isHover, prefix, breakpoint);
 
@@ -69,16 +69,14 @@ const Size = ({
 
         if (value !== undefined) nextOptions[valKey] = value;
         if (unit !== undefined) nextOptions[unitKey] = unit;
+        
+        Object.assign(nextOptions, extras);
 
         onChange(nextOptions);
     };
 
 	const onReset = target => {
-        const nextOptions = cloneDeep(options);
-        const valKey = getAttributeKey(target, isHover, prefix, breakpoint);
-        const unitKey = getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint);
-
-        nextOptions[valKey] = isHover
+        const defVal = isHover
             ? getLastBreakpointAttribute({
                     target: `${prefix}${target}`,
                     breakpoint,
@@ -87,7 +85,7 @@ const Size = ({
               })
             : getDefaultAttr(target);
 
-        nextOptions[unitKey] = isHover
+        const defUnit = isHover
             ? getLastBreakpointAttribute({
                     target: `${prefix}${target}-unit`,
                     breakpoint,
@@ -96,8 +94,7 @@ const Size = ({
               })
             : getDefaultAttr(`${target}-unit`);
         
-        nextOptions.isReset = true;
-		onChange(nextOptions);
+        updateDimension(target, defVal, defUnit, { isReset: true });
 	};
 
 	return (

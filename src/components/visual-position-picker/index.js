@@ -123,8 +123,38 @@ const VisualPositionPicker = ({
 			cleanupRef.current = onMouseUp;
 			document.addEventListener('mousemove', onMouseMove);
 			document.addEventListener('mouseup', onMouseUp);
+			document.addEventListener('mouseup', onMouseUp);
 		},
 		[handleMouseDown, handleMouseMove, handleMouseUp]
+	);
+
+	const handleKeyDown = useCallback(
+		e => {
+			if (disabled) return;
+			const step = e.shiftKey ? 10 : 1;
+			let newX = left,
+				newY = top;
+
+			switch (e.key) {
+				case 'ArrowLeft':
+					newX = Math.max(0, left - step);
+					break;
+				case 'ArrowRight':
+					newX = Math.min(100, left + step);
+					break;
+				case 'ArrowUp':
+					newY = Math.max(0, top - step);
+					break;
+				case 'ArrowDown':
+					newY = Math.min(100, top + step);
+					break;
+				default:
+					return;
+			}
+			e.preventDefault();
+			handlePositionChange(newX, newY);
+		},
+		[disabled, left, top, handlePositionChange]
 	);
 
 	const classes = classnames('maxi-visual-position-picker', className, {
@@ -143,6 +173,7 @@ const VisualPositionPicker = ({
 				ref={containerRef}
 				className='maxi-visual-position-picker__container'
 				onMouseDown={handleMouseDownWrapper}
+				onKeyDown={handleKeyDown}
 				role='button'
 				tabIndex={disabled ? -1 : 0}
 				aria-label={__('Drag to set position', 'maxi-blocks')}

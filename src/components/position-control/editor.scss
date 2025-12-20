@@ -29,7 +29,9 @@ body.maxi-blocks--active {
 		margin-bottom: 8px;
 
 		.components-button {
+			display: flex !important;
 			justify-content: space-between !important;
+			align-items: center !important;
 			width: 100% !important;
 			padding: 8px 10px !important;
 			font-size: 13px !important;
@@ -38,6 +40,7 @@ body.maxi-blocks--active {
 			border: 1px solid var(--maxi-grey-light) !important;
 			border-radius: 4px !important;
 			transition: all 0.3s ease;
+			text-align: left !important;
 
 			&:hover {
 				border-color: var(--maxi-primary-color) !important;

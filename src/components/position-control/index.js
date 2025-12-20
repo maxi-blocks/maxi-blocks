@@ -104,6 +104,27 @@ const PositionControl = props => {
 		};
 	};
 
+	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates
+	const normalizePositionForPicker = value => {
+		if (value === null || value === undefined || value === '') return 0.5;
+		
+		// Extract numeric value if string
+		const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+		
+		// Only use if it's a valid percentage (string with %)
+		if (typeof value === 'string' && value.includes('%') && Number.isFinite(numericValue)) {
+			return Math.max(0, Math.min(100, numericValue)) / 100;
+		}
+		
+		// If numeric and in 0-100 range, treat as percentage
+		if (typeof numericValue === 'number' && Number.isFinite(numericValue) && numericValue >= 0 && numericValue <= 100) {
+			return numericValue / 100;
+		}
+		
+		// Default to center for other units or invalid values
+		return 0.5;
+	};
+
 	// Reusable component for the position picker and advanced settings
 	const PositionPickerSection = (
 		<>
@@ -111,18 +132,20 @@ const PositionControl = props => {
 				<FocalPointPicker
 					label={__('Layer placement', 'maxi-blocks')}
 					value={{
-						x:
-							(getLastBreakpointAttribute({
+						x: normalizePositionForPicker(
+							getLastBreakpointAttribute({
 								target: `${prefix}position-left`,
 								breakpoint,
 								attributes: props,
-							}) || 0) / 100,
-						y:
-							(getLastBreakpointAttribute({
+							})
+						),
+						y: normalizePositionForPicker(
+							getLastBreakpointAttribute({
 								target: `${prefix}position-top`,
 								breakpoint,
 								attributes: props,
-							}) || 0) / 100,
+							})
+						),
 					}}
 					onChange={focalPoint => {
 						onChange({
@@ -142,7 +165,7 @@ const PositionControl = props => {
 			</div>
 			<div className='maxi-position-control__advanced-toggle'>
 				<Button onClick={() => setShowAdvanced(!showAdvanced)}>
-					{__('Show more layer placement settings', 'maxi-blocks')}
+					{__('More layer placement settings', 'maxi-blocks')}
 					<span
 						className={`maxi-position-control__toggle-arrow${
 							showAdvanced ? '--expanded' : ''

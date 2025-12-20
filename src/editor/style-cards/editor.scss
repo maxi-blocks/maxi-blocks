@@ -913,7 +913,7 @@ html[dir='rtl'] {
 		.maxi-tabs-control__button {
 			flex: 1;
 			min-width: 52px;
-			padding:4px 8px;
+			padding: 4px 8px;
 			border: 1.5px solid var(--maxi-grey-light) !important;
 			border-radius: 5px;
 			background-color: var(--maxi-white);
@@ -958,5 +958,5 @@ html[dir='rtl'] {
 // Scoped to maxi-blocks context to avoid affecting other libraries
 body.maxi-blocks--active [class*="menu"][class*="css-"],
 .maxi-style-cards__popover [class*="menu"][class*="css-"] {
-	z-index: 999999 !important;
+	z-index: 100 !important;
 }

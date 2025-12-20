@@ -123,7 +123,6 @@ const VisualPositionPicker = ({
 			cleanupRef.current = onMouseUp;
 			document.addEventListener('mousemove', onMouseMove);
 			document.addEventListener('mouseup', onMouseUp);
-			document.addEventListener('mouseup', onMouseUp);
 		},
 		[handleMouseDown, handleMouseMove, handleMouseUp]
 	);

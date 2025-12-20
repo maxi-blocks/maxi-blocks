@@ -932,3 +932,11 @@ html[dir='rtl'] {
 		}
 	}
 }
+
+// Fix z-index for font-family dropdown menu in style cards
+// React-select can portal menu to body, so we need a global rule
+// Scoped to maxi-blocks context to avoid affecting other libraries
+body.maxi-blocks--active [class*="menu"][class*="css-"],
+.maxi-style-cards__popover [class*="menu"][class*="css-"] {
+	z-index: 999999 !important;
+}

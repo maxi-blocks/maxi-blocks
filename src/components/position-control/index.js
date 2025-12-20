@@ -2,10 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '@components/button';
 import SelectControl from '@components/select-control';
 import AxisControl from '@components/axis-control';
 import withRTC from '@extensions/maxi-block/withRTC';
@@ -22,6 +25,16 @@ import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
+ * Icons
+ */
+import { arrowIcon } from '@maxi-icons';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const PositionControl = props => {
@@ -34,6 +47,8 @@ const PositionControl = props => {
 		isHover = false,
 		defaultAttributes,
 	} = props;
+
+	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	const classes = classnames('maxi-position-control', className);
 
@@ -89,20 +104,107 @@ const PositionControl = props => {
 		};
 	};
 
-	const PositionAxisControl = (
-		<AxisControl
-			{...props}
-			target='position'
-			prefix={prefix}
-			onChange={obj => onChange(obj)}
-			breakpoint={breakpoint}
-			minMaxSettings={minMaxSettings}
-			optionType='string'
-			enableAxisUnits
-			allowedUnits={['px', 'em', 'vw', '%', '-']}
-			isHover={isHover}
-			defaultAttributes={defaultAttributes}
-		/>
+	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates
+	// Now uses the explicit unit to prevent misinterpreting small pixel values
+	const normalizeCoordinate = (raw, unit) => {
+		if (raw === null || raw === undefined || Number.isNaN(parseFloat(raw))) {
+			return 0.5; // Default to center if invalid
+		}
+
+		let val = typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
+
+		// If a specific non-percentage unit is provided, we avoid guessing.
+		// If the value happens to be 0-1, we use it; otherwise we default to 0/0.5
+		if (unit && unit !== '%') {
+			if (val >= 0 && val <= 1) return val;
+			return 0.5; // Default to center if unit is px/em/vw and value > 1
+		}
+
+		// If the unit is percentage-based or undefined, apply percentage logic
+		if (val > 1 || val < -1) {
+			return Math.max(0, Math.min(1, val / 100));
+		}
+		return Math.max(0, Math.min(1, val));
+	};
+
+	// Reusable component for the position picker and advanced settings
+	const PositionPickerSection = (
+		<>
+			<div className='maxi-position-control__focal-picker'>
+				<FocalPointPicker
+					label={__('Layer placement', 'maxi-blocks')}
+					value={{
+						x: normalizeCoordinate(
+							getLastBreakpointAttribute({
+								target: `${prefix}position-left`,
+								breakpoint,
+								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-left-unit`,
+								breakpoint,
+								attributes: props,
+							})
+						),
+						y: normalizeCoordinate(
+							getLastBreakpointAttribute({
+								target: `${prefix}position-top`,
+								breakpoint,
+								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-top-unit`,
+								breakpoint,
+								attributes: props,
+							})
+						),
+					}}
+					onChange={focalPoint => {
+						onChange({
+							[`${prefix}position-top-${breakpoint}`]: Math.round(
+								focalPoint.y * 100
+							),
+							[`${prefix}position-top-unit-${breakpoint}`]: '%',
+							[`${prefix}position-left-${breakpoint}`]: Math.round(
+								focalPoint.x * 100
+							),
+							[`${prefix}position-left-unit-${breakpoint}`]: '%',
+							[`${prefix}position-right-${breakpoint}`]: '',
+							[`${prefix}position-bottom-${breakpoint}`]: '',
+						});
+					}}
+				/>
+			</div>
+			<div className='maxi-position-control__advanced-toggle'>
+				<Button onClick={() => setShowAdvanced(!showAdvanced)}>
+					{__('More layer placement settings', 'maxi-blocks')}
+					<span
+						className={`maxi-position-control__toggle-arrow${
+							showAdvanced ? '--expanded' : ''
+						}`}
+					>
+						{arrowIcon}
+					</span>
+				</Button>
+			</div>
+			{showAdvanced && (
+				<div className='maxi-position-control__advanced-options'>
+					<AxisControl
+						{...props}
+						target='position'
+						prefix={prefix}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						minMaxSettings={minMaxSettings}
+						optionType='string'
+						enableAxisUnits
+						allowedUnits={['px', 'em', 'vw', '%', '-']}
+						isHover={isHover}
+						defaultAttributes={defaultAttributes}
+					/>
+				</div>
+			)}
+		</>
 	);
 
 	return (
@@ -165,10 +267,10 @@ const PositionControl = props => {
 						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
-					}) !== 'inherit' && PositionAxisControl}
+					}) !== 'inherit' && PositionPickerSection}
 				</>
 			) : (
-				PositionAxisControl
+				PositionPickerSection
 			)}
 		</div>
 	);

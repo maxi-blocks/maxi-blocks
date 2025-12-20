@@ -1,23 +1,56 @@
+// ============================================
+// Variables & Mixins
+// ============================================
+$grey-light: var(--maxi-grey-light);
+$grey-dark: var(--maxi-grey-dark);
+$white: var(--maxi-white);
+$black: var(--maxi-black);
+$primary: var(--maxi-primary-color);
+$secondary: var(--maxi-secondary-color);
+$transition: all 0.3s ease;
+
+@mixin stacking-context {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+@mixin wordpress-input-reset {
+	border: 1px solid $grey-light;
+	border-radius: 4px;
+	background-color: $white;
+	transition: $transition;
+	
+	&:hover {
+		border-color: $primary !important;
+	}
+}
+
 body .maxi-background-control {
 	padding-top: 8px;
+
+	// Hide MediaUploader preview when FocalPointPicker is present
+	.maxi-background-control__image-layer:has(.maxi-focal-point-picker) {
+		.maxi-mediauploader-control__preview,
+		.maxi-mediauploader-control__image__preview {
+			display: none;
+		}
+	}
+
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
-		.maxi-tabs-control__button {
-		}
 
 		// Unique classes for each background type button
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
 		.maxi-tabs-control__button-gradient {
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			@include wordpress-input-reset;
+			color: $grey-dark;
 			
-
-			&.maxi-tabs-control__button--selected {
-				border: 1px solid var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
+			&.maxi-tabs-control__button--selected,
+			&[aria-pressed='true'] {
+				border-color: $primary;
+				color: $primary;
 				background-color: var(--maxi-whisper-green);
 			}
 		}
@@ -39,22 +72,33 @@ body .maxi-background-control {
 
 	.parallax-direction {
 		.maxi-tabs-control__button {
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid $grey-light;
 			border-radius: 3px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: $grey-dark;
+			background-color: $white;
 			width: 48px;
 			transition: all 0.4s ease !important;
+
+			// Fix syntax: added missing colons
+			&:first-child { margin-right: 4px !important; }
+			&:last-child { border-right: none; margin-left: 8px !important; }
 
 			&[aria-pressed='true'],
 			&:active,
 			&:hover {
 				background-color: var(--maxi-whisper-green);
-				color: var(--maxi-secondary-color);
-				border: 1px solid var(--maxi-primary-color);
+				color: $secondary;
+				border: 1px solid $primary;
+				cursor: pointer;
+			}
+
+			&:focus:not(:disabled) {
+				box-shadow: none;
+				outline: none;
 			}
 		}
 	}
+	
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {
@@ -62,26 +106,23 @@ body .maxi-background-control {
 			}
 		}
 	}
+	
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
 			margin-bottom: 8px !important;
-			border: 1px solid var(--maxi-grey-light);
-			border-radius: 4px;
+			@include wordpress-input-reset;
 		}
 	}
+	
 	.maxi-background-layer {
 		&__preview {
-			display: block;
 			width: 20px;
 			height: 20px;
-			margin: 3px 4px 0 0 !important;
-			border: 1px solid var(--maxi-black);
-			opacity: 1;
-			float: left;
-			border-radius: 0;
-			margin-right: 3px;
+			margin-right: 8px;
+			border: 1px solid $black;
 			background-size: cover !important;
+			flex-shrink: 0; 
 
 			svg {
 				display: block;
@@ -94,7 +135,7 @@ body .maxi-background-control {
 			margin: 0 0 8px;
 			display: flex;
 			align-items: center;
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $secondary;
 			z-index: 0;
 
 			.maxi-background-layer__title__text {
@@ -105,7 +146,7 @@ body .maxi-background-control {
 		}
 
 		&__content {
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $secondary;
 			border-radius: 0;
 			padding: 22px 8px 0;
 			margin: -23px -8px 8px;
@@ -158,7 +199,7 @@ body .maxi-background-control {
 				margin: auto 5px auto 5px;
 				cursor: pointer;
 				position: relative;
-				transition: all 0.4s ease;
+				transition: $transition;
 
 				&:hover {
 					transform: scale(1.1);
@@ -201,15 +242,12 @@ body .maxi-background-control {
 
 	.maxi-list-item-control__arrow {
 		width: 25px;
-		-webkit-transition: 0.3s ease all;
-		transition: 0.3s ease all;
+		transition: $transition;
 		cursor: pointer;
-		-webkit-transform-origin: center;
-		-ms-transform-origin: center;
 		transform-origin: center;
 		padding: 6px 0px;
-		border-right: 1px solid var(--maxi-secondary-color);
-		background-color: var(--maxi-white);
+		border-right: 1px solid $secondary;
+		background-color: $white;
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
 
@@ -228,7 +266,7 @@ body .maxi-background-control {
 		background: var(--maxi-whisper-green);
 		display: block;
 		padding: 7px 6px 7px 6px !important;
-		border-right: 1px solid var(--maxi-secondary-color);
+		border-right: 1px solid $secondary;
 		margin-right: 5px !important;
 		counter-increment: list-items-counter 1;
 		font-size: 14px;
@@ -237,46 +275,12 @@ body .maxi-background-control {
 	}
 }
 
-.parallax-direction .maxi-tabs-control__button {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: auto;
-	padding: 8px 30px !important;
-	border-bottom: 1px solid var(--maxi-grey-light);
-	border-top: 1px solid var(--maxi-grey-light);
-	border-right: 1px solid var(--maxi-grey-light);
-	border-radius: 0;
-	color: var(--maxi-grey-dark);
-	background-color: var(--maxi-white);
-	text-align: center;
-}
-
-.parallax-direction .maxi-tabs-control__button last-child {
-	border-right: none;
-	margin-left: 8px !important;
-}
-.parallax-direction .maxi-tabs-control__button:first-child {
-	margin-right: 4px !important;
-}
-.parallax-direction .maxi-tabs-control__button hover {
-	background-color: var(--maxi-grey-light);
-	cursor: pointer;
-}
-.parallax-direction .maxi-tabs-control__button focus:not(:disabled) {
-	box-shadow: none;
-	outline: none;
-}
-.parallax-direction .maxi-tabs-control__button active {
-	background-color: var(--maxi-grey-light);
-}
-
+// Global fallback container fix
 body.maxi-blocks--active .components-popover__fallback-container {
 	button.components-button.is-link {
 		height: 30px;
-		border: 1.5px solid var(--maxi-secondary-color);
-		color: var(--maxi-secondary-color) !important;
+		border: 1.5px solid $secondary;
+		color: $secondary !important;
 		background: var(--maxi-whisper-green);
 		border-radius: 30px;
 		text-decoration: none;
@@ -284,11 +288,118 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		transition: all 0.5s ease-in-out;
 
 		&:hover {
-			border-color: var(--maxi-primary-color) !important;
+			border-color: $primary !important;
 			background: var(--maxi-mid-green);
 		}
 	}
 }
+
+// FocalPointPicker styling for background image layer
+.maxi-background-control__image-layer {
+	.maxi-focal-point-picker {
+		@include stacking-context;
+		margin-bottom: 8px;
+
+		// Target the WordPress FocalPointPicker with unique class
+		.maxi-background-position-picker {
+			@include stacking-context;
+		}
+
+		// The label/title should be on top
+		.components-base-control__field {
+			@include stacking-context;
+			align-items: stretch !important;
+
+			// Label styling - order -1 ensures it's always first
+			.components-base-control__label {
+				margin-bottom: 8px !important;
+				order: -1;
+				font-size: 13px;
+				text-transform: none !important;
+			}
+
+			// Image picker container - stack in middle
+			.components-focal-point-picker {
+				order: 1;
+				@include stacking-context;
+
+				// The media preview with focal point
+				.components-focal-point-picker__icon_container {
+					width: 100%;
+					margin-bottom: 8px;
+				}
+			}
+		}
+
+		// Value fields container (LEFT/TOP inputs)
+		.focal-point-picker__controls {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			width: 100%;
+			margin-top: 0px;
+			margin-bottom: -30px;
+
+			// Each input control (Left and Top)
+			.focal-point-picker__controls-position-unit-control {
+				// The input base container - make it column layout
+				.components-input-base {
+					flex-direction: column !important;
+					align-items: flex-start !important;
+					gap: 0px;
+					width: 100%;
+					border-radius: 5px !important;
+
+					// Label container
+					.components-flex-item {
+						width: 100%;
+						margin-bottom: 2px;
+					}
+
+					// Style the LEFT/TOP labels
+					.components-input-control__label {
+						font-size: 13px !important;
+						text-transform: none !important;
+						line-height: 15px !important;
+						min-height: 20px;
+					}
+
+					// Input container should be full width
+					.components-input-control__container {
+						width: 100%;
+					}
+				}
+			}
+		}
+
+		// Fallback targeting for different WordPress versions
+		.components-focal-point-picker__media {
+			width: 100%;
+			max-width: 100%;
+		}
+
+		// Fix the focal point circle indicator
+		.components-focal-point-picker__icon_container {
+			width: 30px !important;
+			height: 30px !important;
+			border-radius: 50% !important;
+			border: 2px solid $white !important;
+			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+			background: transparent !important;
+			cursor: grab;
+
+			&:active {
+				cursor: grabbing;
+			}
+
+			&::before,
+			&::after {
+				display: none !important;
+			}
+		}
+	}
+}
+
 .settings-background-image {
 	margin-left: -8px !important;
 }

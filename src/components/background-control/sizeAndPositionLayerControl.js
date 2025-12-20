@@ -23,6 +23,11 @@ import {
 /**
  * Component
  */
+import { cloneDeep } from 'lodash';
+
+/**
+ * Component
+ */
 const Size = ({
 	options,
 	onChange,
@@ -33,44 +38,16 @@ const Size = ({
 	onlyWidth = false,
 }) => {
 	const minMaxSettings = {
-		px: {
-			min: 0,
-			max: 1999,
-			minRange: 0,
-			maxRange: 1999,
-		},
-		em: {
-			min: 0,
-			max: 1999,
-			minRange: 0,
-			maxRange: 1999,
-		},
-		vw: {
-			min: 0,
-			max: 1999,
-			minRange: 0,
-			maxRange: 1999,
-		},
-		vh: {
-			min: 0,
-			max: 1999,
-			minRange: 0,
-			maxRange: 1999,
-		},
-		'%': {
-			min: 0,
-			max: 300,
-			minRange: 0,
-			maxRange: 300,
-		},
+		px: { min: 0, max: 1999, minRange: 0, maxRange: 1999 },
+		em: { min: 0, max: 1999, minRange: 0, maxRange: 1999 },
+		vw: { min: 0, max: 1999, minRange: 0, maxRange: 1999 },
+		vh: { min: 0, max: 1999, minRange: 0, maxRange: 1999 },
+		'%': { min: 0, max: 300, minRange: 0, maxRange: 300 },
 	};
 
 	const getDefaultAttr = target => {
 		if (isLayer) {
 			const { type } = options;
-
-			// getDefaultLayerAttr does not support breakpoints,
-			// so I wrote a little hack to reset it correctly
 			return breakpoint === 'general'
 				? getDefaultLayerAttr(
 						`${type === 'shape' ? 'SVG' : type}Options`,
@@ -84,27 +61,43 @@ const Size = ({
 		);
 	};
 
+    const updateDimension = (dimension, value, unit) => {
+        const valKey = getAttributeKey(dimension, isHover, prefix, breakpoint);
+        const unitKey = getAttributeKey(`${dimension}-unit`, isHover, prefix, breakpoint);
+
+        const nextOptions = cloneDeep(options);
+
+        if (value !== undefined) nextOptions[valKey] = value;
+        if (unit !== undefined) nextOptions[unitKey] = unit;
+
+        onChange(nextOptions);
+    };
+
 	const onReset = target => {
-		onChange({
-			[getAttributeKey(target, isHover, prefix, breakpoint)]: isHover
-				? getLastBreakpointAttribute({
-						target: `${prefix}${target}`,
-						breakpoint,
-						attributes: options,
-						isHover: false,
-				  })
-				: getDefaultAttr(target),
-			[getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint)]:
-				isHover
-					? getLastBreakpointAttribute({
-							target: `${prefix}${target}-unit`,
-							breakpoint,
-							attributes: options,
-							isHover: false,
-					  })
-					: getDefaultAttr(`${target}-unit`),
-			isReset: true,
-		});
+        const nextOptions = cloneDeep(options);
+        const valKey = getAttributeKey(target, isHover, prefix, breakpoint);
+        const unitKey = getAttributeKey(`${target}-unit`, isHover, prefix, breakpoint);
+
+        nextOptions[valKey] = isHover
+            ? getLastBreakpointAttribute({
+                    target: `${prefix}${target}`,
+                    breakpoint,
+                    attributes: options,
+                    isHover: false,
+              })
+            : getDefaultAttr(target);
+
+        nextOptions[unitKey] = isHover
+            ? getLastBreakpointAttribute({
+                    target: `${prefix}${target}-unit`,
+                    breakpoint,
+                    attributes: options,
+                    isHover: false,
+              })
+            : getDefaultAttr(`${target}-unit`);
+        
+        nextOptions.isReset = true;
+		onChange(nextOptions);
 	};
 
 	return (
@@ -129,22 +122,8 @@ const Size = ({
 					attributes: options,
 					isHover,
 				})}
-				onChangeValue={val => {
-					onChange({
-						[getAttributeKey('width', isHover, prefix, breakpoint)]:
-							val,
-					});
-				}}
-				onChangeUnit={val =>
-					onChange({
-						[getAttributeKey(
-							'width-unit',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
+				onChangeValue={val => updateDimension('width', val, undefined)}
+				onChangeUnit={val => updateDimension('width', undefined, val)}
 				onReset={() => onReset('width')}
 				minMaxSettings={minMaxSettings}
 			/>
@@ -165,26 +144,8 @@ const Size = ({
 						attributes: options,
 						isHover,
 					})}
-					onChangeValue={val => {
-						onChange({
-							[getAttributeKey(
-								'height',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						});
-					}}
-					onChangeUnit={val =>
-						onChange({
-							[getAttributeKey(
-								'height-unit',
-								isHover,
-								prefix,
-								breakpoint
-							)]: val,
-						})
-					}
+				onChangeValue={val => updateDimension('height', val, undefined)}
+				onChangeUnit={val => updateDimension('height', undefined, val)}
 					onReset={() => onReset('height')}
 					minMaxSettings={minMaxSettings}
 				/>

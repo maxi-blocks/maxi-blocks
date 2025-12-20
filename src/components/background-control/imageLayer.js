@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useMemo } from '@wordpress/element';
 import { FocalPointPicker } from '@wordpress/components';
 
 /**
@@ -56,13 +56,18 @@ const ImageLayerSettings = props => {
 		getBlockClipPath, // for IB
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'background-image-parallax-status',
-		props: imageOptions,
-		prefix,
-	});
+	const parallaxStatus = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-parallax-status',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	return (
 		<>
@@ -465,7 +470,8 @@ const ImageLayer = props => {
 		disableUpload = false,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
 	const [moreSettings, setMoreSettings] = useState(false);
 
@@ -480,11 +486,15 @@ const ImageLayer = props => {
 		);
 	};
 
-	const mediaID = getAttributeValue({
-		target: 'background-image-mediaID',
-		props: imageOptions,
-		prefix,
-	});
+	const mediaID = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaID',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	const handleSelectImage = imageData => {
 		onChange({

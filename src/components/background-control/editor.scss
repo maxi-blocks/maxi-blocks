@@ -1,4 +1,33 @@
+// ============================================
+// Variables & Mixins
+// ============================================
+$grey-light: var(--maxi-grey-light);
+$grey-dark: var(--maxi-grey-dark);
+$white: var(--maxi-white);
+$black: var(--maxi-black);
+$primary: var(--maxi-primary-color);
+$secondary: var(--maxi-secondary-color);
+$transition: all 0.3s ease;
+
+@mixin stacking-context {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+@mixin wordpress-input-reset {
+	border: 1px solid $grey-light;
+	border-radius: 4px;
+	background-color: $white;
+	transition: $transition;
+	
+	&:hover {
+		border-color: $primary !important;
+	}
+}
+
 body .maxi-background-control {
+
 	padding-top: 8px;
 
 	// Hide MediaUploader preview when FocalPointPicker is present
@@ -81,15 +110,10 @@ body .maxi-background-control {
 	}
 	.maxi-background-layer {
 		&__preview {
-			display: block;
 			width: 20px;
 			height: 20px;
-			margin: 3px 4px 0 0 !important;
-			border: 1px solid var(--maxi-black);
-			opacity: 1;
-			float: left;
-			border-radius: 0;
-			margin-right: 3px;
+			margin-right: 8px;
+			border: 1px solid $black;
 			background-size: cover !important;
 
 			svg {
@@ -103,7 +127,7 @@ body .maxi-background-control {
 			margin: 0 0 8px;
 			display: flex;
 			align-items: center;
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $secondary;
 			z-index: 0;
 
 			.maxi-background-layer__title__text {
@@ -114,7 +138,7 @@ body .maxi-background-control {
 		}
 
 		&__content {
-			border: 1px solid var(--maxi-secondary-color);
+			border: 1px solid $secondary;
 			border-radius: 0;
 			padding: 22px 8px 0;
 			margin: -23px -8px 8px;

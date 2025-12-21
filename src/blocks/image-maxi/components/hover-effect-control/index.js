@@ -444,19 +444,14 @@ const HoverEffectControl = props => {
                                         />
                                         <ToggleSwitch
                                                 label={__('Custom hover text', 'maxi-blocks')}
-                                                selected={
-                                                        props['hover-title-typography-status-hover'] ??
-                                                        props['hover-title-typography-status']
-                                                }
+                                                selected={props['hover-title-typography-status']}
                                                 onChange={val =>
                                                         onChange({
                                                                 'hover-title-typography-status': val,
-                                                                'hover-title-typography-status-hover': val,
                                                         })
                                                 }
                                         />
-                                        {(props['hover-title-typography-status-hover'] ??
-                                                props['hover-title-typography-status']) && (
+                                        {props['hover-title-typography-status'] && (
                                                 <TypographyControl
                                                         typography={{
                                                                 ...getGroupAttributes(
@@ -492,19 +487,14 @@ const HoverEffectControl = props => {
                                         />
                                         <ToggleSwitch
                                                 label={__('Custom content text', 'maxi-blocks')}
-                                                selected={
-                                                        props['hover-content-typography-status-hover'] ??
-                                                        props['hover-content-typography-status']
-                                                }
+                                                selected={props['hover-content-typography-status']}
                                                 onChange={val =>
                                                         onChange({
                                                                 'hover-content-typography-status': val,
-                                                                'hover-content-typography-status-hover': val,
                                                         })
                                                 }
                                         />
-                                        {(props['hover-content-typography-status-hover'] ??
-                                                props['hover-content-typography-status']) && (
+                                        {props['hover-content-typography-status'] && (
                                                 <TypographyControl
                                                         typography={{
                                                                 ...getGroupAttributes(
@@ -583,13 +573,16 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-padding-status'] && (
 						<AxisControl
-							{...getGroupAttributes(props, 'hoverPadding')}
-							label={__('Padding', 'maxi-blocks')}
-							onChange={onChange}
-							target='hover-padding'
-							breakpoint={breakpoint}
-							disableAuto
-						/>
+						{...getGroupAttributes(props, 'padding', false, 'hover-')}
+						label={__('Padding', 'maxi-blocks')}
+						onChange={onChange}
+						target='padding'
+						prefix='hover-'
+						breakpoint={breakpoint}
+						optionType='string'
+						disableAuto
+						enableAxisUnits
+					/>
 					)}
 					<ToggleSwitch
 						label={__('Custom margin', 'maxi-blocks')}
@@ -602,13 +595,15 @@ const HoverEffectControl = props => {
 					/>
 					{props['hover-margin-status'] && (
 						<AxisControl
-							{...getGroupAttributes(props, 'hoverMargin')}
-							label={__('Margin', 'maxi-blocks')}
-							onChange={onChange}
-							target='hover-margin'
-							optionType='string'
-							breakpoint={breakpoint}
-						/>
+						{...getGroupAttributes(props, 'margin', false, 'hover-')}
+						label={__('Margin', 'maxi-blocks')}
+						onChange={onChange}
+						target='margin'
+						prefix='hover-'
+						optionType='string'
+						breakpoint={breakpoint}
+						enableAxisUnits
+					/>
 					)}
 				</>
 			)}

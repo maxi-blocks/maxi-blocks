@@ -190,9 +190,7 @@ const getHoverEffectDetailsBoxObject = props => {
 };
 
 const getHoverEffectTitleTextObject = props => {
-	const hoverTitleStatus =
-		props['hover-title-typography-status-hover'] ??
-		props['hover-title-typography-status'];
+	const hoverTitleStatus = props['hover-title-typography-status'];
 
 	const response = {
 		...(hoverTitleStatus && {
@@ -210,9 +208,7 @@ const getHoverEffectTitleTextObject = props => {
 };
 
 const getHoverEffectContentTextObject = props => {
-	const hoverContentStatus =
-		props['hover-content-typography-status-hover'] ??
-		props['hover-content-typography-status'];
+	const hoverContentStatus = props['hover-content-typography-status'];
 
 	const response = {
 		...(hoverContentStatus && {

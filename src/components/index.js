@@ -28,6 +28,7 @@ export { default as ContextLoop } from './context-loop';
 export { default as CssCodeEditor } from './css-code-editor';
 export { default as CustomCss } from './custom-css-control';
 export { default as CustomLabel } from './custom-label';
+export { default as DebouncedTextareaControl } from './debounced-textarea-control';
 export { default as DefaultStylesControl } from './default-styles-control';
 export { default as DialogBox } from './dialog-box';
 export { default as DisplayControl } from './display-control';

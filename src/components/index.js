@@ -21,6 +21,7 @@ export { default as BoxShadowControl } from './box-shadow-control';
 export { default as Breadcrumbs } from './breadcrumbs';
 export { default as Button } from './button';
 export { default as CheckBoxControl } from './checkbox-control';
+export { default as ClampControl } from './clamp-control';
 export { default as ClipPathControl } from './clip-path-control';
 export { default as ColorControl } from './color-control';
 export { default as ContentLoader } from './content-loader';

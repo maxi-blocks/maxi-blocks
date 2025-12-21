@@ -17,9 +17,9 @@ import AxisControl from '@components/axis-control';
 import BackgroundControl from '@components/background-control';
 import BorderControl from '@components/border-control';
 import Icon from '@components/icon';
+import DebouncedTextareaControl from '@components/debounced-textarea-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
-import TextareaControl from '@components/textarea-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TypographyControl from '@components/typography-control';
 
@@ -418,7 +418,7 @@ const HoverEffectControl = props => {
 						]}
 						onChange={val => onChange({ 'hover-text-preset': val })}
 					/>
-					<TextareaControl
+					<DebouncedTextareaControl
 						placeholder={__(
 							'Add hover title text here',
 							'maxi-blocks'
@@ -469,7 +469,7 @@ const HoverEffectControl = props => {
 						/>
 					)}
 					<hr />
-					<TextareaControl
+					<DebouncedTextareaControl
 						placeholder={__(
 							'Add hover content text here',
 							'maxi-blocks'
@@ -580,6 +580,7 @@ const HoverEffectControl = props => {
 							target='hover-padding'
 							breakpoint={breakpoint}
 							disableAuto
+							optionType='string'
 						/>
 					)}
 					<ToggleSwitch

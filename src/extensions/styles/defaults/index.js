@@ -57,6 +57,7 @@ export { default as video } from './video';
 export { default as videoOverlay } from './videoOverlay';
 export { default as videoPopup } from './videoPopup';
 export { default as zIndex } from './zIndex';
+export { hoverPadding, hoverMargin, hoverBorder, hoverBorderRadius, hoverBorderWidth, hoverBackground, hoverBackgroundColor, hoverBackgroundGradient } from './hover';
 export * from './background';
 export * from './backgroundActive';
 export * from './backgroundHover';

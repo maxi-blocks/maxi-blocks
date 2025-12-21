@@ -51,7 +51,8 @@ const BackgroundContent = props => {
 							}`}
 							className={classnames(
 								'maxi-background-displayer__layer',
-								`maxi-background-displayer__${order}`
+								`maxi-background-displayer__${order}`,
+								isHover && 'maxi-background-displayer__layer--hover'
 							)}
 						/>
 					);
@@ -91,7 +92,8 @@ const BackgroundContent = props => {
 								}`}
 								className={classnames(
 									'maxi-background-displayer__layer',
-									`maxi-background-displayer__${order}`
+									`maxi-background-displayer__${order}`,
+									isHover && 'maxi-background-displayer__layer--hover'
 								)}
 								style={
 									dcStatus
@@ -137,7 +139,8 @@ const BackgroundContent = props => {
 							className={classnames(
 								'maxi-background-displayer__layer',
 								'maxi-background-displayer__parallax',
-								`maxi-background-displayer__${order}`
+								`maxi-background-displayer__${order}`,
+								isHover && 'maxi-background-displayer__layer--hover'
 							)}
 						>
 							<img
@@ -172,7 +175,8 @@ const BackgroundContent = props => {
 							className={classnames(
 								'maxi-background-displayer__layer',
 								'maxi-background-displayer__svg',
-								`maxi-background-displayer__${order}`
+								`maxi-background-displayer__${order}`,
+								isHover && 'maxi-background-displayer__layer--hover'
 							)}
 						>
 							{svg}

@@ -12,6 +12,7 @@ import Button from '@components/button';
 import InfoBox from '@components/info-box';
 import ListControl from '@components/list-control';
 import ListItemControl from '@components/list-control/list-item-control';
+import ReactSelectControl from '@components/react-select-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TextControl from '@components/text-control';
@@ -44,6 +45,27 @@ import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
  */
 import './editor.scss';
 
+/**
+ * Helper to get uniqueIDs array from a relation item
+ * Supports both legacy single uniqueID and new uniqueIDs array format
+ */
+const getUniqueIDs = item => {
+	if (item.uniqueIDs && Array.isArray(item.uniqueIDs) && item.uniqueIDs.length > 0) {
+		return item.uniqueIDs;
+	}
+	if (item.uniqueID) {
+		return [item.uniqueID];
+	}
+	return [];
+};
+
+/**
+ * Helper to check if any blocks are selected
+ */
+const hasSelectedBlocks = item => {
+	return getUniqueIDs(item).length > 0;
+};
+
 const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 	const {
@@ -65,12 +87,13 @@ const RelationControl = props => {
 	const cloneRelations = relations =>
 		!isEmpty(relations) ? cloneDeep(relations) : [];
 
-	// Ensure that each relation of `relations` array has a valid block
-	const relations = cloneRelations(rawRelations).filter(
-		relation =>
-			isEmpty(relation.uniqueID) ||
-			!!getClientIdFromUniqueId(relation.uniqueID)
-	);
+	// Ensure that each relation of `relations` array has valid block(s)
+	const relations = cloneRelations(rawRelations).filter(relation => {
+		const ids = getUniqueIDs(relation);
+		if (ids.length === 0) return true; // Keep relations with no blocks selected yet
+		// Keep relation if at least one block still exists
+		return ids.some(id => !!getClientIdFromUniqueId(id));
+	});
 
 	const getRelationId = relations => {
 		return relations && !isEmpty(relations)
@@ -124,12 +147,15 @@ const RelationControl = props => {
 
 		const relation = {
 			title: '',
-			uniqueID: '',
+			uniqueID: '', // Legacy field for backward compatibility
+			uniqueIDs: [], // New multi-select field
 			target: '',
 			action: '',
 			sid: '',
-			attributes: {},
-			css: {},
+			attributes: {}, // After state attributes
+			beforeAttributes: {}, // Before state attributes
+			css: {}, // After state CSS
+			beforeCss: {}, // Before state CSS
 			id: getRelationId(relations),
 			effects: transitionDefaultAttributes,
 			isButton,
@@ -287,6 +313,133 @@ const RelationControl = props => {
 		});
 	};
 
+	/**
+	 * Display the "Before" settings panel for configuring the starting state
+	 */
+	const displayBeforeSetting = item => {
+		if (!item) return null;
+
+		const clientId = getClientIdFromUniqueId(item.uniqueID);
+
+		const selectedSettings = getSelectedIBSettings(clientId, item.sid);
+
+		if (!selectedSettings) return null;
+
+		const settingsComponent = selectedSettings.component;
+		const prefix = selectedSettings?.prefix || '';
+		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
+
+		// Use beforeAttributes instead of attributes
+		const beforeAttrs = item.beforeAttributes || {};
+		const mergedAttributes = getCleanDisplayIBAttributes(
+			blockAttributes,
+			beforeAttrs
+		);
+
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
+			if (deviceType !== 'general') return {};
+
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+			if (!baseBreakpoint) return {};
+
+			return Object.keys(obj).reduce((acc, key) => {
+				if (key.includes('-general')) {
+					const newKey = key.replace('general', baseBreakpoint);
+
+					acc[newKey] = obj[key];
+				}
+
+				return acc;
+			}, {});
+		};
+
+		const getNewAttributesOnReset = obj => {
+			const newAttributes = { ...beforeAttrs };
+			const resetTargets = Object.keys({
+				...obj,
+				...transformGeneralAttributesToBaseBreakpoint(obj),
+			});
+
+			resetTargets.forEach(target => {
+				newAttributes[target] = undefined;
+			});
+
+			return newAttributes;
+		};
+
+		return settingsComponent({
+			...blockAttributes,
+			...getGroupAttributes(
+				mergedAttributes,
+				selectedSettings.attrGroupName,
+				false,
+				prefix
+			),
+			attributes: mergedAttributes,
+			blockAttributes,
+			onChange: ({ isReset, ...obj }) => {
+				const newAttributesObj = isReset
+					? getNewAttributesOnReset(obj)
+					: {
+							...beforeAttrs,
+							...obj,
+							...transformGeneralAttributesToBaseBreakpoint(obj),
+					  };
+
+				const { cleanAttributesObject, tempAttributes } =
+					getCleanResponseIBAttributes(
+						newAttributesObj,
+						blockAttributes,
+						item.uniqueID,
+						selectedSettings,
+						deviceType,
+						prefix,
+						item.sid,
+						clientId
+					);
+
+				const stylesObj = getIBStylesObj({
+					clientId,
+					sid: item.sid,
+					attributes: omitBy(
+						{
+							...tempAttributes,
+							...cleanAttributesObject,
+						},
+						val => val === undefined
+					),
+					blockAttributes,
+					breakpoint: deviceType,
+				});
+
+				const styles = getIBStyles({
+					stylesObj,
+					blockAttributes,
+					isFirst: true,
+				});
+
+				const newBeforeAttributes = omitBy(
+					{
+						...beforeAttrs,
+						...cleanAttributesObject,
+					},
+					val => val === undefined
+				);
+
+				// Store to beforeAttributes and beforeCss
+				onChangeRelation(relations, item.id, {
+					beforeAttributes: newBeforeAttributes,
+					beforeCss: styles,
+				});
+			},
+			prefix,
+			blockStyle: blockAttributes.blockStyle,
+			breakpoint: deviceType,
+			clientId,
+		});
+	};
+
 	const getBlocksToAffect = () => {
 		const arr = [];
 
@@ -434,35 +587,44 @@ const RelationControl = props => {
 											)}
 										/>
 									)}
-									<SelectControl
-										__nextHasNoMarginBottom
-										label={__(
-											'Block to affect',
+									<ReactSelectControl
+										labelText={__(
+											'Blocks to affect',
 											'maxi-blocks'
 										)}
-										value={item.uniqueID}
-										newStyle
-										options={[
-											{
-												label: __(
-													'Select block…',
-													'maxi-blocks'
-												),
-												value: '',
-											},
-											...blocksToAffect,
-										]}
-										onChange={value =>
+										isMulti
+										placeholder={__(
+											'Select blocks…',
+											'maxi-blocks'
+										)}
+										value={getUniqueIDs(item).map(id => {
+											const block = blocksToAffect.find(
+												b => b.value === id
+											);
+											return block
+												? block
+												: { label: id, value: id };
+										})}
+										options={blocksToAffect}
+										onChange={selectedOptions => {
+											const newUniqueIDs = selectedOptions
+												? selectedOptions.map(
+														opt => opt.value
+												  )
+												: [];
 											onChangeRelation(
 												relations,
 												item.id,
 												{
-													uniqueID: value,
+													// Keep first ID for legacy compatibility
+													uniqueID:
+														newUniqueIDs[0] || '',
+													uniqueIDs: newUniqueIDs,
 												}
-											)
-										}
+											);
+										}}
 									/>
-									{item.uniqueID && (
+									{hasSelectedBlocks(item) && (
 										<>
 											<SelectControl
 												__nextHasNoMarginBottom
@@ -637,7 +799,7 @@ const RelationControl = props => {
 											</div>
 										</>
 									)}
-									{item.uniqueID &&
+									{hasSelectedBlocks(item) &&
 										item.sid &&
 										(item.effects.disableTransition ? (
 											displaySelectedSetting(item)
@@ -647,7 +809,17 @@ const RelationControl = props => {
 												items={[
 													{
 														label: __(
-															'Settings',
+															'Before',
+															'maxi-blocks'
+														),
+														content:
+															displayBeforeSetting(
+																item
+															),
+													},
+													{
+														label: __(
+															'After',
 															'maxi-blocks'
 														),
 														content:

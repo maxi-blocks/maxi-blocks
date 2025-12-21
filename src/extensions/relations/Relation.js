@@ -10,6 +10,7 @@ class Relation {
 		this.id = item?.id;
 		this.uniqueID = item?.uniqueID;
 		this.css = item?.css;
+		this.beforeCss = item?.beforeCss; // Before state CSS
 		this.isPreview = false;
 
 		if (!this.uniqueID || this.css.length === 0) return;
@@ -134,9 +135,12 @@ class Relation {
 		this.generateTransitions();
 
 		this.stylesString = '';
+		this.beforeStylesString = '';
 		this.generateStyles();
+		this.generateBeforeStyles();
 
 		this.stylesEl = null;
+		this.beforeStylesEl = null;
 		this.inTransitionEl = null;
 		this.outTransitionEl = null;
 		this.generateStylesEls();
@@ -148,13 +152,23 @@ class Relation {
 		this.contentTimeout = null;
 	}
 
-	// Create two different <style> elements, one for the styles and one for the transitions.
+	// Create style elements for before/after styles and transitions
 	generateStylesEls() {
+		// After state styles (applied on trigger)
 		this.stylesEl = this.mainDocument.createElement('style');
 		this.stylesEl.id = `relations--${this.uniqueID}-${this.id}-styles`;
 		this.stylesEl.setAttribute('data-type', this.action);
 		this.stylesEl.setAttribute('data-sids', this.sids);
 		this.stylesEl.innerText = this.stylesString;
+
+		// Before state styles (applied immediately as default)
+		if (this.beforeStylesString.length > 0) {
+			this.beforeStylesEl = this.mainDocument.createElement('style');
+			this.beforeStylesEl.id = `relations--${this.uniqueID}-${this.id}-before-styles`;
+			this.beforeStylesEl.setAttribute('data-type', 'before');
+			this.beforeStylesEl.setAttribute('data-sids', this.sids);
+			this.beforeStylesEl.innerText = this.beforeStylesString;
+		}
 
 		if (this.inTransitionString.length > 0) {
 			this.inTransitionEl = this.mainDocument.createElement('style');
@@ -202,8 +216,10 @@ class Relation {
 		this.isPreview = isPreview;
 
 		if (this.isPreview) {
+			this.addBeforeStyles(); // Apply before state as default
 			this.enableTransitions();
 		} else {
+			this.removeBeforeStyles();
 			this.disableTransitions();
 		}
 	}
@@ -651,12 +667,63 @@ class Relation {
 		});
 	}
 
+	/**
+	 * Generate CSS string from beforeCss for the default/resting state
+	 */
+	generateBeforeStyles() {
+		// console.log('Rel: generateBeforeStyles', this.uniqueID, this.beforeCss);
+		if (!this.beforeCss || Object.keys(this.beforeCss).length === 0) return;
+
+		// Use the same target format as generateStyles
+		// Before styles should apply to the block without the data-maxi-relations condition
+		const baseTarget = `${this.targetPrefix}${this.blockTarget}`;
+
+		Object.entries(this.beforeCss).forEach(([breakpoint, data]) => {
+			if (!data?.styles || Object.keys(data.styles).length === 0) return;
+
+			let targetWithBreakpoint = baseTarget;
+			if (breakpoint !== 'general') {
+				targetWithBreakpoint = targetWithBreakpoint.replace(
+					'[maxi-blocks-responsive]',
+					`[maxi-blocks-responsive="${breakpoint}"]`
+				);
+			}
+
+			// Build the full selector with target
+			const fullTarget = this.target
+				? `${targetWithBreakpoint} ${this.target}`
+				: targetWithBreakpoint;
+
+			// Simplified selector - relies on add/remove lifecycle instead of body class
+			const selector = `${fullTarget} {`.replace(/\s{2,}/g, ' ');
+
+			let cssBlock = selector;
+			Object.entries(data.styles).forEach(([prop, value]) => {
+				cssBlock += ` ${prop}: ${value} !important;`;
+			});
+			cssBlock += ' }';
+
+			this.beforeStylesString += cssBlock;
+		});
+		// console.log('Rel: beforeStylesString', this.beforeStylesString);
+	}
+
 	addStyles() {
 		this.addStyleEl(this.stylesEl);
 	}
 
+	addBeforeStyles() {
+		if (this.beforeStylesEl) {
+			this.addStyleEl(this.beforeStylesEl);
+		}
+	}
+
 	removeStyles() {
 		if (this.stylesEl) this.stylesEl.remove();
+	}
+
+	removeBeforeStyles() {
+		if (this.beforeStylesEl) this.beforeStylesEl.remove();
 	}
 
 	generateTransitions() {

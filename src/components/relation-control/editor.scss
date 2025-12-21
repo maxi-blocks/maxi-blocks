@@ -31,6 +31,40 @@
 		width: 28px !important;
 		height: 28px !important;
 	}
+	// Multi-select blocks dropdown styling
+	.maxi-react-select-control {
+		margin-bottom: 12px;
+
+		label {
+			display: block;
+			margin-bottom: 4px;
+			font-size: 12px;
+			color: var(--maxi-grey);
+		}
+
+		// Override control height for multi-select
+		.css-13cymwt-control,
+		.css-t3ipsp-control {
+			min-height: 32px;
+			height: auto;
+		}
+
+		// Multi-value chips styling
+		.css-1p3m7a8-multiValue {
+			background-color: var(--maxi-light-grey);
+			border-radius: 3px;
+			margin: 2px;
+		}
+
+		.css-wsp0cs-MultiValueGeneric {
+			font-size: 11px;
+			padding: 2px 4px;
+		}
+
+		.css-1u9des2-indicatorSeparator {
+			display: none;
+		}
+	}
 }
 .maxi-relation-control__button {
 	display: flex;

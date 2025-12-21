@@ -209,7 +209,14 @@ const BackgroundUI = memo( ( props ) => {
 		prevProps.isHover === nextProps.isHover &&
 		prevProps.prefix === nextProps.prefix &&
 		prevProps.breakpoint === nextProps.breakpoint &&
-		prevProps.clientId === nextProps.clientId
+		prevProps.clientId === nextProps.clientId &&
+		prevProps.disableImage === nextProps.disableImage &&
+		prevProps.disableVideo === nextProps.disableVideo &&
+		prevProps.disableGradient === nextProps.disableGradient &&
+		prevProps.disableColor === nextProps.disableColor &&
+		prevProps.disableClipPath === nextProps.disableClipPath &&
+		prevProps.disableSVG === nextProps.disableSVG &&
+		prevProps.disableNoneStyle === nextProps.disableNoneStyle
 	);
 } );
 
@@ -227,6 +234,11 @@ const BackgroundControl = props => {
 		isHover,
 	});
 
+	// Create a stable key from the props that getGroupAttributes actually uses
+	const backgroundPropsKey = JSON.stringify(
+		getGroupAttributes( props, 'background', isHover, prefix )
+	);
+
 	// Use useMemo to extract ONLY the background-related attributes
 	const backgroundAttributes = useMemo( () => {
 		return {
@@ -236,7 +248,8 @@ const BackgroundControl = props => {
 			backgroundGradient: getGroupAttributes( props, 'backgroundGradient', isHover, prefix ),
 			backgroundSVG: getGroupAttributes( props, 'backgroundSVG', isHover, prefix ),
 		};
-	}, [ props, isHover, prefix ] );
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ backgroundPropsKey, isHover, prefix ] );
 
 	return (
 		<BackgroundUI

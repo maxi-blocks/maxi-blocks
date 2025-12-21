@@ -691,6 +691,10 @@
     "type": "boolean",
     "default": false
   },
+  "hover-content-typography-status-hover": {
+    "type": "boolean",
+    "default": false
+  },
   "hover-content-typography-content": {
     "type": "string",
     "default": "Add your Hover Title here"

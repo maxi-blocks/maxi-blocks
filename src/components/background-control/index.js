@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { memo, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -23,6 +24,7 @@ import SettingTabsControl from '@components/setting-tabs-control';
  * External dependencies
  */
 import classnames from 'classnames';
+import { isEqual } from 'lodash';
 
 /**
  * Styles and icons
@@ -40,35 +42,35 @@ import './editor.scss';
 /**
  * Components
  */
-const BackgroundControl = props => {
+
+/**
+ * BackgroundUI: Memoized Render Layer
+ * Only updates when background-specific data changes.
+ */
+const BackgroundUI = memo( ( props ) => {
 	const {
 		className,
-		disableImage = false,
-		disableVideo = false,
-		disableGradient = false,
-		disableColor = false,
-		disableClipPath = false,
-		disableSVG = false,
-		disableNoneStyle = false,
-		onChangeInline = null,
+		disableImage,
+		disableVideo,
+		disableGradient,
+		disableColor,
+		disableClipPath,
+		disableSVG,
+		disableNoneStyle,
+		onChangeInline,
 		onChange,
-		isHover = false,
-		prefix = '',
+		isHover,
+		prefix,
 		disablePalette,
 		clientId,
-		breakpoint = 'general',
+		breakpoint,
 		globalProps,
-		inlineTarget = '',
+		inlineTarget,
 		getBounds,
 		tabsClassName,
+		backgroundActiveMedia,
+		backgroundAttributes, // Pre-grouped attributes
 	} = props;
-
-	const backgroundActiveMedia = getLastBreakpointAttribute({
-		target: `${prefix}background-active-media`,
-		breakpoint,
-		attributes: props,
-		isHover,
-	});
 
 	const classes = classnames('maxi-background-control', className);
 
@@ -141,14 +143,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableColor && backgroundActiveMedia === 'color' && (
 				<ColorLayer
-					colorOptions={{
-						...getGroupAttributes(
-							props,
-							'backgroundColor',
-							isHover,
-							prefix
-						),
-					}}
+					colorOptions={backgroundAttributes.backgroundColor}
 					onChangeInline={obj =>
 						onChangeInline && onChangeInline(obj, inlineTarget)
 					}
@@ -165,14 +160,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableImage && backgroundActiveMedia === 'image' && (
 				<ImageLayer
-					imageOptions={{
-						...getGroupAttributes(
-							props,
-							'backgroundImage',
-							isHover,
-							prefix
-						),
-					}}
+					imageOptions={backgroundAttributes.backgroundImage}
 					onChange={onChange}
 					disableClipPath={disableClipPath}
 					isHover={isHover}
@@ -183,14 +171,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableVideo && backgroundActiveMedia === 'video' && (
 				<VideoLayer
-					videoOptions={{
-						...getGroupAttributes(
-							props,
-							'backgroundVideo',
-							isHover,
-							prefix
-						),
-					}}
+					videoOptions={backgroundAttributes.backgroundVideo}
 					onChange={onChange}
 					disableClipPath={disableClipPath}
 					isHover={isHover}
@@ -200,14 +181,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableGradient && backgroundActiveMedia === 'gradient' && (
 				<GradientLayer
-					gradientOptions={{
-						...getGroupAttributes(
-							props,
-							'backgroundGradient',
-							isHover,
-							prefix
-						),
-					}}
+					gradientOptions={backgroundAttributes.backgroundGradient}
 					onChange={onChange}
 					disableClipPath={disableClipPath}
 					isHover={isHover}
@@ -218,14 +192,7 @@ const BackgroundControl = props => {
 			)}
 			{!disableSVG && backgroundActiveMedia === 'svg' && (
 				<SVGLayer
-					SVGOptions={{
-						...getGroupAttributes(
-							props,
-							'backgroundSVG',
-							isHover,
-							prefix
-						),
-					}}
+					SVGOptions={backgroundAttributes.backgroundSVG}
 					onChange={onChange}
 					isHover={isHover}
 					prefix={prefix}
@@ -234,6 +201,49 @@ const BackgroundControl = props => {
 				/>
 			)}
 		</div>
+	);
+}, ( prevProps, nextProps ) => {
+	return (
+		isEqual( prevProps.backgroundAttributes, nextProps.backgroundAttributes ) &&
+		prevProps.backgroundActiveMedia === nextProps.backgroundActiveMedia &&
+		prevProps.isHover === nextProps.isHover &&
+		prevProps.prefix === nextProps.prefix &&
+		prevProps.breakpoint === nextProps.breakpoint &&
+		prevProps.clientId === nextProps.clientId
+	);
+} );
+
+const BackgroundControl = props => {
+	const {
+		isHover = false,
+		prefix = '',
+		breakpoint = 'general',
+	} = props;
+
+	const backgroundActiveMedia = getLastBreakpointAttribute({
+		target: `${prefix}background-active-media`,
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+
+	// Use useMemo to extract ONLY the background-related attributes
+	const backgroundAttributes = useMemo( () => {
+		return {
+			backgroundColor: getGroupAttributes( props, 'backgroundColor', isHover, prefix ),
+			backgroundImage: getGroupAttributes( props, 'backgroundImage', isHover, prefix ),
+			backgroundVideo: getGroupAttributes( props, 'backgroundVideo', isHover, prefix ),
+			backgroundGradient: getGroupAttributes( props, 'backgroundGradient', isHover, prefix ),
+			backgroundSVG: getGroupAttributes( props, 'backgroundSVG', isHover, prefix ),
+		};
+	}, [ props, isHover, prefix ] );
+
+	return (
+		<BackgroundUI
+			{ ...props }
+			backgroundActiveMedia={ backgroundActiveMedia }
+			backgroundAttributes={ backgroundAttributes }
+		/>
 	);
 };
 

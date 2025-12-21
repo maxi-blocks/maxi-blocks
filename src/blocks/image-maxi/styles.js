@@ -190,8 +190,12 @@ const getHoverEffectDetailsBoxObject = props => {
 };
 
 const getHoverEffectTitleTextObject = props => {
+	const hoverTitleStatus =
+		props['hover-title-typography-status-hover'] ??
+		props['hover-title-typography-status'];
+
 	const response = {
-		...(props['hover-title-typography-status'] && {
+		...(hoverTitleStatus && {
 			typography: getTypographyStyles({
 				obj: {
 					...getGroupAttributes(props, 'hoverTitleTypography'),
@@ -206,8 +210,12 @@ const getHoverEffectTitleTextObject = props => {
 };
 
 const getHoverEffectContentTextObject = props => {
+	const hoverContentStatus =
+		props['hover-content-typography-status-hover'] ??
+		props['hover-content-typography-status'];
+
 	const response = {
-		...(props['hover-content-typography-status'] && {
+		...(hoverContentStatus && {
 			typography: getTypographyStyles({
 				obj: {
 					...getGroupAttributes(props, 'hoverContentTypography'),

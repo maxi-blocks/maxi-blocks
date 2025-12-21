@@ -2543,6 +2543,27 @@ class MaxiBlocks_Styles
                 $typography_hover = get_group_attributes($props, 'typographyHover');
                 $text_level = 'button';
                 break;
+            case 'maxi-blocks/image-maxi':
+                $typography = get_group_attributes($props, 'typography');
+                $typography_hover = get_group_attributes($props, 'typographyHover');
+
+                $hover_title_typography = get_group_attributes($props, 'hoverTitleTypography');
+                $hover_content_typography = get_group_attributes($props, 'hoverContentTypography');
+
+                $response = array_merge_recursive(
+                    get_all_fonts($typography, 'custom-formats', false, $text_level, $block_style, $only_backend),
+                    get_all_fonts($hover_title_typography, false, false, 'h4', $block_style, $only_backend),
+                    get_all_fonts($hover_content_typography, false, false, 'p', $block_style, $only_backend)
+                );
+
+                if (isset($typography_hover['typography-status-hover'])) {
+                    $response = array_merge_recursive(
+                        $response,
+                        get_all_fonts($typography_hover, 'custom-formats', true, $text_level, $block_style, $only_backend)
+                    );
+                }
+
+                return $response;
             default:
                 $typography = get_group_attributes($props, 'typography');
                 $typography_hover = get_group_attributes($props, 'typographyHover');

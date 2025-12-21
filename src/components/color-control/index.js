@@ -111,26 +111,30 @@ const ColorControl = props => {
 		? rawBlockStyle.replace('maxi-', '')
 		: getBlockStyle(clientId);
 
+	// Normalize paletteStatus to ensure it defaults to true when undefined
+	const normalizedPaletteStatus =
+		typeof paletteStatus === 'boolean' ? paletteStatus : true;
+
 	const classes = classnames(
 		'maxi-color-control',
 		!disablePalette &&
-			paletteStatus &&
+			normalizedPaletteStatus &&
 			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
 
 	useEffect(() => {
-		if (globalStatus && !paletteStatus)
+		if (globalStatus && !normalizedPaletteStatus)
 			onChange({
 				paletteSCStatus: true,
-				paletteStatus,
+				paletteStatus: normalizedPaletteStatus,
 				paletteColor,
 				paletteOpacity,
 				color,
 			});
 	}, [globalStatus]);
 
-	const showPalette = !disablePalette && paletteStatus;
+	const showPalette = !disablePalette && normalizedPaletteStatus;
 
 	/**
 	 * Creates an object with the color variables with RGBA format
@@ -141,7 +145,7 @@ const ColorControl = props => {
 		};
 
 	const colorObj = {
-		paletteStatus,
+		paletteStatus: normalizedPaletteStatus,
 		paletteSCStatus,
 		paletteColor,
 		paletteOpacity,
@@ -166,7 +170,7 @@ const ColorControl = props => {
 		if (onReset)
 			onReset({
 				showPalette,
-				paletteStatus,
+				paletteStatus: normalizedPaletteStatus,
 				paletteSCStatus,
 				paletteColor,
 				paletteOpacity,
@@ -201,7 +205,7 @@ const ColorControl = props => {
 
 			if (showPalette)
 				onChange({
-					paletteStatus: defaultColorAttr.paletteStatus,
+					paletteStatus: defaultColorAttr.paletteStatus ?? true,
 					paletteColor: defaultColorAttr.paletteColor,
 					paletteOpacity: paletteOpacity || 1,
 					color,
@@ -224,7 +228,7 @@ const ColorControl = props => {
 				}
 
 				onChange({
-					paletteStatus,
+					paletteStatus: normalizedPaletteStatus,
 					paletteColor,
 					paletteOpacity,
 					color: defaultColor,
@@ -247,7 +251,7 @@ const ColorControl = props => {
 			);
 
 		onChange({
-			paletteStatus,
+			paletteStatus: normalizedPaletteStatus,
 			paletteSCStatus,
 			paletteColor,
 			paletteOpacity: opacity,
@@ -272,7 +276,7 @@ const ColorControl = props => {
 							// If SC palette status is disabled, and palette status is also disabled,
 							// we need to ensure we set the palettes back to show the SC global property
 							...(!val &&
-								!paletteStatus && {
+								!normalizedPaletteStatus && {
 									paletteStatus: true,
 									color: `rgba(${getPaletteColor({
 										clientId,
@@ -309,7 +313,7 @@ const ColorControl = props => {
 				{!disablePalette && (
 					<ToggleSwitch
 						label={__('Set custom colour', 'maxi-blocks')}
-						selected={!paletteStatus}
+						selected={!normalizedPaletteStatus}
 						onChange={val => {
 							let initialCustomColor = 'transparent';
 							if (val) {

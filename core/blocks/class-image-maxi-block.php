@@ -287,7 +287,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             $response = [];
 
-            if (isset($props['hover-title-typography-status']) && $props['hover-title-typography-status']) {
+            $hover_title_status = isset($props['hover-title-typography-status-hover'])
+                ? $props['hover-title-typography-status-hover']
+                : ($props['hover-title-typography-status'] ?? false);
+
+            if ($hover_title_status) {
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'hoverTitleTypography'),
                     'prefix' => 'hover-title-',
@@ -302,7 +306,11 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
         {
             $response = [];
 
-            if (isset($props['hover-content-typography-status']) && $props['hover-content-typography-status']) {
+            $hover_content_status = isset($props['hover-content-typography-status-hover'])
+                ? $props['hover-content-typography-status-hover']
+                : ($props['hover-content-typography-status'] ?? false);
+
+            if ($hover_content_status) {
                 $response['typography'] = get_typography_styles([
                     'obj' => get_group_attributes($props, 'hoverContentTypography'),
                     'prefix' => 'hover-content-',

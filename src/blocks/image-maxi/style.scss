@@ -59,8 +59,13 @@ body.maxi-blocks--active figure.maxi-image-block {
 			text-align: left;
 		}
 	}
+	// Background layers above everything including hover
+	.maxi-background-displayer {
+		z-index: 3;
+	}
 	.maxi-hover-details {
 		background-color: #000;
+		z-index: 2;
 
 		&:not(.maxi-hover-effect__text__flip-horiz) {
 			position: absolute;
@@ -103,7 +108,7 @@ body.maxi-blocks--active figure.maxi-image-block {
 			p {
 				margin: 0;
 				padding: 0;
-				color: #fff;
+				color:var(--maxi-white);
 			}
 		}
 	}

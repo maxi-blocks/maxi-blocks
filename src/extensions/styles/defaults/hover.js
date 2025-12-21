@@ -149,6 +149,10 @@ export const hoverTitleTypography = prefixAttributesCreator({
 			type: 'boolean',
 			default: false,
 		},
+		'hover-title-typography-status-hover': {
+			type: 'boolean',
+			default: false,
+		},
 		'hover-title-typography-content': {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
@@ -165,6 +169,10 @@ export const hoverContentTypography = prefixAttributesCreator({
 	},
 	newAttr: {
 		'hover-content-typography-status': {
+			type: 'boolean',
+			default: false,
+		},
+		'hover-content-typography-status-hover': {
 			type: 'boolean',
 			default: false,
 		},

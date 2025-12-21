@@ -6,7 +6,7 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
 import getAttributeKey from '@extensions/styles/getAttributeKey';
 import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
 import getBreakpoints from '@extensions/styles/helpers/getBreakpoints';
-import calculateEditorFontSize from '@extensions/styles/helpers/calculateEditorFontSize';
+
 
 /**
  * External dependencies
@@ -241,22 +241,8 @@ const getTypographyStyles = ({
 							};
 						}
 
-						const vw = breakpointWidths[breakpoint];
 
-						if (vw) {
-							const calculated = calculateEditorFontSize({
-								minSize,
-								preferredSize,
-								maxSize,
-								minUnit,
-								preferredUnit,
-								maxUnit,
-								viewportWidth: vw,
-							});
-							if (calculated) {
-								return { 'font-size': calculated };
-							}
-						}
+
 						return {
 							'font-size': `clamp(${minSize}${minUnit}, ${preferredSize}${preferredUnit}, ${maxSize}${maxUnit})`,
 						};

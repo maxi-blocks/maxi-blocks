@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useCallback } from '@wordpress/element';
+import { useCallback, useState, useEffect } from '@wordpress/element';
+import { useDebounce } from '@wordpress/compose';
 
 /**
  * External dependencies
@@ -57,25 +58,48 @@ const HoverEffectControl = ( props ) => {
 
 	const classes = classnames( 'maxi-hover-effect-control', className );
 
+	const [ hoverTitle, setHoverTitle ] = useState(
+		props[ 'hover-title-typography-content' ]
+	);
+	const [ hoverContent, setHoverContent ] = useState(
+		props[ 'hover-content-typography-content' ]
+	);
+
+	const debouncedOnChange = useDebounce( onChange, 500 );
+
+	useEffect( () => {
+		setHoverTitle( props[ 'hover-title-typography-content' ] );
+	}, [ props[ 'hover-title-typography-content' ] ] );
+
+	useEffect( () => {
+		setHoverContent( props[ 'hover-content-typography-content' ] );
+	}, [ props[ 'hover-content-typography-content' ] ] );
+
 	const handleHoverTitleChange = useCallback(
-		( val ) =>
-			onChange( {
+		( val ) => {
+			setHoverTitle( val );
+			debouncedOnChange( {
 				'hover-title-typography-content': isNil( val )
 					? getDefaultAttribute( 'hover-title-typography-content' )
 					: val,
-			} ),
-		[ onChange ]
+			} );
+		},
+		[ debouncedOnChange ]
 	);
 
 	const handleHoverContentChange = useCallback(
-		( val ) =>
-			onChange( {
+		( val ) => {
+			setHoverContent( val );
+			debouncedOnChange( {
 				'hover-content-typography-content': isNil( val )
 					? getDefaultAttribute( 'hover-content-typography-content' )
 					: val,
-			} ),
-		[ onChange ]
+			} );
+		},
+		[ debouncedOnChange ]
 	);
+
+
 
 	const setEffectNone = () => {
 		onChange( {
@@ -328,7 +352,7 @@ const HoverEffectControl = ( props ) => {
 							/>
 							<TextareaControl
 								placeholder={ __( 'Add hover title text here', 'maxi-blocks' ) }
-								value={ props[ 'hover-title-typography-content' ] }
+								value={ hoverTitle }
 								onChange={ handleHoverTitleChange }
 							/>
 							<ToggleSwitch
@@ -360,7 +384,7 @@ const HoverEffectControl = ( props ) => {
 							<hr />
 							<TextareaControl
 								placeholder={ __( 'Add hover content text here', 'maxi-blocks' ) }
-								value={ props[ 'hover-content-typography-content' ] }
+								value={ hoverContent }
 								onChange={ handleHoverContentChange }
 							/>
 							<ToggleSwitch

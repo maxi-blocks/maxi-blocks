@@ -49,17 +49,26 @@ const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 	const {
 		selectBlock,
-		toggleBlockHighlight,
 		updateBlockAttributes,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = useDispatch('core/block-editor');
 
-	// Highlight helper for hover effects
+	// Highlight helper using custom CSS class (toggleBlockHighlight doesn't exist in core)
 	const handleHighlight = (uniqueID, isHighlighting) => {
 		if (!uniqueID) return;
 		const targetClientId = getClientIdFromUniqueId(uniqueID);
-		if (targetClientId) {
-			toggleBlockHighlight(targetClientId, isHighlighting);
+		if (!targetClientId) return;
+
+		// Find the block element in the editor and add/remove highlight class
+		const blockElement = document.querySelector(
+			`[data-block="${targetClientId}"]`
+		);
+		if (blockElement) {
+			if (isHighlighting) {
+				blockElement.classList.add('maxi-block--highlighted');
+			} else {
+				blockElement.classList.remove('maxi-block--highlighted');
+			}
 		}
 	};
 

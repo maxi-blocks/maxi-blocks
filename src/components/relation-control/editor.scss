@@ -62,11 +62,9 @@
 }
 
 /* Block highlight style for hover interaction preview */
-.block-editor-block-list__block.is-highlighted {
-	outline: 2px solid var(--maxi-interaction-pink) !important;
-	outline-offset: 3px;
+.maxi-block--highlighted {
+	border-bottom: 2px dotted var(--maxi-interaction-pink) !important;
 	z-index: 99;
-	border-radius: 3px !important;
 }
 
 /* Custom Block Select Control - matches maxi-select-control__second-style */
@@ -205,11 +203,19 @@
 
 		&--selected {
 			background-color: var(--maxi-whisper-green);
-			color: var(--maxi-white);
+			color: var(--maxi-grey-dark);
+			font-weight: 500;
 
 			&:hover {
 				background-color: var(--maxi-whisper-green);
+				color: var(--maxi-grey-dark);
 			}
+		}
+
+		&--active {
+			background-color: var(--maxi-light-green-soft, #e8f5e9);
+			outline: 2px solid var(--maxi-light-green);
+			outline-offset: -2px;
 		}
 	}
 
@@ -226,6 +232,6 @@
 	margin-left: -8px;
 }
 
-.maxi-tabs-control__button-after {
+.maxi-tabs-control__button-effects {
 	margin-right: -8px;
 }

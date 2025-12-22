@@ -1,0 +1,1227 @@
+diff --git a/src/components/background-control/backgroundLayersControl.js b/src/components/background-control/backgroundLayersControl.js
+index b2f99e0fdddf95ce82aca2c81532ed6f3a0e2613..fc9742c09f7589855862e593aea557b8e73ff14f 100644
+--- a/src/components/background-control/backgroundLayersControl.js
++++ b/src/components/background-control/backgroundLayersControl.js
+@@ -165,58 +165,66 @@ const getLayerCardContent = props => {
+ 					SVGOptions={layer}
+ 					onChange={obj =>
+ 						onChange({
+ 							...layer,
+ 							...handleOnChangeLayer(obj, layer),
+ 						})
+ 					}
+ 					layerOrder={layer.order}
+ 					breakpoint={breakpoint}
+ 					isHover={isHover}
+ 					isLayer
+ 					isIB={isIB}
+ 				/>
+ 			);
+ 		default:
+ 			return null;
+ 	}
+ };
+ 
+ const getLayerCardTitle = props => {
+ 	const { onChange, clientId, breakpoint, isHover, previewRef } = props;
+ 	const layer = cloneDeep(props.layer);
+ 	const { type } = layer;
+ 
+ 	const regexLineToChange = /fill=".+?(?=")/;
+-	const colorStr = getColorRGBAString({
+-		firstVar: `color-${layer['background-svg-palette-color']}`,
+-		opacity: layer['background-svg-palette-opacity'],
+-		blockStyle: getBlockStyle(clientId),
+-	});
++
++	let colorStr;
++	if (layer['background-svg-palette-status']) {
++		colorStr = getColorRGBAString({
++			firstVar: `color-${layer['background-svg-palette-color']}`,
++			opacity: layer['background-svg-palette-opacity'],
++			blockStyle: getBlockStyle(clientId),
++		});
++	} else {
++		// Use custom color if available, or default to black
++		colorStr = layer['background-svg-color'] || '#000000';
++	}
++
+ 	const changeTo = `fill="${colorStr}"`;
+ 
+-	const newSvgElement = layer['background-svg-palette-status']
++	const newSvgElement = colorStr
+ 		? layer['background-svg-SVGElement']?.replace(
+ 				regexLineToChange,
+ 				changeTo
+ 		  )
+ 		: layer['background-svg-SVGElement'];
+ 
+ 	const previewStyles = type => {
+ 		switch (type) {
+ 			case 'color': {
+ 				const paletteStatus = getLastBreakpointAttribute({
+ 					target: 'background-palette-status',
+ 					breakpoint,
+ 					attributes: layer,
+ 					isHover,
+ 				});
+ 
+ 				if (paletteStatus) {
+ 					const paletteColor = getLastBreakpointAttribute({
+ 						target: 'background-palette-color',
+ 						breakpoint,
+ 						attributes: layer,
+ 						isHover,
+ 					});
+ 					const paletteOpacity = getLastBreakpointAttribute({
+ 						target: 'background-palette-opacity',
+diff --git a/src/components/relation-control/editor.scss b/src/components/relation-control/editor.scss
+index cfc9214ea631821a2115cb72bfb2f3f8e2397fc8..837d58eef24faf27a80c94844806a9b0a2b5e974 100644
+--- a/src/components/relation-control/editor.scss
++++ b/src/components/relation-control/editor.scss
+@@ -9,50 +9,84 @@
+ 	&__block-access {
+ 		margin-bottom: 10px;
+ 	}
+ 	&__title-spacing {
+ 		margin-top: 20px;
+ 	}
+ 	&__interaction-builder {
+ 		margin-top: 10px;
+ 	}
+ 	.maxi-list-item-control__title__wrapper {
+ 		overflow: hidden;
+ 		max-width: 190px;
+ 		text-overflow: ellipsis;
+ 		white-space: nowrap;
+ 	}
+ 	.maxi-typography-control .maxi-typography-control__formatting-buttons {
+ 		gap: 4px !important;
+ 	}
+ 	.maxi-list-item-control__arrow {
+ 		padding: 7px 9px;
+ 	}
+ 	.maxi-color-control__palette-box {
+ 		width: 28px !important;
+ 		height: 28px !important;
+ 	}
++	// Multi-select blocks dropdown styling
++	.maxi-react-select-control {
++		margin-bottom: 12px;
++
++		label {
++			display: block;
++			margin-bottom: 4px;
++			font-size: 12px;
++			color: var(--maxi-grey);
++		}
++
++		// Override control height for multi-select
++		.css-13cymwt-control,
++		.css-t3ipsp-control {
++			min-height: 32px;
++			height: auto;
++		}
++
++		// Multi-value chips styling
++		.css-1p3m7a8-multiValue {
++			background-color: var(--maxi-light-grey);
++			border-radius: 3px;
++			margin: 2px;
++		}
++
++		.css-wsp0cs-MultiValueGeneric {
++			font-size: 11px;
++			padding: 2px 4px;
++		}
++
++		.css-1u9des2-indicatorSeparator {
++			display: none;
++		}
++	}
+ }
+ .maxi-relation-control__button {
+ 	display: flex;
+ 	justify-content: center;
+ 	align-items: center;
+ 	height: auto; // Changed from fixed height
+ 	min-height: 24px;
+ 	width: fit-content;
+ 	margin: 10px auto; // Changed from margin-top to center horizontally
+ 	padding: 8px 12px;
+ 	background-color: var(--maxi-pastel-green);
+ 	border: 1px solid var(--maxi-mid-green);
+ 	border-radius: 30px;
+ 	color: var(--maxi-grey-dark);
+ 	text-align: center;
+ 	text-decoration: none;
+ 	transition: background-color 0.3s ease, color 0.3s ease,
+ 		border-color 0.3s ease;
+ 	align-items: center;
+ }
+ .maxi-relation-control__button:hover,
+ .maxi-relation-control__button:active {
+ 	// Added active state
+ 	background-color: var(
+ 		--maxi-primary-color
+diff --git a/src/components/relation-control/index.js b/src/components/relation-control/index.js
+index 3f562114034b448393b8c1111b5eb1f85c49773d..cb7540dac3d46bee653325ceb64227c4da3058bf 100644
+--- a/src/components/relation-control/index.js
++++ b/src/components/relation-control/index.js
+@@ -1,98 +1,122 @@
+ /**
+  * WordPress dependencies.
+  */
+ import { __ } from '@wordpress/i18n';
+ import { useDispatch, select } from '@wordpress/data';
+ import { useContext } from '@wordpress/element';
+ 
+ /**
+  * Internal dependencies
+  */
+ import Button from '@components/button';
+ import InfoBox from '@components/info-box';
+ import ListControl from '@components/list-control';
+ import ListItemControl from '@components/list-control/list-item-control';
++import ReactSelectControl from '@components/react-select-control';
+ import SelectControl from '@components/select-control';
+ import SettingTabsControl from '@components/setting-tabs-control';
+ import TextControl from '@components/text-control';
+ import ToggleSwitch from '@components/toggle-switch';
+ import TransitionControl from '@components/transition-control';
+ import { openSidebarAccordion } from '@extensions/inspector';
+ import {
+ 	createTransitionObj,
+ 	getDefaultAttribute,
+ 	getGroupAttributes,
+ } from '@extensions/styles';
+ import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+ import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+ import { getHoverStatus } from '@extensions/relations';
+ import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
+ import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
+ import { getSelectedIBSettings } from '@extensions/relations/utils';
+ import getIBStylesObj from '@extensions/relations/getIBStylesObj';
+ import getIBStyles from '@extensions/relations/getIBStyles';
+ import getCleanDisplayIBAttributes from '@extensions/relations/getCleanDisplayIBAttributes';
+ import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+ 
+ /**
+  * External dependencies
+  */
+ import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
+ 
+ /**
+  * Styles
+  */
+ import './editor.scss';
+ 
++/**
++ * Helper to get uniqueIDs array from a relation item
++ * Supports both legacy single uniqueID and new uniqueIDs array format
++ */
++const getUniqueIDs = item => {
++	if (item.uniqueIDs && Array.isArray(item.uniqueIDs) && item.uniqueIDs.length > 0) {
++		return item.uniqueIDs;
++	}
++	if (item.uniqueID) {
++		return [item.uniqueID];
++	}
++	return [];
++};
++
++/**
++ * Helper to check if any blocks are selected
++ */
++const hasSelectedBlocks = item => {
++	return getUniqueIDs(item).length > 0;
++};
++
+ const RelationControl = props => {
+-	const { getBlock } = select('core/block-editor');
+-	const {
+-		selectBlock,
+-		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+-	} = useDispatch('core/block-editor');
++        const { getBlock } = select('core/block-editor');
++        const {
++                selectBlock,
++                __unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
++                updateBlockAttributes,
++        } = useDispatch('core/block-editor');
+ 
+ 	const repeaterContext = useContext(RepeaterContext);
+ 
+ 	const {
+ 		clientId,
+ 		deviceType,
+ 		isButton,
+ 		onChange,
+ 		relations: rawRelations,
+ 		uniqueID,
+ 	} = props;
+ 
+ 	const cloneRelations = relations =>
+ 		!isEmpty(relations) ? cloneDeep(relations) : [];
+ 
+-	// Ensure that each relation of `relations` array has a valid block
+-	const relations = cloneRelations(rawRelations).filter(
+-		relation =>
+-			isEmpty(relation.uniqueID) ||
+-			!!getClientIdFromUniqueId(relation.uniqueID)
+-	);
++	// Ensure that each relation of `relations` array has valid block(s)
++	const relations = cloneRelations(rawRelations).filter(relation => {
++		const ids = getUniqueIDs(relation);
++		if (ids.length === 0) return true; // Keep relations with no blocks selected yet
++		// Keep relation if at least one block still exists
++		return ids.some(id => !!getClientIdFromUniqueId(id));
++	});
+ 
+ 	const getRelationId = relations => {
+ 		return relations && !isEmpty(relations)
+ 			? Math.max(
+ 					...relations.map(relation =>
+ 						typeof relation.id === 'number' ? relation.id : 0
+ 					)
+ 			  ) + 1
+ 			: 1;
+ 	};
+ 
+ 	const getParsedOptions = rawOptions => {
+ 		const parseOptionsArray = options =>
+ 			options?.map(({ sid, label }) => ({
+ 				label,
+ 				value: sid,
+ 			})) ?? [];
+ 
+ 		const defaultSetting = {
+ 			label: __('Choose settings', 'maxi-blocks'),
+ 			value: '',
+ 		};
+ 
+ 		const parsedOptions =
+ 			Object.keys(rawOptions).length > 1
+@@ -102,56 +126,59 @@ const RelationControl = props => {
+ 							(acc, [groupLabel, groupOptions]) => ({
+ 								...acc,
+ 								[capitalize(groupLabel)]:
+ 									parseOptionsArray(groupOptions),
+ 							}),
+ 							{}
+ 						),
+ 				  }
+ 				: [
+ 						...defaultSetting,
+ 						...parseOptionsArray(
+ 							rawOptions[Object.keys(rawOptions)[0]]
+ 						),
+ 				  ];
+ 
+ 		return parsedOptions;
+ 	};
+ 
+ 	const transitionDefaultAttributes = createTransitionObj();
+ 
+ 	const onAddRelation = relations => {
+ 		const newRelations = cloneRelations(relations);
+ 
+ 		const relation = {
+ 			title: '',
+-			uniqueID: '',
++			uniqueID: '', // Legacy field for backward compatibility
++			uniqueIDs: [], // New multi-select field
+ 			target: '',
+ 			action: '',
+ 			sid: '',
+-			attributes: {},
+-			css: {},
++			attributes: {}, // After state attributes
++			beforeAttributes: {}, // Before state attributes
++			css: {}, // After state CSS
++			beforeCss: {}, // Before state CSS
+ 			id: getRelationId(relations),
+ 			effects: transitionDefaultAttributes,
+ 			isButton,
+ 		};
+ 
+ 		onChange({ relations: [...newRelations, relation] });
+ 	};
+ 
+ 	const onChangeRelation = (relations, id, obj) => {
+ 		const newRelations = cloneRelations(relations);
+ 
+ 		newRelations.forEach(relation => {
+ 			if (relation.id === id) {
+ 				Object.keys(obj).forEach(key => {
+ 					relation[key] = obj[key];
+ 				});
+ 			}
+ 		});
+ 
+ 		onChange({ relations: newRelations });
+ 	};
+ 
+ 	const onRemoveRelation = (id, relations) => {
+ 		const newRelations = cloneRelations(relations);
+ 
+@@ -265,50 +292,182 @@ const RelationControl = props => {
+ 					{
+ 						...item.attributes,
+ 						...cleanAttributesObject,
+ 					},
+ 					val => val === undefined
+ 				);
+ 
+ 				onChangeRelation(relations, item.id, {
+ 					attributes: newAttributes,
+ 					css: styles,
+ 					...(item.sid === 't' && {
+ 						effects: {
+ 							...item.effects,
+ 							transitionTarget: Object.keys(styles),
+ 						},
+ 					}),
+ 				});
+ 			},
+ 			prefix,
+ 			blockStyle: blockAttributes.blockStyle,
+ 			breakpoint: deviceType,
+ 			clientId,
+ 		});
+ 	};
+ 
++	/**
++	 * Display the "Before" settings panel for configuring the starting state
++	 */
++	const displayBeforeSetting = item => {
++		if (!item) return null;
++
++		const clientId = getClientIdFromUniqueId(item.uniqueID);
++
++		const selectedSettings = getSelectedIBSettings(clientId, item.sid);
++
++		if (!selectedSettings) return null;
++
++		const settingsComponent = selectedSettings.component;
++		const prefix = selectedSettings?.prefix || '';
++		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
++
++		// Use beforeAttributes instead of attributes
++		const beforeAttrs = item.beforeAttributes || {};
++		const mergedAttributes = getCleanDisplayIBAttributes(
++			blockAttributes,
++			beforeAttrs
++		);
++
++		const transformGeneralAttributesToBaseBreakpoint = obj => {
++			if (deviceType !== 'general') return {};
++
++			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
++
++			if (!baseBreakpoint) return {};
++
++			return Object.keys(obj).reduce((acc, key) => {
++				if (key.includes('-general')) {
++					const newKey = key.replace('general', baseBreakpoint);
++
++					acc[newKey] = obj[key];
++				}
++
++				return acc;
++			}, {});
++		};
++
++		const getNewAttributesOnReset = obj => {
++			const newAttributes = { ...beforeAttrs };
++			const resetTargets = Object.keys({
++				...obj,
++				...transformGeneralAttributesToBaseBreakpoint(obj),
++			});
++
++			resetTargets.forEach(target => {
++				newAttributes[target] = undefined;
++			});
++
++			return newAttributes;
++		};
++
++		return settingsComponent({
++			...blockAttributes,
++			...getGroupAttributes(
++				mergedAttributes,
++				selectedSettings.attrGroupName,
++				false,
++				prefix
++			),
++			attributes: mergedAttributes,
++			blockAttributes,
++			onChange: ({ isReset, ...obj }) => {
++				const newAttributesObj = isReset
++					? getNewAttributesOnReset(obj)
++					: {
++							...beforeAttrs,
++							...obj,
++							...transformGeneralAttributesToBaseBreakpoint(obj),
++					  };
++
++				const { cleanAttributesObject, tempAttributes } =
++					getCleanResponseIBAttributes(
++						newAttributesObj,
++						blockAttributes,
++						item.uniqueID,
++						selectedSettings,
++						deviceType,
++						prefix,
++						item.sid,
++						clientId
++					);
++
++				const stylesObj = getIBStylesObj({
++					clientId,
++					sid: item.sid,
++					attributes: omitBy(
++						{
++							...tempAttributes,
++							...cleanAttributesObject,
++						},
++						val => val === undefined
++					),
++					blockAttributes,
++					breakpoint: deviceType,
++				});
++
++				const styles = getIBStyles({
++					stylesObj,
++					blockAttributes,
++					isFirst: true,
++				});
++
++                                const newBeforeAttributes = omitBy(
++                                        {
++                                                ...beforeAttrs,
++                                                ...cleanAttributesObject,
++                                        },
++                                        val => val === undefined
++                                );
++
++                                // Keep the block's base attributes in sync with the "Before" state
++                                if (clientId) {
++                                        updateBlockAttributes(clientId, newBeforeAttributes);
++                                }
++
++                                // Store to beforeAttributes and beforeCss
++                                onChangeRelation(relations, item.id, {
++                                        beforeAttributes: newBeforeAttributes,
++                                        beforeCss: styles,
++                                });
++			},
++			prefix,
++			blockStyle: blockAttributes.blockStyle,
++			breakpoint: deviceType,
++			clientId,
++		});
++	};
++
+ 	const getBlocksToAffect = () => {
+ 		const arr = [];
+ 
+ 		const {
+ 			getBlockAttributes,
+ 			getBlockOrder,
+ 			getBlockParentsByBlockName,
+ 		} = select('core/block-editor');
+ 
+ 		const innerBlockPositions =
+ 			repeaterContext?.getInnerBlocksPositions?.();
+ 
+ 		const triggerParentRepeaterColumnClientId =
+ 			repeaterContext?.repeaterStatus &&
+ 			(innerBlockPositions?.[[-1]]?.includes(clientId)
+ 				? clientId
+ 				: getBlockParentsByBlockName(
+ 						clientId,
+ 						'maxi-blocks/column-maxi'
+ 				  ).find(clientId =>
+ 						innerBlockPositions?.[[-1]]?.includes(clientId)
+ 				  ));
+ 
+ 		goThroughMaxiBlocks(block => {
+ 			if (
+@@ -412,79 +571,88 @@ const RelationControl = props => {
+ 										value={item.title}
+ 										placeholder={__(
+ 											'Give memorable name…',
+ 											'maxi-blocks'
+ 										)}
+ 										newStyle
+ 										onChange={value =>
+ 											onChangeRelation(
+ 												relations,
+ 												item.id,
+ 												{
+ 													title: value,
+ 												}
+ 											)
+ 										}
+ 									/>
+ 									{blocksToAffect.length === 0 && (
+ 										<InfoBox
+ 											className='maxi-relation-control__item__content__info-box'
+ 											message={__(
+ 												'Add names to blocks which you want to be able to select them here.',
+ 												'maxi-blocks'
+ 											)}
+ 										/>
+ 									)}
+-									<SelectControl
+-										__nextHasNoMarginBottom
+-										label={__(
+-											'Block to affect',
++									<ReactSelectControl
++										labelText={__(
++											'Blocks to affect',
+ 											'maxi-blocks'
+ 										)}
+-										value={item.uniqueID}
+-										newStyle
+-										options={[
+-											{
+-												label: __(
+-													'Select block…',
+-													'maxi-blocks'
+-												),
+-												value: '',
+-											},
+-											...blocksToAffect,
+-										]}
+-										onChange={value =>
++										isMulti
++										placeholder={__(
++											'Select blocks…',
++											'maxi-blocks'
++										)}
++										value={getUniqueIDs(item).map(id => {
++											const block = blocksToAffect.find(
++												b => b.value === id
++											);
++											return block
++												? block
++												: { label: id, value: id };
++										})}
++										options={blocksToAffect}
++										onChange={selectedOptions => {
++											const newUniqueIDs = selectedOptions
++												? selectedOptions.map(
++														opt => opt.value
++												  )
++												: [];
+ 											onChangeRelation(
+ 												relations,
+ 												item.id,
+ 												{
+-													uniqueID: value,
++													// Keep first ID for legacy compatibility
++													uniqueID:
++														newUniqueIDs[0] || '',
++													uniqueIDs: newUniqueIDs,
+ 												}
+-											)
+-										}
++											);
++										}}
+ 									/>
+-									{item.uniqueID && (
++									{hasSelectedBlocks(item) && (
+ 										<>
+ 											<SelectControl
+ 												__nextHasNoMarginBottom
+ 												label={__(
+ 													'Action',
+ 													'maxi-blocks'
+ 												)}
+ 												value={item.action}
+ 												options={[
+ 													{
+ 														label: __(
+ 															'Choose action',
+ 															'maxi-blocks'
+ 														),
+ 														value: '',
+ 													},
+ 													{
+ 														label: __(
+ 															'On click',
+ 															'maxi-blocks'
+ 														),
+ 														value: 'click',
+ 													},
+ 													{
+ 														label: __(
+@@ -615,61 +783,71 @@ const RelationControl = props => {
+ 														}
+ 													);
+ 												}}
+ 											/>
+ 											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
+ 												<a
+ 													onClick={() =>
+ 														selectBlock(
+ 															getClientIdFromUniqueId(
+ 																item.uniqueID
+ 															),
+ 															openSidebarAccordion(
+ 																0
+ 															)
+ 														)
+ 													}
+ 												>
+ 													{__(
+ 														'Open block settings',
+ 														'maxi-blocks'
+ 													)}
+ 												</a>
+ 											</div>
+ 										</>
+ 									)}
+-									{item.uniqueID &&
++									{hasSelectedBlocks(item) &&
+ 										item.sid &&
+ 										(item.effects.disableTransition ? (
+ 											displaySelectedSetting(item)
+ 										) : (
+ 											<SettingTabsControl
+ 												deviceType={deviceType}
+ 												items={[
+ 													{
+ 														label: __(
+-															'Settings',
++															'Before',
++															'maxi-blocks'
++														),
++														content:
++															displayBeforeSetting(
++																item
++															),
++													},
++													{
++														label: __(
++															'After',
+ 															'maxi-blocks'
+ 														),
+ 														content:
+ 															displaySelectedSetting(
+ 																item
+ 															),
+ 													},
+ 													{
+ 														label: __(
+ 															'Effects',
+ 															'maxi-blocks'
+ 														),
+ 														content: (
+ 															<TransitionControl
+ 																className='maxi-relation-control__item__effects'
+ 																newStyle
+ 																onChange={(
+ 																	obj,
+ 																	splitMode
+ 																) =>
+ 																	onChangeRelation(
+ 																		relations,
+ 																		item.id,
+ 																		{
+ 																			effects:
+diff --git a/src/extensions/relations/Relation.js b/src/extensions/relations/Relation.js
+index c354fd074ddd90515240d82327418c61a07f4c56..f8e7f2edf7d1c142ed330b68316ceb944cd640b7 100644
+--- a/src/extensions/relations/Relation.js
++++ b/src/extensions/relations/Relation.js
+@@ -1,37 +1,38 @@
+ /**
+  * Internal dependencies
+  */
+ import getBlockNameFromUniqueID from '@extensions/attributes/getBlockNameFromUniqueID';
+ import { getIsSiteEditor, getSiteEditorIframe } from '@extensions/fse';
+ 
+ // Relations (IB)
+ class Relation {
+ 	constructor(item, relationAction = null, relationIndex = null) {
+ 		this.id = item?.id;
+ 		this.uniqueID = item?.uniqueID;
+ 		this.css = item?.css;
++		this.beforeCss = item?.beforeCss; // Before state CSS
+ 		this.isPreview = false;
+ 
+ 		if (!this.uniqueID || this.css.length === 0) return;
+ 
+ 		this.mainDocument = document;
+ 		this.mainWindow = window;
+ 
+ 		this.isSiteEditor = getIsSiteEditor();
+ 		if (this.isSiteEditor) {
+ 			const siteEditorIframe = getSiteEditorIframe();
+ 			if (siteEditorIframe) this.mainDocument = siteEditorIframe;
+ 			const iframe =
+ 				document.querySelector(
+ 					'.edit-site-visual-editor .components-resizable-box__container iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+ 				) ??
+ 				document.querySelector(
+ 					'.editor-visual-editor .components-resizable-box__container iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+ 				);
+ 			if (iframe) this.mainWindow = iframe.contentWindow;
+ 		}
+ 
+ 		this.trigger = item.trigger;
+ 		this.triggerEl = this.mainDocument.querySelector(`.${this.trigger}`);
+ 
+ 		this.blockTarget = `.${this.uniqueID}`;
+@@ -112,120 +113,138 @@ class Relation {
+ 				default:
+ 					return [''];
+ 			}
+ 		});
+ 
+ 		this.isBorderArray = this.attributes.map(attributes =>
+ 			Object.keys(attributes).some(attr => attr.startsWith('border'))
+ 		);
+ 		this.isIconArray = this.sids.map(
+ 			sid =>
+ 				sid === 'ic' ||
+ 				sid === 'bi' ||
+ 				// support for old versions
+ 				sid === 'Icon colour' ||
+ 				sid === 'Button icon'
+ 		);
+ 		this.isSVG = this.fullTarget.includes('svg-icon-maxi');
+ 		this.avoidHoverArray = [];
+ 		this.getAvoidHover();
+ 
+ 		this.inTransitionString = '';
+ 		this.outTransitionString = '';
+ 		this.generateTransitions();
+ 
+ 		this.stylesString = '';
++		this.beforeStylesString = '';
+ 		this.generateStyles();
++		this.generateBeforeStyles();
+ 
+-		this.stylesEl = null;
+-		this.inTransitionEl = null;
+-		this.outTransitionEl = null;
+-		this.generateStylesEls();
++                this.stylesEl = null;
++                this.beforeStylesEl = null;
++                this.inTransitionEl = null;
++                this.outTransitionEl = null;
++                this.generateStylesEls();
++
++               // Apply "before" styles immediately so the resting state is visible
++                this.addBeforeStyles();
+ 
+ 		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
+ 		this.transitionTimeout = null;
+ 		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
+ 		// leave the hover transition trigger
+ 		this.contentTimeout = null;
+ 	}
+ 
+-	// Create two different <style> elements, one for the styles and one for the transitions.
++	// Create style elements for before/after styles and transitions
+ 	generateStylesEls() {
++		// After state styles (applied on trigger)
+ 		this.stylesEl = this.mainDocument.createElement('style');
+ 		this.stylesEl.id = `relations--${this.uniqueID}-${this.id}-styles`;
+ 		this.stylesEl.setAttribute('data-type', this.action);
+ 		this.stylesEl.setAttribute('data-sids', this.sids);
+ 		this.stylesEl.innerText = this.stylesString;
+ 
++		// Before state styles (applied immediately as default)
++		if (this.beforeStylesString.length > 0) {
++			this.beforeStylesEl = this.mainDocument.createElement('style');
++			this.beforeStylesEl.id = `relations--${this.uniqueID}-${this.id}-before-styles`;
++			this.beforeStylesEl.setAttribute('data-type', 'before');
++			this.beforeStylesEl.setAttribute('data-sids', this.sids);
++			this.beforeStylesEl.innerText = this.beforeStylesString;
++		}
++
+ 		if (this.inTransitionString.length > 0) {
+ 			this.inTransitionEl = this.mainDocument.createElement('style');
+ 			this.inTransitionEl.id = `relations--${this.uniqueID}-${this.id}-in-transitions`;
+ 			this.inTransitionEl.setAttribute('data-type', this.action);
+ 			this.inTransitionEl.setAttribute('data-sids', this.sids);
+ 			this.inTransitionEl.innerText = this.inTransitionString;
+ 		}
+ 		if (this.outTransitionString.length > 0) {
+ 			this.outTransitionEl = this.mainDocument.createElement('style');
+ 			this.outTransitionEl.id = `relations--${this.uniqueID}-${this.id}-out-transitions`;
+ 			this.outTransitionEl.setAttribute('data-type', this.action);
+ 			this.outTransitionEl.setAttribute('data-sids', this.sids);
+ 			this.outTransitionEl.innerText = this.outTransitionString;
+ 		}
+ 	}
+ 
+ 	// Insert transitions or styles element just after Maxi inline css element
+ 	addStyleEl(styleEl) {
+ 		if (!styleEl) return;
+ 
+ 		if (!this.inlineStylesEl)
+ 			this.inlineStylesEl = this.mainDocument.querySelector(
+ 				'style[id*=maxi-blocks]'
+ 			);
+ 
+ 		const currentEl = this.mainDocument.querySelector(`#${styleEl.id}`);
+ 
+ 		if (currentEl) currentEl.remove();
+ 
+ 		this.inlineStylesEl.parentNode.insertBefore(
+ 			styleEl,
+ 			this.inlineStylesEl.nextSibling
+ 		);
+ 	}
+ 
+ 	getLastUsableBreakpoint(currentBreakpoint, callback) {
+ 		return [...this.breakpoints]
+ 			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
+ 			.reverse()
+ 			.find(breakpoint => callback(breakpoint));
+ 	}
+ 
+ 	setIsPreview(isPreview) {
+ 		this.isPreview = isPreview;
+ 
+ 		if (this.isPreview) {
++			this.addBeforeStyles(); // Apply before state as default
+ 			this.enableTransitions();
+ 		} else {
++			this.removeBeforeStyles();
+ 			this.disableTransitions();
+ 		}
+ 	}
+ 
+ 	/**
+ 	 * Generates a clean CSS and Effect object to be used to generate styles
+ 	 * and transition strings.
+ 	 */
+ 	generateCssResponsiveObj() {
+ 		const getCssObjForEachTarget = (css, effects) => {
+ 			const stylesObj = {};
+ 			const effectsObj = {};
+ 
+ 			const getLastEffectsBreakpointAttribute = (
+ 				target,
+ 				currentBreakpoint,
+ 				isOut = false
+ 			) => {
+ 				const inOrOutEffects = isOut ? effects.out : effects;
+ 
+ 				const lastBreakpoint = this.getLastUsableBreakpoint(
+ 					currentBreakpoint,
+ 					breakpoint =>
+ 						Object.prototype.hasOwnProperty.call(
+ 							inOrOutEffects,
+@@ -629,58 +648,109 @@ class Relation {
+ 		this.stylesObjs.forEach((stylesObj, index) => {
+ 			if (this.hasMultipleTargetsArray[index])
+ 				Object.entries(stylesObj).forEach(
+ 					([targetSelector, styles]) =>
+ 						Object.keys(styles).length &&
+ 						getStylesLine(
+ 							styles,
+ 							`${mainTarget} ${targetSelector}`,
+ 							index
+ 						)
+ 				);
+ 			else
+ 				this.transitionTargetsArray[index].forEach(transitionTarget =>
+ 					getStylesLine(
+ 						stylesObj,
+ 						this.getTargetForLine(
+ 							transitionTarget,
+ 							this.dataTarget
+ 						),
+ 						index
+ 					)
+ 				);
+ 		});
+ 	}
+ 
++	/**
++	 * Generate CSS string from beforeCss for the default/resting state
++	 */
++	generateBeforeStyles() {
++		// console.log('Rel: generateBeforeStyles', this.uniqueID, this.beforeCss);
++		if (!this.beforeCss || Object.keys(this.beforeCss).length === 0) return;
++
++		// Use the same target format as generateStyles
++		// Before styles should apply to the block without the data-maxi-relations condition
++		const baseTarget = `${this.targetPrefix}${this.blockTarget}`;
++
++		Object.entries(this.beforeCss).forEach(([breakpoint, data]) => {
++			if (!data?.styles || Object.keys(data.styles).length === 0) return;
++
++			let targetWithBreakpoint = baseTarget;
++			if (breakpoint !== 'general') {
++				targetWithBreakpoint = targetWithBreakpoint.replace(
++					'[maxi-blocks-responsive]',
++					`[maxi-blocks-responsive="${breakpoint}"]`
++				);
++			}
++
++			// Build the full selector with target
++			const fullTarget = this.target
++				? `${targetWithBreakpoint} ${this.target}`
++				: targetWithBreakpoint;
++
++			// Simplified selector - relies on add/remove lifecycle instead of body class
++			const selector = `${fullTarget} {`.replace(/\s{2,}/g, ' ');
++
++			let cssBlock = selector;
++			Object.entries(data.styles).forEach(([prop, value]) => {
++				cssBlock += ` ${prop}: ${value} !important;`;
++			});
++			cssBlock += ' }';
++
++			this.beforeStylesString += cssBlock;
++		});
++		// console.log('Rel: beforeStylesString', this.beforeStylesString);
++	}
++
+ 	addStyles() {
+ 		this.addStyleEl(this.stylesEl);
+ 	}
+ 
++	addBeforeStyles() {
++		if (this.beforeStylesEl) {
++			this.addStyleEl(this.beforeStylesEl);
++		}
++	}
++
+ 	removeStyles() {
+ 		if (this.stylesEl) this.stylesEl.remove();
+ 	}
+ 
++	removeBeforeStyles() {
++		if (this.beforeStylesEl) this.beforeStylesEl.remove();
++	}
++
+ 	generateTransitions() {
+ 		let inTransitionString = '';
+ 		let outTransitionString = '';
+ 
+ 		const getTransitionLine = (stylesObj, target, index) => {
+ 			const isBackground = target.includes('maxi-background-displayer');
+ 
+ 			Object.entries(this.breakpointsObj).forEach(
+ 				([breakpoint, breakpointValue]) => {
+ 					let hasEffects = !!this.effectsObjs[index][breakpoint];
+ 					let effectsBreakpoint = breakpoint;
+ 
+ 					// Default effects will come for general breakpoint, but maybe
+ 					// creator has decided to affect to a concrete breakpoint, so there's
+ 					// no styles for general. The result is that we have styles for a concrete
+ 					// breakpoint and transitions for general. Need to set general transitions
+ 					// in that case or the transition will not work.
+ 					if (!hasEffects) {
+ 						const breakpointIndex =
+ 							this.breakpoints.indexOf(breakpoint);
+ 
+ 						const previousBreakpoints = this.breakpoints.slice(
+ 							0,
+ 							breakpointIndex
+ 						);
+@@ -958,71 +1028,75 @@ class Relation {
+ 					mutation.attributeName === 'data-maxi-relations'
+ 				) {
+ 					if (mutation.target.dataset.maxiRelations !== 'true')
+ 						mutation.target.dataset.maxiRelations = 'true';
+ 				}
+ 			});
+ 		});
+ 
+ 		if (this.blockTargetEl)
+ 			observer.observe(this.blockTargetEl, {
+ 				attributes: true,
+ 				attributeFilter: ['data-maxi-relations'],
+ 			});
+ 
+ 		this.observer = observer;
+ 	}
+ 
+ 	// Removes the observer added by the addRelationSubscriber method
+ 	removeRelationSubscriber() {
+ 		if (this.observer && typeof this.observer.disconnect === 'function') {
+ 			this.observer.disconnect();
+ 			this.observer = null;
+ 		}
+ 	}
+ 
+-	enableTransitions() {
+-		// console.log('IB is active'); // 🔥
+-		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
+-		clearTimeout(this.transitionTimeout);
++        enableTransitions() {
++                // console.log('IB is active'); // 🔥
++                if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
++                clearTimeout(this.transitionTimeout);
+ 
+-		this.addRelationSubscriber();
++                this.addRelationSubscriber();
+ 
+-		this.addDataAttrToBlock();
+-		this.addTransition(this.inTransitionEl);
+-		this.addStyles();
+-	}
++               this.addBeforeStyles();
++                this.addDataAttrToBlock();
++                this.addTransition(this.inTransitionEl);
++                this.addStyles();
++        }
+ 
+-	disableTransitions() {
+-		// console.log('IB is inactive'); // 🔥
+-		this.removeTransition(this.inTransitionEl);
+-		this.addTransition(this.outTransitionEl);
++        disableTransitions() {
++                // console.log('IB is inactive'); // 🔥
++                this.removeTransition(this.inTransitionEl);
++                this.addTransition(this.outTransitionEl);
+ 
+-		this.removeStyles();
+-	}
++                this.removeStyles();
++                this.removeBeforeStyles();
++        }
+ 
+-	removePreviousStylesAndTransitions() {
+-		// IDs for the styles and transitions elements
+-		const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
+-		const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
+-		const previousOutTransitionsElId = `relations--${this.uniqueID}-${this.id}-out-transitions`;
++        removePreviousStylesAndTransitions() {
++                // IDs for the styles and transitions elements
++                const previousBeforeStylesElId = `relations--${this.uniqueID}-${this.id}-before-styles`;
++                const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
++                const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
++                const previousOutTransitionsElId = `relations--${this.uniqueID}-${this.id}-out-transitions`;
+ 
+ 		// Function to remove an element by its ID
+ 		const removeElementsById = elementId => {
+ 			const elements = this.mainDocument.querySelectorAll(
+ 				`#${elementId}`
+ 			);
+ 			elements.forEach(element => {
+ 				if (element) {
+ 					element.remove();
+ 				}
+ 			});
+-		};
+-
+-		// Remove the previous styles and transitions elements
+-		removeElementsById(previousStylesElId);
+-		removeElementsById(previousInTransitionsElId);
+-		removeElementsById(previousOutTransitionsElId);
+-	}
++                };
++
++                // Remove the previous styles and transitions elements
++                removeElementsById(previousBeforeStylesElId);
++                removeElementsById(previousStylesElId);
++                removeElementsById(previousInTransitionsElId);
++                removeElementsById(previousOutTransitionsElId);
++        }
+ }
+ 
+ export default Relation;
+diff --git a/src/extensions/relations/processRelations.js b/src/extensions/relations/processRelations.js
+index c910b324726e37addbc07730d9206bd9391538a6..6f67984eac9c87bc3a32ce17776e3bf591e13699 100644
+--- a/src/extensions/relations/processRelations.js
++++ b/src/extensions/relations/processRelations.js
+@@ -1,47 +1,86 @@
+ import Relation from './Relation';
+ 
++/**
++ * Helper to get uniqueIDs array from a relation
++ * Supports both legacy single uniqueID and new uniqueIDs array format
++ */
++const getUniqueIDsFromRelation = relation => {
++	if (
++		relation.uniqueIDs &&
++		Array.isArray(relation.uniqueIDs) &&
++		relation.uniqueIDs.length > 0
++	) {
++		return relation.uniqueIDs;
++	}
++	if (relation.uniqueID) {
++		return [relation.uniqueID];
++	}
++	return [];
++};
++
+ export default function processRelations(
+ 	relations,
+ 	relationAction = null,
+ 	relationIndex = null
+ ) {
+ 	if (!relations) return null;
+ 
+-	const modifiedRelations = relations.map(relation => {
++	// Expand relations with multiple uniqueIDs into separate relation objects
++	const expandedRelations = [];
++	relations.forEach(relation => {
++		const uniqueIDs = getUniqueIDsFromRelation(relation);
++		if (uniqueIDs.length === 0) {
++			// Keep relation with no blocks for editor display
++			expandedRelations.push(relation);
++		} else {
++			// Create a separate relation for each target block
++			uniqueIDs.forEach(uniqueID => {
++				expandedRelations.push({
++					...relation,
++					uniqueID, // Set single uniqueID for Relation class compatibility
++				});
++			});
++		}
++	});
++
++	const modifiedRelations = expandedRelations.map(relation => {
+ 		const modifiedRelation = {};
+ 		Object.keys(relation).forEach(key => {
+ 			// Exclude specific keys from being converted to arrays
+ 			if (
+-				['action', 'uniqueID', 'trigger', 'target', 'id'].includes(key)
++				['action', 'uniqueID', 'uniqueIDs', 'trigger', 'target', 'id', 'beforeAttributes', 'beforeCss'].includes(
++					key
++				)
+ 			) {
+ 				modifiedRelation[key] = relation[key];
+ 			} else {
+ 				// Convert other properties to an array, if they're not already one
+ 				modifiedRelation[key] = Array.isArray(relation[key])
+ 					? relation[key]
+ 					: [relation[key]];
+ 			}
+ 		});
+ 		return modifiedRelation;
+ 	});
+ 
+ 	if (relationAction !== null) {
+ 		if (relationIndex !== null) {
+ 			const removingRelation = modifiedRelations.find(
+ 				relation => relation.id === relationIndex
+ 			);
+ 			const relation = new Relation(
+ 				removingRelation,
+ 				relationAction,
+ 				relationIndex
+ 			);
+ 
+ 			if (relationAction === 'remove') {
+ 				relation.removePreviousStylesAndTransitions();
+ 			}
+ 			return null;
+ 		}
+ 	}
+ 
+ 	return modifiedRelations.map(relation => new Relation(relation));
+ }
++

@@ -1448,6 +1448,7 @@ class MaxiBlockComponent extends Component {
 					'target',
 					'blockTarget',
 					'stylesString',
+					'beforeStylesString',
 				];
 
 				const isEquivalent = (a, b) => {

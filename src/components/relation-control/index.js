@@ -71,6 +71,7 @@ const RelationControl = props => {
 	const {
 		selectBlock,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+		updateBlockAttributes,
 	} = useDispatch('core/block-editor');
 
 	const repeaterContext = useContext(RepeaterContext);
@@ -426,6 +427,14 @@ const RelationControl = props => {
 					},
 					val => val === undefined
 				);
+
+				// Get the target block's clientId
+				const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+
+				// Update the actual block attributes so changes are visible immediately
+				if (targetClientId) {
+					updateBlockAttributes(targetClientId, newBeforeAttributes);
+				}
 
 				// Store to beforeAttributes and beforeCss
 				onChangeRelation(relations, item.id, {

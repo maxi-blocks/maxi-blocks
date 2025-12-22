@@ -671,7 +671,6 @@ class Relation {
 	 * Generate CSS string from beforeCss for the default/resting state
 	 */
 	generateBeforeStyles() {
-		// console.log('Rel: generateBeforeStyles', this.uniqueID, this.beforeCss);
 		if (!this.beforeCss || Object.keys(this.beforeCss).length === 0) return;
 
 		// Use the same target format as generateStyles
@@ -694,8 +693,9 @@ class Relation {
 				? `${targetWithBreakpoint} ${this.target}`
 				: targetWithBreakpoint;
 
-			// Simplified selector - relies on add/remove lifecycle instead of body class
-			const selector = `${fullTarget} {`.replace(/\s{2,}/g, ' ');
+			const selector = this.isSiteEditor
+				? `body.maxi-blocks--active${fullTarget} {`.replace(/\s{2,}/g, ' ')
+				: `body.maxi-blocks--active ${fullTarget} {`.replace(/\s{2,}/g, ' ');
 
 			let cssBlock = selector;
 			Object.entries(data.styles).forEach(([prop, value]) => {
@@ -705,7 +705,6 @@ class Relation {
 
 			this.beforeStylesString += cssBlock;
 		});
-		// console.log('Rel: beforeStylesString', this.beforeStylesString);
 	}
 
 	addStyles() {
@@ -1053,8 +1052,10 @@ class Relation {
 		clearTimeout(this.transitionTimeout);
 
 		this.addRelationSubscriber();
+		this.addHoverListeners(); // Add hover events to trigger After state
 
-		this.addDataAttrToBlock();
+		// Don't immediately set data attribute - let hover trigger it
+		// this.addDataAttrToBlock();
 		this.addTransition(this.inTransitionEl);
 		this.addStyles();
 	}
@@ -1063,8 +1064,38 @@ class Relation {
 		// console.log('IB is inactive'); // 🔥
 		this.removeTransition(this.inTransitionEl);
 		this.addTransition(this.outTransitionEl);
+		this.removeHoverListeners(); // Remove hover events
 
 		this.removeStyles();
+		this.removeAddAttrToBlock(); // Ensure data attribute is removed
+	}
+
+	// Add hover event listeners for editor preview
+	addHoverListeners() {
+		if (!this.triggerEl) return;
+
+		// Create bound handlers so we can remove them later
+		this.handleMouseEnter = () => {
+			this.addDataAttrToBlock();
+		};
+		this.handleMouseLeave = () => {
+			this.removeAddAttrToBlock();
+		};
+
+		this.triggerEl.addEventListener('mouseenter', this.handleMouseEnter);
+		this.triggerEl.addEventListener('mouseleave', this.handleMouseLeave);
+	}
+
+	// Remove hover event listeners
+	removeHoverListeners() {
+		if (!this.triggerEl) return;
+
+		if (this.handleMouseEnter) {
+			this.triggerEl.removeEventListener('mouseenter', this.handleMouseEnter);
+		}
+		if (this.handleMouseLeave) {
+			this.triggerEl.removeEventListener('mouseleave', this.handleMouseLeave);
+		}
 	}
 
 	removePreviousStylesAndTransitions() {

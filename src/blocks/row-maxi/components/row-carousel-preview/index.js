@@ -42,6 +42,14 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 			);
 		}
 
+		const heightOffset = attributes[`row-carousel-height-offset-${bp}`];
+		if (heightOffset !== undefined) {
+			rowBlock.setAttribute(
+				`data-carousel-height-offset-${bp}`,
+				heightOffset
+			);
+		}
+
 		const loop = attributes[`row-carousel-loop-${bp}`];
 		if (loop !== undefined) {
 			rowBlock.setAttribute(`data-carousel-loop-${bp}`, loop);

@@ -297,6 +297,17 @@ class MaxiRowCarouselEditor {
 			10
 		);
 
+		this.heightOffset = parseInt(
+			this._container.dataset[
+				`carouselHeightOffset${
+					bp.charAt(0).toUpperCase() + bp.slice(1)
+				}`
+			] ||
+				this._container.dataset.carouselHeightOffsetGeneral ||
+				'0',
+			10
+		);
+
 		const loopValue =
 			this._container.dataset[
 				`carouselLoop${bp.charAt(0).toUpperCase() + bp.slice(1)}`
@@ -546,30 +557,85 @@ class MaxiRowCarouselEditor {
 		this._wrapper.style.width = `${wrapperWidth}px`;
 		this._wrapper.style.transition = `transform ${this.transitionSpeed}s ease`;
 
-		// Find the tallest column to set tracker height
-		// Measure AFTER setting widths so heights reflect final layout
+		// Calculate required height based on all content bounds including absolutely positioned elements
 		let maxHeight = 0;
-		this._columns.forEach(column => {
-			const columnHeight = column._column.getBoundingClientRect().height;
-			if (columnHeight > maxHeight) {
-				maxHeight = columnHeight;
+		const columnHeights = [];
+
+		// Function to get the maximum bottom position of all elements within a container
+		const getMaxContentHeight = (element, index) => {
+			let maxBottom = element.scrollHeight; // Start with scrollHeight as baseline
+
+			// Check all descendant elements including deeply nested ones
+			const allElements = element.querySelectorAll('*');
+			allElements.forEach(child => {
+				const style = window.getComputedStyle(child);
+				const { position } = style;
+
+				// For absolutely or fixed positioned elements, check their actual bounds
+				if (position === 'absolute' || position === 'fixed') {
+					const rect = child.getBoundingClientRect();
+					const parentRect = element.getBoundingClientRect();
+					const bottom = rect.bottom - parentRect.top;
+					if (bottom > maxBottom) {
+						maxBottom = bottom;
+					}
+				} else {
+					// For normal flow elements, use offsetTop + offsetHeight
+					let { offsetParent } = child;
+					let totalOffset = child.offsetTop;
+
+					// Walk up the offsetParent chain until we reach the column element
+					while (
+						offsetParent &&
+						offsetParent !== element &&
+						element.contains(offsetParent)
+					) {
+						totalOffset += offsetParent.offsetTop;
+						offsetParent = offsetParent.offsetParent;
+					}
+
+					const bottom = totalOffset + child.offsetHeight;
+					if (bottom > maxBottom) {
+						maxBottom = bottom;
+					}
+				}
+			});
+
+			const finalHeight = Math.ceil(maxBottom);
+			columnHeights.push({ index, height: finalHeight });
+			return finalHeight;
+		};
+
+		// Check all columns
+		this._columns.forEach((column, index) => {
+			const contentHeight = getMaxContentHeight(column._column, index);
+			if (contentHeight > maxHeight) {
+				maxHeight = contentHeight;
 			}
 		});
 
-		// Set tracker height to the tallest column
-		if (maxHeight > 0) {
-			this._tracker.style.height = `${maxHeight}px`;
-		}
-
 		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: setColumnWidths', {
-			firstColumnWidth,
-			carouselGap,
-			slidesPerView: this.slidesPerView,
-			peekOffset: this.peekOffset,
-			trackerWidth,
-			maxHeight,
-		});
+		console.log(
+			'MaxiRowCarouselEditor: setColumnWidths',
+			JSON.stringify({
+				firstColumnWidth,
+				carouselGap,
+				slidesPerView: this.slidesPerView,
+				peekOffset: this.peekOffset,
+				trackerWidth,
+				columnHeights,
+				maxHeight,
+				totalColumns: this._columns.length,
+			})
+		);
+
+		// Set explicit height on tracker and wrapper with user-configurable offset
+		if (maxHeight > 0) {
+			// Add user-configured height offset plus buffer to prevent scrollbars
+			const finalHeight = maxHeight + this.heightOffset + 20;
+			this._tracker.style.height = `${finalHeight}px`;
+			this._wrapper.style.height = `${finalHeight}px`;
+		}
 
 		// Sync nav container position and size with tracker
 		this.syncNavWithTracker();
@@ -852,6 +918,20 @@ class MaxiRowCarouselEditor {
 
 			this.init();
 			this.carouselActive = true;
+
+			// Force a recalculation of heights after the browser has laid out the DOM
+			// This fixes the scrollbar issue when activating carousel on resize
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					if (this.carouselActive && this._tracker && this._wrapper) {
+						// eslint-disable-next-line no-console
+						console.log(
+							'MaxiRowCarouselEditor: Recalculating heights after RAF'
+						);
+						this.setColumnWidths();
+					}
+				});
+			});
 		} else if (!shouldBeActive && this.carouselActive) {
 			// Deactivate carousel
 			this.destroy();

@@ -205,6 +205,8 @@ class MaxiRowCarousel {
 			parseInt(this.getBreakpointSetting('columnGap', '0'), 10) || 0;
 		this.peekOffset =
 			parseInt(this.getBreakpointSetting('peekOffset', '0'), 10) || 0;
+		this.heightOffset =
+			parseInt(this.getBreakpointSetting('heightOffset', '0'), 10) || 0;
 		this.isLoop = this.getBreakpointSetting('loop', 'false') === 'true';
 		this.isAutoplay =
 			this.getBreakpointSetting('autoplay', 'false') === 'true';
@@ -321,6 +323,20 @@ class MaxiRowCarousel {
 
 			// Initialize carousel (init() will call navEvents() and wrapperEvents())
 			this.init();
+
+			// Force a recalculation of heights after the browser has laid out the DOM
+			// This fixes the scrollbar issue when activating carousel on resize
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					if (this.carouselActive && this._tracker && this._wrapper) {
+						// eslint-disable-next-line no-console
+						console.log(
+							'MaxiRowCarousel: Recalculating heights after RAF'
+						);
+						this.setColumnWidths();
+					}
+				});
+			});
 		} else if (!shouldBeActive && this.carouselActive) {
 			// Need to deactivate carousel
 			this.deactivateCarousel();
@@ -587,32 +603,87 @@ class MaxiRowCarousel {
 			carouselGap * (totalChildren - 1);
 		this._wrapper.style.width = `${wrapperWidth}px`;
 
-		// Find the tallest column to set tracker height
-		// Measure AFTER setting widths so heights reflect final layout
+		// Calculate required height based on all content bounds including absolutely positioned elements
 		let maxHeight = 0;
-		const heights = [];
+		const columnHeights = [];
+
+		// Function to get the maximum bottom position of all elements within a container
+		const getMaxContentHeight = (element, index) => {
+			let maxBottom = element.scrollHeight; // Start with scrollHeight as baseline
+
+			// Check all descendant elements including deeply nested ones
+			const allElements = element.querySelectorAll('*');
+			allElements.forEach(child => {
+				const style = window.getComputedStyle(child);
+				const { position } = style;
+
+				// For absolutely or fixed positioned elements, check their actual bounds
+				if (position === 'absolute' || position === 'fixed') {
+					const rect = child.getBoundingClientRect();
+					const parentRect = element.getBoundingClientRect();
+					const bottom = rect.bottom - parentRect.top;
+					if (bottom > maxBottom) {
+						maxBottom = bottom;
+					}
+				} else {
+					// For normal flow elements, use offsetTop + offsetHeight
+					let { offsetParent } = child;
+					let totalOffset = child.offsetTop;
+
+					// Walk up the offsetParent chain until we reach the column element
+					while (
+						offsetParent &&
+						offsetParent !== element &&
+						element.contains(offsetParent)
+					) {
+						totalOffset += offsetParent.offsetTop;
+						offsetParent = offsetParent.offsetParent;
+					}
+
+					const bottom = totalOffset + child.offsetHeight;
+					if (bottom > maxBottom) {
+						maxBottom = bottom;
+					}
+				}
+			});
+
+			const finalHeight = Math.ceil(maxBottom);
+			columnHeights.push({ index, height: finalHeight });
+			return finalHeight;
+		};
+
+		// Check all real columns
 		this._columns.forEach((column, index) => {
-			const columnHeight = column._column.getBoundingClientRect().height;
-			heights.push({ index, height: columnHeight });
-			if (columnHeight > maxHeight) {
-				maxHeight = columnHeight;
+			const contentHeight = getMaxContentHeight(column._column, index);
+			if (contentHeight > maxHeight) {
+				maxHeight = contentHeight;
 			}
 		});
 
-		// Also check cloned columns for height
-		clones.forEach(clone => {
-			const cloneHeight = clone.getBoundingClientRect().height;
-			if (cloneHeight > maxHeight) {
-				maxHeight = cloneHeight;
+		// Also check clones
+		clones.forEach((clone, index) => {
+			const contentHeight = getMaxContentHeight(clone, `clone-${index}`);
+			if (contentHeight > maxHeight) {
+				maxHeight = contentHeight;
 			}
 		});
 
 		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarousel: Column heights', { heights, maxHeight });
+		console.log(
+			'MaxiRowCarousel: Column heights',
+			JSON.stringify({
+				columnHeights,
+				maxHeight,
+				totalColumns: this._columns.length,
+			})
+		);
 
-		// Set tracker height to the tallest column
+		// Set explicit height on tracker and wrapper with user-configurable offset
 		if (maxHeight > 0) {
-			this._tracker.style.height = `${maxHeight}px`;
+			// Add user-configured height offset plus buffer to prevent scrollbars
+			const finalHeight = maxHeight + this.heightOffset + 20;
+			this._tracker.style.height = `${finalHeight}px`;
+			this._wrapper.style.height = `${finalHeight}px`;
 		}
 
 		// Sync nav container position and size with tracker

@@ -1,0 +1,89 @@
+
+> maxi-blocks@1.0.0 build
+> wp-scripts build
+
+assets by path blocks/ 134 KiB
+  asset blocks/list-item-maxi/block.json 127 KiB [emitted] [from: src/blocks/list-item-maxi/block.json] [copied]
+  + 17 assets
+assets by chunk 5.95 MiB (name: index)
+  assets by path *.css 1.36 MiB 2 assets
+  + 2 assets
+assets by chunk 118 KiB (name: admin)
+  assets by path *.css 96.7 KiB 2 assets
+  + 2 assets
+assets by path images/*.png 3.34 KiB
+  asset images/marker-icon.2b3e1faf.png 1.43 KiB [emitted] [immutable] [from: node_modules/leaflet/dist/images/marker-icon.png]
+  + 2 assets
+assets by path ./*.css 148 KiB
+  asset ./style-index-rtl.min.css 74.1 KiB [emitted] [minimized] (name: ./style-index) (id hint: style)
+  asset ./style-index.min.css 74 KiB [emitted] [minimized] (name: ./style-index) (id hint: style)
+Entrypoint index [big] 6.09 MiB = 6 assets
+Entrypoint admin 118 KiB = admin.min.css 48.3 KiB admin.min.js 20.8 KiB admin-rtl.min.css 48.3 KiB admin.min.asset.php 84 bytes
+orphan modules 8.03 MiB (javascript) 3.34 KiB (asset) 153 KiB (runtime) [orphan] 3591 modules
+runtime modules 3.84 KiB 8 modules
+built modules 9.85 MiB (javascript) 838 KiB (css/mini-extract) [built]
+  modules by path ./node_modules/ 3.59 MiB (javascript) 25 KiB (css/mini-extract)
+    javascript modules 3.16 MiB 761 modules
+    json modules 439 KiB 7 modules
+    css modules 25 KiB 3 modules
+  modules by path ./src/ 765 KiB (css/mini-extract) 6.21 MiB (javascript) 154 modules
+  modules by path ./core/admin/ 49.3 KiB (javascript) 48.8 KiB (css/mini-extract)
+    ./core/admin/admin.js 49.3 KiB [built] [code generated]
+    ./core/admin/admin.scss 50 bytes [built] [code generated]
+    css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./core/admin/admin.scss 48.8 KiB [built] [code generated]
+  + 9 modules
+
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets: 
+  index.min.css (699 KiB)
+  index.min.js (4.58 MiB)
+  index-rtl.min.css (699 KiB)
+
+WARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.
+Entrypoints:
+  index (6.09 MiB)
+      ./style-index.min.css
+      ./style-index-rtl.min.css
+      index.min.css
+      index.min.js
+      index-rtl.min.css
+      index.min.asset.php
+
+WARNING in webpack performance recommendations: 
+You can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.
+For more info visit https://webpack.js.org/guides/code-splitting/
+
+webpack 5.94.0 compiled with 3 warnings in 41342 ms
+
+asset maxi-row-carousel.min.js 17.3 KiB [compared for emit] [minimized] (name: maxi-row-carousel)
+asset maxi-relations.min.js 14.6 KiB [compared for emit] [minimized] (name: maxi-relations)
+asset maxi-slider.min.js 7.05 KiB [compared for emit] [minimized] (name: maxi-slider)
+asset maxi-scroll-effects.min.js 6.61 KiB [compared for emit] [minimized] (name: maxi-scroll-effects)
+asset maxi-parallax.min.js 3.2 KiB [compared for emit] [minimized] (name: maxi-parallax)
+asset maxi-map.min.js 3.14 KiB [compared for emit] [minimized] (name: maxi-map)
+asset maxi-hover-effects.min.js 2.45 KiB [compared for emit] [minimized] (name: maxi-hover-effects)
+asset maxi-video.min.js 2.38 KiB [compared for emit] [minimized] (name: maxi-video)
+asset maxi-accordion.min.js 2.28 KiB [compared for emit] [minimized] (name: maxi-accordion)
+asset maxi-number-counter.min.js 2.04 KiB [compared for emit] [minimized] (name: maxi-number-counter)
+asset maxi-search.min.js 1.95 KiB [compared for emit] [minimized] (name: maxi-search)
+asset maxi-bg-video.min.js 1.6 KiB [compared for emit] [minimized] (name: maxi-bg-video)
+asset maxi-navigation.min.js 1.57 KiB [compared for emit] [minimized] (name: maxi-navigation)
+asset maxi-shape-divider.min.js 903 bytes [compared for emit] [minimized] (name: maxi-shape-divider)
+asset maxi-email-obfuscate.min.js 418 bytes [compared for emit] [minimized] (name: maxi-email-obfuscate)
+./js/maxi-accordion.js 3.45 KiB [built] [code generated]
+./js/maxi-bg-video.js 4.2 KiB [built] [code generated]
+./js/maxi-email-obfuscate.js 1.14 KiB [built] [code generated]
+./js/maxi-hover-effects.js 4.02 KiB [built] [code generated]
+./js/maxi-map.js 5.86 KiB [built] [code generated]
+./js/maxi-navigation.js 4.18 KiB [built] [code generated]
+./js/maxi-number-counter.js 4.79 KiB [built] [code generated]
+./js/maxi-parallax.js 5.22 KiB [built] [code generated]
+./js/maxi-relations.js 33.5 KiB [built] [code generated]
+./js/maxi-row-carousel.js 32.7 KiB [built] [code generated]
+./js/maxi-scroll-effects.js 12.4 KiB [built] [code generated]
+./js/maxi-search.js 3.94 KiB [built] [code generated]
+./js/maxi-shape-divider.js 1.75 KiB [built] [code generated]
+./js/maxi-slider.js 10.1 KiB [built] [code generated]
+./js/maxi-video.js 5.39 KiB [built] [code generated]
+webpack 5.94.0 compiled successfully in 1546 ms

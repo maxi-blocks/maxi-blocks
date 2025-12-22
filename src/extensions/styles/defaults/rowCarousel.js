@@ -50,6 +50,10 @@ const rowCarousel = {
 				type: 'number',
 				default: 0.5,
 			},
+			'row-carousel-height-offset': {
+				type: 'number',
+				default: 0,
+			},
 		},
 	}),
 

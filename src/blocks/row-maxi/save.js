@@ -41,6 +41,12 @@ const save = props => {
 					peekOffset;
 			}
 
+			const heightOffset = attributes[`row-carousel-height-offset-${bp}`];
+			if (heightOffset !== undefined) {
+				carouselDataAttrs[`data-carousel-height-offset-${bp}`] =
+					heightOffset;
+			}
+
 			const loop = attributes[`row-carousel-loop-${bp}`];
 			if (loop !== undefined) {
 				carouselDataAttrs[`data-carousel-loop-${bp}`] = loop;

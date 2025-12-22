@@ -49,6 +49,12 @@ const carouselSlider = ({ props }) => {
 		attributes,
 	});
 
+	const heightOffset = getLastBreakpointAttribute({
+		target: 'row-carousel-height-offset',
+		breakpoint,
+		attributes,
+	});
+
 	const isLoop = getLastBreakpointAttribute({
 		target: 'row-carousel-loop',
 		breakpoint,
@@ -204,8 +210,27 @@ const carouselSlider = ({ props }) => {
 							}
 						/>
 						<AdvancedNumberControl
+							label={__('Height offset (px)', 'maxi-blocks')}
+							min={0}
+							max={500}
+							initial={0}
+							step={10}
+							value={heightOffset}
+							onChangeValue={val => {
+								onChange({
+									[`row-carousel-height-offset-${breakpoint}`]:
+										val !== undefined ? val : '',
+								});
+							}}
+							onReset={() =>
+								onChange({
+									[`row-carousel-height-offset-${breakpoint}`]: 0,
+								})
+							}
+						/>
+						<AdvancedNumberControl
 							label={__('Trigger width (px)', 'maxi-blocks')}
-							min={320}
+							min={0}
 							max={3840}
 							initial={undefined}
 							step={1}

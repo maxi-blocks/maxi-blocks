@@ -4,18 +4,19 @@ body.maxi-blocks--active {
 	// Only apply carousel styles when carousel structure exists (added by JavaScript)
 	.maxi-row-block[data-carousel-initialized='true'] {
 		position: relative;
+		overflow: visible; // Allow content to extend outside row
 
 		.maxi-row-carousel__tracker {
 			position: relative; // For wrapper positioning
 			display: block;
-			overflow: hidden; // Hide columns outside the visible area
-			// Width and height are set by JavaScript based on slidesPerView and tallest column
+			overflow: hidden; // Hide columns outside the visible area horizontally
+			// Width and height set by JavaScript based on slidesPerView and content
 		}
 
 		.maxi-row-carousel__wrapper {
 			display: flex;
 			width: 100%;
-			align-items: flex-start; // Allow columns to have different heights
+			align-items: flex-end; // Align columns to bottom by default
 			// flex-wrap controlled by active class below
 		}
 

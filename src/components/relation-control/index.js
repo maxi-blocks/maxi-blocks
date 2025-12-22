@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useContext } from '@wordpress/element';
+import { useContext, useState, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -17,6 +17,7 @@ import SettingTabsControl from '@components/setting-tabs-control';
 import TextControl from '@components/text-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
+import BlockSelectControl from './BlockSelectControl';
 import { openSidebarAccordion } from '@extensions/inspector';
 import {
 	createTransitionObj,
@@ -37,7 +38,7 @@ import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
+import { capitalize, cloneDeep, isEmpty, isNil, omitBy } from 'lodash';
 
 /**
  * Styles
@@ -48,8 +49,29 @@ const RelationControl = props => {
 	const { getBlock } = select('core/block-editor');
 	const {
 		selectBlock,
+		toggleBlockHighlight,
+		updateBlockAttributes,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = useDispatch('core/block-editor');
+
+	// Highlight helper for hover effects
+	const handleHighlight = (uniqueID, isHighlighting) => {
+		if (!uniqueID) return;
+		const targetClientId = getClientIdFromUniqueId(uniqueID);
+		if (targetClientId) {
+			toggleBlockHighlight(targetClientId, isHighlighting);
+		}
+	};
+
+	// State to track which tab is active for each interaction item
+	const [activeTabs, setActiveTabs] = useState({});
+
+	const setItemTab = (itemId, index) => {
+		setActiveTabs(prev => ({ ...prev, [itemId]: index }));
+	};
+
+	// Circuit breaker: prevents the component from reacting to its own changes
+	const isUpdating = useRef(false);
 
 	const repeaterContext = useContext(RepeaterContext);
 
@@ -157,6 +179,65 @@ const RelationControl = props => {
 
 		onChange({
 			relations: newRelations.filter(relation => relation.id !== id),
+		});
+	};
+
+	/**
+	 * DEFINITIVE FIX FOR "BEFORE" TAB
+	 * Uses direct attribute fetching and substantive diffing to stop the loop.
+	 */
+	const displayBeforeSetting = item => {
+		if (!item?.uniqueID) return null;
+
+		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!targetClientId) return null;
+
+		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
+		if (!selectedSettings) return null;
+
+		// Break the reactive chain by fetching a static snapshot of attributes
+		const currentActualAttributes = select('core/block-editor').getBlockAttributes(targetClientId);
+		if (!currentActualAttributes) return null;
+
+		const settingsComponent = selectedSettings.component;
+		const prefix = selectedSettings?.prefix || '';
+
+		return settingsComponent({
+			...currentActualAttributes,
+			...getGroupAttributes(
+				currentActualAttributes,
+				selectedSettings.attrGroupName,
+				false,
+				prefix
+			),
+			attributes: currentActualAttributes,
+			blockAttributes: currentActualAttributes,
+			onChange: newValues => {
+				// IF WE ARE ALREADY UPDATING, ABORT TO STOP THE CRASH
+				if (isUpdating.current) return;
+
+				const { isReset, ...cleanValues } = newValues;
+
+				// Only dispatch if there is a real difference to avoid infinite re-renders
+				const hasChanged = Object.keys(cleanValues).some(
+					key => cleanValues[key] !== currentActualAttributes[key]
+				);
+
+				if (hasChanged) {
+					isUpdating.current = true; // LOCK THE CIRCUIT
+
+					updateBlockAttributes(targetClientId, cleanValues);
+
+					// RELEASE THE LOCK after the store has finished its cycle
+					setTimeout(() => {
+						isUpdating.current = false;
+					}, 100);
+				}
+			},
+			prefix,
+			blockStyle: currentActualAttributes.blockStyle,
+			breakpoint: deviceType,
+			clientId: targetClientId,
 		});
 	};
 
@@ -401,6 +482,12 @@ const RelationControl = props => {
 						<ListItemControl
 							key={item.id}
 							className='maxi-relation-control__item'
+							onMouseEnter={() =>
+								handleHighlight(item.uniqueID, true)
+							}
+							onMouseLeave={() =>
+								handleHighlight(item.uniqueID, false)
+							}
 							title={
 								item.title ||
 								__('Untitled interaction', 'maxi-blocks')
@@ -434,8 +521,7 @@ const RelationControl = props => {
 											)}
 										/>
 									)}
-									<SelectControl
-										__nextHasNoMarginBottom
+									<BlockSelectControl
 										label={__(
 											'Block to affect',
 											'maxi-blocks'
@@ -452,6 +538,7 @@ const RelationControl = props => {
 											},
 											...blocksToAffect,
 										]}
+										onOptionHover={handleHighlight}
 										onChange={value =>
 											onChangeRelation(
 												relations,
@@ -644,64 +731,79 @@ const RelationControl = props => {
 										) : (
 											<SettingTabsControl
 												deviceType={deviceType}
+												callback={(_, index) => setItemTab(item.id, index)}
 												items={[
 													{
 														label: __(
-															'Settings',
+															'Before',
 															'maxi-blocks'
 														),
+														// Only render if this tab is active (index 0)
 														content:
-															displaySelectedSetting(
-																item
-															),
+															activeTabs[item.id] === 0 || isNil(activeTabs[item.id])
+																? displayBeforeSetting(item)
+																: null,
+													},
+													{
+														label: __(
+															'After',
+															'maxi-blocks'
+														),
+														// Only render if this tab is active (index 1)
+														content:
+															activeTabs[item.id] === 1
+																? displaySelectedSetting(item)
+																: null,
 													},
 													{
 														label: __(
 															'Effects',
 															'maxi-blocks'
 														),
-														content: (
-															<TransitionControl
-																className='maxi-relation-control__item__effects'
-																newStyle
-																onChange={(
-																	obj,
-																	splitMode
-																) =>
-																	onChangeRelation(
-																		relations,
-																		item.id,
-																		{
-																			effects:
-																				splitMode ===
-																				'out'
-																					? {
-																							...item.effects,
-																							out: {
-																								...item
-																									.effects
-																									.out,
+														// Only render if this tab is active (index 2)
+														content:
+															activeTabs[item.id] === 2 ? (
+																<TransitionControl
+																	className='maxi-relation-control__item__effects'
+																	newStyle
+																	onChange={(
+																		obj,
+																		splitMode
+																	) =>
+																		onChangeRelation(
+																			relations,
+																			item.id,
+																			{
+																				effects:
+																					splitMode ===
+																					'out'
+																						? {
+																								...item.effects,
+																								out: {
+																									...item
+																										.effects
+																										.out,
+																									...obj,
+																								},
+																						  }
+																						: {
+																								...item.effects,
 																								...obj,
-																							},
-																					  }
-																					: {
-																							...item.effects,
-																							...obj,
-																					  },
-																		}
-																	)
-																}
-																transition={
-																	item.effects
-																}
-																getDefaultTransitionAttribute={
-																	getDefaultTransitionAttribute
-																}
-																breakpoint={
-																	deviceType
-																}
-															/>
-														),
+																						  },
+																			}
+																		)
+																	}
+																	transition={
+																		item.effects
+																	}
+																	getDefaultTransitionAttribute={
+																		getDefaultTransitionAttribute
+																	}
+																	breakpoint={
+																		deviceType
+																	}
+																/>
+															) : null,
 													},
 												]}
 											/>

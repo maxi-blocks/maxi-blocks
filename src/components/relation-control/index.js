@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useRef } from '@wordpress/element';
+import { useRef, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -38,17 +38,48 @@ import './editor.scss';
 
 const RelationControl = props => {
     const { getBlock } = select('core/block-editor');
-    const { updateBlockAttributes, toggleBlockHighlight } = useDispatch('core/block-editor');
+    const { updateBlockAttributes } = useDispatch('core/block-editor');
     
     // UseRef to prevent infinite loops during attribute updates
     const isUpdating = useRef(false);
+    
+    // Track highlighted blocks for cleanup
+    const highlightedBlocks = useRef(new Set());
 
     const { deviceType, isButton, onChange, relations: rawRelations, uniqueID } = props;
 
     const handleHighlight = (uid, isHighlighting) => {
+        if (!uid) return;
         const targetClientId = getClientIdFromUniqueId(uid);
-        if (targetClientId) toggleBlockHighlight(targetClientId, isHighlighting);
+        if (!targetClientId) return;
+
+        const blockElement = document.querySelector(
+            `[data-block="${targetClientId}"]`
+        );
+        if (blockElement) {
+            if (isHighlighting) {
+                blockElement.classList.add('maxi-block--highlighted');
+                highlightedBlocks.current.add(targetClientId);
+            } else {
+                blockElement.classList.remove('maxi-block--highlighted');
+                highlightedBlocks.current.delete(targetClientId);
+            }
+        }
     };
+
+    // Cleanup on unmount
+    useEffect(() => {
+        return () => {
+            highlightedBlocks.current.forEach(clientId => {
+                const blockElement = document.querySelector(
+                    `[data-block="${clientId}"]`
+                );
+                if (blockElement) {
+                    blockElement.classList.remove('maxi-block--highlighted');
+                }
+            });
+        };
+    }, []);
 
     const relations = (rawRelations || []).filter(r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID));
 

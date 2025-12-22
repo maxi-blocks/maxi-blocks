@@ -34,7 +34,12 @@ import * as iconPresets from '@maxi-icons/button-presets/index';
 const Inspector = props => {
 	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
 		props;
-	const { 'icon-only': iconOnly, 'icon-content': icon } = attributes;
+	const {
+		'icon-only': iconOnly,
+		'icon-content': icon,
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
+	} = attributes;
 	const { selectors, categories } = customCss;
 
 	const onChangeAriaLabel = useCallback(
@@ -231,7 +236,7 @@ const Inspector = props => {
 										alignmentLabel,
 										textAlignmentLabel,
 									}),
-									...(!iconOnly && {
+									...(!iconOnly && [
 										...inspectorTabs.typography({
 											props,
 											textLevel: 'button',
@@ -247,7 +252,22 @@ const Inspector = props => {
 												type: 'button',
 											},
 										}),
-									}),
+										...(dcStatus &&
+											dcLinkStatus && {
+												...inspectorTabs.linkSettings({
+													props,
+													customLabel: __(
+														'Text link',
+														'maxi-blocks'
+													),
+													styleCardPrefix: '',
+													prefix: '',
+													classNamePanel:
+														'maxi-link-settings-panel',
+													disableCustomFormats: true,
+												}),
+											}),
+									]),
 									...inspectorTabs.background({
 										label: 'Button',
 										props,

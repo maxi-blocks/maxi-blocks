@@ -133,6 +133,7 @@ class edit extends MaxiBlockComponent {
 			status: dcStatus,
 			content: dcContent,
 			field: dcField,
+			containsHtml: dcContainsHTML,
 			subField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
@@ -194,7 +195,11 @@ class edit extends MaxiBlockComponent {
 						<>
 							{showDCContent && (
 								<div className='maxi-button-block__content'>
-									{dcContent}
+									{dcContainsHTML ? (
+										<RawHTML>{dcContent}</RawHTML>
+									) : (
+										dcContent
+									)}
 								</div>
 							)}
 							{!showDCContent && (

@@ -34,7 +34,7 @@ const getPrice = (rawPrice, data) => {
 		: null;
 };
 
-const getProductsContent = async (dataRequest, entityData) => {
+const getProductsContent = async (dataRequest, entityData, contentType) => {
 	if (!entityData) return null;
 
 	const { field, delimiterContent, limit, imageAccumulator, linkTarget } =
@@ -81,7 +81,8 @@ const getProductsContent = async (dataRequest, entityData) => {
 				entityData[taxonomyType],
 				delimiterContent,
 				linkTarget === field,
-				taxonomyType
+				taxonomyType,
+				contentType
 			);
 		case 'featured_media':
 			return entityData[field];

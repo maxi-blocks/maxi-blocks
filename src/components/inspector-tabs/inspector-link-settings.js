@@ -16,11 +16,13 @@ import { getGroupAttributes } from '@extensions/styles';
  */
 const linkSettings = ({
 	props,
+	customLabel,
 	styleCardPrefix = '',
 	depth = 2,
 	inlineTarget = '.maxi-text-block__content',
 	prefix = '',
 	classNamePanel,
+	disableCustomFormats,
 }) => {
 	const {
 		attributes,
@@ -33,43 +35,43 @@ const linkSettings = ({
 	} = props;
 
 	const { blockStyle, isList } = attributes;
+	const label = customLabel ?? __('Link', 'maxi-blocks');
 
-	return [
-		{
-			label: __('Link', 'maxi-blocks'),
-			disablePadding: true,
-			content: (
-				<TypographyControl
-					{...getGroupAttributes(
-						attributes,
-						['typography', 'link'],
-						false,
-						prefix
-					)}
-					onChangeInline={(obj, target, isMultiplySelector) =>
-						insertInlineStyles({ obj, target, isMultiplySelector })
-					}
-					onChange={(obj, target) => {
-						maxiSetAttributes(obj);
-						cleanInlineStyles(target);
-					}}
-					setShowLoader={setShowLoader}
-					breakpoint={deviceType}
-					clientId={clientId}
-					blockStyle={blockStyle}
-					styleCardPrefix={styleCardPrefix}
-					inlineTarget={inlineTarget}
-					isList={isList}
-					allowLink
-					linkOnly
-					globalProps={{ target: 'link', type: 'link' }}
-					prefix={prefix}
-				/>
-			),
-			classNamePanel,
-			depth,
-		},
-	];
+	return {
+		label,
+		disablePadding: true,
+		content: (
+			<TypographyControl
+				{...getGroupAttributes(
+					attributes,
+					['typography', 'link'],
+					false,
+					prefix
+				)}
+				onChangeInline={(obj, target, isMultiplySelector) =>
+					insertInlineStyles({ obj, target, isMultiplySelector })
+				}
+				onChange={(obj, target) => {
+					maxiSetAttributes(obj);
+					cleanInlineStyles(target);
+				}}
+				disableCustomFormats={disableCustomFormats}
+				setShowLoader={setShowLoader}
+				breakpoint={deviceType}
+				clientId={clientId}
+				blockStyle={blockStyle}
+				styleCardPrefix={styleCardPrefix}
+				inlineTarget={inlineTarget}
+				isList={isList}
+				allowLink
+				linkOnly
+				globalProps={{ target: 'link', type: 'link' }}
+				prefix={prefix}
+			/>
+		),
+		classNamePanel,
+		depth,
+	};
 };
 
 export default linkSettings;

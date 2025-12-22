@@ -32,6 +32,7 @@ const save = props => {
 		'dc-field': dcField,
 		'dc-link-target': dcLinkTarget,
 		'dc-sub-field': dcSubField,
+		'dc-contains-html': dcContainsHTML,
 		ariaLabels = {},
 	} = props.attributes;
 
@@ -39,10 +40,12 @@ const save = props => {
 
 	const linkOpt = !isNil(linkSettings) && linkSettings;
 
+	const isInlineLink = dcStatus && dcLinkStatus && dcContainsHTML;
 	const linkProps = {
 		...linkOpt,
 		href: dcStatus && dcLinkStatus ? '$link-to-replace' : linkOpt.url ?? '',
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
+		isInlineLink,
 	};
 
 	const relValues = [];

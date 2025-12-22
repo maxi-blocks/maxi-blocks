@@ -667,20 +667,26 @@ class MaxiRowCarouselEditor {
 		// Get dot icon content
 		const dotIconContent =
 			this._container.getAttribute('data-dot-icon') || '';
+		const activeDotIconContent =
+			this._container.getAttribute('data-active-dot-icon') ||
+			dotIconContent;
 
 		// Create dots
 		this._columns.forEach((column, index) => {
 			const dot = document.createElement('span');
 			dot.className = 'maxi-row-carousel__dot';
-			if (index === this.currentColumn) {
+			const isActive = index === this.currentColumn;
+			if (isActive) {
 				dot.classList.add('maxi-row-carousel__dot--active');
 			}
 
-			if (dotIconContent) {
+			// Use active icon for active dot, normal icon for others
+			const iconToUse = isActive ? activeDotIconContent : dotIconContent;
+			if (iconToUse) {
 				// Create icon wrapper for styling
 				const iconWrapper = document.createElement('div');
 				iconWrapper.className = 'maxi-navigation-dot-icon-block__icon';
-				iconWrapper.innerHTML = dotIconContent;
+				iconWrapper.innerHTML = iconToUse;
 				dot.appendChild(iconWrapper);
 			}
 

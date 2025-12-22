@@ -637,18 +637,24 @@ class MaxiRowCarousel {
 		this._dotsContainer.innerHTML = '';
 		const dotIconContent =
 			this._container.getAttribute('data-dot-icon') || '';
+		const activeDotIconContent =
+			this._container.getAttribute('data-active-dot-icon') ||
+			dotIconContent;
 
 		// Create dots based on number of slides, not columns
 		for (let i = 0; i < this.numberOfSlides; i++) {
 			const dot = document.createElement('span');
+			const isActive = i === 0;
 			dot.className = `maxi-row-carousel__dot maxi-row-carousel__dot--${i}${
-				i === 0 ? ' maxi-row-carousel__dot--active' : ''
+				isActive ? ' maxi-row-carousel__dot--active' : ''
 			}`;
-			if (dotIconContent) {
+			// Use active icon for active dot, normal icon for others
+			const iconToUse = isActive ? activeDotIconContent : dotIconContent;
+			if (iconToUse) {
 				// Create icon wrapper for styling
 				const iconWrapper = document.createElement('div');
 				iconWrapper.className = 'maxi-navigation-dot-icon-block__icon';
-				iconWrapper.innerHTML = dotIconContent;
+				iconWrapper.innerHTML = iconToUse;
 				dot.appendChild(iconWrapper);
 			}
 			// Click on dot navigates to that slide (index * slidesPerView)
@@ -747,11 +753,25 @@ class MaxiRowCarousel {
 		// Calculate slide index from column index
 		const slideIndex = Math.floor(columnIndex / this.slidesPerView);
 
+		const dotIconContent =
+			this._container.getAttribute('data-dot-icon') || '';
+		const activeDotIconContent =
+			this._container.getAttribute('data-active-dot-icon') ||
+			dotIconContent;
+
 		this._dots.forEach((dot, i) => {
-			dot.classList.toggle(
-				'maxi-row-carousel__dot--active',
-				i === slideIndex
+			const isActive = i === slideIndex;
+			dot.classList.toggle('maxi-row-carousel__dot--active', isActive);
+
+			// Update icon based on active state
+			const iconWrapper = dot.querySelector(
+				'.maxi-navigation-dot-icon-block__icon'
 			);
+			if (iconWrapper) {
+				iconWrapper.innerHTML = isActive
+					? activeDotIconContent
+					: dotIconContent;
+			}
 		});
 	}
 

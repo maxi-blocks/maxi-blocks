@@ -135,6 +135,16 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 			'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>'
 	);
 
+	// Add active dot icon if enabled
+	if (attributes['active-navigation-dot-icon-status']) {
+		rowBlock.setAttribute(
+			'data-active-dot-icon',
+			attributes['active-navigation-dot-icon-content'] ||
+				attributes['navigation-dot-icon-content'] ||
+				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>'
+		);
+	}
+
 	// eslint-disable-next-line no-console
 	console.log('RowCarouselPreview: Data attributes added', {
 		attributes: Array.from(rowBlock.attributes)

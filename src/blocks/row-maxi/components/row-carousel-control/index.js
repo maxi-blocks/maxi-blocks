@@ -15,6 +15,7 @@ import { ResponsiveTabsControl } from '@components';
 import {
 	getLastBreakpointAttribute,
 	getGroupAttributes,
+	getIconWithColor,
 } from '@extensions/styles';
 import * as inspectorTabs from '@components/inspector-tabs';
 

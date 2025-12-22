@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useContext, useRef } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -43,7 +43,7 @@ const RelationControl = props => {
     // UseRef to prevent infinite loops during attribute updates
     const isUpdating = useRef(false);
 
-    const { clientId, deviceType, isButton, onChange, relations: rawRelations, uniqueID } = props;
+    const { deviceType, isButton, onChange, relations: rawRelations, uniqueID } = props;
 
     const handleHighlight = (uid, isHighlighting) => {
         const targetClientId = getClientIdFromUniqueId(uid);

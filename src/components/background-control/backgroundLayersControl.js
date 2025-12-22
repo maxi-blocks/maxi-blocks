@@ -187,14 +187,22 @@ const getLayerCardTitle = props => {
 	const { type } = layer;
 
 	const regexLineToChange = /fill=".+?(?=")/;
-	const colorStr = getColorRGBAString({
-		firstVar: `color-${layer['background-svg-palette-color']}`,
-		opacity: layer['background-svg-palette-opacity'],
-		blockStyle: getBlockStyle(clientId),
-	});
+
+	let colorStr;
+	if (layer['background-svg-palette-status']) {
+		colorStr = getColorRGBAString({
+			firstVar: `color-${layer['background-svg-palette-color']}`,
+			opacity: layer['background-svg-palette-opacity'],
+			blockStyle: getBlockStyle(clientId),
+		});
+	} else {
+		// Use custom color if available, or default to black
+		colorStr = layer['background-svg-color'] || '#000000';
+	}
+
 	const changeTo = `fill="${colorStr}"`;
 
-	const newSvgElement = layer['background-svg-palette-status']
+	const newSvgElement = colorStr
 		? layer['background-svg-SVGElement']?.replace(
 				regexLineToChange,
 				changeTo

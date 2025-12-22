@@ -451,11 +451,14 @@ class MaxiRowCarouselEditor {
 		}
 
 		// Assemble structure
+		// Note: wrapper goes inside tracker, but nav is added as direct child of container
+		// This prevents arrows from being clipped by tracker's overflow:hidden when positioned outside
 		tracker.appendChild(wrapper);
-		tracker.appendChild(nav);
 
 		// Add tracker to container
 		this._container.appendChild(tracker);
+		// Add nav as direct child of container (not inside tracker) to prevent overflow clipping of arrows
+		this._container.appendChild(nav);
 
 		// eslint-disable-next-line no-console
 		console.log('MaxiRowCarouselEditor: Structure created', {
@@ -551,6 +554,29 @@ class MaxiRowCarouselEditor {
 			carouselGap * (totalChildren - 1);
 		this._wrapper.style.width = `${wrapperWidth}px`;
 		this._wrapper.style.transition = `transform ${this.transitionSpeed}s ease`;
+
+		// Sync nav container position and size with tracker
+		this.syncNavWithTracker();
+	}
+
+	syncNavWithTracker() {
+		// Get nav element
+		const nav = this._container.querySelector('.maxi-row-carousel__nav');
+		if (!nav || !this._tracker) return;
+
+		// Get tracker's position and size relative to the row container
+		const trackerRect = this._tracker.getBoundingClientRect();
+		const containerRect = this._container.getBoundingClientRect();
+
+		// Calculate offset of tracker within container
+		const offsetLeft = trackerRect.left - containerRect.left;
+		const offsetTop = trackerRect.top - containerRect.top;
+
+		// Position nav to match tracker's position and size
+		nav.style.left = `${offsetLeft}px`;
+		nav.style.top = `${offsetTop}px`;
+		nav.style.width = `${trackerRect.width}px`;
+		nav.style.height = `${trackerRect.height}px`;
 	}
 
 	columnAction() {
@@ -957,11 +983,8 @@ class MaxiRowCarouselEditor {
 			const tracker = this._container.querySelector(
 				'.maxi-row-carousel__tracker'
 			);
-			const arrows = this._container.querySelectorAll(
-				'.maxi-row-carousel__arrow'
-			);
-			const dots = this._container.querySelector(
-				'.maxi-row-carousel__dots'
+			const nav = this._container.querySelector(
+				'.maxi-row-carousel__nav'
 			);
 
 			// Move column resizers back to container
@@ -991,8 +1014,7 @@ class MaxiRowCarouselEditor {
 			// Remove carousel elements
 			if (wrapper) wrapper.remove();
 			if (tracker) tracker.remove();
-			arrows.forEach(arrow => arrow.remove());
-			if (dots) dots.remove();
+			if (nav) nav.remove();
 		}
 
 		// Remove active class and initialized flag

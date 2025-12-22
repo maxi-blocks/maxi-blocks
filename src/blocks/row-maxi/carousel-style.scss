@@ -6,7 +6,7 @@ body.maxi-blocks--active {
 		position: relative;
 
 		.maxi-row-carousel__tracker {
-			position: relative; // So navigation is positioned within tracker, not row
+			position: relative; // For wrapper positioning
 			height: 100%;
 			display: block;
 			overflow: hidden; // Hide columns outside the visible area
@@ -23,11 +23,6 @@ body.maxi-blocks--active {
 		// Only apply nowrap when carousel is active
 		&.maxi-row-carousel--active .maxi-row-carousel__wrapper {
 			flex-wrap: nowrap !important;
-		}
-
-		// Navigation hidden by default
-		.maxi-row-carousel__nav {
-			display: none;
 		}
 
 		// Column (slide) styles - normal by default
@@ -62,6 +57,24 @@ body.maxi-blocks--active {
 					}
 				}
 			}
+		}
+	}
+
+	// Navigation container - now a direct child of row block
+	// Positioned and sized by JavaScript to match tracker
+	.maxi-row-block[data-carousel-initialized='true']
+		> .maxi-row-carousel__nav {
+		// Hidden by default
+		display: none;
+		// Position absolutely relative to row block, allowing arrows to extend outside tracker
+		// Top, left, width, height set by JavaScript to match tracker
+		position: absolute;
+		pointer-events: none; // Allow clicks to pass through nav container
+
+		// Re-enable pointer events for interactive elements
+		.maxi-row-carousel__arrow,
+		.maxi-row-carousel__dots {
+			pointer-events: auto;
 		}
 
 		// Navigation arrows
@@ -134,10 +147,9 @@ body.maxi-blocks--active {
 	}
 
 	// Show navigation when carousel is initialized and active
-	.maxi-row-block[data-carousel-initialized='true'].maxi-row-carousel--active {
-		.maxi-row-carousel__nav {
-			display: block;
-		}
+	.maxi-row-block[data-carousel-initialized='true'].maxi-row-carousel--active
+		> .maxi-row-carousel__nav {
+		display: block;
 	}
 
 	@media (max-width: 1919px) {

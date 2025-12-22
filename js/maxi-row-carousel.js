@@ -908,6 +908,7 @@ class MaxiRowCarousel {
 				return; // Already at the end
 			}
 		}
+
 		this.currentColumn += this.slidesPerView;
 		this.columnAction();
 		this.updateArrowStates();
@@ -920,6 +921,7 @@ class MaxiRowCarousel {
 				return; // Already at the beginning
 			}
 		}
+
 		this.currentColumn -= this.slidesPerView;
 		this.columnAction();
 		this.updateArrowStates();
@@ -954,16 +956,32 @@ class MaxiRowCarousel {
 	loop() {
 		// When we've scrolled past the last real column (into front clones)
 		if (this.currentColumn >= this.numberOfColumns) {
-			this.currentColumn %= this.numberOfColumns;
+			// Calculate how many slides we went past the end
+			const overshoot = this.currentColumn - this.numberOfColumns;
+			// Align to slide boundaries: if we went 1 column past, and slidesPerView is 3,
+			// we want to end up at column 0 (start of first slide), not column 1
+			const slideOffset =
+				Math.floor(overshoot / this.slidesPerView) * this.slidesPerView;
+			this.currentColumn = slideOffset;
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump back to the real first column without animation
 			this.columnAction(false);
 		}
 		// When we've scrolled before the first real column (into back clones)
 		if (this.currentColumn < 0) {
-			this.currentColumn =
-				this.numberOfColumns +
-				(this.currentColumn % this.numberOfColumns);
+			// Calculate how many slides we went before the start
+			const undershoot = Math.abs(this.currentColumn);
+			// Calculate how many complete slides fit before we reach the position
+			const slidesBack = Math.ceil(undershoot / this.slidesPerView);
+			// Find the last complete slide position
+			const lastSlideStart =
+				Math.floor((this.numberOfColumns - 1) / this.slidesPerView) *
+				this.slidesPerView;
+			// Go back that many slides from the last slide
+			this.currentColumn = Math.max(
+				0,
+				lastSlideStart - (slidesBack - 1) * this.slidesPerView
+			);
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump to the real last column(s) without animation
 			this.columnAction(false);

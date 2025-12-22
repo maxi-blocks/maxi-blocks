@@ -720,11 +720,7 @@ class MaxiRowCarouselEditor {
 			}
 		}
 
-		if (this.currentColumn < this._columns.length - this.slidesPerView) {
-			this.currentColumn += this.slidesPerView;
-		} else if (this.loop) {
-			this.currentColumn = 0;
-		}
+		this.currentColumn += this.slidesPerView;
 
 		this.columnAction();
 		this.updateArrowStates();
@@ -742,11 +738,7 @@ class MaxiRowCarouselEditor {
 			}
 		}
 
-		if (this.currentColumn > 0) {
-			this.currentColumn -= this.slidesPerView;
-		} else if (this.loop) {
-			this.currentColumn = this._columns.length - this.slidesPerView;
-		}
+		this.currentColumn -= this.slidesPerView;
 
 		this.columnAction();
 		this.updateArrowStates();

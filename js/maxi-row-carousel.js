@@ -682,13 +682,7 @@ class MaxiRowCarousel {
 			);
 		}
 
-		if (this._dots) {
-			this._dots.forEach((dot, currentColumn) => {
-				dot.addEventListener('click', () =>
-					this.exactColumn(currentColumn)
-				);
-			});
-		}
+		// Note: Dot click events are handled in generateDots()
 	}
 
 	wrapperEvents() {

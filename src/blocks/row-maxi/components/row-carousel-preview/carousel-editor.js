@@ -612,8 +612,8 @@ class MaxiRowCarouselEditor {
 			}
 		}
 
-		if (this.currentColumn < this._columns.length - 1) {
-			this.currentColumn += 1;
+		if (this.currentColumn < this._columns.length - this.slidesPerView) {
+			this.currentColumn += this.slidesPerView;
 		} else if (this.loop) {
 			this.currentColumn = 0;
 		}
@@ -635,9 +635,9 @@ class MaxiRowCarouselEditor {
 		}
 
 		if (this.currentColumn > 0) {
-			this.currentColumn -= 1;
+			this.currentColumn -= this.slidesPerView;
 		} else if (this.loop) {
-			this.currentColumn = this._columns.length - 1;
+			this.currentColumn = this._columns.length - this.slidesPerView;
 		}
 
 		this.columnAction();
@@ -658,6 +658,10 @@ class MaxiRowCarouselEditor {
 		}
 	}
 
+	get numberOfSlides() {
+		return Math.ceil(this._columns.length / this.slidesPerView);
+	}
+
 	updateDots() {
 		if (!this._dotsContainer) return;
 
@@ -671,11 +675,16 @@ class MaxiRowCarouselEditor {
 			this._container.getAttribute('data-active-dot-icon') ||
 			dotIconContent;
 
-		// Create dots
-		this._columns.forEach((column, index) => {
+		// Calculate current slide index based on current column
+		const currentSlide = Math.floor(
+			this.currentColumn / this.slidesPerView
+		);
+
+		// Create dots based on number of slides, not columns
+		for (let i = 0; i < this.numberOfSlides; i++) {
 			const dot = document.createElement('span');
 			dot.className = 'maxi-row-carousel__dot';
-			const isActive = index === this.currentColumn;
+			const isActive = i === currentSlide;
 			if (isActive) {
 				dot.classList.add('maxi-row-carousel__dot--active');
 			}
@@ -690,9 +699,12 @@ class MaxiRowCarouselEditor {
 				dot.appendChild(iconWrapper);
 			}
 
-			dot.addEventListener('click', () => this.exactColumn(index));
+			// Click on dot navigates to that slide (index * slidesPerView)
+			dot.addEventListener('click', () =>
+				this.exactColumn(i * this.slidesPerView)
+			);
 			this._dotsContainer.appendChild(dot);
-		});
+		}
 	}
 
 	/**

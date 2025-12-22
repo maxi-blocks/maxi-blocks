@@ -712,25 +712,7 @@ const RelationControl = props => {
 													);
 												}}
 											/>
-											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
-												<a
-													onClick={() =>
-														selectBlock(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															),
-															openSidebarAccordion(
-																0
-															)
-														)
-													}
-												>
-													{__(
-														'Open block settings',
-														'maxi-blocks'
-													)}
-												</a>
-											</div>
+
 										</>
 									)}
 									{item.uniqueID &&
@@ -744,7 +726,7 @@ const RelationControl = props => {
 												items={[
 													{
 														label: __(
-															'Before',
+															'Current',
 															'maxi-blocks'
 														),
 														// Only render if this tab is active (index 0)
@@ -754,10 +736,11 @@ const RelationControl = props => {
 																: null,
 													},
 													{
-														label: __(
-															'After',
-															'maxi-blocks'
-														),
+														label: item.action === 'hover'
+															? __('On hover', 'maxi-blocks')
+															: item.action === 'click'
+																? __('On click', 'maxi-blocks')
+																: __('Interaction', 'maxi-blocks'),
 														// Only render if this tab is active (index 1)
 														content:
 															activeTabs[item.id] === 1

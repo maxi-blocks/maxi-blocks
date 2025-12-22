@@ -15,6 +15,12 @@
 				padding: 0;
 			}
 		}
+		h4.maxi-carousel-dots__active-icon-label,
+		h4.maxi-carousel-dots__not-active-icon-label {
+			padding-left: 8px;
+			padding-right: 8px;
+			margin-bottom: 5px;
+		}
 
 		.maxi-accordion-tab {
 			&:after {
@@ -37,7 +43,7 @@
 		}
 
 		&:last-child {
-			.maxi-accordion-control__item__button {
+			.maxi-accordion-control__item__button[aria-expanded='false'] {
 				border-bottom: 1px solid var(--maxi-grey-light);
 			}
 		}

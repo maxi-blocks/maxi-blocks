@@ -47,14 +47,18 @@ const carouselDots = ({ props }) => {
 
 				{dotsEnabled && (
 					<>
-						<h4>{__('Dot icon', 'maxi-blocks')}</h4>
+						<h4 className='maxi-carousel-dots__not-active-icon-label'>
+							{__('Not-active dot icon', 'maxi-blocks')}
+						</h4>
 						{
 							icon({
 								props,
 								prefix: 'navigation-dot-',
 							}).content
 						}
-						<h4>{__('Active dot icon', 'maxi-blocks')}</h4>
+						<h4 className='maxi-carousel-dots__active-icon-label'>
+							{__('Active dot icon', 'maxi-blocks')}
+						</h4>
 						{
 							icon({
 								props,

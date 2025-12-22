@@ -98,6 +98,7 @@ const carouselSlider = ({ props }) => {
 			<>
 				<ToggleSwitch
 					label={__('Enable carousel', 'maxi-blocks')}
+					className='maxi-carousel-slider__toggle'
 					selected={carouselStatus}
 					onChange={val => {
 						onChange({

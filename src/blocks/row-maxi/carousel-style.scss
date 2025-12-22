@@ -7,16 +7,15 @@ body.maxi-blocks--active {
 
 		.maxi-row-carousel__tracker {
 			position: relative; // For wrapper positioning
-			height: 100%;
 			display: block;
 			overflow: hidden; // Hide columns outside the visible area
-			// Width is set by JavaScript based on slidesPerView
+			// Width and height are set by JavaScript based on slidesPerView and tallest column
 		}
 
 		.maxi-row-carousel__wrapper {
 			display: flex;
 			width: 100%;
-			height: 100%;
+			align-items: flex-start; // Allow columns to have different heights
 			// flex-wrap controlled by active class below
 		}
 

@@ -104,15 +104,19 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 	}
 
 	// Add arrow/dot status (breakpoint-specific)
+	// Note: using "carousel" prefix to match getBreakpointSetting() in JavaScript
 	breakpoints.forEach(bp => {
 		const arrowStatus = attributes[`navigation-arrow-both-status-${bp}`];
 		if (arrowStatus !== undefined) {
-			rowBlock.setAttribute(`data-arrow-status-${bp}`, arrowStatus);
+			rowBlock.setAttribute(
+				`data-carousel-arrow-status-${bp}`,
+				arrowStatus
+			);
 		}
 
 		const dotStatus = attributes[`navigation-dot-status-${bp}`];
 		if (dotStatus !== undefined) {
-			rowBlock.setAttribute(`data-dot-status-${bp}`, dotStatus);
+			rowBlock.setAttribute(`data-carousel-dot-status-${bp}`, dotStatus);
 		}
 	});
 

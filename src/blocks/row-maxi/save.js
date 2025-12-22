@@ -97,16 +97,18 @@ const save = props => {
 			attributes['row-carousel-trigger-width'] || '';
 
 		// Add arrow/dot status (breakpoint-specific)
+		// Note: using "carousel" prefix to match getBreakpointSetting() in JavaScript
 		breakpoints.forEach(bp => {
 			const arrowStatus =
 				attributes[`navigation-arrow-both-status-${bp}`];
 			if (arrowStatus !== undefined) {
-				carouselDataAttrs[`data-arrow-status-${bp}`] = arrowStatus;
+				carouselDataAttrs[`data-carousel-arrow-status-${bp}`] =
+					arrowStatus;
 			}
 
 			const dotStatus = attributes[`navigation-dot-status-${bp}`];
 			if (dotStatus !== undefined) {
-				carouselDataAttrs[`data-dot-status-${bp}`] = dotStatus;
+				carouselDataAttrs[`data-carousel-dot-status-${bp}`] = dotStatus;
 			}
 		});
 

@@ -587,6 +587,34 @@ class MaxiRowCarousel {
 			carouselGap * (totalChildren - 1);
 		this._wrapper.style.width = `${wrapperWidth}px`;
 
+		// Find the tallest column to set tracker height
+		// Measure AFTER setting widths so heights reflect final layout
+		let maxHeight = 0;
+		const heights = [];
+		this._columns.forEach((column, index) => {
+			const columnHeight = column._column.getBoundingClientRect().height;
+			heights.push({ index, height: columnHeight });
+			if (columnHeight > maxHeight) {
+				maxHeight = columnHeight;
+			}
+		});
+
+		// Also check cloned columns for height
+		clones.forEach(clone => {
+			const cloneHeight = clone.getBoundingClientRect().height;
+			if (cloneHeight > maxHeight) {
+				maxHeight = cloneHeight;
+			}
+		});
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarousel: Column heights', { heights, maxHeight });
+
+		// Set tracker height to the tallest column
+		if (maxHeight > 0) {
+			this._tracker.style.height = `${maxHeight}px`;
+		}
+
 		// Sync nav container position and size with tracker
 		this.syncNavWithTracker();
 	}

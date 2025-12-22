@@ -528,15 +528,6 @@ class MaxiRowCarouselEditor {
 		// Set tracker width
 		this._tracker.style.width = `${trackerWidth}px`;
 
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: setColumnWidths', {
-			firstColumnWidth,
-			carouselGap,
-			slidesPerView: this.slidesPerView,
-			peekOffset: this.peekOffset,
-			trackerWidth,
-		});
-
 		// Set each column to its original width explicitly
 		this._columns.forEach(column => {
 			column._column.style.width = `${firstColumnWidth}px`;
@@ -554,6 +545,31 @@ class MaxiRowCarouselEditor {
 			carouselGap * (totalChildren - 1);
 		this._wrapper.style.width = `${wrapperWidth}px`;
 		this._wrapper.style.transition = `transform ${this.transitionSpeed}s ease`;
+
+		// Find the tallest column to set tracker height
+		// Measure AFTER setting widths so heights reflect final layout
+		let maxHeight = 0;
+		this._columns.forEach(column => {
+			const columnHeight = column._column.getBoundingClientRect().height;
+			if (columnHeight > maxHeight) {
+				maxHeight = columnHeight;
+			}
+		});
+
+		// Set tracker height to the tallest column
+		if (maxHeight > 0) {
+			this._tracker.style.height = `${maxHeight}px`;
+		}
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarouselEditor: setColumnWidths', {
+			firstColumnWidth,
+			carouselGap,
+			slidesPerView: this.slidesPerView,
+			peekOffset: this.peekOffset,
+			trackerWidth,
+			maxHeight,
+		});
 
 		// Sync nav container position and size with tracker
 		this.syncNavWithTracker();
@@ -1018,9 +1034,11 @@ class MaxiRowCarouselEditor {
 		}
 
 		// Remove active class and initialized flag
-		this._container.classList.remove('maxi-row-carousel--active');
-		this._container.removeAttribute('data-carousel-initialized');
-		this._container.removeAttribute('data-transition');
+		if (this._container) {
+			this._container.classList.remove('maxi-row-carousel--active');
+			this._container.removeAttribute('data-carousel-initialized');
+			this._container.removeAttribute('data-transition');
+		}
 
 		// Clear references
 		this._container = null;

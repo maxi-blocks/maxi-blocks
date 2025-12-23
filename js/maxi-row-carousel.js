@@ -329,10 +329,6 @@ class MaxiRowCarousel {
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => {
 					if (this.carouselActive && this._tracker && this._wrapper) {
-						// eslint-disable-next-line no-console
-						console.log(
-							'MaxiRowCarousel: Recalculating heights after RAF'
-						);
 						this.setColumnWidths();
 					}
 				});
@@ -667,16 +663,6 @@ class MaxiRowCarousel {
 				maxHeight = contentHeight;
 			}
 		});
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'MaxiRowCarousel: Column heights',
-			JSON.stringify({
-				columnHeights,
-				maxHeight,
-				totalColumns: this._columns.length,
-			})
-		);
 
 		// Set explicit height on tracker and wrapper with user-configurable offset
 		if (maxHeight > 0) {
@@ -1079,9 +1065,6 @@ class MaxiRowCarousel {
 	 * Destroy carousel instance and clean up
 	 */
 	destroy() {
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarousel: destroy() called');
-
 		// Stop autoplay
 		if (this.autoplayInterval) {
 			clearInterval(this.autoplayInterval);

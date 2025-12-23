@@ -42,35 +42,7 @@ class MaxiRowCarouselEditor {
 	constructor(el) {
 		this._container = el;
 
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Constructor called', {
-			container: this._container,
-		});
-
 		// Get all direct column children - in editor they're wrapped in maxi-block__resizer
-		// We need to look for .maxi-block__resizer > .maxi-column-block
-
-		// First, let's check what direct children we have
-		const directChildren = Array.from(this._container.children);
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Direct children', {
-			count: directChildren.length,
-			children: directChildren.map(el => ({
-				tagName: el.tagName,
-				className: el.className,
-			})),
-		});
-
-		// Look for resizer wrappers
-		const resizers = Array.from(
-			this._container.querySelectorAll(':scope > .maxi-block__resizer')
-		);
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Found resizers', {
-			count: resizers.length,
-			resizers,
-		});
-
 		// Look for columns within resizers
 		// In editor, the resizer DIV itself has the maxi-column-block class
 		const columns = Array.from(
@@ -78,12 +50,6 @@ class MaxiRowCarouselEditor {
 				':scope > .maxi-block__resizer.maxi-column-block'
 			)
 		);
-
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Found columns', {
-			count: columns.length,
-			columns,
-		});
 
 		if (columns.length === 0) {
 			return;
@@ -104,10 +70,6 @@ class MaxiRowCarouselEditor {
 
 		// Check if carousel should be active based on trigger width
 		if (!this.shouldCarouselBeActive()) {
-			// eslint-disable-next-line no-console
-			console.log(
-				'MaxiRowCarouselEditor: Carousel should not be active yet'
-			);
 			this.carouselActive = false;
 			this.onResize = this.handleResize.bind(this);
 			window.addEventListener('resize', this.onResize);
@@ -132,11 +94,6 @@ class MaxiRowCarouselEditor {
 				':scope > .maxi-block__resizer.maxi-column-block'
 			)
 		).map((column, i) => new RowCarouselColumnEditor(column, i));
-
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Columns mapped', {
-			columns: this._columns,
-		});
 
 		// Navigation
 		this._arrowNext = this._container.querySelector(
@@ -184,10 +141,6 @@ class MaxiRowCarouselEditor {
 						'maxi-row-carousel--active'
 					)
 				) {
-					// eslint-disable-next-line no-console
-					console.log(
-						'MaxiRowCarouselEditor: Re-applying active class'
-					);
 					this._container.classList.add('maxi-row-carousel--active');
 				}
 			});
@@ -209,9 +162,6 @@ class MaxiRowCarouselEditor {
 
 		// Mark as initialized
 		this._container.setAttribute('data-carousel-initialized', 'true');
-
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Initialization complete');
 	}
 
 	// Copy all methods from the original MaxiRowCarousel class
@@ -231,19 +181,10 @@ class MaxiRowCarouselEditor {
 					.select('maxiBlocks')
 					?.receiveMaxiDeviceType();
 				if (deviceType && deviceType !== 'general') {
-					// eslint-disable-next-line no-console
-					console.log(
-						'MaxiRowCarouselEditor: Using editor device type',
-						deviceType
-					);
 					return deviceType;
 				}
 			} catch (error) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					'MaxiRowCarouselEditor: Could not get device type from store',
-					error
-				);
+				// Silently fail and use window width fallback
 			}
 		}
 
@@ -409,9 +350,6 @@ class MaxiRowCarouselEditor {
 	}
 
 	createCarouselStructure(columns) {
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Creating carousel structure');
-
 		// Create wrapper
 		const wrapper = document.createElement('div');
 		wrapper.className = 'maxi-row-carousel__wrapper';
@@ -500,16 +438,6 @@ class MaxiRowCarouselEditor {
 		this._container.appendChild(tracker);
 		// Add nav as direct child of container (not inside tracker) to prevent overflow clipping of arrows
 		this._container.appendChild(nav);
-
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: Structure created', {
-			tracker,
-			wrapper,
-			nav,
-			columnResizerCount: columnResizers.length,
-			showArrows,
-			showDots,
-		});
 	}
 
 	init() {
@@ -643,21 +571,6 @@ class MaxiRowCarouselEditor {
 				maxHeight = contentHeight;
 			}
 		});
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'MaxiRowCarouselEditor: setColumnWidths',
-			JSON.stringify({
-				firstColumnWidth,
-				carouselGap,
-				slidesPerView: this.slidesPerView,
-				peekOffset: this.peekOffset,
-				trackerWidth,
-				columnHeights,
-				maxHeight,
-				totalColumns: this._columns.length,
-			})
-		);
 
 		// Set explicit height on tracker and wrapper with user-configurable offset
 		if (maxHeight > 0) {
@@ -906,13 +819,6 @@ class MaxiRowCarouselEditor {
 		const currentBP = this.getCurrentBreakpoint();
 		const breakpointChanged = this.lastBreakpoint !== currentBP;
 
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: checkBreakpoint called', {
-			lastBreakpoint: this.lastBreakpoint,
-			currentBP,
-			breakpointChanged,
-		});
-
 		if (breakpointChanged) {
 			this.lastBreakpoint = currentBP;
 
@@ -1018,10 +924,6 @@ class MaxiRowCarouselEditor {
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => {
 					if (this.carouselActive && this._tracker && this._wrapper) {
-						// eslint-disable-next-line no-console
-						console.log(
-							'MaxiRowCarouselEditor: Recalculating heights after RAF'
-						);
 						this.setColumnWidths();
 					}
 				});
@@ -1122,9 +1024,6 @@ class MaxiRowCarouselEditor {
 	 * Destroy carousel instance and clean up
 	 */
 	destroy() {
-		// eslint-disable-next-line no-console
-		console.log('MaxiRowCarouselEditor: destroy() called');
-
 		// Stop autoplay
 		if (this.autoplayInterval) {
 			clearInterval(this.autoplayInterval);

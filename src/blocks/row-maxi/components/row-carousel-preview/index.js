@@ -150,18 +150,6 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 
 	// Active dot uses the same icon as normal dot (styling is different, not the icon)
 	rowBlock.setAttribute('data-active-dot-icon', dotIconContent);
-
-	// eslint-disable-next-line no-console
-	console.log('RowCarouselPreview: Data attributes added', {
-		attributes: Array.from(rowBlock.attributes)
-			.filter(
-				attr =>
-					attr.name.startsWith('data-carousel') ||
-					attr.name.startsWith('data-arrow') ||
-					attr.name.startsWith('data-dot')
-			)
-			.map(attr => ({ name: attr.name, value: attr.value })),
-	});
 };
 
 /**
@@ -184,21 +172,9 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 	// Main effect for mounting/unmounting carousel
 	useEffect(() => {
-		// eslint-disable-next-line no-console
-		console.log('RowCarouselPreview: useEffect triggered', {
-			isPreviewEnabled,
-			clientId,
-			hasMaxiRowCarousel: typeof window.MaxiRowCarousel !== 'undefined',
-		});
-
 		if (!isPreviewEnabled) {
 			// Clean up carousel if preview is disabled
 			if (carouselInstanceRef.current) {
-				// eslint-disable-next-line no-console
-				console.log(
-					'RowCarouselPreview: Cleaning up carousel instance'
-				);
-
 				// Call destroy method if it exists
 				if (typeof carouselInstanceRef.current.destroy === 'function') {
 					carouselInstanceRef.current.destroy();
@@ -237,9 +213,10 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 			if (!blockElement) {
 				// eslint-disable-next-line no-console
-				console.warn('RowCarouselPreview: Block element not found', {
-					clientId,
-				});
+				console.warn(
+					'RowCarouselPreview: Block element not found',
+					clientId
+				);
 				return;
 			}
 
@@ -251,19 +228,10 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			if (!rowBlock) {
 				// eslint-disable-next-line no-console
 				console.warn(
-					'RowCarouselPreview: Row block container not found',
-					{ blockElement }
+					'RowCarouselPreview: Row block container not found'
 				);
 				return;
 			}
-
-			// eslint-disable-next-line no-console
-			console.log('RowCarouselPreview: Found row block element', {
-				rowBlock,
-				hasColumns: rowBlock.querySelectorAll(
-					':scope > .maxi-block__resizer > .maxi-column-block'
-				).length,
-			});
 
 			containerRef.current = rowBlock;
 
@@ -281,7 +249,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 						window.MaxiRowCarouselEditor;
 				} else {
 					// eslint-disable-next-line no-console
-					console.error(
+					console.warn(
 						'RowCarouselPreview: MaxiRowCarouselEditor class not found'
 					);
 					return;
@@ -291,17 +259,11 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			// Function to create carousel after cleanup
 			const createCarousel = () => {
 				try {
-					// eslint-disable-next-line no-console
-					console.log(
-						'RowCarouselPreview: Creating carousel instance'
-					);
 					carouselInstanceRef.current =
 						new targetWindow.MaxiRowCarouselEditor(rowBlock);
 
 					// Fade back in
 					setTimeout(() => {
-						// eslint-disable-next-line no-console
-						console.log('RowCarouselPreview: Fading back in');
 						rowBlock.style.setProperty('opacity', '1', 'important');
 					}, 50);
 
@@ -310,18 +272,13 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 						rowBlock.style.removeProperty('transition');
 						rowBlock.style.removeProperty('opacity');
 					}, 350);
-
-					// eslint-disable-next-line no-console
-					console.log(
-						'RowCarouselPreview: Carousel instance created successfully'
-					);
 				} catch (error) {
 					// Reset opacity on error
 					rowBlock.style.removeProperty('transition');
 					rowBlock.style.removeProperty('opacity');
 
 					// eslint-disable-next-line no-console
-					console.error(
+					console.warn(
 						'RowCarouselPreview: Error creating carousel instance',
 						error
 					);
@@ -330,11 +287,6 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 			// If there's an existing instance, fade out before destroying
 			if (carouselInstanceRef.current) {
-				// eslint-disable-next-line no-console
-				console.log(
-					'RowCarouselPreview: Fading out and cleaning up existing instance'
-				);
-
 				// Add transition and fade out with !important to override any other styles
 				rowBlock.style.setProperty(
 					'transition',
@@ -343,17 +295,8 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				);
 				rowBlock.style.setProperty('opacity', '0.3', 'important');
 
-				// eslint-disable-next-line no-console
-				console.log('RowCarouselPreview: Opacity set to', {
-					opacity: rowBlock.style.opacity,
-					transition: rowBlock.style.transition,
-				});
-
 				// Wait for fade out, then destroy and recreate
 				setTimeout(() => {
-					// eslint-disable-next-line no-console
-					console.log('RowCarouselPreview: Destroying old instance');
-
 					if (
 						carouselInstanceRef.current &&
 						typeof carouselInstanceRef.current.destroy ===
@@ -379,11 +322,6 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 		// eslint-disable-next-line consistent-return
 		return () => {
 			if (carouselInstanceRef.current) {
-				// eslint-disable-next-line no-console
-				console.log(
-					'RowCarouselPreview: Component unmounting, cleaning up'
-				);
-
 				if (typeof carouselInstanceRef.current.destroy === 'function') {
 					carouselInstanceRef.current.destroy();
 				}
@@ -402,11 +340,6 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 		) {
 			return;
 		}
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'RowCarouselPreview: Attributes changed, updating carousel with fade'
-		);
 
 		const rowBlock = containerRef.current;
 
@@ -444,7 +377,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				}
 			} catch (error) {
 				// eslint-disable-next-line no-console
-				console.error(
+				console.warn(
 					'RowCarouselPreview: Error recreating carousel',
 					error
 				);
@@ -473,12 +406,6 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 		) {
 			return;
 		}
-
-		// eslint-disable-next-line no-console
-		console.log(
-			'RowCarouselPreview: Device type changed, checking breakpoint',
-			{ deviceType }
-		);
 
 		// Trigger breakpoint check on the carousel
 		if (typeof carouselInstanceRef.current.checkBreakpoint === 'function') {

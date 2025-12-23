@@ -211,10 +211,29 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 		// Initialize carousel with fade transition
 		const initializeCarousel = () => {
-			// Find the row block element in the editor
-			const blockElement = document.querySelector(
-				`[data-block="${clientId}"]`
-			);
+			// Helper function to find block in main document or FSE iframe
+			const findBlockElement = () => {
+				// Try main document first
+				let blockElement = document.querySelector(
+					`[data-block="${clientId}"]`
+				);
+
+				// If not found, check FSE iframe
+				if (!blockElement) {
+					const fseIframe = document.querySelector(
+						'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+					);
+					if (fseIframe?.contentDocument) {
+						blockElement = fseIframe.contentDocument.querySelector(
+							`[data-block="${clientId}"]`
+						);
+					}
+				}
+
+				return blockElement;
+			};
+
+			const blockElement = findBlockElement();
 
 			if (!blockElement) {
 				// eslint-disable-next-line no-console
@@ -251,13 +270,22 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			// Add carousel data attributes to the row block
 			addCarouselDataAttributes(rowBlock, attributesRef.current);
 
+			// Get the appropriate window object (main or iframe)
+			const targetWindow = rowBlock.ownerDocument.defaultView || window;
+
 			// Check if MaxiRowCarouselEditor class is available
-			if (typeof window.MaxiRowCarouselEditor === 'undefined') {
-				// eslint-disable-next-line no-console
-				console.error(
-					'RowCarouselPreview: MaxiRowCarouselEditor class not found'
-				);
-				return;
+			if (typeof targetWindow.MaxiRowCarouselEditor === 'undefined') {
+				// If not available in target window, try to copy from main window
+				if (typeof window.MaxiRowCarouselEditor !== 'undefined') {
+					targetWindow.MaxiRowCarouselEditor =
+						window.MaxiRowCarouselEditor;
+				} else {
+					// eslint-disable-next-line no-console
+					console.error(
+						'RowCarouselPreview: MaxiRowCarouselEditor class not found'
+					);
+					return;
+				}
 			}
 
 			// Function to create carousel after cleanup
@@ -268,7 +296,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 						'RowCarouselPreview: Creating carousel instance'
 					);
 					carouselInstanceRef.current =
-						new window.MaxiRowCarouselEditor(rowBlock);
+						new targetWindow.MaxiRowCarouselEditor(rowBlock);
 
 					// Fade back in
 					setTimeout(() => {

@@ -1183,3 +1183,24 @@ class MaxiRowCarouselEditor {
 
 // Expose MaxiRowCarouselEditor globally for editor preview
 window.MaxiRowCarouselEditor = MaxiRowCarouselEditor;
+
+// Also expose in FSE iframe if it exists
+const exposeFSEIframe = () => {
+	const fseIframe = document.querySelector(
+		'iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
+	);
+	if (fseIframe?.contentWindow) {
+		fseIframe.contentWindow.MaxiRowCarouselEditor = MaxiRowCarouselEditor;
+	}
+};
+
+// Try immediately
+exposeFSEIframe();
+
+// Watch for FSE iframe to be added
+if (typeof MutationObserver !== 'undefined') {
+	const observer = new MutationObserver(() => {
+		exposeFSEIframe();
+	});
+	observer.observe(document.body, { childList: true, subtree: true });
+}

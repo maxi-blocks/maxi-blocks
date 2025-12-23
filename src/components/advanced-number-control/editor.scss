@@ -70,7 +70,7 @@
 	/*--- Spinner Controls ---*/
 	&__spinner-container {
 		position: absolute;
-		right: 2px;
+		inset-inline-end: 2px;
 		top: 50%;
 		transform: translateY(-48%);
 		flex-direction: column;
@@ -81,7 +81,7 @@
 		&::before {
 			content: '';
 			position: absolute;
-			left: -3px;
+			inset-inline-start: -3px;
 			top: 50%;
 			transform: translateY(-50%);
 			width: 1px;
@@ -210,12 +210,9 @@
 	border-radius: var(--maxi-radius-sm);
 }
 
+// RTL text alignment for select control
 html[dir='rtl'] {
 	.maxi-select-control__input {
-		text-align: right;
-	}
-	.maxi-base-control__label {
-		left: unset;
-		right: 8px;
+		text-align: end;
 	}
 }

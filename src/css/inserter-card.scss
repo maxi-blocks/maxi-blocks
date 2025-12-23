@@ -27,6 +27,7 @@
 			&__content,
 			> div.components-flex {
 				margin: 0 0 0 6px;
+				margin-inline-start: 6px;
 			}
 			&__title {
 				margin: 1.5px 0 0 0;
@@ -40,24 +41,10 @@
 				width: 100%;
 				margin: 0;
 				position: relative;
-				left: -25px;
+				inset-inline-start: -25px;
 				padding-top: 5px;
 			}
 		}
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.block-editor-block-card__content,
-	.block-editor-block-card > div.components-flex {
-		margin-right: 8px !important;
-		margin-left: 0 !important;
-	}
-	.block-editor-block-card__description {
-		left: unset !important;
-		right: -25px;
-	}
-}

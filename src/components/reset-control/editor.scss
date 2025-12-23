@@ -6,7 +6,7 @@
 	height: auto;
 	padding: 8px 5px !important;
 	border-radius: 50%;
-	margin-left: 4px;
+	margin-inline-start: 4px;
 	background: var(--mw);
 	text-decoration: none;
 	transition: var(--maxi-trans-std);
@@ -14,7 +14,7 @@
 	box-shadow: none;
 	cursor: pointer;
 	opacity: 1;
-	margin-right: 0 !important;
+	margin-inline-end: 0 !important;
 
 	&:focus {
 		border-color: var(--mg);
@@ -39,8 +39,7 @@
 		background-color: transparent;
 		border-width: 0 0 0 2px;
 		max-width: 32px;
-		top: 0;
-		right: 0;
+		inset-inline-end: 0;
 		padding: 1px 1px 1px 8px !important;
 		margin-top: -6px !important;
 		&:hover svg {
@@ -66,17 +65,5 @@
 		&:focus {
 			border-color: var(--mg);
 		}
-	}
-}
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-reset-button {
-		right: unset !important;
-		left: 0;
-		padding: 1px 8px 1px 1px !important;
-		margin-left: 0;
-		margin-right: 4px !important;
 	}
 }

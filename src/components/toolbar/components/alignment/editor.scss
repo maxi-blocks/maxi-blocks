@@ -1,6 +1,7 @@
 .maxi-dropdown__alignment-content {
 	z-index: 99999999;
-	margin: -33px 0 0 98px !important;
+	margin: -33px 0 0 0 !important;
+	margin-inline-start: 98px !important;
 
 	.components-popover__content {
 		width: 75px;
@@ -26,9 +27,7 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
+// RTL button order - intentionally kept for semantic button reordering
 html[dir='rtl'] {
 	.maxi-alignment-control {
 		button[aria-label='justify'] {
@@ -45,3 +44,4 @@ html[dir='rtl'] {
 		}
 	}
 }
+

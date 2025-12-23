@@ -36,7 +36,7 @@
 		&__custom-clear-wrapper {
 			position: absolute;
 			top: -2px;
-			right: 31px;
+			inset-inline-end: 31px;
 			margin-top: 0;
 		}
 		&__clear {
@@ -115,20 +115,5 @@
 				}
 			}
 		}
-	}
-}
-
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-gradient-control
-		.components-circular-option-picker__custom-clear-wrapper {
-		right: unset;
-		left: 35px;
-	}
-	label {
-		left: unset;
-		right: 8px;
 	}
 }

@@ -7,7 +7,7 @@
 	display: flex;
 	position: absolute;
 	bottom: -22px;
-	left: 25px;
+	inset-inline-start: 25px;
 	border-radius: 3px;
 	margin: 0 !important;
 	padding: 0 10px 0 5px !important;
@@ -15,7 +15,7 @@
 	z-index: 9;
 	transition: 0.3s;
 	transform: scaleX(0);
-	transform-origin: left center;
+	transform-origin: inline-start center;
 	height: 20px;
 	align-items: center;
 
@@ -79,16 +79,5 @@
 				opacity: 1;
 			}
 		}
-	}
-}
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-breadcrumbs {
-		right: 25px;
-		left: unset;
-		padding: 0 5px 0 10px !important;
-		transform-origin: right;
 	}
 }

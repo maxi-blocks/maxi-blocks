@@ -18,15 +18,15 @@
 		border-radius: 0;
 		height: 30px;
 		width: 72px !important;
-		margin-left: 2% !important;
+		margin-inline-start: 2% !important;
 		justify-content: center;
 		background: var(--mlb);
 		display: block !important;
-		float: right;
+		float: inline-end;
 		text-align: center !important;
 
 		&:last-child {
-			margin-right: 0;
+			margin-inline-end: 0;
 		}
 
 		&:hover {
@@ -40,15 +40,8 @@
 	.maxi-base-control__label {
 		margin-bottom: 0;
 	}
-}
-
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.toolbar-item__text-generator-blocks__popover
-		.maxi-advanced-number-control__value {
-		padding-left: 0 !important;
-		padding-right: 4px !important;
+	.maxi-advanced-number-control__value {
+		padding-inline-start: 0 !important;
+		padding-inline-end: 4px !important;
 	}
 }

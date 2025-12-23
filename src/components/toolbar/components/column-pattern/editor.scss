@@ -16,10 +16,10 @@
 			width: 18.8%;
 			padding: 0;
 			height: 26px;
-			margin-right: 1.5%;
+			margin-inline-end: 1.5%;
 
 			&:nth-child(5n + 5) {
-				margin-right: 0;
+				margin-inline-end: 0;
 			}
 
 			&--toolbar {
@@ -53,13 +53,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.toolbar-item__column-pattern__popover
-		.components-column-pattern__template-button {
-		margin-left: 1.5%;
-		margin-right: 0;
-	}
-}

@@ -32,6 +32,7 @@
 			cursor: pointer;
 			margin: 0;
 			padding: 5px 20px 5px 7px;
+			padding-inline: 7px 20px;
 			display: flex;
 			align-items: center;
 			&:hover {
@@ -87,7 +88,7 @@
 					}
 				}
 				& + span {
-					padding-left: 5px;
+					padding-inline-start: 5px;
 					color: var(--mb);
 				}
 			}
@@ -157,16 +158,11 @@
 		content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z" /></svg>');
 		position: absolute;
 		top: 50%;
-		right: 7px;
+		inset-inline-end: 7px;
 		width: 6px;
 		transform: translateY(-50%) rotate(0);
 		transform-origin: center;
 		transition: transform 0.3s linear;
-
-		@at-root .rtl #{&} {
-			right: unset;
-			left: 5px;
-		}
 	}
 	&[aria-expanded='true'] {
 		border-bottom: 1px solid var(--mgl);
@@ -231,19 +227,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.toolbar-item__copy-paste__popover__item {
-		padding: 5px 7px 5px 20px;
-
-		input[type='checkbox'] + span {
-			padding-right: 5px;
-			padding-left: unset !important;
-		}
-		input[type='checkbox']:checked::before {
-			margin: -3px -2px 0px 0px;
-		}
-	}
-}

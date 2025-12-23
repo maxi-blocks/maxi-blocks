@@ -1,7 +1,7 @@
 .maxi-list-control {
 	.maxi-settingstab-control .maxi-tabs-content {
-		padding-right: 0 !important;
-		padding-left: 0 !important;
+		padding-inline-end: 0 !important;
+		padding-inline-start: 0 !important;
 	}
 
 	&__options {
@@ -63,10 +63,14 @@
 		cursor: pointer;
 		transform-origin: center;
 		padding: 7px 9px !important;
-		border-right: 1px solid var(--msc);
+		border-inline-end: 1px solid var(--msc);
 		background-color: var(--mw);
 		text-align: center;
 		border-radius: 5px 0px 0px 5px !important;
+		border-start-start-radius: 5px !important;
+		border-end-start-radius: 5px !important;
+		border-start-end-radius: 0 !important;
+		border-end-end-radius: 0 !important;
 
 		&:hover {
 			background-color: var(--mwg);
@@ -108,7 +112,7 @@
 		border-radius: var(--maxi-radius-sm);
 		transition: var(--maxi-trans-std);
 		cursor: pointer;
-		padding-right: 5px;
+		padding-inline-end: 5px;
 		background-color: var(--mw);
 
 		&:hover {
@@ -130,8 +134,8 @@
 				background: var(--mpg);
 				display: block;
 				padding: 7px 10px 7px 8px;
-				border-right: 1px solid var(--msc);
-				margin-right: 7px;
+				border-inline-end: 1px solid var(--msc);
+				margin-inline-end: 7px;
 				counter-increment: list-items-counter 1;
 				font-size: 14px;
 				font-weight: 700;
@@ -147,7 +151,7 @@
 			background-color: var(--mgo);
 			border-radius: 50%;
 			cursor: pointer;
-			right: -5px;
+			inset-inline-end: -5px;
 			top: -5px;
 			transition: background-color 0.2s ease;
 
@@ -174,34 +178,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-list-item-control__title__remover {
-		right: unset;
-		left: -5px;
-	}
-	.maxi-background-control {
-		.maxi-background-layer__title__mover {
-			margin: auto auto auto 0;
-		}
-	}
-	.maxi-list-item-control__arrow {
-		border-left: 1px solid var(--msc);
-		border-right: 0;
-		border-radius: 0px 5px 5px 0px !important;
-	}
-	.maxi-list-item-control__title {
-		padding-right: 0;
-		padding-left: 5px;
-	}
-	.maxi-list-item-control__title__id::before {
-		content: counter(list-items-counter);
-		padding: 7px 8px 7px 10px;
-		border-right: 0;
-		border-left: 1px solid var(--msc);
-		margin-left: 7px;
-		margin-right: unset;
-	}
-}

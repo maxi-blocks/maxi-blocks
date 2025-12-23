@@ -6,11 +6,11 @@
 .maxi-clip-path-mode-control {
 	.maxi-tabs-control__button {
 		&:first-child {
-			margin-right: 4px;
+			margin-inline-end: 4px;
 		}
 
 		&:last-child {
-			margin-left: 4px;
+			margin-inline-start: 4px;
 		}
 	}
 }
@@ -107,7 +107,7 @@
 
 			&.maxi-clip-path-delete-handle {
 				position: absolute;
-				left: 0;
+				inset-inline-start: 0;
 				bottom: 0;
 
 				span {
@@ -232,13 +232,4 @@
 
 .maxi-clip-path-control .button {
 	border-radius: 6px;
-}
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-clip-path-delete-handle {
-		left: unset;
-		right: 0;
-	}
 }

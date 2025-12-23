@@ -129,7 +129,7 @@
 					border-width: 0 0 0 2px;
 					width: auto;
 					top: 0;
-					right: 0;
+					inset-inline-end: 0;
 					padding: 1px 1px 1px 8px;
 					&:hover {
 						svg {
@@ -248,16 +248,8 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
+// Chrome picker needs LTR direction for proper input handling
 html[dir='rtl'] {
-	.maxi-color-control__palette-label
-		.maxi-base-control__field
-		.components-maxi-control__reset-button {
-		right: unset;
-		left: 0;
-	}
 	.maxi-color-control .chrome-picker > div > div:last-of-type {
 		direction: ltr;
 	}

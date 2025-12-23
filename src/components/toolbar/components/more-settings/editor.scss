@@ -55,13 +55,13 @@
 			border: none;
 			display: block;
 			width: 100%;
-			text-align: left;
+			text-align: start;
 			position: relative;
 			transition: 0.3s;
 			height: 30px !important;
 			padding: 6px 12px !important;
 			span {
-				float: right;
+				float: inline-end;
 			}
 			&:hover {
 				background-color: var(--mwg);
@@ -87,11 +87,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-more-settings__popover .components-button {
-		text-align: right !important;
-	}
-}

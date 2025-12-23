@@ -315,7 +315,7 @@
 	.maxi-block-style-preview {
 		position: relative;
 		min-width: 100px;
-		margin-left: 10px;
+		margin-inline-start: 10px;
 		height: 32px;
 		transition: var(--maxi-trans-std);
 	}
@@ -323,7 +323,7 @@
 	.maxi-base-control__label {
 		position: absolute;
 		top: -8px;
-		left: 8px;
+		inset-inline-start: 8px;
 		font-size: 8px;
 		color: var(--mdg);
 		font-style: italic;
@@ -337,7 +337,7 @@
 }
 .block-info-icon {
 	position: absolute;
-	right: 5px;
+	inset-inline-end: 5px;
 	border: 2px solid var(--mgl);
 	border-radius: 50%;
 	height: 16px;
@@ -359,22 +359,5 @@
 	span {
 		font-size: 10px;
 		transition: var(--maxi-trans-std);
-	}
-}
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.block-info-icon {
-		right: unset;
-		left: 5px;
-	}
-	.maxi-settingstab-control .maxi-tabs-control__button:last-child {
-		border-left: 1.5px solid var(--mgl);
-		border-right: 1.5px solid var(--mgl);
-	}
-	.maxi-block-style-preview {
-		margin-left: unset;
-		margin-right: 10px;
 	}
 }

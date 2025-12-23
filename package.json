@@ -55,7 +55,7 @@
 		"dompurify": "latest",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
-		"langchain": "^0.3.34",
+		"langchain": "^0.3.37",
 		"leaflet": "latest",
 		"leaflet.gridlayer.googlemutant": "^0.15.0",
 		"masonry-layout": "latest",

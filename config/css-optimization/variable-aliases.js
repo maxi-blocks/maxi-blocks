@@ -25,7 +25,15 @@ const aliasMap = {
 	'--maxi-accessibility-grey': '--mag',
 	'--maxi-trans-std': '--mt',
 	'--maxi-font-sans': '--mf',
+	'--maxi-font-system': '--mfs',
 	'--maxi-radius-sm': '--mrs',
+
+	// Safe Class Name Shortening (Component classes only, NOT block names)
+	'maxi-tabs-control': 'mtc',
+	'maxi-base-control': 'mbc',
+	'maxi-color-control': 'mcc',
+	'maxi-settingstab-control': 'mstc',
+	'maxi-advanced-number-control': 'manc',
 };
 
 module.exports = { aliasMap };

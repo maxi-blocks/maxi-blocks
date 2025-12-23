@@ -78,7 +78,7 @@ $border-light: 1px solid var(--mgl);
 				padding: 0;
 				height: auto;
 				border: 2px solid var(--mgl);
-				border-radius: 5px;
+				border-radius: var(--maxi-radius-sm);
 				cursor: pointer;
 				transition: var(--maxi-trans-std); // Add transition
 
@@ -1114,7 +1114,7 @@ $border-light: 1px solid var(--mgl);
 				left: 0;
 				right: 0;
 				max-width: 400px;
-				border-radius: 5px;
+				border-radius: var(--maxi-radius-sm);
 				margin: 0 auto;
 				color: var(--mw);
 				background: var(--mcib);
@@ -1505,7 +1505,7 @@ $border-light: 1px solid var(--mgl);
 							font-size: 12px;
 							font-weight: normal;
 							border: 1px solid transparent;
-							border-radius: 5px;
+							border-radius: var(--maxi-radius-sm);
 							text-align: center;
 							width: 100%;
 							height: 31px;

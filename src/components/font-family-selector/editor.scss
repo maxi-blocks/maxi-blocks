@@ -47,7 +47,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 		&__control {
 			border-color: var(--mgl);
 			padding: 8px 2px 8px 8px;
-			border-radius: 5px;
+			border-radius: var(--maxi-radius-sm);
 			min-height: unset;
 			display: flex;
 			align-content: center;

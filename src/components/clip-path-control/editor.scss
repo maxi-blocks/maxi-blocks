@@ -161,7 +161,7 @@
 
 	.maxi-clip-path-visual-editor-wrapper {
 		border: 2px solid var(--msc) !important;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 	}
 	.maxi-clip-path-visual-editor {
 		background-color: var(--mw) !important;

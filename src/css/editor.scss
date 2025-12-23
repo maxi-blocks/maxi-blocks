@@ -252,7 +252,7 @@ body .toolbar-item__popover {
 		max-height: unset !important;
 		min-height: unset;
 		padding: 10px;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 		color: var(--mdg);
 		background-color: var(--mw);
 		font-size: 13px;
@@ -747,7 +747,7 @@ body.maxi-blocks--active
 	padding: 0 !important;
 	margin-left: 4px !important;
 	margin-right: 4px !important;
-	border-radius: 5px !important;
+	border-radius: var(--maxi-radius-sm) !important;
 
 	svg {
 		width: 10px !important;

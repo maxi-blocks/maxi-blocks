@@ -18,7 +18,7 @@
 		text-align: center;
 		box-shadow: none !important;
 		border: 1.5px solid var(--mgl);
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		color: var(--mdg);
 		transition: var(--maxi-trans-std);
 		&:hover {

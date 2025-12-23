@@ -83,7 +83,7 @@
 	button {
 		height: auto !important;
 		border: 1.5px solid var(--mgl) !important;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 		color: var(--mb);
 		font-family: var(--maxi-font-sans) !important;
 		font-size: 12px;

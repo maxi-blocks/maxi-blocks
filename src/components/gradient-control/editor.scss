@@ -26,7 +26,7 @@
 		}
 		&__backdrop {
 			border: 1.5px solid var(--mgl) !important;
-			border-radius: 5px !important;
+			border-radius: var(--maxi-radius-sm) !important;
 		}
 	}
 	.components-circular-option-picker {

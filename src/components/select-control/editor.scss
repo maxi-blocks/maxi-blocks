@@ -74,7 +74,7 @@ body.maxi-blocks--active {
 				margin-top: 12px;
 				background-color: var(--mw);
 				border: 1px solid var(--mgl) !important;
-				border-radius: 5px;
+				border-radius: var(--maxi-radius-sm);
 				margin-right: -3px;
 			}
 			.maxi-base-control__label {

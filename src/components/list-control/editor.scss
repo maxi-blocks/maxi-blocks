@@ -19,7 +19,7 @@
 		align-items: center;
 		border: 1px solid var(--msc);
 		z-index: 0;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 		transition: var(--maxi-trans-std); // Added transition
 
 		&:hover {
@@ -34,7 +34,7 @@
 
 	&__content {
 		border: 1px solid var(--msc);
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		padding: 22px 8px 0;
 		margin: -23px -8px 8px;
 
@@ -105,7 +105,7 @@
 		align-items: center;
 		width: 100%;
 		margin: 0;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		transition: var(--maxi-trans-std);
 		cursor: pointer;
 		padding-right: 5px;

@@ -14,7 +14,7 @@ body.maxi-blocks--active {
 		&__light {
 			background: var(--mpg);
 			color: var(--mdg) !important;
-			border-radius: 5px;
+			border-radius: var(--maxi-radius-sm);
 		}
 		&__dark {
 			background: var(--mdg);

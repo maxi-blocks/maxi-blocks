@@ -410,7 +410,7 @@ body .toolbar-item__popover {
 	&__toggle-btn {
 		.maxi-base-control__field {
 			justify-content: space-between;
-			border-radius: 5px;
+			border-radius: var(--maxi-radius-sm);
 
 			.maxi-base-control__label {
 				flex: 3 !important;

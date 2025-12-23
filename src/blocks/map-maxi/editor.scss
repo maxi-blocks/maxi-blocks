@@ -25,7 +25,7 @@
 		bottom: 16px;
 		width: calc(100% - 32px);
 		left: 16px;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		font-size: 13px;
 		padding: 0.5em;
 		text-align: center;

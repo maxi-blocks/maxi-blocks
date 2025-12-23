@@ -25,6 +25,7 @@ const aliasMap = {
 	'--maxi-accessibility-grey': '--mag',
 	'--maxi-trans-std': '--mt',
 	'--maxi-font-sans': '--mf',
+	'--maxi-radius-sm': '--mrs',
 };
 
 module.exports = { aliasMap };

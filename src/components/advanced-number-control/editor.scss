@@ -207,7 +207,7 @@
 	display: flex;
 	align-items: center;
 	border: 1px solid var(--mgl);
-	border-radius: 5px;
+	border-radius: var(--maxi-radius-sm);
 }
 
 html[dir='rtl'] {

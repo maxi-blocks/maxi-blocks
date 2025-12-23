@@ -7,7 +7,7 @@ body.maxi-blocks--active .maxi-text-control {
 		min-height: unset;
 		max-height: unset !important;
 		padding: 2px 8px;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		background-color: rgba(33, 141, 250, 0);
 		border: 1px solid var(--mgl);
 		font-size: 13px;

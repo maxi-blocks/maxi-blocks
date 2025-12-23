@@ -392,7 +392,7 @@ body .maxi-style-cards__popover {
 		padding-left: 2px !important;
 		color: var(--mdg);
 		border: 1.5px solid var(--mgl) !important;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 
 		&-button__preview {
 			width: 20px;
@@ -753,29 +753,29 @@ body .maxi-style-cards__popover {
 			&--delete[type='button']:not(:disabled),
 			&--add-more {
 				border-width: 1.5px !important;
-				border-radius: 5px !important;
+				border-radius: var(--maxi-radius-sm) !important;
 			}
 			.maxi-style-cards__sc__ie--import,
 			.maxi-style-cards__sc__ie--export {
 				border-width: 1.5px !important;
-				border-radius: 5px !important;
+				border-radius: var(--maxi-radius-sm) !important;
 			}
 		}
 		.maxi-style-cards__sc__save button {
 			border-width: 1.5px !important;
-			border-radius: 5px !important;
+			border-radius: var(--maxi-radius-sm) !important;
 		}
 		.maxi-style-cards__sc__save {
 			input[type='text'] {
 				border-width: 1.5px !important;
-				border-radius: 5px !important;
+				border-radius: var(--maxi-radius-sm) !important;
 			}
 		}
 	}
 	.edit-activate button,
 	.maxi-style-cards__sc__actions--save {
 		border-width: 1.5px !important;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 	}
 }
 @media only screen and (max-width: 768px) {

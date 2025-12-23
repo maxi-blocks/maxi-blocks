@@ -131,9 +131,8 @@ const save = props => {
 			attributes['navigation-dot-icon-content'] ||
 			'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>';
 
-		// Add active dot icon (falls back to normal dot icon if not set)
+		// Active dot uses the same icon as normal dot (styling is different, not the icon)
 		carouselDataAttrs['data-active-dot-icon'] =
-			attributes['active-navigation-dot-icon-content'] ||
 			carouselDataAttrs['data-dot-icon'];
 	}
 

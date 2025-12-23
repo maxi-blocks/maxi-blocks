@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { useEffect, useRef } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -141,21 +142,14 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
 			'<svg class="arrow-right-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24" fill="none" data-stroke stroke="#081219" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M15.15 5l7 7-7 7m7-7H1.85"/></svg>'
 	);
 
-	rowBlock.setAttribute(
-		'data-dot-icon',
+	const dotIconContent =
 		attributes['navigation-dot-icon-content'] ||
-			'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>'
-	);
+		'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>';
 
-	// Add active dot icon if enabled
-	if (attributes['active-navigation-dot-icon-status']) {
-		rowBlock.setAttribute(
-			'data-active-dot-icon',
-			attributes['active-navigation-dot-icon-content'] ||
-				attributes['navigation-dot-icon-content'] ||
-				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>'
-		);
-	}
+	rowBlock.setAttribute('data-dot-icon', dotIconContent);
+
+	// Active dot uses the same icon as normal dot (styling is different, not the icon)
+	rowBlock.setAttribute('data-active-dot-icon', dotIconContent);
 
 	// eslint-disable-next-line no-console
 	console.log('RowCarouselPreview: Data attributes added', {
@@ -181,6 +175,12 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 	// Update attributes ref when they change
 	attributesRef.current = attributes;
+
+	// Get current device type from MaxiBlocks store
+	const deviceType = useSelect(select => {
+		const maxiStore = select('maxiBlocks');
+		return maxiStore?.receiveMaxiDeviceType?.() || 'general';
+	}, []);
 
 	// Main effect for mounting/unmounting carousel
 	useEffect(() => {
@@ -404,6 +404,16 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				carouselInstanceRef.current = new window.MaxiRowCarouselEditor(
 					rowBlock
 				);
+
+				// Force breakpoint check after recreation (for responsive device type changes)
+				if (
+					typeof carouselInstanceRef.current.checkBreakpoint ===
+					'function'
+				) {
+					setTimeout(() => {
+						carouselInstanceRef.current.checkBreakpoint();
+					}, 100);
+				}
 			} catch (error) {
 				// eslint-disable-next-line no-console
 				console.error(
@@ -424,6 +434,29 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 			}, 50);
 		}, 300);
 	}, [attributes, isPreviewEnabled]);
+
+	// Effect to handle device type (breakpoint) changes
+	useEffect(() => {
+		// Only update if carousel is initialized and preview is enabled
+		if (
+			!isPreviewEnabled ||
+			!carouselInstanceRef.current ||
+			!containerRef.current
+		) {
+			return;
+		}
+
+		// eslint-disable-next-line no-console
+		console.log(
+			'RowCarouselPreview: Device type changed, checking breakpoint',
+			{ deviceType }
+		);
+
+		// Trigger breakpoint check on the carousel
+		if (typeof carouselInstanceRef.current.checkBreakpoint === 'function') {
+			carouselInstanceRef.current.checkBreakpoint();
+		}
+	}, [deviceType, isPreviewEnabled]);
 
 	// This component doesn't render anything visible
 	return null;

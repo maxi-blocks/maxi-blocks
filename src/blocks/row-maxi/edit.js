@@ -299,10 +299,18 @@ class edit extends MaxiBlockComponent {
 			attributes['row-carousel-status'] &&
 			attributes['row-carousel-preview'];
 
+		// Inline styles targets for carousel navigation icons
+		const inlineStylesTargets = {
+			dot: '.maxi-row-carousel__dot:not(.maxi-row-carousel__dot--active)',
+			dotActive: '.maxi-row-carousel__dot--active',
+			arrow: '.maxi-row-carousel__arrow',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
+				inlineStylesTargets={inlineStylesTargets}
 				repeaterStatus={repeaterContext.repeaterStatus}
 				repeaterRowClientId={repeaterContext.repeaterRowClientId}
 				isRepeaterInherited={this.isRepeaterInherited}

@@ -7,20 +7,29 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import ToggleSwitch from '@components/toggle-switch';
-import { getLastBreakpointAttribute } from '@extensions/styles';
-import icon from './inspector-icon';
+import NavigationIconsControl from '@blocks/slider-maxi/components/navigation-control/navigation-control';
+import {
+	getLastBreakpointAttribute,
+	getGroupAttributes,
+} from '@extensions/styles';
 
 /**
  * Carousel Dots Settings
- * Contains: Enable dots toggle and dot icon controls (normal and active)
+ * Contains: Enable dots toggle and dot icon controls (normal, hover, and active states)
+ * Note: Active state uses the same icon as normal but with different styling
  */
 const carouselDots = ({ props }) => {
 	const {
 		attributes,
 		maxiSetAttributes: onChange,
 		deviceType: breakpoint,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+		clientId,
 	} = props;
 
+	const { blockStyle, svgType } = attributes;
 	const dotPrefix = 'navigation-dot-';
 
 	const dotsEnabled = getLastBreakpointAttribute({
@@ -46,26 +55,23 @@ const carouselDots = ({ props }) => {
 				/>
 
 				{dotsEnabled && (
-					<>
-						<h4 className='maxi-carousel-dots__not-active-icon-label'>
-							{__('Not-active dot icon', 'maxi-blocks')}
-						</h4>
-						{
-							icon({
-								props,
-								prefix: 'navigation-dot-',
-							}).content
-						}
-						<h4 className='maxi-carousel-dots__active-icon-label'>
-							{__('Active dot icon', 'maxi-blocks')}
-						</h4>
-						{
-							icon({
-								props,
-								prefix: 'active-navigation-dot-',
-							}).content
-						}
-					</>
+					<NavigationIconsControl
+						{...getGroupAttributes(attributes, [
+							'dotIcon',
+							'dotIconHover',
+							'dotIconActive',
+						])}
+						onChange={obj => onChange(obj)}
+						deviceType={breakpoint}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						normalInlineTarget={inlineStylesTargets?.dot}
+						activeInlineTarget={inlineStylesTargets?.dotActive}
+						clientId={clientId}
+						blockStyle={blockStyle}
+						svgType={svgType}
+						prefix='navigation-dot-icon-'
+					/>
 				)}
 			</>
 		),

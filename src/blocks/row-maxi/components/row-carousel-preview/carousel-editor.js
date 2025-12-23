@@ -217,7 +217,37 @@ class MaxiRowCarouselEditor {
 	// Copy all methods from the original MaxiRowCarousel class
 	// (These are the same as in maxi-row-carousel.js)
 
+	/**
+	 * Get current breakpoint based on editor device type or window width
+	 * In editor, we use the MaxiBlocks store device type
+	 * @returns {string} Current breakpoint
+	 */
+	// eslint-disable-next-line class-methods-use-this
 	getCurrentBreakpoint() {
+		// Try to get device type from MaxiBlocks store (editor context)
+		if (typeof wp !== 'undefined' && wp.data && wp.data.select) {
+			try {
+				const deviceType = wp.data
+					.select('maxiBlocks')
+					?.receiveMaxiDeviceType();
+				if (deviceType && deviceType !== 'general') {
+					// eslint-disable-next-line no-console
+					console.log(
+						'MaxiRowCarouselEditor: Using editor device type',
+						deviceType
+					);
+					return deviceType;
+				}
+			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					'MaxiRowCarouselEditor: Could not get device type from store',
+					error
+				);
+			}
+		}
+
+		// Fallback to window width
 		const width = window.innerWidth;
 		if (width >= 1920) return 'xxl';
 		if (width >= 1366) return 'xl';
@@ -865,6 +895,33 @@ class MaxiRowCarouselEditor {
 		if (this.autoplayInterval) {
 			clearInterval(this.autoplayInterval);
 			this.autoplayInterval = null;
+		}
+	}
+
+	/**
+	 * Force check for breakpoint changes
+	 * Useful in editor when device type changes without window resize
+	 */
+	checkBreakpoint() {
+		const currentBP = this.getCurrentBreakpoint();
+		const breakpointChanged = this.lastBreakpoint !== currentBP;
+
+		// eslint-disable-next-line no-console
+		console.log('MaxiRowCarouselEditor: checkBreakpoint called', {
+			lastBreakpoint: this.lastBreakpoint,
+			currentBP,
+			breakpointChanged,
+		});
+
+		if (breakpointChanged) {
+			this.lastBreakpoint = currentBP;
+
+			if (this.carouselActive) {
+				this.loadBreakpointSettings();
+				this.setColumnWidths();
+				this.columnAction();
+				this.updateDots();
+			}
 		}
 	}
 

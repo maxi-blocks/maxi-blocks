@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { getAdvancedSettings, getCanvasSettings } from '@extensions/relations';
 import { createSelectors } from '@extensions/styles/custom-css';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Data object
@@ -158,16 +159,55 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const transition = {
+	...transitionDefault,
+	block: {
+		'arrow colour': {
+			title: __('Arrow colour', 'maxi-blocks'),
+// Match button-maxi pattern: target paths, transition all
+			target: [
+				' .maxi-slider-block__arrow--prev svg > *',
+				' .maxi-slider-block__arrow--next svg > *',
+			],
+			property: false,
+			hoverProp: 'navigation-arrow-both-icon-status-hover',
+		},
+		'dot colour': {
+			title: __('Dot colour', 'maxi-blocks'),
+			target: ' .maxi-slider-block__dot svg > *',
+			property: false,
+			hoverProp: 'navigation-dot-icon-status-hover',
+		},
+		'arrow size': {
+			title: __('Arrow size', 'maxi-blocks'),
+			target: [
+				' .maxi-slider-block__arrow--prev svg',
+				' .maxi-slider-block__arrow--next svg',
+			],
+			property: ['width', 'height'],
+			hoverProp: 'navigation-arrow-both-icon-status-hover',
+		},
+		'dot size': {
+			title: __('Dot size', 'maxi-blocks'),
+			target: ' .maxi-slider-block__dot svg',
+			property: ['width', 'height'],
+			hoverProp: 'navigation-dot-icon-status-hover',
+		},
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
+	transition,
 	interactionBuilderSettings,
 };
 
 export {
 	copyPasteMapping,
 	customCss,
+	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
 };

@@ -63,13 +63,25 @@ const dotIcon = {
 				type: 'number',
 				default: 50,
 			},
+			'navigation-dot-icon-spacing-horizontal-unit': {
+				type: 'string',
+				default: '%',
+			},
 			'navigation-dot-icon-spacing-vertical': {
 				type: 'number',
 				default: 85,
 			},
+			'navigation-dot-icon-spacing-vertical-unit': {
+				type: 'string',
+				default: '%',
+			},
 			'navigation-dot-icon-spacing-between': {
 				type: 'number',
 				default: 3,
+			},
+			'navigation-dot-icon-spacing-between-unit': {
+				type: 'string',
+				default: 'px',
 			},
 		},
 	}),

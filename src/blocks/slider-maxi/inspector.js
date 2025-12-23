@@ -231,6 +231,10 @@ const Inspector = props => {
 										selectors: customCss.selectors,
 										categories: customCss.categories,
 									}),
+									...inspectorTabs.transition({
+										props,
+										selectors: customCss.selectors,
+									}),
 									...inspectorTabs.display({
 										props,
 									}),

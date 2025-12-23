@@ -30,7 +30,7 @@ import {
 	getIconSize,
 	getIconPathStyles,
 } from '@extensions/styles/helpers';
-import { customCss } from './data';
+import data from './data'; // Import data configuration
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -164,20 +164,31 @@ const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 				prefix: iconPrefix,
 				blockStyle: props.blockStyle,
 			}),
-		border:
-			props[`${iconPrefix}status-border`] &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
-						false,
-						prefix
-					),
-				},
-				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
-			}),
+		border: props[`${iconPrefix}status-border`]
+			? getBorderStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							[
+								'iconBorder',
+								'iconBorderWidth',
+								'iconBorderRadius',
+							],
+							false,
+							prefix
+						),
+					},
+					prefix: iconPrefix,
+					blockStyle: props.blockStyle,
+			  })
+			: {
+					general: {
+						border: 'none !important',
+						'border-style': 'none !important',
+						'border-width': '0 !important',
+						'border-radius': '0 !important',
+					},
+			  },
 		padding: getMarginPaddingStyles({
 			obj: {
 				...getGroupAttributes(props, 'iconPadding', false, prefix),
@@ -286,24 +297,39 @@ const getIconSpacing = (
 			attributes: props,
 			isHover,
 		});
+		const horizontalSpacingUnit =
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-spacing-horizontal-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) || 'px';
+
 		const verticalSpacing = getLastBreakpointAttribute({
 			target: `${prefix}icon-spacing-vertical`,
 			breakpoint,
 			attributes: props,
 			isHover,
 		});
+		const verticalSpacingUnit =
+			getLastBreakpointAttribute({
+				target: `${prefix}icon-spacing-vertical-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) || '%';
 
 		if (!isNil(horizontalSpacing)) {
 			if (icon === 'prev')
-				responsive[breakpoint].left = `${-horizontalSpacing}px`;
+				responsive[breakpoint].left = `${-horizontalSpacing}${horizontalSpacingUnit}`;
 			if (icon === 'next')
-				responsive[breakpoint].right = `${-horizontalSpacing}px`;
+				responsive[breakpoint].right = `${-horizontalSpacing}${horizontalSpacingUnit}`;
 			if (icon === 'dots')
-				responsive[breakpoint].left = `${horizontalSpacing}%`;
+				responsive[breakpoint].left = `${horizontalSpacing}${horizontalSpacingUnit}`;
 		}
 
 		if (!isNil(verticalSpacing)) {
-			responsive[breakpoint].top = `${verticalSpacing}%`;
+			responsive[breakpoint].top = `${verticalSpacing}${verticalSpacingUnit}`;
 		}
 	});
 
@@ -343,7 +369,12 @@ const getIconSpacingBetween = (
 				breakpoint,
 				attributes: props,
 				isHover,
-			})}px`;
+			})}${getLastBreakpointAttribute({
+				target: `${prefix}icon-spacing-between-unit`,
+				breakpoint,
+				attributes: props,
+				isHover,
+			}) || 'px'}`;
 		}
 	});
 
@@ -520,7 +551,7 @@ const getStyles = props => {
 				}),
 				...getDotsIconObject(props),
 			},
-			customCss.selectorsSlider,
+			data,
 			props
 		),
 	};

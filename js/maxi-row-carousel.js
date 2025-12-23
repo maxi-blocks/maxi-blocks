@@ -217,7 +217,6 @@ class MaxiRowCarousel {
 		this.autoplaySpeed =
 			(parseFloat(this.getBreakpointSetting('autoplaySpeed', '2.5')) ||
 				2.5) * 1000;
-		this.transition = this.getBreakpointSetting('transition', 'slide');
 		this.transitionSpeed =
 			(parseFloat(this.getBreakpointSetting('transitionSpeed', '0.5')) ||
 				0.5) * 1000;
@@ -520,7 +519,7 @@ class MaxiRowCarousel {
 
 	get activeColumnPosition() {
 		// For fade transitions, return realFirstElOffset
-		if (this.transition === 'fade') {
+		if (false) {
 			return this.realFirstElOffset;
 		}
 
@@ -707,9 +706,6 @@ class MaxiRowCarousel {
 			return; // Don't do anything, keep normal row layout
 		}
 
-		// Set transition attribute
-		this._container.setAttribute('data-transition', this.transition);
-
 		// Add active class to enable carousel CSS
 		this._container.classList.add('maxi-row-carousel--active');
 
@@ -731,8 +727,8 @@ class MaxiRowCarousel {
 		// Set column widths AFTER creating clones so clones get widths too
 		this.setColumnWidths();
 
-		// Init styles - but only set transform for slide transitions, not fade
-		if (this.transition !== 'fade') {
+		// Init styles - set initial transform for loop positioning
+		if (this.isLoop) {
 			this.wrapperTranslate = this.realFirstElOffset;
 		}
 

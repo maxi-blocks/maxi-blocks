@@ -326,10 +326,10 @@ class MaxiRowCarouselEditor {
 			pauseOnInteractionValue === 'true' ||
 			pauseOnInteractionValue === true;
 
-		this.transition =
-			this._container.dataset[
-				`carouselTransition${bp.charAt(0).toUpperCase() + bp.slice(1)}`
-			] ||
+		// this.transition =
+		this._container.dataset[
+			`carouselTransition${bp.charAt(0).toUpperCase() + bp.slice(1)}`
+		] ||
 			this._container.dataset.carouselTransitionGeneral ||
 			'slide';
 
@@ -445,7 +445,7 @@ class MaxiRowCarouselEditor {
 		this._columns[this.currentColumn].isActive = this.currentColumn;
 
 		// Set transition attribute
-		this._container.setAttribute('data-transition', this.transition);
+		// this._container.setAttribute('data-transition', this.transition);
 
 		// Add active class to enable carousel CSS
 		this._container.classList.add('maxi-row-carousel--active');
@@ -605,7 +605,7 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnAction() {
-		if (this.transition === 'fade') {
+		if (false) {
 			this.fadeTo(this.currentColumn);
 		} else {
 			this.slideTo(this.currentColumn);

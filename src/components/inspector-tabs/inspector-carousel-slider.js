@@ -127,6 +127,25 @@ const carouselSlider = ({ props }) => {
 								});
 							}}
 						/>
+						<AdvancedNumberControl
+							label={__('Trigger width (px)', 'maxi-blocks')}
+							min={0}
+							max={3840}
+							initial={undefined}
+							step={1}
+							value={attributes['row-carousel-trigger-width']}
+							onChangeValue={val => {
+								onChange({
+									'row-carousel-trigger-width':
+										val !== undefined ? val : undefined,
+								});
+							}}
+							onReset={() =>
+								onChange({
+									'row-carousel-trigger-width': undefined,
+								})
+							}
+						/>
 						<ResponsiveTabsControl />
 						<AdvancedNumberControl
 							label={__('Columns per slide', 'maxi-blocks')}
@@ -228,25 +247,6 @@ const carouselSlider = ({ props }) => {
 								})
 							}
 						/>
-						<AdvancedNumberControl
-							label={__('Trigger width (px)', 'maxi-blocks')}
-							min={0}
-							max={3840}
-							initial={undefined}
-							step={1}
-							value={attributes['row-carousel-trigger-width']}
-							onChangeValue={val => {
-								onChange({
-									'row-carousel-trigger-width':
-										val !== undefined ? val : undefined,
-								});
-							}}
-							onReset={() =>
-								onChange({
-									'row-carousel-trigger-width': undefined,
-								})
-							}
-						/>
 						<ToggleSwitch
 							label={__('Autoplay', 'maxi-blocks')}
 							selected={isAutoplay}
@@ -337,28 +337,25 @@ const carouselSlider = ({ props }) => {
 								});
 							}}
 						/>
-						<SelectControl
-							__nextHasNoMarginBottom
-							label={__('Transition', 'maxi-blocks')}
-							newStyle
-							options={[
-								{
-									label: __('Slide', 'maxi-blocks'),
-									value: 'slide',
-								},
-								{
-									label: __('Fade', 'maxi-blocks'),
-									value: 'fade',
-								},
-							]}
-							value={transition}
-							onChange={val =>
-								onChange({
-									[`row-carousel-transition-${breakpoint}`]:
-										val,
-								})
-							}
-						/>
+						{/* Transition control temporarily disabled - only slide supported */}
+						{/* <SelectControl
+						__nextHasNoMarginBottom
+						label={__('Transition', 'maxi-blocks')}
+						newStyle
+						options={[
+							{
+								label: __('Slide', 'maxi-blocks'),
+								value: 'slide',
+							},
+						]}
+						value={transition}
+						onChange={val =>
+							onChange({
+								[`row-carousel-transition-${breakpoint}`]:
+									val,
+							})
+						}
+					/> */}
 						<AdvancedNumberControl
 							label={__('Transition speed (s)', 'maxi-blocks')}
 							min={0}

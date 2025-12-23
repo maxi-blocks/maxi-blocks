@@ -30,34 +30,34 @@ body.maxi-blocks--active {
 			flex-shrink: 0;
 		}
 
-		// Fade transition
-		&[data-transition='fade'] {
-			.maxi-row-carousel__wrapper {
-				position: relative;
+		// Fade transition (disabled)
+		// &[data-transition='fade'] {
+		// 	.maxi-row-carousel__wrapper {
+		// 		position: relative;
 
-				.maxi-column-block {
-					transition: opacity 0.5s ease, visibility 0.5s ease;
+		// 		.maxi-column-block {
+		// 			transition: opacity 0.5s ease, visibility 0.5s ease;
 
-					&:not([data-carousel-active='true']) {
-						opacity: 0;
-						visibility: hidden;
-						pointer-events: none;
-						position: absolute;
-						top: 0;
-						left: 0;
-						z-index: 0;
-					}
+		// 			&:not([data-carousel-active='true']) {
+		// 				opacity: 0;
+		// 				visibility: hidden;
+		// 				pointer-events: none;
+		// 			position: absolute;
+		// 			top: 0;
+		// 			left: 0;
+		// 			z-index: 0;
+		// 		}
 
-					&[data-carousel-active='true'] {
-						opacity: 1;
-						visibility: visible;
-						pointer-events: auto;
-						position: relative;
-						z-index: 1;
-					}
-				}
-			}
-		}
+		// 		&[data-carousel-active='true'] {
+		// 			opacity: 1;
+		// 			visibility: visible;
+		// 			pointer-events: auto;
+		// 			position: relative;
+		// 			z-index: 1;
+		// 		}
+		// 	}
+		// }
+		// }
 	}
 
 	// Navigation container - now a direct child of row block

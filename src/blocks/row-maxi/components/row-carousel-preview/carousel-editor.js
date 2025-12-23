@@ -917,10 +917,41 @@ class MaxiRowCarouselEditor {
 			this.lastBreakpoint = currentBP;
 
 			if (this.carouselActive) {
+				// Store old slides per view to check if it changed
+				const oldSlidesPerView = this.slidesPerView;
+
+				// Load new breakpoint settings
 				this.loadBreakpointSettings();
+
+				// If slides per view changed, we need to validate current position
+				if (oldSlidesPerView !== this.slidesPerView) {
+					// Ensure current column is valid for new slidesPerView
+					const maxColumn = this._columns.length - this.slidesPerView;
+					if (this.currentColumn > maxColumn) {
+						this.currentColumn = Math.max(0, maxColumn);
+					}
+				}
+
+				// Update transition attribute if it changed
+				this._container.setAttribute(
+					'data-transition',
+					this.transition
+				);
+
+				// Recalculate widths and positions
 				this.setColumnWidths();
 				this.columnAction();
+
+				// Update navigation
 				this.updateDots();
+				this.updateArrowStates();
+
+				// Update autoplay if needed
+				if (this.autoplay && !this.autoplayInterval) {
+					this.startAutoplay();
+				} else if (!this.autoplay && this.autoplayInterval) {
+					this.stopAutoplay();
+				}
 			}
 		}
 	}
@@ -933,9 +964,23 @@ class MaxiRowCarouselEditor {
 		this.lastBreakpoint = currentBP;
 
 		if (breakpointChanged && this.carouselActive) {
+			// Store old slides per view to check if it changed
+			const oldSlidesPerView = this.slidesPerView;
+
 			this.loadBreakpointSettings();
+
+			// If slides per view changed, validate current position
+			if (oldSlidesPerView !== this.slidesPerView) {
+				const maxColumn = this._columns.length - this.slidesPerView;
+				if (this.currentColumn > maxColumn) {
+					this.currentColumn = Math.max(0, maxColumn);
+				}
+			}
+
 			this.setColumnWidths();
 			this.columnAction();
+			this.updateDots();
+			this.updateArrowStates();
 		}
 
 		if (shouldBeActive && !this.carouselActive) {

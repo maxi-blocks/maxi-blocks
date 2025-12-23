@@ -297,7 +297,7 @@ $white: var(--mw);
 		font-weight: 800;
 		padding: 22px 22px 22px 20px;
 		border: 1px solid var(--mgl);
-		transition: all 0.1s;
+		transition: var(--maxi-trans-std);
 		border-radius: 30px;
 		display: flex;
 		align-items: center;

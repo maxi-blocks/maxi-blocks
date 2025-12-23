@@ -1,7 +1,7 @@
 @import './variables';
 
 body.toplevel_page_maxi-blocks-dashboard {
-	background-color: var(--maxi-admin-white) !important;
+	background-color: var(--ma-w) !important;
 	#wpfooter {
 		position: static;
 	}
@@ -23,14 +23,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 		padding-left: 0;
 		.maxi-dashboard_wrap {
 			// This is the black border around the edge of the dashboard
-			background-color: var(--maxi-admin-white);
-			border: 18px solid var(--maxi-admin-black);
+			background-color: var(--ma-w);
+			border: 18px solid var(--ma-b);
 			max-width: 1720px;
 			width: 95%;
 			margin: 30px auto 0;
 			border-radius: 25px;
 			& * {
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 			}
 		}
 	}
@@ -42,8 +42,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 		align-items: center;
 		border-top-left-radius: 25px;
 		border-top-right-radius: 25px;
-		border-bottom: 2px solid var(--maxi-admin-black);
-		background-color: var(--maxi-admin-white);
+		border-bottom: 2px solid var(--ma-b);
+		background-color: var(--ma-w);
 		padding: 4px 23px;
 
 		// Logo section
@@ -58,7 +58,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 			padding: 12px 39px 10px;
 			margin-top: 0;
 			border: none;
-			background: var(--maxi-admin-white);
+			background: var(--ma-w);
 			margin-right: auto;
 
 			.maxi-dashboard_nav-tab {
@@ -68,9 +68,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 				font-size: 20px;
 				margin: 0;
 				padding: 8px 16px;
-				color: var(--maxi-admin-black-text);
+				color: var(--ma-bt);
 				font-weight: 400;
-				transition: all 0.5s ease;
+				transition: var(--maxi-trans-std);
 				outline: none;
 				box-shadow: none;
 
@@ -79,13 +79,13 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 
 				&:hover {
-					color: var(--maxi-admin-pink-hover);
+					color: var(--ma-pih);
 					background: transparent;
 					border: none;
 				}
 
 				&.nav-tab-active {
-					color: var(--maxi-admin-black);
+					color: var(--ma-b);
 					font-weight: 700;
 				}
 			}
@@ -100,8 +100,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 			// Get Cloud button
 			.maxi-dashboard_get-cloud-link {
 				padding: 17px 33px;
-				background: var(--maxi-admin-purple-hover);
-				color: var(--maxi-admin-black);
+				background: var(--ma-ph);
+				color: var(--ma-b);
 				text-decoration: none;
 				border-radius: 26px;
 				font-size: 18px;
@@ -109,7 +109,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				transition: background 0.3s ease, transform 0.2s ease;
 
 				&:hover {
-					background: var(--maxi-admin-pink-hover) !important;
+					background: var(--ma-pih) !important;
 					transform: scale(1.035);
 				}
 			}
@@ -126,12 +126,12 @@ body.toplevel_page_maxi-blocks-dashboard {
 					justify-content: center;
 					width: 51px;
 					height: 51px;
-					background: var(--maxi-admin-light-grey);
+					background: var(--ma-lg);
 					border-radius: 100%;
 					transition: background-color 0.5s ease;
 
 					&:hover {
-						background: var(--maxi-admin-pink-hover) !important;
+						background: var(--ma-pih) !important;
 						transform: scale(1.035);
 					}
 
@@ -197,13 +197,13 @@ body.toplevel_page_maxi-blocks-dashboard {
 					h1 {
 						font-size: 50px !important;
 						font-weight: 700;
-						color: var(--maxi-admin-black);
+						color: var(--ma-b);
 						margin-bottom: 16px !important; // main title
 					}
 
 					p {
 						font-size: 20px !important;
-						color: var(--maxi-admin-black-text) !important;
+						color: var(--ma-bt) !important;
 						max-width: 510px;
 						margin: 0 auto !important; // subtext
 					}
@@ -219,7 +219,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					line-height: 160%;
 				}
 				h1 {
-					color: var(--maxi-admin-black);
+					color: var(--ma-b);
 					margin-bottom: 13px;
 				}
 				h3,
@@ -233,7 +233,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				p {
 					font-size: 14px;
-					color: var(--maxi-admin-black-text);
+					color: var(--ma-bt);
 					margin-bottom: 26px;
 					&:nth-child(7),
 					&:nth-child(3) {
@@ -242,7 +242,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				& > h3 {
 					padding-top: 19px;
-					border-top: 1px solid var(--maxi-admin-border-light);
+					border-top: 1px solid var(--ma-bl);
 					margin-bottom: 11px;
 					&:first-of-type {
 						margin-top: 52px;
@@ -250,16 +250,16 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				ol {
 					margin: 4px 0 17px 43px;
-					color: var(--maxi-admin-black-text);
+					color: var(--ma-bt);
 					li {
 						font-size: 16px;
 					}
 				}
 				a {
-					color: var(--maxi-admin-green);
+					color: var(--ma-gn);
 					transition: all 0.4s ease;
 					&:hover {
-						color: var(--maxi-admin-purple-hover);
+						color: var(--ma-ph);
 					}
 				}
 				&-start {
@@ -282,7 +282,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 					p {
 						font-size: 20px;
-						color: var(--maxi-admin-black-text);
+						color: var(--ma-bt);
 						margin-bottom: 0 !important;
 						max-width: 600px;
 						margin: 0 auto;
@@ -298,7 +298,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					h2 {
 						margin-bottom: 29px;
 						font-size: 20px;
-						color: var(--maxi-admin-black-text);
+						color: var(--ma-bt);
 						text-align: center;
 					}
 					p {
@@ -332,11 +332,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 						display: flex;
 						margin-top: 20px;
 						li {
-							color: var(--maxi-admin-black-text);
+							color: var(--ma-bt);
 							font-size: 14px;
 							font-weight: 400;
 							a {
-								color: var(--maxi-admin-black-text);
+								color: var(--ma-bt);
 							}
 							&:not(:last-child):after {
 								content: '|';
@@ -353,7 +353,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				width: 95%;
 				margin: 0 auto;
 				&_wrapper {
-					background-color: var(--maxi-admin-light-grey);
+					background-color: var(--ma-lg);
 					padding-top: clamp(1vw, 8vw, 3vw) !important;
 					padding-bottom: clamp(1vw, 8vw, 4vw) !important;
 				}
@@ -367,21 +367,21 @@ body.toplevel_page_maxi-blocks-dashboard {
 				h4 {
 					font-size: 16px;
 					font-weight: 700;
-					color: var(--maxi-admin-green);
+					color: var(--ma-gn);
 					margin: 0 0 10px;
 				}
 				p {
 					margin: 15px 0 10px;
 					font-size: 16px;
-					color: var(--maxi-admin-black-text);
+					color: var(--ma-bt);
 					&:last-child {
 						margin: 0;
 					}
 				}
 				&-item {
 					width: 100%;
-					background: var(--maxi-admin-white);
-					border: 2px solid var(--maxi-admin-border-light);
+					background: var(--ma-w);
+					border: 2px solid var(--ma-bl);
 					overflow: hidden;
 					margin-bottom: 15px;
 					border-radius: 10px;
@@ -393,14 +393,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 						margin-bottom: -1px;
 						font-weight: 700;
 						cursor: pointer;
-						background: var(--maxi-admin-white);
+						background: var(--ma-w);
 						border-radius: 8px;
 						transition: all 0.3s ease;
 
 						h3 {
 							font-size: 20px !important;
 							font-weight: 700;
-							color: var(--maxi-admin-black);
+							color: var(--ma-b);
 							margin: 0;
 						}
 
@@ -410,7 +410,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							height: 24px;
 							text-align: center;
 							transition: all 0.5s;
-							color: var(--maxi-admin-black);
+							color: var(--ma-b);
 							transform-origin: center;
 							font-size: 16px;
 							display: flex;
@@ -423,13 +423,13 @@ body.toplevel_page_maxi-blocks-dashboard {
 						display: none;
 
 						&-switcher__label {
-							color: var(--maxi-admin-black-text);
+							color: var(--ma-bt);
 						}
 
 						&-switcher__dropdown {
 							select {
 								border-radius: 10px;
-								border: 2px solid var(--maxi-admin-border-light) !important;
+								border: 2px solid var(--ma-bl) !important;
 								padding: clamp(4px, 1vw, 12px)
 									clamp(15px, 2vw, 25px) !important;
 								box-sizing: border-box;
@@ -454,16 +454,16 @@ body.toplevel_page_maxi-blocks-dashboard {
 							~ .maxi-dashboard_main-content_accordion-item-content {
 								display: block;
 								border-top-width: 3px;
-								border-color: var(--maxi-admin-border-light);
+								border-color: var(--ma-bl);
 								max-height: 10000vh;
 								padding: 25px 25px 20px 34px;
-								transition: all 0.5s ease-in-out;
+								transition: var(--maxi-trans-std)-in-out;
 							}
 						}
 					}
 
 					&-content {
-						border-top: 0px solid var(--maxi-admin-border-light);
+						border-top: 0px solid var(--ma-bl);
 						background: white;
 						max-height: 0;
 						padding: 0 24px;
@@ -474,7 +474,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							display: flex;
 							flex-wrap: wrap;
 							border-bottom: 3px dotted
-								var(--maxi-admin-border-light);
+								var(--ma-bl);
 							padding: 16px 0;
 
 							&:last-child {
@@ -494,13 +494,13 @@ body.toplevel_page_maxi-blocks-dashboard {
 							h4 {
 								font-size: 16px;
 								font-weight: 700;
-								color: var(--maxi-admin-green);
+								color: var(--ma-gn);
 								margin: 0 0 10px;
 							}
 
 							p {
 								font-size: 16px !important;
-								color: var(--maxi-admin-black-text) !important;
+								color: var(--ma-bt) !important;
 								line-height: 2 !important;
 								margin: 0 !important;
 							}
@@ -516,7 +516,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 								textarea {
 									border-radius: 10px;
 									border: 2px solid
-										var(--maxi-admin-border-light) !important;
+										var(--ma-bl) !important;
 									padding: 10px;
 									box-sizing: border-box;
 									width: clamp(70vw, 100vw, 45vw);
@@ -556,10 +556,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 									&:checked
 										~ .maxi-dashboard_main-content_accordion-item-content-switcher__toggle__thumb {
-										background-color: var(
-											--maxi-admin-green
-										);
-										border-color: var(--maxi-admin-green);
+										background-color: var(--ma-gn);
+										border-color: var(--ma-gn);
 										-webkit-transform: translateX(20px);
 										-ms-transform: translateX(20px);
 										transform: translateX(20px);
@@ -591,7 +589,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									box-sizing: border-box;
 									width: 18px;
 									height: 18px;
-									background-color: var(--maxi-admin-white);
+									background-color: var(--ma-w);
 									border: 1px solid var(--mgl);
 									border-radius: 50%;
 									transition: 0.1s transform ease;
@@ -605,7 +603,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							text-align: left;
 
 							.button-primary {
-								background: var(--maxi-admin-black);
+								background: var(--ma-b);
 								border: none;
 								border-radius: 26px;
 								padding: 9px 19px;
@@ -617,7 +615,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 									transform 0.2s ease;
 
 								&:hover {
-									background: var(--maxi-admin-pink-hover);
+									background: var(--ma-pih);
 								}
 							}
 						}
@@ -631,20 +629,20 @@ body.toplevel_page_maxi-blocks-dashboard {
 				.maxi-status-table {
 					padding: 20px !important;
 					border-collapse: collapse;
-					background-color: var(--maxi-admin-white);
+					background-color: var(--ma-w);
 
 					th {
-						background: var(--maxi-admin-black);
+						background: var(--ma-b);
 						padding: 12px;
 						text-align: left;
-						border-bottom: 1px solid var(--maxi-admin-border-light);
-						color: var(--maxi-admin-white);
+						border-bottom: 1px solid var(--ma-bl);
+						color: var(--ma-w);
 						padding: 20px;
 					}
 
 					td {
 						padding: 20px;
-						border-bottom: 1px solid var(--maxi-admin-border-light);
+						border-bottom: 1px solid var(--ma-bl);
 					}
 
 					.header-row td {
@@ -653,8 +651,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 
 					.status-ok span {
-						background: var(--maxi-admin-white);
-						color: var(--maxi-admin-green);
+						background: var(--ma-w);
+						color: var(--ma-gn);
 						padding: 0px;
 						font-size: 14px;
 						font-weight: 700;
@@ -664,7 +662,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&::before {
 							content: '\2713'; /* Unicode for check mark */
-							color: var(--maxi-admin-green);
+							color: var(--ma-gn);
 							margin-right: 8px;
 							margin-left: 12px;
 							font-size: 14px;
@@ -673,7 +671,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 					.status-warning span {
 						background: none !important;
-						color: var(--maxi-admin-orange);
+						color: var(--ma-o);
 						padding: 4px 8px;
 						border-radius: 3px;
 						font-size: 14px;
@@ -682,7 +680,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&::before {
 							content: '✖'; /* Unicode for cross mark */
-							color: var(--maxi-admin-orange);
+							color: var(--ma-o);
 							margin-right: 8px;
 						}
 					}
@@ -690,16 +688,14 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 				.wrapper {
 					padding: 50px; // Example padding for the wrapper
-					background-color: var(
-						--maxi-admin-light-grey
-					); // Optional background color
+					background-color: var(--ma-lg); // Optional background color
 				}
 			}
 		}
 		&-sidebar {
 			width: 100%;
 			.maxi-dashboard_main-sidebar-item {
-				background-color: var(--maxi-admin-white);
+				background-color: var(--ma-w);
 				padding: 20px 30px;
 				margin-bottom: 31px;
 				text-align: center;
@@ -708,7 +704,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				}
 				p {
 					font-size: 16px;
-					color: var(--maxi-admin-black-text);
+					color: var(--ma-bt);
 					font-weight: 700;
 					margin: 0;
 					line-height: 136%;
@@ -882,7 +878,7 @@ body.site-editor-php
 	.edit-site-add-new-template__template-button.components-button:has(.edit-site-add-new-template__template-name
 		span[data-wp-component='Text']:contains('maxi-image-type')) {
 	display: none !important;
-	background: var(--maxi-admin-light-orange);
+	background: var(--ma-lo);
 }
 
 .maxi-dashboard_setup-wizard-button {
@@ -891,8 +887,8 @@ body.site-editor-php
 	line-height: 20px;
 	margin: 0 20px;
 	padding: 12px 24px;
-	background-color: var(--maxi-admin-black);
-	color: var(--maxi-admin-white) !important;
+	background-color: var(--ma-b);
+	color: var(--ma-w) !important;
 	text-decoration: none;
 	border-radius: 26px;
 	font-weight: 500;
@@ -900,16 +896,16 @@ body.site-editor-php
 }
 
 .maxi-dashboard_setup-wizard-button:hover {
-	background-color: var(--maxi-admin-black-text);
-	color: var(--maxi-admin-white);
+	background-color: var(--ma-bt);
+	color: var(--ma-w);
 	transition: all 0.4s ease;
 }
 
 .maxi-dashboard_setup-wizard-button:focus {
 	outline: none;
-	box-shadow: 0 0 0 2px var(--maxi-admin-white),
-		0 0 0 4px var(--maxi-admin-black);
-	color: var(--maxi-admin-white);
+	box-shadow: 0 0 0 2px var(--ma-w),
+		0 0 0 4px var(--ma-b);
+	color: var(--ma-w);
 }
 
 .maxi-dashboard_main-content-start {
@@ -926,7 +922,7 @@ body.site-editor-php
 
 		p {
 			font-size: 16px;
-			color: var(--maxi-admin-black-text);
+			color: var(--ma-bt);
 			margin-bottom: 10px;
 
 			&:last-of-type {
@@ -951,27 +947,27 @@ body.site-editor-php
 
 				// Universal hover for all .button variants
 				&:hover {
-					background: var(--maxi-admin-green) !important;
-					transition: all 0.5s ease;
+					background: var(--ma-gn) !important;
+					transition: var(--maxi-trans-std);
 				}
 
 				&.quick-start {
-					background: var(--maxi-admin-black);
-					color: var(--maxi-admin-white);
+					background: var(--ma-b);
+					color: var(--ma-w);
 					border: none;
 				}
 
 				&.create-new {
-					background: var(--maxi-admin-black);
-					color: var(--maxi-admin-white);
+					background: var(--ma-b);
+					color: var(--ma-w);
 					border: none;
 					padding: 5px 25px;
 					transition: background 0.1s ease, transform 0.3s ease;
-					transition: all 0.5s ease;
+					transition: var(--maxi-trans-std);
 
 					&:hover {
-						background: var(--maxi-admin-light-orange) !important;
-						transition: all 0.5s ease;
+						background: var(--ma-lo) !important;
+						transition: var(--maxi-trans-std);
 					}
 				}
 			}
@@ -1000,7 +996,7 @@ body.site-editor-php
 
 		p {
 			font-size: 16px !important;
-			color: var(--maxi-admin-black-text);
+			color: var(--ma-bt);
 			margin-bottom: 50px;
 		}
 
@@ -1019,7 +1015,7 @@ body.site-editor-php
 				position: relative;
 				z-index: 2;
 				transition: border 0.3s ease;
-				border: 2px solid var(--maxi-admin-border-light);
+				border: 2px solid var(--ma-bl);
 				border-radius: 20px;
 				padding: 20px;
 				text-decoration: none;
@@ -1028,7 +1024,7 @@ body.site-editor-php
 				}
 
 				&:hover {
-					border: 2px solid var(--maxi-admin-green);
+					border: 2px solid var(--ma-gn);
 					& > * {
 						opacity: 0.7;
 						transition: opacity 0.3s ease;
@@ -1037,11 +1033,11 @@ body.site-editor-php
 
 				.video-thumbnail {
 					aspect-ratio: 16/9;
-					background: var(--maxi-admin-light-grey);
+					background: var(--ma-lg);
 					margin-bottom: 28px;
 					overflow: hidden;
 					transition: transform 0.2s ease, border 0.3s ease;
-					border: 2px solid var(--maxi-admin-border-light);
+					border: 2px solid var(--ma-bl);
 
 					img {
 						width: 100%;
@@ -1069,20 +1065,20 @@ body.site-editor-php
 			.button {
 				padding: 6px 30px;
 				font-size: 18px;
-				background: var(--maxi-admin-black);
-				color: var(--maxi-admin-white);
+				background: var(--ma-b);
+				color: var(--ma-w);
 				border: none;
 				border-radius: 27px;
 				font-weight: 700;
 				box-shadow: none;
 				overflow: hidden;
 				transition: background 0.3s ease, transform 0.2s ease;
-				transition: all 0.5s ease;
+				transition: var(--maxi-trans-std);
 
 				&:hover {
-					background: var(--maxi-admin-green) !important;
-					color: var(--maxi-admin-white);
-					transition: all 0.5s ease;
+					background: var(--ma-gn) !important;
+					color: var(--ma-w);
+					transition: var(--maxi-trans-std);
 				}
 			}
 		}
@@ -1098,7 +1094,7 @@ body.site-editor-php
 			text-align: center;
 			padding: 75px 40px 58px;
 			border-radius: 30px;
-			background-color: var(--maxi-admin-light-grey);
+			background-color: var(--ma-lg);
 
 			.cta-icon {
 				max-width: 100px;
@@ -1113,7 +1109,7 @@ body.site-editor-php
 
 			p {
 				font-size: 18px !important;
-				color: var(--maxi-admin-black-text) !important;
+				color: var(--ma-bt) !important;
 				font-size: 18px !important;
 				line-height: 27px !important;
 			}
@@ -1122,8 +1118,8 @@ body.site-editor-php
 				padding: 5px 40px;
 				font-size: 18px;
 				font-weight: 700;
-				background: var(--maxi-admin-black);
-				color: var(--maxi-admin-white);
+				background: var(--ma-b);
+				color: var(--ma-w);
 				border: none;
 				border-radius: 26px;
 				text-decoration: none;
@@ -1133,7 +1129,7 @@ body.site-editor-php
 
 				&:hover {
 					background: var(--mpc) !important;
-					color: var(--maxi-admin-white);
+					color: var(--ma-w);
 				}
 			}
 			&:nth-child(2) {
@@ -1449,11 +1445,11 @@ body.site-editor-php
 		h4 {
 			margin: 8px 0;
 			font-size: 16px;
-			color: var(--maxi-admin-black-text);
+			color: var(--ma-bt);
 
 			span {
 				font-weight: 600;
-				color: var(--maxi-admin-black);
+				color: var(--ma-b);
 			}
 		}
 	}
@@ -1467,12 +1463,12 @@ body.site-editor-php
 			margin: 0 0 8px 0;
 			font-size: 16px;
 			font-weight: 600;
-			color: var(--maxi-admin-black);
+			color: var(--ma-b);
 		}
 
 		p {
 			margin: 0 0 16px 0;
-			color: var(--maxi-admin-black-text);
+			color: var(--ma-bt);
 		}
 	}
 
@@ -1493,9 +1489,9 @@ body.site-editor-php
 			width: 100%;
 
 			&:focus {
-				border-color: var(--maxi-admin-purple-hover);
+				border-color: var(--ma-ph);
 				outline: none;
-				box-shadow: 0 0 0 1px var(--maxi-admin-purple-hover);
+				box-shadow: 0 0 0 1px var(--ma-ph);
 			}
 		}
 	}
@@ -1522,7 +1518,7 @@ body.site-editor-php
 	}
 
 	button.button-primary {
-		background: var(--maxi-admin-black);
+		background: var(--ma-b);
 		border: none;
 		border-radius: 26px;
 		padding: 9px 19px;
@@ -1538,12 +1534,12 @@ body.site-editor-php
 		}
 
 		&:hover {
-			background: var(--maxi-admin-pink-hover);
+			background: var(--ma-pih);
 		}
 	}
 	input {
 		border-radius: 10px;
-		border: 2px solid var(--maxi-admin-border-light) !important;
+		border: 2px solid var(--ma-bl) !important;
 		padding: 10px;
 		box-sizing: border-box;
 		width: clamp(70vw, 100vw, 45vw);
@@ -1617,26 +1613,26 @@ p.maxi-license-help-text {
 		label {
 			font-weight: 600;
 			font-size: 13px;
-			color: var(--maxi-admin-black);
+			color: var(--ma-b);
 		}
 
 		input[type='text'] {
 			width: 100%;
 			max-width: 400px;
 			padding: 8px 12px;
-			border: 1px solid var(--maxi-admin-grey);
+			border: 1px solid var(--ma-g);
 			border-radius: 4px;
 			font-size: 14px;
 			transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
 			&:focus {
-				border-color: var(--maxi-admin-green);
-				box-shadow: 0 0 0 1px var(--maxi-admin-green);
+				border-color: var(--ma-gn);
+				box-shadow: 0 0 0 1px var(--ma-gn);
 				outline: none;
 			}
 
 			&::placeholder {
-				color: var(--maxi-admin-grey);
+				color: var(--ma-g);
 			}
 		}
 
@@ -1648,16 +1644,16 @@ p.maxi-license-help-text {
 			&::file-selector-button {
 				padding: 6px 12px;
 				margin-right: 12px;
-				background: var(--maxi-admin-light-grey);
-				border: 1px solid var(--maxi-admin-grey);
+				background: var(--ma-lg);
+				border: 1px solid var(--ma-g);
 				border-radius: 4px;
 				font-size: 13px;
 				cursor: pointer;
 				transition: background 0.15s ease, border-color 0.15s ease;
 
 				&:hover {
-					background: var(--maxi-admin-mint-hover);
-					border-color: var(--maxi-admin-black-hover);
+					background: var(--ma-mh);
+					border-color: var(--ma-bh);
 				}
 			}
 		}
@@ -1665,7 +1661,7 @@ p.maxi-license-help-text {
 		.description {
 			margin: 4px 0 0;
 			font-size: 12px;
-			color: var(--maxi-admin-grey);
+			color: var(--ma-g);
 		}
 	}
 
@@ -1679,21 +1675,21 @@ p.maxi-license-help-text {
 		margin-top: 5px;
 
 		.button-primary {
-			color: var(--maxi-admin-white) !important;
+			color: var(--ma-w) !important;
 			margin-bottom: 10px;
 		}
 	}
 
 	.maxi-custom-fonts-list {
-		border: 1px solid var(--maxi-admin-border-light);
+		border: 1px solid var(--ma-bl);
 		border-radius: 8px;
 		overflow: hidden;
 
 		thead {
-			background-color: var(--maxi-admin-green);
+			background-color: var(--ma-gn);
 
 			th {
-				color: var(--maxi-admin-white);
+				color: var(--ma-w);
 				font-weight: 600;
 				padding: 12px 15px;
 				border: none;
@@ -1703,22 +1699,22 @@ p.maxi-license-help-text {
 		tbody {
 			tr {
 				&:nth-child(odd) {
-					background-color: var(--maxi-admin-light-grey);
+					background-color: var(--ma-lg);
 				}
 
 				&:nth-child(even) {
-					background-color: var(--maxi-admin-white);
+					background-color: var(--ma-w);
 				}
 
 				&:hover {
-					background-color: var(--maxi-admin-mint-hover);
+					background-color: var(--ma-mh);
 				}
 
 				td {
 					padding: 10px 15px;
 					border: none;
-					border-bottom: 1px solid var(--maxi-admin-border-light);
-					color: var(--maxi-admin-black);
+					border-bottom: 1px solid var(--ma-bl);
+					color: var(--ma-b);
 				}
 			}
 		}
@@ -1728,25 +1724,25 @@ p.maxi-license-help-text {
 		font-weight: 500;
 
 		&.is-success {
-			color: var(--maxi-admin-green);
+			color: var(--ma-gn);
 		}
 
 		&.is-error {
-			color: var(--maxi-admin-orange-hover);
+			color: var(--ma-oh);
 		}
 
 		&.is-loading {
-			color: var(--maxi-admin-green);
+			color: var(--ma-gn);
 		}
 	}
 
 	.maxi-custom-fonts-empty {
-		color: var(--maxi-admin-grey);
+		color: var(--ma-g);
 		font-style: italic;
 		margin: 0;
 		padding: 16px;
-		background: var(--maxi-admin-white);
-		border: 1px dashed var(--maxi-admin-grey);
+		background: var(--ma-w);
+		border: 1px dashed var(--ma-g);
 		border-radius: 6px;
 		text-align: center;
 	}
@@ -1759,8 +1755,8 @@ p.maxi-license-help-text {
 		width: 100%;
 
 		thead th {
-			background: var(--maxi-admin-green);
-			color: var(--maxi-admin-white);
+			background: var(--ma-gn);
+			color: var(--ma-w);
 			font-weight: 600;
 			font-size: 13px;
 			padding: 10px 12px;
@@ -1807,7 +1803,7 @@ p.maxi-license-help-text {
 		}
 
 		.button-link-delete {
-			color: var(--maxi-admin-orange-hover);
+			color: var(--ma-oh);
 			text-decoration: none;
 			cursor: pointer;
 			background: none;
@@ -1817,11 +1813,11 @@ p.maxi-license-help-text {
 			transition: color 0.15s ease;
 
 			&:hover {
-				color: var(--maxi-admin-orange);
+				color: var(--ma-o);
 			}
 
 			&:disabled {
-				color: var(--maxi-admin-grey);
+				color: var(--ma-g);
 				cursor: not-allowed;
 			}
 		}

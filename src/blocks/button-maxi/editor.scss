@@ -11,7 +11,7 @@ body.maxi-blocks--active .maxi-sidebar {
 			border: 1.5px solid var(--mgl);
 			border-radius: 10px;
 			margin-bottom: 10px;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 
 			&:focus {
 				background: var(--mg);

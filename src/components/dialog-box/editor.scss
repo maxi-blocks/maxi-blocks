@@ -71,7 +71,7 @@
 	height: calc(100% - 50px);
 	padding: 10px 0;
 	color: var(--mb);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	font-size: 12px;
 	text-align: center;
 }
@@ -85,9 +85,9 @@
 		border: 1.5px solid var(--mgl) !important;
 		border-radius: 5px !important;
 		color: var(--mb);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: var(--maxi-font-sans) !important;
 		font-size: 12px;
-		transition: all 0.1s;
+		transition: var(--maxi-trans-std);
 
 		&:hover {
 			background-color: rgba(var(--maxi-active-sc-color), 1);

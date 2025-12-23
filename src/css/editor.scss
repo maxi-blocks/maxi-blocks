@@ -52,9 +52,9 @@ h2.gx_error {
 		*):not([class*='maxi-transform-control']):not([class*='maxi-transform-control']
 		*):not(.w-tc-editor-text):not(.maxi-css-code-editor__code-editor *),
 .maxi-popover *:not(i) {
-	transition: all 0.5s ease;
+	transition: var(--maxi-trans-std);
 	color: var(--mdg);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -63,7 +63,7 @@ h2.gx_error {
 
 .maxi-sidebar .block-editor-block-card *:not(i) {
 	color: var(--mdg);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	font-weight: normal;
 	.block-editor-block-card__name {
 		padding: 0 !important;
@@ -75,14 +75,14 @@ h2.gx_error {
 }
 
 .block-editor-inserter {
-	transition: all 0.5s ease;
+	transition: var(--maxi-trans-std);
 	color: var(--mw) !important;
 	height: 100%;
 
 	&__toggle {
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 		svg {
-			transition: all 0.5s ease;
+			transition: var(--maxi-trans-std);
 			fill: var(--mw) !important;
 		}
 	}
@@ -125,16 +125,16 @@ body {
 	}
 }
 .maxi-block {
-	transition: all 0.5s ease;
+	transition: var(--maxi-trans-std);
 
 	.block-editor-block-list__layout {
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 		&:focus:after {
 			box-shadow: none !important;
 		}
 	}
 	&:hover {
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 		& > .block-editor-block-list__layout {
 			& > .block-list-appender {
 				.block-editor-button-block-appender {
@@ -247,7 +247,7 @@ body .toolbar-item__popover {
 	input[type='number'],
 	textarea:not(.w-tc-editor-text),
 	select {
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 		flex: 1;
 		max-height: unset !important;
 		min-height: unset;
@@ -294,7 +294,7 @@ body .toolbar-item__popover {
 			color: var(--mdg);
 		}
 		&:hover {
-			transition: all 0.5s ease;
+			transition: var(--maxi-trans-std);
 			&:before {
 				content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5" role="img" aria-hidden="true" focusable="false"><path fill="rgba(99,186,121, 0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"></path></svg>') !important;
 			}
@@ -430,7 +430,7 @@ svg path#styleCardBoat_b,
 
 .maxi-block {
 	&::after {
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 		content: '';
 		position: absolute;
 		pointer-events: none;
@@ -454,7 +454,7 @@ svg path#styleCardBoat_b,
 
 	&:not(.is-selected) {
 		&:hover {
-			transition: all 0.5s ease;
+			transition: var(--maxi-trans-std);
 			&::after {
 				opacity: 1;
 			}
@@ -592,7 +592,7 @@ html[dir='rtl'] {
 	border-radius: 0;
 	background: var(--mw);
 	visibility: visible;
-	transition: all 0.4s ease;
+	transition: var(--maxi-trans-std);
 	svg {
 		width: 15px;
 		height: 15px;
@@ -741,7 +741,7 @@ body.maxi-blocks--active
 
 // Reset button
 .maxi-components-button.maxi-reset-button {
-	transition: all 0.3s ease;
+	transition: var(--maxi-trans-std);
 	width: 9px !important;
 	height: 31px !important;
 	padding: 0 !important;
@@ -781,7 +781,7 @@ body {
 	.maxi-settingstab-control {
 		button,
 		input {
-			transition: all 0.3s ease;
+			transition: var(--maxi-trans-std);
 		}
 	}
 }

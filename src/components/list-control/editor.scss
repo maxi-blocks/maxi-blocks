@@ -20,7 +20,7 @@
 		border: 1px solid var(--msc);
 		z-index: 0;
 		border-radius: 5px !important;
-		transition: all 0.4s ease; // Added transition
+		transition: var(--maxi-trans-std); // Added transition
 
 		&:hover {
 			background-color: var(--mwg) !important;
@@ -106,7 +106,7 @@
 		width: 100%;
 		margin: 0;
 		border-radius: 5px;
-		transition: all 0.4s ease;
+		transition: var(--maxi-trans-std);
 		cursor: pointer;
 		padding-right: 5px;
 		background-color: var(--mw);

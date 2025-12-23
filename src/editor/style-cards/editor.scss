@@ -165,7 +165,7 @@ body .maxi-style-cards__popover {
 		background-color: var(--mwg) !important;
 		opacity: 1;
 		color: var(--mpc) !important;
-		transition: all 0.3s ease !important;
+		transition: var(--maxi-trans-std) !important;
 	}
 
 	.maxi-accordion-control__item {
@@ -251,7 +251,7 @@ body .maxi-style-cards__popover {
 			border-radius: 50% !important;
 			background-color: var(--mw);
 			cursor: pointer;
-			transition: all 0.2s;
+			transition: var(--maxi-trans-std);
 			align-items: center;
 			justify-content: center;
 			cursor: pointer;
@@ -288,7 +288,7 @@ body .maxi-style-cards__popover {
 			border-radius: 50% !important;
 			background-color: #fff;
 			cursor: pointer;
-			transition: all 0.2s;
+			transition: var(--maxi-trans-std);
 			align-items: center;
 			justify-content: center;
 
@@ -318,7 +318,7 @@ body .maxi-style-cards__popover {
 			border-radius: 50% !important;
 			background-color: #fff;
 			cursor: pointer;
-			transition: all 0.2s;
+			transition: var(--maxi-trans-std);
 			align-items: center;
 			justify-content: center;
 			font-size: 18px;
@@ -351,7 +351,7 @@ body .maxi-style-cards__popover {
 			color: var(--mdg);
 			border: 1px solid var(--mg) !important;
 			background-color: var(--mw);
-			transition: all 0.5s ease;
+			transition: var(--maxi-trans-std);
 
 			&:hover {
 				color: var(--mw) !important;
@@ -361,7 +361,7 @@ body .maxi-style-cards__popover {
 		}
 		.maxi-style-cards__custom-color-presets__box:hover {
 			.maxi-style-cards__custom-color-presets__remove-button {
-				transition: all 0.5s ease;
+				transition: var(--maxi-trans-std);
 				display: flex;
 			}
 		}
@@ -410,7 +410,7 @@ body .maxi-style-cards__popover {
 			display: flex;
 			justify-content: center;
 			border-radius: 50%;
-			transition: all 0.3s;
+			transition: var(--maxi-trans-std);
 			justify-content: space-around;
 
 			&:hover:not(:disabled) {
@@ -426,7 +426,7 @@ body .maxi-style-cards__popover {
 			width: 14px;
 			height: 14px;
 			fill: var(--mg);
-			transition: all 0.3s;
+			transition: var(--maxi-trans-std);
 		}
 	}
 	hr {
@@ -470,7 +470,7 @@ body .maxi-style-cards__popover {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				transition: all 0.5s;
+				transition: var(--maxi-trans-std);
 				border: 1.5px solid var(--mgl);
 				border-radius: 20px;
 				padding: 8px;
@@ -564,7 +564,7 @@ body .maxi-style-cards__popover {
 
 				svg {
 					width: 15px;
-					transition: all 0.3s;
+					transition: var(--maxi-trans-std);
 				}
 
 				&:hover svg {

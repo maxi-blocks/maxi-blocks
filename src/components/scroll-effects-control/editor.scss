@@ -178,7 +178,7 @@
 				font-weight: bolder !important;
 				user-select: none;
 				cursor: pointer;
-				transition: all 0.3s ease;
+				transition: var(--maxi-trans-std);
 				border: 1px solid transparent;
 				padding-bottom: 5px !important;
 
@@ -222,7 +222,7 @@
 	}
 	.components-button {
 		box-shadow: none;
-		transition: all 0.5s;
+		transition: var(--maxi-trans-std);
 
 		&:hover:enabled {
 			// background-color: var(--mpg);

@@ -15,7 +15,7 @@
 						border: 1px solid var(--mgl);
 						border-radius: 4px;
 						padding: 6px 3px;
-						transition: all 0.5s;
+						transition: var(--maxi-trans-std);
 
 						svg {
 							width: 18px;
@@ -57,7 +57,7 @@
 				border: 1px solid var(--mgl);
 				border-radius: 4px;
 				padding: 6px 3px;
-				transition: all 0.5s;
+				transition: var(--maxi-trans-std);
 				svg {
 					width: 18px;
 					height: 18px;

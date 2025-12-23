@@ -7,7 +7,7 @@
 				margin-right: 5px;
 				border-radius: 4px;
 				border: 1.5px solid var(--mgl);
-				transition: all 0.4s ease !important;
+				transition: var(--maxi-trans-std) !important;
 				&:hover {
 					background-color: var(--mwg);
 					border-color: var(--mpc) !important;

@@ -15,7 +15,7 @@
 		padding: 10px 7px;
 		justify-content: center;
 		min-height: 45px;
-		transition: all 0.5s;
+		transition: var(--maxi-trans-std);
 		overflow: hidden;
 
 		svg {

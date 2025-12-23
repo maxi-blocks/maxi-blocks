@@ -34,7 +34,7 @@
 		background: var(--mpc) !important;
 		box-shadow: none;
 		border-radius: 0;
-		transition: all 0.4s ease !important;
+		transition: var(--maxi-trans-std) !important;
 
 		&--repeater {
 			background: var(--mtc) !important;
@@ -73,7 +73,7 @@
 					box-shadow: none !important;
 					text-align: left;
 					text-transform: capitalize;
-					transition: all 0.4s ease;
+					transition: var(--maxi-trans-std);
 					&::after,
 					&::before {
 						content: '';
@@ -89,7 +89,7 @@
 						width: 0;
 						margin: auto;
 						background-color: var(--msc);
-						transition: all 0.4s ease;
+						transition: var(--maxi-trans-std);
 					}
 					&:hover {
 						background-color: var(--mwg);
@@ -169,7 +169,7 @@
 			width: 0;
 			height: 5px;
 			background-color: var(--mpc);
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 		}
 
 		&:hover:before {
@@ -200,7 +200,7 @@
 			opacity: 0;
 			height: 10px;
 			cursor: pointer;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 
 			&::before {
 				content: '';

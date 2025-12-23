@@ -43,7 +43,7 @@ body.maxi-blocks--active {
 	}
 	.maxi-select-control__input {
 		padding-left: 12px !important;
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 	}
 	// Consolidate hover rule to avoid empty ruleset warning
 	.maxi-select-control__input:hover,

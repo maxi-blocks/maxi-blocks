@@ -16,7 +16,7 @@
 	*,
 	*:before,
 	*:after {
-		transition: all 0.4s ease;
+		transition: var(--maxi-trans-std);
 	}
 
 	&-caption,
@@ -235,7 +235,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: var(--maxi-trans-std);
 					border-radius: 0;
 					background-color: transparent;
 					fill: var(--mb) !important;
@@ -249,7 +249,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: var(--maxi-trans-std);
 					}
 
 					&:hover,
@@ -281,7 +281,7 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: var(--maxi-trans-std);
 					border-radius: 0;
 
 					&::after {
@@ -293,7 +293,7 @@
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: var(--maxi-trans-std);
 					}
 
 					&:hover,
@@ -345,7 +345,7 @@
 					rect,
 					polyline,
 					path {
-						transition: all 0.5s ease;
+						transition: var(--maxi-trans-std);
 						// fill: var(--mb);
 						// stroke: transparent;
 					}
@@ -369,7 +369,7 @@
 
 		&:hover {
 			color: var(--mpc) !important;
-			transition: all 0.4s ease !important;
+			transition: var(--maxi-trans-std) !important;
 		}
 	}
 	.maxi-responsive-tabs-control {
@@ -836,7 +836,7 @@ html[dir='rtl'] {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	transition: all 0.5s ease;
+	transition: var(--maxi-trans-std);
 	border-radius: 0;
 	background-color: transparent;
 	fill: var(--mb) !important;

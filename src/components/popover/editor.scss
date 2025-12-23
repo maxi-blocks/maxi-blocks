@@ -37,7 +37,7 @@ $grid-unit-20: 20px;
 	box-sizing: border-box;
 	width: min-content;
 	position: relative !important;
-	transition: all 0.4s ease;
+	transition: var(--maxi-trans-std);
 
 	&:hover {
 		background-color: var(--mpg);

@@ -55,7 +55,7 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			border-radius: 4px !important;
 			background-color: var(--mwg);
 			text-align: center;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 			cursor: pointer;
 
 			&:hover {

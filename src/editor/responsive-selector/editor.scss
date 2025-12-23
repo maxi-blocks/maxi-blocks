@@ -30,7 +30,7 @@
 			letter-spacing: 0px;
 			border-right: 1px solid var(--mgl);
 			border-radius: 0;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 			margin-left: 0;
 			box-shadow: none !important;
 			height: 40px;
@@ -153,7 +153,7 @@
 
 			.responsive-button-tooltip {
 				opacity: 0;
-				transition: all 0.2s;
+				transition: var(--maxi-trans-std);
 				font-weight: bold !important;
 				position: absolute;
 				height: 100%;
@@ -168,7 +168,7 @@
 			svg {
 				display: block;
 				margin: 0 auto;
-				transition: all 0.2s;
+				transition: var(--maxi-trans-std);
 			}
 			&:hover {
 				color: var(--mb);
@@ -217,7 +217,7 @@
 			&:hover {
 				background-color: var(--mw);
 				color: var(--mb) !important;
-				transition: all 0.4s ease !important;
+				transition: var(--maxi-trans-std) !important;
 				&::after {
 					background-color: var(--mdg);
 				}
@@ -226,7 +226,7 @@
 				box-shadow: none !important;
 			}
 			.maxi-tabs-control__notification {
-				transition: all 0.5s ease;
+				transition: var(--maxi-trans-std);
 				position: absolute;
 				z-index: 8;
 				top: 0;

@@ -7,7 +7,7 @@ $border-light: 1px solid var(--mgl);
 	min-height: 90%;
 	max-width: 90%;
 	overflow-y: auto;
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	font-family: var(--maxi-font-sans);
 	font-weight: 600;
 	transition: transform 0.3s ease;
 
@@ -41,7 +41,7 @@ $border-light: 1px solid var(--mgl);
 			flex: 5;
 			display: flex;
 			align-items: center;
-			transition: all 0.4s ease; // Add transition
+			transition: var(--maxi-trans-std); // Add transition
 
 			// Add button hover styles
 			.maxi-cloud-masonry-card__button {
@@ -58,7 +58,7 @@ $border-light: 1px solid var(--mgl);
 				background: var(--mwg);
 				border: 1.5px solid var(--mmg);
 				color: var(--mb);
-				transition: all 0.3s ease;
+				transition: var(--maxi-trans-std);
 				display: flex; // Simplified from separate align/justify
 				justify-content: center;
 				align-items: center;
@@ -80,7 +80,7 @@ $border-light: 1px solid var(--mgl);
 				border: 2px solid var(--mgl);
 				border-radius: 5px;
 				cursor: pointer;
-				transition: all 0.4s ease; // Add transition
+				transition: var(--maxi-trans-std); // Add transition
 
 				// States
 				&--active,
@@ -213,7 +213,7 @@ $border-light: 1px solid var(--mgl);
 				padding: 8px 6px 4px;
 				cursor: pointer;
 				outline: none;
-				transition: all 0.4s ease; // Add transition
+				transition: var(--maxi-trans-std); // Add transition
 				&_active {
 					svg {
 						path {
@@ -240,7 +240,7 @@ $border-light: 1px solid var(--mgl);
 					height: 16px;
 				}
 				span {
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: var(--maxi-font-sans) !important;
 					font-size: 9px;
 					line-height: 100%;
 				}
@@ -265,7 +265,7 @@ $border-light: 1px solid var(--mgl);
 				align-items: center;
 				column-gap: 17px;
 				width: 33.33%;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				h2 {
 					color: var(--mdg);
 					font-size: 16px;
@@ -363,7 +363,7 @@ $border-light: 1px solid var(--mgl);
 				font-weight: bold;
 				color: var(--mw);
 				text-decoration: none;
-				transition: all 0.4s ease; // Add transition
+				transition: var(--maxi-trans-std); // Add transition
 
 				&::before {
 					content: '×';
@@ -458,11 +458,11 @@ $border-light: 1px solid var(--mgl);
 			padding: 0;
 			background-color: transparent;
 			color: var(--mcp);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			text-decoration: none;
 			font-size: 14px;
 			cursor: pointer;
-			transition: all 0.4s ease; // Add transition
+			transition: var(--maxi-trans-std); // Add transition
 
 			svg {
 				width: 12px;
@@ -476,7 +476,7 @@ $border-light: 1px solid var(--mgl);
 				path {
 					fill: var(--mcp);
 					stroke: var(--mw);
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 				}
 			}
 
@@ -493,7 +493,7 @@ $border-light: 1px solid var(--mgl);
 
 		&__logo {
 			display: flex;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			font-size: 18px;
 			word-spacing: 0;
 			text-decoration: none;
@@ -516,7 +516,7 @@ $border-light: 1px solid var(--mgl);
 		height: 100%;
 		margin: 0;
 		overflow: hidden;
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+		font-family: var(--maxi-font-sans);
 
 		.use-placeholder-all-images,
 		.use-sc-styles {
@@ -591,10 +591,10 @@ $border-light: 1px solid var(--mgl);
 			background-color: var(--mcp-w);
 			color: var(--mdg);
 			font-size: 14px;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			font-family: var(--maxi-font-sans);
 			font-weight: 400;
 			cursor: pointer;
-			transition: all 0.4s ease; // Add transition
+			transition: var(--maxi-trans-std); // Add transition
 			outline: 0;
 
 			&:not(&--disabled):hover {
@@ -650,7 +650,7 @@ $border-light: 1px solid var(--mgl);
 			background-color: var(--mw);
 			border-top: 1px solid var(--mgl);
 			border-bottom: 1px solid var(--mgl);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			font-family: var(--maxi-font-sans);
 
 			&__title {
 				position: relative;
@@ -676,7 +676,7 @@ $border-light: 1px solid var(--mgl);
 					right: 12px;
 					transform: translateY(-50%) rotate(0);
 					transform-origin: center;
-					transition: all 0.4s ease; // Add transition
+					transition: var(--maxi-trans-std); // Add transition
 				}
 			}
 
@@ -701,7 +701,7 @@ $border-light: 1px solid var(--mgl);
 							text-decoration: none;
 							color: var(--mdg);
 							font-weight: bold;
-							transition: all 0.4s ease; // Add transition
+							transition: var(--maxi-trans-std); // Add transition
 
 							.ais-HierarchicalMenu-count,
 							.ais-Menu-count {
@@ -751,8 +751,7 @@ $border-light: 1px solid var(--mgl);
 						width: auto;
 						color: var(--mb);
 						background-color: var(--mw);
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						font-family: var(--maxi-font-sans);
 						font-size: 12px;
 						font-weight: normal;
 						border: 1px solid var(--mgl);
@@ -777,7 +776,7 @@ $border-light: 1px solid var(--mgl);
 							bottom: -1px;
 							background-color: var(--mcp-l);
 							z-index: -1;
-							transition: all 0.4s ease; // Add transition
+							transition: var(--maxi-trans-std); // Add transition
 							opacity: 0;
 							border-radius: inherit; /* Add border radius to match parent */
 						}
@@ -866,7 +865,7 @@ $border-light: 1px solid var(--mgl);
 							color: var(--mw);
 							font-weight: bold;
 							border: none;
-							transition: all 0.4s ease; // Add transition
+							transition: var(--maxi-trans-std); // Add transition
 							top: 0;
 							right: 0;
 							height: 100%;
@@ -917,7 +916,7 @@ $border-light: 1px solid var(--mgl);
 					.maxi-cloud-masonry-card {
 						position: relative;
 						z-index: 1;
-						transition: all 0.4s ease; // Add transition
+						transition: var(--maxi-trans-std); // Add transition
 						padding: 12px 12px 20px 12px;
 						height: 100%;
 						overflow: hidden;
@@ -936,17 +935,16 @@ $border-light: 1px solid var(--mgl);
 							align-items: center;
 							flex-direction: column;
 							cursor: pointer;
-							transition: all 0.4s ease !important;
+							transition: var(--maxi-trans-std) !important;
 							transform: translateY(19px);
 
 							&__title {
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: var(--maxi-font-sans);
 								font-weight: 800;
 								text-align: center;
 								font-size: 12px;
 								margin-bottom: 4px;
-								transition: all 0.4s ease; // Add transition
+								transition: var(--maxi-trans-std); // Add transition
 							}
 
 							&__code {
@@ -961,7 +959,7 @@ $border-light: 1px solid var(--mgl);
 							&:hover {
 								span {
 									opacity: 1;
-									transition: all 0.4s ease !important;
+									transition: var(--maxi-trans-std) !important;
 									color: var(--mw);
 									background-color: var(--mb);
 
@@ -975,12 +973,11 @@ $border-light: 1px solid var(--mgl);
 								border: 1.5px solid var(--mb);
 								border-radius: 20px;
 								color: var(--mdg);
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: var(--maxi-font-sans);
 								font-weight: 600;
 								line-height: 100%;
 								padding: 8px 35px;
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 								opacity: 0;
 								margin-top: -5px;
 								margin-bottom: -5px;
@@ -989,7 +986,7 @@ $border-light: 1px solid var(--mgl);
 									content: '';
 									position: absolute;
 									display: block;
-									transition: all 0.4s ease; // Add transition
+									transition: var(--maxi-trans-std); // Add transition
 									opacity: 0;
 									top: 0;
 									left: 0;
@@ -999,11 +996,11 @@ $border-light: 1px solid var(--mgl);
 								}
 
 								&:hover {
-									transition: all 0.4s ease; // Add transition
+									transition: var(--maxi-trans-std); // Add transition
 									color: var(--mw);
 									background-color: var(--mb);
 									opacity: 1;
-									transition: all 0.4s ease !important;
+									transition: var(--maxi-trans-std) !important;
 									&::before {
 										opacity: 1;
 									}
@@ -1029,7 +1026,7 @@ $border-light: 1px solid var(--mgl);
 						bottom: 0;
 						display: block;
 						border: 1px solid var(--mgl);
-						transition: all 0.4s ease; // Add transition
+						transition: var(--maxi-trans-std); // Add transition
 						z-index: 0;
 						border-radius: 10px;
 					}
@@ -1046,7 +1043,7 @@ $border-light: 1px solid var(--mgl);
 								}
 
 								span {
-									transition: all 0.4s ease; // Add transition
+									transition: var(--maxi-trans-std); // Add transition
 								}
 							}
 						}
@@ -1158,8 +1155,7 @@ $border-light: 1px solid var(--mgl);
 						margin-right: 0;
 						color: var(--mdg);
 						background-color: transparent;
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						font-family: var(--maxi-font-sans);
 						font-size: 12px;
 						font-weight: normal;
 						cursor: pointer;
@@ -1181,7 +1177,7 @@ $border-light: 1px solid var(--mgl);
 							bottom: -1px;
 							display: block;
 							background-color: var(--mcp-l);
-							transition: all 0.4s ease !important;
+							transition: var(--maxi-trans-std) !important;
 							opacity: 0;
 						}
 						&:after {
@@ -1276,10 +1272,9 @@ $border-light: 1px solid var(--mgl);
 							border-radius: 20px;
 							background: var(--mw);
 							color: var(--mdg);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							font-family: var(--maxi-font-sans);
 							font-size: 12px;
-							transition: all 0.5s;
+							transition: var(--maxi-trans-std);
 							&:hover,
 							&:focus {
 								border-color: var(--mcp-l);
@@ -1290,7 +1285,7 @@ $border-light: 1px solid var(--mgl);
 					}
 				}
 				.components-checkbox-control {
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+					font-family: var(--maxi-font-sans);
 					font-size: 11px;
 					font-weight: 400;
 					&__input {
@@ -1341,7 +1336,7 @@ $border-light: 1px solid var(--mgl);
 					margin: 0;
 					padding: 0;
 					align-items: center;
-					transition: all 0.4s ease !important; // Added transition here
+					transition: var(--maxi-trans-std) !important; // Added transition here
 
 					&--selected {
 						a {
@@ -1356,11 +1351,10 @@ $border-light: 1px solid var(--mgl);
 						padding: 8px;
 						box-shadow: none;
 						color: var(--mdg);
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif;
+						font-family: var(--maxi-font-sans);
 						font-weight: 500;
 						font-size: 13px;
-						transition: all 0.4s ease !important;
+						transition: var(--maxi-trans-std) !important;
 						text-decoration: none;
 						outline: none;
 
@@ -1372,7 +1366,7 @@ $border-light: 1px solid var(--mgl);
 						&:hover {
 							background-color: var(--mcp-w);
 							box-shadow: none;
-							transition: all 0.4s ease !important;
+							transition: var(--maxi-trans-std) !important;
 						}
 						.ais-RefinementList-checkbox {
 							display: none;
@@ -1389,7 +1383,7 @@ $border-light: 1px solid var(--mgl);
 							&.ais-HierarchicalMenu-item-arrow {
 								display: inline-block;
 								margin-left: -15.78px;
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 								opacity: 0;
 							}
 							&[visible='visible'] {
@@ -1471,7 +1465,7 @@ $border-light: 1px solid var(--mgl);
 					.sub_menu-wrapper {
 						transform: scaleY(0);
 						transform-origin: top center;
-						transition: all 0.4s ease !important;
+						transition: var(--maxi-trans-std) !important;
 					}
 					&--selected {
 						.sub_menu-wrapper {
@@ -1507,8 +1501,7 @@ $border-light: 1px solid var(--mgl);
 						a {
 							color: var(--mb);
 							background-color: var(--mcp-w);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							font-family: var(--maxi-font-sans);
 							font-size: 12px;
 							font-weight: normal;
 							border: 1px solid transparent;
@@ -1521,12 +1514,12 @@ $border-light: 1px solid var(--mgl);
 							box-shadow: none;
 							position: relative;
 							z-index: 1;
-							transition: all 0.4s ease !important;
+							transition: var(--maxi-trans-std) !important;
 							&:hover {
 								background-color: var(
 									--mcp-l
 								);
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 							}
 						}
 						&--selected {
@@ -1542,7 +1535,7 @@ $border-light: 1px solid var(--mgl);
 			}
 			&__top-menu {
 				.ais-Menu {
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 					&-list {
 						display: flex;
 						margin: 0;
@@ -1567,8 +1560,7 @@ $border-light: 1px solid var(--mgl);
 							box-shadow: none;
 							color: var(--mb);
 							background-color: var(--mw);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif;
+							font-family: var(--maxi-font-sans);
 							font-size: 12px;
 							font-weight: normal;
 							text-align: center;
@@ -1586,7 +1578,7 @@ $border-light: 1px solid var(--mgl);
 									--mcp-l
 								);
 								z-index: -1;
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 								opacity: 0;
 								border-radius: inherit; /* Inherit border radius from parent */
 							}
@@ -1604,7 +1596,7 @@ $border-light: 1px solid var(--mgl);
 							}
 							&:hover {
 								color: var(--mb);
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 								&::before {
 									opacity: 1;
 								}
@@ -1670,8 +1662,7 @@ $border-light: 1px solid var(--mgl);
 							padding: 10px;
 							//button for patterns preview and go pro base
 							.maxi-cloud-masonry-card__button {
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: var(--maxi-font-sans);
 								font-weight: 600;
 								margin-right: 0;
 								border: 1px solid var(--mgl);
@@ -1683,7 +1674,7 @@ $border-light: 1px solid var(--mgl);
 								display: flex !important;
 								justify-content: center !important;
 								align-items: center !important;
-								transition: all 0.3s ease; // Add transition
+								transition: var(--maxi-trans-std); // Add transition
 
 								&:hover {
 									background-color: var(
@@ -1692,7 +1683,7 @@ $border-light: 1px solid var(--mgl);
 									border: 1px solid
 										var(--mcp-l);
 									color: var(--mb);
-									transition: all 0.4s ease !important;
+									transition: var(--maxi-trans-std) !important;
 								}
 							}
 						}
@@ -1738,7 +1729,7 @@ $border-light: 1px solid var(--mgl);
 							display: flex !important;
 							justify-content: center !important;
 							align-items: center !important;
-							transition: all 0.4s ease;
+							transition: var(--maxi-trans-std);
 
 							&:hover {
 								background-color: var(
@@ -1747,7 +1738,7 @@ $border-light: 1px solid var(--mgl);
 								border: 1px solid
 									var(--mcp-l);
 								color: var(--mb);
-								transition: all 0.4s ease !important;
+								transition: var(--maxi-trans-std) !important;
 							}
 						}
 
@@ -1815,7 +1806,7 @@ $border-light: 1px solid var(--mgl);
 					background: var(--mw);
 					border-radius: 10px;
 					overflow: hidden;
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 
 					/* Pro version card style */
 					&-pro {
@@ -1825,7 +1816,7 @@ $border-light: 1px solid var(--mgl);
 					/* Card hover state */
 					&:hover {
 						background: var(--maxi-off-white) !important;
-						transition: all 0.4s ease !important;
+						transition: var(--maxi-trans-std) !important;
 					}
 				}
 				.maxi-cloud-masonry-card__image {
@@ -1882,13 +1873,13 @@ $border-light: 1px solid var(--mgl);
 				border: 1px solid var(--mcp);
 				z-index: 100000;
 				line-height: 100%;
-				transition: all 0.3s ease;
+				transition: var(--maxi-trans-std);
 
 				&:hover {
 					background-color: var(--mcp);
 					color: var(--mb);
 					border-color: var(--mcp);
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 				}
 			}
 			&__button-connect-pro {
@@ -1902,7 +1893,7 @@ $border-light: 1px solid var(--mgl);
 				.maxi-network-license-notice {
 					a {
 						color: var(--mcp);
-						transition: all 0.4s ease;
+						transition: var(--maxi-trans-std);
 						&:hover {
 							color: var(--mdg);
 						}
@@ -1920,7 +1911,7 @@ $border-light: 1px solid var(--mgl);
 					border-radius: 0 !important;
 					border-top-left-radius: 30px !important;
 					border-bottom-left-radius: 30px !important;
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 					&:focus,
 					&:active,
 					&:hover {
@@ -2094,7 +2085,7 @@ $border-light: 1px solid var(--mgl);
 		}
 		.ais-Stats-text {
 			color: var(--mdg);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+			font-family: var(--maxi-font-sans);
 			font-weight: 500;
 			font-size: 12px;
 			strong {
@@ -2792,7 +2783,7 @@ html[dir='rtl'] {
 						display: flex !important;
 						justify-content: center !important;
 						align-items: center !important;
-						transition: all 0.3s ease;
+						transition: var(--maxi-trans-std);
 
 						&:hover {
 							background-color: var(--mcp);
@@ -2836,7 +2827,7 @@ html[dir='rtl'] {
 					display: block;
 					background-color: var(--mcp-l);
 					z-index: -1;
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 					opacity: 0;
 				}
 				&:after {
@@ -2853,7 +2844,7 @@ html[dir='rtl'] {
 				}
 				&:hover {
 					color: var(--mb);
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 					&::before {
 						opacity: 1;
 					}
@@ -2872,14 +2863,14 @@ html[dir='rtl'] {
 			.ais-RefinementList-item,
 			.ais-HierarchicalMenu-item {
 				// Add transition for background hover
-				transition: all 0.4s ease !important;
+				transition: var(--maxi-trans-std) !important;
 
 				a {
 					// Existing styles...
 					&:hover {
 						background-color: var(--mcp-w);
 						box-shadow: none;
-						transition: all 0.4s ease !important;
+						transition: var(--maxi-trans-std) !important;
 					}
 				}
 			}

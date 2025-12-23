@@ -13,6 +13,8 @@ const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const VariableAliasPlugin = require('./config/css-optimization/VariableAliasPlugin');
+const { aliasMap } = require('./config/css-optimization/variable-aliases');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -47,7 +49,7 @@ const scriptsConfig = {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),
 	},
-	plugins: [new Dotenv()],
+	plugins: [new Dotenv(), new VariableAliasPlugin(aliasMap)],
 };
 
 // Blocks config
@@ -67,9 +69,11 @@ const blocksConfig = {
 			new CssMinimizerPlugin({
 				minimizerOptions: {
 					preset: [
-						'default',
+						'advanced',
 						{
 							discardComments: { removeAll: true },
+							mergeLonghand: true,
+							uniqueDeclarations: true,
 						},
 					],
 				},
@@ -106,6 +110,7 @@ const blocksConfig = {
 			filename: '[name]-rtl.min.css', // Add .min to RTL CSS filename
 		}),
 		new Dotenv(),
+		new VariableAliasPlugin(aliasMap),
 		...(isAnalyze
 			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
 			: []),

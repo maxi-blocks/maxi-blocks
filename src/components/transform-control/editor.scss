@@ -254,7 +254,7 @@
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				transition: all 0.2s;
+				transition: var(--maxi-trans-std);
 
 				&:focus {
 					border-color: transparent;
@@ -357,7 +357,7 @@
 			margin-right: 5px;
 			border: 1.5px solid var(--mgl);
 			border-radius: 4px;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 			&:last-child {
 				margin-right: 0;
 			}

@@ -9,7 +9,7 @@ body.maxi-blocks--active .maxi-css-code-editor {
 		flex: 1 0 100%;
 		direction: ltr;
 		border-radius: 10px;
-		transition: all 0.3s ease;
+		transition: var(--maxi-trans-std);
 
 		textarea.w-tc-editor-text {
 			background-color: var(--mw);

@@ -105,6 +105,7 @@
 		"@wordpress/scripts": "27.9.0",
 		"caniuse-lite": "^1.0.30001757",
 		"css-minimizer-webpack-plugin": "latest",
+		"cssnano-preset-advanced": "^7.0.10",
 		"dotenv": "^16.4.5",
 		"dotenv-webpack": "latest",
 		"enzyme": "latest",

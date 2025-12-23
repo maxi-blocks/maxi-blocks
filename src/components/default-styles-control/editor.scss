@@ -11,7 +11,7 @@
 		width: 22.5%;
 		border: 1.5px solid var(--mgl);
 		border-radius: 4px;
-		transition: all 0.5s;
+		transition: var(--maxi-trans-std);
 
 		&--active {
 			background-color: var(--mwg);

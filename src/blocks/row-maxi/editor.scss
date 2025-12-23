@@ -16,7 +16,7 @@
 
 			span {
 				font-size: 16px;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				font-weight: 700;
 			}
 		}
@@ -81,7 +81,7 @@
 	}
 
 	button svg {
-		transition: all 0.3s ease;
+		transition: var(--maxi-trans-std);
 	}
 }
 

@@ -28,7 +28,7 @@
 			color: var(--mg);
 			background-color: var(--mw);
 			opacity: 1 !important;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 
 			&:hover {
 				background-color: var(--mg);

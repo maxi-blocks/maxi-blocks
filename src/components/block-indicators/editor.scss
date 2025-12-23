@@ -4,7 +4,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	transition: all 0.5s;
+	transition: var(--maxi-trans-std);
 	z-index: 0;
 	--maxi-block-indicators-min-size: 5px;
 	--maxi-block-indicators-max-size: 20px;

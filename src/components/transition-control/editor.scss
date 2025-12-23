@@ -8,7 +8,7 @@
 			color: var(--mb) !important;
 			margin-right: 6px !important;
 			padding: 8px 12px !important;
-			transition: all 0.4s ease !important;
+			transition: var(--maxi-trans-std) !important;
 
 			&:last-child {
 				margin-right: 0 !important;

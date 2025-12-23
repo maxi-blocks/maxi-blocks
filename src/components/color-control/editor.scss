@@ -161,7 +161,7 @@
 			margin: 0;
 			background-color: var(--mw);
 			cursor: pointer;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 			border-radius: 50%;
 
 			.maxi-color-control__palette-item {

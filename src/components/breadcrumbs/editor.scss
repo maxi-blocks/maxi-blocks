@@ -59,7 +59,7 @@
 			cursor: pointer;
 			color: var(--mw);
 			text-decoration: none;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 
 			&:hover {
 				opacity: 0.7;

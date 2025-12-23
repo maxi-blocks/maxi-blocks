@@ -9,7 +9,7 @@
 	margin-left: 4px;
 	background: var(--mw);
 	text-decoration: none;
-	transition: all 0.3s;
+	transition: var(--maxi-trans-std);
 	-webkit-appearance: none;
 	box-shadow: none;
 	cursor: pointer;
@@ -27,7 +27,7 @@
 	}
 	&:hover svg {
 		fill: var(--mb);
-		transition: all 0.3s;
+		transition: var(--maxi-trans-std);
 	}
 	@at-root .rtl #{&} {
 		margin-right: 4px;
@@ -44,7 +44,7 @@
 		padding: 1px 1px 1px 8px !important;
 		margin-top: -6px !important;
 		&:hover svg {
-			transition: all 0.3s;
+			transition: var(--maxi-trans-std);
 			fill: var(--mb);
 		}
 	}

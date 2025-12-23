@@ -49,7 +49,7 @@
 	}
 }
 .toolbar-item-move__horizontally {
-	transition: all 0.3s;
+	transition: var(--maxi-trans-std);
 
 	.components-button {
 		border-radius: 0;

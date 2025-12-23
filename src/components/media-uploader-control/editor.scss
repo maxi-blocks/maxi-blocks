@@ -20,7 +20,7 @@
 		border: 1.5px solid var(--mgl);
 		border-radius: 5px;
 		color: var(--mdg);
-		transition: all 0.5s;
+		transition: var(--maxi-trans-std);
 		&:hover {
 			border: 1.5px solid var(--mpc);
 			color: var(--mb);

@@ -20,7 +20,7 @@
 		height: 30px;
 		box-shadow: 0 0 0 1px var(--mgl);
 		color: var(--mdg);
-		transition: all 0.2s ease;
+		transition: var(--maxi-trans-std);
 
 		&:first-child {
 			margin-right: 8px;
@@ -57,7 +57,7 @@
 		height: 30px !important;
 		box-shadow: none;
 		color: var(--mdg);
-		transition: all 0.2s ease;
+		transition: var(--maxi-trans-std);
 		text-align: center;
 		justify-content: center;
 		display: flex;

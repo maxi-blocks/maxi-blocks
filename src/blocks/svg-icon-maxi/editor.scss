@@ -22,12 +22,12 @@
 			font-weight: 800;
 			padding: 22px 22px 22px 10px;
 			border: 1px solid var(--mgl);
-			transition: all 0.1s;
+			transition: var(--maxi-trans-std);
 			border-radius: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 
 			svg {
 				width: 36px;
@@ -79,7 +79,7 @@
 		background: var(--mw);
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		visibility: visible;
-		transition: all 0.4s ease;
+		transition: var(--maxi-trans-std);
 
 		svg {
 			fill: var(--msc);
@@ -89,7 +89,7 @@
 
 		&:hover {
 			background-color: var(--mpg) !important;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 			svg {
 				fill: var(--mpc);
 			}

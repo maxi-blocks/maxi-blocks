@@ -44,7 +44,7 @@ body .maxi-background-control {
 			color: var(--mdg);
 			background-color: var(--mw);
 			width: 48px;
-			transition: all 0.4s ease !important;
+			transition: var(--maxi-trans-std) !important;
 
 			&[aria-pressed='true'],
 			&:active,
@@ -158,7 +158,7 @@ body .maxi-background-control {
 				margin: auto 5px auto 5px;
 				cursor: pointer;
 				position: relative;
-				transition: all 0.4s ease;
+				transition: var(--maxi-trans-std);
 
 				&:hover {
 					transform: scale(1.1);
@@ -281,7 +281,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		border-radius: 30px;
 		text-decoration: none;
 		padding: 0 10px;
-		transition: all 0.5s ease-in-out;
+		transition: var(--maxi-trans-std)-in-out;
 
 		&:hover {
 			border-color: var(--mpc) !important;

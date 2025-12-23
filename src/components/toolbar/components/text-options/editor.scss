@@ -61,7 +61,7 @@
 					}
 				}
 				&:hover {
-					transition: all 0.4s ease !important;
+					transition: var(--maxi-trans-std) !important;
 					svg {
 						path {
 							stroke: var(--msc) !important;

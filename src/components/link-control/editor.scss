@@ -199,7 +199,7 @@
 				padding: 4px 17px;
 				height: 24px;
 				border-radius: 0;
-				transition: all 0.4s ease;
+				transition: var(--maxi-trans-std);
 				&:hover {
 					background-color: var(--mpg) !important;
 					color: var(--mpc);
@@ -223,7 +223,7 @@
 			overflow-x: hidden;
 			max-width: 100%;
 			.block-editor-link-control__search-item-type {
-				transition: all 0.4s ease;
+				transition: var(--maxi-trans-std);
 			}
 			&:hover {
 				.block-editor-link-control__search-item-type {
@@ -272,7 +272,7 @@
 		text-align: center;
 		color: var(--mw);
 		display: block;
-		transition: all 0.4s ease !important;
+		transition: var(--maxi-trans-std) !important;
 		&:hover {
 			color: var(--mw) !important;
 			background-color: var(--msc) !important;

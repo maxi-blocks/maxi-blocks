@@ -36,9 +36,9 @@
 			-webkit-box-pack: center;
 			-ms-flex-pack: center;
 			justify-content: center;
-			-webkit-transition: all 0.2s;
-			-o-transition: all 0.2s;
-			transition: all 0.2s;
+			-webkit-transition: var(--maxi-trans-std);
+			-o-transition: var(--maxi-trans-std);
+			transition: var(--maxi-trans-std);
 
 			&:focus {
 				border-color: transparent;

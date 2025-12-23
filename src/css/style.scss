@@ -76,7 +76,7 @@
 		display: flex;
 		a {
 			text-decoration: none;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 		}
 		.maxi-pagination__pages {
 			a:not(:last-child),

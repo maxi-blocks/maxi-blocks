@@ -174,7 +174,7 @@
 				h2 {
 					color: var(--mb);
 					font-size: 16px;
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: var(--maxi-font-sans) !important;
 					font-weight: 500;
 					letter-spacing: -0.5px;
 					margin-bottom: 0;
@@ -508,7 +508,7 @@
 		//border-bottom: 1px solid var(--mgl);
 		margin: 0;
 		background-color: var(--mw);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: var(--maxi-font-sans) !important;
 		font-size: 16px;
 		font-weight: 500;
 		line-height: 1;
@@ -538,7 +538,7 @@
 			padding: 0;
 			background-color: transparent;
 			color: var(--mcp);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			text-decoration: none;
 			font-size: 14px;
 			cursor: pointer;
@@ -602,7 +602,7 @@
 			background-color: var(--mcp-l);
 			color: var(--mb);
 			font-size: 14px;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			font-weight: 400;
 			cursor: pointer;
 			transition: 0.1s;
@@ -796,7 +796,7 @@
 			background-color: var(--mw);
 			border-top: 1px solid var(--mgl);
 			border-bottom: 1px solid var(--mgl);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			&__title {
 				position: relative;
 				border-bottom: 1px solid var(--mgl);
@@ -879,7 +879,7 @@
 				border-radius: 0;
 				color: var(--mb);
 				background-color: var(--mw);
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				font-size: 12px;
 				font-weight: normal;
 				text-align: center;
@@ -1015,8 +1015,7 @@
 							flex-direction: column;
 
 							&__title {
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif;
+								font-family: var(--maxi-font-sans);
 								font-weight: 500;
 								text-align: center;
 								font-size: 14px;
@@ -1036,8 +1035,7 @@
 								border: 2px solid var(--mcp);
 								border-radius: 0;
 								color: var(--mb);
-								font-family: 'Inter', Helvetica, Arial, Lucida,
-									sans-serif !important;
+								font-family: var(--maxi-font-sans) !important;
 								font-weight: 400;
 								line-height: 100%;
 								transition: 0s;
@@ -1185,8 +1183,7 @@
 						margin-right: 0;
 						color: var(--mb);
 						background-color: transparent;
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif !important;
+						font-family: var(--maxi-font-sans) !important;
 						font-size: 12px;
 						font-weight: normal;
 						cursor: pointer;
@@ -1312,8 +1309,7 @@
 							border-radius: 20px !important;
 							background: var(--mw);
 							color: var(--mb);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif !important;
+							font-family: var(--maxi-font-sans) !important;
 							font-size: 12px;
 							transition: all 0.5s;
 							&:hover,
@@ -1326,7 +1322,7 @@
 					}
 				}
 				.components-checkbox-control {
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: var(--maxi-font-sans) !important;
 					font-size: 11px;
 					font-weight: 400;
 					&__input {
@@ -1447,8 +1443,7 @@
 						padding: 8px;
 						box-shadow: none;
 						color: var(--mb);
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif !important;
+						font-family: var(--maxi-font-sans) !important;
 						font-weight: 500;
 						font-size: 13px;
 						transition: color 0.2s;
@@ -1589,8 +1584,7 @@
 							box-shadow: none;
 							color: var(--mb);
 							background-color: var(--mcp-w);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif !important;
+							font-family: var(--maxi-font-sans) !important;
 							font-size: 12px;
 							font-weight: normal;
 							text-align: center;
@@ -1656,8 +1650,7 @@
 							box-shadow: none;
 							color: var(--mb);
 							background-color: var(--mw);
-							font-family: 'Inter', Helvetica, Arial, Lucida,
-								sans-serif !important;
+							font-family: var(--maxi-font-sans) !important;
 							font-size: 12px;
 							font-weight: normal;
 							text-align: center;
@@ -1974,7 +1967,7 @@
 			margin-right: 15px;
 			color: var(--mb);
 			background-color: transparent;
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			font-size: 12px;
 			font-weight: normal;
 			cursor: pointer;
@@ -2058,7 +2051,7 @@
 		box-shadow: none;
 		color: var(--mb);
 		background-color: var(--mw);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: var(--maxi-font-sans) !important;
 		font-size: 12px;
 		font-weight: 400;
 		text-align: center;
@@ -2179,8 +2172,7 @@
 						color: var(--mb);
 						font-weight: 500;
 						font-size: 14px;
-						font-family: 'Inter', Helvetica, Arial, Lucida,
-							sans-serif !important;
+						font-family: var(--maxi-font-sans) !important;
 					}
 				}
 			}
@@ -2205,7 +2197,7 @@
 				margin: 0 5px 0 0;
 				background-color: var(--mcp-w);
 				font-size: 13px;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				color: var(--mb);
 				transition: all 0.1s;
 				line-height: 28px;
@@ -2235,7 +2227,7 @@
 					font-weight: bold;
 					text-transform: capitalize;
 					text-align: center;
-					font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+					font-family: var(--maxi-font-sans) !important;
 					&-pro {
 						color: var(--mch);
 					}
@@ -2290,7 +2282,7 @@
 		}
 		.ais-Stats-text {
 			color: var(--mb);
-			font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 			font-weight: 500;
 			font-size: 12px;
 			strong {
@@ -2402,7 +2394,7 @@
 			}
 			.ais-Stats-text {
 				color: var(--mb);
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				font-weight: 500;
 				font-size: 12px;
 				strong {
@@ -3269,7 +3261,7 @@ body .maxi-hidden {
 			padding: 11px 14px 2px 22px;
 			border-radius: 30px;
 			font-family: 'Inter' !important;
-			transition: all 0.5s ease !important;
+			transition: var(--maxi-trans-std) !important;
 			&:hover {
 				background-color: var(--mcp);
 				color: var(--mw);
@@ -3307,14 +3299,14 @@ body .maxi-hidden {
 			.maxi-base-control__field {
 				margin-bottom: 10px;
 				flex-direction: row-reverse;
-				transition: all 0.5s ease !important;
+				transition: var(--maxi-trans-std) !important;
 				label {
 					margin-left: 15px;
 					font-size: 16px !important;
 					color: var(--mb) !important;
 					font-weight: 700 !important;
 					font-family: 'Inter' !important;
-					transition: all 0.5s ease !important;
+					transition: var(--maxi-trans-std) !important;
 				}
 				&:hover {
 					label.maxi-base-control__label {

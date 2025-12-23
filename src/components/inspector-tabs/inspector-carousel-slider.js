@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
-import SelectControl from '@components/select-control';
+// import SelectControl from '@components/select-control';
 import AlignmentControl from '@components/alignment-control';
 import { ResponsiveTabsControl } from '@components';
 import {
@@ -85,11 +85,11 @@ const carouselSlider = ({ props }) => {
 		attributes,
 	});
 
-	const transition = getLastBreakpointAttribute({
-		target: 'row-carousel-transition',
-		breakpoint,
-		attributes,
-	});
+	// const transition = getLastBreakpointAttribute({
+	// 	target: 'row-carousel-transition',
+	// 	breakpoint,
+	// 	attributes,
+	// });
 
 	const transitionSpeed = getLastBreakpointAttribute({
 		target: 'row-carousel-transition-speed',

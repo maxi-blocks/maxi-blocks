@@ -214,8 +214,6 @@ class edit extends MaxiBlockComponent {
 		const carouselEnabled = attributes['row-carousel-status'] === true;
 
 		if (carouselEnabled) {
-			// eslint-disable-next-line no-console
-			console.log('MaxiRow: Carousel enabled, adding custom data');
 			return {
 				row_carousel: true,
 			};

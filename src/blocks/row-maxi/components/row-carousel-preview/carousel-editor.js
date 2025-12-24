@@ -1111,6 +1111,9 @@ class MaxiRowCarouselEditor {
 // Expose MaxiRowCarouselEditor globally for editor preview
 window.MaxiRowCarouselEditor = MaxiRowCarouselEditor;
 
+// Module-scoped observer reference for cleanup
+let fseIframeObserver = null;
+
 // Also expose in FSE iframe if it exists
 const exposeFSEIframe = () => {
 	const fseIframe = document.querySelector(
@@ -1118,16 +1121,37 @@ const exposeFSEIframe = () => {
 	);
 	if (fseIframe?.contentWindow) {
 		fseIframe.contentWindow.MaxiRowCarouselEditor = MaxiRowCarouselEditor;
+
+		// Disconnect observer after successfully exposing to iframe
+		if (fseIframeObserver) {
+			fseIframeObserver.disconnect();
+			fseIframeObserver = null;
+		}
+
+		return true;
 	}
+	return false;
 };
 
 // Try immediately
-exposeFSEIframe();
+const iframeFound = exposeFSEIframe();
 
-// Watch for FSE iframe to be added
-if (typeof MutationObserver !== 'undefined') {
-	const observer = new MutationObserver(() => {
+// Only watch for FSE iframe if it wasn't found immediately
+if (!iframeFound && typeof MutationObserver !== 'undefined') {
+	fseIframeObserver = new MutationObserver(() => {
 		exposeFSEIframe();
 	});
-	observer.observe(document.body, { childList: true, subtree: true });
+
+	// Observe only the editor region instead of entire document.body for better performance
+	const editorRegion =
+		document.querySelector('.edit-site-visual-editor') || document.body;
+	fseIframeObserver.observe(editorRegion, { childList: true, subtree: true });
+
+	// Clean up observer on window unload to prevent memory leaks
+	window.addEventListener('beforeunload', () => {
+		if (fseIframeObserver) {
+			fseIframeObserver.disconnect();
+			fseIframeObserver = null;
+		}
+	});
 }

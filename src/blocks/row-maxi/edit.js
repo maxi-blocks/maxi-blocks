@@ -37,11 +37,7 @@ import RepeaterContext from './repeaterContext';
 import RowContext from './rowContext';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { getMaxiBlockAttributes } from '@components/maxi-block';
-import {
-	getAttributeValue,
-	getGroupAttributes,
-	getLastBreakpointAttribute,
-} from '@extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
 import { retrieveInnerBlocksPositions } from '@extensions/repeater';
 import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import getStyles from './styles';
@@ -257,12 +253,8 @@ class edit extends MaxiBlockComponent {
 	};
 
 	isCarouselEnabled = () => {
-		const { attributes, deviceType } = this.props;
-		return getLastBreakpointAttribute({
-			target: 'row-carousel-status',
-			breakpoint: deviceType,
-			attributes,
-		});
+		const { attributes } = this.props;
+		return attributes['row-carousel-status'] === true;
 	};
 
 	render() {

@@ -384,12 +384,12 @@ class edit extends MaxiBlockComponent {
 						this.setState({ carouselCurrentSlide: slide }),
 					carouselSlidesWidth: this.state.carouselSlidesWidth,
 					setCarouselSlideWidth: (clientId, width) => {
-						this.setState({
+						this.setState(prevState => ({
 							carouselSlidesWidth: {
-								...this.state.carouselSlidesWidth,
+								...prevState.carouselSlidesWidth,
 								[clientId]: width,
 							},
-						});
+						}));
 					},
 				}}
 			>

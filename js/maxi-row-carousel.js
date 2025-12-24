@@ -500,7 +500,7 @@ class MaxiRowCarousel {
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--next';
 			nextArrow.innerHTML = arrowSecondContent;
 			nav.appendChild(nextArrow);
-			this._nextArrow = nextArrow;
+			this._arrowNext = nextArrow;
 		}
 
 		// Create dots container if enabled
@@ -933,7 +933,7 @@ class MaxiRowCarousel {
 		if (this.isLoop) {
 			// If loop is enabled, always show both arrows
 			if (this._arrowPrev) this._arrowPrev.style.display = '';
-			if (this._nextArrow) this._nextArrow.style.display = '';
+			if (this._arrowNext) this._arrowNext.style.display = '';
 			return;
 		}
 
@@ -942,9 +942,9 @@ class MaxiRowCarousel {
 			this._arrowPrev.style.display =
 				this.currentColumn <= 0 ? 'none' : '';
 		}
-		if (this._nextArrow) {
+		if (this._arrowNext) {
 			const maxColumn = this.numberOfColumns - this.slidesPerView;
-			this._nextArrow.style.display =
+			this._arrowNext.style.display =
 				this.currentColumn >= maxColumn ? 'none' : '';
 		}
 	}

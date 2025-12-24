@@ -491,7 +491,7 @@ class MaxiRowCarousel {
 				'maxi-row-carousel__arrow maxi-row-carousel__arrow--prev';
 			prevArrow.innerHTML = arrowFirstContent;
 			nav.appendChild(prevArrow);
-			this._prevArrow = prevArrow;
+			this._arrowPrev = prevArrow;
 		}
 
 		if (showArrows && arrowSecondContent) {
@@ -932,14 +932,14 @@ class MaxiRowCarousel {
 	updateArrowStates() {
 		if (this.isLoop) {
 			// If loop is enabled, always show both arrows
-			if (this._prevArrow) this._prevArrow.style.display = '';
+			if (this._arrowPrev) this._arrowPrev.style.display = '';
 			if (this._nextArrow) this._nextArrow.style.display = '';
 			return;
 		}
 
 		// Hide/show arrows based on position
-		if (this._prevArrow) {
-			this._prevArrow.style.display =
+		if (this._arrowPrev) {
+			this._arrowPrev.style.display =
 				this.currentColumn <= 0 ? 'none' : '';
 		}
 		if (this._nextArrow) {

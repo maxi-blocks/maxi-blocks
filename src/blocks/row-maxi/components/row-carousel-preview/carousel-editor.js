@@ -120,13 +120,14 @@ class MaxiRowCarouselEditor {
 		this.onDragStart = this.dragStart.bind(this);
 		this.onDragAction = this.dragAction.bind(this);
 		this.onDragEnd = this.dragEnd.bind(this);
+		// Store distinct bound references for hover handlers
+		this.onHoverStart = this.onHover.bind(this, false);
 		this.onHoverEnd = this.onHover.bind(this, true);
-		this.onHover = this.onHover.bind(this, false);
 		this.exactColumn = this.exactColumn.bind(this);
 		this.onResize = this.handleResize.bind(this);
 
-		// Set up hover event listeners
-		this._container.addEventListener('mouseenter', this.onHover);
+		// Set up hover event listeners using distinct bound references
+		this._container.addEventListener('mouseenter', this.onHoverStart);
 		this._container.addEventListener('mouseleave', this.onHoverEnd);
 
 		// Set up MutationObserver to ensure active class persists
@@ -1048,7 +1049,10 @@ class MaxiRowCarouselEditor {
 		}
 
 		if (this._container) {
-			this._container.removeEventListener('mouseenter', this.onHover);
+			this._container.removeEventListener(
+				'mouseenter',
+				this.onHoverStart
+			);
 			this._container.removeEventListener('mouseleave', this.onHoverEnd);
 		}
 

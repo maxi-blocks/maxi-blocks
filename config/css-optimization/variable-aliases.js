@@ -38,7 +38,7 @@ const aliasMap = {
 	// Batch 2 Safe Class Name Shortening
 	'maxi-toolbar': 'mtb',
 	'maxi-placeholder': 'mph',
-	'maxi-components-button': 'mcb',
+//	'maxi-components-button': 'mcb', // Reverted: Causes validation error
 	'maxi-responsive-tabs-control': 'mrtc',
 
 	// Batch 3 Safe Class Name Shortening
@@ -73,7 +73,7 @@ const aliasMap = {
 	// Batch 8 Safe Class Name Shortening
 	'maxi-dropdown': 'mdd',
 	'maxi-block-library': 'mbl',
-	'maxi-list-block': 'mlb',
+//	'maxi-list-block': 'mlb', // Reverted: Causes validation error
 	'maxi-toggle-switch': 'mts',
 
 	// Batch 9 Safe Class Name Shortening

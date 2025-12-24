@@ -28,7 +28,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 			max-width: 1720px;
 			width: 95%;
 			margin: 30px auto 0;
-			border-radius: 25px;
+			border-radius: var(--ma-radius-xl);
 			& * {
 				font-family: var(--maxi-font-sans) !important;
 			}
@@ -65,7 +65,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 				position: relative;
 				background: transparent;
 				border: none;
-				font-size: 20px;
+				font-size: var(--ma-font-xl);
 				margin: 0;
 				padding: 8px 16px;
 				color: var(--ma-bt);
@@ -103,8 +103,8 @@ body.toplevel_page_maxi-blocks-dashboard {
 				background: var(--ma-ph);
 				color: var(--ma-b);
 				text-decoration: none;
-				border-radius: 26px;
-				font-size: 18px;
+				border-radius: var(--ma-radius-xl);
+				font-size: var(--ma-font-lg);
 				font-weight: 700;
 				transition: background 0.3s ease, transform 0.2s ease;
 
@@ -232,7 +232,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					font-weight: 500;
 				}
 				p {
-					font-size: 14px;
+					font-size: var(--ma-font-sm);
 					color: var(--ma-bt);
 					margin-bottom: 26px;
 					&:nth-child(7),
@@ -252,7 +252,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					margin: 4px 0 17px 43px;
 					color: var(--ma-bt);
 					li {
-						font-size: 16px;
+						font-size: var(--ma-font-md);
 					}
 				}
 				a {
@@ -281,7 +281,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						}
 					}
 					p {
-						font-size: 20px;
+						font-size: var(--ma-font-xl);
 						color: var(--ma-bt);
 						margin-bottom: 0 !important;
 						max-width: 600px;
@@ -297,7 +297,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 					h2 {
 						margin-bottom: 29px;
-						font-size: 20px;
+						font-size: var(--ma-font-xl);
 						color: var(--ma-bt);
 						text-align: center;
 					}
@@ -316,7 +316,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					}
 					h3 {
 						margin-top: 23px !important;
-						font-size: 20px;
+						font-size: var(--ma-font-xl);
 					}
 					h4 {
 						margin: 19px 0 30px !important;
@@ -333,7 +333,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						margin-top: 20px;
 						li {
 							color: var(--ma-bt);
-							font-size: 14px;
+							font-size: var(--ma-font-sm);
 							font-weight: 400;
 							a {
 								color: var(--ma-bt);
@@ -361,18 +361,18 @@ body.toplevel_page_maxi-blocks-dashboard {
 					max-width: 100%;
 				}
 				h3 {
-					font-size: 16px;
+					font-size: var(--ma-font-md);
 					margin: 0;
 				}
 				h4 {
-					font-size: 16px;
+					font-size: var(--ma-font-md);
 					font-weight: 700;
 					color: var(--ma-gn);
 					margin: 0 0 10px;
 				}
 				p {
 					margin: 15px 0 10px;
-					font-size: 16px;
+					font-size: var(--ma-font-md);
 					color: var(--ma-bt);
 					&:last-child {
 						margin: 0;
@@ -384,7 +384,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					border: 2px solid var(--ma-bl);
 					overflow: hidden;
 					margin-bottom: 15px;
-					border-radius: 10px;
+					border-radius: var(--ma-radius-md);
 
 					&-label {
 						display: flex;
@@ -412,7 +412,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							transition: all 0.5s;
 							color: var(--ma-b);
 							transform-origin: center;
-							font-size: 16px;
+							font-size: var(--ma-font-md);
 							display: flex;
 							align-items: center;
 							justify-content: center;
@@ -428,7 +428,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 						&-switcher__dropdown {
 							select {
-								border-radius: 10px;
+								border-radius: var(--ma-radius-md);
 								border: 2px solid var(--ma-bl) !important;
 								padding: clamp(4px, 1vw, 12px)
 									clamp(15px, 2vw, 25px) !important;
@@ -492,7 +492,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							padding-right: 40px;
 
 							h4 {
-								font-size: 16px;
+								font-size: var(--ma-font-md);
 								font-weight: 700;
 								color: var(--ma-gn);
 								margin: 0 0 10px;
@@ -514,7 +514,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 								input,
 								textarea {
-									border-radius: 10px;
+									border-radius: var(--ma-radius-md);
 									border: 2px solid
 										var(--ma-bl) !important;
 									padding: 10px;
@@ -605,9 +605,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 							.button-primary {
 								background: var(--ma-b);
 								border: none;
-								border-radius: 26px;
+								border-radius: var(--ma-radius-xl);
 								padding: 9px 19px;
-								font-size: 14px;
+								font-size: var(--ma-font-sm);
 								font-weight: 700;
 								height: auto;
 								line-height: 1.6;
@@ -654,9 +654,9 @@ body.toplevel_page_maxi-blocks-dashboard {
 						background: var(--ma-w);
 						color: var(--ma-gn);
 						padding: 0px;
-						font-size: 14px;
+						font-size: var(--ma-font-sm);
 						font-weight: 700;
-						border-radius: 26px;
+						border-radius: var(--ma-radius-xl);
 						text-decoration: none;
 						position: relative;
 
@@ -665,7 +665,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 							color: var(--ma-gn);
 							margin-right: 8px;
 							margin-left: 12px;
-							font-size: 14px;
+							font-size: var(--ma-font-sm);
 						}
 					}
 
@@ -674,7 +674,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 						color: var(--ma-o);
 						padding: 4px 8px;
 						border-radius: 3px;
-						font-size: 14px;
+						font-size: var(--ma-font-sm);
 						font-weight: 700;
 						position: relative;
 
@@ -703,7 +703,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 					margin-bottom: 7px;
 				}
 				p {
-					font-size: 16px;
+					font-size: var(--ma-font-md);
 					color: var(--ma-bt);
 					font-weight: 700;
 					margin: 0;
@@ -792,7 +792,7 @@ body .plugins {
 					&-pro-library {
 						h2,
 						h3 {
-							font-size: 18px;
+							font-size: var(--ma-font-lg);
 						}
 					}
 				}
@@ -883,14 +883,14 @@ body.site-editor-php
 
 .maxi-dashboard_setup-wizard-button {
 	display: inline-block;
-	font-size: 16px;
+	font-size: var(--ma-font-md);
 	line-height: 20px;
 	margin: 0 20px;
 	padding: 12px 24px;
 	background-color: var(--ma-b);
 	color: var(--ma-w) !important;
 	text-decoration: none;
-	border-radius: 26px;
+	border-radius: var(--ma-radius-xl);
 	font-weight: 500;
 	transition: all 0.4s ease;
 }
@@ -921,7 +921,7 @@ body.site-editor-php
 		}
 
 		p {
-			font-size: 16px;
+			font-size: var(--ma-font-md);
 			color: var(--ma-bt);
 			margin-bottom: 10px;
 
@@ -938,9 +938,9 @@ body.site-editor-php
 
 			.button {
 				padding: 5px 50px;
-				font-size: 19px;
+				font-size: var(--ma-font-lg);
 				font-weight: 700;
-				border-radius: 26px;
+				border-radius: var(--ma-radius-xl);
 				text-decoration: none;
 				transition: background 0.1s ease, transform 0.3s ease;
 				box-shadow: none;
@@ -1047,12 +1047,12 @@ body.site-editor-php
 				}
 
 				h3 {
-					font-size: 20px;
+					font-size: var(--ma-font-xl);
 					margin-bottom: 13px;
 				}
 
 				p {
-					font-size: 16px;
+					font-size: var(--ma-font-md);
 					line-height: 27px;
 					margin-bottom: 0;
 				}
@@ -1064,11 +1064,11 @@ body.site-editor-php
 
 			.button {
 				padding: 6px 30px;
-				font-size: 18px;
+				font-size: var(--ma-font-lg);
 				background: var(--ma-b);
 				color: var(--ma-w);
 				border: none;
-				border-radius: 27px;
+				border-radius: var(--ma-radius-xl);
 				font-weight: 700;
 				box-shadow: none;
 				overflow: hidden;
@@ -1116,12 +1116,12 @@ body.site-editor-php
 
 			.button {
 				padding: 5px 40px;
-				font-size: 18px;
+				font-size: var(--ma-font-lg);
 				font-weight: 700;
 				background: var(--ma-b);
 				color: var(--ma-w);
 				border: none;
-				border-radius: 26px;
+				border-radius: var(--ma-radius-xl);
 				text-decoration: none;
 				margin-top: 18px;
 				box-shadow: none;
@@ -1444,7 +1444,7 @@ body.site-editor-php
 
 		h4 {
 			margin: 8px 0;
-			font-size: 16px;
+			font-size: var(--ma-font-md);
 			color: var(--ma-bt);
 
 			span {
@@ -1461,7 +1461,7 @@ body.site-editor-php
 	.maxi-license-auth-form {
 		h4 {
 			margin: 0 0 8px 0;
-			font-size: 16px;
+			font-size: var(--ma-font-md);
 			font-weight: 600;
 			color: var(--ma-b);
 		}
@@ -1484,8 +1484,8 @@ body.site-editor-php
 			flex: 1;
 			padding: 8px 12px;
 			border: 1px solid #ddd;
-			border-radius: 4px;
-			font-size: 14px;
+			border-radius: var(--ma-radius-sm);
+			font-size: var(--ma-font-sm);
 			width: 100%;
 
 			&:focus {
@@ -1498,9 +1498,9 @@ body.site-editor-php
 
 	.maxi-license-message {
 		padding: 12px 16px;
-		border-radius: 4px;
+		border-radius: var(--ma-radius-sm);
 		margin: 16px 0;
-		font-size: 14px;
+		font-size: var(--ma-font-sm);
 
 		&.success,
 		&.maxi-license-success {
@@ -1520,9 +1520,9 @@ body.site-editor-php
 	button.button-primary {
 		background: var(--ma-b);
 		border: none;
-		border-radius: 26px;
+		border-radius: var(--ma-radius-xl);
 		padding: 9px 19px;
-		font-size: 14px;
+		font-size: var(--ma-font-sm);
 		font-weight: 700;
 		height: auto;
 		line-height: 1.6;
@@ -1538,7 +1538,7 @@ body.site-editor-php
 		}
 	}
 	input {
-		border-radius: 10px;
+		border-radius: var(--ma-radius-md);
 		border: 2px solid var(--ma-bl) !important;
 		padding: 10px;
 		box-sizing: border-box;
@@ -1612,7 +1612,7 @@ p.maxi-license-help-text {
 
 		label {
 			font-weight: 600;
-			font-size: 13px;
+			font-size: var(--ma-font-sm);
 			color: var(--ma-b);
 		}
 
@@ -1621,8 +1621,8 @@ p.maxi-license-help-text {
 			max-width: 400px;
 			padding: 8px 12px;
 			border: 1px solid var(--ma-g);
-			border-radius: 4px;
-			font-size: 14px;
+			border-radius: var(--ma-radius-sm);
+			font-size: var(--ma-font-sm);
 			transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
 			&:focus {
@@ -1638,7 +1638,7 @@ p.maxi-license-help-text {
 
 		input[type='file'] {
 			padding: 8px 0;
-			font-size: 13px;
+			font-size: var(--ma-font-sm);
 			cursor: pointer;
 
 			&::file-selector-button {
@@ -1646,8 +1646,8 @@ p.maxi-license-help-text {
 				margin-right: 12px;
 				background: var(--ma-lg);
 				border: 1px solid var(--ma-g);
-				border-radius: 4px;
-				font-size: 13px;
+				border-radius: var(--ma-radius-sm);
+				font-size: var(--ma-font-sm);
 				cursor: pointer;
 				transition: background 0.15s ease, border-color 0.15s ease;
 
@@ -1668,7 +1668,7 @@ p.maxi-license-help-text {
 	#maxi-custom-font-submit {
 		align-self: flex-start;
 		padding: 8px 16px;
-		font-size: 13px;
+		font-size: var(--ma-font-sm);
 	}
 
 	.submit {
@@ -1758,7 +1758,7 @@ p.maxi-license-help-text {
 			background: var(--ma-gn);
 			color: var(--ma-w);
 			font-weight: 600;
-			font-size: 13px;
+			font-size: var(--ma-font-sm);
 			padding: 10px 12px;
 			text-align: left;
 
@@ -1778,7 +1778,7 @@ p.maxi-license-help-text {
 
 		tbody td {
 			padding: 12px;
-			font-size: 13px;
+			font-size: var(--ma-font-sm);
 			vertical-align: middle;
 
 			&:first-child {
@@ -1809,7 +1809,7 @@ p.maxi-license-help-text {
 			background: none;
 			border: none;
 			padding: 4px 8px;
-			font-size: 13px;
+			font-size: var(--ma-font-sm);
 			transition: color 0.15s ease;
 
 			&:hover {

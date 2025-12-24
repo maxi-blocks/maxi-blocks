@@ -361,10 +361,12 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				carouselInstanceRef.current.destroy();
 			}
 
+			// Get the appropriate window object (main or iframe) from rowBlock
+			const targetWindow = rowBlock.ownerDocument.defaultView || window;
+
 			try {
-				carouselInstanceRef.current = new window.MaxiRowCarouselEditor(
-					rowBlock
-				);
+				carouselInstanceRef.current =
+					new targetWindow.MaxiRowCarouselEditor(rowBlock);
 
 				// Force breakpoint check after recreation (for responsive device type changes)
 				if (

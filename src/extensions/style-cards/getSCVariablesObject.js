@@ -15,6 +15,12 @@ import extractRGBValues from './extractRGBValues';
  * External dependencies
  */
 import { cloneDeep, merge, times, isEmpty } from 'lodash';
+import {
+	styleMap,
+	elementMap,
+	settingMap,
+	breakpointMap,
+} from '../../../config/css-optimization/variable-map';
 
 const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
@@ -137,7 +143,7 @@ const getSCVariablesObject = (
 						if (!cleanResponse) {
 							if (!setting.includes('padding'))
 								response[
-									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 								] = getLastBreakpointAttribute({
 									target: setting,
 									breakpoint,
@@ -152,7 +158,7 @@ const getSCVariablesObject = (
 								});
 								if (unitValue) {
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									] = `${getLastBreakpointAttribute({
 										target: setting,
 										breakpoint,
@@ -160,7 +166,7 @@ const getSCVariablesObject = (
 									})}${unitValue}`;
 								} else {
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									] = `${getLastBreakpointAttribute({
 										target: setting,
 										breakpoint,
@@ -174,7 +180,7 @@ const getSCVariablesObject = (
 							if (getIsValid(value, true)) {
 								if (!setting.includes('padding'))
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									] = value;
 								else {
 									// Padding
@@ -183,11 +189,11 @@ const getSCVariablesObject = (
 										obj[`${unitSetting}-${breakpoint}`];
 									if (unitValue) {
 										response[
-											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+											`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 										] = `${value}${unitValue}`;
 									} else {
 										response[
-											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+											`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 										] = `${value}px`;
 									}
 								}
@@ -199,7 +205,7 @@ const getSCVariablesObject = (
 							isFontFamily &&
 							getIsValid(
 								response[
-									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 								],
 								true
 							)
@@ -209,7 +215,7 @@ const getSCVariablesObject = (
 								element === 'button' &&
 								isEmpty(
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									].replaceAll('"', '')
 								)
 							) {
@@ -217,7 +223,7 @@ const getSCVariablesObject = (
 
 								if (!cleanResponse)
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									] = getLastBreakpointAttribute({
 										target: setting,
 										breakpoint,
@@ -229,15 +235,15 @@ const getSCVariablesObject = (
 
 									if (getIsValid(value, true))
 										response[
-											`--maxi-${style}-${element}-${setting}-${breakpoint}`
+											`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 										] = value;
 								}
 							} else {
 								response[
-									`--maxi-${style}-${element}-${setting}-${breakpoint}`
+									`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 								] = `"${
 									response[
-										`--maxi-${style}-${element}-${setting}-${breakpoint}`
+										`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`
 									]
 								}"`.replaceAll('""', '"'); // Fix for values that already have quotes
 							}
@@ -246,7 +252,7 @@ const getSCVariablesObject = (
 				});
 
 			if (obj['color-global'])
-				response[`--maxi-${style}-${element}-color`] = getColorString(
+				response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.color}`] = getColorString(
 					obj,
 					null,
 					style
@@ -255,109 +261,109 @@ const getSCVariablesObject = (
 				case 'button':
 					if (obj['background-color-global'])
 						response[
-							`--maxi-${style}-${element}-background-color`
+							`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap['background-color']}`
 						] = getColorString(obj, 'background', style);
 
 					if (obj['hover-background-color-global'])
 						response[
-							`--maxi-${style}-${element}-background-color-hover`
+							`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap['background-color']}-${settingMap.hover}`
 						] = getColorString(obj, 'hover-background', style);
 					if (obj['hover-color-global'])
-						response[`--maxi-${style}-${element}-color-hover`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.color}-${settingMap.hover}`] =
 							getColorString(obj, 'hover', style);
 
 					if (obj['border-color-global'])
-						response[`--maxi-${style}-${element}-border-color`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap['border-color']}`] =
 							getColorString(obj, 'border', style);
 					if (obj['hover-border-color-global'])
 						response[
-							`--maxi-${style}-${element}-border-color-hover`
+							`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap['border-color']}-${settingMap.hover}`
 						] = getColorString(obj, 'hover-border', style);
 
 					break;
 
 				case 'icon':
 					if (obj['line-color-global'])
-						response[`--maxi-${style}-${element}-stroke`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.stroke}`] =
 							getColorString(obj, 'line', style);
 
 					if (obj['fill-color-global'])
-						response[`--maxi-${style}-${element}-fill`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.fill}`] =
 							getColorString(obj, 'fill', style);
 
 					if (obj['hover-line-color-global'])
-						response[`--maxi-${style}-${element}-stroke-hover`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.stroke}-${settingMap.hover}`] =
 							getColorString(obj, 'hover-line', style);
 
 					if (obj['hover-fill-color-global'])
-						response[`--maxi-${style}-${element}-fill-hover`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.fill}-${settingMap.hover}`] =
 							getColorString(obj, 'hover-fill', style);
 
 					break;
 
 				case 'link':
 					if (obj['link-color-global'])
-						response[`--maxi-${style}-link`] = getColorString(
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}`] = getColorString(
 							obj,
 							'link',
 							style
 						);
 					if (obj['hover-color-global'])
-						response[`--maxi-${style}-link-hover`] = getColorString(
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.hover}`] = getColorString(
 							obj,
 							'hover',
 							style
 						);
 					if (obj['active-color-global'])
-						response[`--maxi-${style}-link-active`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.active}`] =
 							getColorString(obj, 'active', style);
 					if (obj['visited-color-global'])
-						response[`--maxi-${style}-link-visited`] =
+						response[`--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap.visited}`] =
 							getColorString(obj, 'visited', style);
 
 					break;
 
 				case 'navigation':
 					if (obj['menu-item-color-global'])
-						response[`--maxi-${style}-menu-item`] = getColorString(
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item']}`] = getColorString(
 							obj,
 							'menu-item',
 							style
 						);
 					if (obj['menu-burger-color-global'])
-						response[`--maxi-${style}-menu-burger`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-burger']}`] =
 							getColorString(obj, 'menu-burger', style);
 					if (obj['menu-item-hover-color-global'])
-						response[`--maxi-${style}-menu-item-hover`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}`] =
 							getColorString(obj, 'menu-item-hover', style);
 					if (obj['menu-item-current-color-global'])
-						response[`--maxi-${style}-menu-item-current`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.current}`] =
 							getColorString(obj, 'menu-item-current', style);
 					if (obj['menu-item-visited-color-global'])
-						response[`--maxi-${style}-menu-item-visited`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}`] =
 							getColorString(obj, 'menu-item-visited', style);
 					else if (obj['menu-item-color-global'])
-						response[`--maxi-${style}-menu-item-visited`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}`] =
 							getColorString(obj, 'menu-item', style);
 					if (obj['menu-item-sub-bg-color-global'])
-						response[`--maxi-${style}-menu-item-sub-bg`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}`] =
 							getColorString(obj, 'menu-item-sub-bg', style);
 					if (obj['menu-item-sub-bg-hover-color-global'])
-						response[`--maxi-${style}-menu-item-sub-bg-hover`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.hover}`] =
 							getColorString(
 								obj,
 								'menu-item-sub-bg-hover',
 								style
 							);
 					if (obj['menu-item-sub-bg-current-color-global'])
-						response[`--maxi-${style}-menu-item-sub-bg-current`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.current}`] =
 							getColorString(
 								obj,
 								'menu-item-sub-bg-current',
 								style
 							);
 					if (obj['menu-mobile-bg-color-global'])
-						response[`--maxi-${style}-menu-mobile-bg`] =
+						response[`--maxi-${styleMap[style]}-${settingMap['menu-mobile-bg']}`] =
 							getColorString(obj, 'menu-mobile-bg', style);
 
 					break;
@@ -370,7 +376,7 @@ const getSCVariablesObject = (
 			// Add standard palette colors
 			times(8, n => {
 				if (SC[style].color[n + 1]) {
-					response[`--maxi-${style}-color-${n + 1}`] =
+					response[`--maxi-${styleMap[style]}-${settingMap.color}-${n + 1}`] =
 						SC[style].color[n + 1];
 				}
 			});
@@ -409,7 +415,7 @@ const getSCVariablesObject = (
 						return; // Skip malformed
 
 					// Use the numeric colorObj.id directly for the CSS variable
-					response[`--maxi-${style}-color-${colorObj.id}`] =
+					response[`--maxi-${styleMap[style]}-${settingMap.color}-${colorObj.id}`] =
 						extractRGBValues(colorObj.value);
 				});
 			}

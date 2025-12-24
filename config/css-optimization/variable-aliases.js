@@ -27,6 +27,7 @@ const aliasMap = {
 	'--maxi-font-sans': '--mf',
 	'--maxi-font-system': '--mfs',
 	'--maxi-radius-sm': '--mrs',
+	// Admin aliases reverted due to build disconnect
 
 	// Safe Class Name Shortening (Component classes only, NOT block names)
 	'maxi-tabs-control': 'mtc',
@@ -91,6 +92,38 @@ const aliasMap = {
 	'maxi-inter-blocks-inserter': 'mibi',
 	'maxi-pagination': 'mpgn',
 	'maxi-tabs-content': 'mtbc',
+
+	// Batch 11 (User Requested High-Impact Shortening)
+	'maxi-prompt-control': 'mprc',
+	'maxi-components-popover': 'mcpop',
+	'maxi-scroll-unique-control': 'msuc',
+	'maxi-wrapper-block-inserter': 'mwbi',
+	'maxi-scroll-combinations-select': 'mscs',
+
+	// Batch 12 (Sub-component Optimization)
+	'maxi-prompt-control-results-card': 'mprc-rc',
+	'maxi-prompt-control-generate-tab': 'mprc-gt',
+	'maxi-prompt-control-history-tab': 'mprc-ht',
+	'maxi-prompt-control-modify-tab': 'mprc-mt',
+	'maxi-prompt-control-results': 'mprc-res',
+	'maxi-wrapper-block-inserter__button-wrapper': 'mwbi-bw',
+	'maxi-scroll-unique-control-slider': 'msuc-sl',
+
+	// Batch 13 (Cloud Container - User Requested)
+	'maxi-cloud-container__patterns__top-menu__button-connect-pro': 'mclc-tm-cp',
+	'maxi-cloud-container__patterns__top-menu__button-go-pro': 'mclc-tm-gp',
+	'maxi-cloud-container__details-popup_column-right': 'mclc-dp-cr',
+	'maxi-cloud-container__content-svg-shape__search-bar': 'mclc-svg-sb',
+	'maxi-cloud-container__details-popup_description': 'mclc-dp-desc',
+	'maxi-cloud-container__import-popup_warning-message': 'mclc-ip-warn',
+	'maxi-cloud-container__patterns__top-menu__wrap': 'mclc-tm-w',
+	'maxi-cloud-container__content-svg-shape__categories': 'mclc-svg-cat',
+	'maxi-cloud-container__import-popup_main-wrap': 'mclc-ip-mw',
+	'maxi-cloud-container__details-popup_actions': 'mclc-dp-act',
+
+	// Batch 14 (User Reported Long Classes)
+	'maxi-text-control': 'mtxc',
+	'maxi-cloud-toolbar__sign-in': 'mctb-si',
 };
 
 module.exports = { aliasMap };

@@ -209,7 +209,7 @@ $border-light: 1px solid var(--mgl);
 				color: var(--mdg);
 				background-color: var(--mcp-w);
 				border: 0;
-				border-radius: 30px;
+				border-radius: var(--arp);
 				padding: 8px 6px 4px;
 				cursor: pointer;
 				outline: none;
@@ -241,7 +241,7 @@ $border-light: 1px solid var(--mgl);
 				}
 				span {
 					font-family: var(--maxi-font-sans) !important;
-					font-size: 9px;
+					font-size: var(--af0);
 					line-height: 100%;
 				}
 				&_active,
@@ -268,14 +268,14 @@ $border-light: 1px solid var(--mgl);
 				font-family: var(--maxi-font-sans) !important;
 				h2 {
 					color: var(--mdg);
-					font-size: 16px;
+					font-size: var(--af3);
 					font-weight: 700;
 					letter-spacing: -0.5px;
 				}
 				.maxi-cloud-toolbar__button {
 					padding: 9px 19px;
 					span {
-						font-size: 16px;
+						font-size: var(--af3);
 						font-weight: 700;
 						color: var(--mdg);
 					}
@@ -302,7 +302,7 @@ $border-light: 1px solid var(--mgl);
 						margin: 0 auto 1px;
 					}
 					span {
-						font-size: 16px;
+						font-size: var(--af3);
 						font-weight: 700;
 						color: var(--mdg);
 					}
@@ -359,7 +359,7 @@ $border-light: 1px solid var(--mgl);
 				background-color: var(--mb);
 				border-radius: 50%;
 				transition: background-color 0.3s ease, color 0.3s ease;
-				font-size: 14px;
+				font-size: var(--af2);
 				font-weight: bold;
 				color: var(--mw);
 				text-decoration: none;
@@ -367,7 +367,7 @@ $border-light: 1px solid var(--mgl);
 
 				&::before {
 					content: '×';
-					font-size: 20px;
+					font-size: var(--af5);
 					position: relative;
 					left: 0;
 					top: 1px;
@@ -434,7 +434,7 @@ $border-light: 1px solid var(--mgl);
 		background-color: var(--mw);
 		border-bottom: 1px solid var(--mgl);
 		margin: 0;
-		font-size: 16px;
+		font-size: var(--af3);
 		line-height: 1;
 		word-spacing: 4px;
 		font-weight: 500;
@@ -460,7 +460,7 @@ $border-light: 1px solid var(--mgl);
 			color: var(--mcp);
 			font-family: var(--maxi-font-sans) !important;
 			text-decoration: none;
-			font-size: 14px;
+			font-size: var(--af2);
 			cursor: pointer;
 			transition: var(--maxi-trans-std); // Add transition
 
@@ -494,7 +494,7 @@ $border-light: 1px solid var(--mgl);
 		&__logo {
 			display: flex;
 			font-family: var(--maxi-font-sans) !important;
-			font-size: 18px;
+			font-size: var(--af4);
 			word-spacing: 0;
 			text-decoration: none;
 			align-items: center;
@@ -529,7 +529,7 @@ $border-light: 1px solid var(--mgl);
 
 			.components-checkbox-control {
 				&__label {
-					font-size: 12px;
+					font-size: var(--af1);
 				}
 
 				&__input-container {
@@ -586,11 +586,11 @@ $border-light: 1px solid var(--mgl);
 		.ais-ClearRefinements-button {
 			padding: 7px;
 			border: 1px solid var(--mcp-l);
-			border-radius: 30px;
+			border-radius: var(--arp);
 			margin: 8px;
 			background-color: var(--mcp-w);
 			color: var(--mdg);
-			font-size: 14px;
+			font-size: var(--af2);
 			font-family: var(--maxi-font-sans);
 			font-weight: 400;
 			cursor: pointer;
@@ -662,7 +662,7 @@ $border-light: 1px solid var(--mgl);
 				box-shadow: none;
 				margin-bottom: 0;
 				cursor: pointer;
-				font-size: 12px;
+				font-size: var(--af1);
 
 				&:after {
 					content: '';
@@ -752,7 +752,7 @@ $border-light: 1px solid var(--mgl);
 						color: var(--mb);
 						background-color: var(--mw);
 						font-family: var(--maxi-font-sans);
-						font-size: 12px;
+						font-size: var(--af1);
 						font-weight: normal;
 						border: 1px solid var(--mgl);
 						border-radius: 0;
@@ -942,7 +942,7 @@ $border-light: 1px solid var(--mgl);
 								font-family: var(--maxi-font-sans);
 								font-weight: 800;
 								text-align: center;
-								font-size: 12px;
+								font-size: var(--af1);
 								margin-bottom: 4px;
 								transition: var(--maxi-trans-std); // Add transition
 							}
@@ -1156,7 +1156,7 @@ $border-light: 1px solid var(--mgl);
 						color: var(--mdg);
 						background-color: transparent;
 						font-family: var(--maxi-font-sans);
-						font-size: 12px;
+						font-size: var(--af1);
 						font-weight: normal;
 						cursor: pointer;
 						outline: 0;
@@ -1254,7 +1254,7 @@ $border-light: 1px solid var(--mgl);
 							color: var(--mdg);
 							background-color: var(--mw) !important;
 							background: none;
-							font-size: 18px;
+							font-size: var(--af4);
 							font-weight: 500;
 							transform: translateY(-50%);
 							cursor: pointer;
@@ -1273,7 +1273,7 @@ $border-light: 1px solid var(--mgl);
 							background: var(--mw);
 							color: var(--mdg);
 							font-family: var(--maxi-font-sans);
-							font-size: 12px;
+							font-size: var(--af1);
 							transition: var(--maxi-trans-std);
 							&:hover,
 							&:focus {
@@ -1317,7 +1317,7 @@ $border-light: 1px solid var(--mgl);
 					}
 					.components-base-control__help {
 						margin: 0 8px 8px;
-						font-size: 12px;
+						font-size: var(--af1);
 						color: var(--mdg);
 					}
 					&.use-placeholder-all-images,
@@ -1502,7 +1502,7 @@ $border-light: 1px solid var(--mgl);
 							color: var(--mb);
 							background-color: var(--mcp-w);
 							font-family: var(--maxi-font-sans);
-							font-size: 12px;
+							font-size: var(--af1);
 							font-weight: normal;
 							border: 1px solid transparent;
 							border-radius: var(--maxi-radius-sm);
@@ -1561,7 +1561,7 @@ $border-light: 1px solid var(--mgl);
 							color: var(--mb);
 							background-color: var(--mw);
 							font-family: var(--maxi-font-sans);
-							font-size: 12px;
+							font-size: var(--af1);
 							font-weight: normal;
 							text-align: center;
 							text-decoration: none;
@@ -1667,7 +1667,7 @@ $border-light: 1px solid var(--mgl);
 								margin-right: 0;
 								border: 1px solid var(--mgl);
 								color: var(--mdg);
-								border-radius: 30px;
+								border-radius: var(--arp);
 								min-width: 90px;
 								padding: 5px 10px;
 								text-align: center !important;
@@ -1722,7 +1722,7 @@ $border-light: 1px solid var(--mgl);
 							border: 1px solid var(--mgl);
 							color: var(--mdg);
 							font-weight: bold;
-							border-radius: 30px;
+							border-radius: var(--arp);
 							min-width: 90px;
 							padding: 5px 10px;
 							text-align: center !important;
@@ -1867,7 +1867,7 @@ $border-light: 1px solid var(--mgl);
 				width: auto;
 				height: 31px;
 				padding: 6px 18px;
-				border-radius: 30px;
+				border-radius: var(--arp);
 				background-color: var(--mcp-w);
 				color: var(--mdg);
 				border: 1px solid var(--mcp);
@@ -1925,7 +1925,7 @@ $border-light: 1px solid var(--mgl);
 					color: #f2a600;
 					background: var(--mw);
 					font-style: italic;
-					font-size: 12px;
+					font-size: var(--af1);
 				}
 			}
 		}
@@ -1963,7 +1963,7 @@ $border-light: 1px solid var(--mgl);
 					.maxi-cloud-masonry__serial-tag {
 						color: var(--mdg);
 						font-weight: 700;
-						font-size: 14px;
+						font-size: var(--af2);
 					}
 				}
 			}
@@ -1986,7 +1986,7 @@ $border-light: 1px solid var(--mgl);
 					display: inline-block;
 					padding: 0;
 					color: var(--mdg);
-					font-size: 14px;
+					font-size: var(--af2);
 					font-weight: bold;
 					text-transform: capitalize;
 					text-align: center;
@@ -2087,7 +2087,7 @@ $border-light: 1px solid var(--mgl);
 			color: var(--mdg);
 			font-family: var(--maxi-font-sans);
 			font-weight: 500;
-			font-size: 12px;
+			font-size: var(--af1);
 			strong {
 				color: var(--mcp);
 			}
@@ -2360,7 +2360,7 @@ $border-light: 1px solid var(--mgl);
 						}
 					}
 					&__text_pro {
-						font-size: 12px;
+						font-size: var(--af1);
 						line-height: 16px;
 					}
 				}
@@ -2776,7 +2776,7 @@ html[dir='rtl'] {
 						border: 1px solid var(--mgl);
 						color: var(--mdg);
 						font-weight: bold;
-						border-radius: 30px;
+						border-radius: var(--arp);
 						min-width: 90px;
 						padding: 5px 10px;
 						text-align: center !important;

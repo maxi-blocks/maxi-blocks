@@ -112,16 +112,20 @@
 	--mibo: #2c8a46;
 	/* For mobile and tablet preview iframe */
 
-	/* Radii */
-	--ma-radius-sm: 4px;
-	--ma-radius-md: 10px;
-	--ma-radius-lg: 20px;
-	--ma-radius-xl: 26px;
-	--ma-radius-round: 50%;
+	/* Radii (Admin Short) */
+	--ars: 4px;
+	--arm: 10px;
+	--arl: 20px;
+	--arx: 26px;
+	--axx: 40px;
+	--arp: 30px;
+	--arr: 50%;
 
-	/* Font Sizes */
-	--ma-font-sm: 14px;
-	--ma-font-md: 16px;
-	--ma-font-lg: 18px;
-	--ma-font-xl: 20px;
+	/* Font Sizes (Admin Short) */
+	--af0: 9px;
+	--af1: 12px;
+	--af2: 14px;
+	--af3: 16px;
+	--af4: 18px;
+	--af5: 20px;
 }

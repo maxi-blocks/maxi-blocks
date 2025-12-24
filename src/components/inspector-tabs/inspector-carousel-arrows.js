@@ -22,8 +22,13 @@ const carouselArrows = ({ props }) => {
 		attributes,
 		maxiSetAttributes: onChange,
 		deviceType: breakpoint,
+		insertInlineStyles,
+		cleanInlineStyles,
+		inlineStylesTargets,
+		clientId,
 	} = props;
 
+	const { blockStyle, svgType } = attributes;
 	const arrowPrefix = 'navigation-arrow-';
 
 	const arrowsEnabled = getLastBreakpointAttribute({
@@ -56,10 +61,13 @@ const carouselArrows = ({ props }) => {
 						])}
 						onChange={obj => onChange(obj)}
 						deviceType={breakpoint}
-						insertInlineStyles={props.insertInlineStyles}
-						cleanInlineStyles={props.cleanInlineStyles}
-						clientId={props.clientId}
-						blockStyle={attributes.blockStyle}
+						insertInlineStyles={insertInlineStyles}
+						cleanInlineStyles={cleanInlineStyles}
+						normalInlineTarget={inlineStylesTargets?.arrow}
+						activeInlineTarget={inlineStylesTargets?.arrowActive}
+						clientId={clientId}
+						blockStyle={blockStyle}
+						svgType={svgType}
 						prefix='navigation-arrow-both-icon-'
 					/>
 				)}

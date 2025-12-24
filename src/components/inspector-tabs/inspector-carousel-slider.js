@@ -118,10 +118,6 @@ const carouselSlider = ({ props }) => {
 							label={__('Preview', 'maxi-blocks')}
 							selected={carouselPreview}
 							onChange={val => {
-								// eslint-disable-next-line no-console
-								console.log('Row Carousel: Preview onChange', {
-									val,
-								});
 								onChange({
 									'row-carousel-preview': val,
 								});
@@ -155,15 +151,6 @@ const carouselSlider = ({ props }) => {
 							step={1}
 							value={slidesPerView}
 							onChangeValue={val => {
-								// eslint-disable-next-line no-console
-								console.log(
-									'Row Carousel: Slides per view onChange',
-									{
-										breakpoint,
-										val,
-										attributeName: `row-carousel-slides-per-view-${breakpoint}`,
-									}
-								);
 								onChange({
 									[`row-carousel-slides-per-view-${breakpoint}`]:
 										val !== undefined ? val : '',

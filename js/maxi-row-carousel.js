@@ -55,6 +55,13 @@ class MaxiRowCarousel {
 		// Track current breakpoint
 		this.lastBreakpoint = this.getCurrentBreakpoint();
 
+		/**
+		 * Feature flag for fade transition support
+		 * When true, carousel uses fade transitions instead of slide transitions
+		 * @type {boolean}
+		 */
+		this.isFadeTransition = false;
+
 		// Read breakpoint-specific configuration
 		this.loadBreakpointSettings();
 
@@ -101,6 +108,12 @@ class MaxiRowCarousel {
 		this.initPosition = 0;
 		this.dragPosition = 0;
 		this.endPosition = 0;
+
+		/**
+		 * Offset in pixels of the first real element when loop clones are prepended
+		 * Used to calculate proper positioning in loop mode
+		 * @type {number}
+		 */
 		this.realFirstElOffset = 0;
 
 		this.isInteracting = false;
@@ -220,6 +233,9 @@ class MaxiRowCarousel {
 		this.transitionSpeed =
 			(parseFloat(this.getBreakpointSetting('transitionSpeed', '0.5')) ||
 				0.5) * 1000;
+
+		// Load fade transition setting (currently disabled, reserved for future feature)
+		// this.isFadeTransition = this.getBreakpointSetting('fadeTransition', 'false') === 'true';
 	}
 
 	shouldCarouselBeActive() {
@@ -518,8 +534,8 @@ class MaxiRowCarousel {
 	}
 
 	get activeColumnPosition() {
-		// For fade transitions, return realFirstElOffset
-		if (false) {
+		// For fade transitions, position stays fixed at realFirstElOffset
+		if (this.isFadeTransition) {
 			return this.realFirstElOffset;
 		}
 
@@ -975,7 +991,8 @@ class MaxiRowCarousel {
 	}
 
 	dragStart(e) {
-		if (this.transition === 'fade') return;
+		// Disable drag for fade transitions
+		if (this.isFadeTransition) return;
 
 		const event = e.type.includes('mouse') ? e : e.touches[0];
 		this.initPosition = event.clientX;
@@ -988,7 +1005,8 @@ class MaxiRowCarousel {
 	}
 
 	dragAction(e) {
-		if (this.transition === 'fade') return;
+		// Disable drag for fade transitions
+		if (this.isFadeTransition) return;
 
 		const event = e.type.includes('mouse') ? e : e.touches[0];
 		this.dragPosition = event.clientX;
@@ -1024,7 +1042,8 @@ class MaxiRowCarousel {
 	}
 
 	dragEnd() {
-		if (this.transition === 'fade') return;
+		// Disable drag for fade transitions
+		if (this.isFadeTransition) return;
 
 		this.endPosition = this.dragPosition;
 

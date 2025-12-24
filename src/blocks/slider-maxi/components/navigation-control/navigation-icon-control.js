@@ -162,6 +162,12 @@ const NavigationIconControl = props => {
 							const iconKey = `${shortPrefix}${current}-icon-content`;
 							let newIcon = obj[iconKey];
 
+							// Guard against undefined icon content
+							if (!newIcon) {
+								onChange(obj);
+								return;
+							}
+
 							// Get current color settings
 							const strokeColor =
 								props[
@@ -355,6 +361,12 @@ const NavigationIconControl = props => {
 							// Apply current stroke and fill colors to the new icon
 							const iconKey = `${shortPrefix}icon-content`;
 							let newIcon = obj[iconKey];
+
+							// Guard against undefined icon content
+							if (!newIcon) {
+								onChange(obj);
+								return;
+							}
 
 							// Get current color settings
 							const strokeColor =

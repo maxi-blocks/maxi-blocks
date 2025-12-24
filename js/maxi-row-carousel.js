@@ -126,6 +126,9 @@ class MaxiRowCarousel {
 		this.onHoverEnd = this.onHover.bind(this, true);
 		this.onHover = this.onHover.bind(this, false);
 		this.exactColumn = this.exactColumn.bind(this);
+		this.onColumnNext = this.columnNext.bind(this);
+		this.onColumnPrev = this.columnPrev.bind(this);
+		this.onTransitionEnd = this.transitionEnd.bind(this);
 
 		this._container.addEventListener('mouseenter', this.onHover);
 		this._container.addEventListener('mouseleave', this.onHoverEnd);
@@ -560,11 +563,18 @@ class MaxiRowCarousel {
 	}
 
 	get wrapperTranslate() {
-		return +this._wrapper.style.transform
-			.replace('translateX(', '')
-			.replace('-', '')
-			.replace(')', '')
-			.replace('px', '');
+		const { transform } = this._wrapper.style;
+
+		// Return 0 if transform is not set, empty, or 'none'
+		if (!transform || transform === 'none') {
+			return 0;
+		}
+
+		// Match translateX with optional sign and decimals: translateX(-123.45px)
+		const match = transform.match(/translateX\((-?\d+(?:\.\d+)?)px\)/);
+
+		// Return the absolute value of the matched number, or 0 if no match
+		return match ? Math.abs(parseFloat(match[1])) : 0;
 	}
 
 	set wrapperTranslate(translate) {
@@ -748,8 +758,8 @@ class MaxiRowCarousel {
 			this.wrapperTranslate = this.realFirstElOffset;
 		}
 
-		// Set first column as active
-		this._columns[0].isActive = true;
+		// Set first column as active by passing its ID (0)
+		this._columns[0].isActive = 0;
 
 		// Update arrow states based on initial position
 		this.updateArrowStates();
@@ -799,16 +809,10 @@ class MaxiRowCarousel {
 
 	navEvents() {
 		if (this._arrowNext) {
-			this._arrowNext.addEventListener(
-				'click',
-				this.columnNext.bind(this)
-			);
+			this._arrowNext.addEventListener('click', this.onColumnNext);
 		}
 		if (this._arrowPrev) {
-			this._arrowPrev.addEventListener(
-				'click',
-				this.columnPrev.bind(this)
-			);
+			this._arrowPrev.addEventListener('click', this.onColumnPrev);
 		}
 
 		// Note: Dot click events are handled in generateDots()
@@ -819,14 +823,8 @@ class MaxiRowCarousel {
 		this._wrapper.addEventListener('touchstart', this.onDragStart);
 		this._wrapper.addEventListener('touchmove', this.onDragAction);
 		this._wrapper.addEventListener('touchend', this.onDragEnd);
-		this._wrapper.addEventListener(
-			'transitionend',
-			this.transitionEnd.bind(this)
-		);
-		this._wrapper.addEventListener(
-			'animationend',
-			this.transitionEnd.bind(this)
-		);
+		this._wrapper.addEventListener('transitionend', this.onTransitionEnd);
+		this._wrapper.addEventListener('animationend', this.onTransitionEnd);
 	}
 
 	insertColumnClones(numberOfClones) {
@@ -1095,6 +1093,14 @@ class MaxiRowCarousel {
 			this._wrapper.removeEventListener('mouseleave', this.onDragEnd);
 			this._wrapper.removeEventListener('touchmove', this.onDragAction);
 			this._wrapper.removeEventListener('touchend', this.onDragEnd);
+			this._wrapper.removeEventListener(
+				'transitionend',
+				this.onTransitionEnd
+			);
+			this._wrapper.removeEventListener(
+				'animationend',
+				this.onTransitionEnd
+			);
 		}
 
 		if (this._container) {
@@ -1103,11 +1109,11 @@ class MaxiRowCarousel {
 		}
 
 		if (this._arrowNext) {
-			this._arrowNext.removeEventListener('click', this.columnNext);
+			this._arrowNext.removeEventListener('click', this.onColumnNext);
 		}
 
 		if (this._arrowPrev) {
-			this._arrowPrev.removeEventListener('click', this.columnPrev);
+			this._arrowPrev.removeEventListener('click', this.onColumnPrev);
 		}
 
 		if (this.onResize) {
@@ -1155,6 +1161,16 @@ class MaxiRowCarousel {
 		this._arrowNext = null;
 		this._arrowPrev = null;
 		this._dotsContainer = null;
+
+		// Clear bound handler references
+		this.onDragStart = null;
+		this.onDragAction = null;
+		this.onDragEnd = null;
+		this.onHover = null;
+		this.onHoverEnd = null;
+		this.onColumnNext = null;
+		this.onColumnPrev = null;
+		this.onTransitionEnd = null;
 	}
 }
 

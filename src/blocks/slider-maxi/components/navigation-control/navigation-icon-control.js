@@ -157,7 +157,187 @@ const NavigationIconControl = props => {
 						type='navigation-icon'
 						label={__(sprintf('Add %s icon', label), 'maxi-blocks')}
 						style={blockStyle}
-						onSelect={obj => onChange(obj)}
+						onSelect={obj => {
+							// Apply current stroke and fill colors to the new icon
+							const iconKey = `${shortPrefix}${current}-icon-content`;
+							let newIcon = obj[iconKey];
+
+							// Get current color settings
+							const strokeColor =
+								props[
+									getAttributeKey(
+										'stroke-color',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteColor =
+								props[
+									getAttributeKey(
+										'stroke-palette-color',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteStatus =
+								props[
+									getAttributeKey(
+										'stroke-palette-status',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteSCStatus =
+								props[
+									getAttributeKey(
+										'stroke-palette-sc-status',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteOpacity =
+								props[
+									getAttributeKey(
+										'stroke-palette-opacity',
+										isHover,
+										prefix
+									)
+								];
+
+							const fillColor =
+								props[
+									getAttributeKey(
+										'fill-color',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteColor =
+								props[
+									getAttributeKey(
+										'fill-palette-color',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteStatus =
+								props[
+									getAttributeKey(
+										'fill-palette-status',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteSCStatus =
+								props[
+									getAttributeKey(
+										'fill-palette-sc-status',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteOpacity =
+								props[
+									getAttributeKey(
+										'fill-palette-opacity',
+										isHover,
+										prefix
+									)
+								];
+
+							// Apply stroke color if svgType supports it
+							if (
+								svgType !== 'Shape' &&
+								(strokeColor || strokePaletteStatus)
+							) {
+								const strokeColorStr = strokePaletteStatus
+									? getColorRGBAString(
+											strokePaletteSCStatus
+												? {
+														firstVar: `color-${strokePaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															strokePaletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar:
+															getAttributeKey(
+																'stroke',
+																isHover,
+																prefix
+															),
+														secondVar: `color-${strokePaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															strokePaletteOpacity,
+														blockStyle,
+												  }
+									  )
+									: strokeColor;
+
+								newIcon = setSVGContent(
+									newIcon,
+									strokeColorStr,
+									'stroke'
+								);
+							}
+
+							// Apply fill color if svgType supports it
+							if (
+								svgType !== 'Line' &&
+								(fillColor || fillPaletteStatus)
+							) {
+								const fillColorStr = fillPaletteStatus
+									? getColorRGBAString(
+											fillPaletteSCStatus
+												? {
+														firstVar: `color-${fillPaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															fillPaletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar:
+															getAttributeKey(
+																'fill',
+																isHover,
+																prefix
+															),
+														secondVar: `color-${fillPaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															fillPaletteOpacity,
+														blockStyle,
+												  }
+									  )
+									: fillColor;
+
+								newIcon = setSVGContent(
+									newIcon,
+									fillColorStr,
+									'fill'
+								);
+							}
+
+							onChange({
+								...obj,
+								[iconKey]: newIcon,
+							});
+						}}
 						onRemove={obj => onChange(obj)}
 						icon={props[`${shortPrefix}${current}-icon-content`]}
 						prefix={`${shortPrefix}${current}-`}
@@ -171,7 +351,187 @@ const NavigationIconControl = props => {
 						type='navigation-icon'
 						title={__('Add dot icon', 'maxi-blocks')}
 						style={blockStyle}
-						onSelect={obj => onChange(obj)}
+						onSelect={obj => {
+							// Apply current stroke and fill colors to the new icon
+							const iconKey = `${shortPrefix}icon-content`;
+							let newIcon = obj[iconKey];
+
+							// Get current color settings
+							const strokeColor =
+								props[
+									getAttributeKey(
+										'stroke-color',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteColor =
+								props[
+									getAttributeKey(
+										'stroke-palette-color',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteStatus =
+								props[
+									getAttributeKey(
+										'stroke-palette-status',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteSCStatus =
+								props[
+									getAttributeKey(
+										'stroke-palette-sc-status',
+										isHover,
+										prefix
+									)
+								];
+							const strokePaletteOpacity =
+								props[
+									getAttributeKey(
+										'stroke-palette-opacity',
+										isHover,
+										prefix
+									)
+								];
+
+							const fillColor =
+								props[
+									getAttributeKey(
+										'fill-color',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteColor =
+								props[
+									getAttributeKey(
+										'fill-palette-color',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteStatus =
+								props[
+									getAttributeKey(
+										'fill-palette-status',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteSCStatus =
+								props[
+									getAttributeKey(
+										'fill-palette-sc-status',
+										isHover,
+										prefix
+									)
+								];
+							const fillPaletteOpacity =
+								props[
+									getAttributeKey(
+										'fill-palette-opacity',
+										isHover,
+										prefix
+									)
+								];
+
+							// Apply stroke color if svgType supports it
+							if (
+								svgType !== 'Shape' &&
+								(strokeColor || strokePaletteStatus)
+							) {
+								const strokeColorStr = strokePaletteStatus
+									? getColorRGBAString(
+											strokePaletteSCStatus
+												? {
+														firstVar: `color-${strokePaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															strokePaletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar:
+															getAttributeKey(
+																'stroke',
+																isHover,
+																prefix
+															),
+														secondVar: `color-${strokePaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															strokePaletteOpacity,
+														blockStyle,
+												  }
+									  )
+									: strokeColor;
+
+								newIcon = setSVGContent(
+									newIcon,
+									strokeColorStr,
+									'stroke'
+								);
+							}
+
+							// Apply fill color if svgType supports it
+							if (
+								svgType !== 'Line' &&
+								(fillColor || fillPaletteStatus)
+							) {
+								const fillColorStr = fillPaletteStatus
+									? getColorRGBAString(
+											fillPaletteSCStatus
+												? {
+														firstVar: `color-${fillPaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															fillPaletteOpacity,
+														blockStyle,
+												  }
+												: {
+														firstVar:
+															getAttributeKey(
+																'fill',
+																isHover,
+																prefix
+															),
+														secondVar: `color-${fillPaletteColor}${
+															isHover
+																? '-hover'
+																: ''
+														}`,
+														opacity:
+															fillPaletteOpacity,
+														blockStyle,
+												  }
+									  )
+									: fillColor;
+
+								newIcon = setSVGContent(
+									newIcon,
+									fillColorStr,
+									'fill'
+								);
+							}
+
+							onChange({
+								...obj,
+								[iconKey]: newIcon,
+							});
+						}}
 						onRemove={obj => onChange(obj)}
 						icon={props[`${shortPrefix}icon-content`]}
 						prefix={shortPrefix}

@@ -28,7 +28,13 @@ const carouselArrows = ({ props }) => {
 		clientId,
 	} = props;
 
-	const { blockStyle, svgType } = attributes;
+	const { blockStyle } = attributes;
+	// For arrows, use first arrow's svgType (or fallback if they don't match)
+	const svgType =
+		attributes['navigation-arrow-first-svgType'] ===
+		attributes['navigation-arrow-second-svgType']
+			? attributes['navigation-arrow-first-svgType']
+			: 'Filled';
 	const arrowPrefix = 'navigation-arrow-';
 
 	const arrowsEnabled = getLastBreakpointAttribute({

@@ -29,7 +29,8 @@ const carouselDots = ({ props }) => {
 		clientId,
 	} = props;
 
-	const { blockStyle, svgType } = attributes;
+	const { blockStyle } = attributes;
+	const svgType = attributes['navigation-dot-svgType'];
 	const dotPrefix = 'navigation-dot-';
 
 	const dotsEnabled = getLastBreakpointAttribute({

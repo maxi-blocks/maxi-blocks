@@ -34,6 +34,41 @@ const aliasMap = {
 	'maxi-color-control': 'mcc',
 	'maxi-settingstab-control': 'mstc',
 	'maxi-advanced-number-control': 'manc',
+
+	// Batch 2 Safe Class Name Shortening
+	'maxi-toolbar': 'mtb',
+	'maxi-placeholder': 'mph',
+	'maxi-components-button': 'mcb',
+	'maxi-responsive-tabs-control': 'mrtc',
+
+	// Batch 3 Safe Class Name Shortening
+	'maxi-dimensions-control': 'mdc',
+	'maxi-typography-control': 'mtyc',
+	'maxi-border-control': 'mbdc',
+	'maxi-scroll-effects-control': 'msec',
+
+	// Batch 4 Safe Class Name Shortening
+	'maxi-cloud-container': 'mclc',
+	'maxi-library-modal': 'mlm',
+	'maxi-style-cards': 'mscd',
+	'maxi-transform-control': 'mtfc',
+	'maxi-accordion-control': 'macc',
+	'maxi-cloud-masonry-card': 'mcmc',
+	'maxi-responsive-selector': 'mrsel',
+	'maxi-link-control': 'mlc',
+	'maxi-select-control': 'mslc',
+
+	// Batch 6 Safe Class Name Shortening
+	'maxi-sidebar': 'msb',
+	'maxi-popover-button': 'mpob',
+	'maxi-resizable': 'mrsz',
+
+	// Batch 7 Safe Class Name Shortening
+	'maxi-cloud-toolbar': 'mctb',
+	'maxi-popover': 'mpop', // Distinct from maxi-popover-button
+	'maxi-block-indicators': 'mbi',
+	'maxi-axis-control': 'maxc',
+	'maxi-background-control': 'mbgc',
 };
 
 module.exports = { aliasMap };

@@ -125,6 +125,9 @@ class MaxiRowCarouselEditor {
 		this.onHoverEnd = this.onHover.bind(this, true);
 		this.exactColumn = this.exactColumn.bind(this);
 		this.onResize = this.handleResize.bind(this);
+		// Store bound references for navigation handlers
+		this._boundColumnNext = this.columnNext.bind(this);
+		this._boundColumnPrev = this.columnPrev.bind(this);
 
 		// Set up hover event listeners using distinct bound references
 		this._container.addEventListener('mouseenter', this.onHoverStart);
@@ -738,16 +741,10 @@ class MaxiRowCarouselEditor {
 	 */
 	navEvents() {
 		if (this._arrowNext) {
-			this._arrowNext.addEventListener(
-				'click',
-				this.columnNext.bind(this)
-			);
+			this._arrowNext.addEventListener('click', this._boundColumnNext);
 		}
 		if (this._arrowPrev) {
-			this._arrowPrev.addEventListener(
-				'click',
-				this.columnPrev.bind(this)
-			);
+			this._arrowPrev.addEventListener('click', this._boundColumnPrev);
 		}
 	}
 
@@ -1039,11 +1036,11 @@ class MaxiRowCarouselEditor {
 		}
 
 		if (this._arrowNext) {
-			this._arrowNext.removeEventListener('click', this.columnNext);
+			this._arrowNext.removeEventListener('click', this._boundColumnNext);
 		}
 
 		if (this._arrowPrev) {
-			this._arrowPrev.removeEventListener('click', this.columnPrev);
+			this._arrowPrev.removeEventListener('click', this._boundColumnPrev);
 		}
 
 		if (this.onResize) {

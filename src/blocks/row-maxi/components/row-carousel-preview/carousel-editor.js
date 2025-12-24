@@ -606,11 +606,7 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnAction() {
-		if (false) {
-			this.fadeTo(this.currentColumn);
-		} else {
-			this.slideTo(this.currentColumn);
-		}
+		this.slideTo(this.currentColumn);
 	}
 
 	slideTo(index) {
@@ -622,20 +618,6 @@ class MaxiRowCarouselEditor {
 
 		this._columns.forEach((col, i) => {
 			col.isActive = i === index;
-		});
-
-		this.updateDots();
-	}
-
-	fadeTo(index) {
-		this._columns.forEach((col, i) => {
-			col.isActive = i === index;
-			// In editor, _column IS the resizer
-			const el = col._column;
-			if (el) {
-				el.style.opacity = i === index ? '1' : '0';
-				el.style.transition = `opacity ${this.transitionSpeed}s ease`;
-			}
 		});
 
 		this.updateDots();

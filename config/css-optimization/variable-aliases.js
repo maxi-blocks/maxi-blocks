@@ -71,12 +71,26 @@ const aliasMap = {
 	'maxi-background-control': 'mbgc',
 
 	// Batch 8 Safe Class Name Shortening
-	'maxi-dark': 'mdk',
-	'maxi-light': 'mlt',
 	'maxi-dropdown': 'mdd',
 	'maxi-block-library': 'mbl',
 	'maxi-list-block': 'mlb',
 	'maxi-toggle-switch': 'mts',
+
+	// Batch 9 Safe Class Name Shortening
+	'maxi-font-family-selector': 'mffs',
+	'maxi-hover-details': 'mhd',
+	'maxi-clip-path-control': 'mcpc',
+	'maxi-list-item-control': 'mlic',
+	'maxi-default-styles-control': 'mdsc',
+	'maxi-alignment-control': 'malc',
+
+	// Batch 10 Safe Class Name Shortening (Editor Only / Non-Persisted)
+	'maxi-video-sidebar-url': 'mvsu',
+	'maxi-container-arrow': 'mca',
+	'maxi-block-inserter': 'mbin',
+	'maxi-inter-blocks-inserter': 'mibi',
+	'maxi-pagination': 'mpgn',
+	'maxi-tabs-content': 'mtbc',
 };
 
 module.exports = { aliasMap };

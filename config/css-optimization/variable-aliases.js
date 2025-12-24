@@ -69,6 +69,14 @@ const aliasMap = {
 	'maxi-block-indicators': 'mbi',
 	'maxi-axis-control': 'maxc',
 	'maxi-background-control': 'mbgc',
+
+	// Batch 8 Safe Class Name Shortening
+	'maxi-dark': 'mdk',
+	'maxi-light': 'mlt',
+	'maxi-dropdown': 'mdd',
+	'maxi-block-library': 'mbl',
+	'maxi-list-block': 'mlb',
+	'maxi-toggle-switch': 'mts',
 };
 
 module.exports = { aliasMap };

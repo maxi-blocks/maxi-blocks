@@ -8,6 +8,8 @@ import {
 	useState,
 	forwardRef,
 	useRef,
+	lazy,
+	Suspense,
 } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
@@ -15,7 +17,7 @@ import { useSelect } from '@wordpress/data';
  * Internal dependencies
  */
 // eslint-disable-next-line import/no-cycle
-import CloudLibrary from '.';
+const CloudLibrary = lazy(() => import('.'));
 import { Icon, BaseControl, Button } from '@components';
 import {
 	authConnect,
@@ -429,32 +431,34 @@ const MaxiModal = props => {
 						id='maxi-modal'
 					>
 						<div className='maxi-library-modal maxi-preview'>
-							<CloudLibrary
-								className={`maxi-library-modal__${type}`}
-								cloudType={type}
-								onClose={onClick}
-								blockStyle={style}
-								onSelect={onSelect}
-								url={url}
-								title={title}
-								cost={cost}
-								isPro={isPro}
-								isBeta={isBeta}
-								toneUrl={toneUrl}
-								cardId={cardId}
-								prefix={prefix}
-								gutenbergCode={gutenbergCode}
-								isSwapChecked={isSwapChecked}
-								isMaxiProActive={isMaxiProActive}
-								isMaxiProExpired={isMaxiProExpired}
-								onClickConnect={onClickConnect}
-								onClickConnectCode={onClickConnectCode}
-								showNotValidEmail={showNotValidEmail}
-								showAuthError={showAuthError}
-								userName={userName}
-								onLogOut={onLogOut}
-								layerOrder={layerOrder}
-							/>
+							<Suspense fallback={<div className='maxi-library-modal__loading'>{__('Loading...', 'maxi-blocks')}</div>}>
+								<CloudLibrary
+									className={`maxi-library-modal__${type}`}
+									cloudType={type}
+									onClose={onClick}
+									blockStyle={style}
+									onSelect={onSelect}
+									url={url}
+									title={title}
+									cost={cost}
+									isPro={isPro}
+									isBeta={isBeta}
+									toneUrl={toneUrl}
+									cardId={cardId}
+									prefix={prefix}
+									gutenbergCode={gutenbergCode}
+									isSwapChecked={isSwapChecked}
+									isMaxiProActive={isMaxiProActive}
+									isMaxiProExpired={isMaxiProExpired}
+									onClickConnect={onClickConnect}
+									onClickConnectCode={onClickConnectCode}
+									showNotValidEmail={showNotValidEmail}
+									showAuthError={showAuthError}
+									userName={userName}
+									onLogOut={onLogOut}
+									layerOrder={layerOrder}
+								/>
+							</Suspense>
 						</div>
 					</div>
 				)}
@@ -545,30 +549,32 @@ const MaxiModal = props => {
 			{type === 'switch-tone' && (isOpen || wasOpenedFirstTime) && (
 				<div className='components-modal__screen-overlay maxi-open-preview maxi-switch-tone'>
 					<div className='maxi-library-modal maxi-preview'>
-						<CloudLibrary
-							cloudType={type}
-							onClose={onCloseModal}
-							url={url}
-							title={title}
-							cost={cost}
-							toneUrl={toneUrl}
-							cardId={cardId}
-							prefix={prefix}
-							className={`maxi-library-modal__preview maxi-library-modal__${type}`}
-							isPro={isPro}
-							isBeta={isBeta}
-							onSelect={onSelect}
-							gutenbergCode={gutenbergCode}
-							isSwapChecked={isSwapChecked}
-							isMaxiProActive={isMaxiProActive}
-							isMaxiProExpired={isMaxiProExpired}
-							onClickConnect={onClickConnect}
-							onClickConnectCode={onClickConnectCode}
-							showNotValidEmail={showNotValidEmail}
-							showAuthError={showAuthError}
-							userName={userName}
-							onLogOut={onLogOut}
-						/>
+						<Suspense fallback={<div className='maxi-library-modal__loading'>{__('Loading...', 'maxi-blocks')}</div>}>
+							<CloudLibrary
+								cloudType={type}
+								onClose={onCloseModal}
+								url={url}
+								title={title}
+								cost={cost}
+								toneUrl={toneUrl}
+								cardId={cardId}
+								prefix={prefix}
+								className={`maxi-library-modal__preview maxi-library-modal__${type}`}
+								isPro={isPro}
+								isBeta={isBeta}
+								onSelect={onSelect}
+								gutenbergCode={gutenbergCode}
+								isSwapChecked={isSwapChecked}
+								isMaxiProActive={isMaxiProActive}
+								isMaxiProExpired={isMaxiProExpired}
+								onClickConnect={onClickConnect}
+								onClickConnectCode={onClickConnectCode}
+								showNotValidEmail={showNotValidEmail}
+								showAuthError={showAuthError}
+								userName={userName}
+								onLogOut={onLogOut}
+							/>
+						</Suspense>
 					</div>
 				</div>
 			)}

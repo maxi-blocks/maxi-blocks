@@ -2,11 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { lazy, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import TransformControl from '@components/transform-control';
+import ContentLoader from '@components/content-loader';
+
+const TransformControl = lazy(() => import('@components/transform-control'));
 import { getGroupAttributes } from '@extensions/styles';
 import {
 	getTransformSelectors,
@@ -36,34 +39,36 @@ const transform = ({
 	return {
 		label: __('Transform', 'maxi-blocks'),
 		content: (
-			<TransformControl
-				{...getGroupAttributes(attributes, 'transform')}
-				onChangeInline={(obj, target, pseudoElement) => {
-					insertInlineStyles({
-						obj,
-						target,
-						...(pseudoElement && {
-							pseudoElement: `::${pseudoElement}`,
-						}),
-					});
-				}}
-				onChange={(obj, inlineStylesTargets, pseudoElement) => {
-					maxiSetAttributes(obj);
-					cleanInlineStyles(
-						inlineStylesTargets,
-						pseudoElement && `::${pseudoElement}`
-					);
-				}}
-				uniqueID={uniqueID}
-				breakpoint={deviceType}
-				depth={depth}
-				categories={getTransformCategories(categories, attributes)}
-				selectors={getTransformSelectors(selectors, attributes)}
-				disabledCategories={getDisabledTransformCategories(
-					disabledCategories,
-					attributes
-				)}
-			/>
+			<Suspense fallback={<ContentLoader />}>
+				<TransformControl
+					{...getGroupAttributes(attributes, 'transform')}
+					onChangeInline={(obj, target, pseudoElement) => {
+						insertInlineStyles({
+							obj,
+							target,
+							...(pseudoElement && {
+								pseudoElement: `::${pseudoElement}`,
+							}),
+						});
+					}}
+					onChange={(obj, inlineStylesTargets, pseudoElement) => {
+						maxiSetAttributes(obj);
+						cleanInlineStyles(
+							inlineStylesTargets,
+							pseudoElement && `::${pseudoElement}`
+						);
+					}}
+					uniqueID={uniqueID}
+					breakpoint={deviceType}
+					depth={depth}
+					categories={getTransformCategories(categories, attributes)}
+					selectors={getTransformSelectors(selectors, attributes)}
+					disabledCategories={getDisabledTransformCategories(
+						disabledCategories,
+						attributes
+					)}
+				/>
+			</Suspense>
 		),
 	};
 };

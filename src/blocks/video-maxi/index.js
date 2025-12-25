@@ -7,8 +7,9 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import { lazy } from '@wordpress/element';
 import metadata from './block.json';
-import edit from './edit';
+const edit = lazy(() => import('./edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';

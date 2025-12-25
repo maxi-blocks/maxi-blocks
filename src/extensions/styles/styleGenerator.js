@@ -96,17 +96,37 @@ const styleStringGenerator = (
 	return string;
 };
 
+// Simple Last-Result Cache (Size 1)
+// We use reference equality for rawStyles because styleResolver returns cached objects
+let lastCache = {
+	args: null,
+	result: null,
+};
+
 const styleGenerator = (
 	rawStyles,
 	isIframe = false,
 	isSiteEditor = false,
 	breakpoint
 ) => {
-	let response = '';
-
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
+
+	// Check cache
+	if (
+		lastCache.args &&
+		lastCache.args.rawStyles === rawStyles &&
+		lastCache.args.isIframe === isIframe &&
+		lastCache.args.isSiteEditor === isSiteEditor &&
+		lastCache.args.breakpoint === breakpoint &&
+		lastCache.args.baseBreakpoint === baseBreakpoint &&
+		lastCache.args.currentBreakpoint === currentBreakpoint
+	) {
+		return lastCache.result;
+	}
+
+	let response = '';
 
 	const styles = viewportUnitsProcessor(rawStyles, currentBreakpoint); // replacing viewport units only for the editor
 
@@ -158,6 +178,19 @@ const styleGenerator = (
 			});
 		});
 	});
+
+	// Update cache
+	lastCache = {
+		args: {
+			rawStyles,
+			isIframe,
+			isSiteEditor,
+			breakpoint,
+			baseBreakpoint,
+			currentBreakpoint,
+		},
+		result: response,
+	};
 
 	return response;
 };

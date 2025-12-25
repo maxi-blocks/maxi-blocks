@@ -62,6 +62,8 @@ const blocksConfig = {
 	output: {
 		...defaultConfig.output,
 		filename: '[name].min.js', // Add .min to filename so WP.org i18n skips it
+		chunkFilename: '[name].[contenthash].min.js', // Allow chunk splitting
+		clean: false, // Don't clean to avoid deleting other build assets
 	},
 	optimization: {
 		...defaultConfig.optimization,

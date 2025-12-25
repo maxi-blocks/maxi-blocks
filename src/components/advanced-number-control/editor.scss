@@ -2,8 +2,15 @@
    ADVANCED NUMBER CONTROL COMPONENT
 ===============================================*/
 
+/* Mixin for flex alignment */
+@mixin f-ai-center {
+	display: flex;
+	align-items: center;
+}
+
 .maxi-advanced-number-control {
 	/*--- Shared Resets & Utils ---*/
+	/* Refactored to use :where() for 0 specificity overrides */
 	&__input-wrapper,
 	&__value {
 		// Base and all interaction states
@@ -22,7 +29,7 @@
 	&__input-wrapper,
 	&__spinner-container,
 	&__spinner-button {
-		display: flex;
+				display: flex;
 		align-items: center;
 	}
 
@@ -104,7 +111,7 @@
 
 		color: var(--mg);
 		cursor: pointer;
-		transition: all 200ms ease;
+		transition: var(--maxi-trans-std);
 
 		svg {
 			pointer-events: none;
@@ -204,10 +211,10 @@
 ===============================================*/
 
 .maxi-advanced-number-control__controls-group {
-	display: flex;
-	align-items: center;
+			display: flex;
+		align-items: center;
 	border: 1px solid var(--mgl);
-	border-radius: var(--maxi-radius-sm);
+	border-radius: var(--mrs);
 }
 
 // RTL text alignment for select control

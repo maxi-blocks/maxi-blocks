@@ -1,6 +1,17 @@
 // Maxi Toolbar Styles - Optimized & Refactored
 // =============================================
 
+@mixin f-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin f-ai-center {
+	display: flex;
+	align-items: center;
+}
+
 // Main toolbar popover container with CSS variables
 .maxi-toolbar__popover {
 	// Component variables for consistency and performance
@@ -166,8 +177,8 @@
 			}
 			.toolbar-item {
 				display: flex;
-				align-items: center;
 				justify-content: center;
+				align-items: center;
 
 				&__dynamic-content {
 					&:hover,
@@ -401,7 +412,7 @@ body .toolbar-item__popover {
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {
-			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="var(--mws)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>') !important;
+			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="rgb(255,255,255)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>') !important;
 		}
 	}
 

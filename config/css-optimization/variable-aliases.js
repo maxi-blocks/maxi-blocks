@@ -32,9 +32,9 @@ const aliasMap = {
 	// Safe Class Name Shortening (Component classes only, NOT block names)
 	'maxi-tabs-control': 'mtc',
 	'maxi-base-control': 'mbc',
-	'maxi-color-control': 'mcc',
+	// 'maxi-color-control': 'mcc',
 	'maxi-settingstab-control': 'mstc',
-	'maxi-advanced-number-control': 'manc',
+	// 'maxi-advanced-number-control': 'manc',
 
 	// Batch 2 Safe Class Name Shortening
 	'maxi-toolbar': 'mtb',

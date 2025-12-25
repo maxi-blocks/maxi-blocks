@@ -112,7 +112,7 @@ const blocksConfig = {
 		new Dotenv(),
 		new VariableAliasPlugin(aliasMap),
 		...(isAnalyze
-			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
+			? [new BundleAnalyzerPlugin({ analyzerMode: 'static', reportFilename: 'bundle-report.html', openAnalyzer: true })]
 			: []),
 	],
 };

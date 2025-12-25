@@ -215,6 +215,32 @@ const aliasMap = {
 //	'maxi-background-layer__row': 'mbgl-rw', // Reverted: Causes validation error
 //	'maxi-background-layer__content': 'mbgl-cnt', // Reverted: Causes validation error
 //	'maxi-background-layer__title__text': 'mbgl-ttl-txt', // Reverted: Causes validation error
+
+	// Batch 18 (New Safe Candidates)
+	'maxi-transition-control': 'mtransc',
+	'maxi-text-shadow-control': 'mtxsc',
+	'maxi-shadow-control': 'mshc',
+	'maxi-advanced-css-control': 'madcc',
+	'maxi-flex-settings-control': 'mfsc',
+	'maxi-responsive-control': 'mrc',
+
+	// Batch 19 (More Safe Candidates)
+	'maxi-media-uploader-control': 'mmuc',
+	'maxi-textarea-control': 'mtac',
+	'maxi-text-input': 'mti',
+	'maxi-icon-control': 'mic',
+	'maxi-image-crop-control': 'micc',
+	'maxi-gradient-control': 'mgc',
+	'maxi-font-weight-control': 'mfwc',
+
+	// Batch 20 (CSS Variables)
+	'--maxi-icon-chevron': '--mic',
+	'--maxi-icon-chevron-hover': '--mich',
+	'--maxi-icon-reset': '--mir',
+	'--maxi-icon-reset-hover': '--mirh',
+	'--maxi-icon-arrow-right': '--miar',
+	'--maxi-icon-check': '--michk',
+	'--maxi-icon-cross': '--micr',
 };
 
 module.exports = { aliasMap };

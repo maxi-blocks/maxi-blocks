@@ -2,11 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { lazy, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import RelationControl from '@components/relation-control';
+// import RelationControl from '@components/relation-control';
+import ContentLoader from '@components/content-loader';
+
+const RelationControl = lazy(() => import('@components/relation-control'));
 
 const relation = ({ props, isButton = false }) => {
 	const { attributes, name, clientId, maxiSetAttributes, deviceType } = props;
@@ -35,17 +39,19 @@ const relation = ({ props, isButton = false }) => {
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),
 		content: (
-			<RelationControl
-				{...attributes}
-				name={name}
-				clientId={clientId}
-				onChange={obj => {
-					const filteredObj = filterUndefinedProperties(obj);
-					maxiSetAttributes(filteredObj);
-				}}
-				deviceType={deviceType}
-				isButton={isButton}
-			/>
+			<Suspense fallback={<ContentLoader />}>
+				<RelationControl
+					{...attributes}
+					name={name}
+					clientId={clientId}
+					onChange={obj => {
+						const filteredObj = filterUndefinedProperties(obj);
+						maxiSetAttributes(filteredObj);
+					}}
+					deviceType={deviceType}
+					isButton={isButton}
+				/>
+			</Suspense>
 		),
 		indicatorProps: ['relations'],
 	};

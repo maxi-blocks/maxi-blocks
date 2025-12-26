@@ -4,16 +4,8 @@
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useCallback } from '@wordpress/element';
-
-/**
- * External dependencies
- */
+import { useCallback, Suspense, lazy } from '@wordpress/element';
 import { isEmpty } from 'lodash';
-
-/**
- * Internal dependencies
- */
 import AccordionControl from '@components/accordion-control';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import ImageAltControl from '@components/image-alt-control';
@@ -23,7 +15,8 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import DimensionTab from './components/dimension-tab';
-import HoverEffectControl from './components/hover-effect-control';
+import Spinner from '@components/spinner';
+const HoverEffectControl = lazy(() => import(/* webpackChunkName: "maxi-hover-effects" */ './components/hover-effect-control'));
 import InfoBox from '@components/info-box';
 import {
 	getDefaultAttribute,
@@ -382,30 +375,32 @@ const Inspector = props => {
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
 											>
-												<HoverEffectControl
-													uniqueID={uniqueID}
-													{...getGroupAttributes(
-														attributes,
-														[
-															'hover',
-															'hoverBorder',
-															'hoverBorderWidth',
-															'hoverBorderRadius',
-															'hoverBackground',
-															'hoverBackgroundColor',
-															'hoverBackgroundGradient',
-															'hoverMargin',
-															'hoverPadding',
-															'hoverTitleTypography',
-															'hoverContentTypography',
-														]
-													)}
-													onChange={obj =>
-														maxiSetAttributes(obj)
-													}
-													blockStyle={blockStyle}
-													clientId={clientId}
-												/>
+												<Suspense fallback={<Spinner />}>
+													<HoverEffectControl
+														uniqueID={uniqueID}
+														{...getGroupAttributes(
+															attributes,
+															[
+																'hover',
+																'hoverBorder',
+																'hoverBorderWidth',
+																'hoverBorderRadius',
+																'hoverBackground',
+																'hoverBackgroundColor',
+																'hoverBackgroundGradient',
+																'hoverMargin',
+																'hoverPadding',
+																'hoverTitleTypography',
+																'hoverContentTypography',
+															]
+														)}
+														onChange={obj =>
+															maxiSetAttributes(obj)
+														}
+														blockStyle={blockStyle}
+														clientId={clientId}
+													/>
+												</Suspense>
 											</ResponsiveTabsControl>
 										),
 									},

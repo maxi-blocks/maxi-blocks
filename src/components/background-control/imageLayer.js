@@ -12,7 +12,7 @@ import { Suspense, lazy } from '@wordpress/element';
 import Spinner from '@components/spinner';
 const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import ImageAltControl from '@components/image-alt-control';
-import ImageCropControl from '@components/image-crop-control';
+const ImageCropControl = lazy(() => import(/* webpackChunkName: "maxi-image-crop" */ '@components/image-crop-control'));
 import ImageUrlUpload from '@components/image-url-upload';
 import MediaUploaderControl from '@components/media-uploader-control';
 import OpacityControl from '@components/opacity-control';
@@ -162,35 +162,37 @@ const ImageLayerSettings = props => {
 				attributes: imageOptions,
 				isHover,
 			}) === 'custom' && (
-				<ImageCropControl
-					mediaID={getAttributeValue({
-						target: 'background-image-mediaID',
-						props: imageOptions,
-						prefix,
-					})}
-					cropOptions={getLastBreakpointAttribute({
-						target: `${prefix}background-image-crop-options`,
-						breakpoint,
-						attributes: imageOptions,
-						isHover,
-					})}
-					onChange={cropOptions =>
-						onChange({
-							[getAttributeKey(
-								'background-image-crop-options',
-								isHover,
-								prefix,
-								breakpoint
-							)]: cropOptions,
-							[getAttributeKey(
-								'background-image-mediaURL',
-								isHover,
-								prefix,
-								breakpoint
-							)]: cropOptions.image.source_url,
-						})
-					}
-				/>
+				<Suspense fallback={<Spinner />}>
+					<ImageCropControl
+						mediaID={getAttributeValue({
+							target: 'background-image-mediaID',
+							props: imageOptions,
+							prefix,
+						})}
+						cropOptions={getLastBreakpointAttribute({
+							target: `${prefix}background-image-crop-options`,
+							breakpoint,
+							attributes: imageOptions,
+							isHover,
+						})}
+						onChange={cropOptions =>
+							onChange({
+								[getAttributeKey(
+									'background-image-crop-options',
+									isHover,
+									prefix,
+									breakpoint
+								)]: cropOptions,
+								[getAttributeKey(
+									'background-image-mediaURL',
+									isHover,
+									prefix,
+									breakpoint
+								)]: cropOptions.image.source_url,
+							})
+						}
+					/>
+				</Suspense>
 			)}
 			{!parallaxStatus && (
 				<SelectControl

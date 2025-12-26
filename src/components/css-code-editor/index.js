@@ -87,7 +87,7 @@ const CssCodeEditor = ({
 		}
 	}
 
-	let typingTimeout = null;
+	const typingTimeoutRef = useRef(null);
 
 	const id = `maxi-css-code-editor__error-text${
 		cssClassIndex ? `--${cssClassIndex}` : ''
@@ -126,8 +126,8 @@ const CssCodeEditor = ({
 				)}
 				value={value}
 				onChange={textarea => {
-					if (typingTimeout) clearTimeout(typingTimeout);
-					typingTimeout = setTimeout(
+					if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+					typingTimeoutRef.current = setTimeout(
 						() => onChange(textarea?.target?.value),
 						200
 					);

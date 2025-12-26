@@ -220,7 +220,7 @@ const aliasMap = {
 	'maxi-transition-control': 'mtransc',
 	'maxi-text-shadow-control': 'mtxsc',
 	'maxi-shadow-control': 'mshc',
-	'maxi-advanced-css-control': 'madcc',
+	// 'maxi-advanced-css-control': 'madcc',
 	'maxi-flex-settings-control': 'mfsc',
 	'maxi-responsive-control': 'mrc',
 

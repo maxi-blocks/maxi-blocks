@@ -7,7 +7,7 @@ import { Suspense, lazy } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-const ClipPathControl = lazy(() => import('@components/clip-path-control'));
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import ToggleSwitch from '@components/toggle-switch';
 import SettingTabsControl from '@components/setting-tabs-control';
 import Spinner from '@components/spinner';

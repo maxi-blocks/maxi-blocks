@@ -6,7 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import PositionControl from '@components/position-control';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const PositionControl = lazy(() => import(/* webpackChunkName: "maxi-position-layout" */ '@components/position-control'));
 import { getGroupAttributes } from '@extensions/styles';
 
 /**
@@ -17,12 +19,14 @@ const position = ({ props }) => {
 
 	return {
 		label: __('Position', 'maxi-blocks'),
-		content: (
-			<PositionControl
-				{...getGroupAttributes(attributes, 'position')}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-			/>
+		content: () => (
+			<Suspense fallback={<Spinner />}>
+				<PositionControl
+					{...getGroupAttributes(attributes, 'position')}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+				/>
+			</Suspense>
 		),
 	};
 };

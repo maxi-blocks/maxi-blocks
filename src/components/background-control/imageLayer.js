@@ -8,7 +8,9 @@ import { useState } from '@wordpress/element';
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
-import ClipPathControl from '@components/clip-path-control';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import ImageAltControl from '@components/image-alt-control';
 import ImageCropControl from '@components/image-crop-control';
 import ImageUrlUpload from '@components/image-url-upload';
@@ -620,24 +622,26 @@ const ImageLayerSettings = props => {
 			)}
 			<hr className='maxi-background-control__separator' />
 			{!disableClipPath && (
-				<ClipPathControl
-					onChange={onChange}
-					{...getGroupAttributes(
-						imageOptions,
-						'clipPath',
-						false,
-						'background-image-'
-					)}
-					{...imageOptions}
-					isHover={isHover}
-					isIB={isIB}
-					prefix='background-image-'
-					breakpoint={breakpoint}
-					getBounds={getBounds}
-					getBlockClipPath={getBlockClipPath}
-					isLayer
-					disableRTC
-				/>
+				<Suspense fallback={<Spinner />}>
+					<ClipPathControl
+						onChange={onChange}
+						{...getGroupAttributes(
+							imageOptions,
+							'clipPath',
+							false,
+							'background-image-'
+						)}
+						{...imageOptions}
+						isHover={isHover}
+						isIB={isIB}
+						prefix='background-image-'
+						breakpoint={breakpoint}
+						getBounds={getBounds}
+						getBlockClipPath={getBlockClipPath}
+						isLayer
+						disableRTC
+					/>
+				</Suspense>
 			)}
 			<SizeAndPositionLayerControl
 				prefix={prefix}

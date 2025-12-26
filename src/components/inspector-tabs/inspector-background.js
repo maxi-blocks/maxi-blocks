@@ -6,11 +6,21 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { lazy, Suspense } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
 import SettingTabsControl from '@components/setting-tabs-control';
-import BackgroundControl from '@components/background-control';
+// import BackgroundControl from '@components/background-control';
 import ToggleSwitch from '@components/toggle-switch';
 import { getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
+import ContentLoader from '@components/content-loader';
+
+const BackgroundControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-background-control" */ '@components/background-control')
+);
 
 /**
  * Component
@@ -78,25 +88,27 @@ const background = ({
 					{
 						label: __('Normal', 'maxi-blocks'),
 						content: (
-							<BackgroundControl
-								{...getGroupAttributes(
-									attributes,
-									groupAttributes,
-									false,
-									prefix
-								)}
-								onChangeInline={obj => {
-									insertInlineStyles({
-										obj,
-										target: inlineTarget,
-									});
-								}}
-								onChange={obj => {
-									maxiSetAttributes(obj);
-									cleanInlineStyles(inlineTarget);
-								}}
-								{...backgroundControlBasicProps}
-							/>
+							<Suspense fallback={<ContentLoader />}>
+								<BackgroundControl
+									{...getGroupAttributes(
+										attributes,
+										groupAttributes,
+										false,
+										prefix
+									)}
+									onChangeInline={obj => {
+										insertInlineStyles({
+											obj,
+											target: inlineTarget,
+										});
+									}}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										cleanInlineStyles(inlineTarget);
+									}}
+									{...backgroundControlBasicProps}
+								/>
+							</Suspense>
 						),
 					},
 					{
@@ -122,23 +134,25 @@ const background = ({
 									}
 								/>
 								{hoverStatus && (
-									<BackgroundControl
-										{...getGroupAttributes(
-											attributes,
-											[
-												'background',
-												'backgroundColor',
-												'backgroundGradient',
-											],
-											true,
-											prefix
-										)}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-										}}
-										isHover
-										{...backgroundControlBasicProps}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BackgroundControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'background',
+													'backgroundColor',
+													'backgroundGradient',
+												],
+												true,
+												prefix
+											)}
+											onChange={obj => {
+												maxiSetAttributes(obj);
+											}}
+											isHover
+											{...backgroundControlBasicProps}
+										/>
+									</Suspense>
 								)}
 							</>
 						),
@@ -166,23 +180,25 @@ const background = ({
 									}
 								/>
 								{activeStatus && (
-									<BackgroundControl
-										{...getGroupAttributes(
-											attributes,
-											[
-												'background',
-												'backgroundColor',
-												'backgroundGradient',
-											],
-											false,
-											`${prefix}active-`
-										)}
-										onChange={obj => {
-											maxiSetAttributes(obj);
-										}}
-										{...backgroundControlBasicProps}
-										prefix={`${prefix}active-`}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BackgroundControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'background',
+													'backgroundColor',
+													'backgroundGradient',
+												],
+												false,
+												`${prefix}active-`
+											)}
+											onChange={obj => {
+												maxiSetAttributes(obj);
+											}}
+											{...backgroundControlBasicProps}
+											prefix={`${prefix}active-`}
+										/>
+									</Suspense>
 								)}
 							</>
 						),

@@ -10,7 +10,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { lazy } from '@wordpress/element';
 import metadata from './block.json';
 import { customCss } from './data';
-const edit = lazy(() => import('./edit'));
+const edit = lazy(() => import(/* webpackChunkName: "maxi-slider" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';

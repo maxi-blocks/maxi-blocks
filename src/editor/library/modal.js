@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies.
  */
+// import './editor.scss';
 import { __ } from '@wordpress/i18n';
 import {
 	RawHTML,

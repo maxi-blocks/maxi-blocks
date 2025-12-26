@@ -10,7 +10,9 @@ import { lazy, Suspense } from '@wordpress/element';
 import { getGroupAttributes } from '@extensions/styles';
 import ContentLoader from '@components/content-loader';
 
-const ContextLoop = lazy(() => import('@components/context-loop'));
+const ContextLoop = lazy(() =>
+	import(/* webpackChunkName: "maxi-context-loop" */ '@components/context-loop')
+);
 
 /**
  * Component

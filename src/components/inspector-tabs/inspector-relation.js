@@ -10,7 +10,9 @@ import { lazy, Suspense } from '@wordpress/element';
 // import RelationControl from '@components/relation-control';
 import ContentLoader from '@components/content-loader';
 
-const RelationControl = lazy(() => import('@components/relation-control'));
+const RelationControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-interactions" */ '@components/relation-control')
+);
 
 const relation = ({ props, isButton = false }) => {
 	const { attributes, name, clientId, maxiSetAttributes, deviceType } = props;

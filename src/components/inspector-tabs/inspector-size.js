@@ -6,11 +6,21 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import FullSizeControl from '@components/full-size-control';
+import { lazy, Suspense } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+// import FullSizeControl from '@components/full-size-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import ContentLoader from '@components/content-loader';
+
+const FullSizeControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-size-control" */ '@components/full-size-control')
+);
 
 /**
  * Component
@@ -42,21 +52,23 @@ const size = ({
 	return {
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
-			<FullSizeControl
-				{...getGroupAttributes(attributes, 'size', false, prefix)}
-				prefix={prefix}
-				onChange={obj => maxiSetAttributes(obj)}
-				breakpoint={deviceType}
-				hideHeight={hideHeight}
-				hideWidth={hideWidth || isBlockFullWidth}
-				hideMaxWidth={hideMaxWidth}
-				hideFit={hideFit}
-				isBlockFullWidth={isBlockFullWidth}
-				allowForceAspectRatio={block}
-				showFullWidth={showFullWidth}
-				block={block}
-				isImage={isImage}
-			/>
+			<Suspense fallback={<ContentLoader />}>
+				<FullSizeControl
+					{...getGroupAttributes(attributes, 'size', false, prefix)}
+					prefix={prefix}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={deviceType}
+					hideHeight={hideHeight}
+					hideWidth={hideWidth || isBlockFullWidth}
+					hideMaxWidth={hideMaxWidth}
+					hideFit={hideFit}
+					isBlockFullWidth={isBlockFullWidth}
+					allowForceAspectRatio={block}
+					showFullWidth={showFullWidth}
+					block={block}
+					isImage={isImage}
+				/>
+			</Suspense>
 		),
 		extraIndicators: [
 			...(isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'),

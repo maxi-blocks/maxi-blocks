@@ -13,7 +13,7 @@ import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import ContentLoader from '@components/content-loader';
 
 const ScrollEffectsControl = lazy(() =>
-	import('@components/scroll-effects-control')
+	import(/* webpackChunkName: "maxi-scroll-effects" */ '@components/scroll-effects-control')
 );
 
 /**

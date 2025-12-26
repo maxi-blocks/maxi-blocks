@@ -9,7 +9,7 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import { lazy } from '@wordpress/element';
 import metadata from './block.json';
-const edit = lazy(() => import('./edit'));
+const edit = lazy(() => import(/* webpackChunkName: "maxi-video" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';

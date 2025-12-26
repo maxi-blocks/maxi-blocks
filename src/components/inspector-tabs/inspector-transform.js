@@ -9,7 +9,9 @@ import { lazy, Suspense } from '@wordpress/element';
  */
 import ContentLoader from '@components/content-loader';
 
-const TransformControl = lazy(() => import('@components/transform-control'));
+const TransformControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-transform-control" */ '@components/transform-control')
+);
 import { getGroupAttributes } from '@extensions/styles';
 import {
 	getTransformSelectors,

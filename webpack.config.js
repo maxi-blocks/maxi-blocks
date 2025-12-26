@@ -107,6 +107,7 @@ const blocksConfig = {
 		),
 		new MiniCssExtractPlugin({
 			filename: '[name].min.css', // Add .min to CSS filename
+			chunkFilename: '[name].chunk.min.css', // Add chunk extraction support
 		}),
 		new RtlCssPlugin({
 			filename: '[name]-rtl.min.css', // Add .min to RTL CSS filename

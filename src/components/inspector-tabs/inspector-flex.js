@@ -6,9 +6,15 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import FlexSettingsControl from '@components/flex-settings-control';
+// import FlexSettingsControl from '@components/flex-settings-control';
+import { lazy, Suspense } from '@wordpress/element';
 import { getGroupAttributes } from '@extensions/styles';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import ContentLoader from '@components/content-loader';
+
+const FlexSettingsControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-flex-control" */ '@components/flex-settings-control')
+);
 
 /**
  * Component
@@ -42,14 +48,16 @@ const flex = ({ props }) => {
 		label: __('Flexbox', 'maxi-blocks'),
 		content: (
 			<ResponsiveTabsControl breakpoint={deviceType}>
-				<FlexSettingsControl
-					{...getGroupAttributes(attributes, 'flex')}
-					onChange={maxiSetAttributes}
-					breakpoint={deviceType}
-					clientId={clientId}
-					name={name}
-					parentBlockName={parentBlockName}
-				/>
+				<Suspense fallback={<ContentLoader />}>
+					<FlexSettingsControl
+						{...getGroupAttributes(attributes, 'flex')}
+						onChange={maxiSetAttributes}
+						breakpoint={deviceType}
+						clientId={clientId}
+						name={name}
+						parentBlockName={parentBlockName}
+					/>
+				</Suspense>
 			</ResponsiveTabsControl>
 		),
 	};

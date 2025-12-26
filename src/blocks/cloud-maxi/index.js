@@ -6,10 +6,13 @@
 /**
  * Import dependencies.
  */
-import edit from './edit';
+// import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-cloud" */ './edit'));
 import { library, librarySmall } from '@maxi-icons';
 import './style.scss';
-import './editor.scss';
+// import './editor.scss';
+import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
 
 /**
  * WordPress dependencies.
@@ -52,6 +55,6 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 	},
 	editorScript: 'maxi-blocks-block-editor',
 	/* Save the block markup. */
-	edit,
+	edit: withMaxiLoader(edit),
 	save: () => null,
 });

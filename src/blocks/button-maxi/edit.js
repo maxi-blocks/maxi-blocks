@@ -20,6 +20,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { getGroupAttributes, getIconPositionClass } from '@extensions/styles';
 import { getSVGWidthHeightRatio } from '@extensions/svg';
 import getStyles from './styles';
+import './editor.scss';
 import { copyPasteMapping, maxiAttributes } from './data';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';

@@ -14,6 +14,7 @@ import { isEmpty } from 'lodash';
  */
 import MaxiModal from '@editor/library/modal';
 import { withMaxiProps } from '@extensions/maxi-block';
+import './editor.scss';
 
 class edit extends Component {
 	render() {

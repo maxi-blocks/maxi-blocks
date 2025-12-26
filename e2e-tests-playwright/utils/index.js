@@ -8,3 +8,5 @@ export { default as getAttributes } from './getAttributes';
 export { default as editAdvancedNumberControl } from './editAdvancedNumberControl';
 export { default as editColorControl } from './editColorControl';
 export { default as addCustomCSS } from './addCustomCSS';
+export { default as changeResponsive } from './changeResponsive';
+export { default as editAxisControl } from './editAxisControl';

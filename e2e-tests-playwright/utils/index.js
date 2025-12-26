@@ -10,3 +10,4 @@ export { default as editColorControl } from './editColorControl';
 export { default as addCustomCSS } from './addCustomCSS';
 export { default as changeResponsive } from './changeResponsive';
 export { default as editAxisControl } from './editAxisControl';
+export { default as addBackgroundLayer } from './addBackgroundLayer';

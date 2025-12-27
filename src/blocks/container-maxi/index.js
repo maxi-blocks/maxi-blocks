@@ -8,15 +8,12 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
+import edit from './edit';
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
 import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
 import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
-import withLazyEdit from '@extensions/maxi-block/withLazyEdit';
-
-// Lazy load the edit component
-const edit = withLazyEdit(() => import('./edit'));
 
 /**
  * Styles and icons

@@ -8,17 +8,17 @@ body.maxi-blocks--active .maxi-sidebar {
 			width: calc(100% / 3);
 			height: auto !important;
 			padding: 6px;
-			border: 1.5px solid var(--maxi-grey-light);
+			border: 1.5px solid var(--mgl);
 			border-radius: 10px;
 			margin-bottom: 10px;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 
 			&:focus {
-				background: var(--maxi-grey);
+				background: var(--mg);
 			}
 			&:hover {
-				border: 1.5px solid var(--maxi-primary-color);
-				background: var(--maxi-whisper-green);
+				border: 1.5px solid var(--mpc);
+				background: var(--mwg);
 
 				&::after {
 					content: '';
@@ -31,7 +31,7 @@ body.maxi-blocks--active .maxi-sidebar {
 			&:nth-child(6) {
 				svg {
 					border-radius: 10px;
-					box-shadow: 0 0 8px 0 var(--maxi-grey);
+					box-shadow: 0 0 8px 0 var(--mg);
 				}
 			}
 			&:nth-child(n + 7) {

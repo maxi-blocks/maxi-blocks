@@ -3,7 +3,7 @@
  */
 import { useSelect } from '@wordpress/data';
 import { createHigherOrderComponent, pure } from '@wordpress/compose';
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useState, useEffect, useCallback, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -126,7 +126,11 @@ const withMaxiLoader = createHigherOrderComponent(
 				);
 			}
 
-			return <WrappedComponent {...ownProps} />;
+			return (
+				<Suspense fallback={<ContentLoader />}>
+					<WrappedComponent {...ownProps} />
+				</Suspense>
+			);
 		}),
 	'withMaxiLoader'
 );

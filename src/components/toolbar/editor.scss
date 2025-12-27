@@ -1,6 +1,17 @@
 // Maxi Toolbar Styles - Optimized & Refactored
 // =============================================
 
+@mixin f-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin f-ai-center {
+	display: flex;
+	align-items: center;
+}
+
 // Main toolbar popover container with CSS variables
 .maxi-toolbar__popover {
 	// Component variables for consistency and performance
@@ -16,7 +27,7 @@
 	*,
 	*:before,
 	*:after {
-		transition: all 0.4s ease;
+		transition: var(--maxi-trans-std);
 	}
 
 	&-caption,
@@ -32,7 +43,7 @@
 		margin-left: 10px;
 		position: absolute;
 		right: -16px;
-		background: var(--maxi-primary-color);
+		background: var(--mpc);
 		border-radius: 0 3px 3px 0px;
 		height: 20px;
 		top: 0;
@@ -42,7 +53,7 @@
 		justify-content: center;
 
 		&--repeater {
-			background: var(--maxi-tertiary-color);
+			background: var(--mtc);
 		}
 	}
 	.components-popover__content {
@@ -55,7 +66,7 @@
 
 		.toolbar-wrapper {
 			display: flex;
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			width: min-content;
 			position: relative;
 			top: -23px;
@@ -63,7 +74,7 @@
 			transform: translateX(-50%);
 			box-shadow: 0px 6px 8px 0 rgba(0, 0, 0, 0.08);
 			border-radius: 0;
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 
 			&.pinned--true .maxi-breadcrumbs {
 				transform: scaleX(1);
@@ -81,12 +92,10 @@
 				background-color: rgba(0, 0, 0, 0.85);
 				padding: 7px 8px;
 				text-align: center;
-				color: var(--maxi-white);
+				color: var(--mw);
 				visibility: none;
 				z-index: 5;
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-					Inter, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue',
-					sans-serif;
+				font-family: var(--maxi-font-system);
 				font-size: 12px;
 				font-weight: 400;
 				border-radius: 2px;
@@ -111,18 +120,18 @@
 				bottom: -22px;
 				left: 0;
 				padding: 4px 10px;
-				background: var(--maxi-primary-color);
+				background: var(--mpc);
 				border-radius: 3px 0 0 3px;
-				color: var(--maxi-white);
+				color: var(--mw);
 				font-size: 10px !important;
 				font-weight: 400;
-				font-family: 'Inter', sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				line-height: 100%;
 				height: 20px;
 				white-space: pre;
 
 				&--repeater {
-					background: var(--maxi-tertiary-color);
+					background: var(--mtc);
 				}
 
 				&__block-style {
@@ -151,9 +160,9 @@
 				height: 2rem;
 				padding: 0;
 				padding-right: 0;
-				background-color: var(--maxi-white);
+				background-color: var(--mw);
 				border-radius: 0;
-				border-right: 1px solid var(--maxi-grey-light);
+				border-right: 1px solid var(--mgl);
 				cursor: pointer;
 
 				&.toolbar-item__more-settings {
@@ -168,8 +177,8 @@
 			}
 			.toolbar-item {
 				display: flex;
-				align-items: center;
 				justify-content: center;
+				align-items: center;
 
 				&__dynamic-content {
 					&:hover,
@@ -181,7 +190,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color) !important;
+								stroke: var(--msc) !important;
 							}
 						}
 					}
@@ -198,7 +207,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color) !important;
+								stroke: var(--msc) !important;
 							}
 						}
 					}
@@ -208,7 +217,7 @@
 					&--active {
 						.toolbar-item__icon {
 							path {
-								fill: var(--maxi-primary-color);
+								fill: var(--mpc);
 							}
 						}
 					}
@@ -235,26 +244,26 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: var(--maxi-trans-std);
 					border-radius: 0;
 					background-color: transparent;
-					fill: var(--maxi-black) !important;
+					fill: var(--mb) !important;
 
 					&::after {
 						content: '';
 						display: block;
-						background-color: var(--maxi-secondary-color);
+						background-color: var(--msc);
 						height: 0;
 						position: absolute;
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: var(--maxi-trans-std);
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green) !important;
+						background-color: var(--mpg) !important;
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -262,7 +271,7 @@
 							rect,
 							polyline,
 							path {
-								fill: var(--maxi-secondary-color);
+								fill: var(--msc);
 							}
 						}
 					}
@@ -281,24 +290,24 @@
 					width: 100%;
 					height: 100%;
 					padding: 0;
-					transition: all 0.5s ease;
+					transition: var(--maxi-trans-std);
 					border-radius: 0;
 
 					&::after {
 						content: '';
 						display: block;
-						background-color: var(--maxi-secondary-color);
+						background-color: var(--msc);
 						height: 0;
 						position: absolute;
 						bottom: -1px;
 						left: -1px;
 						right: -1px;
-						transition: all 0.5s ease;
+						transition: var(--maxi-trans-std);
 					}
 
 					&:hover,
 					&[aria-expanded='true'] {
-						background-color: var(--maxi-pastel-green);
+						background-color: var(--mpg);
 						.toolbar-item__icon {
 							ellipse,
 							circle,
@@ -306,7 +315,7 @@
 							rect,
 							polyline,
 							path {
-								stroke: var(--maxi-secondary-color);
+								stroke: var(--msc);
 							}
 						}
 					}
@@ -321,7 +330,7 @@
 				&__bold,
 				&__italic {
 					&:hover path {
-						stroke: var(--maxi-secondary-color);
+						stroke: var(--msc);
 					}
 				}
 
@@ -345,8 +354,8 @@
 					rect,
 					polyline,
 					path {
-						transition: all 0.5s ease;
-						// fill: var(--maxi-black);
+						transition: var(--maxi-trans-std);
+						// fill: var(--mb);
 						// stroke: transparent;
 					}
 				}
@@ -357,19 +366,19 @@
 
 				&__bold path,
 				&__italic path {
-					fill: var(--maxi-white);
-					stroke: var(--maxi-black);
+					fill: var(--mw);
+					stroke: var(--mb);
 				}
 			}
 		}
 	}
 
 	.components-button {
-		font-family: 'Inter', sans-serif !important;
+		font-family: var(--maxi-font-sans) !important;
 
 		&:hover {
-			color: var(--maxi-primary-color) !important;
-			transition: all 0.4s ease !important;
+			color: var(--mpc) !important;
+			transition: var(--maxi-trans-std) !important;
 		}
 	}
 	.maxi-responsive-tabs-control {
@@ -383,7 +392,7 @@
 				}
 
 				&:last-child {
-					border-right: 1px solid var(--maxi-grey-light);
+					border-right: 1px solid var(--mgl);
 					border-radius: 0 10px 10px 0;
 				}
 			}
@@ -392,7 +401,7 @@
 
 	.maxi-color-control__palette-box {
 		&--active {
-			background-color: var(--maxi-pastel-green) !important;
+			background-color: var(--mpg) !important;
 		}
 	}
 }
@@ -403,14 +412,14 @@ body .toolbar-item__popover {
 	button.components-range-control__reset,
 	button.components-circular-option-picker__clear {
 		&:before {
-			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="var(--maxi-whites)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>') !important;
+			content: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 16 15.7"><path fill="rgb(255,255,255)" d="M16.5 1.1v5a.91.91 0 01-.3.7.91.91 0 01-.7.3h-5.1a.91.91 0 01-.7-.3 1 1 0 010-1.4.91.91 0 01.7-.3H13A8.09 8.09 0 0011 3a4.46 4.46 0 00-2.6-.8 5.66 5.66 0 00-4.1 1.7A5.3 5.3 0 002.6 8a5.66 5.66 0 001.7 4.1 5.66 5.66 0 004.1 1.7 5.75 5.75 0 003.4-1.1 5.63 5.63 0 002.1-2.9 1 1 0 01.5-.6 1.41 1.41 0 01.9-.1 1 1 0 01.6.5 1.06 1.06 0 01.1.8 7.49 7.49 0 01-2.9 3.9 7.67 7.67 0 01-4.6 1.5 7.7 7.7 0 01-5.6-2.3A7.56 7.56 0 01.5 8a7.87 7.87 0 012.3-5.6A7.7 7.7 0 018.4.1a3.08 3.08 0 011 .1c.3 0 .6.1.9.1a1.33 1.33 0 01.8.3 3.63 3.63 0 00.7.3 2.09 2.09 0 01.6.4c.2.2.4.3.5.4l.5.5c.2.2.3.4.4.4s.2.2.4.5a3 3 0 00.3.4V1.1a.91.91 0 01.3-.7 1 1 0 011.4 0 .91.91 0 01.3.7z" transform="translate(-.5 -.1)"/> </svg>') !important;
 		}
 	}
 
 	&__toggle-btn {
 		.maxi-base-control__field {
 			justify-content: space-between;
-			border-radius: 5px;
+			border-radius: var(--maxi-radius-sm);
 
 			.maxi-base-control__label {
 				flex: 3 !important;
@@ -421,10 +430,10 @@ body .toolbar-item__popover {
 			opacity: 1 !important;
 			min-width: 40px;
 			height: 30px;
-			background-color: var(--maxi-black);
+			background-color: var(--mb);
 			font-size: 13px;
 			line-height: 13px;
-			color: var(--maxi-white);
+			color: var(--mw);
 			font-weight: 500;
 			flex: 1;
 			border-bottom: none;
@@ -463,11 +472,11 @@ body .toolbar-item__popover {
 			input {
 				display: none;
 				&:checked ~ label {
-					background-color: var(--maxi-pastel-green);
+					background-color: var(--mpg);
 					position: relative;
 					z-index: 1;
-					border: 2px solid var(--maxi-grey-light);
-					border-bottom: 2px solid var(--maxi-primary-color);
+					border: 2px solid var(--mgl);
+					border-bottom: 2px solid var(--mpc);
 				}
 			}
 
@@ -476,14 +485,14 @@ body .toolbar-item__popover {
 				height: 100%;
 				text-align: center;
 				line-height: 26px;
-				border: 2px solid var(--maxi-grey);
+				border: 2px solid var(--mg);
 			}
 		}
 	}
 
 	&:before,
 	&:after {
-		border-color: var(--maxi-grey-dark) !important;
+		border-color: var(--mdg) !important;
 		// border-left-color: transparent !important;
 		// border-right-color: transparent !important;
 		z-index: -1;
@@ -497,14 +506,14 @@ body .toolbar-item__popover {
 		}
 
 		&__field {
-			color: var(--maxi-black);
+			color: var(--mb);
 
 			.components-range-control__track {
 				& + span {
 					span {
-						background-color: var(--maxi-white) !important;
+						background-color: var(--mw) !important;
 						&:before {
-							border-color: var(--maxi-grey-dark) !important;
+							border-color: var(--mdg) !important;
 						}
 					}
 				}
@@ -512,40 +521,40 @@ body .toolbar-item__popover {
 
 			.components-range-control__number {
 				background-color: transparent;
-				color: var(--maxi-black);
-				border-color: var(--maxi-grey) !important;
+				color: var(--mb);
+				border-color: var(--mg) !important;
 			}
 
 			.maxi-select-control__input {
 				option {
-					color: var(--maxi-black) !important;
+					color: var(--mb) !important;
 				}
 			}
 
 			.components-button {
 				&.is-secondary {
 					background-color: transparent;
-					border-color: var(--maxi-grey) !important;
+					border-color: var(--mg) !important;
 
 					&:hover {
 						background-color: transparent !important;
 					}
 
 					svg {
-						fill: var(--maxi-black) !important;
+						fill: var(--mb) !important;
 					}
 				}
 			}
 		}
 
 		&__label {
-			color: var(--maxi-black);
+			color: var(--mb);
 		}
 	}
 
 	.components-popover__content {
-		background-color: var(--maxi-white) !important;
-		border: 1px solid var(--maxi-grey-light);
+		background-color: var(--mw) !important;
+		border: 1px solid var(--mgl);
 		border-radius: 0;
 		min-width: auto;
 		padding: 12px 11px 0 14px;
@@ -555,12 +564,12 @@ body .toolbar-item__popover {
 		outline: none;
 
 		& * {
-			font-family: 'Inter', sans-serif !important;
+			font-family: var(--maxi-font-sans) !important;
 		}
 
 		.maxi-color-control {
 			margin-bottom: 10px;
-			color: var(--maxi-white);
+			color: var(--mw);
 
 			button.maxi-components-button.maxi-reset-button {
 				margin-top: -4px !important;
@@ -574,7 +583,7 @@ body .toolbar-item__popover {
 				.components-angle-picker-control {
 					&__angle-circle-indicator,
 					&__angle-circle {
-						border-color: var(--maxi-grey);
+						border-color: var(--mg);
 					}
 				}
 
@@ -582,12 +591,12 @@ body .toolbar-item__popover {
 					background: none;
 
 					button.components-toolbar__control {
-						border-color: var(--maxi-grey);
+						border-color: var(--mg);
 
 						&.is-pressed,
 						&:hover {
-							background-color: var(--maxi-grey) !important;
-							border-color: var(--maxi-grey) !important;
+							background-color: var(--mg) !important;
+							border-color: var(--mg) !important;
 							& > svg {
 								background: none;
 							}
@@ -596,28 +605,28 @@ body .toolbar-item__popover {
 				}
 			}
 			&__items {
-				color: var(--maxi-white);
+				color: var(--mw);
 
 				.maxi-tabs-control__button {
-					border-color: var(--maxi-grey);
-					background-color: var(--maxi-grey);
+					border-color: var(--mg);
+					background-color: var(--mg);
 				}
 
 				input {
 					&:checked ~ label {
-						background-color: var(--maxi-grey);
+						background-color: var(--mg);
 					}
 				}
 
 				svg {
-					fill: var(--maxi-white) !important;
+					fill: var(--mw) !important;
 					path {
-						stroke: var(--maxi-white);
+						stroke: var(--mw);
 					}
 				}
 			}
 			&__display {
-				color: var(--maxi-white);
+				color: var(--mw);
 			}
 		}
 
@@ -634,21 +643,21 @@ body .toolbar-item__popover {
 	}
 
 	input[type='number'] {
-		border: 1px solid var(--maxi-grey-light) !important;
-		color: var(--maxi-grey) !important;
+		border: 1px solid var(--mgl) !important;
+		color: var(--mg) !important;
 		flex: 2;
 
 		&::placeholder {
-			color: var(--maxi-grey);
+			color: var(--mg);
 			opacity: 0.8;
 		}
 	}
 
 	.maxi-dimensions-control {
-		color: var(--maxi-white);
+		color: var(--mw);
 
 		&_sync {
-			border-color: var(--maxi-grey) !important;
+			border-color: var(--mg) !important;
 			background-color: transparent !important;
 			width: 36px !important;
 
@@ -657,28 +666,28 @@ body .toolbar-item__popover {
 			}
 
 			&[aria-pressed='true'] {
-				border-color: var(--maxi-white);
+				border-color: var(--mw);
 
 				svg {
-					fill: var(--maxi-white);
+					fill: var(--mw);
 				}
 			}
 		}
 
 		&__mobile-controls-item {
 			height: 36px;
-			border-color: var(--maxi-grey) !important;
+			border-color: var(--mg) !important;
 
 			svg {
 				fill: currentColor;
-				color: var(--maxi-white);
+				color: var(--mw);
 			}
 		}
 
 		&__number {
 			background-color: transparent;
-			border-color: var(--maxi-grey) !important;
-			color: var(--maxi-white);
+			border-color: var(--mg) !important;
+			color: var(--mw);
 		}
 	}
 
@@ -687,7 +696,7 @@ body .toolbar-item__popover {
 		top: -10px !important;
 		right: -10px !important;
 		transform: translate(0, 0);
-		background-color: var(--maxi-primary-color);
+		background-color: var(--mpc);
 		border-radius: 50%;
 		min-width: 22px !important;
 		padding: 0 !important;
@@ -695,11 +704,11 @@ body .toolbar-item__popover {
 		left: auto !important;
 
 		&:hover {
-			background-color: var(--maxi-secondary-color);
+			background-color: var(--msc);
 		}
 
 		svg {
-			fill: var(--maxi-white);
+			fill: var(--mw);
 			width: 16px;
 		}
 	}
@@ -708,7 +717,7 @@ body .toolbar-item__popover {
 		display: flex;
 		&__button {
 			display: block;
-			background: var(--maxi-white);
+			background: var(--mw);
 			width: 100%;
 			margin: 0 4px;
 
@@ -729,16 +738,16 @@ body .toolbar-item__popover {
 	.maxi-tabs-control {
 		&__button {
 			background: transparent;
-			color: var(--maxi-grey-dark);
-			border: 1px solid var(--maxi-grey-light);
+			color: var(--mdg);
+			border: 1px solid var(--mgl);
 			border-right: none;
 			padding-top: 8px;
 			padding-bottom: 8px;
 			font-weight: 400;
 
 			&[aria-pressed='true'] {
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green) !important;
+				color: var(--mpc);
+				background-color: var(--mwg) !important;
 				font-weight: 700;
 			}
 		}
@@ -813,7 +822,7 @@ body.rtl .toolbar-item__popover {
 html[dir='rtl'] {
 	.toolbar-item__more-settings {
 		border-left: unset !important;
-		border-right: 1px solid var(--maxi-grey-light) !important;
+		border-right: 1px solid var(--mgl) !important;
 	}
 	.toolbar-block-custom-label {
 		left: unset !important;
@@ -836,13 +845,13 @@ html[dir='rtl'] {
 	width: 100%;
 	height: 100%;
 	padding: 0;
-	transition: all 0.5s ease;
+	transition: var(--maxi-trans-std);
 	border-radius: 0;
 	background-color: transparent;
-	fill: var(--maxi-black) !important;
+	fill: var(--mb) !important;
 }
 
 // Target the SVG fill when hovering over the button
 .components-button:hover .st0 {
-	fill: var(--maxi-primary-color) !important;
+	fill: var(--mpc) !important;
 }

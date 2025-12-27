@@ -15,7 +15,7 @@ const divider = (
 	>
 		<style type='text/css'>
 			{
-				'.st0{fill:none;stroke:var(--maxi-primary-color);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}'
+				'.st0{fill:none;stroke:var(--mpc);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}'
 			}
 		</style>
 		<g transform='matrix( 1, 0, 0, 1, 0,0) '>

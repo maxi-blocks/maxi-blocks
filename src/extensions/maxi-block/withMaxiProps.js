@@ -85,44 +85,51 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
 
-			const {
-				deviceType,
-				baseBreakpoint,
-				hasSelectedChild,
-				isTyping,
-				blockIndex,
-				blockRootClientId,
-				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-				// isLastBlock,
-			} = useSelect(select => {
-				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
-					select('maxiBlocks');
-				const {
-					hasSelectedInnerBlock,
-					isTyping,
-					getBlockIndex,
-					getBlockRootClientId,
-					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-					// getBlocks,
-				} = select('core/block-editor');
+			const deviceType = useSelect(select => {
+				return select('maxiBlocks').receiveMaxiDeviceType();
+			}, []);
 
-				const currentBlockIndex = getBlockIndex(clientId);
-				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-				// const allBlocks = getBlocks();
+			const baseBreakpoint = useSelect(select => {
+				return select('maxiBlocks').receiveBaseBreakpoint();
+			}, []);
 
-				return {
-					deviceType: receiveMaxiDeviceType(),
-					baseBreakpoint: receiveBaseBreakpoint(),
-					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
-					isTyping: isTyping(),
-					blockIndex: currentBlockIndex,
-					blockRootClientId: getBlockRootClientId(clientId),
-					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-					// isLastBlock:
-					// 	attributes?.isFirstOnHierarchy &&
-					// 	currentBlockIndex === allBlocks.length - 1,
-				};
-			});
+			const hasSelectedChild = useSelect(
+				select => {
+					return select('core/block-editor').hasSelectedInnerBlock(
+						clientId,
+						true
+					);
+				},
+				[clientId]
+			);
+
+			const isTyping = useSelect(select => {
+				return select('core/block-editor').isTyping();
+			}, []);
+
+			const blockIndex = useSelect(
+				select => {
+					return select('core/block-editor').getBlockIndex(clientId);
+				},
+				[clientId]
+			);
+
+			// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
+			// const isLastBlock = useSelect( select => {
+			//     const { getBlocks, getBlockIndex } = select('core/block-editor');
+			//     const allBlocks = getBlocks();
+			//     const currentBlockIndex = getBlockIndex(clientId);
+			//     return attributes?.isFirstOnHierarchy && currentBlockIndex === allBlocks.length - 1;
+			// }, [clientId, attributes?.isFirstOnHierarchy]);
+
+			const blockRootClientId = useSelect(
+				select => {
+					return select('core/block-editor').getBlockRootClientId(
+						clientId
+					);
+				},
+				[clientId]
+			);
 
 			const parentColumnClientId = useMemo(() => {
 				if (repeaterContext?.repeaterStatus) {

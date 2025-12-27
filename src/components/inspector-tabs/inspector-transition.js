@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { Suspense, lazy, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -11,7 +11,9 @@ import InfoBox from '@components/info-box';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ToggleSwitch from '@components/toggle-switch';
-import TransitionControl from '@components/transition-control';
+import Spinner from '@components/spinner';
+const TransitionControl = lazy(() => import(/* webpackChunkName: "maxi-hover-anim" */ '@components/transition-control'));
+
 import {
 	createTransitionObj,
 	getDefaultAttribute,
@@ -167,16 +169,18 @@ const TransitionControlWrapper = props => {
 				/>
 			)}
 			{selected && selected !== 'none' && (
-				<TransitionControl
-					{...getTransitionAttributes(attributes, 'transition')}
-					onChange={onChangeTransition}
-					getDefaultTransitionAttribute={
-						getDefaultTransitionAttribute
-					}
-					transition={selectedTransition}
-					breakpoint={deviceType}
-					type={type}
-				/>
+				<Suspense fallback={<Spinner />}>
+					<TransitionControl
+						{...getTransitionAttributes(attributes, 'transition')}
+						onChange={onChangeTransition}
+						getDefaultTransitionAttribute={
+							getDefaultTransitionAttribute
+						}
+						transition={selectedTransition}
+						breakpoint={deviceType}
+						type={type}
+					/>
+				</Suspense>
 			)}
 		</>
 	) : (

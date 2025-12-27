@@ -3,14 +3,21 @@
  */
 import { __ } from '@wordpress/i18n';
 
+import { lazy, Suspense } from '@wordpress/element';
+
 /**
  * Internal dependencies
  */
 import SettingTabsControl from '@components/setting-tabs-control';
-import BoxShadowControl from '@components/box-shadow-control';
+// import BoxShadowControl from '@components/box-shadow-control';
 import ToggleSwitch from '@components/toggle-switch';
 import { getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
+import ContentLoader from '@components/content-loader';
+
+const BoxShadowControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-box-shadow-control" */ '@components/box-shadow-control')
+);
 
 /**
  * Component
@@ -44,29 +51,31 @@ const boxShadow = ({
 					{
 						label: __('Normal', 'maxi-blocks'),
 						content: (
-							<BoxShadowControl
-								{...getGroupAttributes(
-									attributes,
-									'boxShadow',
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								onChangeInline={obj =>
-									insertInlineStyles({
-										obj,
-										target: inlineTarget,
-									})
-								}
-								onChange={obj => {
-									maxiSetAttributes(obj);
-									cleanInlineStyles(inlineTarget);
-								}}
-								breakpoint={deviceType}
-								clientId={clientId}
-								dropShadow={dropShadow}
-								disableInset={disableInset}
-							/>
+							<Suspense fallback={<ContentLoader />}>
+								<BoxShadowControl
+									{...getGroupAttributes(
+										attributes,
+										'boxShadow',
+										false,
+										prefix
+									)}
+									prefix={prefix}
+									onChangeInline={obj =>
+										insertInlineStyles({
+											obj,
+											target: inlineTarget,
+										})
+									}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										cleanInlineStyles(inlineTarget);
+									}}
+									breakpoint={deviceType}
+									clientId={clientId}
+									dropShadow={dropShadow}
+									disableInset={disableInset}
+								/>
+							</Suspense>
 						),
 					},
 					{
@@ -90,21 +99,23 @@ const boxShadow = ({
 								/>
 
 								{hoverStatus && (
-									<BoxShadowControl
-										{...getGroupAttributes(
-											attributes,
-											'boxShadow',
-											true,
-											prefix
-										)}
-										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
-										breakpoint={deviceType}
-										isHover
-										clientId={clientId}
-										dropShadow={dropShadow}
-										disableInset={disableInset}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BoxShadowControl
+											{...getGroupAttributes(
+												attributes,
+												'boxShadow',
+												true,
+												prefix
+											)}
+											prefix={prefix}
+											onChange={obj => maxiSetAttributes(obj)}
+											breakpoint={deviceType}
+											isHover
+											clientId={clientId}
+											dropShadow={dropShadow}
+											disableInset={disableInset}
+										/>
+									</Suspense>
 								)}
 							</>
 						),
@@ -129,20 +140,22 @@ const boxShadow = ({
 									}
 								/>
 								{activeStatus && (
-									<BoxShadowControl
-										{...getGroupAttributes(
-											attributes,
-											'boxShadow',
-											false,
-											`${prefix}active-`
-										)}
-										prefix={`${prefix}active-`}
-										onChange={obj => maxiSetAttributes(obj)}
-										breakpoint={deviceType}
-										clientId={clientId}
-										dropShadow={dropShadow}
-										disableInset={disableInset}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BoxShadowControl
+											{...getGroupAttributes(
+												attributes,
+												'boxShadow',
+												false,
+												`${prefix}active-`
+											)}
+											prefix={`${prefix}active-`}
+											onChange={obj => maxiSetAttributes(obj)}
+											breakpoint={deviceType}
+											clientId={clientId}
+											dropShadow={dropShadow}
+											disableInset={disableInset}
+										/>
+									</Suspense>
 								)}
 							</>
 						),

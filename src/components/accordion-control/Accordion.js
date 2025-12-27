@@ -61,7 +61,7 @@ const Accordion = props => {
 			{items.map((item, id) => {
 				if (!item) return null;
 
-				const itemsIndicators = !isEmpty(item.content)
+				const itemsIndicators = !isEmpty(item.content) && typeof item.content !== 'function'
 					? cloneElement(item.content)
 					: item;
 

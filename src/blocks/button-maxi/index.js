@@ -8,7 +8,9 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import edit from './edit';
+// import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-button" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss, scProps } from './data';
@@ -19,7 +21,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
+// import './editor.scss';
 import { buttonIcon } from '@maxi-icons';
 
 /**

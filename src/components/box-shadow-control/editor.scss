@@ -2,15 +2,15 @@
 	&__default {
 		width: 2rem;
 		height: 1rem;
-		background: var(--maxi-white);
+		background: var(--mw);
 		&__total {
-			box-shadow: 0px 0px 10px 0px var(--maxi-grey);
+			box-shadow: 0px 0px 10px 0px var(--mg);
 		}
 		&__bottom {
-			box-shadow: 0px 7px 15px -2px var(--maxi-grey);
+			box-shadow: 0px 7px 15px -2px var(--mg);
 		}
 		&__solid {
-			box-shadow: 2.5px 5px 0px 0px var(--maxi-grey);
+			box-shadow: 2.5px 5px 0px 0px var(--mg);
 		}
 	}
 }

@@ -8,7 +8,7 @@ const container = (
 		<defs>
 			<Path
 				id='container__a'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

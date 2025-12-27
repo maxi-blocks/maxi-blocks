@@ -6,8 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
 import ColorControl from '@components/color-control';
-import ClipPathControl from '@components/clip-path-control';
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import {
 	getAttributeKey,
@@ -236,24 +238,26 @@ const ColorLayer = props => {
 				isToolbar={isToolbar}
 			/>
 			{!disableClipPath && (
-				<ClipPathControl
-					onChange={onChange}
-					{...getGroupAttributes(
-						props,
-						'clipPath',
-						false,
-						`${prefix}background-color-`
-					)}
-					{...colorOptions}
-					isHover={isHover}
-					isIB={isIB}
-					prefix={`${prefix}background-color-`}
-					breakpoint={breakpoint}
-					isLayer
-					disableRTC
-					getBounds={getBounds}
-					getBlockClipPath={getBlockClipPath}
-				/>
+				<Suspense fallback={<Spinner />}>
+					<ClipPathControl
+						onChange={onChange}
+						{...getGroupAttributes(
+							props,
+							'clipPath',
+							false,
+							`${prefix}background-color-`
+						)}
+						{...colorOptions}
+						isHover={isHover}
+						isIB={isIB}
+						prefix={`${prefix}background-color-`}
+						breakpoint={breakpoint}
+						isLayer
+						disableRTC
+						getBounds={getBounds}
+						getBlockClipPath={getBlockClipPath}
+					/>
+				</Suspense>
 			)}
 			<SizeAndPositionLayerControl
 				prefix={prefix}

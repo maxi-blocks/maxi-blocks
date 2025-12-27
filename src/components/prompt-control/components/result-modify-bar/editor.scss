@@ -9,21 +9,21 @@
 		}
 
 		& > div > div > div {
-			border-color: var(--maxi-grey-light);
+			border-color: var(--mgl);
 		}
 	}
 
 	&__button {
-		background: var(--maxi-mid-green);
+		background: var(--mmg);
 		border-radius: 10px;
-		color: var(--maxi-black) !important;
+		color: var(--mb) !important;
 		font-size: 12px;
 		height: 30px;
 		margin: 0;
 		padding: 2px 13px;
 		&:hover {
-			background: var(--maxi-white);
-			color: var(--maxi-primary-color) !important;
+			background: var(--mw);
+			color: var(--mpc) !important;
 		}
 	}
 }
@@ -33,5 +33,5 @@
 }
 
 .maxi-prompt-control-results-card__clean-history-button:hover {
-	color: var(--maxi-primary-color) !important;
+	color: var(--mpc) !important;
 }

@@ -4,8 +4,8 @@
 		height: 100%;
 		overflow: visible;
 		path {
-			fill: var(--maxi-white);
-			stroke: var(--maxi-grey-dark);
+			fill: var(--mw);
+			stroke: var(--mdg);
 			stroke-width: 1.5px !important;
 		}
 	}
@@ -15,7 +15,7 @@
 	&__templates {
 		margin-bottom: 5px;
 		& .components-column-pattern-apply_settings {
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			justify-content: center;
 		}
 	}
@@ -24,35 +24,35 @@
 		padding: 0 5px;
 
 		&:active {
-			color: var(--maxi-primary-color) !important;
+			color: var(--mpc) !important;
 		}
 
 		&:hover {
-			border-color: var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
+			border-color: var(--mpc);
+			color: var(--mpc);
 			svg path {
-				stroke: var(--maxi-primary-color) !important;
+				stroke: var(--mpc) !important;
 			}
 		}
 
 		&[aria-pressed='true'] {
-			color: var(--maxi-primary-color);
-			border-color: var(--maxi-primary-color);
+			color: var(--mpc);
+			border-color: var(--mpc);
 			svg path {
-				stroke: var(--maxi-primary-color);
+				stroke: var(--mpc);
 			}
 		}
 
 		&--toolbar {
 			&:hover {
 				svg path {
-					fill: var(--maxi-primary-color);
+					fill: var(--mpc);
 				}
 			}
 
 			&[aria-pressed='true'] {
 				svg path {
-					fill: var(--maxi-primary-color);
+					fill: var(--mpc);
 				}
 			}
 
@@ -66,9 +66,9 @@
 			margin-bottom: 10px;
 			margin-top: -10px;
 			&:hover {
-				background-color: var(--maxi-mid-green);
-				color: var(--maxi-white);
-				border-color: var(--maxi-primary-color);
+				background-color: var(--mmg);
+				color: var(--mw);
+				border-color: var(--mpc);
 			}
 		}
 	}

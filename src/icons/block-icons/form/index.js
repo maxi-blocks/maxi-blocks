@@ -8,7 +8,7 @@ const form = (
 		<Path
 			d='M12.8 16.1h9v5.5h-9v-5.5zm-10.5-7h19.5v5.5H2.3V9.1zm0-7.1h19.5v5.4H2.3V2z'
 			fill='none'
-			stroke='var(--maxi-primary-color)'
+			stroke='var(--mpc)'
 			strokeWidth={1.5}
 			strokeLinecap='round'
 			strokeLinejoin='round'

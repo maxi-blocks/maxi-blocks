@@ -14,12 +14,12 @@ import { CONTENT_TYPE_EXAMPLES } from './constants';
 /**
  * External dependencies
  */
-import { ChatOpenAI } from '@langchain/openai';
-import {
-	ChatPromptTemplate,
-	HumanMessagePromptTemplate,
-	SystemMessagePromptTemplate,
-} from '@langchain/core/prompts';
+// import { ChatOpenAI } from '@langchain/openai';
+// import {
+// 	ChatPromptTemplate,
+// 	HumanMessagePromptTemplate,
+// 	SystemMessagePromptTemplate,
+// } from '@langchain/core/prompts';
 import { isEmpty } from 'lodash';
 
 export const getSiteInformation = AISettings => {
@@ -107,6 +107,15 @@ ${humanMessageTemplate}`,
 		];
 	}
 
+	// Dynamic import for optimization
+	const {
+		ChatPromptTemplate,
+		HumanMessagePromptTemplate,
+		SystemMessagePromptTemplate,
+	} = await import(
+		/* webpackChunkName: "langchain-prompts" */ '@langchain/core/prompts'
+	);
+
 	// Original OpenAI format
 	const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
 		`${directGeneratorInstruction}${systemMessageTemplate}`
@@ -134,30 +143,30 @@ export const getUniqueId = results =>
 		  ) + 1
 		: 1;
 
-export const createChat = (openAIApiKey, modelName, additionalParams) => {
-	const config = {
-		openAIApiKey,
-		modelName,
-		streaming: true,
-	};
+// export const createChat = (openAIApiKey, modelName, additionalParams) => {
+// 	const config = {
+// 		openAIApiKey,
+// 		modelName,
+// 		streaming: true,
+// 	};
 
-	// Only add temperature for non-o1, non-o3, and non-gpt-5 models
-	if (
-		!modelName?.includes('o1') &&
-		!modelName?.includes('o3') &&
-		!modelName?.includes('gpt-5')
-	) {
-		config.temperature = additionalParams?.temperature;
-	}
-	if (modelName?.includes('o1') && !modelName?.includes('mini')) {
-		config.streaming = false;
-	}
-	if (modelName?.includes('gpt-5') || modelName?.includes('o3')) {
-		config.streaming = false;
-	}
+// 	// Only add temperature for non-o1, non-o3, and non-gpt-5 models
+// 	if (
+// 		!modelName?.includes('o1') &&
+// 		!modelName?.includes('o3') &&
+// 		!modelName?.includes('gpt-5')
+// 	) {
+// 		config.temperature = additionalParams?.temperature;
+// 	}
+// 	if (modelName?.includes('o1') && !modelName?.includes('mini')) {
+// 		config.streaming = false;
+// 	}
+// 	if (modelName?.includes('gpt-5') || modelName?.includes('o3')) {
+// 		config.streaming = false;
+// 	}
 
-	return new ChatOpenAI(config);
-};
+// 	return new ChatOpenAI(config);
+// };
 
 export const updateResultsWithLoading = (
 	prevResults,
@@ -196,61 +205,61 @@ export const sanitizeContent = (content, shouldRemoveQuotes) => {
 	return newContent;
 };
 
-export const callChatAndUpdateResults = async ({
-	chat,
-	messages,
-	newId,
-	abortControllerRef,
-	shouldRemoveQuotes = true,
-	setIsGenerating,
-	setResults,
-}) => {
-	abortControllerRef.current = new AbortController();
+// export const callChatAndUpdateResults = async ({
+// 	chat,
+// 	messages,
+// 	newId,
+// 	abortControllerRef,
+// 	shouldRemoveQuotes = true,
+// 	setIsGenerating,
+// 	setResults,
+// }) => {
+// 	abortControllerRef.current = new AbortController();
 
-	setIsGenerating(true);
-	const response = await chat.call(messages, {
-		signal: abortControllerRef.current.signal,
-		callbacks: [
-			{
-				handleLLMNewToken(token) {
-					setResults(prevResults => {
-						const newResults = [...prevResults];
-						const addedResult = newResults.find(
-							result => result.id === newId
-						);
+// 	setIsGenerating(true);
+// 	const response = await chat.call(messages, {
+// 		signal: abortControllerRef.current.signal,
+// 		callbacks: [
+// 			{
+// 				handleLLMNewToken(token) {
+// 					setResults(prevResults => {
+// 						const newResults = [...prevResults];
+// 						const addedResult = newResults.find(
+// 							result => result.id === newId
+// 						);
 
-						if (addedResult?.loading) {
-							addedResult.content = sanitizeContent(
-								addedResult.content + token,
-								shouldRemoveQuotes
-							);
-						}
+// 						if (addedResult?.loading) {
+// 							addedResult.content = sanitizeContent(
+// 								addedResult.content + token,
+// 								shouldRemoveQuotes
+// 							);
+// 						}
 
-						return newResults;
-					});
-				},
-			},
-		],
-	});
-	setIsGenerating(false);
+// 						return newResults;
+// 					});
+// 				},
+// 			},
+// 		],
+// 	});
+// 	setIsGenerating(false);
 
-	abortControllerRef.current = null;
+// 	abortControllerRef.current = null;
 
-	setResults(prevResults => {
-		const newResults = [...prevResults];
-		const addedResult = newResults.find(result => result.id === newId);
+// 	setResults(prevResults => {
+// 		const newResults = [...prevResults];
+// 		const addedResult = newResults.find(result => result.id === newId);
 
-		if (addedResult) {
-			addedResult.content = sanitizeContent(
-				response.content,
-				shouldRemoveQuotes
-			);
-			addedResult.loading = false;
-		}
+// 		if (addedResult) {
+// 			addedResult.content = sanitizeContent(
+// 				response.content,
+// 				shouldRemoveQuotes
+// 			);
+// 			addedResult.loading = false;
+// 		}
 
-		return newResults;
-	});
-};
+// 		return newResults;
+// 	});
+// };
 
 export const callBackendAIProxy = async ({
 	messages,

@@ -4,8 +4,8 @@
 		height: 40px;
 		width: 40px;
 		min-width: 40px;
-		background: var(--maxi-white);
-		border: 1.5px solid var(--maxi-grey-light);
+		background: var(--mw);
+		border: 1.5px solid var(--mgl);
 		border-radius: 3px;
 		box-shadow: none;
 		line-height: 1;
@@ -24,30 +24,30 @@
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
 			background: var(--maxi-mid-color);
-			border-color: var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color);
+			border-color: var(--msc);
+			color: var(--msc);
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: var(--msc);
 				}
 				stroke {
-					stroke: var(--maxi-secondary-color);
+					stroke: var(--msc);
 				}
 			}
 		}
 
 		&:hover {
-			background: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color);
+			background: var(--mwg);
+			border-color: var(--msc);
+			color: var(--msc);
 
 			svg {
 				path {
-					fill: var(--maxi-secondary-color);
+					fill: var(--msc);
 				}
 				stroke {
-					stroke: var(--maxi-secondary-color);
+					stroke: var(--msc);
 				}
 			}
 		}
@@ -73,7 +73,7 @@
 	.maxi-tabs-control__button {
 		border-radius: 3px;
 		margin: 0; // Spacing handled by container gap
-		border: 1.5px solid var(--maxi-grey-light) !important;
+		border: 1.5px solid var(--mgl) !important;
 		padding: 0; // Match top icons
 		height: 40px; // Uniform size
 		width: 40px; // Uniform size
@@ -91,12 +91,12 @@
 		// Active state: emphasize with secondary color border
 		&.is-active,
 		&.maxi-tabs-control__button--selected {
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: var(--msc) !important;
 		}
 
 		// Hover state: emphasize with secondary color border
 		&:hover {
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: var(--msc) !important;
 		}
 
 		svg {

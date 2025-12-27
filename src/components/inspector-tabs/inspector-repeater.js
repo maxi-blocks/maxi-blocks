@@ -6,7 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import Repeater from '@components/repeater';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const Repeater = lazy(() => import(/* webpackChunkName: "maxi-repeater-loop" */ '@components/repeater'));
 import { getGroupAttributes } from '@extensions/styles';
 
 const repeater = ({
@@ -16,14 +18,16 @@ const repeater = ({
 }) =>
 	deviceType === 'general' && {
 		label: __('Repeater', 'maxi-blocks'),
-		content: (
-			<Repeater
-				{...getGroupAttributes(attributes, 'repeater')}
-				clientId={clientId}
-				isRepeaterInherited={isRepeaterInherited}
-				updateInnerBlocksPositions={updateInnerBlocksPositions}
-				onChange={maxiSetAttributes}
-			/>
+		content: () => (
+			<Suspense fallback={<Spinner />}>
+				<Repeater
+					{...getGroupAttributes(attributes, 'repeater')}
+					clientId={clientId}
+					isRepeaterInherited={isRepeaterInherited}
+					updateInnerBlocksPositions={updateInnerBlocksPositions}
+					onChange={maxiSetAttributes}
+				/>
+			</Suspense>
 		),
 	};
 

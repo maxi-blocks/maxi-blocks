@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
-
-/**
- * Internal dependencies
- */
-import AdvancedNumberControl from '@components/advanced-number-control';
-import PositionControl from '@components/position-control';
+import { useEffect, Suspense, lazy } from '@wordpress/element';
+ 
+ /**
+  * Internal dependencies
+  */
+ import AdvancedNumberControl from '@components/advanced-number-control';
+ import Spinner from '@components/spinner';
+ const PositionControl = lazy(() => import(/* webpackChunkName: "maxi-position-layout" */ '@components/position-control'));
 import {
 	getAttributeKey,
 	getDefaultAttribute,
@@ -245,18 +246,20 @@ const SizeAndPositionLayerControl = ({
 				isLayer={isLayer}
 				onlyWidth={onlyWidth}
 			/>
-			<PositionControl
-				{...options}
-				{...equivalentProps}
-				className='maxi-background-control__position'
-				disablePosition
-				defaultAttributes={getDefaultLayerWithBreakpoint(
-					`${type === 'shape' ? 'SVG' : type}Options`,
-					'general',
-					isHover
-				)}
-				disableRTC
-			/>
+			<Suspense fallback={<Spinner />}>
+				<PositionControl
+					{...options}
+					{...equivalentProps}
+					className='maxi-background-control__position'
+					disablePosition
+					defaultAttributes={getDefaultLayerWithBreakpoint(
+						`${type === 'shape' ? 'SVG' : type}Options`,
+						'general',
+						isHover
+					)}
+					disableRTC
+				/>
+			</Suspense>
 		</>
 	);
 };

@@ -67,7 +67,7 @@ const ListItemControl = props => {
 			</div>
 			{isOpen && (
 				<div className='maxi-list-item-control__content maxi-list-item-control__ignore-move'>
-					{content}
+					{typeof content === 'function' ? content() : content}
 				</div>
 			)}
 		</div>

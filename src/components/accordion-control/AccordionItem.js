@@ -38,7 +38,7 @@ const AccordionItem = props => {
 				className={panelClassName}
 				isHidden={!isExpanded}
 			>
-				{content}
+				{typeof content === 'function' ? content() : content}
 			</AccordionItemPanel>
 		</div>
 	);

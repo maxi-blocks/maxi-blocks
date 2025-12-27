@@ -3,7 +3,7 @@
 	flex-wrap: nowrap;
 	margin-bottom: 8px;
 	justify-content: space-between;
-	border-top: 1.5px solid var(--maxi-grey-light);
+	border-top: 1.5px solid var(--mgl);
 	padding-top: 8px;
 
 	&__button {
@@ -12,22 +12,22 @@
 		justify-content: center;
 		width: calc(100% / 8.5);
 		height: 26px;
-		border: 1.5px solid var(--maxi-grey-light);
-		border-radius: 5px;
-		color: var(--maxi-grey-dark) !important;
-		background-color: var(--maxi-white);
-		transition: all 0.5s;
+		border: 1.5px solid var(--mgl);
+		border-radius: var(--maxi-radius-sm);
+		color: var(--mdg) !important;
+		background-color: var(--mw);
+		transition: var(--maxi-trans-std);
 		font-weight: 700;
 		margin-right: 6px;
 
 		&:hover {
-			background-color: var(--maxi-pastel-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
+			background-color: var(--mpg);
+			border: 1.5px solid var(--msc) !important;
 		}
 		&[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green);
-			border: 1.5px solid var(--maxi-secondary-color) !important;
-			color: var(--maxi-secondary-color) !important;
+			background-color: var(--mwg);
+			border: 1.5px solid var(--msc) !important;
+			color: var(--msc) !important;
 			font-weight: 700 !important;
 		}
 		&:first-child {

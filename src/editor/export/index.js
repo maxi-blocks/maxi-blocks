@@ -2,12 +2,12 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, forwardRef } from '@wordpress/element';
+import { useState, forwardRef, lazy, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import MaxiExportPopUp from './MaxiExportPopUp';
+// import MaxiExportPopUp from './MaxiExportPopUp';
 import Button from '@components/button';
 import Icon from '@components/icon';
 
@@ -16,6 +16,8 @@ import Icon from '@components/icon';
  */
 import './editor.scss';
 import { cloudLib } from '@maxi-icons';
+
+const MaxiExportPopUp = lazy(() => import('./MaxiExportPopUp'));
 
 const MaxiExportEditorPopUp = forwardRef((props, settingsRef) => {
 	const [isVisible, setIsVisible] = useState(false);
@@ -32,10 +34,12 @@ const MaxiExportEditorPopUp = forwardRef((props, settingsRef) => {
 				<span>{__('Export', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (
-				<MaxiExportPopUp
-					ref={settingsRef}
-					setIsVisible={setIsVisible}
-				/>
+				<Suspense fallback={null}>
+					<MaxiExportPopUp
+						ref={settingsRef}
+						setIsVisible={setIsVisible}
+					/>
+				</Suspense>
 			)}
 		</>
 	);

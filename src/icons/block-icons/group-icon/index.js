@@ -6,7 +6,7 @@ import { SVG, Path } from '@wordpress/primitives';
 const group = (
 	<SVG viewBox='0 0 24 24'>
 		<Path
-			fill='var(--maxi-primary-color)'
+			fill='var(--mpc)'
 			stroke='none'
 			strokeLinecap='round'
 			strokeLinejoin='round'

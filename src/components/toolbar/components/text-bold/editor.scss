@@ -1,7 +1,7 @@
 .toolbar-item__bold {
 	&[aria-pressed='true'] {
 		svg path {
-			fill: var(--maxi-primary-color);
+			fill: var(--mpc);
 		}
 	}
 }

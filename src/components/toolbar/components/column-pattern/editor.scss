@@ -4,7 +4,7 @@
 	.components-column-pattern {
 		&__icon {
 			path {
-				fill: var(--maxi-light-blue-alt);
+				fill: var(--mlb-a);
 			}
 		}
 
@@ -16,22 +16,22 @@
 			width: 18.8%;
 			padding: 0;
 			height: 26px;
-			margin-right: 1.5%;
+			margin-inline-end: 1.5%;
 
 			&:nth-child(5n + 5) {
-				margin-right: 0;
+				margin-inline-end: 0;
 			}
 
 			&--toolbar {
 				&:hover {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mw);
 					}
 				}
 
 				&[aria-pressed='true'] {
 					svg path {
-						fill: var(--maxi-white);
+						fill: var(--mw);
 					}
 				}
 
@@ -53,13 +53,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.toolbar-item__column-pattern__popover
-		.components-column-pattern__template-button {
-		margin-left: 1.5%;
-		margin-right: 0;
-	}
-}

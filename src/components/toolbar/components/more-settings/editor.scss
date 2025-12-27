@@ -21,7 +21,7 @@
 		margin-left: 0 !important;
 		margin-top: 15px;
 		transform: translate(3px, -13px);
-		background-color: var(--maxi-white);
+		background-color: var(--mw);
 		font-family: 'Inter', sans-serif !important;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
@@ -35,7 +35,7 @@
 					height: 1px;
 					left: 12px;
 					right: 12px;
-					background-color: var(--maxi-grey-light);
+					background-color: var(--mgl);
 					position: absolute;
 					bottom: 0;
 				}
@@ -55,17 +55,17 @@
 			border: none;
 			display: block;
 			width: 100%;
-			text-align: left;
+			text-align: start;
 			position: relative;
 			transition: 0.3s;
 			height: 30px !important;
 			padding: 6px 12px !important;
 			span {
-				float: right;
+				float: inline-end;
 			}
 			&:hover {
-				background-color: var(--maxi-whisper-green);
-				color: var(--maxi-primary-color) !important;
+				background-color: var(--mwg);
+				color: var(--mpc) !important;
 			}
 			&::after {
 				content: '';
@@ -74,7 +74,7 @@
 				left: 0;
 				right: 0;
 				width: 0;
-				background-color: var(--maxi-secondary-color);
+				background-color: var(--msc);
 				position: absolute;
 				bottom: 0;
 				margin: auto;
@@ -87,11 +87,3 @@
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-more-settings__popover .components-button {
-		text-align: right !important;
-	}
-}

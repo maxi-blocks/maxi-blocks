@@ -29,14 +29,14 @@
 			margin-left: 10px;
 			float: right;
 			height: 24px;
-			background-color: var(--maxi-whisper-green);
-			border: 1px solid var(--maxi-mid-green);
+			background-color: var(--mwg);
+			border: 1px solid var(--mmg);
 			border-radius: 0;
-			color: var(--maxi-black);
+			color: var(--mb);
 
 			&:hover {
-				border: 1px solid var(--maxi-secondary-color);
-				background-color: var(--maxi-pastel-green);
+				border: 1px solid var(--msc);
+				background-color: var(--mpg);
 			}
 		}
 	}
@@ -44,25 +44,25 @@
 	.w-tc-editor {
 		margin: 5px 0 0 0;
 		width: 100%;
-		background-color: var(--maxi-white);
-		border: 1px solid var(--maxi-grey-light);
+		background-color: var(--mw);
+		border: 1px solid var(--mgl);
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr !important;
 
 		textarea {
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			font-family: monospace !important;
 		}
 	}
 
 	code {
 		padding: 0;
-		background-color: var(--maxi-white);
+		background-color: var(--mw);
 		font-family: monospace !important;
 
 		span {
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			font-family: monospace !important;
 		}
 	}
@@ -74,11 +74,11 @@
 		font-style: italic;
 
 		&.not-valid {
-			border-left: 2px solid var(--maxi-primary-color);
+			border-left: 2px solid var(--mpc);
 		}
 
 		&.valid {
-			border-left: 2px solid var(--maxi-secondary-color);
+			border-left: 2px solid var(--msc);
 		}
 	}
 }

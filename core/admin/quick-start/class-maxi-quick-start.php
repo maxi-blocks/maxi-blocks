@@ -548,20 +548,20 @@ class MaxiBlocks_QuickStart
 				.permalink-structure-preview {
 					margin-top: 15px;
 					padding: 12px;
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 					border-radius: 4px;
 				}
 				.permalink-structure-preview .description {
 					margin: 0 0 5px 0;
-					color: var(--maxi-grey-dark);
+					color: var(--mdg);
 				}
 				.preview-url {
 					display: block;
 					padding: 8px;
-					background: var(--maxi-white);
-					border: 1px solid var(--maxi-grey-light);
+					background: var(--mw);
+					border: 1px solid var(--mgl);
 					border-radius: 2px;
-					color: var(--maxi-primary-color);
+					color: var(--mpc);
 					word-break: break-all;
 				}
 			</style>

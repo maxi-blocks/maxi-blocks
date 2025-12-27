@@ -2,16 +2,10 @@
 	.maxi-dropdown__url-upload-content {
 		& .maxi-components-popover__content.components-popover__content {
 			transform: translate(0px, -13px);
-			border-radius: 5px;
+			border-radius: var(--maxi-radius-sm);
 		}
 	}
-}
-
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.toolbar-item__replace-image button {
-		text-align: right !important;
+	button {
+		text-align: end !important;
 	}
 }

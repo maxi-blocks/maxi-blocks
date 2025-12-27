@@ -2,20 +2,20 @@
 	.maxi-tabs-control__button {
 		&--selected {
 			path {
-				fill: var(--maxi-secondary-color);
+				fill: var(--msc);
 				stroke: transparent;
 			}
 			&[aria-label='color'] {
 				path {
 					&:first-child {
-						fill: var(--maxi-grey-light);
+						fill: var(--mgl);
 					}
 				}
 			}
 			&[aria-label='border'] {
 				path {
 					fill: transparent;
-					stroke: var(--maxi-secondary-color);
+					stroke: var(--msc);
 				}
 			}
 		}
@@ -29,16 +29,16 @@
 		.maxi-tabs-control__button-none,
 		.maxi-tabs-control__button-solid,
 		.maxi-tabs-control__button-gradient {
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			border-radius: 4px;
-			color: var(--maxi-grey-dark);
-			background-color: var(--maxi-white);
+			color: var(--mdg);
+			background-color: var(--mw);
 			
 
 			&.maxi-tabs-control__button--selected {
-				border: 1px solid var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
-				background-color: var(--maxi-whisper-green);
+				border: 1px solid var(--mpc);
+				color: var(--mpc);
+				background-color: var(--mwg);
 			}
 		}
 	}

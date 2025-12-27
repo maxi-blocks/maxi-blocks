@@ -12,27 +12,27 @@
 	hr {
 		margin-top: 12px !important;
 		margin-bottom: 12px !important;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--mgl);
 	}
 	.block-editor-link-control {
 		.block-editor-url-input__input {
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 
 			&::placeholder {
-				color: var(--maxi-grey-dark) !important;
+				color: var(--mdg) !important;
 			}
 		}
 		&__search-item-info {
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 		}
 		&__search-item-action {
-			color: var(--maxi-white);
-			background-color: var(--maxi-black);
-			box-shadow: inset 0 0 0 1px var(--maxi-white);
+			color: var(--mw);
+			background-color: var(--mb);
+			box-shadow: inset 0 0 0 1px var(--mw);
 
 			&:hover {
-				color: var(--maxi-primary-color) !important;
-				box-shadow: inset 0 0 0 1px var(--maxi-primary-color) !important;
+				color: var(--mpc) !important;
+				box-shadow: inset 0 0 0 1px var(--mpc) !important;
 			}
 		}
 		&__search-item-header {
@@ -47,34 +47,34 @@
 				outline: none;
 			}
 			mark {
-				color: var(--maxi-primary-color);
+				color: var(--mpc);
 			}
 		}
 		&__search-results-wrapper {
 			margin-bottom: 8px;
 		}
 		&__search-item-type {
-			background-color: var(--maxi-black);
+			background-color: var(--mb);
 			border-radius: 2px;
 		}
 		&__search-item {
 			margin-bottom: 3px;
-			color: var(--maxi-white);
-			background-color: var(--maxi-grey-dark);
+			color: var(--mw);
+			background-color: var(--mdg);
 
 			&.is-current {
 				margin-bottom: 8px;
-				color: var(--maxi-white);
-				background-color: var(--maxi-grey-dark);
+				color: var(--mw);
+				background-color: var(--mdg);
 
 				a {
 					margin-bottom: 5px;
-					color: var(--maxi-primary-color);
+					color: var(--mpc);
 					text-decoration: none;
 				}
 			}
 			&:hover {
-				background-color: var(--maxi-grey-dark);
+				background-color: var(--mdg);
 			}
 		}
 		&__search-results-wrapper:before,
@@ -110,7 +110,7 @@
 				overflow: hidden;
 				padding: 8px;
 				border-radius: 0;
-				background-color: var(--maxi-white);
+				background-color: var(--mw);
 				text-decoration: none;
 				transition: 0.5s linear;
 				cursor: pointer;
@@ -118,27 +118,27 @@
 				opacity: 1;
 
 				&:hover {
-					border-color: var(--maxi-grey-light);
+					border-color: var(--mgl);
 					box-shadow: none !important;
 					cursor: pointer;
 				}
 
 				&.is-primary {
-					border-color: var(--maxi-primary-color);
+					border-color: var(--mpc);
 
 					&:focus:enabled {
-						box-shadow: 0 0 0 1px var(--maxi-white),
-							0 0 0 3px var(--maxi-primary-color);
+						box-shadow: 0 0 0 1px var(--mw),
+							0 0 0 3px var(--mpc);
 					}
 				}
 
 				&.is-secondary {
-					border: 1px solid var(--maxi-grey-light);
+					border: 1px solid var(--mgl);
 					box-shadow: none !important;
 
 					&:hover {
-						background-color: var(--maxi-white);
-						border-color: var(--maxi-grey-light);
+						background-color: var(--mw);
+						border-color: var(--mgl);
 					}
 
 					svg {
@@ -149,7 +149,7 @@
 
 				&[type='reset'] {
 					svg {
-						fill: var(--maxi-grey-dark);
+						fill: var(--mdg);
 					}
 				}
 
@@ -193,21 +193,21 @@
 			.components-range-control__tooltip {
 				top: auto;
 				bottom: -26px !important;
-				background-color: var(--maxi-grey-dark);
+				background-color: var(--mdg);
 			}
 			.components-range-control__slider {
 				& + span {
 					height: 2px;
 					margin-top: 6px;
 					margin-right: -8px;
-					background: var(--maxi-grey-light);
+					background: var(--mgl);
 				}
 			}
 			.components-range-control__track {
 				height: 2px;
 				margin-top: 6px;
 				margin-left: -8px;
-				background: var(--maxi-secondary-color) !important;
+				background: var(--msc) !important;
 
 				& + span {
 					top: -10px;
@@ -222,8 +222,8 @@
 						width: 16px;
 						height: 16px;
 						margin-right: -3px;
-						border: 2px solid var(--maxi-black);
-						background-color: var(--maxi-white);
+						border: 2px solid var(--mb);
+						background-color: var(--mw);
 
 						&:after {
 							content: '';
@@ -233,7 +233,7 @@
 							width: 8px;
 							height: 8px;
 							border-radius: 50%;
-							background: var(--maxi-black);
+							background: var(--mb);
 						}
 						&::before {
 							display: none !important;

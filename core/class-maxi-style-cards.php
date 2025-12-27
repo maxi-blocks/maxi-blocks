@@ -185,8 +185,8 @@ class MaxiBlocks_StyleCards
             $styles = $this->get_style_card_styles();
 
             // MVP: ensure no margin-bottom for button
-            if ($styles && str_contains($styles, 'margin-bottom: var(--maxi-light-button-margin-bottom-general);')) {
-                $styles = str_replace('margin-bottom: var(--maxi-light-button-margin-bottom-general);', '', $styles);
+            if ($styles && str_contains($styles, 'margin-bottom: var(--maxi-l-btn-mb-g);')) {
+                $styles = str_replace('margin-bottom: var(--maxi-l-btn-mb-g);', '', $styles);
             }
 
             // SC styles

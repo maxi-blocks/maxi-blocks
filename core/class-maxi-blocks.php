@@ -177,6 +177,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'local_fonts' => get_option('local_fonts'),
                 'bunny_fonts' => get_option('bunny_fonts'),
                 'apiRoot' => esc_url_raw(rest_url()),
+                'pluginBuildUrl' => MAXI_PLUGIN_URL_PATH . 'build/',
             ]);
 
             // Inject MaxiBlocks settings directly to avoid API calls

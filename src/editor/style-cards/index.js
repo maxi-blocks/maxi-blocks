@@ -2,13 +2,13 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, forwardRef } from '@wordpress/element';
+import { useState, forwardRef, lazy, Suspense } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
+// import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
 import Button from '@components/button';
 import Icon from '@components/icon';
 
@@ -17,6 +17,8 @@ import Icon from '@components/icon';
  */
 import './editor.scss';
 import { styleCardMenu } from '@maxi-icons';
+
+const MaxiStyleCardsEditor = lazy(() => import('./maxiStyleCardsEditor'));
 
 const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	const { styleCards } = useSelect(select => {
@@ -41,11 +43,13 @@ const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 				<span>{__('Style cards', 'maxi-blocks')}</span>
 			</Button>
 			{isVisible && (
-				<MaxiStyleCardsEditor
-					ref={settingsRef}
-					styleCards={styleCards}
-					setIsVisible={setIsVisible}
-				/>
+				<Suspense fallback={null}>
+					<MaxiStyleCardsEditor
+						ref={settingsRef}
+						styleCards={styleCards}
+						setIsVisible={setIsVisible}
+					/>
+				</Suspense>
 			)}
 		</>
 	);

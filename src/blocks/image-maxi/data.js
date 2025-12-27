@@ -11,7 +11,9 @@ import AlignmentControl from '@components/alignment-control';
 import BorderControl from '@components/border-control';
 import ImageShape from '@components/image-shape';
 import InfoBox from '@components/info-box';
-import ClipPathControl from '@components/clip-path-control';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import {
 	getAlignmentFlexStyles,
 	getBorderStyles,
@@ -269,20 +271,22 @@ const interactionBuilderSettings = {
 			transitionTarget: transition.block['clip path'].target,
 			hoverProp: 'clip-path-status-hover',
 			component: props => (
-				<ClipPathControl
-					{...props}
-					getBounds={() =>
-						getEditorWrapper()
-							.querySelector(
-								`.${props.attributes.uniqueID}${imageClass}`
-							)
-							.getBoundingClientRect()
-					}
-					getBlockClipPath={() =>
-						getGroupAttributes(props.blockAttributes, 'clipPath')
-					}
-					isIB
-				/>
+				<Suspense fallback={<Spinner />}>
+					<ClipPathControl
+						{...props}
+						getBounds={() =>
+							getEditorWrapper()
+								.querySelector(
+									`.${props.attributes.uniqueID}${imageClass}`
+								)
+								.getBoundingClientRect()
+						}
+						getBlockClipPath={() =>
+							getGroupAttributes(props.blockAttributes, 'clipPath')
+						}
+						isIB
+					/>
+				</Suspense>
 			),
 			helper: props => getClipPathStyles(props),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],

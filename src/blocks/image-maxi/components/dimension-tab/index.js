@@ -14,8 +14,10 @@ import { capitalize, isNil } from 'lodash';
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import AspectRatioControl from '@components/aspect-ratio-control';
-import ImageCropControl from '@components/image-crop-control';
 import ToggleSwitch from '@components/toggle-switch';
+import { lazy, Suspense } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const ImageCropControl = lazy(() => import(/* webpackChunkName: "maxi-image-crop" */ '@components/image-crop-control'));
 import SelectControl from '@components/select-control';
 import {
 	getDefaultAttribute,
@@ -123,18 +125,20 @@ const DimensionTab = props => {
 						}}
 					/>
 					{imageSize === 'custom' && (
-						<ImageCropControl
-							mediaID={mediaID}
-							cropOptions={cropOptions}
-							onChange={cropOptions => {
-								maxiSetAttributes({
-									cropOptions,
-									mediaURL: cropOptions.image.source_url,
-									mediaHeight: cropOptions.image.height,
-									mediaWidth: cropOptions.image.width,
-								});
-							}}
-						/>
+						<Suspense fallback={<Spinner />}>
+							<ImageCropControl
+								mediaID={mediaID}
+								cropOptions={cropOptions}
+								onChange={cropOptions => {
+									maxiSetAttributes({
+										cropOptions,
+										mediaURL: cropOptions.image.source_url,
+										mediaHeight: cropOptions.image.height,
+										mediaWidth: cropOptions.image.width,
+									});
+								}}
+							/>
+						</Suspense>
 					)}
 				</>
 			)}

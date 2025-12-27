@@ -207,6 +207,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	updateDOMReferences() {
+		// Optimization: Return early if we already have a valid reference
+		if (this.editorIframe && this.isElementInDOM(this.editorIframe)) {
+			return;
+		}
+
 		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
@@ -1963,11 +1968,19 @@ class MaxiBlockComponent extends Component {
 		const editorWrapper = target.classList.contains('editor-styles-wrapper')
 			? target
 			: target.querySelector('.editor-styles-wrapper');
+
 		if (editorWrapper) {
-			editorWrapper.setAttribute(
-				'maxi-blocks-responsive',
+			// Optimization: Read before Write to avoid unnecessary layout thrashing
+			// Only update if the value actually changed
+			if (
+				editorWrapper.getAttribute('maxi-blocks-responsive') !==
 				currentBreakpoint
-			);
+			) {
+				editorWrapper.setAttribute(
+					'maxi-blocks-responsive',
+					currentBreakpoint
+				);
+			}
 		}
 	}
 

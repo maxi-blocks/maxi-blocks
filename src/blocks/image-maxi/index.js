@@ -49,3 +49,4 @@ registerBlockType(metadata, {
 	}),
 	customCss,
 });
+

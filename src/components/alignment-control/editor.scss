@@ -4,26 +4,26 @@ body .maxi-alignment-control {
 		padding: 8px;
 		width: 23%;
 		margin-right: 7px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--mgl);
 		border-radius: 4px;
 		transition: background-color 0.4s ease, border-color 0.4s ease;
 
 		svg path {
-			fill: var(--maxi-black);
+			fill: var(--mb);
 			transition: fill 0.4s ease;
 		}
 
 		&:hover {
-			background-color: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
+			background-color: var(--mwg);
+			border-color: var(--msc);
 
 			svg path {
-				fill: var(--maxi-secondary-color);
+				fill: var(--msc);
 			}
 		}
 
 		&--selected svg path {
-			fill: var(--maxi-secondary-color);
+			fill: var(--msc);
 		}
 
 		&:first-child {
@@ -34,8 +34,8 @@ body .maxi-alignment-control {
 		}
 
 		&[aria-pressed='true'] {
-			background-color: var(--maxi-whisper-green);
-			border-color: var(--maxi-secondary-color);
+			background-color: var(--mwg);
+			border-color: var(--msc);
 		}
 	}
 

@@ -5,7 +5,7 @@
 	width: 95%;
 	border-radius: 25px;
 	margin: 25px auto 15px;
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 }
 
 .maxi-quick-start-wrapper {
@@ -23,7 +23,7 @@
 }
 
 .maxi-quick-start-wrapper_inside h1 {
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	display: block;
 	font-weight: 700;
 	margin-top: 80px;
@@ -604,7 +604,7 @@ select[name="permalink_structure"]:focus {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	font-size: 16px !important;
 	color: var(--maxi-admin-black-text) !important;
 	font-weight: 400 !important;
@@ -730,7 +730,7 @@ select[name="permalink_structure"]:focus {
 }
 
 #toplevel_page_maxi-blocks-dashboard p.description {
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif;
+	font-family: var(--maxi-font-sans);
 	font-size: 16px !important;
 	margin-top: 20px !important;
 	font-style: italic !important;
@@ -739,7 +739,7 @@ select[name="permalink_structure"]:focus {
 }
 
 .maxi-quick-start-content p.description {
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif;
+	font-family: var(--maxi-font-sans);
 	font-size: 16px !important;
 	color: var(--maxi-admin-black-text);
 	font-weight: 400;
@@ -890,7 +890,7 @@ form.ais-SearchBox-form span.maxi-error {
 
 .maxi-quick-start-section .theme-info p,
 .maxi-quick-start-section .theme-card .theme-info p {
-	font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: var(--maxi-font-sans) !important;
 	font-size: 16px !important;
 	color: var(--maxi-admin-black-text) !important;
 	font-weight: 400 !important;

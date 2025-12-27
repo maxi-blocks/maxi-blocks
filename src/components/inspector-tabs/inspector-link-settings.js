@@ -6,7 +6,13 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import TypographyControl from '@components/typography-control';
+// import TypographyControl from '@components/typography-control';
+import ContentLoader from '@components/content-loader';
+import { lazy, Suspense } from '@wordpress/element';
+
+const TypographyControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-typography-control" */ '@components/typography-control')
+);
 import { getGroupAttributes } from '@extensions/styles';
 
 /**
@@ -39,32 +45,34 @@ const linkSettings = ({
 			label: __('Link', 'maxi-blocks'),
 			disablePadding: true,
 			content: (
-				<TypographyControl
-					{...getGroupAttributes(
-						attributes,
-						['typography', 'link'],
-						false,
-						prefix
-					)}
-					onChangeInline={(obj, target, isMultiplySelector) =>
-						insertInlineStyles({ obj, target, isMultiplySelector })
-					}
-					onChange={(obj, target) => {
-						maxiSetAttributes(obj);
-						cleanInlineStyles(target);
-					}}
-					setShowLoader={setShowLoader}
-					breakpoint={deviceType}
-					clientId={clientId}
-					blockStyle={blockStyle}
-					styleCardPrefix={styleCardPrefix}
-					inlineTarget={inlineTarget}
-					isList={isList}
-					allowLink
-					linkOnly
-					globalProps={{ target: 'link', type: 'link' }}
-					prefix={prefix}
-				/>
+				<Suspense fallback={<ContentLoader />}>
+					<TypographyControl
+						{...getGroupAttributes(
+							attributes,
+							['typography', 'link'],
+							false,
+							prefix
+						)}
+						onChangeInline={(obj, target, isMultiplySelector) =>
+							insertInlineStyles({ obj, target, isMultiplySelector })
+						}
+						onChange={(obj, target) => {
+							maxiSetAttributes(obj);
+							cleanInlineStyles(target);
+						}}
+						setShowLoader={setShowLoader}
+						breakpoint={deviceType}
+						clientId={clientId}
+						blockStyle={blockStyle}
+						styleCardPrefix={styleCardPrefix}
+						inlineTarget={inlineTarget}
+						isList={isList}
+						allowLink
+						linkOnly
+						globalProps={{ target: 'link', type: 'link' }}
+						prefix={prefix}
+					/>
+				</Suspense>
 			),
 			classNamePanel,
 			depth,

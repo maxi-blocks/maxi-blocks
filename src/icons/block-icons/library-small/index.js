@@ -7,7 +7,7 @@ const librarySmall = (
 	<SVG
 		xmlns='http://www.w3.org/2000/svg'
 		viewBox='0 0 24 24'
-		stroke='var(--maxi-primary-color)'
+		stroke='var(--mpc)'
 		strokeMiterlimit='10'
 		strokeWidth='2'
 	>

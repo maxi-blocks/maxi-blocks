@@ -6,7 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ArrowControl from '@components/arrow-control';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const ArrowControl = lazy(() => import(/* webpackChunkName: "maxi-arrow-settings" */ '@components/arrow-control'));
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
@@ -27,19 +29,21 @@ const calloutArrow = ({ props }) => {
 
 	return {
 		label: __('Callout arrow', 'maxi-blocks'),
-		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
-				<ArrowControl
-					{...getGroupAttributes(attributes, [
-						'blockBackground',
-						'arrow',
-						'border',
-					])}
-					onChange={obj => maxiSetAttributes(obj)}
-					isFullWidth={fullWidth}
-					breakpoint={deviceType}
-				/>
-			</ResponsiveTabsControl>
+		content: () => (
+			<Suspense fallback={<Spinner />}>
+				<ResponsiveTabsControl breakpoint={deviceType}>
+					<ArrowControl
+						{...getGroupAttributes(attributes, [
+							'blockBackground',
+							'arrow',
+							'border',
+						])}
+						onChange={obj => maxiSetAttributes(obj)}
+						isFullWidth={fullWidth}
+						breakpoint={deviceType}
+					/>
+				</ResponsiveTabsControl>
+			</Suspense>
 		),
 		ignoreIndicatorGroups: ['border', 'blockBackground'],
 	};

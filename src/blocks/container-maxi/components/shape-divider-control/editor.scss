@@ -2,11 +2,11 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	.maxi-shape-divider-control {
 		&__shape-selector {
 			&__display {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 
 				&:focus {
-					border-color: var(--maxi-secondary-color);
-					box-shadow: 0 0 0 1px var(--maxi-secondary-color);
+					border-color: var(--msc);
+					box-shadow: 0 0 0 1px var(--msc);
 					outline: 2px solid transparent;
 				}
 			}
@@ -33,12 +33,12 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			&:focus,
 			&--selected {
 				border: none;
-				background-color: var(--maxi-white) !important;
+				background-color: var(--mw) !important;
 				box-shadow: none;
 				outline: none;
 
 				svg {
-					fill: var(--maxi-secondary-color);
+					fill: var(--msc);
 				}
 			}
 		}
@@ -51,15 +51,15 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			display: block;
 			width: 100%;
 			padding: 18px 0;
-			border: 1px solid var(--maxi-mid-green);
+			border: 1px solid var(--mmg);
 			border-radius: 4px !important;
-			background-color: var(--maxi-whisper-green);
+			background-color: var(--mwg);
 			text-align: center;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 			cursor: pointer;
 
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 			}
 		}
 	}

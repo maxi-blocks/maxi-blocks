@@ -16,7 +16,7 @@
 			.maxi-components-button {
 				height: auto;
 				padding: 0;
-				color: var(--maxi-black);
+				color: var(--mb);
 			}
 		}
 	}
@@ -31,30 +31,30 @@
 			}
 			& > div > div {
 				z-index: 10000;
-				border-color: var(--maxi-grey-light);
+				border-color: var(--mgl);
 			}
 		}
 		.maxi-prompt-control__buttons {
 			.maxi-components-button {
 				justify-content: center;
 				width: 100%;
-				border: 1.5px solid var(--maxi-secondary-color);
-				color: var(--maxi-secondary-color) !important;
-				background: var(--maxi-whisper-green);
+				border: 1.5px solid var(--msc);
+				color: var(--msc) !important;
+				background: var(--mwg);
 				font-size: 16px !important;
 				font-weight: 700 !important;
 				border-radius: 30px;
 				text-align: center;
 				&:hover {
-					border-color: var(--maxi-primary-color) !important;
-					background: var(--maxi-mid-green);
+					border-color: var(--mpc) !important;
+					background: var(--mmg);
 				}
 				&:disabled {
 					opacity: 0.6;
 					cursor: not-allowed;
-					border-color: var(--maxi-grey) !important;
-					color: var(--maxi-grey-dark) !important;
-					background: var(--maxi-grey-light);
+					border-color: var(--mg) !important;
+					color: var(--mdg) !important;
+					background: var(--mgl);
 				}
 			}
 		}
@@ -65,9 +65,9 @@
 			height: auto;
 			padding: 4px 8px !important;
 			width: auto;
-			border: 1.5px solid var(--maxi-secondary-color);
-			color: var(--maxi-secondary-color) !important;
-			background: var(--maxi-whisper-green);
+			border: 1.5px solid var(--msc);
+			color: var(--msc) !important;
+			background: var(--mwg);
 			font-size: 12px !important;
 			font-weight: 600 !important;
 			border-radius: 30px;
@@ -75,13 +75,13 @@
 			cursor: pointer;
 
 			&:hover {
-				background: var(--maxi-pastel-green);
-				border-color: var(--maxi-secondary-color);
+				background: var(--mpg);
+				border-color: var(--msc);
 			}
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 2px var(--maxi-cloud-primary-light);
+				box-shadow: 0 0 0 2px var(--mcp-l);
 			}
 		}
 	}

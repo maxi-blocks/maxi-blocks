@@ -19,10 +19,10 @@
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color) !important;
+			border-color: var(--msc) !important;
 
 			path {
-				fill: var(--maxi-secondary-color) !important;
+				fill: var(--msc) !important;
 			}
 		}
 	}
@@ -49,7 +49,7 @@
 	}
 }
 .toolbar-item-move__horizontally {
-	transition: all 0.3s;
+	transition: var(--maxi-trans-std);
 
 	.components-button {
 		border-radius: 0;
@@ -61,7 +61,7 @@
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color);
+			border-color: var(--msc);
 		}
 	}
 	.components-button:nth-child(2) {
@@ -70,7 +70,7 @@
 
 		&:hover {
 			background-color: #eaf2f6 !important;
-			border-color: var(--maxi-secondary-color);
+			border-color: var(--msc);
 		}
 	}
 }

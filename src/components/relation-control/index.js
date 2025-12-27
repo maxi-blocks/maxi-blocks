@@ -405,7 +405,7 @@ const RelationControl = props => {
 								item.title ||
 								__('Untitled interaction', 'maxi-blocks')
 							}
-							content={
+							content={() => (
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
@@ -707,7 +707,7 @@ const RelationControl = props => {
 											/>
 										))}
 								</div>
-							}
+							)}
 							id={item.id}
 							onRemove={() =>
 								onRemoveRelation(item.id, relations)

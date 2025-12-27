@@ -25,18 +25,18 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			margin-right: 10px;
+			margin-inline-end: 10px;
 			width: 20px;
 			height: 20px;
 			min-width: 20px;
 			font-size: 12px !important;
 			border-radius: 50%;
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			padding-top: 2px;
 			padding-right: 1px;
 
 			&:hover {
-				border-color: var(--maxi-grey);
+				border-color: var(--mg);
 			}
 		}
 	}
@@ -48,8 +48,8 @@
 			flex: 1;
 			min-height: unset;
 			max-height: unset !important;
-			border: 1px solid var(--maxi-grey-light);
-			color: var(--maxi-grey);
+			border: 1px solid var(--mgl);
+			color: var(--mg);
 			font-size: 12px;
 			line-height: 14px;
 			width: 100%;
@@ -61,26 +61,17 @@
 		}
 	}
 }
-/*******************************
-* RTL
-*******************************/
+// RTL helper popover styles - intentionally kept for RTL-specific paragraph layout
 html[dir='rtl'] {
-	.maxi-info__help-icon-span {
-		margin-left: 10px;
-		margin-right: 0px;
-	}
 	.maxi-info-helper-popover {
 		margin-top: 12px;
 
-		.components-popover__content {
-			p {
+		.components-popover__content p {
+			display: flex;
+			column-gap: 5px;
+			b {
 				display: flex;
-				column-gap: 5px;
-
-				b {
-					display: flex;
-					white-space: pre;
-				}
+				white-space: pre;
 			}
 		}
 	}

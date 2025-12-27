@@ -6,7 +6,9 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import ClipPathControl from '@components/clip-path-control';
+import { Suspense, lazy } from '@wordpress/element';
+import Spinner from '@components/spinner';
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import GradientControl from '@components/gradient-control';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
@@ -46,24 +48,26 @@ const GradientLayerContent = props => {
 				onChange={onChange}
 			/>
 			{!disableClipPath && (
-				<ClipPathControl
-					onChange={onChange}
-					{...getGroupAttributes(
-						props,
-						'clipPath',
-						false,
-						`${prefix}background-gradient-`
-					)}
-					{...gradientOptions}
-					isHover={isHover}
-					isIB={isIB}
-					prefix={`${prefix}background-gradient-`}
-					breakpoint={breakpoint}
-					isLayer
-					disableRTC
-					getBounds={getBounds}
-					getBlockClipPath={getBlockClipPath}
-				/>
+				<Suspense fallback={<Spinner />}>
+					<ClipPathControl
+						onChange={onChange}
+						{...getGroupAttributes(
+							props,
+							'clipPath',
+							false,
+							`${prefix}background-gradient-`
+						)}
+						{...gradientOptions}
+						isHover={isHover}
+						isIB={isIB}
+						prefix={`${prefix}background-gradient-`}
+						breakpoint={breakpoint}
+						isLayer
+						disableRTC
+						getBounds={getBounds}
+						getBlockClipPath={getBlockClipPath}
+					/>
+				</Suspense>
 			)}
 			<SizeAndPositionLayerControl
 				prefix={prefix}

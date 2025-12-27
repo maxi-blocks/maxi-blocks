@@ -19,8 +19,8 @@
 		&:hover,
 		&--active {
 			span {
-				border-color: var(--maxi-primary-color);
-				color: var(--maxi-primary-color);
+				border-color: var(--mpc);
+				color: var(--mpc);
 			}
 		}
 		.maxi-slider-toolbar__slide-remove {
@@ -39,8 +39,8 @@
 			}
 			&:hover {
 				svg {
-					background-color: var(--maxi-primary-color);
-					border-color: var(--maxi-primary-color);
+					background-color: var(--mpc);
+					border-color: var(--mpc);
 					path {
 						fill: white;
 					}

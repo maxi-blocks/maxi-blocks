@@ -33,7 +33,7 @@ body.maxi-blocks--active .maxi-map-block {
 		display: block;
 		width: 17px;
 		height: 17px;
-		background-color: var(--maxi-white);
+		background-color: var(--mw);
 		border-radius: 50%;
 		transition: 0.1s;
 		span {
@@ -42,9 +42,9 @@ body.maxi-blocks--active .maxi-map-block {
 			transition: 0.1s;
 		}
 		&:hover {
-			background-color: var(--maxi-grey-dark);
+			background-color: var(--mdg);
 			span {
-				color: var(--maxi-white);
+				color: var(--mw);
 			}
 		}
 	}

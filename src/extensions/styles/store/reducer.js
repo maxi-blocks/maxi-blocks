@@ -11,7 +11,7 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
-	constructor(maxSize = 200) {
+	constructor(maxSize = 50) {  // Reduced from 200 to 50 for lower memory
 		super(maxSize);
 		this.memoryStats = {
 			totalSize: 0,
@@ -78,10 +78,10 @@ class CSSCache extends MemoCache {
 	}
 
 	checkMemoryUsage() {
-		// More conservative thresholds to prevent excessive cleanup
-		const maxAverageSize = 100 * 1024; // 100KB per block (was 50KB)
-		const maxTotalSize = 20 * 1024 * 1024; // 20MB total (was 10MB)
-		const minTimeBetweenCleanups = 30000; // 30 seconds minimum between cleanups
+		// Lower thresholds for more aggressive memory management
+		const maxAverageSize = 25 * 1024; // 25KB per block (was 100KB)
+		const maxTotalSize = 5 * 1024 * 1024; // 5MB total (was 20MB)
+		const minTimeBetweenCleanups = 15000; // 15 seconds (was 30s)
 
 		// Don't cleanup too frequently
 		const timeSinceLastCleanup = Date.now() - this.memoryStats.lastCleanup;
@@ -92,8 +92,8 @@ class CSSCache extends MemoCache {
 		// Only cleanup if we actually exceed reasonable thresholds
 		const shouldCleanup =
 			(this.memoryStats.averageSize > maxAverageSize &&
-				this.size() > 50) ||
-			(this.memoryStats.totalSize > maxTotalSize && this.size() > 100);
+				this.size() > 20) ||  // Lower threshold from 50 to 20
+			(this.memoryStats.totalSize > maxTotalSize && this.size() > 30);  // Lower from 100 to 30
 
 		if (shouldCleanup) {
 			const oldSize = this.size();
@@ -153,8 +153,8 @@ class CSSCache extends MemoCache {
 	}
 }
 
-// Global CSS cache instance
-const cssCache = new CSSCache(200);
+// Global CSS cache instance - reduced from 200 to 50 for lower memory
+const cssCache = new CSSCache(50);
 
 // Helper function to chunk large style objects
 const chunkStylesIntoChunks = (styles, size) => {

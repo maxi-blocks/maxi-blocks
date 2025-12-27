@@ -6,12 +6,25 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import MarginControl from '@components/margin-control';
-import PaddingControl from '@components/padding-control';
+import { lazy, Suspense } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+// import MarginControl from '@components/margin-control';
+// import PaddingControl from '@components/padding-control';
 import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import ContentLoader from '@components/content-loader';
+
+const MarginControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-margin-control" */ '@components/margin-control')
+);
+const PaddingControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-padding-control" */ '@components/padding-control')
+);
 
 /**
  * Component
@@ -35,30 +48,34 @@ const marginPadding = ({
 		content: (
 			<>
 				{!disableMargin && (
-					<MarginControl
+					<Suspense fallback={<ContentLoader />}>
+						<MarginControl
+							{...getGroupAttributes(
+								attributes,
+								'margin',
+								false,
+								prefix
+							)}
+							prefix={prefix}
+							onChange={obj => maxiSetAttributes(obj)}
+							breakpoint={deviceType}
+							fullWidth={fullWidth}
+						/>
+					</Suspense>
+				)}
+				<Suspense fallback={<ContentLoader />}>
+					<PaddingControl
 						{...getGroupAttributes(
 							attributes,
-							'margin',
+							'padding',
 							false,
 							prefix
 						)}
 						prefix={prefix}
 						onChange={obj => maxiSetAttributes(obj)}
 						breakpoint={deviceType}
-						fullWidth={fullWidth}
 					/>
-				)}
-				<PaddingControl
-					{...getGroupAttributes(
-						attributes,
-						'padding',
-						false,
-						prefix
-					)}
-					prefix={prefix}
-					onChange={obj => maxiSetAttributes(obj)}
-					breakpoint={deviceType}
-				/>
+				</Suspense>
 			</>
 		),
 	};

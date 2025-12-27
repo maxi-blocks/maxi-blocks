@@ -14,12 +14,7 @@ import Button from '@components/button';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import Dropdown from '@components/dropdown';
 import { TextContext } from '@extensions/text/formats';
-
-/**
- * External dependencies
- */
-
-import { LoremIpsum } from 'react-lorem-ipsum';
+import { generateLoremIpsum } from '@extensions/text/generateLoremIpsum';
 
 /**
  * Styles
@@ -34,13 +29,12 @@ const TextGenerator = props => {
 	const [averageWordsLength, setAverageWordsLength] = useState(15);
 
 	const addText = (sentencesPerParagraph, wordsPerSentence) => {
-		const generatedText = LoremIpsum({
-			p: 1,
+		const generatedText = generateLoremIpsum({
 			avgWordsPerSentence: wordsPerSentence,
 			avgSentencesPerParagraph: sentencesPerParagraph,
-		}).map(text => text);
+		});
 
-		const newContent = `${content}${generatedText[0].props.children}`;
+		const newContent = `${content}${generatedText}`;
 
 		const newFormatsArray = [];
 		const newReplacementsArray = [];
@@ -52,20 +46,17 @@ const TextGenerator = props => {
 	};
 
 	const replaceText = (sentencesPerParagraph, wordsPerSentence) => {
-		const generatedText = LoremIpsum({
-			p: 1,
+		const generatedText = generateLoremIpsum({
 			avgWordsPerSentence: wordsPerSentence,
 			avgSentencesPerParagraph: sentencesPerParagraph,
-		}).map(text => text);
-
-		const newContent = generatedText[0].props.children;
+		});
 
 		const newFormatsArray = [];
 		const newReplacementsArray = [];
-		newFormatsArray.length = newContent.length;
-		newReplacementsArray.length = newContent.length;
+		newFormatsArray.length = generatedText.length;
+		newReplacementsArray.length = generatedText.length;
 
-		onChange({ isList: false, content: generatedText[0].props.children });
+		onChange({ isList: false, content: generatedText });
 		closeMoreSettings();
 	};
 

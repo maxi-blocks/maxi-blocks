@@ -8,7 +8,7 @@ const pricingTablets = (
 		<defs>
 			<Path
 				id='pricing_tables__a'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

@@ -6,28 +6,28 @@
 		justify-content: center;
 		width: 100%;
 		min-height: 120px;
-		color: var(--maxi-grey-dark);
-		background-color: var(--maxi-whisper-green);
+		color: var(--mdg);
+		background-color: var(--mwg);
 		font-size: 13px;
-		border: 1px solid var(--maxi-primary-color);
+		border: 1px solid var(--mpc);
 		border-radius: 10px;
 		box-shadow: none !important;
 
 		.maxi-block-library__modal-button {
 			overflow: hidden;
-			color: var(--maxi-white);
-			background: var(--maxi-primary-color);
+			color: var(--mw);
+			background: var(--mpc);
 			font-family: Inter, sans-serif;
 			font-size: 12px;
 			font-weight: 800;
 			padding: 22px 22px 22px 10px;
-			border: 1px solid var(--maxi-grey-light);
-			transition: all 0.1s;
+			border: 1px solid var(--mgl);
+			transition: var(--maxi-trans-std);
 			border-radius: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			transition: all 0.4s ease;
+			transition: var(--maxi-trans-std);
 
 			svg {
 				width: 36px;
@@ -35,14 +35,14 @@
 				padding: 8px;
 
 				path {
-					fill: var(--maxi-white);
+					fill: var(--mw);
 				}
 			}
 
 			&:hover {
-				background: var(--maxi-white) !important;
-				color: var(--maxi-cloud-primary-contrast) !important;
-				border-color: var(--maxi-primary-color);
+				background: var(--mw) !important;
+				color: var(--mcp-c) !important;
+				border-color: var(--mpc);
 
 				path {
 					fill: var(--maxi-primary-green) !important;
@@ -76,22 +76,22 @@
 	&__replace-icon {
 		width: 30px;
 		height: 30px;
-		background: var(--maxi-white);
+		background: var(--mw);
 		box-shadow: -3px 3px 6px 0px rgb(0 0 0 / 16%) !important;
 		visibility: visible;
-		transition: all 0.4s ease;
+		transition: var(--maxi-trans-std);
 
 		svg {
-			fill: var(--maxi-secondary-color);
+			fill: var(--msc);
 			width: 15px;
 			height: 15px;
 		}
 
 		&:hover {
-			background-color: var(--maxi-pastel-green) !important;
-			transition: all 0.4s ease;
+			background-color: var(--mpg) !important;
+			transition: var(--maxi-trans-std);
 			svg {
-				fill: var(--maxi-primary-color);
+				fill: var(--mpc);
 			}
 		}
 	}

@@ -6,16 +6,16 @@ import { SVG, Path } from '@wordpress/primitives';
 const imageBox = (
 	<SVG viewBox='0 0 24 24'>
 		<Path
-			fill='var(--maxi-primary-color)'
-			stroke='var(--maxi-primary-color)'
+			fill='var(--mpc)'
+			stroke='var(--mpc)'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth='0'
 			d='M15.9 11.8c.5 0 1-.1 1.5-.3 1.7-.7 2.6-2.3 2.3-4-.3-1.8-1.5-3-3-3.3s-3.2.3-4 1.6c-.9 1.3-.7 3 .3 4.6.7.9 1.8 1.4 2.9 1.4zm-1.5-4.9c.3-.5.9-.8 1.6-.8h.4c.5.1 1.2.5 1.5 1.8.2.9-.5 1.5-1.1 1.8-.6.2-1.5.3-2-.5-.7-.9-.8-1.7-.4-2.3z'
 		/>
 		<Path
-			fill='var(--maxi-primary-color)'
-			stroke='var(--maxi-primary-color)'
+			fill='var(--mpc)'
+			stroke='var(--mpc)'
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			strokeWidth='0'

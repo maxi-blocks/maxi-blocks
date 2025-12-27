@@ -16,22 +16,22 @@
 		justify-content: space-between;
 		margin-bottom: 12px;
 		margin-top: -15px;
-		border-bottom: 1px solid var(--maxi-grey-light) !important;
+		border-bottom: 1px solid var(--mgl) !important;
 
 		span {
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 		}
 	}
 
 	&__ai-model {
 		p {
 			font-size: small;
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 		}
 
 		p strong {
 			font-weight: 600;
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 		}
 	}
 }

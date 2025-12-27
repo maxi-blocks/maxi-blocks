@@ -3,14 +3,22 @@
  */
 import { __ } from '@wordpress/i18n';
 
+import { lazy, Suspense } from '@wordpress/element';
+
 /**
  * Internal dependencies
  */
 import SettingTabsControl from '@components/setting-tabs-control';
-import BorderControl from '@components/border-control';
+// import BorderControl from '@components/border-control';
 import ToggleSwitch from '@components/toggle-switch';
 import { getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
+import ContentLoader from '@components/content-loader';
+
+const BorderControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-border-control" */ '@components/border-control')
+);
+
 /**
  * Component
  */
@@ -59,28 +67,30 @@ const border = ({
 					{
 						label: __('Normal', 'maxi-blocks'),
 						content: (
-							<BorderControl
-								{...getGroupAttributes(
-									attributes,
-									['border', 'borderWidth', 'borderRadius'],
-									false,
-									prefix
-								)}
-								prefix={prefix}
-								onChangeInline={obj =>
-									insertInlineStyles({
-										obj,
-										target: finalInlineTarget,
-									})
-								}
-								onChange={obj => {
-									maxiSetAttributes(obj);
-									cleanInlineStyles(finalInlineTarget);
-								}}
-								breakpoint={deviceType}
-								clientId={clientId}
-								globalProps={globalProps}
-							/>
+							<Suspense fallback={<ContentLoader />}>
+								<BorderControl
+									{...getGroupAttributes(
+										attributes,
+										['border', 'borderWidth', 'borderRadius'],
+										false,
+										prefix
+									)}
+									prefix={prefix}
+									onChangeInline={obj =>
+										insertInlineStyles({
+											obj,
+											target: finalInlineTarget,
+										})
+									}
+									onChange={obj => {
+										maxiSetAttributes(obj);
+										cleanInlineStyles(finalInlineTarget);
+									}}
+									breakpoint={deviceType}
+									clientId={clientId}
+									globalProps={globalProps}
+								/>
+							</Suspense>
 						),
 					},
 					{
@@ -105,24 +115,26 @@ const border = ({
 									/>
 								)}
 								{hoverStatus && (
-									<BorderControl
-										{...getGroupAttributes(
-											attributes,
-											[
-												'border',
-												'borderWidth',
-												'borderRadius',
-											],
-											true,
-											prefix
-										)}
-										prefix={prefix}
-										onChange={obj => maxiSetAttributes(obj)}
-										breakpoint={deviceType}
-										isHover
-										clientId={clientId}
-										globalProps={hoverGlobalProps}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BorderControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'border',
+													'borderWidth',
+													'borderRadius',
+												],
+												true,
+												prefix
+											)}
+											prefix={prefix}
+											onChange={obj => maxiSetAttributes(obj)}
+											breakpoint={deviceType}
+											isHover
+											clientId={clientId}
+											globalProps={hoverGlobalProps}
+										/>
+									</Suspense>
 								)}
 							</>
 						),
@@ -147,22 +159,24 @@ const border = ({
 									}
 								/>
 								{activeStatus && (
-									<BorderControl
-										{...getGroupAttributes(
-											attributes,
-											[
-												'border',
-												'borderWidth',
-												'borderRadius',
-											],
-											false,
-											`${prefix}active-`
-										)}
-										prefix={`${prefix}active-`}
-										onChange={obj => maxiSetAttributes(obj)}
-										breakpoint={deviceType}
-										clientId={clientId}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BorderControl
+											{...getGroupAttributes(
+												attributes,
+												[
+													'border',
+													'borderWidth',
+													'borderRadius',
+												],
+												false,
+												`${prefix}active-`
+											)}
+											prefix={`${prefix}active-`}
+											onChange={obj => maxiSetAttributes(obj)}
+											breakpoint={deviceType}
+											clientId={clientId}
+										/>
+									</Suspense>
 								)}
 							</>
 						),

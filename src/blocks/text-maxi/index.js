@@ -1,11 +1,4 @@
 /**
- * BLOCK: maxi-blocks/text-maxi
- *
- * Registering an text block with Gutenberg.
- * Shows an text and a description. A test block.
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';

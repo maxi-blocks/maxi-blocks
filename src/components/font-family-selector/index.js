@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, Suspense, lazy } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,11 +12,12 @@ import { useState, useEffect } from '@wordpress/element';
 import { loadFontsInEditor } from '@extensions/text/fonts';
 import BaseControl from '@components/base-control';
 import ResetButton from '@components/reset-control';
+import Spinner from '@components/spinner';
 
 /**
  * External dependencies
  */
-import Select from 'react-select';
+const Select = lazy(() => import('react-select').then(m => ({ default: m.default })));
 import { isNil } from 'lodash';
 import classnames from 'classnames';
 
@@ -112,25 +113,27 @@ const FontFamilySelector = props => {
 			className='maxi-font-family-selector-control'
 		>
 			<div className='maxi-font-family-selector__container'>
-				<Select
-					className={classes}
-					classNamePrefix='maxi-font-family-selector__control'
-					options={options}
-					value={value}
-					placeholder={__('Search…', 'maxi-blocks')}
-					onChange={(value, clear) =>
-						clear.action === 'select-option'
-							? onFontChange(value)
-							: onFontChange({
-									label: defaultValue,
-									value: defaultValue,
-							  })
-					}
-					isLoading={isNil(options)}
-					isClearable
-					onMenuOpen={() => setValue({})}
-					onMenuClose={e => setValue({ label: font, value: font })}
-				/>
+				<Suspense fallback={<Spinner />}>
+					<Select
+						className={classes}
+						classNamePrefix='maxi-font-family-selector__control'
+						options={options}
+						value={value}
+						placeholder={__('Search…', 'maxi-blocks')}
+						onChange={(value, clear) =>
+							clear.action === 'select-option'
+								? onFontChange(value)
+								: onFontChange({
+										label: defaultValue,
+										value: defaultValue,
+								  })
+						}
+						isLoading={isNil(options)}
+						isClearable
+						onMenuOpen={() => setValue({})}
+						onMenuClose={e => setValue({ label: font, value: font })}
+					/>
+				</Suspense>
 
 				{!disableFontFamilyReset && (
 					<ResetButton

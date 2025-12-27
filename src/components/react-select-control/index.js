@@ -1,7 +1,17 @@
 /**
+ * WordPress dependencies
+ */
+import { Suspense, lazy } from '@wordpress/element';
+
+/**
+ * Internal dependencies
+ */
+import Spinner from '@components/spinner';
+
+/**
  * External dependencies
  */
-import Select from 'react-select';
+const Select = lazy(() => import('react-select').then(m => ({ default: m.default })));
 
 const ReactSelectControl = ({ labelText, ...props }) => {
 	const defaultStyles = {
@@ -42,9 +52,12 @@ const ReactSelectControl = ({ labelText, ...props }) => {
 	return (
 		<div className={className}>
 			{labelText && <label>{labelText}</label>}
-			<Select styles={defaultStyles} {...props} />
+			<Suspense fallback={<Spinner />}>
+				<Select styles={defaultStyles} {...props} />
+			</Suspense>
 		</div>
 	);
 };
 
 export default ReactSelectControl;
+

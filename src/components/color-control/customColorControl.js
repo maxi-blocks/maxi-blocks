@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, Suspense, lazy } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -10,11 +10,12 @@ import { useEffect, useState } from '@wordpress/element';
 import BaseControl from '@components/base-control';
 import OpacityControl from '@components/opacity-control';
 import ResetButton from '@components/reset-control';
+import Spinner from '@components/spinner';
 
 /**
  * External dependencies
  */
-import ChromePicker from 'react-color';
+const ChromePicker = lazy(() => import('react-color').then(m => ({ default: m.ChromePicker })));
 import tinycolor from 'tinycolor2';
 import { isEmpty } from 'lodash';
 
@@ -137,31 +138,33 @@ const CustomColorControl = props => {
 				</div>
 			)}
 			<div className='maxi-color-control__color'>
-				<ChromePicker
-					color={colorPicker}
-					onChange={val => {
-						setIsChanging(true);
-						const tempColor = tinycolor(val.rgb)
-							.toRgbString()
-							.replace(/\s/g, '');
+				<Suspense fallback={<Spinner />}>
+					<ChromePicker
+						color={colorPicker}
+						onChange={val => {
+							setIsChanging(true);
+							const tempColor = tinycolor(val.rgb)
+								.toRgbString()
+								.replace(/\s/g, '');
 
-						setColorPicker(tempColor);
-						onChangeInlineValue({
-							color: tempColor,
-						});
-					}}
-					onChangeComplete={val => {
-						const tempColor = tinycolor(val.rgb)
-							.toRgbString()
-							.replace(/\s/g, '');
+							setColorPicker(tempColor);
+							onChangeInlineValue({
+								color: tempColor,
+							});
+						}}
+						onChangeComplete={val => {
+							const tempColor = tinycolor(val.rgb)
+								.toRgbString()
+								.replace(/\s/g, '');
 
-						onChangeValue({
-							color: tempColor,
-						});
-						setIsChanging(false);
-					}}
-					disableAlpha
-				/>
+							onChangeValue({
+								color: tempColor,
+							});
+							setIsChanging(false);
+						}}
+						disableAlpha
+					/>
+				</Suspense>
 			</div>
 		</>
 	);

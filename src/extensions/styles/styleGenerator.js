@@ -96,11 +96,24 @@ const styleStringGenerator = (
 	return string;
 };
 
-// Simple Last-Result Cache (Size 1)
-// We use reference equality for rawStyles because styleResolver returns cached objects
-let lastCache = {
-	args: null,
-	result: null,
+// Per-block LRU cache to prevent mass regeneration on breakpoint change
+// Each block's styles are cached with their parameters as key
+const blockStyleCache = new Map();
+const MAX_BLOCK_CACHE_SIZE = 50;
+
+const getCacheKey = (rawStyles, isIframe, isSiteEditor, breakpoint, baseBreakpoint, currentBreakpoint) => {
+	// Use object reference for rawStyles since styleResolver returns cached objects
+	const styleId = rawStyles?.__cacheId || 
+		(rawStyles?.uniqueID ? `uid-${rawStyles.uniqueID}` : 
+		Object.keys(rawStyles || {}).slice(0, 3).join('-'));
+	return `${styleId}|${isIframe}|${isSiteEditor}|${breakpoint}|${baseBreakpoint}|${currentBreakpoint}`;
+};
+
+const evictOldestCacheEntry = () => {
+	if (blockStyleCache.size >= MAX_BLOCK_CACHE_SIZE) {
+		const firstKey = blockStyleCache.keys().next().value;
+		blockStyleCache.delete(firstKey);
+	}
 };
 
 const styleGenerator = (
@@ -113,17 +126,14 @@ const styleGenerator = (
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
 
-	// Check cache
-	if (
-		lastCache.args &&
-		lastCache.args.rawStyles === rawStyles &&
-		lastCache.args.isIframe === isIframe &&
-		lastCache.args.isSiteEditor === isSiteEditor &&
-		lastCache.args.breakpoint === breakpoint &&
-		lastCache.args.baseBreakpoint === baseBreakpoint &&
-		lastCache.args.currentBreakpoint === currentBreakpoint
-	) {
-		return lastCache.result;
+	// Check per-block cache (prevents mass regeneration on breakpoint change)
+	const cacheKey = getCacheKey(rawStyles, isIframe, isSiteEditor, breakpoint, baseBreakpoint, currentBreakpoint);
+	const cachedResult = blockStyleCache.get(cacheKey);
+	if (cachedResult !== undefined) {
+		// Move to end of map (LRU behavior)
+		blockStyleCache.delete(cacheKey);
+		blockStyleCache.set(cacheKey, cachedResult);
+		return cachedResult;
 	}
 
 	let response = '';
@@ -179,18 +189,9 @@ const styleGenerator = (
 		});
 	});
 
-	// Update cache
-	lastCache = {
-		args: {
-			rawStyles,
-			isIframe,
-			isSiteEditor,
-			breakpoint,
-			baseBreakpoint,
-			currentBreakpoint,
-		},
-		result: response,
-	};
+	// Store in per-block cache (with LRU eviction)
+	evictOldestCacheEntry();
+	blockStyleCache.set(cacheKey, response);
 
 	return response;
 };

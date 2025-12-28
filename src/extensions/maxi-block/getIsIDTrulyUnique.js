@@ -49,13 +49,12 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 
 		let isUnique = currentEditorCount <= repeatCount;
 
-		if (existsInDB && currentEditorCount === 0) {
-			// ID exists in DB but not in current editor
-			if (isNewInsertion) {
-				// Block was just inserted/pasted = pasting from another page
-				isUnique = false;
-			}
-			// If NOT a new insertion, it means we're loading from DB = keep ID
+		// CRITICAL FIX: If the ID exists in the site-wide DB AND this is a new insertion,
+		// it means the block was pasted from another page. In this case, ALWAYS regenerate
+		// the uniqueID regardless of currentEditorCount.
+		// This catches the case where currentEditorCount is 1 (the pasted block itself).
+		if (existsInDB && isNewInsertion) {
+			isUnique = false;
 		}
 
 		return isUnique;

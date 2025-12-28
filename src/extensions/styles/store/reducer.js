@@ -6,6 +6,7 @@ import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 import { omit } from 'lodash';
+import { saveBlockCSS } from '@extensions/styles/cssCacheDB';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -217,33 +218,11 @@ function reducer(
 				prevSavedAttrsClientId: action.prevSavedAttrsClientId,
 			};
 		case 'SAVE_CSS_CACHE': {
-			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
-
-			// Check if already cached
-			const existingCache = state.cssCache.get(uniqueID);
-			if (existingCache) {
-				// Move to end (mark as recently used)
-				state.cssCache.set(uniqueID, existingCache);
-				return state;
-			}
-
-			const breakpointStyles = BREAKPOINTS.reduce(
-				(acc, breakpoint) => ({
-					...acc,
-					[breakpoint]: styleGenerator(
-						stylesObj,
-						isIframe,
-						isSiteEditor,
-						breakpoint
-					),
-				}),
-				{}
-			);
-
-			// Use LRU cache set method (automatically handles size limits)
-			state.cssCache.set(uniqueID, breakpointStyles);
-
-			return { ...state };
+			// MEMORY OPTIMIZATION: Disabled 7-breakpoint CSS caching
+			// The globalStyleManager already injects CSS into DOM via addBlockStyles()
+			// Keeping CSS in memory for all breakpoints was causing ~1.3GB usage
+			// Now we skip memory caching entirely - the DOM is the source of truth
+			return state;
 		}
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;

@@ -47,20 +47,19 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		const lastChangedBlocks = getLastInsertedBlocks() || [];
 		const isNewInsertion = clientId && lastChangedBlocks.includes(clientId);
 
-		let isUnique = currentEditorCount <= repeatCount;
-
 		// Block was just inserted/pasted = pasting from another page
 		// If the ID already exists in DB, force regeneration even if the ID
 		// appears once in the current editor (the pasted block itself).
 		if (existsInDB && isNewInsertion) {
-			isUnique = false;
-		} else if (existsInDB && currentEditorCount === 0) {
-			// ID exists in DB but not in current editor
-			// If NOT a new insertion, it means we're loading from DB = keep ID
-			isUnique = true;
+			return false;
 		}
 
-		return isUnique;
+		// ID exists in DB but not in current editor: loading from DB = keep ID
+		if (existsInDB && currentEditorCount === 0) {
+			return true;
+		}
+
+		return currentEditorCount <= repeatCount;
 	}
 
 	// Fallback to original tree traversal if cache not loaded

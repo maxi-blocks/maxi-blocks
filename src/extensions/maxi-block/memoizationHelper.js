@@ -10,25 +10,53 @@
  * Used by style resolver and CSS cache for performance optimization
  */
 class MemoCache {
-	constructor(maxSize = 100) {
+	constructor(maxSize = 100, { maxAgeMs = null } = {}) {
 		this.cache = new Map();
 		this.maxSize = maxSize;
+		this.maxAgeMs = maxAgeMs;
+	}
+
+	isEntryExpired(entry) {
+		if (!this.maxAgeMs || !entry?.timestamp) {
+			return false;
+		}
+
+		return Date.now() - entry.timestamp > this.maxAgeMs;
+	}
+
+	pruneExpiredEntries() {
+		if (!this.maxAgeMs || this.cache.size === 0) {
+			return;
+		}
+
+		for (const [key, entry] of this.cache.entries()) {
+			if (this.isEntryExpired(entry)) {
+				this.cache.delete(key);
+			}
+		}
 	}
 
 	get(key) {
-		if (!this.cache.has(key)) {
+		const entry = this.cache.get(key);
+
+		if (!entry) {
+			return undefined;
+		}
+
+		if (this.isEntryExpired(entry)) {
+			this.cache.delete(key);
 			return undefined;
 		}
 
 		// Move to end (most recently used)
-		const value = this.cache.get(key);
 		this.cache.delete(key);
-		this.cache.set(key, value);
+		this.cache.set(key, entry);
 		// eslint-disable-next-line getter-return, consistent-return
-		return value;
+		return entry.value;
 	}
 
 	set(key, value) {
+		this.pruneExpiredEntries();
 		if (this.cache.has(key)) {
 			// Update existing
 			this.cache.delete(key);
@@ -37,7 +65,7 @@ class MemoCache {
 			const firstKey = this.cache.keys().next().value;
 			this.cache.delete(firstKey);
 		}
-		this.cache.set(key, value);
+		this.cache.set(key, { value, timestamp: Date.now() });
 	}
 
 	clear() {
@@ -45,6 +73,7 @@ class MemoCache {
 	}
 
 	size() {
+		this.pruneExpiredEntries();
 		return this.cache.size;
 	}
 }

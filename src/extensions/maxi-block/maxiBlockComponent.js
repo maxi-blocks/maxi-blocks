@@ -543,6 +543,7 @@ class MaxiBlockComponent extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
+		this.cleanupPreviewResources();
 
 		// Update FSE iframe styles even for template parts
 		if (getIsSiteEditor()) {
@@ -677,22 +678,9 @@ class MaxiBlockComponent extends Component {
 			this.fontLoadTimeout = null;
 		}
 
-		// MINIMAL cleanup - only clear essential timeouts
-		if (this.previewTimeouts) {
-			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
-			this.previewTimeouts = null;
-		}
-
-		// Disconnect all preview observers to prevent memory leaks
-		if (this.previewObservers) {
-			this.previewObservers.forEach(observer => {
-				if (observer && typeof observer.disconnect === 'function') {
-					observer.disconnect();
-				}
-			});
-			this.previewObservers.clear();
-			this.previewObservers = null;
-		}
+		this.cleanupPreviewResources({ force: true });
+		this.previewTimeouts = null;
+		this.previewObservers = null;
 
 		// Disconnect FSE observer if present
 		if (this.fseIframeObserver) {
@@ -1041,8 +1029,10 @@ class MaxiBlockComponent extends Component {
 
 		// Track observers for proper cleanup to prevent memory leaks
 		if (!this.previewObservers) {
-			this.previewObservers = new Set();
+			this.previewObservers = new Map();
 		}
+
+		this.cleanupPreviewResources();
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -1170,7 +1160,7 @@ class MaxiBlockComponent extends Component {
 			});
 
 			// Track observer for cleanup to prevent memory leaks
-			this.previewObservers.add(observer);
+			this.previewObservers.set(observer, iframe);
 		});
 	}
 
@@ -2012,6 +2002,42 @@ class MaxiBlockComponent extends Component {
 	 */
 	isElementInDOM(element) {
 		return element && element.isConnected && document.contains(element);
+	}
+
+
+
+	cleanupPreviewResources({ force = false } = {}) {
+		if (this.previewTimeouts) {
+			this.previewTimeouts.forEach((timeout, iframe) => {
+				const shouldClear =
+					force ||
+					!iframe ||
+					!this.isElementInDOM(iframe) ||
+					!iframe.isConnected;
+				if (shouldClear) {
+					clearTimeout(timeout);
+					this.previewTimeouts.delete(iframe);
+				}
+			});
+		}
+
+		if (this.previewObservers) {
+			this.previewObservers.forEach((iframe, observer) => {
+				const shouldDisconnect =
+					force ||
+					!iframe ||
+					!this.isElementInDOM(iframe) ||
+					!iframe.isConnected;
+				if (
+					shouldDisconnect &&
+					observer &&
+					typeof observer.disconnect === 'function'
+				) {
+					observer.disconnect();
+					this.previewObservers.delete(observer);
+				}
+			});
+		}
 	}
 
 	// Returns responsive preview elements if present

@@ -12,6 +12,18 @@
 /**
  * Manages styles for a specific document
  */
+const escapeCssIdentifier = (targetDocument, value) => {
+	const escaper =
+		targetDocument?.defaultView?.CSS?.escape ||
+		(typeof CSS !== 'undefined' ? CSS.escape : null);
+
+	if (typeof escaper === 'function') {
+		return escaper(value);
+	}
+
+	return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+};
+
 class DocumentStyleManager {
 	constructor(targetDocument) {
 		this.document = targetDocument;
@@ -90,6 +102,10 @@ class DocumentStyleManager {
 	 * Flush all pending updates to the DOM
 	 */
 	flush() {
+		if (!this.document?.body || !this.document.body.isConnected) {
+			return;
+		}
+
 		if (!this.consolidatedStyleElement) {
 			this.initializeStyleElement();
 		}
@@ -152,6 +168,31 @@ class DocumentStyleManager {
 	}
 
 	/**
+	 * Remove stale style entries based on DOM/editor state.
+	 * @param {Set<string>|null} activeUniqueIDs - Unique IDs present in editor.
+	 */
+	pruneStaleEntries(activeUniqueIDs) {
+		let didRemove = false;
+		const shouldCheckEditorState = activeUniqueIDs instanceof Set;
+
+		for (const uniqueID of this.blockStyles.keys()) {
+			const isMissingFromEditor =
+				shouldCheckEditorState && !activeUniqueIDs.has(uniqueID);
+			const selector = `.${escapeCssIdentifier(this.document, uniqueID)}`;
+			const isMissingFromDOM = !this.document?.querySelector(selector);
+
+			if (isMissingFromEditor || isMissingFromDOM) {
+				this.blockStyles.delete(uniqueID);
+				didRemove = true;
+			}
+		}
+
+		if (didRemove) {
+			this.scheduleUpdate();
+		}
+	}
+
+	/**
 	 * Destroy this document manager
 	 */
 	destroy() {
@@ -183,11 +224,70 @@ class GlobalStyleManager {
 	}
 
 	/**
+	 * Check whether a document is detached or unavailable.
+	 * @param {Document} targetDocument - Document to check.
+	 * @returns {boolean} - True if detached.
+	 */
+	isDocumentDetached(targetDocument) {
+		return (
+			!targetDocument ||
+			!targetDocument.body ||
+			!targetDocument.body.isConnected ||
+			!targetDocument.defaultView
+		);
+	}
+
+	/**
+	 * Collect unique IDs from the editor state when available.
+	 * @returns {Set<string>|null} - Set of active unique IDs or null.
+	 */
+	getEditorUniqueIDs() {
+		const select = globalThis?.wp?.data?.select;
+		if (typeof select !== 'function') {
+			return null;
+		}
+
+		const editorStore = select('core/block-editor');
+		if (!editorStore?.getBlocks) {
+			return null;
+		}
+
+		const blocks = editorStore.getBlocks() || [];
+		const uniqueIDs = new Set();
+		const stack = [...blocks];
+
+		while (stack.length) {
+			const block = stack.pop();
+			if (!block) continue;
+
+			const uniqueID = block?.attributes?.uniqueID;
+			if (uniqueID) {
+				uniqueIDs.add(uniqueID);
+			}
+
+			if (block.innerBlocks?.length) {
+				stack.push(...block.innerBlocks);
+			}
+		}
+
+		return uniqueIDs;
+	}
+
+	/**
 	 * Get or create a document-specific style manager
 	 * @param {Document} targetDocument - The document to manage styles for
 	 * @returns {DocumentStyleManager} - Document-specific style manager
 	 */
 	getDocumentManager(targetDocument) {
+		if (this.isDocumentDetached(targetDocument)) {
+			const existingManager = this.documentManagers.get(targetDocument);
+			if (existingManager) {
+				existingManager.destroy();
+				this.documentManagers.delete(targetDocument);
+			}
+			return null;
+		}
+
 		if (!this.documentManagers.has(targetDocument)) {
 			this.documentManagers.set(
 				targetDocument,
@@ -213,6 +313,7 @@ class GlobalStyleManager {
 		if (!resolvedDocument) return;
 
 		const manager = this.getDocumentManager(resolvedDocument);
+		if (!manager) return;
 		manager.addBlockStyles(uniqueID, styleContent);
 	}
 
@@ -231,6 +332,7 @@ class GlobalStyleManager {
 		if (!resolvedDocument) return;
 
 		const manager = this.getDocumentManager(resolvedDocument);
+		if (!manager) return;
 		manager.removeBlockStyles(uniqueID);
 	}
 
@@ -238,7 +340,12 @@ class GlobalStyleManager {
 	 * Force flush all pending style updates
 	 */
 	flushAll() {
-		for (const manager of this.documentManagers.values()) {
+		for (const [doc, manager] of this.documentManagers.entries()) {
+			if (this.isDocumentDetached(doc)) {
+				manager.destroy();
+				this.documentManagers.delete(doc);
+				continue;
+			}
 			manager.flush();
 		}
 	}
@@ -247,12 +354,17 @@ class GlobalStyleManager {
 	 * Clean up inactive document managers
 	 */
 	cleanup() {
+		const activeUniqueIDs = this.getEditorUniqueIDs();
+
 		for (const [doc, manager] of this.documentManagers.entries()) {
 			// Check if document is still connected
-			if (!doc.body || !doc.body.isConnected) {
+			if (this.isDocumentDetached(doc)) {
 				manager.destroy();
 				this.documentManagers.delete(doc);
+				continue;
 			}
+
+			manager.pruneStaleEntries(activeUniqueIDs);
 		}
 	}
 

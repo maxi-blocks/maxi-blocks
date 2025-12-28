@@ -17,6 +17,7 @@ import goThroughMaxiBlocks from './goThroughMaxiBlocks';
 
 let unsubscribe = null;
 let previousBlockCount = 0;
+let previousBlocksReference = null;
 let isInitialized = false;
 let lastCacheTime = 0;
 const CACHE_DEBOUNCE_MS = 100; // Debounce cache rebuilds
@@ -86,6 +87,14 @@ export const invalidateEditorCache = () => {
 };
 
 /**
+ * Clear editor cache contents to avoid stale references
+ */
+const clearEditorCache = () => {
+	lastCacheTime = 0;
+	dispatch('maxiBlocks/blocks').updateEditorCache({}, {});
+};
+
+/**
  * Get the current block count for change detection
  *
  * @returns {number} Number of blocks in editor
@@ -100,6 +109,39 @@ const getCurrentBlockCount = () => {
 };
 
 /**
+ * Get the current blocks array reference for change detection
+ *
+ * @returns {Array} Current blocks array
+ */
+const getCurrentBlocksReference = () => {
+	try {
+		return select('core/block-editor')?.getBlocks() || [];
+	} catch (error) {
+		return [];
+	}
+};
+
+/**
+ * Detect if a bulk edit is happening (multi-selection change)
+ *
+ * @returns {boolean} Whether bulk edits are likely
+ */
+const getIsBulkEdit = () => {
+	try {
+		const getMultiSelectedBlockClientIds =
+			select('core/block-editor')?.getMultiSelectedBlockClientIds;
+		if (!getMultiSelectedBlockClientIds) {
+			return false;
+		}
+
+		const selectedIds = getMultiSelectedBlockClientIds() || [];
+		return selectedIds.length > 1;
+	} catch (error) {
+		return false;
+	}
+};
+
+/**
  * Subscribe to block editor changes and invalidate cache conservatively
  * OPTIMIZED: Doesn't build cache on init - waits until first access
  */
@@ -110,16 +152,32 @@ export const initializeEditorCacheSubscription = () => {
 
 	// DON'T build cache on init - let it be lazy
 	previousBlockCount = getCurrentBlockCount();
+	previousBlocksReference = getCurrentBlocksReference();
 
 	// Subscribe to changes - only invalidate, don't rebuild
 	unsubscribe = subscribe(() => {
 		try {
 			const currentBlockCount = getCurrentBlockCount();
+			const currentBlocksReference = getCurrentBlocksReference();
+			const hasBlocksChanged =
+				currentBlocksReference !== previousBlocksReference;
+			const isBulkEdit = getIsBulkEdit() && hasBlocksChanged;
+			const hasBlockRemoval = currentBlockCount < previousBlockCount;
+
+			// Clear stale entries when blocks are removed or bulk edits occur
+			if (hasBlockRemoval || isBulkEdit) {
+				clearEditorCache();
+			}
 
 			// LIGHTWEIGHT: Just invalidate cache if block count changed
-			if (currentBlockCount !== previousBlockCount) {
+			if (
+				currentBlockCount !== previousBlockCount ||
+				isBulkEdit ||
+				hasBlocksChanged
+			) {
 				invalidateEditorCache();
 				previousBlockCount = currentBlockCount;
+				previousBlocksReference = currentBlocksReference;
 			}
 		} catch (error) {
 			// Silently fail - cache will rebuild on next access

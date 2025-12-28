@@ -71,6 +71,10 @@ export class RelationCleanupManager {
 			priority = CLEANUP_PRIORITY.NORMAL;
 		}
 
+		if (this.queuedInstances?.has(instance)) {
+			return;
+		}
+
 		this.cleanupQueue.push({
 			type: 'single',
 			instance,
@@ -79,6 +83,7 @@ export class RelationCleanupManager {
 			timestamp: Date.now(),
 		});
 
+		this.queuedInstances?.add(instance);
 		this.cleanupQueue.sort((a, b) => b.priority - a.priority);
 		this.processQueue();
 	}
@@ -94,7 +99,10 @@ export class RelationCleanupManager {
 		const validInstances = instances.filter(
 			instance => instance && typeof instance === 'object'
 		);
-		if (validInstances.length === 0) {
+		const filteredInstances = this.queuedInstances
+			? validInstances.filter(instance => !this.queuedInstances.has(instance))
+			: validInstances;
+		if (filteredInstances.length === 0) {
 			return;
 		}
 
@@ -110,11 +118,16 @@ export class RelationCleanupManager {
 
 		this.cleanupQueue.push({
 			type: 'batch',
-			instances: validInstances,
+			instances: filteredInstances,
 			priority,
 			timestamp: Date.now(),
 		});
 
+		if (this.queuedInstances) {
+			filteredInstances.forEach(instance => {
+				this.queuedInstances.add(instance);
+			});
+		}
 		this.cleanupQueue.sort((a, b) => b.priority - a.priority);
 		this.processQueue();
 	}
@@ -129,37 +142,46 @@ export class RelationCleanupManager {
 
 		this.isProcessing = true;
 
-		// Continue processing until queue is completely empty
-		while (this.cleanupQueue.length > 0) {
-			// Process current batch of tasks
+		try {
+			// Continue processing until queue is completely empty
 			while (this.cleanupQueue.length > 0) {
-				const task = this.cleanupQueue.shift();
+				// Process current batch of tasks
+				while (this.cleanupQueue.length > 0) {
+					const task = this.cleanupQueue.shift();
 
-				try {
-					if (task.type === 'single') {
-						await this.performSingleInstanceCleanup(
-							task.instance,
-							task.index
-						);
-					} else if (task.type === 'batch') {
-						await this.performBatchCleanup(task.instances);
+					try {
+						if (task?.type === 'single') {
+							await this.performSingleInstanceCleanup(
+								task.instance,
+								task.index
+							);
+						} else if (task?.type === 'batch') {
+							await this.performBatchCleanup(task.instances);
+						} else {
+							console.warn(
+								'MaxiBlocks: Cleanup task skipped due to unknown type:',
+								task?.type
+							);
+						}
+
+						this.stats.successfulCleanups++;
+					} catch (error) {
+						this.stats.failedCleanups++;
+						console.error('MaxiBlocks: Cleanup task failed:', error);
+					} finally {
+						this.releaseTaskReferences(task);
 					}
 
-					this.stats.successfulCleanups++;
-				} catch (error) {
-					this.stats.failedCleanups++;
-					console.error('MaxiBlocks: Cleanup task failed:', error);
+					this.stats.totalCleanups++;
 				}
 
-				this.stats.totalCleanups++;
+				// Re-check for any tasks that arrived while we were processing
+				// This handles the race condition where tasks arrive after the inner loop
+				// completes but before isProcessing is set to false
 			}
-
-			// Re-check for any tasks that arrived while we were processing
-			// This handles the race condition where tasks arrive after the inner loop
-			// completes but before isProcessing is set to false
+		} finally {
+			this.isProcessing = false;
 		}
-
-		this.isProcessing = false;
 	}
 
 	/**
@@ -175,15 +197,20 @@ export class RelationCleanupManager {
 			() => this.nullifyReferences(instance),
 		];
 
-		for (const step of cleanupSteps) {
-			try {
-				await step();
-			} catch (error) {
-				console.warn(
-					`MaxiBlocks: Cleanup step failed for instance ${index}:`,
-					error
-				);
+
+		try {
+			for (const step of cleanupSteps) {
+				try {
+					await step();
+				} catch (error) {
+					console.warn(
+						`MaxiBlocks: Cleanup step failed for instance ${index}:`,
+						error
+					);
+				}
 			}
+		} finally {
+			this.queuedInstances?.delete(instance);
 		}
 	}
 
@@ -327,6 +354,7 @@ export class RelationCleanupManager {
 		const propertiesToNullify = [
 			'element',
 			'observer',
+			'relationSubscriber',
 			'callback',
 			'handlers',
 			'references',
@@ -346,6 +374,20 @@ export class RelationCleanupManager {
 				// Some properties might be read-only, continue anyway
 			}
 		});
+	}
+
+	releaseTaskReferences(task) {
+		if (!task) {
+			return;
+		}
+
+		if (task.instance) {
+			task.instance = null;
+		}
+
+		if (task.instances) {
+			task.instances = null;
+		}
 	}
 
 	/**
@@ -375,6 +417,9 @@ export class RelationCleanupManager {
 	 */
 	reset() {
 		this.cleanupQueue = [];
+		if (this.queuedInstances) {
+			this.queuedInstances = new WeakSet();
+		}
 		this.isProcessing = false;
 		this.stats = {
 			totalCleanups: 0,

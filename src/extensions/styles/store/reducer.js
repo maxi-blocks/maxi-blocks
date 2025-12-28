@@ -12,8 +12,8 @@ const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
-	constructor(maxSize = 50) {  // Reduced from 200 to 50 for lower memory
-		super(maxSize);
+	constructor(maxSize = 200, { maxAgeMs = null } = {}) {
+		super(maxSize, { maxAgeMs });
 		this.memoryStats = {
 			totalSize: 0,
 			averageSize: 0,
@@ -79,10 +79,12 @@ class CSSCache extends MemoCache {
 	}
 
 	checkMemoryUsage() {
-		// Lower thresholds for more aggressive memory management
-		const maxAverageSize = 25 * 1024; // 25KB per block (was 100KB)
-		const maxTotalSize = 5 * 1024 * 1024; // 5MB total (was 20MB)
-		const minTimeBetweenCleanups = 15000; // 15 seconds (was 30s)
+		this.pruneExpiredEntries();
+
+		// More conservative thresholds to prevent excessive cleanup
+		const maxAverageSize = 100 * 1024; // 100KB per block (was 50KB)
+		const maxTotalSize = 20 * 1024 * 1024; // 20MB total (was 10MB)
+		const minTimeBetweenCleanups = 30000; // 30 seconds minimum between cleanups
 
 		// Don't cleanup too frequently
 		const timeSinceLastCleanup = Date.now() - this.memoryStats.lastCleanup;
@@ -93,8 +95,8 @@ class CSSCache extends MemoCache {
 		// Only cleanup if we actually exceed reasonable thresholds
 		const shouldCleanup =
 			(this.memoryStats.averageSize > maxAverageSize &&
-				this.size() > 20) ||  // Lower threshold from 50 to 20
-			(this.memoryStats.totalSize > maxTotalSize && this.size() > 30);  // Lower from 100 to 30
+				this.size() > 50) ||
+			(this.memoryStats.totalSize > maxTotalSize && this.size() > 100);
 
 		if (shouldCleanup) {
 			const oldSize = this.size();
@@ -104,9 +106,9 @@ class CSSCache extends MemoCache {
 				return; // Don't cleanup small caches
 			}
 
-			const entriesToKeep = Math.floor(this.maxSize * 0.6); // Keep 60% of entries (more aggressive)
+			const entriesToKeep = Math.floor(this.maxSize * 0.8); // Keep 80% of entries
 
-			// Get most recently used entries (last 60%)
+			// Get most recently used entries (last 80%)
 			const entries = Array.from(this.cache.entries()).slice(
 				-entriesToKeep
 			);
@@ -116,9 +118,9 @@ class CSSCache extends MemoCache {
 			this.clear();
 
 			// Re-add the most recent entries and recalculate memory stats
-			entries.forEach(([key, value]) => {
-				super.set(key, value);
-				const estimatedSize = JSON.stringify(value).length;
+			entries.forEach(([key, entry]) => {
+				super.set(key, entry.value);
+				const estimatedSize = JSON.stringify(entry.value).length;
 				this.memoryStats.totalSize += estimatedSize;
 			});
 
@@ -154,8 +156,10 @@ class CSSCache extends MemoCache {
 	}
 }
 
-// Global CSS cache instance - reduced from 200 to 50 for lower memory
-const cssCache = new CSSCache(50);
+const CSS_CACHE_MAX_AGE_MS = 10 * 60 * 1000; // 10 minutes
+
+// Global CSS cache instance
+const cssCache = new CSSCache(200, { maxAgeMs: CSS_CACHE_MAX_AGE_MS });
 
 // Helper function to chunk large style objects
 const chunkStylesIntoChunks = (styles, size) => {

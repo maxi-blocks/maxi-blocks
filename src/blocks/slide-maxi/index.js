@@ -9,7 +9,8 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import metadata from './block.json';
 import { customCss } from './data';
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-slide" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';
@@ -19,7 +20,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
+// editor.scss moved to edit.js for code splitting
 import { slideIcon } from '@maxi-icons';
 
 /**

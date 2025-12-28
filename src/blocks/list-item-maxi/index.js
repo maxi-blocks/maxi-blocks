@@ -15,7 +15,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-list-item" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss, scProps } from './data';
@@ -25,7 +26,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 /**
  * Styles and icons
  */
-import './editor.scss';
+// editor.scss moved to edit.js for code splitting
 import './style.scss';
 import { textIcon } from '@maxi-icons';
 

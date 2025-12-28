@@ -31,13 +31,49 @@ class DocumentStyleManager {
 		this.consolidatedStyleElement = null;
 		this.pendingUpdate = false;
 		this.updateScheduled = false;
+		this.lastCSS = ''; // Track last CSS to avoid redundant updates
 
-		// Create the consolidated style element
+		// CSSOM: Try to use CSSStyleSheet + adoptedStyleSheets for modern browsers
+		this.adoptedSheet = null;
+		this.usesAdoptedStyleSheets = false;
+
+		this.initializeStyleInjection();
+	}
+
+	/**
+	 * Initialize the style injection mechanism
+	 * Uses adoptedStyleSheets for modern browsers, <style> element for fallback
+	 */
+	initializeStyleInjection() {
+		// Check for adoptedStyleSheets support (modern browsers)
+		if (
+			typeof CSSStyleSheet !== 'undefined' &&
+			'adoptedStyleSheets' in this.document
+		) {
+			try {
+				this.adoptedSheet = new CSSStyleSheet();
+				// Add to document's adopted stylesheets
+				this.document.adoptedStyleSheets = [
+					...this.document.adoptedStyleSheets,
+					this.adoptedSheet,
+				];
+				this.usesAdoptedStyleSheets = true;
+				return;
+			} catch (e) {
+				// Fall through to <style> element fallback
+				console.warn(
+					'[GlobalStyleManager] adoptedStyleSheets failed, using <style> fallback:',
+					e
+				);
+			}
+		}
+
+		// Fallback: Use traditional <style> element
 		this.initializeStyleElement();
 	}
 
 	/**
-	 * Initialize the consolidated style element
+	 * Initialize the consolidated style element (fallback for older browsers)
 	 */
 	initializeStyleElement() {
 		const styleId = 'maxi-blocks__consolidated-styles';
@@ -99,24 +135,42 @@ class DocumentStyleManager {
 	}
 
 	/**
-	 * Flush all pending updates to the DOM
+	 * Flush all pending updates using CSSOM or DOM
 	 */
 	flush() {
 		if (!this.document?.body || !this.document.body.isConnected) {
 			return;
 		}
 
-		if (!this.consolidatedStyleElement) {
-			this.initializeStyleElement();
-		}
-
 		// Build consolidated CSS
 		const consolidatedCSS = this.buildConsolidatedCSS();
 
-		// Update the style element only if content changed
-		if (this.consolidatedStyleElement.textContent !== consolidatedCSS) {
-			this.consolidatedStyleElement.textContent = consolidatedCSS;
+		// Skip if CSS hasn't changed
+		if (consolidatedCSS === this.lastCSS) {
+			return;
 		}
+		this.lastCSS = consolidatedCSS;
+
+		// CSSOM path: Use replaceSync for fast updates (no re-parsing of entire stylesheet)
+		if (this.usesAdoptedStyleSheets && this.adoptedSheet) {
+			try {
+				this.adoptedSheet.replaceSync(consolidatedCSS);
+				return;
+			} catch (e) {
+				// If replaceSync fails, fall through to <style> element
+				console.warn(
+					'[GlobalStyleManager] replaceSync failed, falling back to <style>:',
+					e
+				);
+				this.usesAdoptedStyleSheets = false;
+			}
+		}
+
+		// DOM path: Update <style> element
+		if (!this.consolidatedStyleElement) {
+			this.initializeStyleElement();
+		}
+		this.consolidatedStyleElement.textContent = consolidatedCSS;
 	}
 
 	/**
@@ -169,21 +223,56 @@ class DocumentStyleManager {
 
 	/**
 	 * Remove stale style entries based on DOM/editor state.
+	 * OPTIMIZED: Uses editor state as primary source, batch DOM query as fallback.
+	 * Avoids O(n) individual DOM queries.
 	 * @param {Set<string>|null} activeUniqueIDs - Unique IDs present in editor.
 	 */
 	pruneStaleEntries(activeUniqueIDs) {
 		let didRemove = false;
-		const shouldCheckEditorState = activeUniqueIDs instanceof Set;
+		const hasEditorState = activeUniqueIDs instanceof Set;
 
-		for (const uniqueID of this.blockStyles.keys()) {
-			const isMissingFromEditor =
-				shouldCheckEditorState && !activeUniqueIDs.has(uniqueID);
-			const selector = `.${escapeCssIdentifier(this.document, uniqueID)}`;
-			const isMissingFromDOM = !this.document?.querySelector(selector);
+		// Fast path: Use editor state as source of truth
+		if (hasEditorState) {
+			for (const uniqueID of this.blockStyles.keys()) {
+				if (!activeUniqueIDs.has(uniqueID)) {
+					this.blockStyles.delete(uniqueID);
+					didRemove = true;
+				}
+			}
+		} else {
+			// Fallback: Batch DOM query - one querySelectorAll, build Set, then compare
+			// Much faster than O(n) individual querySelector calls
+			try {
+				const allBlockEls = this.document?.querySelectorAll(
+					'.maxi-block[data-block]'
+				);
+				const domUniqueIDs = new Set();
 
-			if (isMissingFromEditor || isMissingFromDOM) {
-				this.blockStyles.delete(uniqueID);
-				didRemove = true;
+				if (allBlockEls) {
+					allBlockEls.forEach(el => {
+						// Extract uniqueID from class list (format: maxi-xxx-u)
+						const classes = el.className.split(/\s+/);
+						const uniqueIDClass = classes.find(
+							c => c.endsWith('-u') && c.startsWith('maxi-')
+						);
+						if (uniqueIDClass) {
+							domUniqueIDs.add(uniqueIDClass);
+						}
+					});
+				}
+
+				for (const uniqueID of this.blockStyles.keys()) {
+					if (!domUniqueIDs.has(uniqueID)) {
+						this.blockStyles.delete(uniqueID);
+						didRemove = true;
+					}
+				}
+			} catch (error) {
+				// DOM query failed - skip pruning this cycle
+				console.warn(
+					'[GlobalStyleManager] DOM query failed during prune:',
+					error
+				);
 			}
 		}
 

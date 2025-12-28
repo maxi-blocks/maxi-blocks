@@ -20,32 +20,24 @@ const STORE_NAME = STORE_NAMES.blockCSS;
 const CALLER_NAME = 'cssCacheDB';
 
 /**
- * Generate a simple hash of block attributes for cache invalidation
+ * Generate a hash of block attributes for cache invalidation
+ * Includes blockStyle, style-card version, and all attributes for comprehensive coverage
  * @param {Object} attributes - Block attributes
+ * @param {string} styleCardVersion - Optional style card version for global invalidation
  * @returns {string} Hash string
  */
-export const generateAttributeHash = (attributes) => {
-	// Create a simplified hash from key style-related attributes
-	const relevantKeys = [
-		'uniqueID', 'blockStyle', 'font-size-general', 'color-general',
-		'padding-top-general', 'margin-bottom-general', 'border-style-general'
-	];
-	
-	let hashString = '';
-	relevantKeys.forEach(key => {
-		if (attributes[key] !== undefined) {
-			hashString += `${key}:${JSON.stringify(attributes[key])};`;
-		}
-	});
-	
-	// Simple string hash
-	let hash = 0;
-	for (let i = 0; i < hashString.length; i++) {
-		const char = hashString.charCodeAt(i);
-		hash = ((hash << 5) - hash) + char;
-		hash = hash & hash; // Convert to 32bit integer
+export const generateAttributeHash = (attributes, styleCardVersion = '') => {
+	// Hash the full stringified attributes for comprehensive coverage
+	// This ensures any attribute change invalidates the cache
+	const hashInput = JSON.stringify(attributes) + styleCardVersion;
+
+	// djb2 hash algorithm - fast and reasonably distributed
+	let hash = 5381;
+	for (let i = 0; i < hashInput.length; i++) {
+		const char = hashInput.charCodeAt(i);
+		hash = (hash * 33) ^ char;
 	}
-	return hash.toString(36);
+	return (hash >>> 0).toString(36); // Unsigned 32-bit integer to base36
 };
 
 /**

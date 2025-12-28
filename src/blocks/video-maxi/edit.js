@@ -189,13 +189,20 @@ class edit extends MaxiBlockComponent {
 								<RawHTML>{playIcon}</RawHTML>
 							</div>
 						</div>
-					) : (
+					) : isSelected ? (
 						<Suspense fallback={<ContentLoader />}>
 							<VideoPlayer
 								{...attributes}
 								isSelected={isSelected}
 							/>
 						</Suspense>
+					) : (
+						<div className='maxi-video-block__placeholder'>
+							<ContentLoader />
+							<div className='maxi-video-block__placeholder-text'>
+								Select block to load video
+							</div>
+						</div>
 					))}
 			</MaxiBlock>,
 		];

@@ -109,15 +109,25 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<Suspense fallback={<ContentLoader />}>
-					<MapContent
-						{...this.props}
-						apiKey={googleApiKey}
-						isFirstClick={this.state.isFirstClick}
-						isGoogleMaps={mapProvider === 'googlemaps'}
-						isSelected={isSelected}
-					/>
-				</Suspense>
+				{/* Defer heavy MapContent until block is selected to reduce initial paint cost */}
+				{isSelected ? (
+					<Suspense fallback={<ContentLoader />}>
+						<MapContent
+							{...this.props}
+							apiKey={googleApiKey}
+							isFirstClick={this.state.isFirstClick}
+							isGoogleMaps={mapProvider === 'googlemaps'}
+							isSelected={isSelected}
+						/>
+					</Suspense>
+				) : (
+					<div className='maxi-map-block__placeholder'>
+						<ContentLoader />
+						<div className='maxi-map-block__placeholder-text'>
+							Select block to load map
+						</div>
+					</div>
+				)}
 			</MaxiBlock>,
 		];
 	}

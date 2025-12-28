@@ -8,7 +8,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-row" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';
@@ -19,7 +20,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
  * Styles and icons
  */
 import './style.scss';
-import './editor.scss';
+// editor.scss moved to edit.js for code splitting
 import { rowIcon } from '@maxi-icons';
 
 /**

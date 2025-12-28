@@ -59,6 +59,11 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	loadBlockCSS,
+	saveBlockCSS,
+	generateAttributeHash,
+} from '@extensions/styles/cssCacheDB';
 
 /**
  * External dependencies
@@ -236,6 +241,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		// Step 0: Async IDB CSS warm-up (non-blocking)
+		this.attemptIDBCSSInjection();
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -1819,6 +1827,9 @@ class MaxiBlockComponent extends Component {
 				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
 			);
+
+			// Async save to IndexedDB for cross-reload persistence
+			this.saveToIDBCache(uniqueID, styleContent);
 		}
 
 		return styleContent;
@@ -1834,6 +1845,74 @@ class MaxiBlockComponent extends Component {
 		});
 
 		return styles;
+	}
+
+	/**
+	 * Async attempt to load CSS from IndexedDB and inject directly.
+	 * This is non-blocking - if IDB fails or cache misses, displayStyles will regenerate.
+	 */
+	async attemptIDBCSSInjection() {
+		if (this.isPatternsPreview || this.templateModal) return;
+
+		const { uniqueID } = this.props.attributes;
+		if (!uniqueID) return;
+
+		try {
+			const styleCardVersion =
+				select('maxiBlocks/style-cards')?.receiveActiveStyleCardKey?.() || '';
+			const attributeHash = generateAttributeHash(
+				this.props.attributes,
+				styleCardVersion
+			);
+
+			const cachedCSS = await loadBlockCSS(uniqueID, attributeHash);
+
+			if (cachedCSS) {
+				// Cache hit - inject directly
+				const isSiteEditor = getIsSiteEditor();
+				const targetDoc = isSiteEditor
+					? getSiteEditorIframe()?.contentDocument || document
+					: this.editorIframe?.contentDocument || document;
+
+				addBlockStyles(uniqueID, cachedCSS, targetDoc);
+
+				// Mark as loaded from cache (skip regeneration in displayStyles if still same hash)
+				this.idbCacheLoaded = true;
+				this.idbCacheHash = attributeHash;
+
+				if (
+					window?.localStorage?.getItem('maxiBlocks-debug') === 'true'
+				) {
+					console.log(`[IDB CSS Cache] HIT for ${uniqueID}`);
+				}
+			}
+		} catch (error) {
+			// IDB failures are non-fatal - displayStyles will regenerate
+			console.warn('[IDB CSS Cache] Load error:', error);
+		}
+	}
+
+	/**
+	 * Save CSS to IndexedDB after generation (async, non-blocking)
+	 */
+	saveToIDBCache(uniqueID, cssString) {
+		if (!cssString || !uniqueID) return;
+
+		const styleCardVersion =
+			select('maxiBlocks/style-cards')?.receiveActiveStyleCardKey?.() || '';
+		const attributeHash = generateAttributeHash(
+			this.props.attributes,
+			styleCardVersion
+		);
+
+		// Async save - fire and forget
+		saveBlockCSS(uniqueID, cssString, attributeHash).catch(err => {
+			console.warn('[IDB CSS Cache] Save error:', err);
+		});
+
+		if (window?.localStorage?.getItem('maxiBlocks-debug') === 'true') {
+			console.log(`[IDB CSS Cache] SAVED ${uniqueID}`);
+		}
 	}
 
 	removeStyles() {

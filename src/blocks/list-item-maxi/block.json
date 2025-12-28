@@ -6,6 +6,9 @@
 	"category": "maxi-blocks",
 	"description": "Create list items with numbers, bullets or icons",
 	"parent": ["maxi-blocks/text-maxi"],
+	"supports": {
+		"splitting": true
+	},
 	"example": {
 		"attributes": {
 			"preview": true

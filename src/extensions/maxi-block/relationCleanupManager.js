@@ -24,6 +24,7 @@ export const CLEANUP_PRIORITY = {
 export class RelationCleanupManager {
 	constructor() {
 		this.cleanupQueue = [];
+		this.queuedInstances = typeof WeakSet !== 'undefined' ? new WeakSet() : null;
 		this.isProcessing = false;
 		this.stats = {
 			totalCleanups: 0,

@@ -70,7 +70,12 @@ export const getParallaxLayers = (uniqueID, bgLayers) => {
  * @param {Array} bgLayers The background layers
  * @returns {boolean} True if there are parallax layers, false otherwise
  */
-export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));
+export const getHasParallax = bgLayers =>
+	Array.isArray(bgLayers) &&
+	bgLayers.some(
+		({ type, 'background-image-parallax-status': parallaxStatus }) =>
+			type === 'image' && parallaxStatus
+	);
 
 /**
  * Gets the video layers for a given unique ID
@@ -79,22 +84,8 @@ export const getHasParallax = bgLayers => !isEmpty(getParallaxLayers(bgLayers));
  * @param {Array}  bgLayers The background layers
  * @returns {Object} The video layers
  */
-const getVideoLayers = (uniqueID, bgLayers) => {
-	const response = bgLayers?.filter(layer => layer.type === 'video');
-
-	if (!response || isEmpty(response)) return null;
-	return { [uniqueID]: response };
-};
-
-/**
- * Checks if the background layers have video layers
- *
- * @param {string} uniqueID The unique ID of the element
- * @param {Array}  bgLayers The background layers
- * @returns {boolean} True if there are video layers, false otherwise
- */
-export const getHasVideo = (uniqueID, bgLayers) =>
-	!isEmpty(getVideoLayers(uniqueID, bgLayers));
+export const getHasVideo = (_uniqueID, bgLayers) =>
+	Array.isArray(bgLayers) && bgLayers.some(layer => layer.type === 'video');
 
 /**
  * Gets the scroll effects for a given unique ID

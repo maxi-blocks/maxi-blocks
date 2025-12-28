@@ -48,7 +48,11 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
-import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
+import {
+	addBlockStyles,
+	removeBlockStyles,
+	removeBlockStylesEverywhere,
+} from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
@@ -95,6 +99,8 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+		this.customDataCache = null;
+		this.customDataRelationsCache = null;
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 
@@ -1394,8 +1400,18 @@ class MaxiBlockComponent extends Component {
 
 			const customData = this.getCustomData;
 			if (customData) {
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				customDataRelations = customData[uniqueID]?.relations;
+				const isCustomDataSame =
+					this.customDataCache &&
+					isEqual(this.customDataCache, customData);
+
+				if (!isCustomDataSame) {
+					dispatch('maxiBlocks/customData').updateCustomData(customData);
+					this.customDataCache = customData;
+					this.customDataRelationsCache =
+						customData[uniqueID]?.relations;
+				}
+
+				customDataRelations = this.customDataRelationsCache;
 			}
 		}
 
@@ -1877,6 +1893,9 @@ class MaxiBlockComponent extends Component {
 				removeBlockStyles(uniqueID, doc);
 			}
 		});
+
+		// Ensure any tracked document manager drops this block's styles
+		removeBlockStylesEverywhere(uniqueID);
 
 		// Legacy cleanup: Also remove any old individual style elements with this ID
 		const legacyStyleId = `maxi-blocks__styles--${uniqueID}`;

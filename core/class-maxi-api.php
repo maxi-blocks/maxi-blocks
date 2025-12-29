@@ -938,19 +938,27 @@ if (!class_exists('MaxiBlocks_API')):
             global $wpdb;
             $style_card = $this->get_maxi_blocks_sc_string();
 
-            if ($data['update']) {
+            // Properly access REST request parameters
+            $sc_variables = $data instanceof WP_REST_Request
+                ? $data->get_param('sc_variables')
+                : ($data['sc_variables'] ?? '');
+            $sc_styles = $data instanceof WP_REST_Request
+                ? $data->get_param('sc_styles')
+                : ($data['sc_styles'] ?? '');
+            $update = $data instanceof WP_REST_Request
+                ? $data->get_param('update')
+                : ($data['update'] ?? false);
+
+            if ($update) {
                 $new_style_card = [
-                    '_maxi_blocks_style_card' => $data['sc_variables'],
-                    '_maxi_blocks_style_card_preview' => $data['sc_variables'],
-                    '_maxi_blocks_style_card_styles' => $data['sc_styles'],
-                    '_maxi_blocks_style_card_styles_preview' =>
-                        $data['sc_styles'],
+                    '_maxi_blocks_style_card' => $sc_variables,
+                    '_maxi_blocks_style_card_preview' => $sc_variables,
+                    '_maxi_blocks_style_card_styles' => $sc_styles,
+                    '_maxi_blocks_style_card_styles_preview' => $sc_styles,
                 ];
             } else {
-                $new_style_card['_maxi_blocks_style_card_preview'] =
-                    $data['sc_variables'];
-                $new_style_card['_maxi_blocks_style_card_styles_preview'] =
-                    $data['sc_styles'];
+                $new_style_card['_maxi_blocks_style_card_preview'] = $sc_variables;
+                $new_style_card['_maxi_blocks_style_card_styles_preview'] = $sc_styles;
 
                 if (
                     $style_card !== '' &&
@@ -968,25 +976,8 @@ if (!class_exists('MaxiBlocks_API')):
                             $style_card['_maxi_blocks_style_card_styles'];
                     }
                 } else {
-                    if (is_array($data)) {
-                        $new_style_card['_maxi_blocks_style_card'] =
-                            $data['sc_variables'];
-                        if (array_key_exists('sc_styles', $data)) {
-                            $new_style_card['_maxi_blocks_style_card_styles'] =
-                                $data['sc_styles'];
-                        }
-                    } elseif ($data instanceof WP_REST_Request) {
-                        if ($data->has_param('sc_variables')) {
-                            $new_style_card[
-                                '_maxi_blocks_style_card'
-                            ] = $data->get_param('sc_variables');
-                        }
-                        if ($data->has_param('sc_styles')) {
-                            $new_style_card[
-                                '_maxi_blocks_style_card_styles'
-                            ] = $data->get_param('sc_styles');
-                        }
-                    }
+                    $new_style_card['_maxi_blocks_style_card'] = $sc_variables;
+                    $new_style_card['_maxi_blocks_style_card_styles'] = $sc_styles;
                 }
             }
 

@@ -504,7 +504,9 @@ class MaxiBlocks_StyleCards
 
         if (!$style_card) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                $result = $GLOBALS['default_sc_styles_string'];
+                $result = $this->clean_style_card_styles(
+                    $GLOBALS['default_sc_styles_string']
+                );
                 self::$cache['style_styles'] = $result;
                 self::$cache['cache_keys']['style_styles'] = $cache_key;
                 return $result;
@@ -528,7 +530,9 @@ class MaxiBlocks_StyleCards
             !array_key_exists('_maxi_blocks_style_card_styles_preview', $style_card)
         ) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                $result = $GLOBALS['default_sc_styles_string'];
+                $result = $this->clean_style_card_styles(
+                    $GLOBALS['default_sc_styles_string']
+                );
                 self::$cache['style_styles'] = $result;
                 self::$cache['cache_keys']['style_styles'] = $cache_key;
                 return $result;
@@ -553,7 +557,9 @@ class MaxiBlocks_StyleCards
 
         if (!$sc_variables || empty($sc_variables)) {
             if (isset($GLOBALS['default_sc_styles_string'])) {
-                $result = $GLOBALS['default_sc_styles_string'];
+                $result = $this->clean_style_card_styles(
+                    $GLOBALS['default_sc_styles_string']
+                );
                 self::$cache['style_styles'] = $result;
                 self::$cache['cache_keys']['style_styles'] = $cache_key;
                 return $result;
@@ -565,10 +571,21 @@ class MaxiBlocks_StyleCards
         }
 
         // Cache the final result
+        $sc_variables = $this->clean_style_card_styles($sc_variables);
+
         self::$cache['style_styles'] = $sc_variables;
         self::$cache['cache_keys']['style_styles'] = $cache_key;
 
         return $sc_variables;
+    }
+
+    private function clean_style_card_styles($styles)
+    {
+        if (!$styles || !str_contains($styles, 'false')) {
+            return $styles;
+        }
+
+        return str_replace(', false', '', $styles);
     }
 
     public static function get_maxi_blocks_current_style_cards()

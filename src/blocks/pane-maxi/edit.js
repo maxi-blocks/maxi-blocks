@@ -21,7 +21,6 @@ import {
 	withMaxiContextLoopContext,
 } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
-import { getAllowedBlocks } from '@extensions/common/getAllowedBlocks';
 
 const boxedPreset = {
 	'border-bottom-left-radius-general': 10,
@@ -49,15 +48,21 @@ const Content = forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild, hasInnerBlocks, isOpen } =
 		props;
 
-	const ALLOWED_BLOCKS = getAllowedBlocks([
-		'maxi-blocks/container-maxi',
-		'maxi-blocks/column-maxi',
-		'maxi-blocks/pane-maxi',
-		'maxi-blocks/maxi-cloud',
-		'maxi-blocks/slide-maxi',
-		'maxi-blocks/list-item-maxi',
-		'core/list-item',
-	]);
+	const ALLOWED_BLOCKS = wp.blocks
+		.getBlockTypes()
+		.map(block => block.name)
+		.filter(
+			blockName =>
+				[
+					'maxi-blocks/container-maxi',
+					'maxi-blocks/column-maxi',
+					'maxi-blocks/pane-maxi',
+					'maxi-blocks/maxi-cloud',
+					'maxi-blocks/slide-maxi',
+					'maxi-blocks/list-item-maxi',
+					'core/list-item',
+				].indexOf(blockName) === -1
+		);
 
 	return (
 		<>

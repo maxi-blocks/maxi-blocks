@@ -38,7 +38,6 @@ if (process.env.NODE_ENV !== 'production') {
 let cacheLoadAttempts = 0;
 const MAX_CACHE_LOAD_ATTEMPTS = 3;
 const CACHE_RETRY_DELAY = 5000; // 5 seconds
-const MAX_UNIQUE_ID_CACHE_ENTRIES = 20000;
 
 /**
  * Fetch all pages of unique IDs from the API with pagination support
@@ -84,14 +83,6 @@ const fetchAllUniqueIDs = async (clientHash = '') => {
 		totalPages = firstPage.total_pages || 1;
 		serverHash = firstPage.hash || '';
 		allUniqueIDs.push(...firstPage.data);
-
-		if (firstPage.total > MAX_UNIQUE_ID_CACHE_ENTRIES) {
-			return {
-				skipped: true,
-				hash: serverHash,
-				total: firstPage.total,
-			};
-		}
 
 		// Fetch remaining pages if needed
 		if (totalPages > 1) {
@@ -156,22 +147,7 @@ const fetchAllUniqueIDs = async (clientHash = '') => {
 const initUniqueIDCache = async () => {
 	try {
 		// Step 1: Try to load from IndexedDB
-		let cachedData = await loadFromIndexedDB();
-
-		if (
-			cachedData &&
-			cachedData.uniqueIDs &&
-			cachedData.uniqueIDs.length > MAX_UNIQUE_ID_CACHE_ENTRIES
-		) {
-			// eslint-disable-next-line no-console
-			console.warn(
-				`[initUniqueIDCache] Skipping oversized cache (${JSON.stringify(
-					cachedData.uniqueIDs.length
-				)} IDs). Clearing stored cache to reduce memory usage.`
-			);
-			await clearIndexedDB();
-			cachedData = null;
-		}
+		const cachedData = await loadFromIndexedDB();
 
 		if (
 			cachedData &&
@@ -192,17 +168,6 @@ const initUniqueIDCache = async () => {
 				return;
 			}
 
-			if (result && result.skipped) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					`[initUniqueIDCache] Unique ID cache disabled for large datasets (${JSON.stringify(
-						result.total
-					)} IDs).`
-				);
-				cacheLoadAttempts = 0;
-				return;
-			}
-
 			// Cache was stale, update with new data
 			if (result && result.uniqueIDs) {
 				dispatch('maxiBlocks/blocks').loadUniqueIDCache(
@@ -213,17 +178,6 @@ const initUniqueIDCache = async () => {
 		} else {
 			// Step 3: No cache, fetch everything
 			const result = await fetchAllUniqueIDs();
-
-			if (result && result.skipped) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					`[initUniqueIDCache] Unique ID cache disabled for large datasets (${JSON.stringify(
-						result.total
-					)} IDs).`
-				);
-				cacheLoadAttempts = 0;
-				return;
-			}
 
 			if (result && result.uniqueIDs) {
 				dispatch('maxiBlocks/blocks').loadUniqueIDCache(

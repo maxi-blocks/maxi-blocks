@@ -9,13 +9,14 @@ import { registerBlockType } from '@wordpress/blocks';
  */
 import metadata from './block.json';
 import './style.scss';
-import './editor.scss';
+// editor.scss moved to edit.js for code splitting
 import { columnIcon } from '@maxi-icons';
 
 /**
  * Block dependencies
  */
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-column" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';

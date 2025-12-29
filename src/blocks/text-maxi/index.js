@@ -1,11 +1,4 @@
 /**
- * BLOCK: maxi-blocks/text-maxi
- *
- * Registering an text block with Gutenberg.
- * Shows an text and a description. A test block.
- */
-
-/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -15,7 +8,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-text" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import transforms from './transforms';
@@ -26,7 +20,7 @@ import withMaxiPreview from '@extensions/maxi-block/withMaxiPreview';
 /**
  * Styles and icons
  */
-import './editor.scss';
+// editor.scss moved to edit.js for code splitting
 import './style.scss';
 import { textIcon } from '@maxi-icons';
 

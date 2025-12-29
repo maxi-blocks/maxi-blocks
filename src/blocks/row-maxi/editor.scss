@@ -16,7 +16,7 @@
 
 			span {
 				font-size: 16px;
-				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+				font-family: var(--maxi-font-sans) !important;
 				font-weight: 700;
 			}
 		}
@@ -45,8 +45,8 @@
 
 				&:hover {
 					svg {
-						stroke: var(--maxi-primary-color);
-						fill: var(--maxi-white);
+						stroke: var(--mpc);
+						fill: var(--mw);
 						filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
 					}
 				}
@@ -57,7 +57,7 @@
 					max-width: 152px;
 					height: auto;
 					max-height: 48px;
-					fill: var(--maxi-light-blue-alt);
+					fill: var(--mlb-a);
 				}
 			}
 		}
@@ -67,7 +67,7 @@
 		.editor-styles-wrapper & {
 			&.is-selected {
 				&::after {
-					border-color: var(--maxi-light-blue-alt) !important;
+					border-color: var(--mlb-a) !important;
 				}
 			}
 			&::after {
@@ -81,7 +81,7 @@
 	}
 
 	button svg {
-		transition: all 0.3s ease;
+		transition: var(--maxi-trans-std);
 	}
 }
 

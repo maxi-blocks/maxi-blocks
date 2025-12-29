@@ -2,13 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Suspense, lazy } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import IconControl from '@components/icon-control';
+const IconControl = lazy(() => import(/* webpackChunkName: "maxi-symbol-settings" */ '@components/icon-control'));
 import ToggleSwitch from '@components/toggle-switch';
 import SettingTabsControl from '@components/setting-tabs-control';
+import Spinner from '@components/spinner';
 import { getGroupAttributes, getIconWithColor } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
 
@@ -94,6 +96,7 @@ const icon = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
+						<Suspense fallback={<Spinner />}>
 							<IconControl
 								{...getGroupAttributes(
 									attributes,
@@ -119,7 +122,8 @@ const icon = ({
 								inlineTarget={inlineTarget}
 								{...iconControlBasicProps}
 							/>
-						),
+						</Suspense>
+					),
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -153,19 +157,21 @@ const icon = ({
 												})
 											}
 										/>
-										<IconControl
-											{...getGroupAttributes(
-												attributes,
-												groupAttributes,
-												true,
-												prefix
-											)}
-											onChange={obj => {
-												maxiSetAttributes(obj);
-											}}
-											isHover
-											{...iconControlBasicProps}
-										/>
+										<Suspense fallback={<Spinner />}>
+											<IconControl
+												{...getGroupAttributes(
+													attributes,
+													groupAttributes,
+													true,
+													prefix
+												)}
+												onChange={obj => {
+													maxiSetAttributes(obj);
+												}}
+												isHover
+												{...iconControlBasicProps}
+											/>
+										</Suspense>
 									</>
 								)}
 							</>

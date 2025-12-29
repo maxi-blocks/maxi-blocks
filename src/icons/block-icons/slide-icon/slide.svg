@@ -2,7 +2,7 @@
 	y="0px" viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
 	<style type="text/css">
 		.st0 {
-			fill: var(--maxi-primary-color);
+			fill: var(--mpc);
 		}
 	</style>
 	<path class="st0" d="M17.85,0.35H6.05c-0.6,0-1,0.4-1,1v21.3c0,0.6,0.4,1,1,1h11.9c0.6,0,1-0.4,1-1V1.35

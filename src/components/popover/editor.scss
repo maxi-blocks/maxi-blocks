@@ -1,10 +1,10 @@
 $arrow-triangle-base-size: 14px;
 $border-width: 1px;
-$white: var(--maxi-white);
-$gray-400: var(--maxi-grey-light);
-$gray-900: var(--maxi-grey-dark);
-$shadow-popover: 0 0 0 1px rgba(var(--maxi-black), 0.2),
-	0 4px 11px rgba(var(--maxi-black), 0.1);
+$white: var(--mw);
+$gray-400: var(--mgl);
+$gray-900: var(--mdg);
+$shadow-popover: 0 0 0 1px rgba(var(--mb), 0.2),
+	0 4px 11px rgba(var(--mb), 0.1);
 $radius-block-ui: 3px;
 $panel-header-height: 32px;
 $grid-unit-20: 20px;
@@ -37,10 +37,10 @@ $grid-unit-20: 20px;
 	box-sizing: border-box;
 	width: min-content;
 	position: relative !important;
-	transition: all 0.4s ease;
+	transition: var(--maxi-trans-std);
 
 	&:hover {
-		background-color: var(--maxi-pastel-green);
+		background-color: var(--mpg);
 	}
 
 	// Alternate treatment for popovers that put them at elevation zero with high contrast.

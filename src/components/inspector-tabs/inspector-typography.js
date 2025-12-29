@@ -7,7 +7,13 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import SettingTabsControl from '@components/setting-tabs-control';
-import TypographyControl from '@components/typography-control';
+// import TypographyControl from '@components/typography-control';
+import ContentLoader from '@components/content-loader';
+import { lazy, Suspense } from '@wordpress/element';
+
+const TypographyControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-typography-control" */ '@components/typography-control')
+);
 import ToggleSwitch from '@components/toggle-switch';
 import FontLevelControl from '@components/font-level-control';
 import AlignmentControl from '@components/alignment-control';
@@ -103,45 +109,47 @@ const typography = ({
 						{
 							label: __('Normal state', 'maxi-blocks'),
 							content: (
-								<TypographyControl
-									{...getGroupAttributes(
-										attributes,
-										typographyTarget,
-										false,
-										prefix
-									)}
-									onChangeInline={(
-										obj,
-										target,
-										isMultiplySelector
-									) =>
-										insertInlineStyles({
+								<Suspense fallback={<ContentLoader />}>
+									<TypographyControl
+										{...getGroupAttributes(
+											attributes,
+											typographyTarget,
+											false,
+											prefix
+										)}
+										onChangeInline={(
 											obj,
 											target,
-											isMultiplySelector,
-										})
-									}
-									onChange={(obj, target) => {
-										maxiSetAttributes(obj);
-										cleanInlineStyles(target);
-									}}
-									setShowLoader={setShowLoader}
-									hideAlignment={hideAlignment}
-									showBottomGap={showBottomGap}
-									breakpoint={deviceType}
-									clientId={clientId}
-									disableCustomFormats={disableCustomFormats}
-									blockStyle={blockStyle}
-									styleCardPrefix={styleCardPrefix}
-									textLevel={
-										textLevel || attributes.textLevel
-									}
-									inlineTarget={inlineTarget}
-									isList={isList}
-									allowLink={allowLink}
-									globalProps={globalProps}
-									prefix={prefix}
-								/>
+											isMultiplySelector
+										) =>
+											insertInlineStyles({
+												obj,
+												target,
+												isMultiplySelector,
+											})
+										}
+										onChange={(obj, target) => {
+											maxiSetAttributes(obj);
+											cleanInlineStyles(target);
+										}}
+										setShowLoader={setShowLoader}
+										hideAlignment={hideAlignment}
+										showBottomGap={showBottomGap}
+										breakpoint={deviceType}
+										clientId={clientId}
+										disableCustomFormats={disableCustomFormats}
+										blockStyle={blockStyle}
+										styleCardPrefix={styleCardPrefix}
+										textLevel={
+											textLevel || attributes.textLevel
+										}
+										inlineTarget={inlineTarget}
+										isList={isList}
+										allowLink={allowLink}
+										globalProps={globalProps}
+										prefix={prefix}
+									/>
+								</Suspense>
 							),
 						},
 						{
@@ -165,29 +173,31 @@ const typography = ({
 										/>
 									)}
 									{hoverStatus && (
-										<TypographyControl
-											{...getGroupAttributes(
-												attributes,
-												'typography',
-												true,
-												prefix
-											)}
-											onChange={obj =>
-												maxiSetAttributes(obj)
-											}
-											hideAlignment={hideAlignment}
-											breakpoint={deviceType}
-											isHover
-											clientId={clientId}
-											disableCustomFormats={
-												disableCustomFormats
-											}
-											blockStyle={blockStyle}
-											styleCardPrefix={styleCardPrefix}
-											isList={isList}
-											globalProps={hoverGlobalProps}
-											prefix={prefix}
-										/>
+										<Suspense fallback={<ContentLoader />}>
+											<TypographyControl
+												{...getGroupAttributes(
+													attributes,
+													'typography',
+													true,
+													prefix
+												)}
+												onChange={obj =>
+													maxiSetAttributes(obj)
+												}
+												hideAlignment={hideAlignment}
+												breakpoint={deviceType}
+												isHover
+												clientId={clientId}
+												disableCustomFormats={
+													disableCustomFormats
+												}
+												blockStyle={blockStyle}
+												styleCardPrefix={styleCardPrefix}
+												isList={isList}
+												globalProps={hoverGlobalProps}
+												prefix={prefix}
+											/>
+										</Suspense>
 									)}
 								</>
 							),

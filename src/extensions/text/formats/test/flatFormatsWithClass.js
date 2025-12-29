@@ -33,7 +33,7 @@ jest.mock('@extensions/style-cards/getActiveStyleCard', () => {
 						'color-1': '#ffffff',
 						'color-2': '#f2f9fd',
 						'color-3': '#9b9b9b',
-						'color-4': 'var(--maxi-primary-color)',
+						'color-4': 'var(--mpc)',
 						'color-5': '#000000',
 						'color-6': '#c9340a',
 						'color-7': '#081219',

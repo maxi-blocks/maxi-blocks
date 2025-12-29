@@ -18,10 +18,12 @@ import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
  */
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const CACHE_MAX_AGE_MS = 10 * 60 * 1000; // 10 minutes
+
 // LRU cache for style resolution results
-const styleCache = new MemoCache(500); // Cache up to 500 style resolutions
-const cleanContentCache = new MemoCache(200); // Cache for cleanContent operations
-const getCleanContentCache = new MemoCache(200); // Cache for getCleanContent operations
+const styleCache = new MemoCache(500, { maxAgeMs: CACHE_MAX_AGE_MS }); // Cache up to 500 style resolutions
+const cleanContentCache = new MemoCache(200, { maxAgeMs: CACHE_MAX_AGE_MS }); // Cache for cleanContent operations
+const getCleanContentCache = new MemoCache(200, { maxAgeMs: CACHE_MAX_AGE_MS }); // Cache for getCleanContent operations
 
 // Cache statistics for monitoring
 let cacheStats = {
@@ -215,6 +217,10 @@ export const styleCacheUtils = {
 	 * @param {number} maxSize - Maximum total cache size before clearing
 	 */
 	checkMemoryUsage(maxSize = 1000) {
+		styleCache.pruneExpiredEntries();
+		cleanContentCache.pruneExpiredEntries();
+		getCleanContentCache.pruneExpiredEntries();
+
 		let totalSize =
 			styleCache.size() +
 			cleanContentCache.size() +

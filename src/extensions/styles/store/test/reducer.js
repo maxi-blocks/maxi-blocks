@@ -39,6 +39,7 @@ jest.mock('@extensions/maxi-block/memoizationHelper', () => ({
 		has: jest.fn(function(key) {
 			return this.cache.has(key);
 		}),
+		pruneExpiredEntries: jest.fn(),
 		checkMemoryUsage: jest.fn(),
 		getStats: jest.fn(() => ({
 			size: 0,

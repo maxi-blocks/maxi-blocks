@@ -48,13 +48,9 @@ body.maxi-blocks--active .maxi-block {
 	/*Seedlet theme overrides*/
 	.maxi-components-button {
 		&:focus,
-		span {
-			&:focus {
-				outline: none;
-			}
+		span:focus {
+			outline: none;
 		}
-	}
-	.maxi-components-button {
 		&:after,
 		&:before {
 			content: none;
@@ -158,7 +154,7 @@ body.maxi-blocks--active {
 
 /* Fix for links inside of map maxi */
 body.maxi-blocks--active .maxi-map-block .leaflet-bar a {
-	color: var(--maxi-black);
+	color: var(--mb);
 }
 
 /* Fix custom blocks display in maxi wrapper blocks with added bg layers */

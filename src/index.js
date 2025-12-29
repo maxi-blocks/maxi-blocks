@@ -1,3 +1,4 @@
+import './public-path';
 /**
  * Gutenberg Blocks
  *

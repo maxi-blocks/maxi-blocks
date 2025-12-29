@@ -48,13 +48,22 @@ import {
 import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
-import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
+import {
+	addBlockStyles,
+	removeBlockStyles,
+	removeBlockStylesEverywhere,
+} from './globalStyleManager';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	loadBlockCSS,
+	saveBlockCSS,
+	generateAttributeHash,
+} from '@extensions/styles/cssCacheDB';
 
 /**
  * External dependencies
@@ -95,6 +104,8 @@ class MaxiBlockComponent extends Component {
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
 		this.previousRelationInstances = null;
+		this.customDataCache = null;
+		this.customDataRelationsCache = null;
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 
@@ -207,6 +218,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	updateDOMReferences() {
+		// Optimization: Return early if we already have a valid reference
+		if (this.editorIframe && this.isElementInDOM(this.editorIframe)) {
+			return;
+		}
+
 		// SIMPLIFIED - no caching, just direct queries
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
@@ -225,6 +241,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		// Step 0: Async IDB CSS warm-up (non-blocking)
+		this.attemptIDBCSSInjection();
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -538,6 +557,7 @@ class MaxiBlockComponent extends Component {
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
 		this.updateDOMReferences();
+		this.cleanupPreviewResources();
 
 		// Update FSE iframe styles even for template parts
 		if (getIsSiteEditor()) {
@@ -672,22 +692,9 @@ class MaxiBlockComponent extends Component {
 			this.fontLoadTimeout = null;
 		}
 
-		// MINIMAL cleanup - only clear essential timeouts
-		if (this.previewTimeouts) {
-			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
-			this.previewTimeouts = null;
-		}
-
-		// Disconnect all preview observers to prevent memory leaks
-		if (this.previewObservers) {
-			this.previewObservers.forEach(observer => {
-				if (observer && typeof observer.disconnect === 'function') {
-					observer.disconnect();
-				}
-			});
-			this.previewObservers.clear();
-			this.previewObservers = null;
-		}
+		this.cleanupPreviewResources({ force: true });
+		this.previewTimeouts = null;
+		this.previewObservers = null;
 
 		// Disconnect FSE observer if present
 		if (this.fseIframeObserver) {
@@ -1036,8 +1043,10 @@ class MaxiBlockComponent extends Component {
 
 		// Track observers for proper cleanup to prevent memory leaks
 		if (!this.previewObservers) {
-			this.previewObservers = new Set();
+			this.previewObservers = new Map();
 		}
+
+		this.cleanupPreviewResources();
 
 		const isSiteEditor = getIsSiteEditor();
 
@@ -1165,7 +1174,7 @@ class MaxiBlockComponent extends Component {
 			});
 
 			// Track observer for cleanup to prevent memory leaks
-			this.previewObservers.add(observer);
+			this.previewObservers.set(observer, iframe);
 		});
 	}
 
@@ -1399,8 +1408,18 @@ class MaxiBlockComponent extends Component {
 
 			const customData = this.getCustomData;
 			if (customData) {
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				customDataRelations = customData[uniqueID]?.relations;
+				const isCustomDataSame =
+					this.customDataCache &&
+					isEqual(this.customDataCache, customData);
+
+				if (!isCustomDataSame) {
+					dispatch('maxiBlocks/customData').updateCustomData(customData);
+					this.customDataCache = customData;
+					this.customDataRelationsCache =
+						customData[uniqueID]?.relations;
+				}
+
+				customDataRelations = this.customDataRelationsCache;
 			}
 		}
 
@@ -1808,6 +1827,9 @@ class MaxiBlockComponent extends Component {
 				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
 			);
+
+			// Async save to IndexedDB for cross-reload persistence
+			this.saveToIDBCache(uniqueID, styleContent);
 		}
 
 		return styleContent;
@@ -1823,6 +1845,74 @@ class MaxiBlockComponent extends Component {
 		});
 
 		return styles;
+	}
+
+	/**
+	 * Async attempt to load CSS from IndexedDB and inject directly.
+	 * This is non-blocking - if IDB fails or cache misses, displayStyles will regenerate.
+	 */
+	async attemptIDBCSSInjection() {
+		if (this.isPatternsPreview || this.templateModal) return;
+
+		const { uniqueID } = this.props.attributes;
+		if (!uniqueID) return;
+
+		try {
+			const styleCardVersion =
+				select('maxiBlocks/style-cards')?.receiveActiveStyleCardKey?.() || '';
+			const attributeHash = generateAttributeHash(
+				this.props.attributes,
+				styleCardVersion
+			);
+
+			const cachedCSS = await loadBlockCSS(uniqueID, attributeHash);
+
+			if (cachedCSS) {
+				// Cache hit - inject directly
+				const isSiteEditor = getIsSiteEditor();
+				const targetDoc = isSiteEditor
+					? getSiteEditorIframe()?.contentDocument || document
+					: this.editorIframe?.contentDocument || document;
+
+				addBlockStyles(uniqueID, cachedCSS, targetDoc);
+
+				// Mark as loaded from cache (skip regeneration in displayStyles if still same hash)
+				this.idbCacheLoaded = true;
+				this.idbCacheHash = attributeHash;
+
+				if (
+					window?.localStorage?.getItem('maxiBlocks-debug') === 'true'
+				) {
+					console.log(`[IDB CSS Cache] HIT for ${uniqueID}`);
+				}
+			}
+		} catch (error) {
+			// IDB failures are non-fatal - displayStyles will regenerate
+			console.warn('[IDB CSS Cache] Load error:', error);
+		}
+	}
+
+	/**
+	 * Save CSS to IndexedDB after generation (async, non-blocking)
+	 */
+	saveToIDBCache(uniqueID, cssString) {
+		if (!cssString || !uniqueID) return;
+
+		const styleCardVersion =
+			select('maxiBlocks/style-cards')?.receiveActiveStyleCardKey?.() || '';
+		const attributeHash = generateAttributeHash(
+			this.props.attributes,
+			styleCardVersion
+		);
+
+		// Async save - fire and forget
+		saveBlockCSS(uniqueID, cssString, attributeHash).catch(err => {
+			console.warn('[IDB CSS Cache] Save error:', err);
+		});
+
+		if (window?.localStorage?.getItem('maxiBlocks-debug') === 'true') {
+			console.log(`[IDB CSS Cache] SAVED ${uniqueID}`);
+		}
 	}
 
 	removeStyles() {
@@ -1882,6 +1972,9 @@ class MaxiBlockComponent extends Component {
 				removeBlockStyles(uniqueID, doc);
 			}
 		});
+
+		// Ensure any tracked document manager drops this block's styles
+		removeBlockStylesEverywhere(uniqueID);
 
 		// Legacy cleanup: Also remove any old individual style elements with this ID
 		const legacyStyleId = `maxi-blocks__styles--${uniqueID}`;
@@ -1963,11 +2056,19 @@ class MaxiBlockComponent extends Component {
 		const editorWrapper = target.classList.contains('editor-styles-wrapper')
 			? target
 			: target.querySelector('.editor-styles-wrapper');
+
 		if (editorWrapper) {
-			editorWrapper.setAttribute(
-				'maxi-blocks-responsive',
+			// Optimization: Read before Write to avoid unnecessary layout thrashing
+			// Only update if the value actually changed
+			if (
+				editorWrapper.getAttribute('maxi-blocks-responsive') !==
 				currentBreakpoint
-			);
+			) {
+				editorWrapper.setAttribute(
+					'maxi-blocks-responsive',
+					currentBreakpoint
+				);
+			}
 		}
 	}
 
@@ -1999,6 +2100,42 @@ class MaxiBlockComponent extends Component {
 	 */
 	isElementInDOM(element) {
 		return element && element.isConnected && document.contains(element);
+	}
+
+
+
+	cleanupPreviewResources({ force = false } = {}) {
+		if (this.previewTimeouts) {
+			this.previewTimeouts.forEach((timeout, iframe) => {
+				const shouldClear =
+					force ||
+					!iframe ||
+					!this.isElementInDOM(iframe) ||
+					!iframe.isConnected;
+				if (shouldClear) {
+					clearTimeout(timeout);
+					this.previewTimeouts.delete(iframe);
+				}
+			});
+		}
+
+		if (this.previewObservers) {
+			this.previewObservers.forEach((iframe, observer) => {
+				const shouldDisconnect =
+					force ||
+					!iframe ||
+					!this.isElementInDOM(iframe) ||
+					!iframe.isConnected;
+				if (
+					shouldDisconnect &&
+					observer &&
+					typeof observer.disconnect === 'function'
+				) {
+					observer.disconnect();
+					this.previewObservers.delete(observer);
+				}
+			});
+		}
 	}
 
 	// Returns responsive preview elements if present

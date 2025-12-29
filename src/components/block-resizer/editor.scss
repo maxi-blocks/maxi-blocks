@@ -15,13 +15,13 @@ body.maxi-blocks--active .maxi-block__resizer {
 				position: absolute;
 				width: 20px;
 				height: 20px;
-				border: 2px solid var(--maxi-white);
+				border: 2px solid var(--mw);
 				border-radius: 50%;
-				background: var(--maxi-primary-color);
+				background: var(--mpc);
 				cursor: inherit;
 			}
 			&--repeater:after {
-				background: var(--maxi-tertiary-color);
+				background: var(--mtc);
 			}
 
 			&:before {
@@ -29,7 +29,7 @@ body.maxi-blocks--active .maxi-block__resizer {
 				display: block;
 				cursor: inherit;
 				position: absolute;
-				background: var(--maxi-primary-color);
+				background: var(--mpc);
 			}
 
 			&-right {

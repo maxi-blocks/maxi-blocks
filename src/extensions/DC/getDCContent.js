@@ -21,6 +21,7 @@ import getDCEntity from './getDCEntity';
 import { getACFFieldContent } from './getACFData';
 import getACFContentByType from './getACFContentByType';
 import { getCartContent, getProductsContent } from './getWCContent';
+import { createDCCache } from './dcCache';
 
 /**
  * External dependencies
@@ -38,8 +39,7 @@ export const handleParentField = async (contentValue, type) => {
 	return parent?.[0]?.name || __('No parent', 'maxi-blocks');
 };
 
-const cache = {};
-const MAX_CACHE_SIZE = 200;
+const cache = createDCCache('content', { maxSize: 100 });
 
 const getDCContent = async (dataRequest, clientId) => {
 	if (isEmpty(dataRequest)) return null;
@@ -53,22 +53,11 @@ const getDCContent = async (dataRequest, clientId) => {
 	const keysToRemove = ['content', 'customDelimiterStatus', 'customFormat'];
 	keysToRemove.forEach(key => delete filteredDataRequest[key]);
 
-	const cacheKey = JSON.stringify(filteredDataRequest);
-	let data;
+	let data = await cache.get(filteredDataRequest);
 
-	if (cache[cacheKey]) {
-		data = cache[cacheKey];
-	} else {
+	if (!data) {
 		data = await getDCEntity(dataRequest, clientId);
-
-		// Check if the cache size exceeds the maximum limit
-
-		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
-			// Remove the oldest entry from the cache
-			const oldestKey = Object.keys(cache)[0];
-			delete cache[oldestKey];
-		}
-		cache[cacheKey] = data;
+		await cache.set(filteredDataRequest, data);
 	}
 
 	const { source, relation } = dataRequest;

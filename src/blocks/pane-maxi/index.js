@@ -12,7 +12,8 @@ import { registerBlockType } from '@wordpress/blocks';
  * Block dependencies
  */
 import metadata from './block.json';
-import edit from './edit';
+import { lazy } from '@wordpress/element';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-pane" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import { customCss } from './data';

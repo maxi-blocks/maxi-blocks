@@ -2,7 +2,7 @@
  * Editor styles for the admin
  */
 
-$white: var(--maxi-white);
+$white: var(--mw);
 
 .maxi-block-library__modal {
 	width: 80%;
@@ -10,7 +10,7 @@ $white: var(--maxi-white);
 	max-width: 90%;
 
 	.components-modal__content {
-		background: var(--maxi-cloud-primary-whisper);
+		background: var(--mcp-w);
 		padding: 0;
 		overflow-x: hidden;
 		min-height: 100%;
@@ -32,7 +32,7 @@ $white: var(--maxi-white);
 	.components-tab-panel__tab-content {
 		background: $white;
 		padding: 35px;
-		border-top: 1px solid var(--maxi-grey-light);
+		border-top: 1px solid var(--mgl);
 	}
 
 	.components-tab-panel__tabs {
@@ -55,7 +55,7 @@ $white: var(--maxi-white);
 	.components-tab-panel__tabs .maxi-block-library__modal-active-tab {
 		font-weight: 600;
 		background: $white;
-		border: 1px solid var(--maxi-grey-light);
+		border: 1px solid var(--mgl);
 		border-bottom: none;
 	}
 
@@ -68,7 +68,7 @@ $white: var(--maxi-white);
 	}
 
 	.maxi-block-library__modal-header {
-		background: var(--maxi-grey-light);
+		background: var(--mgl);
 		padding: 20px;
 		margin-bottom: 20px;
 		display: grid;
@@ -153,16 +153,16 @@ $white: var(--maxi-white);
 
 	.maxi-cloud-design-inside {
 		transition: 0.2s ease;
-		border: solid 1px var(--maxi-grey-light);
+		border: solid 1px var(--mgl);
 
 		&:hover {
-			box-shadow: 0px 0px 0px 8px var(--maxi-grey-light);
+			box-shadow: 0px 0px 0px 8px var(--mgl);
 		}
 	}
 
 	.maxi-cloud-design-info {
 		background: $white;
-		border-top: solid 1px var(--maxi-grey-light);
+		border-top: solid 1px var(--mgl);
 		text-align: left;
 		position: relative;
 		padding: 12px;
@@ -195,28 +195,28 @@ $white: var(--maxi-white);
 	button.maxi-cloud-favorite-button:hover {
 		background: $white;
 		border: none;
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px var(--mgl),
 			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 	}
 
 	.components-button-group
 		.components-button.maxi-cloud-favorite-button:focus {
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px var(--mgl),
 			inset 0 0 0 2px $white, 0 1px 1px rgba(25, 30, 35, 0.2);
 		background: $white;
 	}
 
 	button.components-button.is-default:active:enabled {
-		box-shadow: inset 0 0 0 1px var(--maxi-grey-light),
+		box-shadow: inset 0 0 0 1px var(--mgl),
 			inset 0 0 0 2px $white;
 	}
 
 	.maxi-cloud-icon-favorite {
-		fill: var(--maxi-grey);
+		fill: var(--mg);
 	}
 
 	.maxi-cloud-icon-favorite-active {
-		fill: var(--maxi-cloud-primary-contrast);
+		fill: var(--mcp-c);
 	}
 
 	.maxi-cloud-zoom-button {
@@ -224,10 +224,10 @@ $white: var(--maxi-white);
 		top: 15px;
 		right: 15px;
 		background: $white;
-		border-radius: 5px !important;
+		border-radius: var(--maxi-radius-sm) !important;
 		transition: 0.2s ease;
 		z-index: 10;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		padding: 5px;
 		height: auto;
 		opacity: 0;
@@ -274,10 +274,10 @@ $white: var(--maxi-white);
 	justify-content: center;
 	width: 100%;
 	min-height: 120px;
-	color: var(--maxi-grey-dark);
-	background-color: var(--maxi-cloud-primary-whisper);
+	color: var(--mdg);
+	background-color: var(--mcp-w);
 	font-size: 13px;
-	border: 1px solid var(--maxi-cloud-primary-light);
+	border: 1px solid var(--mcp-l);
 	border-radius: 10px;
 	box-shadow: none !important;
 	.components-placeholder__instructions {
@@ -290,14 +290,14 @@ $white: var(--maxi-white);
 
 	button.maxi-block-library__modal-button__placeholder {
 		overflow: hidden;
-		color: var(--maxi-white);
-		background: var(--maxi-cloud-primary);
+		color: var(--mw);
+		background: var(--mcp);
 		font-family: Inter, sans-serif;
 		font-size: 12px;
 		font-weight: 800;
 		padding: 22px 22px 22px 20px;
-		border: 1px solid var(--maxi-grey-light);
-		transition: all 0.1s;
+		border: 1px solid var(--mgl);
+		transition: var(--maxi-trans-std);
 		border-radius: 30px;
 		display: flex;
 		align-items: center;
@@ -308,9 +308,9 @@ $white: var(--maxi-white);
 		}
 
 		&:hover {
-			background: var(--maxi-white) !important;
-			color: var(--maxi-cloud-primary-contrast) !important;
-			border-color: var(--maxi-tertiary-color);
+			background: var(--mw) !important;
+			color: var(--mcp-c) !important;
+			border-color: var(--mtc);
 		}
 
 		&--small {

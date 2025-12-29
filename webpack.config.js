@@ -13,6 +13,8 @@ const { resolve } = require('path');
 const { sync: glob } = require('fast-glob');
 const Dotenv = require('dotenv-webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const VariableAliasPlugin = require('./config/css-optimization/VariableAliasPlugin');
+const { aliasMap } = require('./config/css-optimization/variable-aliases');
 
 // Check if ANALYZE is set to true
 const isAnalyze = process.env.ANALYZE === 'true';
@@ -47,7 +49,7 @@ const scriptsConfig = {
 		filename: '[name].min.js',
 		path: resolveNormalized(__dirname, 'js/min'),
 	},
-	plugins: [new Dotenv()],
+	plugins: [new Dotenv(), new VariableAliasPlugin(aliasMap)],
 };
 
 // Blocks config
@@ -60,6 +62,8 @@ const blocksConfig = {
 	output: {
 		...defaultConfig.output,
 		filename: '[name].min.js', // Add .min to filename so WP.org i18n skips it
+		chunkFilename: '[name].[contenthash].min.js', // Allow chunk splitting
+		clean: false, // Don't clean to avoid deleting other build assets
 	},
 	optimization: {
 		...defaultConfig.optimization,
@@ -67,9 +71,11 @@ const blocksConfig = {
 			new CssMinimizerPlugin({
 				minimizerOptions: {
 					preset: [
-						'default',
+						'advanced',
 						{
 							discardComments: { removeAll: true },
+							mergeLonghand: true,
+							uniqueDeclarations: true,
 						},
 					],
 				},
@@ -101,13 +107,15 @@ const blocksConfig = {
 		),
 		new MiniCssExtractPlugin({
 			filename: '[name].min.css', // Add .min to CSS filename
+			chunkFilename: '[name].chunk.min.css', // Add chunk extraction support
 		}),
 		new RtlCssPlugin({
 			filename: '[name]-rtl.min.css', // Add .min to RTL CSS filename
 		}),
 		new Dotenv(),
+		new VariableAliasPlugin(aliasMap),
 		...(isAnalyze
-			? [new BundleAnalyzerPlugin({ analyzerPort: 'auto' })]
+			? [new BundleAnalyzerPlugin({ analyzerMode: 'static', reportFilename: 'bundle-report.html', openAnalyzer: true })]
 			: []),
 	],
 };

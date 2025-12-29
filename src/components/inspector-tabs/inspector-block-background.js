@@ -6,11 +6,17 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
+import { lazy, Suspense } from '@wordpress/element';
 import SettingTabsControl from '@components/setting-tabs-control';
-import BlockBackgroundControl from '@components/background-control/blockBackgroundControl';
+// import BlockBackgroundControl from '@components/background-control/blockBackgroundControl';
 import ToggleSwitch from '@components/toggle-switch';
 import { getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
+import ContentLoader from '@components/content-loader';
+
+const BlockBackgroundControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-block-background-control" */ '@components/background-control/blockBackgroundControl')
+);
 
 /**
  * Component
@@ -45,28 +51,30 @@ const blockBackground = ({
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
-							<BlockBackgroundControl
-								{...getGroupAttributes(attributes, [
-									'blockBackground',
-									'background-layers',
-									'transition',
-								])}
-								onChangeInline={(obj, target) =>
-									insertInlineStyles({ obj, target })
-								}
-								onChange={(obj, target) => {
-									maxiSetAttributes(obj);
-									if (target) cleanInlineStyles(target);
-								}}
-								clientId={clientId}
-								breakpoint={deviceType}
-								disableImage={disableImage}
-								disableVideo={disableVideo}
-								disableGradient={disableGradient}
-								disableColor={disableColor}
-								disableSVG={disableSVG}
-								getBounds={getBounds}
-							/>
+							<Suspense fallback={<ContentLoader />}>
+								<BlockBackgroundControl
+									{...getGroupAttributes(attributes, [
+										'blockBackground',
+										'background-layers',
+										'transition',
+									])}
+									onChangeInline={(obj, target) =>
+										insertInlineStyles({ obj, target })
+									}
+									onChange={(obj, target) => {
+										maxiSetAttributes(obj);
+										if (target) cleanInlineStyles(target);
+									}}
+									clientId={clientId}
+									breakpoint={deviceType}
+									disableImage={disableImage}
+									disableVideo={disableVideo}
+									disableGradient={disableGradient}
+									disableColor={disableColor}
+									disableSVG={disableSVG}
+									getBounds={getBounds}
+								/>
+							</Suspense>
 						),
 						extraIndicators: ['background-layers'],
 					},
@@ -90,18 +98,20 @@ const blockBackground = ({
 									}}
 								/>
 								{bgHoverStatus && (
-									<BlockBackgroundControl
-										{...getGroupAttributes(
-											attributes,
-											['blockBackground', 'transition'],
-											true
-										)}
-										onChange={obj => maxiSetAttributes(obj)}
-										isHover
-										clientId={clientId}
-										breakpoint={deviceType}
-										getBounds={getBounds}
-									/>
+									<Suspense fallback={<ContentLoader />}>
+										<BlockBackgroundControl
+											{...getGroupAttributes(
+												attributes,
+												['blockBackground', 'transition'],
+												true
+											)}
+											onChange={obj => maxiSetAttributes(obj)}
+											isHover
+											clientId={clientId}
+											breakpoint={deviceType}
+											getBounds={getBounds}
+										/>
+									</Suspense>
 								)}
 							</>
 						),

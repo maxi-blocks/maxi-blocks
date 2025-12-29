@@ -2,13 +2,15 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Suspense, lazy } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import ClipPathControl from '@components/clip-path-control';
+const ClipPathControl = lazy(() => import(/* webpackChunkName: "maxi-shape-mask" */ '@components/clip-path-control'));
 import ToggleSwitch from '@components/toggle-switch';
 import SettingTabsControl from '@components/setting-tabs-control';
+import Spinner from '@components/spinner';
 import {
 	getAttributeKey,
 	getGroupAttributes,
@@ -30,17 +32,19 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 
 	return {
 		label: __('Clip-path', 'maxi-blocks'),
-		content: (
+		content: () => (
 			<SettingTabsControl
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
 						content: (
+						<Suspense fallback={<Spinner />}>
 							<ClipPathControl
 								{...getGroupAttributes(attributes, 'clipPath')}
 								{...clipPathControlProps}
 							/>
-						),
+						</Suspense>
+					),
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -99,6 +103,7 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 									}
 								/>
 								{attributes['clip-path-status-hover'] && (
+								<Suspense fallback={<Spinner />}>
 									<ClipPathControl
 										{...getGroupAttributes(
 											attributes,
@@ -108,7 +113,8 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 										{...clipPathControlProps}
 										isHover
 									/>
-								)}
+								</Suspense>
+							)}
 							</>
 						),
 					},

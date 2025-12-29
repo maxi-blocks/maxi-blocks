@@ -47,6 +47,19 @@ import {
 } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 
+const memoize = fn => {
+	let lastArgs = null;
+	let lastResult = null;
+	return (...args) => {
+		if (lastArgs && isEqual(args, lastArgs)) {
+			return lastResult;
+		}
+		lastArgs = args;
+		lastResult = fn(...args);
+		return lastResult;
+	};
+};
+
 /**
  * Edit
  */
@@ -69,6 +82,74 @@ class edit extends MaxiBlockComponent {
 	columnsClientIds = [];
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
+
+	constructor(props) {
+		super(props);
+		this.getRowContext = memoize(
+			(
+				displayHandlers,
+				rowPattern,
+				rowBlockId,
+				columnsSize,
+				columnsClientIds,
+				rowGapProps,
+				rowBorderRadius
+			) => ({
+				displayHandlers,
+				rowPattern,
+				rowBlockId,
+				columnsSize,
+				columnsClientIds,
+				setColumnClientId: this.setColumnClientId,
+				setColumnSize: this.setColumnSize,
+				removeColumnClientId: this.removeColumnClientId,
+				rowGapProps,
+				rowBorderRadius,
+			})
+		);
+
+		this.getRepeaterContextValue = memoize(
+			(
+				repeaterStatus,
+				repeaterRowClientId,
+				getInnerBlocksPositions,
+				updateInnerBlocksPositions,
+				contextRepeaterStatus,
+				context
+			) => ({
+				repeaterStatus,
+				repeaterRowClientId,
+				getInnerBlocksPositions,
+				updateInnerBlocksPositions,
+				...(contextRepeaterStatus && context),
+			})
+		);
+	}
+
+	setColumnClientId = clientId => {
+		this.columnsClientIds = [...this.columnsClientIds, clientId];
+	};
+
+	setColumnSize = (clientId, columnSize) => {
+		this.columnsSize = {
+			...this.columnsSize,
+			[clientId]: columnSize,
+		};
+
+		this.forceUpdate();
+	};
+
+	removeColumnClientId = clientId => {
+		this.columnsClientIds = this.columnsClientIds.filter(
+			val => val !== clientId
+		);
+		this.columnsSize = Object.keys(this.columnsSize).reduce((acc, key) => {
+			if (key !== clientId) {
+				acc[key] = this.columnsSize[key];
+			}
+			return acc;
+		}, {});
+	};
 
 	// Add new method to handle width migration
 	handleWidthMigration = () => {
@@ -246,16 +327,19 @@ class edit extends MaxiBlockComponent {
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
 
-		const repeaterContext = {
-			repeaterStatus: getAttributeValue({
-				target: 'repeater-status',
-				props: attributes,
-			}),
-			repeaterRowClientId: clientId,
-			getInnerBlocksPositions: this.getInnerBlocksPositions,
-			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
-			...(this.context?.repeaterStatus && this.context),
-		};
+		const repeaterStatus = getAttributeValue({
+			target: 'repeater-status',
+			props: attributes,
+		});
+
+		const repeaterContext = this.getRepeaterContextValue(
+			repeaterStatus,
+			clientId,
+			this.getInnerBlocksPositions,
+			this.updateInnerBlocksPositions,
+			this.context?.repeaterStatus,
+			this.context
+		);
 
 		return [
 			<Inspector
@@ -289,47 +373,15 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
-				value={{
-					displayHandlers: this.state.displayHandlers,
-					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
-					rowBlockId: clientId,
-					columnsSize: this.columnsSize,
-					columnsClientIds: this.columnsClientIds,
-					setColumnClientId: clientId => {
-						this.columnsClientIds = [
-							...this.columnsClientIds,
-							clientId,
-						];
-					},
-					setColumnSize: (clientId, columnSize) => {
-						this.columnsSize = {
-							...this.columnsSize,
-							[clientId]: columnSize,
-						};
-
-						this.forceUpdate();
-					},
-					removeColumnClientId: clientId => {
-						this.columnsClientIds = this.columnsClientIds.filter(
-							val => val !== clientId
-						);
-						this.columnsSize = Object.keys(this.columnsSize).reduce(
-							(acc, key) => {
-								if (key !== clientId) {
-									acc[key] = this.columnsSize[key];
-								}
-								return acc;
-							},
-							{}
-						);
-					},
-
-					rowGapProps: getRowGapProps(attributes),
-					rowBorderRadius: getGroupAttributes(
-						attributes,
-						'borderRadius'
-					),
-				}}
+				value={this.getRowContext(
+					this.state.displayHandlers,
+					getGroupAttributes(attributes, 'rowPattern'),
+					clientId,
+					this.columnsSize,
+					this.columnsClientIds,
+					getRowGapProps(attributes),
+					getGroupAttributes(attributes, 'borderRadius')
+				)}
 			>
 				<RepeaterContext.Provider value={repeaterContext}>
 					<MaxiBlock

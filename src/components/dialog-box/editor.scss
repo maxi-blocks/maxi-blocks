@@ -26,10 +26,10 @@
 	width: 400px;
 	height: auto;
 	padding: 25px 30px;
-	border: 1px solid var(--maxi-grey-light);
+	border: 1px solid var(--mgl);
 	border-radius: 3px;
 	margin: auto;
-	background: var(--maxi-white);
+	background: var(--mw);
 	animation: scale 0.2s ease-in-out;
 	.maxi-dialog-close-button {
 		position: absolute;
@@ -42,10 +42,10 @@
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
 			&:hover {
-				background-color: var(--maxi-black);
+				background-color: var(--mb);
 			}
 			path {
-				stroke: var(--maxi-white);
+				stroke: var(--mw);
 			}
 		}
 	}
@@ -70,8 +70,8 @@
 	align-items: center;
 	height: calc(100% - 50px);
 	padding: 10px 0;
-	color: var(--maxi-black);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	color: var(--mb);
+	font-family: var(--maxi-font-sans) !important;
 	font-size: 12px;
 	text-align: center;
 }
@@ -82,16 +82,16 @@
 
 	button {
 		height: auto !important;
-		border: 1.5px solid var(--maxi-grey-light) !important;
-		border-radius: 5px !important;
-		color: var(--maxi-black);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		border: 1.5px solid var(--mgl) !important;
+		border-radius: var(--maxi-radius-sm) !important;
+		color: var(--mb);
+		font-family: var(--maxi-font-sans) !important;
 		font-size: 12px;
-		transition: all 0.1s;
+		transition: var(--maxi-trans-std);
 
 		&:hover {
 			background-color: rgba(var(--maxi-active-sc-color), 1);
-			color: var(--maxi-white);
+			color: var(--mw);
 			border: 1px solid rgba(var(--maxi-active-sc-color), 1);
 		}
 	}

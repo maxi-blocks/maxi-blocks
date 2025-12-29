@@ -2,8 +2,15 @@
    ADVANCED NUMBER CONTROL COMPONENT
 ===============================================*/
 
+/* Mixin for flex alignment */
+@mixin f-ai-center {
+	display: flex;
+	align-items: center;
+}
+
 .maxi-advanced-number-control {
 	/*--- Shared Resets & Utils ---*/
+	/* Refactored to use :where() for 0 specificity overrides */
 	&__input-wrapper,
 	&__value {
 		// Base and all interaction states
@@ -22,7 +29,7 @@
 	&__input-wrapper,
 	&__spinner-container,
 	&__spinner-button {
-		display: flex;
+				display: flex;
 		align-items: center;
 	}
 
@@ -38,7 +45,7 @@
 
 		// Focus state (Keyboard Accessibility)
 		&:focus-within {
-			outline: 2px solid var(--maxi-primary-color);
+			outline: 2px solid var(--mpc);
 			outline-offset: 2px;
 		}
 	}
@@ -62,7 +69,7 @@
 
 		// Focus state (Keyboard Accessibility)
 		&:focus-visible {
-			outline: 2px solid var(--maxi-primary-color);
+			outline: 2px solid var(--mpc);
 			outline-offset: 2px;
 		}
 	}
@@ -70,7 +77,7 @@
 	/*--- Spinner Controls ---*/
 	&__spinner-container {
 		position: absolute;
-		right: 2px;
+		inset-inline-end: 2px;
 		top: 50%;
 		transform: translateY(-48%);
 		flex-direction: column;
@@ -81,12 +88,12 @@
 		&::before {
 			content: '';
 			position: absolute;
-			left: -3px;
+			inset-inline-start: -3px;
 			top: 50%;
 			transform: translateY(-50%);
 			width: 1px;
 			height: 18px;
-			background-color: var(--maxi-grey-light);
+			background-color: var(--mgl);
 			pointer-events: none;
 		}
 	}
@@ -102,9 +109,9 @@
 		border: none;
 		border-radius: 2px;
 
-		color: var(--maxi-grey);
+		color: var(--mg);
 		cursor: pointer;
-		transition: all 200ms ease;
+		transition: var(--maxi-trans-std);
 
 		svg {
 			pointer-events: none;
@@ -112,20 +119,20 @@
 		}
 
 		&--down {
-			border-top: 1px solid var(--maxi-grey);
+			border-top: 1px solid var(--mg);
 		}
 
 		// Interactive States
 		&:focus-visible,
 		&:hover {
 			outline: none;
-			background: var(--maxi-whisper-green);
+			background: var(--mwg);
 		}
 
 		&:hover {
-			color: var(--maxi-primary-color);
+			color: var(--mpc);
 			svg {
-				color: var(--maxi-primary-color);
+				color: var(--mpc);
 				border: none;
 			}
 		}
@@ -135,7 +142,7 @@
 		}
 
 		&:disabled {
-			color: var(--maxi-grey);
+			color: var(--mg);
 			cursor: not-allowed;
 			&:hover {
 				background: transparent;
@@ -204,18 +211,15 @@
 ===============================================*/
 
 .maxi-advanced-number-control__controls-group {
-	display: flex;
-	align-items: center;
-	border: 1px solid var(--maxi-grey-light);
-	border-radius: 5px;
+			display: flex;
+		align-items: center;
+	border: 1px solid var(--mgl);
+	border-radius: var(--mrs);
 }
 
+// RTL text alignment for select control
 html[dir='rtl'] {
 	.maxi-select-control__input {
-		text-align: right;
-	}
-	.maxi-base-control__label {
-		left: unset;
-		right: 8px;
+		text-align: end;
 	}
 }

@@ -12,6 +12,18 @@
 /**
  * Manages styles for a specific document
  */
+const escapeCssIdentifier = (targetDocument, value) => {
+	const escaper =
+		targetDocument?.defaultView?.CSS?.escape ||
+		(typeof CSS !== 'undefined' ? CSS.escape : null);
+
+	if (typeof escaper === 'function') {
+		return escaper(value);
+	}
+
+	return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
+};
+
 class DocumentStyleManager {
 	constructor(targetDocument) {
 		this.document = targetDocument;
@@ -19,13 +31,49 @@ class DocumentStyleManager {
 		this.consolidatedStyleElement = null;
 		this.pendingUpdate = false;
 		this.updateScheduled = false;
+		this.lastCSS = ''; // Track last CSS to avoid redundant updates
 
-		// Create the consolidated style element
+		// CSSOM: Try to use CSSStyleSheet + adoptedStyleSheets for modern browsers
+		this.adoptedSheet = null;
+		this.usesAdoptedStyleSheets = false;
+
+		this.initializeStyleInjection();
+	}
+
+	/**
+	 * Initialize the style injection mechanism
+	 * Uses adoptedStyleSheets for modern browsers, <style> element for fallback
+	 */
+	initializeStyleInjection() {
+		// Check for adoptedStyleSheets support (modern browsers)
+		if (
+			typeof CSSStyleSheet !== 'undefined' &&
+			'adoptedStyleSheets' in this.document
+		) {
+			try {
+				this.adoptedSheet = new CSSStyleSheet();
+				// Add to document's adopted stylesheets
+				this.document.adoptedStyleSheets = [
+					...this.document.adoptedStyleSheets,
+					this.adoptedSheet,
+				];
+				this.usesAdoptedStyleSheets = true;
+				return;
+			} catch (e) {
+				// Fall through to <style> element fallback
+				console.warn(
+					'[GlobalStyleManager] adoptedStyleSheets failed, using <style> fallback:',
+					e
+				);
+			}
+		}
+
+		// Fallback: Use traditional <style> element
 		this.initializeStyleElement();
 	}
 
 	/**
-	 * Initialize the consolidated style element
+	 * Initialize the consolidated style element (fallback for older browsers)
 	 */
 	initializeStyleElement() {
 		const styleId = 'maxi-blocks__consolidated-styles';
@@ -87,20 +135,42 @@ class DocumentStyleManager {
 	}
 
 	/**
-	 * Flush all pending updates to the DOM
+	 * Flush all pending updates using CSSOM or DOM
 	 */
 	flush() {
-		if (!this.consolidatedStyleElement) {
-			this.initializeStyleElement();
+		if (!this.document?.body || !this.document.body.isConnected) {
+			return;
 		}
 
 		// Build consolidated CSS
 		const consolidatedCSS = this.buildConsolidatedCSS();
 
-		// Update the style element only if content changed
-		if (this.consolidatedStyleElement.textContent !== consolidatedCSS) {
-			this.consolidatedStyleElement.textContent = consolidatedCSS;
+		// Skip if CSS hasn't changed
+		if (consolidatedCSS === this.lastCSS) {
+			return;
 		}
+		this.lastCSS = consolidatedCSS;
+
+		// CSSOM path: Use replaceSync for fast updates (no re-parsing of entire stylesheet)
+		if (this.usesAdoptedStyleSheets && this.adoptedSheet) {
+			try {
+				this.adoptedSheet.replaceSync(consolidatedCSS);
+				return;
+			} catch (e) {
+				// If replaceSync fails, fall through to <style> element
+				console.warn(
+					'[GlobalStyleManager] replaceSync failed, falling back to <style>:',
+					e
+				);
+				this.usesAdoptedStyleSheets = false;
+			}
+		}
+
+		// DOM path: Update <style> element
+		if (!this.consolidatedStyleElement) {
+			this.initializeStyleElement();
+		}
+		this.consolidatedStyleElement.textContent = consolidatedCSS;
 	}
 
 	/**
@@ -152,6 +222,66 @@ class DocumentStyleManager {
 	}
 
 	/**
+	 * Remove stale style entries based on DOM/editor state.
+	 * OPTIMIZED: Uses editor state as primary source, batch DOM query as fallback.
+	 * Avoids O(n) individual DOM queries.
+	 * @param {Set<string>|null} activeUniqueIDs - Unique IDs present in editor.
+	 */
+	pruneStaleEntries(activeUniqueIDs) {
+		let didRemove = false;
+		const hasEditorState = activeUniqueIDs instanceof Set;
+
+		// Fast path: Use editor state as source of truth
+		if (hasEditorState) {
+			for (const uniqueID of this.blockStyles.keys()) {
+				if (!activeUniqueIDs.has(uniqueID)) {
+					this.blockStyles.delete(uniqueID);
+					didRemove = true;
+				}
+			}
+		} else {
+			// Fallback: Batch DOM query - one querySelectorAll, build Set, then compare
+			// Much faster than O(n) individual querySelector calls
+			try {
+				const allBlockEls = this.document?.querySelectorAll(
+					'.maxi-block[data-block]'
+				);
+				const domUniqueIDs = new Set();
+
+				if (allBlockEls) {
+					allBlockEls.forEach(el => {
+						// Extract uniqueID from class list (format: maxi-xxx-u)
+						const classes = el.className.split(/\s+/);
+						const uniqueIDClass = classes.find(
+							c => c.endsWith('-u') && c.startsWith('maxi-')
+						);
+						if (uniqueIDClass) {
+							domUniqueIDs.add(uniqueIDClass);
+						}
+					});
+				}
+
+				for (const uniqueID of this.blockStyles.keys()) {
+					if (!domUniqueIDs.has(uniqueID)) {
+						this.blockStyles.delete(uniqueID);
+						didRemove = true;
+					}
+				}
+			} catch (error) {
+				// DOM query failed - skip pruning this cycle
+				console.warn(
+					'[GlobalStyleManager] DOM query failed during prune:',
+					error
+				);
+			}
+		}
+
+		if (didRemove) {
+			this.scheduleUpdate();
+		}
+	}
+
+	/**
 	 * Destroy this document manager
 	 */
 	destroy() {
@@ -183,11 +313,70 @@ class GlobalStyleManager {
 	}
 
 	/**
+	 * Check whether a document is detached or unavailable.
+	 * @param {Document} targetDocument - Document to check.
+	 * @returns {boolean} - True if detached.
+	 */
+	isDocumentDetached(targetDocument) {
+		return (
+			!targetDocument ||
+			!targetDocument.body ||
+			!targetDocument.body.isConnected ||
+			!targetDocument.defaultView
+		);
+	}
+
+	/**
+	 * Collect unique IDs from the editor state when available.
+	 * @returns {Set<string>|null} - Set of active unique IDs or null.
+	 */
+	getEditorUniqueIDs() {
+		const select = globalThis?.wp?.data?.select;
+		if (typeof select !== 'function') {
+			return null;
+		}
+
+		const editorStore = select('core/block-editor');
+		if (!editorStore?.getBlocks) {
+			return null;
+		}
+
+		const blocks = editorStore.getBlocks() || [];
+		const uniqueIDs = new Set();
+		const stack = [...blocks];
+
+		while (stack.length) {
+			const block = stack.pop();
+			if (!block) continue;
+
+			const uniqueID = block?.attributes?.uniqueID;
+			if (uniqueID) {
+				uniqueIDs.add(uniqueID);
+			}
+
+			if (block.innerBlocks?.length) {
+				stack.push(...block.innerBlocks);
+			}
+		}
+
+		return uniqueIDs;
+	}
+
+	/**
 	 * Get or create a document-specific style manager
 	 * @param {Document} targetDocument - The document to manage styles for
 	 * @returns {DocumentStyleManager} - Document-specific style manager
 	 */
 	getDocumentManager(targetDocument) {
+		if (this.isDocumentDetached(targetDocument)) {
+			const existingManager = this.documentManagers.get(targetDocument);
+			if (existingManager) {
+				existingManager.destroy();
+				this.documentManagers.delete(targetDocument);
+			}
+			return null;
+		}
+
 		if (!this.documentManagers.has(targetDocument)) {
 			this.documentManagers.set(
 				targetDocument,
@@ -213,6 +402,7 @@ class GlobalStyleManager {
 		if (!resolvedDocument) return;
 
 		const manager = this.getDocumentManager(resolvedDocument);
+		if (!manager) return;
 		manager.addBlockStyles(uniqueID, styleContent);
 	}
 
@@ -231,14 +421,35 @@ class GlobalStyleManager {
 		if (!resolvedDocument) return;
 
 		const manager = this.getDocumentManager(resolvedDocument);
+		if (!manager) return;
 		manager.removeBlockStyles(uniqueID);
+	}
+
+	/**
+	 * Remove block styles from ALL tracked documents
+	 * @param {string} uniqueID - Block unique identifier
+	 */
+	removeBlockStylesEverywhere(uniqueID) {
+		for (const [doc, manager] of this.documentManagers.entries()) {
+			if (this.isDocumentDetached(doc)) {
+				manager.destroy();
+				this.documentManagers.delete(doc);
+				continue;
+			}
+			manager.removeBlockStyles(uniqueID);
+		}
 	}
 
 	/**
 	 * Force flush all pending style updates
 	 */
 	flushAll() {
-		for (const manager of this.documentManagers.values()) {
+		for (const [doc, manager] of this.documentManagers.entries()) {
+			if (this.isDocumentDetached(doc)) {
+				manager.destroy();
+				this.documentManagers.delete(doc);
+				continue;
+			}
 			manager.flush();
 		}
 	}
@@ -247,12 +458,17 @@ class GlobalStyleManager {
 	 * Clean up inactive document managers
 	 */
 	cleanup() {
+		const activeUniqueIDs = this.getEditorUniqueIDs();
+
 		for (const [doc, manager] of this.documentManagers.entries()) {
 			// Check if document is still connected
-			if (!doc.body || !doc.body.isConnected) {
+			if (this.isDocumentDetached(doc)) {
 				manager.destroy();
 				this.documentManagers.delete(doc);
+				continue;
 			}
+
+			manager.pruneStaleEntries(activeUniqueIDs);
 		}
 	}
 
@@ -336,6 +552,15 @@ export const removeBlockStyles = (uniqueID, targetDocument) => {
 
 	const manager = getGlobalStyleManager();
 	manager.removeBlockStyles(uniqueID, resolvedDocument);
+};
+
+/**
+ * Utility function to remove block styles from ALL tracked documents
+ * @param {string} uniqueID - Block unique identifier
+ */
+export const removeBlockStylesEverywhere = uniqueID => {
+	const manager = getGlobalStyleManager();
+	manager.removeBlockStylesEverywhere(uniqueID);
 };
 
 export default GlobalStyleManager;

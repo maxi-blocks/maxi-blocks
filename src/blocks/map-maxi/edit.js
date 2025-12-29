@@ -1,15 +1,14 @@
 /**
  * WordPress dependencies
  */
-import { renderToString } from '@wordpress/element';
+import { renderToString, lazy, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
-import { Toolbar } from '@components';
-import { MapContent } from './components';
+import { Toolbar, ContentLoader } from '@components';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { getGroupAttributes } from '@extensions/styles';
 import { getBreakpoints } from '@extensions/styles/helpers';
@@ -17,6 +16,13 @@ import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '@maxi-icons/map-icons/markers';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+
+// Lazy load MapContent to defer loading of leaflet (~148 KB)
+const MapContent = lazy(() =>
+	import('./components/map-content').then(module => ({
+		default: module.default,
+	}))
+);
 
 /**
  * Edit
@@ -103,13 +109,25 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<MapContent
-					{...this.props}
-					apiKey={googleApiKey}
-					isFirstClick={this.state.isFirstClick}
-					isGoogleMaps={mapProvider === 'googlemaps'}
-					isSelected={isSelected}
-				/>
+				{/* Defer heavy MapContent until block is selected to reduce initial paint cost */}
+				{isSelected ? (
+					<Suspense fallback={<ContentLoader />}>
+						<MapContent
+							{...this.props}
+							apiKey={googleApiKey}
+							isFirstClick={this.state.isFirstClick}
+							isGoogleMaps={mapProvider === 'googlemaps'}
+							isSelected={isSelected}
+						/>
+					</Suspense>
+				) : (
+					<div className='maxi-map-block__placeholder'>
+						<ContentLoader />
+						<div className='maxi-map-block__placeholder-text'>
+							Select block to load map
+						</div>
+					</div>
+				)}
 			</MaxiBlock>,
 		];
 	}

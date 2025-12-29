@@ -8,7 +8,7 @@ const scale = (
 		<defs>
 			<Path
 				id='scale__a'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -17,7 +17,7 @@ const scale = (
 			/>
 			<Path
 				id='scale__b'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'
@@ -26,7 +26,7 @@ const scale = (
 			/>
 			<Path
 				id='scale__c'
-				stroke='var(--maxi-primary-color)'
+				stroke='var(--mpc)'
 				strokeWidth={1.5}
 				strokeLinejoin='round'
 				strokeLinecap='round'

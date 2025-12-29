@@ -18,11 +18,20 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import SelectControl from '@components/select-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TextControl from '@components/text-control';
-import TypographyControl from '@components/typography-control';
+// import TypographyControl from '@components/typography-control';
 import ColorControl from '@components/color-control';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
-import FlexSettingsControl from '@components/flex-settings-control';
+// import FlexSettingsControl from '@components/flex-settings-control';
+import { lazy, Suspense } from '@wordpress/element';
+import ContentLoader from '@components/content-loader';
 import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
+
+const FlexSettingsControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-flex-control" */ '@components/flex-settings-control')
+);
+const TypographyControl = lazy(() =>
+	import(/* webpackChunkName: "maxi-typography-control" */ '@components/typography-control')
+);
 import {
 	orderByRelations,
 	orderByOptions,
@@ -796,23 +805,25 @@ const ContextLoop = props => {
 													})
 												}
 											/>
-											<TypographyControl
-												{...getGroupAttributes(
-													contextLoop,
-													'typography',
-													false,
-													clPaginationPrefix
-												)}
-												textLevel='p'
-												blockStyle={blockStyle}
-												clientId={clientId}
-												breakpoint={breakpoint}
-												disableCustomFormats
-												hideAlignment
-												styleCardPrefix=''
-												prefix={clPaginationPrefix}
-												onChange={obj => onChange(obj)}
-											/>
+											<Suspense fallback={<ContentLoader />}>
+												<TypographyControl
+													{...getGroupAttributes(
+														contextLoop,
+														'typography',
+														false,
+														clPaginationPrefix
+													)}
+													textLevel='p'
+													blockStyle={blockStyle}
+													clientId={clientId}
+													breakpoint={breakpoint}
+													disableCustomFormats
+													hideAlignment
+													styleCardPrefix=''
+													prefix={clPaginationPrefix}
+													onChange={obj => onChange(obj)}
+												/>
+											</Suspense>
 											<ColorControl
 												label={__(
 													'Pagination hover',
@@ -908,22 +919,24 @@ const ContextLoop = props => {
 											<ResponsiveTabsControl
 												breakpoint={breakpoint}
 											>
-												<FlexSettingsControl
-													{...getGroupAttributes(
-														contextLoop,
-														'flex',
-														false,
-														clPaginationPrefix
-													)}
-													onChange={obj => {
-														onChange(obj);
-													}}
-													breakpoint={breakpoint}
-													clientId={clientId}
-													name='pagination'
-													parentBlockName={name}
-													prefix={clPaginationPrefix}
-												/>
+												<Suspense fallback={<ContentLoader />}>
+													<FlexSettingsControl
+														{...getGroupAttributes(
+															contextLoop,
+															'flex',
+															false,
+															clPaginationPrefix
+														)}
+														onChange={obj => {
+															onChange(obj);
+														}}
+														breakpoint={breakpoint}
+														clientId={clientId}
+														name='pagination'
+														parentBlockName={name}
+														prefix={clPaginationPrefix}
+													/>
+												</Suspense>
 											</ResponsiveTabsControl>
 										</>
 									)}

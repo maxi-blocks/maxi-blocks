@@ -102,11 +102,11 @@ const styleGenerator = (
 	isSiteEditor = false,
 	breakpoint
 ) => {
-	let response = '';
-
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
+
+	let response = '';
 
 	const styles = viewportUnitsProcessor(rawStyles, currentBreakpoint); // replacing viewport units only for the editor
 

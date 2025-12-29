@@ -38,7 +38,16 @@ function get_all_fonts($attr, $recursive_key = false, $is_hover = false, $text_l
             if ($font_name || $font_weight || $font_style || $breakpoint === 'general') {
 
                 // Define final font name, weight, and style, with fallback defaults.
-                $final_font_name = $font_name ?? "sc_font_{$block_style}_{$text_level}";
+                $final_font_name = $font_name;
+                
+                if (!$final_font_name && class_exists('MaxiBlocks_StyleCards')) {
+                    $sc_font = MaxiBlocks_StyleCards::get_active_style_cards_value_by_name($block_style, $text_level, 'font-family-general');
+                    if ($sc_font) {
+                        $final_font_name = str_replace(['"', "'"], '', $sc_font);
+                    }
+                }
+
+                $final_font_name = $final_font_name ?? "sc_font_{$block_style}_{$text_level}";
                 $final_font_weight = $font_weight ?? '400';
                 $final_font_style = $font_style ?? 'normal';
 

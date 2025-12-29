@@ -23,18 +23,18 @@
 			flex: 1;
 			min-width: 35px;
 			height: 32px;
-			border: 1px solid var(--maxi-grey-light);
+			border: 1px solid var(--mgl);
 			margin-bottom: 0;
-			color: var(--maxi-grey);
-			background-color: var(--maxi-white);
+			color: var(--mg);
+			background-color: var(--mw);
 			opacity: 1 !important;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 
 			&:hover {
-				background-color: var(--maxi-grey);
+				background-color: var(--mg);
 			}
 			&:focus {
-				background-color: var(--maxi-grey);
+				background-color: var(--mg);
 			}
 			input {
 				display: none;
@@ -42,8 +42,8 @@
 				&:checked ~ label {
 					position: relative;
 					z-index: 1;
-					border-bottom: 2px solid var(--maxi-secondary-color);
-					background-color: var(--maxi-white);
+					border-bottom: 2px solid var(--msc);
+					background-color: var(--mw);
 				}
 			}
 			label {
@@ -57,7 +57,7 @@
 				width: 20px;
 				height: 100%;
 				margin: 0;
-				fill: var(--maxi-black);
+				fill: var(--mb);
 			}
 		}
 	}

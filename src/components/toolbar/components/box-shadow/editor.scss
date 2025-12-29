@@ -3,8 +3,8 @@
 	// Ensure proper toolbar button dimensions
 	width: var(--mx-toolbar-size) !important;
 	height: var(--mx-toolbar-size) !important;
-	background-color: var(--maxi-white);
-	border-right: var(--maxi-border-1px) solid var(--maxi-grey-light);
+	background-color: var(--mw);
+	border-right: var(--maxi-border-1px) solid var(--mgl);
 
 	// Icon alignment specific to box shadow
 	.toolbar-item__icon {
@@ -18,7 +18,7 @@
 	// Hover states for box shadow icon
 	&:hover,
 	&[aria-expanded='true'] {
-		background-color: var(--maxi-pastel-green);
+		background-color: var(--mpg);
 
 		svg,
 		.toolbar-item__icon {
@@ -28,8 +28,8 @@
 			rect,
 			polyline,
 			path {
-				stroke: var(--maxi-secondary-color);
-				fill: var(--maxi-secondary-color);
+				stroke: var(--msc);
+				fill: var(--msc);
 			}
 		}
 	}

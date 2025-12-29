@@ -48,13 +48,13 @@
 		align-items: center;
 		justify-content: center;
 		background-color: rgba(0, 0, 0, 0.5);
-		box-shadow: inset 0 0 0px 1px var(--maxi-white);
+		box-shadow: inset 0 0 0px 1px var(--mw);
 
 		p {
 			padding: 10px;
 			margin: auto;
-			color: var(--maxi-white);
-			background-color: var(--maxi-black);
+			color: var(--mw);
+			background-color: var(--mb);
 			font-family: Inter, sans-serif;
 			font-size: 14px;
 			text-align: center;
@@ -76,7 +76,7 @@
 		display: flex;
 		a {
 			text-decoration: none;
-			transition: all 0.5s;
+			transition: var(--maxi-trans-std);
 		}
 		.maxi-pagination__pages {
 			a:not(:last-child),
@@ -111,28 +111,28 @@ body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
 
 // Override WordPress core destructive button styles
 .components-button.is-destructive {
-	--wp-components-color-accent: var(--maxi-orange-red) !important;
+	--wp-components-color-accent: var(--mor) !important;
 	--wp-components-color-accent-darker-10: var(
-		--maxi-secondary-color
+		--msc
 	) !important;
 	--wp-components-color-accent-darker-20: var(
-		--maxi-tertiary-color
+		--mtc
 	) !important;
 }
 
 .components-button.is-destructive:not(.is-primary):not(.is-secondary):not(.is-tertiary):not(.is-link) {
-	color: var(--maxi-orange-red) !important;
+	color: var(--mor) !important;
 
 	&:hover:not(:disabled) {
-		color: var(--maxi-tertiary-color) !important;
+		color: var(--mtc) !important;
 	}
 
 	&:focus:not(:disabled) {
 		box-shadow: 0 0 0 var(--wp-admin-border-width-focus)
-			var(--maxi-orange-red) !important;
+			var(--mor) !important;
 	}
 
 	&:active:not(:disabled) {
-		background: var(--maxi-grey-light) !important;
+		background: var(--mgl) !important;
 	}
 }

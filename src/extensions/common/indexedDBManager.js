@@ -14,7 +14,7 @@
  * Database configuration constants
  */
 export const DB_NAME = 'maxiBlocksCache';
-export const DB_VERSION = 2;
+export const DB_VERSION = 4; // Incremented for new dynamicContent store
 
 /**
  * Object store names
@@ -23,6 +23,8 @@ export const STORE_NAMES = {
 	uniqueIDs: 'uniqueIDs',
 	styleCards: 'styleCards',
 	wordPressAPI: 'wordPressAPI',
+	blockCSS: 'blockCSS', // Pre-generated CSS cache per block
+	dynamicContent: 'dynamicContent', // Dynamic Content cache
 };
 
 /**

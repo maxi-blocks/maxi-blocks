@@ -6,13 +6,14 @@ import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 import { omit } from 'lodash';
+import { saveBlockCSS } from '@extensions/styles/cssCacheDB';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
-	constructor(maxSize = 200) {
-		super(maxSize);
+	constructor(maxSize = 200, { maxAgeMs = null } = {}) {
+		super(maxSize, { maxAgeMs });
 		this.memoryStats = {
 			totalSize: 0,
 			averageSize: 0,
@@ -78,6 +79,8 @@ class CSSCache extends MemoCache {
 	}
 
 	checkMemoryUsage() {
+		this.pruneExpiredEntries();
+
 		// More conservative thresholds to prevent excessive cleanup
 		const maxAverageSize = 100 * 1024; // 100KB per block (was 50KB)
 		const maxTotalSize = 20 * 1024 * 1024; // 20MB total (was 10MB)
@@ -103,9 +106,9 @@ class CSSCache extends MemoCache {
 				return; // Don't cleanup small caches
 			}
 
-			const entriesToKeep = Math.floor(this.maxSize * 0.6); // Keep 60% of entries (more aggressive)
+			const entriesToKeep = Math.floor(this.maxSize * 0.8); // Keep 80% of entries
 
-			// Get most recently used entries (last 60%)
+			// Get most recently used entries (last 80%)
 			const entries = Array.from(this.cache.entries()).slice(
 				-entriesToKeep
 			);
@@ -115,9 +118,9 @@ class CSSCache extends MemoCache {
 			this.clear();
 
 			// Re-add the most recent entries and recalculate memory stats
-			entries.forEach(([key, value]) => {
-				super.set(key, value);
-				const estimatedSize = JSON.stringify(value).length;
+			entries.forEach(([key, entry]) => {
+				super.set(key, entry.value);
+				const estimatedSize = JSON.stringify(entry.value).length;
 				this.memoryStats.totalSize += estimatedSize;
 			});
 
@@ -153,8 +156,10 @@ class CSSCache extends MemoCache {
 	}
 }
 
+const CSS_CACHE_MAX_AGE_MS = 10 * 60 * 1000; // 10 minutes
+
 // Global CSS cache instance
-const cssCache = new CSSCache(200);
+const cssCache = new CSSCache(200, { maxAgeMs: CSS_CACHE_MAX_AGE_MS });
 
 // Helper function to chunk large style objects
 const chunkStylesIntoChunks = (styles, size) => {
@@ -217,33 +222,11 @@ function reducer(
 				prevSavedAttrsClientId: action.prevSavedAttrsClientId,
 			};
 		case 'SAVE_CSS_CACHE': {
-			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
-
-			// Check if already cached
-			const existingCache = state.cssCache.get(uniqueID);
-			if (existingCache) {
-				// Move to end (mark as recently used)
-				state.cssCache.set(uniqueID, existingCache);
-				return state;
-			}
-
-			const breakpointStyles = BREAKPOINTS.reduce(
-				(acc, breakpoint) => ({
-					...acc,
-					[breakpoint]: styleGenerator(
-						stylesObj,
-						isIframe,
-						isSiteEditor,
-						breakpoint
-					),
-				}),
-				{}
-			);
-
-			// Use LRU cache set method (automatically handles size limits)
-			state.cssCache.set(uniqueID, breakpointStyles);
-
-			return { ...state };
+			// MEMORY OPTIMIZATION: Disabled 7-breakpoint CSS caching
+			// The globalStyleManager already injects CSS into DOM via addBlockStyles()
+			// Keeping CSS in memory for all breakpoints was causing ~1.3GB usage
+			// Now we skip memory caching entirely - the DOM is the source of truth
+			return state;
 		}
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;

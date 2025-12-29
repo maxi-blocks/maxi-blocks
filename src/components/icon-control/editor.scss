@@ -2,7 +2,7 @@
 	.maxi-tabs-control__button {
 		&--selected {
 			path {
-				fill: var(--maxi-secondary-color);
+				fill: var(--msc);
 				stroke: transparent;
 			}
 		}
@@ -10,14 +10,14 @@
 	.maxi-tabs-control__button-color {
 		path {
 			&:first-child {
-				fill: var(--maxi-white) !important;
+				fill: var(--mw) !important;
 			}
 		}
 	}
 	.maxi-tabs-control__button-border.maxi-tabs-control__button--selected {
 		path {
 			fill: transparent;
-			stroke: var(--maxi-secondary-color);
+			stroke: var(--msc);
 		}
 	}
 }

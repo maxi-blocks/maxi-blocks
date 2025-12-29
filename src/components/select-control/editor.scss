@@ -7,9 +7,9 @@ body.maxi-blocks--active {
 		min-height: unset;
 		max-height: unset !important;
 		padding: 8px;
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--mgl);
 		margin: 0;
-		color: var(--maxi-grey);
+		color: var(--mg);
 		background-size: 9px 9px;
 		font-size: 12px;
 		line-height: 14px;
@@ -21,10 +21,10 @@ body.maxi-blocks--active {
 		opacity: 1;
 		outline: 0;
 		background-image: linear-gradient(
-				var(--maxi-grey-light),
-				var(--maxi-grey-light)
+				var(--mgl),
+				var(--mgl)
 			),
-			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+			var(--maxi-icon-chevron) !important;
 		background-repeat: no-repeat, no-repeat !important;
 		background-size: 1px 18px, 8px 8px !important;
 		background-position: right 1px center, right 5px center !important;
@@ -32,18 +32,18 @@ body.maxi-blocks--active {
 		&:focus,
 		&:active {
 			background-image: linear-gradient(
-					var(--maxi-grey-light),
-					var(--maxi-grey-light)
+					var(--mgl),
+					var(--mgl)
 				),
-				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+				var(--maxi-icon-chevron-hover) !important;
 		}
 		svg {
-			fill: var(--maxi-grey);
+			fill: var(--mg);
 		}
 	}
 	.maxi-select-control__input {
 		padding-left: 12px !important;
-		transition: all 0.5s ease;
+		transition: var(--maxi-trans-std);
 	}
 	// Consolidate hover rule to avoid empty ruleset warning
 	.maxi-select-control__input:hover,
@@ -57,7 +57,7 @@ body.maxi-blocks--active {
 	}
 	.maxi-option {
 		&__in-use {
-			color: var(--maxi-highlight-color);
+			color: var(--mhc);
 			font-weight: 500;
 		}
 	}
@@ -72,9 +72,9 @@ body.maxi-blocks--active {
 			.maxi-base-control__field {
 				position: relative;
 				margin-top: 12px;
-				background-color: var(--maxi-white);
-				border: 1px solid var(--maxi-grey-light) !important;
-				border-radius: 5px;
+				background-color: var(--mw);
+				border: 1px solid var(--mgl) !important;
+				border-radius: var(--maxi-radius-sm);
 				margin-right: -3px;
 			}
 			.maxi-base-control__label {
@@ -82,9 +82,9 @@ body.maxi-blocks--active {
 				top: -8px;
 				left: 8px;
 				font-size: 10px !important;
-				color: var(--maxi-grey-dark);
+				color: var(--mdg);
 				font-style: normal;
-				background: var(--maxi-white);
+				background: var(--mw);
 				padding: 0 5px;
 				pointer-events: none;
 				box-sizing: border-box;
@@ -94,12 +94,12 @@ body.maxi-blocks--active {
 				padding: 10px 11px;
 				border: none !important;
 				/* Short right divider + chevron */
-				background-color: var(--maxi-white) !important;
+				background-color: var(--mw) !important;
 				background-image: linear-gradient(
-						var(--maxi-grey-light),
-						var(--maxi-grey-light)
+						var(--mgl),
+						var(--mgl)
 					),
-					url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+					var(--maxi-icon-chevron) !important;
 				background-repeat: no-repeat, no-repeat !important;
 				background-size: 1px 18px, 8px 8px !important;
 				background-position: right 1px center, right 5px center !important;
@@ -107,10 +107,10 @@ body.maxi-blocks--active {
 				&:focus,
 				&:active {
 					background-image: linear-gradient(
-							var(--maxi-grey-light),
-							var(--maxi-grey-light)
+							var(--mgl),
+							var(--mgl)
 						),
-						url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>') !important;
+						var(--maxi-icon-chevron-hover) !important;
 				}
 			}
 			#inspector-select-control-5 {

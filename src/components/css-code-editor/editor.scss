@@ -2,17 +2,17 @@ body.maxi-blocks--active .maxi-css-code-editor {
 	.w-tc-editor {
 		margin: 8px 8px 0 0;
 		width: 100%;
-		background-color: var(--maxi-white);
-		border: 1px solid var(--maxi-grey-light);
+		background-color: var(--mw);
+		border: 1px solid var(--mgl);
 		border-radius: 10px;
 		font-family: monospace !important;
 		flex: 1 0 100%;
 		direction: ltr;
 		border-radius: 10px;
-		transition: all 0.3s ease;
+		transition: var(--maxi-trans-std);
 
 		textarea.w-tc-editor-text {
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			font-family: monospace !important;
 			font-size: 13px !important;
 			&:hover:not(#inspector-select-control-0):not([id^='inspector-input-control']):not([id^='url-input-control']) {
@@ -20,7 +20,7 @@ body.maxi-blocks--active .maxi-css-code-editor {
 			}
 		}
 		&:hover {
-			border: 1px solid var(--maxi-primary-color) !important;
+			border: 1px solid var(--mpc) !important;
 		}
 	}
 	button.components-button[class*='maxi-advanced-css-control']:hover,
@@ -29,10 +29,10 @@ body.maxi-blocks--active .maxi-css-code-editor {
 	}
 	code {
 		padding: 0;
-		background-color: var(--maxi-white);
+		background-color: var(--mw);
 		font-family: monospace !important;
 		span {
-			background-color: var(--maxi-white);
+			background-color: var(--mw);
 			font-family: monospace !important;
 		}
 	}
@@ -43,10 +43,10 @@ body.maxi-blocks--active .maxi-css-code-editor {
 		padding-right: 5px;
 		font-style: italic;
 		&.not-valid {
-			border-left: 2px solid var(--maxi-orange-red);
+			border-left: 2px solid var(--mor);
 		}
 		&.valid {
-			border-left: 2px solid var(--maxi-primary-color);
+			border-left: 2px solid var(--mpc);
 		}
 	}
 
@@ -55,31 +55,22 @@ body.maxi-blocks--active .maxi-css-code-editor {
 		flex-wrap: wrap;
 
 		.maxi-css-code-editor__validate-button {
-			margin-left: 10px;
-			float: right;
+			margin-inline-start: 10px;
+			float: inline-end;
 		}
 
 		.components-button {
 			height: 24px;
-			background-color: var(--maxi-pastel-green);
-			border: 1px solid var(--maxi-mid-green);
+			background-color: var(--mpg);
+			border: 1px solid var(--mmg);
 			border-radius: 30px;
 
 			&:hover {
-				background-color: var(--maxi-mid-green) !important;
-				color: var(--maxi-white) !important;
-				border-color: var(--maxi-primary-color) !important;
+				background-color: var(--mmg) !important;
+				color: var(--mw) !important;
+				border-color: var(--mpc) !important;
 			}
 		}
 	}
 }
 
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-css-code-editor__validate-button {
-		margin-right: 10px;
-		margin-left: 0px !important;
-	}
-}

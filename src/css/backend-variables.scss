@@ -1,52 +1,70 @@
 :root {
 	/* Core Builder */
-	--maxi-primary-color: #2c8a46; /* Fresh lime green */
-	--maxi-secondary-color: #3fa75a; /* Crisp blue accent */
-	--maxi-tertiary-color: #7a00df; /* Rich deep purple accent */
+	--mpc: #2c8a46; /* Fresh lime green */
+	--msc: #3fa75a; /* Crisp blue accent */
+	--mtc: #7a00df; /* Rich deep purple accent */
 
 	/* Core Colors */
-	--maxi-cloud-primary: #9a8cf3; /* Soft, pastel lavender-purple – modern and approachable */
-	--maxi-cloud-primary-light: #e1dbfe; /* Lighter pastel version, now more distinct from whisper */
-	--maxi-cloud-primary-bright: #7e6ee8; /* A more saturated but still refined shade */
-	--maxi-cloud-primary-whisper: #f5f3fe; /* Slightly darker off-white for backgrounds */
-	--maxi-cloud-primary-contrast: #3a3a3a; /* Dark neutral for text and contrast */
+	--mcp: #9a8cf3; /* Soft, pastel lavender-purple – modern and approachable */
+	--mcp-l: #e1dbfe; /* Lighter pastel version, now more distinct from whisper */
+	--mcp-b: #7e6ee8; /* A more saturated but still refined shade */
+	--mcp-w: #f5f3fe; /* Slightly darker off-white for backgrounds */
+	--mcp-c: #3a3a3a; /* Dark neutral for text and contrast */
 
 	/* Accent & Hover Colors */
-	--maxi-cloud-hover: #b06bf7; /* Vibrant lavender-purple for hover effects */
-	--maxi-cloud-hover-deep: #954dd1; /* Slightly deeper version for active states */
+	--mch: #b06bf7; /* Vibrant lavender-purple for hover effects */
+	--mch-deep: #954dd1; /* Slightly deeper version for active states */
 
 	/* Core Neutrals */
-	--maxi-white: #fff; /* Pure white */
+	--mw: #fff; /* Pure white */
 	--maxi-off-white: #f8f8f8; /* Soft off-white background */
-	--maxi-grey: #b4b4b4; /* Standard grey for text/borders */
-	--maxi-grey-light: #e0e0e0; /* Very light grey background */
-	--maxi-grey-dark: #383838; /* Dark grey for high-contrast elements */
-	--maxi-black: #000; /* True black */
+	--mg: #b4b4b4; /* Standard grey for text/borders */
+	--mgl: #e0e0e0; /* Very light grey background */
+	--mdg: #383838; /* Dark grey for high-contrast elements */
+	--mb: #000; /* True black */
 
 	/* Accessibility */
-	--maxi-accessibility-grey: #757575; /* Medium grey for readability */
+	--mag: #757575; /* Medium grey for readability */
 
-	/* Existing Accent Colors */
-	--maxi-light-blue: #e5f2f8; /* Soft light blue background/highlight */
-	--maxi-light-blue-alt: #7fbddc; /* Alternative blue accent */
-	--maxi-highlight-color: #f066ff; /* Vibrant highlight/punctuation */
-	--maxi-light-yellow: #f7f5df; /* Gentle light yellow for accents */
+	/* Motion */
+	--maxi-trans-std: all 0.3s ease;
+
+	/* Typography */
+	--maxi-font-sans: 'Inter', Helvetica, Arial, Lucida, sans-serif;
+	--maxi-font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+
+	/* Layout */
+	--maxi-radius-sm: 5px;
+	--mlb: #e5f2f8; /* Soft light blue background/highlight */
+	--mlb-a: #7fbddc; /* Alternative blue accent */
+	--mhc: #f066ff; /* Vibrant highlight/punctuation */
+	--mly: #f7f5df; /* Gentle light yellow for accents */
 
 	/* New Accent Brand Colors */
-	--maxi-orange-red: #ff4500; /* Vibrant orange-red */
-	--maxi-golden-orange: #f2a600; /* Warm golden-orange */
-	--maxi-bright-yellow: #ffff00; /* Pure, bright yellow */
-	--maxi-deep-golden: #f2b600; /* Rich golden shade */
+	--mor: #ff4500; /* Vibrant orange-red */
+	--mgo: #f2a600; /* Warm golden-orange */
+	--mby: #ffff00; /* Pure, bright yellow */
+	--mdyd: #f2b600; /* Rich golden shade */
 
-	--maxi-pastel-green: #e3f3ea; /* Soft pastel green */
-	--maxi-mid-green: #e6f3ed; /* Midpoint between the two pastel greens */
-	--maxi-whisper-green: #f3fbf7; /* Soft pastel green */
-	--maxi-hot-pink: #ff66ff; /* Vibrant pink highlight */
+	--mpg: #e3f3ea; /* Soft pastel green */
+	--mmg: #e6f3ed; /* Midpoint between the two pastel greens */
+	--mwg: #f3fbf7; /* Soft pastel green */
+	--mhp: #ff66ff; /* Vibrant pink highlight */
 
 	/* Patterns preview colours */
-	--maxi-cloud-preview-gradient: #f8fbfd; /* For lines gradient */
-	--maxi-cloud-iframe-border: #96b0cb; /* For mobile and tablet preview iframe */
+	--mpcg: #f8fbfd; /* For lines gradient */
+	--mcib: #96b0cb; /* For mobile and tablet preview iframe */
 
 	/* For icon blocks */
-	--maxi-icon-block-orange: #2c8a46; /* For mobile and tablet preview iframe */
+	--mibo: #2c8a46; /* For mobile and tablet preview iframe */
+
+	/* SVG Icons (consolidated for optimization) */
+	--maxi-icon-chevron: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(180,180,180,0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>');
+	--maxi-icon-chevron-hover: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(99,186,121,1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>');
+	--maxi-icon-reset: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5"><path fill="rgba(180,180,180,0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"/></svg>');
+	--maxi-icon-reset-hover: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.34 11.5"><path fill="rgba(99,186,121,0.8)" d="M11.32.75a.74.74 0 0 0-.75-.75.76.76 0 0 0-.75.75v1.49A5.6 5.6 0 1 0 5.6 11.5a5.44 5.44 0 0 0 1.48-.2.74.74 0 0 0 .52-.92.76.76 0 0 0-.92-.53A4.1 4.1 0 1 1 9.22 4H6.57a.75.75 0 0 0 0 1.5h4a.75.75 0 0 0 .53-.22.77.77 0 0 0 .22-.54Z"/></svg>');
+	--maxi-icon-arrow-right: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.783 9.578"><path d="M5.783 4.758a.963.963 0 01-.283.684L1.651 9.295A.967.967 0 01.283 7.927l3.179-3.169L.293 1.59A.963.963 0 011.651.232L5.5 4.084a.963.963 0 01.283.674z"/></svg>');
+	--maxi-icon-check: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.8 8"><path fill="rgb(147,147,147)" d="M8.43.22A1 1 0 0 0 7 .37L2.93 5.48 1.72 4.21a1 1 0 0 0-1.41 0 1 1 0 0 0 0 1.41l2 2.1h.05a.83.83 0 0 0 .16.09l.1.06A1.15 1.15 0 0 0 3 8a.93.93 0 0 0 .4-.09l.11-.07a.71.71 0 0 0 .18-.12s0 0 0-.06l4.8-6A1 1 0 0 0 8.43.22Z"/></svg>');
+	--maxi-icon-cross: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><path fill="rgb(147,147,147)" d="m5.6 4 2.55-2.55A.85.85 0 1 0 7 .25L4.4 2.8 1.85.25a.85.85 0 0 0-1.2 1.2L3.2 4 .65 6.55a.85.85 0 0 0 0 1.2.83.83 0 0 0 .6.25.82.82 0 0 0 .6-.25L4.4 5.2 7 7.75a.82.82 0 0 0 .6.25.83.83 0 0 0 .6-.25.85.85 0 0 0 0-1.2Z" transform="translate(-.4)"/></svg>');
+
 }

@@ -11,7 +11,7 @@
 	&__content,
 	> ol,
 	> ul {
-		outline: 1.5px dashed var(--maxi-pastel-green) !important;
+		outline: 1.5px dashed var(--mpg) !important;
 
 		a.maxi-text-block--link {
 			text-decoration-skip-ink: auto;
@@ -27,14 +27,14 @@
 			.maxi-text-block__content,
 			> ol,
 			> ul {
-				outline: 1.5px dashed var(--maxi-grey-dark) !important;
+				outline: 1.5px dashed var(--mdg) !important;
 			}
 		}
 		&.is-selected {
 			.maxi-text-block__content,
 			> ol,
 			> ul {
-				outline: 1.5px dashed var(--maxi-light-blue-alt) !important;
+				outline: 1.5px dashed var(--mlb-a) !important;
 			}
 		}
 		.maxi-text-block__content,

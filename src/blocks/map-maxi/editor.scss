@@ -1,16 +1,16 @@
 .maxi-map-block {
 	&__not-found {
 		padding: 5% 8%;
-		border: 1px solid var(--maxi-grey-light);
-		background-color: var(--maxi-whisper-green);
+		border: 1px solid var(--mgl);
+		background-color: var(--mwg);
 		p {
 			max-width: 820px;
-			color: var(--maxi-grey-dark);
+			color: var(--mdg);
 			font-size: 16px;
 			font-family: Inter, sans-serif;
 			line-height: 1.5em;
 			a {
-				color: var(--maxi-secondary-color);
+				color: var(--msc);
 			}
 		}
 	}
@@ -25,12 +25,12 @@
 		bottom: 16px;
 		width: calc(100% - 32px);
 		left: 16px;
-		border-radius: 5px;
+		border-radius: var(--maxi-radius-sm);
 		font-size: 13px;
 		padding: 0.5em;
 		text-align: center;
-		background: rgba(var(--maxi-black), 0.6);
-		color: var(--maxi-white);
+		background: rgba(var(--mb), 0.6);
+		color: var(--mw);
 		z-index: 9999;
 	}
 
@@ -69,19 +69,19 @@
 				position: absolute;
 				right: 0;
 				bottom: -16px;
-				background: var(--maxi-primary-color);
+				background: var(--mpc);
 				border-radius: 50%;
 				text-align: center;
-				transition: all 0.4s ease !important;
+				transition: var(--maxi-trans-std) !important;
 
 				span.dashicon {
 					&::before {
-						color: var(--maxi-white);
+						color: var(--mw);
 					}
 				}
 				&:hover {
-					background: var(--maxi-black);
-					transition: all 0.4s ease !important;
+					background: var(--mb);
+					transition: var(--maxi-trans-std) !important;
 				}
 			}
 		}
@@ -90,13 +90,13 @@
 	&__search-box {
 		display: flex;
 		align-items: center;
-		background: var(--maxi-white);
-		color: var(--maxi-grey-dark);
+		background: var(--mw);
+		color: var(--mdg);
 		position: absolute;
 		z-index: 999;
 		top: 0.5rem;
 		right: 0.5rem;
-		border: 1px solid var(--maxi-grey-dark);
+		border: 1px solid var(--mdg);
 		padding: 0 0 0 0.5rem;
 		width: 280px;
 		max-width: calc(100% - 5rem);
@@ -113,7 +113,7 @@
 		.maxi-text-input[type='text'] {
 			background: transparent;
 			border: none;
-			color: var(--maxi-black);
+			color: var(--mb);
 			box-shadow: none;
 			font-family: inherit;
 			padding: 0;
@@ -121,11 +121,11 @@
 		}
 
 		svg.dashicon {
-			fill: var(--maxi-black);
+			fill: var(--mb);
 		}
 
 		&__button {
-			border-top: 1px solid var(--maxi-grey-light);
+			border-top: 1px solid var(--mgl);
 			display: flex;
 			padding: 0.7rem 0;
 			margin: 0 0.5rem;
@@ -134,13 +134,13 @@
 		&-results {
 			position: absolute;
 			z-index: 999;
-			background: var(--maxi-white);
+			background: var(--mw);
 			top: 0;
 			transition: all 200ms ease-in-out;
 			max-width: calc(100% - 5rem);
 			top: 48px;
 			right: 0.5rem;
-			border: 1px solid var(--maxi-grey-dark);
+			border: 1px solid var(--mdg);
 			width: 280px;
 			max-height: calc(100% - 70px);
 			overflow-y: auto;

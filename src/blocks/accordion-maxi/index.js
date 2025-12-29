@@ -7,9 +7,10 @@ import { registerBlockType } from '@wordpress/blocks';
 /**
  * Block dependencies
  */
+import { lazy } from '@wordpress/element';
 import metadata from './block.json';
 import { customCss } from './data';
-import edit from './edit';
+const edit = lazy(() => import(/* webpackChunkName: "maxi-accordion" */ './edit'));
 import attributes from './attributes';
 import save from './save';
 import withMaxiLoader from '@extensions/maxi-block/withMaxiLoader';

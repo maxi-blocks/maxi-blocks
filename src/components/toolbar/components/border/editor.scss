@@ -2,8 +2,8 @@
 .toolbar-item__border {
 	width: 33px !important;
 	height: 33px !important;
-	background-color: var(--maxi-white);
-	border-right: 1px solid var(--maxi-grey-light);
+	background-color: var(--mw);
+	border-right: 1px solid var(--mgl);
 
 	// Icon alignment specific to border
 	.toolbar-item__icon {
@@ -18,7 +18,7 @@
 	// Hover states for border icon
 	&:hover,
 	&[aria-expanded='true'] {
-		background-color: var(--maxi-pastel-green);
+		background-color: var(--mpg);
 
 		svg,
 		.toolbar-item__icon {
@@ -28,18 +28,18 @@
 			rect,
 			polyline,
 			path {
-				stroke: var(--maxi-secondary-color);
-				fill: var(--maxi-secondary-color);
+				stroke: var(--msc);
+				fill: var(--msc);
 			}
 		}
 	}
 
 	// Keyboard accessibility focus treatment
 	&:focus-visible {
-		outline: 2px solid var(--maxi-primary-color);
+		outline: 2px solid var(--mpc);
 		outline-offset: 2px;
-		box-shadow: 0 0 0 1px var(--maxi-white),
-			0 0 0 3px var(--maxi-primary-color);
+		box-shadow: 0 0 0 1px var(--mw),
+			0 0 0 3px var(--mpc);
 		border-radius: 3px;
 	}
 }

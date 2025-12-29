@@ -7,6 +7,12 @@ import { processCss } from '@extensions/styles/store/controls';
  * External dependencies
  */
 import { times, compact } from 'lodash';
+import {
+	styleMap,
+	elementMap,
+	settingMap,
+	breakpointMap,
+} from '../../../config/css-optimization/variable-map';
 
 const styles = ['light', 'dark'];
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
@@ -47,7 +53,7 @@ const getOrganizedValues = styleCard => {
 		elements.forEach(element => {
 			breakpointsKeys.forEach(breakpoint => {
 				settings.forEach(setting => {
-					const label = `--maxi-${style}-${element}-${setting}-${breakpoint}`;
+					const label = `--maxi-${styleMap[style]}-${elementMap[element]}-${settingMap[setting]}-${breakpointMap[breakpoint]}`;
 
 					if (styleCard[label]) {
 						organizedValues = {
@@ -76,7 +82,7 @@ const getOrganizedValues = styleCard => {
 	// Colors
 	styles.forEach(style => {
 		times(8, i => {
-			const label = `--maxi-${style}-color-${i + 1}`;
+			const label = `--maxi-${styleMap[style]}-${settingMap.color}-${i + 1}`;
 
 			if (styleCard[label]) {
 				organizedValues = {
@@ -107,28 +113,28 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 
 			if (organizedValues[style]?.color[colorNumber]) {
 				// Link color
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-palette: var(--maxi-${style}-color-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
 
 				// Link hover color
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-hover-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-hover-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-hover-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-hover-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-hover-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-hover-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-hover-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-hover-palette: var(--maxi-${style}-color-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-hover-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-hover-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-hover-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-hover-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
 
 				// Link active color
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-active-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-active-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-active-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-active-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-active-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-active-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-active-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-active-palette: var(--maxi-${style}-color-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-active-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-active-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-active-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-active-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
 
 				// Link visited color
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-visited-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-visited-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-visited-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-visited-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-visited-color-${colorNumber}.maxi-block--has-link { --maxi-${style}-link-visited-palette: var(--maxi-${style}-color-${colorNumber});}`;
-				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-visited-color-${colorNumber} a.maxi-block--has-link { --maxi-${style}-link-visited-palette: var(--maxi-${style}-color-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-visited-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style}.maxi-sc-${style}-link-visited-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-visited-color-${colorNumber}.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
+				response += `${prefix} .maxi-${style} .maxi-sc-${style}-link-visited-color-${colorNumber} a.maxi-block--has-link { --maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}-${settingMap.palette}: var(--maxi-${styleMap[style]}-${settingMap.color}-${colorNumber});}`;
 			}
 		});
 	}
@@ -174,7 +180,7 @@ const getSentencesByBreakpoint = ({
 					organizedValues?.[style]?.[target]?.[breakpoint]?.[setting];
 
 				if (value)
-					return `${setting}: var(--maxi-${style}-${target}-${setting}-${breakpoint});`;
+					return `${setting}: var(--maxi-${styleMap[style]}-${elementMap[target]}-${settingMap[setting]}-${breakpointMap[breakpoint]});`;
 
 				return null;
 			})
@@ -280,28 +286,28 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		// Text Maxi when has link
 		const textMaxiLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-block--has-link > .maxi-text-block__content:not(p)`;
 
-		addedResponse += `${textMaxiLinkPrefix} { color: var(--maxi-${style}-link); }`;
-		addedResponse += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${style}-link-hover); }`;
-		addedResponse += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${style}-link-hover); }`;
-		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${style}-link-active); }`;
-		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${style}-link-visited); }`;
-		addedResponse += `${textMaxiLinkPrefix}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
+		addedResponse += `${textMaxiLinkPrefix} { color: var(--maxi-${styleMap[style]}-${elementMap.link}); }`;
+		addedResponse += `${textMaxiLinkPrefix}:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+		addedResponse += `${textMaxiLinkPrefix}:focus { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+		addedResponse += `${textMaxiLinkPrefix}:active { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}); }`;
+		addedResponse += `${textMaxiLinkPrefix}:visited { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}); }`;
+		addedResponse += `${textMaxiLinkPrefix}:visited:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
 
 		[
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-text-block a.maxi-block--has-link`,
 			`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-text-block a.maxi-block--has-link`,
 		].forEach(target => {
-			addedResponse += `${target} { color: var(--maxi-${style}-link); }`;
-			addedResponse += `${target}:hover { color: var(--maxi-${style}-link-hover); }`;
-			addedResponse += `${target}:hover span { color: var(--maxi-${style}-link-hover); }`;
-			addedResponse += `${target}:focus { color: var(--maxi-${style}-link-hover); }`;
-			addedResponse += `${target}:focus span { color: var(--maxi-${style}-link-hover); }`;
-			addedResponse += `${target}:active { color: var(--maxi-${style}-link-active); }`;
-			addedResponse += `${target}:active span { color: var(--maxi-${style}-link-active); }`;
-			addedResponse += `${target}:visited { color: var(--maxi-${style}-link-visited); }`;
-			addedResponse += `${target}:visited span { color: var(--maxi-${style}-link-visited); }`;
-			addedResponse += `${target}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
-			addedResponse += `${target}:visited:hover span { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${target} { color: var(--maxi-${styleMap[style]}-${elementMap.link}); }`;
+			addedResponse += `${target}:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+			addedResponse += `${target}:focus { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+			addedResponse += `${target}:focus span { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+			addedResponse += `${target}:active { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}); }`;
+			addedResponse += `${target}:active span { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}); }`;
+			addedResponse += `${target}:visited { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}); }`;
+			addedResponse += `${target}:visited span { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}); }`;
+			addedResponse += `${target}:visited:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+			addedResponse += `${target}:visited:hover span { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
 		});
 
 		// Image Maxi
@@ -470,58 +476,58 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		const targetButton = `${targetItem} button`;
 
 		[targetLink, targetButton].forEach(target => {
-			addedResponse += `${target} { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
-			addedResponse += `${target} span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease; }`;
-			addedResponse += `${target} + span { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
-			addedResponse += `${target} + button { color: var(--maxi-${style}-menu-item); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}); transition: color 0.3s 0s ease; }`;
+			addedResponse += `${target} + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}); transition: color 0.3s 0s ease;}`;
+			addedResponse += `${target} + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}); transition: color 0.3s 0s ease;}`;
 
-			addedResponse += `${target}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-			addedResponse += `${target}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
-			addedResponse += `${target}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
-			addedResponse += `${target}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+			addedResponse += `${target}:hover { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+			addedResponse += `${target}:hover span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+			addedResponse += `${target}:hover + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+			addedResponse += `${target}:hover + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
 		});
 
-		addedResponse += `${targetLink}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:focus { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:focus span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:focus + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:focus + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
 
-		addedResponse += `${targetLink}:visited { color: var(--maxi-${style}-menu-item-visited); }`;
-		addedResponse += `${targetLink}:visited span { color: var(--maxi-${style}-menu-item-visited); }`;
-		addedResponse += `${targetLink}:visited + span { color: var(--maxi-${style}-menu-item-visited); }`;
-		addedResponse += `${targetLink}:visited + button { color: var(--maxi-${style}-menu-item-visited); }`;
+		addedResponse += `${targetLink}:visited { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}); }`;
+		addedResponse += `${targetLink}:visited span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}); }`;
+		addedResponse += `${targetLink}:visited + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}); }`;
+		addedResponse += `${targetLink}:visited + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.visited}); }`;
 
-		addedResponse += `${targetLink}:visited:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:visited:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:visited:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLink}:visited:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLink}:visited:hover { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:visited:hover span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:visited:hover + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLink}:visited:hover + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
 
 		const targetLinkCurrent = `${targetItem}.current-menu-item > a`;
 
-		addedResponse += `${targetLinkCurrent} { color: var(--maxi-${style}-menu-item-current); }`;
-		addedResponse += `${targetLinkCurrent} span { color: var(--maxi-${style}-menu-item-current); }`;
-		addedResponse += `${targetLinkCurrent} + span { color: var(--maxi-${style}-menu-item-current); }`;
-		addedResponse += `${targetLinkCurrent} + button { color: var(--maxi-${style}-menu-item-current); }`;
+		addedResponse += `${targetLinkCurrent} { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.current}); }`;
+		addedResponse += `${targetLinkCurrent} span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.current}); }`;
+		addedResponse += `${targetLinkCurrent} + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.current}); }`;
+		addedResponse += `${targetLinkCurrent} + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.current}); }`;
 
-		addedResponse += `${targetLinkCurrent}:hover { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:hover span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:hover + span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:hover + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:hover { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:hover span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:hover + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:hover + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
 
-		addedResponse += `${targetLinkCurrent}:focus { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${style}-menu-item-hover); }`;
-		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${style}-menu-item-hover); }`;
+		addedResponse += `${targetLinkCurrent}:focus { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:focus span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:focus + span { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
+		addedResponse += `${targetLinkCurrent}:focus + button { color: var(--maxi-${styleMap[style]}-${settingMap['menu-item']}-${settingMap.hover}); }`;
 
 		// mobile menu icon / text
 		const burgerItem = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-open`;
 		const burgerItemClose = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation button.wp-block-navigation__responsive-container-close`;
 
 		[burgerItem, burgerItemClose].forEach(target => {
-			addedResponse += `${target} { color: var(--maxi-${style}-menu-burger); }`;
+			addedResponse += `${target} { color: var(--maxi-${styleMap[style]}-${settingMap['menu-burger']}); }`;
 			sentences.forEach((sentence, i) => {
 				if (sentence?.includes('font-family')) {
-					addedResponse += `${target} { font-family: var(--maxi-${style}-navigation-font-family-general); }`;
+					addedResponse += `${target} { font-family: var(--maxi-${styleMap[style]}-${elementMap.navigation}-${settingMap['font-family']}-${breakpointMap.general}); }`;
 				}
 			});
 		});
@@ -529,21 +535,21 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		// mobile menu background
 		const mobileMenuBgTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__responsive-container.has-modal-open`;
 
-		addedResponse += `${mobileMenuBgTarget} { background-color: var(--maxi-${style}-menu-mobile-bg) !important; }`;
+		addedResponse += `${mobileMenuBgTarget} { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-mobile-bg']}) !important; }`;
 
 		// sub-menus
 		const subMenuTarget = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container ul li`;
 		const subMenuTargetEditor = `${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block .wp-block-navigation .wp-block-navigation__container .wp-block-navigation__submenu-container > div`;
 
-		addedResponse += `${subMenuTarget} { background-color: var(--maxi-${style}-menu-item-sub-bg); }`;
-		addedResponse += `${subMenuTarget}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+		addedResponse += `${subMenuTarget} { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}); }`;
+		addedResponse += `${subMenuTarget}:hover { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.hover}); }`;
 
-		addedResponse += `${subMenuTargetEditor} { background-color: var(--maxi-${style}-menu-item-sub-bg) !important;  }`;
-		addedResponse += `${subMenuTargetEditor}:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover) !important; }`;
+		addedResponse += `${subMenuTargetEditor} { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}) !important;  }`;
+		addedResponse += `${subMenuTargetEditor}:hover { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.hover}) !important; }`;
 
 		[subMenuTarget, subMenuTargetEditor].forEach(target => {
-			addedResponse += `${target}.current-menu-item { background-color: var(--maxi-${style}-menu-item-sub-bg-current); }`;
-			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
+			addedResponse += `${target}.current-menu-item { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.current}); }`;
+			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${styleMap[style]}-${settingMap['menu-item-sub-bg']}-${settingMap.hover}); }`;
 		});
 
 		return addedResponse;
@@ -677,18 +683,18 @@ const getWPNativeStyles = ({
 		const WPNativeLinkPrefix = `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} a`;
 
 		['', ' span'].forEach(suffix => {
-			addedResponse += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${style}-link); }`;
-			if (styleCard[`--maxi-${style}-link-hover`]) {
-				addedResponse += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${style}-link-hover); }`;
-				addedResponse += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${style}-link-hover); }`;
+			addedResponse += `${WPNativeLinkPrefix}${suffix} { color: var(--maxi-${styleMap[style]}-${elementMap.link}); }`;
+			if (styleCard[`--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:focus { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
 			}
-			if (styleCard[`--maxi-${style}-link-active`]) {
-				addedResponse += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${style}-link-active); }`;
+			if (styleCard[`--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:active { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.active}); }`;
 			}
-			if (styleCard[`--maxi-${style}-link-visited`]) {
-				addedResponse += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${style}-link-visited); }`;
-				if (styleCard[`--maxi-${style}-link-hover`]) {
-					addedResponse += `${WPNativeLinkPrefix}${suffix}:visited:hover { color: var(--maxi-${style}-link-hover); }`;
+			if (styleCard[`--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}`]) {
+				addedResponse += `${WPNativeLinkPrefix}${suffix}:visited { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.visited}); }`;
+				if (styleCard[`--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}`]) {
+					addedResponse += `${WPNativeLinkPrefix}${suffix}:visited:hover { color: var(--maxi-${styleMap[style]}-${elementMap.link}-${settingMap.hover}); }`;
 				}
 			}
 		});
@@ -746,51 +752,51 @@ const getWPNativeStyles = ({
 			if (styles) {
 				addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button`} {${[
 					...buttonSentences,
-					styleCard[`--maxi-${style}-button-color`]
-						? `color: var(--maxi-${style}-button-color);`
-						: `color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));`,
+					styleCard[`--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color}`]
+						? `color: var(--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color});`
+						: `color: var(--maxi-${styleMap[style]}-${elementMap.p}-${settingMap.color},rgba(var(--maxi-${styleMap[style]}-${settingMap.color}-3,155,155,155),1));`,
 				]?.join(' ')}}`;
 			}
 		}
 
-		if (styleCard[`--maxi-${style}-button-color`]) {
+		if (styleCard[`--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color}`]) {
 			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p.form-submit input {
-				color: var(--maxi-${style}-button-color);
+				color: var(--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color});
 			}`;
 		}
 
-		if (styleCard[`--maxi-${style}-button-color-hover`]) {
+		if (styleCard[`--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color}-${settingMap.hover}`]) {
 			addedResponse += `${`${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover`} {
-				color: var(--maxi-${style}-button-color-hover);
+				color: var(--maxi-${styleMap[style]}-${elementMap.button}-${settingMap.color}-${settingMap.hover});
 			}`;
 		}
 
 		// General color
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix}, ${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-reply-title small {
-			color: var(--maxi-${style}-p-color,rgba(var(--maxi-${style}-color-3,155,155,155),1));
+			color: var(--maxi-${styleMap[style]}-${elementMap.p}-${settingMap.color},rgba(var(--maxi-${styleMap[style]}-${settingMap.color}-3,155,155,155),1));
 		}`;
 
 		// Headings color
 		headings.forEach(heading => {
 			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} ${heading}.${nativeWPPrefix}, ${prefix} .maxi-${style} .${nativeWPPrefix} ${heading} {
-				color: var(--maxi-${style}-${heading}-color,rgba(var(--maxi-${style}-color-5,0,0,0),1));
+				color: var(--maxi-${styleMap[style]}-${elementMap[heading]}-${settingMap.color},rgba(var(--maxi-${styleMap[style]}-${settingMap.color}-5,0,0,0),1));
 			}`;
 		});
 
 		// backend page / post title
 		addedResponse += `${prefix} .editor-editor-canvas__post-title-wrapper > h1.editor-post-title {
-			color: var(--maxi-light-h1-color,rgba(var(--maxi-light-color-5,0,0,0),1));
+			color: var(--maxi-${styleMap.light}-${elementMap.h1}-${settingMap.color},rgba(var(--maxi-${styleMap.light}-${settingMap.color}-5,0,0,0),1));
 		}`;
 
 		// Button color
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
-			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
+			background: var(--maxi-${styleMap[style]}-${elementMap.button}-${settingMap['background-color']},rgba(var(--maxi-${styleMap[style]}-${settingMap.color}-4,255,74,23),1));
 		}`;
 
 		// Button color hover
-		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {
+		if (styleCard[`--maxi-${styleMap[style]}-${elementMap.button}-${settingMap['background-color']}-${settingMap.hover}`]) {
 			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button:hover {
-				background: var(--maxi-${style}-button-background-color-hover);
+				background: var(--maxi-${styleMap[style]}-${elementMap.button}-${settingMap['background-color']}-${settingMap.hover});
 			}`;
 		}
 

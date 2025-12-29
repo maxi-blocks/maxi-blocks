@@ -1,13 +1,13 @@
 .maxi-textshadow-control {
 	&__default {
 		&__total {
-			text-shadow: 0px 0px 5px var(--maxi-grey);
+			text-shadow: 0px 0px 5px var(--mg);
 		}
 		&__bottom {
-			text-shadow: 5px 0px 3px var(--maxi-grey);
+			text-shadow: 5px 0px 3px var(--mg);
 		}
 		&__solid {
-			text-shadow: 2px 4px 0px var(--maxi-grey);
+			text-shadow: 2px 4px 0px var(--mg);
 		}
 	}
 }

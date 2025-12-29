@@ -10,6 +10,7 @@ import getDCEntity from './getDCEntity';
 import { getCartUrl, getProductData } from './getWooCommerceData';
 import { inlineLinkFields, nameDictionary } from './constants';
 import { getCurrentTemplateSlug, getPostBySlug } from './utils';
+import { createDCCache } from './dcCache';
 
 const getProductsLink = async (dataRequest, data) => {
 	const productData = await getProductData(data?.id);
@@ -41,8 +42,7 @@ const getUserLink = (dataRequest, data) => {
 };
 
 // Exporting for testing purposes
-export const cache = {};
-const MAX_CACHE_SIZE = 200;
+export const cache = createDCCache('link', { maxSize: 100 });
 
 const getDCLink = async (dataRequest, clientId) => {
 	const { type, linkTarget, author, relation } = dataRequest;
@@ -146,20 +146,11 @@ const getDCLink = async (dataRequest, clientId) => {
 		'field',
 	];
 	keysToRemove.forEach(key => delete filteredDataRequest[key]);
-	const cacheKey = JSON.stringify(filteredDataRequest);
-	let data;
+	let data = await cache.get(filteredDataRequest);
 
-	if (cache[cacheKey]) {
-		data = cache[cacheKey];
-	} else {
+	if (!data) {
 		data = await getDCEntity(dataRequest, clientId);
-		// Check if the cache size exceeds the maximum limit
-		if (Object.keys(cache).length >= MAX_CACHE_SIZE) {
-			// Remove the oldest entry from the cache
-			const oldestKey = Object.keys(cache)[0];
-			delete cache[oldestKey];
-		}
-		cache[cacheKey] = data;
+		await cache.set(filteredDataRequest, data);
 	}
 
 	if (type === 'products') {

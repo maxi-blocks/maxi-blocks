@@ -38,6 +38,12 @@ if (!class_exists('MaxiBlocks_API')):
          * Cache key for unique IDs transient
          */
         private const UNIQUE_IDS_CACHE_KEY = 'maxi_blocks_unique_ids_cache';
+        private const OPTIONS_CACHE_KEY = 'maxi_blocks_options_cache';
+        private const STYLE_CARDS_CACHE_KEY = 'maxi_blocks_style_cards_cache';
+        private const OPTIONS_CACHE_VERSION_KEY = 'maxi_blocks_options_cache_version';
+        private const STYLE_CARDS_CACHE_VERSION_KEY = 'maxi_blocks_style_cards_cache_version';
+        private const OPTIONS_CACHE_TTL = 3600;
+        private const STYLE_CARDS_CACHE_TTL = 600;
 
         /**
          * Variables
@@ -63,6 +69,9 @@ if (!class_exists('MaxiBlocks_API')):
             // Use lower priority (20) to run after post is fully saved
             add_action('save_post', [$this, 'invalidate_unique_ids_cache_on_save'], 20, 2);
             add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
+            add_action('updated_option', [$this, 'maybe_invalidate_options_cache'], 10, 3);
+            add_action('added_option', [$this, 'maybe_invalidate_options_cache'], 10, 2);
+            add_action('deleted_option', [$this, 'maybe_invalidate_options_cache'], 10, 1);
 
             // Enable gzip compression for MaxiBlocks API responses
             add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 10, 4);
@@ -615,6 +624,20 @@ if (!class_exists('MaxiBlocks_API')):
         public function get_maxi_blocks_options()
         {
             global $wp_version;
+            $cache_version = $this->get_cache_version(
+                self::OPTIONS_CACHE_VERSION_KEY,
+            );
+            $cache_key = $this->build_cache_key(
+                self::OPTIONS_CACHE_KEY,
+                [],
+                $cache_version,
+            );
+            $cached_response = get_transient($cache_key);
+
+            if ($cached_response !== false && is_array($cached_response)) {
+                $cached_response['cache'] = 'HIT';
+                return $cached_response;
+            }
 
             $version = gettype($wp_version);
             $is_core = true;
@@ -667,6 +690,19 @@ if (!class_exists('MaxiBlocks_API')):
                     MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
                 'show_indicators' => get_option('maxi_show_indicators'),
             ];
+
+            $response['hash'] = md5(
+                wp_json_encode($response) . $cache_version,
+            );
+            $response['cache'] = 'MISS';
+
+            $cache_payload = $response;
+            unset($cache_payload['cache']);
+            set_transient(
+                $cache_key,
+                $cache_payload,
+                self::OPTIONS_CACHE_TTL,
+            );
 
             return $response;
         }
@@ -3231,6 +3267,92 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return rest_ensure_response($data);
+        }
+
+        private function build_cache_key($prefix, $params, $cache_version)
+        {
+            return $prefix . '_' . $cache_version . '_' . md5(
+                wp_json_encode($params),
+            );
+        }
+
+        private function get_cache_version($option_name)
+        {
+            $version = (int) get_option($option_name, 1);
+            if ($version < 1) {
+                $version = 1;
+            }
+
+            return $version;
+        }
+
+        private function bump_cache_version($option_name)
+        {
+            $version = $this->get_cache_version($option_name) + 1;
+            update_option($option_name, $version);
+
+            return $version;
+        }
+
+        private function delete_transients_by_prefix($prefix)
+        {
+            global $wpdb;
+
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_' . $prefix . '%'
+                )
+            );
+            $wpdb->query(
+                $wpdb->prepare(
+                    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+                    '_transient_timeout_' . $prefix . '%'
+                )
+            );
+        }
+
+        public function invalidate_style_cards_cache()
+        {
+            $this->bump_cache_version(self::STYLE_CARDS_CACHE_VERSION_KEY);
+            $this->delete_transients_by_prefix(self::STYLE_CARDS_CACHE_KEY);
+        }
+
+        public function maybe_invalidate_options_cache(
+            $option,
+            $old_value = null,
+            $value = null
+        ) {
+            $options_to_invalidate = [
+                'google_api_key_option',
+                'openai_api_key_option',
+                'maxi_ai_model',
+                'maxi_ai_language',
+                'maxi_ai_tone',
+                'maxi_ai_site_description',
+                'maxi_ai_audience',
+                'maxi_ai_site_goal',
+                'maxi_ai_services',
+                'maxi_ai_business_name',
+                'maxi_ai_business_info',
+                'bunny_fonts',
+                'hide_tooltips',
+                'hide_fse_resizable_handles',
+                'hide_gutenberg_responsive_preview',
+                'maxi_show_indicators',
+            ];
+
+            if (!in_array($option, $options_to_invalidate, true)) {
+                return;
+            }
+
+            $this->invalidate_options_cache();
+        }
+
+        public function invalidate_options_cache()
+        {
+            $this->bump_cache_version(self::OPTIONS_CACHE_VERSION_KEY);
+            $this->delete_transients_by_prefix(self::OPTIONS_CACHE_KEY);
         }
     }
 endif;

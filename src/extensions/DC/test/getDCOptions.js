@@ -16,6 +16,10 @@ import getDCOptions, {
 	clearIdOptionsCache,
 } from '@extensions/DC/getDCOptions';
 
+const mockLoadFromCache = jest.fn();
+const mockSaveToCache = jest.fn();
+const mockCleanupExpiredCache = jest.fn();
+
 // Mock WordPress dependencies
 jest.mock('@wordpress/data', () => ({
 	resolveSelect: jest.fn(),
@@ -56,6 +60,12 @@ jest.mock('@extensions/DC/constants', () => ({
 	},
 }));
 
+jest.mock('@extensions/DC/wordPressAPICacheDB', () => ({
+	loadFromCache: (...args) => mockLoadFromCache(...args),
+	saveToCache: (...args) => mockSaveToCache(...args),
+	cleanupExpiredCache: (...args) => mockCleanupExpiredCache(...args),
+}));
+
 describe('getIdOptions', () => {
 	let mockGetEntityRecords;
 	let mockGetUsers;
@@ -64,9 +74,8 @@ describe('getIdOptions', () => {
 		jest.clearAllMocks();
 		clearIdOptionsCache();
 		localStorage.clear();
-
-		// Reset the timestamp to control cache testing
-		jest.spyOn(Date, 'now').mockImplementation(() => 1000);
+		mockLoadFromCache.mockResolvedValue(null);
+		mockSaveToCache.mockResolvedValue(null);
 
 		// Set up commonly used mocks
 		mockGetEntityRecords = jest.fn();
@@ -107,25 +116,21 @@ describe('getIdOptions', () => {
 		expect(result).toEqual(mockPosts);
 	});
 
-	it('uses cache when available', async () => {
+	it('uses IndexedDB cache when available', async () => {
 		const mockPosts = [
 			{ id: 1, title: { rendered: 'Post 1' } },
 			{ id: 2, title: { rendered: 'Post 2' } },
 		];
 
-		mockGetEntityRecords.mockResolvedValue(mockPosts);
+		mockLoadFromCache.mockResolvedValueOnce(mockPosts);
 
-		// First call should fetch data
-		await getIdOptions('posts', 'by-id', null, false, false);
+		const result = await getIdOptions('posts', 'by-id', null, false, false);
 
-		// Second call should use cache
-		await getIdOptions('posts', 'by-id', null, false, false);
-
-		// Should only have been called once
-		expect(mockGetEntityRecords).toHaveBeenCalledTimes(1);
+		expect(result).toEqual(mockPosts);
+		expect(mockGetEntityRecords).not.toHaveBeenCalled();
 	});
 
-	it('fetches new data when cache expires', async () => {
+	it('fetches data when IndexedDB cache misses', async () => {
 		const mockPosts = [
 			{ id: 1, title: { rendered: 'Post 1' } },
 			{ id: 2, title: { rendered: 'Post 2' } },
@@ -133,18 +138,10 @@ describe('getIdOptions', () => {
 
 		mockGetEntityRecords.mockResolvedValue(mockPosts);
 
-		// First call
 		await getIdOptions('posts', 'by-id', null, false, false);
 
-		// Simulate cache expiration (5 minutes + 1 ms)
-		jest.spyOn(Date, 'now').mockImplementation(
-			() => 1000 + 5 * 60 * 1000 + 1
-		);
-
-		// Second call should fetch again
-		await getIdOptions('posts', 'by-id', null, false, false);
-
-		expect(mockGetEntityRecords).toHaveBeenCalledTimes(2);
+		expect(mockGetEntityRecords).toHaveBeenCalledTimes(1);
+		expect(mockSaveToCache).toHaveBeenCalledTimes(1);
 	});
 
 	it('fetches categories correctly', async () => {
@@ -246,6 +243,40 @@ describe('getIdOptions', () => {
 		const result = await getIdOptions('posts', 'by-id', null, false, false);
 
 		expect(result).toEqual([]);
+	});
+
+	it('falls back to localStorage cache on timeout', async () => {
+		jest.useFakeTimers();
+
+		const cachedPosts = [
+			{ id: 1, title: { rendered: 'Cached Post 1' } },
+			{ id: 2, title: { rendered: 'Cached Post 2' } },
+		];
+
+		localStorage.setItem(
+			'maxi_dc_cache_postType_post',
+			JSON.stringify(cachedPosts)
+		);
+
+		mockGetEntityRecords.mockImplementation(
+			() => new Promise(() => {})
+		);
+
+		const resultPromise = getIdOptions(
+			'posts',
+			'by-id',
+			null,
+			false,
+			false
+		);
+
+		jest.advanceTimersByTime(3000);
+
+		const result = await resultPromise;
+
+		expect(result).toEqual(cachedPosts);
+
+		jest.useRealTimers();
 	});
 
 	it('handles pagination with correct per_page parameter', async () => {

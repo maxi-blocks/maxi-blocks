@@ -41,27 +41,8 @@ const clearCustomCache = () => {
 	customTaxonomiesCache = null;
 };
 
-// Add this at the top of the file, after the imports
-const cache = {
-	customTaxonomy: {},
-	users: {},
-	categories: {},
-	tags: {},
-	customPostType: {},
-	currentArchive: {},
-	postType: {},
-};
-
 export const clearIdOptionsCache = () => {
-	Object.keys(cache).forEach(key => {
-		if (cache[key] && typeof cache[key] === 'object') {
-			Object.keys(cache[key]).forEach(subKey => {
-				cache[key][subKey] = null;
-			});
-		} else {
-			cache[key] = null;
-		}
-	});
+	// No-op: in-memory caching has been removed in favor of IndexedDB.
 };
 
 // Hook into the editor initialization
@@ -77,23 +58,6 @@ const fetchUsers = async type => {
 	return users && users.length
 		? users.map(({ id, name }) => ({ id, name }))
 		: null;
-};
-
-const MAX_CACHE_AGE = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-const getCachedData = cacheKey => {
-	const cachedItem = cache[cacheKey];
-	if (cachedItem && Date.now() - cachedItem.timestamp < MAX_CACHE_AGE) {
-		return cachedItem.data;
-	}
-	return null;
-};
-
-const setCachedData = (cacheKey, data) => {
-	cache[cacheKey] = {
-		data,
-		timestamp: Date.now(),
-	};
 };
 
 /**
@@ -316,18 +280,9 @@ export const getIdOptions = async (
 	try {
 		if (relation.includes('by-custom-taxonomy')) {
 			const taxonomy = relation.split('custom-taxonomy-').pop();
-			const cacheKey = `customTaxonomy.${taxonomy}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('taxonomy', taxonomy, args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('taxonomy', taxonomy, args);
 		} else if (['users'].includes(type) || relation === 'by-author') {
-			data = getCachedData('users');
-			if (!data) {
-				data = await fetchUsers(type);
-				setCachedData('users', data);
-			}
+			data = await fetchUsers(type);
 		} else if (
 			['categories', 'product_categories'].includes(type) ||
 			relation === 'by-category'
@@ -339,21 +294,7 @@ export const getIdOptions = async (
 				? 'product_cat'
 				: 'category';
 
-			const cacheKey = `categories.${categoryType}`;
-
-			data = getCachedData(cacheKey);
-
-			if (!data) {
-				data = await paginatedEntityFetch(
-					'taxonomy',
-					categoryType,
-					args
-				);
-
-				if (data) {
-					setCachedData(cacheKey, data);
-				}
-			}
+			data = await paginatedEntityFetch('taxonomy', categoryType, args);
 		} else if (
 			['tags', 'product_tags'].includes(type) ||
 			relation === 'by-tag'
@@ -361,60 +302,28 @@ export const getIdOptions = async (
 			const tagType = ['products', 'product_tags'].includes(type)
 				? 'product_tag'
 				: 'post_tag';
-
-			const cacheKey = `tags.${tagType}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('taxonomy', tagType, args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('taxonomy', tagType, args);
 		} else if (isCustomTaxonomy) {
-			const cacheKey = `customTaxonomy.${type}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('taxonomy', type, args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('taxonomy', type, args);
 		} else if (isCustomPostType) {
-			const cacheKey = `customPostType.${type}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('postType', type, args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('postType', type, args);
 		} else if (relation === 'current-archive') {
 			const currentTemplateType = getCurrentTemplateSlug();
-			const cacheKey = `currentArchive.${currentTemplateType}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				if (currentTemplateType === 'author') {
-					data = await fetchUsers();
-				} else if (
-					['category', 'tag', 'taxonomy'].includes(
-						currentTemplateType
-					)
-				) {
-					data = await paginatedEntityFetch(
-						'taxonomy',
-						currentTemplateType,
-						args
-					);
-				} else {
-					data = await paginatedEntityFetch(
-						'taxonomy',
-						'category',
-						args
-					);
-				}
-				setCachedData(cacheKey, data);
+			if (currentTemplateType === 'author') {
+				data = await fetchUsers();
+			} else if (
+				['category', 'tag', 'taxonomy'].includes(currentTemplateType)
+			) {
+				data = await paginatedEntityFetch(
+					'taxonomy',
+					currentTemplateType,
+					args
+				);
+			} else {
+				data = await paginatedEntityFetch('taxonomy', 'category', args);
 			}
 		} else if (getCurrentTemplateSlug() === 'archive') {
-			const cacheKey = 'currentArchive.archive';
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('taxonomy', 'category', args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('taxonomy', 'category', args);
 		} else {
 			const dictionary = {
 				posts: 'post',
@@ -423,12 +332,7 @@ export const getIdOptions = async (
 				products: 'product',
 			};
 			const postType = dictionary[type];
-			const cacheKey = `postType.${postType}`;
-			data = getCachedData(cacheKey);
-			if (!data) {
-				data = await paginatedEntityFetch('postType', postType, args);
-				setCachedData(cacheKey, data);
-			}
+			data = await paginatedEntityFetch('postType', postType, args);
 		}
 	} catch (error) {
 		// Silent error handling

@@ -21,11 +21,26 @@ import {
 import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 import { getIsSiteEditor, getIsTemplatePart } from '@extensions/fse';
 import MaxiBlocksSaveBlocker from '@editor/save-blocker';
+import { styleCacheUtils } from '@extensions/styles/styleResolver';
+import { cssCacheUtils } from '@extensions/styles/store/reducer';
 
 /**
  * Component
  */
 const BlockStylesSaver = () => {
+	const clearStyleCaches = () => {
+		try {
+			styleCacheUtils.clearCache();
+			cssCacheUtils.clearCache();
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				'[Styles Cache] ⚠️ Failed to clear style caches:',
+				JSON.stringify(error)
+			);
+		}
+	};
+
 	const {
 		isSaving,
 		isPreviewing,
@@ -118,6 +133,8 @@ const BlockStylesSaver = () => {
 					JSON.stringify(error)
 				);
 			}
+
+			clearStyleCaches();
 		}
 
 		// Update previous state
@@ -144,6 +161,7 @@ const BlockStylesSaver = () => {
 		// This prevents the infinite loop where setting isPageLoaded=false triggers this effect again
 		if (getIsSiteEditor() && isPageLoaded && hasTemplateChanged) {
 			dispatch('maxiBlocks').setIsPageLoaded(false);
+			clearStyleCaches();
 		}
 	}, [hasTemplateChanged]); // Only depend on hasTemplateChanged, not isPageLoaded
 

@@ -1155,7 +1155,7 @@ const LibraryContainer = props => {
 		saveMaxiStyleCards(newAllSCs, true);
 		updateSCOnEditor(parsedCard);
 		setSelectedStyleCard(newId);
-		saveSCStyles(false);
+		saveSCStyles(true);
 
 		onRequestClose();
 	};

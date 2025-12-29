@@ -21,24 +21,6 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getValueFromKeys = (value, keys) =>
 	keys.reduce((acc, key) => acc?.[key], value);
 
-const attributeCache = new WeakMap();
-
-const getCacheKey = ({
-	target,
-	breakpoint,
-	isHover,
-	avoidXXL,
-	keys,
-	forceUseBreakpoint,
-	baseBreakpoint,
-	currentBreakpoint,
-}) =>
-	`${target ?? ''}|${breakpoint ?? ''}|${isHover ? 1 : 0}|${
-		avoidXXL ? 1 : 0
-	}|${forceUseBreakpoint ? 1 : 0}|${baseBreakpoint ?? ''}|${
-		currentBreakpoint ?? ''
-	}|${keys.join('.')}`;
-
 const getAttributeValueWrapper = (
 	target,
 	attributes,
@@ -63,15 +45,6 @@ const attrFilter = attr =>
 
 const blockEditorStore = select('core/block-editor');
 
-const getStoreContext = () => {
-	const maxiBlocksStore = select('maxiBlocks');
-	return {
-		currentBreakpoint:
-			maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general',
-		baseBreakpoint: maxiBlocksStore?.receiveBaseBreakpoint(),
-	};
-};
-
 /**
  * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
  * for a concrete property in case is not set for the requested breakpoint. Also enables getting
@@ -84,8 +57,7 @@ const getLastBreakpointAttributeSingle = (
 	isHover,
 	avoidXXL,
 	keys,
-	forceUseBreakpoint = false,
-	storeContext = null
+	forceUseBreakpoint = false
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		blockEditorStore || {
@@ -103,26 +75,11 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 			keys
 		);
+	const maxiBlocksStore = select('maxiBlocks');
 
-	const { currentBreakpoint, baseBreakpoint } =
-		storeContext ?? getStoreContext();
-
-	if (!isNil(attr)) {
-		const cacheKey = getCacheKey({
-			target,
-			breakpoint,
-			isHover,
-			avoidXXL,
-			keys,
-			forceUseBreakpoint,
-			baseBreakpoint,
-			currentBreakpoint,
-		});
-		const attrCache = attributeCache.get(attr);
-		if (attrCache?.has(cacheKey)) {
-			return attrCache.get(cacheKey);
-		}
-	}
+	const currentBreakpoint =
+		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
+	const baseBreakpoint = maxiBlocksStore?.receiveBaseBreakpoint();
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
@@ -139,9 +96,7 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			isHover,
 			avoidXXL,
-			keys,
-			forceUseBreakpoint,
-			storeContext ?? { currentBreakpoint, baseBreakpoint }
+			keys
 		);
 
 		if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
@@ -190,9 +145,7 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			false,
 			avoidXXL,
-			keys,
-			forceUseBreakpoint,
-			storeContext ?? { currentBreakpoint, baseBreakpoint }
+			keys
 		);
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
@@ -204,26 +157,8 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			isHover,
 			baseBreakpoint === 'xxl' ? false : avoidXXL,
-			keys,
-			forceUseBreakpoint,
-			storeContext ?? { currentBreakpoint, baseBreakpoint }
+			keys
 		);
-
-	if (!isNil(attr)) {
-		const cacheKey = getCacheKey({
-			target,
-			breakpoint,
-			isHover,
-			avoidXXL,
-			keys,
-			forceUseBreakpoint,
-			baseBreakpoint,
-			currentBreakpoint,
-		});
-		const attrCache = attributeCache.get(attr) ?? new Map();
-		attrCache.set(cacheKey, currentAttr);
-		attributeCache.set(attr, attrCache);
-	}
 
 	return currentAttr;
 };

@@ -62,6 +62,7 @@
 		border: none;
 		box-shadow: none;
 		outline: none;
+		overflow: unset !important;
 
 		.toolbar-wrapper {
 			display: flex;
@@ -71,7 +72,7 @@
 			top: -23px;
 			left: 50%;
 			transform: translateX(-50%);
-			box-shadow: var(--mx-shadow);
+			box-shadow: 0px 6px 8px 0 rgba(0, 0, 0, 0.08);
 			border-radius: 0;
 			border: 1px solid var(--mgl);
 
@@ -86,7 +87,7 @@
 
 			.breadcrumbs-pin-tooltip {
 				position: absolute;
-				top: var(--mx-tooltip-offset);
+				top: -24px;
 				left: 0;
 				background-color: rgba(0, 0, 0, 0.85);
 				padding: 7px 8px;
@@ -155,9 +156,10 @@
 				display: flex;
 				justify-content: center;
 				position: relative;
-				width: var(--mx-toolbar-size);
-				height: var(--mx-toolbar-size);
+				width: 2rem;
+				height: 2rem;
 				padding: 0;
+				padding-right: 0;
 				background-color: var(--mw);
 				border-radius: 0;
 				border-right: 1px solid var(--mgl);
@@ -343,8 +345,8 @@
 
 				&__icon {
 					display: block;
-					width: var(--mx-icon-size);
-					height: var(--mx-icon-size);
+					width: 1rem;
+					height: 1rem;
 					margin: auto;
 					ellipse,
 					circle,
@@ -557,7 +559,7 @@ body .toolbar-item__popover {
 		min-width: auto;
 		padding: 12px 11px 0 14px;
 		overflow: visible !important;
-		box-shadow: var(--mx-shadow-popover);
+		box-shadow: 0 -2px 8px 0px rgba(0, 0, 0, 0.05);
 		margin-left: -2px;
 		outline: none;
 

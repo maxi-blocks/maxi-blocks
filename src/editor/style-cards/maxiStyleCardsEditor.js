@@ -365,7 +365,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		saveMaxiStyleCards(newAllSCs, true);
 		updateSCOnEditor(card, activeSCColour);
 		setSelectedStyleCard(newId);
-		saveSCStyles(true);
+		saveSCStyles(false);
 	};
 
 	const customiseInputRef = useRef();

@@ -25,6 +25,7 @@ import { getLastBreakpointAttribute } from '@extensions/styles';
 import getStyles from './styles';
 import SliderContext from '@blocks/slider-maxi/context';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+import { getAllowedBlocks } from '@extensions/common/getAllowedBlocks';
 
 /**
  * Editor
@@ -68,19 +69,13 @@ class edit extends MaxiBlockComponent {
 		const { attributes, deviceType, hasInnerBlocks, clientId } = this.props;
 		const { uniqueID } = attributes;
 
-		const ALLOWED_BLOCKS = wp.blocks
-			.getBlockTypes()
-			.map(block => block.name)
-			.filter(
-				blockName =>
-					[
-						'maxi-blocks/container-maxi',
-						'maxi-blocks/slide-maxi',
-						'maxi-blocks/maxi-cloud',
-						'maxi-blocks/list-item-maxi',
-						'core/list-item',
-					].indexOf(blockName) === -1
-			);
+		const ALLOWED_BLOCKS = getAllowedBlocks([
+			'maxi-blocks/container-maxi',
+			'maxi-blocks/slide-maxi',
+			'maxi-blocks/maxi-cloud',
+			'maxi-blocks/list-item-maxi',
+			'core/list-item',
+		]);
 
 		const emptySlideClass = `maxi-slide-block__${
 			hasInnerBlocks ? 'has-innerBlock' : 'empty'

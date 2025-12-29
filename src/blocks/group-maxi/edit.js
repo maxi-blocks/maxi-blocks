@@ -17,6 +17,7 @@ import {
 } from '@extensions/DC';
 import { DISALLOWED_BLOCKS } from '@extensions/repeater';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+import { getAllowedBlocks } from '@extensions/common/getAllowedBlocks';
 
 /**
  * Edit
@@ -33,27 +34,20 @@ class edit extends MaxiBlockComponent {
 		/**
 		 * TODO: Gutenberg still does not have the disallowedBlocks feature
 		 */
-		const ALLOWED_BLOCKS = wp.blocks
-			.getBlockTypes()
-			.map(block => block.name)
-			.filter(
-				blockName =>
-					[
-						'maxi-blocks/container-maxi',
-						'maxi-blocks/column-maxi',
-						'maxi-blocks/pane-maxi',
-						'maxi-blocks/maxi-cloud',
-						'maxi-blocks/slide-maxi',
-						'maxi-blocks/list-item-maxi',
-						'core/list-item',
-						...DISALLOWED_BLOCKS,
-					].indexOf(blockName) === -1
-			)
-			.concat(
-				this.props.repeaterStatus
-					? Array(DISALLOWED_BLOCKS.length).fill(null)
-					: DISALLOWED_BLOCKS
-			);
+		const ALLOWED_BLOCKS = getAllowedBlocks([
+			'maxi-blocks/container-maxi',
+			'maxi-blocks/column-maxi',
+			'maxi-blocks/pane-maxi',
+			'maxi-blocks/maxi-cloud',
+			'maxi-blocks/slide-maxi',
+			'maxi-blocks/list-item-maxi',
+			'core/list-item',
+			...DISALLOWED_BLOCKS,
+		]).concat(
+			this.props.repeaterStatus
+				? Array(DISALLOWED_BLOCKS.length).fill(null)
+				: DISALLOWED_BLOCKS
+		);
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,

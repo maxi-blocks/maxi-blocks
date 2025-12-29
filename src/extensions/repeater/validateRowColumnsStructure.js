@@ -173,6 +173,10 @@ const validateRowColumnsStructure = async (
 		return true;
 	}
 
+	if (childColumns.length <= 1) {
+		return true;
+	}
+
 	let columnToValidateByIndex = 0;
 
 	const columnToValidateBy = rawColumnToValidateByClientId

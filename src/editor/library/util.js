@@ -31,27 +31,36 @@ export const rgbToHex = color => {
 };
 
 export const fitSvg = svgCode => {
-	const template = document.createElement('div');
+	const containerId = 'maxi-temporary-elem';
+	let container = document.getElementById(containerId);
 
-	template.setAttribute('id', 'maxi-temporary-elem');
-	template.innerHTML = svgCode.trim();
-	document.querySelector('body').append(template);
+	if (!container) {
+		container = document.createElement('div');
+		container.setAttribute('id', containerId);
+		container.style.position = 'absolute';
+		container.style.left = '-9999px';
+		container.style.top = '-9999px';
+		container.style.width = '0';
+		container.style.height = '0';
+		container.style.overflow = 'hidden';
+		document.body.append(container);
+	}
 
-	const bbox = document.querySelector('#maxi-temporary-elem svg').getBBox();
+	container.innerHTML = svgCode.trim();
 
-	const SVGElement = document.querySelector('#maxi-temporary-elem svg');
-	SVGElement.setAttribute(
+	const svgElement = container.querySelector('svg');
+	const bbox = svgElement.getBBox();
+
+	svgElement.setAttribute(
 		'viewBox',
 		`${bbox.x}, ${bbox.y}, ${bbox.width}, ${bbox.height}`
 	);
-	SVGElement.removeAttribute('width');
-	SVGElement.removeAttribute('height');
+	svgElement.removeAttribute('width');
+	svgElement.removeAttribute('height');
 
-	const newSvgCode = document.querySelector(
-		'#maxi-temporary-elem svg'
-	).outerHTML;
+	const newSvgCode = svgElement.outerHTML;
 
-	document.querySelector('#maxi-temporary-elem').remove();
+	container.innerHTML = '';
 
 	return newSvgCode;
 };

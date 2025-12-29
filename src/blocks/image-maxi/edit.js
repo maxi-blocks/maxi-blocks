@@ -38,6 +38,7 @@ import { copyPasteMapping } from './data';
 import { TextContext, onChangeRichText } from '@extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+import './editor.scss';
 
 /**
  * Icons

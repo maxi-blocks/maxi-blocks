@@ -426,6 +426,21 @@ class GlobalStyleManager {
 	}
 
 	/**
+	 * Remove block styles from ALL tracked documents
+	 * @param {string} uniqueID - Block unique identifier
+	 */
+	removeBlockStylesEverywhere(uniqueID) {
+		for (const [doc, manager] of this.documentManagers.entries()) {
+			if (this.isDocumentDetached(doc)) {
+				manager.destroy();
+				this.documentManagers.delete(doc);
+				continue;
+			}
+			manager.removeBlockStyles(uniqueID);
+		}
+	}
+
+	/**
 	 * Force flush all pending style updates
 	 */
 	flushAll() {
@@ -537,6 +552,15 @@ export const removeBlockStyles = (uniqueID, targetDocument) => {
 
 	const manager = getGlobalStyleManager();
 	manager.removeBlockStyles(uniqueID, resolvedDocument);
+};
+
+/**
+ * Utility function to remove block styles from ALL tracked documents
+ * @param {string} uniqueID - Block unique identifier
+ */
+export const removeBlockStylesEverywhere = uniqueID => {
+	const manager = getGlobalStyleManager();
+	manager.removeBlockStylesEverywhere(uniqueID);
 };
 
 export default GlobalStyleManager;

@@ -1,0 +1,13 @@
+.maxi-select-edit-overlay {
+	position: absolute;
+	inset: 0;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	pointer-events: none;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+	&.is-selected {
+		border-color: var(--maxi-cloud-primary, #3a7afe);
+		box-shadow: 0 0 0 2px rgba(58, 122, 254, 0.25);
+	}
+}

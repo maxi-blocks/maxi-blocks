@@ -180,6 +180,14 @@ const ResultCard = ({
 				)}
 				{result.content === '' ? '\u00A0' : getContent()}
 			</p>
+			{result.loading && (
+				<div className={`${className}__progress`}>
+					{__(
+						`Generating… ${result.progress ?? result.content.length} characters`,
+						'maxi-blocks'
+					)}
+				</div>
+			)}
 			<div className={`${className}__end-of-content`}>
 				<div
 					ref={endOfContentRef}

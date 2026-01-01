@@ -1,0 +1,41 @@
+.maxi-lovability-metrics {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+	color: #1e1e1e;
+	display: flex;
+	flex-direction: column;
+	font-size: 12px;
+	gap: 8px;
+	min-width: 200px;
+	padding: 10px 12px;
+
+	&__header {
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		color: #50575e;
+	}
+
+	&__rows {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+	}
+
+	&__row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		line-height: 1.4;
+
+		strong {
+			font-size: 13px;
+			font-weight: 600;
+			color: #1d2327;
+		}
+	}
+}

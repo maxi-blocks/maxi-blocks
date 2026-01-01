@@ -1,5 +1,6 @@
 export { default as AccordionControl } from './accordion-control';
 export { default as AdvancedCssControl } from './advanced-css-control';
+export { default as AIChatPanel } from './ai-chat-panel';
 export { default as AdvancedNumberControl } from './advanced-number-control';
 export { default as AlignmentControl } from './alignment-control';
 export { default as AriaLabelControl } from './aria-label-control';

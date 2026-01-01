@@ -1,3 +1,12 @@
+import { dispatch, select } from '@wordpress/data';
+
+import '../../src/store/mcpAbilities';
+import { STORE_NAME as MCP_STORE_NAME } from '../../src/store/mcpAbilities';
+import {
+	createMcpClient,
+	getMcpBaseUrl,
+} from '../../src/services/mcpClient';
+
 // Keep track of active polling to prevent multiple instances
 let activePollingEmail = null;
 
@@ -478,6 +487,175 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		openAIApiKeyVisibleInput.addEventListener('input', () => {
 			testOpenAIApiKey();
 		});
+	}
+
+	// MCP API token and abilities
+	const mcpTokenInput = document.getElementById('maxi_mcp_token');
+	const mcpStatusElement = document.getElementById(
+		'maxi-mcp-connection-status'
+	);
+	const mcpAbilitiesElement = document.getElementById('maxi-mcp-abilities');
+	const mcpErrorElement = document.getElementById('maxi-mcp-error');
+	const mcpStatusClassMap = {
+		connected: 'is-connected',
+		loading: 'is-loading',
+		unauthorized: 'is-error',
+		unreachable: 'is-error',
+		error: 'is-error',
+		idle: 'is-idle',
+	};
+
+	const formatAbilityLabel = ability => {
+		if (typeof ability === 'string') {
+			return ability;
+		}
+
+		if (ability?.name) {
+			return ability.name;
+		}
+
+		if (ability?.id) {
+			return ability.id;
+		}
+
+		return JSON.stringify(ability);
+	};
+
+	const renderMcpAbilities = abilities => {
+		if (!mcpAbilitiesElement) return;
+
+		mcpAbilitiesElement.innerHTML = '';
+
+		if (!abilities?.length) {
+			const emptyItem = document.createElement('li');
+			emptyItem.textContent = window.localization.mcp_no_abilities;
+			emptyItem.classList.add('maxi-mcp-abilities__empty');
+			mcpAbilitiesElement.appendChild(emptyItem);
+			return;
+		}
+
+		abilities.forEach(ability => {
+			const item = document.createElement('li');
+			item.textContent = formatAbilityLabel(ability);
+			mcpAbilitiesElement.appendChild(item);
+		});
+	};
+
+	const updateMcpUiFromStore = () => {
+		if (!mcpStatusElement || !mcpErrorElement || !mcpAbilitiesElement) {
+			return;
+		}
+
+		const store = select(MCP_STORE_NAME);
+		if (!store) {
+			return;
+		}
+
+		const status = store.getStatus();
+		const abilities = store.getAbilities();
+		const error = store.getError();
+
+		const statusMessageMap = {
+			connected: window.localization.mcp_status_connected,
+			loading: window.localization.mcp_status_loading,
+			unauthorized: window.localization.mcp_status_unauthorized,
+			unreachable: window.localization.mcp_status_unreachable,
+			error: window.localization.mcp_status_error,
+			idle: window.localization.mcp_status_idle,
+		};
+
+		mcpStatusElement.textContent =
+			statusMessageMap[status] || window.localization.mcp_status_idle;
+
+		mcpStatusElement.classList.remove(...Object.values(mcpStatusClassMap));
+		if (mcpStatusClassMap[status]) {
+			mcpStatusElement.classList.add(mcpStatusClassMap[status]);
+		}
+
+		mcpErrorElement.textContent = error || '';
+
+		if (status === 'connected') {
+			renderMcpAbilities(abilities);
+		} else {
+			mcpAbilitiesElement.innerHTML = '';
+		}
+	};
+
+	const fetchMcpAbilities = async token => {
+		const trimmedToken = token.trim();
+
+		if (!trimmedToken) {
+			dispatch(MCP_STORE_NAME).reset();
+			updateMcpUiFromStore();
+			return;
+		}
+
+		const store = select(MCP_STORE_NAME);
+		const cachedToken = store?.getToken();
+		const cachedAbilities = store?.getAbilities();
+		const cachedStatus = store?.getStatus();
+
+		if (
+			cachedStatus === 'connected' &&
+			cachedToken === trimmedToken &&
+			cachedAbilities?.length
+		) {
+			updateMcpUiFromStore();
+			return;
+		}
+
+		dispatch(MCP_STORE_NAME).setToken(trimmedToken);
+		dispatch(MCP_STORE_NAME).setStatus('loading');
+		dispatch(MCP_STORE_NAME).setError(null);
+		updateMcpUiFromStore();
+
+		try {
+			const client = createMcpClient({
+				baseUrl: getMcpBaseUrl(),
+				token: trimmedToken,
+			});
+			const abilities = await client.getAbilities();
+			dispatch(MCP_STORE_NAME).setAbilities(abilities);
+			dispatch(MCP_STORE_NAME).setStatus('connected');
+			dispatch(MCP_STORE_NAME).setError(null);
+		} catch (error) {
+			let status = 'error';
+			let message = window.localization.mcp_error_generic;
+
+			if (error?.code === 'unauthorized') {
+				status = 'unauthorized';
+				message = window.localization.mcp_error_unauthorized;
+			} else if (
+				error?.code === 'unreachable' ||
+				error?.code === 'missing_base_url'
+			) {
+				status = 'unreachable';
+				message = window.localization.mcp_error_unreachable;
+			}
+
+			dispatch(MCP_STORE_NAME).setStatus(status);
+			dispatch(MCP_STORE_NAME).setError(message);
+			dispatch(MCP_STORE_NAME).setAbilities([]);
+		} finally {
+			updateMcpUiFromStore();
+		}
+	};
+
+	let mcpDebounceTimer;
+
+	const handleMcpTokenUpdate = () => {
+		if (!mcpTokenInput) return;
+		clearTimeout(mcpDebounceTimer);
+		mcpDebounceTimer = setTimeout(() => {
+			fetchMcpAbilities(mcpTokenInput.value);
+		}, 400);
+	};
+
+	if (mcpTokenInput) {
+		makeInputPasswordVisible(mcpTokenInput);
+		handleMcpTokenUpdate();
+		mcpTokenInput.addEventListener('input', handleMcpTokenUpdate);
+		mcpTokenInput.addEventListener('blur', handleMcpTokenUpdate);
 	}
 
 	function autoResize(textarea) {

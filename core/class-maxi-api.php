@@ -3097,6 +3097,7 @@ if (!class_exists('MaxiBlocks_API')):
             $openai_api_key = get_option('openai_api_key_option');
 
             if (!$openai_api_key) {
+                error_log('MaxiBlocks AI proxy error: OpenAI API key not configured.');
                 return new WP_Error(
                     'no_api_key',
                     'OpenAI API key not configured',
@@ -3117,6 +3118,7 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Validate message format
             if (!is_array($messages) || empty($messages)) {
+                error_log('MaxiBlocks AI proxy error: Invalid messages payload.');
                 return new WP_Error(
                     'invalid_messages',
                     'Messages must be a non-empty array',
@@ -3187,6 +3189,76 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
+            if ($streaming) {
+                @ini_set('output_buffering', 'off');
+                @ini_set('zlib.output_compression', '0');
+                while (ob_get_level() > 0) {
+                    ob_end_flush();
+                }
+
+                header('Content-Type: text/event-stream; charset=utf-8');
+                header('Cache-Control: no-cache');
+                header('Connection: keep-alive');
+                header('X-Accel-Buffering: no');
+
+                $response_buffer = '';
+
+                $curl_handle = curl_init(
+                    'https://api.openai.com/v1/chat/completions',
+                );
+                curl_setopt($curl_handle, CURLOPT_POST, true);
+                curl_setopt($curl_handle, CURLOPT_HTTPHEADER, [
+                    'Authorization: Bearer ' . $openai_api_key,
+                    'Content-Type: application/json',
+                ]);
+                curl_setopt(
+                    $curl_handle,
+                    CURLOPT_POSTFIELDS,
+                    wp_json_encode($body),
+                );
+                curl_setopt($curl_handle, CURLOPT_TIMEOUT, 0);
+                curl_setopt(
+                    $curl_handle,
+                    CURLOPT_WRITEFUNCTION,
+                    function ($curl, $data) use (&$response_buffer) {
+                        $response_buffer .= $data;
+                        echo $data;
+                        if (function_exists('ob_flush')) {
+                            @ob_flush();
+                        }
+                        flush();
+                        return strlen($data);
+                    },
+                );
+
+                $result = curl_exec($curl_handle);
+                $curl_error = $result === false ? curl_error($curl_handle) : '';
+                $response_code = curl_getinfo(
+                    $curl_handle,
+                    CURLINFO_HTTP_CODE,
+                );
+                curl_close($curl_handle);
+
+                if ($result === false || $response_code !== 200) {
+                    $error_message = $curl_error ?: $response_buffer;
+                    error_log(
+                        'MaxiBlocks AI streaming error: ' . $error_message,
+                    );
+                    $error_payload = wp_json_encode([
+                        'type' => 'error',
+                        'message' => $error_message ?: 'OpenAI API error',
+                    ]);
+                    echo "data: {$error_payload}\n\n";
+                    echo "data: [DONE]\n\n";
+                    if (function_exists('ob_flush')) {
+                        @ob_flush();
+                    }
+                    flush();
+                }
+
+                exit;
+            }
+
             // Make request to OpenAI
             $response = wp_remote_post(
                 'https://api.openai.com/v1/chat/completions',
@@ -3201,6 +3273,10 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (is_wp_error($response)) {
+                error_log(
+                    'MaxiBlocks AI proxy error: ' .
+                        $response->get_error_message(),
+                );
                 return new WP_Error(
                     'openai_request_failed',
                     $response->get_error_message(),
@@ -3212,6 +3288,9 @@ if (!class_exists('MaxiBlocks_API')):
             $response_body = wp_remote_retrieve_body($response);
 
             if ($response_code !== 200) {
+                error_log(
+                    'MaxiBlocks AI proxy error: ' . $response_body,
+                );
                 return new WP_Error(
                     'openai_api_error',
                     'OpenAI API returned error: ' . $response_body,
@@ -3223,6 +3302,7 @@ if (!class_exists('MaxiBlocks_API')):
             $data = json_decode($response_body, true);
 
             if (!$data) {
+                error_log('MaxiBlocks AI proxy error: Invalid response.');
                 return new WP_Error(
                     'invalid_response',
                     'Invalid response from OpenAI API',

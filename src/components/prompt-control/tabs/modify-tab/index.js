@@ -38,6 +38,7 @@ const ModifyTab = ({
 	selectedResultId,
 	setSelectedResultId,
 	setResults,
+	onModelUnavailable,
 	switchToResultsTab,
 }) => {
 	const className = 'maxi-prompt-control-modify-tab';
@@ -139,6 +140,7 @@ Original text: ${
 			setResults,
 			setSelectedResultId,
 			setIsGenerating,
+			onModelUnavailable,
 		});
 	};
 

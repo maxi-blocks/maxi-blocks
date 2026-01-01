@@ -69,6 +69,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
 	const [isGenerating, setIsGenerating] = useState(false);
+	const [isManualMode, setIsManualMode] = useState(false);
 
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 	const [customValue, setCustomValue] = useState('');
@@ -132,6 +133,26 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		);
 	}
 
+	if (isManualMode) {
+		return (
+			<InfoBox
+				message={__(
+					'The selected AI model is unavailable. Continue by editing content manually, or select another model in the Maxi AI settings.',
+					'maxi-blocks'
+				)}
+				links={[
+					{
+						title: __(
+							'Integrations > OpenAI API key',
+							'maxi-blocks'
+						),
+						href: getMaxiAdminSettingsUrl('maxi_blocks_maxi_ai'),
+					},
+				]}
+			/>
+		);
+	}
+
 	const getMessages = async () => {
 		const systemTemplate = `${getSiteInformation(
 			AISettings
@@ -179,6 +200,7 @@ ${getExamplesSection(contentType)}`;
 			setResults,
 			setSelectedResultId,
 			setIsGenerating,
+			onModelUnavailable: () => setIsManualMode(true),
 		});
 	};
 
@@ -254,6 +276,7 @@ ${getExamplesSection(contentType)}`;
 								selectedResultId={selectedResultId}
 								setSelectedResultId={setSelectedResultId}
 								setResults={setResults}
+								onModelUnavailable={() => setIsManualMode(true)}
 								switchToGenerateTab={switchToGenerateTab}
 								switchToResultsTab={switchToResultsTab}
 							/>

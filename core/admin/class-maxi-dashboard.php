@@ -385,6 +385,34 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'Network error occurred',
                         'maxi-blocks',
                     ),
+                    'mcp_status_idle' => __('Not connected', 'maxi-blocks'),
+                    'mcp_status_loading' => __('Connecting…', 'maxi-blocks'),
+                    'mcp_status_connected' => __('Connected', 'maxi-blocks'),
+                    'mcp_status_unauthorized' => __(
+                        'Unauthorized',
+                        'maxi-blocks',
+                    ),
+                    'mcp_status_unreachable' => __(
+                        'Unavailable',
+                        'maxi-blocks',
+                    ),
+                    'mcp_status_error' => __('Error', 'maxi-blocks'),
+                    'mcp_error_unauthorized' => __(
+                        'The MCP token is invalid or lacks access.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_error_unreachable' => __(
+                        'Unable to reach the MCP endpoint.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_error_generic' => __(
+                        'Unexpected MCP error. Please try again.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_no_abilities' => __(
+                        'No abilities returned.',
+                        'maxi-blocks',
+                    ),
                 ]);
 
                 wp_localize_script('maxi-admin', 'maxiAiSettings', [
@@ -1783,6 +1811,38 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $description =
+                '<h4>' .
+                __('Insert MCP API token here', 'maxi-blocks') .
+                '</h4>';
+            $description .=
+                '<p>' .
+                __(
+                    'Connect to the MCP API to fetch available abilities.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_mcp_token',
+                '',
+                'password',
+                [
+                    'placeholder' => __(
+                        'Paste your MCP access token',
+                        'maxi-blocks',
+                    ),
+                ],
+            );
+            $content .=
+                '<div class="maxi-mcp-status" aria-live="polite">' .
+                '<p><strong>' .
+                __('MCP connection', 'maxi-blocks') .
+                ':</strong> <span id="maxi-mcp-connection-status" class="maxi-mcp-status__state"></span></p>' .
+                '<p id="maxi-mcp-error" class="maxi-mcp-status__error"></p>' .
+                '<ul id="maxi-mcp-abilities" class="maxi-mcp-abilities"></ul>' .
+                '</div>';
+
+            $description =
                 '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
             $content .= $this->generate_setting(
                 $description,
@@ -2395,6 +2455,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_gutenberg_responsive_preview' => $args_true,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
+                'maxi_mcp_token' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
@@ -3199,12 +3260,16 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $google_api_key = get_option('google_api_key_option', '');
             $openai_api_key = get_option('openai_api_key_option', '');
+            $mcp_token = get_option('maxi_mcp_token', '');
 
             echo '<input type="hidden" name="google_api_key_option" value="' .
                 esc_attr($google_api_key) .
                 '">';
             echo '<input type="hidden" name="openai_api_key_option" value="' .
                 esc_attr($openai_api_key) .
+                '">';
+            echo '<input type="hidden" name="maxi_mcp_token" value="' .
+                esc_attr($mcp_token) .
                 '">';
         }
 

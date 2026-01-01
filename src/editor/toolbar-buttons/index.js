@@ -23,6 +23,15 @@ import { main } from '@maxi-icons';
  */
 const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
+	const [isAIChatOpen, setIsAIChatOpen] = useState(false);
+
+	const toggleAIChat = () => {
+		const newState = !isAIChatOpen;
+		setIsAIChatOpen(newState);
+		if (window.maxiToggleAIChat) {
+			window.maxiToggleAIChat();
+		}
+	};
 
 	return (
 		<>
@@ -33,6 +42,14 @@ const ToolbarButtons = () => {
 					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
 				>
 					<Icon icon={main} />
+				</Button>
+				<Button
+					className='maxi-toolbar-layout__button maxi-toolbar-layout__button--ai'
+					aria-pressed={isAIChatOpen}
+					onClick={toggleAIChat}
+					title='Maxi AI Assistant'
+				>
+					<span style={{ fontSize: '16px' }}>✨</span>
 				</Button>
 			</div>
 			<ResponsiveSelector

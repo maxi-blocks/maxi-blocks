@@ -169,6 +169,7 @@ export const updateResultsWithLoading = (
 			id: newId,
 			content: '',
 			loading: true,
+			progress: 0,
 			...additionalData,
 		},
 		...prevResults,
@@ -261,60 +262,210 @@ export const callBackendAIProxy = async ({
 	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
+	onModelUnavailable,
 }) => {
 	abortControllerRef.current = new AbortController();
 
 	setIsGenerating(true);
+	const wpApiRoot = window.wpApiSettings?.root || '/wp-json/';
+	const wpNonce = window.wpApiSettings?.nonce;
 
-	try {
-		const response = await apiFetch({
-			path: '/maxi-blocks/v1.0/ai/chat',
-			method: 'POST',
-			data: {
-				messages,
-				model: modelName,
-				temperature: additionalParams?.temperature,
-				streaming: false, // Start with non-streaming for simplicity
-			},
-			signal: abortControllerRef.current.signal,
-		});
-
-		setIsGenerating(false);
-		abortControllerRef.current = null;
-
-		// Extract content from OpenAI response
-		const content = response?.choices?.[0]?.message?.content || '';
-
+	const updateResultWithError = errorMessage => {
 		setResults(prevResults => {
 			const newResults = [...prevResults];
 			const addedResult = newResults.find(result => result.id === newId);
 
 			if (addedResult) {
-				addedResult.content = sanitizeContent(
-					content,
-					shouldRemoveQuotes
-				);
-				addedResult.loading = false;
-			}
-
-			return newResults;
-		});
-	} catch (error) {
-		setIsGenerating(false);
-		abortControllerRef.current = null;
-
-		setResults(prevResults => {
-			const newResults = [...prevResults];
-			const addedResult = newResults.find(result => result.id === newId);
-
-			if (addedResult) {
-				addedResult.content = error.message || 'AI request failed';
+				addedResult.content = errorMessage || 'AI request failed';
 				addedResult.loading = false;
 				addedResult.error = true;
 			}
 
 			return newResults;
 		});
+	};
+
+	const finalizeResult = finalContent => {
+		setResults(prevResults => {
+			const newResults = [...prevResults];
+			const addedResult = newResults.find(result => result.id === newId);
+
+			if (addedResult) {
+				addedResult.content = sanitizeContent(
+					finalContent ?? addedResult.content,
+					shouldRemoveQuotes
+				);
+				addedResult.loading = false;
+				addedResult.progress = addedResult.content.length;
+			}
+
+			return newResults;
+		});
+	};
+
+	const isModelUnavailableError = errorMessage =>
+		Boolean(
+			errorMessage?.includes('model_not_found') ||
+				errorMessage?.toLowerCase().includes('model not found') ||
+				errorMessage?.toLowerCase().includes('model is not available')
+		);
+
+	try {
+		const response = await fetch(`${wpApiRoot}maxi-blocks/v1.0/ai/chat`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'text/event-stream',
+				...(wpNonce ? { 'X-WP-Nonce': wpNonce } : {}),
+			},
+			body: JSON.stringify({
+				messages,
+				model: modelName,
+				temperature: additionalParams?.temperature,
+				streaming: true,
+			}),
+			signal: abortControllerRef.current.signal,
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			console.error('MaxiBlocks AI request failed:', errorText);
+			updateResultWithError(errorText);
+			if (isModelUnavailableError(errorText)) {
+				onModelUnavailable?.();
+			}
+			throw new Error(errorText);
+		}
+
+		const isEventStream = response.headers
+			.get('content-type')
+			?.includes('text/event-stream');
+
+		if (!isEventStream || !response.body) {
+			const fallbackResponse = await apiFetch({
+				path: '/maxi-blocks/v1.0/ai/chat',
+				method: 'POST',
+				data: {
+					messages,
+					model: modelName,
+					temperature: additionalParams?.temperature,
+					streaming: false,
+				},
+				signal: abortControllerRef.current.signal,
+			});
+
+			setIsGenerating(false);
+			abortControllerRef.current = null;
+
+			const content =
+				fallbackResponse?.choices?.[0]?.message?.content || '';
+
+			setResults(prevResults => {
+				const newResults = [...prevResults];
+				const addedResult = newResults.find(
+					result => result.id === newId
+				);
+
+				if (addedResult) {
+					addedResult.content = sanitizeContent(
+						content,
+						shouldRemoveQuotes
+					);
+					addedResult.loading = false;
+					addedResult.progress = content.length;
+				}
+
+				return newResults;
+			});
+
+			return;
+		}
+
+		const reader = response.body.getReader();
+		const decoder = new TextDecoder('utf-8');
+		let buffer = '';
+		let responseContent = '';
+
+		while (true) {
+			const { value, done } = await reader.read();
+			buffer += decoder.decode(value || new Uint8Array(), {
+				stream: !done,
+			});
+			const lines = buffer.split('\n');
+			buffer = lines.pop();
+
+			for (const line of lines) {
+				const trimmedLine = line.trim();
+				if (!trimmedLine.startsWith('data:')) {
+					continue;
+				}
+				const dataString = trimmedLine.replace(/^data:\s*/, '');
+				if (dataString === '[DONE]') {
+					finalizeResult(responseContent);
+					setIsGenerating(false);
+					abortControllerRef.current = null;
+					return;
+				}
+				try {
+					const parsed = JSON.parse(dataString);
+					if (parsed?.type === 'error' || parsed?.error) {
+						const errorMessage =
+							parsed?.message ||
+							parsed?.error?.message ||
+							'AI request failed';
+						console.error('MaxiBlocks AI stream error:', parsed);
+						updateResultWithError(errorMessage);
+						if (isModelUnavailableError(errorMessage)) {
+							onModelUnavailable?.();
+						}
+						throw new Error(errorMessage);
+					}
+
+					const delta =
+						parsed?.choices?.[0]?.delta?.content || '';
+					if (delta) {
+						responseContent = sanitizeContent(
+							responseContent + delta,
+							shouldRemoveQuotes
+						);
+						setResults(prevResults => {
+							const newResults = [...prevResults];
+							const addedResult = newResults.find(
+								result => result.id === newId
+							);
+
+							if (addedResult?.loading) {
+								addedResult.content = responseContent;
+								addedResult.progress = responseContent.length;
+							}
+
+							return newResults;
+						});
+					}
+				} catch (error) {
+					console.error('MaxiBlocks AI stream parse error:', error);
+				}
+			}
+
+			if (done) {
+				break;
+			}
+		}
+
+		finalizeResult(responseContent);
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+	} catch (error) {
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+
+		if (error?.name !== 'AbortError') {
+			updateResultWithError(error.message || 'AI request failed');
+		}
+
+		if (isModelUnavailableError(error.message)) {
+			onModelUnavailable?.();
+		}
 
 		throw error;
 	}
@@ -331,6 +482,7 @@ export const handleContentGeneration = async ({
 	setResults,
 	setSelectedResultId,
 	setIsGenerating,
+	onModelUnavailable,
 }) => {
 	const newId = getUniqueId(results);
 
@@ -358,6 +510,7 @@ export const handleContentGeneration = async ({
 				: true,
 			setIsGenerating,
 			setResults,
+			onModelUnavailable,
 		});
 	} catch (error) {
 		// Error handling logic

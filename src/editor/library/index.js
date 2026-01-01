@@ -161,6 +161,7 @@ const CloudLibrary = props => {
 				onSelect={onSelect}
 				url={url}
 				title={title}
+				gutenbergCode={gutenbergCode}
 				prefix={prefix}
 				isPro={isPro}
 				isBeta={isBeta}

@@ -7,6 +7,46 @@ body.toplevel_page_maxi-blocks-dashboard {
 	}
 }
 
+.maxi-mcp-status {
+	margin-top: 16px;
+	padding: 12px 16px;
+	background: #f7f7f7;
+	border-radius: 6px;
+}
+
+.maxi-mcp-status__state {
+	font-weight: 600;
+}
+
+.maxi-mcp-status__state.is-connected {
+	color: #0a7d35;
+}
+
+.maxi-mcp-status__state.is-error {
+	color: #b32d2e;
+}
+
+.maxi-mcp-status__state.is-loading {
+	color: #606060;
+}
+
+.maxi-mcp-status__error {
+	margin: 8px 0 0;
+	color: #b32d2e;
+}
+
+.maxi-mcp-abilities {
+	margin: 12px 0 0;
+	padding-left: 18px;
+}
+
+.maxi-mcp-abilities__empty {
+	color: #606060;
+	font-style: italic;
+	list-style: none;
+	padding-left: 0;
+}
+
 body.toplevel_page_maxi-blocks-dashboard {
 	.notice-warning {
 		&.inline {

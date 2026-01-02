@@ -16,9 +16,18 @@ import {
 } from '@extensions/style-cards/styleCardsCacheDB';
 
 // Expose cache clearing function for debugging (development/test only)
+// Expose cache clearing function for debugging (development/test only)
 if (process.env.NODE_ENV !== 'production') {
 	window.maxiBlocksClearStyleCardsCache = clearIndexedDB;
 }
+
+const formatError = error => {
+	if (!error) return 'Unknown error';
+	if (typeof error === 'string') return error;
+	const name = error.name || 'Error';
+	const message = error.message || JSON.stringify(error);
+	return `[${name}] ${message}`;
+};
 
 /**
  * Controls
@@ -34,7 +43,7 @@ const controls = {
 				// eslint-disable-next-line no-console
 				console.warn(
 					'[RECEIVE_STYLE_CARDS] IndexedDB load failed, continuing with network fetch:',
-					JSON.stringify(cacheError)
+					formatError(cacheError)
 				);
 				cachedData = null;
 			}
@@ -68,7 +77,7 @@ const controls = {
 							// eslint-disable-next-line no-console
 							console.warn(
 								'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
-								JSON.stringify(cacheError)
+								formatError(cacheError)
 							);
 						}
 
@@ -78,7 +87,7 @@ const controls = {
 					// eslint-disable-next-line no-console
 					console.warn(
 						'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:',
-						JSON.stringify(validationError)
+						formatError(validationError)
 					);
 					// Fall through to fresh fetch below
 				}
@@ -103,7 +112,7 @@ const controls = {
 						// eslint-disable-next-line no-console
 						console.warn(
 							'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
-							JSON.stringify(cacheError)
+							formatError(cacheError)
 						);
 					}
 				}
@@ -119,7 +128,7 @@ const controls = {
 			// eslint-disable-next-line no-console
 			console.warn(
 				'[RECEIVE_STYLE_CARDS] Error fetching style cards:',
-				JSON.stringify(error)
+				formatError(error)
 			);
 			throw error;
 		}
@@ -140,7 +149,7 @@ const controls = {
 			// eslint-disable-next-line no-console
 			console.warn(
 				'Error saving Style Card. Code error: ',
-				JSON.stringify(err, null, 2)
+				formatError(err)
 			);
 		}
 	},

@@ -14,6 +14,7 @@ import {
 	executeTransaction,
 	executeRequest,
 	STORE_NAMES,
+	formatError,
 } from '@extensions/common/indexedDBManager';
 
 const STORE_NAME = STORE_NAMES.uniqueIDs;
@@ -46,7 +47,7 @@ export const saveToIndexedDB = async (uniqueIDs, hash) => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error saving to IndexedDB:`,
-			JSON.stringify(error)
+			formatError(error)
 		);
 		throw error;
 	}
@@ -75,7 +76,7 @@ export const loadFromIndexedDB = async () => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error loading from IndexedDB:`,
-			JSON.stringify(error)
+			formatError(error)
 		);
 		return null;
 	}
@@ -100,7 +101,7 @@ export const clearIndexedDB = async () => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error clearing IndexedDB:`,
-			JSON.stringify(error)
+			formatError(error)
 		);
 		throw error;
 	}

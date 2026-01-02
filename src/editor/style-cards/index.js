@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, forwardRef } from '@wordpress/element';
+import { useState, forwardRef, useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -11,6 +11,7 @@ import { useSelect } from '@wordpress/data';
 import MaxiStyleCardsEditor from './maxiStyleCardsEditor';
 import Button from '@components/button';
 import Icon from '@components/icon';
+import applyHeadingPaletteColor from '@extensions/style-cards/applyHeadingPaletteColor';
 
 /**
  * Styles and icons
@@ -28,6 +29,60 @@ const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 	});
 
 	const [isVisible, setIsVisible] = useState(false);
+
+	const focusHeadingsGlobals = (headingLevel = 'h1') => {
+		const headingAccordion = document.querySelector(
+			'.maxi-blocks-sc__type--heading'
+		);
+		if (!headingAccordion) return false;
+
+		const headingButton = headingAccordion.querySelector(
+			'.maxi-accordion-control__item__button'
+		);
+		if (headingButton) {
+			headingButton.click();
+		}
+
+		const headingPanel = headingAccordion.querySelector(
+			'.maxi-accordion-control__item__panel'
+		);
+		if (!headingPanel) return false;
+
+		const tabButton = headingPanel.querySelector(
+			`.maxi-tabs-control__button-${headingLevel.toLowerCase()}`
+		);
+		if (tabButton) {
+			tabButton.click();
+			return true;
+		}
+
+		return false;
+	};
+
+	useEffect(() => {
+		window.maxiBlocksOpenStyleCardsEditor = (options = {}) => {
+			setIsVisible(true);
+
+			if (options.applyHeadingPaletteColor) {
+				applyHeadingPaletteColor({
+					headingLevel: options.applyHeadingLevel ?? options.headingLevel ?? 'all',
+				});
+			}
+
+			if (options.focusHeadingsGlobals) {
+				const { headingLevel = 'h1', delay = 300 } = options;
+				setTimeout(() => {
+					focusHeadingsGlobals(headingLevel);
+				}, delay);
+			}
+		};
+		window.maxiBlocksCloseStyleCardsEditor = () => setIsVisible(false);
+
+		return () => {
+			delete window.maxiBlocksOpenStyleCardsEditor;
+			delete window.maxiBlocksCloseStyleCardsEditor;
+		};
+	}, []);
 
 	return (
 		<>

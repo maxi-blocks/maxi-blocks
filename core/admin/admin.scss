@@ -10,7 +10,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 .maxi-mcp-status {
 	margin-top: 16px;
 	padding: 12px 16px;
-	background: #f7f7f7;
+	background: var(--maxi-admin-light-grey);
 	border-radius: 6px;
 }
 
@@ -19,20 +19,20 @@ body.toplevel_page_maxi-blocks-dashboard {
 }
 
 .maxi-mcp-status__state.is-connected {
-	color: #0a7d35;
+	color: var(--maxi-admin-green);
 }
 
 .maxi-mcp-status__state.is-error {
-	color: #b32d2e;
+	color: var(--maxi-admin-orange-hover);
 }
 
 .maxi-mcp-status__state.is-loading {
-	color: #606060;
+	color: var(--maxi-admin-black-text);
 }
 
 .maxi-mcp-status__error {
 	margin: 8px 0 0;
-	color: #b32d2e;
+	color: var(--maxi-admin-orange-hover);
 }
 
 .maxi-mcp-abilities {
@@ -41,7 +41,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 }
 
 .maxi-mcp-abilities__empty {
-	color: #606060;
+	color: var(--maxi-admin-black-text);
 	font-style: italic;
 	list-style: none;
 	padding-left: 0;
@@ -504,7 +504,7 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 					&-content {
 						border-top: 0px solid var(--maxi-admin-border-light);
-						background: white;
+						background: var(--maxi-admin-white);
 						max-height: 0;
 						padding: 0 24px;
 						transition: all 0.5s;
@@ -1527,7 +1527,7 @@ body.site-editor-php
 		input {
 			flex: 1;
 			padding: 8px 12px;
-			border: 1px solid #ddd;
+			border: 1px solid var(--maxi-admin-grey);
 			border-radius: 4px;
 			font-size: 14px;
 			width: 100%;
@@ -1548,16 +1548,16 @@ body.site-editor-php
 
 		&.success,
 		&.maxi-license-success {
-			background: #d4edda;
-			color: #155724;
-			border: 1px solid #c3e6cb;
+			background: var(--maxi-admin-mint);
+			color: var(--maxi-admin-green);
+			border: 1px solid var(--maxi-admin-border-light);
 		}
 
 		&.error,
 		&.maxi-license-error {
-			background: #f8d7da;
-			color: #721c24;
-			border: 1px solid #f5c6cb;
+			background: var(--maxi-admin-light-grey);
+			color: var(--maxi-admin-orange-hover);
+			border: 1px solid var(--maxi-admin-border-light);
 		}
 	}
 
@@ -1621,13 +1621,13 @@ p.maxi-license-help-text {
 		margin-bottom: 8px;
 		font-size: 15px;
 		font-weight: 600;
-		color: #1e1e1e;
+		color: var(--maxi-admin-black);
 	}
 
 	> p {
 		margin-top: 0;
 		margin-bottom: 16px;
-		color: #50575e;
+		color: var(--maxi-admin-black-text);
 	}
 
 	#maxi-custom-fonts-notice {
@@ -1644,8 +1644,8 @@ p.maxi-license-help-text {
 		gap: 16px;
 		margin-bottom: 20px;
 		padding: 16px;
-		background: #fff;
-		border: 1px solid #e2e4e7;
+		background: var(--maxi-admin-white);
+		border: 1px solid var(--maxi-admin-border-light);
 		border-radius: 6px;
 	}
 

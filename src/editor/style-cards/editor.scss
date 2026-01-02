@@ -154,12 +154,16 @@ body .maxi-style-cards__popover {
 	position: fixed !important;
 	top: 0;
 	right: 0;
+	left: auto !important;
+	transform: none !important;
 	z-index: 98;
 	height: 100%;
 	width: 350px;
 	box-shadow: 0 4px 0px rgba(0, 0, 0, 0.1);
 	background-color: var(--maxi-white);
 	border-left: 1.5px solid var(--maxi-grey-light);
+	margin: 0 !important;
+	max-width: 100vw;
 
 	button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button):hover {
 		background-color: var(--maxi-whisper-green) !important;

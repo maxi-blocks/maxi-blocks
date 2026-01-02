@@ -9,7 +9,12 @@ import apiFetch from '@wordpress/api-fetch';
  * Internal dependencies
  */
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
-import { CONTENT_TYPE_EXAMPLES } from './constants';
+import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
+import { openStyleCardsEditor } from '@extensions/style-cards/applyThemeToStyleCards';
+import {
+	CONTENT_TYPE_EXAMPLES,
+	DESIGN_AGENT_SYSTEM_PROMPT,
+} from './constants';
 
 /**
  * External dependencies
@@ -125,6 +130,43 @@ ${humanMessageTemplate}`,
 	return messages;
 };
 
+
+
+
+
+
+const handleUiTarget = responseContent => {
+	try {
+		const parsed = JSON.parse(responseContent);
+		if (!parsed?.ui_target) return;
+
+		const target = parsed.ui_target;
+
+		if (
+			target === 'global-style-colors' ||
+			target === 'global-style-typography'
+		) {
+			openStyleCardsEditor();
+			return;
+		}
+
+		const mapping = {
+			'margin-padding': 'Margin / Padding',
+			'height-width': 'Height / Width',
+			'background-layer': 'Background / Layer',
+			border: 'Border',
+			'box-shadow': 'Box shadow',
+		};
+
+		if (mapping[target]) {
+			// Tab 0 is usually 'Settings'
+			openSidebarAccordion(0, mapping[target]);
+		}
+	} catch (e) {
+		// ignore
+	}
+};
+
 export const getUniqueId = results =>
 	!isEmpty(results)
 		? Math.max(
@@ -202,6 +244,7 @@ export const callChatAndUpdateResults = async ({
 	messages,
 	newId,
 	abortControllerRef,
+	prompt,
 	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
@@ -259,6 +302,7 @@ export const callBackendAIProxy = async ({
 	additionalParams,
 	newId,
 	abortControllerRef,
+	prompt,
 	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
@@ -290,6 +334,7 @@ export const callBackendAIProxy = async ({
 			const newResults = [...prevResults];
 			const addedResult = newResults.find(result => result.id === newId);
 
+
 			if (addedResult) {
 				addedResult.content = sanitizeContent(
 					finalContent ?? addedResult.content,
@@ -297,6 +342,9 @@ export const callBackendAIProxy = async ({
 				);
 				addedResult.loading = false;
 				addedResult.progress = addedResult.content.length;
+
+                // Handle UI Target expansion
+                handleUiTarget(addedResult.content);
 			}
 
 			return newResults;
@@ -323,6 +371,7 @@ export const callBackendAIProxy = async ({
 				model: modelName,
 				temperature: additionalParams?.temperature,
 				streaming: true,
+				prompt,
 			}),
 			signal: abortControllerRef.current.signal,
 		});
@@ -350,6 +399,7 @@ export const callBackendAIProxy = async ({
 					model: modelName,
 					temperature: additionalParams?.temperature,
 					streaming: false,
+					prompt,
 				},
 				signal: abortControllerRef.current.signal,
 			});
@@ -373,6 +423,9 @@ export const callBackendAIProxy = async ({
 					);
 					addedResult.loading = false;
 					addedResult.progress = content.length;
+
+                    // Handle UI Target expansion
+                    handleUiTarget(content);
 				}
 
 				return newResults;
@@ -488,6 +541,7 @@ export const handleContentGeneration = async ({
 
 	try {
 		const messages = await getMessages(additionalData);
+		const prompt = additionalData?.prompt;
 
 		// Updating results with loading state
 		setResults(prevResults =>
@@ -503,6 +557,7 @@ export const handleContentGeneration = async ({
 			additionalParams,
 			newId,
 			abortControllerRef,
+			prompt,
 			shouldRemoveQuotes: additionalData?.settings?.contentType
 				? !['Quotes', 'Pull quotes Testimonial'].includes(
 						additionalData.settings.contentType
@@ -665,4 +720,32 @@ export const getContext = (contextOption, clientId) => {
 	goThroughMaxiBlocks(buildBlockStructure, false, blocks);
 
 	return result;
+};
+
+/**
+ * Parse the AI response to check for clarification requests.
+ *
+ * @param {string} content - The content to parse.
+ * @return {Object|null} - The parsed payload if intent is CLARIFY, otherwise null.
+ */
+export const parseClarifyPayload = (content) => {
+	try {
+        if (!content || typeof content !== 'string') return null;
+
+		const startIndex = content.indexOf('{');
+		const endIndex = content.lastIndexOf('}');
+		if (startIndex === -1 || endIndex === -1) {
+            return null;
+        }
+
+		const jsonStr = content.substring(startIndex, endIndex + 1);
+		const parsed = JSON.parse(jsonStr);
+
+		if (parsed.intent === 'CLARIFY' && Array.isArray(parsed.options)) {
+			return parsed;
+		}
+		return null;
+	} catch (e) {
+		return null;
+	}
 };

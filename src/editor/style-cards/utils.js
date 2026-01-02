@@ -281,3 +281,48 @@ export const removeNavigationHoverUnderline = remove => {
 		removeStyleElement();
 	}
 };
+
+export const openStyleCardsEditor = (options = {}) => {
+	if (typeof window !== 'undefined') {
+		if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
+			window.maxiBlocksOpenStyleCardsEditor(options);
+		}
+	}
+
+	const styleCardsButton =
+		typeof document !== 'undefined'
+			? document.getElementById('maxi-button__style-cards')
+			: null;
+
+	if (styleCardsButton) {
+		styleCardsButton.click();
+	}
+
+	if (typeof document !== 'undefined' && options.focusHeadingsGlobals) {
+		const { headingLevel = 'h1', delay = 300 } = options;
+		setTimeout(() => {
+			const headingAccordion = document.querySelector(
+				'.maxi-blocks-sc__type--heading'
+			);
+			if (headingAccordion) {
+				const headingButton = headingAccordion.querySelector(
+					'.maxi-accordion-control__item__button'
+				);
+				if (headingButton) {
+					headingButton.click();
+				}
+				
+				// Try to switch tab
+				const headingPanel = headingAccordion.querySelector('.maxi-accordion-control__item__panel');
+				if (headingPanel) {
+					const tabButton = headingPanel.querySelector(`.maxi-tabs-control__button-${headingLevel.toLowerCase()}`);
+					if (tabButton) {
+						tabButton.click();
+					}
+				}
+			}
+		}, delay);
+	}
+
+	return !!styleCardsButton;
+};

@@ -629,6 +629,9 @@ class MaxiBlocks_StyleCards
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                 // Process the style cards to ensure all custom colors are properly handled
                 foreach ($decoded as $key => $card) {
+                    // Added safety check for malformed data
+                    if (!is_array($card)) continue;
+
                     // Make sure color object exists in each style card
                     if (!isset($card['color'])) {
                         $decoded[$key]['color'] = array();

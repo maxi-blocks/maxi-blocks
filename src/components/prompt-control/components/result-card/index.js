@@ -16,11 +16,13 @@ import classnames from 'classnames';
 import Button from '@components/button';
 import DialogBox from '@components/dialog-box';
 import ResultModifyBar from '@components/prompt-control/components/result-modify-bar';
+import MaxiClarifyUI from '@components/prompt-control/components/clarify-ui';
 import Icon from '@components/icon';
 import {
 	CONTENT_LIMIT,
 	MODIFICATION_MODIFICATORS,
 } from '@components/prompt-control/constants';
+
 
 /**
  * Styles
@@ -49,7 +51,9 @@ const ResultCard = ({
 	onSelect,
 	onUseSettings,
 	onModify,
+
 	onDelete,
+	onClarifySelect,
 }) => {
 	const className = 'maxi-prompt-control-results-card';
 
@@ -63,6 +67,28 @@ const ResultCard = ({
 	const endOfContentRef = useRef();
 
 	const [copySuccess, setCopySuccess] = useState(false);
+	const parseClarifyPayload = content => {
+		if (!content || typeof content !== 'string') return null;
+		const trimmed = content.trim();
+		if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) return null;
+
+		try {
+			const parsed = JSON.parse(trimmed);
+			if (
+				parsed &&
+				parsed.action === 'CLARIFY' &&
+				Array.isArray(parsed.options)
+			) {
+				return parsed;
+			}
+		} catch (error) {
+			return null;
+		}
+
+		return null;
+	};
+
+	const clarifyPayload = parseClarifyPayload(result.content);
 
 	const limitContent = (content, limit = CONTENT_LIMIT) => {
 		if (content.length <= limit) {
@@ -180,20 +206,21 @@ const ResultCard = ({
 				)}
 				{result.content === '' ? '\u00A0' : getContent()}
 			</p>
-			{result.loading && (
-				<div className={`${className}__progress`}>
-					{__(
-						`Generating… ${result.progress ?? result.content.length} characters`,
-						'maxi-blocks'
-					)}
-				</div>
-			)}
 			<div className={`${className}__end-of-content`}>
 				<div
 					ref={endOfContentRef}
 					className={`${className}__end-of-content__inner`}
 				/>
 			</div>
+			{clarifyPayload && (
+				<div className={`${className}__clarify`}>
+					<MaxiClarifyUI
+						message={clarifyPayload.message}
+						options={clarifyPayload.options}
+						onSelect={onClarifySelect}
+					/>
+				</div>
+			)}
 			{result.content.length > CONTENT_LIMIT && !result.loading && (
 				<Button
 					className={`${className}__show-more`}

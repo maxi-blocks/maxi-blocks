@@ -51,6 +51,36 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Register regular admin menu (not for network admin)
             add_action('admin_menu', [$this, 'maxi_register_menu']);
 
+            // Explicitly handle saving of AI Provider to ensure persistence
+            add_action('admin_init', function() {
+                 $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
+                 $log = date('Y-m-d H:i:s') . " - admin_init fired\n";
+                 $log .= "option_page: " . (isset($_POST['option_page']) ? $_POST['option_page'] : 'NOT SET') . "\n";
+                 $log .= "maxi_ai_provider in POST: " . (isset($_POST['maxi_ai_provider']) ? $_POST['maxi_ai_provider'] : 'NOT SET') . "\n";
+                 $log .= "Current DB value: " . get_option('maxi_ai_provider', 'FALLBACK') . "\n";
+                 
+                 if (isset($_POST['option_page']) && $_POST['option_page'] === 'maxi-blocks-settings-group') {
+                     $log .= "Condition matched!\n";
+                     if (isset($_POST['maxi_ai_provider'])) {
+                         $provider = sanitize_text_field($_POST['maxi_ai_provider']);
+                         $log .= "Provider from POST: $provider\n";
+                         if (in_array($provider, ['openai', 'anthropic', 'gemini', 'mistral'])) {
+                              $result = update_option('maxi_ai_provider', $provider);
+                              $log .= "update_option result: " . ($result ? 'true' : 'false') . "\n";
+                              $log .= "New DB value: " . get_option('maxi_ai_provider', 'FALLBACK') . "\n";
+                         } else {
+                              $log .= "Provider not in allowed list\n";
+                         }
+                     } else {
+                         $log .= "maxi_ai_provider NOT in POST\n";
+                     }
+                 } else {
+                     $log .= "option_page condition NOT matched\n";
+                 }
+                 $log .= "---\n";
+                 file_put_contents($log_file, $log, FILE_APPEND);
+            });
+
             add_action('admin_init', [$this, 'register_maxi_blocks_settings']);
 
             add_action('admin_enqueue_scripts', [
@@ -419,6 +449,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     'defaultModel' => get_option(
                         'maxi_ai_model',
                         'gpt-3.5-turbo',
+                    ),
+                    'defaultProvider' => get_option(
+                        'maxi_ai_provider',
+                        'openai',
                     ),
                 ]);
 
@@ -1801,11 +1835,64 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description =
                 '<h4>' .
+                __('AI Provider', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_provider',
+                '',
+                'dropdown',
+                [
+                    'list' => [
+                        'openai' => __('OpenAI', 'maxi-blocks'),
+                        'anthropic' => __('Anthropic', 'maxi-blocks'),
+                        'gemini' => __('Gemini', 'maxi-blocks'),
+                        'mistral' => __('Mistral', 'maxi-blocks'),
+                    ],
+                    'default' => 'openai',
+                ],
+            );
+
+            $description =
+                '<h4>' .
                 __('Insert OpenAI API Key here', 'maxi-blocks') .
                 '</h4>';
             $content .= $this->generate_setting(
                 $description,
                 'openai_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert Anthropic API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'anthropic_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert Gemini API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'gemini_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert Mistral API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'mistral_api_key_option',
                 '',
                 'password',
             );
@@ -1843,7 +1930,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</div>';
 
             $description =
-                '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
+                '<h4>' . __('AI Model', 'maxi-blocks') . '</h4>';
             $content .= $this->generate_setting(
                 $description,
                 'maxi_ai_model',
@@ -2238,6 +2325,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
 
+            // For hidden inputs, return just the raw input without wrapper divs
+            if ($type === 'hidden') {
+                return $visible_input;
+            }
+
             $input = <<<HTML
 			    <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
 			        <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
@@ -2317,35 +2409,70 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $option .
                 '" id="' .
                 $option .
-                '" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+                '" autocomplete="off" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
 
-            $option_value = get_option($option)
-                ? get_option($option)
+            $default_value = isset($args['default'])
+                ? $args['default']
                 : 'gpt-3.5-turbo';
+            $option_value = get_option($option, $default_value);
+
+            // Handle case where get_option returns false/empty but we want default
+            if (!$option_value && $default_value) {
+                $option_value = $default_value;
+            }
+            
+            // DEBUG: Log dropdown rendering
+            if ($option === 'maxi_ai_provider') {
+                $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
+                $log = date('Y-m-d H:i:s') . " - DROPDOWN RENDER\n";
+                $log .= "option: $option\n";
+                $log .= "default_value: $default_value\n";
+                $log .= "raw get_option: " . get_option($option, 'RAW_FALLBACK') . "\n";
+                $log .= "option_value used: $option_value\n";
+                $log .= "---\n";
+                file_put_contents($log_file, $log, FILE_APPEND);
+            }
 
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
                 $dropdown .= '<option value=""></option>';
             } else {
-                // For other dropdowns, process the static list
-                if (($key = array_search($option_value, $list)) !== false) {
-                    unset($list[$key]);
-                    array_unshift($list, $option_value);
+                $is_associative = array_keys($list) !== range(0, count($list) - 1);
+
+                // DEBUG: Log selection logic
+                if ($option === 'maxi_ai_provider') {
+                    $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
+                    $log = date('Y-m-d H:i:s') . " - SELECTION LOOP\n";
+                    $log .= "option_value being compared: '$option_value'\n";
                 }
 
-                foreach ($list as $value) {
+                foreach ($list as $key => $value) {
+                    $option_key = $is_associative ? $key : $value;
+                    $selected = selected($option_value, $option_key, false);
+                    
+                    // DEBUG: Log each comparison
+                    if ($option === 'maxi_ai_provider') {
+                        $log .= "  option_key: '$option_key' | selected(): '$selected'\n";
+                    }
+                    
                     $dropdown .=
                         '<option value="' .
-                        $value .
-                        '">' .
+                        $option_key .
+                        '" ' .
+                        $selected .
+                        '>' .
                         $value .
                         '</option>';
+                }
+                
+                // DEBUG: Write log
+                if ($option === 'maxi_ai_provider') {
+                    $log .= "---\n";
+                    file_put_contents($log_file, $log, FILE_APPEND);
                 }
             }
 
             $dropdown .= '</select>';
-
-            $dropdown .= $this->generate_input($option, '', 'hidden');
 
             $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
             $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
@@ -2376,8 +2503,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ) {
                 $is_api_input = $type === 'password';
 
-                if ($is_api_input) {
-                    $api_name = str_replace('_api_key_option', '', $option);
+                if ($is_api_input && $option === 'google_api_key_option') {
                     $content .= '<div id="maxi-api-test"></div>';
                 }
 
@@ -2392,7 +2518,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 if (str_contains($option, 'api_key_option')) {
                     $content .=
-                        '<div id="maxi-api-test__validation-message"></div>';
+                        '<div id="maxi-api-test__validation-message-' .
+                        esc_attr($option) .
+                        '"></div>';
                 }
             } else {
                 $content .= $this->generate_toggle($option, $function);
@@ -2432,6 +2560,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'default' => 'gpt-3.5-turbo',
             ];
+            $args_ai_provider = [
+                'type' => 'string',
+                'default' => 'openai',
+            ];
             $args_ai_description = [
                 'type' => 'string',
             ];
@@ -2455,7 +2587,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_gutenberg_responsive_preview' => $args_true,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
+                'anthropic_api_key_option' => $args_api_key,
+                'gemini_api_key_option' => $args_api_key,
+                'mistral_api_key_option' => $args_api_key,
                 'maxi_mcp_token' => $args_api_key,
+                'maxi_ai_provider' => $args_ai_provider,
                 'maxi_ai_model' => $args_ai_model,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
@@ -3260,6 +3396,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $google_api_key = get_option('google_api_key_option', '');
             $openai_api_key = get_option('openai_api_key_option', '');
+            $anthropic_api_key = get_option('anthropic_api_key_option', '');
+            $gemini_api_key = get_option('gemini_api_key_option', '');
+            $mistral_api_key = get_option('mistral_api_key_option', '');
             $mcp_token = get_option('maxi_mcp_token', '');
 
             echo '<input type="hidden" name="google_api_key_option" value="' .
@@ -3267,6 +3406,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '">';
             echo '<input type="hidden" name="openai_api_key_option" value="' .
                 esc_attr($openai_api_key) .
+                '">';
+            echo '<input type="hidden" name="anthropic_api_key_option" value="' .
+                esc_attr($anthropic_api_key) .
+                '">';
+            echo '<input type="hidden" name="gemini_api_key_option" value="' .
+                esc_attr($gemini_api_key) .
+                '">';
+            echo '<input type="hidden" name="mistral_api_key_option" value="' .
+                esc_attr($mistral_api_key) .
                 '">';
             echo '<input type="hidden" name="maxi_mcp_token" value="' .
                 esc_attr($mcp_token) .

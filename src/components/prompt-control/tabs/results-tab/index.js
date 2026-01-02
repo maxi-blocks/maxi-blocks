@@ -32,7 +32,9 @@ const ResultsTab = ({
 	onAbort,
 	updateSettings,
 	switchToGenerateTab,
+
 	switchToModifyTab,
+	onClarifySelect,
 }) => {
 	const className = 'maxi-prompt-control-history-tab';
 
@@ -61,7 +63,9 @@ const ResultsTab = ({
 				onChangeTextFormat={onChangeTextFormat}
 				updateSettings={updateSettings}
 				switchToGenerateTab={switchToGenerateTab}
+
 				switchToModifyTab={switchToModifyTab}
+				onClarifySelect={onClarifySelect}
 			/>
 			{isGenerating && (
 				<Button className={`${className}__abort`} onClick={onAbort}>

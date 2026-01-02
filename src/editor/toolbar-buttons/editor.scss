@@ -39,8 +39,11 @@
 
 			&:hover,
 			&[aria-pressed='true'] {
-				border-color: #ff4a17;
-				background: linear-gradient(135deg, #fff5f2 0%, #fff 100%);
+				border-color: transparent;
+				background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
+				                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
+				background-origin: border-box;
+				background-clip: padding-box, border-box;
 			}
 		}
 	}

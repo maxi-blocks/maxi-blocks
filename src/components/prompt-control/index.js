@@ -24,7 +24,7 @@ import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
 	getContext,
 	getContextSection,
-	getExamplesSection,
+    getExamplesSection,
 	getFormattedMessages,
 	getSiteInformation,
 	handleContentGeneration,
@@ -153,7 +153,9 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		);
 	}
 
-	const getMessages = async () => {
+	const getMessages = async (promptOverride) => {
+        const currentPrompt = typeof promptOverride === 'string' ? promptOverride : prompt;
+
 		const systemTemplate = `${getSiteInformation(
 			AISettings
 		)}${getContextSection(getContext(contextOption, clientId))}
@@ -172,7 +174,7 @@ ${getExamplesSection(contentType)}`;
 				? ', and avoid using quotation marks'
 				: ''
 		}. Ensure it aligns with the site details and is polished for the website.${
-			prompt ? `\nUser's custom instructions: ${prompt}` : ''
+			currentPrompt ? `\nUser's custom instructions: ${currentPrompt}` : ''
 		}`;
 
 		return getFormattedMessages(
@@ -182,7 +184,8 @@ ${getExamplesSection(contentType)}`;
 		);
 	};
 
-	const generateContent = async () => {
+	const generateContent = async (promptOverride) => {
+        const currentPrompt = typeof promptOverride === 'string' ? promptOverride : prompt;
 		switchToResultsTab();
 
 		handleContentGeneration({
@@ -193,15 +196,31 @@ ${getExamplesSection(contentType)}`;
 			},
 			additionalData: {
 				settings,
+				prompt: currentPrompt,
 			},
 			results,
 			abortControllerRef,
-			getMessages,
+			getMessages: () => getMessages(currentPrompt),
 			setResults,
 			setSelectedResultId,
 			setIsGenerating,
 			onModelUnavailable: () => setIsManualMode(true),
 		});
+	};
+
+	const handleClarifySelect = option => {
+		if (!option) {
+			return;
+		}
+
+		if (option.id === 'cancel') {
+			switchToGenerateTab();
+			return;
+		}
+
+		const clarifyPrompt = option.prompt || option.value || option.label || '';
+		updateSettings({ prompt: clarifyPrompt });
+		generateContent(clarifyPrompt);
 	};
 
 	const handleAbort = () => {
@@ -247,6 +266,7 @@ ${getExamplesSection(contentType)}`;
 								setCustomValue={setCustomValue}
 								setSelectedResultId={setSelectedResultId}
 								onContentChange={onContentChange}
+                                onClarifySelect={handleClarifySelect}
 								onChangeTextFormat={
 									textContext.onChangeTextFormat
 								}

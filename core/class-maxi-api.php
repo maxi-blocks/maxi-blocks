@@ -5,6 +5,7 @@ require_once ABSPATH . 'wp-admin/includes/media.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 require_once plugin_dir_path(__DIR__) . 'core/class-maxi-local-fonts.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-fonts.php';
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-acp-client.php';
 
 /**
  * MaxiBlocks styles API
@@ -496,6 +497,26 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_array($param) || is_string($param);
                         },
                     ],
+                    'prompt' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'design_prompt' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
+                        },
+                    ],
+                    'page_type' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'site_profile' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
                     'model' => [
                         'validate_callback' => function ($param) {
                             return is_string($param);
@@ -511,11 +532,120 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_bool($param);
                         },
                     ],
+                    'provider' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'max_tokens' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
                 ],
                 'permission_callback' => function () {
                     return current_user_can('edit_posts');
                 },
             ]);
+            register_rest_route($this->namespace, '/ai/context', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_ai_context'],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/acp/request', [
+                'methods' => 'POST',
+                'callback' => [$this, 'proxy_acp_request'],
+                'args' => [
+                    'url' => [
+                        'required' => true,
+                        'validate_callback' => function ($param) {
+                            return is_string($param) && !empty($param);
+                        },
+                    ],
+                    'method' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                    ],
+                    'payload' => [
+                        'validate_callback' => function ($param) {
+                            return is_array($param) || is_object($param) || is_null($param);
+                        },
+                    ],
+                    'headers' => [
+                        'validate_callback' => function ($param) {
+                            return is_array($param) || is_null($param);
+                        },
+                    ],
+                    'timeout' => [
+                        'validate_callback' => function ($param) {
+                            return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+        }
+
+        public function proxy_acp_request($request)
+        {
+            $url = $request->get_param('url');
+            $method = strtoupper($request->get_param('method') ?: 'POST');
+            $payload = $request->get_param('payload');
+            $headers = $request->get_param('headers') ?: [];
+            $timeout = $request->get_param('timeout');
+
+            $validated_url = esc_url_raw($url);
+            if (!wp_http_validate_url($validated_url)) {
+                return new WP_Error(
+                    'maxi_blocks_acp_invalid_url',
+                    'ACP URL must be a valid http(s) URL.',
+                    ['status' => 400],
+                );
+            }
+
+            $allowed_base = get_option('maxi_blocks_acp_base_url');
+            if (!empty($allowed_base)) {
+                $allowed_parts = wp_parse_url($allowed_base);
+                $target_parts = wp_parse_url($validated_url);
+
+                $allowed_host = $allowed_parts['host'] ?? null;
+                $target_host = $target_parts['host'] ?? null;
+                $allowed_scheme = $allowed_parts['scheme'] ?? null;
+                $target_scheme = $target_parts['scheme'] ?? null;
+                $allowed_port = $allowed_parts['port'] ?? null;
+                $target_port = $target_parts['port'] ?? null;
+
+                $host_matches = $allowed_host && $target_host && strtolower($allowed_host) === strtolower($target_host);
+                $scheme_matches = $allowed_scheme && $target_scheme && strtolower($allowed_scheme) === strtolower($target_scheme);
+                $port_matches = $allowed_port === $target_port;
+
+                if (!$host_matches || !$scheme_matches || !$port_matches) {
+                    return new WP_Error(
+                        'maxi_blocks_acp_disallowed_url',
+                        'ACP URL does not match the configured base URL.',
+                        ['status' => 403],
+                    );
+                }
+            }
+
+            $response = MaxiBlocks_ACP_Client::request(
+                $validated_url,
+                $payload,
+                $headers,
+                $method,
+                $timeout ? (int) $timeout : null,
+            );
+
+            if (is_wp_error($response)) {
+                return $response;
+            }
+
+            return rest_ensure_response($response);
         }
 
         public function get_custom_fonts($request)
@@ -640,6 +770,16 @@ if (!class_exists('MaxiBlocks_API')):
                     'has_openai_api_key' => !empty(
                         get_option('openai_api_key_option')
                     ),
+                    'has_anthropic_api_key' => !empty(
+                        get_option('anthropic_api_key_option')
+                    ),
+                    'has_gemini_api_key' => !empty(
+                        get_option('gemini_api_key_option')
+                    ),
+                    'has_mistral_api_key' => !empty(
+                        get_option('mistral_api_key_option')
+                    ),
+                    'provider' => get_option('maxi_ai_provider', 'openai'),
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
@@ -3089,27 +3229,57 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
-         * Proxy AI chat requests to OpenAI API
+         * Proxy AI chat requests to OpenAI API (and others)
          * This keeps the API key secure on the backend
          */
         public function proxy_ai_chat($request)
         {
-            $openai_api_key = get_option('openai_api_key_option');
+            // Get parameters from request
+            $messages = $request->get_param('messages');
+            $prompt = $request->get_param('prompt');
+            $design_prompt = $request->get_param('design_prompt');
+            $page_type = $request->get_param('page_type');
+            $site_profile = $request->get_param('site_profile');
+            $selected_block_id = $request->get_param('selected_block_id');
+            if (!is_bool($design_prompt)) {
+                $design_prompt = $this->is_design_prompt($prompt);
+            }
+            $model = $request->get_param('model');
+            $temperature = $request->get_param('temperature');
+            $streaming = $request->get_param('streaming') ?: false;
+            $provider = strtolower($request->get_param('provider') ?: 'openai');
+            $max_tokens = $request->get_param('max_tokens');
 
-            if (!$openai_api_key) {
-                error_log('MaxiBlocks AI proxy error: OpenAI API key not configured.');
+            $supported_providers = ['openai', 'anthropic', 'gemini', 'mistral'];
+            if (!in_array($provider, $supported_providers, true)) {
                 return new WP_Error(
-                    'no_api_key',
-                    'OpenAI API key not configured',
-                    ['status' => 500],
+                    'unsupported_provider',
+                    'Unsupported AI provider',
+                    ['status' => 400],
                 );
             }
 
-            // Get parameters from request
-            $messages = $request->get_param('messages');
-            $model = $request->get_param('model') ?: 'gpt-3.5-turbo';
-            $temperature = $request->get_param('temperature');
-            $streaming = $request->get_param('streaming') ?: false;
+            if ($design_prompt) {
+                if (empty($prompt) || !is_string($prompt)) {
+                    return new WP_Error(
+                        'invalid_prompt',
+                        'Prompt must be a non-empty string',
+                        ['status' => 400],
+                    );
+                }
+
+                $context = $this->get_ai_context_text($site_profile, $page_type, $selected_block_id);
+                $messages = [
+                    [
+                        'role' => 'system',
+                        'content' => $this->get_design_agent_system_prompt($context),
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => 'User request: ' . $prompt,
+                    ],
+                ];
+            }
 
             // Convert messages to OpenAI format if needed
             if (is_string($messages)) {
@@ -3168,121 +3338,130 @@ if (!class_exists('MaxiBlocks_API')):
 
             $messages = $converted_messages;
 
-            // Build OpenAI API request
-            $body = [
-                'model' => $model,
-                'messages' => $messages,
-                'stream' => $streaming,
-            ];
+            if ($provider === 'openai') {
+                $openai_api_key = get_option('openai_api_key_option');
 
-            // Add temperature based on model support
-            // o1 and o3 models don't support temperature at all
-            if (!str_contains($model, 'o1') && !str_contains($model, 'o3')) {
-                // Only GPT-5 models require temperature = 1, others support custom values
-                if (str_contains($model, 'gpt-5')) {
-                    $body['temperature'] = 1;
-                } else {
-                    // Most models (including gpt-4o) support custom temperature
-                    if ($temperature !== null) {
-                        $body['temperature'] = (float) $temperature;
+                if (!$openai_api_key) {
+                    error_log('MaxiBlocks AI proxy error: OpenAI API key not configured.');
+                    return new WP_Error(
+                        'no_api_key',
+                        'OpenAI API key not configured',
+                        ['status' => 500],
+                    );
+                }
+
+                $model = $model ?: 'gpt-3.5-turbo';
+
+                // Build OpenAI API request
+                $body = [
+                    'model' => $model,
+                    'messages' => $messages,
+                    'stream' => $streaming,
+                ];
+
+                // Add temperature based on model support
+                // o1 and o3 models don't support temperature at all
+                if (
+                    !str_contains($model, 'o1') &&
+                    !str_contains($model, 'o3')
+                ) {
+                    // Only GPT-5 models require temperature = 1, others support custom values
+                    if (str_contains($model, 'gpt-5')) {
+                        $body['temperature'] = 1;
+                    } else {
+                        // Most models (including gpt-4o) support custom temperature
+                        if ($temperature !== null) {
+                            $body['temperature'] = (float) $temperature;
+                        }
                     }
                 }
-            }
 
-            if ($streaming) {
-                @ini_set('output_buffering', 'off');
-                @ini_set('zlib.output_compression', '0');
-                while (ob_get_level() > 0) {
-                    ob_end_flush();
-                }
+                if ($streaming) {
+                    @ini_set('output_buffering', 'off');
+                    @ini_set('zlib.output_compression', '0');
+                    while (ob_get_level() > 0) {
+                        ob_end_flush();
+                    }
 
-                header('Content-Type: text/event-stream; charset=utf-8');
-                header('Cache-Control: no-cache');
-                header('Connection: keep-alive');
-                header('X-Accel-Buffering: no');
+                    header('Content-Type: text/event-stream; charset=utf-8');
+                    header('Cache-Control: no-cache');
+                    header('Connection: keep-alive');
+                    header('X-Accel-Buffering: no');
 
-                $response_buffer = '';
+                    $response_buffer = '';
 
-                $curl_handle = curl_init(
-                    'https://api.openai.com/v1/chat/completions',
-                );
-                curl_setopt($curl_handle, CURLOPT_POST, true);
-                curl_setopt($curl_handle, CURLOPT_HTTPHEADER, [
-                    'Authorization: Bearer ' . $openai_api_key,
-                    'Content-Type: application/json',
-                ]);
-                curl_setopt(
-                    $curl_handle,
-                    CURLOPT_POSTFIELDS,
-                    wp_json_encode($body),
-                );
-                curl_setopt($curl_handle, CURLOPT_TIMEOUT, 0);
-                curl_setopt(
-                    $curl_handle,
-                    CURLOPT_WRITEFUNCTION,
-                    function ($curl, $data) use (&$response_buffer) {
-                        $response_buffer .= $data;
-                        echo $data;
+                    $curl_handle = curl_init(
+                        'https://api.openai.com/v1/chat/completions',
+                    );
+                    curl_setopt($curl_handle, CURLOPT_POST, true);
+                    curl_setopt($curl_handle, CURLOPT_HTTPHEADER, [
+                        'Authorization: Bearer ' . $openai_api_key,
+                        'Content-Type: application/json',
+                    ]);
+                    curl_setopt(
+                        $curl_handle,
+                        CURLOPT_POSTFIELDS,
+                        wp_json_encode($body),
+                    );
+                    curl_setopt($curl_handle, CURLOPT_TIMEOUT, 0);
+                    curl_setopt(
+                        $curl_handle,
+                        CURLOPT_WRITEFUNCTION,
+                        function ($curl, $data) use (&$response_buffer) {
+                            $response_buffer .= $data;
+                            echo $data;
+                            if (function_exists('ob_flush')) {
+                                @ob_flush();
+                            }
+                            flush();
+                            return strlen($data);
+                        },
+                    );
+
+                    $result = curl_exec($curl_handle);
+                    $curl_error = $result === false ? curl_error($curl_handle) : '';
+                    $response_code = curl_getinfo(
+                        $curl_handle,
+                        CURLINFO_HTTP_CODE,
+                    );
+                    curl_close($curl_handle);
+
+                    if ($result === false || $response_code !== 200) {
+                        $error_message = $curl_error ?: $response_buffer;
+                        error_log(
+                            'MaxiBlocks AI streaming error: ' . $error_message,
+                        );
+                        $error_payload = wp_json_encode([
+                            'type' => 'error',
+                            'message' => $error_message ?: 'OpenAI API error',
+                        ]);
+                        echo "data: {$error_payload}\n\n";
+                        echo "data: [DONE]\n\n";
                         if (function_exists('ob_flush')) {
                             @ob_flush();
                         }
                         flush();
-                        return strlen($data);
-                    },
-                );
-
-                $result = curl_exec($curl_handle);
-                $curl_error = $result === false ? curl_error($curl_handle) : '';
-                $response_code = curl_getinfo(
-                    $curl_handle,
-                    CURLINFO_HTTP_CODE,
-                );
-                curl_close($curl_handle);
-
-                if ($result === false || $response_code !== 200) {
-                    $error_message = $curl_error ?: $response_buffer;
-                    error_log(
-                        'MaxiBlocks AI streaming error: ' . $error_message,
-                    );
-                    $error_payload = wp_json_encode([
-                        'type' => 'error',
-                        'message' => $error_message ?: 'OpenAI API error',
-                    ]);
-                    echo "data: {$error_payload}\n\n";
-                    echo "data: [DONE]\n\n";
-                    if (function_exists('ob_flush')) {
-                        @ob_flush();
+                        exit;
                     }
-                    flush();
+                    exit;
                 }
 
-                exit;
-            }
-
-            // Make request to OpenAI
-            $response = wp_remote_post(
-                'https://api.openai.com/v1/chat/completions',
-                [
-                    'timeout' => 30,
+                $response = wp_remote_post('https://api.openai.com/v1/chat/completions', [
                     'headers' => [
                         'Authorization' => 'Bearer ' . $openai_api_key,
-                        'Content-Type' => 'application/json',
+                        'Content-Type'  => 'application/json',
                     ],
-                    'body' => wp_json_encode($body),
-                ],
-            );
+                    'body'    => wp_json_encode($body),
+                    'timeout' => 60,
+                ]);
 
-            if (is_wp_error($response)) {
-                error_log(
-                    'MaxiBlocks AI proxy error: ' .
+                if (is_wp_error($response)) {
+                    return new WP_Error(
+                        'openai_api_error',
                         $response->get_error_message(),
-                );
-                return new WP_Error(
-                    'openai_request_failed',
-                    $response->get_error_message(),
-                    ['status' => 500],
-                );
-            }
+                        ['status' => 500]
+                    );
+                }
 
             $response_code = wp_remote_retrieve_response_code($response);
             $response_body = wp_remote_retrieve_body($response);
@@ -3311,6 +3490,206 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return rest_ensure_response($data);
+            }
         }
+
+        private function get_design_agent_system_prompt($context = '')
+        {
+            $context_section = $context ? "\n\nContext:\n{$context}\n" : "\n";
+
+            return <<<PROMPT
+### ROLE
+You are the MaxiBlocks Design Partner. Your goal is to execute technical design changes or offer expert guidance when a request is unclear.
+
+### CONTEXT & STATE
+- Active Style Card: {{active_sc}}
+- Site Category: {{site_profile}}
+- Page Type: {{current_page_type}}
+- Selected Block: {{selected_block_id}}
+
+### CLARIFICATION PROTOCOL (The A/B/C Rule)
+If a user's request is vague (e.g., "make it pop," "fix this," "jazz it up"), you MUST NOT execute any changes. Instead, you must return a `CLARIFY` action.
+
+### CLARIFICATION OUTPUT REQUIREMENTS
+For every `CLARIFY` action, you must provide exactly three options:
+1. **Option A (The Safe Choice):** A standard, professional improvement (e.g., adding spacing or improving contrast).
+2. **Option B (The Aesthetic Choice):** A stylistic change (e.g., changing fonts or colors).
+3. **Option C (The Bold Choice):** A creative or structural change (e.g., adding shadows, gradients, or new patterns).
+
+### BLOCK-LEVEL ATTRIBUTE MAPPING
+- Padding/Space inside -> spacing.padding
+- Margin/Space outside -> spacing.margin
+- Height/Tallness -> dimensions.minHeight
+- Width/Thickness -> dimensions.width
+
+### UI INTERACTION PROTOCOL
+When you modify a block attribute, you must also include a `ui_target` in your JSON response. This tells the MaxiBlocks middleware which sidebar panel to expand for the user.
+
+### UI TARGET MAPPING
+- If changing Padding or Margin -> `ui_target`: "margin-padding"
+- If changing Min-Height or Width -> `ui_target`: "height-width"
+- If changing Colors or Opacity -> `ui_target`: "background-layer"
+- If changing Borders or Radius -> `ui_target`: "border"
+- If changing Box Shadows -> `ui_target`: "box-shadow"
+
+### GLOBAL VS. LOCAL RULE
+- **Local (Block Level):** If the user asks for "Padding," "Height," or "Margins," target the **Block Settings** and the specific block `ui_target`.
+- **Global (Style Card Level):** If the user asks for "Colors," "Fonts," or "Brand Feel," target the **Style Card Editor**.
+
+### GLOBAL UI TARGETS
+- **Color Change:** `ui_target`: "global-style-colors"
+- **Font Change:** `ui_target`: "global-style-typography"
+
+### JSON RESPONSE SCHEMAS (JSON ONLY)
+#### CLARIFY
+{
+  "action": "CLARIFY",
+  "message": "I've got some ideas to help with that! Which direction should we take?",
+  "options": [
+    {
+      "id": "option_a",
+      "label": "Short label",
+      "description": "Clear explanation of what will happen."
+    },
+    {
+      "id": "option_b",
+      "label": "Short label",
+      "description": "Clear explanation of what will happen."
+    },
+    {
+      "id": "option_c",
+      "label": "Short label",
+      "description": "Clear explanation of what will happen."
+    }
+  ]
+}
+
+#### MODIFY BLOCK
+{
+  "action": "MODIFY_BLOCK",
+  "ui_target": "margin-padding",
+  "payload": {
+    "spacing": { "padding": { "bottom": "40px" } }
+  },
+  "message": "I've increased the bottom padding for you. I've also opened the Spacing panel so you can fine-tune it!"
+}
+
+#### UPDATE STYLE CARD
+{
+  "action": "UPDATE_SC",
+  "ui_target": "global-style-typography",
+  "payload": {
+    "font_family": "Cormorant Garamond",
+    "target": "headings"
+  },
+  "message": "I've updated your global heading font to Cormorant Garamond. I'm opening the Style Card Typography settings now so you can see how it looks across the whole site!"
+}
+$context_section
+PROMPT;
+        }
+
+        private function is_design_prompt($prompt)
+        {
+            if (empty($prompt) || !is_string($prompt)) {
+                return false;
+            }
+
+            $normalized = strtolower($prompt);
+            $keywords = [
+                'style card',
+                'stylecard',
+                'palette',
+                'theme',
+                'font',
+                'fonts',
+                'typography',
+                'color',
+                'colour',
+                'colors',
+                'colours',
+                'feminine',
+                'luxury',
+            ];
+
+            foreach ($keywords as $keyword) {
+                if (strpos($normalized, $keyword) !== false) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public function get_ai_context()
+        {
+            return rest_ensure_response([
+                'context' => $this->get_ai_context_text(),
+            ]);
+        }
+
+        private function get_ai_context_text($site_profile = null, $page_type = null, $selected_block_id = null)
+        {
+            if (!class_exists('MaxiBlocks_StyleCards')) {
+                return '';
+            }
+
+            $active_sc = MaxiBlocks_StyleCards::get_maxi_blocks_active_style_card();
+            if (!$active_sc || !is_array($active_sc)) {
+                return '';
+            }
+
+            $name = $active_sc['name'] ?? 'Unknown';
+            $light_colors = $active_sc['light']['styleCard']['color'] ?? [];
+            $default_light_colors = $active_sc['light']['defaultStyleCard']['color'] ?? [];
+
+            $get_color = function ($key) use ($light_colors, $default_light_colors) {
+                $value = $light_colors[$key] ?? $default_light_colors[$key] ?? null;
+                return $this->rgb_string_to_hex($value);
+            };
+
+            $background_1 = $get_color(1);
+            $background_2 = $get_color(2);
+            $link = $get_color(4);
+            $hover = $get_color(6);
+
+            $site_profile_value = $site_profile ?: get_option('maxi_ai_site_description');
+            if (!$site_profile_value) {
+                $site_profile_value = get_option('maxi_ai_business_name');
+            }
+
+            $page_type_value = $page_type ?: 'Unknown';
+
+            return sprintf(
+                'Active style card: %s. Site profile: %s. Page type: %s. Colors (light): background_1=%s, background_2=%s, link=%s, hover=%s. Selected Block: %s.',
+                $name,
+                $site_profile_value ?: 'unknown',
+                $page_type_value ?: 'unknown',
+                $background_1 ?: 'unknown',
+                $background_2 ?: 'unknown',
+                $link ?: 'unknown',
+                $hover ?: 'unknown',
+                $selected_block_id ?: 'none'
+            );
+        }
+
+        private function rgb_string_to_hex($rgb)
+        {
+            if (!is_string($rgb)) {
+                return null;
+            }
+
+            $parts = array_map('trim', explode(',', $rgb));
+            if (count($parts) !== 3) {
+                return null;
+            }
+
+            $r = max(0, min(255, (int) $parts[0]));
+            $g = max(0, min(255, (int) $parts[1]));
+            $b = max(0, min(255, (int) $parts[2]));
+
+            return sprintf('#%02x%02x%02x', $r, $g, $b);
+        }
+
+
     }
 endif;

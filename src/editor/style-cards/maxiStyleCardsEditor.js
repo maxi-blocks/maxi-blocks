@@ -188,7 +188,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
 			const isUserCreatedSC = getIsUserCreatedStyleCard();
-			setIsTemplate(!isUserCreatedSC);
+			setIsTemplate(
+				selectedSCValue?.pendingChanges ? false : !isUserCreatedSC
+			);
 			setShowCopyCardDialog(false);
 
 			const rawCustomColors =
@@ -201,6 +203,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	}, [selectedSCKey, activeSCColour]);
 
 	const canBeSaved = keySC => {
+		if (styleCards[keySC]?.pendingChanges) {
+			return true;
+		}
+
+
 		// Check if style card exists in both current and saved states
 		if (!styleCards[keySC] || !savedStyleCards[keySC]) {
 			return false;
@@ -505,6 +512,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			[selectedSCKey]: {
 				...updatedSCValue,
 				...{ status: isChosenActive ? 'active' : '' },
+				pendingChanges: false,
 			},
 		};
 

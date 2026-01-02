@@ -14,7 +14,21 @@
  * Database configuration constants
  */
 export const DB_NAME = 'maxiBlocksCache';
-export const DB_VERSION = 2;
+export const DB_VERSION = 5;
+
+/**
+ * Helper to format errors for logging
+ * JSON.stringify often returns {} for Error/DOMException objects
+ */
+export const formatError = error => {
+	if (!error) return 'Unknown error';
+	// If it's already a string, return it
+	if (typeof error === 'string') return error;
+	// Try to get name and message
+	const name = error.name || 'Error';
+	const message = error.message || JSON.stringify(error);
+	return `[${name}] ${message}`;
+};
 
 /**
  * Object store names
@@ -49,7 +63,7 @@ export const openDB = callerName => {
 			// eslint-disable-next-line no-console
 			console.warn(
 				`[${callerName}] Failed to open database:`,
-				JSON.stringify(request.error)
+				formatError(request.error)
 			);
 			reject(request.error);
 		};
@@ -92,7 +106,7 @@ export const executeTransaction = (transaction, db, callerName, operation) => {
 			// eslint-disable-next-line no-console
 			console.warn(
 				`[${callerName}] Failed to ${operation}:`,
-				JSON.stringify(transaction.error)
+				formatError(transaction.error)
 			);
 			reject(transaction.error);
 		};
@@ -120,7 +134,7 @@ export const executeRequest = (request, db, callerName, operation) => {
 			// eslint-disable-next-line no-console
 			console.warn(
 				`[${callerName}] Failed to ${operation}:`,
-				JSON.stringify(request.error)
+				formatError(request.error)
 			);
 			reject(request.error);
 		};

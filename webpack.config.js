@@ -60,6 +60,7 @@ const blocksConfig = {
 	output: {
 		...defaultConfig.output,
 		filename: '[name].min.js', // Add .min to filename so WP.org i18n skips it
+		chunkFilename: '[name].min.js',
 	},
 	optimization: {
 		...defaultConfig.optimization,

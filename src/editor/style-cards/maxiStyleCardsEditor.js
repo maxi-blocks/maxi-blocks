@@ -662,7 +662,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				anchor={ref.current}
 				noArrow
 				resize
-				position={isRTL ? 'bottom left right' : 'bottom right left'}
+				position={isRTL ? 'bottom right left' : 'bottom left right'}
 				className='maxi-style-cards__popover maxi-sidebar'
 				focusOnMount
 				strategy='fixed'

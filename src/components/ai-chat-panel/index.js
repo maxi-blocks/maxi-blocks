@@ -607,17 +607,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	};
 
 	const handleApplyTheme = (theme, prompt) => {
-		console.log('[Maxi AI] handleApplyTheme called with:', { theme, prompt });
-		
 		if (!allStyleCards || !saveMaxiStyleCards) {
-			console.log('[Maxi AI] Style Cards not ready');
 			return __('Style Cards System is not ready.', 'maxi-blocks');
 		}
 
 		// Detect if request is about headings
 		const isHeadingRequest = prompt && /heading|header|title|h1|h2|h3|h4|h5|h6/i.test(prompt);
 		const isBlueRequest = prompt && /blue/i.test(prompt);
-		console.log('[Maxi AI] Request detection:', { isHeadingRequest, isBlueRequest, prompt });
 
 		const result = applyThemeToStyleCards({
 			styleCards: allStyleCards,
@@ -626,8 +622,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			openEditor: false, // We'll handle opening manually with options
 			timestamp: Date.now(),
 		});
-
-		console.log('[Maxi AI] applyThemeToStyleCards result:', result);
 
 		if (!result) {
 			return __('Could not apply theme. Try specifying a color like "make it green".', 'maxi-blocks');
@@ -673,53 +667,36 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 			
-			console.log('[Maxi AI] Calling window.maxiBlocksOpenStyleCardsEditor with options:', editorOptions);
-			console.log('[Maxi AI] window.maxiBlocksOpenStyleCardsEditor exists:', typeof window.maxiBlocksOpenStyleCardsEditor);
-			
 			if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
 				window.maxiBlocksOpenStyleCardsEditor(editorOptions);
-				console.log('[Maxi AI] Style Card editor opened successfully');
 			} else {
 				// Fallback: click the button
 				const styleCardsButton = document.getElementById('maxi-button__style-cards');
-				console.log('[Maxi AI] Fallback: button found:', !!styleCardsButton, styleCardsButton);
 				if (styleCardsButton) {
 					styleCardsButton.click();
-					console.log('[Maxi AI] Button clicked');
 					
 					// If heading request, try to focus headings after editor opens
 					if (isHeadingRequest) {
 						setTimeout(() => {
 							// Try to find Headings accordion - look for the accordion item wrapper first
-							console.log('[Maxi AI] Looking for Headings accordion...');
-							
 							// The accordion item has class maxi-blocks-sc__type--heading
 							// The button inside it has class maxi-accordion-control__item__button
 							const headingAccordionItem = document.querySelector('.maxi-blocks-sc__type--heading');
-							console.log('[Maxi AI] Heading accordion item found:', !!headingAccordionItem);
 							
 							if (headingAccordionItem) {
 								// Accordion button is a div with role="button" and class .maxi-accordion-control__item__button
 								// NOT a <button> tag
 								const accordionBtn = headingAccordionItem.querySelector('.maxi-accordion-control__item__button');
-								console.log('[Maxi AI] Accordion toggle button found:', !!accordionBtn);
 								
 								if (accordionBtn) {
 									// Check if already expanded to avoid closing it
 									const isExpanded = accordionBtn.getAttribute('aria-expanded') === 'true';
 									if (!isExpanded) {
 										accordionBtn.click();
-										console.log('[Maxi AI] Clicked heading accordion header to open');
-									} else {
-										console.log('[Maxi AI] Heading accordion is already open');
 									}
 									
 									// Now try to switch to the specific H-tag tab if needed
 									setTimeout(() => {
-										// This assumes SettingTabsControl renders buttons with text like "H1", "H2"
-										// OR we can look for specific classes if we knew them.
-										// Based on standard Maxi tabs, they might have classes.
-										// Let's try to find the specific tab button.
 										const headingPanel = headingAccordionItem.querySelector('.maxi-accordion-control__item__panel');
 										if (headingPanel) {
 											const tabButtons = Array.from(headingPanel.querySelectorAll('[role="tab"], button'));
@@ -729,7 +706,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 											
 											if (targetTab) {
 												targetTab.click();
-												console.log(`[Maxi AI] Switched to ${editorOptions.headingLevel} tab`);
 											}
 										}
 									}, 100);
@@ -737,20 +713,16 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							} else {
 								// Fallback: try to find by text content
 								const allAccordionButtons = document.querySelectorAll('.maxi-accordion-control__item__button');
-								console.log('[Maxi AI] All accordion buttons found:', allAccordionButtons.length);
 								
 								for (const btn of allAccordionButtons) {
 									if (btn.textContent.toLowerCase().includes('heading')) {
 										btn.click();
-										console.log('[Maxi AI] Clicked heading button by text match');
 										break;
 									}
 								}
 							}
 						}, 500);
 					}
-				} else {
-					console.log('[Maxi AI] Could not find style cards button');
 				}
 			}
 		}, 300);

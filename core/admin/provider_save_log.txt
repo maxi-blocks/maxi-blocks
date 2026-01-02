@@ -2656,3 +2656,237 @@ maxi_ai_provider in POST: NOT SET
 Current DB value: gemini
 option_page condition NOT matched
 ---
+2026-01-02 13:39:23 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:40:00 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:41:23 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:42:01 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:43:24 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:43:56 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:44:05 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:44:31 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:44:33 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:44:40 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:44:40 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:45:08 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:45:17 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:45:25 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:45:28 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:45:55 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:46:05 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:46:16 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:46:25 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:46:36 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:46:47 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:47:26 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:48:47 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:49:27 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:50:48 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:51:28 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:52:49 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:53:29 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:09 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:09 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:09 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:32 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:32 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:36 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:54:56 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:55:07 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:55:15 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:55:26 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---
+2026-01-02 13:55:29 - admin_init fired
+option_page: NOT SET
+maxi_ai_provider in POST: NOT SET
+Current DB value: gemini
+option_page condition NOT matched
+---

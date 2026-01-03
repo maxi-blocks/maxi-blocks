@@ -219,6 +219,31 @@
 		}
 	}
 
+	&__option-button {
+		/* Reusing the gradient border style */
+		background: var(--maxi-white);
+		border: 1px solid transparent;
+		/* Use a slightly lighter/transparent internal background if desired, or white to match suggestion */
+		background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
+		                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
+		background-origin: border-box;
+		background-clip: padding-box, border-box;
+		border-radius: 12px;
+		padding: 4px 10px;
+		font-size: 11px;
+		color: var(--maxi-grey-dark);
+		cursor: pointer;
+		transition: all 0.2s;
+		
+		&:hover {
+			background: var(--maxi-black);
+			background-image: none;
+			color: var(--maxi-white);
+			border-color: var(--maxi-black);
+			transform: translateY(-1px);
+		}
+	}
+
 	&__scope-area {
 		padding: 8px 16px;
 		background: var(--maxi-off-white);

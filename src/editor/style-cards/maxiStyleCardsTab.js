@@ -119,7 +119,11 @@ const GlobalColor = props => {
 
 	const currentPaletteOpacity =
 		processSCAttribute(SC, paletteOpacity, groupAttr) || 1;
-	const currentColor = processSCAttribute(SC, color, groupAttr);
+	const rawColor = processSCAttribute(SC, color, groupAttr);
+	// Format raw RGB (like "255,0,0") as rgba for ColorControl display
+	const currentColor = (rawColor && typeof rawColor === 'string' && rawColor.includes(',') && !rawColor.includes('rgba'))
+		? `rgba(${rawColor},${currentPaletteOpacity})`
+		: rawColor;
 
 	let processedDefaultPaletteColorValue = getDefaultSCValue({
 		target: paletteColor,

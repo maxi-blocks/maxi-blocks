@@ -99,7 +99,11 @@ ${getContentAttributesSection(contentType, tone, writingStyle, language)}
 
 		const systemTemplate = `${getSiteInformation(AISettings)}
 ${getContextSection(getContext(contextOption, clientId))}
-${generatedTextExplanation}`;
+${generatedTextExplanation}${
+			AISettings.systemInstructions
+				? `\n\n${AISettings.systemInstructions}`
+				: ''
+		}`;
 
 		const humanTemplate = `Please ${modificationType}${languageExplanation} the following text${customExplanation}.${getAdditionalInstruction()} Ensure the ${
 			MODIFICATION_MODIFICATORS[modificationType]

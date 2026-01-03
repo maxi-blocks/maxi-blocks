@@ -783,6 +783,9 @@ if (!class_exists('MaxiBlocks_API')):
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
+                    'system_instructions' => get_option(
+                        'maxi_ai_system_instructions',
+                    ),
                     'site_description' => get_option(
                         'maxi_ai_site_description',
                     ),

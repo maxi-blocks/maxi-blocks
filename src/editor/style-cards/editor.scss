@@ -152,10 +152,8 @@
 
 body .maxi-style-cards__popover {
 	position: fixed !important;
-	top: 0;
+	top: 0 !important;
 	right: 0;
-	left: auto !important;
-	transform: none !important;
 	z-index: 98;
 	height: 100%;
 	width: 350px;

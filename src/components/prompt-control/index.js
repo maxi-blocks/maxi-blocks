@@ -159,7 +159,11 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		const systemTemplate = `${getSiteInformation(
 			AISettings
 		)}${getContextSection(getContext(contextOption, clientId))}
-${getExamplesSection(contentType)}`;
+${getExamplesSection(contentType)}${
+			AISettings.systemInstructions
+				? `\n\n${AISettings.systemInstructions}`
+				: ''
+		}`;
 
 		const humanTemplate = `Please craft a ${lowerCase(tone)} ${lowerCase(
 			writingStyle

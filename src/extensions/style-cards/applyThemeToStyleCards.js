@@ -44,10 +44,14 @@ const VIBE_DICTIONARY = {
 			letterSpacingUnit: 'em',
 		},
 		palette: {
-			primary: '#db2777',
-			hover: '#9d174d',
-			soft: '#fdf2f8',
-			shadow: '#e5d5da',
+			1: '#ffffff', // White background
+			2: '#fdf2f8', // Soft pink background
+			3: '#9ca3af', // Muted gray text
+			4: '#db2777', // Primary pink
+			5: '#831843', // Dark pink heading
+			6: '#9d174d', // Hover pink
+			7: '#fce7f3', // Light pink surface
+			8: '#e5d5da', // Pink shadow
 		},
 	},
 	'modern corporate': {
@@ -62,10 +66,14 @@ const VIBE_DICTIONARY = {
 			weight: 400,
 		},
 		palette: {
-			primary: '#0284c7',
-			hover: '#0369a1',
-			soft: '#f8fafc',
-			shadow: '#cbd5e1',
+			1: '#ffffff', // White background
+			2: '#f8fafc', // Slate light
+			3: '#64748b', // Slate muted
+			4: '#0284c7', // Primary blue
+			5: '#0f172a', // Slate dark heading
+			6: '#0369a1', // Hover blue
+			7: '#e2e8f0', // Slate surface
+			8: '#cbd5e1', // Slate shadow
 		},
 	},
 	'bold startup': {
@@ -79,10 +87,14 @@ const VIBE_DICTIONARY = {
 			weight: 450,
 		},
 		palette: {
-			primary: '#7c3aed',
-			hover: '#6d28d9',
-			soft: '#f5f3ff',
-			shadow: '#ddd6fe',
+			1: '#ffffff', // White background
+			2: '#f5f3ff', // Violet light
+			3: '#6b7280', // Gray muted
+			4: '#7c3aed', // Primary violet
+			5: '#1f2937', // Dark heading
+			6: '#6d28d9', // Hover violet
+			7: '#ede9fe', // Violet surface
+			8: '#ddd6fe', // Violet shadow
 		},
 	},
 	'retro vintage': {
@@ -95,10 +107,14 @@ const VIBE_DICTIONARY = {
 			weight: 400,
 		},
 		palette: {
-			primary: '#ea580c',
-			hover: '#c2410c',
-			soft: '#fef2f2',
-			shadow: '#eac6bc',
+			1: '#fefce8', // Cream background
+			2: '#fef2f2', // Warm white
+			3: '#78716c', // Stone muted
+			4: '#ea580c', // Primary orange
+			5: '#44403c', // Stone dark heading
+			6: '#c2410c', // Hover orange
+			7: '#fef3c7', // Amber surface
+			8: '#eac6bc', // Warm shadow
 		},
 	},
 	'luxury boutique': {
@@ -115,10 +131,14 @@ const VIBE_DICTIONARY = {
 			letterSpacingUnit: 'em',
 		},
 		palette: {
-			primary: '#a27b5c',
-			hover: '#846144',
-			soft: '#fafaf9',
-			shadow: '#e7e5e4',
+			1: '#ffffff', // White background
+			2: '#fafaf9', // Stone light
+			3: '#78716c', // Stone muted
+			4: '#a27b5c', // Primary brown
+			5: '#292524', // Stone dark heading
+			6: '#846144', // Hover brown
+			7: '#f5f5f4', // Stone surface
+			8: '#e7e5e4', // Stone shadow
 		},
 	},
 	'tech dark': {
@@ -131,10 +151,14 @@ const VIBE_DICTIONARY = {
 			weight: 400,
 		},
 		palette: {
-			primary: '#22d3ee',
-			hover: '#0891b2',
-			soft: '#1e293b',
-			shadow: '#000000',
+			1: '#0f172a', // Dark background
+			2: '#1e293b', // Slate dark
+			3: '#94a3b8', // Slate light muted
+			4: '#22d3ee', // Primary cyan
+			5: '#f8fafc', // Light heading
+			6: '#0891b2', // Hover cyan
+			7: '#334155', // Slate medium
+			8: '#000000', // Black shadow
 		},
 	},
 };
@@ -564,6 +588,7 @@ const isSoftFeminine = prompt => {
 
 const adjustPaletteLightness = (palette, delta) => {
 	const adjustColor = hex => {
+		if (!hex) return null;
 		const [r, g, b] = hexToRgbString(hex)
 			.split(',')
 			.map(value => Number(value));
@@ -572,6 +597,18 @@ const adjustPaletteLightness = (palette, delta) => {
 		return rgbToHex(adjusted);
 	};
 
+	// Handle numbered palette (1-8)
+	if (palette[1] !== undefined) {
+		const newPalette = {};
+		for (let i = 1; i <= 8; i++) {
+			if (palette[i]) {
+				newPalette[i] = adjustColor(palette[i]);
+			}
+		}
+		return newPalette;
+	}
+
+	// Handle legacy named palette
 	return {
 		primary: adjustColor(palette.primary),
 		hover: adjustColor(palette.hover),
@@ -587,22 +624,16 @@ const generatePaletteFromBase = baseHex => {
 	const [r, g, b] = baseRgb;
 	const { h, s, l } = rgbToHsl(r, g, b);
 
-	const primary = baseHex;
-	const hover = rgbToHex(
-		hslToRgb(h, clamp(s + 5, 15, 100), clamp(l - 12, 20, 60))
-	);
-	const soft = rgbToHex(
-		hslToRgb(h, clamp(s * 0.35, 8, 25), clamp(l + 45, 90, 98))
-	);
-	const shadow = rgbToHex(
-		hslToRgb(h, clamp(s * 0.45, 10, 40), clamp(l - 45, 10, 30))
-	);
-
+	// Generate all 8 palette slots from the base color
 	return {
-		primary,
-		hover,
-		soft,
-		shadow,
+		1: '#ffffff', // White background
+		2: rgbToHex(hslToRgb(h, clamp(s * 0.35, 8, 25), clamp(l + 45, 90, 98))), // Soft/light
+		3: rgbToHex(hslToRgb(h, clamp(s * 0.4, 10, 30), clamp(l - 20, 40, 60))), // Muted
+		4: baseHex, // Primary
+		5: rgbToHex(hslToRgb(h, clamp(s + 10, 20, 100), clamp(l - 35, 15, 35))), // Dark heading
+		6: rgbToHex(hslToRgb(h, clamp(s + 5, 15, 100), clamp(l - 12, 20, 60))), // Hover
+		7: rgbToHex(hslToRgb(h, clamp(s * 0.5, 5, 20), clamp(l + 35, 85, 95))), // Surface
+		8: rgbToHex(hslToRgb(h, clamp(s * 0.45, 10, 40), clamp(l - 45, 10, 30))), // Shadow
 	};
 };
 
@@ -636,10 +667,23 @@ const ensureStyleCardColor = sc => {
 const applyPaletteToLight = (styleCard, palette) => {
 	const nextSC = ensureStyleCardColor(styleCard);
 	const lightColors = nextSC.light.styleCard.color;
-	lightColors[2] = hexToRgbString(palette.soft);
-	lightColors[4] = hexToRgbString(palette.primary);
-	lightColors[6] = hexToRgbString(palette.hover);
-	lightColors[8] = hexToRgbString(palette.shadow);
+	
+	// Apply all 8 palette slots
+	// Support both numbered format (1-8) and legacy named format (primary, hover, soft, shadow)
+	if (palette[1] !== undefined) {
+		// New numbered format
+		for (let i = 1; i <= 8; i++) {
+			if (palette[i]) {
+				lightColors[i] = hexToRgbString(palette[i]);
+			}
+		}
+	} else {
+		// Legacy named format (backwards compatibility)
+		if (palette.soft) lightColors[2] = hexToRgbString(palette.soft);
+		if (palette.primary) lightColors[4] = hexToRgbString(palette.primary);
+		if (palette.hover) lightColors[6] = hexToRgbString(palette.hover);
+		if (palette.shadow) lightColors[8] = hexToRgbString(palette.shadow);
+	}
 	return nextSC;
 };
 
@@ -753,7 +797,10 @@ export const applyThemeToStyleCards = ({
 	const activeSC = getActiveStyleCard(styleCards);
 	if (!activeSC) return null;
 
+	console.log('[ThemeEngine] Processing prompt:', prompt);
 	const vibeKey = getVibeFromPrompt(prompt);
+	console.log('[ThemeEngine] Vibe key detected:', vibeKey);
+	
 	const vibe = vibeKey ? VIBE_DICTIONARY[vibeKey] : null;
 	const resolvedTheme =
 		normalizeThemeValue(theme) || getThemeFromPrompt(prompt);
@@ -761,9 +808,16 @@ export const applyThemeToStyleCards = ({
 		normalizeThemeValue(color) ||
 		parseColorFromPrompt(prompt) ||
 		(resolvedTheme && CSS_COLOR_KEYWORDS[resolvedTheme]);
+	
+	console.log('[ThemeEngine] Resolved Theme:', resolvedTheme);
+	console.log('[ThemeEngine] Resolved Color:', resolvedColor);
+
 	const defaultPalette =
 		(vibe?.palette || (resolvedTheme && THEME_PALETTES[resolvedTheme])) ||
 		(resolvedColor ? generatePaletteFromBase(resolvedColor) : null);
+	
+	console.log('[ThemeEngine] Default Palette found:', !!defaultPalette);
+
 	const fallbackPalette = getPaletteFromStyleCard(activeSC.value);
 	const palette =
 		defaultPalette ||
@@ -771,7 +825,13 @@ export const applyThemeToStyleCards = ({
 		fallbackPalette
 			? fallbackPalette
 			: null);
-	if (!palette) return null;
+	
+	console.log('[ThemeEngine] Final Palette:', !!palette);
+	
+	if (!palette) {
+		console.warn('[ThemeEngine] No palette found. Returning null.');
+		return null;
+	}
 
 	const adjustedPalette = shouldLighten(prompt)
 		? adjustPaletteLightness(palette, 10)
@@ -791,29 +851,65 @@ export const applyThemeToStyleCards = ({
 	});
 
 	if (isCustom) {
-		nextStyleCards[activeSC.key] = applyPaletteToLight(
-			nextStyleCards[activeSC.key],
-			adjustedPalette
-		);
-		if (vibe) {
-			nextStyleCards[activeSC.key] = applyTypographyToStyleCard(
-				nextStyleCards[activeSC.key],
-				vibe,
-				prompt
-			);
-		}
+		// Check if this is a heading-only color request
+		const isHeadingOnlyRequest = resolvedColor && 
+			/\b(heading|headers?|title)\b/i.test(prompt) &&
+			!/\b(palette|theme|site|everything|all colors?)\b/i.test(prompt);
 		
-		// [NEW] Smart Element Coloring
-		if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
+		if (isHeadingOnlyRequest) {
+			// Only apply heading colors, skip palette changes
+			// Convert hex to RGB format (style cards use 'r,g,b' format)
+			const rgbColor = hexToRgbString(resolvedColor);
+			console.log('[ThemeEngine] Heading-only request detected. Hex:', resolvedColor, 'RGB:', rgbColor);
+			
+			// Ensure the light.styleCard structure exists
+			if (!nextStyleCards[activeSC.key].light) {
+				nextStyleCards[activeSC.key].light = { styleCard: {}, defaultStyleCard: {} };
+			}
+			if (!nextStyleCards[activeSC.key].light.styleCard) {
+				nextStyleCards[activeSC.key].light.styleCard = {};
+			}
+			
 			const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 			headingLevels.forEach(level => {
 				if (!nextStyleCards[activeSC.key].light.styleCard[level]) {
 					nextStyleCards[activeSC.key].light.styleCard[level] = {};
 				}
-				nextStyleCards[activeSC.key].light.styleCard[level]['color'] = resolvedColor;
+				// Set custom color - disable palette, set RGB color
+				// IMPORTANT: color-global must be TRUE for the CSS variable to be output
 				nextStyleCards[activeSC.key].light.styleCard[level]['palette-status'] = false;
-				nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = false;
+				nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = true;
+				nextStyleCards[activeSC.key].light.styleCard[level]['color'] = rgbColor;
+				nextStyleCards[activeSC.key].light.styleCard[level]['palette-opacity'] = 1;
+				console.log(`[ThemeEngine] Set ${level} color to RGB:`, rgbColor);
 			});
+		} else {
+			// Apply full palette changes
+			nextStyleCards[activeSC.key] = applyPaletteToLight(
+				nextStyleCards[activeSC.key],
+				adjustedPalette
+			);
+			if (vibe) {
+				nextStyleCards[activeSC.key] = applyTypographyToStyleCard(
+					nextStyleCards[activeSC.key],
+					vibe,
+					prompt
+				);
+			}
+			
+			// [NEW] Smart Element Coloring (for non-heading-only requests)
+			if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
+				const rgb = hexToRgbString(resolvedColor);
+				const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+				headingLevels.forEach(level => {
+					if (!nextStyleCards[activeSC.key].light.styleCard[level]) {
+						nextStyleCards[activeSC.key].light.styleCard[level] = {};
+					}
+					nextStyleCards[activeSC.key].light.styleCard[level]['color'] = rgb;
+					nextStyleCards[activeSC.key].light.styleCard[level]['palette-status'] = false;
+					nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = true;
+				});
+			}
 		}
 
 		nextStyleCards[activeSC.key].pendingChanges = true;
@@ -831,10 +927,21 @@ export const applyThemeToStyleCards = ({
 	const vibeName = vibeKey
 		? `${vibeKey.replace(/\s+/g, '-')}-${timestamp}`
 		: null;
+	
+	// Check if this is a heading-only color request (same logic as above)
+	const isHeadingOnlyRequest = resolvedColor && 
+		/\b(heading|headers?|title)\b/i.test(prompt) &&
+		!/\b(palette|theme|site|everything|all colors?)\b/i.test(prompt);
+	
+	// For heading-only requests, use original palette from source card
+	const paletteForNewCard = isHeadingOnlyRequest 
+		? (fallbackPalette || adjustedPalette)
+		: adjustedPalette;
+	
 	const { key: newKey, card: newCard } = createCustomStyleCard(
 		activeSC.value,
 		timestamp,
-		adjustedPalette,
+		paletteForNewCard,
 		vibeName
 	);
 	Object.keys(nextStyleCards).forEach(key => {
@@ -850,18 +957,36 @@ export const applyThemeToStyleCards = ({
 		nextStyleCards[newKey] = newCard;
 	}
 	
-	// [NEW] Smart Element Coloring
-	if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
-		console.log('[ThemeEngine] Applying heading color:', resolvedColor);
+	// Smart Element Coloring for heading-only requests
+	if (isHeadingOnlyRequest) {
+		// Convert hex to RGB format (style cards use 'r,g,b' format)
+		const rgbColor = hexToRgbString(resolvedColor);
+		console.log('[ThemeEngine] Heading-only request for new card. Hex:', resolvedColor, 'RGB:', rgbColor);
 		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 		headingLevels.forEach(level => {
 			if (!nextStyleCards[newKey].light.styleCard[level]) {
 				nextStyleCards[newKey].light.styleCard[level] = {};
 			}
-			nextStyleCards[newKey].light.styleCard[level]['color'] = resolvedColor;
-			nextStyleCards[newKey].light.styleCard[level]['color-general'] = resolvedColor;
+			// Set custom color - disable palette, set RGB color
 			nextStyleCards[newKey].light.styleCard[level]['palette-status'] = false;
-			nextStyleCards[newKey].light.styleCard[level]['color-global'] = false;
+			nextStyleCards[newKey].light.styleCard[level]['color-global'] = true;
+			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
+			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
+			console.log(`[ThemeEngine] Set ${level} color to RGB:`, rgbColor);
+		});
+	} else if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
+		// Fallback for combined requests
+		const rgbColor = hexToRgbString(resolvedColor);
+		console.log('[ThemeEngine] Combined request - applying heading color. Hex:', resolvedColor, 'RGB:', rgbColor);
+		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+		headingLevels.forEach(level => {
+			if (!nextStyleCards[newKey].light.styleCard[level]) {
+				nextStyleCards[newKey].light.styleCard[level] = {};
+			}
+			nextStyleCards[newKey].light.styleCard[level]['palette-status'] = false;
+			nextStyleCards[newKey].light.styleCard[level]['color-global'] = true;
+			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
+			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
 		});
 	} else {
 		console.log('[ThemeEngine] No heading color match. Resolved:', resolvedColor, 'Prompt:', prompt);

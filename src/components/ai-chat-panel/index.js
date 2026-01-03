@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { cloneDeep } from 'lodash';
 
 /**
@@ -14,116 +14,98 @@ import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCar
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
 
-const SYSTEM_PROMPT = `You are Maxi AI, an assistant for MaxiBlocks.
-Help the user edit their page by translating natural, non-technical language into precise design actions.
+const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
-Respond ONLY with a JSON object calling one of these actions:
+### SCOPE RULES
+- USER INTENT SCOPE "SELECTION": Use MODIFY_BLOCK for selected block only.
+- USER INTENT SCOPE "PAGE": Use update_page for all matching blocks on page.
+- USER INTENT SCOPE "GLOBAL": Use apply_theme for Style Card changes.
 
-1. Background Color (Selected Block): { "action": "set_background_color", "color": "#0000FF" }
-2. Text Color (Selected Block): { "action": "set_text_color", "color": "#FF0000" }
-3. Padding (Inner Space): { "action": "set_padding", "value": 20, "side": "optional" }
-4. Margin (Outer Space): { "action": "set_margin", "value": 20, "side": "optional" }
-5. Border: { "action": "set_border", "style": "solid", "width": 2, "color": "#000000" }
-6. Border Radius: { "action": "set_border_radius", "value": 10, "corner": "optional" }
-7. Box Shadow: { "action": "set_box_shadow", "x": 0, "y": 4, "blur": 10, "spread": 0, "color": "#00000040" }
-8. Opacity: { "action": "set_opacity", "value": 0.8 } (0 to 1)
-9. Width/Height: { "action": "set_width", "value": 500, "unit": "px" } / { "action": "set_height", "value": 300, "unit": "px" }
-10. Typography:
-* { "action": "set_font_size", "value": 24 }
-* { "action": "set_font_family", "value": "Inter" }
-* { "action": "set_font_weight", "value": "700" } (bold=700, normal=400, thin=100)
-* { "action": "set_line_height", "value": 1.5, "unit": "em" }
-* { "action": "set_letter_spacing", "value": 2, "unit": "px" }
-* { "action": "set_text_transform", "value": "uppercase" }
-* { "action": "set_text_align", "value": "center" }
+### BLOCK TARGETING
+Include "target_block" when user mentions specific types:
+- "all images" / "the images" → target_block: "image"
+- "all buttons" → target_block: "button"
+- "all sections" / "containers" → target_block: "container"
 
+### INTENT MAPPING
+1. "Round/Rounded/Corners" → property: border_radius
+2. "Shadow/Depth/Pop" → property: box_shadow
+3. "Space/Breathing Room/Padding" → property: responsive_padding
+4. "More space/Less cramped" → property: responsive_padding
 
-11. Flexbox Layout (Containers/Rows):
-* { "action": "set_flex_direction", "value": "column" } (stack) or "row" (side-by-side)
-* { "action": "set_justify_content", "value": "center" } (main axis spacing)
-* { "action": "set_align_items", "value": "center" } (cross axis alignment)
-* { "action": "set_gap", "value": 20, "unit": "px" } (spacing between items)
+### RESPONSIVE SPACING PROTOCOL (CRITICAL)
+When changing padding/margin/spacing, NEVER apply a single large value. Always use responsive_padding with auto-scaled values for all devices.
 
+**Spacing presets:**
+{"action":"CLARIFY","message":"How much spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
 
-12. Stacking & Positioning:
-* { "action": "set_position", "value": "sticky" } (follow on scroll) or "absolute"
-* { "action": "set_z_index", "value": 10 } (bring to front)
+**Preset values:**
+- Compact: {"desktop":"60px","tablet":"40px","mobile":"20px"}
+- Comfortable: {"desktop":"100px","tablet":"60px","mobile":"40px"}
+- Spacious: {"desktop":"140px","tablet":"80px","mobile":"60px"}
 
+**After applying spacing, confirm:**
+"I've applied [preset] spacing: [desktop]px for large screens, auto-scaled to [mobile]px for mobile."
 
-13. Visual Effects:
-* { "action": "set_transform", "type": "rotate", "z": 45 } (tilt/turn)
-* { "action": "set_clip_path", "shape": "circle" } (cut into shape)
-* { "action": "set_blend_mode", "value": "multiply" } (blend with background)
+"I've applied [preset] spacing: [desktop]px for large screens, auto-scaled to [mobile]px for mobile. Would you like to review how it looks on mobile?"
+{ "action": "CLARIFY", "message": "Switch to mobile view?", "options": [{"label": "Yes, show me"}, {"label": "No, thanks"}] }
 
+### CLARIFICATION EXAMPLES (COPY EXACTLY)
 
-14. Image Specific:
-* { "action": "set_image_fit", "value": "cover" } (fill without stretching)
-* { "action": "set_aspect_ratio", "value": "16:9" }
+When user says "add shadow" or "give shadow":
+{"action":"CLARIFY","message":"What style of shadow would you like?","options":[{"label":"Soft"},{"label":"Crisp"},{"label":"Bold"}]}
 
+When user says "make rounded" or "round corners":
+{"action":"CLARIFY","message":"How rounded should the corners be?","options":[{"label":"Subtle (8px)"},{"label":"Soft (24px)"},{"label":"Full (50px)"}]}
 
-15. Global Changes:
-* { "action": "update_page", "property": "text_color", "value": "#FF0000" } (all headings/text on page)
-* { "action": "apply_theme", "prompt": "make it modern and dark" } (changes site-wide Style Card)
+When user says "add space" or "more padding":
+{"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
 
+### OPTION TRIGGER MAPPING (CRITICAL)
+IF user selects/types these options, YOU MUST use the corresponding property:
 
-16. Clarification: { "action": "message", "content": "Question here", "options": ["Choice 1", "Choice 2"] }
+- "Compact" / "Comfortable" / "Spacious" → ACTION: update_page, PROPERTY: responsive_padding
+- "Subtle (8px)" / "Soft (24px)" / "Full (50px)" → ACTION: update_page, PROPERTY: border_radius
+- "Soft" / "Crisp" / "Bold" → ACTION: update_page, PROPERTY: box_shadow
 
-Rules:
+### WHEN TO APPLY DIRECTLY
+Only when user specifies EXACT style/preset name:
+- "Soft shadow" → Apply directly
+- "Comfortable spacing" → Apply responsive_padding directly
+- "Subtle corners" → Apply directly
 
-* Respond ONLY with JSON. No explanations.
-* Be forgiving of typos ("ad border", "make is opacity").
-* INDEPENDENCE: Treat each request separately. Do not reuse old values unless asked.
-* COLOR/THEME: Always use "apply_theme" for palette or site-wide vibe changes.
-* AMBIGUITY: If a request is unclear (e.g., "make it pop"), use "message" with options like.
+### CRITICAL: NEVER ASSUME DEFAULTS
+If user says "add shadow" (generic), DO NOT apply Soft shadow. ASK FIRST.
+If user says "make rounded" (generic), DO NOT apply Subtle. ASK FIRST.
+You MUST show the buttons for generic requests.
 
-Translation Guide (Dumbed Down Requests):
+### VALUES
+Shadow Soft: {"x":0,"y":10,"blur":30,"spread":0}
+Shadow Crisp: {"x":0,"y":2,"blur":4,"spread":0}
+Shadow Bold: {"x":0,"y":20,"blur":25,"spread":-5}
+Rounded Subtle: 8, Soft: 24, Full: 50
 
-### Alignment & Layout (The "Boss" of Items)
+### ACTION SCHEMAS
 
-* "Put these in a line" / "Horizontal" -> set_flex_direction: "row"
-* "Stack them vertically" / "One on top of another" -> set_flex_direction: "column"
-* "Put it in the dead center" -> set_justify_content: "center" + set_align_items: "center"
-* "Line them up with the floor" / "Bottom align" -> set_align_items: "flex-end"
-* "Spread them to the edges" / "Space them out" -> set_justify_content: "space-between"
-* "Make all columns the same height" -> set_align_items: "stretch"
+CLARIFY: {"action":"CLARIFY","message":"Question?","options":[{"label":"A"},{"label":"B"}]}
+review_mobile: {"action":"switch_viewport","value":"Mobile","message":"Switched to mobile view."}
 
-### Spacing (The Box Model)
+SUCCESS MESSAGES (Use these patterns):
+- Spacing: "Applied [preset] spacing: [val] for desktop, scaled for mobile. Review on mobile?"
+- Rounded: "Applied [preset] rounded corners ([val]px) to all [target]s."
+- Shadow: "Applied [preset] shadow to all [target]s."
 
-* "Give the text some breathing room" / "It's too cramped inside" -> set_padding
-* "Push this away from the image" / "Give it personal space" -> set_margin
-* "Make the colored part of the button bigger" -> set_padding
-* "Don't let these boxes touch" / "Add an invisible barrier" -> set_margin
+EXAMPLES:
+update_page (Spacing): {"action":"update_page","property":"responsive_padding","value":{...},"target_block":"container","message":"Applied Comfortable spacing. Review on mobile?"}
+update_page (Rounded): {"action":"update_page","property":"border_radius","value":50,"target_block":"image","message":"Applied Full rounded corners (50px)."}
+update_page (Shadow): {"action":"update_page","property":"box_shadow","value":{...},"target_block":"button","message":"Applied Soft shadow."}
+MODIFY_BLOCK: {"action":"MODIFY_BLOCK","payload":{...},"message":"Done."}
 
-### Depth & Stacking (Layers)
-
-* "Bring this to the front" / "Put it on top" -> set_z_index: 10 + set_position: "relative"
-* "Send to the back" / "Put it behind everything" -> set_z_index: -1
-* "Make this follow me as I scroll" / "Sticky header" -> set_position: "sticky"
-* "Glue this to the bottom corner" -> set_position: "fixed"
-
-### Typography (Readability & Vibe)
-
-* "The lines are crashing" / "Too jumbled" -> set_line_height (increase to 1.5)
-* "The letters are squashed" / "Too tight" -> set_letter_spacing (increase)
-* "Make the text chunkier" / "Heavy" -> set_font_weight: "700"
-* "Give it a luxury/premium feel" -> set_letter_spacing: 3px + set_text_transform: "uppercase"
-* "Wall of text" -> set_line_height: 1.6 + set_margin: bottom
-
-### Visual Polish (The "Pop")
-
-* "Make it pop" -> set_box_shadow (soft blur) + set_font_weight: "bold"
-* "Soften the edges" -> set_border_radius: 12px
-* "Make it a circle" -> set_border_radius: 500px
-* "Frosted glass vibe" / "See-through" -> set_opacity: 0.8 + set_background_color (light tint)
-* "Tilt/Turn this" -> set_transform: "rotate"
-* "Zoom in on the photo" -> set_image_fit: "cover" + set_transform: "scale"
-
-### Moods & Vibes (Global)
-
-* "Make it look like Apple" -> apply_theme: "minimalist white, clean sans-serif, high contrast"
-* "Give it a summer vibe" -> apply_theme: "bright yellows, oranges, and warm neutrals"
-* "Make it professional and trustworthy" -> apply_theme: "deep blues, grays, and formal serifs"
+REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
 `;
+
+
+
 
 const AIChatPanel = ({ isOpen, onClose }) => {
 	const [messages, setMessages] = useState([]);
@@ -141,6 +123,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		select => select('core/block-editor').getBlocks(),
 		[]
 	);
+	
+	const registry = useRegistry();
 
 	// Style Card Data
 	const activeStyleCard = useSelect(
@@ -333,16 +317,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		};
 	};
 
-	// Box Shadow
-	// Box Shadow
-	const updateBoxShadow = (x = 0, y = 4, blur = 10, spread = 0, color = '#00000040', prefix = '') => ({
+	// Box Shadow - Uses Style Card palette by default
+	const updateBoxShadow = (x = 0, y = 4, blur = 10, spread = 0, color = null, prefix = '') => ({
 		[`${prefix}box-shadow-status-general`]: true,
 		[`${prefix}box-shadow-horizontal-general`]: x,
 		[`${prefix}box-shadow-vertical-general`]: y,
 		[`${prefix}box-shadow-blur-general`]: blur,
 		[`${prefix}box-shadow-spread-general`]: spread,
-		[`${prefix}box-shadow-palette-status-general`]: false,
-		[`${prefix}box-shadow-color-general`]: color,
+		// Use palette color from Style Card (color 8 is shadow color)
+		[`${prefix}box-shadow-palette-status-general`]: true,
+		[`${prefix}box-shadow-palette-color-general`]: 8,
+		[`${prefix}box-shadow-palette-opacity-general`]: 12,
 		[`${prefix}box-shadow-horizontal-unit-general`]: 'px',
 		[`${prefix}box-shadow-vertical-unit-general`]: 'px',
 		[`${prefix}box-shadow-blur-unit-general`]: 'px',
@@ -733,8 +718,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return __('Style Card updated. Review and save in the editor.', 'maxi-blocks');
 	};
 
-	const handleUpdatePage = (property, value) => {
+	const handleUpdatePage = (property, value, targetBlock = null) => {
 		let count = 0;
+		
+		// Block type matching helper
+		const matchesTarget = (blockName) => {
+			if (!targetBlock) return true; // No filter, apply to all
+			const lowerName = blockName.toLowerCase();
+			const lowerTarget = targetBlock.toLowerCase();
+			
+			if (lowerTarget === 'image') return lowerName.includes('image');
+			if (lowerTarget === 'button') return lowerName.includes('button');
+			if (lowerTarget === 'text') return lowerName.includes('text');
+			if (lowerTarget === 'container') return lowerName.includes('container'); // Strict container check
+			return true;
+		};
+		
 		const recursiveUpdate = (blocks) => {
 			blocks.forEach(block => {
 				let changes = null;
@@ -742,7 +741,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				
 				const prefix = getBlockPrefix(block.name);
 				
-				if (isMaxi) {
+				if (isMaxi && matchesTarget(block.name)) {
 					switch (property) {
 						case 'background_color':
 							// Apply to containers, rows, columns
@@ -765,11 +764,69 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'padding':
 							changes = updatePadding(value, null, prefix);
 							break;
+						case 'responsive_padding':
+							if (typeof value === 'object') {
+								const { desktop, tablet, mobile } = value;
+								// Helper to parse '100px' -> 100
+								const parseVal = (v) => parseInt(v) || 0;
+								
+								const dVal = parseVal(desktop);
+								const tVal = parseVal(tablet);
+								const mVal = parseVal(mobile);
+								
+								changes = {
+									// Desktop (XL, L)
+									[`${prefix}padding-top-xl`]: dVal, [`${prefix}padding-bottom-xl`]: dVal,
+									[`${prefix}padding-left-xl`]: 0, [`${prefix}padding-right-xl`]: 0, // Force side padding to 0
+									
+									[`${prefix}padding-top-lg`]: dVal, [`${prefix}padding-bottom-lg`]: dVal,
+									[`${prefix}padding-left-lg`]: 0, [`${prefix}padding-right-lg`]: 0,
+
+									// Tablet (M, S)
+									[`${prefix}padding-top-md`]: tVal, [`${prefix}padding-bottom-md`]: tVal,
+									[`${prefix}padding-left-md`]: 0, [`${prefix}padding-right-md`]: 0,
+									
+									[`${prefix}padding-top-sm`]: tVal, [`${prefix}padding-bottom-sm`]: tVal,
+									[`${prefix}padding-left-sm`]: 0, [`${prefix}padding-right-sm`]: 0,
+									
+									// Mobile (XS, XXS)
+									[`${prefix}padding-top-xs`]: mVal, [`${prefix}padding-bottom-xs`]: mVal,
+									[`${prefix}padding-left-xs`]: 0, [`${prefix}padding-right-xs`]: 0,
+									
+									[`${prefix}padding-top-xxs`]: mVal, [`${prefix}padding-bottom-xxs`]: mVal,
+									[`${prefix}padding-left-xxs`]: 0, [`${prefix}padding-right-xxs`]: 0,
+									
+									// Units
+									[`${prefix}padding-unit-xl`]: 'px', [`${prefix}padding-unit-lg`]: 'px',
+									[`${prefix}padding-unit-md`]: 'px', [`${prefix}padding-unit-sm`]: 'px',
+									[`${prefix}padding-unit-xs`]: 'px', [`${prefix}padding-unit-xxs`]: 'px',
+									
+									// Sync - we sync top/bottom but not sides, so set to 'none' (unlinked)
+									[`${prefix}padding-sync-xl`]: 'none', 
+									[`${prefix}padding-sync-lg`]: 'none', 
+									[`${prefix}padding-sync-md`]: 'none',
+									[`${prefix}padding-sync-sm`]: 'none',
+									[`${prefix}padding-sync-xs`]: 'none',
+									[`${prefix}padding-sync-xxs`]: 'none',
+								};
+							}
+							break;
 						case 'margin':
 							changes = updateMargin(value, null, prefix);
 							break;
 						case 'font_size':
 							changes = updateFontSize(value);
+							break;
+						case 'border_radius':
+							changes = updateBorderRadius(value, null, prefix);
+							break;
+						case 'box_shadow':
+							// value is expected to be object {x, y, blur, spread, color}
+							if (typeof value === 'object') {
+								changes = updateBoxShadow(value.x, value.y, value.blur, value.spread, value.color, prefix);
+							} else {
+								console.warn('Expected object for box_shadow in Page update');
+							}
 							break;
 					}
 				}
@@ -785,34 +842,322 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			});
 		};
 
-		recursiveUpdate(allBlocks);
+		// Wrap in batch to prevent multiple re-renders
+		registry.batch(() => {
+			recursiveUpdate(allBlocks);
+		});
+		
 		return `Updated ${count} blocks on the page.`;
+	};
+
+	// Hover Animation Helper
+	const applyHoverAnimation = (currentAttributes, shadowValue) => {
+		// 1. Define the Smooth Transition (Applied to Base)
+		const transitionSettings = "box-shadow 0.3s ease, transform 0.3s ease";
+		
+		// 2. Define the "Lift" Effect (Applied to Hover)
+		const hoverTransform = "translateY(-5px)";
+		
+		const prefix = getBlockPrefix(selectedBlock?.name || '');
+		
+		// Shadow Value should be object {x, y, blur, spread, color}
+		const { x=0, y=10, blur=30, spread=0, color='rgba(0,0,0,0.1)' } = (typeof shadowValue === 'object') ? shadowValue : {};
+
+		return {
+			// Base State: Clean slate + Transition
+			[`${prefix}box-shadow-general`]: 'none', // Or should we rely on status?
+			[`${prefix}box-shadow-status-general`]: false, // Explicitly disable base shadow
+			[`${prefix}transition-general`]: transitionSettings,
+			
+			// Hover State: The Shadow + The Lift
+			[`${prefix}box-shadow-status-hover`]: true,
+			[`${prefix}box-shadow-horizontal-hover`]: x,
+			[`${prefix}box-shadow-vertical-hover`]: y,
+			[`${prefix}box-shadow-blur-hover`]: blur,
+			[`${prefix}box-shadow-spread-hover`]: spread,
+			[`${prefix}box-shadow-color-hover`]: color,
+			[`${prefix}box-shadow-horizontal-unit-hover`]: 'px',
+			[`${prefix}box-shadow-vertical-unit-hover`]: 'px',
+			[`${prefix}box-shadow-blur-unit-hover`]: 'px',
+			[`${prefix}box-shadow-spread-unit-hover`]: 'px',
+			
+			[`${prefix}transform-hover`]: hoverTransform,
+		};
 	};
 
 	const parseAndExecuteAction = async responseText => {
 		try {
 			let action;
-			try {
-				action = JSON.parse(responseText.trim());
-			} catch {
-				const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-				if (jsonMatch) {
-					action = JSON.parse(jsonMatch[0]);
+			
+			// If already an object (from client-side interception), use it directly
+			if (typeof responseText === 'object' && responseText !== null) {
+				action = responseText;
+			} else {
+				try {
+					action = JSON.parse(responseText.trim());
+				} catch {
+					const jsonMatch = responseText.match(/\{[\s\S]*\}/);
+					if (jsonMatch) {
+						action = JSON.parse(jsonMatch[0]);
+					}
 				}
 			}
 
+			// FALLBACK: If AI returned plain text for known clarification patterns, synthesize the response
 			if (!action || !action.action) {
+				const lowerText = responseText.toLowerCase();
+				
+				// Detect rounded corners clarification
+				if (lowerText.includes('rounded') || lowerText.includes('corner')) {
+					console.log('[Maxi AI Debug] Fallback: Detected rounded corners clarification in plain text');
+					return {
+						executed: false,
+						message: 'How rounded should the corners be?',
+						options: ['Subtle (8px)', 'Soft (24px)', 'Full (50px)']
+					};
+				}
+				
+				// Detect shadow clarification
+				if (lowerText.includes('shadow') || lowerText.includes('style')) {
+					console.log('[Maxi AI Debug] Fallback: Detected shadow clarification in plain text');
+					return {
+						executed: false,
+						message: 'What style of shadow would you like?',
+						options: ['Soft', 'Crisp', 'Bold']
+					};
+				}
+
+				// Detect spacing/padding clarification
+				if (lowerText.includes('spacing') || lowerText.includes('padding') || lowerText.includes('space')) {
+					console.log('[Maxi AI Debug] Fallback: Detected spacing clarification in plain text');
+					return {
+						executed: false,
+						message: 'How much vertical spacing would you like?',
+						options: ['Compact', 'Comfortable', 'Spacious']
+					};
+				}
+				
+				// No pattern matched, return as regular message
 				return { executed: false, message: responseText };
 			}
 
-			if (action.action === 'message') {
-				return { executed: false, message: action.content, options: action.options };
+			// DEBUG: Log parsed action
+			console.log('[Maxi AI Debug] Parsed action:', JSON.stringify(action, null, 2));
+
+			// --- NEW ACTION TYPES ---
+			
+			if (action.action === 'CLARIFY') {
+				// Map CLARIFY to the existing message/options structure
+				console.log('[Maxi AI Debug] CLARIFY action detected');
+				console.log('[Maxi AI Debug] Raw options:', action.options);
+				
+				const optionsLabels = action.options?.map(opt => opt.label) || [];
+				console.log('[Maxi AI Debug] Extracted option labels:', optionsLabels);
+				
+				return { 
+					executed: false, 
+					message: action.message, 
+					options: optionsLabels 
+				};
 			}
 
-			// GLOBAL ACTIONS
+			if (action.action === 'MODIFY_BLOCK') {
+				if (!selectedBlock?.clientId) {
+					return {
+						executed: false,
+						message: __('Please select a block first.', 'maxi-blocks'),
+					};
+				}
+
+				let changes = {};
+				const prefix = getBlockPrefix(selectedBlock.name);
+
+				// Handle Special Actions (Hover)
+				if (action.payload?.special_action === 'APPLY_HOVER_ANIMATION') {
+					changes = applyHoverAnimation(selectedBlock.attributes, action.payload.shadow_value);
+				} 
+				// Handle Standard Payload
+				else if (action.payload) {
+					// We need to map the "clean" payload keys back to Maxi internal keys if they differ.
+					// The Prompt uses "spacing": {"padding": ...}, "shadow": ...
+					// We can reuse existing helpers or map manually.
+					
+					const p = action.payload;
+					
+					if (p.spacing?.padding) {
+						// Assuming simple value or side specific. 
+						// Existing helpers: updatePadding(value, side, prefix)
+						if (typeof p.spacing.padding === 'object') {
+							Object.entries(p.spacing.padding).forEach(([side, val]) => {
+								const c = updatePadding(parseInt(val), side, prefix);
+								changes = { ...changes, ...c };
+							});
+						} else {
+							changes = { ...changes, ...updatePadding(parseInt(p.spacing.padding), null, prefix) };
+						}
+					}
+					
+					if (p.spacing?.margin) {
+						if (typeof p.spacing.margin === 'object') {
+							Object.entries(p.spacing.margin).forEach(([side, val]) => {
+								const c = updateMargin(parseInt(val), side, prefix);
+								changes = { ...changes, ...c };
+							});
+						} else {
+							changes = { ...changes, ...updateMargin(parseInt(p.spacing.margin), null, prefix) };
+						}
+					}
+					
+					if (p.border_radius) {
+						// value can be int or string "8px"
+						const val = parseInt(p.border_radius);
+						changes = { ...changes, ...updateBorderRadius(val, null, prefix) };
+					}
+					
+					if (p.shadow || p['box-shadow']) {
+						const shadowVal = p.shadow || p['box-shadow'];
+						// Parse shadow string if needed, or pass directly if updateBoxShadow supports it?
+						// updateBoxShadow takes (x, y, blur, spread, color, prefix)
+						// We might need a helper to parsing "0 10px 30px rgba..." or direct key assignment
+						// Direct assignment is safer for complex strings:
+						changes = { 
+							...changes, 
+							[`${prefix}box-shadow-general`]: shadowVal 
+						};
+					}
+					
+					// Add more mappings as needed for Width, Height, etc.
+				}
+
+				if (action.ui_target) {
+					console.log('[Maxi AI] UI Target requested:', action.ui_target);
+					// Map new IDs to existing sidebar logic
+					// spacing-panel, dimension-panel, border-panel, shadow-panel, style-card-colors, style-card-typography
+					
+					const uiMap = {
+						'spacing-panel': { panel: 'Margin / Padding', tab: 'Settings' },
+						'dimension-panel': { panel: 'Dimension', tab: 'Settings' },
+						'border-panel': { panel: 'Border', tab: 'Settings' },
+						'shadow-panel': { panel: 'Box shadow', tab: 'Settings' },
+						'shadow-panel-hover': { panel: 'Box shadow', tab: 'Settings', state: 'hover' }, // Logic hint
+					};
+					
+					const mapping = uiMap[action.ui_target];
+					if (mapping) {
+						// Trigger sidebar open logic (reusing existing code or refactoring)
+						// We can attach this metadata to the return and handle it in the main flow
+						// Or verify if we can set "state" (hover/normal) programmatically?
+						action.sidebarMapping = mapping; 
+					}
+				}
+
+				if (!isEmpty(changes)) {
+					updateBlockAttributes(selectedBlock.clientId, changes);
+					
+					// Handle UI Target trigger
+					if (action.sidebarMapping) {
+						const { panel, tab } = action.sidebarMapping;
+						// Reuse the sidebar opening logic from previous implementation
+						setTimeout(() => {
+							const tabButtons = document.querySelectorAll('.maxi-tabs-control__button');
+							for (const tabBtn of tabButtons) {
+								if (tabBtn.textContent.trim().toLowerCase() === tab.toLowerCase()) {
+									tabBtn.click();
+									break;
+								}
+							}
+							setTimeout(() => {
+								const selectors = ['.maxi-accordion-control__item__button', '.maxi-accordion-control button', '[class*="accordion"] button', '.maxi-accordion-tab__item__button'];
+								const labelParts = panel.split(/\s*\/\s*|\s+/).filter(p => p.length > 2);
+								for (const selector of selectors) {
+									const buttons = document.querySelectorAll(selector);
+									for (const button of buttons) {
+										const text = button.textContent.trim();
+										if (labelParts.some(part => text.toLowerCase().includes(part.toLowerCase()))) {
+											button.click();
+											return;
+										}
+									}
+								}
+							}, 200);
+						}, 300);
+					}
+					
+					return { executed: true, message: action.message || 'Updated.' };
+				}
+				
+				return { executed: true, message: action.message || 'No changes needed.' };
+			} // End MODIFY_BLOCK
+
+
+			// --- GLOBAL ACTIONS RESTORED ---
+			// Handle both "update_page" and "UPDATE_PAGE" (case insensitive)
+			const actionType = action.action?.toLowerCase();
+			
+			if (action.action === 'switch_viewport') {
+				const device = action.value || 'Mobile';
+				// Use WordPress data dispatch to switch viewport
+				const { dispatch } = require('@wordpress/data');
+				// Try both common stores for viewport switching
+				try {
+					dispatch('core/edit-post').__experimentalSetPreviewDeviceType(device);
+				} catch (e) {
+					try {
+						dispatch('core/editor').setDeviceType(device);
+					} catch (e2) {
+						console.warn('Could not switch viewport', e2);
+					}
+				}
+				return { executed: true, message: action.message || `Switched to ${device} view.` };
+			}
+
 			if (action.action === 'update_page') {
-				const resultMsg = handleUpdatePage(action.property, action.value);
-				return { executed: true, message: resultMsg };
+				let property = action.property;
+				let value = action.value;
+				
+				// Handle AI returning payload wrapper (legacy fix)
+				if (action.payload) {
+					if (action.payload.shadow) {
+						property = 'box_shadow';
+						value = action.payload.shadow;
+					} else if (action.payload.border_radius !== undefined) {
+						property = 'border_radius';
+						value = action.payload.border_radius;
+					} else if (action.payload.padding !== undefined) {
+						property = 'padding';
+						value = action.payload.padding;
+					}
+				}
+				
+				console.log('[Maxi AI Debug] update_page action received:', property, value, 'target:', action.target_block);
+				
+				// Normalize border_radius values - AI sometimes sends wrong numbers
+				if (property === 'border_radius') {
+					// Parse numeric value or map keyword
+					if (typeof value === 'string') {
+						const lowerValue = value.toLowerCase();
+						if (lowerValue.includes('subtle') || lowerValue === '8px') value = 8;
+						else if (lowerValue.includes('soft') || lowerValue === '24px') value = 24;
+						else if (lowerValue.includes('full') || lowerValue === '50px') value = 50;
+						else value = parseInt(value) || 8; // Default to subtle
+					}
+					console.log('[Maxi AI Debug] Normalized border_radius to:', value);
+				}
+				
+				const resultMsg = handleUpdatePage(property, value, action.target_block);
+				console.log('[Maxi AI Debug] handleUpdatePage returned:', resultMsg);
+
+				// EXPAND SIDEBAR based on property
+				// This ensures "settings are showing" as requested by user
+				if (property === 'responsive_padding' || property === 'padding' || property === 'margin') {
+					openSidebarAccordion('dimension-panel');
+				} else if (property === 'box_shadow') {
+					openSidebarAccordion('shadow-panel');
+				} else if (property === 'border_radius' || property === 'border') {
+					openSidebarAccordion('border-panel');
+				}
+
+				return { executed: true, message: action.message || resultMsg };
 			}
 
 			if (action.action === 'update_style_card') {
@@ -826,293 +1171,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				return { executed: true, message: resultMsg, openedStyleCard: true };
 			}
 
-			// SINGLE BLOCK ACTIONS
-			if (!selectedBlock?.clientId) {
-				return {
-					executed: false,
-					message: __('Please select a block first for single-block updates.', 'maxi-blocks'),
-				};
+			if (action.action === 'message') {
+				return { executed: false, message: action.content, options: action.options };
 			}
 
-			let resultMsg = 'Action executed.';
-			const attrs = selectedBlock.attributes;
-			let changes = {};
-			const prefix = getBlockPrefix(selectedBlock.name);
-
-			switch (action.action) {
-				case 'set_background_color':
-					changes = updateBackgroundColor(selectedBlock.clientId, action.color, attrs);
-					resultMsg = __('Background color updated.', 'maxi-blocks');
-					break;
-				case 'set_text_color':
-					changes = updateTextColor(action.color);
-					resultMsg = __('Text color updated.', 'maxi-blocks');
-					break;
-				case 'set_padding':
-					changes = updatePadding(action.value, action.side, prefix);
-					resultMsg = action.side 
-						? __(`${action.side.charAt(0).toUpperCase() + action.side.slice(1)} padding updated.`, 'maxi-blocks')
-						: __('Padding updated.', 'maxi-blocks');
-					break;
-				case 'set_font_size':
-					changes = updateFontSize(action.value);
-					resultMsg = __('Font size updated.', 'maxi-blocks');
-					break;
-				case 'set_margin':
-					changes = updateMargin(action.value, action.side, prefix);
-					resultMsg = action.side 
-						? __(`${action.side.charAt(0).toUpperCase() + action.side.slice(1)} margin updated.`, 'maxi-blocks')
-						: __('Margin updated.', 'maxi-blocks');
-					break;
-				case 'set_border':
-					changes = updateBorder(action.style, action.width, action.color, prefix);
-					resultMsg = action.style === 'none' 
-						? __('Border removed.', 'maxi-blocks')
-						: __('Border updated.', 'maxi-blocks');
-					break;
-				case 'set_border_radius':
-					changes = updateBorderRadius(action.value, action.corner, prefix);
-					resultMsg = action.corner 
-						? __(`${action.corner} border radius updated.`, 'maxi-blocks')
-						: __('Border radius updated.', 'maxi-blocks');
-					break;
-				case 'set_box_shadow':
-					changes = updateBoxShadow(action.x, action.y, action.blur, action.spread, action.color, prefix);
-					resultMsg = __('Box shadow added.', 'maxi-blocks');
-					break;
-				case 'remove_box_shadow':
-					changes = removeBoxShadow(prefix);
-					resultMsg = __('Box shadow removed.', 'maxi-blocks');
-					break;
-				case 'set_opacity':
-					changes = updateOpacity(action.value);
-					resultMsg = __(`Opacity set to ${Math.round(action.value * 100)}%.`, 'maxi-blocks');
-					break;
-				case 'set_width':
-					changes = updateWidth(action.value, action.unit || 'px', prefix);
-					resultMsg = __(`Width set to ${action.value}${action.unit || 'px'}.`, 'maxi-blocks');
-					break;
-				case 'set_height':
-					changes = updateHeight(action.value, action.unit || 'px', prefix);
-					resultMsg = __(`Height set to ${action.value}${action.unit || 'px'}.`, 'maxi-blocks');
-					break;
-				case 'set_font_family':
-					changes = updateFontFamily(action.value);
-					resultMsg = __(`Font family set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_font_weight':
-					changes = updateFontWeight(action.value);
-					resultMsg = __(`Font weight set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_line_height':
-					changes = updateLineHeight(action.value, action.unit || 'em');
-					resultMsg = __(`Line height set to ${action.value}${action.unit || 'em'}.`, 'maxi-blocks');
-					break;
-				case 'set_letter_spacing':
-					changes = updateLetterSpacing(action.value, action.unit || 'px');
-					resultMsg = __(`Letter spacing set to ${action.value}${action.unit || 'px'}.`, 'maxi-blocks');
-					break;
-				case 'set_text_transform':
-					changes = updateTextTransform(action.value);
-					resultMsg = __(`Text transform set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_text_align':
-					changes = updateTextAlign(action.value);
-					resultMsg = __(`Text alignment set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_flex_direction':
-					changes = updateFlexDirection(action.value);
-					resultMsg = __(`Flex direction set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_justify_content':
-					changes = updateJustifyContent(action.value);
-					resultMsg = __(`Justify content set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_align_items':
-					changes = updateAlignItems(action.value);
-					resultMsg = __(`Align items set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_gap':
-					changes = updateGap(action.value, action.unit || 'px');
-					resultMsg = __(`Gap set to ${action.value}${action.unit || 'px'}.`, 'maxi-blocks');
-					break;
-				case 'set_display':
-					changes = updateDisplay(action.value);
-					resultMsg = __(`Display set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_position':
-					changes = updatePosition(action.value);
-					resultMsg = __(`Position set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_z_index':
-					changes = updateZIndex(action.value);
-					resultMsg = __(`Z-index set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_transform':
-					changes = updateTransform(action.type, action.x, action.y, action.z);
-					resultMsg = __(`Transform ${action.type} updated.`, 'maxi-blocks');
-					break;
-				case 'set_clip_path':
-					changes = updateClipPath(action.shape);
-					resultMsg = __(`Clip path set to ${action.shape}.`, 'maxi-blocks');
-					break;
-				case 'add_scroll_effect':
-					changes = addScrollEffect(action.effect);
-					resultMsg = __(`Scroll effect ${action.effect} added.`, 'maxi-blocks');
-					break;
-				case 'set_overflow':
-					changes = updateOverflow(action.value);
-					resultMsg = __(`Overflow set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_blend_mode':
-					changes = updateBlendMode(action.value);
-					resultMsg = __(`Blend mode set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_image_fit':
-					changes = updateImageFit(action.value);
-					resultMsg = __(`Image fit set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'set_aspect_ratio':
-					changes = updateAspectRatio(action.value);
-					resultMsg = __(`Aspect ratio set to ${action.value}.`, 'maxi-blocks');
-					break;
-				case 'update_block':
-					changes = action.attributes;
-					resultMsg = __('Block settings updated.', 'maxi-blocks');
-					break;
-				default:
-					return { executed: false, message: __('Unknown action.', 'maxi-blocks') };
-			}
-
-			if (changes) {
-				console.log('[Maxi AI] Applying changes to block:', selectedBlock.clientId, changes);
-				
-				// Use handleSetAttributes to properly process breakpoint-related attributes
-				handleSetAttributes({
-					obj: changes,
-					attributes: selectedBlock.attributes,
-					clientId: selectedBlock.clientId,
-					onChange: processedChanges => {
-						console.log('[Maxi AI] Processed changes:', processedChanges);
-						updateBlockAttributes(selectedBlock.clientId, processedChanges);
-					},
-				});
-
-				// Force style recalculation by invalidating CSS cache and re-selecting block
-				const { uniqueID } = selectedBlock.attributes;
-				if (uniqueID) {
-					const { dispatch } = wp.data;
-					dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
-				}
-
-				// Re-select the block to trigger re-render
-				const { selectBlock } = wp.data.dispatch('core/block-editor');
-				selectBlock(selectedBlock.clientId);
-
-				// Open relevant sidebar panel based on action type
-				// Format: { panel: 'Panel Name', tab: 'Settings' | 'Advanced' }
-				const sidebarMapping = {
-					set_padding: { panel: 'Margin / Padding', tab: 'Settings' },
-					set_margin: { panel: 'Margin / Padding', tab: 'Settings' },
-					set_background_color: { panel: 'Background / Layer', tab: 'Settings' },
-					set_text_color: { panel: 'Typography', tab: 'Settings' },
-					set_font_size: { panel: 'Typography', tab: 'Settings' },
-					set_border: { panel: 'Border', tab: 'Settings' },
-					set_border_radius: { panel: 'Border', tab: 'Settings' },
-					set_box_shadow: { panel: 'Box shadow', tab: 'Settings' },
-					remove_box_shadow: { panel: 'Box shadow', tab: 'Settings' },
-					set_opacity: { panel: 'Opacity', tab: 'Advanced' },
-					set_width: { panel: 'Height / Width', tab: 'Settings' },
-					set_height: { panel: 'Height / Width', tab: 'Settings' },
-					// Typography
-					set_font_family: { panel: 'Typography', tab: 'Settings' },
-					set_font_weight: { panel: 'Typography', tab: 'Settings' },
-					set_line_height: { panel: 'Typography', tab: 'Settings' },
-					set_letter_spacing: { panel: 'Typography', tab: 'Settings' },
-					set_text_transform: { panel: 'Typography', tab: 'Settings' },
-					set_text_align: { panel: 'Typography', tab: 'Settings' },
-					// Layout
-					set_flex_direction: { panel: 'Flexbox', tab: 'Settings' },
-					set_justify_content: { panel: 'Flexbox', tab: 'Settings' },
-					set_align_items: { panel: 'Flexbox', tab: 'Settings' },
-					set_gap: { panel: 'Flexbox', tab: 'Settings' },
-					set_display: { panel: 'Display', tab: 'Advanced' },
-					set_position: { panel: 'Position', tab: 'Advanced' },
-					set_z_index: { panel: 'Z-index', tab: 'Advanced' },
-					// Visual Effects
-					set_transform: { panel: 'Transform', tab: 'Advanced' },
-					set_clip_path: { panel: 'Clip path', tab: 'Settings' },
-					add_scroll_effect: { panel: 'Scroll effects', tab: 'Advanced' },
-					set_overflow: { panel: 'Overflow', tab: 'Advanced' },
-					set_blend_mode: { panel: 'Background / Layer', tab: 'Settings' },
-					// Block Specific
-					set_image_fit: { panel: 'Dimension', tab: 'Settings' },
-					set_aspect_ratio: { panel: 'Dimension', tab: 'Settings' },
-				};
-
-				const mapping = sidebarMapping[action.action];
-				if (mapping) {
-					const { panel: panelLabel, tab: tabName } = mapping;
-					console.log('[Maxi AI] Attempting to open sidebar panel:', panelLabel, 'in tab:', tabName);
-					
-					// Use setTimeout to allow DOM to settle after block attribute update
-					setTimeout(() => {
-						// First, click the correct tab (Settings or Advanced)
-						// Use the correct selector for tab buttons
-						const tabButtons = document.querySelectorAll('.maxi-tabs-control__button');
-						console.log('[Maxi AI] Found tab buttons:', tabButtons.length);
-						
-						for (const tabBtn of tabButtons) {
-							const btnText = tabBtn.textContent.trim().toLowerCase();
-							console.log('[Maxi AI] Tab button text:', btnText);
-							if (btnText === tabName.toLowerCase()) {
-								console.log('[Maxi AI] Clicking tab:', tabName);
-								tabBtn.click();
-								break;
-							}
-						}
-						
-						// Wait a bit for the tab content to render, then find the accordion
-						setTimeout(() => {
-							// Try multiple selector strategies
-							const selectors = [
-								'.maxi-accordion-control__item__button',
-								'.maxi-accordion-control button',
-								'[class*="accordion"] button',
-								'.maxi-accordion-tab__item__button',
-							];
-							
-							// Extract key words from panelLabel for matching
-							const labelParts = panelLabel.split(/\s*\/\s*|\s+/).filter(p => p.length > 2);
-							console.log('[Maxi AI] Looking for panel containing:', labelParts);
-							
-							for (const selector of selectors) {
-								const buttons = document.querySelectorAll(selector);
-								
-								for (const button of buttons) {
-									const text = button.textContent.trim();
-									// Check if button text matches any part of the panel label
-									const matches = labelParts.some(part => 
-										text.toLowerCase().includes(part.toLowerCase())
-									);
-									
-									if (matches) {
-										console.log('[Maxi AI] Found matching button:', text);
-										button.click();
-										return;
-									}
-								}
-							}
-							
-							console.log('[Maxi AI] No matching accordion button found for:', panelLabel);
-						}, 200);
-					}, 300);
-				}
-			}
+			// ... (rest of standard legacy handling if needed, or rely on prompt to strictly use new types)
+			// Given the strict prompt, we might not need the old switch(action.action) block if the AI complies.
+			// But sticking to the new schema is key.
 
 			return {
 				executed: true,
-				message: resultMsg,
+				message: action.message || 'Done.',
 			};
 
 		} catch (e) {
@@ -1211,7 +1280,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}
 
 			const { executed, message, options } = await parseAndExecuteAction(assistantContent);
-			console.log('[Maxi AI] Parsed action result:', { executed, message });
+			console.log('[Maxi AI] Parsed action result:', { executed, message, options });
 
 			setMessages(prev => [
 				...prev,
@@ -1256,7 +1325,65 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 	};
 
-	const handleSuggestion = suggestion => {
+	const handleSuggestion = async suggestion => {
+		// INTERCEPTION: Check for Presets to bypass AI Latency/Hallucination
+		let directAction = null;
+
+		// 1. ROUNDED CORNERS
+		if (suggestion.includes('Subtle (8px)')) directAction = { action: 'update_page', property: 'border_radius', value: 8, message: 'Applied Subtle rounded corners (8px).' };
+		else if (suggestion.includes('Soft (24px)')) directAction = { action: 'update_page', property: 'border_radius', value: 24, message: 'Applied Soft rounded corners (24px).' };
+		else if (suggestion.includes('Full (50px)')) directAction = { action: 'update_page', property: 'border_radius', value: 50, message: 'Applied Full rounded corners (50px).' };
+		
+		// 2. SPACING (Responsive)
+		else if (suggestion === 'Compact') directAction = { action: 'update_page', property: 'responsive_padding', value: { desktop: '60px', tablet: '40px', mobile: '20px' }, target_block: 'container', message: 'Applied Compact spacing. Review on mobile?' };
+		else if (suggestion === 'Comfortable') directAction = { action: 'update_page', property: 'responsive_padding', value: { desktop: '100px', tablet: '60px', mobile: '40px' }, target_block: 'container', message: 'Applied Comfortable spacing. Review on mobile?' };
+		else if (suggestion === 'Spacious') directAction = { action: 'update_page', property: 'responsive_padding', value: { desktop: '140px', tablet: '80px', mobile: '60px' }, target_block: 'container', message: 'Applied Spacious spacing. Review on mobile?' };
+
+		// 3. SHADOW
+		else if (suggestion === 'Soft') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:10, blur:30, spread:0, color: 'rgba(0,0,0,0.1)' }, message: 'Applied Soft shadow. Hover effect?' };
+		else if (suggestion === 'Crisp') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:2, blur:4, spread:0, color: 'rgba(0,0,0,0.1)' }, message: 'Applied Crisp shadow. Hover effect?' };
+		else if (suggestion === 'Bold') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:20, blur:25, spread:-5, color: 'rgba(0,0,0,0.1)' }, message: 'Applied Bold shadow. Hover effect?' };
+
+		// 4. MOBILE REVIEW
+		else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') directAction = { action: 'switch_viewport', value: 'Mobile', message: 'Switched to mobile view.' };
+
+
+		if (directAction) {
+			// Add User Message immediately
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			setInput(''); // Clear input if any
+            
+			// Execute Action with fake loading for UX
+            setIsLoading(true);
+            
+			// Use small delay to allow UI to update
+			setTimeout(async () => {
+			    try {
+					console.log('[Maxi AI Intercept] Executing direct action:', directAction);
+					const result = await parseAndExecuteAction(directAction);
+					
+					// Determine options for success message
+					let nextOptions = undefined;
+					if (directAction.property === 'responsive_padding') nextOptions = ['Yes, show me', 'No, thanks'];
+					
+					// Add AI Message
+					setMessages(prev => [...prev, { 
+						role: 'assistant', 
+						content: result.message, 
+						options: nextOptions,
+						executed: true 
+					}]);
+				} catch (e) {
+					console.error('Direct action failed:', e);
+					setMessages(prev => [...prev, { role: 'assistant', content: 'Error executing action.', isError: true }]);
+				} finally {
+					setIsLoading(false);
+				}
+            }, 600); 
+			return;
+		}
+
+		// Fallback: Just set input for manual sending (or generic prompts)
 		setInput(suggestion);
 	};
 
@@ -1325,15 +1452,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									<button
 										key={i}
 										onClick={() => handleSuggestion(opt)}
-										style={{
-											border: '1px solid currentColor',
-											background: 'rgba(255,255,255,0.1)',
-											color: 'inherit',
-											padding: '4px 10px',
-											borderRadius: '12px',
-											fontSize: '11px',
-											cursor: 'pointer',
-										}}
+										className='maxi-ai-chat-panel__option-button'
 									>
 										{opt}
 									</button>

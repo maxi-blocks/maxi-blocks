@@ -20,16 +20,22 @@ const getColorString = (obj, target, style) => {
 	const prefix = target ? `${target}-` : '';
 	const paletteStatus = obj[`${prefix}palette-status`];
 	const paletteColor = obj[`${prefix}palette-color`];
-	const paletteOpacity = obj[`${prefix}palette-opacity`];
+	const paletteOpacity = obj[`${prefix}palette-opacity`] ?? 1;
 	const color = obj[`${prefix}color`];
 
-	return paletteStatus
-		? getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				blockStyle: style,
-				opacity: paletteOpacity,
-		  })
-		: color;
+	if (paletteStatus) {
+		return getColorRGBAString({
+			firstVar: `color-${paletteColor}`,
+			blockStyle: style,
+			opacity: paletteOpacity,
+		});
+	}
+	// When palette is disabled, wrap raw RGB in rgba() for valid CSS
+	// color is expected in format "r,g,b" like "255,165,0"
+	if (color && typeof color === 'string' && color.includes(',')) {
+		return `rgba(${color},${paletteOpacity})`;
+	}
+	return color;
 };
 
 const getParsedObj = obj => {

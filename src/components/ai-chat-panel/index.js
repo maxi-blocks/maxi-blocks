@@ -71,11 +71,11 @@ When user says "add space" or "more padding":
 When user asks to change icon color, fill, stroke, or border:
 - "change icon color" / "fill color" → property: svg_fill_color, value: palette number (1-8)
 - "change icon stroke" / "line color" / "icon border" → property: svg_line_color, value: palette number (1-8)
+- "change icon line width" / "stroke width" → property: svg_stroke_width, value: 1-4
 - Default: Use palette number based on request (1=Primary, 2=Secondary, 3=Accent, 4=Highlight, 5=Text, 8=Dark)
 - If user says "brand color" → use palette 4 (highlight)
 - If user says "match headings" → use palette 2
-- If no specific color mentioned, ASK with clarify:
-{"action":"CLARIFY","message":"Which Style Card color would you like for the icons?","options":[{"label":"Primary"},{"label":"Accent"},{"label":"Brand"}]}
+- For icon color requests, the client will show a palette picker - no need to clarify.
  
 ### OPTION TRIGGER MAPPING (CRITICAL)
 IF user selects/types these options, YOU MUST use the corresponding property:
@@ -84,9 +84,7 @@ IF user selects/types these options, YOU MUST use the corresponding property:
 - "Subtle (8px)" / "Soft (24px)" / "Full (50px)" -> ACTION: update_page, PROPERTY: border_radius
 - "Soft" / "Crisp" / "Bold" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
-- "Primary" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 1
-- "Accent" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 3
-- "Brand" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 4
+- "Thin" / "Medium" / "Thick" (line width) -> ACTION: update_page, PROPERTY: svg_stroke_width
 
 
 ### WHEN TO APPLY DIRECTLY
@@ -132,7 +130,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const [messages, setMessages] = useState([]);
 	const [input, setInput] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
-	const [scope, setScope] = useState('selection'); // 'selection', 'page', 'global'
+	const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
 	const messagesEndRef = useRef(null);
 
 	const selectedBlock = useSelect(
@@ -372,18 +370,51 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 	// Box Shadow - Uses Style Card palette by default
 	// Box Shadow - Supports Theme Variables
-	const updateBoxShadow = (x = 0, y = 4, blur = 10, spread = 0, color = null, prefix = '') => {
+	const updateBoxShadow = (x = 0, y = 4, blur = 10, spread = 0, color = null, prefix = '', opacity = null) => {
 		const base = {
 			[`${prefix}box-shadow-status-general`]: true,
 			[`${prefix}box-shadow-horizontal-general`]: x,
 			[`${prefix}box-shadow-vertical-general`]: y,
 			[`${prefix}box-shadow-blur-general`]: blur,
 			[`${prefix}box-shadow-spread-general`]: spread,
+			[`${prefix}box-shadow-inset-general`]: false,
 			[`${prefix}box-shadow-horizontal-unit-general`]: 'px',
 			[`${prefix}box-shadow-vertical-unit-general`]: 'px',
 			[`${prefix}box-shadow-blur-unit-general`]: 'px',
 			[`${prefix}box-shadow-spread-unit-general`]: 'px',
 		};
+
+		// Handle numeric palette color with breakpoints
+		if (typeof color === 'number') {
+			const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+			const allAttrs = { ...base };
+			
+			breakpoints.forEach(bp => {
+				const suffix = bp === 'general' ? '-general' : `-${bp}`;
+				// Set palette color
+				allAttrs[`${prefix}box-shadow-palette-status${suffix}`] = true;
+				allAttrs[`${prefix}box-shadow-palette-color${suffix}`] = color;
+				allAttrs[`${prefix}box-shadow-color${suffix}`] = '';
+				
+				// Set values for each breakpoint
+				allAttrs[`${prefix}box-shadow-horizontal${suffix}`] = x;
+				allAttrs[`${prefix}box-shadow-vertical${suffix}`] = y;
+				allAttrs[`${prefix}box-shadow-blur${suffix}`] = blur;
+				allAttrs[`${prefix}box-shadow-spread${suffix}`] = spread;
+				allAttrs[`${prefix}box-shadow-inset${suffix}`] = false;
+				allAttrs[`${prefix}box-shadow-horizontal-unit${suffix}`] = 'px';
+				allAttrs[`${prefix}box-shadow-vertical-unit${suffix}`] = 'px';
+				allAttrs[`${prefix}box-shadow-blur-unit${suffix}`] = 'px';
+				allAttrs[`${prefix}box-shadow-spread-unit${suffix}`] = 'px';
+				// Apply opacity if provided
+				if (opacity !== null) {
+					allAttrs[`${prefix}box-shadow-palette-opacity${suffix}`] = opacity;
+				}
+			});
+			
+			console.log('[Maxi AI Debug] updateBoxShadow attrs:', prefix, allAttrs);
+			return allAttrs;
+		}
 
 		if (color) {
 			// Custom color or variable provided
@@ -543,6 +574,32 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return { ...base, [`${prefix}border-palette-status-general`]: false, [`${prefix}border-color-general`]: color };
 		}
 		
+			// Handle numeric palette colour
+		if (typeof color === 'number') {
+			const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+			const widthNum = parseFloat(width) || 2; // Use number, not string
+			const allAttrs = { ...base };
+			
+			breakpoints.forEach(bp => {
+				const suffix = bp === 'general' ? '-general' : `-${bp}`;
+				// Set palette colour
+				allAttrs[`${prefix}border-palette-status${suffix}`] = true;
+				allAttrs[`${prefix}border-palette-color${suffix}`] = color;
+				allAttrs[`${prefix}border-color${suffix}`] = '';
+				
+				// Set width and style for each breakpoint (width must be NUMBER)
+				allAttrs[`${prefix}border-style${suffix}`] = style || 'solid';
+				allAttrs[`${prefix}border-top-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-bottom-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-left-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-right-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-sync-width${suffix}`] = 'all';
+				allAttrs[`${prefix}border-unit-width${suffix}`] = 'px';
+			});
+			
+			console.log('[Maxi AI Debug] updateBorder attrs:', prefix, allAttrs);
+			return allAttrs;
+		}
 		return {
 			...base,
 			[`${prefix}border-color-general`]: color || '#000000',
@@ -551,6 +608,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	};
 
 	// Width
+
+
 	// Width
 	const updateWidth = (value, unit = 'px', prefix = '') => ({
 		[`${prefix}width-general`]: value,
@@ -670,18 +729,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 	// SVG Icon Color Helpers - Uses Style Card Palette by default
 	const updateSvgFillColor = (paletteNumber = 4, isHover = false) => {
+		// Hover attributes use -hover suffix (paletteAttributesCreator doesn't add -general)
 		const suffix = isHover ? '-hover' : '';
-		return {
+		const result = {
 			[`svg-fill-palette-color${suffix}`]: paletteNumber,
 			[`svg-fill-palette-status${suffix}`]: true,
 		};
+		// If hover, also enable the hover status toggle
+		if (isHover) {
+			result['svg-status-hover'] = true;
+		}
+		return result;
 	};
 
 	const updateSvgLineColor = (paletteNumber = 7, isHover = false) => {
 		const suffix = isHover ? '-hover' : '';
-		return {
+		const result = {
 			[`svg-line-palette-color${suffix}`]: paletteNumber,
 			[`svg-line-palette-status${suffix}`]: true,
+		};
+		// If hover, also enable the hover status toggle
+		if (isHover) {
+			result['svg-status-hover'] = true;
+		}
+		return result;
+	};
+
+	const updateSvgStrokeWidth = (width = 2) => {
+		return {
+			'svg-stroke-general': width,
 		};
 	};
 
@@ -1076,7 +1152,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'box_shadow':
 							// value is expected to be object {x, y, blur, spread, color}
 							if (typeof value === 'object') {
-								changes = updateBoxShadow(value.x, value.y, value.blur, value.spread, value.color, prefix);
+								changes = updateBoxShadow(value.x, value.y, value.blur, value.spread, value.color, prefix, value.opacity);
 							} else {
 								console.warn('Expected object for box_shadow in Page update');
 							}
@@ -1115,6 +1191,27 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							if (clientId || block.name.includes('svg-icon')) {
 								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
 								changes = updateSvgLineColor(paletteNum);
+							}
+							break;
+						case 'svg_stroke_width':
+							// Only apply to SVG icon blocks
+							if (clientId || block.name.includes('svg-icon')) {
+								const strokeWidth = typeof value === 'number' ? value : parseInt(value) || 2;
+								changes = updateSvgStrokeWidth(strokeWidth);
+							}
+							break;
+						case 'svg_fill_color_hover':
+							// Only apply to SVG icon blocks - hover state
+							if (clientId || block.name.includes('svg-icon')) {
+								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
+								changes = updateSvgFillColor(paletteNum, true); // true = isHover
+							}
+							break;
+						case 'svg_line_color_hover':
+							// Only apply to SVG icon blocks - line/stroke hover state
+							if (clientId || block.name.includes('svg-icon')) {
+								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
+								changes = updateSvgLineColor(paletteNum, true); // true = isHover
 							}
 							break;
 					}
@@ -1595,8 +1692,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			
 			setMessages(prev => [...prev, {
 				role: 'assistant',
-				content: target ? `What style of border for the ${target}s?` : 'What style of border would you like?',
-				options: ['Subtle Border', 'Strong Border', 'Brand Border'],
+				content: target ? `Which colour border for the ${target}s?` : 'Which colour border would you like?',
+				options: ['palette'],
+				optionsType: 'palette',
+				colorTarget: 'border',
 				targetContext: target, // Store the target for when user clicks an option
 				executed: false
 			}]);
@@ -1613,8 +1712,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			
 			setMessages(prev => [...prev, {
 				role: 'assistant',
-				content: target ? `What style of shadow for the ${target}s?` : 'What style of shadow would you like?',
-				options: ['Soft', 'Crisp', 'Bold'],
+				content: target ? `Which colour box shadow for the ${target}s?` : 'Which colour box shadow would you like?',
+				options: ['palette'],
+				optionsType: 'palette',
+				colorTarget: 'box-shadow',
 				targetContext: target,
 				executed: false
 			}]);
@@ -1659,16 +1760,55 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-		// COLOR requests - show palette swatches
+		// ICON LINE HOVER requests - show colour palette for stroke hover
+		if (lowerMessage.includes('icon') && (lowerMessage.includes('line') || lowerMessage.includes('stroke')) && lowerMessage.includes('hover') && !lowerMessage.includes('remove')) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'Which colour for the icon line hover?',
+				options: ['palette'],
+				optionsType: 'palette',
+				colorTarget: 'icon-line-hover',
+				executed: false
+			}]);
+			return;
+		}
+		
+		// ICON FILL HOVER requests - show colour palette for fill hover
+		if (lowerMessage.includes('icon') && lowerMessage.includes('hover') && !lowerMessage.includes('line') && !lowerMessage.includes('stroke') && !lowerMessage.includes('remove')) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'Which colour for the icon fill hover?',
+				options: ['palette'],
+				optionsType: 'palette',
+				colorTarget: 'icon-hover',
+				executed: false
+			}]);
+			return;
+		}
+		
+		// ICON LINE WIDTH requests - show width presets
+		if (lowerMessage.includes('icon') && lowerMessage.includes('line') && lowerMessage.includes('width') && !lowerMessage.includes('remove')) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'What line width would you like for the icons?',
+				options: ['Thin', 'Medium', 'Thick'],
+				lineWidthTarget: 'icon',
+				executed: false
+			}]);
+			return;
+		}
+		
+		// COLOR requests - show palette swatches (exclude width requests)
 		if ((lowerMessage.includes('color') || lowerMessage.includes('colour')) 
 			&& (lowerMessage.includes('icon') || lowerMessage.includes('fill') || lowerMessage.includes('stroke') || lowerMessage.includes('line'))
+			&& !lowerMessage.includes('width')
 			&& !lowerMessage.includes('remove')) {
 			// Determine if fill or stroke
 			const isStroke = lowerMessage.includes('stroke') || lowerMessage.includes('line') || lowerMessage.includes('border');
 			
 			setMessages(prev => [...prev, {
 				role: 'assistant',
-				content: isStroke ? 'Which color for the icon stroke?' : 'Which color for the icon fill?',
+				content: isStroke ? 'Which colour for the icon stroke?' : 'Which colour for the icon fill?',
 				options: ['palette'],
 				optionsType: 'palette',
 				colorTarget: isStroke ? 'stroke' : 'fill',
@@ -1910,10 +2050,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		else if (suggestion === 'Comfortable') directAction = { action: 'apply_responsive_spacing', preset: 'comfortable', target_block: targetContext || 'container', message: 'Applied Comfortable spacing across all breakpoints.' };
 		else if (suggestion === 'Spacious') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: targetContext || 'container', message: 'Applied Spacious spacing across all breakpoints.' };
 
-		// 3. SHADOW & GLOW
-		else if (suggestion === 'Soft') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:10, blur:30, spread:0, color: 'rgba(0,0,0,0.1)' }, target_block: targetContext, message: 'Applied Soft shadow.' };
-		else if (suggestion === 'Crisp') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:2, blur:4, spread:0, color: 'rgba(0,0,0,0.1)' }, target_block: targetContext, message: 'Applied Crisp shadow.' };
-		else if (suggestion === 'Bold') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:20, blur:25, spread:-5, color: 'rgba(0,0,0,0.1)' }, target_block: targetContext, message: 'Applied Bold shadow.' };
+		// 3. SHADOW & GLOW - Handled by two-step flow (color selection → style selection)
+		// Old direct handlers removed - see section 9 for the new context-aware handler
 		else if (suggestion === 'Brand Glow') directAction = { action: 'update_page', property: 'box_shadow', value: { x:0, y:10, blur:25, spread:-5, color: 'var(--highlight)' }, target_block: targetContext, message: 'Applied Brand Glow (using theme variable).' };
 
 		// 4. THEME BORDERS - now respects targetContext
@@ -1927,22 +2065,137 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 6. MOBILE REVIEW
 		else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') directAction = { action: 'switch_viewport', value: 'Mobile', message: 'Switched to mobile view.' };
 
-		// 7. PALETTE COLOR SELECTION (Color 1-8 OR Custom 1000+)
+		// 7. PALETTE COLOR SELECTION (Color 1-8 only for icon hover/fill/stroke, custom colors not supported)
 		else if (/^Color \d+$/.test(suggestion)) {
-			const paletteNum = parseInt(suggestion.replace('Color ', ''));
-			// Find the colorTarget from the previous message
+			let paletteNum = parseInt(suggestion.replace('Color ', ''));
+			// Sanity check: only allow standard palette 1-8, reset anything else to 4 (highlight)
+			if (paletteNum < 1 || paletteNum > 8) paletteNum = 4;
+
 			const prevMsg = messages.findLast(m => m.colorTarget);
-			const property = prevMsg?.colorTarget === 'stroke' ? 'svg_line_color' : 'svg_fill_color';
+			if (prevMsg?.colorTarget === 'border') {
+				// Don't apply immediately - ask for border style preset
+				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+				setMessages(prev => [...prev, {
+					role: 'assistant',
+					content: 'Which border style?',
+					options: ['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'],
+					borderColorChoice: paletteNum,
+					targetContext: prevMsg.targetContext,
+					executed: false
+				}]);
+				return;
+			} else if (prevMsg?.colorTarget === 'box-shadow') {
+				// Don't apply immediately - ask for shadow style preset
+				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+				setMessages(prev => [...prev, {
+					role: 'assistant',
+					content: 'Which shadow style?',
+					options: ['Soft', 'Medium', 'Hard'],
+					shadowColorChoice: paletteNum,
+					targetContext: prevMsg.targetContext,
+					executed: false
+				}]);
+				return;
+			} else if (prevMsg?.colorTarget === 'icon-line-hover') {
+				// Apply hover colour to icon line/stroke
+				directAction = { 
+					action: 'update_page', 
+					property: 'svg_line_color_hover', 
+					value: paletteNum, 
+					target_block: 'svg-icon',
+					message: `Applied Colour ${paletteNum} as icon line hover colour.` 
+				};
+			} else if (prevMsg?.colorTarget === 'icon-hover') {
+				// Apply hover colour to icon fill
+				directAction = { 
+					action: 'update_page', 
+					property: 'svg_fill_color_hover', 
+					value: paletteNum, 
+					target_block: 'svg-icon',
+					message: `Applied Colour ${paletteNum} as icon fill hover colour.` 
+				};
+			} else {
+				const property = prevMsg?.colorTarget === 'stroke' ? 'svg_line_color' : 'svg_fill_color';
+				directAction = { 
+					action: 'update_page', 
+					property, 
+					value: paletteNum, 
+					target_block: 'svg-icon',
+					message: `Applied Colour ${paletteNum} to icons.` 
+				};
+			}
+		}
+
+		// 8. BORDER STYLE PRESETS
+		else if (['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'].includes(suggestion)) {
+			const prevMsg = messages.findLast(m => m.borderColorChoice !== undefined);
+			const borderColor = prevMsg?.borderColorChoice || 1;
+			const targetBlock = prevMsg?.targetContext;
 			
-			directAction = { 
-				action: 'update_page', 
-				property, 
-				value: paletteNum, 
-				target_block: 'svg-icon',
-				message: `Applied Color ${paletteNum} to icons.` 
+			const styleMap = {
+				'Solid Normal': { width: 1, style: 'solid' },
+				'Solid Fat': { width: 2, style: 'solid' },
+				'Dashed Normal': { width: 1, style: 'dashed' },
+				'Dashed Fat': { width: 2, style: 'dashed' },
+				'Dotted Normal': { width: 1, style: 'dotted' },
+				'Dotted Fat': { width: 2, style: 'dotted' }
+			};
+			
+			const style = styleMap[suggestion];
+			directAction = {
+				action: 'update_page',
+				property: 'border',
+				value: { ...style, color: borderColor },
+				target_block: targetBlock,
+				message: targetBlock ? `Applied ${suggestion} border to all ${targetBlock}s.` : `Applied ${suggestion} border.`
 			};
 		}
 
+		// 9. SHADOW STYLE PRESETS - Only trigger if we have a shadow color choice in context
+		else if (['Soft', 'Medium', 'Hard'].includes(suggestion)) {
+			const prevMsg = messages.findLast(m => m.shadowColorChoice !== undefined);
+			// Only handle as shadow preset if we have shadow context
+			if (prevMsg?.shadowColorChoice !== undefined) {
+				const shadowColor = prevMsg.shadowColorChoice;
+				const targetBlock = prevMsg?.targetContext;
+
+			const styleMap = {
+				'Soft': { x: 0, y: 10, blur: 30, spread: -10, opacity: 50 },
+				'Medium': { x: 0, y: 15, blur: 50, spread: -15 },
+				'Hard': { x: 10, y: 10, blur: 0, spread: 0 }
+			};
+
+			const style = styleMap[suggestion];
+				directAction = {
+				action: 'update_page',
+				property: 'box_shadow',
+				value: { ...style, color: shadowColor },
+				target_block: targetBlock,
+				message: targetBlock ? `Applied ${suggestion} shadow to all ${targetBlock}s.` : `Applied ${suggestion} shadow.`
+			};
+			} // Close inner if (prevMsg?.shadowColorChoice)
+		} // Close else if (['Soft', 'Medium', 'Hard'])
+
+		// 10. ICON LINE WIDTH PRESETS
+		else if (['Thin', 'Medium', 'Thick'].includes(suggestion)) {
+			const prevMsg = messages.findLast(m => m.lineWidthTarget !== undefined);
+			// Only handle as line width preset if we have line width context
+			if (prevMsg?.lineWidthTarget === 'icon') {
+				const widthMap = {
+					'Thin': 1,
+					'Medium': 1.9,
+					'Thick': 4
+				};
+				const strokeWidth = widthMap[suggestion];
+				directAction = {
+					action: 'update_page',
+					property: 'svg_stroke_width',
+					value: strokeWidth,
+					target_block: 'svg-icon',
+					message: `Applied ${suggestion} line width to all icons.`
+				};
+			}
+		}
 
 		if (directAction && scope === 'selection') {
 			// Convert Page actions to Selection actions if we are in Selection tab
@@ -2022,26 +2275,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						.map(word => word.charAt(0).toUpperCase() + word.slice(1))
 						.join(' ')}`}
 				</h3>
-				<button className='maxi-ai-chat-panel__close' onClick={onClose}>
-					×
-				</button>
-			</div>
-
-			<div className='maxi-ai-chat-panel__scope-area'>
 				<div className='maxi-ai-chat-panel__scope-options'>
-					<button
-						className={`maxi-ai-chat-panel__scope-option ${scope === 'selection' ? 'is-active' : ''}`}
-						onClick={() => setScope('selection')}
-						title={__('Apply changes only to the selected block', 'maxi-blocks')}
-					>
-						{__('Selection', 'maxi-blocks')}
-					</button>
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${scope === 'page' ? 'is-active' : ''}`}
 						onClick={() => setScope('page')}
 						title={__('Apply changes to the entire page', 'maxi-blocks')}
 					>
 						{__('Page', 'maxi-blocks')}
+					</button>
+					<button
+						className={`maxi-ai-chat-panel__scope-option ${scope === 'selection' ? 'is-active' : ''}`}
+						onClick={() => setScope('selection')}
+						title={__('Apply changes only to the selected block', 'maxi-blocks')}
+					>
+						{__('Selection', 'maxi-blocks')}
 					</button>
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${scope === 'global' ? 'is-active' : ''}`}
@@ -2051,7 +2298,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						{__('Style Card', 'maxi-blocks')}
 					</button>
 				</div>
+				<button className='maxi-ai-chat-panel__close' onClick={onClose}>
+					×
+				</button>
 			</div>
+
+
 
 			<div className='maxi-ai-chat-panel__messages'>
 				{messages.map((msg, index) => (

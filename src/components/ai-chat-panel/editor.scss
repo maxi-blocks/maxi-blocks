@@ -9,7 +9,8 @@
 	max-height: 70vh;
 	display: flex;
 	flex-direction: column;
-	background: var(--maxi-white);
+	background: rgba(255, 255, 255, 0.9);
+	backdrop-filter: blur(10px);
 	border: 1px solid var(--maxi-grey-light);
 	border-radius: 16px;
 	box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -24,7 +25,6 @@
 	&__header {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		padding: 10px 16px;
 		background: var(--maxi-off-white);
 		border-bottom: 1px solid var(--maxi-grey-light);
@@ -44,7 +44,7 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 4px;
+		padding: 8px;
 		border-radius: 50%;
 		color: var(--maxi-grey);
 		line-height: 1;
@@ -52,8 +52,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 24px;
-		height: 24px;
+		width: 30px;
+		height: 30px;
 
 		&:hover {
 			background: var(--maxi-grey-light);
@@ -75,14 +75,14 @@
 		max-width: 90%;
 		padding: 8px 12px;
 		border-radius: 10px;
-		font-size: 13px;
+		font-size: 14px;
 		line-height: 1.5;
 
 		&--user {
 			align-self: flex-end;
 			background: var(--maxi-grey-light); /* Softer user bubble */
 			color: var(--maxi-black);
-			border-bottom-right-radius: 4px;
+			border-bottom-right-radius: 0px;
 		}
 
 		&--assistant {
@@ -90,14 +90,14 @@
 			background: var(--maxi-white);
 			color: var(--maxi-grey-dark);
 			border: 1px solid var(--maxi-grey-light);
-			border-bottom-left-radius: 4px;
+			border-bottom-left-radius: 0px;
 		}
 
 		&--system {
 			align-self: center;
 			background: var(--maxi-light-blue);
-			color: #0066cc;
-			font-size: 12px;
+			color: var(--maxi-primary-color);
+			font-size:14px;
 			padding: 4px 10px;
 			border-radius: 12px;
 		}
@@ -122,9 +122,9 @@
 
 	&__input {
 		flex: 1;
-		padding: 10px 14px;
+		padding: 14px 18px;
 		border: 1px solid var(--maxi-grey-light);
-		border-radius: 24px; /* Pill shape */
+		border-radius: 24px !important; /* Pill shape */
 		font-size: 14px;
 		outline: none;
 		transition: all 0.2s;
@@ -197,60 +197,48 @@
 	}
 
 	&__suggestion {
-		background: var(--maxi-white);
-		border: 1px solid transparent;
-		background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
-		                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
-		background-origin: border-box;
-		background-clip: padding-box, border-box;
+		background: var(--maxi-black);
+		border: 1px solid var(--maxi-black);
 		border-radius: 16px;
 		padding: 4px 10px;
 		font-size: 12px;
-		color: var(--maxi-grey-dark);
+		color: var(--maxi-white);
 		cursor: pointer;
 		transition: all 0.2s;
 
 		&:hover {
-			background: var(--maxi-black);
-			background-image: none;
-			color: var(--maxi-white);
-			border-color: var(--maxi-black);
+			background: var(--maxi-white);
+			border: 1px solid transparent;
+			background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
+			                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
+			background-origin: border-box;
+			background-clip: padding-box, border-box;
+			color: var(--maxi-grey-dark);
 			transform: translateY(-1px);
 		}
 	}
 
 	&__option-button {
 		/* Reusing the gradient border style */
-		background: var(--maxi-white);
-		border: 1px solid transparent;
-		/* Use a slightly lighter/transparent internal background if desired, or white to match suggestion */
-		background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
-		                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
-		background-origin: border-box;
-		background-clip: padding-box, border-box;
+		background: var(--maxi-black);
+		border: 1px solid var(--maxi-black);
 		border-radius: 12px;
 		padding: 4px 10px;
-		font-size: 11px;
-		color: var(--maxi-grey-dark);
+		font-size: 12px;
+		color: var(--maxi-white);
 		cursor: pointer;
 		transition: all 0.2s;
 		
 		&:hover {
-			background: var(--maxi-black);
-			background-image: none;
-			color: var(--maxi-white);
-			border-color: var(--maxi-black);
+			background: var(--maxi-white);
+			border: 1px solid transparent;
+			background-image: linear-gradient(var(--maxi-white), var(--maxi-white)), 
+			                  linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
+			background-origin: border-box;
+			background-clip: padding-box, border-box;
+			color: var(--maxi-grey-dark);
 			transform: translateY(-1px);
 		}
-	}
-
-	&__scope-area {
-		padding: 8px 16px;
-		background: var(--maxi-off-white);
-		border-bottom: 1px solid var(--maxi-grey-light);
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 
 	&__scope-options {
@@ -259,6 +247,7 @@
 		padding: 2px;
 		border-radius: 20px;
 		gap: 2px;
+		margin: 0 auto; /* Center the tabs */
 	}
 
 	&__scope-option {

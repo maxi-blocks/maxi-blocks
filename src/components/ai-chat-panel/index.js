@@ -337,11 +337,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 	// Border Radius
 	// Border Radius
+	// Border Radius
 	const updateBorderRadius = (value, corner = null, prefix = '') => {
 		// Fix: Allow 0 to be passed validly
-		// If value is null/undefined, default to 8. If 0, keep 0.
-		let finalValue = (value === undefined || value === null || value === '') ? 8 : value;
-		finalValue = String(finalValue); // Ensure string type for consistency
+		let finalValue = (value === undefined || value === null || value === '') ? 8 : Number(value);
+		if (isNaN(finalValue)) finalValue = 8;
 
 		const corners = {
 			'top-left': 'border-top-left-radius',
@@ -350,22 +350,26 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			'bottom-right': 'border-bottom-right-radius',
 		};
 		
+		let changes = {};
 		if (corner && corners[corner.toLowerCase()]) {
-			return {
+			changes = {
 				[`${prefix}${corners[corner.toLowerCase()]}-general`]: finalValue,
 				[`${prefix}border-sync-radius-general`]: 'none',
 				[`${prefix}border-unit-radius-general`]: 'px',
 			};
+		} else {
+			changes = {
+				[`${prefix}border-top-left-radius-general`]: finalValue,
+				[`${prefix}border-top-right-radius-general`]: finalValue,
+				[`${prefix}border-bottom-left-radius-general`]: finalValue,
+				[`${prefix}border-bottom-right-radius-general`]: finalValue,
+				[`${prefix}border-sync-radius-general`]: 'all',
+				[`${prefix}border-unit-radius-general`]: 'px',
+			};
 		}
 		
-		return {
-			[`${prefix}border-top-left-radius-general`]: finalValue,
-			[`${prefix}border-top-right-radius-general`]: finalValue,
-			[`${prefix}border-bottom-left-radius-general`]: finalValue,
-			[`${prefix}border-bottom-right-radius-general`]: finalValue,
-			[`${prefix}border-sync-radius-general`]: 'all',
-			[`${prefix}border-unit-radius-general`]: 'px',
-		};
+		console.log('[Maxi AI Debug] updateBorderRadius:', prefix, changes);
+		return changes;
 	};
 
 	// Box Shadow - Uses Style Card palette by default

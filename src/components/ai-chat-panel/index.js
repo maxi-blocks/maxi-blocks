@@ -17,7 +17,7 @@ import { handleSetAttributes } from '@extensions/maxi-block';
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
 ### SCOPE RULES
-- USER INTENT SCOPE "SELECTION": Use MODIFY_BLOCK for selected block only.
+- USER INTENT SCOPE "SELECTION": Use update_selection for selected block and its contents.
 - USER INTENT SCOPE "PAGE": Use update_page for all matching blocks on page.
 - USER INTENT SCOPE "GLOBAL": Use apply_theme for Style Card changes.
 
@@ -117,6 +117,7 @@ SUCCESS MESSAGES (Use these patterns):
 EXAMPLES:
 update_page (Spacing): {"action":"update_page","property":"responsive_padding","value":{...},"target_block":"container","message":"Applied Comfortable spacing. Review on mobile?"}
 update_page (Rounded): {"action":"update_page","property":"border_radius","value":50,"target_block":"image","message":"Applied Full rounded corners (50px)."}
+update_selection (Border): {"action":"update_selection","property":"border","value":{...},"target_block":"image","message":"Applied border to all images in selection."}
 update_page (Shadow): {"action":"update_page","property":"box_shadow","value":{...},"target_block":"button","message":"Applied Soft shadow."}
 MODIFY_BLOCK: {"action":"MODIFY_BLOCK","payload":{...},"message":"Done."}
 
@@ -575,7 +576,31 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				return { ...base, [`${prefix}border-palette-status-general`]: true, [`${prefix}border-palette-color-general`]: 3 }; 
 			}
 			// Fallback for other vars or hex
-			return { ...base, [`${prefix}border-palette-status-general`]: false, [`${prefix}border-color-general`]: color };
+			// Must iterate all breakpoints to ensure we override specific palette settings
+			const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+			const widthNum = parseFloat(width) || 2;
+			const allAttrs = { ...base };
+
+			breakpoints.forEach(bp => {
+				const suffix = bp === 'general' ? '-general' : `-${bp}`;
+				
+				// Disable palette and set custom color
+				allAttrs[`${prefix}border-palette-status${suffix}`] = false;
+				allAttrs[`${prefix}border-color${suffix}`] = color;
+				allAttrs[`${prefix}border-palette-color${suffix}`] = ''; // Explicitly clear stale palette index
+				
+				// Apply style/width to all breakpoints to ensure consistency
+				allAttrs[`${prefix}border-style${suffix}`] = style || 'solid';
+				allAttrs[`${prefix}border-top-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-bottom-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-left-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-right-width${suffix}`] = widthNum;
+				allAttrs[`${prefix}border-sync-width${suffix}`] = 'all';
+				allAttrs[`${prefix}border-unit-width${suffix}`] = 'px';
+			});
+			
+			console.log('[Maxi AI Debug] updateBorder (Custom) attrs:', prefix, allAttrs);
+			return allAttrs;
 		}
 		
 			// Handle numeric palette colour
@@ -589,7 +614,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				// Set palette colour
 				allAttrs[`${prefix}border-palette-status${suffix}`] = true;
 				allAttrs[`${prefix}border-palette-color${suffix}`] = color;
-				allAttrs[`${prefix}border-color${suffix}`] = '';
+				allAttrs[`${prefix}border-color${suffix}`] = `var(--maxi-color-${color})`;
 				
 				// Set width and style for each breakpoint (width must be NUMBER)
 				allAttrs[`${prefix}border-style${suffix}`] = style || 'solid';
@@ -737,13 +762,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	});
 
 	// SVG Icon Color Helpers - Uses Style Card Palette by default
-	const updateSvgFillColor = (paletteNumber = 4, isHover = false) => {
+	const updateSvgFillColor = (value = 4, isHover = false) => {
 		// Hover attributes use -hover suffix (paletteAttributesCreator doesn't add -general)
 		const suffix = isHover ? '-hover' : '';
-		const result = {
-			[`svg-fill-palette-color${suffix}`]: paletteNumber,
-			[`svg-fill-palette-status${suffix}`]: true,
-		};
+		
+		const result = {};
+		
+		if (typeof value === 'number') {
+			result[`svg-fill-palette-color${suffix}`] = value;
+			result[`svg-fill-palette-status${suffix}`] = true;
+			result[`svg-fill-color${suffix}`] = ''; // clear custom
+		} else {
+			// Assume it's a color string (hex/var)
+			result[`svg-fill-palette-status${suffix}`] = false;
+			result[`svg-fill-color${suffix}`] = value;
+		}
+
 		// If hover, also enable the hover status toggle
 		if (isHover) {
 			result['svg-status-hover'] = true;
@@ -751,12 +785,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return result;
 	};
 
-	const updateSvgLineColor = (paletteNumber = 7, isHover = false) => {
+	const updateSvgLineColor = (value = 7, isHover = false) => {
 		const suffix = isHover ? '-hover' : '';
-		const result = {
-			[`svg-line-palette-color${suffix}`]: paletteNumber,
-			[`svg-line-palette-status${suffix}`]: true,
-		};
+		
+		const result = {};
+		
+		if (typeof value === 'number') {
+			result[`svg-line-palette-color${suffix}`] = value;
+			result[`svg-line-palette-status${suffix}`] = true;
+			result[`svg-line-color${suffix}`] = '';
+		} else {
+			result[`svg-line-palette-status${suffix}`] = false;
+			result[`svg-line-color${suffix}`] = value;
+		}
+
 		// If hover, also enable the hover status toggle
 		if (isHover) {
 			result['svg-status-hover'] = true;
@@ -1052,18 +1094,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return __('Style Card updated. Review and save in the editor.', 'maxi-blocks');
 	};
 
-	const handleUpdatePage = (property, value, targetBlock = null, clientId = null) => {
+	/*
+	 * ============================================================================
+	 * UNIVERSAL BLOCK UPDATER
+	 * ============================================================================
+	 * Applies updates to a list of blocks recursively.
+	 * Used by both Page changes (allBlocks) and Selection changes ([selectedBlock]).
+	 */
+	const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBlock = null, specificClientId = null) => {
 		let count = 0;
-		
+
 		// Block type matching helper
-		const matchesTarget = (blockName) => {
-			if (!targetBlock) return true; // No filter, apply to all
+		const matchesTarget = (blockName, targetBlockArg) => {
+			if (!targetBlockArg) return true; // No filter, apply to all
 			const lowerName = blockName.toLowerCase();
-			const lowerTarget = targetBlock.toLowerCase();
+			const lowerTarget = targetBlockArg.toLowerCase();
 			
 			// STRICTER TARGETING
 			if (lowerTarget === 'image') {
-				// Only target actual Image blocks, ignore containers/groups/rows that might have "image" in name
+				// Only target actual Image blocks
 				return lowerName === 'maxi-blocks/image-maxi' || lowerName === 'maxi-blocks/image'; 
 			}
 			if (lowerTarget === 'button') {
@@ -1074,30 +1123,42 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				// Exclude groups/rows if looking for main container
 				return lowerName.includes('container') && !lowerName.includes('group'); 
 			}
+			if (lowerTarget === 'icon') {
+				return lowerName.includes('icon-maxi') || lowerName.includes('svg-icon');
+			}
 			return true;
 		};
-		
+
 		const recursiveUpdate = (blocks) => {
+			if (!Array.isArray(blocks)) {
+				return;
+			}
+			
 			blocks.forEach(block => {
 				let changes = null;
 				const isMaxi = block.name.startsWith('maxi-blocks/');
 				
 				const prefix = getBlockPrefix(block.name);
 				
-				// MATCHING LOGIC: If clientId is provided, match strictly. Otherwise use target filters.
-				const isMatch = clientId ? block.clientId === clientId : matchesTarget(block.name);
+				// MATCHING LOGIC
+				const isMatch = specificClientId ? block.clientId === specificClientId : matchesTarget(block.name, targetBlock);
+
+				// console.log(`[Maxi AI Debug] Checking block: ${block.name} (${block.clientId}). isMaxi: ${isMaxi}, isMatch: ${isMatch}, Target: ${targetBlock}`);
 
 				if (isMaxi && isMatch) {
+					// console.log(`[Maxi AI Debug] MATCH: ${block.name} (${block.clientId}). Updating ${property}...`);
+					
 					switch (property) {
+
 						case 'background_color':
 							// Apply to containers, rows, columns OR if it's a direct clientId match (Selection)
-							if (clientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column')) {
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column')) {
 								changes = updateBackgroundColor(block.clientId, value, block.attributes);
 							}
 							break;
 						case 'text_color':
 							// Apply to text and buttons OR direct selection
-							if (clientId || block.name.includes('text-maxi') || block.name.includes('button-maxi')) {
+							if (specificClientId || block.name.includes('text-maxi') || block.name.includes('button-maxi')) {
 								changes = updateTextColor(value);
 							}
 							break;
@@ -1168,7 +1229,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						case 'border':
 							// value can be string "1px solid red" or object {width, style, color}
-							if (typeof value === 'object') {
+							if (value === 'none') {
+								changes = updateBorder(0, 'none', null, prefix);
+							} else if (typeof value === 'object') {
 								changes = updateBorder(value.width, value.style, value.color, prefix);
 							} else if (typeof value === 'string') {
 								// Simple parse for "1px solid color"
@@ -1178,17 +1241,16 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									changes = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), prefix);
 								} else {
 									// FALLBACK: Single value = color only, use defaults
-									// This handles AI sending just "var(--p)" or "var(--highlight)"
 									changes = updateBorder(1, 'solid', value, prefix);
 								}
 							}
 							break;
 						case 'box_shadow':
 							// value is expected to be object {x, y, blur, spread, color}
-							if (typeof value === 'object') {
+							if (value === 'none') {
+								changes = removeBoxShadow(prefix);
+							} else if (typeof value === 'object') {
 								changes = updateBoxShadow(value.x, value.y, value.blur, value.spread, value.color, prefix, value.opacity);
-							} else {
-								console.warn('Expected object for box_shadow in Page update');
 							}
 							break;
 						case 'apply_responsive_spacing':
@@ -1206,7 +1268,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'object_fit':
 						case 'objectFit':
 							// Only apply to images or direct selection
-							if (clientId || block.name.includes('image')) {
+							if (specificClientId || block.name.includes('image')) {
 								changes = updateImageFit(value);
 							}
 							break;
@@ -1215,37 +1277,33 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						case 'svg_fill_color':
 							// Only apply to SVG icon blocks
-							if (clientId || block.name.includes('svg-icon')) {
-								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
-								changes = updateSvgFillColor(paletteNum);
+							if (specificClientId || block.name.includes('svg-icon')) {
+								changes = updateSvgFillColor(value);
 							}
 							break;
 						case 'svg_line_color':
 							// Only apply to SVG icon blocks
-							if (clientId || block.name.includes('svg-icon')) {
-								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
-								changes = updateSvgLineColor(paletteNum);
+							if (specificClientId || block.name.includes('svg-icon')) {
+								changes = updateSvgLineColor(value);
 							}
 							break;
 						case 'svg_stroke_width':
 							// Only apply to SVG icon blocks
-							if (clientId || block.name.includes('svg-icon')) {
-								const strokeWidth = typeof value === 'number' ? value : parseInt(value) || 2;
-								changes = updateSvgStrokeWidth(strokeWidth);
+							if (specificClientId || block.name.includes('svg-icon')) {
+								const width = typeof value === 'number' ? value : parseInt(value) || 2;
+								changes = updateSvgStrokeWidth(width);
 							}
 							break;
 						case 'svg_fill_color_hover':
 							// Only apply to SVG icon blocks - hover state
-							if (clientId || block.name.includes('svg-icon')) {
-								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
-								changes = updateSvgFillColor(paletteNum, true); // true = isHover
+							if (specificClientId || block.name.includes('svg-icon')) {
+								changes = updateSvgFillColor(value, true); // true = isHover
 							}
 							break;
 						case 'svg_line_color_hover':
 							// Only apply to SVG icon blocks - line/stroke hover state
-							if (clientId || block.name.includes('svg-icon')) {
-								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
-								changes = updateSvgLineColor(paletteNum, true); // true = isHover
+							if (specificClientId || block.name.includes('svg-icon')) {
+								changes = updateSvgLineColor(value, true); // true = isHover
 							}
 							break;
 						case 'text_align':
@@ -1264,22 +1322,82 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 
 				if (changes) {
+					// console.log(`[Maxi AI Debug] Dispatching update to ${block.clientId}:`, changes);
 					updateBlockAttributes(block.clientId, changes);
 					count++;
 				}
 
+
 				if (block.innerBlocks && block.innerBlocks.length > 0) {
+					// console.log(`[Maxi AI Debug] Recursing into ${block.innerBlocks.length} inner blocks of ${block.name}`);
 					recursiveUpdate(block.innerBlocks);
+				} else {
+					// Fallback: Check if block helper has innerBlocks not directly on object?
+					// Usually block object has 'innerBlocks' array.
 				}
 			});
 		};
 
+		// execute
+		if (blocksToUpdate && blocksToUpdate.length > 0) {
+			// console.log(`[Maxi AI Debug] applyUpdatesToBlocks started with ${blocksToUpdate.length} blocks. Target: ${targetBlock}`);
+			recursiveUpdate(blocksToUpdate);
+		} else {
+			// console.log('[Maxi AI Debug] applyUpdatesToBlocks called with empty block list.');
+		}
+		
+		return count;
+	};
+
+	const handleUpdatePage = (property, value, targetBlock = null, clientId = null) => {
+		let count = 0;
 		// Wrap in batch to prevent multiple re-renders
 		registry.batch(() => {
-			recursiveUpdate(allBlocks);
+			count = applyUpdatesToBlocks(allBlocks, property, value, targetBlock, clientId);
 		});
-		
 		return `Updated ${count} blocks on the page.`;
+	};
+
+	const handleUpdateSelection = (property, value, targetBlock = null) => {
+		if (!selectedBlock) return __('Please select a block first.', 'maxi-blocks');
+		
+		let count = 0;
+		// IMPORTANT: getSelectedBlock() often returns a "light" object or the recursion fails if innerBlocks aren't fully hydrated in that specific reference.
+		// Instead, we should find the selected block within the full 'allBlocks' tree to ensure we have the complete structure with innerBlocks.
+		
+		const findBlockByClientId = (blocks, id) => {
+			for (const block of blocks) {
+				if (block.clientId === id) return block;
+				if (block.innerBlocks && block.innerBlocks.length > 0) {
+					const found = findBlockByClientId(block.innerBlocks, id);
+					if (found) return found;
+				}
+			}
+			return null;
+		};
+
+
+		const fullSelectedBlock = findBlockByClientId(allBlocks, selectedBlock.clientId);
+
+		if (!fullSelectedBlock) {
+			console.warn('[Maxi AI] Could not find full selected block in allBlocks tree. Using selectedBlock state as fallback.');
+		}
+
+		const blocksToProcess = [fullSelectedBlock || selectedBlock];
+		
+		// Wrap in batch
+		registry.batch(() => {
+			count = applyUpdatesToBlocks(blocksToProcess, property, value, targetBlock);
+		});
+
+
+		if (count === 0) {
+			return __('No matching components found in selection.', 'maxi-blocks');
+		}
+		
+		return count === 1 
+			? __('Updated the selected block.', 'maxi-blocks')
+			: `Updated ${count} items in the selection.`;
 	};
 
 	// Hover Animation Helper
@@ -1686,6 +1804,44 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				return { executed: true, message: resultMsg, openedStyleCard: true };
 			}
 
+			if (action.action === 'update_selection') {
+				let property = action.property;
+				let value = action.value;
+				
+				// Handle same payload wrapper if needed
+				if (action.payload) {
+					if (action.payload.shadow) { property = 'box_shadow'; value = action.payload.shadow; }
+					else if (action.payload.border_radius !== undefined) { property = 'border_radius'; value = action.payload.border_radius; }
+					else if (action.payload.padding !== undefined) { property = 'padding'; value = action.payload.padding; }
+				}
+				
+				// Normalizations
+				if (property === 'border_radius' && typeof value === 'string') {
+					if (value.includes('subtle') || value === '8px') value = 8;
+					else if (value.includes('soft') || value === '24px') value = 24;
+					else if (value.includes('full') || value === '50px') value = 50;
+					else if (value.includes('square') || value === '0px') value = 0;
+					else value = parseInt(value) || 8;
+				}
+
+				const resultMsg = handleUpdateSelection(property, value, action.target_block);
+				console.log('[Maxi AI Debug] handleUpdateSelection result:', resultMsg);
+
+				// EXPAND SIDEBAR
+				if (property === 'responsive_padding' || property === 'padding' || property === 'margin') openSidebarAccordion(0, 'dimension-panel');
+				else if (property === 'box_shadow') openSidebarAccordion(0, 'shadow-panel');
+				else if (property === 'border_radius' || property === 'border') openSidebarAccordion(0, 'border-panel');
+
+				// Combine AI message with technical result if mismatch
+				// If resultMsg says "No matching components", we should probably show that.
+				let finalMessage = action.message || resultMsg;
+				if (typeof resultMsg === 'string' && resultMsg.includes('No matching')) {
+					finalMessage = `${action.message} (${resultMsg})`;
+				}
+
+				return { executed: true, message: finalMessage };
+			}
+
 			if (action.action === 'message') {
 				return { executed: false, message: action.content, options: action.options };
 			}
@@ -1703,6 +1859,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			console.error('Parse error:', e);
 			return { executed: false, message: __('Error parsing AI response.', 'maxi-blocks') };
 		}
+
 	};
 
 	const sendMessage = async () => {
@@ -1890,7 +2047,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (lowerMessage.includes('round') || lowerMessage.includes('radius')))) {
 			setIsLoading(true);
 			const directAction = scope === 'selection' 
-				? { action: 'MODIFY_BLOCK', payload: { border_radius: 0 }, message: 'Removed rounded corners from selected block.' }
+				? { action: 'update_selection', property: 'border_radius', value: 0, message: 'Removed rounded corners from selected block.' }
 				: { action: 'update_page', property: 'border_radius', value: 0, message: 'Removed rounded corners.' };
 			
 			setTimeout(async () => {
@@ -1901,11 +2058,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-		// DIRECT ACTION: "Remove shadow" / "no shadow"
+			// DIRECT ACTION: "Remove shadow" / "no shadow"
 		if (lowerMessage.includes('remove') && lowerMessage.includes('shadow') || lowerMessage.includes('no shadow')) {
 			setIsLoading(true);
 			const directAction = scope === 'selection'
-				? { action: 'MODIFY_BLOCK', payload: { shadow: 'none' }, message: 'Removed shadow from selected block.' }
+				? { action: 'update_selection', property: 'box_shadow', value: 'none', message: 'Removed shadow from selected block.' }
 				: { action: 'update_page', property: 'box_shadow', value: 'none', message: 'Removed shadows.' };
 			
 			setTimeout(async () => {
@@ -1916,11 +2073,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-		// DIRECT ACTION: "Remove border"
+			// DIRECT ACTION: "Remove border"
 		if (lowerMessage.includes('remove') && lowerMessage.includes('border') && !lowerMessage.includes('radius')) {
 			setIsLoading(true);
 			const directAction = scope === 'selection'
-				? { action: 'MODIFY_BLOCK', payload: { border: 'none' }, message: 'Removed border from selected block.' }
+				? { action: 'update_selection', property: 'border', value: 'none', message: 'Removed border from selected block.' }
 				: { action: 'update_page', property: 'border', value: 'none', message: 'Removed borders.' };
 			
 			setTimeout(async () => {
@@ -1946,9 +2103,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				context += `\nYou MUST respond with the apply_theme action for any design change request.`;
 				context += `\nExample: { "action": "apply_theme", "prompt": "${userMessage}" }`;
 			} else if (scope === 'selection') {
-				context += `\n\nCRITICAL: You are in SELECTION mode. You MUST only use the "MODIFY_BLOCK" action.`;
-				context += `\nEven if the user says "all images", they have explicitly chosen "SELECTION" tab, so you MUST only modify the CURRENTLY SELECTED block.`;
-				context += `\nDO NOT use update_page or apply_responsive_spacing in this mode.`;
+				context += `\n\nCRITICAL: You are in SELECTION mode. You MUST use the "update_selection" action.`;
+				context += `\nThis targets the selected block AND its inner blocks (recursively).`;
+				context += `\nDo not use update_page (would affect unselected) or apply_responsive_spacing (use update_selection instead).`;
 			} else if (scope === 'page') {
 				context += `\n\nCRITICAL: You are in PAGE mode. You SHOULD use "update_page" or "apply_responsive_spacing" to affect multiple blocks if requested.`;
 			}
@@ -2005,7 +2162,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			// Debug: Log what the AI returned
 			console.log('[Maxi AI] Raw AI response:', assistantContent);
 
-			// Force apply_theme for global scope if AI didn't use it
+			// 4. Force apply_theme for global scope if AI didn't use it
 			if (scope === 'global') {
 				try {
 					const parsed = JSON.parse(assistantContent.trim());
@@ -2020,38 +2177,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 
-			// Coerce update_page to MODIFY_BLOCK in selection mode
-			if (scope === 'selection') {
-				try {
-					const parsed = JSON.parse(assistantContent.trim());
-					if (parsed.action === 'update_page' || parsed.action === 'apply_responsive_spacing') {
-						console.log('[Maxi AI] Coercing', parsed.action, 'to MODIFY_BLOCK for selection mode');
-						const coerced = {
-							action: 'MODIFY_BLOCK',
-							message: parsed.message || 'Applied to selected block.',
-							payload: {}
-						};
-						
-						// Map properties from update_page to MODIFY_BLOCK payload
-						if (parsed.property === 'box_shadow' || parsed.payload?.shadow) {
-							coerced.payload.shadow = parsed.value || parsed.payload?.shadow;
-						} else if (parsed.property === 'border_radius' || parsed.payload?.border_radius !== undefined) {
-							coerced.payload.border_radius = parsed.value ?? parsed.payload?.border_radius;
-						} else if (parsed.property === 'border' || parsed.payload?.border) {
-							coerced.payload.border = parsed.value || parsed.payload?.border;
-						} else if (parsed.property === 'padding') {
-							coerced.payload.padding = parsed.value;
-						} else if (parsed.preset) {
-							coerced.payload.spacing_preset = parsed.preset;
-						} else if (parsed.property && parsed.value !== undefined) {
-							// Generic property mapping
-							coerced.payload[parsed.property] = parsed.value;
-						}
-						
-						assistantContent = JSON.stringify(coerced);
-					}
-				} catch (e) { /* Not JSON, continue */ }
-			}
+			// 5. SELECTION SCOPE VALIDATION (Optional: You could validate `update_selection` usage here but better to trust the prompt + fallback)
+			// (Removed old coercion to MODIFY_BLOCK - we now support `update_selection` natively)
+
 
 			const { executed, message, options } = await parseAndExecuteAction(assistantContent);
 			console.log('[Maxi AI] Parsed action result:', { executed, message, options });
@@ -2134,13 +2262,48 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 6. MOBILE REVIEW
 		else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') directAction = { action: 'switch_viewport', value: 'Mobile', message: 'Switched to mobile view.' };
 
-		// 7. PALETTE COLOR SELECTION (Color 1-8 only for icon hover/fill/stroke, custom colors not supported)
-		else if (/^Color \d+$/.test(suggestion)) {
-			let paletteNum = parseInt(suggestion.replace('Color ', ''));
-			// Sanity check: only allow standard palette 1-8, reset anything else to 4 (highlight)
-			if (paletteNum < 1 || paletteNum > 8) paletteNum = 4;
+
+		// 7. PALETTE & CUSTOM COLOR SELECTION
+		else if (/^Color .+$/.test(suggestion)) {
+			console.log('[Maxi AI Debug] Color selection triggered:', suggestion);
+			
+			// Extract ID part (can be number or string for custom)
+			const idPart = suggestion.replace('Color ', '');
+			console.log('[Maxi AI Debug] Extracted ID:', idPart);
+			
+			// Debug: customColors
+             // console.log('[Maxi AI Debug] Available customColors:', customColors);
+			
+			let colorValue = null;
+			let isPalette = false;
+
+			// Check if standard palette 1-8
+			const paletteNum = parseInt(idPart);
+			// Check if it's strictly a number 1-8. If idPart is "custom-1", parseInt might be NaN or partial match.
+			// Better check: is it a valid integer AND in range?
+			if (!isNaN(paletteNum) && String(paletteNum) === idPart && paletteNum >= 1 && paletteNum <= 8) {
+				colorValue = paletteNum;
+				isPalette = true;
+				console.log('[Maxi AI Debug] Identified as Standard Palette:', paletteNum);
+			} else {
+				// Try to find in custom colors
+				// Log the lookup attempt
+				console.log('[Maxi AI Debug] Looking for custom color with ID:', idPart);
+				
+				const customColor = customColors.find(c => String(c.id) === idPart);
+				if (customColor) {
+					console.log('[Maxi AI Debug] Found custom color:', customColor);
+					colorValue = customColor.value; // Use the HEX/String value
+				} else {
+					console.warn('[Maxi AI Debug] Unknown color ID:', idPart);
+					colorValue = 4; // Fallback to highlight
+					isPalette = true;
+				}
+			}
 
 			const prevMsg = messages.findLast(m => m.colorTarget);
+			console.log('[Maxi AI Debug] Context prevMsg target:', prevMsg?.colorTarget);
+
 			if (prevMsg?.colorTarget === 'border') {
 				// Don't apply immediately - ask for border style preset
 				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
@@ -2148,7 +2311,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					role: 'assistant',
 					content: 'Which border style?',
 					options: ['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'],
-					borderColorChoice: paletteNum,
+					borderColorChoice: colorValue,
 					targetContext: prevMsg.targetContext,
 					executed: false
 				}]);
@@ -2160,37 +2323,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					role: 'assistant',
 					content: 'Which shadow style?',
 					options: ['Soft', 'Medium', 'Hard'],
-					shadowColorChoice: paletteNum,
+					shadowColorChoice: colorValue,
 					targetContext: prevMsg.targetContext,
 					executed: false
 				}]);
 				return;
-			} else if (prevMsg?.colorTarget === 'icon-line-hover') {
-				// Apply hover colour to icon line/stroke
-				directAction = { 
-					action: 'update_page', 
-					property: 'svg_line_color_hover', 
-					value: paletteNum, 
-					target_block: 'svg-icon',
-					message: `Applied Colour ${paletteNum} as icon line hover colour.` 
-				};
-			} else if (prevMsg?.colorTarget === 'icon-hover') {
-				// Apply hover colour to icon fill
-				directAction = { 
-					action: 'update_page', 
-					property: 'svg_fill_color_hover', 
-					value: paletteNum, 
-					target_block: 'svg-icon',
-					message: `Applied Colour ${paletteNum} as icon fill hover colour.` 
-				};
 			} else {
-				const property = prevMsg?.colorTarget === 'stroke' ? 'svg_line_color' : 'svg_fill_color';
+				// ICON COLORS
+				// For icons, we need to handle Palette vs Custom slightly differently if the helper expects int vs string
+				// updateSvgFillColor helper: if value is number, uses palette. If string? It currently might not support it well.
+				// Let's check updateSvgFillColor implementation.
+				// Lines ~1260 use: const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
+				// This implies it ONLY supports palette numbers.
+				// We should fix the case handler in applyUpdatesToBlocks to allow string values for icons too.
+				
+				const target = prevMsg?.colorTarget;
+				let property = '';
+				let msgText = '';
+				
+				if (target === 'icon-line-hover') { property = 'svg_line_color_hover'; msgText = 'icon line hover colour'; }
+				else if (target === 'icon-hover') { property = 'svg_fill_color_hover'; msgText = 'icon fill hover colour'; }
+				else if (target === 'stroke') { property = 'svg_line_color'; msgText = 'icon stroke colour'; }
+				else { property = 'svg_fill_color'; msgText = 'icon fill colour'; }
+
 				directAction = { 
 					action: 'update_page', 
 					property, 
-					value: paletteNum, 
+					value: colorValue, 
 					target_block: 'svg-icon',
-					message: `Applied Colour ${paletteNum} to icons.` 
+					message: `Applied ${isPalette ? 'Colour ' + colorValue : 'Custom Colour'} as ${msgText}.` 
 				};
 			}
 		}
@@ -2227,8 +2388,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			};
 			
 			const style = styleMap[suggestion];
+			
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+
 			directAction = {
-				action: 'update_page',
+				action: actionType,
 				property: 'border',
 				value: { ...style, color: borderColor },
 				target_block: targetBlock,
@@ -2251,8 +2415,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			};
 
 			const style = styleMap[suggestion];
-				directAction = {
-				action: 'update_page',
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+
+			directAction = {
+				action: actionType,
 				property: 'box_shadow',
 				value: { ...style, color: shadowColor },
 				target_block: targetBlock,
@@ -2285,24 +2451,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (directAction && scope === 'selection') {
 			// Convert Page actions to Selection actions if we are in Selection tab
 			if (directAction.action === 'update_page' || directAction.action === 'apply_responsive_spacing') {
-				const oldAction = directAction;
-				directAction = {
-					action: 'MODIFY_BLOCK',
-					message: oldAction.message.replace('all', 'selected').replace('all images', 'selected block'),
-					payload: {}
-				};
-
-				// Map property/value to payload
-				if (oldAction.action === 'apply_responsive_spacing') {
-					// Spacing preset
-					directAction.payload.spacing_preset = oldAction.preset;
-				} else {
-					// Standard property mapping
-					if (oldAction.property === 'box_shadow') directAction.payload.shadow = oldAction.value;
-					else if (oldAction.property === 'border_radius') directAction.payload.border_radius = oldAction.value;
-					else if (oldAction.property === 'border') directAction.payload.border = oldAction.value;
-					else if (oldAction.property === 'background_color') directAction.payload.background_color = oldAction.value;
-				}
+				directAction.action = 'update_selection';
+				directAction.message = directAction.message.replace('all', 'selected').replace('page', 'selection');
 			}
 		}
 

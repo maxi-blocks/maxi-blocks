@@ -157,6 +157,45 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		[]
 	);
 	const { saveMaxiStyleCards, resetSC, setActiveStyleCard } = useDispatch('maxiBlocks/style-cards') || {};
+	
+	// Fetch Custom Colors
+	const customColors = useSelect(select => {
+		const {
+			receiveSelectedStyleCardValue,
+			receiveMaxiSelectedStyleCardValue,
+		} = select('maxiBlocks/style-cards') || {};
+
+		if (!receiveSelectedStyleCardValue) return [];
+
+		// Try multiple strategies to get custom colors in order of preference
+		// First check if we can get them directly from receiveSelectedStyleCardValue
+		let colors = receiveSelectedStyleCardValue(
+			'customColors',
+			null,
+			'color'
+		);
+
+		// If that fails, try the direct selector
+		if (!colors || colors.length === 0) {
+			colors = receiveMaxiSelectedStyleCardValue?.('customColors') || [];
+		}
+
+		// If still no colors, try to get the styleCard directly
+		if (!colors || colors.length === 0) {
+			const styleCard = select('maxiBlocks/style-cards')?.receiveMaxiSelectedStyleCard();
+
+			if (styleCard && styleCard.value) {
+				// Check multiple possible locations for custom colors
+				colors =
+					styleCard.value.light?.styleCard?.color?.customColors ||
+					styleCard.value.dark?.styleCard?.color?.customColors ||
+					styleCard.value.color?.customColors ||
+					[];
+			}
+		}
+
+		return colors || [];
+	}, []);
 
 	const { updateBlockAttributes } = useDispatch('core/block-editor');
 	
@@ -1888,8 +1927,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 6. MOBILE REVIEW
 		else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') directAction = { action: 'switch_viewport', value: 'Mobile', message: 'Switched to mobile view.' };
 
-		// 7. PALETTE COLOR SELECTION (Color 1-8)
-		else if (/^Color \d$/.test(suggestion)) {
+		// 7. PALETTE COLOR SELECTION (Color 1-8 OR Custom 1000+)
+		else if (/^Color \d+$/.test(suggestion)) {
 			const paletteNum = parseInt(suggestion.replace('Color ', ''));
 			// Find the colorTarget from the previous message
 			const prevMsg = messages.findLast(m => m.colorTarget);
@@ -2024,16 +2063,31 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						{msg.options && (
 							<div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
 								{msg.optionsType === 'palette' ? (
-									// Render color swatches for palette options
-									getPaletteColors().map((color, i) => (
-										<button
-											key={i}
-											onClick={() => handleSuggestion(`Color ${i + 1}`)}
-											className='maxi-ai-chat-panel__palette-swatch'
-											style={{ backgroundColor: color }}
-											title={`Color ${i + 1}`}
-										/>
-									))
+									<>
+										{/* Standard Palette Colors (1-8) */}
+										{getPaletteColors().map((color, i) => (
+											<button
+												key={`std-${i}`}
+												onClick={() => handleSuggestion(`Color ${i + 1}`)}
+												className='maxi-ai-chat-panel__palette-swatch'
+												style={{ backgroundColor: color }}
+												title={`Color ${i + 1}`}
+											/>
+										))}
+										
+										{/* Divider if needed, or just append */}
+										
+										{/* Custom Colors */}
+										{customColors && customColors.length > 0 && customColors.map((cc) => (
+											<button
+												key={`custom-${cc.id}`}
+												onClick={() => handleSuggestion(`Color ${cc.id}`)}
+												className='maxi-ai-chat-panel__palette-swatch maxi-ai-chat-panel__palette-swatch--custom'
+												style={{ backgroundColor: cc.value }}
+												title={cc.name || `Custom Color ${cc.id}`}
+											/>
+										))}
+									</>
 								) : (
 									// Standard text button options
 									msg.options.map((opt, i) => (

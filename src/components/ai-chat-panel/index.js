@@ -195,6 +195,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		scrollToBottom();
 	}, [messages]);
 
+	// Get Style Card palette colors for visual swatches
+	// Uses CSS variables that are already set on the page (same approach as sidebar palette)
+	const getPaletteColors = () => {
+		return [1, 2, 3, 4, 5, 6, 7, 8].map(i => `rgba(var(--maxi-light-color-${i}), 1)`);
+	};
+
 	// --- Helper Functions ---
 
 	const getBlockPrefix = (blockName) => {
@@ -1614,6 +1620,24 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
+		// COLOR requests - show palette swatches
+		if ((lowerMessage.includes('color') || lowerMessage.includes('colour')) 
+			&& (lowerMessage.includes('icon') || lowerMessage.includes('fill') || lowerMessage.includes('stroke') || lowerMessage.includes('line'))
+			&& !lowerMessage.includes('remove')) {
+			// Determine if fill or stroke
+			const isStroke = lowerMessage.includes('stroke') || lowerMessage.includes('line') || lowerMessage.includes('border');
+			
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: isStroke ? 'Which color for the icon stroke?' : 'Which color for the icon fill?',
+				options: ['palette'],
+				optionsType: 'palette',
+				colorTarget: isStroke ? 'stroke' : 'fill',
+				executed: false
+			}]);
+			return;
+		}
+		
 		// DIRECT ACTION: "Make it square" / "remove rounded corners" / "remove border radius"
 		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (lowerMessage.includes('round') || lowerMessage.includes('radius')))) {
 			setIsLoading(true);
@@ -1864,6 +1888,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 6. MOBILE REVIEW
 		else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') directAction = { action: 'switch_viewport', value: 'Mobile', message: 'Switched to mobile view.' };
 
+		// 7. PALETTE COLOR SELECTION (Color 1-8)
+		else if (/^Color \d$/.test(suggestion)) {
+			const paletteNum = parseInt(suggestion.replace('Color ', ''));
+			// Find the colorTarget from the previous message
+			const prevMsg = messages.findLast(m => m.colorTarget);
+			const property = prevMsg?.colorTarget === 'stroke' ? 'svg_line_color' : 'svg_fill_color';
+			
+			directAction = { 
+				action: 'update_page', 
+				property, 
+				value: paletteNum, 
+				target_block: 'svg-icon',
+				message: `Applied Color ${paletteNum} to icons.` 
+			};
+		}
+
 
 		if (directAction && scope === 'selection') {
 			// Convert Page actions to Selection actions if we are in Selection tab
@@ -1983,15 +2023,29 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						{msg.content}
 						{msg.options && (
 							<div style={{ display: 'flex', gap: '8px', marginTop: '8px', flexWrap: 'wrap' }}>
-								{msg.options.map((opt, i) => (
-									<button
-										key={i}
-										onClick={() => handleSuggestion(opt)}
-										className='maxi-ai-chat-panel__option-button'
-									>
-										{opt}
-									</button>
-								))}
+								{msg.optionsType === 'palette' ? (
+									// Render color swatches for palette options
+									getPaletteColors().map((color, i) => (
+										<button
+											key={i}
+											onClick={() => handleSuggestion(`Color ${i + 1}`)}
+											className='maxi-ai-chat-panel__palette-swatch'
+											style={{ backgroundColor: color }}
+											title={`Color ${i + 1}`}
+										/>
+									))
+								) : (
+									// Standard text button options
+									msg.options.map((opt, i) => (
+										<button
+											key={i}
+											onClick={() => handleSuggestion(opt)}
+											className='maxi-ai-chat-panel__option-button'
+										>
+											{opt}
+										</button>
+									))
+								)}
 							</div>
 						)}
 						{msg.executed && (

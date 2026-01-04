@@ -300,6 +300,22 @@
 			color: var(--maxi-black);
 		}
 	}
+
+	&__palette-swatch {
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: 2px solid var(--maxi-grey-light);
+		cursor: pointer;
+		transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+		padding: 0;
+
+		&:hover {
+			transform: scale(1.15);
+			border-color: var(--maxi-grey-dark);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		}
+	}
 }
 
 @keyframes typing-bounce {

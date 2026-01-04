@@ -66,6 +66,16 @@ When user says "add space" or "more padding":
 - **Brand Glow:** Use "box_shadow" with color "var(--highlight)".
 - **Ghost Button:** Set background "transparent", border "2px solid var(--highlight)", color "var(--highlight)".
 - **Invert Section:** Set background "var(--h1)", color "white".
+
+### SVG ICON COLORS (STYLE CARD PALETTE)
+When user asks to change icon color, fill, stroke, or border:
+- "change icon color" / "fill color" → property: svg_fill_color, value: palette number (1-8)
+- "change icon stroke" / "line color" / "icon border" → property: svg_line_color, value: palette number (1-8)
+- Default: Use palette number based on request (1=Primary, 2=Secondary, 3=Accent, 4=Highlight, 5=Text, 8=Dark)
+- If user says "brand color" → use palette 4 (highlight)
+- If user says "match headings" → use palette 2
+- If no specific color mentioned, ASK with clarify:
+{"action":"CLARIFY","message":"Which Style Card color would you like for the icons?","options":[{"label":"Primary"},{"label":"Accent"},{"label":"Brand"}]}
  
 ### OPTION TRIGGER MAPPING (CRITICAL)
 IF user selects/types these options, YOU MUST use the corresponding property:
@@ -74,7 +84,10 @@ IF user selects/types these options, YOU MUST use the corresponding property:
 - "Subtle (8px)" / "Soft (24px)" / "Full (50px)" -> ACTION: update_page, PROPERTY: border_radius
 - "Soft" / "Crisp" / "Bold" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
-	
+- "Primary" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 1
+- "Accent" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 3
+- "Brand" (icon color) -> ACTION: update_page, PROPERTY: svg_fill_color, VALUE: 4
+
 
 ### WHEN TO APPLY DIRECTLY
 Only when user specifies EXACT style/preset name:
@@ -610,6 +623,23 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		'mix-blend-mode-general': value,
 	});
 
+	// SVG Icon Color Helpers - Uses Style Card Palette by default
+	const updateSvgFillColor = (paletteNumber = 4, isHover = false) => {
+		const suffix = isHover ? '-hover' : '';
+		return {
+			[`svg-fill-palette-color${suffix}`]: paletteNumber,
+			[`svg-fill-palette-status${suffix}`]: true,
+		};
+	};
+
+	const updateSvgLineColor = (paletteNumber = 7, isHover = false) => {
+		const suffix = isHover ? '-hover' : '';
+		return {
+			[`svg-line-palette-color${suffix}`]: paletteNumber,
+			[`svg-line-palette-status${suffix}`]: true,
+		};
+	};
+
 	// Image Block Helpers
 	const updateImageFit = (fit) => {
 		if (fit === 'cover') {
@@ -1027,6 +1057,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						case 'opacity':
 							changes = updateOpacity(value);
+							break;
+						case 'svg_fill_color':
+							// Only apply to SVG icon blocks
+							if (clientId || block.name.includes('svg-icon')) {
+								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
+								changes = updateSvgFillColor(paletteNum);
+							}
+							break;
+						case 'svg_line_color':
+							// Only apply to SVG icon blocks
+							if (clientId || block.name.includes('svg-icon')) {
+								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
+								changes = updateSvgLineColor(paletteNum);
+							}
 							break;
 					}
 				}

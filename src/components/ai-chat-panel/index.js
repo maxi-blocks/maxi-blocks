@@ -666,9 +666,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		'text-transform-general': value,
 	});
 
-	const updateTextAlign = (value) => ({
-		'text-alignment-general': value,
-	});
+	const updateTextAlign = (alignment = 'left') => {
+		return {
+			'text-alignment-general': alignment,
+			'alignment-general': alignment, // For buttons etc
+			'text-alignment-xxl': '', 'text-alignment-xl': '', 'text-alignment-l': '', 'text-alignment-m': '', 'text-alignment-s': '', 'text-alignment-xs': '',
+			'alignment-xxl': '', 'alignment-xl': '', 'alignment-l': '', 'alignment-m': '', 'alignment-s': '', 'alignment-xs': '',
+		};
+	};
 
 	// Layout/Flexbox helpers
 	const updateFlexDirection = (value) => ({
@@ -799,6 +804,31 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return {
 			'imageRatio': 'custom',
 			'imageRatioCustom': String(val),
+		};
+	};
+
+
+
+	const updateItemAlign = (alignment = 'center') => {
+		let justify = alignment;
+		let align = alignment;
+
+		if (alignment === 'left') {
+			justify = 'flex-start';
+			align = 'flex-start';
+		} else if (alignment === 'right') {
+			justify = 'flex-end';
+			align = 'flex-end';
+		} else if (alignment === 'center') {
+			justify = 'center';
+			align = 'center';
+		}
+
+		return {
+			'justify-content-general': justify,
+			'align-items-general': align,
+			'justify-content-xxl': '', 'justify-content-xl': '', 'justify-content-l': '', 'justify-content-m': '', 'justify-content-s': '', 'justify-content-xs': '',
+			'align-items-xxl': '', 'align-items-xl': '', 'align-items-l': '', 'align-items-m': '', 'align-items-s': '', 'align-items-xs': '',
 		};
 	};
 
@@ -1213,6 +1243,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								const paletteNum = typeof value === 'number' ? value : parseInt(value) || 7;
 								changes = updateSvgLineColor(paletteNum, true); // true = isHover
 							}
+							break;
+						case 'text_align':
+							changes = updateTextAlign(value);
+							break;
+						case 'align_items':
+							changes = updateItemAlign(value);
+							break;
+						case 'align_everything':
+							changes = {
+								...updateTextAlign(value),
+								...updateItemAlign(value)
+							};
 							break;
 					}
 				}
@@ -1785,7 +1827,30 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}]);
 			return;
 		}
-		
+
+		// ALIGNMENT - "Center align everything" (Text vs Items)
+		if (lowerMessage.includes('align') && lowerMessage.includes('center') && (lowerMessage.includes('everything') || lowerMessage.includes('all'))) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'Would you like to align the text or the items?',
+				options: ['Align Text', 'Align Items'],
+				alignmentType: 'center',
+				executed: false
+			}]);
+			return;
+		}
+
+		// ALIGNMENT - "Align everything" (Generic)
+		if (lowerMessage.includes('align') && (lowerMessage.includes('everything') || lowerMessage.includes('all')) && !lowerMessage.includes('left') && !lowerMessage.includes('right') && !lowerMessage.includes('center')) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'How would you like to align everything?',
+				options: ['Align Left', 'Align Center', 'Align Right'],
+				executed: false
+			}]);
+			return;
+		}
+
 		// ICON LINE WIDTH requests - show width presets
 		if (lowerMessage.includes('icon') && lowerMessage.includes('line') && lowerMessage.includes('width') && !lowerMessage.includes('remove')) {
 			setMessages(prev => [...prev, {
@@ -2124,6 +2189,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					message: `Applied Colour ${paletteNum} to icons.` 
 				};
 			}
+		}
+
+		// ALIGNMENT OPTIONS
+		else if (['Align Text', 'Align Items'].includes(suggestion)) {
+			const prevMsg = messages.findLast(m => m.alignmentType);
+			const alignVal = prevMsg?.alignmentType || 'center';
+			
+			if (suggestion === 'Align Text') {
+				directAction = { action: 'update_page', property: 'text_align', value: alignVal, message: `Aligned all text ${alignVal}.` };
+			} else {
+				directAction = { action: 'update_page', property: 'align_items', value: alignVal, message: `Aligned all items ${alignVal}.` };
+			}
+		}
+		else if (['Align Left', 'Align Center', 'Align Right'].includes(suggestion)) {
+			const alignVal = suggestion.replace('Align ', '').toLowerCase();
+			directAction = { action: 'update_page', property: 'align_everything', value: alignVal, message: `Aligned everything ${alignVal}.` };
 		}
 
 		// 8. BORDER STYLE PRESETS

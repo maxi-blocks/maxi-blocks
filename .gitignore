@@ -49,3 +49,5 @@ CLAUDE.md
 # Ignore PHP CS Fixer config
 **/.php-cs-fixer.dist.php
 
+# Ignore debug log files
+core/admin/provider_save_log.txt

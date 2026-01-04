@@ -53,32 +53,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             // Explicitly handle saving of AI Provider to ensure persistence
             add_action('admin_init', function() {
-                 $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
-                 $log = date('Y-m-d H:i:s') . " - admin_init fired\n";
-                 $log .= "option_page: " . (isset($_POST['option_page']) ? $_POST['option_page'] : 'NOT SET') . "\n";
-                 $log .= "maxi_ai_provider in POST: " . (isset($_POST['maxi_ai_provider']) ? $_POST['maxi_ai_provider'] : 'NOT SET') . "\n";
-                 $log .= "Current DB value: " . get_option('maxi_ai_provider', 'FALLBACK') . "\n";
-                 
                  if (isset($_POST['option_page']) && $_POST['option_page'] === 'maxi-blocks-settings-group') {
-                     $log .= "Condition matched!\n";
                      if (isset($_POST['maxi_ai_provider'])) {
                          $provider = sanitize_text_field($_POST['maxi_ai_provider']);
-                         $log .= "Provider from POST: $provider\n";
                          if (in_array($provider, ['openai', 'anthropic', 'gemini', 'mistral'])) {
-                              $result = update_option('maxi_ai_provider', $provider);
-                              $log .= "update_option result: " . ($result ? 'true' : 'false') . "\n";
-                              $log .= "New DB value: " . get_option('maxi_ai_provider', 'FALLBACK') . "\n";
-                         } else {
-                              $log .= "Provider not in allowed list\n";
+                              update_option('maxi_ai_provider', $provider);
                          }
-                     } else {
-                         $log .= "maxi_ai_provider NOT in POST\n";
                      }
-                 } else {
-                     $log .= "option_page condition NOT matched\n";
                  }
-                 $log .= "---\n";
-                 file_put_contents($log_file, $log, FILE_APPEND);
             });
 
             add_action('admin_init', [$this, 'register_maxi_blocks_settings']);

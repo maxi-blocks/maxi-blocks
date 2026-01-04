@@ -132,29 +132,6 @@ MaxiBlocks now exposes a REST proxy endpoint for communicating with ACP agents. 
 
 If the `maxi_blocks_acp_base_url` option is set, requests must match the configured base URL (scheme, host, and port).
 
-## Agent Communication Protocol (ACP) 🔗
-
-MaxiBlocks now exposes a REST proxy endpoint for communicating with ACP agents. This lets you connect ACP-compatible services (BeeAI, LangChain, CrewAI, or custom agents) to the WordPress editor while keeping requests authenticated to logged-in editors.
-
-**Endpoint**
-
-`POST /wp-json/maxi-blocks/v1/acp/request`
-
-**Required fields**
-
-- `url` (string): Full ACP endpoint URL.
-
-**Optional fields**
-
-- `method` (string): HTTP method (defaults to `POST`).
-- `payload` (object|array|null): JSON payload to send.
-- `headers` (object|array|null): Additional headers.
-- `timeout` (number): Timeout in seconds.
-
-**Security**
-
-If the `maxi_blocks_acp_base_url` option is set, requests must match the configured base URL (scheme, host, and port).
-
 ## Prompt Maxi Copywriting Controls ✍️
 
 Adjustable settings for the content creation text block.

@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
+import { dispatch, useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { cloneDeep } from 'lodash';
 
 /**
@@ -1181,17 +1181,23 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 				let changes = {};
 				const prefix = getBlockPrefix(selectedBlock.name);
+				console.log('[Maxi AI Debug] MODIFY_BLOCK - Block name:', selectedBlock.name, 'Prefix:', prefix || '(empty)');
 
 				// Helper to collect changes for a single block
 				const getChangesForSelection = (prop, val) => {
 					let c = null;
+					
+					// Detect removal commands
+					const isRemoval = val === null || val === 'none' || val === 'remove' || val === 0 || val === '0' || val === 'square';
+					
 					switch (prop) {
 						case 'padding': c = updatePadding(val, null, prefix); break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
 						case 'background_color': c = updateBackgroundColor(selectedBlock.clientId, val, selectedBlock.attributes); break;
 						case 'border': 
-							if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, prefix);
+							if (isRemoval) c = updateBorder(0, 'none', null, prefix);
+							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, prefix);
 							else {
 								const parts = String(val).split(' ');
 								if (parts.length >= 3) c = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), prefix);
@@ -1199,10 +1205,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							}
 							break;
 						case 'border_radius': 
-							// Normalize square/0
-							let rVal = val;
-							if (val === 'square' || val === '0px' || val === '0' || parseInt(val) === 0) rVal = 0;
-							else if (typeof val === 'string') {
+							// Normalize square/0/removal
+							let rVal = isRemoval ? 0 : val;
+							if (!isRemoval && (val === '0px' || parseInt(val) === 0)) rVal = 0;
+							else if (!isRemoval && typeof val === 'string') {
 								if (val.includes('subtle')) rVal = 8;
 								else if (val.includes('soft')) rVal = 24;
 								else if (val.includes('full')) rVal = 50;
@@ -1213,7 +1219,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'shadow':
 						case 'box_shadow':
 						case 'box-shadow':
-							if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, prefix);
+							if (isRemoval) c = removeBoxShadow(prefix);
+							else if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, prefix);
 							else c = { [`${prefix}box-shadow-general`]: val, [`${prefix}box-shadow-status-general`]: true };
 							break;
 						case 'width': c = updateWidth(val, String(val).includes('%') ? '' : 'px', prefix); break;
@@ -1221,6 +1228,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'objectFit':
 						case 'object_fit': c = updateImageFit(val); break;
 						case 'opacity': c = updateOpacity(val); break;
+						// Typography properties
+						case 'color':
+						case 'text_color':
+							c = updateTextColor(val);
+							break;
+						case 'font_size':
+						case 'fontSize':
+							c = updateFontSize(val);
+							break;
+						case 'font_weight':
+						case 'fontWeight':
+							c = updateFontWeight(val);
+							break;
 					}
 					return c;
 				};
@@ -1246,19 +1266,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							if (val.margin) Object.assign(allChanges, getChangesForSelection('margin', val.margin));
 						} else {
 							const c = getChangesForSelection(prop, val);
+							console.log('[Maxi AI Debug] getChangesForSelection result:', prop, val, '->', c);
 							if (c) Object.assign(allChanges, c);
 						}
 					});
 
+					console.log('[Maxi AI Debug] Final allChanges:', JSON.stringify(allChanges));
+					console.log('[Maxi AI Debug] selectedBlock:', selectedBlock?.name, 'clientId:', selectedBlock?.clientId);
 					if (Object.keys(allChanges).length > 0) {
-						updateBlockAttributes(selectedBlock.clientId, allChanges);
+						console.log('[Maxi AI Debug] Calling dispatch updateBlockAttributes with:', selectedBlock?.clientId, allChanges);
+						// Use direct dispatch instead of hook to ensure the update goes through
+						dispatch('core/block-editor').updateBlockAttributes(selectedBlock.clientId, allChanges);
+						console.log('[Maxi AI Debug] dispatch updateBlockAttributes called successfully');
 					}
 				}
 
 				// 3. Handle Direct Property/Value
 				if (action.property && action.value !== undefined) {
 					const c = getChangesForSelection(action.property, action.value);
-					if (c) updateBlockAttributes(selectedBlock.clientId, c);
+					if (c) dispatch('core/block-editor').updateBlockAttributes(selectedBlock.clientId, c);
 				}
 
 				// 4. Trigger Sidebar Expand based on properties (Enhanced Selection Feedback)
@@ -1470,8 +1496,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// CLIENT-SIDE INTERCEPTION: Detect vague requests and show clarification immediately
 		const lowerMessage = userMessage.toLowerCase();
 		
-		// Border requests - detect target from user message
-		if (lowerMessage.includes('border') && !lowerMessage.includes('radius') && !lowerMessage.includes('square') && !lowerMessage.includes('subtle') && !lowerMessage.includes('strong') && !lowerMessage.includes('brand')) {
+		// Border requests - detect target from user message (exclude removal commands)
+		if (lowerMessage.includes('border') && !lowerMessage.includes('radius') && !lowerMessage.includes('square') && !lowerMessage.includes('subtle') && !lowerMessage.includes('strong') && !lowerMessage.includes('brand') && !lowerMessage.includes('remove')) {
 			// Detect what the user wants to target
 			let target = null;
 			if (lowerMessage.includes('image')) target = 'image';
@@ -1488,8 +1514,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-		// Shadow requests - detect target from user message
-		if (lowerMessage.includes('shadow') && !lowerMessage.includes('soft') && !lowerMessage.includes('crisp') && !lowerMessage.includes('bold')) {
+		// Shadow requests - detect target from user message (exclude removal commands)
+		if (lowerMessage.includes('shadow') && !lowerMessage.includes('soft') && !lowerMessage.includes('crisp') && !lowerMessage.includes('bold') && !lowerMessage.includes('remove') && !lowerMessage.includes('no shadow')) {
 			// Detect what the user wants to target
 			let target = null;
 			if (lowerMessage.includes('image')) target = 'image';
@@ -1525,9 +1551,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-		// Rounded corners requests - detect target from user message
+		// Rounded corners requests - detect target from user message (exclude removal commands)
 		if ((lowerMessage.includes('round') || lowerMessage.includes('corner') || lowerMessage.includes('radius')) 
-			&& !lowerMessage.includes('subtle') && !lowerMessage.includes('soft') && !lowerMessage.includes('full') && !lowerMessage.includes('square')) {
+			&& !lowerMessage.includes('subtle') && !lowerMessage.includes('soft') && !lowerMessage.includes('full') && !lowerMessage.includes('square') && !lowerMessage.includes('remove')) {
 			// Detect what the user wants to target
 			let target = null;
 			if (lowerMessage.includes('image')) target = 'image';
@@ -1541,6 +1567,51 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				targetContext: target,
 				executed: false
 			}]);
+			return;
+		}
+		
+		// DIRECT ACTION: "Make it square" / "remove rounded corners" / "remove border radius"
+		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (lowerMessage.includes('round') || lowerMessage.includes('radius')))) {
+			setIsLoading(true);
+			const directAction = scope === 'selection' 
+				? { action: 'MODIFY_BLOCK', payload: { border_radius: 0 }, message: 'Removed rounded corners from selected block.' }
+				: { action: 'update_page', property: 'border_radius', value: 0, message: 'Removed rounded corners.' };
+			
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
+		
+		// DIRECT ACTION: "Remove shadow" / "no shadow"
+		if (lowerMessage.includes('remove') && lowerMessage.includes('shadow') || lowerMessage.includes('no shadow')) {
+			setIsLoading(true);
+			const directAction = scope === 'selection'
+				? { action: 'MODIFY_BLOCK', payload: { shadow: 'none' }, message: 'Removed shadow from selected block.' }
+				: { action: 'update_page', property: 'box_shadow', value: 'none', message: 'Removed shadows.' };
+			
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
+		
+		// DIRECT ACTION: "Remove border"
+		if (lowerMessage.includes('remove') && lowerMessage.includes('border') && !lowerMessage.includes('radius')) {
+			setIsLoading(true);
+			const directAction = scope === 'selection'
+				? { action: 'MODIFY_BLOCK', payload: { border: 'none' }, message: 'Removed border from selected block.' }
+				: { action: 'update_page', property: 'border', value: 'none', message: 'Removed borders.' };
+			
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
 			return;
 		}
 
@@ -1631,6 +1702,39 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					console.log('[Maxi AI] Non-JSON response, creating apply_theme for global scope');
 					assistantContent = JSON.stringify({ action: 'apply_theme', prompt: userMessage });
 				}
+			}
+
+			// Coerce update_page to MODIFY_BLOCK in selection mode
+			if (scope === 'selection') {
+				try {
+					const parsed = JSON.parse(assistantContent.trim());
+					if (parsed.action === 'update_page' || parsed.action === 'apply_responsive_spacing') {
+						console.log('[Maxi AI] Coercing', parsed.action, 'to MODIFY_BLOCK for selection mode');
+						const coerced = {
+							action: 'MODIFY_BLOCK',
+							message: parsed.message || 'Applied to selected block.',
+							payload: {}
+						};
+						
+						// Map properties from update_page to MODIFY_BLOCK payload
+						if (parsed.property === 'box_shadow' || parsed.payload?.shadow) {
+							coerced.payload.shadow = parsed.value || parsed.payload?.shadow;
+						} else if (parsed.property === 'border_radius' || parsed.payload?.border_radius !== undefined) {
+							coerced.payload.border_radius = parsed.value ?? parsed.payload?.border_radius;
+						} else if (parsed.property === 'border' || parsed.payload?.border) {
+							coerced.payload.border = parsed.value || parsed.payload?.border;
+						} else if (parsed.property === 'padding') {
+							coerced.payload.padding = parsed.value;
+						} else if (parsed.preset) {
+							coerced.payload.spacing_preset = parsed.preset;
+						} else if (parsed.property && parsed.value !== undefined) {
+							// Generic property mapping
+							coerced.payload[parsed.property] = parsed.value;
+						}
+						
+						assistantContent = JSON.stringify(coerced);
+					}
+				} catch (e) { /* Not JSON, continue */ }
 			}
 
 			const { executed, message, options } = await parseAndExecuteAction(assistantContent);

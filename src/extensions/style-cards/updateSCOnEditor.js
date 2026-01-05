@@ -37,10 +37,7 @@ export const getSCFontsData = obj => {
 
 	Object.entries(obj).forEach(([key, val]) => {
 		if (key.includes('font-family')) {
-			if (val) {
-				// Extract just the primary font name (before comma/fallback stack)
-				fontName = val.replaceAll('"', '').split(',')[0].trim();
-			}
+			if (val) fontName = val.replaceAll('"', '');
 			response[fontName] = response[fontName] ?? {
 				weight: [],
 				style: [],

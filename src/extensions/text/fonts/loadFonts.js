@@ -187,34 +187,7 @@ const loadFonts = async (
 				const fontRecord = select('maxiBlocks/text').getFont(fontName);
 				const fontFiles = fontRecord?.files;
 
-				// Fallback: If font isn't in store, load directly from Google Fonts
-				if (isEmpty(fontFiles)) {
-					const fontId = `maxi-blocks-gfont-${fontName.toLowerCase().replace(/\s/g, '-')}`;
-					
-					// Check if already loaded
-					if (target.getElementById?.(fontId) || target.head?.querySelector?.(`#${CSS.escape(fontId)}`)) {
-						return;
-					}
-					
-					// Build Google Fonts URL directly
-					const weight = fontDataNew?.weight || '400';
-					const apiUrl = window.maxiBlocksMain?.bunny_fonts
-						? 'https://fonts.bunny.net'
-						: 'https://fonts.googleapis.com';
-					const fontUrl = `${apiUrl}/css2?family=${encodeURIComponent(fontName)}:wght@${weight}&display=swap`;
-					
-					// Create and inject link element
-					const linkElement = document.createElement('link');
-					linkElement.id = fontId;
-					linkElement.rel = 'stylesheet';
-					linkElement.href = fontUrl;
-					linkElement.type = 'text/css';
-					
-					const targetHead = target.head || Array.from(target.querySelectorAll('head')).pop();
-					if (targetHead) targetHead.appendChild(linkElement);
-					
-					return;
-				}
+				if (isEmpty(fontFiles)) return;
 
 				// Custom font flow: inject @font-face rules via <style>
 				if (fontRecord?.source === 'custom') {

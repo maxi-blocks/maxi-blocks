@@ -13,8 +13,6 @@ import './editor.scss';
 import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCards';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
-import updateSCOnEditor from '@extensions/style-cards/updateSCOnEditor';
-import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
@@ -213,14 +211,6 @@ const LAYOUT_PATTERNS = [
 	{ regex: /feminine|soft.*pastel|delicate|script.*font/, property: 'aesthetic', value: 'feminine', selectionMsg: 'Applied feminine style.', pageMsg: 'Applied feminine aesthetic.' },
 	{ regex: /corporate|professional|business|navy.*slate/, property: 'aesthetic', value: 'corporate', selectionMsg: 'Applied corporate style.', pageMsg: 'Applied corporate aesthetic.' },
 	{ regex: /natural|organic|earth.*tone|terracotta|sage/, property: 'aesthetic', value: 'natural', selectionMsg: 'Applied natural style.', pageMsg: 'Applied natural/organic aesthetic.' },
-	
-	// STRATEGIC VISUAL ARCHITECTURES
-	{ regex: /luxury|opulent|concierge|elegant/, property: 'aesthetic', value: 'luxury', selectionMsg: 'Applied luxury aesthetic.', pageMsg: 'Applied luxury aesthetic.' },
-	{ regex: /classy|old\s*money|quiet\s*luxury|heritage/, property: 'aesthetic', value: 'classy', selectionMsg: 'Applied classy aesthetic.', pageMsg: 'Applied classy aesthetic.' },
-	{ regex: /cyberpunk|neon|matrix|night\s*city|futuristic/, property: 'aesthetic', value: 'cyberpunk', selectionMsg: 'Applied cyberpunk style.', pageMsg: 'Applied cyberpunk aesthetic.' },
-	{ regex: /retro|vintage|miami|80s|arcade|synthwave/, property: 'aesthetic', value: 'retro', selectionMsg: 'Applied retro style.', pageMsg: 'Applied retro aesthetic.' },
-	{ regex: /playful|summer|youth|fun|dopamine|cloud.*look/, property: 'aesthetic', value: 'playful', selectionMsg: 'Applied playful style.', pageMsg: 'Applied playful aesthetic.' },
-	{ regex: /seasonal|winter|autumn|spring/, property: 'aesthetic', value: 'seasonal_winter', selectionMsg: 'Applied seasonal aesthetic.', pageMsg: 'Applied seasonal aesthetic.' },
 	
 	// GROUP 13: TYPOGRAPHY READABILITY
 	{ regex: /lines.*crash|wall.*text|too.*close.*lines|line.*height|more.*space.*lines/, property: 'line_height', value: 1.8, selectionMsg: 'Increased line spacing (line-height: 1.8).', pageMsg: 'Improved line spacing for readability.' },
@@ -1120,71 +1110,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		const targetCard = newStyleCards[targetKey];
 		let changesCount = 0;
 
-		// Helper: Hex to RGB String (255,255,255)
-		const hexToRgbString = (hex) => {
-			if (!hex) return '0,0,0';
-			// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-			const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-			hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-			return result ? 
-				`${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}` : 
-				'0,0,0';
-		};
-
-		// Helper to safely set deeply nested values with schema mapping
+		// Helper to safely set deeply nested values
 		const setStyleValue = (key, value) => {
-			// Strip CSS fallback stacks from font-family values (e.g., "Oswald, sans-serif" -> "Oswald")
-			// Style Card stores just the font name, CSS fallback is handled elsewhere
-			let processedValue = value;
-			if (key.toLowerCase().includes('font-family') && typeof value === 'string' && value.includes(',')) {
-				processedValue = value.split(',')[0].trim();
-				console.log('[Maxi AI] Stripped font fallback:', { original: value, new: processedValue });
-			}
-			
 			['light', 'dark'].forEach(mode => {
 				if (!targetCard[mode]) targetCard[mode] = {};
 				if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
 				
-				// 1. Handle Color Palette (color-palette-1 -> color[1])
-				if (key.startsWith('color-palette-')) {
-					if (!targetCard[mode].styleCard.color) targetCard[mode].styleCard.color = {};
-					const paletteIndex = key.replace('color-palette-', '');
-					// Convert Hex to RGB string for Style Card
-					targetCard[mode].styleCard.color[paletteIndex] = hexToRgbString(value);
-					return;
-				}
-
-				// 2. Handle Heading Typography (Apply to all H tags)
-				if (key.includes('-heading')) {
-					const actualProperty = key.replace('-heading', '-general'); // font-family-heading -> font-family-general
-					['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(tag => {
-						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
-						targetCard[mode].styleCard[tag][actualProperty] = processedValue;
-					});
-					return;
-				}
-
-				// 3. Handle Body/General Typography (Apply to p, list, button)
-				if (key === 'font-family-general' || key === 'font-weight-general') {
-					['p', 'ul', 'ol', 'button', 'a'].forEach(tag => {
-						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
-						targetCard[mode].styleCard[tag][key] = processedValue;
-					});
-					// Also set as fallback for headings if they don't have overrides? 
-					// For now, keep it simple.
-					return;
-				}
-				
-				// 4. Default Fallback
-				let category = 'color'; 
+				// Identify category
+				let category = 'color'; // Default
 				if (key.startsWith('font-')) category = 'typography';
 				
 				if (!targetCard[mode].styleCard[category]) {
 					targetCard[mode].styleCard[category] = {};
 				}
 
-				targetCard[mode].styleCard[category][key] = processedValue;
+				targetCard[mode].styleCard[category][key] = value;
 			});
 			changesCount++;
 		};
@@ -1194,35 +1134,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		});
 
 		if (changesCount > 0) {
-			// Mark as having pending changes so 'Save' button enables in editor
-			targetCard.pendingChanges = true;
-			
-			// Update state but DO NOT save to DB yet (second arg false)
-			saveMaxiStyleCards(newStyleCards, false);
-
-			// Updates the canvas CSS variables so changes are visible immediately
-			const activeColor = getActiveColourFromSC(targetCard, 4);
-			
-			// Robustly find the editor canvas (iframe or document)
-			const frames = [document];
-			const iframe = document.querySelector('iframe[name="editor-canvas"]');
-			if (iframe && iframe.contentDocument) frames.push(iframe.contentDocument);
-			
-			updateSCOnEditor(targetCard, activeColor, frames, true);
+			saveMaxiStyleCards(newStyleCards, true);
 			
 			// Switch UI if we changed cards
 			if (setActiveStyleCard && targetKey !== activeKey) {
 				setActiveStyleCard(targetKey);
 			}
 			
-			// Open Style Card editor for user to review and save
-			setTimeout(() => {
-				if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
-					window.maxiBlocksOpenStyleCardsEditor();
-				}
-			}, 200);
-			
-			return message + ' Review and save in the Style Card editor.';
+			return message;
 		}
 		return __('No valid Style Card updates found.', 'maxi-blocks');
 	};
@@ -2669,29 +2588,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (lowerMessage.match(pattern.regex)) {
 				setIsLoading(true);
 				
-				// SPECIAL: Aesthetic patterns provide clarification options
+				// SPECIAL: Aesthetic patterns use apply_theme for global style changes
 				if (pattern.property === 'aesthetic') {
-					// Aesthetic styles need specific colour/style choices
-					const styleOptions = {
-						'minimalism': ['White background', 'Light greys only', 'Remove all shadows'],
-						'brutalism': ['Black borders', 'Monospace fonts', 'High contrast'],
-						'neobrutalism': ['Thick borders', 'Block shadows', 'Vibrant pastels'],
-						'swiss': ['Grid layout', 'Helvetica style', 'Red accents'],
-						'editorial': ['Serif headings', 'Pull quotes', 'High contrast'],
-						'masculine': ['Dark colours', 'Sharp corners', 'Bold weights'],
-						'feminine': ['Soft pastels', 'Rounded shapes', 'Script accents'],
-						'corporate': ['Navy palette', 'Clean sans-serif', 'Generous spacing'],
-						'natural': ['Earth tones', 'Organic curves', 'Warm palette'],
+					const directAction = {
+						action: 'apply_theme',
+						prompt: `Apply ${pattern.value} style: ${lowerMessage}`,
+						message: pattern.pageMsg
 					};
-					const options = styleOptions[pattern.value] || ['Apply style'];
-					setMessages(prev => [...prev, {
-						role: 'assistant',
-						content: `Which aspect of the ${pattern.value} style would you like to apply?`,
-						options,
-						aestheticStyle: pattern.value,
-						executed: false
-					}]);
-					setIsLoading(false);
+					setTimeout(async () => {
+						const result = await parseAndExecuteAction(directAction);
+						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+						setIsLoading(false);
+					}, 50);
 					return;
 				}
 				
@@ -3083,173 +2991,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			} // Close inner if (prevMsg?.shadowColorChoice)
 		} // Close else if (['Soft', 'Medium', 'Hard'])
 
-		// 10. AESTHETIC STYLE OPTIONS
-		// Masculine style - Fonts: Oswald (Heading), Roboto (Body)
-		else if (suggestion === 'Dark colours') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Full 8-color Dark Palette
-					'color-palette-1': '#1a1a1a', // Dark Background
-					'color-palette-2': '#2d2d2d', // Dark Surface
-					'color-palette-3': '#404040', // Muted
-					'color-palette-4': '#ffffff', // Primary (White contrast)
-					'color-palette-5': '#ffffff', // Heading Text
-					'color-palette-6': '#e5e5e5', // Hover
-					'color-palette-7': '#333333', // Surface 2
-					'color-palette-8': '#000000', // Shadow
-					// Typography
-					'font-family-heading': 'Oswald, sans-serif', 
-					'font-family-general': 'Roboto, sans-serif', 
-					'font-weight-heading': 700 
-				}, 
-				message: 'Applied full dark palette and masculine fonts.' 
-			};
-		}
-		else if (suggestion === 'Sharp corners') directAction = { action: 'update_page', property: 'border_radius', value: 0, target_block: 'container', message: 'Removed all rounded corners (sharp aesthetic).' };
-		else if (suggestion === 'Bold weights') directAction = { action: 'update_style_card', updates: { 'font-weight-heading': 700 }, message: 'Applied bold weights.' };
-		
-		// Feminine style - Fonts: Playfair Display (Heading), Lato (Body)
-		else if (suggestion === 'Soft pastels') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Full 8-color Pastel Palette
-					'color-palette-1': '#fff0f5', // Lavender Blush
-					'color-palette-2': '#fff5f8', // Lighter
-					'color-palette-3': '#ffd1dc', // Pastel Pink
-					'color-palette-4': '#db7093', // Primary (Pale Violet Red)
-					'color-palette-5': '#5c5c5c', // Text Dark Grey
-					'color-palette-6': '#c71585', // Hover
-					'color-palette-7': '#ffe4e1', // Misty Rose
-					'color-palette-8': '#e0c0c0', // Shadow
-					// Typography
-					// 'font-family-heading': 'Playfair Display', 
-					// 'font-family-general': 'Lato'
-				}, 
-				message: 'Applied soft pastel palette and feminine fonts.' 
-			};
-		}
-		else if (suggestion === 'Rounded shapes') directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: 'container', message: 'Applied rounded corners (soft aesthetic).' };
-		else if (suggestion === 'Script accents') directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: 'container', message: 'Applied rounded corners (soft aesthetic).' };
-		
-		// Corporate style - Fonts: Montserrat (Heading), Open Sans (Body)
-		else if (suggestion === 'Navy palette') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Full 8-color Navy Palette
-					'color-palette-1': '#ffffff', // White BG
-					'color-palette-2': '#f0f4f8', // Light Blue/Grey
-					'color-palette-3': '#8da3c1', // Muted Blue
-					'color-palette-4': '#1e3a5f', // Primary Navy
-					'color-palette-5': '#0f1e31', // Dark Heading
-					'color-palette-6': '#2b4d7a', // Hover Navy
-					'color-palette-7': '#e1e8f0', // Surface
-					'color-palette-8': '#0a1420', // Shadow
-					// Typography
-					// 'font-family-heading': 'Montserrat',
-					// 'font-family-general': 'Open Sans'
-				}, 
-				message: 'Applied navy corporate palette and fonts.' 
-			};
-		}
-		else if (suggestion === 'Clean sans-serif') directAction = { action: 'update_page', property: 'gap', value: 20, target_block: 'container', message: 'Applied clean spacing.' };
-		else if (suggestion === 'Generous spacing') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: 'container', message: 'Applied generous spacing.' };
-		
-		// Minimalism style - Fonts: Inter (All)
-		else if (suggestion === 'White background') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Full 8-color Minimalist Palette
-					'color-palette-1': '#ffffff', // Pure White
-					'color-palette-2': '#fafafa', // Off White
-					'color-palette-3': '#e0e0e0', // Light Grey
-					'color-palette-4': '#000000', // Primary Black
-					'color-palette-5': '#111111', // Almost Black Text
-					'color-palette-6': '#333333', // Hover Grey
-					'color-palette-7': '#f5f5f5', // Surface
-					// 'font-family-general': 'Inter',
-					// 'font-family-heading': 'Inter'
-				}, 
-				message: 'Applied minimalist white palette and Inter font.' 
-			};
-		}
-		else if (suggestion === 'Light greys only') directAction = { action: 'update_style_card', updates: { 'color-palette-5': '#666666', 'color-palette-8': '#444444' }, message: 'Applied light grey text palette to Style Card.' };
-		else if (suggestion === 'Remove all shadows') directAction = { action: 'update_page', property: 'box_shadow', value: 'none', target_block: 'container', message: 'Removed all shadows (minimalist).' };
-		
-		// Brutalism/Neobrutalism
-		else if (suggestion === 'Black borders') directAction = { action: 'update_page', property: 'border', value: { width: 3, style: 'solid', color: 8 }, target_block: 'container', message: 'Applied black borders (brutalist).' };
-		else if (suggestion === 'Thick borders') directAction = { action: 'update_page', property: 'border', value: { width: 4, style: 'solid', color: 8 }, target_block: 'container', message: 'Applied thick borders (neobrutalist).' };
-		else if (suggestion === 'Block shadows') directAction = { action: 'update_page', property: 'box_shadow', value: { x: 5, y: 5, blur: 0, spread: 0, color: 8 }, target_block: 'container', message: 'Applied block shadows (neobrutalist).' };
-		else if (suggestion === 'Vibrant pastels') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Full 8-color Neo-Brutalist Palette
-					'color-palette-1': '#fffbf0', // Cream BG
-					'color-palette-2': '#ffd1dc', // Pink
-					'color-palette-3': '#ffeb99', // Yellow
-					'color-palette-4': '#98d8c8', // Teal
-					'color-palette-5': '#000000', // Black Text
-					'color-palette-6': '#7ac7b5', // Hover Teal
-					'color-palette-7': '#e6e6fa', // Lavender
-					// 'font-family-general': 'Work Sans',
-					// 'font-family-heading': 'Space Mono'
-				}, 
-				message: 'Applied vibrant neo-brutalist palette and fonts.' 
-			};
-		}
-		else if (suggestion === 'Monospace fonts') directAction = { action: 'update_page', property: 'border', value: { width: 2, style: 'solid', color: 5 }, target_block: 'container', message: 'Applied monospace-themed borders.' };
-		else if (suggestion === 'High contrast') directAction = { action: 'update_style_card', updates: { 'color-palette-1': '#ffffff', 'color-palette-5': '#000000', 'color-palette-8': '#000000' }, message: 'Applied high contrast palette to Style Card.' };
-		
-		// Swiss/Editorial
-		else if (suggestion === 'Grid layout') directAction = { action: 'update_page', property: 'gap', value: 24, target_block: 'container', message: 'Applied Swiss grid spacing.' };
-		else if (suggestion === 'Helvetica style') directAction = { action: 'update_style_card', updates: { 'font-weight-heading': 900 }, message: 'Applied bold Helvetica-style weights.' };
-		else if (suggestion === 'Red accents') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Swiss Red Palette
-					'color-palette-1': '#ffffff', 
-					'color-palette-2': '#f5f5f5',
-					'color-palette-3': '#999999',
-					'color-palette-4': '#ff0000', // International Red
-					'color-palette-5': '#000000',
-					'color-palette-6': '#cc0000',
-					'color-palette-7': '#eeeeee',
-					'color-palette-8': '#000000'
-				}, 
-				message: 'Applied Swiss red accent palette.' 
-			};
-		}
-		else if (suggestion === 'Serif headings') directAction = { action: 'update_page', property: 'font_weight', value: 400, target_block: 'heading', message: 'Normalized heading weights.' };
-		else if (suggestion === 'Pull quotes') directAction = { action: 'update_page', property: 'font_weight', value: 300, target_block: 'text', message: 'Applied editorial typography.' };
-		
-		// Natural style
-		else if (suggestion === 'Earth tones') {
-			directAction = { 
-				action: 'update_style_card', 
-				updates: { 
-					// Earth Tones Palette
-					'color-palette-1': '#f5f0e6', // Linen
-					'color-palette-2': '#e0d8c8', // Tan
-					'color-palette-3': '#a89f91', // Taupe
-					'color-palette-4': '#8b7355', // Brown
-					'color-palette-5': '#3e362e', // Dark Brown Text
-					'color-palette-6': '#6d5a43', // Hover Brown
-					'color-palette-7': '#d6cec2', // Beige
-					// 'font-family-heading': 'Lora',
-					// 'font-family-general': 'Nunito'
-				}, 
-				message: 'Applied earth tone palette and natural fonts.' 
-			};
-		}
-		else if (suggestion === 'Organic curves') directAction = { action: 'update_page', property: 'border_radius', value: 50, target_block: 'container', message: 'Applied organic rounded shapes.' };
-		else if (suggestion === 'Warm palette') directAction = { action: 'update_style_card', updates: { 'color-palette-1': '#fff8f0', 'color-palette-4': '#c67b5c', 'color-palette-2': '#ffe0d0' }, message: 'Applied warm natural palette to Style Card.' };
-
-		// 11. ICON LINE WIDTH PRESETS
+		// 10. ICON LINE WIDTH PRESETS
 		else if (['Thin', 'Medium', 'Thick'].includes(suggestion)) {
 			const prevMsg = messages.findLast(m => m.lineWidthTarget !== undefined);
 			// Only handle as line width preset if we have line width context

@@ -97,135 +97,68 @@ const VIBE_DICTIONARY = {
 			8: '#ddd6fe', // Violet shadow
 		},
 	},
-	// NEW: Retro (Miami Vice / 80s)
-	'retro': {
+	'retro vintage': {
 		headingFont: {
-			family: 'Press Start 2P',
-			weight: 400,
-		},
-		bodyFont: {
-			family: 'VT323',
-			weight: 400,
-			lineHeight: 1.5,
-		},
-		palette: {
-			1: '#131c5a', // Space Cadet (Background)
-			2: '#1da5be', // Pacific Blue
-			3: '#d1439e', // Pantone Pink
-			4: '#f8e924', // Dandelion (Primary Pop)
-			5: '#ffffff', // White Text
-			6: '#d1439e', // Pink Hover
-			7: '#1da5be', // Blue Surface
-			8: '#000000', // Void Shadow
-		},
-	},
-	// NEW: Luxury (Opulent Concierge)
-	'luxury': {
-		headingFont: {
-			family: 'Cormorant Garamond',
-			weight: 300,
-		},
-		bodyFont: {
-			family: 'Poppins',
-			weight: 300,
-			lineHeight: 1.8,
-			letterSpacing: 0.05,
-		},
-		palette: {
-			1: '#080808', // Obsidian
-			2: '#1b1b1b', // Surface
-			3: '#bcabb0', // Muted Rose
-			4: '#5d3543', // Deep Mulberry
-			5: '#fffcfc', // Snow White Text
-			6: '#785964', // Dusty Mauve
-			7: '#151515', // Dark Surface
-			8: '#000000', // Shadow
-		},
-	},
-	// NEW: Cyberpunk (Night City)
-	'cyberpunk': {
-		headingFont: {
-			family: 'Orbitron',
-			weight: 700,
-			letterSpacing: 0.1,
+			family: 'Fraunces',
+			weight: 600,
 		},
 		bodyFont: {
 			family: 'Space Mono',
 			weight: 400,
 		},
 		palette: {
-			1: '#0a0a0f', // Deep Void
-			2: '#16161e', // Surface
-			3: '#e0e0ff', // Pale Blue Text
-			4: '#00ffff', // Electric Cyan
-			5: '#ff00ff', // Magenta Heading/Accent
-			6: '#ffff00', // Acid Yellow Hover
-			7: '#101015', // Surface 2
-			8: '#000000', // Shadow
+			1: '#fefce8', // Cream background
+			2: '#fef2f2', // Warm white
+			3: '#78716c', // Stone muted
+			4: '#ea580c', // Primary orange
+			5: '#44403c', // Stone dark heading
+			6: '#c2410c', // Hover orange
+			7: '#fef3c7', // Amber surface
+			8: '#eac6bc', // Warm shadow
 		},
 	},
-	// NEW: Playful (Summer Fun)
-	'playful': {
-		headingFont: {
-			family: 'Fredoka',
-			weight: 600,
-		},
-		bodyFont: {
-			family: 'Quicksand',
-			weight: 500,
-		},
-		palette: {
-			1: '#f0f3ed', // Off White BG
-			2: '#ffffff', // Pure White Surface
-			3: '#3b2617', // Dark Cocoa Text
-			4: '#0ae0ff', // Sky Blue Primary
-			5: '#3b2617', // Dark Text Heading
-			6: '#f09100', // Tangerine Hover
-			7: '#d1f4ff', // Light Blue Surface
-			8: '#c0d6d1', // Soft Shadow
-		},
-	},
-	// NEW: Classy (Old Money)
-	'classy': {
+	'luxury boutique': {
 		headingFont: {
 			family: 'Cormorant Garamond',
-			weight: 600,
-			fontStyle: 'italic',
+			weight: 300,
 		},
 		bodyFont: {
-			family: 'Proza Libre', // Fallback to Lato if unavailable
-			weight: 400,
+			family: 'Montserrat',
+			weight: 300,
+			lineHeight: 1.8,
+			lineHeightUnit: 'em',
+			letterSpacing: 0.05,
+			letterSpacingUnit: 'em',
 		},
 		palette: {
-			1: '#f3efe8', // Linen White
-			2: '#fdfbf7', // Pearl
-			3: '#0e1c4f', // Midnight Navy Text
-			4: '#bba591', // Warm Beige Primary
-			5: '#0e1c4f', // Navy Heading
-			6: '#8d7b68', // Dark Beige Hover
-			7: '#e6ded5', // Surface
-			8: '#d6cec2', // Shadow
+			1: '#ffffff', // White background
+			2: '#fafaf9', // Stone light
+			3: '#78716c', // Stone muted
+			4: '#a27b5c', // Primary brown
+			5: '#292524', // Stone dark heading
+			6: '#846144', // Hover brown
+			7: '#f5f5f4', // Stone surface
+			8: '#e7e5e4', // Stone shadow
 		},
 	},
-	// NEW: Seasonal (Winter)
-	'seasonal_winter': {
+	'tech dark': {
 		headingFont: {
-			family: 'Bodoni Moda',
-			weight: 700,
+			family: 'Space Grotesk',
+			weight: 500,
 		},
 		bodyFont: {
-			family: 'Roboto',
+			family: 'Inter',
 			weight: 400,
 		},
 		palette: {
-			1: '#f5f9fa', // Ice White
-			2: '#eef6f8', // Glacial
-			3: '#1c315e', // Midnight Text
-			4: '#88a47c', // Frosted Pine
-			5: '#1c315e', // Midnight Heading
-			6: '#227c70', // Teal Hover
-			7: '#ddecee', // Surface
-			8: '#cfdce0', // Shadow
+			1: '#0f172a', // Dark background
+			2: '#1e293b', // Slate dark
+			3: '#94a3b8', // Slate light muted
+			4: '#22d3ee', // Primary cyan
+			5: '#f8fafc', // Light heading
+			6: '#0891b2', // Hover cyan
+			7: '#334155', // Slate medium
+			8: '#000000', // Black shadow
 		},
 	},
 };
@@ -618,57 +551,19 @@ const getVibeFromPrompt = prompt => {
 	const normalizedPrompt = normalizeThemeValue(prompt);
 	if (!normalizedPrompt) return null;
 
-	// Strategic Visual Architectures
-	if (
-		normalizedPrompt.includes('luxury') ||
-		normalizedPrompt.includes('boutique') ||
-		normalizedPrompt.includes('concierge') || 
-		normalizedPrompt.includes('opulent') ||
-		normalizedPrompt.includes('elegant')
-	)
-		return 'luxury';
-		
-	if (
-		normalizedPrompt.includes('retro') ||
-		normalizedPrompt.includes('vintage') ||
-		normalizedPrompt.includes('miami') ||
-		normalizedPrompt.includes('80s') || 
-		normalizedPrompt.includes('arcade')
-	)
-		return 'retro';
-		
-	if (
-		normalizedPrompt.includes('cyberpunk') || 
-		normalizedPrompt.includes('neon') || 
-		normalizedPrompt.includes('futuristic') || 
-		normalizedPrompt.includes('night city') ||
-		normalizedPrompt.includes('matrix')
-	)
-		return 'cyberpunk';
-		
-	if (
-		normalizedPrompt.includes('playful') || 
-		normalizedPrompt.includes('summer') || 
-		normalizedPrompt.includes('youth') || 
-		normalizedPrompt.includes('fun') ||
-		normalizedPrompt.includes('dopamine')
-	)
-		return 'playful';
-
-	if (
-		normalizedPrompt.includes('classy') || 
-		normalizedPrompt.includes('old money') || 
-		normalizedPrompt.includes('quiet luxury') ||
-		normalizedPrompt.includes('heritage')
-	)
-		return 'classy';
-
-	if (normalizedPrompt.includes('winter') || normalizedPrompt.includes('seasonal')) return 'seasonal_winter';
-
-	// Legacy / Specific
 	if (normalizedPrompt.includes('feminine')) return 'feminine';
 	if (normalizedPrompt.includes('modern corporate')) return 'modern corporate';
 	if (normalizedPrompt.includes('bold startup')) return 'bold startup';
+	if (
+		normalizedPrompt.includes('retro') ||
+		normalizedPrompt.includes('vintage')
+	)
+		return 'retro vintage';
+	if (
+		normalizedPrompt.includes('luxury') ||
+		normalizedPrompt.includes('boutique')
+	)
+		return 'luxury boutique';
 	if (normalizedPrompt.includes('tech dark')) return 'tech dark';
 
 	return null;

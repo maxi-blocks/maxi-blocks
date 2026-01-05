@@ -29,13 +29,6 @@ const DisplayControl = props => {
 		defaultDisplay = 'inherit',
 	} = props;
 
-	// Subscribe to global "Reveal Hidden Blocks" flag from maxiBlocks settings
-	const isRevealModeActive = useSelect(select => {
-		const settings = select('maxiBlocks').receiveMaxiSettings();
-		// Expect a boolean settings flag. Default to false if missing.
-		return !!settings?.reveal_hidden_blocks;
-	}, []);
-
 	const isHide = () => {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		const breakpointIndex = breakpoints.indexOf(breakpoint) - 1;
@@ -94,9 +87,7 @@ const DisplayControl = props => {
 	const shouldBeHidden =
 		isHide() || props[`display-${breakpoint}`] === 'none';
 
-	const classes = classnames('maxi-display-control', className, {
-		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,
-	});
+	const classes = classnames('maxi-display-control', className);
 
 	const openListView = () => {
 		const { setIsListViewOpened } = dispatch('core/edit-post');
@@ -105,7 +96,7 @@ const DisplayControl = props => {
 
 	return (
 		<div className={classes}>
-			{shouldBeHidden && !isRevealModeActive && (
+			{shouldBeHidden && (
 				<InfoBox
 					className='maxi-warning-box__hidden-reveal'
 					message={

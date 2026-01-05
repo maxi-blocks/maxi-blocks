@@ -127,7 +127,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcLinkStatus,
 		dcLinkTarget,
 		showLoader,
-		isRevealModeActive,
 		attributes,
 		deviceType,
 		baseBreakpoint,
@@ -205,10 +204,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		uniqueID,
 		className,
 		// Hidden handling
-		displayValue === 'none' &&
-			(isRevealModeActive
-				? 'is-temporarily-revealed'
-				: 'maxi-block--hidden'),
+		displayValue === 'none' && 'maxi-block--hidden',
 		customClasses,
 		paletteClasses,
 		hasLink &&
@@ -356,13 +352,6 @@ const MaxiBlock = memo(
 			return () => {};
 		}, [styleStr, isFirstOnHierarchy, clientId, ref]);
 
-		// Reveal Hidden Blocks: read global flag (non-hook; safe in any render path)
-		const isRevealModeActive = useSelect(
-			sel =>
-				!!sel('maxiBlocks').receiveMaxiSettings()?.reveal_hidden_blocks,
-			[]
-		);
-
 		return (
 			<MaxiBlockContent
 				key={`maxi-block-content__${clientId}`}
@@ -372,7 +361,6 @@ const MaxiBlock = memo(
 				isHovered={isHovered}
 				pagination={pagination}
 				{...props}
-				isRevealModeActive={isRevealModeActive}
 				attributes={attributes}
 				deviceType={deviceType}
 				context={context}
@@ -398,11 +386,6 @@ const MaxiBlock = memo(
 			context,
 			state,
 		} = rawNewProps;
-
-		const isRevealModeActiveOld = rawOldProps.isRevealModeActive;
-		const isRevealModeActiveNew = rawNewProps.isRevealModeActive;
-
-		if (isRevealModeActiveOld !== isRevealModeActiveNew) return false;
 
 		// Check differences between attributes
 		if (!isEqual(oldAttr, newAttr)) return false;

@@ -31,6 +31,12 @@ define(
 define('REQUIRED_MYSQL_VERSION', '8.0');
 define('REQUIRED_MARIADB_VERSION', '10.4');
 
+// Load Composer dependencies when available.
+$maxi_autoload_path = MAXI_PLUGIN_DIR_PATH . 'vendor/autoload.php';
+if (file_exists($maxi_autoload_path)) {
+    require_once $maxi_autoload_path;
+}
+
 //======================================================================
 // Translations
 //======================================================================
@@ -203,63 +209,12 @@ function maxi_blocks_after_update($upgrader_object, $options)
             if ($plugin == plugin_basename(__FILE__)) {
                 // Reset the dismissal option
                 update_option('maxi_blocks_db_notice_dismissed', 'no');
-                update_option('maxi_plugin_update_notice_dismissed', 'no');
                 break;
             }
         }
     }
 }
 add_action('upgrader_process_complete', 'maxi_blocks_after_update', 10, 2);
-
-//======================================================================
-// Clear cache notice after plugin update
-//======================================================================
-
-add_action('admin_init', 'maxi_check_plugin_version_update');
-
-function maxi_check_plugin_version_update()
-{
-    $current_version = MAXI_PLUGIN_VERSION;
-    $stored_version = get_option('maxi_plugin_version', '0');
-
-    if (version_compare($current_version, $stored_version, '!=')) {
-        add_action('admin_notices', 'maxi_plugin_update_notice');
-        update_option('maxi_plugin_update_notice_dismissed', 'no');
-    }
-}
-
-function maxi_plugin_update_notice()
-{
-    if (get_option('maxi_plugin_update_notice_dismissed') === 'yes') {
-        return;
-    }
-
-    echo '<div class="notice notice-warning is-dismissible" id="maxi-plugin-update-notice">';
-    echo '<p>MaxiBlocks plugin has been updated. Please clear your browser and plugin caches to ensure the best performance. <a href="https://maxiblocks.com/go/clearing-caches" target="_blank">Learn more</a></p>';
-    echo '</div>';
-
-    add_action('admin_footer', 'maxi_blocks_enqueue_notice_scripts'); // Reuse the existing function to enqueue scripts
-}
-
-function maxi_blocks_register_plugin_update_notice_route()
-{
-    register_rest_route('maxi-blocks/v1', '/dismiss-plugin-update-notice', [
-        'methods' => 'POST',
-        'callback' => 'maxi_blocks_dismiss_plugin_update_notice',
-        'permission_callback' => function () {
-            return current_user_can('manage_options');
-        },
-    ]);
-}
-add_action('rest_api_init', 'maxi_blocks_register_plugin_update_notice_route');
-
-function maxi_blocks_dismiss_plugin_update_notice()
-{
-    update_option('maxi_plugin_update_notice_dismissed', 'yes');
-    // Update the stored plugin version to the current version to prevent the notice from showing again until the next update
-    update_option('maxi_plugin_version', MAXI_PLUGIN_VERSION);
-    return new WP_REST_Response(null, 204);
-}
 
 //======================================================================
 // Init
@@ -314,6 +269,11 @@ require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 if (class_exists('MaxiBlocks_StyleCards')) {
     MaxiBlocks_StyleCards::register();
 }
+
+//======================================================================
+// MaxiBlocks Custom Fonts
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-fonts.php';
 
 //======================================================================
 // MaxiBlocks Image Crop

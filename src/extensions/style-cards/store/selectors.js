@@ -78,6 +78,7 @@ const navigationObject = {
 		'text-orientation-general': 'unset',
 		'text-direction-general': 'ltr',
 		'white-space-general': 'normal',
+		'text-wrap-general': 'wrap',
 		'word-spacing-general': 0,
 		'word-spacing-unit-general': 'px',
 		'bottom-gap-general': 20,

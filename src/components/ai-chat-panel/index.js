@@ -599,7 +599,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				allAttrs[`${prefix}border-unit-width${suffix}`] = 'px';
 			});
 			
-			console.log('[Maxi AI Debug] updateBorder (Custom) attrs:', prefix, allAttrs);
+			// console.log('[Maxi AI Debug] updateBorder (Custom) attrs:', prefix, allAttrs);
 			return allAttrs;
 		}
 		
@@ -2265,14 +2265,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 		// 7. PALETTE & CUSTOM COLOR SELECTION
 		else if (/^Color .+$/.test(suggestion)) {
-			console.log('[Maxi AI Debug] Color selection triggered:', suggestion);
-			
 			// Extract ID part (can be number or string for custom)
 			const idPart = suggestion.replace('Color ', '');
-			console.log('[Maxi AI Debug] Extracted ID:', idPart);
-			
-			// Debug: customColors
-             // console.log('[Maxi AI Debug] Available customColors:', customColors);
 			
 			let colorValue = null;
 			let isPalette = false;
@@ -2284,26 +2278,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (!isNaN(paletteNum) && String(paletteNum) === idPart && paletteNum >= 1 && paletteNum <= 8) {
 				colorValue = paletteNum;
 				isPalette = true;
-				console.log('[Maxi AI Debug] Identified as Standard Palette:', paletteNum);
 			} else {
 				// Try to find in custom colors
-				// Log the lookup attempt
-				console.log('[Maxi AI Debug] Looking for custom color with ID:', idPart);
-				
 				const customColor = customColors.find(c => String(c.id) === idPart);
 				if (customColor) {
-					console.log('[Maxi AI Debug] Found custom color:', customColor);
 					colorValue = customColor.value; // Use the HEX/String value
 				} else {
-					console.warn('[Maxi AI Debug] Unknown color ID:', idPart);
+					console.warn('Maxi AI: Unknown color ID:', idPart);
 					colorValue = 4; // Fallback to highlight
 					isPalette = true;
 				}
 			}
 
 			const prevMsg = messages.findLast(m => m.colorTarget);
-			console.log('[Maxi AI Debug] Context prevMsg target:', prevMsg?.colorTarget);
-
+			
 			if (prevMsg?.colorTarget === 'border') {
 				// Don't apply immediately - ask for border style preset
 				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);

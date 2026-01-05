@@ -8,6 +8,12 @@ import getVwSize from '@extensions/dom/getViewPortUnitsSize';
  */
 import { cloneDeep, isObject } from 'lodash';
 
+const viewportValueMatch = value => {
+	if (typeof value !== 'string') return null;
+
+	return value.trim().match(/^(-?\d*\.?\d+)(vw|vh)$/);
+};
+
 const getVhSize = () => {
 	if (typeof window === 'undefined') return null;
 
@@ -21,12 +27,19 @@ const getVhSize = () => {
 	return null;
 };
 
-const convertViewportValue = (value, unit, breakpoint) => {
+const convertViewportValue = (value, breakpoint) => {
+	// Skip conversion for 'general' breakpoint
+	if (breakpoint === 'general') return value;
+
+	const match = viewportValueMatch(value);
+
+	if (!match) return value;
+
+	const numericValue = parseFloat(match[1]);
+	const unit = match[2];
 	const size = unit === 'vw' ? getVwSize(breakpoint) : getVhSize();
 
-	if (!size) return value;
-
-	const numericValue = parseFloat(value);
+	if (!size || Number.isNaN(size)) return value;
 
 	if (Number.isNaN(numericValue)) return value;
 
@@ -34,20 +47,23 @@ const convertViewportValue = (value, unit, breakpoint) => {
 };
 
 // Replaces vw and vh units with px values on responsive on editor
+// The breakpoint parameter is the CURRENT VIEW breakpoint (e.g., 'm' when previewing tablet).
+// ALL values should be converted using the CURRENT VIEW breakpoint's size, not the definition breakpoint,
+// because the preview is displaying at that breakpoint's width.
 const viewportUnitsProcessor = (obj, breakpoint) => {
+	// If viewing at 'general', no conversion needed anywhere
 	if (breakpoint === 'general') return obj;
 
 	const response = cloneDeep(obj);
 
+	// Always use the top-level (current view) breakpoint for ALL conversions
+	// This is correct because the preview is showing that breakpoint's width
 	const checkObjUnits = obj => {
 		Object.entries(obj).forEach(([key, val]) => {
 			if (isObject(val)) {
 				checkObjUnits(val);
 			} else if (typeof val === 'string') {
-				if (val.includes('vw'))
-					obj[key] = convertViewportValue(val, 'vw', breakpoint);
-				else if (val.includes('vh'))
-					obj[key] = convertViewportValue(val, 'vh', breakpoint);
+				obj[key] = convertViewportValue(val, breakpoint);
 			}
 		});
 

@@ -1784,7 +1784,9 @@ class MaxiBlockComponent extends Component {
 				uniqueID
 			);
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
-		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+		} else {
+			// Always regenerate styles on breakpoint change to ensure
+			// viewport units (vw/vh) are recalculated for the new breakpoint's width
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,

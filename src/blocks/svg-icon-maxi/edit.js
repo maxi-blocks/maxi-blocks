@@ -28,6 +28,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
+	viewportUnitsProcessor,
 } from '@extensions/styles';
 import {
 	shouldSetPreserveAspectRatio,
@@ -133,10 +134,14 @@ class edit extends MaxiBlockComponent {
 				svgWidth !== ''
 			) {
 				const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+				const { width: processedWidth } = viewportUnitsProcessor(
+					{ width: fullWidthValue },
+					breakpoint
+				);
 
-				if (resizableInstance.state.width !== fullWidthValue) {
+				if (resizableInstance.state.width !== processedWidth) {
 					resizableInstance.updateSize({
-						width: fullWidthValue,
+						width: processedWidth,
 					});
 
 					let newContent = svgCode
@@ -157,9 +162,9 @@ class edit extends MaxiBlockComponent {
 				const resizableElement = resizableInstance.resizable;
 				if (
 					resizableElement &&
-					resizableElement.style.width !== fullWidthValue
+					resizableElement.style.width !== processedWidth
 				) {
-					resizableElement.style.width = fullWidthValue;
+					resizableElement.style.width = processedWidth;
 				}
 			}
 		}
@@ -333,7 +338,7 @@ class edit extends MaxiBlockComponent {
 					{!isEmptyContent && !heightFitContent && (
 						<BlockResizer
 							className='maxi-svg-icon-block__icon'
-							key={`maxi-svg-icon-block__icon--${clientId}`}
+							key={`maxi-svg-icon-block__icon--${clientId}-${deviceType}`}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,
@@ -342,15 +347,20 @@ class edit extends MaxiBlockComponent {
 							lockAspectRatio
 							deviceType={deviceType}
 							defaultSize={{
-								width: `${getLastBreakpointAttribute({
-									target: 'svg-width',
-									breakpoint: deviceType || 'general',
-									attributes,
-								})}${getLastBreakpointAttribute({
-									target: 'svg-width-unit',
-									breakpoint: deviceType || 'general',
-									attributes,
-								})}`,
+								width: viewportUnitsProcessor(
+									{
+										width: `${getLastBreakpointAttribute({
+											target: 'svg-width',
+											breakpoint: deviceType || 'general',
+											attributes,
+										})}${getLastBreakpointAttribute({
+											target: 'svg-width-unit',
+											breakpoint: deviceType || 'general',
+											attributes,
+										})}`,
+									},
+									deviceType || 'general'
+								).width,
 							}}
 							showHandle={isSelected}
 							enable={{

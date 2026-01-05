@@ -2,6 +2,7 @@
  * External dependencies
  */
 import { isNil } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -173,7 +174,7 @@ const getPaneContentWrapperStyles = props => {
 
 	const response = {
 		paneTransition: {
-			label: 'Pane transition',
+			label: __('Pane transition', 'maxi-blocks'),
 			general: {
 				transition: getPaneContentTransition(animationDuration),
 			},

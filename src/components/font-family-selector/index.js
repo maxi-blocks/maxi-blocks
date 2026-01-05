@@ -41,15 +41,48 @@ const FontFamilySelector = props => {
 	} = props;
 
 	const { options } = useSelect(select => {
-		const { getFonts } = select('maxiBlocks/text');
+		const store = select('maxiBlocks/text');
+		const fonts = store?.getFonts?.() ?? {};
+		const customFonts = store?.getCustomFonts?.() ?? {};
 
-		const fonts = getFonts();
-		const options = Object.values(fonts).map(({ value }) => {
-			return { label: value, value };
+		const customOptions = [];
+		const standardOptions = [];
+
+		Object.values(fonts).forEach(fontData => {
+			const value = fontData?.value;
+
+			if (!value) {
+				return;
+			}
+
+			const option = { label: value, value };
+
+			if (customFonts?.[value]) {
+				customOptions.push(option);
+				return;
+			}
+
+			standardOptions.push(option);
 		});
 
+		const groupedOptions = [];
+
+		if (customOptions.length) {
+			groupedOptions.push({
+				label: __('Custom fonts', 'maxi-blocks'),
+				options: customOptions,
+			});
+		}
+
+		if (standardOptions.length) {
+			groupedOptions.push({
+				label: __('Maxi fonts', 'maxi-blocks'),
+				options: standardOptions,
+			});
+		}
+
 		return {
-			options,
+			options: groupedOptions.length ? groupedOptions : standardOptions,
 		};
 	}, []);
 
@@ -74,37 +107,43 @@ const FontFamilySelector = props => {
 	const classes = classnames('maxi-font-family-selector', className);
 
 	return (
-		<BaseControl __nextHasNoMarginBottom>
-			<Select
-				className={classes}
-				classNamePrefix='maxi-font-family-selector__control'
-				options={options}
-				value={value}
-				placeholder={__('Search…', 'maxi-blocks')}
-				onChange={(value, clear) =>
-					clear.action === 'select-option'
-						? onFontChange(value)
-						: onFontChange({
+		<BaseControl
+			__nextHasNoMarginBottom
+			className='maxi-font-family-selector-control'
+		>
+			<div className='maxi-font-family-selector__container'>
+				<Select
+					className={classes}
+					classNamePrefix='maxi-font-family-selector__control'
+					options={options}
+					value={value}
+					placeholder={__('Search…', 'maxi-blocks')}
+					onChange={(value, clear) =>
+						clear.action === 'select-option'
+							? onFontChange(value)
+							: onFontChange({
+									label: defaultValue,
+									value: defaultValue,
+							  })
+					}
+					isLoading={isNil(options)}
+					isClearable
+					onMenuOpen={() => setValue({})}
+					onMenuClose={e => setValue({ label: font, value: font })}
+				/>
+
+				{!disableFontFamilyReset && (
+					<ResetButton
+						isInline
+						onReset={e => {
+							onFontChange({
 								label: defaultValue,
 								value: defaultValue,
-						  })
-				}
-				isLoading={isNil(options)}
-				isClearable
-				onMenuOpen={() => setValue({})}
-				onMenuClose={e => setValue({ label: font, value: font })}
-			/>
-
-			{!disableFontFamilyReset && (
-				<ResetButton
-					onReset={e => {
-						onFontChange({
-							label: defaultValue,
-							value: defaultValue,
-						});
-					}}
-				/>
-			)}
+							});
+						}}
+					/>
+				)}
+			</div>
 		</BaseControl>
 	);
 };

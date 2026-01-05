@@ -6,7 +6,7 @@ import { cleanUrl } from './fontCacheUtils';
  * @param {Object} fontData - The font data
  * @returns {Promise<string>} The font URL
  */
-export const buildFontUrl = async (fontName, fontData = {}) => {
+const buildFontUrl = async (fontName, fontData = {}) => {
 	// Check if we need to use local fonts
 	if (window.maxiBlocksMain?.local_fonts) {
 		const encodedFontName = encodeURIComponent(fontName).replace(
@@ -57,3 +57,5 @@ export const buildFontUrl = async (fontName, fontData = {}) => {
 	)}:${fontString}&display=swap`;
 	return url;
 };
+
+export default buildFontUrl;

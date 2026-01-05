@@ -39,9 +39,6 @@
 		&:last-child {
 			.maxi-accordion-control__item__button {
 				border-bottom: 1px solid var(--maxi-grey-light);
-				&[aria-expanded='true'] {
-					// border-color: transparent;
-				}
 			}
 		}
 		&__button {
@@ -49,7 +46,7 @@
 			z-index: 2;
 			display: flex;
 			align-items: center;
-			padding: 10px;
+			padding: 8px;
 			border-top: 1.5px solid var(--maxi-grey-light);
 			margin-bottom: 0px;
 			background: var(--maxi-white);
@@ -125,7 +122,36 @@
 		}
 	}
 }
-.maxi-context-loop,
-.maxi-repeater {
-	margin-top: 10px !important;
+
+.maxi-sidebar {
+	.maxi-context-loop,
+	.maxi-repeater {
+		> *:last-child {
+			margin-top: 10px !important;
+		}
+	}
+}
+
+// Make the Interaction builder dot and text pink when active
+.maxi-accordion-control__item[data-name='interaction builder'] {
+	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
+		color: var(--maxi-interaction-pink) !important;
+		font-weight: 700 !important;
+		
+		&:before {
+			background-color: var(--maxi-interaction-pink) !important;
+		}
+	}
+}
+
+// Make the Background / Layer dot and text blue when active
+.maxi-accordion-control__item[data-name='background / layer'] {
+	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
+		color: var(--maxi-background-yellow) !important;
+		font-weight: 700 !important;
+		
+		&:before {
+			background-color: var(--maxi-background-yellow) !important;
+		}
+	}
 }

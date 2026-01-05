@@ -61,6 +61,38 @@ const actions = {
 			blockClientIds,
 		};
 	},
+	// UniqueID cache actions for O(1) lookup performance
+	loadUniqueIDCache(uniqueIDs) {
+		return {
+			type: 'LOAD_UNIQUE_ID_CACHE',
+			uniqueIDs,
+		};
+	},
+	addToUniqueIDCache(uniqueID) {
+		return {
+			type: 'ADD_TO_UNIQUE_ID_CACHE',
+			uniqueID,
+		};
+	},
+	removeFromUniqueIDCache(uniqueID) {
+		return {
+			type: 'REMOVE_FROM_UNIQUE_ID_CACHE',
+			uniqueID,
+		};
+	},
+	addMultipleToUniqueIDCache(uniqueIDs) {
+		return {
+			type: 'ADD_MULTIPLE_TO_UNIQUE_ID_CACHE',
+			uniqueIDs,
+		};
+	},
+	// Batch action for adding multiple blocks at once (performance optimization)
+	addMultipleBlocks(blocks) {
+		return {
+			type: 'ADD_MULTIPLE_BLOCKS',
+			blocks, // Array of { uniqueID, clientId, blockRoot }
+		};
+	},
 };
 
 export default actions;

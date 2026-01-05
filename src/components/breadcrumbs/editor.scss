@@ -1,94 +1,138 @@
+// 1. Standalone Utility
 .maxi-breadcrumbs__popover {
-	z-index: 10;
+  z-index: 10;
 }
 
+// 2. Main Component
 .maxi-breadcrumbs {
-	font-family: 'Inter', sans-serif !important;
-	display: flex;
-	position: absolute;
-	bottom: -22px;
-	left: 25px;
-	border-radius: 3px;
-	margin: 0 !important;
-	padding: 0 10px 0 5px !important;
-	background: var(--maxi-primary-color);
-	z-index: 9;
-	transition: 0.3s;
-	transform: scaleX(0);
-	transform-origin: left center;
-	height: 20px;
-	align-items: center;
+  // Layout & Position
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: -22px;
+  left: 25px;
+  z-index: 9;
 
-	&:hover {
-		transform: scaleX(1);
-		.maxi-breadcrumbs__item {
-			transition-delay: 0.2s;
-			opacity: 1;
-		}
-	}
+  // Box Model
+  height: 20px;
+  margin: 0 !important;
+  padding: 0 10px 0 5px !important;
+  border-radius: 3px;
 
-	&--repeater {
-		background: var(--maxi-tertiary-color);
-	}
+  // Visuals
+  background: var(--maxi-primary-color);
+  font-family: 'Inter', sans-serif !important;
 
-	&__item {
-		display: inline;
-		min-width: max-content;
-		list-style: none;
-		font-size: 10px;
-		font-weight: 400;
-		margin-bottom: 0;
-		line-height: 100%;
-		opacity: 0;
+  // Animation / State
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: 0.3s;
 
-		.maxi-breadcrumbs__item__content {
-			text-decoration: underline;
-			text-underline-offset: 3px;
-			text-decoration-color: rgba(var(--maxi-white), 0.6);
-			top: -1px;
-			position: relative;
-		}
+  &:hover {
+    transform: scaleX(1);
 
-		&:not(:last-child):after {
-			content: '>';
-			padding: 0 4px;
-			color: var(--maxi-white);
-		}
-		&__content {
-			text-decoration: underline;
-			cursor: pointer;
-			color: var(--maxi-white);
-			text-decoration: none;
-			transition: all 0.5s;
+    .maxi-breadcrumbs__item {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+  }
 
-			&:hover {
-				opacity: 0.7;
-			}
-		}
-	}
+  &--repeater {
+    background: var(--maxi-tertiary-color);
+  }
+
+  // 3. Breadcrumb Items
+  &__item {
+    display: inline;
+    min-width: max-content;
+    
+    // Typography
+    list-style: none;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 100%;
+    
+    // Animation
+    opacity: 0;
+    margin-bottom: 0;
+
+    // Separator (>)
+    &:not(:last-child):after {
+      content: '>';
+      padding: 0 4px;
+      color: var(--maxi-white);
+    }
+
+    // Inner Content Link
+    &__content {
+      position: relative;
+      top: -1px;
+      
+      // Visuals & Typography
+      color: var(--maxi-white);
+      cursor: pointer;
+      
+      // Text Decoration Logic
+      // Note: Kept underline styles in case they are toggled externally, 
+      // but 'none' is the active state per your original code.
+      text-decoration: none; 
+      text-underline-offset: 3px;
+      text-decoration-color: rgba(var(--maxi-white), 0.6);
+      
+      transition: all 0.5s;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    // 4. Shared Modifiers (Interaction & Background)
+    // grouped to remove code duplication
+    &--has-interaction,
+    &--has-background {
+      margin: 0 8px 0 2px;
+      padding: 4px 6px 4px 5px;
+
+      .maxi-breadcrumbs__item__content {
+        font-weight: 500;
+      }
+
+      &:not(:last-child):after {
+        padding-right: 0;
+      }
+    }
+
+    &--has-interaction {
+      background-color: var(--maxi-interaction-pink);
+    }
+
+    &--has-background {
+      background-color: var(--maxi-background-yellow);
+    }
+  }
 }
+
+// 5. External Toolbar Trigger
 .toolbar-block-custom-label {
-	display: flex !important;
-	align-items: center;
+  display: flex !important;
+  align-items: center;
 
-	&:hover {
-		& ~ .maxi-breadcrumbs {
-			transform: scaleY(1);
-			.maxi-breadcrumbs__item {
-				transition-delay: 0.2s;
-				opacity: 1;
-			}
-		}
-	}
+  &:hover ~ .maxi-breadcrumbs {
+    // Note: Original code uses scaleY here but scaleX on the main element.
+    // Kept as-is per instructions to preserve functionality.
+    transform: scaleY(1);
+
+    .maxi-breadcrumbs__item {
+      opacity: 1;
+      transition-delay: 0.2s;
+    }
+  }
 }
-/*******************************
-* RTL
-*******************************/
-html[dir='rtl'] {
-	.maxi-breadcrumbs {
-		right: 25px;
-		left: unset;
-		padding: 0 5px 0 10px !important;
-		transform-origin: right;
-	}
+
+// 6. RTL Support
+html[dir='rtl'] .maxi-breadcrumbs {
+  left: unset;
+  right: 25px;
+  padding: 0 5px 0 10px !important;
+  transform-origin: right;
 }

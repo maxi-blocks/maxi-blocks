@@ -23,6 +23,17 @@ const addTypographyStyle = async ({
 	isStyleCards = false,
 }) => {
 	const response = {};
+
+	// click on the typography advanced settings if it's not open
+	const isAdvancedSettingsOpen = await page.evaluate(
+		() => !!document.querySelector('.maxi-typography-control__text-indent')
+	);
+	if (!isAdvancedSettingsOpen) {
+		const advancedSettingsSelector = await page.$(
+			'.maxi-typography-control__advanced-toggle button.maxi-typography-control-button'
+		);
+		if (advancedSettingsSelector) await advancedSettingsSelector.click();
+	}
 	// Weight, Transform, Style, Decoration
 	const weightSelector = await instance.$(
 		'.maxi-typography-control__weight .maxi-base-control__field select'

@@ -69,8 +69,15 @@ const ResponsiveButton = ({
 			<Button
 				className='maxi-responsive-selector__button-item'
 				onClick={() => {
-					if (getIsTemplatePart()) setScreenSize(target);
-					else setScreenSize(isBaseBreakpoint ? 'general' : target);
+					const targetSize = isBaseBreakpoint ? 'general' : target;
+
+					// Compute the actual applied screen size based on context
+					const appliedScreenSize = getIsTemplatePart()
+						? target
+						: targetSize;
+
+					// Apply the screen size to MaxiBlocks
+					setScreenSize(appliedScreenSize);
 				}}
 				aria-pressed={getIsPressed()}
 			>
@@ -172,14 +179,15 @@ const ResponsiveSelector = props => {
 		});
 	});
 
+	// Track when native buttons are clicked to avoid conflicts
+	const lastNativeClickRef = useRef(0);
+
 	const onChangeNativeResponsive = useCallback(button => {
 		button.addEventListener(
 			'click',
-			e => {
-				// Prevent Gutenberg's default behavior (iframe creation)
-				e.preventDefault();
-				e.stopPropagation();
-				e.stopImmediatePropagation();
+			() => {
+				// Record that a native button was just clicked
+				lastNativeClickRef.current = Date.now();
 
 				// Get all responsive buttons in order: Desktop, Tablet, Mobile
 				const allButtons = Array.from(
@@ -196,52 +204,21 @@ const ResponsiveSelector = props => {
 				const targetSize = targetSizes[buttonIndex];
 
 				if (targetSize) {
-					// Use our custom responsive logic first
+					// Just update MaxiBlocks state and let Gutenberg handle its own rendering
+					// Don't prevent default - let Gutenberg's React handle the click naturally
 					setScreenSize(targetSize);
-
-					// Update aria-checked state and move the checkmark SVG
-					setTimeout(() => {
-						const refreshedButtons = Array.from(
-							document.querySelectorAll(
-								'button[role="menuitemradio"].components-menu-items-choice'
-							)
-						);
-
-						// Find the checkmark SVG
-						const checkmarkSvg = document.querySelector(
-							'button[role="menuitemradio"].components-menu-items-choice svg.components-menu-items__item-icon'
-						);
-
-						refreshedButtons.forEach((btn, index) => {
-							// Update aria-checked
-							const newValue =
-								index === buttonIndex ? 'true' : 'false';
-							btn.setAttribute('aria-checked', newValue);
-
-							// Remove any existing checkmark from this button
-							const existingSvg = btn.querySelector('svg');
-							if (existingSvg) {
-								existingSvg.remove();
-							}
-
-							// Add checkmark to the clicked button
-							if (index === buttonIndex && checkmarkSvg) {
-								btn.appendChild(checkmarkSvg.cloneNode(true));
-							}
-						});
-					}, 10);
 				}
-
-				return false;
 			},
-			true
-		); // Use capture phase to intercept before Gutenberg
+			false
+		);
 	}, []);
 
 	useEffect(() => {
 		const previewButton =
 			document.querySelector('.editor-preview-dropdown__toggle') ||
 			document.querySelector('.block-editor-post-preview__button-toggle');
+
+		let syncTimeout = null;
 
 		if (previewButton) {
 			const config = {
@@ -254,6 +231,16 @@ const ResponsiveSelector = props => {
 				mutationsList.forEach(mutation => {
 					if (mutation.type === 'attributes') {
 						if (mutation.attributeName === 'aria-expanded') {
+							const isExpanded =
+								previewButton.getAttribute('aria-expanded') ===
+								'true';
+
+							// Cancel any pending sync
+							if (syncTimeout) {
+								clearTimeout(syncTimeout);
+								syncTimeout = null;
+							}
+
 							const node =
 								document.querySelector(
 									'.components-dropdown-menu__menu'
@@ -262,7 +249,7 @@ const ResponsiveSelector = props => {
 									'.block-editor-post-preview__dropdown-content'
 								);
 
-							if (node) {
+							if (node && isExpanded) {
 								// Actions on default responsive values
 								const responsiveButtons =
 									Array.from(
@@ -276,6 +263,7 @@ const ResponsiveSelector = props => {
 										)
 									);
 
+								// Attach click handlers to native buttons
 								responsiveButtons.forEach(
 									onChangeNativeResponsive
 								);
@@ -287,11 +275,16 @@ const ResponsiveSelector = props => {
 
 			const observer = new MutationObserver(callback);
 			observer.observe(previewButton, config);
-			return () => observer.disconnect();
+			return () => {
+				observer.disconnect();
+				if (syncTimeout) {
+					clearTimeout(syncTimeout);
+				}
+			};
 		}
 
 		return () => {};
-	});
+	}, [deviceType, onChangeNativeResponsive]);
 
 	const addCloudLibrary = () => {
 		let rootClientId;

@@ -32,26 +32,30 @@ describe('IconControl', () => {
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 
-		// width, stroke width
-		const inputs = await page.$$(
-			'.maxi-advanced-number-control .maxi-base-control__field input'
-		);
-
 		// width
-		await inputs[0].click();
+		const widthInput = await page.$(
+			'.maxi-icon-control__width .maxi-base-control__field input'
+		);
+		await widthInput.click();
 		await pressKeyTimes('Backspace', '1');
 		await page.keyboard.type('40', { delay: 350 });
 
 		expect(await getAttributes('icon-width-general')).toStrictEqual('340');
 
 		// stroke width
-		await inputs[2].click();
+		const strokeWidthInput = await page.$(
+			'.maxi-icon-control__stroke-width .maxi-base-control__field input'
+		);
+		await strokeWidthInput.click();
 		await page.keyboard.type('5', { delay: 350 });
 
 		expect(await getAttributes('icon-stroke-general')).toStrictEqual(5);
 
 		// icon spacing
-		await inputs[4].click();
+		const spacingInput = await page.$(
+			'.maxi-icon-control__spacing .maxi-base-control__field input'
+		);
+		await spacingInput.click();
 		await pressKeyWithModifier('ctrl', 'a');
 		await page.keyboard.type('66', { delay: 350 });
 
@@ -102,6 +106,10 @@ describe('IconControl', () => {
 		await borderTab.click();
 
 		// Set border radius to 100
+		const borderTabButton = await page.$(
+			'button.maxi-tabs-control__button-border'
+		);
+		await borderTabButton.click();
 		const borderRadiusInput = await page.$(
 			'.maxi-axis-control__icon-border .maxi-advanced-number-control .maxi-base-control__field input'
 		);

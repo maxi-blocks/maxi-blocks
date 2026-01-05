@@ -110,6 +110,7 @@ describe('TypographyControl', () => {
 		await changeResponsive(page, 'base');
 		await openSidebarTab(page, 'style', 'typography');
 
+		await page.waitForTimeout(3000);
 		await editColorControl({
 			page,
 			instance: await page.$('.maxi-typography-control__color'),
@@ -117,7 +118,7 @@ describe('TypographyControl', () => {
 			customColor: '#FAFA03',
 		});
 
-		await page.waitForTimeout(500);
+		await page.waitForTimeout(1000);
 
 		expect(await getAttributes('color-general')).toStrictEqual(
 			'rgb(250,250,3)'

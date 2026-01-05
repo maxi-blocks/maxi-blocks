@@ -7,16 +7,16 @@ import { isNil } from 'lodash';
 
 export const getWeightLabel = weight => {
 	const weightOptions = {
-		100: 'Hairline (100)',
-		200: 'Extra light (200)',
-		300: 'Light (300)',
-		400: 'Regular (400)',
-		500: 'Medium (500)',
-		600: 'Semi bold (600)',
-		700: 'Bold (700)',
-		800: 'Extra bold (800)',
-		900: 'Heavy (900)',
-		950: 'Extra heavy (950)',
+		100: __('Hairline (100)', 'maxi-blocks'),
+		200: __('Extra light (200)', 'maxi-blocks'),
+		300: __('Light (300)', 'maxi-blocks'),
+		400: __('Regular (400)', 'maxi-blocks'),
+		500: __('Medium (500)', 'maxi-blocks'),
+		600: __('Semi bold (600)', 'maxi-blocks'),
+		700: __('Bold (700)', 'maxi-blocks'),
+		800: __('Extra bold (800)', 'maxi-blocks'),
+		900: __('Heavy (900)', 'maxi-blocks'),
+		950: __('Extra heavy (950)', 'maxi-blocks'),
 	};
 
 	return weightOptions[weight];

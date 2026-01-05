@@ -263,6 +263,10 @@ const Inspector = props => {
 																						skin ===
 																						'icon-reveal'
 																					}
+																					buttonClasses={{
+																						left: 'maxi-search-control__left',
+																						right: 'maxi-search-control__right',
+																					}}
 																				/>
 																			),
 																		extraIndicators:

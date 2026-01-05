@@ -1,11 +1,13 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * Data object
@@ -13,34 +15,37 @@ import {
 const name = 'row-maxi';
 const copyPasteMapping = {
 	settings: {
-		'Row settings': {
+		[__('Row settings', 'maxi-blocks')]: {
 			group: {
-				'Row pattern': 'row-pattern',
-				'Row gap': ['row-gap', 'row-gap-unit'],
-				'Column gap': ['column-gap', 'column-gap-unit'],
-				'Flex wrap': 'flex-wrap',
+				[__('Row pattern', 'maxi-blocks')]: 'row-pattern',
+				[__('Row gap', 'maxi-blocks')]: ['row-gap', 'row-gap-unit'],
+				[__('Column gap', 'maxi-blocks')]: [
+					'column-gap',
+					'column-gap-unit',
+				],
+				[__('Flex wrap', 'maxi-blocks')]: 'flex-wrap',
 			},
 			hasBreakpoints: true,
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},

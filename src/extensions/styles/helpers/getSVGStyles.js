@@ -13,6 +13,7 @@ import { isValidNumber } from '@extensions/styles/utils';
  * External dependencies
  */
 import { round } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -24,7 +25,7 @@ export const getSVGWidthStyles = ({
 	disableHeight = true,
 }) => {
 	const response = {
-		label: 'Icon size',
+		label: __('Icon size', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -106,7 +107,7 @@ export const getSVGWidthStyles = ({
 
 const getSVGPathStyles = (obj, prefix = 'svg-', isHover = false) => {
 	const response = {
-		label: 'SVG path',
+		label: __('SVG path', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -150,7 +151,7 @@ const getSVGPathFillStyles = (
 	isHover = false
 ) => {
 	const response = {
-		label: 'SVG path-fill',
+		label: __('SVG path-fill', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -189,7 +190,7 @@ const getSVGPathStrokeStyles = (
 	useIconColor = true
 ) => {
 	const response = {
-		label: 'SVG Path stroke',
+		label: __('SVG Path stroke', 'maxi-blocks'),
 	};
 
 	if (isHover && !useIconColor && !obj['typography-status-hover']) {

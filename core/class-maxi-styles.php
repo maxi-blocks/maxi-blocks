@@ -98,6 +98,10 @@ class MaxiBlocks_Styles
 
         // Register prefetch filter once for all enqueued scripts
         add_filter('wp_resource_hints', [$this, 'add_script_prefetch_hints'], 10, 2);
+
+        // Clear template cache when templates are saved/updated
+        add_action('save_post_wp_template', [$this, 'clear_template_cache']);
+        add_action('save_post_wp_template_part', [$this, 'clear_template_cache']);
     }
 
     private function should_apply_content_filter()
@@ -136,7 +140,6 @@ class MaxiBlocks_Styles
 
     public function enqueue_styles()
     {
-
         $post_id = $this->get_id();
         $post_content = $this->get_content(false, $post_id);
         $this->apply_content('maxi-blocks-styles', $post_content, $post_id);
@@ -748,7 +751,6 @@ class MaxiBlocks_Styles
      */
     public function get_breakpoints($breakpoints)
     {
-
         // TODO: It may connect to the API to centralize the default values there
         return (object) [
             'xs' => 480,
@@ -853,6 +855,7 @@ class MaxiBlocks_Styles
 
         $consolidated_fonts = [];
 
+
         // First pass: consolidate fonts with multiple weights
         foreach ($fonts as $font => $font_data) {
             $is_sc_font = strpos($font, 'sc_font') !== false;
@@ -914,6 +917,22 @@ class MaxiBlocks_Styles
             $is_sc_font = $font_info['is_sc_font'];
             $weights = $font_info['weights'];
             $styles = $font_info['styles'];
+
+            // Handle custom uploaded fonts first (always local)
+            $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
+            $custom_font_data = $local_fonts->get_custom_font_data_by_family($font);
+            if ($custom_font_data) {
+                $custom_font_url = $local_fonts->get_or_create_custom_font_stylesheet_url($font, $custom_font_data);
+                if ($custom_font_url) {
+                    wp_enqueue_style(
+                        $name . '-font-' . sanitize_title_with_dashes($font),
+                        $custom_font_url,
+                        array(),
+                        MAXI_PLUGIN_VERSION
+                    );
+                }
+                continue;
+            }
 
             if (!$is_sc_font) {
                 // Create consolidated font data with multiple weights
@@ -1086,6 +1105,7 @@ class MaxiBlocks_Styles
         }
     }
 
+    // Custom font CSS generation moved to MaxiBlocks_Local_Fonts
 
     /**
      * Legacy function
@@ -1158,7 +1178,30 @@ class MaxiBlocks_Styles
         $colors = [];
 
         while (($last_pos = strpos($style, $needle, $last_pos)) !== false) {
-            $end_pos = strpos($style, ')', $last_pos);
+            // Find the matching closing parenthesis for rgba( by counting parens
+            $paren_count = 0;
+            $pos = $last_pos;
+            $end_pos = false;
+
+            while ($pos < strlen($style)) {
+                if ($style[$pos] === '(') {
+                    $paren_count++;
+                } elseif ($style[$pos] === ')') {
+                    $paren_count--;
+                    if ($paren_count === 0) {
+                        $end_pos = $pos;
+                        break;
+                    }
+                }
+                $pos++;
+            }
+
+            if ($end_pos === false) {
+                // Couldn't find matching parenthesis, skip this one
+                $last_pos = $last_pos + strlen($needle);
+                continue;
+            }
+
             $color_str = substr($style, $last_pos, $end_pos - $last_pos + 1);
 
             if (!in_array($color_str, $colors)) {
@@ -1240,6 +1283,12 @@ class MaxiBlocks_Styles
 
             // Apply all color changes in a single pass
             foreach ($all_color_changes as $color_key => $color_value) {
+                // Guard: Skip if color_vars doesn't have this key or if the value is empty
+                // This prevents generating broken CSS like rgba(var(--color,),1)
+                if (!isset($color_vars[$color_key]) || $color_vars[$color_key] === '') {
+                    continue;
+                }
+
                 $old_color_str =
                     "rgba(var($color_key," . $color_vars[$color_key] . ')';
                 $new_color_str = "rgba(var($color_key," . $color_value . ')';
@@ -1611,6 +1660,32 @@ class MaxiBlocks_Styles
     }
 
     /**
+     * Clear template cache when templates are saved/updated
+     *
+     * @param int $post_id The post ID being saved
+     * @return void
+     */
+    public function clear_template_cache($post_id)
+    {
+        // Delete all maxi_blocks_template_* transients
+        global $wpdb;
+
+        // Delete transients and their timeout entries
+        $wpdb->query(
+            "DELETE FROM {$wpdb->options}
+            WHERE option_name LIKE '_transient_maxi_blocks_template_%'
+            OR option_name LIKE '_transient_timeout_maxi_blocks_template_%'"
+        );
+
+        // Also clear memory cache
+        foreach (array_keys(self::$blocks_cache) as $key) {
+            if (strpos($key, '//') !== false) {
+                unset(self::$blocks_cache[$key]);
+            }
+        }
+    }
+
+    /**
      * Check if block needs custom meta
      *
      * @param  string $unique_id
@@ -1881,17 +1956,29 @@ class MaxiBlocks_Styles
         $blocks = $this->fetch_blocks_by_template_id($template_id);
 
         $specific_archives = ['tag', 'category', 'author', 'date'];
-
-        // Smart template inheritance: only fall back to archive if specific template is empty
+        // Attempt to replace a specific archive type with 'archive' in the template_id
+        $modified_template_id = $template_id;
         foreach ($specific_archives as $archive_type) {
             if (strpos($template_id, $archive_type) !== false) {
-                // If specific template has no blocks, fall back to archive template
-                if (empty($blocks)) {
-                    $archive_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
-                    $blocks = $this->fetch_blocks_by_template_id($archive_template_id);
-                }
-                break; // Exit the loop once a match is found
+                // Replace the first occurrence of the archive_type with 'archive'
+                $modified_template_id = preg_replace('/' . preg_quote($archive_type, '/') . '/', 'archive', $template_id, 1);
+                break; // Exit the loop once a match is found and replacement is done
             }
+        }
+
+        // Also handle custom taxonomies (taxonomy-*)
+        if ($modified_template_id === $template_id && strpos($template_id, 'taxonomy-') !== false) {
+            // Replace 'taxonomy-{taxonomy_name}' with 'archive'
+            $modified_template_id = preg_replace('/taxonomy-[^\/]+/', 'archive', $template_id, 1);
+        }
+
+        // Check if the modification was successful and the modified template_id is different
+        if ($modified_template_id !== $template_id) {
+            // Fetch blocks for the modified template_id which now targets 'archive'
+            $blocks_all_archives = $this->fetch_blocks_by_template_id($modified_template_id);
+
+            // Merge the blocks specific to the archive with the general archive blocks
+            $blocks = array_merge($blocks, $blocks_all_archives);
         }
 
 
@@ -1957,9 +2044,18 @@ class MaxiBlocks_Styles
     */
     public function fetch_blocks_by_template_id($template_id)
     {
-        // Check cache first
+        // Check memory cache first
         if (isset(self::$blocks_cache[$template_id])) {
             return self::$blocks_cache[$template_id];
+        }
+
+        // Check transient cache
+        $transient_key = 'maxi_blocks_template_' . md5($template_id);
+        $cached_blocks = get_transient($transient_key);
+
+        if ($cached_blocks !== false) {
+            self::$blocks_cache[$template_id] = $cached_blocks;
+            return $cached_blocks;
         }
 
         global $wpdb;
@@ -2019,7 +2115,10 @@ class MaxiBlocks_Styles
             }
         }
 
-        // Cache the result before returning
+        // Cache the result in transient - 1 hour expiration
+        set_transient($transient_key, $all_blocks, HOUR_IN_SECONDS);
+
+        // Cache in memory
         self::$blocks_cache[$template_id] = $all_blocks;
         return $all_blocks;
     }
@@ -2249,7 +2348,6 @@ class MaxiBlocks_Styles
      */
     private function get_parsed_reusable_blocks_frontend($blocks)
     {
-
         $reusable_block_ids = $this->get_reusable_blocks_ids($blocks);
 
         // Remove duplicates from the block IDs.
@@ -2695,5 +2793,4 @@ class MaxiBlocks_Styles
         }
         update_option('maxi_blocks_sc_fonts_migration_done', true);
     }
-
 }

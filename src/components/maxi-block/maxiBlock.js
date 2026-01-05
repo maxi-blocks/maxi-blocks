@@ -128,6 +128,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcLinkStatus,
 		dcLinkTarget,
 		showLoader,
+		attributes,
 		...extraProps
 	} = props;
 
@@ -135,25 +136,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
 		breakpoint: extraProps.deviceType,
-		attributes: extraProps.attributes,
+		attributes: attributes,
 	});
-
-	if (isSelected) {
-		if (blockName === 'maxi-blocks/text-maxi') {
-			setDefaultBlockName('maxi-blocks/text-maxi');
-		} else {
-			setDefaultBlockName('core/paragraph');
-		}
-		// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
-		// } else if (blockName === 'maxi-blocks/container-maxi') {
-		// 	setDefaultBlockName('maxi-blocks/container-maxi');
-		// }
-		// } else if (isPostEditor()) {
-		// 	setDefaultBlockName('maxi-blocks/text-maxi');
-		// } else {
-		// 	setDefaultBlockName('maxi-blocks/container-maxi');
-		// }
-	}
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
@@ -167,7 +151,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}, 0);
 
 	// Are just necessary for the memo() part
-	delete extraProps.attributes;
 	delete extraProps.deviceType;
 	delete extraProps.baseBreakpoint;
 	delete extraProps.context;
@@ -231,6 +214,14 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRepeater && 'maxi-block--repeater',
 		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
+		!isSave && !isEmpty(attributes?.relations) && 'maxi-block--interaction',
+		!isSave &&
+			!isEmpty(
+				background?.['background-layers']?.filter(
+					layer => layer.type !== 'color'
+				)
+			) &&
+			'maxi-block--background',
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 

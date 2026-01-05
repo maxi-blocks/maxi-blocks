@@ -312,11 +312,6 @@ const inlineStylesTargets = {
 };
 
 const attributesToStyles = {
-	// 'img-width': {
-	// 	target: `${inlineStylesTargets.image}, ${inlineStylesTargets.caption}`,
-	// 	property: 'width',
-	// 	unit: 'px',
-	// },
 	'font-size': {
 		target: inlineStylesTargets.caption,
 		property: 'font-size',

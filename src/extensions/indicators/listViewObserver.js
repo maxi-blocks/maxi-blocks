@@ -71,13 +71,20 @@ const updateListViewItem = item => {
  */
 const hasActiveIndicators = blocks => {
 	const blockList = blocks || select('core/block-editor').getBlocks();
-	return blockList.some(block => {
+
+	// Check for interaction and background indicators
+	const hasBlockIndicators = blockList.some(block => {
 		const { hasInteraction, hasBackgroundLayers } = getBlockStatus(block);
 		if (hasInteraction || hasBackgroundLayers) return true;
 		if (block.innerBlocks?.length)
 			return hasActiveIndicators(block.innerBlocks);
 		return false;
 	});
+
+	// Also check if any elements in the DOM have the hidden-parent indicator
+	const hasHiddenParentIndicators = document.querySelectorAll('[data-maxi-hidden-parent="true"]').length > 0;
+
+	return hasBlockIndicators || hasHiddenParentIndicators;
 };
 
 /**

@@ -10,8 +10,7 @@ import {
 	useReducer,
 	useState,
 } from '@wordpress/element';
-import { dispatch, select, useSelect } from '@wordpress/data';
-import { setDefaultBlockName } from '@wordpress/blocks';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * Internal dependencies

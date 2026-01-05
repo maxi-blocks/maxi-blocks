@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useSelect, dispatch } from '@wordpress/data';
+import { dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies

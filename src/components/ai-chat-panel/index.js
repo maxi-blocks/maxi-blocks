@@ -124,8 +124,166 @@ MODIFY_BLOCK: {"action":"MODIFY_BLOCK","payload":{...},"message":"Done."}
 REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
 `;
 
-
-
+/**
+ * ============================================================================
+ * LAYOUT PATTERNS LOOKUP TABLE
+ * ============================================================================
+ * 
+ * Pattern-based layout intent detection for zero-latency responses.
+ * Each pattern maps natural language to CSS flexbox/layout properties.
+ * 
+ * Structure:
+ * - regex: Pattern to match against lowercase user message  
+ * - property: CSS property key for applyUpdatesToBlocks
+ * - value: CSS value (can be object for compound values like stacking)
+ * - selectionMsg: Message for Selection scope
+ * - pageMsg: Message for Page scope
+ * - target: Optional target_block filter (defaults to 'container')
+ */
+const LAYOUT_PATTERNS = [
+	// GROUP 1: DIRECTIONAL INTENT (flex-direction)
+	{ regex: /side\s*by\s*side|horizontal(?!ly)|in\s*a\s*line|beside\s*(each\s*other)?|next\s*to\s*(each\s*other)?/, property: 'flex_direction', value: 'row', selectionMsg: 'Arranged items side by side (row layout).', pageMsg: 'Arranged containers horizontally.' },
+	{ regex: /stack(ed)?|vertical(?!ly)|one\s*on\s*top|underneath|on\s*top\s*of|column\s*layout/, property: 'flex_direction', value: 'column', selectionMsg: 'Stacked items vertically (column layout).', pageMsg: 'Arranged containers in a stack.' },
+	{ regex: /backwards?|right\s*to\s*left|reverse.*horizontal|flip.*order/, property: 'flex_direction', value: 'row-reverse', selectionMsg: 'Reversed horizontal order (row-reverse).', pageMsg: 'Reversed horizontal order.' },
+	{ regex: /bottom\s*up|reverse.*vertical|reverse.*stack|upwards?\s*stack/, property: 'flex_direction', value: 'column-reverse', selectionMsg: 'Reversed vertical order (column-reverse).', pageMsg: 'Reversed vertical order.' },
+	
+	// GROUP 2: JUSTIFY CONTENT (main axis distribution)
+	{ regex: /spread.*wall|space\s*between|first.*last.*edge|push.*apart|stretch.*apart/, property: 'justify_content', value: 'space-between', selectionMsg: 'Spread items to edges (space-between).', pageMsg: 'Applied space-between layout.' },
+	{ regex: /breathing\s*room|balanced\s*spac|space\s*around|equal\s*margin/, property: 'justify_content', value: 'space-around', selectionMsg: 'Added balanced spacing (space-around).', pageMsg: 'Applied balanced spacing.' },
+	{ regex: /equal\s*gap|evenly\s*spac|space\s*evenly|perfectly\s*even/, property: 'justify_content', value: 'space-evenly', selectionMsg: 'Applied even spacing (space-evenly).', pageMsg: 'Applied evenly distributed spacing.' },
+	{ regex: /push.*start|bunch.*start|items?.*left(?!.*text)|align.*items?.*left/, property: 'justify_content', value: 'flex-start', selectionMsg: 'Pushed items to start (flex-start).', pageMsg: 'Aligned items to start.' },
+	{ regex: /push.*end|bunch.*end|items?.*right(?!.*text)|align.*items?.*right/, property: 'justify_content', value: 'flex-end', selectionMsg: 'Pushed items to end (flex-end).', pageMsg: 'Aligned items to end.' },
+	{ regex: /center.*items?|items?.*center(?!.*text)|centre.*items?|items?.*centre/, property: 'justify_content', value: 'center', selectionMsg: 'Centred items on main axis (justify-content: center).', pageMsg: 'Centred items horizontally.' },
+	
+	// GROUP 3: ALIGN ITEMS (cross-axis)
+	{ regex: /top\s*align|ceiling|push.*top|align.*top(?!.*text)/, property: 'align_items_flex', value: 'flex-start', selectionMsg: 'Aligned items to top (align-items: flex-start).', pageMsg: 'Top-aligned items.' },
+	{ regex: /bottom\s*align|floor|push.*bottom|align.*bottom(?!.*text)/, property: 'align_items_flex', value: 'flex-end', selectionMsg: 'Aligned items to bottom (align-items: flex-end).', pageMsg: 'Bottom-aligned items.' },
+	{ regex: /middle\s*align|center.*vertically|centre.*vertically|vertical.*center|vertical.*centre/, property: 'align_items_flex', value: 'center', selectionMsg: 'Vertically centred items (align-items: center).', pageMsg: 'Vertically centred items.' },
+	{ regex: /same\s*height|stretch|equal\s*height|fill.*height|full.*height/, property: 'align_items_flex', value: 'stretch', selectionMsg: 'Stretched items to same height (align-items: stretch).', pageMsg: 'Stretched items to equal height.' },
+	{ regex: /baseline|line\s*up.*text|align.*first\s*word/, property: 'align_items_flex', value: 'baseline', selectionMsg: 'Aligned items by text baseline.', pageMsg: 'Baseline-aligned items.' },
+	
+	// GROUP 4: FLEX WRAP
+	{ regex: /let.*wrap|allow.*wrap|multi-?line|next\s*line|new\s*line|overflow.*wrap/, property: 'flex_wrap', value: 'wrap', selectionMsg: 'Enabled wrapping to new lines (flex-wrap: wrap).', pageMsg: 'Enabled multi-line wrapping.' },
+	{ regex: /one\s*line|single\s*line|no\s*wrap|don'?t\s*wrap|force.*together/, property: 'flex_wrap', value: 'nowrap', selectionMsg: 'Forced items to single line (flex-wrap: nowrap).', pageMsg: 'Disabled wrapping.' },
+	{ regex: /wrap.*upward|wrap.*reverse|reverse.*wrap/, property: 'flex_wrap', value: 'wrap-reverse', selectionMsg: 'Enabled reverse wrapping (flex-wrap: wrap-reverse).', pageMsg: 'Enabled reverse wrapping.' },
+	
+	// GROUP 5: EXTENDED - DEAD CENTER & FLEX SIZING
+	{ regex: /dead\s*cent(er|re)|perfect(ly)?\s*cent(er|re)(ed)?|absolute(ly)?\s*cent(er|re)/, property: 'dead_center', value: true, selectionMsg: 'Perfectly centred items (horizontally + vertically).', pageMsg: 'Dead-centred all containers.' },
+	{ regex: /fill.*remaining|fill.*rest|take.*rest|expand.*fill|grow.*space|use.*remaining/, property: 'flex_grow', value: 1, selectionMsg: 'Set to fill remaining space (flex-grow: 1).', pageMsg: 'Set containers to fill remaining space.' },
+	{ regex: /don'?t\s*shrink|no\s*shrink|keep.*fixed|fixed\s*size|prevent.*shrink/, property: 'flex_shrink', value: 0, selectionMsg: 'Prevented shrinking (flex-shrink: 0).', pageMsg: 'Prevented containers from shrinking.' },
+	
+	// GROUP 6: STACKING & POSITION
+	{ regex: /bring.*front|put.*top|on\s*top|overlap|layer.*top|above.*other/, property: 'stacking', value: { zIndex: 10, position: 'relative' }, selectionMsg: 'Brought to front (z-index: 10).', pageMsg: 'Brought containers to front.' },
+	{ regex: /send.*back|put.*behind|behind.*everything|layer.*back|below.*other/, property: 'stacking', value: { zIndex: -1, position: 'relative' }, selectionMsg: 'Sent to back (z-index: -1).', pageMsg: 'Sent containers to back.' },
+	{ regex: /make.*sticky|sticky|follow.*scroll|stay.*scroll|stick.*top/, property: 'position', value: 'sticky', selectionMsg: 'Made sticky (follows scroll).', pageMsg: 'Made containers sticky.' },
+	{ regex: /float.*corner|fixed\s*position|stay.*corner|pin.*corner|always\s*visible/, property: 'position', value: 'fixed', selectionMsg: 'Fixed to viewport (always visible).', pageMsg: 'Fixed containers to viewport.' },
+	
+	// GROUP 7: VISIBILITY
+	{ regex: /hide\s*(this|it)?(?!.*mobile)|make.*invisible|disappear|display.*none|remove.*view/, property: 'display', value: 'none', selectionMsg: 'Hidden from view (display: none).', pageMsg: 'Hidden containers.' },
+	{ regex: /show\s*(this|it)?(?!.*mobile)|make.*visible|appear|unhide|display.*block/, property: 'display', value: 'flex', selectionMsg: 'Made visible (display: flex).', pageMsg: 'Made containers visible.' },
+	
+	// GROUP 8: GAP CONTROL (special handling - remove only, add has clarification)
+	{ regex: /remove\s*gap|no\s*gap|zero\s*gap|remove\s*gutter/, property: 'gap', value: 0, selectionMsg: 'Removed gaps between items.', pageMsg: 'Removed gaps from containers.' },
+	
+	// GROUP 9: OPACITY & TRANSPARENCY
+	{ regex: /see.*through|transparent|ghostly|translucent|opacity.*half|semi.*transparent/, property: 'opacity', value: 0.5, selectionMsg: 'Made semi-transparent (opacity: 0.5).', pageMsg: 'Made containers semi-transparent.' },
+	{ regex: /fade.*out.*complete|fully.*transparent|invisible|opacity.*zero|completely.*transparent/, property: 'opacity', value: 0, selectionMsg: 'Made fully transparent (opacity: 0).', pageMsg: 'Made containers invisible.' },
+	{ regex: /fully.*opaque|solid|not.*transparent|opacity.*full|remove.*transparency/, property: 'opacity', value: 1, selectionMsg: 'Made fully opaque (opacity: 1).', pageMsg: 'Restored full opacity.' },
+	
+	// GROUP 10: TRANSFORM EFFECTS
+	{ regex: /tilt|askew|skew|slant/, property: 'transform_rotate', value: 5, selectionMsg: 'Tilted element (rotate: 5deg).', pageMsg: 'Tilted containers.' },
+	{ regex: /rotate|spin|turn.*degrees/, property: 'transform_rotate', value: 45, selectionMsg: 'Rotated element (45deg).', pageMsg: 'Rotated containers.' },
+	{ regex: /flip.*horizontal|mirror/, property: 'transform_scale', value: { x: -1, y: 1 }, selectionMsg: 'Flipped horizontally.', pageMsg: 'Flipped containers horizontally.' },
+	{ regex: /flip.*vertical|upside.*down/, property: 'transform_scale', value: { x: 1, y: -1 }, selectionMsg: 'Flipped vertically.', pageMsg: 'Flipped containers vertically.' },
+	{ regex: /zoom.*hover|bigger.*hover|enlarge.*hover|scale.*hover|grow.*hover/, property: 'transform_scale_hover', value: 1.1, selectionMsg: 'Added zoom on hover (scale: 1.1).', pageMsg: 'Added hover zoom effect.' },
+	
+	// GROUP 11: SCROLL EFFECTS
+	{ regex: /fade.*scroll|scroll.*fade|entrance.*fade|fade.*in.*scroll/, property: 'scroll_fade', value: true, selectionMsg: 'Added scroll fade-in effect.', pageMsg: 'Added scroll fade to containers.' },
+	{ regex: /parallax|slow.*background|background.*slower/, property: 'parallax', value: true, selectionMsg: 'Added parallax effect.', pageMsg: 'Added parallax to backgrounds.' },
+	
+	// GROUP 12: AESTHETIC STYLES (triggers apply_theme via special handling)
+	{ regex: /minimalis(m|t)|clean.*look|simple.*design|white.*space/, property: 'aesthetic', value: 'minimalism', selectionMsg: 'Applied minimalist style.', pageMsg: 'Applied minimalist aesthetic.' },
+	{ regex: /brutalis(m|t)|raw.*html|harsh|industrial/, property: 'aesthetic', value: 'brutalism', selectionMsg: 'Applied brutalist style.', pageMsg: 'Applied brutalist aesthetic.' },
+	{ regex: /neobrutalis(m|t)|thick.*border.*pastel|block.*shadow|modern.*figma/, property: 'aesthetic', value: 'neobrutalism', selectionMsg: 'Applied neobrutalist style.', pageMsg: 'Applied neobrutalist aesthetic.' },
+	{ regex: /swiss|helvetica|grid.*layout|typograph/, property: 'aesthetic', value: 'swiss', selectionMsg: 'Applied Swiss style.', pageMsg: 'Applied Swiss typography aesthetic.' },
+	{ regex: /editorial|magazine|newspaper|pull.*quote/, property: 'aesthetic', value: 'editorial', selectionMsg: 'Applied editorial style.', pageMsg: 'Applied editorial layout.' },
+	{ regex: /masculine|bold.*dark|strong.*geometric/, property: 'aesthetic', value: 'masculine', selectionMsg: 'Applied masculine style.', pageMsg: 'Applied masculine aesthetic.' },
+	{ regex: /feminine|soft.*pastel|delicate|script.*font/, property: 'aesthetic', value: 'feminine', selectionMsg: 'Applied feminine style.', pageMsg: 'Applied feminine aesthetic.' },
+	{ regex: /corporate|professional|business|navy.*slate/, property: 'aesthetic', value: 'corporate', selectionMsg: 'Applied corporate style.', pageMsg: 'Applied corporate aesthetic.' },
+	{ regex: /natural|organic|earth.*tone|terracotta|sage/, property: 'aesthetic', value: 'natural', selectionMsg: 'Applied natural style.', pageMsg: 'Applied natural/organic aesthetic.' },
+	
+	// GROUP 13: TYPOGRAPHY READABILITY
+	{ regex: /lines.*crash|wall.*text|too.*close.*lines|line.*height|more.*space.*lines/, property: 'line_height', value: 1.8, selectionMsg: 'Increased line spacing (line-height: 1.8).', pageMsg: 'Improved line spacing for readability.' },
+	{ regex: /tight.*lines|condense.*lines|less.*space.*lines/, property: 'line_height', value: 1.2, selectionMsg: 'Tightened line spacing (line-height: 1.2).', pageMsg: 'Reduced line spacing.' },
+	{ regex: /letters.*squish|too.*tight.*letter|letter.*spac|track/, property: 'letter_spacing', value: 1, selectionMsg: 'Increased letter spacing.', pageMsg: 'Added letter spacing.' },
+	{ regex: /chunk|heavy|bold|thicker.*text|fatter.*text|font.*weight/, property: 'font_weight', value: 700, selectionMsg: 'Made text bolder (font-weight: 700).', pageMsg: 'Applied bold weight.' },
+	{ regex: /thin.*text|light.*weight|lighter.*text/, property: 'font_weight', value: 300, selectionMsg: 'Made text lighter (font-weight: 300).', pageMsg: 'Applied light weight.' },
+	{ regex: /remove.*underline|no.*underline|plain.*link/, property: 'text_decoration', value: 'none', selectionMsg: 'Removed underline.', pageMsg: 'Removed underlines from links.' },
+	{ regex: /add.*underline|underline.*text/, property: 'text_decoration', value: 'underline', selectionMsg: 'Added underline.', pageMsg: 'Underlined text.' },
+	
+	// GROUP 14: BACKGROUNDS & MEDIA
+	{ regex: /video.*behind|movie.*behind|background.*video/, property: 'background_media', value: 'video', selectionMsg: 'Set video as background.', pageMsg: 'Applied video background.' },
+	{ regex: /darken.*screen|overlay|dim.*background|dark.*overlay/, property: 'background_overlay', value: 0.5, selectionMsg: 'Added dark overlay (50%).', pageMsg: 'Darkened background with overlay.' },
+	{ regex: /zoom.*photo|fill.*container|cover.*image|fit.*cover/, property: 'object_fit', value: 'cover', selectionMsg: 'Set image to cover container.', pageMsg: 'Applied cover fit to images.' },
+	{ regex: /contain.*image|show.*whole|fit.*contain/, property: 'object_fit', value: 'contain', selectionMsg: 'Set image to contain.', pageMsg: 'Applied contain fit to images.' },
+	{ regex: /pattern.*texture|tile.*background|repeat.*background|honeycomb/, property: 'background_tile', value: true, selectionMsg: 'Added tiled pattern.', pageMsg: 'Applied repeating pattern.' },
+	
+	// GROUP 15: SHAPES & DIVIDERS
+	{ regex: /wavy.*edge|wave.*bottom|wave.*divider/, property: 'shape_divider', value: 'wave', selectionMsg: 'Added wave shape divider.', pageMsg: 'Applied wave divider.' },
+	{ regex: /triangle.*edge|angle.*divider|slant.*edge/, property: 'shape_divider', value: 'triangle', selectionMsg: 'Added triangle shape divider.', pageMsg: 'Applied angled divider.' },
+	{ regex: /cut.*triangle|triangle.*shape|clip.*triangle/, property: 'clip_path', value: 'polygon(50% 0%, 0% 100%, 100% 100%)', selectionMsg: 'Cut into triangle shape.', pageMsg: 'Applied triangle clip.' },
+	{ regex: /cut.*circle|circle.*shape|round.*clip/, property: 'clip_path', value: 'circle(50%)', selectionMsg: 'Cut into circle shape.', pageMsg: 'Applied circle clip.' },
+	{ regex: /cut.*diamond|diamond.*shape/, property: 'clip_path', value: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', selectionMsg: 'Cut into diamond shape.', pageMsg: 'Applied diamond clip.' },
+	
+	// GROUP 16: CONSTRAINTS & SIZING
+	{ regex: /don'?t.*too.*wide|max.*width|limit.*width|constrain.*width/, property: 'max_width', value: 'fit-content', selectionMsg: 'Constrained max width.', pageMsg: 'Limited maximum width.' },
+	{ regex: /full.*width|stretch.*wide|100.*width/, property: 'full_width', value: true, selectionMsg: 'Set to full width.', pageMsg: 'Made containers full width.' },
+	{ regex: /minimum.*height|at.*least.*tall|min.*height/, property: 'min_height', value: 400, selectionMsg: 'Set minimum height.', pageMsg: 'Applied minimum height.' },
+	
+	// GROUP 17: ROW PATTERNS
+	{ regex: /zig.*zag|alternate|stagger|every.*other/, property: 'row_pattern', value: 'alternating', selectionMsg: 'Applied alternating row pattern.', pageMsg: 'Created zig-zag layout.' },
+	{ regex: /masonry|pinterest|grid.*flow/, property: 'row_pattern', value: 'masonry', selectionMsg: 'Applied masonry layout.', pageMsg: 'Created masonry grid.' },
+	
+	// GROUP 18: RELATIVE SIZING (±20% adjustment)
+	{ regex: /bigger(?!.*hover)|larger|increase.*size|more.*size|scale.*up/, property: 'relative_size', value: 1.2, selectionMsg: 'Increased size by 20%.', pageMsg: 'Scaled up by 20%.' },
+	{ regex: /smaller|reduce.*size|decrease.*size|less.*size|scale.*down/, property: 'relative_size', value: 0.8, selectionMsg: 'Decreased size by 20%.', pageMsg: 'Scaled down by 20%.' },
+	{ regex: /bigger.*text|larger.*text|increase.*font|larger.*font/, property: 'font_size_relative', value: 1.2, selectionMsg: 'Increased font size by 20%.', pageMsg: 'Enlarged text.' },
+	{ regex: /smaller.*text|reduce.*text|decrease.*font|tinier/, property: 'font_size_relative', value: 0.8, selectionMsg: 'Decreased font size by 20%.', pageMsg: 'Reduced text size.' },
+	{ regex: /wider|more.*width|increase.*width|stretch.*horizontal/, property: 'width_relative', value: 1.2, selectionMsg: 'Increased width by 20%.', pageMsg: 'Made wider.' },
+	{ regex: /narrower|less.*width|decrease.*width|thinner/, property: 'width_relative', value: 0.8, selectionMsg: 'Decreased width by 20%.', pageMsg: 'Made narrower.' },
+	{ regex: /taller|more.*height|increase.*height|stretch.*vertical/, property: 'height_relative', value: 1.2, selectionMsg: 'Increased height by 20%.', pageMsg: 'Made taller.' },
+	{ regex: /shorter|less.*height|decrease.*height|squash/, property: 'height_relative', value: 0.8, selectionMsg: 'Decreased height by 20%.', pageMsg: 'Made shorter.' },
+	
+	// GROUP 19: DIRECTIONAL MARGIN
+	{ regex: /push.*down|more.*space.*above|margin.*top|space.*above/, property: 'margin_top', value: 40, selectionMsg: 'Added top margin (40px).', pageMsg: 'Added space above.' },
+	{ regex: /push.*up|more.*space.*below|margin.*bottom|space.*below|space.*under/, property: 'margin_bottom', value: 40, selectionMsg: 'Added bottom margin (40px).', pageMsg: 'Added space below.' },
+	{ regex: /push.*right|more.*space.*left|margin.*left|space.*left/, property: 'margin_left', value: 40, selectionMsg: 'Added left margin (40px).', pageMsg: 'Added space on left.' },
+	{ regex: /push.*left|more.*space.*right|margin.*right|space.*right/, property: 'margin_right', value: 40, selectionMsg: 'Added right margin (40px).', pageMsg: 'Added space on right.' },
+	
+	// GROUP 20: DIRECTIONAL PADDING
+	{ regex: /cushion.*top|pad.*top|padding.*top|inside.*top/, property: 'padding_top', value: 30, selectionMsg: 'Added top padding (30px).', pageMsg: 'Added internal space at top.' },
+	{ regex: /cushion.*bottom|pad.*bottom|padding.*bottom|inside.*bottom/, property: 'padding_bottom', value: 30, selectionMsg: 'Added bottom padding (30px).', pageMsg: 'Added internal space at bottom.' },
+	{ regex: /cushion.*left|pad.*left|padding.*left|inside.*left/, property: 'padding_left', value: 30, selectionMsg: 'Added left padding (30px).', pageMsg: 'Added internal space on left.' },
+	{ regex: /cushion.*right|pad.*right|padding.*right|inside.*right/, property: 'padding_right', value: 30, selectionMsg: 'Added right padding (30px).', pageMsg: 'Added internal space on right.' },
+	
+	// GROUP 21: RESPONSIVE OVERRIDES
+	{ regex: /hide.*mobile|mobile.*hide|don'?t.*show.*mobile|invisible.*mobile/, property: 'display_mobile', value: 'none', selectionMsg: 'Hidden on mobile devices.', pageMsg: 'Hidden on mobile.' },
+	{ regex: /hide.*desktop|desktop.*hide|mobile.*only/, property: 'display_desktop', value: 'none', selectionMsg: 'Hidden on desktop (mobile only).', pageMsg: 'Showing only on mobile.' },
+	{ regex: /hide.*tablet|tablet.*hide/, property: 'display_tablet', value: 'none', selectionMsg: 'Hidden on tablet.', pageMsg: 'Hidden on tablets.' },
+	{ regex: /show.*mobile.*only|mobile.*version/, property: 'show_mobile_only', value: true, selectionMsg: 'Showing on mobile only.', pageMsg: 'Visible only on mobile.' },
+	
+	// GROUP 22: HOVER STATE PATTERNS
+	{ regex: /change.*hover|hover.*change|when.*hover/, property: 'hover_effect', value: 'transform', selectionMsg: 'Added hover effect.', pageMsg: 'Applied hover transformation.' },
+	{ regex: /lift.*hover|raise.*hover|elevate.*hover/, property: 'hover_lift', value: true, selectionMsg: 'Added lift on hover.', pageMsg: 'Elements lift on hover.' },
+	{ regex: /glow.*hover|shine.*hover/, property: 'hover_glow', value: true, selectionMsg: 'Added glow on hover.', pageMsg: 'Elements glow on hover.' },
+	{ regex: /darken.*hover|dim.*hover/, property: 'hover_darken', value: true, selectionMsg: 'Added darken on hover.', pageMsg: 'Elements darken on hover.' },
+	{ regex: /lighten.*hover|brighten.*hover/, property: 'hover_lighten', value: true, selectionMsg: 'Added lighten on hover.', pageMsg: 'Elements brighten on hover.' },
+	
+	// GROUP 23: UNIVERSAL ALIGNMENT (text + items together)
+	{ regex: /align.*everything.*left|everything.*left.*align|left.*align.*all|flush.*left/, property: 'align_everything', value: 'left', selectionMsg: 'Left-aligned all content.', pageMsg: 'Left-aligned everything.' },
+	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
+	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
+];
 
 const AIChatPanel = ({ isOpen, onClose }) => {
 	const [messages, setMessages] = useState([]);
@@ -724,6 +882,27 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		'column-gap-unit-general': unit,
 	});
 
+	// Flex sizing helpers
+	const updateFlexGrow = (value) => ({
+		'flex-grow-general': Number(value),
+	});
+
+	const updateFlexShrink = (value) => ({
+		'flex-shrink-general': Number(value),
+	});
+
+	// Combo helper for dead center
+	const updateDeadCenter = () => ({
+		'justify-content-general': 'center',
+		'align-items-general': 'center',
+	});
+
+	// Stacking/layer helper
+	const updateStacking = (zIndex, position = 'relative') => ({
+		'z-index-general': Number(zIndex),
+		'position-general': position,
+	});
+
 	const updateDisplay = (value) => ({
 		'display-general': value,
 	});
@@ -931,14 +1110,56 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		const targetCard = newStyleCards[targetKey];
 		let changesCount = 0;
 
-		// Helper to safely set deeply nested values
+		// Helper: Hex to RGB String (255,255,255)
+		const hexToRgbString = (hex) => {
+			if (!hex) return '0,0,0';
+			// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+			const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+			hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+			const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+			return result ? 
+				`${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}` : 
+				'0,0,0';
+		};
+
+		// Helper to safely set deeply nested values with schema mapping
 		const setStyleValue = (key, value) => {
 			['light', 'dark'].forEach(mode => {
 				if (!targetCard[mode]) targetCard[mode] = {};
 				if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
 				
-				// Identify category
-				let category = 'color'; // Default
+				// 1. Handle Color Palette (color-palette-1 -> color[1])
+				if (key.startsWith('color-palette-')) {
+					if (!targetCard[mode].styleCard.color) targetCard[mode].styleCard.color = {};
+					const paletteIndex = key.replace('color-palette-', '');
+					// Convert Hex to RGB string for Style Card
+					targetCard[mode].styleCard.color[paletteIndex] = hexToRgbString(value);
+					return;
+				}
+
+				// 2. Handle Heading Typography (Apply to all H tags)
+				if (key.includes('-heading')) {
+					const actualProperty = key.replace('-heading', '-general'); // font-family-heading -> font-family-general
+					['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(tag => {
+						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
+						targetCard[mode].styleCard[tag][actualProperty] = value;
+					});
+					return;
+				}
+
+				// 3. Handle Body/General Typography (Apply to p, list, button)
+				if (key === 'font-family-general' || key === 'font-weight-general') {
+					['p', 'ul', 'ol', 'button', 'a'].forEach(tag => {
+						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
+						targetCard[mode].styleCard[tag][key] = value;
+					});
+					// Also set as fallback for headings if they don't have overrides? 
+					// For now, keep it simple.
+					return;
+				}
+				
+				// 4. Default Fallback
+				let category = 'color'; 
 				if (key.startsWith('font-')) category = 'typography';
 				
 				if (!targetCard[mode].styleCard[category]) {
@@ -962,7 +1183,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				setActiveStyleCard(targetKey);
 			}
 			
-			return message;
+			// Open Style Card editor for user to review and save
+			setTimeout(() => {
+				if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
+					window.maxiBlocksOpenStyleCardsEditor();
+				}
+			}, 200);
+			
+			return message + ' Review and save in the Style Card editor.';
 		}
 		return __('No valid Style Card updates found.', 'maxi-blocks');
 	};
@@ -1307,15 +1535,327 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							}
 							break;
 						case 'text_align':
-							changes = updateTextAlign(value);
+							// Text alignment for text/heading blocks
+							changes = { 'text-alignment-general': value };
 							break;
 						case 'align_items':
-							changes = updateItemAlign(value);
+							// Item alignment for container blocks
+							changes = { 
+								'justify-content-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
+								'align-items-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
+							};
 							break;
 						case 'align_everything':
+							// Universal alignment: text + flex items together
+							const flexValue = value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center';
+							changes = { 
+								'text-alignment-general': value,
+								'justify-content-general': flexValue,
+								'align-items-general': flexValue,
+							};
+							break;
+						// ======= LAYOUT INTENT PROPERTIES =======
+						case 'flex_direction':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateFlexDirection(value);
+							}
+							break;
+						case 'justify_content':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateJustifyContent(value);
+							}
+							break;
+						case 'align_items_flex':
+							// Apply to layout containers (different from text align_items)
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateAlignItems(value);
+							}
+							break;
+						case 'flex_wrap':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = {
+									'flex-wrap-general': value,
+								};
+							}
+							break;
+						case 'gap':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								const gapVal = typeof value === 'number' ? value : parseInt(value) || 0;
+								changes = updateGap(gapVal);
+							}
+							break;
+						// ======= EXTENDED LAYOUT PROPERTIES =======
+						case 'dead_center':
+							// Combo: center both axes
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateDeadCenter();
+							}
+							break;
+						case 'flex_grow':
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateFlexGrow(value);
+							}
+							break;
+						case 'flex_shrink':
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateFlexShrink(value);
+							}
+							break;
+						case 'stacking':
+							// Combo: z-index + position
+							if (typeof value === 'object' && value.zIndex !== undefined) {
+								changes = updateStacking(value.zIndex, value.position || 'relative');
+							}
+							break;
+						case 'position':
+							changes = updatePosition(value);
+							break;
+						case 'display':
+							changes = updateDisplay(value);
+							break;
+						// ======= OPACITY & TRANSPARENCY =======
+						case 'opacity':
+							changes = { 'opacity-general': Number(value) };
+							break;
+						// ======= TRANSFORM EFFECTS =======
+						case 'transform_rotate':
 							changes = {
-								...updateTextAlign(value),
-								...updateItemAlign(value)
+								'transform-rotate-general': Number(value),
+								'transform-origin-general': 'center center',
+							};
+							break;
+						case 'transform_scale':
+							if (typeof value === 'object') {
+								changes = {
+									'transform-scale-x-general': value.x || 1,
+									'transform-scale-y-general': value.y || 1,
+								};
+							} else {
+								changes = {
+									'transform-scale-x-general': Number(value),
+									'transform-scale-y-general': Number(value),
+								};
+							}
+							break;
+						case 'transform_scale_hover':
+							changes = {
+								'transform-scale-x-hover': Number(value),
+								'transform-scale-y-hover': Number(value),
+								'transform-status-hover': true,
+							};
+							break;
+						// ======= SCROLL EFFECTS =======
+						case 'scroll_fade':
+							changes = { 'scroll-fade-status-general': true };
+							break;
+						case 'parallax':
+							changes = { 
+								'background-image-attachment-general': 'fixed',
+								'background-image-parallax-general': true,
+							};
+							break;
+						// ======= AESTHETIC (special - triggers apply_theme) =======
+						case 'aesthetic':
+							// This is handled specially - force to global scope
+							// The aesthetic patterns will use apply_theme instead
+							changes = null; // Handled in the loop with special logic
+							break;
+						// ======= TYPOGRAPHY =======
+						case 'line_height':
+							changes = { 'line-height-general': Number(value) };
+							break;
+						case 'letter_spacing':
+							changes = { 'letter-spacing-general': Number(value) };
+							break;
+						case 'font_weight':
+							changes = { 'font-weight-general': Number(value) };
+							break;
+						case 'text_decoration':
+							changes = { 'text-decoration-general': value };
+							break;
+						// ======= BACKGROUNDS & MEDIA =======
+						case 'background_media':
+							changes = { 'background-active-media-general': value };
+							break;
+						case 'background_overlay':
+							changes = {
+								'overlay-background-color-general': 'rgba(0,0,0,' + Number(value) + ')',
+								'overlay-status-general': true,
+							};
+							break;
+						case 'object_fit':
+							if (block.name.includes('image')) {
+								changes = { 'object-fit-general': value };
+							}
+							break;
+						case 'background_tile':
+							changes = { 
+								'background-image-repeat-general': 'repeat',
+								'background-image-size-general': 'auto',
+							};
+							break;
+						// ======= SHAPES & DIVIDERS =======
+						case 'shape_divider':
+							changes = { 
+								'shape-divider-bottom-status': true,
+								'shape-divider-bottom-shape': value,
+							};
+							break;
+						case 'clip_path':
+							changes = { 
+								'clip-path-general': value,
+								'clip-path-status-general': true,
+							};
+							break;
+						// ======= CONSTRAINTS & SIZING =======
+						case 'max_width':
+							changes = { 'max-width-general': value };
+							break;
+						case 'full_width':
+							changes = { 
+								'full-width-general': true,
+								'size-advanced-options': true,
+							};
+							break;
+						case 'min_height':
+							changes = { 
+								'min-height-general': Number(value),
+								'min-height-unit-general': 'px',
+							};
+							break;
+						// ======= ROW PATTERNS =======
+						case 'row_pattern':
+							// Row patterns are complex - just set a marker attribute
+							changes = { 'row-pattern-general': value };
+							break;
+						// ======= RELATIVE SIZING =======
+						case 'relative_size':
+							// Multiply current size by value (1.2 = +20%, 0.8 = -20%)
+							const currentWidth = block.attributes['width-general'] || 100;
+							const currentHeight = block.attributes['height-general'] || 100;
+							changes = {
+								'width-general': Math.round(currentWidth * Number(value)),
+								'height-general': Math.round(currentHeight * Number(value)),
+							};
+							break;
+						case 'font_size_relative':
+							const currentFontSize = block.attributes['font-size-general'] || 16;
+							changes = { 'font-size-general': Math.round(currentFontSize * Number(value)) };
+							break;
+						case 'width_relative':
+							const currentW = block.attributes['width-general'] || 100;
+							changes = { 'width-general': Math.round(currentW * Number(value)) };
+							break;
+						case 'height_relative':
+							const currentH = block.attributes['height-general'] || 100;
+							changes = { 'height-general': Math.round(currentH * Number(value)) };
+							break;
+						// ======= DIRECTIONAL MARGIN =======
+						case 'margin_top':
+							changes = { 
+								[`${prefix}margin-top-general`]: Number(value),
+								[`${prefix}margin-top-unit-general`]: 'px',
+							};
+							break;
+						case 'margin_bottom':
+							changes = { 
+								[`${prefix}margin-bottom-general`]: Number(value),
+								[`${prefix}margin-bottom-unit-general`]: 'px',
+							};
+							break;
+						case 'margin_left':
+							changes = { 
+								[`${prefix}margin-left-general`]: Number(value),
+								[`${prefix}margin-left-unit-general`]: 'px',
+							};
+							break;
+						case 'margin_right':
+							changes = { 
+								[`${prefix}margin-right-general`]: Number(value),
+								[`${prefix}margin-right-unit-general`]: 'px',
+							};
+							break;
+						// ======= DIRECTIONAL PADDING =======
+						case 'padding_top':
+							changes = { 
+								[`${prefix}padding-top-general`]: Number(value),
+								[`${prefix}padding-top-unit-general`]: 'px',
+							};
+							break;
+						case 'padding_bottom':
+							changes = { 
+								[`${prefix}padding-bottom-general`]: Number(value),
+								[`${prefix}padding-bottom-unit-general`]: 'px',
+							};
+							break;
+						case 'padding_left':
+							changes = { 
+								[`${prefix}padding-left-general`]: Number(value),
+								[`${prefix}padding-left-unit-general`]: 'px',
+							};
+							break;
+						case 'padding_right':
+							changes = { 
+								[`${prefix}padding-right-general`]: Number(value),
+								[`${prefix}padding-right-unit-general`]: 'px',
+							};
+							break;
+						// ======= RESPONSIVE OVERRIDES =======
+						case 'display_mobile':
+							changes = { 'display-xs': value }; // xs = mobile
+							break;
+						case 'display_tablet':
+							changes = { 'display-sm': value, 'display-md': value }; // sm/md = tablet
+							break;
+						case 'display_desktop':
+							changes = { 'display-xl': value, 'display-lg': value }; // xl/lg = desktop
+							break;
+						case 'show_mobile_only':
+							changes = { 
+								'display-xl': 'none', 
+								'display-lg': 'none',
+								'display-md': 'none',
+								'display-xs': 'flex',
+							};
+							break;
+						// ======= HOVER STATE EFFECTS =======
+						case 'hover_effect':
+							changes = { 
+								'transform-status-hover': true,
+								'transform-scale-x-hover': 1.05,
+								'transform-scale-y-hover': 1.05,
+							};
+							break;
+						case 'hover_lift':
+							changes = { 
+								'transform-status-hover': true,
+								'transform-translate-y-hover': -10,
+								'box-shadow-blur-hover': 20,
+								'box-shadow-vertical-hover': 10,
+							};
+							break;
+						case 'hover_glow':
+							changes = { 
+								'box-shadow-status-hover': true,
+								'box-shadow-blur-hover': 30,
+								'box-shadow-spread-hover': 5,
+								'box-shadow-opacity-hover': 0.5,
+							};
+							break;
+						case 'hover_darken':
+							changes = { 
+								'opacity-hover': 0.7,
+								'opacity-status-hover': true,
+							};
+							break;
+						case 'hover_lighten':
+							changes = { 
+								'filter-brightness-hover': 1.2,
+								'filter-status-hover': true,
 							};
 							break;
 					}
@@ -2088,6 +2628,82 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 
+		// ============================================================
+		// LAYOUT INTENT INTERCEPTION (Lookup Table Pattern Matching)
+		// ============================================================
+		// Uses LAYOUT_PATTERNS constant for zero-latency, maintainable pattern matching
+		
+		for (const pattern of LAYOUT_PATTERNS) {
+			if (lowerMessage.match(pattern.regex)) {
+				setIsLoading(true);
+				
+				// SPECIAL: Aesthetic patterns provide clarification options
+				if (pattern.property === 'aesthetic') {
+					// Aesthetic styles need specific colour/style choices
+					const styleOptions = {
+						'minimalism': ['White background', 'Light greys only', 'Remove all shadows'],
+						'brutalism': ['Black borders', 'Monospace fonts', 'High contrast'],
+						'neobrutalism': ['Thick borders', 'Block shadows', 'Vibrant pastels'],
+						'swiss': ['Grid layout', 'Helvetica style', 'Red accents'],
+						'editorial': ['Serif headings', 'Pull quotes', 'High contrast'],
+						'masculine': ['Dark colours', 'Sharp corners', 'Bold weights'],
+						'feminine': ['Soft pastels', 'Rounded shapes', 'Script accents'],
+						'corporate': ['Navy palette', 'Clean sans-serif', 'Generous spacing'],
+						'natural': ['Earth tones', 'Organic curves', 'Warm palette'],
+					};
+					const options = styleOptions[pattern.value] || ['Apply style'];
+					setMessages(prev => [...prev, {
+						role: 'assistant',
+						content: `Which aspect of the ${pattern.value} style would you like to apply?`,
+						options,
+						aestheticStyle: pattern.value,
+						executed: false
+					}]);
+					setIsLoading(false);
+					return;
+				}
+				
+				// Standard pattern handling
+				const directAction = scope === 'selection'
+					? { action: 'update_selection', property: pattern.property, value: pattern.value, message: pattern.selectionMsg }
+					: { action: 'update_page', property: pattern.property, value: pattern.value, target_block: pattern.target || 'container', message: pattern.pageMsg };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+		}
+		
+		// SPECIAL: Gap with number extraction (not in lookup table)
+		const gapMatch = lowerMessage.match(/(\d+)\s*(?:px)?\s*(?:gap|gutter|air\s*between|space\s*between\s*items)/i);
+		if (gapMatch) {
+			const gapValue = parseInt(gapMatch[1]);
+			setIsLoading(true);
+			const directAction = scope === 'selection'
+				? { action: 'update_selection', property: 'gap', value: gapValue, message: `Applied ${gapValue}px gap between items.` }
+				: { action: 'update_page', property: 'gap', value: gapValue, target_block: 'container', message: `Applied ${gapValue}px gap to containers.` };
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
+		
+		// SPECIAL: Gap clarification (add gaps without number)
+		if (lowerMessage.match(/add\s*(gap|gutter)|gap\s*between|gutter\s*between/) && !gapMatch) {
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'How much gap would you like between items?',
+				options: ['Small (10px)', 'Medium (20px)', 'Large (40px)'],
+				gapTarget: scope === 'selection' ? 'selection' : 'container',
+				executed: false
+			}]);
+			return;
+		}
+
 		setIsLoading(true);
 
 		try {
@@ -2360,6 +2976,26 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			directAction = { action: 'update_page', property: 'align_everything', value: alignVal, message: `Aligned everything ${alignVal}.` };
 		}
 
+		// GAP SIZE PRESETS (from layout intent clarification)
+		else if (suggestion === 'Small (10px)') {
+			const prevMsg = messages.findLast(m => m.gapTarget);
+			directAction = prevMsg?.gapTarget === 'selection'
+				? { action: 'update_selection', property: 'gap', value: 10, message: 'Applied small gap (10px).' }
+				: { action: 'update_page', property: 'gap', value: 10, target_block: 'container', message: 'Applied small gap (10px) to containers.' };
+		}
+		else if (suggestion === 'Medium (20px)') {
+			const prevMsg = messages.findLast(m => m.gapTarget);
+			directAction = prevMsg?.gapTarget === 'selection'
+				? { action: 'update_selection', property: 'gap', value: 20, message: 'Applied medium gap (20px).' }
+				: { action: 'update_page', property: 'gap', value: 20, target_block: 'container', message: 'Applied medium gap (20px) to containers.' };
+		}
+		else if (suggestion === 'Large (40px)') {
+			const prevMsg = messages.findLast(m => m.gapTarget);
+			directAction = prevMsg?.gapTarget === 'selection'
+				? { action: 'update_selection', property: 'gap', value: 40, message: 'Applied large gap (40px).' }
+				: { action: 'update_page', property: 'gap', value: 40, target_block: 'container', message: 'Applied large gap (40px) to containers.' };
+		}
+
 		// 8. BORDER STYLE PRESETS
 		else if (['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'].includes(suggestion)) {
 			const prevMsg = messages.findLast(m => m.borderColorChoice !== undefined);
@@ -2415,7 +3051,176 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			} // Close inner if (prevMsg?.shadowColorChoice)
 		} // Close else if (['Soft', 'Medium', 'Hard'])
 
-		// 10. ICON LINE WIDTH PRESETS
+		// 10. AESTHETIC STYLE OPTIONS
+		// Masculine style - Fonts: Oswald (Heading), Roboto (Body)
+		else if (suggestion === 'Dark colours') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Full 8-color Dark Palette
+					'color-palette-1': '#1a1a1a', // Dark Background
+					'color-palette-2': '#2d2d2d', // Dark Surface
+					'color-palette-3': '#404040', // Muted
+					'color-palette-4': '#ffffff', // Primary (White contrast)
+					'color-palette-5': '#ffffff', // Heading Text
+					'color-palette-6': '#e5e5e5', // Hover
+					'color-palette-7': '#333333', // Surface 2
+					'color-palette-8': '#000000', // Shadow
+					// Typography
+					'font-family-heading': 'Oswald, sans-serif', 
+					'font-family-general': 'Roboto, sans-serif', 
+					'font-weight-heading': 700 
+				}, 
+				message: 'Applied full dark palette and masculine fonts.' 
+			};
+		}
+		else if (suggestion === 'Sharp corners') directAction = { action: 'update_page', property: 'border_radius', value: 0, target_block: 'container', message: 'Removed all rounded corners (sharp aesthetic).' };
+		else if (suggestion === 'Bold weights') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Oswald, sans-serif', 'font-family-general': 'Roboto, sans-serif', 'font-weight-heading': 700 }, message: 'Applied Oswald & Roboto fonts (Bold/Masculine).' };
+		
+		// Feminine style - Fonts: Playfair Display (Heading), Lato (Body)
+		else if (suggestion === 'Soft pastels') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Full 8-color Pastel Palette
+					'color-palette-1': '#fff0f5', // Lavender Blush
+					'color-palette-2': '#fff5f8', // Lighter
+					'color-palette-3': '#ffd1dc', // Pastel Pink
+					'color-palette-4': '#db7093', // Primary (Pale Violet Red)
+					'color-palette-5': '#5c5c5c', // Text Dark Grey
+					'color-palette-6': '#c71585', // Hover
+					'color-palette-7': '#ffe4e1', // Misty Rose
+					'color-palette-8': '#e0c0c0', // Shadow
+					// Typography
+					'font-family-heading': 'Playfair Display, serif', 
+					'font-family-general': 'Lato, sans-serif'
+				}, 
+				message: 'Applied soft pastel palette and feminine fonts.' 
+			};
+		}
+		else if (suggestion === 'Rounded shapes') directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: 'container', message: 'Applied rounded corners (soft aesthetic).' };
+		else if (suggestion === 'Script accents') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Playfair Display, serif', 'font-family-general': 'Lato, sans-serif' }, message: 'Applied Playfair Display & Lato fonts (Feminine).' };
+		
+		// Corporate style - Fonts: Montserrat (Heading), Open Sans (Body)
+		else if (suggestion === 'Navy palette') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Full 8-color Navy Palette
+					'color-palette-1': '#ffffff', // White BG
+					'color-palette-2': '#f0f4f8', // Light Blue/Grey
+					'color-palette-3': '#8da3c1', // Muted Blue
+					'color-palette-4': '#1e3a5f', // Primary Navy
+					'color-palette-5': '#0f1e31', // Dark Heading
+					'color-palette-6': '#2b4d7a', // Hover Navy
+					'color-palette-7': '#e1e8f0', // Surface
+					'color-palette-8': '#0a1420', // Shadow
+					// Typography
+					'font-family-heading': 'Montserrat, sans-serif',
+					'font-family-general': 'Open Sans, sans-serif'
+				}, 
+				message: 'Applied navy corporate palette and fonts.' 
+			};
+		}
+		else if (suggestion === 'Clean sans-serif') directAction = { action: 'update_style_card', updates: { 'font-family-general': 'Open Sans, sans-serif', 'font-family-heading': 'Montserrat, sans-serif' }, message: 'Applied Montserrat & Open Sans fonts.' };
+		else if (suggestion === 'Generous spacing') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: 'container', message: 'Applied generous spacing.' };
+		
+		// Minimalism style - Fonts: Inter (All)
+		else if (suggestion === 'White background') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Full 8-color Minimalist Palette
+					'color-palette-1': '#ffffff', // Pure White
+					'color-palette-2': '#fafafa', // Off White
+					'color-palette-3': '#e0e0e0', // Light Grey
+					'color-palette-4': '#000000', // Primary Black
+					'color-palette-5': '#111111', // Almost Black Text
+					'color-palette-6': '#333333', // Hover Grey
+					'color-palette-7': '#f5f5f5', // Surface
+					'color-palette-8': '#cccccc', // Shadow
+					'font-family-general': 'Inter, sans-serif',
+					'font-family-heading': 'Inter, sans-serif'
+				}, 
+				message: 'Applied minimalist white palette and Inter font.' 
+			};
+		}
+		else if (suggestion === 'Light greys only') directAction = { action: 'update_style_card', updates: { 'color-palette-5': '#666666', 'color-palette-8': '#444444' }, message: 'Applied light grey text palette to Style Card.' };
+		else if (suggestion === 'Remove all shadows') directAction = { action: 'update_page', property: 'box_shadow', value: 'none', target_block: 'container', message: 'Removed all shadows (minimalist).' };
+		
+		// Brutalism/Neobrutalism
+		else if (suggestion === 'Black borders') directAction = { action: 'update_page', property: 'border', value: { width: 3, style: 'solid', color: 8 }, target_block: 'container', message: 'Applied black borders (brutalist).' };
+		else if (suggestion === 'Thick borders') directAction = { action: 'update_page', property: 'border', value: { width: 4, style: 'solid', color: 8 }, target_block: 'container', message: 'Applied thick borders (neobrutalist).' };
+		else if (suggestion === 'Block shadows') directAction = { action: 'update_page', property: 'box_shadow', value: { x: 5, y: 5, blur: 0, spread: 0, color: 8 }, target_block: 'container', message: 'Applied block shadows (neobrutalist).' };
+		else if (suggestion === 'Vibrant pastels') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Full 8-color Neo-Brutalist Palette
+					'color-palette-1': '#fffbf0', // Cream BG
+					'color-palette-2': '#ffd1dc', // Pink
+					'color-palette-3': '#ffeb99', // Yellow
+					'color-palette-4': '#98d8c8', // Teal
+					'color-palette-5': '#000000', // Black Text
+					'color-palette-6': '#7ac7b5', // Hover Teal
+					'color-palette-7': '#e6e6fa', // Lavender
+					'color-palette-8': '#000000', // Black Shadow
+					'font-family-general': 'Work Sans, sans-serif',
+					'font-family-heading': 'Space Mono, monospace'
+				}, 
+				message: 'Applied vibrant neo-brutalist palette and fonts.' 
+			};
+		}
+		else if (suggestion === 'Monospace fonts') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Space Mono, monospace', 'font-family-general': 'Work Sans, sans-serif' }, message: 'Applied Space Mono & Work Sans fonts.' };
+		else if (suggestion === 'High contrast') directAction = { action: 'update_style_card', updates: { 'color-palette-1': '#ffffff', 'color-palette-5': '#000000', 'color-palette-8': '#000000' }, message: 'Applied high contrast palette to Style Card.' };
+		
+		// Swiss/Editorial
+		else if (suggestion === 'Grid layout') directAction = { action: 'update_page', property: 'gap', value: 24, target_block: 'container', message: 'Applied Swiss grid spacing.' };
+		else if (suggestion === 'Helvetica style') directAction = { action: 'update_style_card', updates: { 'font-family-general': 'Roboto, sans-serif', 'font-family-heading': 'Roboto, sans-serif', 'font-weight-heading': 900 }, message: 'Applied Roboto (Helvetica-style) typography.' };
+		else if (suggestion === 'Red accents') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Swiss Red Palette
+					'color-palette-1': '#ffffff', 
+					'color-palette-2': '#f5f5f5',
+					'color-palette-3': '#999999',
+					'color-palette-4': '#ff0000', // International Red
+					'color-palette-5': '#000000',
+					'color-palette-6': '#cc0000',
+					'color-palette-7': '#eeeeee',
+					'color-palette-8': '#000000'
+				}, 
+				message: 'Applied Swiss red accent palette.' 
+			};
+		}
+		else if (suggestion === 'Serif headings') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Merriweather, serif' }, message: 'Applied Merriweather serif headings.' };
+		else if (suggestion === 'Pull quotes') directAction = { action: 'update_page', property: 'font_weight', value: 300, target_block: 'text', message: 'Applied editorial typography.' };
+		
+		// Natural style
+		else if (suggestion === 'Earth tones') {
+			directAction = { 
+				action: 'update_style_card', 
+				updates: { 
+					// Earth Tones Palette
+					'color-palette-1': '#f5f0e6', // Linen
+					'color-palette-2': '#e0d8c8', // Tan
+					'color-palette-3': '#a89f91', // Taupe
+					'color-palette-4': '#8b7355', // Brown
+					'color-palette-5': '#3e362e', // Dark Brown Text
+					'color-palette-6': '#6d5a43', // Hover Brown
+					'color-palette-7': '#d6cec2', // Beige
+					'color-palette-8': '#2b2520', // Shadow
+					'font-family-heading': 'Lora, serif',
+					'font-family-general': 'Nunito, sans-serif'
+				}, 
+				message: 'Applied earth tone palette and natural fonts.' 
+			};
+		}
+		else if (suggestion === 'Organic curves') directAction = { action: 'update_page', property: 'border_radius', value: 50, target_block: 'container', message: 'Applied organic rounded shapes.' };
+		else if (suggestion === 'Warm palette') directAction = { action: 'update_style_card', updates: { 'color-palette-1': '#fff8f0', 'color-palette-4': '#c67b5c', 'color-palette-2': '#ffe0d0' }, message: 'Applied warm natural palette to Style Card.' };
+
+		// 11. ICON LINE WIDTH PRESETS
 		else if (['Thin', 'Medium', 'Thick'].includes(suggestion)) {
 			const prevMsg = messages.findLast(m => m.lineWidthTarget !== undefined);
 			// Only handle as line width preset if we have line width context

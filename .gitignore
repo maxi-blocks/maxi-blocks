@@ -49,3 +49,6 @@ CLAUDE.md
 # Ignore PHP CS Fixer config
 **/.php-cs-fixer.dist.php
 
+# Ignore agent files
+.agent/
+.agent/*

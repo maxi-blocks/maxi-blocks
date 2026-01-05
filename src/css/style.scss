@@ -87,62 +87,6 @@
 	}
 }
 
-// Highlight hidden Maxi blocks in List View
-
-.block-editor-list-view__block[data-maxi-hidden='true'],
-.block-editor-list-view-leaf[data-maxi-hidden='true'] {
-	opacity: 0.7;
-}
-
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-list-view__expander,
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-list-view__expander {
-	color: var(--maxi-admin-grey) !important; // grey highlight for expander
-}
-
-// Target icon container with has-colors and selected rows
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-list-view__block-icon.has-colors,
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-list-view__block-icon.has-colors,
-.block-editor-list-view-leaf[data-maxi-hidden='true'].is-selected
-	.block-editor-list-view__block-icon,
-.block-editor-list-view__block[data-maxi-hidden='true'].is-selected
-	.block-editor-list-view__block-icon {
-	color: var(--maxi-admin-grey) !important;
-}
-
-// Make the List View row text grey for hidden blocks
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-list-view-block-contents,
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-list-view-block-contents,
-.block-editor-list-view-leaf[data-maxi-hidden='true']
-	.block-editor-list-view-block-select-button__title,
-.block-editor-list-view__block[data-maxi-hidden='true']
-	.block-editor-list-view-block-select-button__title,
-.block-editor-list-view-leaf[data-maxi-hidden='true'] .components-truncate,
-.block-editor-list-view__block[data-maxi-hidden='true'] .components-truncate {
-	color: var(--maxi-admin-grey) !important;
-}
-
-// Add a grey dot indicator for blocks with hidden children
-.block-editor-list-view-tree
-	[data-maxi-hidden-parent='true']:not([data-maxi-hidden='true'])
-	> .block-editor-list-view-block__contents-cell::after {
-	content: '';
-	position: absolute;
-	right: 3px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background-color: var(--maxi-admin-grey);
-	pointer-events: none;
-}
-
 .maxi-link-wrapper {
 	display: contents;
 

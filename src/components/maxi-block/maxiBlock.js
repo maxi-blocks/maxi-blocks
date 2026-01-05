@@ -153,6 +153,10 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		}, 0);
 
 	// Are just necessary for the memo() part
+	delete extraProps.deviceType;
+	delete extraProps.baseBreakpoint;
+	delete extraProps.context;
+	delete extraProps.state;
 
 	// Not usable/necessary on save blocks
 	const [isDragOverBlock, setIsDragOverBlock] = isSave ? [] : useState(false);
@@ -216,6 +220,14 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRepeater && 'maxi-block--repeater',
 		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
+		!isSave && !isEmpty(attributes?.relations) && 'maxi-block--interaction',
+		!isSave &&
+			!isEmpty(
+				background?.['background-layers']?.filter(
+					layer => layer.type !== 'color'
+				)
+			) &&
+			'maxi-block--background',
 		isSave && dcStatus && dcHide && '$class-to-replace'
 	);
 

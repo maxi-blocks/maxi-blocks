@@ -517,6 +517,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				'-',
 				$is_multisite
 					? sprintf(
+						/* translators: %s: Multisite type (Subdomain or Subfolder) */
 						__('Enabled (%s)', 'maxi-blocks'),
 						$multisite_type,
 					)
@@ -589,6 +590,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$permalink_display = empty($permalink_structure)
 				? __('Plain', 'maxi-blocks')
 				: sprintf(
+					/* translators: %s: Permalink structure format */
 					__('Pretty Permalinks (%s)', 'maxi-blocks'),
 					$permalink_structure,
 				);

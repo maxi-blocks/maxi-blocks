@@ -1,7 +1,12 @@
-import {
-	getAdvancedSettings,
-	getCanvasSettings,
-} from '@extensions/relations';
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import { getAdvancedSettings, getCanvasSettings } from '@extensions/relations';
 import { createSelectors } from '@extensions/styles/custom-css';
 
 /**
@@ -10,19 +15,19 @@ import { createSelectors } from '@extensions/styles/custom-css';
 const name = 'slide-maxi';
 const copyPasteMapping = {
 	settings: {
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

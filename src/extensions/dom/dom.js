@@ -382,8 +382,17 @@ wp.domReady(() => {
 		});
 	}
 
+	// Store the preview observer to prevent multiple instances and enable cleanup
+	let previewObserver = null;
+	let previewHideTimeout = null;
+
 	const hideMaxiReusableBlocksPreview = () => {
-		const observer = new MutationObserver(mutationsList => {
+		// Prevent creating multiple observers for the same purpose
+		if (previewObserver) {
+			return;
+		}
+
+		previewObserver = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {
 				if (mutation.addedNodes.length > 0) {
 					const preview = document.querySelector(
@@ -391,12 +400,30 @@ wp.domReady(() => {
 					);
 					if (preview) {
 						preview.style.display = 'none'; // Hide the preview
+
+						// Disconnect observer after successful hide to prevent memory leaks
+						if (previewObserver) {
+							previewObserver.disconnect();
+							previewObserver = null;
+						}
 					}
 				}
 			}
 		});
 
-		observer.observe(document.body, { childList: true, subtree: true });
+		previewObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
+
+		// Failsafe: disconnect observer after 5 seconds if preview never appears
+		clearTimeout(previewHideTimeout);
+		previewHideTimeout = setTimeout(() => {
+			if (previewObserver) {
+				previewObserver.disconnect();
+				previewObserver = null;
+			}
+		}, 5000);
 	};
 
 	const waitForBlockTypeItems = () => {

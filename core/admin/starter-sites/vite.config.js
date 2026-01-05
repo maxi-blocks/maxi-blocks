@@ -25,6 +25,17 @@ export default defineConfig({
 		rollupOptions: {
 			// Specify the input file explicitly
 			input: 'public/index.html',
+			// Externalize WordPress dependencies to use global wp object
+			external: [
+				'react',
+				'react-dom',
+				'react-dom/client',
+				'@wordpress/i18n',
+				'@wordpress/element',
+				'@wordpress/components',
+				'@wordpress/api-fetch',
+				'@wordpress/primitives',
+			],
 			output: {
 				// Match the original filename pattern from Craco - use main.js and main.css
 				entryFileNames: 'js/main.js',
@@ -39,6 +50,17 @@ export default defineConfig({
 				// Use UMD format which is more compatible with WordPress
 				format: 'umd',
 				name: 'MaxiStarterSites',
+				// Map WordPress externals to global wp object
+				globals: {
+					react: 'React',
+					'react-dom': 'ReactDOM',
+					'react-dom/client': 'ReactDOM',
+					'@wordpress/i18n': 'wp.i18n',
+					'@wordpress/element': 'wp.element',
+					'@wordpress/components': 'wp.components',
+					'@wordpress/api-fetch': 'wp.apiFetch',
+					'@wordpress/primitives': 'wp.primitives',
+				},
 			},
 		},
 

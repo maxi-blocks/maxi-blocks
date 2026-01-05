@@ -11,14 +11,8 @@ import { ColumnSizeControl } from './components';
 import { createSelectors } from '@extensions/styles/custom-css';
 import { getGroupAttributes } from '@extensions/styles';
 import getRowGapProps from '@extensions/attributes/getRowGapProps';
-import {
-	getColumnSizeStyles,
-	getFlexStyles,
-} from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getColumnSizeStyles, getFlexStyles } from '@extensions/styles/helpers';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 
 /**
  * External dependencies
@@ -31,27 +25,27 @@ import { merge } from 'lodash';
 const name = 'column-maxi';
 const copyPasteMapping = {
 	settings: {
-		'Column settings': {
+		[__('Column settings', 'maxi-blocks')]: {
 			group: {
-				'Fit content': 'column-fit-content',
-				'Column size': 'column-size',
-				'Vertical align': 'justify-content',
+				[__('Fit content', 'maxi-blocks')]: 'column-fit-content',
+				[__('Column size', 'maxi-blocks')]: 'column-size',
+				[__('Vertical align', 'maxi-blocks')]: 'justify-content',
 			},
 			hasBreakpoints: true,
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},

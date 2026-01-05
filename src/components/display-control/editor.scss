@@ -11,6 +11,17 @@
 }
 
 .maxi-display-control {
+	.maxi-warning-box__link-inline {
+		color: var(--maxi-primary-color);
+		text-decoration: underline;
+		cursor: pointer;
+
+		&:hover {
+			color: var(--maxi-secondary-color);
+			text-decoration: underline;
+		}
+	}
+
 	.maxi-base-control {
 		.maxi-tabs-control {
 			column-gap: 5px;

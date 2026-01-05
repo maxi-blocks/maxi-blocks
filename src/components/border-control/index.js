@@ -395,15 +395,15 @@ const BorderControl = props => {
 					}
 					newStyle
 					options={[
-						{ label: 'None', value: 'none' },
-						{ label: 'Dotted', value: 'dotted' },
-						{ label: 'Dashed', value: 'dashed' },
-						{ label: 'Solid', value: 'solid' },
-						{ label: 'Double', value: 'double' },
-						{ label: 'Groove', value: 'groove' },
-						{ label: 'Ridge', value: 'ridge' },
-						{ label: 'Inset', value: 'inset' },
-						{ label: 'Outset', value: 'outset' },
+						{ label: __('None', 'maxi-blocks'), value: 'none' },
+						{ label: __('Dotted', 'maxi-blocks'), value: 'dotted' },
+						{ label: __('Dashed', 'maxi-blocks'), value: 'dashed' },
+						{ label: __('Solid', 'maxi-blocks'), value: 'solid' },
+						{ label: __('Double', 'maxi-blocks'), value: 'double' },
+						{ label: __('Groove', 'maxi-blocks'), value: 'groove' },
+						{ label: __('Ridge', 'maxi-blocks'), value: 'ridge' },
+						{ label: __('Inset', 'maxi-blocks'), value: 'inset' },
+						{ label: __('Outset', 'maxi-blocks'), value: 'outset' },
 					]}
 					onChange={val => {
 						onChange({

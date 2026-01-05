@@ -10,6 +10,9 @@ const getIsUniqueCustomLabelRepeated = (
 ) => {
 	let currentRepeatCount = 0;
 
+	// ALWAYS use tree traversal to check the actual block editor state
+	// This is crucial for batch block creation (like column templates)
+	// where Redux store hasn't been updated yet but blocks are in the editor
 	goThroughMaxiBlocks(block => {
 		const { customLabel, uniqueID } = block.attributes;
 		if (

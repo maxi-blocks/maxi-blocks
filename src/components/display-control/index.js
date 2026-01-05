@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
+import { useSelect, dispatch } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -98,15 +98,34 @@ const DisplayControl = props => {
 		'is-temporarily-revealed': shouldBeHidden && isRevealModeActive,
 	});
 
+	const openListView = () => {
+		const { setIsListViewOpened } = dispatch('core/edit-post');
+		setIsListViewOpened(true);
+	};
+
 	return (
 		<div className={classes}>
 			{shouldBeHidden && !isRevealModeActive && (
 				<InfoBox
 					className='maxi-warning-box__hidden-reveal'
-					message={__(
-						'To view or edit a hidden block, open List View, select the block, then choose Show.',
-						'maxi-blocks'
-					)}
+					message={
+						<>
+							{__(
+								'To view or edit a hidden block,',
+								'maxi-blocks'
+							)}{' '}
+							<a
+								className='maxi-warning-box__link-inline'
+								onClick={openListView}
+							>
+								{__('open List View', 'maxi-blocks')}
+							</a>
+							{__(
+								', select the block, then choose Show.',
+								'maxi-blocks'
+							)}
+						</>
+					}
 				/>
 			)}
 			<SettingTabsControl

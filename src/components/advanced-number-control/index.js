@@ -109,6 +109,7 @@ const AdvancedNumberControl = props => {
 		newStyle = false,
 		showHelp = false,
 		helpContent = '',
+		disabled = false,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -132,7 +133,8 @@ const AdvancedNumberControl = props => {
 		`maxi-advanced-number-control ${
 			newStyle ? 'maxi-advanced-number-control__second-style' : ''
 		}`,
-		className
+		className,
+		{ 'maxi-advanced-number-control--disabled': disabled }
 	);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
@@ -306,6 +308,7 @@ const AdvancedNumberControl = props => {
 								max={enableUnit ? maxValue : max}
 								step={stepValue}
 								placeholder={placeholder}
+								disabled={disabled}
 							/>
 							<div className='maxi-advanced-number-control__spinner-container'>
 								<button

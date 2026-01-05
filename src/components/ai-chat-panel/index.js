@@ -61,10 +61,13 @@ When user says "make rounded" or "round corners":
 When user says "add space" or "more padding":
 {"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
 
+When user says "style buttons":
+{"action":"CLARIFY","message":"What button style would you like?","options":[{"label":"Solid"},{"label":"Outline"},{"label":"Flat"}]}
+
 ### THEME-AWARE RULES (CRITICAL)
 - **Theme Border:** use "var(--p)" (Subtle), "var(--h1)" (Strong), "var(--highlight)" (Brand).
 - **Brand Glow:** Use "box_shadow" with color "var(--highlight)".
-- **Ghost Button:** Set background "transparent", border "2px solid var(--highlight)", color "var(--highlight)".
+- **Ghost Button:** use "button_style" value "outline".
 - **Invert Section:** Set background "var(--h1)", color "white".
 
 ### SVG ICON COLORS (STYLE CARD PALETTE)
@@ -85,6 +88,7 @@ IF user selects/types these options, YOU MUST use the corresponding property:
 - "Soft" / "Crisp" / "Bold" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
 - "Thin" / "Medium" / "Thick" (line width) -> ACTION: update_page, PROPERTY: svg_stroke_width
+- "Solid" / "Outline" / "Flat" -> ACTION: update_selection, PROPERTY: button_style
 
 
 ### WHEN TO APPLY DIRECTLY
@@ -92,6 +96,7 @@ Only when user specifies EXACT style/preset name:
 - "Soft shadow" → Apply directly
 - "Comfortable spacing" → Apply responsive_padding directly
 - "Subtle corners" → Apply directly
+- "Outline button" → Apply directly
 
 ### CRITICAL: NEVER ASSUME DEFAULTS
 If user says "add shadow" (generic), DO NOT apply Soft shadow. ASK FIRST.
@@ -283,6 +288,18 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*left|everything.*left.*align|left.*align.*all|flush.*left/, property: 'align_everything', value: 'left', selectionMsg: 'Left-aligned all content.', pageMsg: 'Left-aligned everything.' },
 	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
+	
+	// GROUP 24: BUTTON ACTIONS
+	{ regex: /outline.*button|ghost.*button|transparent.*button/, property: 'button_style', value: 'outline', selectionMsg: 'Applied outline style to buttons.', pageMsg: 'Changed all buttons to outline style.', target: 'button' },
+	{ regex: /solid.*button|filled.*button|fill.*button/, property: 'button_style', value: 'solid', selectionMsg: 'Applied solid style to buttons.', pageMsg: 'Changed all buttons to solid style.', target: 'button' },
+	{ regex: /flat.*button|no.*shadow.*button/, property: 'button_style', value: 'flat', selectionMsg: 'Applied flat style (no shadow) to buttons.', pageMsg: 'Removed shadows from buttons.', target: 'button' },
+	{ regex: /pill.*button|capsule.*button|rounded.*button/, property: 'border_radius', value: 50, selectionMsg: 'Applied pill shape to buttons.', pageMsg: 'Changed buttons to pill shape.', target: 'button' },
+	{ regex: /full.*width.*button|stretch.*button|expand.*button/, property: 'width', value: '100%', selectionMsg: 'Made buttons full width.', pageMsg: 'Expanded buttons to full width.', target: 'button' },
+	{ regex: /auto.*width.*button|fit.*content.*button|shrink.*button/, property: 'width', value: 'auto', selectionMsg: 'Set buttons to auto width.', pageMsg: 'Set buttons to fit content.', target: 'button' },
+	{ regex: /icon.*only.*button|remove.*text.*button|hide.*text.*button/, property: 'button_icon', value: 'only', selectionMsg: 'Made buttons icon-only.', pageMsg: 'Changed buttons to icon-only.', target: 'button' },
+	{ regex: /remove.*icon.*button|no.*icon.*button|hide.*icon.*button|text.*only.*button/, property: 'button_icon', value: 'none', selectionMsg: 'Removed icons from buttons.', pageMsg: 'Removed icons from all buttons.', target: 'button' },
+	{ regex: /small.*button|tiny.*button|compact.*button/, property: 'button_size', value: 'small', selectionMsg: 'Made buttons smaller.', pageMsg: 'Reduced button size.', target: 'button' },
+	{ regex: /large.*button|big.*button|huge.*button|giant.*button/, property: 'button_size', value: 'large', selectionMsg: 'Made buttons larger.', pageMsg: 'Increased button size.', target: 'button' },
 ];
 
 const AIChatPanel = ({ isOpen, onClose }) => {
@@ -1599,7 +1616,66 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								'transform-status-hover': true,
 							};
 							break;
-						// ======= SCROLL EFFECTS =======
+						// ======= BUTTON ACTIONS =======
+						case 'button_style':
+							if (block.name.includes('button')) { // Double check
+								if (value === 'outline') {
+									changes = {
+										[`${prefix}background-active-media-general`]: 'none',
+										[`${prefix}border-style-general`]: 'solid',
+										[`${prefix}border-top-width-general`]: '2',
+										[`${prefix}border-bottom-width-general`]: '2',
+										[`${prefix}border-left-width-general`]: '2',
+										[`${prefix}border-right-width-general`]: '2',
+										[`${prefix}border-sync-width-general`]: 'all',
+										[`${prefix}border-unit-width-general`]: 'px',
+										[`${prefix}border-palette-status-general`]: true,
+										[`${prefix}border-palette-color-general`]: 4, // Highlight
+									};
+								} else if (value === 'solid') {
+									changes = {
+										[`${prefix}background-active-media-general`]: 'color',
+										[`${prefix}background-palette-status-general`]: true,
+										[`${prefix}background-palette-color-general`]: 4, // Highlight
+										[`${prefix}border-style-general`]: 'none',
+									};
+								} else if (value === 'flat') {
+									changes = {
+										[`${prefix}box-shadow-status-general`]: false,
+									};
+								}
+							}
+							break;
+						case 'button_icon':
+							if (block.name.includes('button')) {
+								if (value === 'only') {
+									changes = { 'icon-only': true };
+								} else if (value === 'none') {
+									changes = { 'icon-only': false, 'icon-content': '' }; // Removing content effectively removes icon
+								}
+							}
+							break;
+						case 'button_size':
+							if (block.name.includes('button')) {
+								if (value === 'small') {
+									changes = {
+										[`${prefix}padding-top-general`]: '8',
+										[`${prefix}padding-bottom-general`]: '8',
+										[`${prefix}padding-left-general`]: '16',
+										[`${prefix}padding-right-general`]: '16',
+										[`${prefix}font-size-general`]: 14,
+									};
+								} else if (value === 'large') {
+									changes = {
+										[`${prefix}padding-top-general`]: '20',
+										[`${prefix}padding-bottom-general`]: '20',
+										[`${prefix}padding-left-general`]: '40',
+										[`${prefix}padding-right-general`]: '40',
+										[`${prefix}font-size-general`]: 20,
+									};
+								}
+							}
+							break;
 						case 'scroll_fade':
 							changes = { 'scroll-fade-status-general': true };
 							break;
@@ -2081,6 +2157,63 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'font_weight':
 						case 'fontWeight':
 							c = updateFontWeight(val);
+							break;
+						// ======= BUTTON ACTIONS =======
+						case 'button_style':
+							if (selectedBlock.name.includes('button')) {
+								if (val === 'outline') {
+									c = {
+										[`${prefix}background-active-media-general`]: 'none',
+										[`${prefix}border-style-general`]: 'solid',
+										[`${prefix}border-top-width-general`]: '2',
+										[`${prefix}border-bottom-width-general`]: '2',
+										[`${prefix}border-left-width-general`]: '2',
+										[`${prefix}border-right-width-general`]: '2',
+										[`${prefix}border-sync-width-general`]: 'all',
+										[`${prefix}border-unit-width-general`]: 'px',
+										[`${prefix}border-palette-status-general`]: true,
+										[`${prefix}border-palette-color-general`]: 4,
+									};
+								} else if (val === 'solid') {
+									c = {
+										[`${prefix}background-active-media-general`]: 'color',
+										[`${prefix}background-palette-status-general`]: true,
+										[`${prefix}background-palette-color-general`]: 4,
+										[`${prefix}border-style-general`]: 'none',
+									};
+								} else if (val === 'flat') {
+									c = { [`${prefix}box-shadow-status-general`]: false };
+								}
+							}
+							break;
+						case 'button_icon':
+							if (selectedBlock.name.includes('button')) {
+								if (val === 'only') c = { 'icon-only': true };
+								else if (val === 'none') {
+                                    c = { 'icon-only': false, 'icon-content': '' };
+                                }
+							}
+							break;
+						case 'button_size':
+							if (selectedBlock.name.includes('button')) {
+								if (val === 'small') {
+									c = {
+										[`${prefix}padding-top-general`]: '8',
+										[`${prefix}padding-bottom-general`]: '8',
+										[`${prefix}padding-left-general`]: '16',
+										[`${prefix}padding-right-general`]: '16',
+										[`${prefix}font-size-general`]: 14,
+									};
+								} else if (val === 'large') {
+									c = {
+										[`${prefix}padding-top-general`]: '20',
+										[`${prefix}padding-bottom-general`]: '20',
+										[`${prefix}padding-left-general`]: '40',
+										[`${prefix}padding-right-general`]: '40',
+										[`${prefix}font-size-general`]: 20,
+									};
+								}
+							}
 							break;
 					}
 					return c;

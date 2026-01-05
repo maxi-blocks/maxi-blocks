@@ -13,6 +13,8 @@ import './editor.scss';
 import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCards';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
+import updateSCOnEditor from '@extensions/style-cards/updateSCOnEditor';
+import { getActiveColourFromSC } from '../../editor/style-cards/utils';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
@@ -211,6 +213,14 @@ const LAYOUT_PATTERNS = [
 	{ regex: /feminine|soft.*pastel|delicate|script.*font/, property: 'aesthetic', value: 'feminine', selectionMsg: 'Applied feminine style.', pageMsg: 'Applied feminine aesthetic.' },
 	{ regex: /corporate|professional|business|navy.*slate/, property: 'aesthetic', value: 'corporate', selectionMsg: 'Applied corporate style.', pageMsg: 'Applied corporate aesthetic.' },
 	{ regex: /natural|organic|earth.*tone|terracotta|sage/, property: 'aesthetic', value: 'natural', selectionMsg: 'Applied natural style.', pageMsg: 'Applied natural/organic aesthetic.' },
+	
+	// STRATEGIC VISUAL ARCHITECTURES
+	{ regex: /luxury|opulent|concierge|elegant/, property: 'aesthetic', value: 'luxury', selectionMsg: 'Applied luxury aesthetic.', pageMsg: 'Applied luxury aesthetic.' },
+	{ regex: /classy|old\s*money|quiet\s*luxury|heritage/, property: 'aesthetic', value: 'classy', selectionMsg: 'Applied classy aesthetic.', pageMsg: 'Applied classy aesthetic.' },
+	{ regex: /cyberpunk|neon|matrix|night\s*city|futuristic/, property: 'aesthetic', value: 'cyberpunk', selectionMsg: 'Applied cyberpunk style.', pageMsg: 'Applied cyberpunk aesthetic.' },
+	{ regex: /retro|vintage|miami|80s|arcade|synthwave/, property: 'aesthetic', value: 'retro', selectionMsg: 'Applied retro style.', pageMsg: 'Applied retro aesthetic.' },
+	{ regex: /playful|summer|youth|fun|dopamine|cloud.*look/, property: 'aesthetic', value: 'playful', selectionMsg: 'Applied playful style.', pageMsg: 'Applied playful aesthetic.' },
+	{ regex: /seasonal|winter|autumn|spring/, property: 'aesthetic', value: 'seasonal_winter', selectionMsg: 'Applied seasonal aesthetic.', pageMsg: 'Applied seasonal aesthetic.' },
 	
 	// GROUP 13: TYPOGRAPHY READABILITY
 	{ regex: /lines.*crash|wall.*text|too.*close.*lines|line.*height|more.*space.*lines/, property: 'line_height', value: 1.8, selectionMsg: 'Increased line spacing (line-height: 1.8).', pageMsg: 'Improved line spacing for readability.' },
@@ -1124,6 +1134,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 		// Helper to safely set deeply nested values with schema mapping
 		const setStyleValue = (key, value) => {
+			// Strip CSS fallback stacks from font-family values (e.g., "Oswald, sans-serif" -> "Oswald")
+			// Style Card stores just the font name, CSS fallback is handled elsewhere
+			let processedValue = value;
+			if (key.toLowerCase().includes('font-family') && typeof value === 'string' && value.includes(',')) {
+				processedValue = value.split(',')[0].trim();
+				console.log('[Maxi AI] Stripped font fallback:', { original: value, new: processedValue });
+			}
+			
 			['light', 'dark'].forEach(mode => {
 				if (!targetCard[mode]) targetCard[mode] = {};
 				if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
@@ -1142,7 +1160,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					const actualProperty = key.replace('-heading', '-general'); // font-family-heading -> font-family-general
 					['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].forEach(tag => {
 						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
-						targetCard[mode].styleCard[tag][actualProperty] = value;
+						targetCard[mode].styleCard[tag][actualProperty] = processedValue;
 					});
 					return;
 				}
@@ -1151,7 +1169,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				if (key === 'font-family-general' || key === 'font-weight-general') {
 					['p', 'ul', 'ol', 'button', 'a'].forEach(tag => {
 						if (!targetCard[mode].styleCard[tag]) targetCard[mode].styleCard[tag] = {};
-						targetCard[mode].styleCard[tag][key] = value;
+						targetCard[mode].styleCard[tag][key] = processedValue;
 					});
 					// Also set as fallback for headings if they don't have overrides? 
 					// For now, keep it simple.
@@ -1166,7 +1184,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					targetCard[mode].styleCard[category] = {};
 				}
 
-				targetCard[mode].styleCard[category][key] = value;
+				targetCard[mode].styleCard[category][key] = processedValue;
 			});
 			changesCount++;
 		};
@@ -1176,7 +1194,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		});
 
 		if (changesCount > 0) {
-			saveMaxiStyleCards(newStyleCards, true);
+			// Mark as having pending changes so 'Save' button enables in editor
+			targetCard.pendingChanges = true;
+			
+			// Update state but DO NOT save to DB yet (second arg false)
+			saveMaxiStyleCards(newStyleCards, false);
+
+			// Updates the canvas CSS variables so changes are visible immediately
+			const activeColor = getActiveColourFromSC(targetCard, 4);
+			
+			// Robustly find the editor canvas (iframe or document)
+			const frames = [document];
+			const iframe = document.querySelector('iframe[name="editor-canvas"]');
+			if (iframe && iframe.contentDocument) frames.push(iframe.contentDocument);
+			
+			updateSCOnEditor(targetCard, activeColor, frames, true);
 			
 			// Switch UI if we changed cards
 			if (setActiveStyleCard && targetKey !== activeKey) {
@@ -3075,7 +3107,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			};
 		}
 		else if (suggestion === 'Sharp corners') directAction = { action: 'update_page', property: 'border_radius', value: 0, target_block: 'container', message: 'Removed all rounded corners (sharp aesthetic).' };
-		else if (suggestion === 'Bold weights') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Oswald, sans-serif', 'font-family-general': 'Roboto, sans-serif', 'font-weight-heading': 700 }, message: 'Applied Oswald & Roboto fonts (Bold/Masculine).' };
+		else if (suggestion === 'Bold weights') directAction = { action: 'update_style_card', updates: { 'font-weight-heading': 700 }, message: 'Applied bold weights.' };
 		
 		// Feminine style - Fonts: Playfair Display (Heading), Lato (Body)
 		else if (suggestion === 'Soft pastels') {
@@ -3092,14 +3124,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					'color-palette-7': '#ffe4e1', // Misty Rose
 					'color-palette-8': '#e0c0c0', // Shadow
 					// Typography
-					'font-family-heading': 'Playfair Display, serif', 
-					'font-family-general': 'Lato, sans-serif'
+					// 'font-family-heading': 'Playfair Display', 
+					// 'font-family-general': 'Lato'
 				}, 
 				message: 'Applied soft pastel palette and feminine fonts.' 
 			};
 		}
 		else if (suggestion === 'Rounded shapes') directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: 'container', message: 'Applied rounded corners (soft aesthetic).' };
-		else if (suggestion === 'Script accents') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Playfair Display, serif', 'font-family-general': 'Lato, sans-serif' }, message: 'Applied Playfair Display & Lato fonts (Feminine).' };
+		else if (suggestion === 'Script accents') directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: 'container', message: 'Applied rounded corners (soft aesthetic).' };
 		
 		// Corporate style - Fonts: Montserrat (Heading), Open Sans (Body)
 		else if (suggestion === 'Navy palette') {
@@ -3116,13 +3148,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					'color-palette-7': '#e1e8f0', // Surface
 					'color-palette-8': '#0a1420', // Shadow
 					// Typography
-					'font-family-heading': 'Montserrat, sans-serif',
-					'font-family-general': 'Open Sans, sans-serif'
+					// 'font-family-heading': 'Montserrat',
+					// 'font-family-general': 'Open Sans'
 				}, 
 				message: 'Applied navy corporate palette and fonts.' 
 			};
 		}
-		else if (suggestion === 'Clean sans-serif') directAction = { action: 'update_style_card', updates: { 'font-family-general': 'Open Sans, sans-serif', 'font-family-heading': 'Montserrat, sans-serif' }, message: 'Applied Montserrat & Open Sans fonts.' };
+		else if (suggestion === 'Clean sans-serif') directAction = { action: 'update_page', property: 'gap', value: 20, target_block: 'container', message: 'Applied clean spacing.' };
 		else if (suggestion === 'Generous spacing') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: 'container', message: 'Applied generous spacing.' };
 		
 		// Minimalism style - Fonts: Inter (All)
@@ -3138,9 +3170,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					'color-palette-5': '#111111', // Almost Black Text
 					'color-palette-6': '#333333', // Hover Grey
 					'color-palette-7': '#f5f5f5', // Surface
-					'color-palette-8': '#cccccc', // Shadow
-					'font-family-general': 'Inter, sans-serif',
-					'font-family-heading': 'Inter, sans-serif'
+					// 'font-family-general': 'Inter',
+					// 'font-family-heading': 'Inter'
 				}, 
 				message: 'Applied minimalist white palette and Inter font.' 
 			};
@@ -3164,19 +3195,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					'color-palette-5': '#000000', // Black Text
 					'color-palette-6': '#7ac7b5', // Hover Teal
 					'color-palette-7': '#e6e6fa', // Lavender
-					'color-palette-8': '#000000', // Black Shadow
-					'font-family-general': 'Work Sans, sans-serif',
-					'font-family-heading': 'Space Mono, monospace'
+					// 'font-family-general': 'Work Sans',
+					// 'font-family-heading': 'Space Mono'
 				}, 
 				message: 'Applied vibrant neo-brutalist palette and fonts.' 
 			};
 		}
-		else if (suggestion === 'Monospace fonts') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Space Mono, monospace', 'font-family-general': 'Work Sans, sans-serif' }, message: 'Applied Space Mono & Work Sans fonts.' };
+		else if (suggestion === 'Monospace fonts') directAction = { action: 'update_page', property: 'border', value: { width: 2, style: 'solid', color: 5 }, target_block: 'container', message: 'Applied monospace-themed borders.' };
 		else if (suggestion === 'High contrast') directAction = { action: 'update_style_card', updates: { 'color-palette-1': '#ffffff', 'color-palette-5': '#000000', 'color-palette-8': '#000000' }, message: 'Applied high contrast palette to Style Card.' };
 		
 		// Swiss/Editorial
 		else if (suggestion === 'Grid layout') directAction = { action: 'update_page', property: 'gap', value: 24, target_block: 'container', message: 'Applied Swiss grid spacing.' };
-		else if (suggestion === 'Helvetica style') directAction = { action: 'update_style_card', updates: { 'font-family-general': 'Roboto, sans-serif', 'font-family-heading': 'Roboto, sans-serif', 'font-weight-heading': 900 }, message: 'Applied Roboto (Helvetica-style) typography.' };
+		else if (suggestion === 'Helvetica style') directAction = { action: 'update_style_card', updates: { 'font-weight-heading': 900 }, message: 'Applied bold Helvetica-style weights.' };
 		else if (suggestion === 'Red accents') {
 			directAction = { 
 				action: 'update_style_card', 
@@ -3194,7 +3224,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				message: 'Applied Swiss red accent palette.' 
 			};
 		}
-		else if (suggestion === 'Serif headings') directAction = { action: 'update_style_card', updates: { 'font-family-heading': 'Merriweather, serif' }, message: 'Applied Merriweather serif headings.' };
+		else if (suggestion === 'Serif headings') directAction = { action: 'update_page', property: 'font_weight', value: 400, target_block: 'heading', message: 'Normalized heading weights.' };
 		else if (suggestion === 'Pull quotes') directAction = { action: 'update_page', property: 'font_weight', value: 300, target_block: 'text', message: 'Applied editorial typography.' };
 		
 		// Natural style
@@ -3210,9 +3240,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					'color-palette-5': '#3e362e', // Dark Brown Text
 					'color-palette-6': '#6d5a43', // Hover Brown
 					'color-palette-7': '#d6cec2', // Beige
-					'color-palette-8': '#2b2520', // Shadow
-					'font-family-heading': 'Lora, serif',
-					'font-family-general': 'Nunito, sans-serif'
+					// 'font-family-heading': 'Lora',
+					// 'font-family-general': 'Nunito'
 				}, 
 				message: 'Applied earth tone palette and natural fonts.' 
 			};

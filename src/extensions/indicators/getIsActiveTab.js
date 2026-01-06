@@ -176,6 +176,16 @@ const getIsActiveTab = (
 					});
 				}
 				if (
+					isArray(currentAttributes[attribute]) &&
+					currentAttributes[attribute].length === 0
+				) {
+					if (defaultAttributes[attribute] == null) return true;
+					return isEqual(
+						currentAttributes[attribute],
+						defaultAttributes[attribute]
+					);
+				}
+				if (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
@@ -238,6 +248,7 @@ const getIsActiveTab = (
 			isArray(currentAttributes[attribute]) &&
 			currentAttributes[attribute].length === 0
 		) {
+			if (defaultAttributes[attribute] == null) return true;
 			return isEqual(
 				currentAttributes[attribute],
 				defaultAttributes[attribute]

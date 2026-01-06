@@ -628,66 +628,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 				display: none;
 			}
 			&-status {
-				.maxi-status-table {
-					padding: 20px !important;
-					border-collapse: collapse;
-					background-color: var(--maxi-admin-white);
-
-					th {
-						background: var(--maxi-admin-black);
-						padding: 12px;
-						text-align: left;
-						border-bottom: 1px solid var(--maxi-admin-border-light);
-						color: var(--maxi-admin-white);
-						padding: 20px;
-					}
-
-					td {
-						padding: 20px;
-						border-bottom: 1px solid var(--maxi-admin-border-light);
-					}
-
-					.header-row td {
-						font-weight: bold;
-						background: var(--maxi-primary-color);
-					}
-
-					.status-ok span {
-						background: var(--maxi-admin-white);
-						color: var(--maxi-admin-green);
-						padding: 0px;
-						font-size: 14px;
-						font-weight: 700;
-						border-radius: 26px;
-						text-decoration: none;
-						position: relative;
-
-						&::before {
-							content: '\2713'; /* Unicode for check mark */
-							color: var(--maxi-admin-green);
-							margin-right: 8px;
-							margin-left: 12px;
-							font-size: 14px;
-						}
-					}
-
-					.status-warning span {
-						background: none !important;
-						color: var(--maxi-admin-orange);
-						padding: 4px 8px;
-						border-radius: 3px;
-						font-size: 14px;
-						font-weight: 700;
-						position: relative;
-
-						&::before {
-							content: '✖'; /* Unicode for cross mark */
-							color: var(--maxi-admin-orange);
-							margin-right: 8px;
-						}
-					}
-				}
-
 				.wrapper {
 					padding: 50px; // Example padding for the wrapper
 					background-color: var(
@@ -731,6 +671,138 @@ body.toplevel_page_maxi-blocks-dashboard {
 
 .maxi-dashboard_main-content-status {
 	padding: 20px;
+}
+
+.maxi-status-table {
+	position: relative;
+	z-index: 2;
+	width: 100%;
+	margin: 20px 0;
+	border-collapse: collapse;
+	background: var(--maxi-admin-white);
+	table-layout: fixed;
+
+	tr th[colspan='4'] {
+		background: var(--maxi-admin-black);
+		color: var(--maxi-admin-white);
+		padding: 12px;
+		text-align: left;
+		border-bottom: 1px solid #dee2e6;
+	}
+
+	td {
+		background: var(--maxi-admin-white);
+		padding: 12px;
+		border-bottom: 1px solid var(--maxi-admin-border-light);
+		color: var(--maxi-admin-black-text);
+	}
+
+	td:nth-child(3) {
+		word-break: break-word;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		hyphens: auto;
+	}
+
+	tr:hover {
+		background-color: var(--maxi-admin-light-grey);
+	}
+
+	.header-row td {
+		font-weight: bold;
+		background: var(--maxi-admin-black);
+		color: var(--maxi-admin-white);
+
+		&:first-child {
+			border-top-left-radius: 10px;
+		}
+
+		&:last-child {
+			border-top-right-radius: 10px;
+		}
+	}
+
+	.plugin-section {
+		background: var(--maxi-admin-light-grey);
+		padding: 15px;
+	}
+
+	.status-ok span {
+		color: var(--maxi-admin-green);
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		background: transparent;
+		font-weight: bold;
+
+		&::before {
+			content: '✓';
+			font-weight: bold;
+			font-size: 16px;
+			line-height: 1;
+			background: transparent;
+		}
+	}
+
+	.status-warning span {
+		color: var(--maxi-admin-orange);
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		background: transparent;
+		font-weight: bold;
+
+		&::before {
+			content: '×';
+			font-weight: bold;
+			font-size: 16px;
+			line-height: 1;
+			background: transparent;
+		}
+	}
+}
+
+#maxi-status-wrapper {
+	.maxi-status-table {
+		max-width: clamp(280px, 95%, 1000px);
+		width: 95%;
+		margin: 20px auto 0;
+
+		td:first-child {
+			width: 22%;
+		}
+
+		td:nth-child(2) {
+			width: 23%;
+		}
+
+		td:nth-child(3) {
+			width: 44%;
+		}
+
+		td:nth-child(4) {
+			width: 11%;
+		}
+
+		.header-row td {
+			background: var(--maxi-admin-purple);
+		}
+	}
+}
+
+#dashboard_system_report {
+	.maxi-status-table {
+		td:first-child {
+			padding-left: 25px;
+		}
+
+		td:nth-child(1),
+		td:nth-child(2),
+		td:nth-child(3),
+		td:nth-child(4) {
+			width: 25%;
+		}
+	}
 }
 body .plugins {
 	.maxi-blocks-db-notice .notice-warning {

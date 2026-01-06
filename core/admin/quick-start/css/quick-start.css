@@ -712,23 +712,6 @@ select[name="permalink_structure"]:focus {
 	color: var(--maxi-admin-black) !important;
 }
 
-.maxi-status-table .status-warning span {
-	color: var(--maxi-admin-orange);
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
-	background: transparent;
-	font-weight: bold !important;
-}
-
-.maxi-status-table .status-warning span::before {
-	content: '×';
-	font-weight: bold !important;
-	font-size: 16px;
-	line-height: 1;
-	background: transparent;
-}
-
 #toplevel_page_maxi-blocks-dashboard p.description {
 	font-family: Inter, Helvetica, Arial, Lucida, sans-serif;
 	font-size: 16px !important;
@@ -744,64 +727,6 @@ select[name="permalink_structure"]:focus {
 	color: var(--maxi-admin-black-text);
 	font-weight: 400;
 	margin-bottom: 25px !important;
-}
-
-.maxi-status-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 20px 0;
-	background: var(--maxi-admin-white);
-	table-layout: fixed;
-}
-
-.maxi-status-table td {
-	padding: 12px;
-	border-bottom: 1px solid var(--maxi-admin-border-light);
-}
-
-.maxi-status-table td:nth-child(1) {
-	width: 25%;
-}
-
-.maxi-status-table td:nth-child(2) {
-	width: 25%;
-}
-
-.maxi-status-table td:nth-child(3) {
-	width: 25%;
-	word-break: break-word;
-	/* Breaks words at any character when needed */
-	overflow-wrap: break-word;
-	/* Alternative that works for more browsers */
-	word-wrap: break-word;
-	/* Legacy property for older browsers */
-	hyphens: auto;
-}
-
-.maxi-status-table td:nth-child(4) {
-	width: 25%;
-}
-
-.maxi-status-table td:first-child {
-	padding-left: 25px !important;
-}
-
-.maxi-status-table .header-row td {
-	font-weight: bold;
-	background: var(--maxi-admin-black);
-	color: var(--maxi-admin-white);
-}
-
-.maxi-status-table .header-row td:first-child {
-	border-top-left-radius: 10px;
-}
-
-.maxi-status-table .header-row td:last-child {
-	border-top-right-radius: 10px;
-}
-
-.maxi-status-table tr:hover {
-	background-color: var(--maxi-admin-light-grey);
 }
 
 /* New styles for custom input */

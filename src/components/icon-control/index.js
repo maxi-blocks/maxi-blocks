@@ -787,6 +787,21 @@ const IconControl = props => {
 		disablePadding = false,
 	} = props;
 
+	// Get the current SVG type
+	const svgType = props[`${prefix}svgType`];
+
+	// Process icon with colors for preview
+	const processedIcon =
+		iconContent && getIconWithColor
+			? getIconWithColor({
+					rawIcon: iconContent,
+					type: [
+						svgType !== 'Shape' && 'stroke',
+						svgType !== 'Line' && 'fill',
+					].filter(Boolean),
+			  })
+			: iconContent;
+
 	// Build CSS classes for the wrapper
 	const classes = classnames(
 		'maxi-icon-control',
@@ -862,7 +877,7 @@ const IconControl = props => {
 						});
 					}}
 					onRemove={obj => onChange(obj)}
-					icon={iconContent}
+					icon={processedIcon}
 					prefix={prefix}
 				/>
 			)}

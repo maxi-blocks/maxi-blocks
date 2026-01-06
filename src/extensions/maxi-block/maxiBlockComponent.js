@@ -1392,18 +1392,6 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		if (window?.__MAXI_DEBUG_VIEWPORT__) {
-			// eslint-disable-next-line no-console
-			console.debug('[maxi viewport] displayStyles', {
-				isBreakpointChange,
-				deviceType: this.props.deviceType,
-				shouldGenerateNewStyles,
-				hasViewportUnits:
-					stylesForViewportCheck &&
-					this.hasViewportUnits(stylesForViewportCheck),
-			});
-		}
-
 		if (shouldGenerateNewStyles) {
 			obj = stylesForViewportCheck || this.getStylesObject || {};
 
@@ -1549,13 +1537,18 @@ class MaxiBlockComponent extends Component {
 	hasViewportUnits(stylesObj) {
 		if (!stylesObj) return false;
 
+		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
+		// Requires: number (with optional sign/decimal) + viewport unit
+		// Boundaries prevent matching "overview", URLs, or identifiers
+		const viewportUnitRegex = /(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+
 		const stack = [stylesObj];
 
 		while (stack.length) {
 			const current = stack.pop();
 
 			if (typeof current === 'string') {
-				if (current.includes('vw') || current.includes('vh')) {
+				if (viewportUnitRegex.test(current)) {
 					return true;
 				}
 			} else if (isArray(current)) {
@@ -1584,16 +1577,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
-
-		if (window?.__MAXI_DEBUG_VIEWPORT__) {
-			// eslint-disable-next-line no-console
-			console.debug('[maxi viewport] injectStyles', {
-				uniqueID,
-				currentBreakpoint,
-				isBreakpointChange,
-				forceGenerate,
-			});
-		}
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (

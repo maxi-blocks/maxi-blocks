@@ -244,6 +244,42 @@ const getIsActiveTab = (
 			);
 		}
 
+		const breakpointMatch = attribute.match(/-(xxl|xl|l|m|s|xs)$/);
+		if (breakpointMatch) {
+			const generalAttribute = attribute.replace(
+				`-${breakpointMatch[1]}`,
+				'-general'
+			);
+
+			if (
+				(defaultAttributes[attribute] == null ||
+					defaultAttributes[generalAttribute] != null) &&
+				isEqual(
+					currentAttributes[attribute],
+					defaultAttributes[generalAttribute]
+				)
+			)
+				return true;
+
+			if (
+				defaultAttributes[attribute] == null &&
+				isEqual(
+					currentAttributes[attribute],
+					getStyleCardDefault(attribute)
+				)
+			)
+				return true;
+
+			if (
+				defaultAttributes[attribute] == null &&
+				isEqual(
+					currentAttributes[attribute],
+					getStyleCardDefault(generalAttribute)
+				)
+			)
+				return true;
+		}
+
 		if (
 			attribute === 'transition' &&
 			currentAttributes[attribute] &&

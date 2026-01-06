@@ -202,9 +202,10 @@ const ColorControl = props => {
 			if (showPalette)
 				onChange({
 					paletteStatus: defaultColorAttr.paletteStatus,
+					paletteSCStatus: defaultColorAttr.paletteSCStatus,
 					paletteColor: defaultColorAttr.paletteColor,
-					paletteOpacity: paletteOpacity || 1,
-					color,
+					paletteOpacity: defaultColorAttr.paletteOpacity,
+					color: defaultColorAttr.color,
 				});
 			else {
 				let defaultColor;

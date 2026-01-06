@@ -4,7 +4,7 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray, isEqual, isEmpty, isPlainObject } from 'lodash';
-import { getGroupAttributes } from '@extensions/styles';
+import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
 import { getDefaultSCValue } from '@extensions/style-cards';
 import getColumnDefaultValue from '@extensions/column-templates/getColumnDefaultValue';
 
@@ -189,12 +189,12 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					if (
-						isEqual(
-							currentAttributes[attribute],
-							defaultAttributes[attribute]
-						)
-					)
+					const resolvedDefault = getDefaultAttribute(
+						attribute,
+						selectedBlockClientId
+					);
+
+					if (isEqual(currentAttributes[attribute], resolvedDefault))
 						return true;
 
 					if (

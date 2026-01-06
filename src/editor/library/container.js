@@ -1298,26 +1298,36 @@ const LibraryContainer = props => {
 			</div>
 		);
 
-	const {
-		InstantSearch,
-		SearchBox,
-		connectMenu,
-		connectHierarchicalMenu,
-		connectCurrentRefinements,
-		Menu,
-		Stats,
-		Configure,
-	} = instantSearchApi || {};
+	const { InstantSearch, SearchBox, Menu, Stats, Configure } =
+		instantSearchApi || {};
 
-	const CustomMenuSelect = connectMenu ? connectMenu(MenuSelect) : null;
-	const CustomMenuSC = connectMenu ? connectMenu(MenuSC) : null;
-	const CustomSvgMenuSelect = connectMenu ? connectMenu(SvgMenuSelect) : null;
-	const CustomHierarchicalMenu = connectHierarchicalMenu
-		? connectHierarchicalMenu(HierarchicalMenu)
-		: null;
-	const CustomClearRefinements = connectCurrentRefinements
-		? connectCurrentRefinements(ClearRefinements)
-		: null;
+	const {
+		CustomMenuSelect,
+		CustomMenuSC,
+		CustomSvgMenuSelect,
+		CustomHierarchicalMenu,
+		CustomClearRefinements,
+	} = useMemo(() => {
+		const {
+			connectMenu,
+			connectHierarchicalMenu,
+			connectCurrentRefinements,
+		} = instantSearchApi || {};
+
+		return {
+			CustomMenuSelect: connectMenu ? connectMenu(MenuSelect) : null,
+			CustomMenuSC: connectMenu ? connectMenu(MenuSC) : null,
+			CustomSvgMenuSelect: connectMenu
+				? connectMenu(SvgMenuSelect)
+				: null,
+			CustomHierarchicalMenu: connectHierarchicalMenu
+				? connectHierarchicalMenu(HierarchicalMenu)
+				: null,
+			CustomClearRefinements: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinements)
+				: null,
+		};
+	}, [instantSearchApi]);
 
 	const {
 		searchClientPatterns,

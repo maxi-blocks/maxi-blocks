@@ -575,26 +575,34 @@ const LibraryContainer = props => {
 			</div>
 		);
 
-	const {
-		InstantSearch,
-		SearchBox,
-		connectMenu,
-		connectHierarchicalMenu,
-		connectCurrentRefinements,
-		Stats,
-		Configure,
-	} = instantSearchApi || {};
+	const { InstantSearch, SearchBox, Stats, Configure } =
+		instantSearchApi || {};
 
-	const CustomMenuSelect = connectMenu ? connectMenu(MenuSelect) : null;
-	const CustomHierarchicalMenu = connectHierarchicalMenu
-		? connectHierarchicalMenu(HierarchicalMenu)
-		: null;
-	const CustomClearRefinements = connectCurrentRefinements
-		? connectCurrentRefinements(ClearRefinements)
-		: null;
-	const CustomClearRefinementsHidden = connectCurrentRefinements
-		? connectCurrentRefinements(ClearRefinementsHidden)
-		: null;
+	const {
+		CustomMenuSelect,
+		CustomHierarchicalMenu,
+		CustomClearRefinements,
+		CustomClearRefinementsHidden,
+	} = useMemo(() => {
+		const {
+			connectMenu,
+			connectHierarchicalMenu,
+			connectCurrentRefinements,
+		} = instantSearchApi || {};
+
+		return {
+			CustomMenuSelect: connectMenu ? connectMenu(MenuSelect) : null,
+			CustomHierarchicalMenu: connectHierarchicalMenu
+				? connectHierarchicalMenu(HierarchicalMenu)
+				: null,
+			CustomClearRefinements: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinements)
+				: null,
+			CustomClearRefinementsHidden: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinementsHidden)
+				: null,
+		};
+	}, [instantSearchApi]);
 
 	return (
 		<div className='maxi-cloud-container'>

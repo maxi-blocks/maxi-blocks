@@ -154,6 +154,10 @@ const getIsActiveTab = (
 			currentAttributes['icon-content'] === ''
 		)
 			return true;
+		const resolvedDefault = getDefaultAttribute(
+			attribute,
+			selectedBlockClientId
+		);
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
@@ -194,11 +198,6 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					const resolvedDefault = getDefaultAttribute(
-						attribute,
-						selectedBlockClientId
-					);
-
 					if (isEqual(currentAttributes[attribute], resolvedDefault))
 						return true;
 
@@ -253,10 +252,10 @@ const getIsActiveTab = (
 			isArray(currentAttributes[attribute]) &&
 			currentAttributes[attribute].length === 0
 		) {
-			if (defaultAttributes[attribute] == null) return true;
+			if (resolvedDefault == null) return true;
 			return isEqual(
 				currentAttributes[attribute],
-				defaultAttributes[attribute]
+				resolvedDefault
 			);
 		}
 
@@ -359,7 +358,7 @@ const getIsActiveTab = (
 
 		return isEqual(
 			currentAttributes[attribute],
-			defaultAttributes[attribute]
+			resolvedDefault
 		);
 	});
 };

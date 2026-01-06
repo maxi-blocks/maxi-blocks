@@ -43,13 +43,6 @@ import {
  * Styles and icons
  */
 import './editor.scss';
-import {
-	backgroundColor,
-	backgroundGradient,
-	styleNone,
-	iconStroke,
-	iconFill,
-} from '@maxi-icons';
 
 /**
  * IconControlResponsiveSettings Component

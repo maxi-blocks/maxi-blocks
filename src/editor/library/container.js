@@ -765,7 +765,12 @@ const LibraryContainer = props => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
-		const newContent = svgAttributesReplacer(hit.svg_code, shapeType, type);
+		const newContent = svgAttributesReplacer(
+			hit.svg_code,
+			shapeType,
+			type,
+			layerOrder
+		);
 
 		return (
 			<MasonryItem

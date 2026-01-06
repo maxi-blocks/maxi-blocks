@@ -63,12 +63,13 @@ export const fitSvg = svgCode => {
 export const svgAttributesReplacer = (
 	svgCode,
 	target = 'svg',
-	iconType = null
+	iconType = null,
+	layerOrder = null
 ) => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
 	const block = clientId ? getBlock(clientId) : null;
-	const currentAttributes = block?.attributes;
+	let currentAttributes = block?.attributes;
 	const blockStyle = getBlockStyle(clientId);
 
 	const fallbackFill = 'var(--maxi-icon-block-orange)';
@@ -89,6 +90,20 @@ export const svgAttributesReplacer = (
 			// For image-shape target, use just 'list-' for both fill and stroke
 			fillPrefix = 'list-';
 			strokePrefix = 'list-';
+		} else if (target === 'shape' && iconType === 'bg-shape') {
+			// For background-shape target, use background-svg- for both fill and stroke
+			fillPrefix = 'background-svg-';
+			strokePrefix = 'background-svg-';
+
+			// Get attributes from the specific background layer if layerOrder is provided
+			if (layerOrder && currentAttributes['background-layers']) {
+				const bgLayer = currentAttributes['background-layers'].find(
+					layer => layer.order === layerOrder
+				);
+				if (bgLayer) {
+					currentAttributes = bgLayer;
+				}
+			}
 		} else if (target === 'icon' && iconType) {
 			// Handle specific iconType cases
 			switch (iconType) {
@@ -134,6 +149,7 @@ export const svgAttributesReplacer = (
 		} = getPaletteAttributes({
 			obj: currentAttributes,
 			prefix: fillPrefix,
+			breakpoint: iconType === 'bg-shape' ? 'general' : null,
 		});
 
 		const {
@@ -145,6 +161,7 @@ export const svgAttributesReplacer = (
 		} = getPaletteAttributes({
 			obj: currentAttributes,
 			prefix: strokePrefix,
+			breakpoint: iconType === 'bg-shape' ? 'general' : null,
 		});
 
 		const fillPaletteColorVar =

@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray, isEqual, isEmpty } from 'lodash';
+import { isArray, isEqual, isEmpty, isPlainObject } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 import getColumnDefaultValue from '@extensions/column-templates/getColumnDefaultValue';
 
@@ -123,10 +123,29 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					return isEqual(
-						currentAttributes[attribute],
-						defaultAttributes[attribute]
+					if (
+						isEqual(
+							currentAttributes[attribute],
+							defaultAttributes[attribute]
+						)
+					)
+						return true;
+
+					const generalAttribute = attribute.replace(
+						`-${bp}`,
+						'-general'
 					);
+
+					if (
+						generalAttribute in defaultAttributes &&
+						isEqual(
+							currentAttributes[attribute],
+							defaultAttributes[generalAttribute]
+						)
+					)
+						return true;
+
+					return false;
 				}
 
 				return true;
@@ -177,6 +196,13 @@ const getIsActiveTab = (
 			);
 			if (!hasNonColorLayer) return true;
 		}
+
+		if (
+			isPlainObject(currentAttributes[attribute]) &&
+			isEmpty(currentAttributes[attribute]) &&
+			defaultAttributes[attribute] == null
+		)
+			return true;
 
 		if (currentAttributes[attribute] === '') return true;
 

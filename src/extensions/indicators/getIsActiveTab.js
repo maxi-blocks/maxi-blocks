@@ -5,6 +5,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray, isEqual, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
+import getColumnDefaultValue from '@extensions/column-templates/getColumnDefaultValue';
 
 const getIsActiveTab = (
 	attributes,
@@ -19,9 +20,11 @@ const getIsActiveTab = (
 
 	if (!showIndicators) return false;
 
-	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
+	const { getBlock, getSelectedBlockClientId, getBlockRootClientId } =
+		select('core/block-editor');
 
-	const block = getBlock(getSelectedBlockClientId());
+	const selectedBlockClientId = getSelectedBlockClientId();
+	const block = getBlock(selectedBlockClientId);
 
 	if (!block) return null;
 
@@ -57,6 +60,34 @@ const getIsActiveTab = (
 		});
 
 		return attributesArr;
+	};
+
+	let columnDefaultSize;
+
+	const getColumnDefaultSize = () => {
+		if (columnDefaultSize !== undefined) return columnDefaultSize;
+
+		const rootClientId = getBlockRootClientId(selectedBlockClientId);
+		const rootBlock = rootClientId ? getBlock(rootClientId) : null;
+		if (!rootBlock) {
+			columnDefaultSize = null;
+			return columnDefaultSize;
+		}
+
+		const rowPattern = getGroupAttributes(rootBlock.attributes, 'rowPattern');
+		const columnSizes = getGroupAttributes(
+			currentAttributes,
+			'columnSize'
+		);
+
+		columnDefaultSize = getColumnDefaultValue(
+			rowPattern,
+			columnSizes,
+			selectedBlockClientId,
+			'general'
+		);
+
+		return columnDefaultSize;
 	};
 
 	return ![
@@ -128,6 +159,15 @@ const getIsActiveTab = (
 			)
 		) {
 			return true;
+		}
+
+		if (
+			name.includes('column-maxi') &&
+			attribute === 'column-size-general'
+		) {
+			const defaultSize = getColumnDefaultSize();
+			if (defaultSize !== null && currentAttributes[attribute] === defaultSize)
+				return true;
 		}
 
 		// Check if background layers have any non-color layer

@@ -28,7 +28,7 @@ class InfiniteHits extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.hits.length !== this.props.hits.length) {
+		if (prevProps.hits !== this.props.hits) {
 			this.scheduleLayout();
 		}
 	}

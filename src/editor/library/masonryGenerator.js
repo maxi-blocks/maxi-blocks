@@ -13,7 +13,20 @@ const masonryGenerator = (type = 'patterns') => {
 		'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list'
 	);
 
-	if (!elem) return;
+	if (!elem) {
+		if (masonryInstance) {
+			masonryInstance.destroy();
+			masonryInstance = null;
+			masonryElement = null;
+		}
+		return;
+	}
+
+	if (masonryElement && !document.body.contains(masonryElement)) {
+		masonryInstance?.destroy();
+		masonryInstance = null;
+		masonryElement = null;
+	}
 
 	if (masonryInstance && masonryElement === elem) {
 		masonryInstance.reloadItems();

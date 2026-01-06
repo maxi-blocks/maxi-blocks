@@ -261,14 +261,24 @@ const getIsActiveTab = (
 				`-${breakpointMatch[1]}`,
 				'-general'
 			);
+			const resolvedAttributeDefault = getDefaultAttribute(
+				attribute,
+				selectedBlockClientId
+			);
+			const resolvedGeneralDefault = getDefaultAttribute(
+				generalAttribute,
+				selectedBlockClientId
+			);
 
 			if (
 				(defaultAttributes[attribute] == null ||
 					defaultAttributes[generalAttribute] != null) &&
-				isEqual(
-					currentAttributes[attribute],
-					defaultAttributes[generalAttribute]
-				)
+				isEqual(currentAttributes[attribute], resolvedGeneralDefault)
+			)
+				return true;
+
+			if (
+				isEqual(currentAttributes[attribute], resolvedAttributeDefault)
 			)
 				return true;
 

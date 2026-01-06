@@ -1392,6 +1392,18 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		if (window?.__MAXI_DEBUG_VIEWPORT__) {
+			// eslint-disable-next-line no-console
+			console.debug('[maxi viewport] displayStyles', {
+				isBreakpointChange,
+				deviceType: this.props.deviceType,
+				shouldGenerateNewStyles,
+				hasViewportUnits:
+					stylesForViewportCheck &&
+					this.hasViewportUnits(stylesForViewportCheck),
+			});
+		}
+
 		if (shouldGenerateNewStyles) {
 			obj = stylesForViewportCheck || this.getStylesObject || {};
 
@@ -1572,6 +1584,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		const target = this.getStyleTarget(isSiteEditor, iframe);
+
+		if (window?.__MAXI_DEBUG_VIEWPORT__) {
+			// eslint-disable-next-line no-console
+			console.debug('[maxi viewport] injectStyles', {
+				uniqueID,
+				currentBreakpoint,
+				isBreakpointChange,
+				forceGenerate,
+			});
+		}
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (

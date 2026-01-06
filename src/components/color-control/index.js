@@ -120,39 +120,6 @@ const ColorControl = props => {
 		className
 	);
 
-	useEffect(() => {
-		if (globalStatus && !paletteStatus)
-			onChange({
-				paletteSCStatus: true,
-				paletteStatus,
-				paletteColor,
-				paletteOpacity,
-				color,
-			});
-	}, [globalStatus]);
-
-	// Force palette mode when paletteOnly is enabled
-	useEffect(() => {
-		if (paletteOnly && !paletteStatus) {
-			onChangeValue({
-				paletteStatus: true,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [paletteOnly]);
-
-	// When paletteOnly is enabled, ensure we can edit even if a style card is active
-	useEffect(() => {
-		if (paletteOnly && globalStatus && !paletteSCStatus) {
-			onChangeValue({
-				paletteSCStatus: true,
-			});
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [paletteOnly, globalStatus]);
-
-	const showPalette = (!disablePalette && paletteStatus) || paletteOnly;
-
 	/**
 	 * Creates an object with the color variables with RGBA format
 	 */
@@ -161,6 +128,7 @@ const ColorControl = props => {
 			rgb: { r: 1, g: 1, b: 1, a: 1 },
 		};
 
+	// Define colorObj and onChangeValue BEFORE useEffects that use them
 	const colorObj = {
 		paletteStatus,
 		paletteSCStatus,
@@ -174,6 +142,33 @@ const ColorControl = props => {
 			...colorObj,
 			...obj,
 		});
+
+	useEffect(() => {
+		if (globalStatus && !paletteStatus)
+			onChangeValue({
+				paletteSCStatus: true,
+			});
+	}, [globalStatus, paletteStatus, onChange, paletteColor, paletteOpacity, paletteSCStatus, color]);
+
+	// Force palette mode when paletteOnly is enabled
+	useEffect(() => {
+		if (paletteOnly && !paletteStatus) {
+			onChangeValue({
+				paletteStatus: true,
+			});
+		}
+	}, [paletteOnly, paletteStatus, onChange, paletteColor, paletteOpacity, paletteSCStatus, color]);
+
+	// When paletteOnly is enabled, ensure we can edit even if a style card is active
+	useEffect(() => {
+		if (paletteOnly && globalStatus && !paletteSCStatus) {
+			onChangeValue({
+				paletteSCStatus: true,
+			});
+		}
+	}, [paletteOnly, globalStatus, paletteSCStatus, onChange, paletteStatus, paletteColor, paletteOpacity, color]);
+
+	const showPalette = (!disablePalette && paletteStatus) || paletteOnly;
 
 	const onChangeInlineValue = obj =>
 		typeof onChangeInline === 'function'

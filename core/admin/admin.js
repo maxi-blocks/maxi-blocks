@@ -1269,6 +1269,267 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 });
 
+// Custom Fonts Manager with AJAX
+document.addEventListener('DOMContentLoaded', () => {
+	const submitBtn = document.getElementById('maxi-custom-font-submit');
+
+	if (!submitBtn) {
+		return;
+	}
+
+	// Check if wp.apiFetch is available
+	if (!window.wp || !window.wp.apiFetch) {
+		console.error('wp.apiFetch is not available');
+		return;
+	}
+
+	const noticeContainer = document.getElementById('maxi-custom-fonts-notice');
+	const fontsListContainer = document.querySelector(
+		'.maxi-custom-fonts-list'
+	);
+
+	/**
+	 * Display a notice message using DOM-safe element creation
+	 *
+	 * @param {string} message - The message to display (will be escaped)
+	 * @param {string} type    - Notice type: 'success' or 'error'
+	 */
+	const showNotice = (message, type = 'success') => {
+		if (!noticeContainer) {
+			return;
+		}
+
+		// Determine notice classes based on type
+		const noticeClass =
+			type === 'success'
+				? 'notice notice-success'
+				: 'notice notice-error';
+
+		// Create wrapper div with notice classes
+		const wrapperDiv = document.createElement('div');
+		wrapperDiv.className = `${noticeClass} is-dismissible`;
+
+		// Create paragraph element and set text content (XSS-safe)
+		const paragraph = document.createElement('p');
+		paragraph.textContent = message;
+
+		// Append paragraph to wrapper
+		wrapperDiv.appendChild(paragraph);
+
+		// Clear and update notice container
+		noticeContainer.innerHTML = '';
+		noticeContainer.appendChild(wrapperDiv);
+	};
+
+	const refreshFontsList = async () => {
+		if (!fontsListContainer) {
+			return;
+		}
+
+		try {
+			const fonts = await wp.apiFetch({
+				path: '/maxi-blocks/v1.0/fonts/custom',
+			});
+
+			const fontsArray = Object.values(fonts);
+
+			// Find or create the container element
+			let container = document.querySelector(
+				'.maxi-custom-fonts-list-container'
+			);
+			if (!container) {
+				container = fontsListContainer.parentElement;
+			}
+
+			if (!fontsArray.length) {
+				container.innerHTML =
+					'<p>No custom fonts have been uploaded yet.</p>';
+				return;
+			}
+
+			let html = '';
+
+			fontsArray.forEach(font => {
+				const family = font.value || '';
+				const variants = font.variants || [];
+
+				// Collect unique weights and styles
+				const weights = [];
+				const styles = [];
+
+				variants.forEach(v => {
+					const weight = v.weight || '';
+					const style = v.style || '';
+
+					if (weight && !weights.includes(weight)) {
+						weights.push(weight);
+					}
+					if (style && !styles.includes(style)) {
+						styles.push(style);
+					}
+				});
+
+				// Sort weights numerically
+				weights.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+
+				const weightsHtml = weights.length
+					? `<span class="maxi-font-weights">${weights.join(
+							', '
+					  )}</span>`
+					: '—';
+				const stylesHtml = styles.length
+					? `<span class="maxi-font-styles">${styles.join(
+							', '
+					  )}</span>`
+					: '—';
+
+				html += '<tr>';
+				html += `<td><strong>${family}</strong></td>`;
+				html += `<td>${weightsHtml}</td>`;
+				html += `<td>${stylesHtml}</td>`;
+				html += '<td>';
+				if (font.id) {
+					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${font.id}">Remove</button>`;
+				}
+				html += '</td></tr>';
+			});
+
+			// Only update tbody to preserve event listeners on delete buttons
+			const tbody = fontsListContainer.querySelector('tbody');
+			if (tbody) {
+				tbody.innerHTML = html;
+			} else {
+				// If table doesn't exist yet, create it
+				container.innerHTML = `
+					<table class="widefat striped maxi-custom-fonts-list">
+						<thead>
+							<tr>
+								<th>Font family</th>
+								<th>Weights</th>
+								<th>Styles</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>${html}</tbody>
+					</table>
+				`;
+			}
+
+			// Reattach handlers to new buttons
+			attachDeleteHandlers();
+		} catch (error) {
+			console.error('Error refreshing fonts list:', error);
+		}
+	};
+
+	const handleDelete = async event => {
+		const { target: btn } = event;
+		const { fontId } = btn.dataset;
+
+		if (!fontId) {
+			return;
+		}
+
+		// eslint-disable-next-line no-alert
+		if (!window.confirm('Are you sure you want to remove this font?')) {
+			return;
+		}
+
+		btn.disabled = true;
+		btn.textContent = 'Removing...';
+
+		try {
+			await wp.apiFetch({
+				path: `/maxi-blocks/v1.0/fonts/custom/${fontId}`,
+				method: 'DELETE',
+			});
+
+			showNotice('Custom font removed successfully.', 'success');
+			await refreshFontsList();
+		} catch (error) {
+			showNotice(error.message || 'Failed to remove font.', 'error');
+			btn.disabled = false;
+			btn.textContent = 'Remove';
+		}
+	};
+
+	function attachDeleteHandlers() {
+		document.querySelectorAll('.maxi-delete-custom-font').forEach(btn => {
+			btn.addEventListener('click', handleDelete);
+		});
+	}
+
+	// Handle button click
+	submitBtn.addEventListener('click', async () => {
+		const familyInput = document.getElementById('maxi-custom-font-family');
+		const fileInput = document.getElementById('maxi-custom-font-file');
+
+		if (!familyInput || !fileInput || !fileInput.files[0]) {
+			showNotice('Please fill in all required fields.', 'error');
+			return;
+		}
+
+		const family = familyInput.value.trim();
+		const file = fileInput.files[0];
+
+		if (!family) {
+			showNotice('Font family name is required.', 'error');
+			return;
+		}
+
+		// Disable submit button
+		submitBtn.disabled = true;
+		submitBtn.textContent = 'Uploading...';
+
+		try {
+			// First upload the file to media library
+			const formData = new FormData();
+			formData.append('file', file);
+
+			const attachment = await wp.apiFetch({
+				path: '/wp/v2/media',
+				method: 'POST',
+				body: formData,
+			});
+
+			// Then add it as a custom font
+			try {
+				await wp.apiFetch({
+					path: '/maxi-blocks/v1.0/fonts/custom',
+					method: 'POST',
+					data: {
+						family,
+						attachment_id: attachment.id,
+					},
+				});
+
+				showNotice('Custom font added successfully!', 'success');
+
+				// Clear inputs
+				familyInput.value = '';
+				fileInput.value = '';
+
+				await refreshFontsList();
+			} catch (fontError) {
+				// Delete the uploaded attachment if font creation fails
+				await wp.apiFetch({
+					path: `/wp/v2/media/${attachment.id}`,
+					method: 'DELETE',
+				});
+				throw fontError;
+			}
+		} catch (error) {
+			showNotice(error.message || 'Failed to upload font.', 'error');
+		} finally {
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'Add custom font';
+		}
+	});
+
+	// Initial attachment of delete handlers
+	attachDeleteHandlers();
+});
+
 // Network License Management for Multisite
 // eslint-disable-next-line func-names
 document.addEventListener('DOMContentLoaded', function () {

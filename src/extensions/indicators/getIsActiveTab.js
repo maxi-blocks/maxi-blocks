@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray, isEqual } from 'lodash';
+import { isArray, isEqual, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 
 const getIsActiveTab = (
@@ -118,6 +118,16 @@ const getIsActiveTab = (
 				currentAttributes[attribute],
 				defaultAttributes[attribute]
 			);
+		}
+
+		if (
+			attribute === 'transition' &&
+			currentAttributes[attribute] &&
+			Object.values(currentAttributes[attribute]).every(value =>
+				isEmpty(value)
+			)
+		) {
+			return true;
 		}
 
 		// Check if background layers have any non-color layer

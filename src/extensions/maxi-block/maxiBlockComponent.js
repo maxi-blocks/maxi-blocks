@@ -1841,14 +1841,24 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		}
 
 		if (styles) {

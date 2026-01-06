@@ -24,12 +24,19 @@ const loadLangChainModules = (() => {
 			cachedModulesPromise = Promise.all([
 				import('@langchain/openai'),
 				import('@langchain/core/prompts'),
-			]).then(([openAI, prompts]) => ({
-				ChatOpenAI: openAI.ChatOpenAI,
-				ChatPromptTemplate: prompts.ChatPromptTemplate,
-				HumanMessagePromptTemplate: prompts.HumanMessagePromptTemplate,
-				SystemMessagePromptTemplate: prompts.SystemMessagePromptTemplate,
-			}));
+			])
+				.then(([openAI, prompts]) => ({
+					ChatOpenAI: openAI.ChatOpenAI,
+					ChatPromptTemplate: prompts.ChatPromptTemplate,
+					HumanMessagePromptTemplate:
+						prompts.HumanMessagePromptTemplate,
+					SystemMessagePromptTemplate:
+						prompts.SystemMessagePromptTemplate,
+				}))
+				.catch(error => {
+					cachedModulesPromise = null;
+					throw error;
+				});
 		}
 
 		return cachedModulesPromise;

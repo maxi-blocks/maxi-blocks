@@ -128,6 +128,50 @@ const ColorControl = props => {
 			rgb: { r: 1, g: 1, b: 1, a: 1 },
 		};
 
+	/**
+	 * Computes the initial custom colour with opacity applied consistently.
+	 * Extracted for testability and to simplify the ToggleSwitch handler.
+	 */
+	const getInitialCustomColor = ({
+		paletteColor: pColor,
+		customColors: cColors,
+		color: currentColor,
+		paletteOpacity: pOpacity,
+		clientId: cId,
+		blockStyle: bStyle,
+	}) => {
+		const opacity = pOpacity || 1;
+
+		if (typeof pColor === 'number' && cColors) {
+			// Standard palette colours (1-8)
+			if (pColor >= 1 && pColor <= 8) {
+				return `rgba(${getPaletteColor({
+					clientId: cId,
+					color: pColor,
+					blockStyle: bStyle,
+				})},${opacity})`;
+			}
+
+			// Custom colours from style card
+			const matchedCustomColor = cColors.find(cc => cc.id === pColor);
+			if (matchedCustomColor) {
+				// Apply opacity consistently for custom colours
+				const tc = tinycolor(matchedCustomColor.value);
+				tc.setAlpha(opacity);
+				return tc.toRgbString();
+			}
+		}
+
+		// Fallback to existing color string with opacity applied
+		if (currentColor && typeof currentColor === 'string') {
+			const tc = tinycolor(currentColor);
+			tc.setAlpha(opacity);
+			return tc.toRgbString();
+		}
+
+		return 'transparent';
+	};
+
 	// Define colorObj and onChangeValue BEFORE useEffects that use them
 	const colorObj = {
 		paletteStatus,
@@ -344,42 +388,19 @@ const ColorControl = props => {
 				<ToggleSwitch
 					label={__('Set custom colour', 'maxi-blocks')}
 					selected={!paletteStatus}
+					// Disable toggle when style card lock prevents enabling custom colour
+					disabled={globalStatus && !paletteSCStatus && paletteStatus}
 					onChange={val => {
-						// Prevent enabling custom colour when a style card lock is active
-						if (globalStatus && !paletteSCStatus && val) return;
-						let initialCustomColor = 'transparent';
-						if (val) {
-							if (
-								typeof paletteColor === 'number' &&
-								customColors
-							) {
-								if (paletteColor >= 1 && paletteColor <= 8) {
-									initialCustomColor = `rgba(${getPaletteColor(
-										{
-											clientId,
-											color: paletteColor,
-											blockStyle,
-										}
-									)},${paletteOpacity || 1})`;
-								} else {
-									const matchedCustomColor =
-										customColors.find(
-											cc => cc.id === paletteColor
-										);
-									if (matchedCustomColor) {
-										initialCustomColor =
-											matchedCustomColor.value;
-									} else if (
-										color &&
-										typeof color === 'string'
-									) {
-										initialCustomColor = color;
-									}
-								}
-							} else if (color && typeof color === 'string') {
-								initialCustomColor = color;
-							}
-						}
+						const initialCustomColor = val
+							? getInitialCustomColor({
+									paletteColor,
+									customColors,
+									color,
+									paletteOpacity,
+									clientId,
+									blockStyle,
+							  })
+							: 'transparent';
 
 						onChangeValue({
 							paletteStatus: !val,

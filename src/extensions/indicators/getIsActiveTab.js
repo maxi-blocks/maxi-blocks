@@ -149,6 +149,11 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === null) return true;
 		if (currentAttributes[attribute] === false) return true;
+		if (
+			attribute.startsWith('icon-') &&
+			currentAttributes['icon-content'] === ''
+		)
+			return true;
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {

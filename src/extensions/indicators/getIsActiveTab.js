@@ -98,13 +98,20 @@ const getIsActiveTab = (
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
+		if (currentAttributes[attribute] === null) return true;
 		if (currentAttributes[attribute] === false) return true;
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
 				if (currentAttributes[attribute] === undefined) return true;
+				if (currentAttributes[attribute] === null) return true;
 				if (currentAttributes[attribute] === false) return true;
 				if (currentAttributes[attribute] === '') return true;
+				if (
+					['none', 'unset'].includes(currentAttributes[attribute]) &&
+					defaultAttributes[attribute] == null
+				)
+					return true;
 				if (
 					isArray(currentAttributes[attribute]) &&
 					currentAttributes[attribute].length !== 0
@@ -200,6 +207,12 @@ const getIsActiveTab = (
 		if (
 			isPlainObject(currentAttributes[attribute]) &&
 			isEmpty(currentAttributes[attribute]) &&
+			defaultAttributes[attribute] == null
+		)
+			return true;
+
+		if (
+			['none', 'unset'].includes(currentAttributes[attribute]) &&
 			defaultAttributes[attribute] == null
 		)
 			return true;

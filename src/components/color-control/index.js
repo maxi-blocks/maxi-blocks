@@ -208,27 +208,12 @@ const ColorControl = props => {
 					color: defaultColorAttr.color,
 				});
 			else {
-				let defaultColor;
-
-				if (typeof paletteColor === 'number' && paletteColor >= 1000) {
-					const customIndex = paletteColor - 1000;
-					defaultColor =
-						customColors?.[customIndex]?.value ||
-						color ||
-						'rgba(0, 0, 0, 1)';
-				} else {
-					defaultColor = `rgba(${getPaletteColor({
-						clientId,
-						color: paletteColor,
-						blockStyle,
-					})},${paletteOpacity || 1})`;
-				}
-
 				onChange({
-					paletteStatus,
-					paletteColor,
-					paletteOpacity,
-					color: defaultColor,
+					paletteStatus: defaultColorAttr.paletteStatus,
+					paletteSCStatus: defaultColorAttr.paletteSCStatus,
+					paletteColor: defaultColorAttr.paletteColor,
+					paletteOpacity: defaultColorAttr.paletteOpacity,
+					color: defaultColorAttr.color,
 					isReset: true,
 				});
 			}

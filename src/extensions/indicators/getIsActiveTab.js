@@ -5,6 +5,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray, isEqual, isEmpty, isPlainObject } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
+import { getDefaultSCValue } from '@extensions/style-cards';
 import getColumnDefaultValue from '@extensions/column-templates/getColumnDefaultValue';
 
 const getIsActiveTab = (
@@ -22,6 +23,7 @@ const getIsActiveTab = (
 
 	const { getBlock, getSelectedBlockClientId, getBlockRootClientId } =
 		select('core/block-editor');
+	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
 
 	const selectedBlockClientId = getSelectedBlockClientId();
 	const block = getBlock(selectedBlockClientId);
@@ -29,6 +31,9 @@ const getIsActiveTab = (
 	if (!block) return null;
 
 	const { name, attributes: currentAttributes } = block;
+	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
+	const blockStyle = currentAttributes.blockStyle?.replace('maxi-', '');
+	const textLevel = currentAttributes.textLevel;
 
 	if (!name.includes('maxi-blocks')) return null;
 
@@ -60,6 +65,37 @@ const getIsActiveTab = (
 		});
 
 		return attributesArr;
+	};
+
+	const getStyleCardDefault = attribute => {
+		if (!styleCard || !blockStyle) return null;
+
+		const scValue = getDefaultSCValue({
+			target: attribute,
+			SC: styleCard,
+			SCStyle: blockStyle,
+			groupAttr: textLevel,
+		});
+
+		if (scValue !== null && scValue !== undefined) return scValue;
+
+		const breakpointMatch = attribute.match(
+			/-(xxl|xl|l|m|s|xs)$/
+		);
+
+		if (!breakpointMatch) return null;
+
+		const generalAttribute = attribute.replace(
+			`-${breakpointMatch[1]}`,
+			'-general'
+		);
+
+		return getDefaultSCValue({
+			target: generalAttribute,
+			SC: styleCard,
+			SCStyle: blockStyle,
+			groupAttr: textLevel,
+		});
 	};
 
 	let columnDefaultSize;
@@ -138,6 +174,15 @@ const getIsActiveTab = (
 					)
 						return true;
 
+					if (
+						defaultAttributes[attribute] == null &&
+						isEqual(
+							currentAttributes[attribute],
+							getStyleCardDefault(attribute)
+						)
+					)
+						return true;
+
 					const generalAttribute = attribute.replace(
 						`-${bp}`,
 						'-general'
@@ -148,6 +193,15 @@ const getIsActiveTab = (
 						isEqual(
 							currentAttributes[attribute],
 							defaultAttributes[generalAttribute]
+						)
+					)
+						return true;
+
+					if (
+						defaultAttributes[generalAttribute] == null &&
+						isEqual(
+							currentAttributes[attribute],
+							getStyleCardDefault(generalAttribute)
 						)
 					)
 						return true;
@@ -186,6 +240,15 @@ const getIsActiveTab = (
 		) {
 			return true;
 		}
+
+		if (
+			defaultAttributes[attribute] == null &&
+			isEqual(
+				currentAttributes[attribute],
+				getStyleCardDefault(attribute)
+			)
+		)
+			return true;
 
 		if (
 			name.includes('column-maxi') &&

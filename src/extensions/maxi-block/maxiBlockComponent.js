@@ -1608,6 +1608,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
+				forceGenerate,
 				iframe,
 				isSiteEditor
 			);
@@ -1792,6 +1793,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe,
 		isSiteEditor
 	) {
@@ -1819,8 +1821,10 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBlockStyleChange) {
-			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		if (isBlockStyleChange || forceGenerate) {
+			const cssCache =
+				!forceGenerate &&
+				select('maxiBlocks/styles').getCSSCache(uniqueID);
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];

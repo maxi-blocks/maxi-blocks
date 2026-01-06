@@ -67,6 +67,18 @@ const getIsActiveTab = (
 		return attributesArr;
 	};
 
+	const isNumericValue = value =>
+		(typeof value === 'number' ||
+			(typeof value === 'string' && value.trim() !== '')) &&
+		!Number.isNaN(Number(value));
+
+	const areEquivalent = (left, right) => {
+		if (isNumericValue(left) && isNumericValue(right))
+			return Number(left) === Number(right);
+
+		return isEqual(left, right);
+	};
+
 	const getStyleCardDefault = attribute => {
 		if (!styleCard || !blockStyle) return null;
 
@@ -154,6 +166,12 @@ const getIsActiveTab = (
 			currentAttributes['icon-content'] === ''
 		)
 			return true;
+		if (
+			attribute.startsWith('icon-') &&
+			currentAttributes['icon-inherit'] === true &&
+			/(stroke|fill|background|border|box-shadow|gradient)/.test(attribute)
+		)
+			return true;
 		const resolvedDefault = getDefaultAttribute(
 			attribute,
 			selectedBlockClientId
@@ -198,7 +216,7 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					if (isEqual(currentAttributes[attribute], resolvedDefault))
+					if (areEquivalent(currentAttributes[attribute], resolvedDefault))
 						return true;
 
 					if (
@@ -253,10 +271,7 @@ const getIsActiveTab = (
 			currentAttributes[attribute].length === 0
 		) {
 			if (resolvedDefault == null) return true;
-			return isEqual(
-				currentAttributes[attribute],
-				resolvedDefault
-			);
+			return areEquivalent(currentAttributes[attribute], resolvedDefault);
 		}
 
 		const breakpointMatch = attribute.match(/-(xxl|xl|l|m|s|xs)$/);
@@ -317,7 +332,7 @@ const getIsActiveTab = (
 
 		if (
 			defaultAttributes[attribute] == null &&
-			isEqual(
+			areEquivalent(
 				currentAttributes[attribute],
 				getStyleCardDefault(attribute)
 			)
@@ -356,10 +371,7 @@ const getIsActiveTab = (
 
 		if (currentAttributes[attribute] === '') return true;
 
-		return isEqual(
-			currentAttributes[attribute],
-			resolvedDefault
-		);
+		return areEquivalent(currentAttributes[attribute], resolvedDefault);
 	});
 };
 

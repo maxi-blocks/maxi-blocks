@@ -1381,11 +1381,19 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
-		const shouldGenerateNewStyles =
+		let shouldGenerateNewStyles =
 			!isBreakpointChange || this.props.deviceType === 'xxl';
+		let stylesForViewportCheck;
+
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			stylesForViewportCheck = this.getStylesObject || {};
+			if (this.hasViewportUnits(stylesForViewportCheck)) {
+				shouldGenerateNewStyles = true;
+			}
+		}
 
 		if (shouldGenerateNewStyles) {
-			obj = this.getStylesObject || {};
+			obj = stylesForViewportCheck || this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1412,6 +1420,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
+			shouldGenerateNewStyles,
 			this.editorIframe
 		);
 
@@ -1525,6 +1534,28 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
+	hasViewportUnits(stylesObj) {
+		if (!stylesObj) return false;
+
+		const stack = [stylesObj];
+
+		while (stack.length) {
+			const current = stack.pop();
+
+			if (typeof current === 'string') {
+				if (current.includes('vw') || current.includes('vh')) {
+					return true;
+				}
+			} else if (isArray(current)) {
+				stack.push(...current);
+			} else if (isObject(current)) {
+				stack.push(...Object.values(current));
+			}
+		}
+
+		return false;
+	}
+
 	injectStyles(
 		uniqueID,
 		stylesObj,
@@ -1533,6 +1564,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
@@ -1542,7 +1574,11 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+		if (
+			forceGenerate ||
+			!isBreakpointChange ||
+			currentBreakpoint === 'xxl'
+		) {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,

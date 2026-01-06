@@ -70,10 +70,12 @@ const ColumnSizeControl = props => {
 							clientId,
 							breakpoint
 						);
+						const isEmptyValue =
+							val === undefined || val === null || val === '';
 
 						onChange({
 							[`column-size-${breakpoint}`]:
-								val !== undefined && val !== '' ? val : '',
+								isEmptyValue ? '' : val,
 							isReset: true,
 						});
 					}}

@@ -17,7 +17,7 @@ import {
 /**
  * External dependencies
  */
-import { lowerCase, isEmpty } from 'lodash';
+import { lowerCase, isEmpty, isEqual } from 'lodash';
 import classnames from 'classnames';
 
 const Accordion = props => {
@@ -85,11 +85,15 @@ const Accordion = props => {
 					) {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
-						isActiveTab = !item.indicatorProps.every(prop =>
-							Array.isArray(attributes[prop])
-								? isEmpty(attributes[prop])
-								: attributes[prop] === defaultAttributes[prop]
-						);
+						isActiveTab = !item.indicatorProps.every(prop => {
+							if (Array.isArray(attributes[prop]))
+								return isEmpty(attributes[prop]);
+
+							return isEqual(
+								attributes[prop],
+								defaultAttributes[prop]
+							);
+						});
 					}
 				}
 

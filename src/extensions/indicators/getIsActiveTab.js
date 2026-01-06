@@ -71,6 +71,9 @@ const getIsActiveTab = (
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
+				if (currentAttributes[attribute] === undefined) return true;
+				if (currentAttributes[attribute] === false) return true;
+				if (currentAttributes[attribute] === '') return true;
 				if (
 					isArray(currentAttributes[attribute]) &&
 					currentAttributes[attribute].length !== 0

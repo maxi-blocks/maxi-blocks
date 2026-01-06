@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray } from 'lodash';
+import { isArray, isEqual } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 
 const getIsActiveTab = (
@@ -89,8 +89,8 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					return (
-						currentAttributes[attribute] ===
+					return isEqual(
+						currentAttributes[attribute],
 						defaultAttributes[attribute]
 					);
 				}
@@ -111,8 +111,9 @@ const getIsActiveTab = (
 			isArray(currentAttributes[attribute]) &&
 			currentAttributes[attribute].length === 0
 		) {
-			return (
-				currentAttributes[attribute] !== defaultAttributes[attribute]
+			return isEqual(
+				currentAttributes[attribute],
+				defaultAttributes[attribute]
 			);
 		}
 
@@ -126,7 +127,10 @@ const getIsActiveTab = (
 
 		if (currentAttributes[attribute] === '') return true;
 
-		return currentAttributes[attribute] === defaultAttributes[attribute];
+		return isEqual(
+			currentAttributes[attribute],
+			defaultAttributes[attribute]
+		);
 	});
 };
 

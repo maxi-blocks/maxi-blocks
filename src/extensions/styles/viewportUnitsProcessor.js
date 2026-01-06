@@ -41,27 +41,64 @@ const replaceViewportUnits = (value, breakpoint) => {
 	return result;
 };
 
-const viewportUnitsProcessor = (obj, breakpoint) => {
-	if (breakpoint === 'general') return obj;
+const BREAKPOINT_KEYS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+const resolveBreakpoint = (key, currentBreakpoint, baseBreakpoint) => {
+	if (key === 'general') return baseBreakpoint || currentBreakpoint;
+	if (BREAKPOINT_KEYS.includes(key)) return key;
+	return currentBreakpoint;
+};
+
+const walkAndReplace = (
+	value,
+	currentBreakpoint,
+	baseBreakpoint,
+	activeBreakpoint = currentBreakpoint
+) => {
+	if (Array.isArray(value)) {
+		return value.map(item =>
+			walkAndReplace(
+				item,
+				currentBreakpoint,
+				baseBreakpoint,
+				activeBreakpoint
+			)
+		);
+	}
+
+	if (isObject(value)) {
+		return Object.entries(value).reduce((acc, [key, val]) => {
+			const nextBreakpoint = resolveBreakpoint(
+				key,
+				currentBreakpoint,
+				baseBreakpoint
+			);
+			acc[key] = walkAndReplace(
+				val,
+				currentBreakpoint,
+				baseBreakpoint,
+				nextBreakpoint
+			);
+			return acc;
+		}, {});
+	}
+
+	if (
+		typeof value === 'string' &&
+		(value.includes('vw') || value.includes('vh'))
+	) {
+		return replaceViewportUnits(value, activeBreakpoint);
+	}
+
+	return value;
+};
+
+const viewportUnitsProcessor = (obj, currentBreakpoint, baseBreakpoint) => {
+	if (currentBreakpoint === 'general') return obj;
 
 	const response = cloneDeep(obj);
 
-	const checkObjUnits = obj => {
-		Object.entries(obj).forEach(([key, val]) => {
-			if (isObject(val)) {
-				checkObjUnits(val);
-			} else if (
-				typeof val === 'string' &&
-				(val.includes('vw') || val.includes('vh'))
-			) {
-				obj[key] = replaceViewportUnits(val, breakpoint);
-			}
-		});
-
-		return obj;
-	};
-
-	return checkObjUnits(response);
+	return walkAndReplace(response, currentBreakpoint, baseBreakpoint);
 };
 
 export default viewportUnitsProcessor;

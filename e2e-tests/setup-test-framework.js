@@ -155,15 +155,6 @@ function observeConsoleLogging() {
 			return;
 		}
 
-		// Ignore YouTube postMessage origin mismatch on localhost.
-		if (
-			text.includes("Failed to execute 'postMessage' on 'DOMWindow'") &&
-			text.includes('https://www.youtube.com') &&
-			text.includes('http://localhost:')
-		) {
-			return;
-		}
-
 		// Video headers fails sometimes
 		if (text.includes('Error with Permissions-Policy header')) {
 			return;

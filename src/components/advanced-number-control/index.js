@@ -103,18 +103,13 @@ const AdvancedNumberControl = props => {
 		allowedUnits = ['px', 'em', 'vw', 'vh', '%', '-'],
 		minMaxSettings = minMaxSettingsDefault,
 		optionType = 'number',
-		inputType: inputTypeProp = 'number',
+		inputType = 'number',
 		customValidationRegex,
 		transformRangePreferredValue,
 		newStyle = false,
 		showHelp = false,
 		helpContent = '',
 	} = props;
-
-	const inputType =
-		inputTypeProp || (optionType === 'string' ? 'text' : 'number');
-	const validationRegex =
-		customValidationRegex ?? (optionType === 'string' ? null : /[a-zA-Z]/);
 
 	const [currentValue, setCurrentValue] = useState(
 		value === undefined ? defaultValue : trim(value)
@@ -296,7 +291,10 @@ const AdvancedNumberControl = props => {
 								value={latestValueRef.current || currentValue}
 								onChange={handleInputChange}
 								onKeyDown={e => {
-									validateNumberInput(e, validationRegex);
+									validateNumberInput(
+										e,
+										customValidationRegex
+									);
 									if (
 										e.key === '-' &&
 										(enableUnit ? minValue : min) >= 0

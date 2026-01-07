@@ -448,8 +448,8 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 		if (hasGlobalButtonRadius && buttonRadiusValue) {
 			[
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,
+				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__button`,
+				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__button`,
 			].forEach(target => {
 				addedResponse += `${target} { border-radius: var(--maxi-${style}-button-border-radius-general) !important; }`;
 			});

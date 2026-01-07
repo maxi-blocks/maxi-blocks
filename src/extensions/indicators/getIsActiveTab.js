@@ -191,6 +191,12 @@ const getIsActiveTab = (
 		)
 			return true;
 		if (
+			name.includes('image-maxi') &&
+			attribute === 'altSelector' &&
+			currentAttributes.altSelector !== 'custom'
+		)
+			return true;
+		if (
 			attribute.includes('clip-path-status') &&
 			currentAttributes[attribute] === false
 		)

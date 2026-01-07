@@ -186,8 +186,6 @@ const getIsActiveTab = (
 		if (
 			attribute.includes('clip-path') &&
 			!attribute.includes('clip-path-status') &&
-			currentAttributes[attribute] &&
-			currentAttributes[attribute].includes('clip-path') &&
 			currentAttributes[
 				attribute.includes('hover')
 					? 'clip-path-status-hover'

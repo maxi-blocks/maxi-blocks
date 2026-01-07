@@ -367,7 +367,7 @@
 	.components-button {
 		font-family: 'Inter', sans-serif !important;
 
-		&:hover {
+		&:hover:not(:disabled) {
 			color: var(--maxi-primary-color) !important;
 			transition: all 0.4s ease !important;
 		}

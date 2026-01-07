@@ -404,6 +404,7 @@ const BackgroundLayersControl = ({
 	onChangeInline,
 	onChange,
 	clientId,
+	blockAttributes,
 	breakpoint,
 	disableAddLayer,
 	getBounds,
@@ -414,6 +415,10 @@ const BackgroundLayersControl = ({
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
+	const normalLayersSource =
+		isIB && blockAttributes?.['background-layers']
+			? blockAttributes['background-layers']
+			: layers;
 
 	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
 		layers && !isEmpty(layers)
@@ -514,11 +519,14 @@ const BackgroundLayersControl = ({
 					<ListControl onListItemsDrag={onLayersDrag}>
 						{[...(!isHover ? layers : allLayers)].map(layer => {
 							const normalLayer = layer.isHover
-								? layers.find(
-										normalLayer =>
-											normalLayer.order === layer.order &&
-											!normalLayer.isHover
-								  )
+								? normalLayersSource.find(normalLayer => {
+										if (normalLayer.isHover) return false;
+										if (normalLayer.id && layer.id)
+											return normalLayer.id === layer.id;
+										return (
+											normalLayer.order === layer.order
+										);
+								  })
 								: null;
 
 							return (

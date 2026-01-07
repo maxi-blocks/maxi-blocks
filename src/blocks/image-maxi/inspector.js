@@ -160,6 +160,13 @@ const Inspector = props => {
 											extraIndicatorsResponsive: [
 												'img-width',
 											],
+											ignoreIndicator: [
+												'mediaID',
+												'mediaURL',
+												'mediaWidth',
+												'mediaHeight',
+												'cropOptions',
+											],
 										},
 									...inspectorTabs.alignment({
 										props,

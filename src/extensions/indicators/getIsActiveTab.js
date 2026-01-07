@@ -345,7 +345,7 @@ const getIsActiveTab = (
 			attribute === 'transition' &&
 			currentAttributes[attribute] &&
 			Object.values(currentAttributes[attribute]).every(value =>
-				isEmpty(value)
+				value === 0 ? false : isEmpty(value)
 			)
 		) {
 			return true;

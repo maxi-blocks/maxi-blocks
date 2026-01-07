@@ -179,6 +179,7 @@ const Inspector = props => {
 													}}
 												/>
 											),
+											ignoreIndicator: ['mediaID'],
 										},
 									{
 										label: __('Caption', 'maxi-blocks'),

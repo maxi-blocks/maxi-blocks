@@ -58,6 +58,7 @@ const blockBackground = ({
 									maxiSetAttributes(obj);
 									if (target) cleanInlineStyles(target);
 								}}
+								blockAttributes={attributes}
 								clientId={clientId}
 								breakpoint={deviceType}
 								disableImage={disableImage}
@@ -98,6 +99,7 @@ const blockBackground = ({
 										)}
 										onChange={obj => maxiSetAttributes(obj)}
 										isHover
+										blockAttributes={attributes}
 										clientId={clientId}
 										breakpoint={deviceType}
 										getBounds={getBounds}

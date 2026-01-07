@@ -1540,7 +1540,8 @@ class MaxiBlockComponent extends Component {
 		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
 		// Requires: number (with optional sign/decimal) + viewport unit
 		// Boundaries prevent matching "overview", URLs, or identifiers
-		const viewportUnitRegex = /(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+		const viewportUnitRegex =
+			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 		const stack = [stylesObj];
 

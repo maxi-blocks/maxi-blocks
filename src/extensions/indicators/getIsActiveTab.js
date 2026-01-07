@@ -4,7 +4,11 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray, isEqual, isEmpty, isPlainObject } from 'lodash';
-import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
+import {
+	getDefaultAttribute,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '@extensions/styles';
 import { getDefaultSCValue } from '@extensions/style-cards';
 import getColumnDefaultValue from '@extensions/column-templates/getColumnDefaultValue';
 
@@ -183,16 +187,21 @@ const getIsActiveTab = (
 			currentAttributes[attribute] === false
 		)
 			return true;
-		if (
-			attribute.includes('clip-path') &&
-			!attribute.includes('clip-path-status') &&
-			!currentAttributes[
-				attribute.includes('hover')
-					? 'clip-path-status-hover'
-					: 'clip-path-status'
-			]
-		)
-			return true;
+		if (attribute.includes('clip-path') && !attribute.includes('clip-path-status')) {
+			const isHover = attribute.includes('hover');
+			const clipPathStatus = breakpoint
+				? getLastBreakpointAttribute({
+						target: 'clip-path-status',
+						breakpoint,
+						attributes: currentAttributes,
+						isHover,
+				  })
+				: currentAttributes[
+						isHover ? 'clip-path-status-hover' : 'clip-path-status'
+				  ];
+
+			if (!clipPathStatus) return true;
+		}
 		if (
 			attribute.includes('clip-path') &&
 			!attribute.includes('clip-path-status') &&

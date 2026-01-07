@@ -441,6 +441,20 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			}
 		});
 
+		const hasGlobalButtonRadius =
+			styleCard[`--maxi-${style}-button-border-radius-global`];
+		const buttonRadiusValue =
+			styleCard[`--maxi-${style}-button-border-radius-general`];
+
+		if (hasGlobalButtonRadius && buttonRadiusValue) {
+			[
+				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block.maxi-button-block .maxi-button-block__content`,
+				`${prefix} ${secondPrefix} .maxi-${style}.maxi-block .maxi-button-block .maxi-button-block__content`,
+			].forEach(target => {
+				addedResponse += `${target} { border-radius: var(--maxi-${style}-button-border-radius-general) !important; }`;
+			});
+		}
+
 		// Navigation inside Maxi Container
 		const navigationSentences = getSentencesByBreakpoint({
 			organizedValues,
@@ -787,6 +801,15 @@ const getWPNativeStyles = ({
 		addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
 			background: var(--maxi-${style}-button-background-color,rgba(var(--maxi-${style}-color-4,255,74,23),1));
 		}`;
+
+		if (hasGlobalButtonRadius && buttonRadiusValue) {
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-element-button {
+				border-radius: var(--maxi-${style}-button-border-radius-general) !important;
+			}`;
+			addedResponse += `${prefix} ${secondPrefix} .maxi-${style} .${nativeWPPrefix} .wp-block-post-comments-form .comment-form p.form-submit input {
+				border-radius: var(--maxi-${style}-button-border-radius-general) !important;
+			}`;
+		}
 
 		// Button color hover
 		if (styleCard[`--maxi-${style}-button-background-color-hover`]) {

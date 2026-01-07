@@ -178,6 +178,11 @@ const getIsActiveTab = (
 			currentAttributes.altSelector !== 'custom'
 		)
 			return true;
+		if (
+			attribute.includes('clip-path-status') &&
+			currentAttributes[attribute] === false
+		)
+			return true;
 		const resolvedDefault = getDefaultAttribute(
 			attribute,
 			selectedBlockClientId

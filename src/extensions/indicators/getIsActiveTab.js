@@ -84,6 +84,18 @@ const getIsActiveTab = (
 			.replace(/-(general|xxl|xl|l|m|s|xs)$/, '')
 			.replace('clip-path', 'clip-path-status');
 
+	const getAltSelectorKey = attribute => {
+		if (attribute === 'mediaAlt') return 'altSelector';
+		if (attribute === 'altSelector') return 'altSelector';
+		if (attribute.endsWith('mediaAlt'))
+			return attribute.replace(/mediaAlt$/, 'altSelector');
+		if (attribute === 'background-image-parallax-alt')
+			return 'background-image-parallax-alt-selector';
+		if (attribute === 'background-image-parallax-alt-selector')
+			return 'background-image-parallax-alt-selector';
+		return null;
+	};
+
 	const areEquivalent = (left, right) => {
 		if (isNumericValue(left) && isNumericValue(right))
 			return Number(left) === Number(right);
@@ -194,6 +206,13 @@ const getIsActiveTab = (
 			name.includes('image-maxi') &&
 			attribute === 'altSelector' &&
 			currentAttributes.altSelector !== 'custom'
+		)
+			return true;
+		const altSelectorKey = getAltSelectorKey(attribute);
+		if (
+			altSelectorKey &&
+			altSelectorKey in currentAttributes &&
+			currentAttributes[altSelectorKey] !== 'custom'
 		)
 			return true;
 		if (

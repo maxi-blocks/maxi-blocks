@@ -37,6 +37,7 @@ const ColorLayer = props => {
 		disableClipPath,
 		isHover = false,
 		isIB = false,
+		normalLayer,
 		prefix = '',
 		clientId,
 		breakpoint,
@@ -147,35 +148,35 @@ const ColorLayer = props => {
 		};
 	};
 
-	const getNormalAttr = () => ({
+	const getNormalAttr = (attributesSource = colorOptions) => ({
 		paletteStatus: getLastBreakpointAttribute({
 			target: `${prefix}background-palette-status`,
 			breakpoint,
-			attributes: colorOptions,
+			attributes: attributesSource,
 			isHover: false,
 		}),
 		paletteSCStatus: getLastBreakpointAttribute({
 			target: `${prefix}background-palette-sc-status`,
 			breakpoint,
-			attributes: colorOptions,
+			attributes: attributesSource,
 			isHover: false,
 		}),
 		paletteColor: getLastBreakpointAttribute({
 			target: `${prefix}background-palette-color`,
 			breakpoint,
-			attributes: colorOptions,
+			attributes: attributesSource,
 			isHover: false,
 		}),
 		paletteOpacity: getLastBreakpointAttribute({
 			target: `${prefix}background-palette-opacity`,
 			breakpoint,
-			attributes: colorOptions,
+			attributes: attributesSource,
 			isHover: false,
 		}),
 		color: getLastBreakpointAttribute({
 			target: `${prefix}background-color`,
 			breakpoint,
-			attributes: colorOptions,
+			attributes: attributesSource,
 			isHover: false,
 		}),
 	});
@@ -189,7 +190,7 @@ const ColorLayer = props => {
 		color,
 	}) => {
 		if (isHover) {
-			const normalColorAttr = getNormalAttr();
+			const normalColorAttr = getNormalAttr(normalLayer || colorOptions);
 			let resetColor = normalColorAttr.color;
 
 			if (!resetColor && normalColorAttr.paletteColor) {

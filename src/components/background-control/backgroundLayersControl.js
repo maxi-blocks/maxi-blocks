@@ -54,6 +54,7 @@ const getLayerCardContent = props => {
 		isHover,
 		isIB,
 		layer,
+		normalLayer,
 		onChangeInline = null,
 		onChange,
 		previewRef,
@@ -75,6 +76,7 @@ const getLayerCardContent = props => {
 				<ColorLayer
 					key={`background-color-layer--${layer.order}`}
 					colorOptions={layer}
+					normalLayer={normalLayer}
 					onChangeInline={obj => {
 						previewRef.current.style.background =
 							obj['background-color'];
@@ -511,6 +513,14 @@ const BackgroundLayersControl = ({
 				{!isEmpty(allLayers) && (
 					<ListControl onListItemsDrag={onLayersDrag}>
 						{[...(!isHover ? layers : allLayers)].map(layer => {
+							const normalLayer = layer.isHover
+								? layers.find(
+										normalLayer =>
+											normalLayer.order === layer.order &&
+											!normalLayer.isHover
+								  )
+								: null;
+
 							return (
 								<ListItemControl
 									key={`maxi-background-layers__${
@@ -537,6 +547,7 @@ const BackgroundLayersControl = ({
 										isHover,
 										isIB,
 										layer,
+										normalLayer,
 										onChangeInline,
 										onChange: (rawLayer, target = false) =>
 											onChangeLayer(

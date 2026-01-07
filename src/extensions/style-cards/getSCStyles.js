@@ -187,7 +187,13 @@ const getSentencesByBreakpoint = ({
 	return sentences;
 };
 
-const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
+const getMaxiSCStyles = ({
+	organizedValues,
+	styleCard,
+	prefix,
+	style,
+	isBackend,
+}) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
@@ -442,9 +448,9 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		});
 
 		const hasGlobalButtonRadius =
-			styleCard[`--maxi-${style}-button-border-radius-global`];
+			styleCard?.[`--maxi-${style}-button-border-radius-global`];
 		const buttonRadiusValue =
-			styleCard[`--maxi-${style}-button-border-radius-general`];
+			styleCard?.[`--maxi-${style}-button-border-radius-general`];
 
 		if (hasGlobalButtonRadius && buttonRadiusValue) {
 			[
@@ -582,6 +588,10 @@ const getWPNativeStyles = ({
 		: 'maxi-block--use-sc';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
+		const hasGlobalButtonRadius =
+			styleCard?.[`--maxi-${style}-button-border-radius-global`];
+		const buttonRadiusValue =
+			styleCard?.[`--maxi-${style}-button-border-radius-general`];
 		let addedResponse = '';
 
 		const breakpointLevelSentences = getSentencesByBreakpoint({
@@ -875,6 +885,7 @@ const getSCStyles = (
 		// Maxi styles
 		response += getMaxiSCStyles({
 			organizedValues,
+			styleCard,
 			prefix,
 			style,
 			isBackend,

@@ -156,8 +156,8 @@ const Inspector = props => {
 													imageData={imageData}
 												/>
 											),
-											extraIndicators: [
-												'imageRatio',
+											extraIndicators: ['imageRatio'],
+											extraIndicatorsResponsive: [
 												'img-width',
 											],
 										},

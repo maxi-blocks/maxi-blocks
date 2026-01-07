@@ -172,6 +172,12 @@ const getIsActiveTab = (
 			/(stroke|fill|background|border|box-shadow|gradient)/.test(attribute)
 		)
 			return true;
+		if (
+			name.includes('image-maxi') &&
+			attribute === 'mediaAlt' &&
+			currentAttributes.altSelector !== 'custom'
+		)
+			return true;
 		const resolvedDefault = getDefaultAttribute(
 			attribute,
 			selectedBlockClientId

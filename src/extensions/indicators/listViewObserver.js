@@ -25,6 +25,17 @@ const getBlockStatus = block => {
 };
 
 /**
+ * Helper to check if block is hidden or has hidden descendants
+ */
+const getHiddenStatus = item => {
+	const isHidden = item.getAttribute('data-maxi-hidden') === 'true';
+	const hasHiddenParent =
+		item.getAttribute('data-maxi-hidden-parent') === 'true';
+
+	return { isHidden, hasHiddenParent };
+};
+
+/**
  * Updates a single List View item with indicators and a11y labels
  */
 const updateListViewItem = item => {
@@ -36,6 +47,7 @@ const updateListViewItem = item => {
 	if (!block) return;
 
 	const { hasInteraction, hasBackgroundLayers } = getBlockStatus(block);
+	const { isHidden, hasHiddenParent } = getHiddenStatus(item);
 
 	// Apply Interaction Attributes
 	if (hasInteraction) {
@@ -52,10 +64,12 @@ const updateListViewItem = item => {
 	}
 
 	// Combined Accessibility Label & Tooltip
-	if (hasInteraction || hasBackgroundLayers) {
+	if (hasInteraction || hasBackgroundLayers || isHidden || hasHiddenParent) {
 		const labelParts = [];
 		if (hasInteraction) labelParts.push('Interaction');
 		if (hasBackgroundLayers) labelParts.push('Background');
+		if (isHidden) labelParts.push('Hidden block');
+		if (hasHiddenParent) labelParts.push('Hidden block inside');
 
 		const label = labelParts.join(', ');
 		item.setAttribute('aria-label', label);
@@ -82,7 +96,9 @@ const hasActiveIndicators = blocks => {
 	});
 
 	// Also check if any elements in the DOM have the hidden-parent indicator
-	const hasHiddenParentIndicators = document.querySelectorAll('[data-maxi-hidden-parent="true"]').length > 0;
+	const hasHiddenParentIndicators =
+		document.querySelectorAll('[data-maxi-hidden-parent="true"]').length >
+		0;
 
 	return hasBlockIndicators || hasHiddenParentIndicators;
 };

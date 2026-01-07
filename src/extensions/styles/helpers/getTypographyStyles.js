@@ -259,6 +259,9 @@ const getTypographyStyles = ({
 			...(!isNil(getValue('text-direction', breakpoint)) && {
 				direction: getValue('text-direction', breakpoint),
 			}),
+			...(!isNil(getValue('text-wrap', breakpoint)) && {
+				'text-wrap': getValue('text-wrap', breakpoint),
+			}),
 			...(!isNil(getValue('white-space', breakpoint)) && {
 				'white-space': getValue('white-space', breakpoint),
 			}),

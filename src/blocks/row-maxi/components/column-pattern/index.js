@@ -177,7 +177,7 @@ const ColumnPattern = props => {
 					label={__('Number of columns', 'maxi-blocks')}
 					value={numCol}
 					defaultValue={numCol}
-					onChangeValue={numCol => setNumCol(numCol)}
+					onChangeValue={(numCol, meta) => setNumCol(numCol)}
 					min={1}
 					maxRange={8}
 					disableReset

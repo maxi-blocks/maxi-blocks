@@ -3,14 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
-import { useInstanceId } from '@wordpress/compose';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useInstanceId, useDebounce } from '@wordpress/compose';
+import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
+import { isEmpty, isNumber, merge, trim } from 'lodash';
 
 /**
  * Internal dependencies
@@ -195,15 +195,18 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
-		if (onChangeValue) {
-			const val =
-				latestValueRef.current === '' || optionType === 'string'
-					? latestValueRef.current.toString()
-					: +latestValueRef.current;
-			onChangeValue(val);
-		}
-	}, 300);
+	const handleChange = useDebounce(
+		useCallback((onChangeValue, latestValueRef, optionType) => {
+			if (onChangeValue) {
+				const val =
+					latestValueRef.current === '' || optionType === 'string'
+						? latestValueRef.current.toString()
+						: +latestValueRef.current;
+				onChangeValue(val);
+			}
+		}, []),
+		300
+	);
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
@@ -228,7 +231,14 @@ const AdvancedNumberControl = props => {
 		latestValueRef.current =
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
-		handleChange(result);
+
+		const val =
+			result === '' || optionType === 'string'
+				? result.toString()
+				: +result;
+		onChangeValue?.(val, { inline: enableUnit ? { unit } : {} });
+
+		handleChange(onChangeValue, latestValueRef, optionType);
 	};
 
 	const rawPreferredValues = [
@@ -528,13 +538,22 @@ const AdvancedNumberControl = props => {
 
 							setCurrentValue(result);
 							latestValueRef.current = result;
-							onChangeValue(result);
+
+							onChangeValue?.(result, {
+								inline: enableUnit ? { unit } : {},
+							});
+
+							handleChange(
+								onChangeValue,
+								latestValueRef,
+								optionType
+							);
 						}}
 						min={enableUnit ? minValueRange : min}
 						max={maxRange || (enableUnit ? maxValueRange : max)}
 						step={stepValue}
 						withInputField={false}
-						initialPosition={value ?? initial}
+						initialPosition={value || initial}
 						__nextHasNoMarginBottom
 					/>
 				)}

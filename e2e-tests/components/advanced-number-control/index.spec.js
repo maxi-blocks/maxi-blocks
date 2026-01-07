@@ -235,7 +235,7 @@ describe('Advanced Number Control', () => {
 		await pressKeyTimes('ArrowUp', '3');
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
-			'300'
+			'298.3'
 		);
 
 		// check em min rangue

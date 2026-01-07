@@ -559,7 +559,6 @@ const HoverEffectControl = props => {
 							}
 							onChange={onChange}
 							prefix='hover-'
-							disablePalette
 							clientId={clientId}
 						/>
 					)}
@@ -579,7 +578,9 @@ const HoverEffectControl = props => {
 							onChange={onChange}
 							target='hover-padding'
 							breakpoint={breakpoint}
+							optionType='string'
 							disableAuto
+							enableAxisUnits
 						/>
 					)}
 					<ToggleSwitch
@@ -599,6 +600,7 @@ const HoverEffectControl = props => {
 							target='hover-margin'
 							optionType='string'
 							breakpoint={breakpoint}
+							enableAxisUnits
 						/>
 					)}
 				</>

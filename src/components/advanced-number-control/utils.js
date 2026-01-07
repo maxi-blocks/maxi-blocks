@@ -1,4 +1,6 @@
 const validateNumberInput = (event, regex = /[a-zA-Z]/) => {
+	if (!regex) return;
+
 	if (
 		regex.test(event.key) &&
 		event.key !== 'e' &&

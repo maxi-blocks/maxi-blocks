@@ -57,6 +57,7 @@ const ColorControl = props => {
 		isToolbar = false,
 		prefix = '',
 		avoidBreakpointForDefault = false,
+		paletteOnly = false,
 	} = props;
 
 	const {
@@ -114,23 +115,10 @@ const ColorControl = props => {
 	const classes = classnames(
 		'maxi-color-control',
 		!disablePalette &&
-			paletteStatus &&
+			(paletteStatus || paletteOnly) &&
 			`maxi-color-palette-control maxi-color-palette--${blockStyle}`,
 		className
 	);
-
-	useEffect(() => {
-		if (globalStatus && !paletteStatus)
-			onChange({
-				paletteSCStatus: true,
-				paletteStatus,
-				paletteColor,
-				paletteOpacity,
-				color,
-			});
-	}, [globalStatus]);
-
-	const showPalette = !disablePalette && paletteStatus;
 
 	/**
 	 * Creates an object with the color variables with RGBA format
@@ -139,6 +127,44 @@ const ColorControl = props => {
 		getColorRGBAParts(colorString, true) || {
 			rgb: { r: 1, g: 1, b: 1, a: 1 },
 		};
+
+	const getInitialCustomColor = ({
+		paletteColor: paletteColorValue,
+		customColors: customColorsValue,
+		color: currentColor,
+		paletteOpacity: paletteOpacityValue,
+		clientId: clientIdValue,
+		blockStyle: blockStyleValue,
+	}) => {
+		const opacity = paletteOpacityValue || 1;
+
+		if (typeof paletteColorValue === 'number' && customColorsValue) {
+			if (paletteColorValue >= 1 && paletteColorValue <= 8) {
+				return `rgba(${getPaletteColor({
+					clientId: clientIdValue,
+					color: paletteColorValue,
+					blockStyle: blockStyleValue,
+				})},${opacity})`;
+			}
+
+			const matchedCustomColor = customColorsValue.find(
+				cc => cc.id === paletteColorValue
+			);
+			if (matchedCustomColor) {
+				const tc = tinycolor(matchedCustomColor.value);
+				tc.setAlpha(opacity);
+				return tc.toRgbString();
+			}
+		}
+
+		if (currentColor && typeof currentColor === 'string') {
+			const tc = tinycolor(currentColor);
+			tc.setAlpha(opacity);
+			return tc.toRgbString();
+		}
+
+		return 'transparent';
+	};
 
 	const colorObj = {
 		paletteStatus,
@@ -153,6 +179,29 @@ const ColorControl = props => {
 			...colorObj,
 			...obj,
 		});
+
+	useEffect(() => {
+		if (globalStatus && !paletteStatus)
+			onChangeValue({
+				paletteSCStatus: true,
+			});
+	}, [globalStatus]);
+
+	useEffect(() => {
+		if (paletteOnly && !paletteStatus)
+			onChangeValue({
+				paletteStatus: true,
+			});
+	}, [paletteOnly]);
+
+	useEffect(() => {
+		if (paletteOnly && globalStatus && !paletteSCStatus)
+			onChangeValue({
+				paletteSCStatus: true,
+			});
+	}, [paletteOnly, globalStatus]);
+
+	const showPalette = (!disablePalette && paletteStatus) || paletteOnly;
 
 	const onChangeInlineValue = obj =>
 		onChangeInline
@@ -288,6 +337,7 @@ const ColorControl = props => {
 				className={classnames(
 					globalStatus &&
 						!paletteSCStatus &&
+						!paletteOnly &&
 						'maxi-color-control--disabled'
 				)}
 			>
@@ -306,64 +356,6 @@ const ColorControl = props => {
 						globalPaletteOpacity={globalPaletteOpacity}
 					/>
 				)}
-				{!disablePalette && (
-					<ToggleSwitch
-						label={__('Set custom colour', 'maxi-blocks')}
-						selected={!paletteStatus}
-						onChange={val => {
-							let initialCustomColor = 'transparent';
-							if (val) {
-								if (
-									typeof paletteColor === 'number' &&
-									customColors
-								) {
-									if (
-										paletteColor >= 1 &&
-										paletteColor <= 8
-									) {
-										initialCustomColor = `rgba(${getPaletteColor(
-											{
-												clientId,
-												color: paletteColor,
-												blockStyle,
-											}
-										)},${paletteOpacity || 1})`;
-									} else {
-										const matchedCustomColor =
-											customColors.find(
-												cc => cc.id === paletteColor
-											);
-										if (matchedCustomColor) {
-											initialCustomColor =
-												matchedCustomColor.value;
-										} else if (
-											color &&
-											typeof color === 'string'
-										) {
-											initialCustomColor = color;
-										}
-									}
-								} else if (color && typeof color === 'string') {
-									initialCustomColor = color;
-								}
-							}
-
-							onChangeValue({
-								paletteStatus: !val,
-								...(val && {
-									color: initialCustomColor,
-								}),
-								...(!disableOpacity &&
-									!val &&
-									color && {
-										paletteOpacity:
-											tinycolor(color).getAlpha() ||
-											paletteOpacity,
-									}),
-							});
-						}}
-					/>
-				)}
 				{!showPalette && (
 					<CustomColorControl
 						label={label}
@@ -379,6 +371,39 @@ const ColorControl = props => {
 					/>
 				)}
 			</div>
+			{!disablePalette && !paletteOnly && (
+				<ToggleSwitch
+					label={__('Set custom colour', 'maxi-blocks')}
+					selected={!paletteStatus}
+					disabled={globalStatus && !paletteSCStatus && paletteStatus}
+					onChange={val => {
+						const initialCustomColor = val
+							? getInitialCustomColor({
+									paletteColor,
+									customColors,
+									color,
+									paletteOpacity,
+									clientId,
+									blockStyle,
+							  })
+							: 'transparent';
+
+						onChangeValue({
+							paletteStatus: !val,
+							...(val && {
+								color: initialCustomColor,
+							}),
+							...(!disableOpacity &&
+								!val &&
+								color && {
+									paletteOpacity:
+										tinycolor(color).getAlpha() ||
+										paletteOpacity,
+								}),
+						});
+					}}
+				/>
+			)}
 		</div>
 	);
 };

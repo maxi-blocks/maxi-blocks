@@ -76,12 +76,13 @@ const SvgWidthControl = props => {
 				label={__(customLabel, 'maxi-blocks')}
 				value={width}
 				placeholder={placeholderWidth}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					const newVal = val !== undefined && val !== '' ? val : '';
 
 					onChange({
 						[getAttributeKey('width', isHover, prefix, breakpoint)]:
 							newVal,
+						meta,
 					});
 				}}
 				enableUnit

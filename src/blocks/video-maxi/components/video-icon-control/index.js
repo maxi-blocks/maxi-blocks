@@ -247,7 +247,7 @@ const IconSettings = props => {
 									isHover,
 									attributes: props,
 								})}
-								onChangeValue={val =>
+								onChangeValue={(val, meta) =>
 									onChange({
 										[getAttributeKey(
 											'icon-height',
@@ -255,6 +255,7 @@ const IconSettings = props => {
 											prefix,
 											breakpoint
 										)]: val,
+										meta,
 									})
 								}
 								defaultValue={getDefaultAttribute(
@@ -317,10 +318,11 @@ const IconSettings = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val =>
+									onChangeValue={(val, meta) =>
 										onChange({
 											[`${prefix}icon-spacing-${breakpoint}`]:
 												val,
+											meta,
 										})
 									}
 									enableUnit

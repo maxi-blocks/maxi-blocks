@@ -384,10 +384,11 @@ const SCAccordion = props => {
 										'maxi-blocks'
 									)}
 									value={showMobileFrom}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChangeValue(
 											{
 												'show-mobile-down-from': val,
+												meta,
 											},
 											groupAttr
 										);

@@ -18,6 +18,7 @@ import handleSetAttributes from './handleSetAttributes';
 import {
 	handleInsertInlineStyles,
 	handleCleanInlineStyles,
+	getInlineStylesAndTargetsFromAttributes,
 } from './inlineStyles';
 import { excludeAttributes } from '@extensions/copy-paste';
 import { getBlockData } from '@extensions/attributes';
@@ -160,6 +161,38 @@ const withMaxiProps = createHigherOrderComponent(
 				return null;
 			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
+			const ref = useRef(null);
+			const styleObjKeys = useRef([]);
+
+			const insertInlineStyles = useCallback(
+				({
+					obj,
+					target = '',
+					isMultiplySelector = false,
+					pseudoElement = '',
+				}) =>
+					handleInsertInlineStyles({
+						styleObj: obj,
+						target,
+						isMultiplySelector,
+						pseudoElement,
+						styleObjKeys,
+						ref,
+					}),
+				[styleObjKeys, ref]
+			);
+
+			const cleanInlineStyles = useCallback(
+				(target = '', pseudoElement = '') =>
+					handleCleanInlineStyles(
+						target,
+						pseudoElement,
+						styleObjKeys,
+						ref
+					),
+				[styleObjKeys, ref]
+			);
+
 			const maxiSetAttributes = useCallback(
 				obj => {
 					// First, check if we already have a blockStyle that needs to be preserved
@@ -169,6 +202,54 @@ const withMaxiProps = createHigherOrderComponent(
 						obj,
 						attributes,
 						clientId,
+						onChangeInline: (changedAttributes, inlineOptions) => {
+							const { attributesToStyles } = getBlockData(name);
+							if (!attributesToStyles) return;
+
+							const actions =
+								getInlineStylesAndTargetsFromAttributes({
+									changedAttributes,
+									attributesToStyles,
+									inlineOptions,
+								});
+
+							if (!actions || !Array.isArray(actions)) return;
+
+							actions.forEach(
+								({
+									styleObj,
+									target = '',
+									isMultiplySelector = false,
+									pseudoElement = '',
+								}) => {
+									if (!styleObj) return;
+									insertInlineStyles({
+										obj: styleObj,
+										target,
+										isMultiplySelector,
+										pseudoElement,
+									});
+								}
+							);
+						},
+						cleanInlineStyles: changedAttributes => {
+							const { attributesToStyles } = getBlockData(name);
+							if (!attributesToStyles) return;
+
+							const actions =
+								getInlineStylesAndTargetsFromAttributes({
+									changedAttributes,
+									attributesToStyles,
+								});
+
+							if (!actions || !Array.isArray(actions)) return;
+
+							actions.forEach(
+								({ target = '', pseudoElement = '' }) => {
+									cleanInlineStyles(target, pseudoElement);
+								}
+							);
+						},
 						onChange: newAttributes => {
 							// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
 							if (
@@ -274,39 +355,11 @@ const withMaxiProps = createHigherOrderComponent(
 					copyPasteMapping,
 					contextLoopContext,
 					blockPositionFromColumn,
+					name,
+					deviceType,
+					insertInlineStyles,
+					cleanInlineStyles,
 				]
-			);
-
-			const ref = useRef(null);
-			const styleObjKeys = useRef([]);
-
-			const insertInlineStyles = useCallback(
-				({
-					obj,
-					target = '',
-					isMultiplySelector = false,
-					pseudoElement = '',
-				}) =>
-					handleInsertInlineStyles({
-						styleObj: obj,
-						target,
-						isMultiplySelector,
-						pseudoElement,
-						styleObjKeys,
-						ref,
-					}),
-				[styleObjKeys, ref]
-			);
-
-			const cleanInlineStyles = useCallback(
-				(target = '', pseudoElement = '') =>
-					handleCleanInlineStyles(
-						target,
-						pseudoElement,
-						styleObjKeys,
-						ref
-					),
-				[styleObjKeys, ref]
 			);
 
 			const getBounds = useCallback(selector => {

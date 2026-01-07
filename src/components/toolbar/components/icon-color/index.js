@@ -51,7 +51,7 @@ const IconColor = props => {
 					<p className='toolbar-item__icon-color__popover__warning'>
 						{__(
 							'Icon colour is inherited from button.',
-							'maxi-button'
+							'maxi-blocks'
 						)}
 					</p>
 				) : (

@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useContext } from '@wordpress/element';
+import { useState, useContext, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -74,7 +74,7 @@ const LinkOptions = props => {
 				[`${prefix}link-${statePrefix}palette-sc-status`]: undefined,
 				[`${prefix}link-${statePrefix}palette-opacity`]: undefined,
 			},
-			undefined,
+			{ isReset: true },
 			true
 		);
 	};
@@ -339,6 +339,7 @@ const TypographyControl = props => {
 		isStyleCards = false,
 		disablePalette = false,
 		disableFontFamily = false,
+		disableResponsiveTabs = false,
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
@@ -625,7 +626,12 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {},
+		{
+			forceDisableCustomFormats = false,
+			tag = '',
+			isReset = false,
+			meta,
+		} = {},
 		disableFilter = false
 	) => {
 		if (forceIndividualChanges) {
@@ -635,7 +641,7 @@ const TypographyControl = props => {
 				return acc;
 			}, {});
 
-			onChange({ ...obj, isReset });
+			onChange({ ...obj, isReset, meta });
 			return;
 		}
 
@@ -674,9 +680,9 @@ const TypographyControl = props => {
 		}
 
 		if (!isReset) {
-			onChange(filteredObj, getInlineTarget(tag));
+			onChange({ ...filteredObj, meta }, getInlineTarget(tag));
 		} else {
-			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+			onChange({ ...obj, meta, isReset: true }, getInlineTarget(tag));
 		}
 	};
 
@@ -690,8 +696,11 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
+	const Wrapper = disableResponsiveTabs ? Fragment : ResponsiveTabsControl;
+	const wrapperProps = disableResponsiveTabs ? {} : { breakpoint };
+
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
+		<Wrapper {...wrapperProps}>
 			<div className={classes}>
 				{/* When linkOnly is enabled, render only LinkOptions */}
 				{linkOnly && allowLink && (
@@ -1281,7 +1290,7 @@ const TypographyControl = props => {
 														[`${prefix}palette-opacity`]:
 															undefined,
 													},
-													undefined,
+													{ isReset: true },
 													true
 												);
 											},
@@ -1296,7 +1305,6 @@ const TypographyControl = props => {
 								disablePalette={disablePalette}
 							/>
 						)}
-
 						{!disableFontFamily &&
 							!disableColor &&
 							!isStyleCards &&
@@ -1716,6 +1724,50 @@ const TypographyControl = props => {
 										)
 									}
 								/>
+								<SelectControl
+									__nextHasNoMarginBottom
+									label={__('Text wrap', 'maxi-blocks')}
+									className='maxi-typography-control__text-wrap'
+									value={getValue('text-wrap')}
+									defaultValue={getDefault('text-wrap')}
+									newStyle
+									options={[
+										{
+											label: __('Wrap', 'maxi-blocks'),
+											value: 'wrap',
+										},
+										{
+											label: __('No wrap', 'maxi-blocks'),
+											value: 'nowrap',
+										},
+										{
+											label: __('Balance', 'maxi-blocks'),
+											value: 'balance',
+										},
+										{
+											label: __('Pretty', 'maxi-blocks'),
+											value: 'pretty',
+										},
+										{
+											label: __('Stable', 'maxi-blocks'),
+											value: 'stable',
+										},
+									]}
+									onChange={val => {
+										onChangeFormat({
+											[`${prefix}text-wrap`]: val,
+										});
+									}}
+									onReset={() =>
+										onChangeFormat(
+											{
+												[`${prefix}text-wrap`]:
+													getDefault('text-wrap'),
+											},
+											{ isReset: true }
+										)
+									}
+								/>
 								{!isStyleCards && (
 									<>
 										<SelectControl
@@ -1922,7 +1974,7 @@ const TypographyControl = props => {
 					</>
 				)}
 			</div>
-		</ResponsiveTabsControl>
+		</Wrapper>
 	);
 };
 

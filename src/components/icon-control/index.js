@@ -294,12 +294,13 @@ const IconControlResponsiveSettings = withRTC(props => {
 							step={1}
 							breakpoint={breakpoint}
 							value={props[`${prefix}icon-spacing-${breakpoint}`]}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChange({
 									[`${prefix}icon-spacing-${breakpoint}`]:
 										val !== undefined && val !== ''
 											? val
 											: '',
+									meta,
 								});
 							}}
 							onReset={() =>

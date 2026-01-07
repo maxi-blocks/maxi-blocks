@@ -64,8 +64,9 @@ class MaxiBlocks_StyleCards
             }
         });
 
-        // Run the migration once
+        // Run the migrations once
         add_action('admin_init', [$this, 'run_link_palette_migration']);
+        add_action('admin_init', [$this, 'run_text_wrap_migration']);
 
         // Clear cache when style cards are updated
         add_action('maxi_blocks_style_card_updated', [__CLASS__, 'clear_cache']);
@@ -1098,6 +1099,69 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Migrate style cards to add text-wrap-general property
+     *
+     * @return bool True if migration was performed, false otherwise
+     */
+    public static function migrate_style_cards_text_wrap()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        $updated = false;
+
+        // Typography elements that should have text-wrap
+        $typography_elements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'navigation'];
+        $modes = ['dark', 'light'];
+
+        foreach ($style_cards as $key => $sc) {
+            foreach ($modes as $mode) {
+                if (!isset($sc[$mode]['defaultStyleCard'])) {
+                    continue;
+                }
+
+                foreach ($typography_elements as $element) {
+                    if (!isset($sc[$mode]['defaultStyleCard'][$element])) {
+                        continue;
+                    }
+
+                    // Add text-wrap-general if it doesn't exist
+                    if (!isset($sc[$mode]['defaultStyleCard'][$element]['text-wrap-general'])) {
+                        $style_cards[$key][$mode]['defaultStyleCard'][$element]['text-wrap-general'] = 'wrap';
+                        $updated = true;
+                    }
+                }
+            }
+        }
+
+        if ($updated) {
+            $updated_style_cards = json_encode($style_cards);
+            $wpdb->update(
+                $wpdb->prefix . "maxi_blocks_general",
+                ['object' => $updated_style_cards],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        return $updated;
+    }
+
+    public function run_text_wrap_migration()
+    {
+        // Check if migration has already been run
+        if (get_option('maxi_blocks_text_wrap_migrated') !== 'yes') {
+            self::migrate_style_cards_text_wrap();
+            update_option('maxi_blocks_text_wrap_migrated', 'yes');
+        }
+    }
+
+    /**
      * Helper function to get WP native styles
      */
     private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
@@ -1492,6 +1556,7 @@ class MaxiBlocks_StyleCards
             'text-transform',
             'letter-spacing',
             'white-space',
+            'text-wrap',
             'word-spacing',
             'text-indent',
             'margin-bottom',
@@ -1676,6 +1741,7 @@ class MaxiBlocks_StyleCards
             'text-transform',
             'letter-spacing',
             'white-space',
+            'text-wrap',
             'word-spacing',
             'text-indent',
             'margin-bottom',

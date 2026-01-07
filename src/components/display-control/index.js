@@ -85,13 +85,20 @@ const DisplayControl = props => {
 	// Determine effective hidden state for current breakpoint (accounts for inheritance)
 	const effectiveValue = getValue();
 	const shouldBeHidden =
-		isHide() || props[`display-${breakpoint}`] === 'none';
-
+		(isHide() || props[`display-${breakpoint}`] === 'none') &&
+		!props?.clientId;
 	const classes = classnames('maxi-display-control', className);
 
 	const openListView = () => {
-		const { setIsListViewOpened } = dispatch('core/edit-post');
-		setIsListViewOpened(true);
+		// Try core/editor first (WordPress 6.5+), then fall back to core/edit-post
+		const editorDispatch = dispatch('core/editor');
+		const editPostDispatch = dispatch('core/edit-post');
+
+		if (editorDispatch?.setIsListViewOpened) {
+			editorDispatch.setIsListViewOpened(true);
+		} else if (editPostDispatch?.setIsListViewOpened) {
+			editPostDispatch.setIsListViewOpened(true);
+		}
 	};
 
 	return (

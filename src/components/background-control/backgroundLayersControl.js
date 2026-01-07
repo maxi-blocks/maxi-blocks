@@ -521,6 +521,8 @@ const BackgroundLayersControl = ({
 							const normalLayer = layer.isHover
 								? normalLayersSource.find(normalLayer => {
 										if (normalLayer.isHover) return false;
+										if (normalLayer.sid && layer.sid)
+											return normalLayer.sid === layer.sid;
 										if (normalLayer.id && layer.id)
 											return normalLayer.id === layer.id;
 										return (

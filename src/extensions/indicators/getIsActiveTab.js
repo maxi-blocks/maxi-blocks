@@ -76,6 +76,14 @@ const getIsActiveTab = (
 			(typeof value === 'string' && value.trim() !== '')) &&
 		!Number.isNaN(Number(value));
 
+	const clipPathBreakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+	const getClipPathStatusTarget = attribute =>
+		attribute
+			.replace(/-hover$/, '')
+			.replace(/-(general|xxl|xl|l|m|s|xs)$/, '')
+			.replace('clip-path', 'clip-path-status');
+
 	const areEquivalent = (left, right) => {
 		if (isNumericValue(left) && isNumericValue(right))
 			return Number(left) === Number(right);
@@ -189,15 +197,23 @@ const getIsActiveTab = (
 			return true;
 		if (attribute.includes('clip-path') && !attribute.includes('clip-path-status')) {
 			const isHover = attribute.includes('hover');
-			const clipPathStatus = breakpoint
+			const clipPathStatusTarget = getClipPathStatusTarget(attribute);
+			const hasBreakpointStatus = clipPathBreakpoints.some(bp => {
+				const statusKey = `${clipPathStatusTarget}-${bp}${
+					isHover ? '-hover' : ''
+				}`;
+
+				return statusKey in currentAttributes;
+			});
+			const clipPathStatus = hasBreakpointStatus
 				? getLastBreakpointAttribute({
-						target: 'clip-path-status',
-						breakpoint,
+						target: clipPathStatusTarget,
+						breakpoint: breakpoint ?? 'general',
 						attributes: currentAttributes,
 						isHover,
 				  })
 				: currentAttributes[
-						isHover ? 'clip-path-status-hover' : 'clip-path-status'
+						`${clipPathStatusTarget}${isHover ? '-hover' : ''}`
 				  ];
 
 			if (!clipPathStatus) return true;

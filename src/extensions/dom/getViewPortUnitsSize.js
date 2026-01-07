@@ -8,11 +8,6 @@ export const getVwSize = breakpoint => {
 			? xxlSize
 			: select('maxiBlocks').receiveMaxiBreakpoints()[breakpoint]) * 0.01;
 
-	if (window?.__MAXI_DEBUG_VIEWPORT__) {
-		// eslint-disable-next-line no-console
-		console.debug('[maxi viewport] vw size', { breakpoint, value });
-	}
-
 	return value;
 };
 
@@ -22,11 +17,6 @@ export const getVhSize = () => {
 	const height =
 		window.innerHeight || document.documentElement?.clientHeight || 0;
 	const value = height * 0.01;
-
-	if (window?.__MAXI_DEBUG_VIEWPORT__) {
-		// eslint-disable-next-line no-console
-		console.debug('[maxi viewport] vh size', { height, value });
-	}
 
 	return value;
 };

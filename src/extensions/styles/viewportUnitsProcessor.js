@@ -29,15 +29,6 @@ const replaceViewportUnits = (value, breakpoint) => {
 		);
 	}
 
-	if (window?.__MAXI_DEBUG_VIEWPORT__) {
-		// eslint-disable-next-line no-console
-		console.debug('[maxi viewport] replace units', {
-			breakpoint,
-			input: value,
-			output: result,
-		});
-	}
-
 	return result;
 };
 

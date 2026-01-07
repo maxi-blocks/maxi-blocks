@@ -11,7 +11,6 @@ import {
 	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
-import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -25,7 +24,6 @@ import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '@extensions/DC/constants';
-import isPostEditor from '@extensions/dom/isPostEditor';
 
 /**
  * External dependencies
@@ -136,7 +134,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
 		breakpoint: extraProps.deviceType,
-		attributes: attributes,
+		attributes,
 	});
 
 	// Gets if the block has to be disabled due to the device type

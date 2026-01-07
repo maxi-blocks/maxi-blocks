@@ -3,6 +3,7 @@
  */
 import { select, subscribe } from '@wordpress/data';
 import domReady from '@wordpress/dom-ready';
+import { __ } from '@wordpress/i18n';
 
 const ATTR_NAME = 'data-maxi-interaction';
 const BG_ATTR_NAME = 'data-maxi-background';
@@ -66,10 +67,12 @@ const updateListViewItem = item => {
 	// Combined Accessibility Label & Tooltip
 	if (hasInteraction || hasBackgroundLayers || isHidden || hasHiddenParent) {
 		const labelParts = [];
-		if (hasInteraction) labelParts.push('Interaction');
-		if (hasBackgroundLayers) labelParts.push('Background');
-		if (isHidden) labelParts.push('Hidden block');
-		if (hasHiddenParent) labelParts.push('Hidden block inside');
+		if (hasInteraction) labelParts.push(__('Interaction', 'maxi-blocks'));
+		if (hasBackgroundLayers)
+			labelParts.push(__('Background', 'maxi-blocks'));
+		if (isHidden) labelParts.push(__('Hidden block', 'maxi-blocks'));
+		if (hasHiddenParent)
+			labelParts.push(__('Hidden block inside', 'maxi-blocks'));
 
 		const label = labelParts.join(', ');
 		item.setAttribute('aria-label', label);
@@ -126,19 +129,31 @@ const createLegend = () => {
 	legend.id = LEGEND_ID;
 	legend.className = 'maxi-list-view-legend';
 	legend.innerHTML = `
-        <div class="maxi-list-view-legend__title">Legend</div>
+        <div class="maxi-list-view-legend__title">${__(
+			'Legend',
+			'maxi-blocks'
+		)}</div>
         <div class="maxi-list-view-legend__items">
             <div class="maxi-list-view-legend__item">
                 <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--pink"></span>
-                <span class="maxi-list-view-legend__label">Interaction</span>
+                <span class="maxi-list-view-legend__label">${__(
+					'Interaction',
+					'maxi-blocks'
+				)}</span>
             </div>
             <div class="maxi-list-view-legend__item">
                 <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--orange"></span>
-                <span class="maxi-list-view-legend__label">Background layer</span>
+                <span class="maxi-list-view-legend__label">${__(
+					'Background layer',
+					'maxi-blocks'
+				)}</span>
             </div>
             <div class="maxi-list-view-legend__item">
                 <span class="maxi-list-view-legend__dot maxi-list-view-legend__dot--grey"></span>
-                <span class="maxi-list-view-legend__label">Hidden block inside</span>
+                <span class="maxi-list-view-legend__label">${__(
+					'Hidden block inside',
+					'maxi-blocks'
+				)}</span>
             </div>
         </div>
     `;

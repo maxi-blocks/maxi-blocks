@@ -39,5 +39,5 @@ test.describe('Group Maxi', () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot(
 			'group-custom-css__style.css'
 		);
-	}, 500000);
+	});
 });

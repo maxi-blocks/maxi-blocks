@@ -171,5 +171,5 @@ test.describe('Divider Maxi', () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot(
 			'divider-custom-css__style.css'
 		);
-	}, 500000);
+	});
 });

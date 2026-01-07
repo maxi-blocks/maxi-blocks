@@ -304,5 +304,5 @@ test.describe('Button Maxi', () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot(
 			'button-maxi__custom-css__style.css'
 		);
-	}, 500000);
+	});
 });

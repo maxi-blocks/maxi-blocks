@@ -100,10 +100,11 @@ const Divider = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val =>
+									onChangeValue={(val, meta) =>
 										onChange({
 											[`divider-border-top-width-${breakpoint}`]:
 												val,
+											meta,
 										})
 									}
 									onReset={() =>
@@ -134,9 +135,10 @@ const Divider = props => {
 								breakpoint,
 								attributes: props,
 							})}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								onChange({
 									[`divider-width-${breakpoint}`]: val,
+									meta,
 								})
 							}
 							onReset={() =>
@@ -172,12 +174,13 @@ const Divider = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChange({
 											[`divider-border-right-width-${breakpoint}`]:
 												val !== undefined && val !== ''
 													? val
 													: '',
+											meta,
 										});
 									}}
 									min={0}
@@ -208,12 +211,13 @@ const Divider = props => {
 								breakpoint,
 								attributes: props,
 							})}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChange({
 									[`divider-height-${breakpoint}`]:
 										val !== undefined && val !== ''
 											? val
 											: '',
+									meta,
 								});
 							}}
 							min={0}

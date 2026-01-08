@@ -319,13 +319,14 @@ const ScrollEffectsUniqueControl = props => {
 			<AdvancedNumberControl
 				label={__(effectProperties?.label, 'maxi-blocks')}
 				value={zonesAttribute[getActiveThumbPercentage()]}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChange({
 						[`scroll-${type}-zones-${breakpoint}`]: {
 							...zonesAttribute,
 							[getActiveThumbPercentage()]:
 								val !== undefined && val !== '' ? val : '',
 						},
+						meta,
 					});
 					isPreviewEnabled && applyEffect(type, uniqueID, val);
 				}}

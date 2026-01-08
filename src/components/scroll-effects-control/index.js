@@ -219,12 +219,13 @@ const ScrollEffectsControl = props => {
 									breakpoint,
 									attributes: props,
 								})}
-								onChangeValue={val => {
+								onChangeValue={(val, meta) => {
 									onChange({
 										[`scroll-${type}-speed-${breakpoint}`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
+										meta,
 									});
 								}}
 								min={0}
@@ -250,12 +251,13 @@ const ScrollEffectsControl = props => {
 									breakpoint,
 									attributes: props,
 								})}
-								onChangeValue={val => {
+								onChangeValue={(val, meta) => {
 									onChange({
 										[`scroll-${type}-delay-${breakpoint}`]:
 											val !== undefined && val !== ''
 												? val
 												: '',
+										meta,
 									});
 								}}
 								min={0}

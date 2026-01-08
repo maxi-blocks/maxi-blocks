@@ -126,7 +126,7 @@ const carouselSlider = ({ props }) => {
 						<AdvancedNumberControl
 							label={__('Trigger width (px)', 'maxi-blocks')}
 							min={0}
-							max={3840}
+							max={7680}
 							initial={undefined}
 							step={1}
 							value={attributes['row-carousel-trigger-width']}
@@ -136,11 +136,7 @@ const carouselSlider = ({ props }) => {
 										val !== undefined ? val : undefined,
 								});
 							}}
-							onReset={() =>
-								onChange({
-									'row-carousel-trigger-width': undefined,
-								})
-							}
+							disableReset
 						/>
 						<ResponsiveTabsControl />
 						<AdvancedNumberControl

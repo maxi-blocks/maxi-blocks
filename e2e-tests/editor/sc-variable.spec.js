@@ -59,7 +59,12 @@ describe('sc-variable', () => {
 
 		const scVariable = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content => (content.textContent || content.innerText || content.innerHTML).trim()
+			content =>
+				(
+					content.textContent ||
+					content.innerText ||
+					content.innerHTML
+				).trim()
 		);
 
 		expect(scVariable).toMatchSnapshot();
@@ -98,7 +103,12 @@ describe('sc-variable', () => {
 
 		const scVariableFront = await previewPage.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content => (content.textContent || content.innerText || content.innerHTML).trim()
+			content =>
+				(
+					content.textContent ||
+					content.innerText ||
+					content.innerHTML
+				).trim()
 		);
 
 		expect(scVariableFront).toMatchSnapshot();

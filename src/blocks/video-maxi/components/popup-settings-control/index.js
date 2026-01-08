@@ -149,6 +149,7 @@ const PopupSettingsControl = props => {
 			<AdvancedNumberControl
 				className='maxi-video-popup-control__animation-duration'
 				label={__('Popup animation duration', 'maxi-blocks')}
+				placeholder={0.3}
 				value={popupAnimationDuration ?? ''}
 				unit={popupAnimationDurationUnit ?? 's'}
 				enableUnit

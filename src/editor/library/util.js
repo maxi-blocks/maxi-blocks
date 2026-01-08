@@ -286,7 +286,6 @@ const resolveCSSVariable = colorValue => {
 		const varMatch = resolved.match(/var\(([^,)]+)(?:,([^)]+))?\)/);
 
 		if (!varMatch) {
-			hasVar = false;
 			break;
 		}
 

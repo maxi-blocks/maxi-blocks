@@ -87,11 +87,9 @@ const attributes = {
 	 */
 	popupAnimationDuration: {
 		type: 'number',
-		default: 0.3,
 	},
 	popupAnimationDurationUnit: {
 		type: 'string',
-		default: 's',
 		enum: ['s', 'ms'],
 	},
 };

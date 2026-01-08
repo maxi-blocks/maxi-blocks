@@ -38,9 +38,10 @@ const MarkerSize = ({ deviceType, onChange, ...props }) => (
 			attributes: props,
 		})}
 		defaultValue={getDefaultAttribute(`svg-width-${deviceType}`)}
-		onChangeValue={val => {
+		onChangeValue={(val, meta) => {
 			onChange({
 				[`svg-width-${deviceType}`]: val,
+				meta,
 			});
 		}}
 		onReset={() => {

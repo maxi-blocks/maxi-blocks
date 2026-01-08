@@ -154,6 +154,7 @@ const NavigationIconControl = props => {
 				shortPrefix === arrowShortPrefix &&
 				['first', 'second'].map(current => (
 					<MaxiModal
+						key={`${shortPrefix}${current}-icon-modal`}
 						type='navigation-icon'
 						label={__(sprintf('Add %s icon', label), 'maxi-blocks')}
 						style={blockStyle}
@@ -598,7 +599,8 @@ const NavigationIconControl = props => {
 																	)
 																]
 															),
-													})
+													}),
+													{}
 												),
 											});
 										shortPrefix === dotsShortPrefix &&

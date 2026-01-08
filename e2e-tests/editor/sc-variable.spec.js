@@ -42,6 +42,45 @@ const waitForScVarsGeneration = async (pageContext, timeout = 15000) => {
 		},
 		{ timeout }
 	);
+
+	// Wait for content to stabilize by checking it doesn't change
+	await pageContext.waitForFunction(
+		() => {
+			return new Promise((resolve) => {
+				const el = document.getElementById('maxi-blocks-sc-vars-inline-css');
+				if (!el) {
+					resolve(false);
+					return;
+				}
+
+				let previousContent = el.textContent || el.innerText || el.innerHTML;
+				let stableCount = 0;
+				const requiredStableChecks = 3;
+
+				const checkInterval = setInterval(() => {
+					const currentContent = el.textContent || el.innerText || el.innerHTML;
+
+					if (currentContent === previousContent) {
+						stableCount++;
+						if (stableCount >= requiredStableChecks) {
+							clearInterval(checkInterval);
+							resolve(true);
+						}
+					} else {
+						stableCount = 0;
+						previousContent = currentContent;
+					}
+				}, 200);
+
+				// Failsafe timeout
+				setTimeout(() => {
+					clearInterval(checkInterval);
+					resolve(stableCount >= requiredStableChecks);
+				}, 5000);
+			});
+		},
+		{ timeout }
+	);
 };
 
 describe('sc-variable', () => {

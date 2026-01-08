@@ -343,8 +343,9 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
-										const newVal =
+										const rawNewVal =
 											currentVal + (stepValue || 1);
+										const newVal = parseFloat(rawNewVal.toFixed(10));
 										const maxVal = enableUnit
 											? maxValue
 											: max;
@@ -399,8 +400,9 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
-										const newVal =
+										const rawNewVal =
 											currentVal - (stepValue || 1);
+										const newVal = parseFloat(rawNewVal.toFixed(10));
 										const minVal = enableUnit
 											? minValue
 											: min;

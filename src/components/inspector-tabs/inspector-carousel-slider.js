@@ -137,8 +137,11 @@ const carouselSlider = ({ props }) => {
 										val !== undefined ? val : undefined,
 								});
 							}}
-							disableReset
-							newStyle
+							onReset={() => {
+								onChange({
+									'row-carousel-trigger-width': undefined,
+								});
+							}}
 						/>
 						<ResponsiveTabsControl />
 						<AdvancedNumberControl

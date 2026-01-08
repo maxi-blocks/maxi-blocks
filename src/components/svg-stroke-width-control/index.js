@@ -71,8 +71,10 @@ const SvgStrokeWidthControl = props => {
 			onReset={() => {
 				onChange({
 					[strokeAttrLabel]: defaultStroke,
-					[`${prefix === 'svg-' ? '' : prefix}content`]:
-						setSVGStrokeWidth(content, defaultStroke),
+					...(!prefix.includes('navigation') && {
+						[`${prefix === 'svg-' ? '' : prefix}content`]:
+							setSVGStrokeWidth(content, defaultStroke),
+					}),
 					isReset: true,
 				});
 			}}

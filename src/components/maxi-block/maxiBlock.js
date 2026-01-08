@@ -11,7 +11,6 @@ import {
 	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
-import { setDefaultBlockName } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -25,7 +24,6 @@ import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '@extensions/DC/constants';
-import isPostEditor from '@extensions/dom/isPostEditor';
 
 /**
  * External dependencies
@@ -129,19 +127,21 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		dcLinkTarget,
 		showLoader,
 		attributes,
+		deviceType,
+		baseBreakpoint,
 		...extraProps
 	} = props;
 
 	// Gets if the block is full-width
 	const isFullWidth = getLastBreakpointAttribute({
 		target: 'full-width',
-		breakpoint: extraProps.deviceType,
-		attributes: attributes,
+		breakpoint: deviceType,
+		attributes,
 	});
 
 	// Gets if the block has to be disabled due to the device type
 	const isDisabled =
-		DISALLOWED_BREAKPOINTS.includes(extraProps.baseBreakpoint) &&
+		DISALLOWED_BREAKPOINTS.includes(baseBreakpoint) &&
 		mobile({ tablet: true });
 
 	// Unselect the block if it's disabled
@@ -202,7 +202,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		extraClassName,
 		uniqueID,
 		className,
-		displayValue === 'none' && 'maxi-block-display-none',
+		// Hidden handling
+		displayValue === 'none' && 'maxi-block--hidden',
 		customClasses,
 		paletteClasses,
 		hasLink &&
@@ -310,7 +311,15 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
-		const { clientId, attributes, deviceType } = props;
+		const {
+			clientId,
+			attributes,
+			deviceType,
+			baseBreakpoint,
+			context,
+			state,
+			isSelected,
+		} = props;
 		const pagination = attributes?.['cl-pagination'];
 
 		const [isHovered, setHovered] = useReducer(e => !e, false);
@@ -351,6 +360,12 @@ const MaxiBlock = memo(
 				isHovered={isHovered}
 				pagination={pagination}
 				{...props}
+				attributes={attributes}
+				deviceType={deviceType}
+				context={context}
+				state={state}
+				isSelected={isSelected}
+				baseBreakpoint={baseBreakpoint}
 			/>
 		);
 	}),

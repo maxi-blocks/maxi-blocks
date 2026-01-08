@@ -174,6 +174,26 @@ function observeConsoleLogging() {
 			return;
 		}
 
+	// DoubleClick/Google CDN CSP violations (used by YouTube embeds)
+	if (
+		text.includes('Refused to load the script') &&
+		(text.includes('doubleclick.net') || text.includes('google.com'))
+	) {
+		return;
+	}
+	if (
+		text.includes('Content Security Policy directive') &&
+		(text.includes('doubleclick.net') || text.includes('google.com'))
+	) {
+		return;
+	}
+	if (
+		text.includes('Refused to evaluate a string as JavaScript') &&
+		text.includes('Content Security Policy directive')
+	) {
+		return;
+	}
+
 		// CustomCSS validator returns connection errors sometimes
 		if (text.includes('Error validating css: TypeError: Failed to fetch')) {
 			return;

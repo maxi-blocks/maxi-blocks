@@ -230,6 +230,7 @@ const Inspector = props => {
 											'svg-line-palette-sc-status-hover',
 											'svg-status-hover',
 										],
+										extraIndicators: [],
 										ignoreIndicator: [
 											`svg-width-${deviceType}`,
 											`svg-stroke-${deviceType}`,
@@ -259,6 +260,7 @@ const Inspector = props => {
 											indicatorProps: [
 												`svg-stroke-${deviceType}`,
 											],
+											extraIndicators: [],
 											ignoreIndicator: [
 												'svg-fill-palette-color',
 												'svg-fill-palette-status',
@@ -318,6 +320,7 @@ const Inspector = props => {
 											`svg-width-unit-${deviceType}`,
 											`svg-width-fit-content-${deviceType}`,
 										],
+										extraIndicators: [],
 										ignoreIndicator: [
 											'svg-fill-palette-color',
 											'svg-fill-palette-status',

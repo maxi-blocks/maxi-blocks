@@ -111,18 +111,15 @@ const Accordion = props => {
 									attributes['svg-status-hover'] === false
 								)
 									return true;
-								if (
-									name.includes('svg-icon-maxi') &&
-									prop.startsWith('svg-width') &&
-									attributes[prop] === '' &&
-									attributes[
-										`${prop.replace(
-											'svg-width',
-											'svg-width-fit-content'
-										)}`
-									] === false
-								)
-									return true;
+								if (name.includes('svg-icon-maxi')) {
+									const widthFitContentKey = `svg-width-fit-content-${prop.split('-').pop()}`;
+									if (
+										prop.startsWith('svg-width') &&
+										attributes[prop] === '' &&
+										attributes[widthFitContentKey] === false
+									)
+										return true;
+								}
 								if (
 									name.includes('svg-icon-maxi') &&
 									prop.startsWith('svg-stroke') &&

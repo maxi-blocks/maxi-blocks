@@ -34,6 +34,8 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 				background: {
 					[breakpoint]: {
 						background: 'none',
+						'background-color': 'transparent',
+						'background-image': 'none',
 					},
 				},
 			});

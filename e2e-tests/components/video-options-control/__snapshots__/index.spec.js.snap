@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Video options control Check video options control 1`] = `"<iframe class="maxi-video-block__video-player" id="video-maxi-1se8ef1z-u-player" title="video player" allowfullscreen="" allow="autoplay" src="https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&amp;enablejsapi=1&amp;mute=1&amp;controls=0&amp;autoplay=1"></iframe>"`;
+exports[`Video options control Check video options control 1`] = `"<iframe class="maxi-video-block__video-player" id="video-maxi-1se8ef1z-u-player" title="Placeholder Video" allowfullscreen="" allow="autoplay" src="https://www.youtube.com/embed/ScMzIvxBSi4?rel=0&amp;enablejsapi=1&amp;mute=1&amp;controls=0&amp;autoplay=1"></iframe>"`;
 
 exports[`Video options control Check video options control 2`] = `
 "<!-- wp:maxi-blocks/video-maxi {"maxi-version-current":"2.1.7","maxi-version-origin":"2.1.7","blockStyle":"light","isFirstOnHierarchy":true,"uniqueID":"video-maxi-1se8ef1z-u","customLabel":"Video_1","embedUrl":"https://www.youtube.com/embed/ScMzIvxBSi4?rel=0\\u0026enablejsapi=1\\u0026mute=1\\u0026controls=0\\u0026autoplay=1","isLoop":true,"isMuted":true,"isAutoplay":true,"showPlayerControls":false} -->

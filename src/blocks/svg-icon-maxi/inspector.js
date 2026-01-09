@@ -207,34 +207,6 @@ const Inspector = props => {
 												content={attributes.content}
 											/>
 										),
-										indicatorProps: [
-											'svg-fill-color',
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-palette-opacity',
-											'svg-fill-palette-sc-status',
-											'svg-line-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-palette-opacity',
-											'svg-line-palette-sc-status',
-											'svg-fill-color-hover',
-											'svg-fill-palette-color-hover',
-											'svg-fill-palette-status-hover',
-											'svg-fill-palette-opacity-hover',
-											'svg-fill-palette-sc-status-hover',
-											'svg-line-color-hover',
-											'svg-line-palette-color-hover',
-											'svg-line-palette-status-hover',
-											'svg-line-palette-opacity-hover',
-											'svg-line-palette-sc-status-hover',
-											'svg-status-hover',
-										],
-										extraIndicators: [],
-										ignoreIndicator: [
-											`svg-width-${deviceType}`,
-											`svg-stroke-${deviceType}`,
-										],
 									},
 
 									attributes.content &&
@@ -316,21 +288,6 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										indicatorProps: [
-											`svg-width-${deviceType}`,
-											`svg-width-unit-${deviceType}`,
-											`svg-width-fit-content-${deviceType}`,
-										],
-										extraIndicators: [],
-										ignoreIndicator: [
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-color',
-											`svg-stroke-${deviceType}`,
-										],
 									},
 									...inspectorTabs.marginPadding({
 										props,

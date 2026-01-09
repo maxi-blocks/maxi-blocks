@@ -17,10 +17,20 @@ const isEligible = attributes =>
 
 const migrate = newAttributes => {
 	HOVER_TOGGLE_KEYS.forEach(key => {
-		if (key in newAttributes) {
+		if (Object.prototype.hasOwnProperty.call(newAttributes, key)) {
 			const value = newAttributes[key];
+			const destination = getAttributeKey(key, false, false, 'general');
+
+			if (
+				!Object.prototype.hasOwnProperty.call(
+					newAttributes,
+					destination
+				)
+			) {
+				newAttributes[destination] = value;
+			}
+
 			delete newAttributes[key];
-			newAttributes[getAttributeKey(key, false, false, 'general')] = value;
 		}
 	});
 

@@ -29,6 +29,17 @@ const getHoverEffectsBackgroundStyles = (props, blockStyle) => {
 
 		if (!currentActiveMedia) return;
 
+		if (currentActiveMedia === 'none') {
+			merge(response, {
+				background: {
+					[breakpoint]: {
+						background: 'none',
+					},
+				},
+			});
+			return;
+		}
+
 		merge(response, {
 			...(currentActiveMedia === 'color' && {
 				background: getColorBackgroundObject({

@@ -44,6 +44,30 @@ import { isEmpty, isNil, round } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const filterStylesByStatus = (styles, statusTarget, props) => {
+	if (!styles) return null;
+
+	const filtered = Object.fromEntries(
+		Object.entries(styles).filter(
+			([key]) => !breakpoints.includes(key)
+		)
+	);
+
+	breakpoints.forEach(breakpoint => {
+		const status = getLastBreakpointAttribute({
+			target: statusTarget,
+			breakpoint,
+			attributes: props,
+		});
+
+		if (status && styles[breakpoint] && !isEmpty(styles[breakpoint])) {
+			filtered[breakpoint] = styles[breakpoint];
+		}
+	});
+
+	return isEmpty(filtered) ? null : filtered;
+};
+
 const getWrapperObject = props => {
 	const { fitParentSize } = props;
 
@@ -140,35 +164,51 @@ const getHoverWrapperObject = props => {
 };
 
 const getHoverEffectDetailsBoxObject = props => {
+	const hoverBorderStyles = getBorderStyles({
+		obj: {
+			...getGroupAttributes(
+				props,
+				['hoverBorder', 'hoverBorderWidth', 'hoverBorderRadius'],
+				false
+			),
+		},
+		prefix: 'hover-',
+		blockStyle: props.blockStyle,
+	});
+	const hoverMarginStyles = getMarginPaddingStyles({
+		obj: {
+			...getGroupAttributes(props, 'hoverMargin'),
+		},
+		prefix: 'hover-',
+	});
+	const hoverPaddingStyles = getMarginPaddingStyles({
+		obj: {
+			...getGroupAttributes(props, 'hoverPadding'),
+		},
+		prefix: 'hover-',
+	});
+
+	const filteredHoverBorderStyles = filterStylesByStatus(
+		hoverBorderStyles,
+		'hover-border-status',
+		props
+	);
+	const filteredHoverMarginStyles = filterStylesByStatus(
+		hoverMarginStyles,
+		'hover-margin-status',
+		props
+	);
+	const filteredHoverPaddingStyles = filterStylesByStatus(
+		hoverPaddingStyles,
+		'hover-padding-status',
+		props
+	);
+
 	const response = {
-		...(props['hover-border-status'] && {
-			border: getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						[
-							'hoverBorder',
-							'hoverBorderWidth',
-							'hoverBorderRadius',
-						],
-						false
-					),
-				},
-				prefix: 'hover-',
-				blockStyle: props.blockStyle,
-			}),
-		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'hoverMargin'),
-			},
-			prefix: 'hover-',
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'hoverPadding'),
-			},
-			prefix: 'hover-',
+		...(filteredHoverBorderStyles && { border: filteredHoverBorderStyles }),
+		...(filteredHoverMarginStyles && { margin: filteredHoverMarginStyles }),
+		...(filteredHoverPaddingStyles && {
+			padding: filteredHoverPaddingStyles,
 		}),
 		background: {
 			...getHoverEffectsBackgroundStyles(
@@ -193,15 +233,22 @@ const getHoverEffectDetailsBoxObject = props => {
 };
 
 const getHoverEffectTitleTextObject = props => {
+	const hoverTitleTypography = getTypographyStyles({
+		obj: {
+			...getGroupAttributes(props, 'hoverTitleTypography'),
+		},
+		prefix: 'hover-title-',
+		blockStyle: props.blockStyle,
+	});
+	const filteredHoverTitleTypography = filterStylesByStatus(
+		hoverTitleTypography,
+		'hover-title-typography-status',
+		props
+	);
+
 	const response = {
-		...(props['hover-title-typography-status'] && {
-			typography: getTypographyStyles({
-				obj: {
-					...getGroupAttributes(props, 'hoverTitleTypography'),
-				},
-				prefix: 'hover-title-',
-				blockStyle: props.blockStyle,
-			}),
+		...(filteredHoverTitleTypography && {
+			typography: filteredHoverTitleTypography,
 		}),
 	};
 
@@ -209,15 +256,22 @@ const getHoverEffectTitleTextObject = props => {
 };
 
 const getHoverEffectContentTextObject = props => {
+	const hoverContentTypography = getTypographyStyles({
+		obj: {
+			...getGroupAttributes(props, 'hoverContentTypography'),
+		},
+		prefix: 'hover-content-',
+		blockStyle: props.blockStyle,
+	});
+	const filteredHoverContentTypography = filterStylesByStatus(
+		hoverContentTypography,
+		'hover-content-typography-status',
+		props
+	);
+
 	const response = {
-		...(props['hover-content-typography-status'] && {
-			typography: getTypographyStyles({
-				obj: {
-					...getGroupAttributes(props, 'hoverContentTypography'),
-				},
-				prefix: 'hover-content-',
-				blockStyle: props.blockStyle,
-			}),
+		...(filteredHoverContentTypography && {
+			typography: filteredHoverContentTypography,
 		}),
 	};
 
@@ -245,13 +299,24 @@ const getImageWrapperObject = props => {
 		breakpointStyles => !isEmpty(breakpointStyles)
 	);
 
+	const hoverExtension = {};
+	breakpoints.forEach(breakpoint => {
+		const hoverExtensionStatus = getLastBreakpointAttribute({
+			target: 'hover-extension',
+			breakpoint,
+			attributes: props,
+		});
+
+		if (hoverExtensionStatus) {
+			hoverExtension[breakpoint] = { overflow: 'visible' };
+		}
+	});
+
 	const response = {
 		alignment: getAlignmentFlexStyles({
 			...getGroupAttributes(props, 'alignment'),
 		}),
-		...(props['hover-extension'] && {
-			hoverExtension: { general: { overflow: 'visible' } },
-		}),
+		...(!isEmpty(hoverExtension) && { hoverExtension }),
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),

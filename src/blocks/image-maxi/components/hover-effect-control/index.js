@@ -25,7 +25,12 @@ import TypographyControl from '@components/typography-control';
 
 import BezierEditor from 'bezier-easing-editor';
 
-import { getDefaultAttribute, getGroupAttributes } from '@extensions/styles';
+import {
+	getAttributeKey,
+	getDefaultAttribute,
+	getGroupAttributes,
+	getLastBreakpointAttribute,
+} from '@extensions/styles';
 
 /**
  * Styles and icons
@@ -67,12 +72,48 @@ const HoverEffectControl = props => {
 
 	const disablePreview = () => {
 		onChange({
-			'hover-preview': false,
+			[getAttributeKey('hover-preview', false, false, breakpoint)]: false,
 		});
 		document
 			.querySelector(`#block-${clientId} .maxi-image-block__image`)
 			.removeAttribute('style');
 	};
+
+	const hoverPreview = getLastBreakpointAttribute({
+		target: 'hover-preview',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverExtension = getLastBreakpointAttribute({
+		target: 'hover-extension',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverBorderStatus = getLastBreakpointAttribute({
+		target: 'hover-border-status',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverPaddingStatus = getLastBreakpointAttribute({
+		target: 'hover-padding-status',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverMarginStatus = getLastBreakpointAttribute({
+		target: 'hover-margin-status',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverTitleTypographyStatus = getLastBreakpointAttribute({
+		target: 'hover-title-typography-status',
+		breakpoint,
+		attributes: props,
+	});
+	const hoverContentTypographyStatus = getLastBreakpointAttribute({
+		target: 'hover-content-typography-status',
+		breakpoint,
+		attributes: props,
+	});
 
 	return (
 		<div className={classes}>
@@ -100,17 +141,33 @@ const HoverEffectControl = props => {
 				<>
 					<ToggleSwitch
 						label={__('Show hover preview', 'maxi-blocks')}
-						selected={props['hover-preview']}
+						selected={hoverPreview}
 						onChange={val => {
 							val === false
 								? disablePreview()
-								: onChange({ 'hover-preview': val });
+								: onChange({
+										[getAttributeKey(
+											'hover-preview',
+											false,
+											false,
+											breakpoint
+										)]: val,
+								  });
 						}}
 					/>
 					<ToggleSwitch
 						label={__('Extend outside boundary', 'maxi-blocks')}
-						selected={props['hover-extension']}
-						onChange={val => onChange({ 'hover-extension': val })}
+						selected={hoverExtension}
+						onChange={val =>
+							onChange({
+								[getAttributeKey(
+									'hover-extension',
+									false,
+									false,
+									breakpoint
+								)]: val,
+							})
+						}
 					/>
 				</>
 			)}
@@ -436,14 +493,19 @@ const HoverEffectControl = props => {
 					/>
 					<ToggleSwitch
 						label={__('Custom hover text', 'maxi-blocks')}
-						selected={props['hover-title-typography-status']}
+						selected={hoverTitleTypographyStatus}
 						onChange={val =>
 							onChange({
-								'hover-title-typography-status': val,
+								[getAttributeKey(
+									'hover-title-typography-status',
+									false,
+									false,
+									breakpoint
+								)]: val,
 							})
 						}
 					/>
-					{props['hover-title-typography-status'] && (
+					{hoverTitleTypographyStatus && (
 						<TypographyControl
 							typography={{
 								...getGroupAttributes(
@@ -459,6 +521,7 @@ const HoverEffectControl = props => {
 							showBottomGap
 							blockStyle={blockStyle}
 							clientId={clientId}
+							breakpoint={breakpoint}
 							tabsClassName='mb-hover-bg'
 							globalProps={{
 								target: '',
@@ -487,14 +550,19 @@ const HoverEffectControl = props => {
 					/>
 					<ToggleSwitch
 						label={__('Custom content text', 'maxi-blocks')}
-						selected={props['hover-content-typography-status']}
+						selected={hoverContentTypographyStatus}
 						onChange={val =>
 							onChange({
-								'hover-content-typography-status': val,
+								[getAttributeKey(
+									'hover-content-typography-status',
+									false,
+									false,
+									breakpoint
+								)]: val,
 							})
 						}
 					/>
-					{props['hover-content-typography-status'] && (
+					{hoverContentTypographyStatus && (
 						<TypographyControl
 							typography={{
 								...getGroupAttributes(
@@ -508,6 +576,7 @@ const HoverEffectControl = props => {
 							disableCustomFormats
 							blockStyle={blockStyle}
 							clientId={clientId}
+							breakpoint={breakpoint}
 							globalProps={{
 								target: '',
 								type: 'p',
@@ -534,17 +603,23 @@ const HoverEffectControl = props => {
 						disableSVG
 						prefix='hover-'
 						clientId={clientId}
+						breakpoint={breakpoint}
 					/>
 					<ToggleSwitch
 						label={__('Custom border', 'maxi-blocks')}
-						selected={props['hover-border-status']}
+						selected={hoverBorderStatus}
 						onChange={val =>
 							onChange({
-								'hover-border-status': val,
+								[getAttributeKey(
+									'hover-border-status',
+									false,
+									false,
+									breakpoint
+								)]: val,
 							})
 						}
 					/>
-					{props['hover-border-status'] && (
+					{hoverBorderStatus && (
 						<BorderControl
 							{...getGroupAttributes(props, [
 								'hoverBorder',
@@ -565,14 +640,19 @@ const HoverEffectControl = props => {
 					)}
 					<ToggleSwitch
 						label={__('Custom padding', 'maxi-blocks')}
-						selected={props['hover-padding-status']}
+						selected={hoverPaddingStatus}
 						onChange={val =>
 							onChange({
-								'hover-padding-status': val,
+								[getAttributeKey(
+									'hover-padding-status',
+									false,
+									false,
+									breakpoint
+								)]: val,
 							})
 						}
 					/>
-					{props['hover-padding-status'] && (
+					{hoverPaddingStatus && (
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverPadding')}
 							label={__('Padding', 'maxi-blocks')}
@@ -586,14 +666,19 @@ const HoverEffectControl = props => {
 					)}
 					<ToggleSwitch
 						label={__('Custom margin', 'maxi-blocks')}
-						selected={props['hover-margin-status']}
+						selected={hoverMarginStatus}
 						onChange={val =>
 							onChange({
-								'hover-margin-status': val,
+								[getAttributeKey(
+									'hover-margin-status',
+									false,
+									false,
+									breakpoint
+								)]: val,
 							})
 						}
 					/>
-					{props['hover-margin-status'] && (
+					{hoverMarginStatus && (
 						<AxisControl
 							{...getGroupAttributes(props, 'hoverMargin')}
 							label={__('Margin', 'maxi-blocks')}

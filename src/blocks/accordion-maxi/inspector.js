@@ -68,6 +68,11 @@ const Inspector = props => {
 		breakpoint: deviceType,
 		clientId,
 	};
+	const titleIndicatorProps = [
+		...Object.keys(getGroupAttributes(attributes, 'accordionTitle')),
+		'title-typography-status-hover',
+		'title-typography-status-active',
+	];
 
 	return (
 		<InspectorControls>
@@ -141,6 +146,7 @@ const Inspector = props => {
 												}
 											/>
 										),
+										indicatorProps: titleIndicatorProps,
 									},
 									...inspectorTabs.icon({
 										...iconTabsProps,

@@ -106,6 +106,23 @@ const Accordion = props => {
 								)
 									return true;
 								if (
+									name.includes('accordion-maxi') &&
+									prop === 'titleLevel'
+								)
+									return true;
+								if (
+									name.includes('accordion-maxi') &&
+									prop === 'title-typography-status-hover' &&
+									attributes['title-typography-status-hover'] === false
+								)
+									return true;
+								if (
+									name.includes('accordion-maxi') &&
+									prop === 'title-typography-status-active' &&
+									attributes['title-typography-status-active'] === false
+								)
+									return true;
+								if (
 									name.includes('svg-icon-maxi') &&
 									prop === 'svg-status-hover' &&
 									attributes['svg-status-hover'] === false

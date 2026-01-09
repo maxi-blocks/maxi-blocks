@@ -105,6 +105,20 @@ const Accordion = props => {
 									attributes.altSelector !== 'custom'
 								)
 									return true;
+								if (
+									name.includes('svg-icon-maxi') &&
+									prop === 'svg-status-hover' &&
+									attributes['svg-status-hover'] === false
+								)
+									return true;
+								if (
+									name.includes('svg-icon-maxi') &&
+									['svg-fill-color', 'svg-line-color'].includes(prop) &&
+									attributes[`${prop}`] === '' &&
+									attributes[`${prop.replace('-color', '-palette-status')}`] ===
+										false
+								)
+									return true;
 
 								const breakpointMatch = prop.match(
 									/-(xxl|xl|l|m|s|xs)$/

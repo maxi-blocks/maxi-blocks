@@ -93,20 +93,13 @@ const icon = ({
 
 	return {
 		label,
-		indicatorProps: normalIndicatorProps,
-		extraIndicators: hoverStatus
-			? [
-					`${prefix}icon-status-hover`,
-					`${prefix}icon-status-hover-target`,
-					...hoverIndicatorProps,
-			  ]
-			: [],
 		content: (
 			<SettingTabsControl
 				hasMarginBottom
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
+						indicatorProps: normalIndicatorProps,
 						content: (
 							<IconControl
 								{...getGroupAttributes(
@@ -137,6 +130,13 @@ const icon = ({
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
+						indicatorProps: hoverStatus ? hoverIndicatorProps : [],
+						extraIndicators: hoverStatus
+							? [
+									`${prefix}icon-status-hover`,
+									`${prefix}icon-status-hover-target`,
+							  ]
+							: [],
 						content: (
 							<>
 								<ManageHoverTransitions />

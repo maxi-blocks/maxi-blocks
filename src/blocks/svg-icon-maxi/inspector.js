@@ -154,6 +154,7 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isSecondary
+								attributes={attributes}
 								items={[
 									...inspectorTabs.alignment({
 										props,
@@ -330,6 +331,7 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isPrimary
+								attributes={attributes}
 								items={[
 									...inspectorTabs.blockBackground({
 										props,
@@ -360,6 +362,7 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isPrimary
+								attributes={attributes}
 								items={[
 									...inspectorTabs.ariaLabel({
 										props,

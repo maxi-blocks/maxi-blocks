@@ -244,18 +244,14 @@ const carouselSlider = ({ props }) => {
 										val,
 								};
 
-								// When enabling autoplay, also enable pause behaviors by default
+								// When enabling autoplay, also enable pause behaviors automatically
 								if (val) {
-									if (pauseOnHover === undefined) {
-										updates[
-											`row-carousel-pause-on-hover-${breakpoint}`
-										] = true;
-									}
-									if (pauseOnInteraction === undefined) {
-										updates[
-											`row-carousel-pause-on-interaction-${breakpoint}`
-										] = true;
-									}
+									updates[
+										`row-carousel-pause-on-hover-${breakpoint}`
+									] = true;
+									updates[
+										`row-carousel-pause-on-interaction-${breakpoint}`
+									] = true;
 								}
 
 								onChange(updates);

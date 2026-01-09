@@ -256,6 +256,9 @@ const Inspector = props => {
 													breakpoint={deviceType}
 												/>
 											),
+											indicatorProps: [
+												`svg-stroke-${deviceType}`,
+											],
 											ignoreIndicator: [
 												'svg-fill-palette-color',
 												'svg-fill-palette-status',
@@ -310,6 +313,11 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
+										indicatorProps: [
+											`svg-width-${deviceType}`,
+											`svg-width-unit-${deviceType}`,
+											`svg-width-fit-content-${deviceType}`,
+										],
 										ignoreIndicator: [
 											'svg-fill-palette-color',
 											'svg-fill-palette-status',

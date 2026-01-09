@@ -113,6 +113,24 @@ const Accordion = props => {
 									return true;
 								if (
 									name.includes('svg-icon-maxi') &&
+									prop.startsWith('svg-width') &&
+									attributes[prop] === '' &&
+									attributes[
+										`${prop.replace(
+											'svg-width',
+											'svg-width-fit-content'
+										)}`
+									] === false
+								)
+									return true;
+								if (
+									name.includes('svg-icon-maxi') &&
+									prop.startsWith('svg-stroke') &&
+									attributes[prop] === ''
+								)
+									return true;
+								if (
+									name.includes('svg-icon-maxi') &&
 									['svg-fill-color', 'svg-line-color'].includes(prop) &&
 									attributes[`${prop}`] === '' &&
 									attributes[`${prop.replace('-color', '-palette-status')}`] ===

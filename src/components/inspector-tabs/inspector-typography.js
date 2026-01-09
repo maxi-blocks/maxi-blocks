@@ -54,17 +54,9 @@ const typography = ({
 	const hoverStatus = typographyHoverStatus || globalHoverStatus;
 
 	const typographyTarget = allowLink ? ['typography', 'link'] : 'typography';
-	const typographyIndicatorProps = [
-		...Object.keys(
-			getGroupAttributes(attributes, typographyTarget, false, prefix)
-		),
-		...Object.keys(getGroupAttributes(attributes, 'typography', true, prefix)),
-		`${prefix}typography-status-hover`,
-	];
 
 	return {
 		label: __('Typography', 'maxi-blocks'),
-		indicatorProps: typographyIndicatorProps,
 		disablePadding: true,
 		content: (
 			<>
@@ -199,9 +191,7 @@ const typography = ({
 									)}
 								</>
 							),
-							extraIndicators: hoverStatus
-								? [`${prefix}typography-status-hover`]
-								: [],
+							extraIndicators: [`${prefix}typography-status-hover`],
 						},
 					]}
 					depth={depth}

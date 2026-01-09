@@ -208,30 +208,10 @@ const Inspector = props => {
 												content={attributes.content}
 											/>
 										),
-										indicatorProps: [
-											'svg-fill-color',
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-palette-opacity',
-											'svg-fill-palette-sc-status',
-											'svg-line-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-palette-opacity',
-											'svg-line-palette-sc-status',
-											'svg-fill-color-hover',
-											'svg-fill-palette-color-hover',
-											'svg-fill-palette-status-hover',
-											'svg-fill-palette-opacity-hover',
-											'svg-fill-palette-sc-status-hover',
-											'svg-line-color-hover',
-											'svg-line-palette-color-hover',
-											'svg-line-palette-status-hover',
-											'svg-line-palette-opacity-hover',
-											'svg-line-palette-sc-status-hover',
-											'svg-status-hover',
+										ignoreIndicator: [
+											`svg-width-${deviceType}`,
+											`svg-stroke-${deviceType}`,
 										],
-										extraIndicators: [],
 									},
 
 									attributes.content &&
@@ -254,10 +234,15 @@ const Inspector = props => {
 													breakpoint={deviceType}
 												/>
 											),
-											indicatorProps: [
-												`svg-stroke-${deviceType}`,
+											ignoreIndicator: [
+												'svg-fill-palette-color',
+												'svg-fill-palette-status',
+												'svg-fill-color',
+												'svg-line-palette-color',
+												'svg-line-palette-status',
+												'svg-line-color',
+												`svg-width-${deviceType}`,
 											],
-											extraIndicators: [],
 										},
 									...inspectorTabs.background({
 										label: 'Icon',
@@ -288,7 +273,6 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
-												disableNotifications
 											>
 												<SvgWidthControl
 													{...getGroupAttributes(
@@ -304,12 +288,15 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										indicatorProps: [
-											`svg-width-${deviceType}`,
-											`svg-width-unit-${deviceType}`,
-											`svg-width-fit-content-${deviceType}`,
+										ignoreIndicator: [
+											'svg-fill-palette-color',
+											'svg-fill-palette-status',
+											'svg-fill-color',
+											'svg-line-palette-color',
+											'svg-line-palette-status',
+											'svg-line-color',
+											`svg-stroke-${deviceType}`,
 										],
-										extraIndicators: [],
 									},
 									...inspectorTabs.marginPadding({
 										props,

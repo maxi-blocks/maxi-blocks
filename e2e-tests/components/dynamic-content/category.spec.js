@@ -18,19 +18,56 @@ describe('Dynamic content', () => {
 	it('Should return categories DC content', async () => {
 		await createNewPost();
 
-		// Fetch a category that has posts
-		// First call to set the results on the store
-		await wpDataSelect('core', 'getEntityRecords', 'taxonomy', 'category');
-		await page.waitForTimeout(1000);
+		/**
+		 * Fetch categories with retry logic for CI environments
+		 * WordPress REST API can be slower in GitHub Actions
+		 */
+		const fetchCategoriesWithRetry = async (maxRetries = 3) => {
+			let attempt = 1;
 
-		// Second call to actually get the data
-		const categories = await wpDataSelect(
-			'core',
-			'getEntityRecords',
-			'taxonomy',
-			'category',
-			{ per_page: 10 }
-		);
+			const attemptFetch = async () => {
+				try {
+					// First call to set the results on the store
+					await wpDataSelect(
+						'core',
+						'getEntityRecords',
+						'taxonomy',
+						'category'
+					);
+					await page.waitForTimeout(2000);
+
+					// Second call to actually get the data
+					const categories = await wpDataSelect(
+						'core',
+						'getEntityRecords',
+						'taxonomy',
+						'category',
+						{ per_page: 10 }
+					);
+
+					if (!categories || categories.length === 0) {
+						throw new Error('No categories returned from API');
+					}
+
+					return categories;
+				} catch (error) {
+					if (attempt === maxRetries) {
+						throw new Error(
+							`Failed to fetch categories after ${maxRetries} attempts. Last error: ${error.message}`
+						);
+					}
+
+					// Wait before retry with exponential backoff
+					await page.waitForTimeout(2000 * attempt);
+					attempt += 1;
+					return attemptFetch();
+				}
+			};
+
+			return attemptFetch();
+		};
+
+		const categories = await fetchCategoriesWithRetry();
 
 		// Find first category with count > 0, or fall back to first category
 		const category =
@@ -48,17 +85,61 @@ describe('Dynamic content', () => {
 		);
 		await setClipboardData({ plainText: codeEditor });
 
+		/**
+		 * Wait for the editor to be ready for input
+		 */
+		await page.waitForSelector(
+			'.editor-post-title__input, .wp-block-post-title',
+			{
+				visible: true,
+				timeout: 10000,
+			}
+		);
+		await page.waitForTimeout(500);
+
 		// Set title
 		await page.keyboard.type('Categories DC test', { delay: 350 });
 
 		// Add code editor
 		await page.keyboard.press('Enter');
+		await page.waitForTimeout(500);
 		await pressKeyWithModifier('primary', 'v');
 
+		/**
+		 * Wait for blocks to be inserted and rendered
+		 * Dynamic content blocks need time to fetch and render data
+		 */
 		await page.waitForSelector('.maxi-text-block__content', {
 			visible: true,
+			timeout: 15000,
 		});
-		await page.waitForTimeout(5000);
+
+		/**
+		 * Wait for dynamic content to be fully loaded
+		 * Check that at least one block has non-empty content
+		 */
+		await page.waitForFunction(
+			() => {
+				const blocks = document.querySelectorAll(
+					'.maxi-text-block__content'
+				);
+				if (blocks.length === 0) return false;
+
+				// Check if at least some blocks have content
+				let loadedBlocks = 0;
+				blocks.forEach(block => {
+					if (block.innerText && block.innerText.trim().length > 0) {
+						loadedBlocks += 1;
+					}
+				});
+
+				// We expect at least 6 blocks with content (title, description, slug, parent, count, link)
+				return loadedBlocks >= 6;
+			},
+			{ timeout: 15000 }
+		);
+
+		await page.waitForTimeout(2000);
 
 		// Check backend - use actual category data
 		const expectedResults = {
@@ -123,12 +204,43 @@ describe('Dynamic content', () => {
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
+
+		/**
+		 * Wait for frontend content to load with retry logic
+		 * Frontend dynamic content can take time to render in CI
+		 */
 		await previewPage.waitForSelector(
 			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
+				timeout: 15000,
 			}
 		);
+
+		/**
+		 * Ensure dynamic content is fully loaded on frontend
+		 */
+		await previewPage.waitForFunction(
+			() => {
+				const blocks = document.querySelectorAll(
+					'.maxi-text-block__content'
+				);
+				if (blocks.length === 0) return false;
+
+				// Check if at least some blocks have content
+				let loadedBlocks = 0;
+				blocks.forEach(block => {
+					if (block.innerText && block.innerText.trim().length > 0) {
+						loadedBlocks += 1;
+					}
+				});
+
+				// We expect at least 6 blocks with content
+				return loadedBlocks >= 6;
+			},
+			{ timeout: 15000 }
+		);
+
 		await previewPage.waitForTimeout(1000);
 
 		const getFrontResults = async (block, type) =>
@@ -169,5 +281,5 @@ describe('Dynamic content', () => {
 		];
 
 		expect(frontResults.every(result => result)).toBe(true);
-	});
+	}, 90000);
 });

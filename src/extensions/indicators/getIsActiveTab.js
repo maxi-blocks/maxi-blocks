@@ -103,6 +103,29 @@ const getIsActiveTab = (
 		return isEqual(left, right);
 	};
 
+	const mergeDefaults = (defaultValue, currentValue) => {
+		if (!isPlainObject(defaultValue)) {
+			return currentValue === undefined ? defaultValue : currentValue;
+		}
+
+		if (!isPlainObject(currentValue)) return defaultValue;
+
+		const merged = {};
+		const defaultKeys = Object.keys(defaultValue);
+
+		defaultKeys.forEach(key => {
+			merged[key] = mergeDefaults(defaultValue[key], currentValue[key]);
+		});
+
+		Object.keys(currentValue).forEach(key => {
+			if (!defaultKeys.includes(key)) {
+				merged[key] = currentValue[key];
+			}
+		});
+
+		return merged;
+	};
+
 	const getStyleCardDefault = attribute => {
 		if (!styleCard || !blockStyle) return null;
 
@@ -403,14 +426,27 @@ const getIsActiveTab = (
 				return true;
 		}
 
-		if (
-			attribute === 'transition' &&
-			currentAttributes[attribute] &&
-			Object.values(currentAttributes[attribute]).every(value =>
-				value === 0 ? false : isEmpty(value)
-			)
-		) {
-			return true;
+		if (attribute === 'transition' && currentAttributes[attribute]) {
+			const resolvedTransitionDefault = resolvedDefault ?? {};
+			const normalizedTransition = mergeDefaults(
+				resolvedTransitionDefault,
+				currentAttributes[attribute]
+			);
+
+			if (
+				Object.values(currentAttributes[attribute]).every(value =>
+					value === 0 ? false : isEmpty(value)
+				)
+			) {
+				return true;
+			}
+
+			if (
+				resolvedDefault &&
+				areEquivalent(normalizedTransition, resolvedTransitionDefault)
+			) {
+				return true;
+			}
 		}
 
 		if (

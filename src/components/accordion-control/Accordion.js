@@ -13,6 +13,7 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '@extensions/indicators';
+import { getDefaultAttribute } from '@extensions/styles';
 
 /**
  * External dependencies
@@ -66,6 +67,16 @@ const Accordion = props => {
 					: item;
 
 				let isActiveTab = false;
+				const isNumericValue = value =>
+					(typeof value === 'number' ||
+						(typeof value === 'string' && value.trim() !== '')) &&
+					!Number.isNaN(Number(value));
+				const areEquivalent = (left, right) => {
+					if (isNumericValue(left) && isNumericValue(right))
+						return Number(left) === Number(right);
+
+					return isEqual(left, right);
+				};
 
 				if (item.indicatorProps) {
 					const { getBlock, getSelectedBlockClientId } =
@@ -89,10 +100,15 @@ const Accordion = props => {
 							if (Array.isArray(attributes[prop]))
 								return isEmpty(attributes[prop]);
 
-							return isEqual(
-								attributes[prop],
-								defaultAttributes[prop]
-							);
+							const resolvedDefault =
+								defaultAttributes[prop] ??
+								getDefaultAttribute(prop, getSelectedBlockClientId());
+							const currentValue =
+								attributes[prop] === undefined
+									? resolvedDefault
+									: attributes[prop];
+
+							return areEquivalent(currentValue, resolvedDefault);
 						});
 					}
 				}

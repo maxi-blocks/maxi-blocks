@@ -139,6 +139,16 @@ const Accordion = props => {
 
 								return areEquivalent(currentValue, resolvedDefault);
 							});
+
+							if (
+								name.includes('image-maxi') &&
+								attributes.altSelector !== 'custom' &&
+								item.indicatorProps.some(prop =>
+									['altSelector', 'mediaAlt'].includes(prop)
+								)
+							) {
+								isActiveTab = false;
+							}
 						}
 					}
 

@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import VideoIconControl from '@blocks/video-maxi/components/video-icon-control';
 import SelectControl from '@components/select-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
 import ColorControl from '@components/color-control';
 import AspectRatioControl from '@components/aspect-ratio-control';
 import {
@@ -23,6 +24,8 @@ const PopupSettingsControl = props => {
 		blockStyle,
 		onChange,
 		popAnimation,
+		popupAnimationDuration,
+		popupAnimationDurationUnit,
 		popupRatio,
 		popupRatioCustom,
 	} = props;
@@ -140,6 +143,42 @@ const PopupSettingsControl = props => {
 				onChange={val =>
 					onChange({
 						popAnimation: val,
+					})
+				}
+			/>
+			<AdvancedNumberControl
+				className='maxi-video-popup-control__animation-duration'
+				label={__('Popup animation duration', 'maxi-blocks')}
+				placeholder={0.3}
+				value={popupAnimationDuration ?? ''}
+				unit={popupAnimationDurationUnit ?? 's'}
+				enableUnit
+				allowedUnits={['ms', 's']}
+				minMaxSettings={{
+					ms: {
+						min: 100,
+						max: 10000,
+						minRange: 100,
+						maxRange: 10000,
+					},
+					s: {
+						min: 0.1,
+						max: 10,
+						minRange: 0.1,
+						maxRange: 10,
+					},
+				}}
+				step={(popupAnimationDurationUnit ?? 's') === 'ms' ? 10 : 0.01}
+				defaultValue=''
+				onChangeValue={val => onChange({ popupAnimationDuration: val })}
+				onChangeUnit={val =>
+					onChange({ popupAnimationDurationUnit: val })
+				}
+				onReset={() =>
+					onChange({
+						popupAnimationDuration: undefined,
+						popupAnimationDurationUnit: undefined,
+						isReset: true,
 					})
 				}
 			/>

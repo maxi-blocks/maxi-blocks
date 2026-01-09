@@ -86,7 +86,12 @@ const Accordion = props => {
 					item.extraIndicators,
 					item.extraIndicatorsResponsive,
 					item.ignoreIndicator,
-					item.ignoreIndicatorGroups
+					item.ignoreIndicatorGroups,
+					{
+						attributes: props.attributes,
+						name:
+							blockName ?? getBlockName(getSelectedBlockClientId()),
+					}
 				);
 
 				const classesItemButton = classnames(

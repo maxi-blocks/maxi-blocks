@@ -18,7 +18,8 @@ const getIsActiveTab = (
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
 	ignoreIndicator = [],
-	ignoreIndicatorGroups = []
+	ignoreIndicatorGroups = [],
+	context = {}
 ) => {
 	const { show_indicators: showIndicators } =
 		(typeof window !== 'undefined' && window.maxiSettings) || {};
@@ -32,14 +33,18 @@ const getIsActiveTab = (
 	const selectedBlockClientId = getSelectedBlockClientId();
 	const block = getBlock(selectedBlockClientId);
 
-	if (!block) return null;
+	const providedAttributes = context.attributes;
+	const providedName = context.name;
 
-	const { name, attributes: currentAttributes } = block;
+	if (!block && !providedAttributes) return null;
+
+	const name = providedName ?? block?.name;
+	const currentAttributes = providedAttributes ?? block?.attributes;
 	const styleCard = receiveMaxiSelectedStyleCard()?.value || {};
 	const blockStyle = currentAttributes.blockStyle?.replace('maxi-', '');
 	const textLevel = currentAttributes.textLevel;
 
-	if (!name.includes('maxi-blocks')) return null;
+	if (!name || !name.includes('maxi-blocks')) return null;
 
 	const defaultAttributes = getBlockAttributes(name);
 

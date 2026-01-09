@@ -20,6 +20,30 @@ const SvgColorControl = props => {
 		disableHover = false,
 	} = props;
 	const hoverStatus = props['svg-status-hover'];
+	const normalIndicatorProps = [
+		'svg-fill-color',
+		'svg-fill-palette-color',
+		'svg-fill-palette-status',
+		'svg-fill-palette-opacity',
+		'svg-fill-palette-sc-status',
+		'svg-line-color',
+		'svg-line-palette-color',
+		'svg-line-palette-status',
+		'svg-line-palette-opacity',
+		'svg-line-palette-sc-status',
+	];
+	const hoverIndicatorProps = [
+		'svg-fill-color-hover',
+		'svg-fill-palette-color-hover',
+		'svg-fill-palette-status-hover',
+		'svg-fill-palette-opacity-hover',
+		'svg-fill-palette-sc-status-hover',
+		'svg-line-color-hover',
+		'svg-line-palette-color-hover',
+		'svg-line-palette-status-hover',
+		'svg-line-palette-opacity-hover',
+		'svg-line-palette-sc-status-hover',
+	];
 
 	const onChangeProps = {
 		onChangeFill: obj => {
@@ -71,6 +95,7 @@ const SvgColorControl = props => {
 				{
 					label: __('Normal state', 'maxi-blocks'),
 					content: normalSvgColor,
+					indicatorProps: normalIndicatorProps,
 				},
 				{
 					label: __('Hover state', 'maxi-blocks'),
@@ -120,6 +145,8 @@ const SvgColorControl = props => {
 							)}
 						</>
 					),
+					indicatorProps: hoverIndicatorProps,
+					extraIndicators: hoverStatus ? ['svg-status-hover'] : [],
 				},
 			]}
 		/>

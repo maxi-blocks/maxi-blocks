@@ -131,9 +131,16 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
-						const itemsIndicators = !isEmpty(item.content)
-							? cloneElement(item.content)
-							: item;
+						const hasIndicatorOverrides =
+							item.indicatorProps ||
+							item.extraIndicators ||
+							item.extraIndicatorsResponsive ||
+							item.ignoreIndicator ||
+							item.ignoreIndicatorGroups;
+						const itemsIndicators =
+							hasIndicatorOverrides || isEmpty(item.content)
+								? item
+								: cloneElement(item.content);
 
 						const showButton = (
 							<Button

@@ -84,9 +84,23 @@ const icon = ({
 		'iconBorderRadius',
 		'iconPadding',
 	];
+	const normalIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, false, prefix)
+	);
+	const hoverIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, true, prefix)
+	).filter(key => !normalIndicatorProps.includes(key));
 
 	return {
 		label,
+		indicatorProps: normalIndicatorProps,
+		extraIndicators: hoverStatus
+			? [
+					`${prefix}icon-status-hover`,
+					`${prefix}icon-status-hover-target`,
+					...hoverIndicatorProps,
+			  ]
+			: [],
 		content: (
 			<SettingTabsControl
 				hasMarginBottom

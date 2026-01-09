@@ -197,6 +197,11 @@ const getIsActiveTab = (
 		)
 			return true;
 		if (
+			attribute.startsWith('hover-') &&
+			currentAttributes['hover-type'] === 'none'
+		)
+			return true;
+		if (
 			name.includes('image-maxi') &&
 			attribute === 'mediaAlt' &&
 			currentAttributes.altSelector !== 'custom'

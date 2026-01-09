@@ -37,9 +37,8 @@ describe('sc-variable', () => {
 				const el = document.getElementById(
 					'maxi-blocks-sc-vars-inline-css'
 				);
-				if (!el) return false;
-				const content = el.textContent || el.innerText || el.innerHTML;
-				if (!content) return false;
+				if (!el || !el.innerText) return false;
+				const content = el.innerText;
 				// Check that all breakpoints are present and content is substantial
 				const hasAllBreakpoints = [
 					'general',
@@ -59,12 +58,7 @@ describe('sc-variable', () => {
 
 		const scVariable = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content =>
-				(
-					content.textContent ||
-					content.innerText ||
-					content.innerHTML
-				).trim()
+			content => content.innerText
 		);
 
 		expect(scVariable).toMatchSnapshot();
@@ -73,17 +67,16 @@ describe('sc-variable', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		// Wait for the SC vars element and ensure content is fully generated on preview page
-		await previewPage.waitForSelector('#maxi-blocks-sc-vars-inline-css');
+		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
 
 		// Wait for content to be complete by checking for all breakpoints
-		await previewPage.waitForFunction(
+		await page.waitForFunction(
 			() => {
 				const el = document.getElementById(
 					'maxi-blocks-sc-vars-inline-css'
 				);
-				if (!el) return false;
-				const content = el.textContent || el.innerText || el.innerHTML;
-				if (!content) return false;
+				if (!el || !el.innerText) return false;
+				const content = el.innerText;
 				// Check that all breakpoints are present and content is substantial
 				const hasAllBreakpoints = [
 					'general',
@@ -101,14 +94,9 @@ describe('sc-variable', () => {
 			{ timeout: 15000 }
 		);
 
-		const scVariableFront = await previewPage.$eval(
+		const scVariableFront = await page.$eval(
 			'#maxi-blocks-sc-vars-inline-css',
-			content =>
-				(
-					content.textContent ||
-					content.innerText ||
-					content.innerHTML
-				).trim()
+			content => content.innerText
 		);
 
 		expect(scVariableFront).toMatchSnapshot();

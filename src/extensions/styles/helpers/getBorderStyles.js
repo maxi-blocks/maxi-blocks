@@ -110,9 +110,6 @@ const getBorderStyles = ({
 		});
 		const isBorderNone = isUndefined(borderStyle) || borderStyle === 'none';
 		omitBorderStyle = omitBorderStyle ? isBorderNone : false;
-		if (!isHover && !isIB && isBorderNone) {
-			response[breakpoint].border = 'none';
-		}
 
 		const breakpointSuffix = `-${breakpoint}${hoverSuffix}`;
 		const replacer = new RegExp(

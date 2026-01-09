@@ -75,11 +75,9 @@ const icon = ({
 
 	const groupAttributes = [
 		'icon',
-		'iconHover',
 		'iconBackgroundGradient',
 		'iconBackgroundColor',
 		'iconBorder',
-		'iconBackgroundHover',
 		'iconBorderWidth',
 		'iconBorderRadius',
 		'iconPadding',

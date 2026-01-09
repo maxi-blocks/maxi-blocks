@@ -343,9 +343,27 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
+<<<<<<< HEAD
 										const rawNewVal =
 											currentVal + (stepValue || 1);
 										const newVal = parseFloat(rawNewVal.toFixed(10));
+=======
+										let newVal =
+											currentVal + (stepValue || 1);
+
+										// Fix floating-point precision issues
+										const decimalPlaces = (
+											stepValue
+												.toString()
+												.split('.')[1] || ''
+										).length;
+										newVal = parseFloat(
+											newVal.toFixed(
+												Math.max(decimalPlaces, 10)
+											)
+										);
+
+>>>>>>> c9ba88956cffde68f032ee2b33f34ec6d4b02db6
 										const maxVal = enableUnit
 											? maxValue
 											: max;
@@ -356,8 +374,11 @@ const AdvancedNumberControl = props => {
 											onChangeValue(newVal);
 										}
 									}}
-									title='Increase value'
-									aria-label='Increase value'
+									title={__('Increase value', 'maxi-blocks')}
+									aria-label={__(
+										'Increase value',
+										'maxi-blocks'
+									)}
 								>
 									<svg
 										width='8'
@@ -400,9 +421,27 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
+<<<<<<< HEAD
 										const rawNewVal =
 											currentVal - (stepValue || 1);
 										const newVal = parseFloat(rawNewVal.toFixed(10));
+=======
+										let newVal =
+											currentVal - (stepValue || 1);
+
+										// Fix floating-point precision issues
+										const decimalPlaces = (
+											stepValue
+												.toString()
+												.split('.')[1] || ''
+										).length;
+										newVal = parseFloat(
+											newVal.toFixed(
+												Math.max(decimalPlaces, 10)
+											)
+										);
+
+>>>>>>> c9ba88956cffde68f032ee2b33f34ec6d4b02db6
 										const minVal = enableUnit
 											? minValue
 											: min;
@@ -496,8 +535,19 @@ const AdvancedNumberControl = props => {
 						}`}
 						value={rangeValue ?? placeholder ?? 0}
 						onChange={val => {
-							const result =
+							let result =
 								optionType === 'string' ? val.toString() : +val;
+
+							// Fix floating-point precision issues for numeric values
+							if (optionType !== 'string' && stepValue < 1) {
+								const decimalPlaces = (
+									stepValue.toString().split('.')[1] || ''
+								).length;
+								result = parseFloat(
+									result.toFixed(Math.max(decimalPlaces, 10))
+								);
+							}
+
 							setCurrentValue(result);
 							latestValueRef.current = result;
 

@@ -53,6 +53,24 @@ const Inspector = props => {
 		'dc-status': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
+	const hoverIndicatorIgnore =
+		attributes['hover-type'] === 'none'
+			? Object.keys(
+					getGroupAttributes(attributes, [
+						'hover',
+						'hoverBorder',
+						'hoverBorderWidth',
+						'hoverBorderRadius',
+						'hoverBackground',
+						'hoverBackgroundColor',
+						'hoverBackgroundGradient',
+						'hoverMargin',
+						'hoverPadding',
+						'hoverTitleTypography',
+						'hoverContentTypography',
+					])
+			  )
+			: [];
 
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
@@ -166,7 +184,7 @@ const Inspector = props => {
 											isAlignment: true,
 											disableJustify: true,
 										}),
-									deviceType === 'general' &&
+										deviceType === 'general' &&
 											!SVGElement && {
 												label: __('Alt tag', 'maxi-blocks'),
 												content: (
@@ -179,6 +197,7 @@ const Inspector = props => {
 														}}
 													/>
 												),
+												ignoreIndicator: ['mediaID'],
 											},
 									{
 										label: __('Caption', 'maxi-blocks'),
@@ -408,6 +427,7 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
+										ignoreIndicator: hoverIndicatorIgnore,
 									},
 									{
 										label: __('Shape mask', 'maxi-blocks'),

@@ -53,24 +53,17 @@ const Inspector = props => {
 		'dc-status': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
-	const hoverIndicatorIgnore =
-		attributes['hover-type'] === 'none'
-			? Object.keys(
-					getGroupAttributes(attributes, [
-						'hover',
-						'hoverBorder',
-						'hoverBorderWidth',
-						'hoverBorderRadius',
-						'hoverBackground',
-						'hoverBackgroundColor',
-						'hoverBackgroundGradient',
-						'hoverMargin',
-						'hoverPadding',
-						'hoverTitleTypography',
-						'hoverContentTypography',
-					])
-			  )
-			: [];
+	const dimensionIndicatorProps = [
+		'imageSize',
+		'useInitSize',
+		`img-width-${deviceType}`,
+		'imageRatio',
+		'imageRatioCustom',
+		'fitParentSize',
+		`object-size-${deviceType}`,
+		`object-position-horizontal-${deviceType}`,
+		`object-position-vertical-${deviceType}`,
+	];
 
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
@@ -174,11 +167,12 @@ const Inspector = props => {
 														imageData={imageData}
 													/>
 												),
-												extraIndicators: ['imageRatio'],
-												extraIndicatorsResponsive: [
-													'img-width',
-												],
-											},
+													extraIndicators: ['imageRatio'],
+													extraIndicatorsResponsive: [
+														'img-width',
+													],
+													indicatorProps: dimensionIndicatorProps,
+												},
 										...inspectorTabs.alignment({
 											props,
 											isAlignment: true,
@@ -197,7 +191,7 @@ const Inspector = props => {
 														}}
 													/>
 												),
-												ignoreIndicator: ['mediaID'],
+												indicatorProps: ['altSelector', 'mediaAlt'],
 											},
 									{
 										label: __('Caption', 'maxi-blocks'),
@@ -427,7 +421,7 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: hoverIndicatorIgnore,
+										indicatorProps: ['hover-type'],
 									},
 									{
 										label: __('Shape mask', 'maxi-blocks'),

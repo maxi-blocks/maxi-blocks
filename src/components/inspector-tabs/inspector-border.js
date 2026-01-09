@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '@components/setting-tabs-control';
 import BorderControl from '@components/border-control';
 import ToggleSwitch from '@components/toggle-switch';
-import { getGroupAttributes } from '@extensions/styles';
+import { getAttributeKey, getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
 /**
  * Component
@@ -50,9 +50,16 @@ const border = ({
 				? '.maxi-background-displayer'
 				: ''
 			: inlineTarget;
+	const borderIndicatorProp = getAttributeKey(
+		'border-style',
+		false,
+		prefix,
+		deviceType
+	);
 
 	return {
 		label: __('Border', 'maxi-blocks'),
+		indicatorProps: [borderIndicatorProp],
 		content: (
 			<SettingTabsControl
 				items={[

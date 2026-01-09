@@ -131,6 +131,8 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
+						// Use item-level indicator metadata when provided to avoid
+						// extracting props from content that may not include overrides.
 						const hasIndicatorOverrides =
 							item.indicatorProps ||
 							item.extraIndicators ||

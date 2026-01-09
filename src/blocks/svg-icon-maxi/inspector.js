@@ -231,6 +231,7 @@ const Inspector = props => {
 											'svg-line-palette-sc-status-hover',
 											'svg-status-hover',
 										],
+										extraIndicators: [],
 									},
 
 									attributes.content &&
@@ -257,15 +258,6 @@ const Inspector = props => {
 												`svg-stroke-${deviceType}`,
 											],
 											extraIndicators: [],
-											ignoreIndicator: [
-												'svg-fill-palette-color',
-												'svg-fill-palette-status',
-												'svg-fill-color',
-												'svg-line-palette-color',
-												'svg-line-palette-status',
-												'svg-line-color',
-												`svg-width-${deviceType}`,
-											],
 										},
 									...inspectorTabs.background({
 										label: 'Icon',
@@ -317,6 +309,7 @@ const Inspector = props => {
 											`svg-width-unit-${deviceType}`,
 											`svg-width-fit-content-${deviceType}`,
 										],
+										extraIndicators: [],
 									},
 									...inspectorTabs.marginPadding({
 										props,

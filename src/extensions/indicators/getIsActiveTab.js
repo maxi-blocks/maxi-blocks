@@ -126,6 +126,11 @@ const getIsActiveTab = (
 		return merged;
 	};
 
+	const isTransitionValueCleared = value => {
+		if (value === 0) return false;
+		return isEmpty(value);
+	};
+
 	const getStyleCardDefault = attribute => {
 		if (!styleCard || !blockStyle) return null;
 
@@ -434,8 +439,8 @@ const getIsActiveTab = (
 			);
 
 			if (
-				Object.values(currentAttributes[attribute]).every(value =>
-					value === 0 ? false : isEmpty(value)
+				Object.values(currentAttributes[attribute]).every(
+					isTransitionValueCleared
 				)
 			) {
 				return true;
@@ -449,23 +454,26 @@ const getIsActiveTab = (
 			}
 		}
 
-		if (
-			defaultAttributes[attribute] == null &&
-			areEquivalent(
-				currentAttributes[attribute],
-				getStyleCardDefault(attribute)
+			if (
+				defaultAttributes[attribute] == null &&
+				areEquivalent(
+					currentAttributes[attribute],
+					getStyleCardDefault(attribute)
+				)
 			)
-		)
-			return true;
-
-		if (
-			name.includes('column-maxi') &&
-			attribute === 'column-size-general'
-		) {
-			const defaultSize = getColumnDefaultSize();
-			if (defaultSize !== null && currentAttributes[attribute] === defaultSize)
 				return true;
-		}
+
+			if (
+				name.includes('column-maxi') &&
+				attribute === 'column-size-general'
+			) {
+				const defaultSize = getColumnDefaultSize();
+				if (
+					defaultSize !== null &&
+					areEquivalent(currentAttributes[attribute], defaultSize)
+				)
+					return true;
+			}
 
 		// Check if background layers have any non-color layer
 		if (attribute === 'background-layers') {

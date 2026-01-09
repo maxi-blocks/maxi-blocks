@@ -80,13 +80,14 @@ const CustomColorControl = props => {
 						<OpacityControl
 							label={__('Colour opacity', 'maxi-blocks')}
 							opacity={color.a}
-							onChangeOpacity={val => {
+							onChangeOpacity={(val, meta) => {
 								if (!isEmpty(color)) {
 									color.a = val;
 
 									onChangeValue({
 										color: tinycolor(color).toRgbString(),
 										paletteOpacity: val,
+										meta,
 									});
 								}
 							}}
@@ -121,13 +122,14 @@ const CustomColorControl = props => {
 					<OpacityControl
 						label={__('Colour opacity', 'maxi-blocks')}
 						opacity={color.a}
-						onChangeOpacity={val => {
+						onChangeOpacity={(val, meta) => {
 							if (!isEmpty(color)) {
 								color.a = val;
 
 								onChangeValue({
 									color: tinycolor(color).toRgbString(),
 									paletteOpacity: val,
+									meta,
 								});
 							}
 						}}

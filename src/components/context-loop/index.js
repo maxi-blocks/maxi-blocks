@@ -600,9 +600,10 @@ const ContextLoop = props => {
 									<AdvancedNumberControl
 										label={__('Accumulator', 'maxi-blocks')}
 										value={accumulator}
-										onChangeValue={value =>
+										onChangeValue={(value, meta) =>
 											changeProps({
 												'cl-accumulator': value,
+												meta,
 											})
 										}
 										onReset={() =>
@@ -689,10 +690,14 @@ const ContextLoop = props => {
 													'maxi-blocks'
 												)}
 												value={usePaginationPerPage}
-												onChangeValue={value => {
+												onChangeValue={(
+													value,
+													meta
+												) => {
 													changeProps({
 														'cl-pagination-per-page':
 															value,
+														meta,
 													});
 													setUsePaginationPerPage(
 														value
@@ -736,10 +741,14 @@ const ContextLoop = props => {
 														paginationTotal ||
 														usePaginationPerPage * 2
 													}
-													onChangeValue={value =>
+													onChangeValue={(
+														value,
+														meta
+													) =>
 														changeProps({
 															'cl-pagination-total':
 																value,
+															meta,
 														})
 													}
 													onReset={() =>
@@ -933,9 +942,10 @@ const ContextLoop = props => {
 								<AdvancedNumberControl
 									label={__('Accumulator', 'maxi-blocks')}
 									value={accumulator}
-									onChangeValue={value =>
+									onChangeValue={(value, meta) =>
 										changeProps({
 											'cl-accumulator': value,
+											meta,
 										})
 									}
 									onReset={() =>

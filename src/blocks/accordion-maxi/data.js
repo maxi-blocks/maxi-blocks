@@ -458,12 +458,349 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	headerLine: `> ${normalPaneTarget} > .maxi-pane-block__header > .maxi-pane-block__header-line-container > .maxi-pane-block__header-line`,
+	activeHeaderLine: `> ${activePaneTarget} > .maxi-pane-block__header > .maxi-pane-block__header-line-container > .maxi-pane-block__header-line`,
+	contentLine: `> ${normalPaneTarget} > .maxi-pane-block__content-line-container > .maxi-pane-block__content-line`,
+	activeContentLine: `> ${activePaneTarget} > .maxi-pane-block__content-line-container > .maxi-pane-block__content-line`,
+	contentWrapper: '> .maxi-pane-block > .maxi-pane-block__content-wrapper',
+	icon: `> ${normalPaneTarget} > .maxi-pane-block__header .maxi-pane-block__icon`,
+	activeIcon: `> ${activePaneTarget} > .maxi-pane-block__header .maxi-pane-block__icon`,
+	iconPath: `> ${normalPaneTarget} > .maxi-pane-block__header  .maxi-pane-block__icon svg path`,
+	activeIconPath: `> ${activePaneTarget} > .maxi-pane-block__header  .maxi-pane-block__icon svg path`,
+	title: `> ${normalPaneTarget} > .maxi-pane-block__header .maxi-pane-block__title`,
+	activeTitle: `> ${activePaneTarget} > .maxi-pane-block__header .maxi-pane-block__title`,
+};
+
+const attributesToStyles = {
+	'active-icon-stroke': {
+		target: inlineStylesTargets.activeIconPath,
+		property: 'stroke-width',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-top-left-radius': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-top-left-radius',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-top-right-radius': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-top-right-radius',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-bottom-right-radius': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-bottom-right-radius',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-bottom-left-radius': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-bottom-left-radius',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-top-width': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-top-width',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-bottom-width': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-right-width': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-right-width',
+		isMultiplySelector: true,
+	},
+	'active-icon-border-left-width': {
+		target: inlineStylesTargets.activeIcon,
+		property: 'border-left-width',
+		isMultiplySelector: true,
+	},
+	'icon-stroke': {
+		target: inlineStylesTargets.iconPath,
+		property: 'stroke-width',
+		isMultiplySelector: true,
+	},
+	'icon-border-top-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-left-radius',
+		isMultiplySelector: true,
+	},
+	'icon-border-top-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-right-radius',
+		isMultiplySelector: true,
+	},
+	'icon-border-bottom-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-right-radius',
+		isMultiplySelector: true,
+	},
+	'icon-border-bottom-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-left-radius',
+		isMultiplySelector: true,
+	},
+	'icon-border-top-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-width',
+		isMultiplySelector: true,
+	},
+	'icon-border-bottom-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'icon-border-right-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-right-width',
+		isMultiplySelector: true,
+	},
+	'icon-border-left-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-left-width',
+		isMultiplySelector: true,
+	},
+	'title-font-size': {
+		target: inlineStylesTargets.title,
+		property: 'font-size',
+		isMultiplySelector: true,
+	},
+	'title-line-height': {
+		target: inlineStylesTargets.title,
+		property: 'line-height',
+		isMultiplySelector: true,
+	},
+	'title-letter-spacing': {
+		target: inlineStylesTargets.title,
+		property: 'letter-spacing',
+		isMultiplySelector: true,
+	},
+	'title-text-indent': {
+		target: inlineStylesTargets.title,
+		property: 'text-indent',
+		isMultiplySelector: true,
+	},
+	'title-word-spacing': {
+		target: inlineStylesTargets.title,
+		property: 'word-spacing',
+		isMultiplySelector: true,
+	},
+	'title-bottom-gap': {
+		target: inlineStylesTargets.title,
+		property: 'margin-bottom',
+		isMultiplySelector: true,
+	},
+	'active-title-font-size': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'font-size',
+		isMultiplySelector: true,
+	},
+	'active-title-line-height': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'line-height',
+		isMultiplySelector: true,
+	},
+	'active-title-letter-spacing': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'letter-spacing',
+		isMultiplySelector: true,
+	},
+	'active-title-text-indent': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'text-indent',
+		isMultiplySelector: true,
+	},
+	'active-title-word-spacing': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'word-spacing',
+		isMultiplySelector: true,
+	},
+	'active-title-bottom-gap': {
+		target: inlineStylesTargets.activeTitle,
+		property: 'margin-bottom',
+		isMultiplySelector: true,
+	},
+	'header-divider-border-top-width': {
+		target: inlineStylesTargets.headerLine,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'header-divider-width': {
+		target: inlineStylesTargets.headerLine,
+		property: 'width',
+		isMultiplySelector: true,
+	},
+	'header-active-divider-border-top-width': {
+		target: inlineStylesTargets.activeHeaderLine,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'header-active-divider-width': {
+		target: inlineStylesTargets.activeHeaderLine,
+		property: 'width',
+		isMultiplySelector: true,
+	},
+	'content-divider-border-top-width': {
+		target: inlineStylesTargets.contentLine,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'content-divider-width': {
+		target: inlineStylesTargets.contentLine,
+		property: 'width',
+		isMultiplySelector: true,
+	},
+	'content-active-divider-border-top-width': {
+		target: inlineStylesTargets.activeContentLine,
+		property: 'border-bottom-width',
+		isMultiplySelector: true,
+	},
+	'content-active-divider-width': {
+		target: inlineStylesTargets.activeContentLine,
+		property: 'width',
+		isMultiplySelector: true,
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -472,5 +809,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

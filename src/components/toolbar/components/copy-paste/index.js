@@ -202,7 +202,36 @@ const CopyPaste = props => {
 		closeMoreSettings();
 	};
 	const onPasteBlocks = () => {
-		const newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
+		// Keep inner content when stripping out column wrappers
+		const removeColumnsFromBlocks = (blocks = []) =>
+			blocks.reduce((acc, block) => {
+				const inner = Array.isArray(block.innerBlocks)
+					? removeColumnsFromBlocks(block.innerBlocks)
+					: [];
+
+				// If it's a column wrapper, drop the wrapper and keep its children
+				if (block.name === 'maxi-blocks/column-maxi') {
+					return acc.concat(inner);
+				}
+
+				// Otherwise keep the block, with its (processed) children
+				acc.push({
+					...block,
+					innerBlocks: inner,
+				});
+				return acc;
+			}, []);
+
+		let newCopiedBlocks = cleanInnerBlocks(copiedBlocks);
+
+		if (blockName === 'maxi-blocks/column-maxi') {
+			newCopiedBlocks = removeColumnsFromBlocks(newCopiedBlocks);
+
+			if (isEmpty(newCopiedBlocks)) {
+				closeMoreSettings();
+				return;
+			}
+		}
 
 		if (!repeaterContext?.repeaterStatus) {
 			replaceInnerBlocks(clientId, newCopiedBlocks);

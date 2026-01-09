@@ -21,6 +21,18 @@ import { getDefaultAttribute } from '@extensions/styles';
 import { lowerCase, isEmpty, isEqual } from 'lodash';
 import classnames from 'classnames';
 
+const isNumericValue = value =>
+	(typeof value === 'number' ||
+		(typeof value === 'string' && value.trim() !== '')) &&
+	!Number.isNaN(Number(value));
+
+const areEquivalent = (left, right) => {
+	if (isNumericValue(left) && isNumericValue(right))
+		return Number(left) === Number(right);
+
+	return isEqual(left, right);
+};
+
 const Accordion = props => {
 	const {
 		className,
@@ -67,16 +79,6 @@ const Accordion = props => {
 					: item;
 
 				let isActiveTab = false;
-				const isNumericValue = value =>
-					(typeof value === 'number' ||
-						(typeof value === 'string' && value.trim() !== '')) &&
-					!Number.isNaN(Number(value));
-				const areEquivalent = (left, right) => {
-					if (isNumericValue(left) && isNumericValue(right))
-						return Number(left) === Number(right);
-
-					return isEqual(left, right);
-				};
 
 				if (item.indicatorProps) {
 					const { getBlock, getSelectedBlockClientId } =
@@ -89,33 +91,33 @@ const Accordion = props => {
 							window.maxiSettings) ||
 						{};
 
-						if (
-							showIndicators &&
-							block &&
-							block.name.includes('maxi-blocks')
-						) {
-							const { attributes, name } = block;
-							const defaultAttributes = getBlockAttributes(name);
-							isActiveTab = !item.indicatorProps.every(prop => {
-								if (Array.isArray(attributes[prop]))
-									return isEmpty(attributes[prop]);
-								if (
-									name.includes('image-maxi') &&
-									['altSelector', 'mediaAlt'].includes(prop) &&
-									attributes.altSelector !== 'custom'
-								)
-									return true;
-								if (
-									name.includes('accordion-maxi') &&
-									prop === 'titleLevel'
-								)
-									return true;
-								if (
-									name.includes('accordion-maxi') &&
-									prop === 'title-typography-status-hover' &&
-									attributes['title-typography-status-hover'] === false
-								)
-									return true;
+					if (
+						showIndicators &&
+						block &&
+						block.name.includes('maxi-blocks')
+					) {
+						const { attributes, name } = block;
+						const defaultAttributes = getBlockAttributes(name);
+						isActiveTab = !item.indicatorProps.every(prop => {
+							if (Array.isArray(attributes[prop]))
+								return isEmpty(attributes[prop]);
+							if (
+								name.includes('image-maxi') &&
+								['altSelector', 'mediaAlt'].includes(prop) &&
+								attributes.altSelector !== 'custom'
+							)
+								return true;
+							if (
+								name.includes('accordion-maxi') &&
+								prop === 'titleLevel'
+							)
+								return true;
+							if (
+								name.includes('accordion-maxi') &&
+								prop === 'title-typography-status-hover' &&
+								attributes['title-typography-status-hover'] === false
+							)
+								return true;
 								if (
 									name.includes('accordion-maxi') &&
 									prop === 'title-typography-status-active' &&

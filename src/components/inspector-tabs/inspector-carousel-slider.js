@@ -154,7 +154,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									[`row-carousel-slides-per-view-${breakpoint}`]:
-										val !== undefined ? val : '',
+										val,
 								});
 							}}
 							onReset={() =>
@@ -188,7 +188,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									[`row-carousel-column-gap-${breakpoint}`]:
-										val !== undefined ? val : '',
+										val,
 								});
 							}}
 							onReset={() =>
@@ -207,7 +207,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									[`row-carousel-peek-offset-${breakpoint}`]:
-										val !== undefined ? val : '',
+										val,
 								});
 							}}
 							onReset={() =>
@@ -226,7 +226,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									[`row-carousel-height-offset-${breakpoint}`]:
-										val !== undefined ? val : '',
+										val,
 								});
 							}}
 							onReset={() =>
@@ -246,18 +246,12 @@ const carouselSlider = ({ props }) => {
 
 								// When enabling autoplay, also enable pause behaviors by default
 								if (val) {
-									if (
-										pauseOnHover === undefined ||
-										pauseOnHover === false
-									) {
+									if (pauseOnHover === undefined) {
 										updates[
 											`row-carousel-pause-on-hover-${breakpoint}`
 										] = true;
 									}
-									if (
-										pauseOnInteraction === undefined ||
-										pauseOnInteraction === false
-									) {
+									if (pauseOnInteraction === undefined) {
 										updates[
 											`row-carousel-pause-on-interaction-${breakpoint}`
 										] = true;
@@ -305,7 +299,7 @@ const carouselSlider = ({ props }) => {
 									onChangeValue={val => {
 										onChange({
 											[`row-carousel-autoplay-speed-${breakpoint}`]:
-												val !== undefined ? val : '',
+												val,
 										});
 									}}
 									onReset={() =>
@@ -354,7 +348,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									[`row-carousel-transition-speed-${breakpoint}`]:
-										val !== undefined ? val : '',
+										val,
 								});
 							}}
 							onReset={() =>

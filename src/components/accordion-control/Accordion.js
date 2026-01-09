@@ -89,29 +89,35 @@ const Accordion = props => {
 							window.maxiSettings) ||
 						{};
 
-					if (
-						showIndicators &&
-						block &&
-						block.name.includes('maxi-blocks')
-					) {
-						const { attributes, name } = block;
-						const defaultAttributes = getBlockAttributes(name);
-						isActiveTab = !item.indicatorProps.every(prop => {
-							if (Array.isArray(attributes[prop]))
-								return isEmpty(attributes[prop]);
+						if (
+							showIndicators &&
+							block &&
+							block.name.includes('maxi-blocks')
+						) {
+							const { attributes, name } = block;
+							const defaultAttributes = getBlockAttributes(name);
+							isActiveTab = !item.indicatorProps.every(prop => {
+								if (Array.isArray(attributes[prop]))
+									return isEmpty(attributes[prop]);
+								if (
+									name.includes('image-maxi') &&
+									['altSelector', 'mediaAlt'].includes(prop) &&
+									attributes.altSelector !== 'custom'
+								)
+									return true;
 
-							const resolvedDefault =
-								defaultAttributes[prop] ??
-								getDefaultAttribute(prop, getSelectedBlockClientId());
-							const currentValue =
-								attributes[prop] === undefined
-									? resolvedDefault
-									: attributes[prop];
+								const resolvedDefault =
+									defaultAttributes[prop] ??
+									getDefaultAttribute(prop, getSelectedBlockClientId());
+								const currentValue =
+									attributes[prop] === undefined
+										? resolvedDefault
+										: attributes[prop];
 
-							return areEquivalent(currentValue, resolvedDefault);
-						});
+								return areEquivalent(currentValue, resolvedDefault);
+							});
+						}
 					}
-				}
 
 				const classesItemButton = classnames(
 					'maxi-accordion-control__item__button',

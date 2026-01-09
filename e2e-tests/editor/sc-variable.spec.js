@@ -34,12 +34,21 @@ describe('sc-variable', () => {
 		// Wait for content to be complete by checking for all breakpoints
 		await page.waitForFunction(
 			() => {
-				const el = document.getElementById('maxi-blocks-sc-vars-inline-css');
+				const el = document.getElementById(
+					'maxi-blocks-sc-vars-inline-css'
+				);
 				if (!el || !el.innerText) return false;
 				const content = el.innerText;
 				// Check that all breakpoints are present and content is substantial
-				const hasAllBreakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs']
-					.every(bp => content.includes(`-${bp}:`));
+				const hasAllBreakpoints = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				].every(bp => content.includes(`-${bp}:`));
 				// Also verify minimum content length to ensure it's fully generated
 				const hasMinimumContent = content.length > 10000;
 				return hasAllBreakpoints && hasMinimumContent;
@@ -63,12 +72,21 @@ describe('sc-variable', () => {
 		// Wait for content to be complete by checking for all breakpoints
 		await page.waitForFunction(
 			() => {
-				const el = document.getElementById('maxi-blocks-sc-vars-inline-css');
+				const el = document.getElementById(
+					'maxi-blocks-sc-vars-inline-css'
+				);
 				if (!el || !el.innerText) return false;
 				const content = el.innerText;
 				// Check that all breakpoints are present and content is substantial
-				const hasAllBreakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs']
-					.every(bp => content.includes(`-${bp}:`));
+				const hasAllBreakpoints = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				].every(bp => content.includes(`-${bp}:`));
 				// Also verify minimum content length to ensure it's fully generated
 				const hasMinimumContent = content.length > 10000;
 				return hasAllBreakpoints && hasMinimumContent;

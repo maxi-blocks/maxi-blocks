@@ -202,7 +202,12 @@ const getHoverEffectDetailsBoxObject = props => {
 		});
 
 		if (!hoverBorderStatus) {
-			hoverBorderClearStyles[breakpoint] = { border: 'none' };
+			hoverBorderClearStyles[breakpoint] = {
+				border: 'none',
+				'border-color': 'transparent',
+				'border-style': 'none',
+				'border-width': '0',
+			};
 		}
 	});
 	const mergedHoverBorderStyles = {

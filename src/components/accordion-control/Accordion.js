@@ -64,14 +64,21 @@ const Accordion = props => {
 					? cloneElement(item.content)
 					: item;
 
-				const indicatorAttributes =
-					item.indicatorProps ??
+				const derivedIndicatorAttributes =
 					getMaxiAttrsFromChildren({
 						items: itemsIndicators,
 						blockName:
 							blockName ?? getBlockName(getSelectedBlockClientId()),
-					}) ??
-					[];
+					}) ?? [];
+
+				const indicatorAttributes = item.indicatorProps
+					? [
+							...new Set([
+								...item.indicatorProps,
+								...derivedIndicatorAttributes,
+							]),
+					  ]
+					: derivedIndicatorAttributes;
 
 				const isActiveTab = getIsActiveTab(
 					indicatorAttributes,

@@ -3,7 +3,6 @@
  */
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState, cloneElement } from '@wordpress/element';
-import { getBlockAttributes } from '@wordpress/blocks';
 
 /**
  * Internal dependencies
@@ -13,25 +12,12 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '@extensions/indicators';
-import { getDefaultAttribute } from '@extensions/styles';
 
 /**
  * External dependencies
  */
-import { lowerCase, isEmpty, isEqual } from 'lodash';
+import { lowerCase, isEmpty } from 'lodash';
 import classnames from 'classnames';
-
-const isNumericValue = value =>
-	(typeof value === 'number' ||
-		(typeof value === 'string' && value.trim() !== '')) &&
-	!Number.isNaN(Number(value));
-
-const areEquivalent = (left, right) => {
-	if (isNumericValue(left) && isNumericValue(right))
-		return Number(left) === Number(right);
-
-	return isEqual(left, right);
-};
 
 const Accordion = props => {
 	const {
@@ -78,147 +64,27 @@ const Accordion = props => {
 					? cloneElement(item.content)
 					: item;
 
-				let isActiveTab = false;
+				const indicatorAttributes =
+					item.indicatorProps ??
+					getMaxiAttrsFromChildren({
+						items: itemsIndicators,
+						blockName:
+							blockName ?? getBlockName(getSelectedBlockClientId()),
+					}) ??
+					[];
 
-				if (item.indicatorProps) {
-					const { getBlock, getSelectedBlockClientId } =
-						select('core/block-editor');
-
-					const block = getBlock(getSelectedBlockClientId());
-
-					const { show_indicators: showIndicators } =
-						(typeof window !== 'undefined' &&
-							window.maxiSettings) ||
-						{};
-
-					if (
-						showIndicators &&
-						block &&
-						block.name.includes('maxi-blocks')
-					) {
-						const { attributes, name } = block;
-						const defaultAttributes = getBlockAttributes(name);
-						isActiveTab = !item.indicatorProps.every(prop => {
-							if (Array.isArray(attributes[prop]))
-								return isEmpty(attributes[prop]);
-							if (
-								name.includes('image-maxi') &&
-								['altSelector', 'mediaAlt'].includes(prop) &&
-								attributes.altSelector !== 'custom'
-							)
-								return true;
-							if (
-								name.includes('accordion-maxi') &&
-								prop === 'titleLevel'
-							)
-								return true;
-							if (
-								name.includes('accordion-maxi') &&
-								prop === 'title-typography-status-hover' &&
-								attributes['title-typography-status-hover'] === false
-							)
-								return true;
-								if (
-									name.includes('accordion-maxi') &&
-									prop === 'title-typography-status-active' &&
-									attributes['title-typography-status-active'] === false
-								)
-									return true;
-								if (
-									name.includes('svg-icon-maxi') &&
-									prop === 'svg-status-hover' &&
-									attributes['svg-status-hover'] === false
-								)
-									return true;
-								if (name.includes('svg-icon-maxi')) {
-									const widthFitContentKey = `svg-width-fit-content-${prop.split('-').pop()}`;
-									if (
-										prop.startsWith('svg-width') &&
-										attributes[prop] === '' &&
-										attributes[widthFitContentKey] === false
-									)
-										return true;
-								}
-								if (
-									name.includes('svg-icon-maxi') &&
-									prop.startsWith('svg-stroke') &&
-									attributes[prop] === ''
-								)
-									return true;
-								if (
-									name.includes('svg-icon-maxi') &&
-									['svg-fill-color', 'svg-line-color'].includes(prop) &&
-									attributes[`${prop}`] === '' &&
-									attributes[`${prop.replace('-color', '-palette-status')}`] ===
-										false
-								)
-									return true;
-
-								const breakpointMatch = prop.match(
-									/-(xxl|xl|l|m|s|xs)$/
-								);
-								const resolvedDefault =
-									defaultAttributes[prop] ??
-									getDefaultAttribute(
-										prop,
-										getSelectedBlockClientId()
-									) ??
-									(breakpointMatch
-										? getDefaultAttribute(
-												prop.replace(
-													`-${breakpointMatch[1]}`,
-													'-general'
-												),
-												getSelectedBlockClientId()
-										  )
-										: undefined);
-								let currentValue =
-									attributes[prop] === undefined
-										? resolvedDefault
-										: attributes[prop];
-								if (
-									prop.includes('border-style') &&
-									(currentValue === '' ||
-										currentValue === null ||
-										currentValue === undefined)
-								) {
-									currentValue = 'none';
-								}
-
-								return areEquivalent(currentValue, resolvedDefault);
-							});
-
-							if (
-								name.includes('image-maxi') &&
-								attributes.altSelector !== 'custom' &&
-								item.indicatorProps.some(prop =>
-									['altSelector', 'mediaAlt'].includes(prop)
-								)
-							) {
-								isActiveTab = false;
-							}
-						}
-					}
+				const isActiveTab = getIsActiveTab(
+					indicatorAttributes,
+					item.breakpoint,
+					item.extraIndicators,
+					item.extraIndicatorsResponsive,
+					item.ignoreIndicator,
+					item.ignoreIndicatorGroups
+				);
 
 				const classesItemButton = classnames(
 					'maxi-accordion-control__item__button',
-					(item.indicatorProps
-						? isActiveTab
-						: getIsActiveTab(
-								getMaxiAttrsFromChildren({
-									items: itemsIndicators,
-									blockName:
-										blockName ??
-										getBlockName(
-											getSelectedBlockClientId()
-										),
-								}),
-								item.breakpoint,
-								item.extraIndicators,
-								item.extraIndicatorsResponsive,
-								item.ignoreIndicator,
-								item.ignoreIndicatorGroups
-						  )) && 'maxi-accordion-control__item--active'
+					isActiveTab && 'maxi-accordion-control__item--active'
 				);
 
 				const classesItem = classnames(

@@ -18,6 +18,7 @@ import { getIsValid } from '@extensions/styles';
 const getPropsFromChildren = (items, excludedEntries = []) => {
 	const response = [];
 	const keyResponse = [];
+	const ignoreResponse = [];
 
 	const currentBreakpoint =
 		select('maxiBlocks').receiveMaxiDeviceType() || 'general';
@@ -27,6 +28,19 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 		if ('indicatorProps' in item) {
 			response.push(...item.indicatorProps);
 			return;
+		}
+
+		if (
+			'_ignore' in item &&
+			(isObject(item._ignore) || Array.isArray(item._ignore))
+		) {
+			if (Array.isArray(item._ignore))
+				item._ignore.forEach(indicator => ignoreResponse.push(indicator));
+			else
+				Object.values(item._ignore).forEach(val => {
+					if (Array.isArray(val))
+						val.forEach(indicator => ignoreResponse.push(indicator));
+				});
 		}
 
 		// Gets extraIndicators in cases where the prop is send to the component
@@ -49,6 +63,18 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 
 			Object.entries(item.props).forEach(([key, val]) => {
 				keyResponse.push(key);
+				if (key === '_ignore') {
+					if (Array.isArray(val))
+						val.forEach(indicator => ignoreResponse.push(indicator));
+					else if (isObject(val))
+						Object.values(val).forEach(ignoreVal => {
+							if (Array.isArray(ignoreVal))
+								ignoreVal.forEach(indicator =>
+									ignoreResponse.push(indicator)
+								);
+						});
+					return;
+				}
 				if (!excludedEntries.includes(key) && getIsValid(val, true)) {
 					if (isObject(val))
 						Object.keys(val).forEach(subKey =>
@@ -63,7 +89,11 @@ const getPropsFromChildren = (items, excludedEntries = []) => {
 
 	getProps(items);
 
-	return compact(uniq(response));
+	const ignoreSet = new Set(ignoreResponse);
+	const filteredResponse = response.filter(
+		attribute => !ignoreSet.has(attribute)
+	);
+	return compact(uniq(filteredResponse));
 };
 
 export const getMaxiAttrsFromChildren = ({

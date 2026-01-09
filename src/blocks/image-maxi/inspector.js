@@ -142,52 +142,44 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
+										deviceType === 'general' &&
+											!attributes[
+												'image-full-width-general'
+											] && {
+												label: __(
+													'Dimension',
+													'maxi-blocks'
+												),
+												content: (
+													<DimensionTab
+														{...props}
+														imageData={imageData}
+													/>
+												),
+												extraIndicators: ['imageRatio'],
+												extraIndicatorsResponsive: [
+													'img-width',
+												],
+											},
+										...inspectorTabs.alignment({
+											props,
+											isAlignment: true,
+											disableJustify: true,
+										}),
 									deviceType === 'general' &&
-										!attributes[
-											'image-full-width-general'
-										] && {
-											label: __(
-												'Dimension',
-												'maxi-blocks'
-											),
-											content: (
-												<DimensionTab
-													{...props}
-													imageData={imageData}
-												/>
-											),
-											extraIndicators: ['imageRatio'],
-											extraIndicatorsResponsive: [
-												'img-width',
-											],
-											ignoreIndicator: [
-												'mediaID',
-												'mediaURL',
-												'mediaWidth',
-												'mediaHeight',
-												'cropOptions',
-											],
-										},
-									...inspectorTabs.alignment({
-										props,
-										isAlignment: true,
-										disableJustify: true,
-									}),
-									deviceType === 'general' &&
-										!SVGElement && {
-											label: __('Alt tag', 'maxi-blocks'),
-											content: (
-												<ImageAltControl
-													mediaID={mediaID}
-													altSelector={altSelector}
-													mediaAlt={mediaAlt}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-													}}
-												/>
-											),
-											ignoreIndicator: ['mediaID'],
-										},
+											!SVGElement && {
+												label: __('Alt tag', 'maxi-blocks'),
+												content: (
+													<ImageAltControl
+														mediaID={mediaID}
+														altSelector={altSelector}
+														mediaAlt={mediaAlt}
+														onChange={obj => {
+															maxiSetAttributes(obj);
+														}}
+													/>
+												),
+											},
 									{
 										label: __('Caption', 'maxi-blocks'),
 										content: (

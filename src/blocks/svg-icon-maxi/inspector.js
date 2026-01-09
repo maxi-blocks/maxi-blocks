@@ -300,6 +300,7 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												disableNotifications
 											>
 												<SvgWidthControl
 													{...getGroupAttributes(

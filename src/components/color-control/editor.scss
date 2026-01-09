@@ -110,6 +110,10 @@
 				margin-bottom: 10px;
 				font-weight: 500;
 			}
+
+			.maxi-color-control__palette-container {
+				flex-wrap: wrap;
+			}
 		}
 
 		&-label {
@@ -142,7 +146,7 @@
 
 		&-container {
 			display: flex;
-			flex-wrap: wrap;
+			flex-wrap: nowrap;
 			justify-content: flex-start;
 			align-items: center;
 			margin-bottom: 0;

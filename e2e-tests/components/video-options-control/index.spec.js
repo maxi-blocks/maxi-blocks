@@ -55,19 +55,7 @@ describe('Video options control', () => {
 
 		expect(await getAttributes('showPlayerControls')).toStrictEqual(false);
 
-		// Wait for iframe title to be set (YouTube iframe loads asynchronously)
-		// Increase timeout for CI environments where network/resources are slower
-		await page.waitForFunction(
-			() => {
-				const iframe = document.querySelector(
-					'.maxi-video-block__video-player'
-				);
-				return (
-					iframe && iframe.getAttribute('title') === 'video player'
-				);
-			},
-			{ timeout: 15000 }
-		);
+		await page.waitForTimeout(1000);
 
 		// Check video content
 		const videoContent = await page.$eval(

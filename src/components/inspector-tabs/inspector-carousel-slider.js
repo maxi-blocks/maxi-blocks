@@ -134,7 +134,7 @@ const carouselSlider = ({ props }) => {
 							onChangeValue={val => {
 								onChange({
 									'row-carousel-trigger-width':
-										val !== undefined ? val : undefined,
+										val,
 								});
 							}}
 							onReset={() => {

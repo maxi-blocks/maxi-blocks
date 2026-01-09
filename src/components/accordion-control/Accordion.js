@@ -106,13 +106,36 @@ const Accordion = props => {
 								)
 									return true;
 
+								const breakpointMatch = prop.match(
+									/-(xxl|xl|l|m|s|xs)$/
+								);
 								const resolvedDefault =
 									defaultAttributes[prop] ??
-									getDefaultAttribute(prop, getSelectedBlockClientId());
-								const currentValue =
+									getDefaultAttribute(
+										prop,
+										getSelectedBlockClientId()
+									) ??
+									(breakpointMatch
+										? getDefaultAttribute(
+												prop.replace(
+													`-${breakpointMatch[1]}`,
+													'-general'
+												),
+												getSelectedBlockClientId()
+										  )
+										: undefined);
+								let currentValue =
 									attributes[prop] === undefined
 										? resolvedDefault
 										: attributes[prop];
+								if (
+									prop.includes('border-style') &&
+									(currentValue === '' ||
+										currentValue === null ||
+										currentValue === undefined)
+								) {
+									currentValue = 'none';
+								}
 
 								return areEquivalent(currentValue, resolvedDefault);
 							});

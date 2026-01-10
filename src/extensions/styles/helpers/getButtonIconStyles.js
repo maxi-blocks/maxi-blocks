@@ -323,43 +323,41 @@ const getButtonIconStyles = ({
 	if (hasIcon) {
 		const pathStyles = getIconPathStyles(obj, false, prefix);
 
+		response = {
+			...response,
+			[`${normalTarget} svg path`]: pathStyles,
+		};
+
 		// Only compute and add hover values if not already in response (from iconHoverStatus block)
 		// This preserves hoverSvgStyles and other hover-specific styles
-		if (!iconHoverStatus) {
-			response = {
-				...response,
-				[`${normalTarget} svg path`]: pathStyles,
-			};
-		} else if (!response[hoverTarget]) {
+		if (iconHoverStatus && !response[hoverTarget]) {
 			// Compute cached hover values if needed
 			if (!cachedHoverIconObj) {
-				cachedHoverIconObj =
-					iconHoverStatus &&
-					getIconHoverObject(obj, 'iconHover', prefix, iconType);
+				cachedHoverIconObj = getIconHoverObject(
+					obj,
+					'iconHover',
+					prefix,
+					iconType
+				);
 			}
 			if (!cachedHoverIconSize) {
-				cachedHoverIconSize =
-					iconHoverStatus &&
-					getIconSize(obj, true, prefix, iconWidthHeightRatio);
+				cachedHoverIconSize = getIconSize(
+					obj,
+					true,
+					prefix,
+					iconWidthHeightRatio
+				);
 			}
 			if (!cachedHoverPathStyles) {
-				cachedHoverPathStyles =
-					iconHoverStatus && getIconPathStyles(obj, true, prefix);
+				cachedHoverPathStyles = getIconPathStyles(obj, true, prefix);
 			}
 
 			response = {
 				...response,
-				[`${normalTarget} svg path`]: pathStyles,
 				[hoverTarget]: cachedHoverIconObj,
 				[`${hoverTarget} svg > *`]: cachedHoverIconObj,
 				[`${hoverTarget} svg`]: cachedHoverIconSize,
 				[`${hoverTarget} svg path`]: cachedHoverPathStyles,
-			};
-		} else {
-			// iconHoverStatus block already set hover styles, just add normal path
-			response = {
-				...response,
-				[`${normalTarget} svg path`]: pathStyles,
 			};
 		}
 	}

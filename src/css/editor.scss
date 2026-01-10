@@ -411,19 +411,6 @@ body.maxi-blocks--active {
 		min-width: 55px !important;
 		padding: 8px 6px !important;
 		background-color: var(--maxi-white) !important;
-		/* Draw shorter vertical lines using layered backgrounds */
-		/* Short dividers on LEFT and RIGHT plus chevron */
-		// background-image: linear-gradient(
-		// 		var(--maxi-grey-light),
-		// 		var(--maxi-grey-light)
-		// 	),
-		// 	linear-gradient(var(--maxi-grey-light), var(--maxi-grey-light)),
-		// 	url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>');
-		// background-repeat: no-repeat, no-repeat, no-repeat !important;
-		// /* Set the short line heights here */
-		// background-size: 1px 18px, 1px 18px, 8px 8px !important;
-		// background-position: left 0.5px center, right 0.5px center,
-		// 	right 5px center !important;
 		/* Ensure native borders are not shown */
 		border-left: none !important;
 		border-right: none !important;
@@ -803,31 +790,107 @@ body.maxi-blocks--active
 // 	border: 1.5px solid var(--maxi-grey-light) !important;
 // 	border-radius: 5px 0 0 5px !important;
 
-// Interaction indicator in List View - blue dot for blocks with interactions
-.block-editor-list-view-tree
-	[data-maxi-interaction='true']
+// Dots indicator system for List View
+// Uses a single ::after pseudo-element with box-shadow to create multiple dots
+// Supports any combination of: interaction (pink), background (yellow), hidden-parent (grey)
+
+// Base dot styling - applies to all combinations
+.block-editor-list-view-tree [data-maxi-interaction='true'],
+.block-editor-list-view-tree [data-maxi-background='true'],
+.block-editor-list-view-tree [data-maxi-hidden-parent='true'] {
 	> .block-editor-list-view-block__contents-cell::after {
-	content: '';
-	position: absolute;
-	right: 3px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background-color: var(--maxi-interaction-pink);
-	pointer-events: none;
+		content: '';
+		position: absolute;
+		right: 3px;
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		pointer-events: none;
+	}
 }
 
-// When a block with interaction is selected, make the dot and text blue
+// Single dot - interaction only (centered) - includes hidden blocks
+.block-editor-list-view-tree
+	[data-maxi-interaction='true']:not([data-maxi-background='true']):not([data-maxi-hidden-parent='true']),
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-hidden='true']:not([data-maxi-background='true']):not([data-maxi-hidden-parent='true']) {
+	> .block-editor-list-view-block__contents-cell::after {
+		top: 50%;
+		transform: translateY(-50%);
+		background-color: var(--maxi-interaction-pink);
+	}
+}
+
+// Single dot - background only (centered) - includes hidden blocks
+.block-editor-list-view-tree
+	[data-maxi-background='true']:not([data-maxi-interaction='true']):not([data-maxi-hidden-parent='true']),
+.block-editor-list-view-tree
+	[data-maxi-background='true'][data-maxi-hidden='true']:not([data-maxi-interaction='true']):not([data-maxi-hidden-parent='true']) {
+	> .block-editor-list-view-block__contents-cell::after {
+		top: 50%;
+		transform: translateY(-50%);
+		background-color: var(--maxi-background-yellow);
+	}
+}
+
+// Single dot - hidden-parent only (centered) - includes when block itself is also hidden
+.block-editor-list-view-tree
+	[data-maxi-hidden-parent='true']:not([data-maxi-interaction='true']):not([data-maxi-background='true'])
+	> .block-editor-list-view-block__contents-cell::after {
+	top: 50%;
+	transform: translateY(-50%);
+	background-color: var(--maxi-admin-grey);
+}
+
+// Two dots - interaction + background - includes hidden blocks
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-background='true']:not([data-maxi-hidden-parent='true']),
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-background='true'][data-maxi-hidden='true']:not([data-maxi-hidden-parent='true']) {
+	> .block-editor-list-view-block__contents-cell::after {
+		top: 33%;
+		transform: translateY(-33%);
+		background-color: var(--maxi-interaction-pink);
+		box-shadow: 0 8px 0 var(--maxi-background-yellow);
+	}
+}
+
+// Two dots - interaction + hidden-parent - includes when block itself is also hidden
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-hidden-parent='true']:not([data-maxi-background='true'])
+	> .block-editor-list-view-block__contents-cell::after {
+	top: 33%;
+	transform: translateY(-33%);
+	background-color: var(--maxi-interaction-pink);
+	box-shadow: 0 8px 0 var(--maxi-admin-grey);
+}
+
+// Two dots - background + hidden-parent - includes when block itself is also hidden
+.block-editor-list-view-tree
+	[data-maxi-background='true'][data-maxi-hidden-parent='true']:not([data-maxi-interaction='true'])
+	> .block-editor-list-view-block__contents-cell::after {
+	top: 33%;
+	transform: translateY(-33%);
+	background-color: var(--maxi-background-yellow);
+	box-shadow: 0 8px 0 var(--maxi-admin-grey);
+}
+
+// Three dots - interaction + background + hidden-parent (slightly smaller for better spacing) - includes when block itself is also hidden
+.block-editor-list-view-tree
+	[data-maxi-interaction='true'][data-maxi-background='true'][data-maxi-hidden-parent='true']
+	> .block-editor-list-view-block__contents-cell::after {
+	top: 25%;
+	transform: translateY(-25%);
+	width: 5px;
+	height: 5px;
+	background-color: var(--maxi-interaction-pink);
+	box-shadow: 0 6px 0 var(--maxi-background-yellow),
+		0 12px 0 var(--maxi-admin-grey);
+}
+
+// When a block with interaction is selected, make the text pink
 .block-editor-list-view-leaf.is-selected[data-maxi-interaction='true'],
 .block-editor-list-view__block.is-selected[data-maxi-interaction='true'] {
-	// Blue dot when selected
-	> .block-editor-list-view-block__contents-cell::after {
-		background-color: var(--maxi-interaction-pink) !important;
-	}
-
-	// Blue text when selected
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
 	.components-truncate {
@@ -835,56 +898,9 @@ body.maxi-blocks--active
 	}
 }
 
-// Interaction indicator in List View - yellow dot for blocks with background layers
-.block-editor-list-view-tree
-	[data-maxi-background='true']
-	> .block-editor-list-view-block__contents-cell::after {
-	content: '';
-	position: absolute;
-	right: 3px;
-	top: 50%;
-	transform: translateY(-50%);
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background-color: var(--maxi-background-yellow);
-	pointer-events: none;
-}
-
-// Handle case where both interaction and background are present
-.block-editor-list-view-tree
-	[data-maxi-interaction='true'][data-maxi-background='true']
-	> .block-editor-list-view-block__contents-cell::after {
-	// Shift the background dot to the left of the interaction dot
-	top: 30%;
-	transform: translateY(-30%);
-}
-
-// Create a second pseudo-element for the interaction dot when both are present
-.block-editor-list-view-tree
-	[data-maxi-interaction='true'][data-maxi-background='true']
-	> .block-editor-list-view-block__contents-cell::before {
-	content: '';
-	position: absolute;
-	right: 3px;
-	top: 70%;
-	transform: translateY(-70%);
-	width: 6px;
-	height: 6px;
-	border-radius: 50%;
-	background-color: var(--maxi-interaction-pink);
-	pointer-events: none;
-}
-
-// When a block with background is selected, make the dot and text yellow
-.block-editor-list-view-leaf.is-selected[data-maxi-background='true'],
-.block-editor-list-view__block.is-selected[data-maxi-background='true'] {
-	// Yellow dot when selected
-	> .block-editor-list-view-block__contents-cell::after {
-		background-color: var(--maxi-background-yellow) !important;
-	}
-
-	// Yellow text when selected
+// When a block with background only is selected (no interaction), make the text yellow
+.block-editor-list-view-leaf.is-selected[data-maxi-background='true']:not([data-maxi-interaction='true']),
+.block-editor-list-view__block.is-selected[data-maxi-background='true']:not([data-maxi-interaction='true']) {
 	.block-editor-list-view-block-contents,
 	.block-editor-list-view-block-select-button__title,
 	.components-truncate {
@@ -892,24 +908,44 @@ body.maxi-blocks--active
 	}
 }
 
-// When both are selected, prioritize interaction pink for text, but keep dots
-.block-editor-list-view-leaf.is-selected[data-maxi-interaction='true'][data-maxi-background='true'],
-.block-editor-list-view__block.is-selected[data-maxi-interaction='true'][data-maxi-background='true'] {
-	// Interaction dot (before)
-	> .block-editor-list-view-block__contents-cell::before {
-		background-color: var(--maxi-interaction-pink) !important;
-	}
-	// Background dot (after)
-	> .block-editor-list-view-block__contents-cell::after {
-		background-color: var(--maxi-background-yellow) !important;
-	}
+// Highlight hidden Maxi blocks in List View
 
-	// Text color - prioritize pink as it's likely more important/visible
+.block-editor-list-view__block[data-maxi-hidden='true'],
+.block-editor-list-view-leaf[data-maxi-hidden='true'] {
+	opacity: 0.7;
+}
+
+.block-editor-list-view__block[data-maxi-hidden='true']
+	.block-editor-list-view__expander,
+.block-editor-list-view-leaf[data-maxi-hidden='true']
+	.block-editor-list-view__expander {
+	color: var(--maxi-admin-grey) !important; // grey highlight for expander
+}
+
+// Target icon container with has-colors and selected rows
+.block-editor-list-view-leaf[data-maxi-hidden='true']
+	.block-editor-list-view__block-icon.has-colors,
+.block-editor-list-view__block[data-maxi-hidden='true']
+	.block-editor-list-view__block-icon.has-colors,
+.block-editor-list-view-leaf[data-maxi-hidden='true'].is-selected
+	.block-editor-list-view__block-icon,
+.block-editor-list-view__block[data-maxi-hidden='true'].is-selected
+	.block-editor-list-view__block-icon {
+	color: var(--maxi-admin-grey) !important;
+}
+
+// Make the List View row text grey for hidden blocks
+.block-editor-list-view-leaf[data-maxi-hidden='true']
 	.block-editor-list-view-block-contents,
+.block-editor-list-view__block[data-maxi-hidden='true']
+	.block-editor-list-view-block-contents,
+.block-editor-list-view-leaf[data-maxi-hidden='true']
 	.block-editor-list-view-block-select-button__title,
-	.components-truncate {
-		color: var(--maxi-interaction-pink) !important;
-	}
+.block-editor-list-view__block[data-maxi-hidden='true']
+	.block-editor-list-view-block-select-button__title,
+.block-editor-list-view-leaf[data-maxi-hidden='true'] .components-truncate,
+.block-editor-list-view__block[data-maxi-hidden='true'] .components-truncate {
+	color: var(--maxi-admin-grey) !important;
 }
 
 // Ensure the secondary sidebar has position relative for the legend
@@ -938,13 +974,13 @@ body.maxi-blocks--active
 	&__items {
 		display: flex;
 		flex-direction: row;
-		gap: 16px;
+		gap: 6px;
 	}
 
 	&__item {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 3px;
 	}
 
 	&__dot {

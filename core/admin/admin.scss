@@ -682,14 +682,6 @@ body.toplevel_page_maxi-blocks-dashboard {
 	background: var(--maxi-admin-white);
 	table-layout: fixed;
 
-	tr th[colspan='4'] {
-		background: var(--maxi-admin-black);
-		color: var(--maxi-admin-white);
-		padding: 12px;
-		text-align: left;
-		border-bottom: 1px solid #dee2e6;
-	}
-
 	td {
 		background: var(--maxi-admin-white);
 		padding: 12px;

@@ -325,7 +325,12 @@ const getButtonIconStyles = ({
 
 		// Only compute and add hover values if not already in response (from iconHoverStatus block)
 		// This preserves hoverSvgStyles and other hover-specific styles
-		if (!iconHoverStatus || !response[hoverTarget]) {
+		if (!iconHoverStatus) {
+			response = {
+				...response,
+				[`${normalTarget} svg path`]: pathStyles,
+			};
+		} else if (!response[hoverTarget]) {
 			// Compute cached hover values if needed
 			if (!cachedHoverIconObj) {
 				cachedHoverIconObj =

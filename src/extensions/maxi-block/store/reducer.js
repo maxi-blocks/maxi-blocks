@@ -1,6 +1,8 @@
 const reducer = (
 	state = {
 		blocks: {},
+		blockClientIdsByUniqueID: {},
+		customLabelClientIds: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
@@ -13,7 +15,22 @@ const reducer = (
 ) => {
 	switch (action.type) {
 		case 'ADD_BLOCK': {
-			const { uniqueID, clientId, blockRoot } = action;
+			const { uniqueID, clientId, blockRoot, customLabel } = action;
+			const existingClientIds =
+				state.blockClientIdsByUniqueID[uniqueID] ?? [];
+			const nextClientIds = existingClientIds.includes(clientId)
+				? existingClientIds
+				: [...existingClientIds, clientId];
+			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
+
+			if (customLabel) {
+				const existingLabelClientIds =
+					state.customLabelClientIds[customLabel] ?? [];
+				nextCustomLabelClientIds[customLabel] =
+					existingLabelClientIds.includes(clientId)
+						? existingLabelClientIds
+						: [...existingLabelClientIds, clientId];
+			}
 
 			return {
 				...state,
@@ -22,8 +39,14 @@ const reducer = (
 					[uniqueID]: {
 						clientId,
 						blockRoot,
+						customLabel,
 					},
 				},
+				blockClientIdsByUniqueID: {
+					...state.blockClientIdsByUniqueID,
+					[uniqueID]: nextClientIds,
+				},
+				customLabelClientIds: nextCustomLabelClientIds,
 				// Also add to uniqueID cache for O(1) lookup
 				uniqueIDCache: {
 					...state.uniqueIDCache,
@@ -32,12 +55,56 @@ const reducer = (
 			};
 		}
 		case 'REMOVE_BLOCK': {
-			const { uniqueID, clientId } = action;
+			const { uniqueID, clientId, customLabel } = action;
+			const blockData = state.blocks[uniqueID];
+			const resolvedCustomLabel = customLabel ?? blockData?.customLabel;
+			const existingClientIds =
+				state.blockClientIdsByUniqueID[uniqueID] ?? [];
+			const nextClientIds = existingClientIds.filter(
+				existingClientId => existingClientId !== clientId
+			);
+			const nextBlockClientIdsByUniqueID = {
+				...state.blockClientIdsByUniqueID,
+			};
+			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
 
-			delete state.blocks[uniqueID];
+			if (nextClientIds.length) {
+				nextBlockClientIdsByUniqueID[uniqueID] = nextClientIds;
+			} else {
+				delete nextBlockClientIdsByUniqueID[uniqueID];
+			}
+
+			if (resolvedCustomLabel) {
+				const existingLabelClientIds =
+					state.customLabelClientIds[resolvedCustomLabel] ?? [];
+				const nextLabelClientIds = existingLabelClientIds.filter(
+					existingClientId => existingClientId !== clientId
+				);
+				if (nextLabelClientIds.length) {
+					nextCustomLabelClientIds[resolvedCustomLabel] =
+						nextLabelClientIds;
+				} else {
+					delete nextCustomLabelClientIds[resolvedCustomLabel];
+				}
+			}
+
+			const remainingClientId = nextClientIds[0];
+			const nextBlocks = { ...state.blocks };
+
+			if (remainingClientId) {
+				nextBlocks[uniqueID] = {
+					...nextBlocks[uniqueID],
+					clientId: remainingClientId,
+				};
+			} else {
+				delete nextBlocks[uniqueID];
+			}
 
 			return {
 				...state,
+				blocks: nextBlocks,
+				blockClientIdsByUniqueID: nextBlockClientIdsByUniqueID,
+				customLabelClientIds: nextCustomLabelClientIds,
 				lastInsertedBlocks: state.lastInsertedBlocks.filter(
 					item => item !== clientId
 				),
@@ -165,19 +232,50 @@ const reducer = (
 
 			// Batch add multiple blocks in a single state update (performance optimization)
 			const newBlocks = { ...state.blocks };
+			const newBlockClientIdsByUniqueID = {
+				...state.blockClientIdsByUniqueID,
+			};
+			const newCustomLabelClientIds = {
+				...state.customLabelClientIds,
+			};
 			const newUniqueIDCache = { ...state.uniqueIDCache };
 
-			blocks.forEach(({ uniqueID, clientId, blockRoot }) => {
-				newBlocks[uniqueID] = {
-					clientId,
-					blockRoot,
-				};
-				newUniqueIDCache[uniqueID] = true;
-			});
+			blocks.forEach(
+				({ uniqueID, clientId, blockRoot, customLabel }) => {
+					newBlocks[uniqueID] = {
+						clientId,
+						blockRoot,
+						customLabel,
+					};
+
+					const existingClientIds =
+						newBlockClientIdsByUniqueID[uniqueID] ?? [];
+					if (!existingClientIds.includes(clientId)) {
+						newBlockClientIdsByUniqueID[uniqueID] = [
+							...existingClientIds,
+							clientId,
+						];
+					}
+
+					if (customLabel) {
+						const existingLabelClientIds =
+							newCustomLabelClientIds[customLabel] ?? [];
+						if (!existingLabelClientIds.includes(clientId)) {
+							newCustomLabelClientIds[customLabel] = [
+								...existingLabelClientIds,
+								clientId,
+							];
+						}
+					}
+					newUniqueIDCache[uniqueID] = true;
+				}
+			);
 
 			return {
 				...state,
 				blocks: newBlocks,
+				blockClientIdsByUniqueID: newBlockClientIdsByUniqueID,
+				customLabelClientIds: newCustomLabelClientIds,
 				uniqueIDCache: newUniqueIDCache,
 			};
 		}

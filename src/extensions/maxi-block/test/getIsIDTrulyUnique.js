@@ -31,6 +31,26 @@ const mockLastInsertedBlocks = [
 	'new-client-id-2',
 	'pasted-client-id-3',
 ];
+const mockUniqueIDCounts = {
+	'button-maxi-7f750e3e-u': 1,
+	'button-maxi-8f753e7g-u': 1,
+	'button-maxi-9f75ge3g-u': 1,
+	'button-maxi-0f75de4g-u': 1,
+	'divider-maxi-2l45ss4g-u': 1,
+	'column-maxi-3eu7sf1p-uf45se4g-u': 1,
+};
+
+const getDefaultUniqueIDCount = id => {
+	if (id in mockUniqueIDCounts) {
+		return mockUniqueIDCounts[id];
+	}
+
+	if (id in mockBlocks) {
+		return 1;
+	}
+
+	return 0;
+};
 
 jest.mock('@wordpress/data', () => {
 	return {
@@ -43,6 +63,7 @@ jest.mock('@wordpress/data', () => {
 					),
 					isUniqueIDCacheLoaded: jest.fn(() => true),
 					isUniqueIDInCache: jest.fn(id => id in mockCache),
+					getUniqueIDCount: jest.fn(id => getDefaultUniqueIDCount(id)),
 				};
 			}
 			// Fallback for core/block-editor
@@ -307,20 +328,23 @@ describe('getIsIDTrulyUnique', () => {
 		// mockBlocks has: 'button-maxi-8f753e7g-u' appears once in mockBlocks object
 		// But the tree traversal fallback would find it twice
 		// Let's make the cache not loaded for these old tests to use tree traversal
-		select.mockImplementation(storeName => {
-			if (storeName === 'maxiBlocks/blocks') {
+			select.mockImplementation(storeName => {
+				if (storeName === 'maxiBlocks/blocks') {
+					return {
+						getBlocks: jest.fn(() => mockBlocks),
+						getLastInsertedBlocks: jest.fn(
+							() => mockLastInsertedBlocks
+						),
+						isUniqueIDCacheLoaded: jest.fn(() => false),
+						isUniqueIDInCache: jest.fn(() => false),
+						getUniqueIDCount: jest.fn(id =>
+							getDefaultUniqueIDCount(id)
+						),
+					};
+				}
 				return {
-					getBlocks: jest.fn(() => mockBlocks),
-					getLastInsertedBlocks: jest.fn(
-						() => mockLastInsertedBlocks
-					),
-					isUniqueIDCacheLoaded: jest.fn(() => false),
-					isUniqueIDInCache: jest.fn(() => false),
-				};
-			}
-			return {
-				getBlocks: jest.fn(
-					clientId =>
+					getBlocks: jest.fn(
+						clientId =>
 						!clientId && [
 							{
 								clientId:
@@ -367,6 +391,9 @@ describe('getIsIDTrulyUnique', () => {
 					),
 					isUniqueIDCacheLoaded: jest.fn(() => false),
 					isUniqueIDInCache: jest.fn(() => false),
+					getUniqueIDCount: jest.fn(id =>
+						getDefaultUniqueIDCount(id)
+					),
 				};
 			}
 			return {
@@ -409,6 +436,9 @@ describe('getIsIDTrulyUnique', () => {
 					),
 					isUniqueIDCacheLoaded: jest.fn(() => false),
 					isUniqueIDInCache: jest.fn(() => false),
+					getUniqueIDCount: jest.fn(id =>
+						getDefaultUniqueIDCount(id)
+					),
 				};
 			}
 			return {
@@ -464,6 +494,9 @@ describe('getIsIDTrulyUnique', () => {
 					),
 					isUniqueIDCacheLoaded: jest.fn(() => false),
 					isUniqueIDInCache: jest.fn(() => false),
+					getUniqueIDCount: jest.fn(id =>
+						getDefaultUniqueIDCount(id)
+					),
 				};
 			}
 			return {
@@ -512,6 +545,9 @@ describe('getIsIDTrulyUnique', () => {
 					),
 					isUniqueIDCacheLoaded: jest.fn(() => false),
 					isUniqueIDInCache: jest.fn(() => false),
+					getUniqueIDCount: jest.fn(id =>
+						getDefaultUniqueIDCount(id)
+					),
 				};
 			}
 			return {
@@ -599,6 +635,9 @@ describe('getIsIDTrulyUnique', () => {
 						),
 						isUniqueIDCacheLoaded: jest.fn(() => true),
 						isUniqueIDInCache: jest.fn(id => id in mockCache),
+						getUniqueIDCount: jest.fn(id =>
+							id === 'button-maxi-duplicate-u' ? 2 : 0
+						),
 					};
 				}
 				return {
@@ -648,14 +687,15 @@ describe('getIsIDTrulyUnique', () => {
 		it('Should detect when cache is not loaded and fall back to tree traversal', () => {
 			// Mock cache not loaded
 			select.mockImplementation(storeName => {
-				if (storeName === 'maxiBlocks/blocks') {
-					return {
-						getBlocks: jest.fn(() => ({})),
-						getLastInsertedBlocks: jest.fn(() => []),
-						isUniqueIDCacheLoaded: jest.fn(() => false),
-						isUniqueIDInCache: jest.fn(() => false),
-					};
-				}
+					if (storeName === 'maxiBlocks/blocks') {
+						return {
+							getBlocks: jest.fn(() => ({})),
+							getLastInsertedBlocks: jest.fn(() => []),
+							isUniqueIDCacheLoaded: jest.fn(() => false),
+							isUniqueIDInCache: jest.fn(() => false),
+							getUniqueIDCount: jest.fn(() => 0),
+						};
+					}
 				return {
 					getBlocks: jest.fn(() => []),
 					getBlock: jest.fn(() => false),
@@ -677,36 +717,38 @@ describe('getIsIDTrulyUnique', () => {
 		it('Should respect repeatCount parameter', () => {
 			// Mock to return 2 instances
 			select.mockImplementation(storeName => {
-				if (storeName === 'maxiBlocks/blocks') {
-					return {
-						getBlocks: jest.fn(() => {
-							const blocks = {};
-							// Simulate 1 block with ID (since keys must be unique)
-							blocks['button-maxi-twice-u'] = {
-								clientId: 'client-1',
-								blockRoot: null,
-							};
-							return blocks;
-						}),
-						getLastInsertedBlocks: jest.fn(() => []),
-						isUniqueIDCacheLoaded: jest.fn(() => true),
-						isUniqueIDInCache: jest.fn(() => false),
-					};
-				}
+					if (storeName === 'maxiBlocks/blocks') {
+						return {
+							getBlocks: jest.fn(() => {
+								const blocks = {};
+								// Simulate 1 block with ID (since keys must be unique)
+								blocks['button-maxi-twice-u'] = {
+									clientId: 'client-1',
+									blockRoot: null,
+								};
+								return blocks;
+							}),
+							getLastInsertedBlocks: jest.fn(() => []),
+							isUniqueIDCacheLoaded: jest.fn(() => true),
+							isUniqueIDInCache: jest.fn(() => false),
+							getUniqueIDCount: jest.fn(id =>
+								id === 'button-maxi-twice-u' ? 2 : 0
+							),
+						};
+					}
 				return {
 					getBlocks: jest.fn(() => []),
 					getBlock: jest.fn(() => false),
 				};
 			});
 
-			// With repeatCount=2, should be valid (count is 1, which is <= 2)
-			expect(getIsIDTrulyUnique('button-maxi-twice-u', 2)).toBe(true);
+				// With repeatCount=2, should be valid
+				expect(getIsIDTrulyUnique('button-maxi-twice-u', 2)).toBe(true);
 
-			// With repeatCount=1, would be invalid if count was 2
-			// But our mock only returns 1 instance, so it's valid
-			expect(getIsIDTrulyUnique('button-maxi-twice-u', 1)).toBe(true);
+				// With repeatCount=1, should be invalid for a count of 2
+				expect(getIsIDTrulyUnique('button-maxi-twice-u', 1)).toBe(false);
+			});
 		});
-	});
 
 	/**
 	 * INTEGRATION TESTS
@@ -715,22 +757,25 @@ describe('getIsIDTrulyUnique', () => {
 	describe('Real-world scenarios', () => {
 		beforeEach(() => {
 			// Reset mocks to default state
-			select.mockImplementation(storeName => {
-				if (storeName === 'maxiBlocks/blocks') {
+				select.mockImplementation(storeName => {
+					if (storeName === 'maxiBlocks/blocks') {
+						return {
+							getBlocks: jest.fn(() => mockBlocks),
+							getLastInsertedBlocks: jest.fn(
+								() => mockLastInsertedBlocks
+							),
+							isUniqueIDCacheLoaded: jest.fn(() => true),
+							isUniqueIDInCache: jest.fn(id => id in mockCache),
+							getUniqueIDCount: jest.fn(id =>
+								getDefaultUniqueIDCount(id)
+							),
+						};
+					}
 					return {
-						getBlocks: jest.fn(() => mockBlocks),
-						getLastInsertedBlocks: jest.fn(
-							() => mockLastInsertedBlocks
-						),
-						isUniqueIDCacheLoaded: jest.fn(() => true),
-						isUniqueIDInCache: jest.fn(id => id in mockCache),
+						getBlocks: jest.fn(() => []),
+						getBlock: jest.fn(() => false),
 					};
-				}
-				return {
-					getBlocks: jest.fn(() => []),
-					getBlock: jest.fn(() => false),
-				};
-			});
+				});
 		});
 
 		it('Scenario: User copies block within same page', () => {
@@ -785,14 +830,15 @@ describe('getIsIDTrulyUnique', () => {
 
 			// Simulate batch paste where all clientIds are in lastInsertedBlocks
 			select.mockImplementation(storeName => {
-				if (storeName === 'maxiBlocks/blocks') {
-					return {
-						getBlocks: jest.fn(() => ({})),
-						getLastInsertedBlocks: jest.fn(() => batchClientIds),
-						isUniqueIDCacheLoaded: jest.fn(() => true),
-						isUniqueIDInCache: jest.fn(() => false),
-					};
-				}
+					if (storeName === 'maxiBlocks/blocks') {
+						return {
+							getBlocks: jest.fn(() => ({})),
+							getLastInsertedBlocks: jest.fn(() => batchClientIds),
+							isUniqueIDCacheLoaded: jest.fn(() => true),
+							isUniqueIDInCache: jest.fn(() => false),
+							getUniqueIDCount: jest.fn(() => 0),
+						};
+					}
 				return {
 					getBlocks: jest.fn(() => []),
 					getBlock: jest.fn(() => false),

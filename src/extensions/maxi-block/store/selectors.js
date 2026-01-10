@@ -47,6 +47,22 @@ const selectors = {
 
 		return false;
 	},
+	getUniqueIDClientIds(state, uniqueID) {
+		if (!state || !uniqueID) return [];
+		return state.blockClientIdsByUniqueID?.[uniqueID] ?? [];
+	},
+	getUniqueIDCount(state, uniqueID) {
+		if (!state || !uniqueID) return 0;
+		return state.blockClientIdsByUniqueID?.[uniqueID]?.length ?? 0;
+	},
+	getCustomLabelClientIds(state, customLabel) {
+		if (!state || !customLabel) return [];
+		return state.customLabelClientIds?.[customLabel] ?? [];
+	},
+	getCustomLabelCount(state, customLabel) {
+		if (!state || !customLabel) return 0;
+		return state.customLabelClientIds?.[customLabel]?.length ?? 0;
+	},
 	// UniqueID cache selectors for O(1) lookup performance
 	isUniqueIDCacheLoaded(state) {
 		return state?.uniqueIDCacheLoaded ?? false;

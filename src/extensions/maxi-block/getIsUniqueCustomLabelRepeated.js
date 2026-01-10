@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { select } from '@wordpress/data';
+
+/**
  * Internal dependencies
  */
 import goThroughMaxiBlocks from './goThroughMaxiBlocks';
@@ -8,11 +13,25 @@ const getIsUniqueCustomLabelRepeated = (
 	uniqueIDToIgnore,
 	repeatCount = 1
 ) => {
+	const { getBlock, getCustomLabelCount } = select('maxiBlocks/blocks');
+	const existingCount = getCustomLabelCount(uniqueCustomLabelToCompare);
+	const ignoredBlock = uniqueIDToIgnore
+		? getBlock(uniqueIDToIgnore)
+		: null;
+	const shouldIgnoreFromStore =
+		ignoredBlock?.customLabel === uniqueCustomLabelToCompare;
+	const adjustedCount =
+		shouldIgnoreFromStore && existingCount > 0
+			? Math.max(existingCount - 1, 0)
+			: existingCount;
+
+	if (adjustedCount > repeatCount) {
+		return true;
+	}
+
 	let currentRepeatCount = 0;
 
-	// ALWAYS use tree traversal to check the actual block editor state
-	// This is crucial for batch block creation (like column templates)
-	// where Redux store hasn't been updated yet but blocks are in the editor
+	// Fallback to tree traversal to handle batch creation timing gaps
 	goThroughMaxiBlocks(block => {
 		const { customLabel, uniqueID } = block.attributes;
 		if (

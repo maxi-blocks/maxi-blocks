@@ -1,3 +1,4 @@
+import { select } from '@wordpress/data';
 import {
 	getPostStyles,
 	getBlockStyles,
@@ -7,6 +8,15 @@ import {
 	getAllStylesAreSaved,
 	getDefaultGroupAttributes,
 } from '@extensions/styles/store/selectors';
+
+jest.mock('@wordpress/data', () => ({
+	select: jest.fn(() => ({
+		getBlocks: jest.fn(() => ({
+			block1: { clientId: 'client-1' },
+			block2: { clientId: 'client-2' },
+		})),
+	})),
+}));
 
 jest.mock('@extensions/maxi-block', () => ({
 	goThroughMaxiBlocks: jest.fn(callback => {
@@ -18,6 +28,15 @@ jest.mock('@extensions/maxi-block', () => ({
 }));
 
 describe('Styles store selectors', () => {
+	beforeEach(() => {
+		select.mockImplementation(() => ({
+			getBlocks: jest.fn(() => ({
+				block1: { clientId: 'client-1' },
+				block2: { clientId: 'client-2' },
+			})),
+		}));
+	});
+
 	describe('getPostStyles', () => {
 		it('Returns styles from state if present', () => {
 			const state = { styles: { block1: { color: 'red' } } };
@@ -120,6 +139,21 @@ describe('Styles store selectors', () => {
 			};
 
 			expect(getAllStylesAreSaved(state)).toBe(false);
+		});
+
+		it('Falls back to traversal when store is empty', () => {
+			select.mockImplementation(() => ({
+				getBlocks: jest.fn(() => ({})),
+			}));
+
+			const state = {
+				styles: {
+					block1: { color: 'red' },
+					block2: { color: 'blue' },
+				},
+			};
+
+			expect(getAllStylesAreSaved(state)).toBe(true);
 		});
 
 		it('Returns false when no styles in state', () => {

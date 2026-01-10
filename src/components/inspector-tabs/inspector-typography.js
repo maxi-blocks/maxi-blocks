@@ -125,7 +125,7 @@ const typography = ({
 									<TypographyControl
 										{...getGroupAttributes(
 											attributes,
-											'typography',
+											typographyTarget,
 											true,
 											prefix
 										)}
@@ -141,6 +141,7 @@ const typography = ({
 										styleCardPrefix={styleCardPrefix}
 										isList={isList}
 										globalProps={hoverGlobalProps}
+										textLevel={textLevel}
 										prefix={prefix}
 									/>
 								)}

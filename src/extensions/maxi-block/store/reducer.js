@@ -1,7 +1,11 @@
+const isSafeMapKey = key =>
+	key !== '__proto__' && key !== 'prototype' && key !== 'constructor';
+
 const reducer = (
 	state = {
 		blocks: {},
 		blockClientIdsByUniqueID: {},
+		blocksByClientId: {},
 		customLabelClientIds: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
@@ -22,14 +26,27 @@ const reducer = (
 				? existingClientIds
 				: [...existingClientIds, clientId];
 			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
+			const nextBlocksByClientId = {
+				...state.blocksByClientId,
+				[clientId]: {
+					clientId,
+					uniqueID,
+					blockRoot,
+					customLabel,
+				},
+			};
 
-			if (customLabel) {
+			if (customLabel != null) {
+				const labelKey = String(customLabel);
 				const existingLabelClientIds =
-					state.customLabelClientIds[customLabel] ?? [];
-				nextCustomLabelClientIds[customLabel] =
+					state.customLabelClientIds[labelKey] ?? [];
+
+				if (isSafeMapKey(labelKey)) {
+					nextCustomLabelClientIds[labelKey] =
 					existingLabelClientIds.includes(clientId)
 						? existingLabelClientIds
 						: [...existingLabelClientIds, clientId];
+				}
 			}
 
 			return {
@@ -46,6 +63,7 @@ const reducer = (
 					...state.blockClientIdsByUniqueID,
 					[uniqueID]: nextClientIds,
 				},
+				blocksByClientId: nextBlocksByClientId,
 				customLabelClientIds: nextCustomLabelClientIds,
 				// Also add to uniqueID cache for O(1) lookup
 				uniqueIDCache: {
@@ -57,7 +75,11 @@ const reducer = (
 		case 'REMOVE_BLOCK': {
 			const { uniqueID, clientId, customLabel } = action;
 			const blockData = state.blocks[uniqueID];
-			const resolvedCustomLabel = customLabel ?? blockData?.customLabel;
+			const blockDataByClientId = state.blocksByClientId[clientId];
+			const resolvedCustomLabel =
+				customLabel ??
+				blockDataByClientId?.customLabel ??
+				blockData?.customLabel;
 			const existingClientIds =
 				state.blockClientIdsByUniqueID[uniqueID] ?? [];
 			const nextClientIds = existingClientIds.filter(
@@ -67,6 +89,9 @@ const reducer = (
 				...state.blockClientIdsByUniqueID,
 			};
 			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
+			const nextBlocksByClientId = { ...state.blocksByClientId };
+
+			delete nextBlocksByClientId[clientId];
 
 			if (nextClientIds.length) {
 				nextBlockClientIdsByUniqueID[uniqueID] = nextClientIds;
@@ -74,17 +99,20 @@ const reducer = (
 				delete nextBlockClientIdsByUniqueID[uniqueID];
 			}
 
-			if (resolvedCustomLabel) {
-				const existingLabelClientIds =
-					state.customLabelClientIds[resolvedCustomLabel] ?? [];
-				const nextLabelClientIds = existingLabelClientIds.filter(
-					existingClientId => existingClientId !== clientId
-				);
-				if (nextLabelClientIds.length) {
-					nextCustomLabelClientIds[resolvedCustomLabel] =
-						nextLabelClientIds;
-				} else {
-					delete nextCustomLabelClientIds[resolvedCustomLabel];
+			if (resolvedCustomLabel != null) {
+				const labelKey = String(resolvedCustomLabel);
+
+				if (isSafeMapKey(labelKey)) {
+					const existingLabelClientIds =
+						state.customLabelClientIds[labelKey] ?? [];
+					const nextLabelClientIds = existingLabelClientIds.filter(
+						existingClientId => existingClientId !== clientId
+					);
+					if (nextLabelClientIds.length) {
+						nextCustomLabelClientIds[labelKey] = nextLabelClientIds;
+					} else {
+						delete nextCustomLabelClientIds[labelKey];
+					}
 				}
 			}
 
@@ -92,9 +120,13 @@ const reducer = (
 			const nextBlocks = { ...state.blocks };
 
 			if (remainingClientId) {
+				const remainingBlockData =
+					nextBlocksByClientId[remainingClientId];
 				nextBlocks[uniqueID] = {
 					...nextBlocks[uniqueID],
 					clientId: remainingClientId,
+					blockRoot: remainingBlockData?.blockRoot,
+					customLabel: remainingBlockData?.customLabel,
 				};
 			} else {
 				delete nextBlocks[uniqueID];
@@ -104,6 +136,7 @@ const reducer = (
 				...state,
 				blocks: nextBlocks,
 				blockClientIdsByUniqueID: nextBlockClientIdsByUniqueID,
+				blocksByClientId: nextBlocksByClientId,
 				customLabelClientIds: nextCustomLabelClientIds,
 				lastInsertedBlocks: state.lastInsertedBlocks.filter(
 					item => item !== clientId
@@ -235,6 +268,9 @@ const reducer = (
 			const newBlockClientIdsByUniqueID = {
 				...state.blockClientIdsByUniqueID,
 			};
+			const newBlocksByClientId = {
+				...state.blocksByClientId,
+			};
 			const newCustomLabelClientIds = {
 				...state.customLabelClientIds,
 			};
@@ -244,6 +280,12 @@ const reducer = (
 				({ uniqueID, clientId, blockRoot, customLabel }) => {
 					newBlocks[uniqueID] = {
 						clientId,
+						blockRoot,
+						customLabel,
+					};
+					newBlocksByClientId[clientId] = {
+						clientId,
+						uniqueID,
 						blockRoot,
 						customLabel,
 					};
@@ -257,14 +299,18 @@ const reducer = (
 						];
 					}
 
-					if (customLabel) {
-						const existingLabelClientIds =
-							newCustomLabelClientIds[customLabel] ?? [];
-						if (!existingLabelClientIds.includes(clientId)) {
-							newCustomLabelClientIds[customLabel] = [
-								...existingLabelClientIds,
-								clientId,
-							];
+					if (customLabel != null) {
+						const labelKey = String(customLabel);
+
+						if (isSafeMapKey(labelKey)) {
+							const existingLabelClientIds =
+								newCustomLabelClientIds[labelKey] ?? [];
+							if (!existingLabelClientIds.includes(clientId)) {
+								newCustomLabelClientIds[labelKey] = [
+									...existingLabelClientIds,
+									clientId,
+								];
+							}
 						}
 					}
 					newUniqueIDCache[uniqueID] = true;
@@ -275,6 +321,7 @@ const reducer = (
 				...state,
 				blocks: newBlocks,
 				blockClientIdsByUniqueID: newBlockClientIdsByUniqueID,
+				blocksByClientId: newBlocksByClientId,
 				customLabelClientIds: newCustomLabelClientIds,
 				uniqueIDCache: newUniqueIDCache,
 			};

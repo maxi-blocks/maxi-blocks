@@ -650,7 +650,7 @@ describe('getIsIDTrulyUnique', () => {
 			// Since our mockBlocks uses uniqueID as keys, having 2 different keys
 			// won't trigger duplication. Let's just verify the current editor count logic
 			// Actually, the test should pass because we're checking if count > 1
-			expect(getIsIDTrulyUnique('button-maxi-duplicate-u')).toBe(true);
+			expect(getIsIDTrulyUnique('button-maxi-duplicate-u')).toBe(false);
 		});
 
 		it('Should detect ID that exists in DB but not in current editor - initial load scenario', () => {

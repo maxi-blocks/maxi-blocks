@@ -25,9 +25,9 @@ class BatchBlockDispatcher {
 	 * @param {string} uniqueID     - Block's unique ID
 	 * @param {string} clientId     - Block's client ID
 	 * @param {*}      blockRoot    - Block's root element
-	 * @param {string} customLabel  - Block's custom label
+	 * @param {string} [customLabel]  - Block's custom label
 	 */
-	addBlock(uniqueID, clientId, blockRoot, customLabel) {
+	addBlock(uniqueID, clientId, blockRoot, customLabel = null) {
 		this.pendingBlocks.push({
 			uniqueID,
 			clientId,

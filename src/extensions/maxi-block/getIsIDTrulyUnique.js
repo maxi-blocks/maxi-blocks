@@ -18,7 +18,7 @@ import goThroughMaxiBlocks from './goThroughMaxiBlocks';
  * @returns {boolean}          - True if ID is unique (appears <= repeatCount times)
  */
 const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
-	if (!id.endsWith('-u')) return false;
+	if (typeof id !== 'string' || !id.endsWith('-u')) return false;
 
 	const {
 		isUniqueIDCacheLoaded,
@@ -31,7 +31,7 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 	if (isUniqueIDCacheLoaded()) {
 		const existsInDB = isUniqueIDInCache(id);
 
-		const currentEditorCount = getUniqueIDCount(id);
+		const currentEditorCount = Number(getUniqueIDCount?.(id) ?? 0);
 
 		// Check if ID exists in DB but not in current editor
 		// This could mean:
@@ -64,7 +64,13 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		const { uniqueID } = block.attributes;
 		if (uniqueID === id) {
 			currentRepeatCount += 1;
+
+			if (currentRepeatCount > repeatCount) {
+				return true;
+			}
 		}
+
+		return false;
 	});
 
 	if (currentRepeatCount > repeatCount) {

@@ -15,6 +15,7 @@ jest.mock('@wordpress/data', () => ({
 			block1: { clientId: 'client-1' },
 			block2: { clientId: 'client-2' },
 		})),
+		getBlockClientIds: jest.fn(() => ['client-1', 'client-2']),
 	})),
 }));
 
@@ -34,6 +35,7 @@ describe('Styles store selectors', () => {
 				block1: { clientId: 'client-1' },
 				block2: { clientId: 'client-2' },
 			})),
+			getBlockClientIds: jest.fn(() => ['client-1', 'client-2']),
 		}));
 	});
 
@@ -144,6 +146,7 @@ describe('Styles store selectors', () => {
 		it('Falls back to traversal when store is empty', () => {
 			select.mockImplementation(() => ({
 				getBlocks: jest.fn(() => ({})),
+				getBlockClientIds: jest.fn(() => []),
 			}));
 
 			const state = {
@@ -154,6 +157,8 @@ describe('Styles store selectors', () => {
 			};
 
 			expect(getAllStylesAreSaved(state)).toBe(true);
+			const { goThroughMaxiBlocks } = require('@extensions/maxi-block');
+			expect(goThroughMaxiBlocks).toHaveBeenCalled();
 		});
 
 		it('Returns false when no styles in state', () => {

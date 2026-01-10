@@ -54,11 +54,24 @@ export const getAllStylesAreSaved = state => {
 	if (state.styles) {
 		const maxiBlocksStore = select('maxiBlocks/blocks');
 		const maxiBlocks = maxiBlocksStore?.getBlocks?.();
+		const maxiClientIds = maxiBlocksStore?.getBlockClientIds?.() ?? [];
+		const maxiBlocksCount = Object.keys(maxiBlocks ?? {}).length;
+		const hasCompleteStore =
+			maxiBlocksCount > 0 &&
+			maxiBlocksCount === maxiClientIds.length;
 
-		if (maxiBlocks && Object.keys(maxiBlocks).length > 0) {
-			return Object.keys(maxiBlocks).every(
+		if (maxiBlocks && maxiBlocksCount > 0) {
+			const hasAllStyles = Object.keys(maxiBlocks).every(
 				uniqueID => !!state.styles[uniqueID]
 			);
+
+			if (!hasAllStyles) {
+				return false;
+			}
+
+			if (hasCompleteStore) {
+				return true;
+			}
 		}
 
 		let allStylesAreSaved = true;

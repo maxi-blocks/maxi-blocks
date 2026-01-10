@@ -1,3 +1,5 @@
+const EMPTY_ARRAY = [];
+
 const selectors = {
 	getBlocks(state) {
 		if (state) return state.blocks;
@@ -11,6 +13,10 @@ const selectors = {
 	},
 	getBlockByClientId(state, clientId) {
 		if (state && clientId) {
+			if (state.blocksByClientId?.[clientId]) {
+				return state.blocksByClientId[clientId];
+			}
+
 			for (const uniqueID in state.blocks) {
 				if (state.blocks[uniqueID].clientId === clientId) {
 					return state.blocks[uniqueID];
@@ -48,19 +54,19 @@ const selectors = {
 		return false;
 	},
 	getUniqueIDClientIds(state, uniqueID) {
-		if (!state || !uniqueID) return [];
-		return state.blockClientIdsByUniqueID?.[uniqueID] ?? [];
+		if (!state || !uniqueID) return EMPTY_ARRAY;
+		return state.blockClientIdsByUniqueID?.[uniqueID] ?? EMPTY_ARRAY;
 	},
 	getUniqueIDCount(state, uniqueID) {
 		if (!state || !uniqueID) return 0;
 		return state.blockClientIdsByUniqueID?.[uniqueID]?.length ?? 0;
 	},
 	getCustomLabelClientIds(state, customLabel) {
-		if (!state || !customLabel) return [];
-		return state.customLabelClientIds?.[customLabel] ?? [];
+		if (!state || customLabel == null) return EMPTY_ARRAY;
+		return state.customLabelClientIds?.[customLabel] ?? EMPTY_ARRAY;
 	},
 	getCustomLabelCount(state, customLabel) {
-		if (!state || !customLabel) return 0;
+		if (!state || customLabel == null) return 0;
 		return state.customLabelClientIds?.[customLabel]?.length ?? 0;
 	},
 	// UniqueID cache selectors for O(1) lookup performance

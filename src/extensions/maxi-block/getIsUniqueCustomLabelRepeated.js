@@ -13,10 +13,14 @@ const getIsUniqueCustomLabelRepeated = (
 	uniqueIDToIgnore,
 	repeatCount = 1
 ) => {
-	const { getBlock, getCustomLabelCount } = select('maxiBlocks/blocks');
-	const existingCount = getCustomLabelCount(uniqueCustomLabelToCompare);
+	const store = select('maxiBlocks/blocks');
+	const existingCount =
+		typeof store?.getCustomLabelCount === 'function'
+			? store.getCustomLabelCount(uniqueCustomLabelToCompare)
+			: 0;
 	const ignoredBlock = uniqueIDToIgnore
-		? getBlock(uniqueIDToIgnore)
+		&& typeof store?.getBlock === 'function'
+		? store.getBlock(uniqueIDToIgnore)
 		: null;
 	const shouldIgnoreFromStore =
 		ignoredBlock?.customLabel === uniqueCustomLabelToCompare;

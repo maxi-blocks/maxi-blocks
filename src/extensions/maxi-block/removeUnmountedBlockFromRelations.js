@@ -22,11 +22,27 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 
 	if (!isDragging) {
 		const maxiBlocks = maxiBlocksStore?.getBlocks?.();
+		const maxiClientIds =
+			maxiBlocksStore?.getBlockClientIds?.() ??
+			Object.values(maxiBlocks ?? {})
+				.map(block => block?.clientId)
+				.filter(Boolean);
 
-		if (maxiBlocks && Object.keys(maxiBlocks).length > 0) {
+		const canUseStore =
+			Array.isArray(maxiClientIds) && maxiClientIds.length > 0;
+		let isStoreComplete = false;
+
+		if (canUseStore) {
+			const maxiBlocksCount = Object.keys(maxiBlocks ?? {}).length;
+			isStoreComplete =
+				maxiBlocksCount > 0 &&
+				maxiClientIds.length === maxiBlocksCount;
+		}
+
+		if (canUseStore) {
 			const { updateBlockAttributes } = dispatch('core/block-editor');
 
-			for (const { clientId } of Object.values(maxiBlocks)) {
+			for (const clientId of maxiClientIds) {
 				const attributes =
 					blockEditorStore.getBlockAttributes(clientId);
 				if (!attributes) continue;
@@ -43,12 +59,13 @@ const removeUnmountedBlockFromRelations = uniqueID => {
 						updateBlockAttributes(clientId, {
 							relations: filteredRelations,
 						});
-						return;
 					}
 				}
 			}
 
-			return;
+			if (isStoreComplete) {
+				return;
+			}
 		}
 
 		goThroughMaxiBlocks(({ clientId, attributes }) => {

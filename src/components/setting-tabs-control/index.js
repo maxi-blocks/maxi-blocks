@@ -8,13 +8,13 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import BaseControl from '@components/base-control';
-import Button from '@components/button';
-import { getForcedTabFromPath } from '@extensions/inspector';
+import BaseControl from '../base-control';
+import Button from '../button';
+import { getForcedTabFromPath } from '../../extensions/inspector';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
-} from '@extensions/indicators';
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
@@ -53,11 +53,6 @@ const SettingTabsControl = props => {
 		depth,
 		hasBorder = false,
 		showTooltip = false,
-		/**
-		 * Optional class name to be appended to the content wrapper (`.maxi-tabs-content`).
-		 * Useful for one-off styling or visual debugging without affecting other instances.
-		 */
-		contentClassName,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -93,8 +88,7 @@ const SettingTabsControl = props => {
 	const classesContent = classnames(
 		'maxi-tabs-content',
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null,
-		isNestedAccordion && 'maxi-tabs-content--nested',
-		contentClassName
+		isNestedAccordion && 'maxi-tabs-content--nested'
 	);
 
 	const setActiveTab = (tab, name) => {
@@ -131,18 +125,9 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
-						// Use item-level indicator metadata when provided to avoid
-						// extracting props from content that may not include overrides.
-						const hasIndicatorOverrides =
-							item.indicatorProps ||
-							item.extraIndicators ||
-							item.extraIndicatorsResponsive ||
-							item.ignoreIndicator ||
-							item.ignoreIndicatorGroups;
-						const itemsIndicators =
-							hasIndicatorOverrides || isEmpty(item.content)
-								? item
-								: cloneElement(item.content);
+						const itemsIndicators = !isEmpty(item.content)
+							? cloneElement(item.content)
+							: item;
 
 						const showButton = (
 							<Button
@@ -168,8 +153,7 @@ const SettingTabsControl = props => {
 										item.extraIndicators,
 										item.extraIndicatorsResponsive,
 										item.ignoreIndicator
-									) && 'maxi-tabs-control__button--active',
-									item.className
+									) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);
@@ -187,7 +171,16 @@ const SettingTabsControl = props => {
 								{!isEmpty(item.label) && item.label}
 								{!isEmpty(item.icon) && item.icon}
 								{item.showNotification && (
-									<div className='maxi-tabs-control__notification' />
+									<svg
+										className='maxi-tabs-control__notification'
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 9 9'
+									>
+										<path
+											fill='#ff4a17'
+											d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
+										/>
+									</svg>
 								)}
 							</Button>
 						);
@@ -214,7 +207,6 @@ const SettingTabsControl = props => {
 		<div className={classes}>
 			{type === 'buttons' && (
 				<BaseControl
-					__nextHasNoMarginBottom
 					label={label}
 					help={help}
 					aria-labelledby={label}

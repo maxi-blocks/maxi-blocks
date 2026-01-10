@@ -8,23 +8,23 @@ import { useCallback } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import AccordionControl from '@components/accordion-control';
-import BlockStylesControl from '@components/block-styles-control';
-import CustomLabel from '@components/custom-label';
-import ResponsiveTabsControl from '@components/responsive-tabs-control';
-import SettingTabsControl from '@components/setting-tabs-control';
-import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
-import SvgWidthControl from '@components/svg-width-control';
+import AccordionControl from '../../components/accordion-control';
+import BlockStylesControl from '../../components/block-styles-control';
+import CustomLabel from '../../components/custom-label';
+import ResponsiveTabsControl from '../../components/responsive-tabs-control';
+import SettingTabsControl from '../../components/setting-tabs-control';
+import SvgStrokeWidthControl from '../../components/svg-stroke-width-control';
+import SvgWidthControl from '../../components/svg-width-control';
 import SvgAltControl from './components/svg-alt-control';
 import SvgColorControl from './components/svg-color-control';
 import {
 	getColorRGBAString,
 	getGroupAttributes,
-} from '@extensions/styles';
-import { setSVGContentWithBlockStyle } from '@extensions/svg';
-import * as inspectorTabs from '@components/inspector-tabs';
+} from '../../extensions/styles';
+import { setSVGContentWithBlockStyle } from '../../extensions/svg';
+import * as inspectorTabs from '../../components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
-import { withMaxiInspector } from '@extensions/inspector';
+import { withMaxiInspector } from '../../extensions/inspector';
 
 /**
  * Inspector
@@ -154,7 +154,6 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isSecondary
-								attributes={attributes}
 								items={[
 									...inspectorTabs.alignment({
 										props,
@@ -311,7 +310,6 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isPrimary
-								attributes={attributes}
 								items={[
 									...inspectorTabs.blockBackground({
 										props,
@@ -342,7 +340,6 @@ const Inspector = props => {
 						content: (
 							<AccordionControl
 								isPrimary
-								attributes={attributes}
 								items={[
 									...inspectorTabs.ariaLabel({
 										props,

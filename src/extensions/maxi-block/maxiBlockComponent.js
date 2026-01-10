@@ -97,6 +97,8 @@ class MaxiBlockComponent extends Component {
 		this.previousRelationInstances = null;
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
+		this.xxlStyleCache = null;
+		this.isXxlStyleCacheDirty = false;
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
@@ -559,6 +561,19 @@ class MaxiBlockComponent extends Component {
 			Object.keys(diffAttributes).length === 1 &&
 			Object.keys(diffAttributes)[0] === 'relations';
 
+		const hasNonRelationChanges = Object.keys(diffAttributes).some(
+			key => key !== 'relations'
+		);
+
+		if (
+			hasNonRelationChanges ||
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint ||
+			this.props.attributes.blockStyle !==
+				prevProps.attributes.blockStyle
+		) {
+			this.isXxlStyleCacheDirty = true;
+		}
+
 		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
@@ -568,7 +583,9 @@ class MaxiBlockComponent extends Component {
 							prevProps.baseBreakpoint &&
 							!!prevProps.baseBreakpoint),
 					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle
+						prevProps.attributes.blockStyle,
+					this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+						!!prevProps.baseBreakpoint
 				);
 			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
@@ -608,12 +625,6 @@ class MaxiBlockComponent extends Component {
 					);
 				}
 			}
-
-			// Skip relation updates if only 'relations' changed (prevents cascade)
-			// Only update relations when actual content/style attributes change
-			const hasNonRelationChanges = Object.keys(diffAttributes).some(
-				key => key !== 'relations'
-			);
 
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
@@ -1363,7 +1374,11 @@ class MaxiBlockComponent extends Component {
 	/**
 	 * Refresh the styles on the Editor
 	 */
-	displayStyles(isBreakpointChange = false, isBlockStyleChange = false) {
+	displayStyles(
+		isBreakpointChange = false,
+		isBlockStyleChange = false,
+		isBaseBreakpointChange = false
+	) {
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
@@ -1412,6 +1427,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
+			isBaseBreakpointChange,
 			this.editorIframe
 		);
 
@@ -1533,6 +1549,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
+		isBaseBreakpointChange,
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
@@ -1550,6 +1567,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
+				isBaseBreakpointChange,
 				iframe,
 				isSiteEditor
 			);
@@ -1734,6 +1752,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
+		isBaseBreakpointChange,
 		iframe,
 		isSiteEditor
 	) {
@@ -1761,7 +1780,16 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBlockStyleChange) {
+		if (
+			isBreakpointChange &&
+			currentBreakpoint === 'xxl' &&
+			!isBlockStyleChange &&
+			!isBaseBreakpointChange &&
+			this.xxlStyleCache &&
+			!this.isXxlStyleCacheDirty
+		) {
+			styleContent = this.xxlStyleCache;
+		} else if (isBlockStyleChange) {
 			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
 
 			if (cssCache) {
@@ -1808,6 +1836,10 @@ class MaxiBlockComponent extends Component {
 				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
 			);
+			if (currentBreakpoint === 'xxl') {
+				this.xxlStyleCache = styleContent;
+				this.isXxlStyleCacheDirty = false;
+			}
 		}
 
 		return styleContent;

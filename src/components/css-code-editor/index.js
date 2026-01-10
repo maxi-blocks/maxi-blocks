@@ -32,6 +32,8 @@ const CssCodeEditor = ({
 	cssClassIndex,
 }) => {
 	const errorRef = useRef(null);
+	const textareaRef = useRef(null);
+	const typingTimeoutRef = useRef(null);
 
 	const validateCSSCode = async code => {
 		let responseFinal = '';
@@ -86,8 +88,6 @@ const CssCodeEditor = ({
 		}
 	}
 
-	let typingTimeout = null;
-
 	const id = `maxi-css-code-editor__error-text${
 		cssClassIndex ? `--${cssClassIndex}` : ''
 	}`;
@@ -105,28 +105,29 @@ const CssCodeEditor = ({
 				<Button
 					aria-label={__('Validate', 'maxi-blocks')}
 					className={`maxi-css-code-editor__validate-button maxi-css-code-editor__validate-button--${cssClassIndex}`}
-					onClick={el => {
-						validateCss(
-							el?.target?.nextSibling?.getElementsByTagName(
-								'textarea'
-							)?.[0]?.value
-						);
+					onClick={() => {
+						validateCss(textareaRef.current?.value);
 					}}
 				>
 					{__('Validate', 'maxi-blocks')}
 				</Button>
 			)}
 			<textarea
+				ref={textareaRef}
 				className={classnames(
 					'maxi-css-code-editor__textarea',
 					cssClassIndex &&
 						`maxi-css-code-editor__textarea--${cssClassIndex}`
 				)}
 				value={value}
+				spellCheck={false}
+				aria-describedby={!disabled && !isEmpty(value) ? id : undefined}
 				onChange={event => {
-					if (typingTimeout) clearTimeout(typingTimeout);
-					typingTimeout = setTimeout(
-						() => onChange(event?.target?.value),
+					const newValue = event?.target?.value;
+					if (typingTimeoutRef.current)
+						clearTimeout(typingTimeoutRef.current);
+					typingTimeoutRef.current = setTimeout(
+						() => onChange(newValue),
 						200
 					);
 				}}

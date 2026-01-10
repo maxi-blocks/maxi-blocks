@@ -16,7 +16,6 @@ import Button from '@components/button';
 import cssValidator from 'w3c-css-validator';
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
-import CodeEditor from '@uiw/react-textarea-code-editor';
 
 /**
  * Styles
@@ -117,23 +116,22 @@ const CssCodeEditor = ({
 					{__('Validate', 'maxi-blocks')}
 				</Button>
 			)}
-			<CodeEditor
-				language='css'
+			<textarea
 				className={classnames(
-					'maxi-css-code-editor__code-editor',
+					'maxi-css-code-editor__textarea',
 					cssClassIndex &&
-						`maxi-css-code-editor__code-editor--${cssClassIndex}`
+						`maxi-css-code-editor__textarea--${cssClassIndex}`
 				)}
 				value={value}
-				onChange={textarea => {
+				onChange={event => {
 					if (typingTimeout) clearTimeout(typingTimeout);
 					typingTimeout = setTimeout(
-						() => onChange(textarea?.target?.value),
+						() => onChange(event?.target?.value),
 						200
 					);
 				}}
-				onBlur={textarea => {
-					validateCss(textarea?.target?.value);
+				onBlur={event => {
+					validateCss(event?.target?.value);
 				}}
 				disabled={disabled}
 			/>

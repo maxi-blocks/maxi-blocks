@@ -59,17 +59,11 @@
 .maxi-block--highlighted {
 	border-bottom: 2px dotted var(--maxi-interaction-pink) !important;
 	position: relative;
-	z-index: 99;
+	z-index: 10000;
 }
 
 /* Interaction builder tabs highlight */
 .maxi-relation-control__interaction-tabs {
-	.maxi-tabs-control__button--selected,
-	.maxi-tabs-control__button[aria-pressed='true'] {
-		color: var(--maxi-interaction-pink);
-		border-color: var(--maxi-interaction-pink);
-	}
-
 	.maxi-tabs-control__button--active {
 		color: var(--maxi-interaction-pink);
 		border-color: var(--maxi-interaction-pink);

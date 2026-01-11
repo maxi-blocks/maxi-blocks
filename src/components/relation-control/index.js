@@ -19,6 +19,7 @@ import TransitionControl from '@components/transition-control';
 import BlockSelectControl from './BlockSelectControl';
 import { createTransitionObj, getGroupAttributes } from '@extensions/styles';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+import { getSiteEditorIframeBody } from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
 import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
@@ -93,14 +94,21 @@ const RelationControl = props => {
 	const getDefaultTransitionAttribute = target =>
 		transitionDefaultAttributes[`${target}-${deviceType}`];
 
+	const getBlockElement = clientId => {
+		const iframeBody = getSiteEditorIframeBody();
+		const searchContexts = [iframeBody, document].filter(Boolean);
+
+		return searchContexts
+			.map(context => context.querySelector(`[data-block="${clientId}"]`))
+			.find(Boolean);
+	};
+
 	const handleHighlight = (uid, isHighlighting) => {
 		if (!uid) return;
 		const targetClientId = getClientIdFromUniqueId(uid);
 		if (!targetClientId) return;
 
-		const blockElement = document.querySelector(
-			`[data-block="${targetClientId}"]`
-		);
+		const blockElement = getBlockElement(targetClientId);
 		if (blockElement) {
 			if (isHighlighting) {
 				blockElement.classList.add('maxi-block--highlighted');
@@ -116,9 +124,7 @@ const RelationControl = props => {
 	useEffect(() => {
 		return () => {
 			highlightedBlocks.current.forEach(clientId => {
-				const blockElement = document.querySelector(
-					`[data-block="${clientId}"]`
-				);
+				const blockElement = getBlockElement(clientId);
 				if (blockElement) {
 					blockElement.classList.remove('maxi-block--highlighted');
 				}
@@ -240,22 +246,46 @@ const RelationControl = props => {
 		});
 	};
 
+	const onAddRelation = () => {
+		onChange({
+			relations: [
+				...relations,
+				{
+					id: getRelationId(relations),
+					title: '',
+					uniqueID: '',
+					target: '',
+					action: '',
+					sid: '',
+					attributes: {},
+					css: {},
+					effects: createTransitionObj(),
+					isButton,
+				},
+			],
+		});
+	};
+
 	const displaySelectedSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-			const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
-			const blockAttributes = blockAttributesByClientId.get(targetClientId);
+		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
+		const blockAttributes = blockAttributesByClientId.get(targetClientId);
 
-			if (!selectedSettings || !blockAttributes) return null;
+		if (!selectedSettings || !blockAttributes) return null;
 
-			const mergedAttributes = merge({}, cloneDeep(blockAttributes), item.attributes);
-			const attributesWithId = {
-				...mergedAttributes,
-				uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
-			};
-			const blockAttributesWithId = {
-				...cloneDeep(blockAttributes),
-				uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
-			};
+		const mergedAttributes = merge(
+			{},
+			cloneDeep(blockAttributes),
+			item.attributes
+		);
+		const attributesWithId = {
+			...mergedAttributes,
+			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
+		};
+		const blockAttributesWithId = {
+			...cloneDeep(blockAttributes),
+			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
+		};
 
 		return selectedSettings.component({
 			...attributesWithId,
@@ -302,7 +332,7 @@ const RelationControl = props => {
 		});
 	};
 
-		return (
+	return (
 		<div className='maxi-relation-control'>
 			{!isEmpty(relations) && (
 				<ToggleSwitch
@@ -316,25 +346,7 @@ const RelationControl = props => {
 			)}
 			<Button
 				variant='secondary'
-				onClick={() =>
-					onChange({
-						relations: [
-							...relations,
-							{
-								id: getRelationId(relations),
-								title: '',
-								uniqueID: '',
-								target: '',
-								action: '',
-								sid: '',
-								attributes: {},
-								css: {},
-								effects: createTransitionObj(),
-								isButton,
-							},
-						],
-					})
-				}
+				onClick={onAddRelation}
 			>
 				{__('Add new interaction', 'maxi-blocks')}
 			</Button>

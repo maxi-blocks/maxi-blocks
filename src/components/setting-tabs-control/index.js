@@ -186,7 +186,7 @@ const SettingTabsControl = props => {
 						);
 						return showTooltip ? (
 							<Tooltip
-								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}__tooltip`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}__tooltip`}
 								text={item.label || item.value}
 								placement='top'
 							>

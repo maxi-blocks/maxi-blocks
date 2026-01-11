@@ -225,9 +225,13 @@ const RelationControl = props => {
 			...mergedAttributes,
 			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
 		};
+		const blockAttributesWithId = {
+			...blockAttributes,
+			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
+		};
 
 		return selectedSettings.component({
-			...blockAttributes,
+			...blockAttributesWithId,
 			...getGroupAttributes(
 				mergedAttributes,
 				selectedSettings.attrGroupName,
@@ -235,6 +239,7 @@ const RelationControl = props => {
 				selectedSettings?.prefix || ''
 			),
 			attributes: attributesWithId,
+			blockAttributes: blockAttributesWithId,
 			onChange: obj => {
 				const newAttributesObj = { ...item.attributes, ...obj };
 				const { cleanAttributesObject } = getCleanResponseIBAttributes(

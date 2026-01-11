@@ -26,6 +26,7 @@ import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlo
 import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
+import SettingTabsIndicatorContext from '@extensions/indicators/context';
 
 /**
  * External dependencies
@@ -73,19 +74,25 @@ const RelationControl = props => {
 		[rawRelations]
 	);
 
-	const blockAttributesByClientId = useSelect(
+	const blockDataByClientId = useSelect(
 		selectFn => {
-			const { getBlockAttributes } = selectFn('core/block-editor');
-			const attributesMap = new Map();
+			const { getBlock } = selectFn('core/block-editor');
+			const blockMap = new Map();
 
 			relations.forEach(relation => {
 				const clientId = getClientIdFromUniqueId(relation.uniqueID);
 				if (clientId) {
-					attributesMap.set(clientId, getBlockAttributes(clientId));
+					const block = getBlock(clientId);
+					if (block) {
+						blockMap.set(clientId, {
+							attributes: block.attributes,
+							name: block.name,
+						});
+					}
 				}
 			});
 
-			return attributesMap;
+			return blockMap;
 		},
 		[relations]
 	);
@@ -200,8 +207,8 @@ const RelationControl = props => {
 	const displayBeforeSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
 		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
-		const currentActualAttributes =
-			blockAttributesByClientId.get(targetClientId);
+		const blockData = blockDataByClientId.get(targetClientId);
+		const currentActualAttributes = blockData?.attributes;
 
 		if (!selectedSettings || !currentActualAttributes) return null;
 
@@ -275,7 +282,8 @@ const RelationControl = props => {
 	const displaySelectedSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
 		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
-		const blockAttributes = blockAttributesByClientId.get(targetClientId);
+		const blockData = blockDataByClientId.get(targetClientId);
+		const blockAttributes = blockData?.attributes;
 
 		if (!selectedSettings || !blockAttributes) return null;
 
@@ -294,52 +302,59 @@ const RelationControl = props => {
 		};
 
 		return (
-			<div className='maxi-relation-control__interaction-setting'>
-				{selectedSettings.component({
-					...attributesWithId,
-					...getGroupAttributes(
-						mergedAttributes,
-						selectedSettings.attrGroupName,
-						false,
-						selectedSettings?.prefix || ''
-					),
-					attributes: attributesWithId,
-					blockAttributes: blockAttributesWithId,
-					onChange: obj => {
-						const newAttributesObj = { ...item.attributes, ...obj };
-						const { cleanAttributesObject } =
-							getCleanResponseIBAttributes(
-								newAttributesObj,
+			<SettingTabsIndicatorContext.Provider
+				value={{
+					currentAttributes: mergedAttributes,
+					blockName: blockData?.name,
+				}}
+			>
+				<div className='maxi-relation-control__interaction-setting'>
+					{selectedSettings.component({
+						...attributesWithId,
+						...getGroupAttributes(
+							mergedAttributes,
+							selectedSettings.attrGroupName,
+							false,
+							selectedSettings?.prefix || ''
+						),
+						attributes: attributesWithId,
+						blockAttributes: blockAttributesWithId,
+						onChange: obj => {
+							const newAttributesObj = { ...item.attributes, ...obj };
+							const { cleanAttributesObject } =
+								getCleanResponseIBAttributes(
+									newAttributesObj,
+									blockAttributes,
+									item.uniqueID,
+									selectedSettings,
+									deviceType,
+									selectedSettings?.prefix || '',
+									item.sid,
+									targetClientId
+								);
+							const stylesObj = getIBStylesObj({
+								clientId: targetClientId,
+								sid: item.sid,
+								attributes: omitBy(cleanAttributesObject, isNil),
 								blockAttributes,
-								item.uniqueID,
-								selectedSettings,
-								deviceType,
-								selectedSettings?.prefix || '',
-								item.sid,
-								targetClientId
-							);
-						const stylesObj = getIBStylesObj({
-							clientId: targetClientId,
-							sid: item.sid,
-							attributes: omitBy(cleanAttributesObject, isNil),
-							blockAttributes,
-							breakpoint: deviceType,
-						});
-						const styles = getIBStyles({
-							stylesObj,
-							blockAttributes,
-							isFirst: true,
-						});
-						onChangeRelation(relations, item.id, {
-							attributes: omitBy(cleanAttributesObject, isNil),
-							css: styles,
-						});
-					},
-					prefix: selectedSettings?.prefix || '',
-					breakpoint: deviceType,
-					clientId: targetClientId,
-				})}
-			</div>
+								breakpoint: deviceType,
+							});
+							const styles = getIBStyles({
+								stylesObj,
+								blockAttributes,
+								isFirst: true,
+							});
+							onChangeRelation(relations, item.id, {
+								attributes: omitBy(cleanAttributesObject, isNil),
+								css: styles,
+							});
+						},
+						prefix: selectedSettings?.prefix || '',
+						breakpoint: deviceType,
+						clientId: targetClientId,
+					})}
+				</div>
+			</SettingTabsIndicatorContext.Provider>
 		);
 	};
 

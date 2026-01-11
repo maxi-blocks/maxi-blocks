@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect, cloneElement } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	cloneElement,
+	useContext,
+} from '@wordpress/element';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { Tooltip } from '@wordpress/components';
 
@@ -14,6 +19,7 @@ import { getForcedTabFromPath } from '@extensions/inspector';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
+	SettingTabsIndicatorContext,
 } from '@extensions/indicators';
 
 /**
@@ -65,6 +71,7 @@ const SettingTabsControl = props => {
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const [localTab, setLocalTab] = useState(0);
+	const indicatorContext = useContext(SettingTabsIndicatorContext);
 
 	const tab = tabProp ?? localTab;
 	const setTab = setTabProp ?? setLocalTab;
@@ -159,7 +166,9 @@ const SettingTabsControl = props => {
 										item.breakpoint,
 										item.extraIndicators,
 										item.extraIndicatorsResponsive,
-										item.ignoreIndicator
+										item.ignoreIndicator,
+										item.ignoreIndicatorGroups,
+										indicatorContext
 									) && 'maxi-tabs-control__button--active',
 									item.className
 								)}

@@ -229,47 +229,49 @@ const RelationControl = props => {
 					blockName: blockData?.name,
 				}}
 			>
-				{selectedSettings.component({
-					...currentActualAttributes,
-					...getGroupAttributes(
-						currentActualAttributes,
-						selectedSettings.attrGroupName,
-						false,
-						selectedSettings?.prefix || ''
-					),
-					attributes: attributesWithId,
-					blockAttributes: currentActualAttributes,
-					onChange: newValues => {
-						if (isUpdating.current) return;
+				<div className='maxi-relation-control__interaction-setting'>
+					{selectedSettings.component({
+						...currentActualAttributes,
+						...getGroupAttributes(
+							currentActualAttributes,
+							selectedSettings.attrGroupName,
+							false,
+							selectedSettings?.prefix || ''
+						),
+						attributes: attributesWithId,
+						blockAttributes: currentActualAttributes,
+						onChange: newValues => {
+							if (isUpdating.current) return;
 
-						const { isReset, ...cleanValues } = newValues || {};
+							const { isReset, ...cleanValues } = newValues || {};
 
-						// USE DEEP EQUALITY: Prevents false positives with nested objects
-						const hasChanged = Object.keys(cleanValues).some(
-							key =>
-								!isEqual(cleanValues[key], currentActualAttributes[key])
-						);
+							// USE DEEP EQUALITY: Prevents false positives with nested objects
+							const hasChanged = Object.keys(cleanValues).some(
+								key =>
+									!isEqual(cleanValues[key], currentActualAttributes[key])
+							);
 
-						if (hasChanged) {
-							try {
-								isUpdating.current = true;
-								updateBlockAttributes(targetClientId, cleanValues);
-							} catch (error) {
-								// eslint-disable-next-line no-console
-								console.error(
-									'Failed to update relation block attributes:',
-									error
-								);
-							} finally {
-								// Release lock immediately after the dispatch call
-								isUpdating.current = false;
+							if (hasChanged) {
+								try {
+									isUpdating.current = true;
+									updateBlockAttributes(targetClientId, cleanValues);
+								} catch (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'Failed to update relation block attributes:',
+										error
+									);
+								} finally {
+									// Release lock immediately after the dispatch call
+									isUpdating.current = false;
+								}
 							}
-						}
-					},
-					prefix: selectedSettings?.prefix || '',
-					breakpoint: deviceType,
-					clientId: targetClientId,
-				})}
+						},
+						prefix: selectedSettings?.prefix || '',
+						breakpoint: deviceType,
+						clientId: targetClientId,
+					})}
+				</div>
 			</SettingTabsIndicatorContext.Provider>
 		);
 	};

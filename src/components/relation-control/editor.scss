@@ -69,6 +69,12 @@
 	border-color: var(--maxi-interaction-pink) !important;
 }
 
+.maxi-relation-control__interaction-tabs
+	.maxi-relation-control__interaction-indicator {
+	color: var(--maxi-interaction-pink) !important;
+	border-color: var(--maxi-interaction-pink) !important;
+}
+
 /* Custom Block Select Control - matches maxi-select-control__second-style */
 .maxi-block-select-control {
 	width: 100%;

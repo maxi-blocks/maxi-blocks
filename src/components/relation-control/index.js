@@ -373,6 +373,12 @@ const RelationControl = props => {
 		);
 	};
 
+	const hasInteractionAttributes = item =>
+		!isEmpty(item.attributes) &&
+		Object.values(item.attributes).some(
+			value => value !== undefined && value !== null && value !== ''
+		);
+
 	return (
 		<div className='maxi-relation-control'>
 			{!isEmpty(relations) && (
@@ -498,6 +504,9 @@ const RelationControl = props => {
 														'Current',
 														'maxi-blocks'
 													),
+													className: hasInteractionAttributes(item)
+														? 'maxi-relation-control__interaction-indicator'
+														: undefined,
 													content: displayBeforeSetting(item),
 												},
 												{

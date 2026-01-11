@@ -54,6 +54,10 @@ const RelationControl = props => {
 		uniqueID,
 	} = props;
 
+	const transitionDefaultAttributes = createTransitionObj();
+	const getDefaultTransitionAttribute = target =>
+		transitionDefaultAttributes[`${target}-${deviceType}`];
+
 	const handleHighlight = (uid, isHighlighting) => {
 		if (!uid) return;
 		const targetClientId = getClientIdFromUniqueId(uid);
@@ -231,7 +235,7 @@ const RelationControl = props => {
 		};
 
 		return selectedSettings.component({
-			...blockAttributesWithId,
+			...attributesWithId,
 			...getGroupAttributes(
 				mergedAttributes,
 				selectedSettings.attrGroupName,
@@ -431,6 +435,9 @@ const RelationControl = props => {
 														<TransitionControl
 															transition={item.effects}
 															breakpoint={deviceType}
+															getDefaultTransitionAttribute={
+																getDefaultTransitionAttribute
+															}
 															onChange={obj =>
 																onChangeRelation(
 																	relations,

@@ -28,7 +28,15 @@ import getIBStyles from '@extensions/relations/getIBStyles';
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isNil, merge, omitBy } from 'lodash';
+import {
+	capitalize,
+	cloneDeep,
+	isEmpty,
+	isEqual,
+	isNil,
+	merge,
+	omitBy,
+} from 'lodash';
 
 /**
  * Styles
@@ -466,13 +474,37 @@ const RelationControl = props => {
 // Helper for select options
 const getParsedOptions = rawOptions => {
 	if (!rawOptions) return [];
-	const options = [];
-	Object.entries(rawOptions).forEach(([group, opts]) => {
-		opts.forEach(opt =>
-			options.push({ label: `${group}: ${opt.label}`, value: opt.sid })
-		);
-	});
-	return options;
+
+	const parseOptionsArray = options =>
+		options?.map(({ sid, label }) => ({
+			label,
+			value: sid,
+		})) ?? [];
+
+	const defaultSetting = {
+		label: __('Choose settings', 'maxi-blocks'),
+		value: '',
+	};
+
+	const rawGroups = Object.keys(rawOptions);
+
+	if (rawGroups.length > 1) {
+		return {
+			'': [defaultSetting],
+			...Object.entries(rawOptions).reduce(
+				(acc, [groupLabel, groupOptions]) => ({
+					...acc,
+					[capitalize(groupLabel)]: parseOptionsArray(groupOptions),
+				}),
+				{}
+			),
+		};
+	}
+
+	return [
+		defaultSetting,
+		...parseOptionsArray(rawOptions[rawGroups[0]]),
+	];
 };
 
 export default RelationControl;

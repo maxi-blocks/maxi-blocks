@@ -234,6 +234,12 @@ const RelationControl = props => {
 					try {
 						isUpdating.current = true;
 						updateBlockAttributes(targetClientId, cleanValues);
+					} catch (error) {
+						// eslint-disable-next-line no-console
+						console.error(
+							'Failed to update relation block attributes:',
+							error
+						);
 					} finally {
 						// Release lock immediately after the dispatch call
 						isUpdating.current = false;

@@ -132,14 +132,13 @@ const SettingTabsControl = props => {
 								? item.label
 								: item.value;
 						const buttonLabelSlug = String(buttonLabel).toLowerCase();
-						const itemsIndicators =
-							i === tab && !isEmpty(item.content)
-								? cloneElement(item.content)
-								: item;
+						const itemsIndicators = !isEmpty(item.content)
+							? cloneElement(item.content)
+							: item;
 
 						const showButton = (
 							<Button
-								key={`maxi-tabs-control__button-${buttonLabelSlug}`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}`}
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
@@ -186,7 +185,7 @@ const SettingTabsControl = props => {
 						);
 						return showTooltip ? (
 							<Tooltip
-								key={`maxi-tabs-control__button-${buttonLabelSlug}__tooltip`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}__tooltip`}
 								text={item.label || item.value}
 								placement='top'
 							>

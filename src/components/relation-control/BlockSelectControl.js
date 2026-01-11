@@ -336,22 +336,22 @@ const BlockSelectControl = ({
 												}
 											}}
 											onMouseEnter={() => {
-												setActiveIndex(index);
+												setActiveOption(index);
 												if (onOptionHover && option.value) {
 													lastHoveredValue.current = option.value;
 													onOptionHover(option.value, true);
-											}
-										}}
-										onMouseLeave={() => {
-											if (onOptionHover && option.value) {
-												onOptionHover(option.value, false);
-											}
-											if (lastHoveredValue.current === option.value) {
-												lastHoveredValue.current = null;
-											}
-										}}
-										onClick={() => handleSelect(option.value)}
-									>
+												}
+											}}
+											onMouseLeave={() => {
+												if (onOptionHover && option.value) {
+													onOptionHover(option.value, false);
+												}
+												if (lastHoveredValue.current === option.value) {
+													lastHoveredValue.current = null;
+												}
+											}}
+											onClick={() => handleSelect(option.value)}
+										>
 										{option.label}
 									</li>
 								))

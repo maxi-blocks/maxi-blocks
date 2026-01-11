@@ -7,6 +7,7 @@ import {
 	useEffect,
 	useCallback,
 	useMemo,
+	useId,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
@@ -42,16 +43,16 @@ const BlockSelectControl = ({
 	const lastHoveredValue = useRef(null);
 
 	// Generate unique IDs for ARIA
-	const instanceId = useRef(
-		`block-select-${Math.random().toString(36).substr(2, 9)}`
-	);
-	const triggerId = `${instanceId.current}-trigger`;
-	const listboxId = `${instanceId.current}-listbox`;
+	const instanceId = useId();
+	const triggerId = `${instanceId}-trigger`;
+	const listboxId = `${instanceId}-listbox`;
 
 	const filteredOptions = useMemo(
 		() =>
 			options.filter(option =>
-				option.label.toLowerCase().includes(searchQuery.toLowerCase())
+				String(option.label)
+					.toLowerCase()
+					.includes(searchQuery.toLowerCase())
 			),
 		[options, searchQuery]
 	);
@@ -141,13 +142,18 @@ const BlockSelectControl = ({
 		}
 	};
 
-	const handleClose = useCallback(() => {
-		clearHover();
-		setIsOpen(false);
-		setSearchQuery('');
-		setActiveIndex(-1);
-		triggerRef.current?.focus();
-	}, [clearHover]);
+	const handleClose = useCallback(
+		({ restoreFocus } = { restoreFocus: true }) => {
+			clearHover();
+			setIsOpen(false);
+			setSearchQuery('');
+			setActiveIndex(-1);
+			if (restoreFocus) {
+				triggerRef.current?.focus();
+			}
+		},
+		[clearHover]
+	);
 
 	const handleSelect = useCallback(
 		optionValue => {
@@ -163,6 +169,8 @@ const BlockSelectControl = ({
 		switch (event.key) {
 			case 'ArrowDown':
 			case 'ArrowUp':
+			case 'Home':
+			case 'End':
 				event.preventDefault();
 				if (!isOpen) {
 					setIsOpen(true);
@@ -182,18 +190,37 @@ const BlockSelectControl = ({
 		}
 	};
 
+	const setActiveOption = useCallback(
+		index => {
+			setActiveIndex(index);
+		},
+		[setActiveIndex]
+	);
+
 	// Keyboard handler for search input and list navigation
 	const handleSearchKeyDown = event => {
 		switch (event.key) {
 			case 'ArrowDown':
 				event.preventDefault();
-				setActiveIndex(prev =>
-					prev < filteredOptions.length - 1 ? prev + 1 : prev
+				setActiveOption(
+					activeIndex < filteredOptions.length - 1
+						? activeIndex + 1
+						: activeIndex
 				);
 				break;
 			case 'ArrowUp':
 				event.preventDefault();
-				setActiveIndex(prev => (prev > 0 ? prev - 1 : prev));
+				setActiveOption(activeIndex > 0 ? activeIndex - 1 : activeIndex);
+				break;
+			case 'Home':
+				event.preventDefault();
+				setActiveOption(filteredOptions.length ? 0 : -1);
+				break;
+			case 'End':
+				event.preventDefault();
+				setActiveOption(
+					filteredOptions.length ? filteredOptions.length - 1 : -1
+				);
 				break;
 			case 'Enter':
 				event.preventDefault();
@@ -206,13 +233,30 @@ const BlockSelectControl = ({
 				handleClose();
 				break;
 			case 'Tab':
-				handleClose();
+				handleClose({ restoreFocus: false });
 				break;
 		}
 	};
 
+	useEffect(() => {
+		if (!isOpen || !onOptionHover) return;
+
+		const activeOption = filteredOptions[activeIndex];
+		if (!activeOption?.value) return;
+
+		if (
+			lastHoveredValue.current &&
+			lastHoveredValue.current !== activeOption.value
+		) {
+			onOptionHover(lastHoveredValue.current, false);
+		}
+
+		lastHoveredValue.current = activeOption.value;
+		onOptionHover(activeOption.value, true);
+	}, [activeIndex, filteredOptions, isOpen, onOptionHover]);
+
 	// Get the active descendant ID
-	const getOptionId = index => `${instanceId.current}-option-${index}`;
+	const getOptionId = index => `${instanceId}-option-${index}`;
 	const activeDescendant =
 		activeIndex >= 0 ? getOptionId(activeIndex) : undefined;
 
@@ -269,26 +313,33 @@ const BlockSelectControl = ({
 							onMouseLeave={clearHover}
 						>
 							{filteredOptions.length > 0 ? (
-								filteredOptions.map((option, index) => (
-									<li
-										key={option.value || `fallback-${index}`}
-										id={getOptionId(index)}
-										role='option'
-										aria-selected={option.value === value}
-										className={classnames(
-											'maxi-block-select-control__option',
-											{
-												'maxi-block-select-control__option--selected':
-													option.value === value,
-												'maxi-block-select-control__option--active':
-													index === activeIndex,
-											}
-										)}
-										onMouseEnter={() => {
-											setActiveIndex(index);
-											if (onOptionHover && option.value) {
-												lastHoveredValue.current = option.value;
-												onOptionHover(option.value, true);
+									filteredOptions.map((option, index) => (
+										<li
+											key={option.value || `fallback-${index}`}
+											id={getOptionId(index)}
+											role='option'
+											aria-selected={option.value === value}
+											className={classnames(
+												'maxi-block-select-control__option',
+												{
+													'maxi-block-select-control__option--selected':
+														option.value === value,
+													'maxi-block-select-control__option--active':
+														index === activeIndex,
+												}
+											)}
+											onFocus={() => {
+												setActiveOption(index);
+												if (onOptionHover && option.value) {
+													lastHoveredValue.current = option.value;
+													onOptionHover(option.value, true);
+												}
+											}}
+											onMouseEnter={() => {
+												setActiveIndex(index);
+												if (onOptionHover && option.value) {
+													lastHoveredValue.current = option.value;
+													onOptionHover(option.value, true);
 											}
 										}}
 										onMouseLeave={() => {

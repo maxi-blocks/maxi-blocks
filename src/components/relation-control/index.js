@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select } from '@wordpress/data';
-import { useRef, useEffect } from '@wordpress/element';
+import { useRef, useEffect, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -87,9 +87,20 @@ const RelationControl = props => {
 		};
 	}, []);
 
-	const relations = (rawRelations || []).filter(
-		r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+	const relations = useMemo(
+		() =>
+			(rawRelations || []).filter(
+				r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+			),
+		[rawRelations]
 	);
+
+	useEffect(() => {
+		if (!rawRelations) return;
+		if (rawRelations.length !== relations.length) {
+			onChange({ relations });
+		}
+	}, [rawRelations, relations, onChange]);
 
 	const getRelationId = rels =>
 		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;

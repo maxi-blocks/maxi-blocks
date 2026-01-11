@@ -1,11 +1,5 @@
 .maxi-relation-control {
 	margin-top: 10px;
-	&__button {
-		display: flex;
-		width: 100%;
-		justify-content: center;
-		margin-bottom: 10px;
-	}
 	&__block-access {
 		margin-bottom: 10px;
 	}
@@ -64,6 +58,7 @@
 /* Block highlight style for hover interaction preview */
 .maxi-block--highlighted {
 	border-bottom: 2px dotted var(--maxi-interaction-pink) !important;
+	position: relative;
 	z-index: 99;
 }
 

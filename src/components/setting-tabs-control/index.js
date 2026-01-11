@@ -131,6 +131,7 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
+						const buttonLabelSlug = String(buttonLabel).toLowerCase();
 						const itemsIndicators =
 							i === tab && !isEmpty(item.content)
 								? cloneElement(item.content)
@@ -138,11 +139,11 @@ const SettingTabsControl = props => {
 
 						const showButton = (
 							<Button
-								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}`}
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
-									`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`,
+									`maxi-tabs-control__button-${buttonLabelSlug}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&

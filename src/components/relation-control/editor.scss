@@ -63,13 +63,11 @@
 }
 
 /* Highlight only setting tabs with interaction indicators (not top-level tabs) */
-.maxi-relation-control {
-	.maxi-settingstab-control:not(.maxi-relation-control__interaction-tabs) {
-		.maxi-tabs-control__button--active {
-			color: var(--maxi-interaction-pink);
-			border-color: var(--maxi-interaction-pink);
-		}
-	}
+.maxi-relation-control__interaction-tabs
+	+ .maxi-tabs-content
+	.maxi-tabs-control__button--active {
+	color: var(--maxi-interaction-pink);
+	border-color: var(--maxi-interaction-pink);
 }
 
 /* Custom Block Select Control - matches maxi-select-control__second-style */

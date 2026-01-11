@@ -60,3 +60,172 @@
 	color: var(--maxi-white) !important;
 	border-color: var(--maxi-primary-color) !important;
 }
+
+/* Block highlight style for hover interaction preview */
+.maxi-block--highlighted {
+	border-bottom: 2px dotted var(--maxi-interaction-pink) !important;
+	z-index: 99;
+}
+
+/* Custom Block Select Control - matches maxi-select-control__second-style */
+.maxi-block-select-control {
+	width: 100%;
+	margin-bottom: 0;
+
+	.maxi-base-control__field {
+		position: relative;
+		margin-top: 12px;
+		background-color: var(--maxi-white);
+		border: 1px solid var(--maxi-grey-light) !important;
+		border-radius: 5px;
+		margin-right: -3px;
+	}
+
+	.maxi-base-control__label {
+		position: absolute;
+		top: -8px;
+		left: 8px;
+		font-size: 10px !important;
+		color: var(--maxi-grey-dark);
+		font-style: normal;
+		background: var(--maxi-white);
+		padding: 0 5px;
+		pointer-events: none;
+		box-sizing: border-box;
+		z-index: 1;
+	}
+
+	&__wrapper {
+		position: relative;
+		width: 100%;
+	}
+
+	&__trigger {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 10px 11px;
+		padding-right: 22px;
+		background: var(--maxi-white);
+		border: none !important;
+		border-radius: 5px;
+		cursor: pointer;
+		font-size: 12px;
+		line-height: 14px;
+		text-align: left;
+		color: var(--maxi-grey);
+		background-image: linear-gradient(
+				var(--maxi-grey-light),
+				var(--maxi-grey-light)
+			),
+			url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(180, 180, 180, 0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
+			!important;
+		background-repeat: no-repeat, no-repeat !important;
+		background-size: 1px 18px, 8px 8px !important;
+		background-position: right 1px center, right 5px center !important;
+
+		&:hover,
+		&:focus,
+		&:active {
+			background-image: linear-gradient(
+					var(--maxi-grey-light),
+					var(--maxi-grey-light)
+				),
+				url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"> <path fill="rgba(99, 186, 121, 1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/> </svg>')
+				!important;
+		}
+	}
+
+	&__trigger-label {
+		flex: 1;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&__trigger-arrow {
+		display: none; /* Using background SVG arrow instead */
+	}
+
+	&__dropdown {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: var(--maxi-white);
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 5px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		z-index: 1000;
+	}
+
+	&__search {
+		padding: 8px;
+		border-bottom: 1px solid var(--maxi-grey-light);
+	}
+
+	&__search-input {
+		width: 100%;
+		padding: 8px 10px;
+		font-size: 12px;
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 4px;
+		outline: none;
+		box-sizing: border-box;
+
+		&:focus {
+			border-color: var(--maxi-light-green);
+		}
+
+		&::placeholder {
+			color: var(--maxi-grey-soft);
+		}
+	}
+
+	&__options {
+		max-height: 200px;
+		overflow-y: auto;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	&__option {
+		padding: 8px 12px;
+		cursor: pointer;
+		font-size: 12px;
+		color: var(--maxi-grey);
+		transition: background-color 0.15s ease;
+
+		&:hover {
+			background-color: var(--maxi-whisper-green);
+			color: var(--maxi-grey-dark);
+		}
+
+		&--selected {
+			background-color: var(--maxi-whisper-green);
+			color: var(--maxi-grey-dark);
+			font-weight: 500;
+
+			&:hover {
+				background-color: var(--maxi-whisper-green);
+				color: var(--maxi-grey-dark);
+			}
+		}
+
+		&--active {
+			background-color: var(--maxi-light-green-soft, #e8f5e9);
+			outline: 2px solid var(--maxi-light-green);
+			outline-offset: -2px;
+		}
+	}
+
+	&__no-results {
+		padding: 12px;
+		font-size: 12px;
+		color: var(--maxi-grey-soft);
+		text-align: center;
+		font-style: italic;
+	}
+}

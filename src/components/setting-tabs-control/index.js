@@ -131,9 +131,10 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
-						const itemsIndicators = !isEmpty(item.content)
-							? cloneElement(item.content)
-							: item;
+						const itemsIndicators =
+							i === tab && !isEmpty(item.content)
+								? cloneElement(item.content)
+								: item;
 
 						const showButton = (
 							<Button

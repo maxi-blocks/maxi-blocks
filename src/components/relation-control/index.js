@@ -24,12 +24,11 @@ import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlo
 import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
-import getCleanDisplayIBAttributes from '@extensions/relations/getCleanDisplayIBAttributes';
 
 /**
  * External dependencies
  */
-import { cloneDeep, isEmpty, isEqual, isNil, omitBy } from 'lodash';
+import { cloneDeep, isEmpty, isEqual, isNil, merge, omitBy } from 'lodash';
 
 /**
  * Styles
@@ -221,10 +220,7 @@ const RelationControl = props => {
 
 		if (!selectedSettings || !blockAttributes) return null;
 
-		const mergedAttributes = getCleanDisplayIBAttributes(
-			blockAttributes,
-			item.attributes
-		);
+		const mergedAttributes = merge({}, blockAttributes, item.attributes);
 		const attributesWithId = {
 			...mergedAttributes,
 			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,

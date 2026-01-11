@@ -69,6 +69,11 @@
 		color: var(--maxi-interaction-pink);
 		border-color: var(--maxi-interaction-pink);
 	}
+
+	.maxi-tabs-control__button--active {
+		color: var(--maxi-interaction-pink);
+		border-color: var(--maxi-interaction-pink);
+	}
 }
 
 /* Custom Block Select Control - matches maxi-select-control__second-style */

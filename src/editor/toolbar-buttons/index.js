@@ -21,8 +21,46 @@ import { main } from '@maxi-icons';
 /**
  * Component
  */
+const MASTER_TOOLBAR_CLOSED_KEY = 'maxiBlocksMasterToolbarClosed';
+
+const getInitialOpenState = () => {
+	if (typeof window === 'undefined') return false;
+
+	try {
+		return localStorage.getItem(MASTER_TOOLBAR_CLOSED_KEY) !== 'true';
+	} catch (error) {
+		console.error('Unable to read Maxi toolbar preference:', error);
+		return true;
+	}
+};
+
+const markToolbarClosed = () => {
+	try {
+		localStorage.setItem(MASTER_TOOLBAR_CLOSED_KEY, 'true');
+	} catch (error) {
+		console.error('Unable to persist Maxi toolbar preference:', error);
+	}
+};
+
 const ToolbarButtons = () => {
-	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
+	const [isResponsiveOpen, setIsResponsiveOpen] = useState(
+		getInitialOpenState
+	);
+
+	const handleClose = () => {
+		markToolbarClosed();
+		setIsResponsiveOpen(false);
+	};
+
+	const handleToggle = () => {
+		setIsResponsiveOpen(prevState => {
+			const nextState = !prevState;
+			if (!nextState) {
+				markToolbarClosed();
+			}
+			return nextState;
+		});
+	};
 
 	return (
 		<>
@@ -30,14 +68,14 @@ const ToolbarButtons = () => {
 				<Button
 					className='maxi-toolbar-layout__button'
 					aria-pressed={isResponsiveOpen}
-					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
+					onClick={handleToggle}
 				>
 					<Icon icon={main} />
 				</Button>
 			</div>
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}
-				onClose={() => setIsResponsiveOpen(false)}
+				onClose={handleClose}
 			/>
 		</>
 	);

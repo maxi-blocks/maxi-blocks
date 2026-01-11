@@ -24,7 +24,7 @@ import { main } from '@maxi-icons';
 const MASTER_TOOLBAR_CLOSED_KEY = 'maxiBlocksMasterToolbarClosed';
 
 const getInitialOpenState = () => {
-	if (typeof window === 'undefined') return false;
+	if (typeof window === 'undefined') return true;
 
 	try {
 		return localStorage.getItem(MASTER_TOOLBAR_CLOSED_KEY) !== 'true';

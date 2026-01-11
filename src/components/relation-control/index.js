@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useRef, useEffect, useMemo } from '@wordpress/element';
 
 /**
@@ -14,6 +14,7 @@ import ListItemControl from '@components/list-control/list-item-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TextControl from '@components/text-control';
+import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
 import BlockSelectControl from './BlockSelectControl';
 import { createTransitionObj, getGroupAttributes } from '@extensions/styles';
@@ -44,8 +45,10 @@ import {
 import './editor.scss';
 
 const RelationControl = props => {
-	const { getBlock } = select('core/block-editor');
-	const { updateBlockAttributes } = useDispatch('core/block-editor');
+	const {
+		updateBlockAttributes,
+		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
+	} = useDispatch('core/block-editor');
 
 	// UseRef to prevent infinite loops during attribute updates
 	const isUpdating = useRef(false);
@@ -60,6 +63,23 @@ const RelationControl = props => {
 		relations: rawRelations,
 		uniqueID,
 	} = props;
+
+	const blockAttributesByClientId = useSelect(
+		selectFn => {
+			const { getBlockAttributes } = selectFn('core/block-editor');
+			const attributesMap = new Map();
+
+			relations.forEach(relation => {
+				const clientId = getClientIdFromUniqueId(relation.uniqueID);
+				if (clientId) {
+					attributesMap.set(clientId, getBlockAttributes(clientId));
+				}
+			});
+
+			return attributesMap;
+		},
+		[relations]
+	);
 
 	const transitionDefaultAttributes = createTransitionObj();
 	const getDefaultTransitionAttribute = target =>
@@ -174,9 +194,8 @@ const RelationControl = props => {
 	const displayBeforeSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
 		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
-		const currentActualAttributes = select('core/block-editor').getBlockAttributes(
-			targetClientId
-		);
+		const currentActualAttributes =
+			blockAttributesByClientId.get(targetClientId);
 
 		if (!selectedSettings || !currentActualAttributes) return null;
 
@@ -223,20 +242,20 @@ const RelationControl = props => {
 
 	const displaySelectedSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
-		const blockAttributes = cloneDeep(getBlock(targetClientId)?.attributes);
+			const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
+			const blockAttributes = blockAttributesByClientId.get(targetClientId);
 
-		if (!selectedSettings || !blockAttributes) return null;
+			if (!selectedSettings || !blockAttributes) return null;
 
-		const mergedAttributes = merge({}, blockAttributes, item.attributes);
-		const attributesWithId = {
-			...mergedAttributes,
-			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
-		};
-		const blockAttributesWithId = {
-			...blockAttributes,
-			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
-		};
+			const mergedAttributes = merge({}, cloneDeep(blockAttributes), item.attributes);
+			const attributesWithId = {
+				...mergedAttributes,
+				uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
+			};
+			const blockAttributesWithId = {
+				...cloneDeep(blockAttributes),
+				uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
+			};
 
 		return selectedSettings.component({
 			...attributesWithId,
@@ -283,8 +302,18 @@ const RelationControl = props => {
 		});
 	};
 
-	return (
+		return (
 		<div className='maxi-relation-control'>
+			{!isEmpty(relations) && (
+				<ToggleSwitch
+					label={__('Preview all interactions', 'maxi-blocks')}
+					selected={props['relations-preview']}
+					onChange={value => {
+						markNextChangeAsNotPersistent();
+						onChange({ 'relations-preview': value });
+					}}
+				/>
+			)}
 			<Button
 				variant='secondary'
 				onClick={() =>

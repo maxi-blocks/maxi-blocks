@@ -64,6 +64,14 @@ const RelationControl = props => {
 		uniqueID,
 	} = props;
 
+	const relations = useMemo(
+		() =>
+			(rawRelations || []).filter(
+				r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+			),
+		[rawRelations]
+	);
+
 	const blockAttributesByClientId = useSelect(
 		selectFn => {
 			const { getBlockAttributes } = selectFn('core/block-editor');
@@ -117,14 +125,6 @@ const RelationControl = props => {
 			});
 		};
 	}, []);
-
-	const relations = useMemo(
-		() =>
-			(rawRelations || []).filter(
-				r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
-			),
-		[rawRelations]
-	);
 
 	useEffect(() => {
 		if (!rawRelations) return;

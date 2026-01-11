@@ -293,49 +293,54 @@ const RelationControl = props => {
 			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
 		};
 
-		return selectedSettings.component({
-			...attributesWithId,
-			...getGroupAttributes(
-				mergedAttributes,
-				selectedSettings.attrGroupName,
-				false,
-				selectedSettings?.prefix || ''
-			),
-			attributes: attributesWithId,
-			blockAttributes: blockAttributesWithId,
-			onChange: obj => {
-				const newAttributesObj = { ...item.attributes, ...obj };
-				const { cleanAttributesObject } = getCleanResponseIBAttributes(
-					newAttributesObj,
-					blockAttributes,
-					item.uniqueID,
-					selectedSettings,
-					deviceType,
-					selectedSettings?.prefix || '',
-					item.sid,
-					targetClientId
-				);
-				const stylesObj = getIBStylesObj({
-					clientId: targetClientId,
-					sid: item.sid,
-					attributes: omitBy(cleanAttributesObject, isNil),
-					blockAttributes,
+		return (
+			<div className='maxi-relation-control__interaction-setting'>
+				{selectedSettings.component({
+					...attributesWithId,
+					...getGroupAttributes(
+						mergedAttributes,
+						selectedSettings.attrGroupName,
+						false,
+						selectedSettings?.prefix || ''
+					),
+					attributes: attributesWithId,
+					blockAttributes: blockAttributesWithId,
+					onChange: obj => {
+						const newAttributesObj = { ...item.attributes, ...obj };
+						const { cleanAttributesObject } =
+							getCleanResponseIBAttributes(
+								newAttributesObj,
+								blockAttributes,
+								item.uniqueID,
+								selectedSettings,
+								deviceType,
+								selectedSettings?.prefix || '',
+								item.sid,
+								targetClientId
+							);
+						const stylesObj = getIBStylesObj({
+							clientId: targetClientId,
+							sid: item.sid,
+							attributes: omitBy(cleanAttributesObject, isNil),
+							blockAttributes,
+							breakpoint: deviceType,
+						});
+						const styles = getIBStyles({
+							stylesObj,
+							blockAttributes,
+							isFirst: true,
+						});
+						onChangeRelation(relations, item.id, {
+							attributes: omitBy(cleanAttributesObject, isNil),
+							css: styles,
+						});
+					},
+					prefix: selectedSettings?.prefix || '',
 					breakpoint: deviceType,
-				});
-				const styles = getIBStyles({
-					stylesObj,
-					blockAttributes,
-					isFirst: true,
-				});
-				onChangeRelation(relations, item.id, {
-					attributes: omitBy(cleanAttributesObject, isNil),
-					css: styles,
-				});
-			},
-			prefix: selectedSettings?.prefix || '',
-			breakpoint: deviceType,
-			clientId: targetClientId,
-		});
+					clientId: targetClientId,
+				})}
+			</div>
+		);
 	};
 
 	return (

@@ -62,6 +62,15 @@
 	z-index: 99;
 }
 
+/* Interaction builder tabs highlight */
+.maxi-relation-control__interaction-tabs {
+	.maxi-tabs-control__button--selected,
+	.maxi-tabs-control__button[aria-pressed='true'] {
+		color: var(--maxi-interaction-pink);
+		border-color: var(--maxi-interaction-pink);
+	}
+}
+
 /* Custom Block Select Control - matches maxi-select-control__second-style */
 .maxi-block-select-control {
 	width: 100%;

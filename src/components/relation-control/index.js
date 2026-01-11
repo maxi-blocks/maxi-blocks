@@ -438,6 +438,7 @@ const RelationControl = props => {
 									{item.uniqueID && item.sid && (
 										<SettingTabsControl
 											deviceType={deviceType}
+											className='maxi-relation-control__interaction-tabs'
 											items={[
 												{
 													label: __(

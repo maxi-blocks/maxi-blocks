@@ -158,6 +158,11 @@ const RelationControl = props => {
 
 		if (!selectedSettings || !currentActualAttributes) return null;
 
+		const attributesWithId = {
+			...currentActualAttributes,
+			uniqueID: currentActualAttributes?.uniqueID ?? item.uniqueID,
+		};
+
 		return selectedSettings.component({
 			...currentActualAttributes,
 			...getGroupAttributes(
@@ -166,11 +171,12 @@ const RelationControl = props => {
 				false,
 				selectedSettings?.prefix || ''
 			),
-			attributes: currentActualAttributes,
+			attributes: attributesWithId,
+			blockAttributes: currentActualAttributes,
 			onChange: newValues => {
 				if (isUpdating.current) return;
 
-				const { isReset, ...cleanValues } = newValues;
+				const { isReset, ...cleanValues } = newValues || {};
 
 				// USE DEEP EQUALITY: Prevents false positives with nested objects
 				const hasChanged = Object.keys(cleanValues).some(
@@ -204,6 +210,10 @@ const RelationControl = props => {
 			blockAttributes,
 			item.attributes
 		);
+		const attributesWithId = {
+			...mergedAttributes,
+			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
+		};
 
 		return selectedSettings.component({
 			...blockAttributes,
@@ -213,7 +223,7 @@ const RelationControl = props => {
 				false,
 				selectedSettings?.prefix || ''
 			),
-			attributes: mergedAttributes,
+			attributes: attributesWithId,
 			onChange: obj => {
 				const newAttributesObj = { ...item.attributes, ...obj };
 				const { cleanAttributesObject } = getCleanResponseIBAttributes(

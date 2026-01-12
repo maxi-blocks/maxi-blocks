@@ -29,6 +29,7 @@ import 'react-image-crop/src/ReactCrop.scss';
  */
 const GeneralInput = props => {
 	const { target, value, onChange, inputState } = props;
+	const minValue = 0;
 
 	return (
 		<label
@@ -78,9 +79,9 @@ const GeneralInput = props => {
 						className='maxi-image-crop-control__spinner-button maxi-image-crop-control__spinner-button--down'
 						onClick={e => {
 							e.preventDefault();
-							onChange((value || 0) - 1);
+							onChange(Math.max(minValue, (value || 0) - 1));
 						}}
-						disabled={!inputState}
+						disabled={!inputState || (value || 0) <= minValue}
 					>
 						<svg
 							width='8'

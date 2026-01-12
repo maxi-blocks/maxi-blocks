@@ -148,9 +148,19 @@ const RelationControl = props => {
 	}, [relations]);
 
 	useEffect(() => {
-		if (!rawRelations) return;
-		if (rawRelations.length !== relations.length) {
-			onChangeRef.current?.({ relations });
+		if (!rawRelations || !onChangeRef.current) return;
+
+		// Only clean up relations if blocks were actually deleted
+		// Don't trigger on every render or attribute change
+		const hasInvalidRelations = rawRelations.some(
+			r =>
+				r.uniqueID &&
+				!isEmpty(r.uniqueID) &&
+				!getClientIdFromUniqueId(r.uniqueID)
+		);
+
+		if (hasInvalidRelations && rawRelations.length !== relations.length) {
+			onChangeRef.current({ relations });
 		}
 	}, [rawRelations, relations]);
 

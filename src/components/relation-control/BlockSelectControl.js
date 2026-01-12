@@ -328,6 +328,7 @@ const BlockSelectControl = ({
 											option.value || `fallback-${index}`
 										}
 										id={getOptionId(index)}
+										value={option.value}
 										role='option'
 										aria-selected={option.value === value}
 										className={classnames(

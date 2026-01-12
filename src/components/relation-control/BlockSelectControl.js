@@ -187,6 +187,8 @@ const BlockSelectControl = ({
 					handleClose();
 				}
 				break;
+			default:
+				break;
 		}
 	};
 
@@ -210,7 +212,9 @@ const BlockSelectControl = ({
 				break;
 			case 'ArrowUp':
 				event.preventDefault();
-				setActiveOption(activeIndex > 0 ? activeIndex - 1 : activeIndex);
+				setActiveOption(
+					activeIndex > 0 ? activeIndex - 1 : activeIndex
+				);
 				break;
 			case 'Home':
 				event.preventDefault();
@@ -234,6 +238,8 @@ const BlockSelectControl = ({
 				break;
 			case 'Tab':
 				handleClose({ restoreFocus: false });
+				break;
+			default:
 				break;
 		}
 	};
@@ -291,7 +297,10 @@ const BlockSelectControl = ({
 								ref={searchInputRef}
 								type='text'
 								className='maxi-block-select-control__search-input'
-								placeholder={__('Search blocks…', 'maxi-blocks')}
+								placeholder={__(
+									'Search blocks…',
+									'maxi-blocks'
+								)}
 								aria-label={__('Search blocks…', 'maxi-blocks')}
 								value={searchQuery}
 								onChange={e => setSearchQuery(e.target.value)}
@@ -313,45 +322,63 @@ const BlockSelectControl = ({
 							onMouseLeave={clearHover}
 						>
 							{filteredOptions.length > 0 ? (
-									filteredOptions.map((option, index) => (
-										<li
-											key={option.value || `fallback-${index}`}
-											id={getOptionId(index)}
-											role='option'
-											aria-selected={option.value === value}
-											className={classnames(
-												'maxi-block-select-control__option',
-												{
-													'maxi-block-select-control__option--selected':
-														option.value === value,
-													'maxi-block-select-control__option--active':
-														index === activeIndex,
-												}
-											)}
-											onFocus={() => {
-												setActiveOption(index);
-												if (onOptionHover && option.value) {
-													lastHoveredValue.current = option.value;
-													onOptionHover(option.value, true);
-												}
-											}}
-											onMouseEnter={() => {
-												setActiveOption(index);
-												if (onOptionHover && option.value) {
-													lastHoveredValue.current = option.value;
-													onOptionHover(option.value, true);
-												}
-											}}
-											onMouseLeave={() => {
-												if (onOptionHover && option.value) {
-													onOptionHover(option.value, false);
-												}
-												if (lastHoveredValue.current === option.value) {
-													lastHoveredValue.current = null;
-												}
-											}}
-											onClick={() => handleSelect(option.value)}
-										>
+								filteredOptions.map((option, index) => (
+									<li
+										key={
+											option.value || `fallback-${index}`
+										}
+										id={getOptionId(index)}
+										role='option'
+										aria-selected={option.value === value}
+										className={classnames(
+											'maxi-block-select-control__option',
+											{
+												'maxi-block-select-control__option--selected':
+													option.value === value,
+												'maxi-block-select-control__option--active':
+													index === activeIndex,
+											}
+										)}
+										onFocus={() => {
+											setActiveOption(index);
+											if (onOptionHover && option.value) {
+												lastHoveredValue.current =
+													option.value;
+												onOptionHover(
+													option.value,
+													true
+												);
+											}
+										}}
+										onMouseEnter={() => {
+											setActiveOption(index);
+											if (onOptionHover && option.value) {
+												lastHoveredValue.current =
+													option.value;
+												onOptionHover(
+													option.value,
+													true
+												);
+											}
+										}}
+										onMouseLeave={() => {
+											if (onOptionHover && option.value) {
+												onOptionHover(
+													option.value,
+													false
+												);
+											}
+											if (
+												lastHoveredValue.current ===
+												option.value
+											) {
+												lastHoveredValue.current = null;
+											}
+										}}
+										onClick={() =>
+											handleSelect(option.value)
+										}
+									>
 										{option.label}
 									</li>
 								))
@@ -360,6 +387,7 @@ const BlockSelectControl = ({
 									className='maxi-block-select-control__no-results'
 									role='option'
 									aria-disabled='true'
+									aria-selected='false'
 								>
 									{__('No blocks found', 'maxi-blocks')}
 								</li>

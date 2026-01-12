@@ -71,7 +71,8 @@ const RelationControl = props => {
 	const relations = useMemo(
 		() =>
 			(rawRelations || []).filter(
-				r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+				r =>
+					isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
 			),
 		[rawRelations]
 	);
@@ -232,8 +233,12 @@ const RelationControl = props => {
 	 */
 	const displayBeforeSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-		if (!targetClientId || !blockDataByClientId.has(targetClientId)) return null;
-		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId))
+			return null;
+		const selectedSettings = getSelectedIBSettings(
+			targetClientId,
+			item.sid
+		);
 		const blockData = blockDataByClientId.get(targetClientId);
 		const currentActualAttributes = blockData?.attributes;
 
@@ -275,13 +280,19 @@ const RelationControl = props => {
 							// USE DEEP EQUALITY: Prevents false positives with nested objects
 							const hasChanged = Object.keys(cleanValues).some(
 								key =>
-									!isEqual(cleanValues[key], currentActualAttributes[key])
+									!isEqual(
+										cleanValues[key],
+										currentActualAttributes[key]
+									)
 							);
 
 							if (hasChanged) {
 								try {
 									isUpdating.current = true;
-									updateBlockAttributes(targetClientId, cleanValues);
+									updateBlockAttributes(
+										targetClientId,
+										cleanValues
+									);
 								} catch (error) {
 									// eslint-disable-next-line no-console
 									console.error(
@@ -325,8 +336,12 @@ const RelationControl = props => {
 
 	const displaySelectedSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-		if (!targetClientId || !blockDataByClientId.has(targetClientId)) return null;
-		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId))
+			return null;
+		const selectedSettings = getSelectedIBSettings(
+			targetClientId,
+			item.sid
+		);
 		const blockData = blockDataByClientId.get(targetClientId);
 		const blockAttributes = blockData?.attributes;
 
@@ -365,7 +380,10 @@ const RelationControl = props => {
 						attributes: attributesWithId,
 						blockAttributes: blockAttributesWithId,
 						onChange: obj => {
-							const newAttributesObj = { ...item.attributes, ...obj };
+							const newAttributesObj = {
+								...item.attributes,
+								...obj,
+							};
 							const { cleanAttributesObject } =
 								getCleanResponseIBAttributes(
 									newAttributesObj,
@@ -380,7 +398,10 @@ const RelationControl = props => {
 							const stylesObj = getIBStylesObj({
 								clientId: targetClientId,
 								sid: item.sid,
-								attributes: omitBy(cleanAttributesObject, isNil),
+								attributes: omitBy(
+									cleanAttributesObject,
+									isNil
+								),
 								blockAttributes,
 								breakpoint: deviceType,
 							});
@@ -390,7 +411,10 @@ const RelationControl = props => {
 								isFirst: true,
 							});
 							onChangeRelation(relations, item.id, {
-								attributes: omitBy(cleanAttributesObject, isNil),
+								attributes: omitBy(
+									cleanAttributesObject,
+									isNil
+								),
 								css: styles,
 							});
 						},
@@ -401,6 +425,44 @@ const RelationControl = props => {
 				</div>
 			</SettingTabsIndicatorContext.Provider>
 		);
+	};
+
+	// Helper for select options
+	const getParsedOptions = rawOptions => {
+		if (!rawOptions) return [];
+
+		const parseOptionsArray = options =>
+			options?.map(({ sid, label }) => ({
+				label,
+				value: sid,
+			})) ?? [];
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
+		};
+
+		const rawGroups = Object.keys(rawOptions);
+
+		if (rawGroups.length === 0) {
+			return [defaultSetting];
+		}
+
+		if (rawGroups.length > 1) {
+			return {
+				'': [defaultSetting],
+				...Object.entries(rawOptions).reduce(
+					(acc, [groupLabel, groupOptions]) => ({
+						...acc,
+						[capitalize(groupLabel)]:
+							parseOptionsArray(groupOptions),
+					}),
+					{}
+				),
+			};
+		}
+
+		return [defaultSetting, ...parseOptionsArray(rawOptions[rawGroups[0]])];
 	};
 
 	return (
@@ -416,6 +478,7 @@ const RelationControl = props => {
 				/>
 			)}
 			<Button
+				className='maxi-relation-control__button'
 				variant='secondary'
 				onClick={onAddRelation}
 			>
@@ -424,34 +487,41 @@ const RelationControl = props => {
 
 			{!isEmpty(relations) && (
 				<ListControl>
-						{relations.map(item => (
-							<ListItemControl
-								key={item.id}
-								title={
-									item.title ||
-									__('Untitled interaction', 'maxi-blocks')
-								}
-								onMouseEnter={() => {
-									hoveredUniqueIdRef.current = item.uniqueID;
-									handleHighlight(item.uniqueID, true);
-								}}
-								onMouseLeave={() => {
-									hoveredUniqueIdRef.current = null;
-									handleHighlight(item.uniqueID, false);
-								}}
+					{relations.map(item => (
+						<ListItemControl
+							key={item.id}
+							title={
+								item.title ||
+								__('Untitled interaction', 'maxi-blocks')
+							}
+							onMouseEnter={() => {
+								hoveredUniqueIdRef.current = item.uniqueID;
+								handleHighlight(item.uniqueID, true);
+							}}
+							onMouseLeave={() => {
+								hoveredUniqueIdRef.current = null;
+								handleHighlight(item.uniqueID, false);
+							}}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
 										value={item.title}
 										onChange={v =>
-											onChangeRelation(relations, item.id, {
-												title: v,
-											})
+											onChangeRelation(
+												relations,
+												item.id,
+												{
+													title: v,
+												}
+											)
 										}
 									/>
 									<BlockSelectControl
-										label={__('Block to affect', 'maxi-blocks')}
+										label={__(
+											'Block to affect',
+											'maxi-blocks'
+										)}
 										value={item.uniqueID}
 										options={[
 											{
@@ -465,9 +535,13 @@ const RelationControl = props => {
 										]}
 										onOptionHover={handleHighlight}
 										onChange={v =>
-											onChangeRelation(relations, item.id, {
-												uniqueID: v,
-											})
+											onChangeRelation(
+												relations,
+												item.id,
+												{
+													uniqueID: v,
+												}
+											)
 										}
 									/>
 									<SelectControl
@@ -497,14 +571,21 @@ const RelationControl = props => {
 											},
 										]}
 										onChange={v =>
-											onChangeRelation(relations, item.id, {
-												action: v,
-											})
+											onChangeRelation(
+												relations,
+												item.id,
+												{
+													action: v,
+												}
+											)
 										}
 									/>
 									{item.uniqueID && (
 										<SelectControl
-											label={__('Settings', 'maxi-blocks')}
+											label={__(
+												'Settings',
+												'maxi-blocks'
+											)}
 											value={item.sid}
 											options={getParsedOptions(
 												getIBOptionsFromBlockData(
@@ -514,9 +595,13 @@ const RelationControl = props => {
 												)
 											)}
 											onChange={v =>
-												onChangeRelation(relations, item.id, {
-													sid: v,
-												})
+												onChangeRelation(
+													relations,
+													item.id,
+													{
+														sid: v,
+													}
+												)
 											}
 										/>
 									)}
@@ -530,7 +615,10 @@ const RelationControl = props => {
 														'Current',
 														'maxi-blocks'
 													),
-													content: displayBeforeSetting(item),
+													content:
+														displayBeforeSetting(
+															item
+														),
 												},
 												{
 													label:
@@ -538,12 +626,15 @@ const RelationControl = props => {
 															? __(
 																	'On hover',
 																	'maxi-blocks'
-															)
+															  )
 															: __(
 																	'On click',
 																	'maxi-blocks'
-															),
-													content: displaySelectedSetting(item),
+															  ),
+													content:
+														displaySelectedSetting(
+															item
+														),
 												},
 												{
 													label: __(
@@ -552,8 +643,12 @@ const RelationControl = props => {
 													),
 													content: (
 														<TransitionControl
-															transition={item.effects}
-															breakpoint={deviceType}
+															transition={
+																item.effects
+															}
+															breakpoint={
+																deviceType
+															}
 															getDefaultTransitionAttribute={
 																getDefaultTransitionAttribute
 															}
@@ -562,10 +657,11 @@ const RelationControl = props => {
 																	relations,
 																	item.id,
 																	{
-																		effects: {
-																			...item.effects,
-																			...obj,
-																		},
+																		effects:
+																			{
+																				...item.effects,
+																				...obj,
+																			},
 																	}
 																)
 															}
@@ -584,46 +680,6 @@ const RelationControl = props => {
 			)}
 		</div>
 	);
-};
-
-// Helper for select options
-	const getParsedOptions = rawOptions => {
-		if (!rawOptions) return [];
-
-	const parseOptionsArray = options =>
-		options?.map(({ sid, label }) => ({
-			label,
-			value: sid,
-		})) ?? [];
-
-	const defaultSetting = {
-		label: __('Choose settings', 'maxi-blocks'),
-		value: '',
-	};
-
-	const rawGroups = Object.keys(rawOptions);
-
-	if (rawGroups.length === 0) {
-		return [defaultSetting];
-	}
-
-	if (rawGroups.length > 1) {
-		return {
-			'': [defaultSetting],
-			...Object.entries(rawOptions).reduce(
-				(acc, [groupLabel, groupOptions]) => ({
-					...acc,
-					[capitalize(groupLabel)]: parseOptionsArray(groupOptions),
-				}),
-				{}
-			),
-		};
-	}
-
-	return [
-		defaultSetting,
-		...parseOptionsArray(rawOptions[rawGroups[0]]),
-	];
 };
 
 export default RelationControl;

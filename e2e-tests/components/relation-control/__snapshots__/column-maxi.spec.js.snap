@@ -8,6 +8,7 @@ exports[`Column Maxi hover simple actions Column size 1`] = `
       "column-size-general": 50,
       "column-size-xl": 50,
       "justify-content-general": "space-between",
+      "justify-content-xl": "space-between",
     },
     "css": {
       "general": {
@@ -20,7 +21,9 @@ exports[`Column Maxi hover simple actions Column size 1`] = `
       },
     },
     "effects": {
+      "disableTransition": false,
       "easing-general": "ease",
+      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,

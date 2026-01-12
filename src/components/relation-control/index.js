@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, select } from '@wordpress/data';
 import { useRef, useEffect, useMemo } from '@wordpress/element';
 
 /**
@@ -26,6 +26,7 @@ import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlo
 import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
+import getHoverStatus from '@extensions/relations/getHoverStatus';
 import SettingTabsIndicatorContext from '@extensions/indicators/context';
 
 /**
@@ -371,6 +372,22 @@ const RelationControl = props => {
 			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
 		};
 
+		const transformGeneralAttributesToBaseBreakpoint = obj => {
+			if (deviceType !== 'general') return {};
+
+			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+
+			if (!baseBreakpoint) return {};
+
+			return Object.keys(obj).reduce((acc, key) => {
+				if (key.includes('-general')) {
+					const newKey = key.replace('general', baseBreakpoint);
+					acc[newKey] = obj[key];
+				}
+				return acc;
+			}, {});
+		};
+
 		return (
 			<SettingTabsIndicatorContext.Provider
 				value={{
@@ -393,8 +410,11 @@ const RelationControl = props => {
 							const newAttributesObj = {
 								...item.attributes,
 								...obj,
+								...transformGeneralAttributesToBaseBreakpoint(
+									obj
+								),
 							};
-							const { cleanAttributesObject } =
+							const { cleanAttributesObject, tempAttributes } =
 								getCleanResponseIBAttributes(
 									newAttributesObj,
 									blockAttributes,
@@ -405,13 +425,15 @@ const RelationControl = props => {
 									item.sid,
 									targetClientId
 								);
+							const mergedAttributes = merge(
+								{},
+								cleanAttributesObject,
+								tempAttributes
+							);
 							const stylesObj = getIBStylesObj({
 								clientId: targetClientId,
 								sid: item.sid,
-								attributes: omitBy(
-									cleanAttributesObject,
-									isNil
-								),
+								attributes: mergedAttributes,
 								blockAttributes,
 								breakpoint: deviceType,
 							});
@@ -420,11 +442,33 @@ const RelationControl = props => {
 								blockAttributes,
 								isFirst: true,
 							});
+							// Remove empty/default border styles from XXL
+							if (styles.xxl?.styles?.border === 'none') {
+								delete styles.xxl.styles.border;
+								if (
+									Object.keys(styles.xxl.styles).length === 0
+								) {
+									delete styles.xxl;
+								}
+							}
+							const newAttributes = omitBy(
+								{
+									...item.attributes,
+									...cleanAttributesObject,
+								},
+								isNil
+							);
+							// Convert empty string units to "px" for explicit representation
+							Object.keys(newAttributes).forEach(key => {
+								if (
+									key.includes('-unit-') &&
+									newAttributes[key] === ''
+								) {
+									newAttributes[key] = 'px';
+								}
+							});
 							onChangeRelation(relations, item.id, {
-								attributes: omitBy(
-									cleanAttributesObject,
-									isNil
-								),
+								attributes: newAttributes,
 								css: styles,
 							});
 						},
@@ -619,6 +663,23 @@ const RelationControl = props => {
 														targetClientId,
 														v
 													);
+												const {
+													transitionTarget,
+													transitionTrigger,
+													hoverProp,
+												} = selectedSettings || {};
+												const blockData =
+													blockDataByClientId.get(
+														targetClientId
+													);
+												const hoverStatus =
+													hoverProp &&
+													getHoverStatus(
+														hoverProp,
+														blockData?.attributes ||
+															{},
+														item.attributes
+													);
 												onChangeRelation(
 													relations,
 													item.id,
@@ -627,6 +688,15 @@ const RelationControl = props => {
 														target:
 															selectedSettings?.target ||
 															'',
+														effects: {
+															...item.effects,
+															transitionTarget,
+															transitionTrigger,
+															hoverStatus:
+																!!hoverStatus,
+															disableTransition:
+																!!selectedSettings?.disableTransition,
+														},
 													}
 												);
 											}}

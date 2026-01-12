@@ -43,7 +43,7 @@ describe('Button Maxi hover simple actions', () => {
 		await page.waitForTimeout(200);
 
 		// Add action
-		let selectControls = await page.$$('.maxi-select-control__input');
+		const selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[1].select('hover');
 		await page.waitForTimeout(200);
 	};
@@ -224,7 +224,7 @@ describe('Button Maxi hover simple actions', () => {
 
 		// Icon padding
 		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[5].select('%');
+		await selectControls[4].select('%');
 
 		await page.$$eval(
 			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
@@ -300,7 +300,7 @@ describe('Button Maxi hover simple actions', () => {
 
 	it('Button border', async () => {
 		// Select setting
-		let selectControls = await page.$$('.maxi-select-control__input');
+		const selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[2].select('bb');
 		await page.waitForTimeout(200);
 
@@ -324,10 +324,6 @@ describe('Button Maxi hover simple actions', () => {
 			colorPalette: 8,
 			opacity: 50,
 		});
-
-		// Border width
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[5].select('%');
 
 		// Border radius
 		await page.waitForTimeout(500);

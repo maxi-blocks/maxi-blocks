@@ -128,12 +128,12 @@ const MediaUploader = props => {
 										naturalWidth={
 											alternativeImage
 												? alternativeImage.width
-												: imageData.media_details.width
+												: imageData?.media_details?.width ?? 640
 										}
 										naturalHeight={
 											alternativeImage
 												? alternativeImage.height
-												: imageData.media_details.height
+												: imageData?.media_details?.height ?? 360
 										}
 										className='maxi-mediauploader-control__responsive-wrapper'
 									>
@@ -142,7 +142,7 @@ const MediaUploader = props => {
 											autoPlay={false}
 											loop={false}
 											muted
-											preload
+											preload='metadata'
 											src={
 												alternativeImage
 													? alternativeImage.source_url

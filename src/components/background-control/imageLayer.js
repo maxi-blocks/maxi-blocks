@@ -619,12 +619,12 @@ const ImageLayer = props => {
 										onChange({
 											[getAttributeKey(
 												'background-image-mediaID',
-												false,
+												isHover,
 												prefix
 											)]: '',
 											[getAttributeKey(
 												'background-image-mediaURL',
-												false,
+												isHover,
 												prefix
 											)]: '',
 											[getAttributeKey(

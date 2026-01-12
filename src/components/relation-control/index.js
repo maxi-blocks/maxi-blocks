@@ -609,15 +609,27 @@ const RelationControl = props => {
 													)
 												)
 											)}
-											onChange={v =>
+											onChange={v => {
+												const targetClientId =
+													getClientIdFromUniqueId(
+														item.uniqueID
+													);
+												const selectedSettings =
+													getSelectedIBSettings(
+														targetClientId,
+														v
+													);
 												onChangeRelation(
 													relations,
 													item.id,
 													{
 														sid: v,
+														target:
+															selectedSettings?.target ||
+															'',
 													}
-												)
-											}
+												);
+											}}
 										/>
 									)}
 									{item.uniqueID && item.sid && (

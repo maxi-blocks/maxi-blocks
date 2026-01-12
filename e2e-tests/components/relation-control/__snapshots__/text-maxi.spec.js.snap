@@ -6,7 +6,6 @@ exports[`Text Maxi hover simple actions Alignment 1`] = `
     "action": "hover",
     "attributes": {
       "text-alignment-general": "right",
-      "text-alignment-xl": "right",
     },
     "css": {
       "general": {
@@ -17,9 +16,7 @@ exports[`Text Maxi hover simple actions Alignment 1`] = `
       },
     },
     "effects": {
-      "disableTransition": true,
       "easing-general": "ease",
-      "hoverStatus": false,
       "transition-delay-general": 0,
       "transition-duration-general": 0.3,
       "transition-status-general": true,

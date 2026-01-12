@@ -34,15 +34,18 @@ describe('Button Maxi hover simple actions', () => {
 		await page.waitForTimeout(150);
 
 		// Add target
-		let selectControls = await page.$$('.maxi-select-control__input');
-
-		await selectControls[1].select('button-maxi-1se8ef1z-u');
+		await page.waitForSelector('.maxi-block-select-control__trigger');
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForSelector('.maxi-block-select-control__dropdown');
+		await page.click(
+			'.maxi-block-select-control__options li[value="button-maxi-1se8ef1z-u"]'
+		);
+		await page.waitForTimeout(200);
 
 		// Add action
-		await page.waitForTimeout(500);
-		selectControls = await page.$$('.maxi-select-control__input');
-
-		await selectControls[2].select('hover');
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('hover');
+		await page.waitForTimeout(200);
 	};
 
 	beforeEach(async () => {
@@ -144,7 +147,15 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button icon', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bi');
+		await selectControls[2].select('bi');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Width
 		await page.waitForTimeout(350);
@@ -234,7 +245,15 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button typography', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bty');
+		await selectControls[2].select('bty');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Change font family
 		await page.$eval(
@@ -282,7 +301,15 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button border', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bb');
+		await selectControls[2].select('bb');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -321,7 +348,14 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button background', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bbg');
+		await selectControls[2].select('bbg');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
 		await page.waitForTimeout(350);
 
 		// Background color
@@ -343,7 +377,15 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button shadow', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bbs');
+		await selectControls[2].select('bbs');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -409,7 +451,15 @@ describe('Button Maxi hover simple actions', () => {
 	it('Button margin/padding', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('bmp');
+		await selectControls[2].select('bmp');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		await page.waitForTimeout(350);
 
@@ -451,7 +501,14 @@ describe('Button Maxi hover simple actions', () => {
 		const backgroundSelectControls = await page.$$(
 			'.maxi-select-control__input'
 		);
-		await backgroundSelectControls[3].select('bbg');
+		await backgroundSelectControls[2].select('bbg');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		let tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
 		await page.waitForTimeout(350);
 
 		// Background color
@@ -470,7 +527,14 @@ describe('Button Maxi hover simple actions', () => {
 		const shadowSelectControls = await page.$$(
 			'.maxi-select-control__input'
 		);
-		await shadowSelectControls[3].select('bbs');
+		await shadowSelectControls[2].select('bbs');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
 		await page.waitForTimeout(350);
 
 		// Select first default

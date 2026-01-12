@@ -31,6 +31,14 @@ export const DefaultDividersControl = props => {
 	const { onChange, breakpoint, dividerBorderStyle, isHover, prefix } = props;
 
 	const onChangeStyle = newStyle => {
+		// Also save line-orientation since it's a styleAttr needed for CSS generation
+		const currentLineOrientation = getLastBreakpointAttribute({
+			target: `${prefix}line-orientation`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+
 		onChange({
 			[getAttributeKey(
 				'divider-border-style',
@@ -38,6 +46,12 @@ export const DefaultDividersControl = props => {
 				prefix,
 				breakpoint
 			)]: newStyle,
+			[getAttributeKey(
+				'line-orientation',
+				isHover,
+				prefix,
+				breakpoint
+			)]: currentLineOrientation || 'horizontal',
 		});
 	};
 

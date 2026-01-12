@@ -106,6 +106,10 @@ body .maxi-background-control {
 			@include wordpress-input-reset;
 		}
 	}
+
+	.maxi-list-item-control__title__wrapper {
+		align-items: center;
+	}
 	
 	.maxi-background-layer {
 		&__preview {

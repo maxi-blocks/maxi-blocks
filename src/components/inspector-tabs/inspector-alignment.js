@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, isRTL } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -51,7 +51,7 @@ const alignment = ({
 	const alignmentDefaultValue =
 		getDefaultAttribute('alignment-general', props.clientId) || 'center';
 	const textAlignmentDefaultValue =
-		getDefaultAttribute('text-alignment-general', props.clientId) || 'left';
+		getDefaultAttribute('text-alignment-general', props.clientId) || (isRTL() ? 'right' : 'left');
 
 	// Check if any alignment attribute is set to a non-default value
 	// Treat both undefined/null AND values matching the default as "default"

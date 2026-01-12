@@ -58,7 +58,7 @@ const RelationControl = props => {
 	// Track highlighted blocks for cleanup
 	const highlightedBlocks = useRef(new Set());
 	const hoveredUniqueIdRef = useRef(null);
-	const onChangeRef = useRef(onChange);
+	const onChangeRef = useRef(null);
 
 	const {
 		deviceType,

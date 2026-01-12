@@ -149,23 +149,16 @@
 		line-height: 14px;
 		text-align: left;
 		color: var(--maxi-grey);
-		background-image: linear-gradient(
-				var(--maxi-grey-light),
-				var(--maxi-grey-light)
-			),
-			url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(180,180,180,0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>') !important;
-		background-repeat: no-repeat, no-repeat !important;
-		background-size: 1px 18px, 8px 8px !important;
-		background-position: right 1px center, right 5px center !important;
+		background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(180,180,180,0.9)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>') !important;
+		background-size: 8px 8px !important;
+		background-position: right 5px center !important;
+		padding-left: 8px !important;
+		background-repeat: no-repeat !important;
 
 		&:hover,
 		&:focus,
 		&:active {
-			background-image: linear-gradient(
-					var(--maxi-grey-light),
-					var(--maxi-grey-light)
-				),
-				url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(99,186,121,1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>') !important;
+			background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgba(99,186,121,1)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>') !important;
 		}
 	}
 

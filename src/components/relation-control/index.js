@@ -490,6 +490,7 @@ const RelationControl = props => {
 					{relations.map(item => (
 						<ListItemControl
 							key={item.id}
+							id={item.id}
 							title={
 								item.title ||
 								__('Untitled interaction', 'maxi-blocks')
@@ -507,6 +508,10 @@ const RelationControl = props => {
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
 										value={item.title}
+										placeholder={__(
+											'Give memorable name…',
+											'maxi-blocks'
+										)}
 										onChange={v =>
 											onChangeRelation(
 												relations,

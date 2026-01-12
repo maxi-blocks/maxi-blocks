@@ -1,0 +1,219 @@
+// Global overrides for FocalPointPicker in position control (beats CSS-in-JS)
+body.maxi-blocks--active {
+	.maxi-position-control__focal-picker {
+		.components-focal-point-picker {
+			background-color: var(--maxi-whisper-green) !important;
+			border: 1px solid var(--maxi-grey) !important;
+			border-radius: 4px !important;
+			box-shadow: none !important;
+			outline: none !important;
+		}
+
+		.components-focal-point-picker__media,
+		.components-focal-point-picker__media--placeholder {
+			background: var(--maxi-whisper-green) !important;
+			box-shadow: none !important;
+		}
+
+		.components-focal-point-picker__grid > div {
+			background-color: var(--maxi-primary-color) !important;
+			opacity: 1 !important;
+		}
+	}
+}
+
+// Position Control Toggle Styles
+.maxi-position-control {
+	&__advanced-toggle {
+		margin-top: 8px;
+		margin-bottom: 8px;
+
+		.components-button {
+			display: flex !important;
+			justify-content: space-between !important;
+			align-items: center !important;
+			width: 100% !important;
+			padding: 8px 10px !important;
+			font-size: 13px !important;
+			color: var(--maxi-grey-dark) !important;
+			background: var(--maxi-white) !important;
+			border: 1px solid var(--maxi-grey-light) !important;
+			border-radius: 4px !important;
+			transition: all 0.3s ease;
+			text-align: left !important;
+
+			&:hover {
+				border-color: var(--maxi-primary-color) !important;
+				background: var(--maxi-whisper-green) !important;
+			}
+		}
+	}
+
+	&__toggle-arrow {
+		display: inline-flex;
+		margin-left: 8px;
+		transition: transform 0.3s ease;
+
+		svg {
+			width: 12px;
+			height: 12px;
+			fill: currentColor;
+		}
+
+		&--expanded {
+			transform: rotate(180deg);
+
+			svg {
+				width: 12px;
+				height: 12px;
+				fill: currentColor;
+			}
+		}
+	}
+
+	&__advanced-options {
+		animation: maxi-position-slideDown 0.3s ease-out;
+	}
+
+	// FocalPointPicker styling for layer placement
+	&__focal-picker {
+		width: 100%;
+		margin-bottom: 8px;
+
+		// Force vertical stacking layout
+		display: flex;
+		flex-direction: column;
+
+		// The picker grid/box area
+		.components-focal-point-picker {
+			background-color: var(--maxi-whisper-green) !important;
+			border: 1px solid var(--maxi-grey) !important;
+			border-radius: 4px !important;
+			box-shadow: none !important;
+
+			// The placeholder background (overrides inline style)
+			.components-focal-point-picker__media,
+			.components-focal-point-picker__media--placeholder {
+				background: var(--maxi-whisper-green) !important;
+				box-shadow: none !important;
+			}
+
+			// Grid container
+			.components-focal-point-picker__grid {
+				// Grid lines - all direct children
+				> div {
+					background-color: var(--maxi-primary-color) !important;
+					opacity: 1 !important;
+				}
+			}
+		}
+
+		// The label/title should be on top
+		.components-base-control__field {
+			display: flex !important;
+			flex-direction: column !important;
+			align-items: stretch !important;
+			width: 100%;
+
+			// Label styling - order -1 ensures it's always first
+			.components-base-control__label {
+				margin-bottom: 8px !important;
+				order: -1;
+				font-size: 13px;
+				text-transform: none !important;
+			}
+
+			// Image picker container - stack in middle
+			.components-focal-point-picker {
+				order: 1;
+				display: flex;
+				flex-direction: column;
+				width: 100%;
+
+				// The media preview with focal point
+				.components-focal-point-picker__icon_container {
+					width: 100%;
+					margin-bottom: 8px;
+				}
+			}
+		}
+
+		// Value fields container (LEFT/TOP inputs)
+		.focal-point-picker__controls {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			width: 100%;
+			margin-top: 0px;
+			margin-bottom: -30px;
+
+			// Each input control (Left and Top)
+			.focal-point-picker__controls-position-unit-control {
+				// The input base container - make it column layout
+				.components-input-base {
+					flex-direction: column !important;
+					align-items: flex-start !important;
+					gap: 0px;
+					width: 100%;
+					border-radius: 5px !important;
+
+					// Label container
+					.components-flex-item {
+						width: 100%;
+						margin-bottom: 2px;
+					}
+
+					// Style the LEFT/TOP labels
+					.components-input-control__label {
+						font-size: 13px !important;
+						text-transform: none !important;
+						line-height: 15px !important;
+						min-height: 20px;
+					}
+
+					// Input container should be full width
+					.components-input-control__container {
+						width: 100%;
+					}
+				}
+			}
+		}
+
+		// Fallback targeting for different WordPress versions
+		.components-focal-point-picker__media {
+			width: 100%;
+			max-width: 100%;
+		}
+
+		// Fix the focal point circle indicator
+		.components-focal-point-picker__icon_container {
+			width: 30px !important;
+			height: 30px !important;
+			border-radius: 50% !important;
+			border: 2px solid #fff !important;
+			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+			background: transparent !important;
+			cursor: grab;
+
+			&:active {
+				cursor: grabbing;
+			}
+
+			&::before,
+			&::after {
+				display: none !important;
+			}
+		}
+	}
+}
+
+@keyframes maxi-position-slideDown {
+	from {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

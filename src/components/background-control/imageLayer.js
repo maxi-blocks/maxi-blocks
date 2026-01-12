@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useMemo } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -55,13 +56,18 @@ const ImageLayerSettings = props => {
 		getBlockClipPath, // for IB
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'background-image-parallax-status',
-		props: imageOptions,
-		prefix,
-	});
+	const parallaxStatus = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-parallax-status',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	return (
 		<>
@@ -250,206 +256,6 @@ const ImageLayerSettings = props => {
 						})
 					}
 				/>
-			)}
-			<SelectControl
-				__nextHasNoMarginBottom
-				label={__('Background position', 'maxi-blocks')}
-				className='maxi-background-control__image-layer__position-selector'
-				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-position`,
-					breakpoint,
-					attributes: imageOptions,
-					isHover,
-				})}
-				defaultValue={getDefaultAttr('background-image-position')}
-				newStyle
-				options={[
-					{
-						label: __('Left top', 'maxi-blocks'),
-						value: 'left top',
-					},
-					{
-						label: __('Left center', 'maxi-blocks'),
-						value: 'left center',
-					},
-					{
-						label: __('Left bottom', 'maxi-blocks'),
-						value: 'left bottom',
-					},
-					{
-						label: __('Right top', 'maxi-blocks'),
-						value: 'right top',
-					},
-					{
-						label: __('Right center', 'maxi-blocks'),
-						value: 'right center',
-					},
-					{
-						label: __('Right bottom', 'maxi-blocks'),
-						value: 'right bottom',
-					},
-					{
-						label: __('Center top', 'maxi-blocks'),
-						value: 'center top',
-					},
-					{
-						label: __('Center center', 'maxi-blocks'),
-						value: 'center center',
-					},
-					{
-						label: __('Center bottom', 'maxi-blocks'),
-						value: 'center bottom',
-					},
-					{
-						label: __('Custom', 'maxi-blocks'),
-						value: 'custom',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('background-image-position'),
-					})
-				}
-			/>
-			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-position`,
-				breakpoint,
-				attributes: imageOptions,
-				isHover,
-			}) === 'custom' && (
-				<>
-					<AdvancedNumberControl
-						label={__('Y-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width-unit`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('X-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: 'background-image-position-height-unit',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: 'background-image-position-height',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-				</>
 			)}
 			{!parallaxStatus && (
 				<>
@@ -664,7 +470,8 @@ const ImageLayer = props => {
 		disableUpload = false,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
 	const [moreSettings, setMoreSettings] = useState(false);
 
@@ -679,11 +486,15 @@ const ImageLayer = props => {
 		);
 	};
 
-	const mediaID = getAttributeValue({
-		target: 'background-image-mediaID',
-		props: imageOptions,
-		prefix,
-	});
+	const mediaID = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaID',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	const handleSelectImage = imageData => {
 		onChange({
@@ -702,12 +513,103 @@ const ImageLayer = props => {
 		});
 	};
 
+	const handleFocalPointChange = focalPoint => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position',
+				isHover,
+				prefix,
+				breakpoint
+			)]: 'custom',
+			[getAttributeKey(
+				'background-image-position-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.x * 100),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '%',
+			[getAttributeKey(
+				'background-image-position-height',
+				isHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.y * 100),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: '%',
+		});
+	};
+
+	// Compute URL once for validation and prop usage
+	const imageUrl = getAttributeValue({
+		target: 'background-image-mediaURL',
+		props: imageOptions,
+		prefix,
+	});
+
+	// Helper to normalize position value to 0-1 range for FocalPointPicker
+	const normalizePositionForPicker = value => {
+		if (value === null || value === undefined || value === '') return 0.5;
+		
+		// Extract numeric value if string
+		const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+		
+		// Only use if it's a valid percentage
+		if (typeof value === 'string' && value.includes('%') && Number.isFinite(numericValue)) {
+			return Math.max(0, Math.min(100, numericValue)) / 100;
+		}
+		
+		// If numeric and in 0-100 range, treat as percentage
+		if (typeof numericValue === 'number' && Number.isFinite(numericValue) && numericValue >= 0 && numericValue <= 100) {
+			return numericValue / 100;
+		}
+		
+		// Default to center for other units or invalid values
+		return 0.5;
+	};
+
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
 				<>
 					{!imageOptions['dc-status'] && (
 						<>
+							{mediaID && imageUrl && (
+								<div className='maxi-focal-point-picker'>
+									<FocalPointPicker
+										className='maxi-background-position-picker'
+										label={__('Image focus', 'maxi-blocks')}
+										url={imageUrl}
+										value={{
+											x: normalizePositionForPicker(
+												getLastBreakpointAttribute({
+													target: `${prefix}background-image-position-width`,
+													breakpoint,
+													attributes: imageOptions,
+													isHover,
+												})
+											),
+											y: normalizePositionForPicker(
+												getLastBreakpointAttribute({
+													target: `${prefix}background-image-position-height`,
+													breakpoint,
+													attributes: imageOptions,
+													isHover,
+												})
+											),
+										}}
+										onChange={handleFocalPointChange}
+									/>
+								</div>
+							)}
 							<MediaUploaderControl
 								mediaID={mediaID}
 								isImageUrl={getAttributeValue({
@@ -871,14 +773,13 @@ const ImageLayer = props => {
 														'background-image-parallax-speed'
 													]
 												}
-												onChangeValue={(val, meta) => {
+												onChangeValue={val => {
 													onChange({
 														'background-image-parallax-speed':
 															val !== undefined &&
 															val !== ''
 																? val
 																: '',
-														meta,
 													});
 												}}
 												min={0.2}

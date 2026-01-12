@@ -114,7 +114,10 @@ body .maxi-background-control {
 			margin-right: 8px;
 			border: 1px solid $black;
 			background-size: cover !important;
-			flex-shrink: 0; 
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex: 0 0 20px;
 
 			svg {
 				display: block;

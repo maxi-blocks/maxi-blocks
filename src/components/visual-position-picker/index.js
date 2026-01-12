@@ -151,6 +151,10 @@ const VisualPositionPicker = ({
 
 	const handleMouseDownWrapper = useCallback(
 		e => {
+			if (cleanupRef.current) {
+				cleanupRef.current();
+			}
+
 			handleMouseDown(e);
 
 			const onMouseMove = ev => handleMouseMove(ev);

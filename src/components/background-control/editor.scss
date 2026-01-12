@@ -8,6 +8,7 @@ $black: var(--maxi-black);
 $primary: var(--maxi-primary-color);
 $secondary: var(--maxi-secondary-color);
 $transition: all 0.3s ease;
+$focal-point-controls-offset: -30px;
 
 @mixin stacking-context {
 	display: flex;
@@ -71,7 +72,6 @@ body .maxi-background-control {
 			width: 48px;
 			transition: all 0.4s ease !important;
 
-			// Fix syntax: added missing colons
 			&:first-child { margin-right: 4px !important; }
 			&:last-child { border-right: none; margin-left: 8px !important; }
 
@@ -259,8 +259,11 @@ body .maxi-background-control {
 	.maxi-list-item-control__title__id:before {
 		content: counter(list-items-counter);
 		background: var(--maxi-whisper-green);
-		display: block;
-		padding: 7px 6px 7px 6px !important;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 25px;
+		padding: 0 6px !important;
 		border-right: 1px solid $secondary;
 		margin-right: 5px !important;
 		counter-increment: list-items-counter 1;
@@ -327,13 +330,13 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		}
 
 		// Value fields container (LEFT/TOP inputs)
-		.focal-point-picker__controls {
-			display: flex;
-			flex-direction: row;
-			gap: 8px;
-			width: 100%;
-			margin-top: 0px;
-			margin-bottom: -30px;
+			.focal-point-picker__controls {
+				display: flex;
+				flex-direction: row;
+				gap: 8px;
+				width: 100%;
+				margin-top: 0px;
+				margin-bottom: $focal-point-controls-offset;
 
 			// Each input control (Left and Top)
 			.focal-point-picker__controls-position-unit-control {

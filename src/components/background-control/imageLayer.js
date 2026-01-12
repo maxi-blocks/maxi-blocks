@@ -33,7 +33,20 @@ import DynamicContent from '@components/dynamic-content';
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
+/**
+ * Helper to normalize position value to 0-1 range for FocalPointPicker
+ */
+const normalizePositionForPicker = value => {
+	if (value === null || value === undefined || value === '') return 0.5;
+
+	const numericValue = typeof value === 'number' ? value : parseFloat(value);
+
+	if (Number.isFinite(numericValue)) {
+		return Math.max(0, Math.min(100, numericValue)) / 100;
+	}
+
+	return 0.5;
+};
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -549,32 +562,15 @@ const ImageLayer = props => {
 	};
 
 	// Compute URL once for validation and prop usage
-	const imageUrl = getAttributeValue({
-		target: 'background-image-mediaURL',
-		props: imageOptions,
-		prefix,
-	});
-
-	// Helper to normalize position value to 0-1 range for FocalPointPicker
-	const normalizePositionForPicker = value => {
-		if (value === null || value === undefined || value === '') return 0.5;
-		
-		// Extract numeric value if string
-		const numericValue = typeof value === 'string' ? parseFloat(value) : value;
-		
-		// Only use if it's a valid percentage
-		if (typeof value === 'string' && value.includes('%') && Number.isFinite(numericValue)) {
-			return Math.max(0, Math.min(100, numericValue)) / 100;
-		}
-		
-		// If numeric and in 0-100 range, treat as percentage
-		if (typeof numericValue === 'number' && Number.isFinite(numericValue) && numericValue >= 0 && numericValue <= 100) {
-			return numericValue / 100;
-		}
-		
-		// Default to center for other units or invalid values
-		return 0.5;
-	};
+	const imageUrl = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaURL',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	return (
 		<div className='maxi-background-control__image-layer'>
@@ -774,13 +770,14 @@ const ImageLayer = props => {
 														'background-image-parallax-speed'
 													]
 												}
-												onChangeValue={val => {
+												onChangeValue={(val, meta) => {
 													onChange({
 														'background-image-parallax-speed':
 															val !== undefined &&
 															val !== ''
 																? val
 																: '',
+														meta,
 													});
 												}}
 												min={0.2}

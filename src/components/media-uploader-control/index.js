@@ -105,10 +105,10 @@ const MediaUploader = props => {
 										: ''
 								}`}
 							{!!mediaID && !imageData && <Spinner />}
-								{mediaType === 'image' &&
-									showPreview &&
-									!!mediaID &&
-									imageData && (
+							{mediaType === 'image' &&
+								showPreview &&
+								!!mediaID &&
+								imageData && (
 									<div className='maxi-mediauploader-control__responsive-wrapper'>
 										<img
 											src={
@@ -120,37 +120,37 @@ const MediaUploader = props => {
 										/>
 									</div>
 								)}
-								{mediaType === 'video' &&
-									showPreview &&
-									!!mediaID &&
-									imageData && (
+							{mediaType === 'video' &&
+								showPreview &&
+								!!mediaID &&
+								imageData && (
 									<ResponsiveWrapper
 										naturalWidth={
 											alternativeImage
-											? alternativeImage.width
-											: imageData.media_details.width
-									}
-									naturalHeight={
-										alternativeImage
-											? alternativeImage.height
-											: imageData.media_details.height
-									}
-									className='maxi-mediauploader-control__responsive-wrapper'
-								>
-									<video
-										controls
-										autoPlay={false}
-										loop={false}
-										muted
-										preload
-										src={
-											alternativeImage
-												? alternativeImage.source_url
-												: imageData.source_url
+												? alternativeImage.width
+												: imageData.media_details.width
 										}
-									/>
-								</ResponsiveWrapper>
-							)}
+										naturalHeight={
+											alternativeImage
+												? alternativeImage.height
+												: imageData.media_details.height
+										}
+										className='maxi-mediauploader-control__responsive-wrapper'
+									>
+										<video
+											controls
+											autoPlay={false}
+											loop={false}
+											muted
+											preload
+											src={
+												alternativeImage
+													? alternativeImage.source_url
+													: imageData.source_url
+											}
+										/>
+									</ResponsiveWrapper>
+								)}
 						</Button>
 					)}
 				/>
@@ -181,21 +181,21 @@ const MediaUploader = props => {
 					/>
 				</MediaUploadCheck>
 			)}
-				{!!mediaID && showRemove && (
-					<MediaUploadCheck>
-						<Button
-							onClick={onRemoveImage}
-							isDestructive
-							className={
-								mediaType === 'image'
-									? 'maxi-mediauploader-control__remove'
-									: 'maxi-mediauploader-control__video__remove'
-							}
-						>
-							{removeButton}
-						</Button>
-					</MediaUploadCheck>
-				)}
+			{!!mediaID && showRemove && (
+				<MediaUploadCheck>
+					<Button
+						onClick={onRemoveImage}
+						isDestructive
+						className={
+							mediaType === 'image'
+								? 'maxi-mediauploader-control__remove'
+								: 'maxi-mediauploader-control__video__remove'
+						}
+					>
+						{removeButton}
+					</Button>
+				</MediaUploadCheck>
+			)}
 			{extendSelector}
 		</div>
 	);

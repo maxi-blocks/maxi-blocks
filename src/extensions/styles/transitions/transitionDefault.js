@@ -1,19 +1,21 @@
+import { __ } from '@wordpress/i18n';
+
 const transitionDefault = {
 	canvas: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: ['', ' > .maxi-background-displayer'],
 			property: ['border', 'border-radius', 'top', 'left'],
 			hoverProp: 'border-status-hover',
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: '',
 			property: 'box-shadow',
 			hoverProp: 'box-shadow-status-hover',
 		},
 		'background / layer': {
-			title: 'Background / Layer',
+			title: __('Background / Layer', 'maxi-blocks'),
 			target: [
 				' > .maxi-background-displayer > div',
 				' > .maxi-background-displayer > div > svg',
@@ -22,7 +24,7 @@ const transitionDefault = {
 			hoverProp: 'block-background-status-hover',
 		},
 		opacity: {
-			title: 'Opacity',
+			title: __('Opacity', 'maxi-blocks'),
 			target: '',
 			property: 'opacity',
 			hoverProp: 'opacity-status-hover',

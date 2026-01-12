@@ -33,10 +33,7 @@ import {
 	getMarginPaddingStyles,
 	getTypographyStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -56,11 +53,13 @@ const name = 'button-maxi';
 const copyPasteMapping = {
 	_exclude: ['buttonContent', 'icon-content'],
 	settings: {
-		'Button text': 'buttonContent',
-		Icon: {
+		[__('Button text', 'maxi-blocks')]: 'buttonContent',
+		[__('Icon', 'maxi-blocks')]: {
 			group: {
-				Icon: { groupAttributes: ['icon', 'iconHover'] },
-				'Icon border': {
+				[__('Icon', 'maxi-blocks')]: {
+					groupAttributes: ['icon', 'iconHover'],
+				},
+				[__('Icon border', 'maxi-blocks')]: {
 					groupAttributes: [
 						'iconBorder',
 						'iconBorderWidth',
@@ -70,7 +69,7 @@ const copyPasteMapping = {
 						'iconBorderRadiusHover',
 					],
 				},
-				'Icon background': {
+				[__('Icon background', 'maxi-blocks')]: {
 					groupAttributes: [
 						'iconBackground',
 						'iconBackgroundColor',
@@ -80,58 +79,62 @@ const copyPasteMapping = {
 						'iconBackgroundGradientHover',
 					],
 				},
-				'Icon padding': {
+				[__('Icon padding', 'maxi-blocks')]: {
 					groupAttributes: 'Icon padding',
 				},
 			},
 		},
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			group: {
-				Alignment: { groupAttributes: 'alignment' },
-				'Text alignment': { groupAttributes: 'textAlignment' },
+				[__('Alignment', 'maxi-blocks')]: {
+					groupAttributes: 'alignment',
+				},
+				[__('Text alignment', 'maxi-blocks')]: {
+					groupAttributes: 'textAlignment',
+				},
 			},
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
-		'Button background': {
+		[__('Button background', 'maxi-blocks')]: {
 			template: 'background',
 			prefix,
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix,
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 			prefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 			prefix,
 		},
 	},
 	canvas: {
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -170,19 +173,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		typography: {
-			title: 'Typography',
+			title: __('Typography', 'maxi-blocks'),
 			target: contentClass,
 			property: false,
 			hoverProp: 'typography-status-hover',
 		},
 		'button background': {
-			title: 'Button background',
+			title: __('Button background', 'maxi-blocks'),
 			target: buttonClass,
 			property: 'background',
 			hoverProp: `${prefix}background-status-hover`,
 		},
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: buttonClass,
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
@@ -395,6 +398,269 @@ const scProps = {
 };
 const linkElements = ['button', 'canvas'];
 
+const inlineStylesTargets = {
+	block: '',
+	button: buttonClass,
+	content: contentClass,
+	icon: iconClass,
+	iconPath: `${iconClass} svg path`,
+};
+
+const attributesToStyles = {
+	'icon-stroke': {
+		target: inlineStylesTargets.iconPath,
+		property: 'stroke-width',
+	},
+	'icon-border-top-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-width',
+	},
+	'icon-border-right-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-right-width',
+	},
+	'icon-border-bottom-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-width',
+	},
+	'icon-border-left-width': {
+		target: inlineStylesTargets.icon,
+		property: 'border-left-width',
+	},
+	'icon-border-top-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-left-radius',
+	},
+	'icon-border-top-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-top-right-radius',
+	},
+	'icon-border-bottom-right-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-right-radius',
+	},
+	'icon-border-bottom-left-radius': {
+		target: inlineStylesTargets.icon,
+		property: 'border-bottom-left-radius',
+	},
+	'font-size': {
+		target: inlineStylesTargets.content,
+		property: 'font-size',
+	},
+	'line-height': {
+		target: inlineStylesTargets.content,
+		property: 'line-height',
+	},
+	'letter-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'letter-spacing',
+	},
+	'text-indent': {
+		target: inlineStylesTargets.content,
+		property: 'text-indent',
+	},
+	'word-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'word-spacing',
+	},
+	'bottom-gap': {
+		target: inlineStylesTargets.content,
+		property: 'margin-bottom',
+	},
+	'button-margin-top': {
+		target: inlineStylesTargets.button,
+		property: 'margin-top',
+	},
+	'button-margin-right': {
+		target: inlineStylesTargets.button,
+		property: 'margin-right',
+	},
+	'button-margin-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'margin-bottom',
+	},
+	'button-margin-left': {
+		target: inlineStylesTargets.button,
+		property: 'margin-left',
+	},
+	'button-padding-top': {
+		target: inlineStylesTargets.button,
+		property: 'padding-top',
+	},
+	'button-padding-right': {
+		target: inlineStylesTargets.button,
+		property: 'padding-right',
+	},
+	'button-padding-bottom': {
+		target: inlineStylesTargets.button,
+		property: 'padding-bottom',
+	},
+	'button-padding-left': {
+		target: inlineStylesTargets.button,
+		property: 'padding-left',
+	},
+	'button-border-top-width': {
+		target: inlineStylesTargets.button,
+		property: 'border-top-width',
+	},
+	'button-border-right-width': {
+		target: inlineStylesTargets.button,
+		property: 'border-right-width',
+	},
+	'button-border-bottom-width': {
+		target: inlineStylesTargets.button,
+		property: 'border-bottom-width',
+	},
+	'button-border-left-width': {
+		target: inlineStylesTargets.button,
+		property: 'border-left-width',
+	},
+	'button-border-top-left-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-top-left-radius',
+	},
+	'button-border-top-right-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-top-right-radius',
+	},
+	'button-border-bottom-right-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-bottom-right-radius',
+	},
+	'button-border-bottom-left-radius': {
+		target: inlineStylesTargets.button,
+		property: 'border-bottom-left-radius',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
@@ -404,6 +670,7 @@ const data = {
 	maxiAttributes,
 	scProps,
 	linkElements,
+	attributesToStyles,
 };
 
 export {
@@ -414,5 +681,6 @@ export {
 	maxiAttributes,
 	scProps,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

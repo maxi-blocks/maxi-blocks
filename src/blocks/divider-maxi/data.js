@@ -18,10 +18,7 @@ import {
 	getBoxShadowStyles,
 	getDividerStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getPaletteAttributes } from '@extensions/styles';
 
@@ -39,23 +36,27 @@ const prefix = 'divider-';
 const name = 'divider-maxi';
 const copyPasteMapping = {
 	settings: {
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			group: {
-				'Line orientation': 'line-orientation',
-				'Line vertical position': 'line-vertical',
-				'Line horizontal position': 'line-horizontal',
+				[__('Line orientation', 'maxi-blocks')]: 'line-orientation',
+				[__('Line vertical position', 'maxi-blocks')]: 'line-vertical',
+				[__('Line horizontal position', 'maxi-blocks')]:
+					'line-horizontal',
 			},
 			hasBreakpoints: true,
 		},
-		'Line settings': {
+		[__('Line settings', 'maxi-blocks')]: {
 			group: {
-				'Line style': 'divider-border-style',
-				'Line colour': {
+				[__('Line style', 'maxi-blocks')]: 'divider-border-style',
+				[__('Line colour', 'maxi-blocks')]: {
 					props: 'divider-border',
 					isPalette: true,
 				},
-				'Line size': ['divider-height', 'divider-width'],
-				'Line weight': [
+				[__('Line size', 'maxi-blocks')]: [
+					'divider-height',
+					'divider-width',
+				],
+				[__('Line weight', 'maxi-blocks')]: [
 					'divider-border-top-width',
 					'divider-border-top-unit',
 					'divider-border-right-width',
@@ -64,28 +65,28 @@ const copyPasteMapping = {
 			},
 			hasBreakpoints: true,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix: 'divider-',
 		},
 	},
 	canvas: {
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -116,7 +117,7 @@ const transition = {
 	...transitionDefault,
 	block: {
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: dividerClass,
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
@@ -174,12 +175,167 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	divider: ' hr.maxi-divider-block__divider',
+};
+
+const attributesToStyles = {
+	'divider-border-top-width': {
+		target: inlineStylesTargets.divider,
+		property: 'border-top-width',
+	},
+	'divider-border-right-width': {
+		target: inlineStylesTargets.divider,
+		property: 'border-right-width',
+	},
+	'divider-width': {
+		target: inlineStylesTargets.divider,
+		property: 'width',
+		unit: '%',
+	},
+	'divider-height': {
+		target: inlineStylesTargets.divider,
+		property: 'height',
+		unit: '%',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -188,5 +344,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

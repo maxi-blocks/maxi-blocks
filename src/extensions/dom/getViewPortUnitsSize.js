@@ -1,13 +1,24 @@
 import { select } from '@wordpress/data';
 
-const getVwSize = breakpoint => {
+export const getVwSize = breakpoint => {
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 
-	return (
+	const value =
 		(breakpoint === 'xxl'
 			? xxlSize
-			: select('maxiBlocks').receiveMaxiBreakpoints()[breakpoint]) * 0.01
-	);
+			: select('maxiBlocks').receiveMaxiBreakpoints()[breakpoint]) * 0.01;
+
+	return value;
+};
+
+export const getVhSize = () => {
+	if (typeof window === 'undefined') return 0;
+
+	const height =
+		window.innerHeight || document.documentElement?.clientHeight || 0;
+	const value = height * 0.01;
+
+	return value;
 };
 
 export default getVwSize;

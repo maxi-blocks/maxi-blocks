@@ -103,12 +103,23 @@ const mockStateBlocks = [
 
 jest.mock('@wordpress/data', () => {
 	return {
-		select: jest.fn(() => ({
-			getBlocks: jest.fn(() => mockStateBlocks),
-			getBlock: jest.fn(
-				(state, uniqueID) => mockStateBlock.blocks[uniqueID]
-			),
-		})),
+		select: jest.fn(storeName => {
+			if (storeName === 'maxiBlocks/blocks') {
+				return {
+					getBlocks: jest.fn(() => mockStateBlock.blocks),
+				};
+			}
+			// For 'core/block-editor'
+			return {
+				getBlocks: jest.fn(() => mockStateBlocks),
+				getBlock: jest.fn(
+					clientId =>
+						mockStateBlocks.find(
+							block => block.clientId === clientId
+						) || false
+				),
+			};
+		}),
 	};
 });
 

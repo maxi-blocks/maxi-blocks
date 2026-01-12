@@ -1,4 +1,9 @@
 /**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
+/**
  * Internal dependencies
  */
 import { createSelectors } from '@extensions/styles/custom-css';
@@ -20,79 +25,85 @@ const name = 'map-maxi';
 const copyPasteMapping = {
 	_exclude: ['map-markers'],
 	settings: {
-		'Configure map': {
+		[__('Configure map', 'maxi-blocks')]: {
 			group: {
-				'Map provider': 'map-provider',
-				'Minium zoom': 'map-min-zoom',
-				'Maximum zoom': 'map-max-zoom',
+				[__('Map provider', 'maxi-blocks')]: 'map-provider',
+				[__('Minimum zoom', 'maxi-blocks')]: 'map-min-zoom',
+				[__('Maximum zoom', 'maxi-blocks')]: 'map-max-zoom',
 			},
 		},
-		'Map marker': {
+		[__('Map marker', 'maxi-blocks')]: {
 			group: {
-				Markers: 'map-markers',
-				'Marker icon': ['map-marker-icon', 'map-marker'],
-				'Marker fill colour': {
+				[__('Markers', 'maxi-blocks')]: 'map-markers',
+				[__('Marker icon', 'maxi-blocks')]: [
+					'map-marker-icon',
+					'map-marker',
+				],
+				[__('Marker fill colour', 'maxi-blocks')]: {
 					props: 'svg-fill',
 					isPalette: true,
 				},
-				'Marker line colour': {
+				[__('Marker line colour', 'maxi-blocks')]: {
 					props: 'svg-line',
 					isPalette: true,
 				},
-				'Marker size': {
+				[__('Marker size', 'maxi-blocks')]: {
 					props: 'svg-width',
 					hasBreakpoints: true,
 				},
 			},
 		},
-		'Map popup text': {
+		[__('Map popup text', 'maxi-blocks')]: {
 			group: {
-				'Title text level': 'map-marker-heading-level',
-				'Title typography': {
+				[__('Title text level', 'maxi-blocks')]:
+					'map-marker-heading-level',
+				[__('Title typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 				},
-				'Description typography': {
+				[__('Description typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 					prefix: 'description-',
 				},
 			},
 		},
-		'Map popup': {
+		[__('Map popup', 'maxi-blocks')]: {
 			group: {
-				Background: {
+				[__('Background', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 					prefix: 'popup-',
 				},
-				'Box shadow': {
+				[__('Box shadow', 'maxi-blocks')]: {
 					groupAttributes: 'boxShadow',
 					prefix: 'popup-',
 				},
 			},
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
-		'Map interaction': {
+		[__('Map interaction', 'maxi-blocks')]: {
 			group: {
-				'Map dragging': 'map-dragging',
-				'Map touch zoom': 'map-touch-zoom',
-				'Map double click zoom': 'map-double-click-zoom',
-				'Map scroll wheel zoom': 'map-scroll-wheel-zoom',
+				[__('Map dragging', 'maxi-blocks')]: 'map-dragging',
+				[__('Map touch zoom', 'maxi-blocks')]: 'map-touch-zoom',
+				[__('Map double click zoom', 'maxi-blocks')]:
+					'map-double-click-zoom',
+				[__('Map scroll wheel zoom', 'maxi-blocks')]:
+					'map-scroll-wheel-zoom',
 			},
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},
@@ -126,11 +137,198 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	popup: popupClass,
+	title: popupTitleClass,
+	description: popupDescriptionClass,
+};
+
+const attributesToStyles = {
+	'font-size': {
+		target: inlineStylesTargets.title,
+		property: 'font-size',
+	},
+	'line-height': {
+		target: inlineStylesTargets.title,
+		property: 'line-height',
+	},
+	'letter-spacing': {
+		target: inlineStylesTargets.title,
+		property: 'letter-spacing',
+	},
+	'text-indent': {
+		target: inlineStylesTargets.title,
+		property: 'text-indent',
+	},
+	'word-spacing': {
+		target: inlineStylesTargets.title,
+		property: 'word-spacing',
+	},
+	'bottom-gap': {
+		target: inlineStylesTargets.title,
+		property: 'margin-bottom',
+	},
+	'description-font-size': {
+		target: inlineStylesTargets.description,
+		property: 'font-size',
+	},
+	'description-line-height': {
+		target: inlineStylesTargets.description,
+		property: 'line-height',
+	},
+	'description-letter-spacing': {
+		target: inlineStylesTargets.description,
+		property: 'letter-spacing',
+	},
+	'description-text-indent': {
+		target: inlineStylesTargets.description,
+		property: 'text-indent',
+	},
+	'description-word-spacing': {
+		target: inlineStylesTargets.description,
+		property: 'word-spacing',
+	},
+	'description-bottom-gap': {
+		target: inlineStylesTargets.description,
+		property: 'margin-bottom',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -138,5 +336,6 @@ export {
 	customCss,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

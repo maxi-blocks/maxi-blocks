@@ -145,6 +145,33 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 true,
             );
 
+            // Manually inject translations for the bundled script
+            // WordPress's wp_set_script_translations() doesn't work with large bundled files,
+            // so we inject the translations directly using the same method WordPress uses
+            $locale = get_locale();
+            $json_file = plugin_dir_path(dirname(__FILE__)) . 'languages/maxi-blocks-' . $locale . '-' . md5('maxi-blocks/build/index.min.js') . '.json';
+
+            if (file_exists($json_file)) {
+                $translations_json = file_get_contents($json_file);
+                $translations_data = json_decode($translations_json, true);
+
+                if ($translations_data && isset($translations_data['locale_data'])) {
+                    // Inject translations inline BEFORE the script loads
+                    wp_add_inline_script(
+                        'maxi-blocks-block-editor',
+                        sprintf(
+                            '( function( domain, translations ) {
+                                var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+                                localeData[""].domain = domain;
+                                wp.i18n.setLocaleData( localeData, domain );
+                            } )( "maxi-blocks", %s );',
+                            $translations_json
+                        ),
+                        'before'
+                    );
+                }
+            }
+
             // Localize the script with our data
             wp_localize_script('maxi-blocks-block-editor', 'maxiBlocksMain', [
                 'local_fonts' => get_option('local_fonts'),

@@ -183,9 +183,10 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-indent-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					maxiSetAttributes({
 						[`list-indent-${deviceType}`]: val,
+						meta,
 					})
 				}
 				enableUnit
@@ -238,9 +239,10 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-gap-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					maxiSetAttributes({
 						[`list-gap-${deviceType}`]: val,
+						meta,
 					})
 				}
 				enableUnit
@@ -297,11 +299,12 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-paragraph-spacing-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) => {
 					maxiSetAttributes({
 						[`list-paragraph-spacing-${deviceType}`]: val,
-					})
-				}
+						meta,
+					});
+				}}
 				enableUnit
 				unit={getLastBreakpointAttribute({
 					target: 'list-paragraph-spacing-unit',
@@ -361,10 +364,11 @@ const ListOptionsControl = props => {
 					breakpoint: deviceType,
 					attributes,
 				})}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					maxiSetAttributes({
 						[`list-marker-size-${deviceType}`]:
 							val !== undefined && val !== '' ? val : '',
+						meta,
 					});
 				}}
 				enableUnit
@@ -420,9 +424,10 @@ const ListOptionsControl = props => {
 						attributes,
 					})}
 					value={attributes[`list-marker-height-${deviceType}`]}
-					onChangeValue={val =>
+					onChangeValue={(val, meta) =>
 						maxiSetAttributes({
 							[`list-marker-height-${deviceType}`]: val,
+							meta,
 						})
 					}
 					enableUnit
@@ -461,9 +466,10 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-marker-line-height-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					maxiSetAttributes({
 						[`list-marker-line-height-${deviceType}`]: val,
+						meta,
 					})
 				}
 				enableUnit
@@ -501,9 +507,10 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-marker-vertical-offset-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					maxiSetAttributes({
 						[`list-marker-vertical-offset-${deviceType}`]: val,
+						meta,
 					})
 				}
 				enableUnit
@@ -558,9 +565,10 @@ const ListOptionsControl = props => {
 					attributes,
 				})}
 				value={attributes[`list-marker-indent-${deviceType}`]}
-				onChangeValue={val =>
+				onChangeValue={(val, meta) =>
 					maxiSetAttributes({
 						[`list-marker-indent-${deviceType}`]: val,
+						meta,
 					})
 				}
 				enableUnit

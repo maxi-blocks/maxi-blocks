@@ -24,6 +24,7 @@ import {
 	round,
 	toNumber,
 } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -63,7 +64,7 @@ export const getColorBackgroundObject = ({
 		return {};
 
 	const response = {
-		label: 'Background Color',
+		label: __('Background Color', 'maxi-blocks'),
 		[breakpoint]: {},
 	};
 
@@ -214,7 +215,7 @@ export const getGradientBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Background gradient',
+		label: __('Background gradient', 'maxi-blocks'),
 		[breakpoint]: {},
 	};
 
@@ -341,7 +342,7 @@ export const getImageBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Background Image',
+		label: __('Background Image', 'maxi-blocks'),
 		[breakpoint]: {},
 	};
 
@@ -691,7 +692,7 @@ const getSVGBackgroundObject = ({
 	...props
 }) => {
 	const response = {
-		label: 'Icon background',
+		label: __('Icon background', 'maxi-blocks'),
 		[breakpoint]: {},
 	};
 

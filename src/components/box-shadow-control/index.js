@@ -84,11 +84,12 @@ const BoxShadowValueControl = props => {
 				attributes: props,
 				isHover,
 			})}
-			onChangeValue={val => {
+			onChangeValue={(val, meta) => {
 				onChange({
 					[`${prefix}box-shadow-${type}-${breakpoint}${
 						isHover ? '-hover' : ''
 					}`]: val !== undefined && val !== '' ? val : '',
+					meta,
 				});
 			}}
 			min={-3999}
@@ -147,7 +148,7 @@ const BoxShadowControl = props => {
 		isHover = false,
 		prefix = '',
 		clientId,
-		label = 'Box shadow',
+		label = __('Box shadow', 'maxi-blocks'),
 		dropShadow = false,
 		disableInset = false,
 	} = props;

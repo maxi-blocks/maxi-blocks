@@ -13,10 +13,7 @@ import {
 	getAlignmentTextStyles,
 	getTypographyStyles,
 } from '@extensions/styles/helpers';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
@@ -33,32 +30,32 @@ const name = 'list-item-maxi';
 const copyPasteMapping = {
 	_exclude: ['content', 'linkSettings', 'custom-formats'],
 	settings: {
-		'Text content': 'content',
-		'Text alignment': {
+		[__('Text content', 'maxi-blocks')]: 'content',
+		[__('Text alignment', 'maxi-blocks')]: {
 			groupAttributes: 'textAlignment',
 		},
-		Typography: {
+		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
 	},
@@ -140,6 +137,162 @@ const scProps = {
 	scType: 'color',
 };
 
+const inlineStylesTargets = {
+	block: '',
+	content: contentClass,
+};
+
+const attributesToStyles = {
+	'font-size': {
+		target: inlineStylesTargets.content,
+		property: 'font-size',
+	},
+	'line-height': {
+		target: inlineStylesTargets.content,
+		property: 'line-height',
+	},
+	'letter-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'letter-spacing',
+	},
+	'text-indent': {
+		target: inlineStylesTargets.content,
+		property: 'text-indent',
+	},
+	'word-spacing': {
+		target: inlineStylesTargets.content,
+		property: 'word-spacing',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
@@ -147,6 +300,7 @@ const data = {
 	transition,
 	interactionBuilderSettings,
 	scProps,
+	attributesToStyles,
 };
 
 export {
@@ -156,5 +310,6 @@ export {
 	interactionBuilderSettings,
 	scProps,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

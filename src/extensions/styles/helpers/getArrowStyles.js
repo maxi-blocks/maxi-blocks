@@ -11,6 +11,7 @@ import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
  * External dependencies
  */
 import { isNil, isEmpty, isNumber } from 'lodash';
+import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -81,7 +82,7 @@ export const getArrowObject = props => {
 
 export const getArrowBorder = (props, isHover) => {
 	const response = {
-		label: 'Arrow Border',
+		label: __('Arrow Border', 'maxi-blocks'),
 		general: {},
 	};
 
@@ -120,7 +121,7 @@ export const getArrowColorObject = (
 	isHover = false
 ) => {
 	const response = {
-		label: 'Arrow Color',
+		label: __('Arrow Color', 'maxi-blocks'),
 		general: {},
 	};
 

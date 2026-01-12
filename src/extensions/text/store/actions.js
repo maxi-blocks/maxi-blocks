@@ -21,9 +21,10 @@ export const setFontUrl = (fontName, fontData, url) => {
 };
 
 // Action to set fonts after fetching from JSON
-export const setFonts = fonts => ({
+export const setFonts = (fonts, customFonts = {}) => ({
 	type: 'SET_FONTS',
 	fonts,
+	customFonts,
 });
 
 // Generator function to fetch fonts using data-controls
@@ -42,7 +43,22 @@ export function* fetchFonts() {
 		}
 
 		const fonts = yield apiFetch({ url: fontsUrl });
-		yield setFonts(fonts);
+		let customFonts = {};
+
+		try {
+			customFonts = yield apiFetch({
+				path: '/maxi-blocks/v1.0/fonts/custom',
+			});
+		} catch (error) {
+			console.warn('Failed to load custom fonts:', error);
+		}
+
+		const mergedFonts = {
+			...fonts,
+			...(customFonts || {}),
+		};
+
+		yield setFonts(mergedFonts, customFonts || {});
 	} catch (error) {
 		console.error('Failed to load fonts:', error);
 	}

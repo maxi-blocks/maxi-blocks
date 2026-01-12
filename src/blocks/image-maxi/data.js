@@ -19,10 +19,7 @@ import {
 	getImageShapeStyles,
 } from '@extensions/styles/helpers';
 import { getGroupAttributes } from '@extensions/styles';
-import {
-	getCanvasSettings,
-	getAdvancedSettings,
-} from '@extensions/relations';
+import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '@extensions/dom';
 
@@ -50,7 +47,7 @@ const copyPasteMapping = {
 		'captionContent',
 	],
 	settings: {
-		Image: [
+		[__('Image', 'maxi-blocks')]: [
 			'mediaID',
 			'isImageUrl',
 			'mediaURL',
@@ -58,115 +55,115 @@ const copyPasteMapping = {
 			'mediaHeight',
 			'mediaAlt',
 		],
-		Dimension: {
+		[__('Dimension', 'maxi-blocks')]: {
 			group: {
-				'Image size': 'imageSize',
-				'Use original size': 'useInitSize',
-				'Image width': 'img-width-general',
-				'Image ratio': 'imageRatio',
+				[__('Image size', 'maxi-blocks')]: 'imageSize',
+				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
+				[__('Image width', 'maxi-blocks')]: 'img-width-general',
+				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
 			},
 		},
-		Alignment: {
+		[__('Alignment', 'maxi-blocks')]: {
 			groupAttributes: 'alignment',
 		},
-		'Alt tag': ['mediaAlt', 'altSelector'],
-		Caption: {
+		[__('Alt tag', 'maxi-blocks')]: ['mediaAlt', 'altSelector'],
+		[__('Caption', 'maxi-blocks')]: {
 			group: {
-				'Caption type': 'captionType',
-				'Caption content': 'captionContent',
-				'Caption position': 'captionPosition',
-				'Caption gap': {
+				[__('Caption type', 'maxi-blocks')]: 'captionType',
+				[__('Caption content', 'maxi-blocks')]: 'captionContent',
+				[__('Caption position', 'maxi-blocks')]: 'captionPosition',
+				[__('Caption gap', 'maxi-blocks')]: {
 					props: 'caption-gap',
 					hasBreakpoints: true,
 				},
-				'Caption gap unit': {
+				[__('Caption gap unit', 'maxi-blocks')]: {
 					props: 'caption-gap-unit',
 					hasBreakpoints: true,
 				},
-				Typography: {
+				[__('Typography', 'maxi-blocks')]: {
 					groupAttributes: 'typography',
 				},
-				'Text alignment': {
+				[__('Text alignment', 'maxi-blocks')]: {
 					groupAttributes: 'textAlignment',
 				},
-				Link: { groupAttributes: 'link' },
+				[__('Link', 'maxi-blocks')]: { groupAttributes: 'link' },
 			},
 		},
-		'Hover effects': {
+		[__('Hover effects', 'maxi-blocks')]: {
 			group: {
-				Hover: {
+				[__('Hover', 'maxi-blocks')]: {
 					groupAttributes: 'hover',
 				},
-				'Hover background': {
+				[__('Hover background', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackground',
 				},
-				'Hover background color': {
+				[__('Hover background color', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackgroundColor',
 				},
-				'Hover background gradient': {
+				[__('Hover background gradient', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBackgroundGradient',
 				},
-				'Hover border': {
+				[__('Hover border', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorder',
 				},
-				'Hover border radius': {
+				[__('Hover border radius', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorderRadius',
 				},
-				'Hover border width': {
+				[__('Hover border width', 'maxi-blocks')]: {
 					groupAttributes: 'hoverBorderWidth',
 				},
-				'Hover content typography': {
+				[__('Hover content typography', 'maxi-blocks')]: {
 					groupAttributes: 'hoverContentTypography',
 				},
-				'Hover margin': {
+				[__('Hover margin', 'maxi-blocks')]: {
 					groupAttributes: 'hoverMargin',
 				},
-				'Hover padding': {
+				[__('Hover padding', 'maxi-blocks')]: {
 					groupAttributes: 'hoverPadding',
 				},
-				'Hover title typography': {
+				[__('Hover title typography', 'maxi-blocks')]: {
 					groupAttributes: 'hoverTitleTypography',
 				},
 			},
 		},
-		'Clip path': {
+		[__('Clip path', 'maxi-blocks')]: {
 			groupAttributes: 'clipPath',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 			prefix,
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 			prefix,
 		},
-		Size: {
+		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 			prefix,
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	canvas: {
 		blockSpecific: {
-			Size: {
+			[__('Size', 'maxi-blocks')]: {
 				template: 'size',
 			},
 		},
-		Background: {
+		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
-		Border: {
+		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
 		},
-		'Box shadow': {
+		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
 		},
-		Opacity: {
+		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},
-		'Margin/Padding': {
+		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
@@ -195,19 +192,19 @@ const transition = {
 	...transitionDefault,
 	block: {
 		border: {
-			title: 'Border',
+			title: __('Border', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: ['border', 'border-radius'],
 			hoverProp: `${prefix}border-status-hover`,
 		},
 		'box shadow': {
-			title: 'Box shadow',
+			title: __('Box shadow', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'box-shadow',
 			hoverProp: `${prefix}box-shadow-status-hover`,
 		},
 		'clip path': {
-			title: 'Clip path',
+			title: __('Clip path', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
@@ -307,12 +304,259 @@ const interactionBuilderSettings = {
 	advanced: getAdvancedSettings({ customCss }),
 };
 
+const inlineStylesTargets = {
+	block: '',
+	image: imageClass,
+	imageWrapper: imageWrapperClass,
+	caption: `${blockClass}__caption`,
+};
+
+const attributesToStyles = {
+	'font-size': {
+		target: inlineStylesTargets.caption,
+		property: 'font-size',
+	},
+	'line-height': {
+		target: inlineStylesTargets.caption,
+		property: 'line-height',
+	},
+	'letter-spacing': {
+		target: inlineStylesTargets.caption,
+		property: 'letter-spacing',
+	},
+	'text-indent': {
+		target: inlineStylesTargets.caption,
+		property: 'text-indent',
+	},
+	'word-spacing': {
+		target: inlineStylesTargets.caption,
+		property: 'word-spacing',
+	},
+	'image-border-top-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-width',
+	},
+	'image-border-right-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-right-width',
+	},
+	'image-border-bottom-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-width',
+	},
+	'image-border-left-width': {
+		target: inlineStylesTargets.image,
+		property: 'border-left-width',
+	},
+	'image-border-top-left-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-left-radius',
+	},
+	'image-border-top-right-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-top-right-radius',
+	},
+	'image-border-bottom-right-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-right-radius',
+	},
+	'image-border-bottom-left-radius': {
+		target: inlineStylesTargets.image,
+		property: 'border-bottom-left-radius',
+	},
+	'image-margin-top': {
+		target: inlineStylesTargets.image,
+		property: 'margin-top',
+	},
+	'image-margin-right': {
+		target: inlineStylesTargets.image,
+		property: 'margin-right',
+	},
+	'image-margin-bottom': {
+		target: inlineStylesTargets.image,
+		property: 'margin-bottom',
+	},
+	'image-margin-left': {
+		target: inlineStylesTargets.image,
+		property: 'margin-left',
+	},
+	'image-padding-top': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-top',
+	},
+	'image-padding-right': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-right',
+	},
+	'image-padding-bottom': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-bottom',
+	},
+	'image-padding-left': {
+		target: inlineStylesTargets.imageWrapper,
+		property: 'padding-left',
+	},
+	'image-width': {
+		target: inlineStylesTargets.image,
+		property: 'width',
+	},
+	'image-height': {
+		target: inlineStylesTargets.image,
+		property: 'height',
+	},
+	'image-min-width': {
+		target: inlineStylesTargets.image,
+		property: 'min-width',
+	},
+	'image-min-height': {
+		target: inlineStylesTargets.image,
+		property: 'min-height',
+	},
+	'image-max-width': {
+		target: inlineStylesTargets.image,
+		property: 'max-width',
+	},
+	'image-max-height': {
+		target: inlineStylesTargets.image,
+		property: 'max-height',
+	},
+	'border-top-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-width',
+	},
+	'border-right-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-right-width',
+	},
+	'border-bottom-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-width',
+	},
+	'border-left-width': {
+		target: inlineStylesTargets.block,
+		property: 'border-left-width',
+	},
+	'border-top-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-left-radius',
+	},
+	'border-top-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-top-right-radius',
+	},
+	'border-bottom-right-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-right-radius',
+	},
+	'border-bottom-left-radius': {
+		target: inlineStylesTargets.block,
+		property: 'border-bottom-left-radius',
+	},
+	opacity: {
+		target: inlineStylesTargets.block,
+		property: 'opacity',
+	},
+	'flex-grow': {
+		target: inlineStylesTargets.block,
+		property: 'flex-grow',
+	},
+	'flex-shrink': {
+		target: inlineStylesTargets.block,
+		property: 'flex-shrink',
+	},
+	'row-gap': {
+		target: inlineStylesTargets.block,
+		property: 'row-gap',
+	},
+	'column-gap': {
+		target: inlineStylesTargets.block,
+		property: 'column-gap',
+	},
+	order: {
+		target: inlineStylesTargets.block,
+		property: 'order',
+	},
+	'margin-top': {
+		target: inlineStylesTargets.block,
+		property: 'margin-top',
+	},
+	'margin-right': {
+		target: inlineStylesTargets.block,
+		property: 'margin-right',
+	},
+	'margin-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'margin-bottom',
+	},
+	'margin-left': {
+		target: inlineStylesTargets.block,
+		property: 'margin-left',
+	},
+	'padding-top': {
+		target: inlineStylesTargets.block,
+		property: 'padding-top',
+	},
+	'padding-right': {
+		target: inlineStylesTargets.block,
+		property: 'padding-right',
+	},
+	'padding-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'padding-bottom',
+	},
+	'padding-left': {
+		target: inlineStylesTargets.block,
+		property: 'padding-left',
+	},
+	'position-top': {
+		target: inlineStylesTargets.block,
+		property: 'top',
+	},
+	'position-right': {
+		target: inlineStylesTargets.block,
+		property: 'right',
+	},
+	'position-bottom': {
+		target: inlineStylesTargets.block,
+		property: 'bottom',
+	},
+	'position-left': {
+		target: inlineStylesTargets.block,
+		property: 'left',
+	},
+	width: {
+		target: inlineStylesTargets.block,
+		property: 'width',
+	},
+	height: {
+		target: inlineStylesTargets.block,
+		property: 'height',
+	},
+	'min-width': {
+		target: inlineStylesTargets.block,
+		property: 'min-width',
+	},
+	'min-height': {
+		target: inlineStylesTargets.block,
+		property: 'min-height',
+	},
+	'max-width': {
+		target: inlineStylesTargets.block,
+		property: 'max-width',
+	},
+	'max-height': {
+		target: inlineStylesTargets.block,
+		property: 'max-height',
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	attributesToStyles,
 };
 
 export {
@@ -321,5 +565,6 @@ export {
 	transition,
 	interactionBuilderSettings,
 	ariaLabelsCategories,
+	attributesToStyles,
 };
 export default data;

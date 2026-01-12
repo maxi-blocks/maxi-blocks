@@ -52,14 +52,6 @@ const RelationControl = props => {
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = useDispatch('core/block-editor');
 
-	// UseRef to prevent infinite loops during attribute updates
-	const isUpdating = useRef(false);
-
-	// Track highlighted blocks for cleanup
-	const highlightedBlocks = useRef(new Set());
-	const hoveredUniqueIdRef = useRef(null);
-	const onChangeRef = useRef(null);
-
 	const {
 		deviceType,
 		isButton,
@@ -67,6 +59,14 @@ const RelationControl = props => {
 		relations: rawRelations,
 		uniqueID,
 	} = props;
+
+	// UseRef to prevent infinite loops during attribute updates
+	const isUpdating = useRef(false);
+
+	// Track highlighted blocks for cleanup
+	const highlightedBlocks = useRef(new Set());
+	const hoveredUniqueIdRef = useRef(null);
+	const onChangeRef = useRef(null);
 
 	const relations = useMemo(
 		() =>

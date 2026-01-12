@@ -57,6 +57,8 @@ const RelationControl = props => {
 
 	// Track highlighted blocks for cleanup
 	const highlightedBlocks = useRef(new Set());
+	const hoveredUniqueIdRef = useRef(null);
+	const onChangeRef = useRef(onChange);
 
 	const {
 		deviceType,
@@ -127,7 +129,11 @@ const RelationControl = props => {
 		}
 	};
 
-	// Cleanup on unmount
+	useEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
+
+	// Cleanup on unmount or when relations change
 	useEffect(() => {
 		return () => {
 			highlightedBlocks.current.forEach(clientId => {
@@ -136,15 +142,32 @@ const RelationControl = props => {
 					blockElement.classList.remove('maxi-block--highlighted');
 				}
 			});
+			highlightedBlocks.current.clear();
 		};
-	}, []);
+	}, [relations]);
 
 	useEffect(() => {
 		if (!rawRelations) return;
 		if (rawRelations.length !== relations.length) {
-			onChange({ relations });
+			onChangeRef.current?.({ relations });
 		}
-	}, [rawRelations, relations, onChange]);
+	}, [rawRelations, relations]);
+
+	useEffect(() => {
+		const currentHovered = hoveredUniqueIdRef.current;
+		if (!currentHovered) return;
+		handleHighlight(currentHovered, true);
+
+		highlightedBlocks.current.forEach(clientId => {
+			const currentClientId = getClientIdFromUniqueId(currentHovered);
+			if (currentClientId && clientId === currentClientId) return;
+			const blockElement = getBlockElement(clientId);
+			if (blockElement) {
+				blockElement.classList.remove('maxi-block--highlighted');
+			}
+			highlightedBlocks.current.delete(clientId);
+		});
+	}, [relations]);
 
 	const getRelationId = rels =>
 		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;
@@ -396,19 +419,21 @@ const RelationControl = props => {
 
 			{!isEmpty(relations) && (
 				<ListControl>
-					{relations.map(item => (
-						<ListItemControl
-							key={item.id}
-							title={
-								item.title ||
-								__('Untitled interaction', 'maxi-blocks')
-							}
-							onMouseEnter={() =>
-								handleHighlight(item.uniqueID, true)
-							}
-							onMouseLeave={() =>
-								handleHighlight(item.uniqueID, false)
-							}
+						{relations.map(item => (
+							<ListItemControl
+								key={item.id}
+								title={
+									item.title ||
+									__('Untitled interaction', 'maxi-blocks')
+								}
+								onMouseEnter={() => {
+									hoveredUniqueIdRef.current = item.uniqueID;
+									handleHighlight(item.uniqueID, true);
+								}}
+								onMouseLeave={() => {
+									hoveredUniqueIdRef.current = null;
+									handleHighlight(item.uniqueID, false);
+								}}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
@@ -557,8 +582,8 @@ const RelationControl = props => {
 };
 
 // Helper for select options
-const getParsedOptions = rawOptions => {
-	if (!rawOptions) return [];
+	const getParsedOptions = rawOptions => {
+		if (!rawOptions) return [];
 
 	const parseOptionsArray = options =>
 		options?.map(({ sid, label }) => ({
@@ -572,6 +597,10 @@ const getParsedOptions = rawOptions => {
 	};
 
 	const rawGroups = Object.keys(rawOptions);
+
+	if (rawGroups.length === 0) {
+		return [defaultSetting];
+	}
 
 	if (rawGroups.length > 1) {
 		return {

@@ -52,7 +52,7 @@ const VisualPositionPicker = ({
 						});
 					}
 				},
-				50, // 50ms throttle for smooth updates
+				16, // 16ms throttle for smoother updates
 				{ leading: true, trailing: true }
 			),
 		[]

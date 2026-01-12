@@ -29,14 +29,6 @@ $transition: all 0.3s ease;
 body .maxi-background-control {
 	padding-top: 8px;
 
-	// Hide MediaUploader preview when FocalPointPicker is present
-	.maxi-background-control__image-layer:has(.maxi-focal-point-picker) {
-		.maxi-mediauploader-control__preview,
-		.maxi-mediauploader-control__image__preview {
-			display: none;
-		}
-	}
-
 	.maxi-tabs-control__full-width {
 		column-gap: 5px;
 

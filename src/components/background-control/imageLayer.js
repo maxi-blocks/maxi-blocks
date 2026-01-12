@@ -618,7 +618,30 @@ const ImageLayer = props => {
 										prefix,
 									})}
 									onSelectImage={handleSelectImage}
-									showRemove={false}
+									onRemoveImage={() =>
+										onChange({
+											[getAttributeKey(
+												'background-image-mediaID',
+												false,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-mediaURL',
+												false,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-width',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-height',
+												isHover,
+												prefix
+											)]: '',
+										})
+									}
 								/>
 							<ImageUrlUpload
 								attributes={imageOptions}

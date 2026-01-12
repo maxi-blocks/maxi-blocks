@@ -41,6 +41,7 @@ const MediaUploader = props => {
 		extendSelector,
 		replaceButton = __('Replace', 'maxi-blocks'),
 		removeButton = __('Remove', 'maxi-blocks'),
+		showRemove = true,
 		alternativeImage,
 		allowedTypes = ['image'],
 	} = props;
@@ -173,21 +174,21 @@ const MediaUploader = props => {
 					/>
 				</MediaUploadCheck>
 			)}
-			{!!mediaID && (
-				<MediaUploadCheck>
-					<Button
-						onClick={onRemoveImage}
-						isDestructive
-						className={
-							mediaType === 'image'
-								? 'maxi-mediauploader-control__remove'
-								: 'maxi-mediauploader-control__video__remove'
-						}
-					>
-						{removeButton}
-					</Button>
-				</MediaUploadCheck>
-			)}
+				{!!mediaID && showRemove && (
+					<MediaUploadCheck>
+						<Button
+							onClick={onRemoveImage}
+							isDestructive
+							className={
+								mediaType === 'image'
+									? 'maxi-mediauploader-control__remove'
+									: 'maxi-mediauploader-control__video__remove'
+							}
+						>
+							{removeButton}
+						</Button>
+					</MediaUploadCheck>
+				)}
 			{extendSelector}
 		</div>
 	);

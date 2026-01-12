@@ -610,39 +610,16 @@ const ImageLayer = props => {
 									/>
 								</div>
 							)}
-							<MediaUploaderControl
-								mediaID={mediaID}
-								isImageUrl={getAttributeValue({
-									target: 'background-image-isImageUrl',
-									props: imageOptions,
-									prefix,
-								})}
-								onSelectImage={handleSelectImage}
-								onRemoveImage={() =>
-									onChange({
-										[getAttributeKey(
-											'background-image-mediaID',
-											false,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-mediaURL',
-											false,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-width',
-											isHover,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-height',
-											isHover,
-											prefix
-										)]: '',
-									})
-								}
-							/>
+								<MediaUploaderControl
+									mediaID={mediaID}
+									isImageUrl={getAttributeValue({
+										target: 'background-image-isImageUrl',
+										props: imageOptions,
+										prefix,
+									})}
+									onSelectImage={handleSelectImage}
+									showRemove={false}
+								/>
 							<ImageUrlUpload
 								attributes={imageOptions}
 								prefix={`${prefix}background-image-`}

@@ -618,6 +618,7 @@ const ImageLayer = props => {
 										prefix,
 									})}
 									onSelectImage={handleSelectImage}
+									showPreview={false}
 									onRemoveImage={() =>
 										onChange({
 											[getAttributeKey(

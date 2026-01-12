@@ -42,6 +42,7 @@ const MediaUploader = props => {
 		replaceButton = __('Replace', 'maxi-blocks'),
 		removeButton = __('Remove', 'maxi-blocks'),
 		showRemove = true,
+		showPreview = true,
 		alternativeImage,
 		allowedTypes = ['image'],
 	} = props;
@@ -104,22 +105,28 @@ const MediaUploader = props => {
 										: ''
 								}`}
 							{!!mediaID && !imageData && <Spinner />}
-							{mediaType === 'image' && !!mediaID && imageData && (
-								<div className='maxi-mediauploader-control__responsive-wrapper'>
-									<img
-										src={
+								{mediaType === 'image' &&
+									showPreview &&
+									!!mediaID &&
+									imageData && (
+									<div className='maxi-mediauploader-control__responsive-wrapper'>
+										<img
+											src={
+												alternativeImage
+													? alternativeImage.source_url
+													: imageData.source_url
+											}
+											alt={__('Image', 'maxi-blocks')}
+										/>
+									</div>
+								)}
+								{mediaType === 'video' &&
+									showPreview &&
+									!!mediaID &&
+									imageData && (
+									<ResponsiveWrapper
+										naturalWidth={
 											alternativeImage
-												? alternativeImage.source_url
-												: imageData.source_url
-										}
-										alt={__('Image', 'maxi-blocks')}
-									/>
-								</div>
-							)}
-							{mediaType === 'video' && !!mediaID && imageData && (
-								<ResponsiveWrapper
-									naturalWidth={
-										alternativeImage
 											? alternativeImage.width
 											: imageData.media_details.width
 									}

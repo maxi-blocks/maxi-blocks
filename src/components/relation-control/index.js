@@ -136,12 +136,12 @@ const RelationControl = props => {
 	// Cleanup on unmount or when relations change
 	useEffect(() => {
 		return () => {
-			highlightedBlocks.current.forEach(clientId => {
+			for (const clientId of Array.from(highlightedBlocks.current)) {
 				const blockElement = getBlockElement(clientId);
 				if (blockElement) {
 					blockElement.classList.remove('maxi-block--highlighted');
 				}
-			});
+			}
 			highlightedBlocks.current.clear();
 		};
 	}, [relations]);
@@ -158,15 +158,17 @@ const RelationControl = props => {
 		if (!currentHovered) return;
 		handleHighlight(currentHovered, true);
 
-		highlightedBlocks.current.forEach(clientId => {
+		for (const clientId of Array.from(highlightedBlocks.current)) {
 			const currentClientId = getClientIdFromUniqueId(currentHovered);
-			if (currentClientId && clientId === currentClientId) return;
+			if (currentClientId && clientId === currentClientId) {
+				continue;
+			}
 			const blockElement = getBlockElement(clientId);
 			if (blockElement) {
 				blockElement.classList.remove('maxi-block--highlighted');
 			}
 			highlightedBlocks.current.delete(clientId);
-		});
+		}
 	}, [relations]);
 
 	const getRelationId = rels =>
@@ -210,13 +212,14 @@ const RelationControl = props => {
 	const getBlocksToAffect = () => {
 		const arr = [];
 		goThroughMaxiBlocks(block => {
-			if (block.attributes.customLabel) {
+			const attrs = block?.attributes || {};
+			if (attrs.customLabel) {
 				arr.push({
 					label:
-						block.attributes.uniqueID === uniqueID
-							? `${block.attributes.customLabel} (Current)`
-							: block.attributes.customLabel,
-					value: block.attributes.uniqueID,
+						attrs.uniqueID === uniqueID
+							? `${attrs.customLabel} (Current)`
+							: attrs.customLabel,
+					value: attrs.uniqueID,
 				});
 			}
 		});
@@ -229,6 +232,7 @@ const RelationControl = props => {
 	 */
 	const displayBeforeSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId)) return null;
 		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
 		const blockData = blockDataByClientId.get(targetClientId);
 		const currentActualAttributes = blockData?.attributes;
@@ -321,6 +325,7 @@ const RelationControl = props => {
 
 	const displaySelectedSetting = item => {
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId)) return null;
 		const selectedSettings = getSelectedIBSettings(targetClientId, item.sid);
 		const blockData = blockDataByClientId.get(targetClientId);
 		const blockAttributes = blockData?.attributes;

@@ -6,7 +6,8 @@ import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
-import { select, dispatch } from '@wordpress/data';
+import batchRelationsUpdater from '@extensions/relations/batchRelationsUpdater';
+import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(),
@@ -24,6 +25,12 @@ jest.mock('@extensions/relations/getCleanResponseIBAttributes', () =>
 jest.mock('@extensions/relations/getIBStylesObj', () => jest.fn());
 
 jest.mock('@extensions/relations/getIBStyles', () => jest.fn());
+
+jest.mock('@extensions/relations/batchRelationsUpdater', () => ({
+	addUpdate: jest.fn(),
+	flush: jest.fn(),
+	getPendingCount: jest.fn(),
+}));
 
 describe('updateRelationsRemotely', () => {
 	const mockBlockTriggerClientId = 'trigger-client-id';
@@ -92,10 +99,6 @@ describe('updateRelationsRemotely', () => {
 				],
 			}),
 		});
-		dispatch.mockReturnValue({
-			updateBlockAttributes: jest.fn(),
-			__unstableMarkNextChangeAsNotPersistent: jest.fn(),
-		});
 
 		updateRelationsRemotely({
 			blockTriggerClientId: mockBlockTriggerClientId,
@@ -108,7 +111,11 @@ describe('updateRelationsRemotely', () => {
 		expect(getCleanResponseIBAttributes).not.toHaveBeenCalled();
 		expect(getIBStylesObj).not.toHaveBeenCalled();
 		expect(getIBStyles).not.toHaveBeenCalled();
-		expect(console).toHaveLogged();
+		// Empty relations array is still passed to batch updater to clear the relation
+		expect(batchRelationsUpdater.addUpdate).toHaveBeenCalledWith(
+			mockBlockTriggerClientId,
+			[]
+		);
 	});
 
 	it('should skip relations with different uniqueID', () => {
@@ -163,10 +170,6 @@ describe('updateRelationsRemotely', () => {
 				],
 			}),
 		});
-		dispatch.mockReturnValue({
-			updateBlockAttributes: jest.fn(),
-			__unstableMarkNextChangeAsNotPersistent: jest.fn(),
-		});
 
 		const selectedSettings = {
 			prefix: '',
@@ -206,7 +209,6 @@ describe('updateRelationsRemotely', () => {
 			'bgl',
 			mockBlockTriggerClientId
 		);
-		expect(console).toHaveLogged();
 	});
 
 	it('should handle transition effects', () => {
@@ -225,10 +227,6 @@ describe('updateRelationsRemotely', () => {
 					},
 				],
 			}),
-		});
-		dispatch.mockReturnValue({
-			updateBlockAttributes: jest.fn(),
-			__unstableMarkNextChangeAsNotPersistent: jest.fn(),
 		});
 
 		const selectedSettings = {
@@ -254,20 +252,16 @@ describe('updateRelationsRemotely', () => {
 			breakpoint: mockBreakpoint,
 		});
 
-		expect(dispatch).toHaveBeenCalledWith('core/block-editor');
-		expect(dispatch().updateBlockAttributes).toHaveBeenCalledWith(
+		expect(batchRelationsUpdater.addUpdate).toHaveBeenCalledWith(
 			mockBlockTriggerClientId,
-			expect.objectContaining({
-				relations: expect.arrayContaining([
-					expect.objectContaining({
-						effects: {
-							transitionTarget: ['transform', 'transform-origin'],
-						},
-					}),
-				]),
-			})
+			expect.arrayContaining([
+				expect.objectContaining({
+					effects: {
+						transitionTarget: ['transform', 'transform-origin'],
+					},
+				}),
+			])
 		);
-		expect(console).toHaveLogged();
 	});
 
 	it('should update relations if there are changes', () => {
@@ -286,10 +280,6 @@ describe('updateRelationsRemotely', () => {
 					},
 				],
 			}),
-		});
-		dispatch.mockReturnValue({
-			updateBlockAttributes: jest.fn(),
-			__unstableMarkNextChangeAsNotPersistent: jest.fn(),
 		});
 
 		const selectedSettings = {
@@ -316,24 +306,20 @@ describe('updateRelationsRemotely', () => {
 			breakpoint: mockBreakpoint,
 		});
 
-		expect(dispatch).toHaveBeenCalledWith('core/block-editor');
-		expect(dispatch().updateBlockAttributes).toHaveBeenCalledWith(
+		expect(batchRelationsUpdater.addUpdate).toHaveBeenCalledWith(
 			mockBlockTriggerClientId,
-			expect.objectContaining({
-				relations: expect.arrayContaining([
-					expect.objectContaining({
-						attributes: expect.objectContaining({
-							'border-status': true,
-							'border-width': '2px',
-						}),
-						css: {
-							'border-width': '2px',
-						},
+			expect.arrayContaining([
+				expect.objectContaining({
+					attributes: expect.objectContaining({
+						'border-status': true,
+						'border-width': '2px',
 					}),
-				]),
-			})
+					css: {
+						'border-width': '2px',
+					},
+				}),
+			])
 		);
-		expect(console).toHaveLogged();
 	});
 
 	it('should not update relations if there are no changes', () => {
@@ -379,6 +365,6 @@ describe('updateRelationsRemotely', () => {
 			breakpoint: mockBreakpoint,
 		});
 
-		expect(dispatch).not.toHaveBeenCalled();
+		expect(batchRelationsUpdater.addUpdate).not.toHaveBeenCalled();
 	});
 });

@@ -10,6 +10,11 @@ jest.mock('@extensions/style-cards/updateSCOnEditor', () => ({
 }));
 jest.mock('@extensions/style-cards/getSCVariablesObject', () => jest.fn());
 jest.mock('@extensions/style-cards/getSCStyles', () => jest.fn());
+jest.mock('@extensions/style-cards/styleCardsCacheDB', () => ({
+	loadFromIndexedDB: jest.fn(() => Promise.resolve(null)),
+	saveToIndexedDB: jest.fn(() => Promise.resolve()),
+	clearIndexedDB: jest.fn(() => Promise.resolve()),
+}));
 
 describe('style-cards store controls', () => {
 	beforeEach(() => {
@@ -18,22 +23,21 @@ describe('style-cards store controls', () => {
 
 	describe('RECEIVE_STYLE_CARDS control', () => {
 		it('Fetches style cards from API and parses the response', async () => {
-			const mockResponse = JSON.stringify({
+			const mockStyleCards = {
 				styleCard1: { name: 'Style Card 1' },
 				styleCard2: { name: 'Style Card 2' },
-			});
+			};
+
+			const mockResponse = {
+				data: JSON.stringify(mockStyleCards),
+				hash: 'abc123',
+			};
 
 			apiFetch.mockResolvedValue(mockResponse);
 
 			const result = await controls.RECEIVE_STYLE_CARDS();
 
-			expect(apiFetch).toHaveBeenCalledWith({
-				path: '/maxi-blocks/v1.0/style-cards/',
-			});
-			expect(result).toEqual({
-				styleCard1: { name: 'Style Card 1' },
-				styleCard2: { name: 'Style Card 2' },
-			});
+			expect(result).toEqual(mockStyleCards);
 		});
 	});
 
@@ -101,6 +105,8 @@ describe('style-cards store controls', () => {
 	describe('RESET_STYLE_CARDS control', () => {
 		it('Resets style cards and logs a message', async () => {
 			const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
+
+			apiFetch.mockResolvedValue({});
 
 			await controls.RESET_STYLE_CARDS();
 

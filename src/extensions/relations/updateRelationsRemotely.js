@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { select, dispatch } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -10,6 +10,7 @@ import getCleanResponseIBAttributes from './getCleanResponseIBAttributes';
 import { getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
+import batchRelationsUpdater from './batchRelationsUpdater';
 
 /**
  * External dependencies
@@ -105,6 +106,7 @@ const updateRelationsRemotely = ({
 				cleanAttributesObject,
 				tempAttributes
 			);
+
 			const stylesObj = getIBStylesObj({
 				clientId: blockTargetClientId,
 				sid: item.sid,
@@ -137,25 +139,12 @@ const updateRelationsRemotely = ({
 		}
 	}
 
-	if (!isEmpty(diff(relations, newRelations))) {
-		const editor = dispatch(BLOCK_EDITOR);
-		editor.__unstableMarkNextChangeAsNotPersistent();
-		editor.updateBlockAttributes(blockTriggerClientId, {
-			relations: newRelations,
-		});
+	const diffResult = diff(relations, newRelations);
+	const hasDiff = !isEmpty(diffResult);
 
-		const getUniqueID = clientID =>
-			blockEditor.getBlockAttributes(clientID).uniqueID;
-
-		// eslint-disable-next-line no-console
-		console.log(
-			`Relations updated for ${getUniqueID(
-				blockTriggerClientId
-			)} as a result of ${getUniqueID(
-				blockTargetClientId
-			)} change. The new 'relations' attribute is: `,
-			newRelations
-		);
+	if (hasDiff) {
+		// Add to batch queue instead of immediate update
+		batchRelationsUpdater.addUpdate(blockTriggerClientId, newRelations);
 	}
 };
 

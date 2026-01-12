@@ -54,10 +54,11 @@ const IconSize = props => {
 					initial={1}
 					step={1}
 					value={props[`icon-spacing-${breakpoint}`]}
-					onChangeValue={val => {
+					onChangeValue={(val, meta) => {
 						onChange({
 							[`icon-spacing-${breakpoint}`]:
 								val !== undefined && val !== '' ? val : '',
+							meta,
 						});
 					}}
 					onReset={() =>

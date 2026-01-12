@@ -54,6 +54,7 @@ import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
+import batchBlockDispatcher from './batchBlockDispatcher';
 
 /**
  * External dependencies
@@ -188,12 +189,8 @@ class MaxiBlockComponent extends Component {
 		this.setMaxiAttributes();
 		this.setRelations();
 
-		// Add block to store
-		dispatch('maxiBlocks/blocks').addBlock(
-			newUniqueID,
-			clientId,
-			this.rootSlot
-		);
+		// Add block to store (batched for performance)
+		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -374,7 +371,6 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		// Log relations processing time
 		// Step 4: Block setup and reusable check
 		this.isReusable = this.hasParentWithClass(this.blockRef, 'is-reusable');
 
@@ -480,7 +476,19 @@ class MaxiBlockComponent extends Component {
 	 * Prevents styling
 	 */
 	getSnapshotBeforeUpdate(prevProps, prevState) {
-		if (this.isPatternsPreview || this.templateModal) return false;
+		if (this.isPatternsPreview || this.templateModal) {
+			// Clear cached diff for consistency
+			this.cachedDiffAttributes = null;
+			return false;
+		}
+
+		// OPTIMIZATION: Calculate diff once and cache for componentDidUpdate
+		// This avoids expensive diff() recalculation in componentDidUpdate
+		this.cachedDiffAttributes = diff(
+			prevProps.attributes,
+			this.props.attributes
+		);
+
 		// If deviceType or baseBreakpoint changes, render styles
 		const wasBreakpointChanged =
 			this.props.deviceType !== prevProps.deviceType ||
@@ -539,7 +547,19 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) return;
 		const { uniqueID } = this.props.attributes;
 
-		if (!shouldDisplayStyles) {
+		// OPTIMIZATION: Use cached diff from getSnapshotBeforeUpdate instead of recalculating
+		// Falls back to calculating if not cached (edge case)
+		const diffAttributes =
+			this.cachedDiffAttributes !== undefined
+				? this.cachedDiffAttributes
+				: diff(prevProps.attributes, this.props.attributes);
+
+		const onlyRelationsChanged =
+			!isEmpty(diffAttributes) &&
+			Object.keys(diffAttributes).length === 1 &&
+			Object.keys(diffAttributes)[0] === 'relations';
+
+		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -554,11 +574,7 @@ class MaxiBlockComponent extends Component {
 			this.isReusable && this.displayStyles();
 		}
 
-		// Gets the differences between the previous and current attributes
-		const diffAttributes = diff(
-			prevProps.attributes,
-			this.props.attributes
-		);
+		// Note: diffAttributes already calculated above to check onlyRelationsChanged
 
 		if (!isEmpty(diffAttributes)) {
 			// Check if the modified attribute is related with hover status,
@@ -593,21 +609,30 @@ class MaxiBlockComponent extends Component {
 				}
 			}
 
+			// Skip relation updates if only 'relations' changed (prevents cascade)
+			// Only update relations when actual content/style attributes change
+			const hasNonRelationChanges = Object.keys(diffAttributes).some(
+				key => key !== 'relations'
+			);
+
 			// If there's a relation affecting this concrete block, check if is necessary
 			// to update it's content to keep the coherence and the good UX
-			const blocksIBRelations = select(
-				'maxiBlocks/relations'
-			).receiveBlockUnderRelationClientIDs(uniqueID);
+			if (hasNonRelationChanges) {
+				const blocksIBRelations = select(
+					'maxiBlocks/relations'
+				).receiveBlockUnderRelationClientIDs(uniqueID);
 
-			if (!isEmpty(blocksIBRelations))
-				blocksIBRelations.forEach(({ clientId }) =>
-					updateRelationsRemotely({
-						blockTriggerClientId: clientId,
-						blockTargetClientId: this.props.clientId,
-						blockAttributes: this.props.attributes,
-						breakpoint: this.props.deviceType,
-					})
-				);
+				if (!isEmpty(blocksIBRelations)) {
+					blocksIBRelations.forEach(({ clientId }) =>
+						updateRelationsRemotely({
+							blockTriggerClientId: clientId,
+							blockTargetClientId: this.props.clientId,
+							blockAttributes: this.props.attributes,
+							breakpoint: this.props.deviceType,
+						})
+					);
+				}
+			}
 		}
 
 		this.hideGutenbergPopover();
@@ -651,6 +676,17 @@ class MaxiBlockComponent extends Component {
 		if (this.previewTimeouts) {
 			this.previewTimeouts.forEach(timeout => clearTimeout(timeout));
 			this.previewTimeouts = null;
+		}
+
+		// Disconnect all preview observers to prevent memory leaks
+		if (this.previewObservers) {
+			this.previewObservers.forEach(observer => {
+				if (observer && typeof observer.disconnect === 'function') {
+					observer.disconnect();
+				}
+			});
+			this.previewObservers.clear();
+			this.previewObservers = null;
 		}
 
 		// Disconnect FSE observer if present
@@ -998,6 +1034,11 @@ class MaxiBlockComponent extends Component {
 			this.previewTimeouts = new Map();
 		}
 
+		// Track observers for proper cleanup to prevent memory leaks
+		if (!this.previewObservers) {
+			this.previewObservers = new Set();
+		}
+
 		const isSiteEditor = getIsSiteEditor();
 
 		const imageName = isSiteEditor
@@ -1055,6 +1096,10 @@ class MaxiBlockComponent extends Component {
 				const newTimeout = setTimeout(() => {
 					observer.disconnect();
 					this.previewTimeouts.delete(iframe);
+					// Remove observer from tracking when it disconnects
+					if (this.previewObservers) {
+						this.previewObservers.delete(observer);
+					}
 				}, disconnectTimeout);
 
 				this.previewTimeouts.set(iframe, newTimeout);
@@ -1101,6 +1146,10 @@ class MaxiBlockComponent extends Component {
 				iframe.style.display = 'none';
 
 				observer.disconnect();
+				// Remove observer from tracking when it disconnects
+				if (this.previewObservers) {
+					this.previewObservers.delete(observer);
+				}
 			};
 
 			const observer = new MutationObserver((mutationsList, observer) => {
@@ -1114,6 +1163,9 @@ class MaxiBlockComponent extends Component {
 				childList: true,
 				subtree: true,
 			});
+
+			// Track observer for cleanup to prevent memory leaks
+			this.previewObservers.add(observer);
 		});
 	}
 
@@ -1143,18 +1195,48 @@ class MaxiBlockComponent extends Component {
 		const { clientId, name: blockName, attributes } = this.props;
 		const { customLabel } = attributes;
 
-		const isBlockCopied =
-			!select('maxiBlocks/blocks').getIsNewBlock(
-				this.props.attributes.uniqueID
-			) &&
-			select('maxiBlocks/blocks')
-				.getLastInsertedBlocks()
-				.includes(this.props.clientId);
+		const lastInsertedBlocks =
+			select('maxiBlocks/blocks').getLastInsertedBlocks();
+		const isNewBlock = select('maxiBlocks/blocks').getIsNewBlock(
+			this.props.attributes.uniqueID
+		);
 
-		if (isBlockCopied || !getIsIDTrulyUnique(idToCheck)) {
+		const isBlockCopied =
+			!isNewBlock && lastInsertedBlocks.includes(this.props.clientId);
+
+		// OPTIMIZATION: Skip expensive uniqueID check if block is being loaded from DB
+		// Only check uniqueID in these scenarios:
+		// 1. Block was just copied/pasted (isBlockCopied = true)
+		// 2. Block is in lastInsertedBlocks (new insertion, pattern, or template)
+		// 3. Block is marked as new (first-time creation)
+		const needsUniqueIDCheck =
+			isBlockCopied ||
+			(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
+			isNewBlock;
+
+		// Fast path: Block is being loaded from saved content, trust the ID
+		if (!needsUniqueIDCheck) {
+			// Still check custom label even if we skip uniqueID check
+			if (getIsUniqueCustomLabelRepeated(customLabel)) {
+				this.props.attributes.customLabel = getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				);
+			}
+			return idToCheck;
+		}
+
+		// Slow path: Actually check if uniqueID is unique (only for copy/paste/new blocks)
+		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
+
+		if (isBlockCopied || !isUnique) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
+
+			// Immediately add to cache for batch paste optimization
+			// This ensures subsequent blocks in the same paste operation see this ID
+			dispatch('maxiBlocks/blocks').addToUniqueIDCache(newUniqueID);
 
 			propagateNewUniqueID(
 				idToCheck,
@@ -1299,11 +1381,19 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
-		const shouldGenerateNewStyles =
+		let shouldGenerateNewStyles =
 			!isBreakpointChange || this.props.deviceType === 'xxl';
+		let stylesForViewportCheck;
+
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			stylesForViewportCheck = this.getStylesObject || {};
+			if (this.hasViewportUnits(stylesForViewportCheck)) {
+				shouldGenerateNewStyles = true;
+			}
+		}
 
 		if (shouldGenerateNewStyles) {
-			obj = this.getStylesObject || {};
+			obj = stylesForViewportCheck || this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1330,6 +1420,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
+			shouldGenerateNewStyles,
 			this.editorIframe
 		);
 
@@ -1443,6 +1534,34 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
+	hasViewportUnits(stylesObj) {
+		if (!stylesObj) return false;
+
+		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
+		// Requires: number (with optional sign/decimal) + viewport unit
+		// Boundaries prevent matching "overview", URLs, or identifiers
+		const viewportUnitRegex =
+			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+
+		const stack = [stylesObj];
+
+		while (stack.length) {
+			const current = stack.pop();
+
+			if (typeof current === 'string') {
+				if (viewportUnitRegex.test(current)) {
+					return true;
+				}
+			} else if (isArray(current)) {
+				stack.push(...current);
+			} else if (isObject(current)) {
+				stack.push(...Object.values(current));
+			}
+		}
+
+		return false;
+	}
+
 	injectStyles(
 		uniqueID,
 		stylesObj,
@@ -1451,6 +1570,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
@@ -1460,7 +1580,11 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+		if (
+			forceGenerate ||
+			!isBreakpointChange ||
+			currentBreakpoint === 'xxl'
+		) {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1468,6 +1592,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
+				forceGenerate,
 				iframe,
 				isSiteEditor
 			);
@@ -1534,13 +1659,16 @@ class MaxiBlockComponent extends Component {
 		loadFonts(getPageFonts(), true, iframeDocument);
 
 		// Collect fonts from both main document and FSE iframe
-		const fontSelector = 'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
-		let maxiFonts = Array.from(document.querySelectorAll(fontSelector));
+		const fontSelector =
+			'link[rel="stylesheet"][id*="maxi-blocks-styles-font"]';
+		const maxiFonts = Array.from(document.querySelectorAll(fontSelector));
 
 		// Also check FSE iframe for SC fonts (for reusables/template parts)
 		const siteEditorDoc = getSiteEditorIframe();
 		if (siteEditorDoc) {
-			const fseFonts = Array.from(siteEditorDoc.querySelectorAll(fontSelector));
+			const fseFonts = Array.from(
+				siteEditorDoc.querySelectorAll(fontSelector)
+			);
 			// Merge fonts, avoiding duplicates by ID
 			const existingIds = new Set(maxiFonts.map(font => font.id));
 			fseFonts.forEach(font => {
@@ -1649,6 +1777,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe,
 		isSiteEditor
 	) {
@@ -1676,8 +1805,10 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBlockStyleChange) {
-			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		if (isBlockStyleChange || forceGenerate) {
+			const cssCache =
+				!forceGenerate &&
+				select('maxiBlocks/styles').getCSSCache(uniqueID);
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];
@@ -1698,14 +1829,24 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		}
 
 		if (styles) {

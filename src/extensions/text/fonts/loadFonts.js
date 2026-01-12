@@ -8,7 +8,59 @@ import { dispatch, select } from '@wordpress/data';
  */
 import { isEmpty, uniq } from 'lodash';
 import { cleanUrl } from './fontCacheUtils';
-import { buildFontUrl } from './loadFontUtils';
+import buildFontUrl from './loadFontUtils';
+
+const buildVariantKey = (weight, style) => {
+	const normalizedWeight = weight?.toString() || '400';
+	const normalizedStyle = style === 'italic' ? 'italic' : 'normal';
+
+	if (normalizedStyle === 'italic') {
+		return normalizedWeight === '400' || normalizedWeight === 'normal'
+			? 'italic'
+			: `${normalizedWeight}italic`;
+	}
+
+	return normalizedWeight;
+};
+
+const guessFontFormat = url => {
+	if (typeof url !== 'string') {
+		return 'woff2';
+	}
+
+	const clean = url.split('?')[0].split('#')[0];
+	const extension = clean.split('.').pop()?.toLowerCase();
+
+	switch (extension) {
+		case 'woff2':
+			return 'woff2';
+		case 'woff':
+			return 'woff';
+		case 'otf':
+			return 'opentype';
+		case 'ttf':
+			return 'truetype';
+		default:
+			return 'woff2';
+	}
+};
+
+const createFontFaceCss = (fontName, weight, style, fileUrl) => {
+	const sanitizedName = fontName?.replace(/'/g, "\\'") ?? '';
+	const fontStyle = style === 'italic' ? 'italic' : 'normal';
+	const fontWeight = weight || '400';
+	const fontFormat = guessFontFormat(fileUrl);
+
+	return (
+		'@font-face {\n' +
+		`\tfont-family: '${sanitizedName}';\n` +
+		`\tsrc: url('${fileUrl}') format('${fontFormat}');\n` +
+		`\tfont-weight: ${fontWeight};\n` +
+		`\tfont-style: ${fontStyle};\n` +
+		'\tfont-display: swap;\n' +
+		'}\n'
+	);
+};
 
 /**
  * Get the font URL - simplified version without caching
@@ -132,10 +184,92 @@ const loadFonts = async (
 
 				if (isEmpty(fontDataNew.style)) delete fontDataNew.style;
 
-				const fontFiles =
-					select('maxiBlocks/text').getFont(fontName)?.files;
+				const fontRecord = select('maxiBlocks/text').getFont(fontName);
+				const fontFiles = fontRecord?.files;
 
 				if (isEmpty(fontFiles)) return;
+
+				// Custom font flow: inject @font-face rules via <style>
+				if (fontRecord?.source === 'custom') {
+					const styleVariants =
+						Array.isArray(fontStyleArr) && fontStyleArr.length
+							? fontStyleArr
+							: ['normal'];
+
+					await Promise.all(
+						fontWeightArr.map(async weightValue =>
+							Promise.all(
+								styleVariants.map(async styleValue => {
+									const variantKey = buildVariantKey(
+										weightValue,
+										styleValue
+									);
+									let fileUrl = fontFiles?.[variantKey];
+
+									if (!fileUrl) {
+										const fallbackKey = buildVariantKey(
+											'400',
+											styleValue
+										);
+										fileUrl =
+											fontFiles?.[fallbackKey] ??
+											fontFiles?.['400'];
+									}
+
+									if (!fileUrl) {
+										console.warn(
+											`Missing custom font file for ${fontName} (${variantKey})`
+										);
+										return;
+									}
+
+									const customFontId = getFontID(fontName, {
+										weight: weightValue,
+										style: styleValue,
+									});
+
+									// Check if font style already exists
+									// Use getElementById when target is a Document, otherwise use querySelector with CSS.escape
+									const existingFont = target.getElementById
+										? target.getElementById(customFontId)
+										: target.head.querySelector(
+												`#${CSS.escape(customFontId)}`
+										  );
+
+									if (existingFont) {
+										if (setIsLoading)
+											setIsLoading(false, customFontId);
+										return;
+									}
+
+									if (setIsLoading)
+										setIsLoading(true, customFontId);
+
+									const styleElement =
+										document.createElement('style');
+									styleElement.id = customFontId;
+									styleElement.appendChild(
+										document.createTextNode(
+											createFontFaceCss(
+												fontName,
+												weightValue,
+												styleValue,
+												fileUrl
+											)
+										)
+									);
+
+									target.head.appendChild(styleElement);
+
+									if (setIsLoading)
+										setIsLoading(false, customFontId);
+								})
+							)
+						)
+					);
+
+					return;
+				}
 
 				const loadBackendFont = async (fontName, fontData) => {
 					const fontId = getFontID(fontName, fontData);

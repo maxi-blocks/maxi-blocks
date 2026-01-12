@@ -88,7 +88,9 @@ const AxisInput = props => {
 			)}
 			placeholder={lastValue}
 			value={value}
-			onChangeValue={val => onChangeValue(val, singleTarget, breakpoint)}
+			onChangeValue={(val, meta) =>
+				onChangeValue(val, singleTarget, breakpoint, undefined, meta)
+			}
 			minMaxSettings={minMaxSettings}
 			enableAuto={!disableAuto}
 			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
@@ -724,7 +726,13 @@ const AxisControl = props => {
 			isHover,
 		}) || 'px';
 
-	const onChangeValue = (val, singleTarget, customBreakpoint, prefix) => {
+	const onChangeValue = (
+		val,
+		singleTarget,
+		customBreakpoint,
+		prefix,
+		meta
+	) => {
 		let newValue = '';
 		if (optionType === 'number' && isNaN(val))
 			if (isEmpty(val)) newValue = val;
@@ -869,7 +877,7 @@ const AxisControl = props => {
 			}
 		}
 
-		onChange(response);
+		onChange({ ...response, meta });
 	};
 
 	return (

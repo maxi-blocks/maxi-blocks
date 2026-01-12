@@ -28,11 +28,10 @@ const Inspector = props => {
 		maxiSetAttributes,
 		clientId,
 		insertInlineStyles,
-		cleanInlineStyles,
 		inlineStylesTargets,
 	} = props;
 
-	const { accordionLayout, blockStyle, titleLevel } = attributes;
+	const { blockStyle, titleLevel, accordionLayout } = attributes;
 	const { selectors, categories } = customCss;
 
 	const iconTabsProps = {
@@ -61,9 +60,6 @@ const Inspector = props => {
 		},
 		onChange: obj => {
 			maxiSetAttributes(obj);
-			cleanInlineStyles(inlineStylesTargets.headerLine);
-			if (accordionLayout === 'simple')
-				cleanInlineStyles(inlineStylesTargets.contentLine);
 		},
 		breakpoint: deviceType,
 		clientId,

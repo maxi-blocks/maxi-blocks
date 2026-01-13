@@ -51,8 +51,8 @@
 		padding-top: 0;
 
 		&--disable-padding {
-			padding-left: 8px;
-			padding-right: 8px;
+			padding-left: 0;
+			padding-right: 0;
 		}
 
 		&--nested {
@@ -234,7 +234,7 @@
 
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding: 0 8px;
+			padding: 6px 8px 0;
 			background-color: var(--maxi-white);
 		}
 

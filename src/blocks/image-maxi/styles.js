@@ -193,27 +193,6 @@ const getHoverEffectDetailsBoxObject = props => {
 		'hover-border-status',
 		props
 	);
-	const hoverBorderClearStyles = {};
-	breakpoints.forEach(breakpoint => {
-		const hoverBorderStatus = getLastBreakpointAttribute({
-			target: 'hover-border-status',
-			breakpoint,
-			attributes: props,
-		});
-
-		if (!hoverBorderStatus) {
-			hoverBorderClearStyles[breakpoint] = {
-				border: 'none',
-				'border-color': 'transparent',
-				'border-style': 'none',
-				'border-width': '0',
-			};
-		}
-	});
-	const mergedHoverBorderStyles = {
-		...(filteredHoverBorderStyles || {}),
-		...(!isEmpty(hoverBorderClearStyles) && hoverBorderClearStyles),
-	};
 	const filteredHoverMarginStyles = filterStylesByStatus(
 		hoverMarginStyles,
 		'hover-margin-status',
@@ -226,8 +205,8 @@ const getHoverEffectDetailsBoxObject = props => {
 	);
 
 	const response = {
-		...(!isEmpty(mergedHoverBorderStyles) && {
-			border: mergedHoverBorderStyles,
+		...(filteredHoverBorderStyles && {
+			border: filteredHoverBorderStyles,
 		}),
 		...(filteredHoverMarginStyles && { margin: filteredHoverMarginStyles }),
 		...(filteredHoverPaddingStyles && {

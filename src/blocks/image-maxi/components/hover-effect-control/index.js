@@ -516,7 +516,7 @@ const HoverEffectControl = props => {
 								),
 							}}
 							hideAlignment
-							onChangeInline={onChangeInline}
+							{...(onChangeInline && { onChangeInline })}
 							onChange={onChange}
 							prefix='hover-title-'
 							disableCustomFormats
@@ -594,9 +594,10 @@ const HoverEffectControl = props => {
 							'hoverBackgroundColor',
 							'hoverBackgroundGradient',
 						])}
-						onChangeInline={obj =>
-							onChangeInline(obj, '.maxi-hover-details__content')
-						}
+						{...(onChangeInline && {
+							onChangeInline: obj =>
+								onChangeInline(obj, '.maxi-hover-details__content'),
+						})}
 						onChange={onChange}
 						tabsClassName='mb-hover-bg'
 						disableClipPath
@@ -628,16 +629,21 @@ const HoverEffectControl = props => {
 								'hoverBorderWidth',
 								'hoverBorderRadius',
 							])}
-							onChangeInline={obj =>
-								onChangeInline(
-									obj,
-									'.maxi-hover-details__content'
-								)
-							}
+							{...(onChangeInline && {
+								onChangeInline: obj =>
+									onChangeInline(
+										obj,
+										'.maxi-hover-details__content'
+									),
+							})}
 							onChange={onChange}
 							prefix='hover-'
 							breakpoint={breakpoint}
 							clientId={clientId}
+							globalProps={{
+								target: 'border',
+								type: 'border',
+							}}
 						/>
 					)}
 					<ToggleSwitch

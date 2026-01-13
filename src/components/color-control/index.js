@@ -353,6 +353,13 @@ const ColorControl = props => {
 								...(val && {
 									color: initialCustomColor,
 								}),
+								...(!val && {
+									color: `rgba(${getPaletteColor({
+										clientId,
+										color: paletteColor,
+										blockStyle,
+									})},${paletteOpacity || 1})`,
+								}),
 								...(!disableOpacity &&
 									!val &&
 									color && {

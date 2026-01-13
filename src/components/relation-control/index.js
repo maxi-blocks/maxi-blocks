@@ -68,6 +68,7 @@ const RelationControl = props => {
 	const highlightedBlocks = useRef(new Set());
 	const hoveredUniqueIdRef = useRef(null);
 	const onChangeRef = useRef(null);
+	const lastCleanedRef = useRef(null);
 
 	const relations = useMemo(
 		() =>
@@ -161,6 +162,10 @@ const RelationControl = props => {
 		);
 
 		if (hasInvalidRelations && rawRelations.length !== relations.length) {
+			// Prevent infinite loop by checking if we've already processed this cleanup
+			if (isEqual(lastCleanedRef.current, relations)) return;
+
+			lastCleanedRef.current = cloneDeep(relations);
 			onChangeRef.current({ relations });
 		}
 	}, [rawRelations, relations]);

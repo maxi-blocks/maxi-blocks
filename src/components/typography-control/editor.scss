@@ -121,12 +121,16 @@
 		flex-wrap: nowrap; /* Change from wrap to nowrap */
 		gap: 10px;
 		width: 100%;
-		align-items: flex-end; /* Align items to the bottom */
+		align-items: stretch;
 
 		> div {
 			flex: 1 1 auto; /* Allow items to grow and shrink */
 			position: relative;
 			width: auto !important; /* Remove fixed width */
+		}
+
+		.maxi-base-control__field {
+			align-items: stretch !important;
 		}
 
 		&:has(.maxi-typography-control__weight-warning) {
@@ -171,6 +175,8 @@
 		.maxi-select-control__input {
 			padding-left: 5px !important;
 			padding-right: 19px !important;
+			height: 36px !important;
+			min-height: 36px !important;
 			font-size: 11px !important;
 		}
 	}

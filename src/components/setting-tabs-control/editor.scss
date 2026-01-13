@@ -238,6 +238,11 @@
 			background-color: var(--maxi-white);
 		}
 
+		.maxi-tabs-control--disable-padding {
+			margin-left: -8px;
+			margin-right: -8px;
+		}
+
 		&--nested {
 			background: var(--maxi-white);
 			border: 1.5px solid var(--maxi-secondary-color);

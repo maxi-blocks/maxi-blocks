@@ -135,7 +135,7 @@ const RelationControl = props => {
 		onChangeRef.current = onChange;
 	}, [onChange]);
 
-	// Cleanup on unmount or when relations change
+	// Cleanup on unmount
 	useEffect(() => {
 		return () => {
 			for (const clientId of Array.from(highlightedBlocks.current)) {
@@ -146,7 +146,7 @@ const RelationControl = props => {
 			}
 			highlightedBlocks.current.clear();
 		};
-	}, [relations]);
+	}, []);
 
 	useEffect(() => {
 		if (!rawRelations || !onChangeRef.current) return;

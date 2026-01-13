@@ -288,7 +288,7 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 						blockAttributes: currentActualAttributes,
-						onChange: newValues => {
+						onChange: async newValues => {
 							if (isUpdating.current) return;
 
 							const { isReset, ...cleanValues } = newValues || {};
@@ -305,9 +305,11 @@ const RelationControl = props => {
 							if (hasChanged) {
 								try {
 									isUpdating.current = true;
-									updateBlockAttributes(
-										targetClientId,
-										cleanValues
+									await Promise.resolve(
+										updateBlockAttributes(
+											targetClientId,
+											cleanValues
+										)
 									);
 								} catch (error) {
 									// eslint-disable-next-line no-console
@@ -316,7 +318,7 @@ const RelationControl = props => {
 										error
 									);
 								} finally {
-									// Release lock immediately after the dispatch call
+									// Release lock after async work completes
 									isUpdating.current = false;
 								}
 							}

@@ -253,6 +253,11 @@
 				border-bottom: 1.5px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
 
+				.maxi-tabs-control {
+					margin-left: -8px;
+					margin-right: -8px;
+				}
+
 				&:after {
 					content: '';
 					position: absolute;

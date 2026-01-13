@@ -350,20 +350,15 @@ const ColorControl = props => {
 
 							onChangeValue({
 								paletteStatus: !val,
+								// When toggling TO custom color mode (val=true), set the current palette color
 								...(val && {
 									color: initialCustomColor,
 								}),
-								// Only set color for hover effects when toggling palette OFF
-								// For normal typography, the style generator will compute the color
-								// based on the palette settings, which allows proper responsive inheritance
-								...(!val &&
-									isHover && {
-										color: `rgba(${getPaletteColor({
-											clientId,
-											color: paletteColor,
-											blockStyle,
-										})},${paletteOpacity || 1})`,
-									}),
+								// When toggling BACK to palette mode (!val=true), clear the color attribute
+								// so frontend uses palette colors instead of the old custom value
+								...(!val && {
+									color: undefined,
+								}),
 								...(!disableOpacity &&
 									!val &&
 									color && {

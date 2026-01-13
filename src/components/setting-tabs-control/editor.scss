@@ -51,8 +51,8 @@
 		padding-top: 0;
 
 		&--disable-padding {
-			margin-left: -8px;
-			margin-right: -8px;
+			padding-left: 8px;
+			padding-right: 8px;
 		}
 
 		&--nested {
@@ -234,7 +234,7 @@
 
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding: 0;
+			padding: 0 8px;
 			background-color: var(--maxi-white);
 		}
 
@@ -257,11 +257,6 @@
 				border-top: 1.5px solid var(--maxi-grey-light);
 				border-bottom: 1.5px solid var(--maxi-grey-light);
 				background-color: var(--maxi-white);
-
-				.maxi-tabs-control {
-					margin-left: -8px;
-					margin-right: -8px;
-				}
 
 				&:after {
 					content: '';

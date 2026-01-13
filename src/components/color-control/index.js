@@ -353,13 +353,17 @@ const ColorControl = props => {
 								...(val && {
 									color: initialCustomColor,
 								}),
-								...(!val && {
-									color: `rgba(${getPaletteColor({
-										clientId,
-										color: paletteColor,
-										blockStyle,
-									})},${paletteOpacity || 1})`,
-								}),
+								// Only set color for hover effects when toggling palette OFF
+								// For normal typography, the style generator will compute the color
+								// based on the palette settings, which allows proper responsive inheritance
+								...(!val &&
+									isHover && {
+										color: `rgba(${getPaletteColor({
+											clientId,
+											color: paletteColor,
+											blockStyle,
+										})},${paletteOpacity || 1})`,
+									}),
 								...(!disableOpacity &&
 									!val &&
 									color && {

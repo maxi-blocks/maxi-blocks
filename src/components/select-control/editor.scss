@@ -10,7 +10,6 @@ body.maxi-blocks--active {
 		border: 1.5px solid var(--maxi-grey-light);
 		margin: 0;
 		color: var(--maxi-grey);
-		background-size: 9px 9px;
 		font-size: 12px;
 		line-height: 14px;
 		vertical-align: middle;
@@ -37,7 +36,7 @@ body.maxi-blocks--active {
 	}
 	.maxi-select-control__input:focus,
 	.maxi-text-control__input:focus {
-		border-color: none !important;
+		border-color: transparent !important;
 	}
 	.maxi-option {
 		&__in-use {

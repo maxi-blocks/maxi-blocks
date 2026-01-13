@@ -10,6 +10,7 @@
 	--typography-button-transition: all 200ms ease;
 	--typography-interactive-border: 1px solid var(--maxi-grey-light);
 	--typography-button-radius: 4px;
+	--typography-chevron-icon: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgb(147, 147, 147)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>');
 
 	/*-------------------------------------------
 	 SHARED COMPONENT PATTERNS
@@ -113,6 +114,16 @@
 		}
 	}
 
+	.maxi-select-control__input {
+		-webkit-appearance: none;
+		appearance: none;
+		background-image: var(--typography-chevron-icon) !important;
+		background-repeat: no-repeat !important;
+		background-size: 10px 6px !important;
+		background-position: right 10px center !important;
+		padding-right: 26px !important;
+	}
+
 	/*-------------------------------------------
 	 WEIGHT & SIZE ROW LAYOUT
 	-------------------------------------------*/
@@ -174,7 +185,7 @@
 	.maxi-typography-control__weight {
 		.maxi-select-control__input {
 			padding-left: 5px !important;
-			padding-right: 19px !important;
+			padding-right: 26px !important;
 			height: 36px !important;
 			min-height: 36px !important;
 			font-size: 11px !important;
@@ -293,15 +304,6 @@
 	/*-------------------------------------------
 	 ADVANCED CONTROLS & ANIMATIONS
 	-------------------------------------------*/
-	.maxi-typography-control__toggle-arrow {
-		transition: transform 200ms ease;
-		transform: rotate(0);
-
-		&--expanded {
-			transform: rotate(180deg);
-		}
-	}
-
 	.maxi-typography-control-button {
 		@extend %flex-center-pattern;
 		justify-content: space-between;
@@ -315,7 +317,18 @@
 	}
 
 	.maxi-typography-control-arrow-span {
+		display: inline-block;
+		width: 10px;
+		height: 6px;
+		margin-left: 8px;
+		background-image: var(--typography-chevron-icon);
+		background-repeat: no-repeat;
+		background-size: 10px 6px;
 		transition: transform 300ms ease;
+
+		&.maxi-typography-control__toggle-arrow--expanded {
+			transform: rotate(180deg);
+		}
 	}
 
 	.maxi-typography-control__advanced-options {

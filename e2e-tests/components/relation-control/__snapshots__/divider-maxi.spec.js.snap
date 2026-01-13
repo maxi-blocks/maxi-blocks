@@ -87,8 +87,6 @@ exports[`Divider Maxi hover simple actions Line settings 1`] = `
       "divider-width-general": 11,
       "divider-width-unit-general": "%",
       "divider-width-xl": 11,
-      "line-orientation-general": "horizontal",
-      "line-orientation-xl": "horizontal",
     },
     "css": {
       "general": {

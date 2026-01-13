@@ -243,6 +243,10 @@
 			margin-right: -8px;
 		}
 
+		.maxi-tabs-control + .maxi-responsive-tabs-control {
+			margin-top: -6px;
+		}
+
 		&--nested {
 			background: var(--maxi-white);
 			border: 1.5px solid var(--maxi-secondary-color);

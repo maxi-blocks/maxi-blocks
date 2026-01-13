@@ -238,6 +238,15 @@
 			background-color: var(--maxi-white);
 		}
 
+		&.maxi-clip-path-tabs-content {
+			padding-left: 0;
+			padding-right: 0;
+
+			.maxi-tabs-control + .maxi-responsive-tabs-control {
+				margin-top: -6px;
+			}
+		}
+
 		.maxi-tabs-control--disable-padding {
 			margin-left: -8px;
 			margin-right: -8px;

@@ -25,3 +25,15 @@
 .maxi-tabs-control__button-popup {
 	margin-right: -8px;
 }
+
+body.maxi-blocks--active {
+	.maxi-advanced-number-control.maxi-video-popup-control__animation-duration {
+		.maxi-advanced-number-control__input-wrapper {
+			width: 80px !important;
+		}
+
+		.maxi-dimensions-control__units select.maxi-select-control__input {
+			min-width: 42px !important;
+		}
+	}
+}

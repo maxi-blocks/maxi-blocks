@@ -716,7 +716,7 @@ const RelationControl = props => {
 											items={[
 												{
 													label: __(
-														'Current',
+														'Start',
 														'maxi-blocks'
 													),
 													content:
@@ -725,16 +725,10 @@ const RelationControl = props => {
 														),
 												},
 												{
-													label:
-														item.action === 'hover'
-															? __(
-																	'On hover',
-																	'maxi-blocks'
-															  )
-															: __(
-																	'On click',
-																	'maxi-blocks'
-															  ),
+													label: __(
+														'End',
+														'maxi-blocks'
+													),
 													content:
 														displaySelectedSetting(
 															item

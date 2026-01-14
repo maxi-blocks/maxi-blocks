@@ -137,7 +137,6 @@ class edit extends MaxiBlockComponent {
 		const { attributes, maxiSetAttributes, isSelected, deviceType } =
 			this.props;
 		const {
-			'hover-preview': hoverPreview,
 			'hover-type': hoverType,
 			captionContent,
 			captionType,
@@ -155,6 +154,11 @@ class edit extends MaxiBlockComponent {
 			captionPosition,
 			fitParentSize,
 		} = attributes;
+		const hoverPreview = getLastBreakpointAttribute({
+			target: 'hover-preview',
+			breakpoint: deviceType || 'general',
+			attributes,
+		});
 		const {
 			status: dcStatus,
 			mediaId: dcMediaId,
@@ -181,6 +185,14 @@ class edit extends MaxiBlockComponent {
 			hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
+		const hoverPreviewAttributes = {
+			...getGroupAttributes(attributes, [
+				'hover',
+				'hoverTitleTypography',
+				'hoverContentTypography',
+			]),
+			'hover-preview': hoverPreview,
+		};
 
 		/**
 		 * Prevents losing general link format when the link is affecting whole content
@@ -498,11 +510,7 @@ class edit extends MaxiBlockComponent {
 								wrapperClassName={wrapperClassName}
 								hoverClassName={hoverClasses}
 								isSVG={!!SVGElement}
-								{...getGroupAttributes(attributes, [
-									'hover',
-									'hoverTitleTypography',
-									'hoverContentTypography',
-								])}
+								{...hoverPreviewAttributes}
 							>
 								{SVGElement ? (
 									<RawHTML>{SVGElement}</RawHTML>

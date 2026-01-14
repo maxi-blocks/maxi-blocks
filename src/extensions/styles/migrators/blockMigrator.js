@@ -21,6 +21,7 @@ import transformIBTargetMigrator from './transformIBTargetMigrator';
 import backgroundPositionMigrator from './backgroundPositionMigrator';
 import disableTransitionIBMigrator from './disableTransitionIBMigrator';
 import corruptedHoverAttributesMigrator from './corruptedHoverAttributesMigrator';
+import hoverToggleBreakpointMigrator from './hoverToggleBreakpointMigrator';
 import bottomGapMigrator from './bottomGapMigrator';
 import transitionMigrator from './transitionMigrator';
 import fullWidthAttributeMigrator from './fullWidthAttributeMigrator';
@@ -146,6 +147,7 @@ const defaultMigrators = [
 	backgroundPositionMigrator,
 	disableTransitionIBMigrator,
 	corruptedHoverAttributesMigrator,
+	hoverToggleBreakpointMigrator,
 	bottomGapMigrator,
 	transitionMigrator,
 	IBLabelToIDMigrator,

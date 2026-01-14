@@ -109,6 +109,10 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 		const cached = styleCache.get(cacheKey);
 		if (cached !== undefined) {
 			cacheStats.hits += 1;
+			// BUGFIX: Even on cache hit, update Redux store so it has current styles for DB save
+			Object.entries(cached).forEach(([target]) => {
+				dispatch('maxiBlocks/styles').updateStyles(target, cached);
+			});
 			return cached;
 		}
 		cacheStats.misses += 1;

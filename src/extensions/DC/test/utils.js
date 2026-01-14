@@ -471,6 +471,25 @@ describe('getTaxonomyContent', () => {
 			include: [1, 2],
 		});
 	});
+
+	it('should return the correct link class for the content type', async () => {
+		mockEntityRecords.mockResolvedValue([
+			{ name: 'Tag 1' },
+			{ name: 'Tag 2' },
+		]);
+
+		const result = await getTaxonomyContent(
+			[1, 2],
+			', ',
+			true,
+			'post_tag',
+			'button'
+		);
+
+		expect(result).toBe(
+			'<span><a class="maxi-button-block--link"><span>Tag 1</span></a>,  <a class="maxi-button-block--link"><span>Tag 2</span></a></span>'
+		);
+	});
 });
 
 describe('getCurrentTemplateSlug', () => {

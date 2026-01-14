@@ -79,12 +79,18 @@ describe('Divider Maxi hover simple actions', () => {
 		await page.waitForTimeout(150);
 
 		// Add target
-		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('divider-maxi-1se8ef1z-u');
+		await page.waitForSelector('.maxi-block-select-control__trigger');
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForSelector('.maxi-block-select-control__dropdown');
+		await page.click(
+			'.maxi-block-select-control__options li[value="divider-maxi-1se8ef1z-u"]'
+		);
+		await page.waitForTimeout(200);
 
 		// Add action
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[2].select('hover');
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('hover');
+		await page.waitForTimeout(200);
 	});
 
 	const checkFrontend = async () => {
@@ -134,7 +140,15 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Divider shadow', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('dbs');
+		await selectControls[2].select('dbs');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Select first default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>
@@ -190,7 +204,15 @@ describe('Divider Maxi hover simple actions', () => {
 	it('Line settings', async () => {
 		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('dls');
+		await selectControls[2].select('dls');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Select second default
 		await page.$$eval('.maxi-default-styles-control__button', buttons =>

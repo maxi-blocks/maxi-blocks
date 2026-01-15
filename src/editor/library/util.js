@@ -218,20 +218,33 @@ export const svgAttributesReplacer = (
 	const fillRegExp = /fill:[^n]+?(?=})/g;
 	const fillStr = `fill:${resolvedFill}`;
 
-	const fillRegExp2 = /[^-]fill="[^n]+?(?=")/g;
+	// Changed from +? to *? to handle empty fill="" attributes
+	const fillRegExp2 = /[^-]fill="[^n]*?(?=")/g;
 	const fillStr2 = ` fill="${resolvedFill}`;
 
 	const strokeRegExp = /stroke:[^n]+?(?=})/g;
 	const strokeStr = `stroke:${resolvedStroke}`;
 
-	const strokeRegExp2 = /[^-]stroke="[^n]+?(?=")/g;
+	// Changed from +? to *? to handle empty stroke="" attributes
+	const strokeRegExp2 = /[^-]stroke="[^n]*?(?=")/g;
 	const strokeStr2 = ` stroke="${resolvedStroke}`;
 
-	return svgCode
+	let result = svgCode
 		.replace(fillRegExp, fillStr)
 		.replace(fillRegExp2, fillStr2)
 		.replace(strokeRegExp, strokeStr)
 		.replace(strokeRegExp2, strokeStr2);
+
+	// For shapes, add fill to SVG element if not present
+	if (target === 'shape' || target === 'image-shape') {
+		// Check if SVG element has a fill attribute
+		if (!/<svg[^>]*\sfill=/i.test(result)) {
+			// Add fill attribute to the SVG element
+			result = result.replace(/<svg/i, `<svg fill="${resolvedFill}"`);
+		}
+	}
+
+	return result;
 };
 
 export const isColorLight = color => {

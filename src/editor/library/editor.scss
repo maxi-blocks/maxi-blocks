@@ -121,13 +121,24 @@ $border-light: 1px solid var(--maxi-grey-light);
 				border-color: var(--maxi-primary-color);
 			}
 
-			// SVG styles in preview
+			// SVG styles in preview - inherit real colors from Style Card
 			&__shape svg {
 				max-height: 100%;
-				fill: var(--maxi-black);
 
+				// Make children inherit fill from parent SVG (overrides empty fill="" attributes)
 				* {
 					fill: inherit;
+				}
+			}
+
+			// Dark background for light-colored SVG shapes
+			&--light {
+				background: var(--maxi-grey);
+				border-color: var(--maxi-grey);
+
+				&:hover {
+					background: var(--maxi-grey-dark, #4a4a4a);
+					border-color: var(--maxi-grey-dark, #4a4a4a);
 				}
 			}
 

@@ -38,6 +38,7 @@ import {
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
@@ -784,17 +785,10 @@ const IconControl = props => {
 	// Get the current SVG type
 	const svgType = props[`${prefix}svgType`];
 
-	// Process icon with colors for preview
-	const processedIcon =
-		iconContent && getIconWithColor
-			? getIconWithColor({
-					rawIcon: iconContent,
-					type: [
-						svgType !== 'Shape' && 'stroke',
-						svgType !== 'Line' && 'fill',
-					].filter(Boolean),
-			  })
-			: iconContent;
+	// Process icon with current colors for preview (uses svgAttributesReplacer to get actual colors)
+	const processedIcon = iconContent
+		? svgAttributesReplacer(iconContent, 'icon', type)
+		: iconContent;
 
 	// Build CSS classes for the wrapper
 	const classes = classnames(

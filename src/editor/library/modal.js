@@ -397,7 +397,13 @@ const MaxiModal = props => {
 							{__('Load icon library', 'maxi-blocks')}
 						</Button>
 						{!isEmpty(icon) && (
-							<div className='maxi-library-modal__action-section__preview'>
+							<div
+								className={classNames(
+									'maxi-library-modal__action-section__preview',
+									isSVGColorLight(icon) &&
+										'maxi-library-modal__action-section__preview--light'
+								)}
+							>
 								<Icon
 									className='maxi-library-modal__action-section__preview--remove'
 									icon={remove}
@@ -461,7 +467,13 @@ const MaxiModal = props => {
 				)}
 			</div>
 			{type === 'button-icon' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
+				<div
+					className={classNames(
+						'maxi-library-modal__action-section__preview',
+						isSVGColorLight(icon) &&
+							'maxi-library-modal__action-section__preview--light'
+					)}
+				>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'
 						icon={remove}
@@ -479,7 +491,13 @@ const MaxiModal = props => {
 			)}
 			{(type === 'navigation-icon' || type === 'search-icon') &&
 				!isEmpty(icon) && (
-					<div className='maxi-library-modal__action-section__preview'>
+					<div
+						className={classNames(
+							'maxi-library-modal__action-section__preview',
+							isSVGColorLight(icon) &&
+								'maxi-library-modal__action-section__preview--light'
+						)}
+					>
 						<Icon
 							className='maxi-library-modal__action-section__preview--remove'
 							icon={remove}
@@ -517,7 +535,13 @@ const MaxiModal = props => {
 				</div>
 			)}
 			{type === 'image-shape' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
+				<div
+					className={classNames(
+						'maxi-library-modal__action-section__preview',
+						isSVGColorLight(icon) &&
+							'maxi-library-modal__action-section__preview--light'
+					)}
+				>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'
 						icon={remove}
@@ -534,7 +558,13 @@ const MaxiModal = props => {
 				</div>
 			)}
 			{type.includes('video-icon') && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
+				<div
+					className={classNames(
+						'maxi-library-modal__action-section__preview',
+						isSVGColorLight(icon) &&
+							'maxi-library-modal__action-section__preview--light'
+					)}
+				>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'
 						icon={remove}

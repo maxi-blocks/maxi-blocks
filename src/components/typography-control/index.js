@@ -1327,9 +1327,8 @@ const TypographyControl = props => {
 											? 'maxi-typography-control__toggle-arrow--expanded'
 											: ''
 									}`}
-								>
-									▼
-								</span>
+									aria-hidden='true'
+								/>
 							</Button>
 						</div>
 

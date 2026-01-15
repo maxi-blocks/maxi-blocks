@@ -76,6 +76,30 @@ function maxi_load_translations($mofile, $domain)
 add_filter('load_textdomain_mofile', 'maxi_load_translations', 10, 2);
 
 //======================================================================
+// Plugin action links
+//======================================================================
+function maxi_blocks_add_settings_link($links)
+{
+    $settings_url = is_network_admin()
+        ? network_admin_url('admin.php?page=maxi-blocks-dashboard')
+        : admin_url('admin.php?page=maxi-blocks-dashboard&tab=maxi_blocks_settings');
+    $settings_link =
+        '<a href="' .
+        esc_url($settings_url) .
+        '">' .
+        esc_html__('Settings', 'maxi-blocks') .
+        '</a>';
+
+    array_unshift($links, $settings_link);
+
+    return $links;
+}
+add_filter(
+    'plugin_action_links_' . plugin_basename(__FILE__),
+    'maxi_blocks_add_settings_link',
+);
+
+//======================================================================
 // Database version check
 //======================================================================
 // Hook for checking the database version in the admin area

@@ -130,7 +130,7 @@
 	.maxi-typography-control__weight-size-row {
 		display: flex;
 		flex-wrap: nowrap; /* Change from wrap to nowrap */
-		gap: 10px;
+		gap: 8px;
 		width: 100%;
 		align-items: stretch;
 
@@ -161,6 +161,9 @@
 			width: 265px !important;
 			margin-bottom: 10px !important;
 		}
+		.maxi-advanced-number-control__input-wrapper {
+			width: 50px !important;
+		}
 	}
 
 	/*-------------------------------------------
@@ -185,7 +188,7 @@
 	.maxi-typography-control__weight {
 		.maxi-select-control__input {
 			padding-left: 5px !important;
-			padding-right: 26px !important;
+			padding-right: 10px !important;
 			height: 36px !important;
 			min-height: 36px !important;
 			font-size: 11px !important;
@@ -211,7 +214,7 @@
 		}
 
 		.maxi-typography-control__line-height {
-			margin-right: 10px !important;
+			margin-right: 8px !important;
 		}
 
 		.maxi-base-control__field {
@@ -220,6 +223,9 @@
 
 		.maxi-base-control__label {
 			@extend %floating-label;
+		}
+		.maxi-advanced-number-control__input-wrapper {
+			width: 50px !important;
 		}
 	}
 

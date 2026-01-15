@@ -31,12 +31,7 @@ body.maxi-blocks--active {
 	// Consolidate hover rule to avoid empty ruleset warning
 	.maxi-select-control__input:hover,
 	.maxi-text-control__input:hover {
-		/* Intentionally left for future hover tweaks; keep non-empty to satisfy linter */
 		outline: none;
-	}
-	.maxi-select-control__input:focus,
-	.maxi-text-control__input:focus {
-		border-color: transparent !important;
 	}
 	.maxi-option {
 		&__in-use {
@@ -89,7 +84,6 @@ body.maxi-blocks--active {
 			&:not(.maxi-dc-type):not(.maxi-dc-field):not(.maxi-context-loop-control__type)
 				#inspector-select-control-4.maxi-select-control__input {
 				flex: 0 0 auto !important;
-				width: 104px !important;
 				height: 36px !important;
 				line-height: 36px !important;
 				padding-top: 0 !important;

@@ -239,11 +239,12 @@
 		}
 
 		&.maxi-clip-path-tabs-content {
-			padding-left: 0;
-			padding-right: 0;
+			// padding-left: 0;
+			// padding-right: 0;
 
-			.maxi-tabs-control + .maxi-responsive-tabs-control {
-				margin-top: -6px;
+			// Hide the empty tabs content inside responsive tabs control
+			.maxi-responsive-tabs-control > .maxi-tabs-content {
+				display: none;
 			}
 		}
 
@@ -252,11 +253,11 @@
 			margin-right: -8px;
 		}
 
-				&:has(.maxi-tabs-control--disable-padding) {
-					padding-top: 0;
-				}
+		&:has(.maxi-tabs-control--disable-padding) {
+			padding-top: 0;
+		}
 
-				.maxi-tabs-control--disable-padding + .maxi-responsive-tabs-control {
+		.maxi-tabs-control--disable-padding + .maxi-responsive-tabs-control {
 			margin-top: -6px;
 		}
 

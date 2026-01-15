@@ -28,6 +28,7 @@ import {
 	checkAndHandleDomainMigration,
 } from '@editor/auth';
 import useObserveBlockSize from './hooks';
+import { isSVGColorLight } from './util';
 
 /**
  * External dependencies
@@ -494,7 +495,13 @@ const MaxiModal = props => {
 					</div>
 				)}
 			{type === 'bg-shape' && !isEmpty(icon) && (
-				<div className='maxi-library-modal__action-section__preview'>
+				<div
+					className={classNames(
+						'maxi-library-modal__action-section__preview',
+						isSVGColorLight(icon) &&
+							'maxi-library-modal__action-section__preview--light'
+					)}
+				>
 					<Icon
 						className='maxi-library-modal__action-section__preview--remove'
 						icon={remove}

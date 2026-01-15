@@ -773,11 +773,9 @@ const LibraryContainer = props => {
 		);
 
 		// Analyze the processed SVG code to detect if it has light colors
-		// For image-shape and bg-shape, always return false (no inversion needed)
+		// For image-shape, always return false (no inversion needed)
 		const colorStatus =
-			type === 'image-shape' || type === 'bg-shape'
-				? false
-				: isSVGColorLight(newContent);
+			type === 'image-shape' ? false : isSVGColorLight(newContent);
 
 		return (
 			<MasonryItem

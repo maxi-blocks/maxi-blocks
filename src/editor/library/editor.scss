@@ -1950,9 +1950,9 @@ $border-light: 1px solid var(--maxi-grey-light);
 		border-radius: 8px;
 
 		// Medium-dark background for light-colored SVG icons to ensure visibility
-		// Uses accessibility grey for better contrast without being too dark
+		// Use maxi-grey for better contrast without being too dark
 		.maxi-cloud-masonry-card__light {
-			background-color: var(--maxi-accessibility-grey);
+			background-color: var(--maxi-grey);
 			border-radius: 8px;
 
 			.maxi-cloud-masonry-card__svg-container__title {

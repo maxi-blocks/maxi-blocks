@@ -165,17 +165,17 @@ const IconControlResponsiveSettings = withRTC(props => {
 		const options = [];
 
 		options.push({
-			label: 'None',
+			label: __('None'),
 			value: 'none',
 		});
 
 		options.push({
-			label: 'Solid',
+			label: __('Solid'),
 			value: 'color',
 		});
 
 		options.push({
-			label: 'Gradient',
+			label: __('Gradient'),
 			value: 'gradient',
 		});
 

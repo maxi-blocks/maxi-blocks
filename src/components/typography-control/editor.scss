@@ -161,9 +161,6 @@
 			width: 265px !important;
 			margin-bottom: 10px !important;
 		}
-		.maxi-advanced-number-control__input-wrapper {
-			width: 50px !important;
-		}
 	}
 
 	/*-------------------------------------------
@@ -223,9 +220,6 @@
 
 		.maxi-base-control__label {
 			@extend %floating-label;
-		}
-		.maxi-advanced-number-control__input-wrapper {
-			width: 50px !important;
 		}
 	}
 
@@ -421,4 +415,10 @@
 ===============================================*/
 .maxi-link-settings-panel {
 	padding: 0px 8px;
+}
+
+.maxi-typography-control:not([class*='maxi-style-cards-control']) {
+	.maxi-advanced-number-control__input-wrapper {
+		width: 50px !important;
+	}
 }

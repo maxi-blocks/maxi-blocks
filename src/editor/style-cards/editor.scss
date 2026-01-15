@@ -19,7 +19,7 @@ $breakpoints: (
 	'xs': 347px,
 	'sm': 768px,
 	'md': 782px,
-	'xxl': 2500px
+	'xxl': 2500px,
 );
 
 @mixin flex-center {
@@ -31,14 +31,20 @@ $breakpoints: (
 @mixin respond-to($breakpoint) {
 	$width: map-get($breakpoints, $breakpoint);
 	@if $breakpoint == 'xxl' {
-		@media only screen and (min-width: $width) { @content; }
+		@media only screen and (min-width: $width) {
+			@content;
+		}
 	} @else {
-		@media only screen and (max-width: $width) { @content; }
+		@media only screen and (max-width: $width) {
+			@content;
+		}
 	}
 }
 
 @mixin rtl {
-	html[dir='rtl'] & { @content; }
+	html[dir='rtl'] & {
+		@content;
+	}
 }
 
 @mixin control-row {
@@ -67,7 +73,7 @@ $breakpoints: (
 	background-color: $white;
 	cursor: pointer;
 	transition: $transition-fast;
-	
+
 	&:hover {
 		background: $white;
 		border-color: var(--maxi-grey);
@@ -81,7 +87,6 @@ $breakpoints: (
 		opacity: 0.3;
 	}
 }
-
 
 .has-tooltip {
 	.tooltip {
@@ -742,6 +747,10 @@ body .maxi-style-cards__popover {
 		&__size {
 			margin-top: $control-spacing;
 		}
+		.maxi-typography-control__spacing-controls
+			.maxi-typography-control__line-height {
+			margin-right: 10px !important;
+		}
 	}
 	.maxi-toggle-switch {
 		&:last-child {
@@ -829,13 +838,17 @@ body .maxi-style-cards__popover {
 }
 
 @include respond-to('md') {
-	body:not(.is-fullscreen-mode):not(.folded) .maxi-responsive-selector .maxi-style-cards__popover {
+	body:not(.is-fullscreen-mode):not(.folded)
+		.maxi-responsive-selector
+		.maxi-style-cards__popover {
 		margin: 148px 0 0 25px;
 	}
 }
 
 @include respond-to('xs') {
-	.maxi-responsive-selector .maxi-style-cards__popover .components-popover__content {
+	.maxi-responsive-selector
+		.maxi-style-cards__popover
+		.components-popover__content {
 		margin-left: -25px;
 		left: 100%;
 		transform: none;
@@ -941,11 +954,11 @@ html[dir='rtl'] {
 
 	.maxi-tabs-content {
 		padding: 0;
-		
+
 		.maxi-tab-content__box {
 			padding: 0;
 			border: none;
-			
+
 			&:after {
 				display: none;
 			}
@@ -956,7 +969,7 @@ html[dir='rtl'] {
 // Fix z-index for font-family dropdown menu in style cards
 // React-select can portal menu to body, so we need a global rule
 // Scoped to maxi-blocks context to avoid affecting other libraries
-body.maxi-blocks--active [class*="menu"][class*="css-"],
-.maxi-style-cards__popover [class*="menu"][class*="css-"] {
+body.maxi-blocks--active [class*='menu'][class*='css-'],
+.maxi-style-cards__popover [class*='menu'][class*='css-'] {
 	z-index: 100 !important;
 }

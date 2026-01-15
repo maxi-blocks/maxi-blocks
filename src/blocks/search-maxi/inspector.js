@@ -232,7 +232,7 @@ const Inspector = props => {
 																					'Close icon',
 																					'maxi-blocks'
 																				),
-																				type: 'search-icon',
+																				type: 'search-icon-close',
 																				...iconControlsDisabledProps,
 																				prefix: closeIconPrefix,
 																			}

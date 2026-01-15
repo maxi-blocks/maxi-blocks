@@ -6,6 +6,7 @@ import MaxiModal from '@editor/library/modal';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
 import SVGFillControl from '@components/svg-fill-control';
 import { getBlockStyle } from '@extensions/styles';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * External dependencies
@@ -29,6 +30,11 @@ const SVGLayer = props => {
 
 	const SVGElement = SVGOptions[`${prefix}background-svg-SVGElement`];
 
+	// Process SVG with current colors for preview
+	const processedSVGElement = SVGElement
+		? svgAttributesReplacer(SVGElement, 'shape', 'bg-shape', layerOrder)
+		: SVGElement;
+
 	return (
 		<>
 			{(!isHover || (isHover && isLayerHover)) && (
@@ -47,7 +53,7 @@ const SVGLayer = props => {
 						onChange({ ...SVGOptions, ...obj });
 					}}
 					layerOrder={layerOrder}
-					icon={SVGElement}
+					icon={processedSVGElement}
 					onSelect={obj => onChange(obj)}
 				/>
 			)}

@@ -2,7 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { renderToString } from '@wordpress/element';
+import { RawHTML, renderToString } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -13,10 +13,12 @@ import {
 	ResponsiveTabsControl,
 	SvgColor,
 } from '@components';
+import { setSVGContentWithBlockStyle } from '@extensions/svg';
 import {
 	getDefaultAttribute,
 	getGroupAttributes,
 	getLastBreakpointAttribute,
+	getColorRGBAString,
 } from '@extensions/styles';
 
 /**
@@ -67,17 +69,77 @@ const MapMarkersControl = props => {
 		...getGroupAttributes(props, 'svgHover'),
 	};
 
+	const {
+		'svg-fill-palette-status': fillPaletteStatus,
+		'svg-fill-palette-sc-status': fillPaletteSCStatus,
+		'svg-fill-palette-color': fillPaletteColor,
+		'svg-fill-palette-opacity': fillPaletteOpacity,
+		'svg-fill-color': fillDirectColor,
+		'svg-line-palette-status': linePaletteStatus,
+		'svg-line-palette-sc-status': linePaletteSCStatus,
+		'svg-line-palette-color': linePaletteColor,
+		'svg-line-palette-opacity': linePaletteOpacity,
+		'svg-line-color': lineDirectColor,
+	} = svgAttributes;
+
+	const fillPaletteColorVar =
+		fillPaletteColor != null ? `color-${fillPaletteColor}` : null;
+	const fillPaletteSCColor = fillPaletteColorVar;
+	const resolvedFill =
+		fillPaletteColorVar && (fillPaletteStatus || fillPaletteSCStatus)
+			? getColorRGBAString(
+					fillPaletteSCStatus
+						? {
+								firstVar: fillPaletteSCColor,
+								opacity: fillPaletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: 'icon-fill',
+								secondVar: fillPaletteColorVar,
+								opacity: fillPaletteOpacity,
+								blockStyle,
+						  }
+			  )
+			: fillDirectColor || 'var(--maxi-icon-block-orange)';
+
+	const linePaletteColorVar =
+		linePaletteColor != null ? `color-${linePaletteColor}` : null;
+	const linePaletteSCColor = linePaletteColorVar;
+	const resolvedStroke =
+		linePaletteColorVar && (linePaletteStatus || linePaletteSCStatus)
+			? getColorRGBAString(
+					linePaletteSCStatus
+						? {
+								firstVar: linePaletteSCColor,
+								opacity: linePaletteOpacity,
+								blockStyle,
+						  }
+						: {
+								firstVar: 'icon-stroke',
+								secondVar: linePaletteColorVar,
+								opacity: linePaletteOpacity,
+								blockStyle,
+						  }
+			  )
+			: lineDirectColor || '#081219';
+
+	const applyMarkerColors = svgContent =>
+		setSVGContentWithBlockStyle(svgContent, resolvedFill, resolvedStroke);
+
 	const markerPresets = Object.values(mapMarkers).map((value, rawIndex) => {
 		const index = rawIndex + 1;
+		const rawContent = renderToString(value);
+		const coloredContent = applyMarkerColors(rawContent);
 
 		return {
 			label: __(`Default marker ${index}`, 'maxi-blocks'),
-			content: value,
+			content: <RawHTML>{coloredContent}</RawHTML>,
 			activeItem: index === mapMarker,
 			onChange: () =>
 				onChange({
 					'map-marker': index,
-					'map-marker-icon': renderToString(value),
+					'map-marker-icon': applyMarkerColors(rawContent),
 				}),
 		};
 	});

@@ -29,6 +29,7 @@ import {
 } from '@extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 import DynamicContent from '@components/dynamic-content';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * External dependencies
@@ -572,84 +573,96 @@ const ImageLayer = props => {
 		[imageOptions, prefix]
 	);
 
+	// Get DC values for dynamic content images
+	const { status: dcStatus, mediaUrl: dcMediaUrl } = useMemo(
+		() => getDCValues(getGroupAttributes(imageOptions, 'dynamicContent'), {}),
+		[imageOptions]
+	);
+
+	// Use DC URL when DC is active, otherwise use regular image URL
+	const effectiveImageUrl = dcStatus ? dcMediaUrl : imageUrl;
+
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{!disableUpload && (
 				<>
-					{!imageOptions['dc-status'] && (
-						<>
-							{mediaID && imageUrl && (
-								<div
-									className='maxi-focal-point-picker'
-									style={{ position: 'relative' }}
-								>
-									<FocalPointPicker
-										className='maxi-background-position-picker'
-										label={__('Image focus', 'maxi-blocks')}
-										url={imageUrl}
-										value={{
-											x: normalizePositionForPicker(
-												getLastBreakpointAttribute({
-													target: `${prefix}background-image-position-width`,
-													breakpoint,
-													attributes: imageOptions,
-													isHover,
-												})
-											),
-											y: normalizePositionForPicker(
-												getLastBreakpointAttribute({
-													target: `${prefix}background-image-position-height`,
-													breakpoint,
-													attributes: imageOptions,
-													isHover,
-												})
-											),
-										}}
-										onChange={handleFocalPointChange}
-									/>
-								</div>
-							)}
-							<MediaUploaderControl
-								mediaID={mediaID}
-								isImageUrl={getAttributeValue({
-									target: 'background-image-isImageUrl',
-									props: imageOptions,
-									prefix,
-								})}
-								onSelectImage={handleSelectImage}
-								showPreview={false}
-								onRemoveImage={() =>
-									onChange({
-										[getAttributeKey(
-											'background-image-mediaID',
-											isHover,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-mediaURL',
-											isHover,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-width',
-											isHover,
-											prefix
-										)]: '',
-										[getAttributeKey(
-											'background-image-height',
-											isHover,
-											prefix
-										)]: '',
-									})
-								}
-							/>
-							<ImageUrlUpload
-								attributes={imageOptions}
-								prefix={`${prefix}background-image-`}
-								onChange={handleSelectImage}
-							/>
-						</>
-					)}
+					<>
+						{effectiveImageUrl && (
+							<div
+								className='maxi-focal-point-picker'
+								style={{ position: 'relative' }}
+							>
+								<FocalPointPicker
+									className='maxi-background-position-picker'
+									label={__('Image focus', 'maxi-blocks')}
+									url={effectiveImageUrl}
+									value={{
+										x: normalizePositionForPicker(
+											getLastBreakpointAttribute({
+												target: `${prefix}background-image-position-width`,
+												breakpoint,
+												attributes: imageOptions,
+												isHover,
+											})
+										),
+										y: normalizePositionForPicker(
+											getLastBreakpointAttribute({
+												target: `${prefix}background-image-position-height`,
+												breakpoint,
+												attributes: imageOptions,
+												isHover,
+											})
+										),
+									}}
+									onChange={handleFocalPointChange}
+								/>
+							</div>
+						)}
+						{!imageOptions['dc-status'] && (
+							<>
+								<MediaUploaderControl
+									mediaID={mediaID}
+									isImageUrl={getAttributeValue({
+										target: 'background-image-isImageUrl',
+										props: imageOptions,
+										prefix,
+									})}
+									onSelectImage={handleSelectImage}
+									showPreview={false}
+									onRemoveImage={() =>
+										onChange({
+											[getAttributeKey(
+												'background-image-mediaID',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-mediaURL',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-width',
+												isHover,
+												prefix
+											)]: '',
+											[getAttributeKey(
+												'background-image-height',
+												isHover,
+												prefix
+											)]: '',
+										})
+									}
+								/>
+								<ImageUrlUpload
+									attributes={imageOptions}
+									prefix={`${prefix}background-image-`}
+									onChange={handleSelectImage}
+								/>
+							</>
+						)}
+					</>
+
 					<DynamicContent
 						{...getGroupAttributes(imageOptions, 'dynamicContent')}
 						onChange={obj => {

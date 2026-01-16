@@ -129,12 +129,7 @@ body.maxi-blocks--active {
 				display: flex;
 				flex-direction: column;
 				width: 100%;
-
-				// The media preview with focal point
-				.components-focal-point-picker__icon_container {
-					width: 100%;
-					margin-bottom: 8px;
-				}
+				overflow: hidden;
 			}
 		}
 
@@ -183,12 +178,28 @@ body.maxi-blocks--active {
 		.components-focal-point-picker__media {
 			width: 100%;
 			max-width: 100%;
+			overflow: hidden;
+		}
+
+		// Constrain focal point within bounds - create isolated positioning context
+		.components-focal-point-picker-wrapper {
+			position: relative !important;
+			overflow: hidden !important;
+			isolation: isolate;
+		}
+
+		.components-focal-point-picker {
+			position: relative !important;
+			isolation: isolate;
 		}
 
 		// Fix the focal point circle indicator
 		.components-focal-point-picker__icon_container {
-			width: 30px !important;
-			height: 30px !important;
+			position: absolute !important;
+			width: 24px !important;
+			height: 24px !important;
+			margin: 0 !important; // Reset WordPress negative margins
+			transform: translate(-50%, -50%) !important;
 			border-radius: 50% !important;
 			border: 2px solid #fff !important;
 			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;

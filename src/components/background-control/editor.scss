@@ -21,7 +21,7 @@ $focal-point-controls-offset: -30px;
 	border-radius: 4px;
 	background-color: $white;
 	transition: $transition;
-	
+
 	&:hover {
 		border-color: $primary !important;
 	}
@@ -39,7 +39,7 @@ body .maxi-background-control {
 		.maxi-tabs-control__button-gradient {
 			@include wordpress-input-reset;
 			color: $grey-dark;
-			
+
 			&.maxi-tabs-control__button--selected,
 			&[aria-pressed='true'] {
 				border-color: $primary;
@@ -72,8 +72,13 @@ body .maxi-background-control {
 			width: 48px;
 			transition: all 0.4s ease !important;
 
-			&:first-child { margin-right: 4px !important; }
-			&:last-child { border-right: none; margin-left: 8px !important; }
+			&:first-child {
+				margin-right: 4px !important;
+			}
+			&:last-child {
+				border-right: none;
+				margin-left: 8px !important;
+			}
 
 			&[aria-pressed='true'],
 			&:active,
@@ -90,7 +95,7 @@ body .maxi-background-control {
 			}
 		}
 	}
-	
+
 	.maxi-mediauploader-control {
 		&__image {
 			.maxi-mediauploader-control__remove {
@@ -98,7 +103,7 @@ body .maxi-background-control {
 			}
 		}
 	}
-	
+
 	.maxi-background-control__add-layer {
 		margin-top: 0 !important;
 		.maxi-base-control__field {
@@ -321,23 +326,18 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			.components-focal-point-picker {
 				order: 1;
 				@include stacking-context;
-
-				// The media preview with focal point
-				.components-focal-point-picker__icon_container {
-					width: 100%;
-					margin-bottom: 8px;
-				}
+				overflow: hidden;
 			}
 		}
 
 		// Value fields container (LEFT/TOP inputs)
-			.focal-point-picker__controls {
-				display: flex;
-				flex-direction: row;
-				gap: 8px;
-				width: 100%;
-				margin-top: 0px;
-				margin-bottom: $focal-point-controls-offset;
+		.focal-point-picker__controls {
+			display: flex;
+			flex-direction: row;
+			gap: 8px;
+			width: 100%;
+			margin-top: 0px;
+			margin-bottom: $focal-point-controls-offset;
 
 			// Each input control (Left and Top)
 			.focal-point-picker__controls-position-unit-control {
@@ -375,12 +375,28 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		.components-focal-point-picker__media {
 			width: 100%;
 			max-width: 100%;
+			overflow: hidden;
+		}
+
+		// Constrain focal point within bounds - create isolated positioning context
+		.components-focal-point-picker-wrapper {
+			position: relative !important;
+			overflow: hidden !important;
+			isolation: isolate;
+		}
+
+		.components-focal-point-picker {
+			position: relative !important;
+			isolation: isolate;
 		}
 
 		// Fix the focal point circle indicator
 		.components-focal-point-picker__icon_container {
-			width: 30px !important;
-			height: 30px !important;
+			position: absolute !important;
+			width: 24px !important;
+			height: 24px !important;
+			margin: 0 !important; // Reset WordPress negative margins
+			transform: translate(-50%, -50%) !important;
 			border-radius: 50% !important;
 			border: 2px solid $white !important;
 			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;

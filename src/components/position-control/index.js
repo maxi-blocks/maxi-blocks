@@ -107,11 +107,16 @@ const PositionControl = props => {
 	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates
 	// Now uses the explicit unit to prevent misinterpreting small pixel values
 	const normalizeCoordinate = (raw, unit) => {
-		if (raw === null || raw === undefined || Number.isNaN(parseFloat(raw))) {
+		if (
+			raw === null ||
+			raw === undefined ||
+			Number.isNaN(parseFloat(raw))
+		) {
 			return 0.5; // Default to center if invalid
 		}
 
-		let val = typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
+		const val =
+			typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
 
 		// If a specific non-percentage unit is provided, we avoid guessing.
 		// If the value happens to be 0-1, we use it; otherwise we default to 0/0.5
@@ -130,7 +135,10 @@ const PositionControl = props => {
 	// Reusable component for the position picker and advanced settings
 	const PositionPickerSection = (
 		<>
-			<div className='maxi-position-control__focal-picker'>
+			<div
+				className='maxi-position-control__focal-picker'
+				style={{ position: 'relative' }}
+			>
 				<FocalPointPicker
 					label={__('Layer placement', 'maxi-blocks')}
 					value={{
@@ -165,9 +173,8 @@ const PositionControl = props => {
 								focalPoint.y * 100
 							),
 							[`${prefix}position-top-unit-${breakpoint}`]: '%',
-							[`${prefix}position-left-${breakpoint}`]: Math.round(
-								focalPoint.x * 100
-							),
+							[`${prefix}position-left-${breakpoint}`]:
+								Math.round(focalPoint.x * 100),
 							[`${prefix}position-left-unit-${breakpoint}`]: '%',
 							[`${prefix}position-right-${breakpoint}`]: '',
 							[`${prefix}position-bottom-${breakpoint}`]: '',

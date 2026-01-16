@@ -579,7 +579,10 @@ const ImageLayer = props => {
 					{!imageOptions['dc-status'] && (
 						<>
 							{mediaID && imageUrl && (
-								<div className='maxi-focal-point-picker'>
+								<div
+									className='maxi-focal-point-picker'
+									style={{ position: 'relative' }}
+								>
 									<FocalPointPicker
 										className='maxi-background-position-picker'
 										label={__('Image focus', 'maxi-blocks')}
@@ -606,40 +609,40 @@ const ImageLayer = props => {
 									/>
 								</div>
 							)}
-								<MediaUploaderControl
-									mediaID={mediaID}
-									isImageUrl={getAttributeValue({
-										target: 'background-image-isImageUrl',
-										props: imageOptions,
-										prefix,
-									})}
-									onSelectImage={handleSelectImage}
-									showPreview={false}
-									onRemoveImage={() =>
-										onChange({
-											[getAttributeKey(
-												'background-image-mediaID',
-												isHover,
-												prefix
-											)]: '',
-											[getAttributeKey(
-												'background-image-mediaURL',
-												isHover,
-												prefix
-											)]: '',
-											[getAttributeKey(
-												'background-image-width',
-												isHover,
-												prefix
-											)]: '',
-											[getAttributeKey(
-												'background-image-height',
-												isHover,
-												prefix
-											)]: '',
-										})
-									}
-								/>
+							<MediaUploaderControl
+								mediaID={mediaID}
+								isImageUrl={getAttributeValue({
+									target: 'background-image-isImageUrl',
+									props: imageOptions,
+									prefix,
+								})}
+								onSelectImage={handleSelectImage}
+								showPreview={false}
+								onRemoveImage={() =>
+									onChange({
+										[getAttributeKey(
+											'background-image-mediaID',
+											isHover,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-mediaURL',
+											isHover,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-width',
+											isHover,
+											prefix
+										)]: '',
+										[getAttributeKey(
+											'background-image-height',
+											isHover,
+											prefix
+										)]: '',
+									})
+								}
+							/>
 							<ImageUrlUpload
 								attributes={imageOptions}
 								prefix={`${prefix}background-image-`}

@@ -375,18 +375,19 @@ body.maxi-blocks--active .components-popover__fallback-container {
 		.components-focal-point-picker__media {
 			width: 100%;
 			max-width: 100%;
-			overflow: hidden;
 		}
 
-		// Constrain focal point within bounds - create isolated positioning context
+		// Create isolated positioning context for focal point
 		.components-focal-point-picker-wrapper {
 			position: relative !important;
-			overflow: hidden !important;
 			isolation: isolate;
+			width: 95%;
+			margin: 10px auto;
 		}
 
 		.components-focal-point-picker {
 			position: relative !important;
+			overflow: visible !important;
 			isolation: isolate;
 		}
 
@@ -398,7 +399,7 @@ body.maxi-blocks--active .components-popover__fallback-container {
 			margin: 0 !important; // Reset WordPress negative margins
 			transform: translate(-50%, -50%) !important;
 			border-radius: 50% !important;
-			border: 2px solid $white !important;
+			border: 2px solid var(--maxi-primary-color) !important;
 			box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
 			background: transparent !important;
 			cursor: grab;

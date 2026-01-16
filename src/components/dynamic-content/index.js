@@ -575,13 +575,11 @@ const DynamicContent = props => {
 										) && (
 											<SelectControl
 												__nextHasNoMarginBottom
-												label={__(
-													'Order by',
-													'maxi-blocks'
-												)}
+												label={__('Order by', 'maxi-blocks')}
 												value={orderBy}
 												options={orderByOptions}
 												newStyle
+												className='maxi-context-loop-control_type'
 												onChange={value =>
 													changeProps({
 														'dc-order-by': value,
@@ -601,6 +599,7 @@ const DynamicContent = props => {
 										__nextHasNoMarginBottom
 										label={__('Order', 'maxi-blocks')}
 										value={order}
+										className='maxi-context-loop-control_type'
 										options={
 											orderOptions[
 												orderByRelations.includes(

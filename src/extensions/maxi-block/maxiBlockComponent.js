@@ -1381,11 +1381,19 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
-		const shouldGenerateNewStyles =
+		let shouldGenerateNewStyles =
 			!isBreakpointChange || this.props.deviceType === 'xxl';
+		let stylesForViewportCheck;
+
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			stylesForViewportCheck = this.getStylesObject || {};
+			if (this.hasViewportUnits(stylesForViewportCheck)) {
+				shouldGenerateNewStyles = true;
+			}
+		}
 
 		if (shouldGenerateNewStyles) {
-			obj = this.getStylesObject || {};
+			obj = stylesForViewportCheck || this.getStylesObject || {};
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1412,6 +1420,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
+			shouldGenerateNewStyles,
 			this.editorIframe
 		);
 
@@ -1525,6 +1534,34 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
+	hasViewportUnits(stylesObj) {
+		if (!stylesObj) return false;
+
+		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
+		// Requires: number (with optional sign/decimal) + viewport unit
+		// Boundaries prevent matching "overview", URLs, or identifiers
+		const viewportUnitRegex =
+			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+
+		const stack = [stylesObj];
+
+		while (stack.length) {
+			const current = stack.pop();
+
+			if (typeof current === 'string') {
+				if (viewportUnitRegex.test(current)) {
+					return true;
+				}
+			} else if (isArray(current)) {
+				stack.push(...current);
+			} else if (isObject(current)) {
+				stack.push(...Object.values(current));
+			}
+		}
+
+		return false;
+	}
+
 	injectStyles(
 		uniqueID,
 		stylesObj,
@@ -1533,6 +1570,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
@@ -1542,7 +1580,11 @@ class MaxiBlockComponent extends Component {
 		const target = this.getStyleTarget(isSiteEditor, iframe);
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+		if (
+			forceGenerate ||
+			!isBreakpointChange ||
+			currentBreakpoint === 'xxl'
+		) {
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1550,6 +1592,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
+				forceGenerate,
 				iframe,
 				isSiteEditor
 			);
@@ -1734,6 +1777,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
+		forceGenerate,
 		iframe,
 		isSiteEditor
 	) {
@@ -1761,8 +1805,10 @@ class MaxiBlockComponent extends Component {
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
 
-		if (isBlockStyleChange) {
-			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		if (isBlockStyleChange || forceGenerate) {
+			const cssCache =
+				!forceGenerate &&
+				select('maxiBlocks/styles').getCSSCache(uniqueID);
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];
@@ -1783,14 +1829,24 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 		}
 
 		if (styles) {

@@ -39,6 +39,14 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.contextLoop,
+	...attributesData.rowCarousel,
+	...attributesData.rowCarouselAlignment,
+	...attributesData.navigation,
+	...attributesData.arrowIcon,
+	...attributesData.arrowIconHover,
+	...attributesData.dotIcon,
+	...attributesData.dotIconActive,
+	...attributesData.dotIconHover,
 	...attributesData.dynamicContentLink,
 	...attributesData.transform,
 	...{

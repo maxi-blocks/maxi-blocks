@@ -34,7 +34,6 @@
 	&__input-wrapper {
 		position: relative;
 		flex: none;
-		width: 55px !important;
 
 		// Focus state (Keyboard Accessibility)
 		&:focus-within {
@@ -47,6 +46,7 @@
 		height: 36px;
 		padding: 0 5px 0 4px !important;
 		z-index: 0;
+		width: 60px;
 
 		// Browser Spinner Hides
 		&::-webkit-outer-spin-button,

@@ -44,30 +44,35 @@ const getIconWithColor = (attributes, args = {}, prefix = '') => {
 					target: `icon-${type}-palette-color`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!paletteOpacity)
 				paletteOpacity = getAttributeValue({
 					target: `icon-${type}-palette-opacity`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!paletteStatus)
 				paletteStatus = getAttributeValue({
 					target: `icon-${type}-palette-status`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!paletteSCStatus)
 				paletteSCStatus = getAttributeValue({
 					target: `icon-${type}-palette-sc-status`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 			if (!color)
 				color = getAttributeValue({
 					target: `icon-${type}-color`,
 					isHover,
 					props: attributes,
+					prefix,
 				});
 
 			lineColorStr = getColorRGBAString(

@@ -148,8 +148,11 @@ const FullSizeControl = props => {
 						breakpoint,
 						attributes: props,
 					})}
-					onChangeValue={val =>
-						onChange({ [`${prefix}width-${breakpoint}`]: val })
+					onChangeValue={(val, meta) =>
+						onChange({
+							[`${prefix}width-${breakpoint}`]: val,
+							meta,
+						})
 					}
 					onReset={() => {
 						onChange({
@@ -213,8 +216,11 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val =>
-							onChange({ [`${prefix}height-${breakpoint}`]: val })
+						onChangeValue={(val, meta) =>
+							onChange({
+								[`${prefix}height-${breakpoint}`]: val,
+								meta,
+							})
 						}
 						onReset={() => {
 							onChange({
@@ -273,10 +279,11 @@ const FullSizeControl = props => {
 									breakpoint,
 									attributes: props,
 								})}
-								onChangeValue={val =>
+								onChangeValue={(val, meta) =>
 									onChange({
 										[`${prefix}max-width-${breakpoint}`]:
 											val,
+										meta,
 									})
 								}
 								onReset={() => {
@@ -322,9 +329,10 @@ const FullSizeControl = props => {
 								breakpoint,
 								attributes: props,
 							})}
-							onChangeValue={val =>
+							onChangeValue={(val, meta) =>
 								onChange({
 									[`${prefix}min-width-${breakpoint}`]: val,
+									meta,
 								})
 							}
 							onReset={() => {
@@ -364,9 +372,10 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[`${prefix}max-height-${breakpoint}`]: val,
+								meta,
 							})
 						}
 						onReset={() => {
@@ -405,9 +414,10 @@ const FullSizeControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val =>
+						onChangeValue={(val, meta) =>
 							onChange({
 								[`${prefix}min-height-${breakpoint}`]: val,
+								meta,
 							})
 						}
 						onReset={() => {

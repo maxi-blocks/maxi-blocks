@@ -17,6 +17,7 @@ import {
 	getSiteEditorIframe,
 } from '@extensions/fse';
 import getWinBreakpoint from './getWinBreakpoint';
+import initHighlightHiddenBlocks from './highlightHiddenBlocks';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '@extensions/styles';
 import { authConnect, getMaxiCookieKey } from '@editor/auth';
@@ -74,6 +75,9 @@ wp.domReady(() => {
 
 	// Initial set of scrollbar width
 	updateScrollbarWidth();
+
+	// Initialize List View highlight for hidden Maxi blocks
+	const cleanupHighlightHiddenBlocks = initHighlightHiddenBlocks();
 
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(
@@ -263,6 +267,7 @@ wp.domReady(() => {
 			) {
 				isNewEditorContentObserver = true;
 				resizeObserver.disconnect();
+				// Do not cleanup highlight here; editor is switching templates, not tearing down
 			}
 
 			// Need to add 'maxi-blocks--active' class to the FSE iframe body
@@ -352,7 +357,14 @@ wp.domReady(() => {
 			if (blockContainer) blockMarginObserver.observe(blockContainer);
 
 			editorContentUnsubscribe();
+			// Keep highlight active during normal editor lifecycle
 		}
+	});
+
+	// Also cleanup on window unload/navigation just in case
+	window.addEventListener('beforeunload', () => {
+		if (typeof cleanupHighlightHiddenBlocks === 'function')
+			cleanupHighlightHiddenBlocks();
 	});
 
 	// authentication for maxi pro

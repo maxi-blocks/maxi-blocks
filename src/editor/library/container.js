@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useDispatch, select, useSelect } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useMemo, useState } from '@wordpress/element';
 import { CheckboxControl } from '@wordpress/components';
 
 /**
@@ -23,17 +23,6 @@ import { ContentLoader } from '@components';
 /**
  * External dependencies
  */
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter';
-import {
-	InstantSearch,
-	SearchBox,
-	connectMenu,
-	connectHierarchicalMenu,
-	connectCurrentRefinements,
-	Menu,
-	Stats,
-	Configure,
-} from 'react-instantsearch-dom';
 import classnames from 'classnames';
 import {
 	isEmpty,
@@ -417,6 +406,46 @@ const LibraryContainer = props => {
 		onInsert,
 	} = props;
 
+	const requiresSearch = !['preview', 'switch-tone'].includes(type);
+	const [instantSearchApi, setInstantSearchApi] = useState(null);
+
+	useEffect(() => {
+		if (!requiresSearch) return undefined;
+
+		let isMounted = true;
+
+		const loadSearchModules = async () => {
+			try {
+				const [typesenseModule, instantsearchModule] =
+					await Promise.all([
+						import(
+							'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter'
+						),
+						import('react-instantsearch-dom'),
+					]);
+
+				if (isMounted) {
+					setInstantSearchApi({
+						TypesenseInstantSearchAdapter: typesenseModule.default,
+						...instantsearchModule,
+					});
+				}
+			} catch (error) {
+				console.error('Failed to load search modules:', error);
+				if (isMounted) {
+					setInstantSearchApi(null);
+				}
+				return;
+			}
+		};
+
+		loadSearchModules();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [requiresSearch]);
+
 	useEffect(() => {
 		if (type === 'patterns') {
 			setTimeout(() => {
@@ -466,40 +495,50 @@ const LibraryContainer = props => {
 			updateSCOnEditor(selectedSCValue, null, [document], true);
 	}, [selectedSCKey]);
 
-	const typesenseInstantsearchAdapter = params => {
+	const searchClients = useMemo(() => {
 		const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 		const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
-		return new TypesenseInstantSearchAdapter({
-			server: {
-				apiKey, // Be sure to use an API key that only allows search operations
-				nodes: [
-					{
-						host: apiHost,
-						port: '443',
-						protocol: 'https',
-					},
-				],
-			},
-			// The following parameters are directly passed to Typesense's search API endpoint.
-			//  So you can pass any parameters supported by the search endpoint below.
-			//  query_by is required.
-			additionalSearchParameters: {
-				query_by: params,
-				sort_by: 'post_date_int:desc',
-			},
-		});
-	};
-	const searchClientPatterns = typesenseInstantsearchAdapter(
-		'post_title, post_number, category.lvl0, category.lvl1'
-	).searchClient;
+		if (!apiKey || !apiHost) {
+			console.error(
+				'Missing required environment variables: API_KEY or API_URL'
+			);
+			return null;
+		}
+		if (!instantSearchApi?.TypesenseInstantSearchAdapter) return null;
 
-	const searchClientSc = typesenseInstantsearchAdapter(
-		'post_title, sc_color'
-	).searchClient;
+		const typesenseInstantsearchAdapter = params =>
+			new instantSearchApi.TypesenseInstantSearchAdapter({
+				server: {
+					apiKey, // Be sure to use an API key that only allows search operations
+					nodes: [
+						{
+							host: apiHost,
+							port: '443',
+							protocol: 'https',
+						},
+					],
+				},
+				// The following parameters are directly passed to Typesense's search API endpoint.
+				//  So you can pass any parameters supported by the search endpoint below.
+				//  query_by is required.
+				additionalSearchParameters: {
+					query_by: params,
+					sort_by: 'post_date_int:desc',
+				},
+			});
 
-	const searchClientSvg = typesenseInstantsearchAdapter(
-		'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
-	).searchClient;
+		return {
+			searchClientPatterns: typesenseInstantsearchAdapter(
+				'post_title, post_number, category.lvl0, category.lvl1'
+			).searchClient,
+			searchClientSc: typesenseInstantsearchAdapter(
+				'post_title, sc_color'
+			).searchClient,
+			searchClientSvg: typesenseInstantsearchAdapter(
+				'post_title, svg_tag.lvl0, svg_tag.lvl1, svg_tag.lvl2, svg_category'
+			).searchClient,
+		};
+	}, [instantSearchApi]);
 
 	// Get swap option from cookie
 	const getCookieSwapOption = () => {
@@ -1218,12 +1257,6 @@ const LibraryContainer = props => {
 		);
 	};
 
-	const CustomMenuSelect = connectMenu(MenuSelect);
-	const CustomMenuSC = connectMenu(MenuSC);
-	const CustomSvgMenuSelect = connectMenu(SvgMenuSelect);
-	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
-	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-
 	useInterval(masonryGenerator, 100);
 
 	const maxiPreviewIframe = (url, title) => {
@@ -1266,6 +1299,59 @@ const LibraryContainer = props => {
 	};
 
 	if (isInserting)
+		return (
+			<div className='maxi-cloud-container'>
+				<LoadingContent />
+			</div>
+		);
+
+	const { InstantSearch, SearchBox, Menu, Stats, Configure } =
+		instantSearchApi || {};
+
+	const {
+		CustomMenuSelect,
+		CustomMenuSC,
+		CustomSvgMenuSelect,
+		CustomHierarchicalMenu,
+		CustomClearRefinements,
+	} = useMemo(() => {
+		if (!instantSearchApi) {
+			return {
+				CustomMenuSelect: null,
+				CustomMenuSC: null,
+				CustomSvgMenuSelect: null,
+				CustomHierarchicalMenu: null,
+				CustomClearRefinements: null,
+			};
+		}
+		const {
+			connectMenu,
+			connectHierarchicalMenu,
+			connectCurrentRefinements,
+		} = instantSearchApi || {};
+
+		return {
+			CustomMenuSelect: connectMenu ? connectMenu(MenuSelect) : null,
+			CustomMenuSC: connectMenu ? connectMenu(MenuSC) : null,
+			CustomSvgMenuSelect: connectMenu
+				? connectMenu(SvgMenuSelect)
+				: null,
+			CustomHierarchicalMenu: connectHierarchicalMenu
+				? connectHierarchicalMenu(HierarchicalMenu)
+				: null,
+			CustomClearRefinements: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinements)
+				: null,
+		};
+	}, [instantSearchApi]);
+
+	const {
+		searchClientPatterns,
+		searchClientSc,
+		searchClientSvg,
+	} = searchClients || {};
+
+	if (requiresSearch && (!instantSearchApi || !searchClients))
 		return (
 			<div className='maxi-cloud-container'>
 				<LoadingContent />

@@ -16,17 +16,7 @@ import MaxiImportPopUp from './maxiImportPopUp';
 /**
  * External dependencies
  */
-import React from 'react';
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js';
-import {
-	InstantSearch,
-	SearchBox,
-	connectMenu,
-	connectHierarchicalMenu,
-	connectCurrentRefinements,
-	Stats,
-	Configure,
-} from 'react-instantsearch-dom';
+import React, { useEffect, useMemo, useState } from 'react';
 import classnames from 'classnames';
 import { isEmpty, unescape } from 'lodash';
 import { arrowIcon } from '../icons';
@@ -55,6 +45,21 @@ const resultsCount = {
 		);
 	},
 };
+
+const LoadingContent = () => (
+	<div
+		className='maxi-cloud-container__content-loading'
+		style={{
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			height: '100%',
+			width: '100%',
+		}}
+	>
+		<span>{__('Loading…', 'maxi-blocks')}</span>
+	</div>
+);
 
 /**
  * Navigation/Header Area
@@ -221,55 +226,6 @@ const ClearRefinementsHidden = ({ items, refine }) => (
 		</button>
 	</div>
 );
-
-// Connect components to InstantSearch functionality
-const CustomMenuSelect = connectMenu(MenuSelect);
-const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
-const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
-const CustomClearRefinementsHidden = connectCurrentRefinements(
-	ClearRefinementsHidden
-);
-
-/**
- * Configure Typesense search adapter
- * @param {string} params - Search parameters
- */
-const typesenseInstantsearchAdapter = params => {
-	return new TypesenseInstantSearchAdapter({
-		server: {
-			apiKey,
-			nodes: [
-				{
-					host: apiHost,
-					port: '443',
-					protocol: 'https',
-				},
-			],
-		},
-		additionalSearchParameters: {
-			query_by: params,
-			sort_by: 'post_date_int:desc',
-		},
-	});
-};
-
-// Initialize search client for starter sites
-const searchClientStarterSites = (() => {
-	try {
-		if (!apiKey || !apiHost) {
-			console.error(
-				'Missing required environment variables: API_KEY or API_URL'
-			);
-			return null;
-		}
-		return typesenseInstantsearchAdapter(
-			'post_title, starter_sites_category, cost'
-		).searchClient;
-	} catch (error) {
-		console.error('Typesense initialization error:', error);
-		return null;
-	}
-})();
 
 /**
  * Main Preview Area
@@ -551,8 +507,116 @@ const LibraryContainer = props => {
 		description,
 	} = props;
 
+	const requiresSearch = type === 'starter-sites';
+	const [instantSearchApi, setInstantSearchApi] = useState(null);
+
+	useEffect(() => {
+		if (!requiresSearch) return undefined;
+
+		let isMounted = true;
+
+		const loadSearchModules = async () => {
+			try {
+				const [typesenseModule, instantsearchModule] =
+					await Promise.all([
+						import(
+							'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js'
+						),
+						import('react-instantsearch-dom'),
+					]);
+
+				if (isMounted) {
+					setInstantSearchApi({
+						TypesenseInstantSearchAdapter: typesenseModule.default,
+						...instantsearchModule,
+					});
+				}
+			} catch (error) {
+				console.error('Failed to load search modules:', error);
+				if (isMounted) {
+					setInstantSearchApi(null);
+				}
+				return;
+			}
+		};
+
+		loadSearchModules();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [requiresSearch]);
+
+	const searchClientStarterSites = useMemo(() => {
+		if (!instantSearchApi?.TypesenseInstantSearchAdapter) return null;
+		if (!apiKey || !apiHost) {
+			console.error(
+				'Missing required environment variables: API_KEY or API_URL'
+			);
+			return null;
+		}
+
+		return new instantSearchApi.TypesenseInstantSearchAdapter({
+			server: {
+				apiKey,
+				nodes: [
+					{
+						host: apiHost,
+						port: '443',
+						protocol: 'https',
+					},
+				],
+			},
+			additionalSearchParameters: {
+				query_by: 'post_title, starter_sites_category, cost',
+				sort_by: 'post_date_int:desc',
+			},
+		}).searchClient;
+	}, [instantSearchApi]);
+
+	const { InstantSearch, SearchBox, Stats, Configure } =
+		instantSearchApi || {};
+
+	const {
+		CustomMenuSelect,
+		CustomHierarchicalMenu,
+		CustomClearRefinements,
+		CustomClearRefinementsHidden,
+	} = useMemo(() => {
+		if (!instantSearchApi) {
+			return {
+				CustomMenuSelect: null,
+				CustomHierarchicalMenu: null,
+				CustomClearRefinements: null,
+				CustomClearRefinementsHidden: null,
+			};
+		}
+		const { connectMenu, connectHierarchicalMenu, connectCurrentRefinements } =
+			instantSearchApi;
+
+		return {
+			CustomMenuSelect: connectMenu ? connectMenu(MenuSelect) : null,
+			CustomHierarchicalMenu: connectHierarchicalMenu
+				? connectHierarchicalMenu(HierarchicalMenu)
+				: null,
+			CustomClearRefinements: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinements)
+				: null,
+			CustomClearRefinementsHidden: connectCurrentRefinements
+				? connectCurrentRefinements(ClearRefinementsHidden)
+				: null,
+		};
+	}, [instantSearchApi]);
+
 	// Periodically run masonry layout generator
 	useInterval(masonryGenerator, 100);
+
+	if (requiresSearch && (!instantSearchApi || !searchClientStarterSites))
+		return (
+			<div className='maxi-cloud-container'>
+				<LoadingContent />
+			</div>
+		);
 
 	return (
 		<div className='maxi-cloud-container'>

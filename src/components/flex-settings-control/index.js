@@ -119,10 +119,11 @@ const FlexSettingsControl = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChange({
 											[`${prefix}order-${breakpoint}`]:
 												val,
+											meta,
 										});
 									}}
 									min={0}
@@ -145,10 +146,11 @@ const FlexSettingsControl = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChange({
 											[`${prefix}flex-grow-${breakpoint}`]:
 												val,
+											meta,
 										});
 									}}
 									min={0}
@@ -171,10 +173,11 @@ const FlexSettingsControl = props => {
 										breakpoint,
 										attributes: props,
 									})}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChange({
 											[`${prefix}flex-shrink-${breakpoint}`]:
 												val,
+											meta,
 										});
 									}}
 									min={0}
@@ -257,10 +260,11 @@ const FlexSettingsControl = props => {
 											breakpoint,
 											attributes: props,
 										})}
-										onChangeValue={val => {
+										onChangeValue={(val, meta) => {
 											onChange({
 												[`${prefix}flex-basis-${breakpoint}`]:
 													toString(val),
+												meta,
 											});
 										}}
 										minMaxSettings={{

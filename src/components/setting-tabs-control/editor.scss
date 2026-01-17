@@ -40,7 +40,7 @@
 				transition: all 0.5s ease;
 
 				&[aria-pressed='true'] {
-					border-bottom: 1.5px solid var(--maxi-black) !important;
+					border-bottom: 1.5px solid var(--maxi-black);
 					background-color: var(--maxi-whisper-green);
 				}
 			}

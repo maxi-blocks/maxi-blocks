@@ -1094,3 +1094,22 @@ body.maxi-blocks--active {
 		}
 	}
 }
+
+/*******************************
+* Disable WordPress block move animations
+*******************************/
+.block-editor-block-list__block {
+	// Disable default WordPress move animations
+	transition: none !important;
+	transform: none !important;
+	animation: none !important;
+
+	// Ensure no transition on any state
+	&.is-moving,
+	&[data-is-moving],
+	&.is-dragging {
+		transition: none !important;
+		transform: none !important;
+		animation: none !important;
+	}
+}

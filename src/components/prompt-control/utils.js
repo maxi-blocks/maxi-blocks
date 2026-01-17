@@ -14,13 +14,34 @@ import { CONTENT_TYPE_EXAMPLES } from './constants';
 /**
  * External dependencies
  */
-import { ChatOpenAI } from '@langchain/openai';
-import {
-	ChatPromptTemplate,
-	HumanMessagePromptTemplate,
-	SystemMessagePromptTemplate,
-} from '@langchain/core/prompts';
 import { isEmpty } from 'lodash';
+
+const loadLangChainModules = (() => {
+	let cachedModulesPromise;
+
+	return async () => {
+		if (!cachedModulesPromise) {
+			cachedModulesPromise = Promise.all([
+				import('@langchain/openai'),
+				import('@langchain/core/prompts'),
+			])
+				.then(([openAI, prompts]) => ({
+					ChatOpenAI: openAI.ChatOpenAI,
+					ChatPromptTemplate: prompts.ChatPromptTemplate,
+					HumanMessagePromptTemplate:
+						prompts.HumanMessagePromptTemplate,
+					SystemMessagePromptTemplate:
+						prompts.SystemMessagePromptTemplate,
+				}))
+				.catch(error => {
+					cachedModulesPromise = null;
+					throw error;
+				});
+		}
+
+		return cachedModulesPromise;
+	};
+})();
 
 export const getSiteInformation = AISettings => {
 	const AISettingsKeysToLabels = {
@@ -108,6 +129,12 @@ ${humanMessageTemplate}`,
 	}
 
 	// Original OpenAI format
+	const {
+		ChatPromptTemplate,
+		HumanMessagePromptTemplate,
+		SystemMessagePromptTemplate,
+	} = await loadLangChainModules();
+
 	const systemMessagePrompt = SystemMessagePromptTemplate.fromTemplate(
 		`${directGeneratorInstruction}${systemMessageTemplate}`
 	);
@@ -134,7 +161,12 @@ export const getUniqueId = results =>
 		  ) + 1
 		: 1;
 
-export const createChat = (openAIApiKey, modelName, additionalParams) => {
+export const createChat = async (
+	openAIApiKey,
+	modelName,
+	additionalParams
+) => {
+	const { ChatOpenAI } = await loadLangChainModules();
 	const config = {
 		openAIApiKey,
 		modelName,

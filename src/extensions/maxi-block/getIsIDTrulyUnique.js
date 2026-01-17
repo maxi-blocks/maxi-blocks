@@ -18,24 +18,20 @@ import goThroughMaxiBlocks from './goThroughMaxiBlocks';
  * @returns {boolean}          - True if ID is unique (appears <= repeatCount times)
  */
 const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
-	if (!id.endsWith('-u')) return false;
+	if (typeof id !== 'string' || !id.endsWith('-u')) return false;
 
-	const { isUniqueIDCacheLoaded, isUniqueIDInCache, getLastInsertedBlocks } =
-		select('maxiBlocks/blocks');
+	const {
+		isUniqueIDCacheLoaded,
+		isUniqueIDInCache,
+		getLastInsertedBlocks,
+		getUniqueIDCount,
+	} = select('maxiBlocks/blocks');
 
 	// If cache is loaded, use O(1) lookup for site-wide check
 	if (isUniqueIDCacheLoaded()) {
 		const existsInDB = isUniqueIDInCache(id);
 
-		// Count occurrences in current editor by traversing the actual block tree
-		// Note: Redux store is keyed by uniqueID, so can't detect duplicates there
-		let currentEditorCount = 0;
-		goThroughMaxiBlocks(block => {
-			const { uniqueID } = block.attributes;
-			if (uniqueID === id) {
-				currentEditorCount += 1;
-			}
-		});
+		const currentEditorCount = Number(getUniqueIDCount?.(id) ?? 0);
 
 		// Check if ID exists in DB but not in current editor
 		// This could mean:
@@ -68,7 +64,13 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		const { uniqueID } = block.attributes;
 		if (uniqueID === id) {
 			currentRepeatCount += 1;
+
+			if (currentRepeatCount > repeatCount) {
+				return true;
+			}
 		}
+
+		return false;
 	});
 
 	if (currentRepeatCount > repeatCount) {

@@ -9,14 +9,13 @@ import { Button } from '@wordpress/components';
  */
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
-import useInterval from './useInterval';
 import InfiniteHits from './InfiniteHits';
 import MaxiImportPopUp from './maxiImportPopUp';
 
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter/src/TypesenseInstantsearchAdapter.js';
 import {
 	InstantSearch,
@@ -551,8 +550,16 @@ const LibraryContainer = props => {
 		description,
 	} = props;
 
-	// Periodically run masonry layout generator
-	useInterval(masonryGenerator, 100);
+	useEffect(() => {
+		masonryGenerator('starter-sites');
+	}, [
+		masonryGenerator,
+		type,
+		isImport,
+		templates?.length,
+		pages?.length,
+		patterns?.length,
+	]);
 
 	return (
 		<div className='maxi-cloud-container'>

@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import { useState, useContext } from '@wordpress/element';
+import { useState, useContext, Fragment } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -64,16 +64,17 @@ const LinkOptions = props => {
 
 	const [linkStatus, setLinkStatus] = useState('normal_link');
 
-	const handleReset = () => {
+	const handleReset = (state = '') => {
+		const statePrefix = state ? `${state}-` : '';
 		onChangeFormat(
 			{
-				[`${prefix}link-color`]: undefined,
-				[`${prefix}link-palette-color`]: undefined,
-				[`${prefix}link-palette-status`]: undefined,
-				[`${prefix}link-palette-sc-status`]: undefined,
-				[`${prefix}link-palette-opacity`]: undefined,
+				[`${prefix}link-${statePrefix}color`]: undefined,
+				[`${prefix}link-${statePrefix}palette-color`]: undefined,
+				[`${prefix}link-${statePrefix}palette-status`]: undefined,
+				[`${prefix}link-${statePrefix}palette-sc-status`]: undefined,
+				[`${prefix}link-${statePrefix}palette-opacity`]: undefined,
 			},
-			undefined,
+			{ isReset: true },
 			true
 		);
 	};
@@ -209,7 +210,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('hover'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
@@ -257,7 +258,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('active'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
@@ -305,7 +306,7 @@ const LinkOptions = props => {
 						)
 					}
 					{...(isListItem && {
-						onReset: handleReset,
+						onReset: () => handleReset('visited'),
 					})}
 					textLevel={textLevel}
 					deviceType={breakpoint}
@@ -338,6 +339,7 @@ const TypographyControl = props => {
 		isStyleCards = false,
 		disablePalette = false,
 		disableFontFamily = false,
+		disableResponsiveTabs = false,
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
@@ -624,7 +626,12 @@ const TypographyControl = props => {
 
 	const onChangeFormat = (
 		value,
-		{ forceDisableCustomFormats = false, tag = '', isReset = false } = {},
+		{
+			forceDisableCustomFormats = false,
+			tag = '',
+			isReset = false,
+			meta,
+		} = {},
 		disableFilter = false
 	) => {
 		if (forceIndividualChanges) {
@@ -634,7 +641,7 @@ const TypographyControl = props => {
 				return acc;
 			}, {});
 
-			onChange({ ...obj, isReset });
+			onChange({ ...obj, isReset, meta });
 			return;
 		}
 
@@ -673,9 +680,9 @@ const TypographyControl = props => {
 		}
 
 		if (!isReset) {
-			onChange(filteredObj, getInlineTarget(tag));
+			onChange({ ...filteredObj, meta }, getInlineTarget(tag));
 		} else {
-			onChange({ ...obj, isReset: true }, getInlineTarget(tag));
+			onChange({ ...obj, meta, isReset: true }, getInlineTarget(tag));
 		}
 	};
 
@@ -689,8 +696,11 @@ const TypographyControl = props => {
 		return getIsValid(value, true) ? value : 1;
 	};
 
+	const Wrapper = disableResponsiveTabs ? Fragment : ResponsiveTabsControl;
+	const wrapperProps = disableResponsiveTabs ? {} : { breakpoint };
+
 	return (
-		<ResponsiveTabsControl breakpoint={breakpoint}>
+		<Wrapper {...wrapperProps}>
 			<div className={classes}>
 				{/* When linkOnly is enabled, render only LinkOptions */}
 				{linkOnly && allowLink && (
@@ -1280,7 +1290,7 @@ const TypographyControl = props => {
 														[`${prefix}palette-opacity`]:
 															undefined,
 													},
-													undefined,
+													{ isReset: true },
 													true
 												);
 											},
@@ -1295,7 +1305,6 @@ const TypographyControl = props => {
 								disablePalette={disablePalette}
 							/>
 						)}
-
 						{!disableFontFamily &&
 							!disableColor &&
 							!isStyleCards &&
@@ -1965,7 +1974,7 @@ const TypographyControl = props => {
 					</>
 				)}
 			</div>
-		</ResponsiveTabsControl>
+		</Wrapper>
 	);
 };
 

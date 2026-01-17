@@ -136,3 +136,13 @@ body.maxi-blocks--active .maxi-block--use-sc .entry-content:has(.maxi-block) {
 		background: var(--maxi-grey-light) !important;
 	}
 }
+.block-editor-list-view-leaf.is-selected td {
+	background: var(--maxi-mid-green) !important;
+}
+.block-editor-list-view-leaf.is-selected .block-editor-list-view-block-contents,
+.block-editor-list-view-leaf.is-selected .components-button.has-icon {
+	color: var(--maxi-primary-color) !important;
+}
+.block-editor-list-view-leaf .block-editor-list-view-block-select-button:hover {
+	color: var(--maxi-primary-color) !important;
+}

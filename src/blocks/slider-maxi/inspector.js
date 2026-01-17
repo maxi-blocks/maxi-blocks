@@ -171,6 +171,7 @@ const Inspector = props => {
 									}),
 									...inspectorTabs.blockBackground({
 										props,
+										isIB: props.isIB,
 									}),
 									...inspectorTabs.border({
 										props,

@@ -27,6 +27,7 @@ const BlockBackgroundControl = props => {
 		isIB = false,
 		prefix = '',
 		clientId,
+		blockAttributes,
 		breakpoint = 'general',
 		disableImage = false,
 		disableVideo = false,
@@ -72,6 +73,7 @@ const BlockBackgroundControl = props => {
 				isHover={isHover}
 				isIB={isIB}
 				prefix={prefix}
+				blockAttributes={blockAttributes}
 				disableImage={disableImage}
 				disableVideo={disableVideo}
 				disableGradient={disableGradient}

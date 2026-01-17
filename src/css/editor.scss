@@ -214,7 +214,7 @@ body {
 body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 	input[type='text'],
 	input[type='number'],
-	textarea,
+	textarea:not(.maxi-css-code-editor__textarea),
 	select {
 		border-color: var(--maxi-accessibility-grey);
 
@@ -255,7 +255,7 @@ body .maxi-popover,
 body .toolbar-item__popover {
 	input[type='text'],
 	input[type='number'],
-	textarea:not(.w-tc-editor-text),
+	textarea:not(.w-tc-editor-text):not(.maxi-css-code-editor__textarea),
 	select {
 		transition: all 0.5s ease;
 		flex: 1;
@@ -339,7 +339,7 @@ body.rtl .toolbar-item__popover {
 body .toolbar-item__popover {
 	input[type='text'],
 	input[type='number'],
-	textarea,
+	textarea:not(.maxi-css-code-editor__textarea),
 	select {
 		border-color: var(--maxi-grey);
 	}

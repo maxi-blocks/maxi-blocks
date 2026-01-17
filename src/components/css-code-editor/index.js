@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useRef } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -16,7 +16,6 @@ import Button from '@components/button';
 import cssValidator from 'w3c-css-validator';
 import { isEmpty } from 'lodash';
 import classnames from 'classnames';
-import CodeEditor from '@uiw/react-textarea-code-editor';
 
 /**
  * Styles
@@ -33,6 +32,8 @@ const CssCodeEditor = ({
 	cssClassIndex,
 }) => {
 	const errorRef = useRef(null);
+	const textareaRef = useRef(null);
+	const typingTimeoutRef = useRef(null);
 
 	const validateCSSCode = async code => {
 		let responseFinal = '';
@@ -87,7 +88,19 @@ const CssCodeEditor = ({
 		}
 	}
 
-	let typingTimeout = null;
+	useEffect(() => {
+		if (textareaRef.current && textareaRef.current.value !== value) {
+			textareaRef.current.value = value ?? '';
+		}
+	}, [value]);
+
+	useEffect(() => {
+		return () => {
+			if (typingTimeoutRef.current) {
+				clearTimeout(typingTimeoutRef.current);
+			}
+		};
+	}, []);
 
 	const id = `maxi-css-code-editor__error-text${
 		cssClassIndex ? `--${cssClassIndex}` : ''
@@ -106,36 +119,35 @@ const CssCodeEditor = ({
 				<Button
 					aria-label={__('Validate', 'maxi-blocks')}
 					className={`maxi-css-code-editor__validate-button maxi-css-code-editor__validate-button--${cssClassIndex}`}
-					onClick={el => {
-						validateCss(
-							el?.target?.nextSibling?.getElementsByTagName(
-								'textarea'
-							)?.[0]?.value
-						);
+					onClick={() => {
+						validateCss(textareaRef.current?.value);
 					}}
 				>
 					{__('Validate', 'maxi-blocks')}
 				</Button>
 			)}
-			<CodeEditor
-				language='css'
+			<textarea
+				ref={textareaRef}
 				className={classnames(
-					'maxi-css-code-editor__code-editor',
+					'maxi-css-code-editor__textarea',
 					cssClassIndex &&
-						`maxi-css-code-editor__code-editor--${cssClassIndex}`
+						`maxi-css-code-editor__textarea--${cssClassIndex}`
 				)}
-				value={value}
-				onChange={textarea => {
-					if (typingTimeout) clearTimeout(typingTimeout);
-					typingTimeout = setTimeout(
-						() => onChange(textarea?.target?.value),
-						200
-					);
+				defaultValue={value}
+				onChange={event => {
+					const nextValue = event?.target?.value;
+					if (typingTimeoutRef.current) {
+						clearTimeout(typingTimeoutRef.current);
+					}
+					typingTimeoutRef.current = setTimeout(() => {
+						onChange(nextValue);
+					}, 200);
 				}}
-				onBlur={textarea => {
-					validateCss(textarea?.target?.value);
+				onBlur={event => {
+					validateCss(event?.target?.value);
 				}}
 				disabled={disabled}
+				rows={8}
 			/>
 			{!disabled && (
 				<div

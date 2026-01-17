@@ -12,12 +12,12 @@ import AccordionItem from './AccordionItem';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
-} from '@extensions/indicators';
+} from '../../extensions/indicators';
 
 /**
  * External dependencies
  */
-import { lowerCase, isEmpty } from 'lodash';
+import { lowerCase, isEmpty, isEqual } from 'lodash';
 import classnames from 'classnames';
 
 const Accordion = props => {
@@ -72,23 +72,18 @@ const Accordion = props => {
 						select('core/block-editor');
 
 					const block = getBlock(getSelectedBlockClientId());
-
 					const { show_indicators: showIndicators } =
-						(typeof window !== 'undefined' &&
-							window.maxiSettings) ||
-						{};
+						select('maxiBlocks')?.receiveMaxiSettings?.() ?? {};
 
-					if (
-						showIndicators &&
-						block &&
-						block.name.includes('maxi-blocks')
-					) {
+					if (showIndicators && block && block.name.includes('maxi-blocks')) {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
 						isActiveTab = !item.indicatorProps.every(prop =>
-							Array.isArray(attributes[prop])
-								? isEmpty(attributes[prop])
-								: attributes[prop] === defaultAttributes[prop]
+							attributes?.[prop] == null
+								? true
+								: Array.isArray(attributes[prop])
+									? isEmpty(attributes[prop])
+									: isEqual(attributes[prop], defaultAttributes?.[prop])
 						);
 					}
 				}
@@ -125,10 +120,8 @@ const Accordion = props => {
 
 				const classesItemPanel = classnames(
 					'maxi-accordion-control__item__panel',
-					disablePadding || item.disablePadding
-						? 'maxi-accordion-control__item__panel--disable-padding'
-						: '',
-					item.classNamePanel
+					(disablePadding || item.disablePadding) &&
+						'maxi-accordion-control__item__panel--disable-padding'
 				);
 
 				const accordionUid =

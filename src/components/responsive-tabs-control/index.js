@@ -30,6 +30,7 @@ const ResponsiveTabsControl = props => {
 		children,
 		breakpoint: rawBreakpoint,
 		disableCallback = false,
+		disableNotifications = false,
 		target,
 	} = props;
 	const { baseBreakpoint, breakpoint: storeBreakpoint } = useSelect(
@@ -62,6 +63,8 @@ const ResponsiveTabsControl = props => {
 	};
 
 	const showNotification = customBreakpoint => {
+		if (disableNotifications) return false;
+
 		return baseBreakpoint === customBreakpoint.toLowerCase();
 	};
 

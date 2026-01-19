@@ -28,6 +28,7 @@ import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import {
 	getIsOverflowHidden,
 	getLastBreakpointAttribute,
+	viewportUnitsProcessor,
 } from '@extensions/styles';
 import {
 	shouldSetPreserveAspectRatio,
@@ -73,6 +74,8 @@ class edit extends MaxiBlockComponent {
 		const { updateBlockAttributes } = dispatch('core/block-editor');
 		const svgCode = this.props.attributes.content;
 		const blockId = this.props.attributes.uniqueID;
+		const currentBreakpoint = this.props.deviceType || 'general';
+		const baseBreakpoint = this.props.baseBreakpoint;
 
 		if (svgCode) {
 			const svgInsideIds = uniq(
@@ -115,19 +118,27 @@ class edit extends MaxiBlockComponent {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
 				target: 'svg-width',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: currentBreakpoint,
 				attributes: this.props.attributes,
 			});
 			const svgWidthUnit = getLastBreakpointAttribute({
 				target: 'svg-width-unit',
-				breakpoint: this.props.deviceType || 'general',
+				breakpoint: currentBreakpoint,
 				attributes: this.props.attributes,
 			});
 			const fullWidthValue = `${svgWidth}${svgWidthUnit}`;
+			const { width: processedWidth } = viewportUnitsProcessor(
+				{ width: fullWidthValue },
+				currentBreakpoint,
+				baseBreakpoint
+			);
 
-			if (this.resizableObject.current.state.width !== fullWidthValue) {
+			if (
+				processedWidth &&
+				this.resizableObject.current.state.width !== processedWidth
+			) {
 				this.resizableObject.current.updateSize({
-					width: fullWidthValue,
+					width: processedWidth,
 				});
 
 				let newContent = svgCode
@@ -143,6 +154,15 @@ class edit extends MaxiBlockComponent {
 					this.props.maxiSetAttributes({
 						content: newContent,
 					});
+			}
+
+			const resizableElement = this.resizableObject.current.resizable;
+			if (
+				processedWidth &&
+				resizableElement &&
+				resizableElement.style.width !== processedWidth
+			) {
+				resizableElement.style.width = processedWidth;
 			}
 		}
 	}
@@ -206,6 +226,7 @@ class edit extends MaxiBlockComponent {
 			breakpoint: deviceType,
 			attributes,
 		});
+		const baseBreakpoint = this.props.baseBreakpoint;
 
 		const handleOnResizeStop = (event, direction, elt) => {
 			// Return SVG element its CSS width
@@ -324,15 +345,21 @@ class edit extends MaxiBlockComponent {
 							lockAspectRatio
 							deviceType={deviceType}
 							defaultSize={{
-								width: `${getLastBreakpointAttribute({
-									target: 'svg-width',
-									breakpoint: deviceType || 'general',
-									attributes,
-								})}${getLastBreakpointAttribute({
-									target: 'svg-width-unit',
-									breakpoint: deviceType || 'general',
-									attributes,
-								})}`,
+								width: viewportUnitsProcessor(
+									{
+										width: `${getLastBreakpointAttribute({
+											target: 'svg-width',
+											breakpoint: deviceType || 'general',
+											attributes,
+										})}${getLastBreakpointAttribute({
+											target: 'svg-width-unit',
+											breakpoint: deviceType || 'general',
+											attributes,
+										})}`,
+									},
+									deviceType || 'general',
+									baseBreakpoint
+								).width,
 							}}
 							showHandle={isSelected}
 							enable={{

@@ -108,7 +108,11 @@ const styleGenerator = (
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
 
-	const styles = viewportUnitsProcessor(rawStyles, currentBreakpoint); // replacing viewport units only for the editor
+	const styles = viewportUnitsProcessor(
+		rawStyles,
+		currentBreakpoint,
+		baseBreakpoint
+	); // replacing viewport units only for the editor
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {

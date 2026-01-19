@@ -15,14 +15,14 @@ jobs:
               uses: actions/cache@v4
               with:
                   # npm cache files are stored in `~/.npm` on Linux/macOS
-                  # to clear the cache, change `v1.3` for any other random number, github will destroy
+                  # to clear the cache, change `v1.4` for any other random number, github will destroy
                   # the old cache within 7 days 👌
                   # Note: don't change the `actions/setup-node@v1` or any other dependency version by error
                   path: ~/.npm
-                  key: ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-build-v1.4-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.os }}-build-v1.3-${{ env.cache-name }}-
-                      ${{ runner.os }}-build-v1.3-
+                      ${{ runner.os }}-build-v1.4-${{ env.cache-name }}-
+                      ${{ runner.os }}-build-v1.4-
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules

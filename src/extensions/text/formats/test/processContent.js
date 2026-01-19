@@ -1,4 +1,4 @@
-import processContent from '../processContent';
+import processContent from '@extensions/text/formats/processContent';
 
 describe('processContent', () => {
 	let onChange;

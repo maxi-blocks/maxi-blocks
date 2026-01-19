@@ -1,5 +1,5 @@
-import getHasNativeFormat from '../getHasNativeFormat';
-import onChangeRichText from '../onChangeRichText';
+import getHasNativeFormat from '@extensions/text/formats/getHasNativeFormat';
+import onChangeRichText from '@extensions/text/formats/onChangeRichText';
 
 jest.mock('@extensions/text/formats/getHasNativeFormat', () =>
 	jest.fn(() => true)

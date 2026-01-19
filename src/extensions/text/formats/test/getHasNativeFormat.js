@@ -1,4 +1,4 @@
-import getHasNativeFormat from '../getHasNativeFormat';
+import getHasNativeFormat from '@extensions/text/formats/getHasNativeFormat';
 
 describe('getHasNativeFormat', () => {
 	it('Returns true when format contains core type within range', () => {

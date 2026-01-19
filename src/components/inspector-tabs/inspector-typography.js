@@ -7,11 +7,11 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import SettingTabsControl from '../setting-tabs-control';
-import TypographyControl from '../typography-control';
-import ToggleSwitch from '../toggle-switch';
-import { getGroupAttributes } from '../../extensions/styles';
-import ManageHoverTransitions from '../manage-hover-transitions';
+import SettingTabsControl from '@components/setting-tabs-control';
+import TypographyControl from '@components/typography-control';
+import ToggleSwitch from '@components/toggle-switch';
+import { getGroupAttributes } from '@extensions/styles';
+import ManageHoverTransitions from '@components/manage-hover-transitions';
 
 /**
  * Component

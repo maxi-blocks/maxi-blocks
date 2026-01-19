@@ -12,7 +12,7 @@ import AccordionItem from './AccordionItem';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
+} from '@extensions/indicators';
 
 /**
  * External dependencies
@@ -75,15 +75,22 @@ const Accordion = props => {
 					const { show_indicators: showIndicators } =
 						select('maxiBlocks')?.receiveMaxiSettings?.() ?? {};
 
-					if (showIndicators && block && block.name.includes('maxi-blocks')) {
+					if (
+						showIndicators &&
+						block &&
+						block.name.includes('maxi-blocks')
+					) {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
 						isActiveTab = !item.indicatorProps.every(prop =>
 							attributes?.[prop] == null
 								? true
 								: Array.isArray(attributes[prop])
-									? isEmpty(attributes[prop])
-									: isEqual(attributes[prop], defaultAttributes?.[prop])
+								? isEmpty(attributes[prop])
+								: isEqual(
+										attributes[prop],
+										defaultAttributes?.[prop]
+								  )
 						);
 					}
 				}

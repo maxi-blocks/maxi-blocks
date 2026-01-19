@@ -8,13 +8,13 @@ import { Tooltip } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import BaseControl from '../base-control';
-import Button from '../button';
-import { getForcedTabFromPath } from '../../extensions/inspector';
+import BaseControl from '@components/base-control';
+import Button from '@components/button';
+import { getForcedTabFromPath } from '@extensions/inspector';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
-} from '../../extensions/indicators';
+} from '@extensions/indicators';
 
 /**
  * External dependencies

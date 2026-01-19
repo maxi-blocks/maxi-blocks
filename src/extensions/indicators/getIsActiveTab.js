@@ -4,7 +4,7 @@
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray } from 'lodash';
-import { getGroupAttributes } from '../styles';
+import { getGroupAttributes } from '@extensions/styles';
 
 const getIsActiveTab = (
 	attributes,

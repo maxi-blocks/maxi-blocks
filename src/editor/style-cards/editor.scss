@@ -67,7 +67,7 @@ $breakpoints: (
 	background-color: $white;
 	cursor: pointer;
 	transition: $transition-fast;
-	
+
 	&:hover {
 		background: $white;
 		border-color: var(--maxi-grey);
@@ -203,9 +203,10 @@ $breakpoints: (
 }
 
 .maxi-style-cards__sc-custom-name {
-	padding: 0 8px;
+	padding: 0;
 	h3 {
 		margin: 0 0 5px 0;
+		font-size: 15px;
 
 		b {
 			font-weight: 700;
@@ -663,17 +664,18 @@ body .maxi-style-cards__popover {
 
 			button {
 				flex: 2;
-				margin-right: 8px;
+				margin-right: 5px;
 				justify-content: center;
-				border: 1.5px solid var(--maxi-grey-light);
+				border: 1px solid var(--maxi-grey-light);
 				border-radius: 20px;
 				transition: 0.1s;
 			}
 			input[type='text'] {
 				height: 36px !important;
-				margin-right: 8px;
-				flex: 7;
-				border-radius: 15px !important;
+				margin-right: 5px;
+				flex: 10;
+				border-radius: 5px !important;
+				width: 100%;
 			}
 		}
 	}
@@ -949,11 +951,11 @@ html[dir='rtl'] {
 
 	.maxi-tabs-content {
 		padding: 0;
-		
+
 		.maxi-tab-content__box {
 			padding: 0;
 			border: none;
-			
+
 			&:after {
 				display: none;
 			}

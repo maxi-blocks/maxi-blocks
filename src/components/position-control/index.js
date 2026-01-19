@@ -118,11 +118,10 @@ const PositionControl = props => {
 		const val =
 			typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
 
-		// If a specific non-percentage unit is provided, we avoid guessing.
-		// If the value happens to be 0-1, we use it; otherwise we default to 0/0.5
+		// If a specific non-percentage unit is provided, we cannot meaningfully
+		// convert to a 0-1 coordinate, so default to center
 		if (unit && unit !== '%') {
-			if (val >= 0 && val <= 1) return val;
-			return 0.5; // Default to center if unit is px/em/vw and value > 1
+			return 0.5;
 		}
 
 		// If the unit is percentage-based or undefined, apply percentage logic

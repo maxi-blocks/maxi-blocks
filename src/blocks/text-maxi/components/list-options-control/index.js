@@ -55,11 +55,11 @@ const ListOptionsControl = props => {
 		(listStyleCustom?.includes('<svg ') && 'icon') ||
 		'text';
 	const [listStyleSource, setListStyleSource] = useState(
-		defaultListStyleSource
+		() => defaultListStyleSource
 	);
-	const [listStyleCustoms, setListStyleCustoms] = useState({
-		[listStyleSource]: listStyleCustom,
-	});
+	const [listStyleCustoms, setListStyleCustoms] = useState(() => ({
+		[defaultListStyleSource]: listStyleCustom,
+	}));
 
 	const getListStyleOptions = type => {
 		return {

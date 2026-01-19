@@ -214,7 +214,14 @@ const NumberCounter = attributes => {
 				});
 			}
 		}
-	}, [count, replayStatus, preview, endCountValue]);
+	}, [
+		count,
+		replayStatus,
+		preview,
+		endCountValue,
+		frameDuration,
+		startCountValue,
+	]);
 
 	useEffect(() => {
 		if ((startCountValue < endCountValue && preview) || replayStatus) {
@@ -224,14 +231,7 @@ const NumberCounter = attributes => {
 				setReplayStatus(false);
 			}
 		}
-	}, [
-		startCountValue,
-		replayStatus,
-		endCountValue,
-		countDuration,
-		radius,
-		stroke,
-	]);
+	}, [startCountValue, replayStatus, endCountValue, preview, count]);
 
 	const getResizerSize = () => {
 		return {

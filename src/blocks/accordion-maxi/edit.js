@@ -54,15 +54,15 @@ class edit extends MaxiBlockComponent {
 			return;
 		}
 
-		this.setState({ openPanes: [...this.state.openPanes, paneId] });
+		this.setState(prevState => ({
+			openPanes: [...prevState.openPanes, paneId],
+		}));
 	}
 
 	closePane(paneId) {
-		this.setState({
-			openPanes: [
-				...this.state.openPanes.filter(pane => pane !== paneId),
-			],
-		});
+		this.setState(prevState => ({
+			openPanes: prevState.openPanes.filter(pane => pane !== paneId),
+		}));
 	}
 
 	maxiBlockDidUpdate() {

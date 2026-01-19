@@ -202,18 +202,32 @@ const ColorControl = props => {
 			if (showPalette)
 				onChange({
 					paletteStatus: defaultColorAttr.paletteStatus,
-					paletteSCStatus: defaultColorAttr.paletteSCStatus,
 					paletteColor: defaultColorAttr.paletteColor,
-					paletteOpacity: defaultColorAttr.paletteOpacity,
-					color: defaultColorAttr.color,
+					paletteOpacity: paletteOpacity || 1,
+					color,
 				});
 			else {
+				let defaultColor;
+
+				if (typeof paletteColor === 'number' && paletteColor >= 1000) {
+					const customIndex = paletteColor - 1000;
+					defaultColor =
+						customColors?.[customIndex]?.value ||
+						color ||
+						'rgba(0, 0, 0, 1)';
+				} else {
+					defaultColor = `rgba(${getPaletteColor({
+						clientId,
+						color: paletteColor,
+						blockStyle,
+					})},${paletteOpacity || 1})`;
+				}
+
 				onChange({
-					paletteStatus: defaultColorAttr.paletteStatus,
-					paletteSCStatus: defaultColorAttr.paletteSCStatus,
-					paletteColor: defaultColorAttr.paletteColor,
-					paletteOpacity: defaultColorAttr.paletteOpacity,
-					color: defaultColorAttr.color,
+					paletteStatus,
+					paletteColor,
+					paletteOpacity,
+					color: defaultColor,
 					isReset: true,
 				});
 			}

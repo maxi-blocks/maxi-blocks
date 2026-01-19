@@ -17,8 +17,26 @@ import {
 /**
  * External dependencies
  */
-import { lowerCase, isEmpty, isEqual } from 'lodash';
+import { lowerCase, isEmpty, isEqual, isPlainObject } from 'lodash';
 import classnames from 'classnames';
+
+/**
+ * Checks if a value is considered "cleared" (inactive) for indicator purposes.
+ * Matches the cleared-value logic used by getIsActiveTab.
+ *
+ * @param {*} value        - The current attribute value
+ * @param {*} defaultValue - The default attribute value
+ * @return {boolean} True if the value is cleared/inactive
+ */
+const isClearedValue = (value, defaultValue) => {
+	if (value == null) return true; // null or undefined
+	if (value === false) return true;
+	if (value === '') return true;
+	if (value === 'none' || value === 'unset') return true;
+	if (Array.isArray(value) && value.length === 0) return true;
+	if (isPlainObject(value) && isEmpty(value)) return true;
+	return isEqual(value, defaultValue);
+};
 
 const Accordion = props => {
 	const {
@@ -83,14 +101,10 @@ const Accordion = props => {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
 						isActiveTab = !item.indicatorProps.every(prop =>
-							attributes?.[prop] == null
-								? true
-								: Array.isArray(attributes[prop])
-								? isEmpty(attributes[prop])
-								: isEqual(
-										attributes[prop],
-										defaultAttributes?.[prop]
-								  )
+							isClearedValue(
+								attributes?.[prop],
+								defaultAttributes?.[prop]
+							)
 						);
 					}
 				}

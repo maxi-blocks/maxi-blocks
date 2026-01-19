@@ -231,7 +231,7 @@ const NumberCounter = attributes => {
 				setReplayStatus(false);
 			}
 		}
-	}, [startCountValue, replayStatus, endCountValue, preview, count]);
+	}, [startCountValue, replayStatus, endCountValue, preview]);
 
 	const getResizerSize = () => {
 		return {

@@ -14,6 +14,30 @@ import {
 	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
+/**
+ * Helper to expand advanced position options if not already visible
+ */
+const expandAdvancedPositionOptions = async page => {
+	const positionControl = await page.$('.maxi-position-control');
+	if (!positionControl) return;
+
+	// Check if AxisControl is already visible
+	const axisControlVisible = await positionControl.$(
+		'.maxi-position-control__advanced-options .maxi-axis-control'
+	);
+
+	// Only click toggle if AxisControl is not visible
+	if (!axisControlVisible) {
+		const advancedToggle = await positionControl.$(
+			'.maxi-position-control__advanced-toggle button'
+		);
+		if (advancedToggle) {
+			await advancedToggle.click();
+			await page.waitForTimeout(200);
+		}
+	}
+};
+
 describe('CopyPaste from Toolbar', () => {
 	it('Should copy and paste bulk styles', async () => {
 		await createNewPost();
@@ -35,10 +59,16 @@ describe('CopyPaste from Toolbar', () => {
 			'.maxi-position-control .maxi-base-control__field select'
 		);
 		await selectPosition.select('relative');
+		await page.waitForTimeout(300);
+
+		// Expand advanced options to access AxisControl
+		await expandAdvancedPositionOptions(page);
 
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: await page.$(
+				'.maxi-position-control .maxi-position-control__advanced-options .maxi-axis-control'
+			),
 			syncOption: 'all',
 			values: '56',
 			unit: '%',

@@ -4,6 +4,7 @@
 	border: 2px solid transparent;
 	border-radius: 4px;
 	pointer-events: none;
+	z-index: 2;
 	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
 	&.is-selected {

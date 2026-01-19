@@ -1,8 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { subscribe } from '@wordpress/data';
-import { createRoot, render, useState } from '@wordpress/element';
+import { createRoot, render, useState, useEffect } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -14,10 +13,18 @@ const ROOT_ID = 'maxi-blocks__ai-chat-root';
 const AIChatWrapper = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
-	// Expose toggle function globally for toolbar button
-	window.maxiToggleAIChat = () => setIsOpen(prev => !prev);
-	window.maxiOpenAIChat = () => setIsOpen(true);
-	window.maxiCloseAIChat = () => setIsOpen(false);
+	// Expose toggle functions globally for toolbar button (assigned once via useEffect)
+	useEffect(() => {
+		window.maxiToggleAIChat = () => setIsOpen(prev => !prev);
+		window.maxiOpenAIChat = () => setIsOpen(true);
+		window.maxiCloseAIChat = () => setIsOpen(false);
+
+		return () => {
+			delete window.maxiToggleAIChat;
+			delete window.maxiOpenAIChat;
+			delete window.maxiCloseAIChat;
+		};
+	}, []);
 
 	return <AIChatPanel isOpen={isOpen} onClose={() => setIsOpen(false)} />;
 };

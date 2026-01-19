@@ -13,6 +13,7 @@ import './editor.scss';
 import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCards';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
+import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
@@ -2828,7 +2829,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				body: JSON.stringify({
 					messages: [
 						{ role: 'system', content: SYSTEM_PROMPT },
-						{ role: 'system', content: 'Context: ' + context },
+						{ role: 'system', content: 'Context: ' + context + (selectedBlock ? '\n\nBlock Skills: ' + getSkillContextForBlock(selectedBlock.name) : '') },
 						...messages.filter(m => m.role !== 'assistant' || !m.executed).slice(-6).map(m => ({ 
 							role: m.role === 'assistant' ? 'assistant' : 'user', 
 							content: m.content 

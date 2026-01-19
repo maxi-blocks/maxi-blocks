@@ -39,7 +39,8 @@ const MaxiStyleCardsEditorPopUp = forwardRef((props, settingsRef) => {
 		const headingButton = headingAccordion.querySelector(
 			'.maxi-accordion-control__item__button'
 		);
-		if (headingButton) {
+		// Only click if accordion is closed (aria-expanded not true)
+		if (headingButton && headingButton.getAttribute('aria-expanded') !== 'true') {
 			headingButton.click();
 		}
 

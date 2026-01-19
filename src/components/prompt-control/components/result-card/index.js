@@ -22,6 +22,7 @@ import {
 	CONTENT_LIMIT,
 	MODIFICATION_MODIFICATORS,
 } from '@components/prompt-control/constants';
+import { parseClarifyPayload } from '@components/prompt-control/utils';
 
 
 /**
@@ -67,27 +68,6 @@ const ResultCard = ({
 	const endOfContentRef = useRef();
 
 	const [copySuccess, setCopySuccess] = useState(false);
-	const parseClarifyPayload = content => {
-		if (!content || typeof content !== 'string') return null;
-		const trimmed = content.trim();
-		if (!trimmed.startsWith('{') || !trimmed.endsWith('}')) return null;
-
-		try {
-			const parsed = JSON.parse(trimmed);
-			if (
-				parsed &&
-				parsed.action === 'CLARIFY' &&
-				Array.isArray(parsed.options)
-			) {
-				return parsed;
-			}
-		} catch (error) {
-			return null;
-		}
-
-		return null;
-	};
-
 	const clarifyPayload = parseClarifyPayload(result.content);
 
 	const limitContent = (content, limit = CONTENT_LIMIT) => {

@@ -143,7 +143,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 				links={[
 					{
 						title: __(
-							'Integrations > OpenAI API key',
+							'Maxi AI Settings',
 							'maxi-blocks'
 						),
 						href: getMaxiAdminSettingsUrl('maxi_blocks_maxi_ai'),

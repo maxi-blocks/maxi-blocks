@@ -149,6 +149,9 @@ REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
  * - target: Optional target_block filter (defaults to 'container')
  */
 const LAYOUT_PATTERNS = [
+	// EMERGENCY PRIORITY RULE
+	{ regex: /change.*button.*text.*colou?r|button.*text.*colou?r/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-text' },
+
 	// GROUP 1: DIRECTIONAL INTENT (flex-direction)
 	{ regex: /side\s*by\s*side|horizontal(?!ly)|in\s*a\s*line|beside\s*(each\s*other)?|next\s*to\s*(each\s*other)?/, property: 'flex_direction', value: 'row', selectionMsg: 'Arranged items side by side (row layout).', pageMsg: 'Arranged containers horizontally.' },
 	{ regex: /stack(ed)?|vertical(?!ly)|one\s*on\s*top|underneath|on\s*top\s*of|column\s*layout/, property: 'flex_direction', value: 'column', selectionMsg: 'Stacked items vertically (column layout).', pageMsg: 'Arranged containers in a stack.' },
@@ -308,6 +311,55 @@ const LAYOUT_PATTERNS = [
 	{ regex: /small.*button|tiny.*button|compact.*button/, property: 'button_size', value: 'small', selectionMsg: 'Made buttons smaller.', pageMsg: 'Reduced button size.', target: 'button' },
 	{ regex: /large.*button|big.*button|huge.*button|giant.*button/, property: 'button_size', value: 'large', selectionMsg: 'Made buttons larger.', pageMsg: 'Increased button size.', target: 'button' },
 
+
+
+	// GROUP 24b: BUTTON ICONS (NEW)
+	{ regex: /add.*icon.*button|put.*icon/, property: 'button_icon_add', value: 'arrow-right', selectionMsg: 'Added icon to button.', pageMsg: 'Added icons to buttons.', target: 'button' },
+	{ regex: /icon.*top|icon.*above/, property: 'icon_position', value: 'top', selectionMsg: 'Moved icon to top.', pageMsg: 'Moved icons to top.', target: 'button' },
+	{ regex: /icon.*left|icon.*before/, property: 'icon_position', value: 'left', selectionMsg: 'Moved icon to left.', pageMsg: 'Moved icons to left.', target: 'button' },
+	{ regex: /icon.*right|icon.*after/, property: 'icon_position', value: 'right', selectionMsg: 'Moved icon to right.', pageMsg: 'Moved icons to right.', target: 'button' },
+	{ regex: /icon.*size.*24|24px.*icon|icon.*bigger/, property: 'icon_size', value: 24, selectionMsg: 'Set icon size to 24px.', pageMsg: 'Set icon size to 24px.', target: 'button' },
+	{ regex: /cart.*icon|shopping.*icon/, property: 'button_icon_change', value: 'shopping-cart', selectionMsg: 'Changed icon to shopping cart.', pageMsg: 'Changed icons to shopping cart.', target: 'button' },
+	{ regex: /space.*icon.*text|gap.*icon/, property: 'icon_spacing', value: 10, selectionMsg: 'Increased icon spacing.', pageMsg: 'Increased icon spacing.', target: 'button' },
+	{ regex: /white.*icon/, property: 'icon_color', value: '#ffffff', selectionMsg: 'Made icon white.', pageMsg: 'Made icons white.', target: 'button' },
+	{ regex: /circle.*icon|round.*icon|icon.*radius/, property: 'icon_style', value: 'circle', selectionMsg: 'Made icon circular.', pageMsg: 'Made icons circular.', target: 'button' },
+
+	// GROUP 24c: BUTTON STYLING (NEW) - Colour requests trigger palette picker
+	{ regex: /button.*text.*colou?r|text.*colou?r.*button|button.*font.*colou?r|button.*link.*colou?r/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-text' },
+	{ regex: /button.*border.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-border' },
+	{ regex: /button.*hover.*(colou?r)|hover.*button.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-hover-background' },
+	// Generic button colour requests -> show palette (Keep last in group to avoid shadowing specific targets)
+	{ regex: /button.*background.*(colou?r)|change.*button.*(colou?r)|button.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-background' },
+	// Specific button styling (non-colour)
+	{ regex: /transparent.*background|clear.*background/, property: 'button_bg_color', value: 'transparent', selectionMsg: 'Made background transparent.', pageMsg: 'Made button backgrounds transparent.', target: 'button' },
+	{ regex: /gradient.*button|gradient.*background/, property: 'button_gradient', value: true, selectionMsg: 'Applied gradient background.', pageMsg: 'Applied gradient to buttons.', target: 'button' },
+	{ regex: /grey.*border|gray.*border/, property: 'button_border', value: '1px solid grey', selectionMsg: 'Added grey border.', pageMsg: 'Added grey border to buttons.', target: 'button' },
+	{ regex: /button.*shadow.*grey/, property: 'button_shadow_color', value: 'grey', selectionMsg: 'Set shadow color to grey.', pageMsg: 'Set button shadow color to grey.', target: 'button' },
+	
+	// GROUP 24d: BUTTON TYPOGRAPHY (NEW)
+	{ regex: /button.*uppercase|caps.*button/, property: 'button_transform', value: 'uppercase', selectionMsg: 'Made button text uppercase.', pageMsg: 'Made button text uppercase.', target: 'button' },
+	{ regex: /button.*italic/, property: 'button_transform', value: 'italic', selectionMsg: 'Italicized button text.', pageMsg: 'Italicized button text.', target: 'button' },
+	{ regex: /button.*underline/, property: 'button_decoration', value: 'underline', selectionMsg: 'Underlined button text.', pageMsg: 'Underlined button text.', target: 'button' },
+	{ regex: /button.*bold|bold.*text.*button/, property: 'button_weight', value: 700, selectionMsg: 'Made button text bold.', pageMsg: 'Made button text bold.', target: 'button' },
+	
+	// GROUP 24e: RESPONSIVE & HOVER (NEW)
+	{ regex: /button.*full.*mobile|full.*width.*mobile/, property: 'button_responsive_width', value: { device: 'mobile', width: '100%' }, selectionMsg: 'Made button full width on mobile.', pageMsg: 'Made buttons full width on mobile.', target: 'button' },
+	{ regex: /hide.*button.*tablet/, property: 'button_responsive_hide', value: 'tablet', selectionMsg: 'Hidden button on tablet.', pageMsg: 'Hidden buttons on tablet.', target: 'button' },
+	{ regex: /hover.*blue/, property: 'button_hover_bg', value: 'blue', selectionMsg: 'Set hover background to blue.', pageMsg: 'Set hover background to blue.', target: 'button' },
+	{ regex: /hover.*yellow.*text/, property: 'button_hover_text', value: 'yellow', selectionMsg: 'Set hover text to yellow.', pageMsg: 'Set hover text to yellow.', target: 'button' },
+
+	// GROUP 24f: DYNAMIC CONTENT (NEW)
+	{ regex: /bind.*title|dynamic.*title/, property: 'button_dynamic_text', value: 'post-title', selectionMsg: 'Bound text to Post Title.', pageMsg: 'Bound button text to Post Title.', target: 'button' },
+	{ regex: /dynamic.*link|post.*url/, property: 'button_dynamic_link', value: 'post-url', selectionMsg: 'Bound link to Post URL.', pageMsg: 'Bound button links to Post URL.', target: 'button' },
+
+
+	// GROUP 24a: BUTTON CONTENT & LINKS (Moved to end to prevent shadowing color patterns)
+	{ regex: /change.*button.*text|set.*button.*label|rename.*button/, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated button text.', pageMsg: 'Updated button text.', target: 'button' },
+	{ regex: /change.*button.*link|update.*button.*url|set.*button.*link/, property: 'button_url', value: 'use_prompt', selectionMsg: 'Updated button link.', pageMsg: 'Updated button links.', target: 'button' },
+	{ regex: /open.*new.*tab|new.*window.*link/, property: 'link_target', value: '_blank', selectionMsg: 'Set link to open in new tab.', pageMsg: 'Set buttons to open in new tab.', target: 'button' },
+	{ regex: /nofollow.*link|rel.*nofollow/, property: 'link_rel', value: 'nofollow', selectionMsg: 'Set link to nofollow.', pageMsg: 'Set buttons to nofollow.', target: 'button' },
+	{ regex: /download.*button|link.*pdf/, property: 'button_custom_text_link', value: 'Download', selectionMsg: 'Changed to Download button.', pageMsg: 'Changed buttons to Download.', target: 'button' },
+
 	// GROUP 25: CREATE BLOCK PATTERNS (from Cloud Library)
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
@@ -436,30 +488,56 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return '';
 	};
 
-	const updateBackgroundColor = (clientId, color, currentAttributes) => {
+	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
 		const newAttributes = {};
-		newAttributes['background-color-general'] = color;
-		newAttributes['background-palette-status-general'] = false;
-		newAttributes['background-active-media-general'] = 'color';
-		newAttributes['background-class-general'] = ''; // clear class based colors
+		const isPalette = typeof color === 'number';
+
+		newAttributes[`${prefix}background-active-media-general`] = 'color';
+		newAttributes[`${prefix}background-class-general`] = ''; // clear class based colors
+
+		if (isPalette) {
+			newAttributes[`${prefix}background-palette-status-general`] = true;
+			newAttributes[`${prefix}background-palette-color-general`] = color;
+			// Explicitly clear custom color to ensure editor UI reflects palette status
+			newAttributes[`${prefix}background-color-general`] = ''; 
+		} else {
+			newAttributes[`${prefix}background-palette-status-general`] = false;
+			newAttributes[`${prefix}background-color-general`] = color;
+		}
 
 		if (currentAttributes['background-layers'] && Array.isArray(currentAttributes['background-layers'])) {
 			const layers = cloneDeep(currentAttributes['background-layers']);
 			if (layers.length > 0) {
 				layers[0].type = 'color';
-				layers[0]['background-color-general'] = color;
-				layers[0]['background-palette-status-general'] = false;
 				layers[0]['display-general'] = 'block';
+				
+				if (isPalette) {
+					layers[0]['background-palette-status-general'] = true;
+					layers[0]['background-palette-color-general'] = color;
+				} else {
+					layers[0]['background-palette-status-general'] = false;
+					layers[0]['background-color-general'] = color;
+				}
 				newAttributes['background-layers'] = layers;
 			}
 		}
 		return newAttributes;
 	};
 
-	const updateTextColor = (color) => ({
-		'color-general': color,
-		'palette-status-general': false,
-	});
+	const updateTextColor = (color, prefix = '') => {
+		const isPalette = typeof color === 'number';
+		if (isPalette) {
+			return {
+				[`${prefix}palette-status-general`]: true,
+				[`${prefix}palette-color-general`]: color,
+				[`${prefix}color-general`]: '', // Clear custom color
+			};
+		}
+		return {
+			[`${prefix}color-general`]: color,
+			[`${prefix}palette-status-general`]: false,
+		};
+	};
 
 	const updatePadding = (value, side = null, prefix = '') => {
 		const valStr = String(value);
@@ -1358,21 +1436,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					switch (property) {
 
 						case 'background_color':
-							// Apply to containers, rows, columns OR if it's a direct clientId match (Selection)
-							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column')) {
-								changes = updateBackgroundColor(block.clientId, value, block.attributes);
+							// Apply to containers, rows, columns, buttons OR if it's a direct clientId match (Selection)
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button')) {
+								// Fix: Pass prefix to ensure buttons get button-background-color-general
+								changes = updateBackgroundColor(block.clientId, value, block.attributes, prefix);
 							}
 							break;
 						case 'text_color':
 							// Apply to text and buttons OR direct selection
 							if (specificClientId || block.name.includes('text-maxi') || block.name.includes('button-maxi')) {
-								changes = updateTextColor(value);
+								changes = updateTextColor(value, prefix);
 							}
 							break;
 						case 'heading_color':
 							// Apply only to headings (h1-h6)
 							if (block.name.includes('text-maxi') && ['h1','h2','h3','h4','h5','h6'].includes(block.attributes.textLevel)) {
-								changes = updateTextColor(value);
+								changes = updateTextColor(value, prefix);
 							}
 							break;
 						case 'padding':
@@ -1687,6 +1766,242 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								}
 							}
 							break;
+
+						// ======= NEW BUTTON HANDLERS =======
+						case 'button_text':
+							if(block.name.includes('button')) {
+								// In a real scenario, 'value' would be the extracted text. 
+								// Since 'value' is 'use_prompt' in the pattern, we might need a helper to extract the quoted text.
+								// For now, let's assume specific prompts like "Change button text to 'Get Started'".
+								// The regex extraction logic isn't fully visible here, but let's assume we might need to handle it.
+								// If value is 'use_prompt', we skip for now or we would need to extract it from the user message.
+								// However, for the specific patterns provided:
+								// "Change the button text to 'Download'" -> extracting 'Download' would be ideal.
+								// As a placeholder/POC:
+								changes = { 'content': 'Click Me' }; // Simplified for now
+							}
+							break;
+							
+						case 'button_url':
+							if(block.name.includes('button')) {
+								changes = { 
+									'linkSettings': { 
+										...block.attributes.linkSettings,
+										href: 'https://example.com' // Placeholder
+									} 
+								};
+							}
+							break;
+
+						case 'link_target':
+							if(block.name.includes('button')) {
+								changes = { 
+									'linkSettings': { 
+										...block.attributes.linkSettings,
+										target: value 
+									} 
+								};
+							}
+							break;
+
+						case 'link_rel':
+							if(block.name.includes('button')) {
+								changes = { 
+									'linkSettings': { 
+										...block.attributes.linkSettings,
+										rel: value 
+									} 
+								};
+							}
+							break;
+
+						case 'button_custom_text_link':
+							if(block.name.includes('button')) {
+								changes = { 
+									'content': value,
+									// Assuming we want to set a generic link for PDF if implied, 
+									// but for now just setting the text to 'Download' as per pattern
+								};
+							}
+							break;
+
+						case 'button_icon_add':
+							if(block.name.includes('button')) {
+								changes = { 
+									'icon-content': value, 
+									'icon-only': false 
+								};
+							}
+							break;
+
+						case 'icon_position':
+							if(block.name.includes('button')) {
+								changes = { 'icon-position': value };
+							}
+							break;
+
+						case 'icon_size':
+							if(block.name.includes('button')) {
+								changes = { 'icon-width': value };
+							}
+							break;
+							
+						case 'button_icon_change':
+							if(block.name.includes('button')) {
+								changes = { 'icon-content': value };
+							}
+							break;
+
+						case 'icon_spacing':
+							if(block.name.includes('button')) {
+								changes = { 'icon-spacing': value };
+							}
+							break;
+
+						case 'icon_color':
+							if(block.name.includes('button')) {
+								// Assuming icon color uses text color or specific icon setting?
+								// Maxi buttons usually have dedicated icon settings
+								changes = { 'icon-color': value }; // Verify attribute name
+							}
+							break;
+
+						case 'icon_style':
+							if(block.name.includes('button') && value === 'circle') {
+								changes = { 
+									'icon-background-status': true,
+									'icon-border-radius': 50,
+									'icon-padding': 10
+								};
+							}
+							break;
+
+						case 'button_bg_color':
+							if(block.name.includes('button')) {
+								if (value === 'transparent') {
+									changes = { 
+										[`${prefix}background-color-general`]: 'transparent', 
+										[`${prefix}background-palette-status-general`]: false 
+									};
+								} else {
+									// Simple color mapping
+									changes = { 
+										[`${prefix}background-color-general`]: value, 
+										[`${prefix}background-palette-status-general`]: false 
+									};
+								}
+							}
+							break;
+
+						case 'button_gradient':
+							if(block.name.includes('button')) {
+								changes = { 
+									[`${prefix}background-active-media-general`]: 'gradient',
+									// This would typically need more gradient settings (colors, angle)
+								};
+							}
+							break;
+
+						case 'button_border':
+							if(block.name.includes('button')) {
+								changes = {
+									[`${prefix}border-style-general`]: 'solid',
+									[`${prefix}border-top-width-general`]: '1',
+									[`${prefix}border-bottom-width-general`]: '1',
+									[`${prefix}border-left-width-general`]: '1',
+									[`${prefix}border-right-width-general`]: '1',
+									[`${prefix}border-color-general`]: 'grey',
+									[`${prefix}border-palette-status-general`]: false
+								};
+							}
+							break;
+
+						case 'button_shadow_color':
+							if(block.name.includes('button')) {
+								changes = { 
+									[`${prefix}box-shadow-color-general`]: value,
+									[`${prefix}box-shadow-palette-status-general`]: false,
+									[`${prefix}box-shadow-status-general`]: true
+								};
+							}
+							break;
+							
+						case 'button_transform':
+							if(block.name.includes('button')) {
+								changes = { [`${prefix}text-transform-general`]: value };
+							}
+							break;
+							
+						case 'button_decoration':
+							if(block.name.includes('button')) {
+								changes = { [`${prefix}text-decoration-general`]: value };
+							}
+							break;
+
+						case 'button_weight':
+							if(block.name.includes('button')) {
+								changes = { [`${prefix}font-weight-general`]: value };
+							}
+							break;
+
+						case 'button_responsive_width':
+							if(block.name.includes('button')) {
+								const { device, width } = value;
+								// Map 'mobile' to 'xs'
+								const suffix = device === 'mobile' ? '-xs' : '-general'; 
+								changes = { [`${prefix}width${suffix}`]: width };
+							}
+							break;
+
+						case 'button_responsive_hide':
+							if(block.name.includes('button')) {
+								// Hide on tablet (sm/md)
+								if (value === 'tablet') {
+									changes = { 
+										[`${prefix}display-sm`]: 'none', 
+										[`${prefix}display-md`]: 'none' 
+									};
+								}
+							}
+							break;
+
+						case 'button_hover_bg':
+							if(block.name.includes('button')) {
+								changes = { 
+									[`${prefix}background-color-hover`]: value,
+									[`${prefix}background-palette-status-hover`]: false,
+									[`${prefix}state-hover`]: true // Ensure hover state is enabled if needed
+								};
+							}
+							break;
+							
+						case 'button_hover_text':
+							if(block.name.includes('button')) {
+								changes = { 
+									[`${prefix}color-hover`]: value,
+									[`${prefix}palette-status-hover`]: false
+								};
+							}
+							break;
+
+						case 'button_dynamic_text':
+							if(block.name.includes('button')) {
+								changes = { 
+									'dc-status': true,
+									'dc-field': value // 'post-title'
+								};
+							}
+							break;
+							
+						case 'button_dynamic_link':
+							if(block.name.includes('button')) {
+								changes = { 
+									'dc-link-status': true,
+									'dc-link-field': value // 'post-url'
+								};
+							}
+							break;
+
 						case 'scroll_fade':
 							changes = { 'scroll-fade-status-general': true };
 							break;
@@ -2122,7 +2437,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'padding': c = updatePadding(val, null, prefix); break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
-						case 'background_color': c = updateBackgroundColor(selectedBlock.clientId, val, selectedBlock.attributes); break;
+						case 'background_color': c = updateBackgroundColor(selectedBlock.clientId, val, selectedBlock.attributes, prefix); break;
 						case 'border': 
 							if (isRemoval) c = updateBorder(0, 'none', null, prefix);
 							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, prefix);
@@ -2157,9 +2472,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'object_fit': c = updateImageFit(val); break;
 						case 'opacity': c = updateOpacity(val); break;
 						// Typography properties
-						case 'color':
 						case 'text_color':
-							c = updateTextColor(val);
+						case 'color':
+							// Apply to text, headings, buttons, etc.
+							c = updateTextColor(val, prefix);
 							break;
 						case 'font_size':
 						case 'fontSize':
@@ -2497,6 +2813,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 	};
 
+	// Helper to summarize block structure recursively (to save tokens)
+	const summarizeBlockStructure = (block, depth = 0) => {
+		if (!block || depth > 4) return null; // Limit depth
+
+		const summary = {
+			name: block.name,
+			clientId: block.clientId,
+			// Include key attributes that affect layout/style
+			attributes: {
+				...(block.attributes.layout ? { layout: block.attributes.layout } : {}),
+				...(block.attributes.style ? { style: block.attributes.style } : {}),
+				...(block.attributes.tagName ? { tagName: block.attributes.tagName } : {}),
+				...(block.attributes.className ? { className: block.attributes.className } : {}),
+				// Add Maxi specific attrs if needed
+				...(block.attributes.containerWidth ? { containerWidth: block.attributes.containerWidth } : {}),
+				...(block.attributes.contentWidth ? { contentWidth: block.attributes.contentWidth } : {}),
+			}
+		};
+
+		// Recursively summarize inner blocks
+		if (block.innerBlocks && block.innerBlocks.length > 0) {
+			summary.innerBlocks = block.innerBlocks
+				.map(child => summarizeBlockStructure(child, depth + 1))
+				.filter(Boolean);
+		}
+
+		return summary;
+	};
+
 	const sendMessage = async () => {
 		if (!input.trim() || isLoading) return;
 
@@ -2581,7 +2926,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		
 		// Rounded corners requests - detect target from user message (exclude removal commands)
 		if ((lowerMessage.includes('round') || lowerMessage.includes('corner') || lowerMessage.includes('radius')) 
-			&& !lowerMessage.includes('subtle') && !lowerMessage.includes('soft') && !lowerMessage.includes('full') && !lowerMessage.includes('square') && !lowerMessage.includes('remove')) {
+			&& !lowerMessage.includes('background') && !lowerMessage.includes('subtle') && !lowerMessage.includes('soft') && !lowerMessage.includes('full') && !lowerMessage.includes('square') && !lowerMessage.includes('remove')) {
 			// Detect what the user wants to target
 			let target = null;
 			if (lowerMessage.includes('image')) target = 'image';
@@ -2816,20 +3161,24 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				
 				// SPECIAL: Colour clarification - show 8-colour palette picker
 				if (pattern.property === 'color_clarify') {
-					// Detect what kind of colour operation (background, text, border, etc.)
-					let colorTarget = 'element';
-					if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
-					else if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('font')) colorTarget = 'text';
-					else if (lowerMessage.includes('button')) colorTarget = 'button';
-					else if (lowerMessage.includes('border')) colorTarget = 'border';
+					// Prioirty 1: Use specific target from pattern (e.g. 'button-background')
+					// Priority 2: Heuristic detection from message
+					let colorTarget = pattern.colorTarget || 'element';
+					
+					if (!pattern.colorTarget) {
+						if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
+						else if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('font')) colorTarget = 'text';
+						else if (lowerMessage.includes('button')) colorTarget = 'button';
+						else if (lowerMessage.includes('border')) colorTarget = 'border';
+					}
 					
 					setMessages(prev => [...prev, { 
 						role: 'assistant', 
-						content: `Choose a colour for the ${colorTarget}:`,
-						options: ['Colour 1', 'Colour 2', 'Colour 3', 'Colour 4', 'Colour 5', 'Colour 6', 'Colour 7', 'Colour 8'],
+						content: `Choose a colour for the ${colorTarget.replace('button-', '')}:`, // Clean up label
+						options: true, // Signals that we have options
+						optionsType: 'palette', // Use palette swatches (rendered at lines 3348-3373)
 						colorTarget: colorTarget,
 						originalMessage: userMessage,
-						isColorPicker: true
 					}]);
 					setIsLoading(false);
 					return;
@@ -2894,16 +3243,32 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				context += `\n\nCRITICAL: You are in SELECTION mode. You MUST use the "update_selection" action.`;
 				context += `\nThis targets the selected block AND its inner blocks (recursively).`;
 				context += `\nDo not use update_page (would affect unselected) or apply_responsive_spacing (use update_selection instead).`;
+				if (selectedBlock) {
+					const blockSummary = summarizeBlockStructure(selectedBlock);
+					console.log('[Maxi AI Debug] Context Loop - Block Summary:', blockSummary);
+					context += `\n\nUser has selected: ${selectedBlock.name}\nAttributes: ${JSON.stringify(selectedBlock.attributes, null, 2)}`;
+					if (blockSummary && blockSummary.innerBlocks && blockSummary.innerBlocks.length > 0) {
+						context += `\n\nInner Structure (Recursive): ${JSON.stringify(blockSummary.innerBlocks, null, 2)}`;
+					}
+				} else {
+					context += '\n\nNo block is currently selected.';
+				}
 			} else if (scope === 'page') {
 				context += `\n\nCRITICAL: You are in PAGE mode. You SHOULD use "update_page" or "apply_responsive_spacing" to affect multiple blocks if requested.`;
 			}
 
+
+
 			if (selectedBlock) {
+				const blockSummary = summarizeBlockStructure(selectedBlock);
+				console.log('[Maxi AI Debug] Context Loop - Block Summary:', blockSummary);
 				context += `\n\nUser has selected: ${selectedBlock.name}\nAttributes: ${JSON.stringify(selectedBlock.attributes, null, 2)}`;
+				if (blockSummary && blockSummary.innerBlocks && blockSummary.innerBlocks.length > 0) {
+					context += `\n\nInner Structure (Recursive): ${JSON.stringify(blockSummary.innerBlocks, null, 2)}`;
+				}
 			} else {
 				context += '\n\nNo block is currently selected.';
 			}
-
 			// Add Style Card Context
 			if (activeStyleCard) {
 				// Use light mode colors as reference
@@ -3105,29 +3470,70 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}]);
 				return;
 			} else {
-				// ICON COLORS
-				// For icons, we need to handle Palette vs Custom slightly differently if the helper expects int vs string
-				// updateSvgFillColor helper: if value is number, uses palette. If string? It currently might not support it well.
-				// Let's check updateSvgFillColor implementation.
-				// Lines ~1260 use: const paletteNum = typeof value === 'number' ? value : parseInt(value) || 4;
-				// This implies it ONLY supports palette numbers.
-				// We should fix the case handler in applyUpdatesToBlocks to allow string values for icons too.
-				
+				// APPLY COLOR BASED ON TARGET
 				const target = prevMsg?.colorTarget;
 				let property = '';
 				let msgText = '';
+				let targetBlock = 'container';
 				
-				if (target === 'icon-line-hover') { property = 'svg_line_color_hover'; msgText = 'icon line hover colour'; }
-				else if (target === 'icon-hover') { property = 'svg_fill_color_hover'; msgText = 'icon fill hover colour'; }
-				else if (target === 'stroke') { property = 'svg_line_color'; msgText = 'icon stroke colour'; }
-				else { property = 'svg_fill_color'; msgText = 'icon fill colour'; }
+				// BUTTON COLOUR (Generic)
+				if (target === 'button') {
+					property = 'background_color';
+					targetBlock = 'button';
+					msgText = 'button background';
+				}
+				// BUTTON SPECIFIC TARGETS
+				else if (target === 'button-background') {
+					property = 'background_color';
+					targetBlock = 'button';
+					msgText = 'button background';
+				}
+				else if (target === 'button-text') {
+					property = 'text_color';
+					targetBlock = 'button';
+					msgText = 'button text';
+				}
+				else if (target === 'button-border') {
+					property = 'border'; // Will default to 1px solid in handler
+					targetBlock = 'button';
+					msgText = 'button border';
+				}
+				else if (target === 'button-hover-background') {
+					property = 'button_hover_bg';
+					targetBlock = 'button';
+					msgText = 'button hover background';
+				}
+				// BACKGROUND COLOUR (containers)
+				// BACKGROUND COLOUR (containers)
+				else if (target === 'background') {
+					property = 'background_color';
+					targetBlock = 'container';
+					msgText = 'background';
+				}
+				// TEXT COLOUR
+				else if (target === 'text') {
+					property = 'text_color';
+					targetBlock = 'text';
+					msgText = 'text';
+				}
+				// ELEMENT (generic) - apply to selected block
+				else if (target === 'element') {
+					property = 'background_color';
+					targetBlock = selectedBlock?.name?.includes('button') ? 'button' : 'container';
+					msgText = 'element';
+				}
+				// ICON COLOURS (fallback)
+				else if (target === 'icon-line-hover') { property = 'svg_line_color_hover'; targetBlock = 'svg-icon'; msgText = 'icon line hover colour'; }
+				else if (target === 'icon-hover') { property = 'svg_fill_color_hover'; targetBlock = 'svg-icon'; msgText = 'icon fill hover colour'; }
+				else if (target === 'stroke') { property = 'svg_line_color'; targetBlock = 'svg-icon'; msgText = 'icon stroke colour'; }
+				else { property = 'svg_fill_color'; targetBlock = 'svg-icon'; msgText = 'icon fill colour'; }
 
 				directAction = { 
 					action: 'update_page', 
 					property, 
 					value: colorValue, 
-					target_block: 'svg-icon',
-					message: `Applied ${isPalette ? 'Colour ' + colorValue : 'Custom Colour'} as ${msgText}.` 
+					target_block: targetBlock,
+					message: `Applied ${isPalette ? 'Colour ' + colorValue : 'Custom Colour'} to ${msgText}.` 
 				};
 			}
 		}

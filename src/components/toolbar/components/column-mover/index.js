@@ -62,8 +62,13 @@ const ColumnMover = props => {
 	const buttonMoveLeft = () => {
 		return (
 			<Button
-				aria-disabled={isLeftDisabled}
-				onClick={() => moveBlocksUp([clientId], rootClientId)}
+				disabled={isLeftDisabled}
+				onClick={() => {
+					if (isLeftDisabled) {
+						return;
+					}
+					moveBlocksUp([clientId], rootClientId);
+				}}
 			>
 				<Icon className='toolbar-item__icon' icon={moveLeft} />
 			</Button>
@@ -73,8 +78,13 @@ const ColumnMover = props => {
 	const buttonMoveRight = () => {
 		return (
 			<Button
-				aria-disabled={isRightDisabled}
-				onClick={() => moveBlocksDown([clientId], rootClientId)}
+				disabled={isRightDisabled}
+				onClick={() => {
+					if (isRightDisabled) {
+						return;
+					}
+					moveBlocksDown([clientId], rootClientId);
+				}}
 			>
 				<Icon className='toolbar-item__icon' icon={moveRight} />
 			</Button>

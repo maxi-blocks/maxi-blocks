@@ -86,7 +86,7 @@ const TextGenerator = props => {
 						disableReset
 						label={__('Words per sentence', 'maxi-blocks')}
 						value={averageWordsLength}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							setAverageWordsLength(val);
 						}}
 						min={0}
@@ -97,7 +97,7 @@ const TextGenerator = props => {
 						disableReset
 						label={__('Sentences', 'maxi-blocks')}
 						value={averageSentencesLength}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							setAverageSentencesLength(val);
 						}}
 						min={0}

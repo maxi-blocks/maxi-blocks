@@ -68,6 +68,14 @@ const getIsActiveTab = (
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false) return true;
+		// Treat opacity value of 1 as cleared when default is undefined
+		// (1 = 100% opacity is the logical default)
+		if (
+			attribute.includes('opacity') &&
+			currentAttributes[attribute] === 1 &&
+			defaultAttributes[attribute] === undefined
+		)
+			return true;
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {

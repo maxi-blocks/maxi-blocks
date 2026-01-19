@@ -244,7 +244,8 @@ const ColorControl = props => {
 					prefix,
 					!avoidBreakpointForDefault ? deviceType : null
 				)
-			);
+			) ??
+			1;
 
 		onChange({
 			paletteStatus,
@@ -353,13 +354,17 @@ const ColorControl = props => {
 								...(val && {
 									color: initialCustomColor,
 								}),
-								...(!disableOpacity &&
-									!val &&
-									color && {
-										paletteOpacity:
-											tinycolor(color).getAlpha() ||
-											paletteOpacity,
-									}),
+								// When switching back to palette mode, clear the custom color
+								// and preserve the opacity from the custom color
+								...(!val && {
+									color: undefined,
+									...(!disableOpacity &&
+										color && {
+											paletteOpacity:
+												tinycolor(color).getAlpha() ||
+												paletteOpacity,
+										}),
+								}),
 							});
 						}}
 					/>

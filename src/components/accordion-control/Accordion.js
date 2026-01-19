@@ -35,6 +35,8 @@ const isClearedValue = (value, defaultValue) => {
 	if (value === 'none' || value === 'unset') return true;
 	if (Array.isArray(value) && value.length === 0) return true;
 	if (isPlainObject(value) && isEmpty(value)) return true;
+	// Treat 1 as cleared when default is undefined (common for opacity)
+	if (value === 1 && defaultValue === undefined) return true;
 	return isEqual(value, defaultValue);
 };
 

@@ -18,7 +18,7 @@
 				transform: rotate(90deg);
 			}
 		}
-		&:hover {
+		&:hover:not(:disabled) {
 			path {
 				fill: var(--maxi-secondary-color) !important;
 			}

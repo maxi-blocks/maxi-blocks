@@ -128,10 +128,11 @@ const TransitionControl = props => {
 							breakpoint,
 							attributes: transition,
 						})}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							handleChange({
 								[`transition-duration-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
+								meta,
 							});
 						}}
 						min={0}
@@ -158,10 +159,11 @@ const TransitionControl = props => {
 							breakpoint,
 							attributes: transition,
 						})}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							handleChange({
 								[`transition-delay-${breakpoint}`]:
 									val !== undefined && val !== '' ? val : '',
+								meta,
 							});
 						}}
 						min={0}

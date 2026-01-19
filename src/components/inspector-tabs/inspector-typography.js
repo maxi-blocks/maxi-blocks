@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
@@ -53,9 +54,43 @@ const typography = ({
 
 	const typographyTarget = allowLink ? ['typography', 'link'] : 'typography';
 
+	// Generate text alignment attribute names if alignment is shown
+	const textAlignmentAttributes = [];
+	if (!hideAlignment) {
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+		breakpoints.forEach(bp => {
+			textAlignmentAttributes.push(`${prefix}text-alignment-${bp}`);
+			textAlignmentAttributes.push(`${prefix}text-alignment-${bp}-hover`);
+		});
+	}
+
+	// Get RTL setting to determine the correct default text alignment
+	const { getEditorSettings } = select('core/editor');
+	const isRTL = getEditorSettings()?.isRTL || false;
+
+	// Text alignment default depends on RTL: 'left' for LTR, 'right' for RTL
+	const textAlignmentDefaultValue = isRTL ? 'right' : 'left';
+
+	// Check if text alignment has non-default values
+	const hasNonDefaultTextAlignment =
+		!hideAlignment &&
+		textAlignmentAttributes.some(attr => {
+			const value = attributes[attr];
+			// If undefined/null, it's default
+			if (value === undefined || value === null) return false;
+			// If set to default value, it's default
+			if (value === textAlignmentDefaultValue) return false;
+			// Otherwise it's non-default
+			return true;
+		});
+
 	return {
 		label: __('Typography', 'maxi-blocks'),
 		disablePadding: true,
+		...(!hideAlignment &&
+			hasNonDefaultTextAlignment === false && {
+				ignoreIndicator: textAlignmentAttributes,
+			}),
 		content: (
 			<SettingTabsControl
 				items={[

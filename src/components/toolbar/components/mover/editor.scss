@@ -17,7 +17,7 @@
 			height: 8px !important;
 		}
 
-		&:hover {
+		&:hover:not(:disabled) {
 			background-color: #eaf2f6 !important;
 			border-color: var(--maxi-secondary-color) !important;
 
@@ -59,7 +59,7 @@
 	.components-button:nth-child(1) {
 		border-left: 2px solid transparent;
 
-		&:hover {
+		&:hover:not(:disabled) {
 			background-color: #eaf2f6 !important;
 			border-color: var(--maxi-secondary-color);
 		}
@@ -68,7 +68,7 @@
 		border-right: 2px solid transparent;
 		z-index: 1;
 
-		&:hover {
+		&:hover:not(:disabled) {
 			background-color: #eaf2f6 !important;
 			border-color: var(--maxi-secondary-color);
 		}

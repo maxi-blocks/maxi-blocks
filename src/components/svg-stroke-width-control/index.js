@@ -58,7 +58,7 @@ const SvgStrokeWidthControl = props => {
 			className={classes}
 			value={stroke}
 			placeholder={placeholderStroke}
-			onChangeValue={rawVal => {
+			onChangeValue={(rawVal, meta) => {
 				const val = rawVal !== undefined && rawVal !== '' ? rawVal : '';
 
 				onChange({
@@ -68,6 +68,7 @@ const SvgStrokeWidthControl = props => {
 						[`${prefix === 'svg-' ? '' : prefix}content`]:
 							setSVGStrokeWidth(content, val),
 					}),
+					meta,
 				});
 			}}
 			min={0.1}

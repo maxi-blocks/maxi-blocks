@@ -73,7 +73,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes } = this.props;
+		const { attributes, insertInlineStyles, cleanInlineStyles } =
+			this.props;
 		const {
 			uniqueID,
 			accordionLayout,
@@ -95,6 +96,8 @@ class edit extends MaxiBlockComponent {
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
+				insertInlineStyles={insertInlineStyles}
+				cleanInlineStyles={cleanInlineStyles}
 				inlineStylesTargets={inlineStylesTargets}
 				setShowLoader={value => this.setState({ showLoader: value })}
 			/>,

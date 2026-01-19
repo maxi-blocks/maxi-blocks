@@ -39,11 +39,12 @@ const ResponsiveControl = props => {
 					defaultBreakpoints[breakpoint === 'xxl' ? 'xl' : breakpoint]
 				}
 				value={props[`breakpoints-${breakpoint}`]}
-				onChangeValue={val => {
+				onChangeValue={(val, meta) => {
 					onChange({
 						[`breakpoints-${
 							breakpoint === 'xxl' ? 'xl' : breakpoint
 						}`]: val !== undefined && val !== '' ? val : '',
+						meta,
 					});
 				}}
 				min={0}

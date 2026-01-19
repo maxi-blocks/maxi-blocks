@@ -66,30 +66,15 @@ body.maxi-blocks--active .edit-post-header-toolbar {
 			transform: none !important;
 		}
 	}
-	.maxi-toolbar-layout__button {
-		position: absolute;
-		left: 280px;
-		top: 7px;
-		margin-left: 0;
-	}
 	.edit-site-layout__header-container {
 		z-index: 6;
 	}
 }
 
-// fix for 6.8
-body.branch-6-8 {
-	.edit-site {
-		.maxi-toolbar-layout__button {
-			left: 245px;
-		}
-	}
-}
-
-@media only screen and (max-width: 781px) {
-	.edit-site {
-		.maxi-toolbar-layout__button {
-			left: 125px;
-		}
+// Prevent toolbar from expanding - applies to both editors
+body.maxi-blocks--active {
+	.edit-site-header-edit-mode__start,
+	.editor-header__toolbar {
+		flex-grow: 0;
 	}
 }

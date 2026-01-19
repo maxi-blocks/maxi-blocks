@@ -16,6 +16,7 @@ import AccordionControl from '@components/accordion-control';
 import Button from '@components/button';
 import ColorControl from '@components/color-control';
 import Icon from '@components/icon';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
@@ -235,6 +236,7 @@ const SCAccordion = props => {
 		onChangeValue,
 		disableTypography = false,
 		disableOpacity = false,
+		disableResponsiveTabs = false,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -279,6 +281,7 @@ const SCAccordion = props => {
 					disableFormats
 					disableCustomFormats
 					disableFontFamily={breakpoint !== 'general'}
+					disableResponsiveTabs={disableResponsiveTabs}
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -385,10 +388,11 @@ const SCAccordion = props => {
 										'maxi-blocks'
 									)}
 									value={showMobileFrom}
-									onChangeValue={val => {
+									onChangeValue={(val, meta) => {
 										onChangeValue(
 											{
 												'show-mobile-down-from': val,
+												meta,
 											},
 											groupAttr
 										);
@@ -567,6 +571,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						SC={SC}
 						SCStyle={SCStyle}
 						onChangeValue={onChangeValue}
+						disableResponsiveTabs
 					/>
 				),
 				classNameItem: `maxi-blocks-sc__type--h${item}`,
@@ -1214,10 +1219,13 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							label: __('Headings globals', 'maxi-blocks'),
 							classNameItem: 'maxi-blocks-sc__type--heading',
 							content: (
-								<SettingTabsControl
-									hasBorder
-									items={headingItems()}
-								/>
+								<ResponsiveTabsControl breakpoint={breakpoint}>
+									<SettingTabsControl
+										className="maxi-style-cards-headings-tabs"
+										hasBorder
+										items={headingItems()}
+									/>
+								</ResponsiveTabsControl>
 							),
 						},
 						breakpoint === 'general' && {

@@ -28,6 +28,8 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 
 	.maxi-font-family-selector__control {
 		&__menu {
+			position: absolute;
+			z-index: 200001;
 			border: 1.5px solid var(--maxi-grey-light);
 			border-radius: 0;
 			box-shadow: none;

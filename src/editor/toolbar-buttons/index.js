@@ -115,27 +115,6 @@ wp.domReady(() => {
 				render(<ToolbarButtons />, toolbarButtonsWrapper);
 			}
 
-			if (getIsSiteEditor()) {
-				const toolbarButtonMaxi = document.querySelector(
-					'#maxi-blocks__toolbar-buttons button'
-				);
-
-				if (!toolbarButtonMaxi) return;
-
-				const widthLeftMenu = document.querySelector(
-					'div.edit-site-header-edit-mode__start'
-				)?.offsetWidth;
-
-				const widthSiteIcon = document.querySelector(
-					'div.edit-site-site-hub'
-				)?.offsetWidth;
-
-				if (!widthLeftMenu || !widthSiteIcon) return;
-
-				const leftSpace = widthLeftMenu + widthSiteIcon;
-				toolbarButtonMaxi.style.left = `${leftSpace}px`;
-			}
-
 			isMaxiToolbar = true;
 		}
 	};

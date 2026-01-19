@@ -304,7 +304,7 @@ const TextShadow = props => {
 							key={`maxi-text-shadow-control__${label.toLocaleLowerCase()}`}
 							label={label}
 							value={value}
-							onChangeValue={val => {
+							onChangeValue={(val, meta) => {
 								onChangeValue(
 									index,
 									val !== undefined && val !== '' ? val : ''

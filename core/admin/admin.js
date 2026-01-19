@@ -263,11 +263,6 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	});
 
 	// AI Provider and API Key validation
-	const getProvider = () => {
-		const providerSelect = document.getElementById('maxi_ai_provider');
-		return providerSelect?.value || 'openai';
-	};
-
 	const getProviderApiKey = provider => {
 		const selector = `.${provider}-api-key-option-visible-input`;
 		const input = document.querySelector(selector);
@@ -1591,6 +1586,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 
 			let html = '';
+			
+			// Helper to escape HTML to prevent XSS
+			const escapeHtml = str => {
+				const div = document.createElement('div');
+				div.textContent = str;
+				return div.innerHTML;
+			};
 
 			fontsArray.forEach(font => {
 				const family = font.value || '';
@@ -1616,23 +1618,19 @@ document.addEventListener('DOMContentLoaded', () => {
 				weights.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
 
 				const weightsHtml = weights.length
-					? `<span class="maxi-font-weights">${weights.join(
-							', '
-					  )}</span>`
+					? `<span class="maxi-font-weights">${escapeHtml(weights.join(', '))}</span>`
 					: '—';
 				const stylesHtml = styles.length
-					? `<span class="maxi-font-styles">${styles.join(
-							', '
-					  )}</span>`
+					? `<span class="maxi-font-styles">${escapeHtml(styles.join(', '))}</span>`
 					: '—';
 
 				html += '<tr>';
-				html += `<td><strong>${family}</strong></td>`;
+				html += `<td><strong>${escapeHtml(family)}</strong></td>`;
 				html += `<td>${weightsHtml}</td>`;
 				html += `<td>${stylesHtml}</td>`;
 				html += '<td>';
 				if (font.id) {
-					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${font.id}">Remove</button>`;
+					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${escapeHtml(String(font.id))}">Remove</button>`;
 				}
 				html += '</td></tr>';
 			});

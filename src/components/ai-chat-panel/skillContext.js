@@ -203,10 +203,12 @@ export const DYNAMIC_SKILLS = {
  * @returns {string} Skill context string or empty string if not found
  */
 export const getSkillContextForBlock = (blockName) => {
-	if (!blockName) return '';
+	if (typeof blockName !== 'string' || !blockName) return '';
 	
-	// Extract the block type from the full name
-	const blockType = blockName.replace('maxi-blocks/', '');
+	// Extract the block type from the full name - only strip namespace if it's at the start
+	const blockType = blockName.startsWith('maxi-blocks/')
+		? blockName.slice('maxi-blocks/'.length)
+		: blockName;
 	const skill = BLOCK_SKILLS[blockType];
 	
 	if (!skill) return '';
@@ -235,6 +237,10 @@ export const getAllSkillsContext = () => {
 		.map(skill => `- ${skill.name}: ${skill.summary}`)
 		.join('\n');
 	
+	const dynamicSummaries = Object.values(DYNAMIC_SKILLS)
+		.map(skill => `- ${skill.name}: ${skill.summary}`)
+		.join('\n');
+	
 	return `
 MaxiBlocks Knowledge:
 
@@ -243,5 +249,8 @@ ${blockSummaries}
 
 LAYOUT FEATURES:
 ${layoutSummaries}
+
+DYNAMIC FEATURES:
+${dynamicSummaries}
 `.trim();
 };

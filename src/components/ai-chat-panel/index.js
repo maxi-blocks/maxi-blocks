@@ -14,6 +14,8 @@ import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCar
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
+import { findBestPattern, extractPatternQuery } from './patternSearch';
+import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
@@ -227,6 +229,10 @@ const LAYOUT_PATTERNS = [
 	{ regex: /remove.*underline|no.*underline|plain.*link/, property: 'text_decoration', value: 'none', selectionMsg: 'Removed underline.', pageMsg: 'Removed underlines from links.' },
 	{ regex: /add.*underline|underline.*text/, property: 'text_decoration', value: 'underline', selectionMsg: 'Added underline.', pageMsg: 'Underlined text.' },
 	
+	// GROUP: COLOUR CLARIFICATION (show palette picker)
+	// Match colour requests that need clarification - will show 8-colour palette
+	{ regex: /(make|change|set|turn|paint|color|colour|give).*(red|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey|dark|light)|(\bred|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey)\b.*(background|button|text|heading|container|box|section|color|colour)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	
 	// GROUP 14: BACKGROUNDS & MEDIA
 	{ regex: /video.*behind|movie.*behind|background.*video/, property: 'background_media', value: 'video', selectionMsg: 'Set video as background.', pageMsg: 'Applied video background.' },
 	{ regex: /darken.*screen|overlay|dim.*background|dark.*overlay/, property: 'background_overlay', value: 0.5, selectionMsg: 'Added dark overlay (50%).', pageMsg: 'Darkened background with overlay.' },
@@ -301,6 +307,10 @@ const LAYOUT_PATTERNS = [
 	{ regex: /remove.*icon.*button|no.*icon.*button|hide.*icon.*button|text.*only.*button/, property: 'button_icon', value: 'none', selectionMsg: 'Removed icons from buttons.', pageMsg: 'Removed icons from all buttons.', target: 'button' },
 	{ regex: /small.*button|tiny.*button|compact.*button/, property: 'button_size', value: 'small', selectionMsg: 'Made buttons smaller.', pageMsg: 'Reduced button size.', target: 'button' },
 	{ regex: /large.*button|big.*button|huge.*button|giant.*button/, property: 'button_size', value: 'large', selectionMsg: 'Made buttons larger.', pageMsg: 'Increased button size.', target: 'button' },
+
+	// GROUP 25: CREATE BLOCK PATTERNS (from Cloud Library)
+	// Must include pattern-related keywords to avoid matching style changes like "make button red"
+	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];
 
 const AIChatPanel = ({ isOpen, onClose }) => {
@@ -2734,6 +2744,94 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
 						setIsLoading(false);
 					}, 50);
+					return;
+				}
+				
+				// SPECIAL: Create block patterns - search Cloud Library and insert
+				if (pattern.property === 'create_block') {
+					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
+					
+					setTimeout(async () => {
+						try {
+							const searchQuery = extractPatternQuery(userMessage);
+							console.log('[Maxi AI] Searching Cloud Library for:', searchQuery);
+							
+							const patternResult = await findBestPattern(searchQuery);
+							
+							if (!patternResult) {
+								setMessages(prev => [...prev, { 
+									role: 'assistant', 
+									content: `I couldn't find a pattern for "${searchQuery}" in the Cloud Library. Try browsing the Cloud Library manually or use different keywords.`,
+									executed: false 
+								}]);
+								setIsLoading(false);
+								return;
+							}
+							
+							if (patternResult.isPro) {
+								setMessages(prev => [...prev, { 
+									role: 'assistant', 
+									content: `Found "${patternResult.title}" but it's a Pro pattern. Upgrade to MaxiBlocks Pro to use it!`,
+									executed: false 
+								}]);
+								setIsLoading(false);
+								return;
+							}
+							
+							// Insert the pattern - clientId of selected block or null for append
+							const targetClientId = selectedBlock?.clientId || null;
+							
+							if (targetClientId && patternResult.gutenbergCode) {
+								await onRequestInsertPattern(
+									patternResult.gutenbergCode,
+									false,  // usePlaceholderImage
+									true,   // useSCStyles
+									targetClientId
+								);
+								
+								setMessages(prev => [...prev, { 
+									role: 'assistant', 
+									content: `✨ Created "${patternResult.title}"! The pattern has been inserted.`,
+									executed: true 
+								}]);
+							} else {
+								setMessages(prev => [...prev, { 
+									role: 'assistant', 
+									content: `Found "${patternResult.title}" but please select a block first to replace with this pattern.`,
+									executed: false 
+								}]);
+							}
+						} catch (error) {
+							console.error('[Maxi AI] Pattern insert error:', error);
+							setMessages(prev => [...prev, { 
+								role: 'assistant', 
+								content: 'Sorry, there was an error creating the pattern. Please try again.',
+								executed: false 
+							}]);
+						}
+						setIsLoading(false);
+					}, 100);
+					return;
+				}
+				
+				// SPECIAL: Colour clarification - show 8-colour palette picker
+				if (pattern.property === 'color_clarify') {
+					// Detect what kind of colour operation (background, text, border, etc.)
+					let colorTarget = 'element';
+					if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
+					else if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('font')) colorTarget = 'text';
+					else if (lowerMessage.includes('button')) colorTarget = 'button';
+					else if (lowerMessage.includes('border')) colorTarget = 'border';
+					
+					setMessages(prev => [...prev, { 
+						role: 'assistant', 
+						content: `Choose a colour for the ${colorTarget}:`,
+						options: ['Colour 1', 'Colour 2', 'Colour 3', 'Colour 4', 'Colour 5', 'Colour 6', 'Colour 7', 'Colour 8'],
+						colorTarget: colorTarget,
+						originalMessage: userMessage,
+						isColorPicker: true
+					}]);
+					setIsLoading(false);
 					return;
 				}
 				

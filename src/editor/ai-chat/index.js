@@ -10,6 +10,10 @@ import AIChatPanel from '@components/ai-chat-panel';
 
 const ROOT_ID = 'maxi-blocks__ai-chat-root';
 
+// Module-level cache for React root to avoid memory leaks
+let reactRoot = null;
+let reactRootContainer = null;
+
 const AIChatWrapper = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -31,29 +35,48 @@ const AIChatWrapper = () => {
 
 const mountChatPanel = () => {
 	let rootElement = document.getElementById(ROOT_ID);
-	if (rootElement) return; // Already mounted
-
-	rootElement = document.createElement('div');
-	rootElement.id = ROOT_ID;
-	document.body.appendChild(rootElement);
+	
+	// Already mounted with same container - no action needed
+	if (rootElement && reactRootContainer === rootElement) return;
+	
+	// Create DOM element if needed
+	if (!rootElement) {
+		rootElement = document.createElement('div');
+		rootElement.id = ROOT_ID;
+		document.body.appendChild(rootElement);
+	}
 
 	const isReact18 = typeof createRoot === 'function';
 
 	if (isReact18) {
-		const root = createRoot(rootElement);
-		root.render(<AIChatWrapper />);
+		// Create or reuse React root
+		if (!reactRoot || reactRootContainer !== rootElement) {
+			reactRoot = createRoot(rootElement);
+			reactRootContainer = rootElement;
+		}
+		reactRoot.render(<AIChatWrapper />);
 	} else {
 		render(<AIChatWrapper />, rootElement);
+		reactRootContainer = rootElement;
 	}
+};
+
+const unmountChatPanel = () => {
+	if (reactRoot?.unmount) {
+		reactRoot.unmount();
+	}
+	reactRoot = null;
+	reactRootContainer = null;
 };
 
 wp.domReady(() => {
 	// Mount the chat panel
 	mountChatPanel();
 
-	// Re-mount if removed
+	// Re-mount if removed (with proper cleanup)
 	const observer = new MutationObserver(() => {
 		if (!document.getElementById(ROOT_ID)) {
+			unmountChatPanel();
 			mountChatPanel();
 		}
 	});
@@ -63,3 +86,4 @@ wp.domReady(() => {
 		subtree: false,
 	});
 });
+

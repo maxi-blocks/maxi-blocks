@@ -24,19 +24,26 @@ import classnames from 'classnames';
  * Checks if a value is considered "cleared" (inactive) for indicator purposes.
  * Matches the cleared-value logic used by getIsActiveTab.
  *
- * @param {*} value        - The current attribute value
- * @param {*} defaultValue - The default attribute value
+ * @param {*}      value         - The current attribute value
+ * @param {*}      defaultValue  - The default attribute value
+ * @param {string} attributeName - Optional attribute name to determine special handling
  * @return {boolean} True if the value is cleared/inactive
  */
-const isClearedValue = (value, defaultValue) => {
+const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value == null) return true; // null or undefined
 	if (value === false) return true;
 	if (value === '') return true;
 	if (value === 'none' || value === 'unset') return true;
 	if (Array.isArray(value) && value.length === 0) return true;
 	if (isPlainObject(value) && isEmpty(value)) return true;
-	// Treat 1 as cleared when default is undefined (common for opacity)
-	if (value === 1 && defaultValue === undefined) return true;
+	// Treat 1 as cleared when default is undefined, only for opacity attributes
+	if (
+		value === 1 &&
+		defaultValue === undefined &&
+		/opacity/i.test(attributeName)
+	) {
+		return true;
+	}
 	return isEqual(value, defaultValue);
 };
 
@@ -105,7 +112,8 @@ const Accordion = props => {
 						isActiveTab = !item.indicatorProps.every(prop =>
 							isClearedValue(
 								attributes?.[prop],
-								defaultAttributes?.[prop]
+								defaultAttributes?.[prop],
+								prop
 							)
 						);
 					}

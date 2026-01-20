@@ -32,6 +32,7 @@ const ResponsiveTabsControl = props => {
 		disableCallback = false,
 		disableNotifications = false,
 		target,
+		getIndicatorProps,
 	} = props;
 	const { baseBreakpoint, breakpoint: storeBreakpoint } = useSelect(
 		select => {
@@ -80,20 +81,22 @@ const ResponsiveTabsControl = props => {
 		<SettingTabsControl
 			className={classes}
 			items={breakpoints.map(breakpoint => {
+				const bp = breakpoint.toLowerCase();
+				const isBase = baseBreakpoint === bp;
 				return {
 					label: breakpoint,
 					content:
 						children &&
 						cloneElement(children, {
-							breakpoint:
-								baseBreakpoint === breakpoint.toLowerCase()
-									? 'general'
-									: breakpoint.toLowerCase(),
+							breakpoint: isBase ? 'general' : bp,
 						}),
 					// content: children,
 					showNotification: showNotification(breakpoint),
 					callback: () => changeResponsive(breakpoint),
-					breakpoint: breakpoint.toLowerCase(),
+					breakpoint: bp,
+					...(getIndicatorProps && {
+						indicatorProps: getIndicatorProps(bp, isBase),
+					}),
 				};
 			})}
 			forceTab={getTextOptionsTab()}

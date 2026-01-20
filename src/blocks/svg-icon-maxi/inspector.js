@@ -270,6 +270,11 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												getIndicatorProps={(bp, isBase) =>
+													isBase
+														? ['svg-width-general']
+														: [`svg-width-${bp}`]
+												}
 											>
 												<SvgWidthControl
 													{...getGroupAttributes(

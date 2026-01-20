@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { useState, useEffect, cloneElement } from '@wordpress/element';
+import { getBlockAttributes } from '@wordpress/blocks';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { Tooltip } from '@wordpress/components';
 
@@ -20,7 +21,33 @@ import {
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, isPlainObject, isEqual } from 'lodash';
+
+/**
+ * Checks if a value is considered "cleared" (inactive/default)
+ *
+ * @param {*}      value         The current value
+ * @param {*}      defaultValue  The default value
+ * @param {string} attributeName The attribute name (for special cases)
+ * @return {boolean} True if the value is cleared/inactive
+ */
+const isClearedValue = (value, defaultValue, attributeName = '') => {
+	if (value == null) return true; // null or undefined
+	if (value === false) return true;
+	if (value === '') return true;
+	if (value === 'none' || value === 'unset') return true;
+	if (Array.isArray(value) && value.length === 0) return true;
+	if (isPlainObject(value) && isEmpty(value)) return true;
+	// Treat 1 as cleared when default is undefined, only for opacity attributes
+	if (
+		value === 1 &&
+		defaultValue === undefined &&
+		/opacity/i.test(attributeName)
+	) {
+		return true;
+	}
+	return isEqual(value, defaultValue);
+};
 
 /**
  * Styles and icons
@@ -129,6 +156,35 @@ const SettingTabsControl = props => {
 							? cloneElement(item.content)
 							: item;
 
+						// Handle indicatorProps directly like accordions do
+						let isActiveTab = false;
+						if (item.indicatorProps) {
+							const { getBlock, getSelectedBlockClientId } =
+								select('core/block-editor');
+
+							const block = getBlock(getSelectedBlockClientId());
+							const { show_indicators: showIndicators } =
+								select('maxiBlocks')?.receiveMaxiSettings?.() ??
+								{};
+
+							if (
+								showIndicators &&
+								block &&
+								block.name.includes('maxi-blocks')
+							) {
+								const { attributes, name } = block;
+								const defaultAttributes =
+									getBlockAttributes(name);
+								isActiveTab = !item.indicatorProps.every(prop =>
+									isClearedValue(
+										attributes?.[prop],
+										defaultAttributes?.[prop],
+										prop
+									)
+								);
+							}
+						}
+
 						const showButton = (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`}
@@ -140,20 +196,22 @@ const SettingTabsControl = props => {
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&
 										'maxi-tabs-control__button--nested',
-									getIsActiveTab(
-										getMaxiAttrsFromChildren({
-											items: itemsIndicators,
-											blockName:
-												blockName ??
-												getBlockName(
-													getSelectedBlockClientId()
-												),
-										}),
-										item.breakpoint,
-										item.extraIndicators,
-										item.extraIndicatorsResponsive,
-										item.ignoreIndicator
-									) && 'maxi-tabs-control__button--active'
+									(item.indicatorProps
+										? isActiveTab
+										: getIsActiveTab(
+												getMaxiAttrsFromChildren({
+													items: itemsIndicators,
+													blockName:
+														blockName ??
+														getBlockName(
+															getSelectedBlockClientId()
+														),
+												}),
+												item.breakpoint,
+												item.extraIndicators,
+												item.extraIndicatorsResponsive,
+												item.ignoreIndicator
+										  )) && 'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);

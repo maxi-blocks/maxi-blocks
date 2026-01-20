@@ -18,7 +18,7 @@
 		"editor.formatOnSave": true
 	},
 	"[scss]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "vscode.css-language-features"
 	},
 	"eslint.alwaysShowStatus": true,
 	"prettier.tabWidth": 4,

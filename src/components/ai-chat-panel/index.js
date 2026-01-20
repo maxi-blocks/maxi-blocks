@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { dispatch, select, useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { cloneDeep } from 'lodash';
 
@@ -316,6 +316,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
 	const messagesEndRef = useRef(null);
 
+	// Drag state for moveable panel
+	const [position, setPosition] = useState(null); // null = use CSS default, otherwise { x, y }
+	const [isDragging, setIsDragging] = useState(false);
+	const dragOffset = useRef({ x: 0, y: 0 });
+
 	const selectedBlock = useSelect(
 		select => select('core/block-editor').getSelectedBlock(),
 		[]
@@ -414,6 +419,52 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	useEffect(() => {
 		scrollToBottom();
 	}, [messages]);
+
+	// Drag handlers for moveable panel
+	const handleMouseDown = useCallback((e) => {
+		// Only drag from the header area, not from buttons inside header
+		if (e.target.closest('button')) return;
+		
+		setIsDragging(true);
+		const panelRect = e.currentTarget.closest('.maxi-ai-chat-panel').getBoundingClientRect();
+		dragOffset.current = {
+			x: e.clientX - panelRect.left,
+			y: e.clientY - panelRect.top
+		};
+		e.preventDefault();
+	}, []);
+
+	const handleMouseMove = useCallback((e) => {
+		if (!isDragging) return;
+		
+		const newX = e.clientX - dragOffset.current.x;
+		const newY = e.clientY - dragOffset.current.y;
+		
+		// Keep panel within viewport bounds
+		const maxX = window.innerWidth - 100; // At least 100px visible
+		const maxY = window.innerHeight - 50;
+		
+		setPosition({
+			x: Math.max(0, Math.min(newX, maxX)),
+			y: Math.max(0, Math.min(newY, maxY))
+		});
+	}, [isDragging]);
+
+	const handleMouseUp = useCallback(() => {
+		setIsDragging(false);
+	}, []);
+
+	// Attach mousemove and mouseup to document for smooth dragging
+	useEffect(() => {
+		if (isDragging) {
+			document.addEventListener('mousemove', handleMouseMove);
+			document.addEventListener('mouseup', handleMouseUp);
+		}
+		return () => {
+			document.removeEventListener('mousemove', handleMouseMove);
+			document.removeEventListener('mouseup', handleMouseUp);
+		};
+	}, [isDragging, handleMouseMove, handleMouseUp]);
 
 	// Fix validation for handleSuggestion stale closure
 	const messagesRef = useRef(messages);
@@ -3150,7 +3201,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						{ role: 'system', content: 'Context: ' + context + (selectedBlock ? '\n\nBlock Skills: ' + getSkillContextForBlock(selectedBlock.name) : '') },
 						...messages.filter(m => m.role !== 'assistant' || !m.executed).slice(-6).map(m => ({ 
 							role: m.role === 'assistant' ? 'assistant' : 'user', 
-							content: m.content 
+							content: typeof m.content === 'string' ? m.content : String(m.content || '')
 						})),
 						{ role: 'user', content: userMessage },
 					],
@@ -3725,8 +3776,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	if (!isOpen) return null;
 
 	return (
-		<div className='maxi-ai-chat-panel'>
-			<div className='maxi-ai-chat-panel__header'>
+		<div 
+			className={`maxi-ai-chat-panel${isDragging ? ' maxi-ai-chat-panel--dragging' : ''}`}
+			style={position ? {
+				left: position.x,
+				top: position.y,
+				bottom: 'auto'
+			} : undefined}
+		>
+			<div 
+				className='maxi-ai-chat-panel__header'
+				onMouseDown={handleMouseDown}
+				style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+			>
 				<h3>
 					<span>✨</span>
 					{__('Maxi AI', 'maxi-blocks')}

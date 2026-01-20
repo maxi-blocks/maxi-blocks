@@ -22,6 +22,11 @@
 		display: none;
 	}
 
+	&--dragging {
+		user-select: none;
+		opacity: 0.95;
+	}
+
 	&__header {
 		display: flex;
 		align-items: center;

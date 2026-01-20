@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, useState } from '@wordpress/element';
-import { dispatch, useDispatch, useSelect, useRegistry } from '@wordpress/data';
+import { dispatch, select, useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { cloneDeep } from 'lodash';
 
 /**
@@ -15,6 +15,7 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
+import { BUTTON_PATTERNS, handleButtonUpdate } from './buttonHandlers';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
@@ -299,66 +300,8 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
-	// GROUP 24: BUTTON ACTIONS
-	{ regex: /outline.*button|ghost.*button|transparent.*button/, property: 'button_style', value: 'outline', selectionMsg: 'Applied outline style to buttons.', pageMsg: 'Changed all buttons to outline style.', target: 'button' },
-	{ regex: /solid.*button|filled.*button|fill.*button/, property: 'button_style', value: 'solid', selectionMsg: 'Applied solid style to buttons.', pageMsg: 'Changed all buttons to solid style.', target: 'button' },
-	{ regex: /flat.*button|no.*shadow.*button/, property: 'button_style', value: 'flat', selectionMsg: 'Applied flat style (no shadow) to buttons.', pageMsg: 'Removed shadows from buttons.', target: 'button' },
-	{ regex: /pill.*button|capsule.*button|rounded.*button/, property: 'border_radius', value: 50, selectionMsg: 'Applied pill shape to buttons.', pageMsg: 'Changed buttons to pill shape.', target: 'button' },
-	{ regex: /full.*width.*button|stretch.*button|expand.*button/, property: 'width', value: '100%', selectionMsg: 'Made buttons full width.', pageMsg: 'Expanded buttons to full width.', target: 'button' },
-	{ regex: /auto.*width.*button|fit.*content.*button|shrink.*button/, property: 'width', value: 'auto', selectionMsg: 'Set buttons to auto width.', pageMsg: 'Set buttons to fit content.', target: 'button' },
-	{ regex: /icon.*only.*button|remove.*text.*button|hide.*text.*button/, property: 'button_icon', value: 'only', selectionMsg: 'Made buttons icon-only.', pageMsg: 'Changed buttons to icon-only.', target: 'button' },
-	{ regex: /remove.*icon.*button|no.*icon.*button|hide.*icon.*button|text.*only.*button/, property: 'button_icon', value: 'none', selectionMsg: 'Removed icons from buttons.', pageMsg: 'Removed icons from all buttons.', target: 'button' },
-	{ regex: /small.*button|tiny.*button|compact.*button/, property: 'button_size', value: 'small', selectionMsg: 'Made buttons smaller.', pageMsg: 'Reduced button size.', target: 'button' },
-	{ regex: /large.*button|big.*button|huge.*button|giant.*button/, property: 'button_size', value: 'large', selectionMsg: 'Made buttons larger.', pageMsg: 'Increased button size.', target: 'button' },
-
-
-
-	// GROUP 24b: BUTTON ICONS (NEW)
-	{ regex: /add.*icon.*button|put.*icon/, property: 'button_icon_add', value: 'arrow-right', selectionMsg: 'Added icon to button.', pageMsg: 'Added icons to buttons.', target: 'button' },
-	{ regex: /icon.*top|icon.*above/, property: 'icon_position', value: 'top', selectionMsg: 'Moved icon to top.', pageMsg: 'Moved icons to top.', target: 'button' },
-	{ regex: /icon.*left|icon.*before/, property: 'icon_position', value: 'left', selectionMsg: 'Moved icon to left.', pageMsg: 'Moved icons to left.', target: 'button' },
-	{ regex: /icon.*right|icon.*after/, property: 'icon_position', value: 'right', selectionMsg: 'Moved icon to right.', pageMsg: 'Moved icons to right.', target: 'button' },
-	{ regex: /icon.*size.*24|24px.*icon|icon.*bigger/, property: 'icon_size', value: 24, selectionMsg: 'Set icon size to 24px.', pageMsg: 'Set icon size to 24px.', target: 'button' },
-	{ regex: /cart.*icon|shopping.*icon/, property: 'button_icon_change', value: 'shopping-cart', selectionMsg: 'Changed icon to shopping cart.', pageMsg: 'Changed icons to shopping cart.', target: 'button' },
-	{ regex: /space.*icon.*text|gap.*icon/, property: 'icon_spacing', value: 10, selectionMsg: 'Increased icon spacing.', pageMsg: 'Increased icon spacing.', target: 'button' },
-	{ regex: /white.*icon/, property: 'icon_color', value: '#ffffff', selectionMsg: 'Made icon white.', pageMsg: 'Made icons white.', target: 'button' },
-	{ regex: /circle.*icon|round.*icon|icon.*radius/, property: 'icon_style', value: 'circle', selectionMsg: 'Made icon circular.', pageMsg: 'Made icons circular.', target: 'button' },
-
-	// GROUP 24c: BUTTON STYLING (NEW) - Colour requests trigger palette picker
-	{ regex: /button.*text.*colou?r|text.*colou?r.*button|button.*font.*colou?r|button.*link.*colou?r/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-text' },
-	{ regex: /button.*border.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-border' },
-	{ regex: /button.*hover.*(colou?r)|hover.*button.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-hover-background' },
-	// Generic button colour requests -> show palette (Keep last in group to avoid shadowing specific targets)
-	{ regex: /button.*background.*(colou?r)|change.*button.*(colou?r)|button.*(colou?r)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-background' },
-	// Specific button styling (non-colour)
-	{ regex: /transparent.*background|clear.*background/, property: 'button_bg_color', value: 'transparent', selectionMsg: 'Made background transparent.', pageMsg: 'Made button backgrounds transparent.', target: 'button' },
-	{ regex: /gradient.*button|gradient.*background/, property: 'button_gradient', value: true, selectionMsg: 'Applied gradient background.', pageMsg: 'Applied gradient to buttons.', target: 'button' },
-	{ regex: /grey.*border|gray.*border/, property: 'button_border', value: '1px solid grey', selectionMsg: 'Added grey border.', pageMsg: 'Added grey border to buttons.', target: 'button' },
-	{ regex: /button.*shadow.*grey/, property: 'button_shadow_color', value: 'grey', selectionMsg: 'Set shadow color to grey.', pageMsg: 'Set button shadow color to grey.', target: 'button' },
-	
-	// GROUP 24d: BUTTON TYPOGRAPHY (NEW)
-	{ regex: /button.*uppercase|caps.*button/, property: 'button_transform', value: 'uppercase', selectionMsg: 'Made button text uppercase.', pageMsg: 'Made button text uppercase.', target: 'button' },
-	{ regex: /button.*italic/, property: 'button_transform', value: 'italic', selectionMsg: 'Italicized button text.', pageMsg: 'Italicized button text.', target: 'button' },
-	{ regex: /button.*underline/, property: 'button_decoration', value: 'underline', selectionMsg: 'Underlined button text.', pageMsg: 'Underlined button text.', target: 'button' },
-	{ regex: /button.*bold|bold.*text.*button/, property: 'button_weight', value: 700, selectionMsg: 'Made button text bold.', pageMsg: 'Made button text bold.', target: 'button' },
-	
-	// GROUP 24e: RESPONSIVE & HOVER (NEW)
-	{ regex: /button.*full.*mobile|full.*width.*mobile/, property: 'button_responsive_width', value: { device: 'mobile', width: '100%' }, selectionMsg: 'Made button full width on mobile.', pageMsg: 'Made buttons full width on mobile.', target: 'button' },
-	{ regex: /hide.*button.*tablet/, property: 'button_responsive_hide', value: 'tablet', selectionMsg: 'Hidden button on tablet.', pageMsg: 'Hidden buttons on tablet.', target: 'button' },
-	{ regex: /hover.*blue/, property: 'button_hover_bg', value: 'blue', selectionMsg: 'Set hover background to blue.', pageMsg: 'Set hover background to blue.', target: 'button' },
-	{ regex: /hover.*yellow.*text/, property: 'button_hover_text', value: 'yellow', selectionMsg: 'Set hover text to yellow.', pageMsg: 'Set hover text to yellow.', target: 'button' },
-
-	// GROUP 24f: DYNAMIC CONTENT (NEW)
-	{ regex: /bind.*title|dynamic.*title/, property: 'button_dynamic_text', value: 'post-title', selectionMsg: 'Bound text to Post Title.', pageMsg: 'Bound button text to Post Title.', target: 'button' },
-	{ regex: /dynamic.*link|post.*url/, property: 'button_dynamic_link', value: 'post-url', selectionMsg: 'Bound link to Post URL.', pageMsg: 'Bound button links to Post URL.', target: 'button' },
-
-
-	// GROUP 24a: BUTTON CONTENT & LINKS (Moved to end to prevent shadowing color patterns)
-	{ regex: /change.*button.*text|set.*button.*label|rename.*button/, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated button text.', pageMsg: 'Updated button text.', target: 'button' },
-	{ regex: /change.*button.*link|update.*button.*url|set.*button.*link/, property: 'button_url', value: 'use_prompt', selectionMsg: 'Updated button link.', pageMsg: 'Updated button links.', target: 'button' },
-	{ regex: /open.*new.*tab|new.*window.*link/, property: 'link_target', value: '_blank', selectionMsg: 'Set link to open in new tab.', pageMsg: 'Set buttons to open in new tab.', target: 'button' },
-	{ regex: /nofollow.*link|rel.*nofollow/, property: 'link_rel', value: 'nofollow', selectionMsg: 'Set link to nofollow.', pageMsg: 'Set buttons to nofollow.', target: 'button' },
-	{ regex: /download.*button|link.*pdf/, property: 'button_custom_text_link', value: 'Download', selectionMsg: 'Changed to Download button.', pageMsg: 'Changed buttons to Download.', target: 'button' },
+	// GROUP 24: BUTTON ACTIONS (Imported)
+	...BUTTON_PATTERNS,
 
 	// GROUP 25: CREATE BLOCK PATTERNS (from Cloud Library)
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
@@ -370,6 +313,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const [input, setInput] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
+	const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
 	const messagesEndRef = useRef(null);
 
 	const selectedBlock = useSelect(
@@ -471,6 +415,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		scrollToBottom();
 	}, [messages]);
 
+	// Fix validation for handleSuggestion stale closure
+	const messagesRef = useRef(messages);
+	useEffect(() => {
+		messagesRef.current = messages;
+	}, [messages]);
+
 	// Get Style Card palette colors for visual swatches
 	// Uses CSS variables that are already set on the page (same approach as sidebar palette)
 	const getPaletteColors = () => {
@@ -487,6 +437,23 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// Add other prefixed blocks here if needed
 		return '';
 	};
+
+    // Recursive helper to find blocks regardless of nesting
+    const collectBlocks = (blocks, matcher) => {
+        const result = [];
+        const walk = (list) => {
+            list.forEach((block) => {
+                if (matcher(block)) {
+                    result.push(block);
+                }
+                if (block.innerBlocks && block.innerBlocks.length) {
+                    walk(block.innerBlocks);
+                }
+            });
+        };
+        walk(blocks);
+        return result;
+    };
 
 	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
 		const newAttributes = {};
@@ -1706,299 +1673,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								'transform-status-hover': true,
 							};
 							break;
-						// ======= BUTTON ACTIONS =======
-						case 'button_style':
-							if (block.name.includes('button')) { // Double check
-								if (value === 'outline') {
-									changes = {
-										[`${prefix}background-active-media-general`]: 'none',
-										[`${prefix}border-style-general`]: 'solid',
-										[`${prefix}border-top-width-general`]: '2',
-										[`${prefix}border-bottom-width-general`]: '2',
-										[`${prefix}border-left-width-general`]: '2',
-										[`${prefix}border-right-width-general`]: '2',
-										[`${prefix}border-sync-width-general`]: 'all',
-										[`${prefix}border-unit-width-general`]: 'px',
-										[`${prefix}border-palette-status-general`]: true,
-										[`${prefix}border-palette-color-general`]: 4, // Highlight
-									};
-								} else if (value === 'solid') {
-									changes = {
-										[`${prefix}background-active-media-general`]: 'color',
-										[`${prefix}background-palette-status-general`]: true,
-										[`${prefix}background-palette-color-general`]: 4, // Highlight
-										[`${prefix}border-style-general`]: 'none',
-									};
-								} else if (value === 'flat') {
-									changes = {
-										[`${prefix}box-shadow-status-general`]: false,
-									};
-								}
-							}
-							break;
-						case 'button_icon':
-							if (block.name.includes('button')) {
-								if (value === 'only') {
-									changes = { 'icon-only': true };
-								} else if (value === 'none') {
-									changes = { 'icon-only': false, 'icon-content': '' }; // Removing content effectively removes icon
-								}
-							}
-							break;
-						case 'button_size':
-							if (block.name.includes('button')) {
-								if (value === 'small') {
-									changes = {
-										[`${prefix}padding-top-general`]: '8',
-										[`${prefix}padding-bottom-general`]: '8',
-										[`${prefix}padding-left-general`]: '16',
-										[`${prefix}padding-right-general`]: '16',
-										[`${prefix}font-size-general`]: 14,
-									};
-								} else if (value === 'large') {
-									changes = {
-										[`${prefix}padding-top-general`]: '20',
-										[`${prefix}padding-bottom-general`]: '20',
-										[`${prefix}padding-left-general`]: '40',
-										[`${prefix}padding-right-general`]: '40',
-										[`${prefix}font-size-general`]: 20,
-									};
-								}
-							}
-							break;
 
-						// ======= NEW BUTTON HANDLERS =======
-						case 'button_text':
-							if(block.name.includes('button')) {
-								// In a real scenario, 'value' would be the extracted text. 
-								// Since 'value' is 'use_prompt' in the pattern, we might need a helper to extract the quoted text.
-								// For now, let's assume specific prompts like "Change button text to 'Get Started'".
-								// The regex extraction logic isn't fully visible here, but let's assume we might need to handle it.
-								// If value is 'use_prompt', we skip for now or we would need to extract it from the user message.
-								// However, for the specific patterns provided:
-								// "Change the button text to 'Download'" -> extracting 'Download' would be ideal.
-								// As a placeholder/POC:
-								changes = { 'content': 'Click Me' }; // Simplified for now
-							}
-							break;
-							
-						case 'button_url':
-							if(block.name.includes('button')) {
-								changes = { 
-									'linkSettings': { 
-										...block.attributes.linkSettings,
-										href: 'https://example.com' // Placeholder
-									} 
-								};
-							}
-							break;
-
-						case 'link_target':
-							if(block.name.includes('button')) {
-								changes = { 
-									'linkSettings': { 
-										...block.attributes.linkSettings,
-										target: value 
-									} 
-								};
-							}
-							break;
-
-						case 'link_rel':
-							if(block.name.includes('button')) {
-								changes = { 
-									'linkSettings': { 
-										...block.attributes.linkSettings,
-										rel: value 
-									} 
-								};
-							}
-							break;
-
-						case 'button_custom_text_link':
-							if(block.name.includes('button')) {
-								changes = { 
-									'content': value,
-									// Assuming we want to set a generic link for PDF if implied, 
-									// but for now just setting the text to 'Download' as per pattern
-								};
-							}
-							break;
-
-						case 'button_icon_add':
-							if(block.name.includes('button')) {
-								changes = { 
-									'icon-content': value, 
-									'icon-only': false 
-								};
-							}
-							break;
-
-						case 'icon_position':
-							if(block.name.includes('button')) {
-								changes = { 'icon-position': value };
-							}
-							break;
-
-						case 'icon_size':
-							if(block.name.includes('button')) {
-								changes = { 'icon-width': value };
-							}
-							break;
-							
-						case 'button_icon_change':
-							if(block.name.includes('button')) {
-								changes = { 'icon-content': value };
-							}
-							break;
-
-						case 'icon_spacing':
-							if(block.name.includes('button')) {
-								changes = { 'icon-spacing': value };
-							}
-							break;
-
-						case 'icon_color':
-							if(block.name.includes('button')) {
-								// Assuming icon color uses text color or specific icon setting?
-								// Maxi buttons usually have dedicated icon settings
-								changes = { 'icon-color': value }; // Verify attribute name
-							}
-							break;
-
-						case 'icon_style':
-							if(block.name.includes('button') && value === 'circle') {
-								changes = { 
-									'icon-background-status': true,
-									'icon-border-radius': 50,
-									'icon-padding': 10
-								};
-							}
-							break;
-
-						case 'button_bg_color':
-							if(block.name.includes('button')) {
-								if (value === 'transparent') {
-									changes = { 
-										[`${prefix}background-color-general`]: 'transparent', 
-										[`${prefix}background-palette-status-general`]: false 
-									};
-								} else {
-									// Simple color mapping
-									changes = { 
-										[`${prefix}background-color-general`]: value, 
-										[`${prefix}background-palette-status-general`]: false 
-									};
-								}
-							}
-							break;
-
-						case 'button_gradient':
-							if(block.name.includes('button')) {
-								changes = { 
-									[`${prefix}background-active-media-general`]: 'gradient',
-									// This would typically need more gradient settings (colors, angle)
-								};
-							}
-							break;
-
-						case 'button_border':
-							if(block.name.includes('button')) {
-								changes = {
-									[`${prefix}border-style-general`]: 'solid',
-									[`${prefix}border-top-width-general`]: '1',
-									[`${prefix}border-bottom-width-general`]: '1',
-									[`${prefix}border-left-width-general`]: '1',
-									[`${prefix}border-right-width-general`]: '1',
-									[`${prefix}border-color-general`]: 'grey',
-									[`${prefix}border-palette-status-general`]: false
-								};
-							}
-							break;
-
-						case 'button_shadow_color':
-							if(block.name.includes('button')) {
-								changes = { 
-									[`${prefix}box-shadow-color-general`]: value,
-									[`${prefix}box-shadow-palette-status-general`]: false,
-									[`${prefix}box-shadow-status-general`]: true
-								};
-							}
-							break;
-							
-						case 'button_transform':
-							if(block.name.includes('button')) {
-								changes = { [`${prefix}text-transform-general`]: value };
-							}
-							break;
-							
-						case 'button_decoration':
-							if(block.name.includes('button')) {
-								changes = { [`${prefix}text-decoration-general`]: value };
-							}
-							break;
-
-						case 'button_weight':
-							if(block.name.includes('button')) {
-								changes = { [`${prefix}font-weight-general`]: value };
-							}
-							break;
-
-						case 'button_responsive_width':
-							if(block.name.includes('button')) {
-								const { device, width } = value;
-								// Map 'mobile' to 'xs'
-								const suffix = device === 'mobile' ? '-xs' : '-general'; 
-								changes = { [`${prefix}width${suffix}`]: width };
-							}
-							break;
-
-						case 'button_responsive_hide':
-							if(block.name.includes('button')) {
-								// Hide on tablet (sm/md)
-								if (value === 'tablet') {
-									changes = { 
-										[`${prefix}display-sm`]: 'none', 
-										[`${prefix}display-md`]: 'none' 
-									};
-								}
-							}
-							break;
-
-						case 'button_hover_bg':
-							if(block.name.includes('button')) {
-								changes = { 
-									[`${prefix}background-color-hover`]: value,
-									[`${prefix}background-palette-status-hover`]: false,
-									[`${prefix}state-hover`]: true // Ensure hover state is enabled if needed
-								};
-							}
-							break;
-							
-						case 'button_hover_text':
-							if(block.name.includes('button')) {
-								changes = { 
-									[`${prefix}color-hover`]: value,
-									[`${prefix}palette-status-hover`]: false
-								};
-							}
-							break;
-
-						case 'button_dynamic_text':
-							if(block.name.includes('button')) {
-								changes = { 
-									'dc-status': true,
-									'dc-field': value // 'post-title'
-								};
-							}
-							break;
-							
-						case 'button_dynamic_link':
-							if(block.name.includes('button')) {
-								changes = { 
-									'dc-link-status': true,
-									'dc-link-field': value // 'post-url'
-								};
+						// ======= BUTTON ACTIONS (Delegated) =======
+						default:
+							// Try delegating to buttonHandlers
+							const buttonChanges = handleButtonUpdate(block, property, value, prefix);
+							if (buttonChanges) {
+								changes = buttonChanges;
 							}
 							break;
 
@@ -2415,20 +2096,43 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}
 
 			if (action.action === 'MODIFY_BLOCK') {
-				if (!selectedBlock?.clientId) {
-					return {
-						executed: false,
-						message: __('Please select a block first.', 'maxi-blocks'),
-					};
+				// ORCHESTRATION LAYER: Determine target blocks based on scope
+				let targetBlocks = [];
+				let prefix = ''; // Prefix logic might need to be per-block if they differ, but usually consistent for buttons
+
+				if (scope === 'selection') {
+					if (selectedBlock) {
+						targetBlocks = [selectedBlock];
+						prefix = getBlockPrefix(selectedBlock.name);
+					} else {
+						return {
+							executed: false,
+							message: __('Please select a block first.', 'maxi-blocks'),
+						};
+					}
+				} else if (scope === 'page') {
+					// Recursive search for ALL buttons on the page
+					targetBlocks = collectBlocks(allBlocks, (b) => b.name.includes('button'));
+					
+					if (targetBlocks.length === 0) {
+						return {
+							executed: false,
+							message: __('There are no Maxi buttons on this page to update.', 'maxi-blocks'),
+						};
+					}
+					// Note: prefix might vary if we supported mixed block types, but for "buttons" it's usually button-
+					// We'll calculate prefix inside the loop for safety.
 				}
 
 				let changes = {};
-				const prefix = getBlockPrefix(selectedBlock.name);
-				console.log('[Maxi AI Debug] MODIFY_BLOCK - Block name:', selectedBlock.name, 'Prefix:', prefix || '(empty)');
+				const allBulkUpdates = {}; // clientId -> attributes
 
-				// Helper to collect changes for a single block
-				const getChangesForSelection = (prop, val) => {
+				console.log('[Maxi AI Debug] MODIFY_BLOCK - Scope:', scope, 'Targets:', targetBlocks.length);
+
+				// Helper to collect changes for a single block (REFACTORED to take block argument)
+				const getChangesForBlock = (targetBlock, prop, val) => {
 					let c = null;
+					const blkPrefix = getBlockPrefix(targetBlock.name);
 					
 					// Detect removal commands
 					const isRemoval = val === null || val === 'none' || val === 'remove' || val === 0 || val === '0' || val === 'square';
@@ -2437,14 +2141,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'padding': c = updatePadding(val, null, prefix); break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
-						case 'background_color': c = updateBackgroundColor(selectedBlock.clientId, val, selectedBlock.attributes, prefix); break;
+						case 'background_color': c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, blkPrefix); break;
 						case 'border': 
-							if (isRemoval) c = updateBorder(0, 'none', null, prefix);
-							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, prefix);
+							if (isRemoval) c = updateBorder(0, 'none', null, blkPrefix);
+							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, blkPrefix);
 							else {
 								const parts = String(val).split(' ');
-								if (parts.length >= 3) c = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), prefix);
-								else if (val.startsWith('#') || val.startsWith('rgb') || val.startsWith('var')) c = updateBorder(1, 'solid', val, prefix);
+								if (parts.length >= 3) c = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), blkPrefix);
+								else if (val.startsWith('#') || val.startsWith('rgb') || val.startsWith('var')) c = updateBorder(1, 'solid', val, blkPrefix);
 							}
 							break;
 						case 'border_radius': 
@@ -2457,17 +2161,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								else if (val.includes('full')) rVal = 50;
 								else rVal = parseInt(val) || 8;
 							}
-							c = updateBorderRadius(rVal, null, prefix); 
+							c = updateBorderRadius(rVal, null, blkPrefix); 
 							break;
 						case 'shadow':
 						case 'box_shadow':
 						case 'box-shadow':
-							if (isRemoval) c = removeBoxShadow(prefix);
-							else if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, prefix);
-							else c = { [`${prefix}box-shadow-general`]: val, [`${prefix}box-shadow-status-general`]: true };
+							if (isRemoval) c = removeBoxShadow(blkPrefix);
+							else if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, blkPrefix);
+							else c = { [`${blkPrefix}box-shadow-general`]: val, [`${blkPrefix}box-shadow-status-general`]: true };
 							break;
-						case 'width': c = updateWidth(val, String(val).includes('%') ? '' : 'px', prefix); break;
-						case 'height': c = updateHeight(val, String(val).includes('%') ? '' : 'px', prefix); break;
+						case 'width': c = updateWidth(val, String(val).includes('%') ? '' : 'px', blkPrefix); break;
+						case 'height': c = updateHeight(val, String(val).includes('%') ? '' : 'px', blkPrefix); break;
 						case 'objectFit':
 						case 'object_fit': c = updateImageFit(val); break;
 						case 'opacity': c = updateOpacity(val); break;
@@ -2475,7 +2179,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'text_color':
 						case 'color':
 							// Apply to text, headings, buttons, etc.
-							c = updateTextColor(val, prefix);
+							c = updateTextColor(val, blkPrefix);
 							break;
 						case 'font_size':
 						case 'fontSize':
@@ -2486,63 +2190,56 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							c = updateFontWeight(val);
 							break;
 						// ======= BUTTON ACTIONS =======
-						case 'button_style':
-							if (selectedBlock.name.includes('button')) {
-								if (val === 'outline') {
-									c = {
-										[`${prefix}background-active-media-general`]: 'none',
-										[`${prefix}border-style-general`]: 'solid',
-										[`${prefix}border-top-width-general`]: '2',
-										[`${prefix}border-bottom-width-general`]: '2',
-										[`${prefix}border-left-width-general`]: '2',
-										[`${prefix}border-right-width-general`]: '2',
-										[`${prefix}border-sync-width-general`]: 'all',
-										[`${prefix}border-unit-width-general`]: 'px',
-										[`${prefix}border-palette-status-general`]: true,
-										[`${prefix}border-palette-color-general`]: 4,
+						// ======= BUTTON ACTIONS (Delegated) =======
+						default:
+							// Pass current conversation data if this flow matches the active conversation
+							// Check payload for explicit data override (from handleSuggestion loop)
+							const payloadData = action.payload?._conversationData;
+							
+							const currentData = payloadData || ((conversationContext && conversationContext.flow === prop) 
+								? conversationContext.data 
+								: {});
+							
+							// Add mode to context (Standardized)
+							const updateContext = { ...currentData, mode: scope };
+
+							// Call handler for THIS SPECIFIC BLOCK
+							const result = handleButtonUpdate(targetBlock, prop, val, blkPrefix, updateContext);
+							let btnChanges = null;
+
+							if (result) {
+								if (result.action === 'apply') {
+									btnChanges = result.attributes;
+									if (result.done) {
+                                        // Mark flow as finishing, but we might have other blocks.
+                                        // Wait, if one block says done, are they all done? Usually yes for same flow.
+                                        // We'll set a flag to clear context later.
+                                        conversationStep = { executed: true, done: true }; 
+                                    }
+								} else if (result.action) {
+									// Interaction Request (Step in Flow)
+									console.log('[Maxi AI Conversation] Interaction Request from block:', targetBlock.clientId, result);
+									return { 
+										_isConversationStep: true, 
+										...result,
+										flow: prop
 									};
-								} else if (val === 'solid') {
-									c = {
-										[`${prefix}background-active-media-general`]: 'color',
-										[`${prefix}background-palette-status-general`]: true,
-										[`${prefix}background-palette-color-general`]: 4,
-										[`${prefix}border-style-general`]: 'none',
-									};
-								} else if (val === 'flat') {
-									c = { [`${prefix}box-shadow-status-general`]: false };
-								}
-							}
-							break;
-						case 'button_icon':
-							if (selectedBlock.name.includes('button')) {
-								if (val === 'only') c = { 'icon-only': true };
-								else if (val === 'none') {
-                                    c = { 'icon-only': false, 'icon-content': '' };
+								} else {
+                                    // Legacy/Simple return (just changes)
+                                    btnChanges = result;
                                 }
 							}
-							break;
-						case 'button_size':
-							if (selectedBlock.name.includes('button')) {
-								if (val === 'small') {
-									c = {
-										[`${prefix}padding-top-general`]: '8',
-										[`${prefix}padding-bottom-general`]: '8',
-										[`${prefix}padding-left-general`]: '16',
-										[`${prefix}padding-right-general`]: '16',
-										[`${prefix}font-size-general`]: 14,
-									};
-								} else if (val === 'large') {
-									c = {
-										[`${prefix}padding-top-general`]: '20',
-										[`${prefix}padding-bottom-general`]: '20',
-										[`${prefix}padding-left-general`]: '40',
-										[`${prefix}padding-right-general`]: '40',
-										[`${prefix}font-size-general`]: 20,
-									};
-								}
-							}
+							
+							if (btnChanges) c = btnChanges;
 							break;
 					}
+					
+					// If we got a conversation step trigger, pass it up instantly
+					if (c && c._isConversationStep) return c;
+					
+					// If we got a bulk update result (executed: true), pass it up
+					if (c && c.executed) return c;
+
 					return c;
 				};
 
@@ -2558,34 +2255,136 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				// 2. Handle Payload (Object with multiple updates)
 				if (action.payload) {
 					const p = action.payload;
-					const allChanges = {};
-					
-					Object.entries(p).forEach(([prop, val]) => {
-						// Special handling for spacing object
-						if (prop === 'spacing' && typeof val === 'object') {
-							if (val.padding) Object.assign(allChanges, getChangesForSelection('padding', val.padding));
-							if (val.margin) Object.assign(allChanges, getChangesForSelection('margin', val.margin));
-						} else {
-							const c = getChangesForSelection(prop, val);
-							console.log('[Maxi AI Debug] getChangesForSelection result:', prop, val, '->', c);
-							if (c) Object.assign(allChanges, c);
-						}
-					});
+					let hasUpdates = false;
+					let conversationStep = null;
 
-					console.log('[Maxi AI Debug] Final allChanges:', JSON.stringify(allChanges));
-					console.log('[Maxi AI Debug] selectedBlock:', selectedBlock?.name, 'clientId:', selectedBlock?.clientId);
-					if (Object.keys(allChanges).length > 0) {
-						console.log('[Maxi AI Debug] Calling dispatch updateBlockAttributes with:', selectedBlock?.clientId, allChanges);
-						// Use direct dispatch instead of hook to ensure the update goes through
-						dispatch('core/block-editor').updateBlockAttributes(selectedBlock.clientId, allChanges);
-						console.log('[Maxi AI Debug] dispatch updateBlockAttributes called successfully');
+					// LOOP 1: Properties
+					for (const [prop, val] of Object.entries(p)) {
+						
+						// LOOP 2: Target Blocks
+						for (const block of targetBlocks) {
+							// Special handling for spacing object
+							let c = null;
+							if (prop === 'spacing' && typeof val === 'object') {
+								if (val.padding) {
+									const res = getChangesForBlock(block, 'padding', val.padding);
+									if (res && res._isConversationStep) conversationStep = res;
+									else if (res) Object.assign(allBulkUpdates[block.clientId] || (allBulkUpdates[block.clientId] = {}), res);
+								}
+								if (val.margin) {
+									const res = getChangesForBlock(block, 'margin', val.margin);
+									if (res && res._isConversationStep) conversationStep = res;
+									else if (res) Object.assign(allBulkUpdates[block.clientId] || (allBulkUpdates[block.clientId] = {}), res);
+								}
+							} else {
+								const res = getChangesForBlock(block, prop, val);
+								
+								// Check for Conversation Step
+								if (res && res._isConversationStep) {
+									conversationStep = res;
+									break; // Stop processing blocks, return to user
+								}
+
+								console.log('[Maxi AI Debug] getChangesForBlock result:', block.clientId, prop, val, '->', res);
+								if (res) {
+									if (!allBulkUpdates[block.clientId]) allBulkUpdates[block.clientId] = {};
+									Object.assign(allBulkUpdates[block.clientId], res);
+									hasUpdates = true;
+								}
+							}
+						}
+						
+						if (conversationStep) break; // Stop processing properties
+					}
+
+					// Handle Conversation Step Return
+					if (conversationStep) {
+						const c = conversationStep;
+						console.log('[Maxi AI Conversation] Setting Context:', c);
+						setConversationContext({
+							flow: c.flow,
+							pendingTarget: c.target,
+							data: conversationContext?.data || {},
+							currentOptions: c.options || []
+						});
+						
+						let displayOptions = c.options;
+						if (Array.isArray(c.options) && typeof c.options[0] === 'object') {
+							displayOptions = c.options.map(o => o.label);
+						}
+
+						return {
+							executed: false,
+							message: c.msg,
+							options: displayOptions,
+							optionsType: c.action === 'ask_palette' ? 'palette' : 'text'
+						};
+					}
+
+                    // Check for Completion
+                    if (conversationStep && conversationStep.done) {
+                         // Flow completed successfully
+						setConversationContext(null); // CLEAR STATE
+                    }
+
+					// If we reached here, the flow is either finished or not active
+					if (conversationContext && !conversationStep) {
+                        // Inherit old behavior: if no explicit step returned, maybe we are done?
+                        // But we want explicit control now.
+                        // For now we keep this as fallback clearing if nothing returned.
+						setConversationContext(null);
+					}
+
+					console.log('[Maxi AI Debug] Final Bulk Updates:', Object.keys(allBulkUpdates).length, 'blocks');
+					
+					if (Object.keys(allBulkUpdates).length > 0) {
+						// Batch Update
+						Object.entries(allBulkUpdates).forEach(([clientId, attrs]) => {
+							dispatch('core/block-editor').updateBlockAttributes(clientId, attrs);
+						});
+						console.log('[Maxi AI Debug] dispatch updateBlockAttributes called for all blocks');
+						return { executed: true, message: scope === 'page' ? 'Updated all buttons on page.' : 'Updated selection.' };
+					} else {
+						return { executed: true, message: 'No changes needed.' };
 					}
 				}
 
 				// 3. Handle Direct Property/Value
 				if (action.property && action.value !== undefined) {
 					const c = getChangesForSelection(action.property, action.value);
-					if (c) dispatch('core/block-editor').updateBlockAttributes(selectedBlock.clientId, c);
+					
+					// Check for Conversation Step (Direct Property)
+					if (c && c._isConversationStep) {
+						console.log('[Maxi AI Conversation] Setting Context (Direct):', c);
+						setConversationContext({
+							flow: c.flow,
+							pendingTarget: c.target,
+							data: conversationContext?.data || {},
+							currentOptions: c.options || []
+						});
+						
+						let displayOptions = c.options;
+						if (Array.isArray(c.options) && typeof c.options[0] === 'object') {
+							displayOptions = c.options.map(o => o.label);
+						}
+
+						return {
+							executed: false,
+							message: c.msg,
+							options: displayOptions,
+							optionsType: c.action === 'ask_palette' ? 'palette' : 'text'
+						};
+					}
+
+                    // Check for Bulk/Direct Execution
+                    if (c && c.executed) {
+                        return c;
+                    }
+
+					if (c) {
+						dispatch('core/block-editor').updateBlockAttributes(selectedBlock.clientId, c);
+						if (conversationContext) setConversationContext(null); // Cleanup
+					}
 				}
 
 				// 4. Trigger Sidebar Expand based on properties (Enhanced Selection Feedback)
@@ -2843,14 +2642,49 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	};
 
 	const sendMessage = async () => {
-		if (!input.trim() || isLoading) return;
+		if (!input.trim()) return;
 
-		const userMessage = input.trim();
+		const userMessage = { role: 'user', content: input };
+		setMessages(prev => [...prev, userMessage]);
 		setInput('');
-		setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+		setIsLoading(true);
+
+		// === FLOW STATE MACHINE BYPASS ===
+		// If we are in an active flow, do NOT run standard pattern matching.
+		// Instead, assume the user's input is the answer to the previous question and route it back to MODIFY_BLOCK.
+		if (conversationContext && conversationContext.flow) {
+			console.log('[Maxi AI Conversation] Active flow detected:', conversationContext.flow);
+			
+			// FSM Strict Mode: Ignore natural language during flow, require selection
+			// UNLESS it's a valid option text that matches our current options?
+			// The user requirement says "Pause NLU". 
+			// But if they type "Soft", we should probably accept it if it matches an option.
+			
+			const isOptionMatch = conversationContext.currentOptions?.some(o => 
+				(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === input.toLowerCase()
+			);
+
+            if (isOptionMatch) {
+                // Let handleSuggestion handle it via the standard flow re-entry
+                handleSuggestion(input);
+                return;
+            }
+
+			setMessages(prev => [...prev, { 
+				role: 'assistant', 
+				content: "Please select an option or colour to continue.", 
+				executed: false 
+			}]);
+			setIsLoading(false);
+			return;
+		}
+
+		// Process predefined flows (client-side interception)
+		const lowerMessage = input.toLowerCase();
+		const currentScope = conversationContext?.mode || scope; // Use context mode if in a flow, or tab state
 		
 		// 0. SELECTION CHECK: If in Selection mode, enforce that a block MUST be selected
-		if (scope === 'selection' && !selectedBlock) {
+		if (currentScope === 'selection' && !selectedBlock) {
 			setMessages(prev => [
 				...prev,
 				{
@@ -2863,47 +2697,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		// CLIENT-SIDE INTERCEPTION: Detect vague requests and show clarification immediately
-		const lowerMessage = userMessage.toLowerCase();
+		// const lowerMessage = userMessage.toLowerCase(); // Removed, already declared above
 		
-		// Border requests - detect target from user message (exclude removal commands)
-		if (lowerMessage.includes('border') && !lowerMessage.includes('radius') && !lowerMessage.includes('square') && !lowerMessage.includes('subtle') && !lowerMessage.includes('strong') && !lowerMessage.includes('brand') && !lowerMessage.includes('remove')) {
-			// Detect what the user wants to target
-			let target = null;
-			if (lowerMessage.includes('image')) target = 'image';
-			else if (lowerMessage.includes('button')) target = 'button';
-			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) target = 'container';
-			
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: target ? `Which colour border for the ${target}s?` : 'Which colour border would you like?',
-				options: ['palette'],
-				optionsType: 'palette',
-				colorTarget: 'border',
-				targetContext: target, // Store the target for when user clicks an option
-				executed: false
-			}]);
-			return;
-		}
+
 		
-		// Shadow requests - detect target from user message (exclude removal commands)
-		if (lowerMessage.includes('shadow') && !lowerMessage.includes('soft') && !lowerMessage.includes('crisp') && !lowerMessage.includes('bold') && !lowerMessage.includes('remove') && !lowerMessage.includes('no shadow')) {
-			// Detect what the user wants to target
-			let target = null;
-			if (lowerMessage.includes('image')) target = 'image';
-			else if (lowerMessage.includes('button')) target = 'button';
-			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) target = 'container';
-			
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: target ? `Which colour box shadow for the ${target}s?` : 'Which colour box shadow would you like?',
-				options: ['palette'],
-				optionsType: 'palette',
-				colorTarget: 'box-shadow',
-				targetContext: target,
-				executed: false
-			}]);
-			return;
-		}
+
 		
 		// Spacing requests - detect target from user message
 		if ((lowerMessage.includes('spacing') || lowerMessage.includes('space') || lowerMessage.includes('padding') || lowerMessage.includes('taller')) 
@@ -2925,23 +2723,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 		
 		// Rounded corners requests - detect target from user message (exclude removal commands)
-		if ((lowerMessage.includes('round') || lowerMessage.includes('corner') || lowerMessage.includes('radius')) 
-			&& !lowerMessage.includes('background') && !lowerMessage.includes('subtle') && !lowerMessage.includes('soft') && !lowerMessage.includes('full') && !lowerMessage.includes('square') && !lowerMessage.includes('remove')) {
-			// Detect what the user wants to target
-			let target = null;
-			if (lowerMessage.includes('image')) target = 'image';
-			else if (lowerMessage.includes('button')) target = 'button';
-			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) target = 'container';
-			
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: target ? `How rounded should the ${target} corners be?` : 'How rounded should the corners be?',
-				options: ['Subtle (8px)', 'Soft (24px)', 'Full (50px)'],
-				targetContext: target,
-				executed: false
-			}]);
-			return;
-		}
+
 		
 		// ICON LINE HOVER requests - show colour palette for stroke hover
 		if (lowerMessage.includes('icon') && (lowerMessage.includes('line') || lowerMessage.includes('stroke')) && lowerMessage.includes('hover') && !lowerMessage.includes('remove')) {
@@ -3026,7 +2808,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// DIRECT ACTION: "Make it square" / "remove rounded corners" / "remove border radius"
 		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (lowerMessage.includes('round') || lowerMessage.includes('radius')))) {
 			setIsLoading(true);
-			const directAction = scope === 'selection' 
+			const directAction = currentScope === 'selection' 
 				? { action: 'update_selection', property: 'border_radius', value: 0, message: 'Removed rounded corners from selected block.' }
 				: { action: 'update_page', property: 'border_radius', value: 0, message: 'Removed rounded corners.' };
 			
@@ -3041,7 +2823,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			// DIRECT ACTION: "Remove shadow" / "no shadow"
 		if (lowerMessage.includes('remove') && lowerMessage.includes('shadow') || lowerMessage.includes('no shadow')) {
 			setIsLoading(true);
-			const directAction = scope === 'selection'
+			const directAction = currentScope === 'selection'
 				? { action: 'update_selection', property: 'box_shadow', value: 'none', message: 'Removed shadow from selected block.' }
 				: { action: 'update_page', property: 'box_shadow', value: 'none', message: 'Removed shadows.' };
 			
@@ -3056,7 +2838,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			// DIRECT ACTION: "Remove border"
 		if (lowerMessage.includes('remove') && lowerMessage.includes('border') && !lowerMessage.includes('radius')) {
 			setIsLoading(true);
-			const directAction = scope === 'selection'
+			const directAction = currentScope === 'selection'
 				? { action: 'update_selection', property: 'border', value: 'none', message: 'Removed border from selected block.' }
 				: { action: 'update_page', property: 'border', value: 'none', message: 'Removed borders.' };
 			
@@ -3068,6 +2850,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 
+
+
 		// ============================================================
 		// LAYOUT INTENT INTERCEPTION (Lookup Table Pattern Matching)
 		// ============================================================
@@ -3076,6 +2860,76 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		for (const pattern of LAYOUT_PATTERNS) {
 			if (lowerMessage.match(pattern.regex)) {
 				setIsLoading(true);
+
+				// === FSM FLOW TRIGGER ===
+				if (pattern.property.startsWith('flow_')) {
+					
+					// 1. Resolve Blocks based on Scope
+					let targetBlocks = [];
+					let flowScope = currentScope;
+					if (/all|page|everywhere/i.test(lowerMessage)) flowScope = 'page';
+					
+					const matchName = pattern.target || 'button';
+					
+					if (flowScope === 'selection') {
+						if (!selectedBlock) {
+							setMessages(prev => [...prev, { 
+								role: 'assistant', 
+								content: "Please select a block first.", 
+								executed: false 
+							}]);
+							setIsLoading(false);
+							return;
+						}
+						targetBlocks = [selectedBlock];
+					} else {
+						// Page Scope: Find ALL matching blocks
+						targetBlocks = collectBlocks(allBlocks, b => b.name.includes(matchName));
+						
+						if (targetBlocks.length === 0) {
+							setMessages(prev => [...prev, { 
+								role: 'assistant', 
+								content: `No ${matchName}s found on this page.`, 
+								executed: false 
+							}]);
+							setIsLoading(false);
+							return;
+						}
+					}
+
+					// 2. Start Flow (using first block to generate initial question)
+					// We assume all blocks of same type respond to flow same way.
+					const primaryBlock = targetBlocks[0];
+					const prefix = getBlockPrefix(primaryBlock.name);
+					const startResponse = handleButtonUpdate(primaryBlock, pattern.property, 'start', prefix, {});
+
+					if (startResponse) {
+						// Setup Context with ALL block IDs
+						setConversationContext({
+							flow: pattern.property,
+							pendingTarget: startResponse.target || null,
+							data: {},
+							mode: flowScope,
+							currentOptions: startResponse.options || [],
+							blockIds: targetBlocks.map(b => b.clientId) // Track all targets
+						});
+						
+						// Show Trigger Message
+						setMessages(prev => [...prev, {
+							role: 'assistant',
+							content: startResponse.msg,
+							options: startResponse.options ? startResponse.options.map(o => o.label || o) : (startResponse.action === 'ask_palette' ? ['palette'] : []),
+							optionsType: startResponse.action === 'ask_palette' ? 'palette' : 'text',
+							colorTarget: startResponse.target, 
+							executed: false
+						}]);
+					} else {
+						setMessages(prev => [...prev, { role: 'assistant', content: "Flow started but no action required.", executed: false }]);
+					}
+					
+					setIsLoading(false);
+					return;
+				}
 				
 				// SPECIAL: Aesthetic patterns use apply_theme for global style changes
 				if (pattern.property === 'aesthetic') {
@@ -3161,12 +3015,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				
 				// SPECIAL: Colour clarification - show 8-colour palette picker
 				if (pattern.property === 'color_clarify') {
-					// Prioirty 1: Use specific target from pattern (e.g. 'button-background')
+					// Prioity 1: Use specific target from pattern (e.g. 'button-background')
 					// Priority 2: Heuristic detection from message
 					let colorTarget = pattern.colorTarget || 'element';
 					
 					if (!pattern.colorTarget) {
-						if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
+						if (lowerMessage.includes('button') && (lowerMessage.includes('background') || lowerMessage.includes('bg') || lowerMessage.includes('colour') || lowerMessage.includes('color'))) colorTarget = 'button-background';
+					else if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
 						else if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('font')) colorTarget = 'text';
 						else if (lowerMessage.includes('button')) colorTarget = 'button';
 						else if (lowerMessage.includes('border')) colorTarget = 'border';
@@ -3185,7 +3040,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 				
 				// Standard pattern handling
-				const directAction = scope === 'selection'
+				const directAction = currentScope === 'selection'
 					? { action: 'update_selection', property: pattern.property, value: pattern.value, message: pattern.selectionMsg }
 					: { action: 'update_page', property: pattern.property, value: pattern.value, target_block: pattern.target || 'container', message: pattern.pageMsg };
 				setTimeout(async () => {
@@ -3202,7 +3057,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (gapMatch) {
 			const gapValue = parseInt(gapMatch[1]);
 			setIsLoading(true);
-			const directAction = scope === 'selection'
+			const directAction = currentScope === 'selection'
 				? { action: 'update_selection', property: 'gap', value: gapValue, message: `Applied ${gapValue}px gap between items.` }
 				: { action: 'update_page', property: 'gap', value: gapValue, target_block: 'container', message: `Applied ${gapValue}px gap to containers.` };
 			setTimeout(async () => {
@@ -3219,7 +3074,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				role: 'assistant',
 				content: 'How much gap would you like between items?',
 				options: ['Small (10px)', 'Medium (20px)', 'Large (40px)'],
-				gapTarget: scope === 'selection' ? 'selection' : 'container',
+				gapTarget: currentScope === 'selection' ? 'selection' : 'container',
 				executed: false
 			}]);
 			return;
@@ -3334,7 +3189,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			// (Removed old coercion to MODIFY_BLOCK - we now support `update_selection` natively)
 
 
-			const { executed, message, options } = await parseAndExecuteAction(assistantContent);
+			const { executed, message, options, optionsType } = await parseAndExecuteAction(assistantContent);
 			console.log('[Maxi AI] Parsed action result:', { executed, message, options });
 
 			setMessages(prev => [
@@ -3343,6 +3198,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					role: 'assistant',
 					content: message,
 					options,
+					optionsType,
 					executed,
 				},
 			]);
@@ -3380,8 +3236,145 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 	};
 
-	const handleSuggestion = async suggestion => {
-		// INTERCEPTION: Check for Presets to bypass AI Latency/Hallucination
+	const handleSuggestion = async (suggestion) => {
+		// 1. Handle Active Conversation Flow
+		if (conversationContext) {
+			console.log('[Maxi AI Conversation] Handling input:', suggestion);
+			console.log('[Maxi AI Conversation] Current Context:', JSON.stringify(conversationContext, null, 2));
+			
+			let value = suggestion;
+
+			// Map "Color X" to numeric X
+			if (typeof suggestion === 'string' && suggestion.startsWith('Color ')) {
+				const num = parseInt(suggestion.replace('Color ', ''));
+				if (!isNaN(num)) value = num;
+				console.log('[Maxi AI Conversation] Mapped Color to:', value);
+			}
+			// Map Option Labels to Values (if stored in context)
+			else if (conversationContext.currentOptions && conversationContext.currentOptions.length > 0) {
+				console.log('[Maxi AI Conversation] Looking for option match. Options:', JSON.stringify(conversationContext.currentOptions));
+				const match = conversationContext.currentOptions.find(o => {
+					if (typeof o === 'object' && o.label) {
+						return o.label === suggestion;
+					}
+					return o === suggestion;
+				});
+				console.log('[Maxi AI Conversation] Match found:', match);
+				if (match && typeof match === 'object' && match.value !== undefined) {
+					value = match.value;
+					console.log('[Maxi AI Conversation] Mapped to value:', value);
+				}
+			}
+
+			// Capture data for the pending target
+			const updatedData = { 
+				...conversationContext.data,
+				[conversationContext.pendingTarget]: value
+			};
+
+			console.log('[Maxi AI Conversation] Updated Data:', updatedData);
+
+			// Add User Message
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			setIsLoading(true);
+
+			// Update context state
+			setConversationContext(prev => ({ ...prev, data: updatedData }));
+
+            // ORCHESTRATION: Iterate over ALL tracked blocks
+            const targetIds = conversationContext.blockIds || [];
+            if (targetIds.length === 0 && selectedBlock) targetIds.push(selectedBlock.clientId); // Fallback
+
+            // We need to determine the response. Since all blocks usually follow the same flow path,
+            // we process the first valid block to determine the NEXT STEP (Ask Question or Done).
+            // Then we apply any updates to ALL blocks.
+            
+            // Find full block objects - Get FRESH blocks from store to avoid stale closure
+            const freshBlocks = select('core/block-editor').getBlocks();
+            const fullBlocks = collectBlocks(freshBlocks, b => targetIds.includes(b.clientId));
+            if (fullBlocks.length === 0 && selectedBlock && targetIds.includes(selectedBlock.clientId)) fullBlocks.push(selectedBlock);
+
+            if (fullBlocks.length === 0) {
+                 setMessages(prev => [...prev, { role: 'assistant', content: "Lost track of blocks.", executed: false }]);
+                 setIsLoading(false);
+                 return;
+            }
+
+            let nextStepResponse = null;
+            let finalMsg = "Done.";
+			let isUnchanged = true;
+
+            // Batch update via registry if needed, or just sequential dispatch
+            // We'll process Logic on the first block to get the 'Action'
+            const primaryBlock = fullBlocks[0];
+            const prefix = getBlockPrefix(primaryBlock.name);
+            const logicResult = handleButtonUpdate(primaryBlock, conversationContext.flow, null, prefix, updatedData);
+
+            if (logicResult) {
+                if (logicResult.action === 'ask_options' || logicResult.action === 'ask_palette') {
+                    // It's another question - update UI and Context, no block changes yet (usually)
+                    nextStepResponse = logicResult;
+                } 
+                else if (logicResult.action === 'apply') {
+                    // APPLIES TO ALL BLOCKS
+                    // We need to generate the specific attributes for EACH block (prefixes might differ!)
+                    
+                    fullBlocks.forEach(blk => {
+                        const p = getBlockPrefix(blk.name);
+                        // Re-run handler for specific block to get correct attributes
+                        const res = handleButtonUpdate(blk, conversationContext.flow, null, p, updatedData);
+                        
+                        if (res && res.action === 'apply' && res.attributes) {
+                            dispatch('core/block-editor').updateBlockAttributes(blk.clientId, res.attributes);
+							isUnchanged = false;
+                        }
+                    });
+
+                    if (logicResult.done) {
+                        nextStepResponse = { done: true };
+                        // Use the message from the pattern if available? logicResult doesn't have it.
+                        // We can look up the pattern again or just say "Done."
+						
+						// Try to find the pattern message for success
+						const pattern = BUTTON_PATTERNS.find(p => p.property === conversationContext.flow);
+						if (pattern && pattern.pageMsg) finalMsg = pattern.pageMsg; // Or selectionMsg depending on mode
+                    }
+                }
+            }
+
+            setTimeout(() => {
+                if (nextStepResponse) {
+                    if (nextStepResponse.done) {
+                         setConversationContext(null); // Clear Context
+                         setMessages(prev => [...prev, { role: 'assistant', content: finalMsg, executed: true }]);
+                    } else {
+                        // Ask next question
+                        setConversationContext(prev => ({
+                            ...prev,
+                            pendingTarget: nextStepResponse.target,
+                            currentOptions: nextStepResponse.options || []
+                        }));
+                         
+                        setMessages(prev => [...prev, { 
+                            role: 'assistant', 
+                            content: nextStepResponse.msg, 
+                            options: nextStepResponse.options ? nextStepResponse.options.map(o => o.label || o) : (nextStepResponse.action === 'ask_palette' ? ['palette'] : []),
+                            optionsType: nextStepResponse.action === 'ask_palette' ? 'palette' : 'text',
+                            colorTarget: nextStepResponse.target,
+                            executed: false 
+                        }]);
+                    }
+                } else {
+                     // No result?
+                     setMessages(prev => [...prev, { role: 'assistant', content: "Flow state error.", executed: false }]);
+                }
+                setIsLoading(false);
+            }, 500);
+
+			return; // Stop standard processing
+		}
+
+		// 2. Standard Logic
 		let directAction = null;
 		
 		// Get target context from the last clarification message (if any)
@@ -3443,17 +3436,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 
-			const prevMsg = messages.findLast(m => m.colorTarget);
+			const prevMsg = messagesRef.current?.findLast(m => m.colorTarget);
 			
-			if (prevMsg?.colorTarget === 'border') {
+			if (prevMsg?.colorTarget === 'border' || prevMsg?.colorTarget === 'button-border') {
 				// Don't apply immediately - ask for border style preset
 				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
 				setMessages(prev => [...prev, {
 					role: 'assistant',
 					content: 'Which border style?',
-					options: ['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'],
+					options: ['Solid Thin', 'Solid Medium', 'Solid Fat', 'Dashed', 'Dotted'],
 					borderColorChoice: colorValue,
-					targetContext: prevMsg.targetContext,
+					targetContext: prevMsg?.colorTarget === 'button-border' ? 'button' : prevMsg.targetContext,
 					executed: false
 				}]);
 				return;
@@ -3540,7 +3533,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 		// ALIGNMENT OPTIONS
 		else if (['Align Text', 'Align Items'].includes(suggestion)) {
-			const prevMsg = messages.findLast(m => m.alignmentType);
+			const prevMsg = messagesRef.current?.findLast(m => m.alignmentType);
 			const alignVal = prevMsg?.alignmentType || 'center';
 			
 			if (suggestion === 'Align Text') {
@@ -3556,55 +3549,86 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 		// GAP SIZE PRESETS (from layout intent clarification)
 		else if (suggestion === 'Small (10px)') {
-			const prevMsg = messages.findLast(m => m.gapTarget);
+			const prevMsg = messagesRef.current?.findLast(m => m.gapTarget);
 			directAction = prevMsg?.gapTarget === 'selection'
 				? { action: 'update_selection', property: 'gap', value: 10, message: 'Applied small gap (10px).' }
 				: { action: 'update_page', property: 'gap', value: 10, target_block: 'container', message: 'Applied small gap (10px) to containers.' };
 		}
 		else if (suggestion === 'Medium (20px)') {
-			const prevMsg = messages.findLast(m => m.gapTarget);
+			const prevMsg = messagesRef.current?.findLast(m => m.gapTarget);
 			directAction = prevMsg?.gapTarget === 'selection'
 				? { action: 'update_selection', property: 'gap', value: 20, message: 'Applied medium gap (20px).' }
 				: { action: 'update_page', property: 'gap', value: 20, target_block: 'container', message: 'Applied medium gap (20px) to containers.' };
 		}
 		else if (suggestion === 'Large (40px)') {
-			const prevMsg = messages.findLast(m => m.gapTarget);
+			const prevMsg = messagesRef.current?.findLast(m => m.gapTarget);
 			directAction = prevMsg?.gapTarget === 'selection'
 				? { action: 'update_selection', property: 'gap', value: 40, message: 'Applied large gap (40px).' }
 				: { action: 'update_page', property: 'gap', value: 40, target_block: 'container', message: 'Applied large gap (40px) to containers.' };
 		}
 
-		// 8. BORDER STYLE PRESETS
-		else if (['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat'].includes(suggestion)) {
-			const prevMsg = messages.findLast(m => m.borderColorChoice !== undefined);
+		// 8. BORDER STYLE PRESETS (Legacy handler for non-FSM flows)
+		else if (['Solid Normal', 'Solid Fat', 'Dashed Normal', 'Dashed Fat', 'Dotted Normal', 'Dotted Fat', 'Solid Thin', 'Solid Medium', 'Dashed', 'Dotted'].includes(suggestion)) {
+			// GUARD: If no active context and last message was "Done.", ignore this click
+			// to prevent legacy handler from overriding FSM-applied styles with defaults
+			const lastAssistantMsg = messagesRef.current?.findLast(m => m.role === 'assistant');
+			if (lastAssistantMsg?.content === 'Done.' || lastAssistantMsg?.executed === true) {
+				// Flow is complete, this is a stale option click - prompt user to start fresh
+				setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+				setMessages(prev => [...prev, { 
+					role: 'assistant', 
+					content: 'The previous flow is complete. Say "outline buttons" to start a new border style flow!',
+					executed: false 
+				}]);
+				return;
+			}
+			
+			const prevMsg = messagesRef.current?.findLast(m => m.borderColorChoice !== undefined);
 			const borderColor = prevMsg?.borderColorChoice || 1;
 			const targetBlock = prevMsg?.targetContext;
 			
 			const styleMap = {
 				'Solid Normal': { width: 1, style: 'solid' },
-				'Solid Fat': { width: 2, style: 'solid' },
+				'Solid Fat': { width: 4, style: 'solid' },
 				'Dashed Normal': { width: 1, style: 'dashed' },
 				'Dashed Fat': { width: 2, style: 'dashed' },
 				'Dotted Normal': { width: 1, style: 'dotted' },
-				'Dotted Fat': { width: 2, style: 'dotted' }
+				'Dotted Fat': { width: 2, style: 'dotted' },
+				// New simplified options
+				'Solid Thin': { width: 1, style: 'solid' },
+				'Solid Medium': { width: 2, style: 'solid' },
+				'Dashed': { width: 2, style: 'dashed' },
+				'Dotted': { width: 2, style: 'dotted' }
 			};
 			
 			const style = styleMap[suggestion];
 			
-			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			// Context Recovery & Action Determination
+			let finalTarget = targetBlock;
+			let finalAction = scope === 'selection' ? 'update_selection' : 'update_page';
+
+			// FAILSAFE: If context is lost (stale closure) for the Button Flow options, default to Page Button update
+			// This prevents "Please select a block first" error when user is in Page tab but scope/context is stale
+			if (!finalTarget && ['Solid Thin', 'Solid Medium', 'Solid Fat', 'Dashed', 'Dotted'].includes(suggestion)) {
+				finalTarget = 'button';
+				finalAction = 'update_page';
+			}
+
+			// Force update_page if target is button (Button Flow)
+			if (finalTarget === 'button') finalAction = 'update_page';
 
 			directAction = {
-				action: actionType,
+				action: finalAction,
 				property: 'border',
 				value: { ...style, color: borderColor },
-				target_block: targetBlock,
-				message: targetBlock ? `Applied ${suggestion} border to all ${targetBlock}s.` : `Applied ${suggestion} border.`
+				target_block: finalTarget,
+				message: finalTarget ? `Applied ${suggestion} border to all ${finalTarget}s.` : `Applied ${suggestion} border.`
 			};
 		}
 
 		// 9. SHADOW STYLE PRESETS - Only trigger if we have a shadow color choice in context
 		else if (['Soft', 'Medium', 'Hard'].includes(suggestion)) {
-			const prevMsg = messages.findLast(m => m.shadowColorChoice !== undefined);
+			const prevMsg = messagesRef.current?.findLast(m => m.shadowColorChoice !== undefined);
 			// Only handle as shadow preset if we have shadow context
 			if (prevMsg?.shadowColorChoice !== undefined) {
 				const shadowColor = prevMsg.shadowColorChoice;
@@ -3680,7 +3704,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					setMessages(prev => [...prev, { 
 						role: 'assistant', 
 						content: result.message, 
-						options: nextOptions,
+						options: nextOptions || result.options,
+						optionsType: result.optionsType,
 						executed: true 
 					}]);
 				} catch (e) {

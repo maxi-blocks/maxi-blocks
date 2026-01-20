@@ -204,9 +204,15 @@ const Inspector = props => {
 												content={attributes.content}
 											/>
 										),
-										ignoreIndicator: [
-											`svg-width-${deviceType}`,
-											`svg-stroke-${deviceType}`,
+										indicatorProps: [
+											'svg-fill-palette-status',
+											'svg-fill-palette-color',
+											'svg-fill-palette-opacity',
+											'svg-fill-color',
+											'svg-line-palette-status',
+											'svg-line-palette-color',
+											'svg-line-palette-opacity',
+											'svg-line-color',
 										],
 									},
 
@@ -230,14 +236,9 @@ const Inspector = props => {
 													breakpoint={deviceType}
 												/>
 											),
-											ignoreIndicator: [
-												'svg-fill-palette-color',
-												'svg-fill-palette-status',
-												'svg-fill-color',
-												'svg-line-palette-color',
-												'svg-line-palette-status',
-												'svg-line-color',
-												`svg-width-${deviceType}`,
+											indicatorProps: [
+												'svg-stroke-general',
+												`svg-stroke-${deviceType}`,
 											],
 										},
 									...inspectorTabs.background({
@@ -284,14 +285,9 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-color',
-											`svg-stroke-${deviceType}`,
+										indicatorProps: [
+											'svg-width-general',
+											`svg-width-${deviceType}`,
 										],
 									},
 									...inspectorTabs.marginPadding({

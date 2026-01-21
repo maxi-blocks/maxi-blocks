@@ -40,12 +40,7 @@ const linkSettings = ({
 			disablePadding: true,
 			content: (
 				<TypographyControl
-					{...getGroupAttributes(
-						attributes,
-						['typography', 'link'],
-						false,
-						prefix
-					)}
+					{...getGroupAttributes(attributes, 'link', false, prefix)}
 					onChangeInline={(obj, target, isMultiplySelector) =>
 						insertInlineStyles({ obj, target, isMultiplySelector })
 					}

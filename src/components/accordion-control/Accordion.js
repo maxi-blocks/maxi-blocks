@@ -17,8 +17,35 @@ import {
 /**
  * External dependencies
  */
-import { lowerCase, isEmpty } from 'lodash';
+import { lowerCase, isEmpty, isEqual, isPlainObject } from 'lodash';
 import classnames from 'classnames';
+
+/**
+ * Checks if a value is considered "cleared" (inactive) for indicator purposes.
+ * Matches the cleared-value logic used by getIsActiveTab.
+ *
+ * @param {*}      value         - The current attribute value
+ * @param {*}      defaultValue  - The default attribute value
+ * @param {string} attributeName - Optional attribute name to determine special handling
+ * @return {boolean} True if the value is cleared/inactive
+ */
+const isClearedValue = (value, defaultValue, attributeName = '') => {
+	if (value == null) return true; // null or undefined
+	if (value === false) return true;
+	if (value === '') return true;
+	if (value === 'none' || value === 'unset') return true;
+	if (Array.isArray(value) && value.length === 0) return true;
+	if (isPlainObject(value) && isEmpty(value)) return true;
+	// Treat 1 as cleared when default is undefined, only for opacity attributes
+	if (
+		value === 1 &&
+		defaultValue === undefined &&
+		/opacity/i.test(attributeName)
+	) {
+		return true;
+	}
+	return isEqual(value, defaultValue);
+};
 
 const Accordion = props => {
 	const {
@@ -72,11 +99,8 @@ const Accordion = props => {
 						select('core/block-editor');
 
 					const block = getBlock(getSelectedBlockClientId());
-
 					const { show_indicators: showIndicators } =
-						(typeof window !== 'undefined' &&
-							window.maxiSettings) ||
-						{};
+						select('maxiBlocks')?.receiveMaxiSettings?.() ?? {};
 
 					if (
 						showIndicators &&
@@ -86,9 +110,11 @@ const Accordion = props => {
 						const { attributes, name } = block;
 						const defaultAttributes = getBlockAttributes(name);
 						isActiveTab = !item.indicatorProps.every(prop =>
-							Array.isArray(attributes[prop])
-								? isEmpty(attributes[prop])
-								: attributes[prop] === defaultAttributes[prop]
+							isClearedValue(
+								attributes?.[prop],
+								defaultAttributes?.[prop],
+								prop
+							)
 						);
 					}
 				}
@@ -125,10 +151,8 @@ const Accordion = props => {
 
 				const classesItemPanel = classnames(
 					'maxi-accordion-control__item__panel',
-					disablePadding || item.disablePadding
-						? 'maxi-accordion-control__item__panel--disable-padding'
-						: '',
-					item.classNamePanel
+					(disablePadding || item.disablePadding) &&
+						'maxi-accordion-control__item__panel--disable-padding'
 				);
 
 				const accordionUid =

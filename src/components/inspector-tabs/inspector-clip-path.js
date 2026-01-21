@@ -113,6 +113,7 @@ const clipPath = ({ props, selector, prefix = '' }) => {
 						),
 					},
 				]}
+				contentClassName='maxi-clip-path-tabs-content'
 			/>
 		),
 	};

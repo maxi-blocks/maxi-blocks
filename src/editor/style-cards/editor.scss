@@ -19,7 +19,7 @@ $breakpoints: (
 	'xs': 347px,
 	'sm': 768px,
 	'md': 782px,
-	'xxl': 2500px
+	'xxl': 2500px,
 );
 
 @mixin flex-center {
@@ -30,14 +30,11 @@ $breakpoints: (
 
 @mixin respond-to($breakpoint) {
 	$width: map-get($breakpoints, $breakpoint);
-
-	@if $breakpoint =='xxl' {
+	@if $breakpoint == 'xxl' {
 		@media only screen and (min-width: $width) {
 			@content;
 		}
-	}
-
-	@else {
+	} @else {
 		@media only screen and (max-width: $width) {
 			@content;
 		}
@@ -91,7 +88,6 @@ $breakpoints: (
 		opacity: 0.3;
 	}
 }
-
 
 .has-tooltip {
 	.tooltip {
@@ -289,7 +285,7 @@ body .maxi-style-cards__popover {
 
 			.maxi-color-control__color {
 				.chrome-picker {
-					&>div {
+					& > div {
 						&:last-child {
 							padding-bottom: 0 !important;
 
@@ -306,7 +302,6 @@ body .maxi-style-cards__popover {
 	}
 
 	.maxi-blocks-sc__type--SVG {
-
 		.maxi-color-control__palette,
 		.maxi-color-control__display {
 			margin-top: 8px;
@@ -320,7 +315,7 @@ body .maxi-style-cards__popover {
 
 			& div {
 				&:nth-child(2) {
-					&>div {
+					& > div {
 						&:not(.flexbox-fix) {
 							margin-right: 0 !important;
 
@@ -548,7 +543,7 @@ body .maxi-style-cards__popover {
 		padding: 10px;
 		background: var(--maxi-white);
 
-		&>svg {
+		& > svg {
 			width: 35px;
 			height: 35px;
 			margin-right: 10px;
@@ -633,11 +628,11 @@ body .maxi-style-cards__popover {
 					}
 				}
 
-				&>div {
-					&>.css-26l3qy-menu {
+				& > div {
+					& > .css-26l3qy-menu {
 						margin: 0;
 
-						&>div {
+						& > div {
 							padding: 0;
 						}
 					}
@@ -684,7 +679,6 @@ body .maxi-style-cards__popover {
 			column-gap: 4px;
 
 			&.edit-activate {
-
 				button,
 				.components-button {
 					width: auto !important;
@@ -791,7 +785,7 @@ body .maxi-style-cards__popover {
 			padding-bottom: 7px;
 		}
 
-		>* {
+		> * {
 			border-right: 1.5px solid var(--maxi-grey-light);
 		}
 
@@ -812,7 +806,6 @@ body .maxi-style-cards__popover {
 	}
 
 	.maxi-typography-control {
-
 		&__weight,
 		&__transform,
 		&__font-style,
@@ -825,6 +818,10 @@ body .maxi-style-cards__popover {
 		&__word-spacing,
 		&__size {
 			margin-top: $control-spacing;
+		}
+		.maxi-typography-control__spacing-controls
+			.maxi-typography-control__line-height {
+			margin-right: 10px !important;
 		}
 	}
 
@@ -846,7 +843,10 @@ body .maxi-style-cards__popover {
 		}
 	}
 
-	.components-range-control .components-base-control__field .components-range-control__track+span {
+	.components-range-control
+		.components-base-control__field
+		.components-range-control__track
+		+ span {
 		z-index: 0;
 	}
 
@@ -863,10 +863,11 @@ body .maxi-style-cards__popover {
 		}
 	}
 
-	.maxi-typography-control .maxi-typography-control__weight-size-row .maxi-typography-control__weight-warning {
+	.maxi-typography-control
+		.maxi-typography-control__weight-size-row
+		.maxi-typography-control__weight-warning {
 		width: 100% !important;
 	}
-
 
 	.maxi-typography-control__weight .maxi-components-button.maxi-reset-button {
 		margin-left: -1px !important;
@@ -881,7 +882,6 @@ body .maxi-style-cards__popover {
 @media only screen and (min-width: 2500px) {
 	.maxi-style-cards__popover {
 		.maxi-style-cards__sc__more-sc {
-
 			&--delete[type='button']:not(:disabled),
 			&--add-more {
 				border-width: 1.5px !important;
@@ -922,13 +922,17 @@ body .maxi-style-cards__popover {
 }
 
 @include respond-to('md') {
-	body:not(.is-fullscreen-mode):not(.folded) .maxi-responsive-selector .maxi-style-cards__popover {
+	body:not(.is-fullscreen-mode):not(.folded)
+		.maxi-responsive-selector
+		.maxi-style-cards__popover {
 		margin: 148px 0 0 25px;
 	}
 }
 
 @include respond-to('xs') {
-	.maxi-responsive-selector .maxi-style-cards__popover .components-popover__content {
+	.maxi-responsive-selector
+		.maxi-style-cards__popover
+		.components-popover__content {
 		margin-left: -25px;
 		left: 100%;
 		transform: none;
@@ -1055,7 +1059,7 @@ html[dir='rtl'] {
 // Fix z-index for font-family dropdown menu in style cards
 // React-select can portal menu to body, so we need a global rule
 // Scoped to maxi-blocks context to avoid affecting other libraries
-body.maxi-blocks--active [class*="menu"][class*="css-"],
-.maxi-style-cards__popover [class*="menu"][class*="css-"] {
+body.maxi-blocks--active [class*='menu'][class*='css-'],
+.maxi-style-cards__popover [class*='menu'][class*='css-'] {
 	z-index: 100 !important;
 }

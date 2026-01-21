@@ -120,8 +120,12 @@ const Mover = props => {
 	const moveUpContent = () => {
 		return (
 			<Button
-				aria-disabled={isTopDisabled}
+				disabled={isTopDisabled}
 				onClick={() => {
+					if (isTopDisabled) {
+						return;
+					}
+
 					moveBlocksUp([clientId], srcRootClientId);
 				}}
 			>
@@ -133,8 +137,14 @@ const Mover = props => {
 	const moveDownContent = () => {
 		return (
 			<Button
-				aria-disabled={isDownDisabled}
-				onClick={() => moveBlocksDown([clientId], srcRootClientId)}
+				disabled={isDownDisabled}
+				onClick={() => {
+					if (isDownDisabled) {
+						return;
+					}
+
+					moveBlocksDown([clientId], srcRootClientId);
+				}}
 			>
 				<Icon className='toolbar-item__icon' icon={moveDown} />
 			</Button>

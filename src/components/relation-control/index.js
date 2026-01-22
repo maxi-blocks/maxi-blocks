@@ -61,29 +61,12 @@ const RelationControl = props => {
 		uniqueID,
 	} = props;
 
-	// eslint-disable-next-line no-console
-	console.log(
-		'[IB Debug] RelationControl RENDER - uniqueID:',
-		uniqueID,
-		'rawRelations:',
-		JSON.stringify(rawRelations, null, 2)
-	);
-
 	// UseRef to prevent infinite loops during attribute updates
 	const isUpdating = useRef(false);
 	const prevRawRelationsRef = useRef(rawRelations);
 
 	useEffect(() => {
 		if (prevRawRelationsRef.current !== rawRelations) {
-			// eslint-disable-next-line no-console
-			console.log(
-				'[IB Debug] rawRelations CHANGED from:',
-				JSON.stringify(prevRawRelationsRef.current, null, 2),
-				'to:',
-				JSON.stringify(rawRelations, null, 2)
-			);
-			// eslint-disable-next-line no-console
-			console.trace('[IB Debug] rawRelations change stack trace');
 			prevRawRelationsRef.current = rawRelations;
 		}
 	}, [rawRelations]);
@@ -98,22 +81,6 @@ const RelationControl = props => {
 		const filtered = (rawRelations || []).filter(
 			r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
 		);
-		// eslint-disable-next-line no-console
-		console.log(
-			'[IB Debug] relations useMemo - rawRelations:',
-			JSON.stringify(rawRelations, null, 2)
-		);
-		// eslint-disable-next-line no-console
-		console.log(
-			'[IB Debug] relations useMemo - filtered:',
-			JSON.stringify(filtered, null, 2)
-		);
-		if (rawRelations?.length !== filtered.length) {
-			// eslint-disable-next-line no-console
-			console.log(
-				'[IB Debug] WARNING: Some relations were filtered out!'
-			);
-		}
 		return filtered;
 	}, [rawRelations]);
 
@@ -192,15 +159,6 @@ const RelationControl = props => {
 
 		// Only clean up relations if blocks were actually deleted
 		// Don't trigger on every render or attribute change
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] cleanup effect - checking each relation:');
-		rawRelations.forEach((r, idx) => {
-			const hasUniqueID = r.uniqueID && !isEmpty(r.uniqueID);
-			const clientId = hasUniqueID ? getClientIdFromUniqueId(r.uniqueID) : null;
-			// eslint-disable-next-line no-console
-			console.log(`[IB Debug] cleanup effect - relation[${idx}]: uniqueID=${r.uniqueID}, hasUniqueID=${hasUniqueID}, clientId=${clientId}`);
-		});
-
 		const hasInvalidRelations = rawRelations.some(
 			r =>
 				r.uniqueID &&
@@ -208,23 +166,12 @@ const RelationControl = props => {
 				!getClientIdFromUniqueId(r.uniqueID)
 		);
 
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] cleanup effect - hasInvalidRelations:', hasInvalidRelations);
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] cleanup effect - rawRelations.length:', rawRelations?.length, 'relations.length:', relations.length);
-
 		if (hasInvalidRelations && rawRelations.length !== relations.length) {
 			// Prevent infinite loop by checking if we've already processed this cleanup
 			if (isEqual(lastCleanedRef.current, relations)) {
-				// eslint-disable-next-line no-console
-				console.log('[IB Debug] cleanup effect - SKIPPED (already cleaned)');
 				return;
 			}
 
-			// eslint-disable-next-line no-console
-			console.log('[IB Debug] cleanup effect - TRIGGERING onChange with cleaned relations:', JSON.stringify(relations, null, 2));
-			// eslint-disable-next-line no-console
-			console.trace('[IB Debug] cleanup effect - TRIGGERING onChange stack trace');
 			lastCleanedRef.current = cloneDeep(relations);
 			onChangeRef.current({ relations });
 		}
@@ -252,13 +199,9 @@ const RelationControl = props => {
 		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;
 
 	const onChangeRelation = (rels, id, obj) => {
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] onChangeRelation - id:', id, 'obj:', JSON.stringify(obj, null, 2));
 		const newRels = cloneDeep(rels).map(r =>
 			r.id === id ? { ...r, ...obj } : r
 		);
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] onChangeRelation - newRels:', JSON.stringify(newRels, null, 2));
 		onChange({ relations: newRels });
 	};
 
@@ -267,13 +210,6 @@ const RelationControl = props => {
 	 * Ensures the filtered array is passed to onChange and resets preview if empty
 	 */
 	const onRemoveRelation = id => {
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] onRemoveRelation called - id:', id);
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] onRemoveRelation - current relations:', JSON.stringify(relations, null, 2));
-		// eslint-disable-next-line no-console
-		console.trace('[IB Debug] onRemoveRelation stack trace');
-
 		const removedRelation = relations.find(relation => relation.id === id);
 		if (removedRelation?.uniqueID) {
 			handleHighlight(removedRelation.uniqueID, false);
@@ -291,9 +227,6 @@ const RelationControl = props => {
 		if (newRelations.length === 0) {
 			updateObj['relations-preview'] = false;
 		}
-
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] onRemoveRelation - updateObj:', JSON.stringify(updateObj, null, 2));
 
 		// 4. Dispatch the change
 		onChange(updateObj);
@@ -362,58 +295,43 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 						blockAttributes: currentActualAttributes,
-						onChange: async newValues => {
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displayBeforeSetting onChange - newValues:', JSON.stringify(newValues, null, 2));
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displayBeforeSetting onChange - isUpdating:', isUpdating.current);
+					onChange: async newValues => {
+						if (isUpdating.current) {
+							return;
+						}
 
-							if (isUpdating.current) {
-								// eslint-disable-next-line no-console
-								console.log('[IB Debug] displayBeforeSetting onChange - SKIPPED (isUpdating)');
-								return;
-							}
+						const { isReset, meta, ...cleanValues } = newValues || {};
 
-							const { isReset, meta, ...cleanValues } = newValues || {};
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displayBeforeSetting onChange - cleanValues (without meta):', JSON.stringify(cleanValues, null, 2));
+						// USE DEEP EQUALITY: Prevents false positives with nested objects
+						const hasChanged = Object.keys(cleanValues).some(
+							key =>
+								!isEqual(
+									cleanValues[key],
+									currentActualAttributes[key]
+								)
+						);
 
-							// USE DEEP EQUALITY: Prevents false positives with nested objects
-							const hasChanged = Object.keys(cleanValues).some(
-								key =>
-									!isEqual(
-										cleanValues[key],
-										currentActualAttributes[key]
+						if (hasChanged) {
+							try {
+								isUpdating.current = true;
+								await Promise.resolve(
+									updateBlockAttributes(
+										targetClientId,
+										cleanValues
 									)
-							);
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displayBeforeSetting onChange - hasChanged:', hasChanged);
-
-							if (hasChanged) {
-								try {
-									isUpdating.current = true;
-									// eslint-disable-next-line no-console
-									console.log('[IB Debug] displayBeforeSetting onChange - calling updateBlockAttributes with:', JSON.stringify(cleanValues, null, 2));
-									await Promise.resolve(
-										updateBlockAttributes(
-											targetClientId,
-											cleanValues
-										)
-									);
-									// eslint-disable-next-line no-console
-									console.log('[IB Debug] displayBeforeSetting onChange - updateBlockAttributes completed');
-								} catch (error) {
-									// eslint-disable-next-line no-console
-									console.error(
-										'Failed to update relation block attributes:',
-										error
-									);
-								} finally {
-									// Release lock after async work completes
-									isUpdating.current = false;
-								}
+								);
+							} catch (error) {
+								// eslint-disable-next-line no-console
+								console.error(
+									'Failed to update relation block attributes:',
+									error
+								);
+							} finally {
+								// Release lock after async work completes
+								isUpdating.current = false;
 							}
-						},
+						}
+					},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,
@@ -504,93 +422,76 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 						blockAttributes: blockAttributesWithId,
-						onChange: obj => {
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - obj:', JSON.stringify(obj, null, 2));
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - item.attributes:', JSON.stringify(item.attributes, null, 2));
+				onChange: obj => {
+					const newAttributesObj = {
+						...item.attributes,
+						...obj,
+						...transformGeneralAttributesToBaseBreakpoint(
+							obj
+						),
+					};
 
-							const newAttributesObj = {
-								...item.attributes,
-								...obj,
-								...transformGeneralAttributesToBaseBreakpoint(
-									obj
-								),
-							};
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - newAttributesObj:', JSON.stringify(newAttributesObj, null, 2));
+					const { cleanAttributesObject, tempAttributes } =
+						getCleanResponseIBAttributes(
+							newAttributesObj,
+							blockAttributes,
+							item.uniqueID,
+							selectedSettings,
+							deviceType,
+							selectedSettings?.prefix || '',
+							item.sid,
+							targetClientId
+						);
 
-							const { cleanAttributesObject, tempAttributes } =
-								getCleanResponseIBAttributes(
-									newAttributesObj,
-									blockAttributes,
-									item.uniqueID,
-									selectedSettings,
-									deviceType,
-									selectedSettings?.prefix || '',
-									item.sid,
-									targetClientId
-								);
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - cleanAttributesObject:', JSON.stringify(cleanAttributesObject, null, 2));
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - tempAttributes:', JSON.stringify(tempAttributes, null, 2));
-
-							const mergedAttributes = merge(
-								{},
-								cleanAttributesObject,
-								tempAttributes
-							);
-							const stylesObj = getIBStylesObj({
-								clientId: targetClientId,
-								sid: item.sid,
-								attributes: mergedAttributes,
-								blockAttributes,
-								breakpoint: deviceType,
-							});
-							const styles = getIBStyles({
-								stylesObj,
-								blockAttributes,
-								isFirst: true,
-							});
-							// Remove empty/default border styles from XXL
-							if (styles.xxl?.styles?.border === 'none') {
-								delete styles.xxl.styles.border;
-								if (
-									Object.keys(styles.xxl.styles).length === 0
-								) {
-									delete styles.xxl;
-								}
-							}
-							const newAttributes = omitBy(
-								{
-									...item.attributes,
-									...cleanAttributesObject,
-								},
-								isNil
-							);
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - newAttributes (after omitBy):', JSON.stringify(newAttributes, null, 2));
-
-							// Convert empty string units to "px" for explicit representation
-							Object.keys(newAttributes).forEach(key => {
-								if (
-									key.includes('-unit-') &&
-									newAttributes[key] === ''
-								) {
-									newAttributes[key] = 'px';
-								}
-							});
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - final newAttributes:', JSON.stringify(newAttributes, null, 2));
-							// eslint-disable-next-line no-console
-							console.log('[IB Debug] displaySelectedSetting onChange - styles:', JSON.stringify(styles, null, 2));
-
-							onChangeRelation(relations, item.id, {
-								attributes: newAttributes,
-								css: styles,
-							});
+					const mergedAttributes = merge(
+						{},
+						cleanAttributesObject,
+						tempAttributes
+					);
+					const stylesObj = getIBStylesObj({
+						clientId: targetClientId,
+						sid: item.sid,
+						attributes: mergedAttributes,
+						blockAttributes,
+						breakpoint: deviceType,
+					});
+					const styles = getIBStyles({
+						stylesObj,
+						blockAttributes,
+						isFirst: true,
+					});
+					// Remove empty/default border styles from XXL
+					if (styles.xxl?.styles?.border === 'none') {
+						delete styles.xxl.styles.border;
+						if (
+							Object.keys(styles.xxl.styles).length === 0
+						) {
+							delete styles.xxl;
+						}
+					}
+					const newAttributes = omitBy(
+						{
+							...item.attributes,
+							...cleanAttributesObject,
 						},
+						isNil
+					);
+
+					// Convert empty string units to "px" for explicit representation
+					Object.keys(newAttributes).forEach(key => {
+						if (
+							key.includes('-unit-') &&
+							newAttributes[key] === ''
+						) {
+							newAttributes[key] = 'px';
+						}
+					});
+
+					onChangeRelation(relations, item.id, {
+						attributes: newAttributes,
+						css: styles,
+					});
+				},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,

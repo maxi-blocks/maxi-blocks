@@ -12,25 +12,6 @@ import RelationControl from '@components/relation-control';
 const relation = ({ props, isButton = false }) => {
 	const { attributes, name, clientId, maxiSetAttributes, deviceType } = props;
 
-	// eslint-disable-next-line no-console
-	console.log(
-		'[IB Debug] inspector-relation CALLED - clientId:',
-		clientId,
-		'relations:',
-		JSON.stringify(attributes?.relations, null, 2),
-		'relations type:',
-		typeof attributes?.relations,
-		'isArray:',
-		Array.isArray(attributes?.relations)
-	);
-	// eslint-disable-next-line no-console
-	if (!attributes?.relations || (Array.isArray(attributes?.relations) && attributes.relations.length === 0)) {
-		// eslint-disable-next-line no-console
-		console.log('[IB Debug] inspector-relation - EMPTY RELATIONS DETECTED!');
-		// eslint-disable-next-line no-console
-		console.trace('[IB Debug] inspector-relation empty relations stack trace');
-	}
-
 	const filterUndefinedProperties = obj => {
 		if (typeof obj !== 'object' || obj === null) {
 			return obj;
@@ -53,17 +34,7 @@ const relation = ({ props, isButton = false }) => {
 	};
 	const handleChange = useCallback(
 		obj => {
-			// eslint-disable-next-line no-console
-			console.log(
-				'[IB Debug] inspector-relation handleChange called with:',
-				JSON.stringify(obj, null, 2)
-			);
 			const filteredObj = filterUndefinedProperties(obj);
-			// eslint-disable-next-line no-console
-			console.log(
-				'[IB Debug] inspector-relation handleChange - filteredObj:',
-				JSON.stringify(filteredObj, null, 2)
-			);
 			maxiSetAttributes(filteredObj);
 		},
 		[maxiSetAttributes]

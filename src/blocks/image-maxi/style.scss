@@ -57,9 +57,11 @@ body.maxi-blocks--active figure.maxi-image-block {
 			position: relative;
 			margin: 0;
 			text-align: left;
+			z-index: 2;
 		}
 	}
 	.maxi-hover-details {
+		z-index: 2;
 		background-color: #000;
 
 		&:not(.maxi-hover-effect__text__flip-horiz) {

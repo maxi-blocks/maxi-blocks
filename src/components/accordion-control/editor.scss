@@ -10,7 +10,8 @@
 		&[data-name='box shadow'],
 		&[data-name='icon'],
 		&[data-name='border'],
-		&[data-name='active icon'] {
+		&[data-name='active icon'],
+		&[data-name='clip path'] {
 			.maxi-accordion-control__item__panel {
 				padding: 0;
 			}
@@ -137,7 +138,7 @@
 	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
 		color: var(--maxi-interaction-pink) !important;
 		font-weight: 700 !important;
-		
+
 		&:before {
 			background-color: var(--maxi-interaction-pink) !important;
 		}
@@ -149,7 +150,7 @@
 	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
 		color: var(--maxi-background-yellow) !important;
 		font-weight: 700 !important;
-		
+
 		&:before {
 			background-color: var(--maxi-background-yellow) !important;
 		}

@@ -30,6 +30,13 @@ const handleSetAttributes = ({
 	onChangeInline,
 	cleanInlineStyles,
 }) => {
+	// eslint-disable-next-line no-console
+	if ('relations' in obj) {
+		// eslint-disable-next-line no-console
+		console.log('[IB Debug] handleSetAttributes - relations in obj:', JSON.stringify(obj.relations, null, 2));
+		// eslint-disable-next-line no-console
+		console.trace('[IB Debug] handleSetAttributes with relations stack trace');
+	}
 	if (meta?.inline) {
 		if (onChangeInline) {
 			return onChangeInline(obj, meta.inline);

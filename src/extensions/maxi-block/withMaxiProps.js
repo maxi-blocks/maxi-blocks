@@ -55,6 +55,28 @@ const withMaxiProps = createHigherOrderComponent(
 				contextLoopContext,
 			} = ownProps;
 
+			// eslint-disable-next-line no-console
+			if (attributes?.relations !== undefined || name?.includes('text-maxi')) {
+				// eslint-disable-next-line no-console
+				console.log(
+					'[IB Debug] withMaxiProps RENDER - clientId:',
+					clientId,
+					'name:',
+					name,
+					'relations:',
+					JSON.stringify(attributes?.relations, null, 2),
+					'relations length:',
+					Array.isArray(attributes?.relations) ? attributes.relations.length : 'not array'
+				);
+				// eslint-disable-next-line no-console
+				if (Array.isArray(attributes?.relations) && attributes.relations.length === 0) {
+					// eslint-disable-next-line no-console
+					console.log('[IB Debug] withMaxiProps RENDER - EMPTY RELATIONS FROM PROPS!');
+					// eslint-disable-next-line no-console
+					console.trace('[IB Debug] withMaxiProps empty relations stack trace');
+				}
+			}
+
 			const repeaterContext = useContext(RepeaterContext);
 
 			// Memoize selectors to prevent recreation on every render
@@ -251,6 +273,24 @@ const withMaxiProps = createHigherOrderComponent(
 							);
 						},
 						onChange: newAttributes => {
+							// eslint-disable-next-line no-console
+							console.log(
+								'[IB Debug] withMaxiProps onChange - clientId:',
+								clientId,
+								'newAttributes:',
+								JSON.stringify(newAttributes, null, 2)
+							);
+							// eslint-disable-next-line no-console
+							if ('relations' in newAttributes) {
+								// eslint-disable-next-line no-console
+								console.log(
+									'[IB Debug] withMaxiProps onChange - RELATIONS BEING SET:',
+									JSON.stringify(newAttributes.relations, null, 2)
+								);
+								// eslint-disable-next-line no-console
+								console.trace('[IB Debug] relations being set stack trace');
+							}
+
 							// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
 							if (
 								originalBlockStyle &&

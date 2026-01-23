@@ -50,10 +50,10 @@ test.describe('Column Maxi', () => {
 			.first()
 			.getAttribute('data-block');
 
-		// Select the column block
+		// Select the column block (change position of click, because center of the block triggers inserter)
 		await page
 			.locator(`.maxi-column-block[data-block="${columnClientId}"]`)
-			.click();
+			.click({ position: { x: 10, y: 10 } });
 
 		await openSidebarTab(page, 'style', 'column settings');
 
@@ -63,20 +63,18 @@ test.describe('Column Maxi', () => {
 
 		await columnSizeInput.fill('50');
 
-		await page.waitForTimeout(300);
-		expect(await getAttributes(page, 'column-size-general')).toStrictEqual(
-			50
-		);
+		await expect
+			.poll(async () => getAttributes(page, 'column-size-general'))
+			.toBe(50);
 
 		const selector = page.locator(
 			'.maxi-accordion-control__item__panel .maxi-base-control__field select'
 		);
 		await selector.selectOption('center');
 
-		await page.waitForTimeout(300);
-		expect(
-			await getAttributes(page, 'justify-content-general')
-		).toStrictEqual('center');
+		await expect
+			.poll(async () => getAttributes(page, 'justify-content-general'))
+			.toBe('center');
 
 		// responsive S
 		await changeResponsive(page, 's');
@@ -102,8 +100,9 @@ test.describe('Column Maxi', () => {
 
 		expect(responsiveSOption).toStrictEqual('9');
 
-		await page.waitForTimeout(300);
-		expect(await getAttributes(page, 'column-size-s')).toStrictEqual(9);
+		await expect
+			.poll(async () => getAttributes(page, 'column-size-s'))
+			.toBe(9);
 
 		// responsive xs
 		await changeResponsive(page, 'xs');
@@ -165,21 +164,23 @@ test.describe('Column Maxi', () => {
 			unit: '%',
 		});
 
-		await page.waitForTimeout(300);
 		const expectBorder = {
 			'border-bottom-left-radius-general': 25,
 			'border-bottom-right-radius-general': 24,
 			'border-top-left-radius-general': 16,
 			'border-top-right-radius-general': 15,
 		};
-		const borderResult = await getAttributes(page, [
-			'border-bottom-left-radius-general',
-			'border-bottom-right-radius-general',
-			'border-top-left-radius-general',
-			'border-top-right-radius-general',
-		]);
 
-		expect(borderResult).toStrictEqual(expectBorder);
+		await expect
+			.poll(async () =>
+				getAttributes(page, [
+					'border-bottom-left-radius-general',
+					'border-bottom-right-radius-general',
+					'border-top-left-radius-general',
+					'border-top-right-radius-general',
+				])
+			)
+			.toEqual(expectBorder);
 
 		// check hover border
 		await borderAccordion
@@ -205,20 +206,23 @@ test.describe('Column Maxi', () => {
 			unit: '%',
 		});
 
-		await page.waitForTimeout(300);
 		const expectHoverBorder = {
 			'border-bottom-left-radius-general-hover': 12,
 			'border-bottom-right-radius-general-hover': 55,
 			'border-top-left-radius-general-hover': 33,
 			'border-top-right-radius-general-hover': 25,
 		};
-		const borderHoverResult = await getAttributes(page, [
-			'border-bottom-left-radius-general-hover',
-			'border-bottom-right-radius-general-hover',
-			'border-top-left-radius-general-hover',
-			'border-top-right-radius-general-hover',
-		]);
-		expect(borderHoverResult).toStrictEqual(expectHoverBorder);
+
+		await expect
+			.poll(async () =>
+				getAttributes(page, [
+					'border-bottom-left-radius-general-hover',
+					'border-bottom-right-radius-general-hover',
+					'border-top-left-radius-general-hover',
+					'border-top-right-radius-general-hover',
+				])
+			)
+			.toEqual(expectHoverBorder);
 
 		// check first column
 		await page.locator('.maxi-column-block').first().waitFor();

@@ -50,16 +50,15 @@ test.describe('Divider Maxi', () => {
 		await alignmentSelectors.nth(1).selectOption('flex-start');
 		await alignmentSelectors.nth(2).selectOption('flex-start');
 
-		await page.waitForTimeout(300);
-		expect(
-			await getAttributes(page, 'line-orientation-general')
-		).toStrictEqual('vertical');
-		expect(
-			await getAttributes(page, 'line-vertical-general')
-		).toStrictEqual('flex-start');
-		expect(
-			await getAttributes(page, 'line-horizontal-general')
-		).toStrictEqual('flex-start');
+		await expect
+			.poll(async () => getAttributes(page, 'line-orientation-general'))
+			.toBe('vertical');
+		await expect
+			.poll(async () => getAttributes(page, 'line-vertical-general'))
+			.toBe('flex-start');
+		await expect
+			.poll(async () => getAttributes(page, 'line-horizontal-general'))
+			.toBe('flex-start');
 
 		// responsive horizontal
 		// responsive S
@@ -148,14 +147,13 @@ test.describe('Divider Maxi', () => {
 
 		await alignmentSelectors.first().selectOption('horizontal');
 
-		await page.waitForTimeout(300);
-		expect(
-			await getAttributes(page, 'line-orientation-general')
-		).toStrictEqual('horizontal');
+		await expect
+			.poll(async () => getAttributes(page, 'line-orientation-general'))
+			.toBe('horizontal');
 
-		expect(await getAttributes(page, 'line-orientation-s')).toStrictEqual(
-			'vertical'
-		);
+		await expect
+			.poll(async () => getAttributes(page, 'line-orientation-s'))
+			.toBe('vertical');
 
 		await page.waitForTimeout(300);
 		expect(await getBlockStyle(page)).toMatchSnapshot(

@@ -104,13 +104,6 @@ test.describe('Button Maxi', () => {
 			)
 			.click();
 
-		const attributes = await getAttributes(page, [
-			'icon-width-general',
-			'icon-stroke-general',
-			'icon-spacing-general',
-			'icon-position',
-		]);
-
 		const expectedAttributesTwo = {
 			'icon-width-general': '343',
 			'icon-stroke-general': 2,
@@ -118,7 +111,16 @@ test.describe('Button Maxi', () => {
 			'icon-position': 'bottom',
 		};
 
-		expect(attributes).toStrictEqual(expectedAttributesTwo);
+		await expect
+			.poll(async () =>
+				getAttributes(page, [
+					'icon-width-general',
+					'icon-stroke-general',
+					'icon-spacing-general',
+					'icon-position',
+				])
+			)
+			.toEqual(expectedAttributesTwo);
 
 		// Icon color
 		await editColorControl({
@@ -130,9 +132,9 @@ test.describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		expect(
-			await getAttributes(page, 'icon-stroke-palette-color')
-		).toStrictEqual(5);
+		await expect
+			.poll(async () => getAttributes(page, 'icon-stroke-palette-color'))
+			.toBe(5);
 
 		// Icon inherit color / border tab
 		await page.locator('button.maxi-tabs-control__button-border').click();
@@ -146,9 +148,11 @@ test.describe('Button Maxi', () => {
 			colorPalette: 6,
 		});
 
-		expect(
-			await getAttributes(page, 'icon-border-palette-color-general')
-		).toStrictEqual(6);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-palette-color-general')
+			)
+			.toBe(6);
 
 		// Border style
 		await page
@@ -156,9 +160,9 @@ test.describe('Button Maxi', () => {
 			.nth(2)
 			.click();
 
-		expect(
-			await getAttributes(page, 'icon-border-style-general')
-		).toStrictEqual('dashed');
+		await expect
+			.poll(async () => getAttributes(page, 'icon-border-style-general'))
+			.toBe('dashed');
 
 		// Border color
 		await editColorControl({
@@ -168,42 +172,47 @@ test.describe('Button Maxi', () => {
 			colorPalette: 4,
 		});
 
-		expect(
-			await getAttributes(page, 'icon-border-palette-color-general')
-		).toStrictEqual(4);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-palette-color-general')
+			)
+			.toBe(4);
 
 		// Border width
 		const borderWidthInput = page.locator(
 			'.maxi-axis-control__content__item__border-width input[type="number"]'
 		);
 		await borderWidthInput.first().fill('59');
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-border-bottom-width-general')
-		).toStrictEqual(59);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-bottom-width-general')
+			)
+			.toBe(59);
 
 		// Border radius
 		const borderRadiusInput = page.locator(
 			'.maxi-axis-control__content__item__border-radius input[type="number"]'
 		);
 		await borderRadiusInput.first().fill('26');
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-border-bottom-right-radius-general')
-		).toStrictEqual(26);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-bottom-right-radius-general')
+			)
+			.toBe(26);
 
 		// Icon padding
 		const iconPaddingInput = page.locator(
 			'.maxi-axis-control__content__item__icon-padding input[type="number"]'
 		);
 		await iconPaddingInput.first().fill('33');
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-padding-bottom-general')
-		).toStrictEqual('33');
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-padding-bottom-general')
+			)
+			.toBe('33');
 
 		await expect(await getEditedPostContent(page, editor)).toMatchSnapshot(
 			'button-maxi__icon__content.html'
@@ -240,14 +249,13 @@ test.describe('Button Maxi', () => {
 
 		// Stroke width
 		await hoverInputs.nth(1).fill('4');
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-stroke-general-hover')
-		).toStrictEqual(4);
-		expect(
-			await getAttributes(page, 'icon-width-general-hover')
-		).toStrictEqual('245');
+		await expect
+			.poll(async () => getAttributes(page, 'icon-stroke-general-hover'))
+			.toBe(4);
+		await expect
+			.poll(async () => getAttributes(page, 'icon-width-general-hover'))
+			.toBe('245');
 
 		// Border tab
 		await page.locator('button.maxi-tabs-control__button-border').click();
@@ -257,11 +265,12 @@ test.describe('Button Maxi', () => {
 			.locator('.maxi-border-control .maxi-default-styles-control button')
 			.nth(3)
 			.click();
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-border-style-general-hover')
-		).toStrictEqual('dotted');
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-style-general-hover')
+			)
+			.toBe('dotted');
 
 		// Border color
 		await editColorControl({
@@ -271,22 +280,23 @@ test.describe('Button Maxi', () => {
 			colorPalette: 5,
 		});
 
-		await page.waitForTimeout(300);
-
-		expect(
-			await getAttributes(page, 'icon-border-palette-color-general-hover')
-		).toStrictEqual(5);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-palette-color-general-hover')
+			)
+			.toBe(5);
 
 		// Border width
 		const borderWidthInput = page.locator(
 			'.maxi-axis-control__content__item__border-width input[type="number"]'
 		);
 		await borderWidthInput.first().fill('70');
-		await page.waitForTimeout(300);
 
-		expect(
-			await getAttributes(page, 'icon-border-bottom-width-general-hover')
-		).toStrictEqual(70);
+		await expect
+			.poll(async () =>
+				getAttributes(page, 'icon-border-bottom-width-general-hover')
+			)
+			.toBe(70);
 
 		await expect(await getEditedPostContent(page, editor)).toMatchSnapshot(
 			'button-maxi__icon-hover__content.html'

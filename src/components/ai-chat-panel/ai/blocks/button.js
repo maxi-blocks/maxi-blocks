@@ -153,16 +153,21 @@ export const BUTTON_PATTERNS = [
 	{ regex: /full.*(mobile|phone)|mobile.*full/i, property: 'button_responsive_width', value: { device: 'mobile', width: '100%' }, selectionMsg: 'Full width on mobile.', pageMsg: 'Set to full width on mobile.', target: 'button' },
 	{ regex: /hide.*mobile|no.*mobile/i, property: 'button_responsive_hide', value: 'mobile', selectionMsg: 'Hidden on mobile.', pageMsg: 'Button hidden on mobile.', target: 'button' },
 	{ regex: /hide.*tablet/i, property: 'button_responsive_hide', value: 'tablet', selectionMsg: 'Hidden on tablet.', pageMsg: 'Button hidden on tablets.', target: 'button' },
-	{ regex: /hide.*(desktop|computer|pc)|desktop.*only/i, property: 'button_responsive_hide', value: 'desktop', selectionMsg: 'Hidden on desktop.', pageMsg: 'Button hidden on desktop.', target: 'button' },
+	{ regex: /hide.*(desktop|computer|pc)/i, property: 'button_responsive_hide', value: 'desktop', selectionMsg: 'Hidden on desktop.', pageMsg: 'Button hidden on desktop.', target: 'button' },
+	{ regex: /(desktop.*only|only.*desktop)/i, property: 'button_responsive_only', value: 'desktop', selectionMsg: 'Desktop only.', pageMsg: 'Button shown only on desktop.', target: 'button' },
+	{ regex: /((mobile|phone).*\bonly\b|\bonly\b.*(mobile|phone))/i, property: 'button_responsive_only', value: 'mobile', selectionMsg: 'Mobile only.', pageMsg: 'Button shown only on mobile.', target: 'button' },
+	{ regex: /(tablet.*only|only.*tablet)/i, property: 'button_responsive_only', value: 'tablet', selectionMsg: 'Tablet only.', pageMsg: 'Button shown only on tablet.', target: 'button' },
 
 	// ============================================================
 	// GROUP 9: CONTENT & LINKS
 	// ============================================================
 
-	{ regex: /change.*text|set.*text|set.*label|rename.*button/i, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated text.', pageMsg: 'Button text updated.', target: 'button' },
+	{ regex: /change.*text|set.*text|set.*label|rename.*button|button\s*(?:text|label|copy)\b|(?:text|label|copy)\s*(?:for|on)?\s*button|cta\s*(?:text|label)|call\s*to\s*action/i, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated text.', pageMsg: 'Button text updated.', target: 'button' },
 	{ regex: /change.*link|update.*url|set.*link|link.*to/i, property: 'button_url', value: 'use_prompt', selectionMsg: 'Updated link.', pageMsg: 'Button link updated.', target: 'button' },
 	{ regex: /open.*new.*(tab|window)/i, property: 'link_target', value: '_blank', selectionMsg: 'Opens in new tab.', pageMsg: 'Configured to open in new tab.', target: 'button' },
 	{ regex: /nofollow/i, property: 'link_rel', value: 'nofollow', selectionMsg: 'Set to nofollow.', pageMsg: 'Added rel="nofollow" to link.', target: 'button' },
+	{ regex: /sponsored/i, property: 'link_rel', value: 'sponsored', selectionMsg: 'Set to sponsored.', pageMsg: 'Added rel="sponsored" to link.', target: 'button' },
+	{ regex: /\bugc\b/i, property: 'link_rel', value: 'ugc', selectionMsg: 'Set to UGC.', pageMsg: 'Added rel="ugc" to link.', target: 'button' },
 	{ regex: /download|pdf/i, property: 'button_custom_text_link', value: 'Download', selectionMsg: 'Changed to download button.', pageMsg: 'Button set as download link.', target: 'button' },
 
 	// ============================================================
@@ -243,15 +248,12 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			[`${prefix}background-active-media-general`]: 'none', // Removed background
 			[`${prefix}background-color-general`]: 'transparent',
 			[`${prefix}background-palette-status-general`]: false,
-			
-			// Fix: Add Hover/Active state for Outlined Buttons so they don't look broken
-			[`${prefix}background-hover-mode`]: 'color',
-			[`${prefix}background-palette-status-hover`]: false,
-			[`${prefix}background-color-hover`]: 'transparent',
-			
-			[`${prefix}background-active-mode`]: 'color',
-			[`${prefix}background-palette-status-active`]: false,
-			[`${prefix}background-color-active`]: 'transparent',
+
+			// Keep hover background transparent for outlined buttons
+			[`${prefix}background-status-hover`]: true,
+			[`${prefix}background-active-media-general-hover`]: 'color',
+			[`${prefix}background-palette-status-general-hover`]: false,
+			[`${prefix}background-color-general-hover`]: 'transparent',
 		};
 		
 		// Apply border style and width to ALL breakpoints to override any existing values
@@ -394,10 +396,10 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				changes = {
 					[`${prefix}background-active-media-general`]: 'none',
 					[`${prefix}border-style-general`]: 'solid',
-					[`${prefix}border-top-width-general`]: '2',
-					[`${prefix}border-bottom-width-general`]: '2',
-					[`${prefix}border-left-width-general`]: '2',
-					[`${prefix}border-right-width-general`]: '2',
+					[`${prefix}border-top-width-general`]: 2,
+					[`${prefix}border-bottom-width-general`]: 2,
+					[`${prefix}border-left-width-general`]: 2,
+					[`${prefix}border-right-width-general`]: 2,
 					[`${prefix}border-sync-width-general`]: 'all',
 					[`${prefix}border-unit-width-general`]: 'px',
 					[`${prefix}border-palette-status-general`]: true,
@@ -443,7 +445,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 					[`${prefix}padding-bottom-general`]: '8',
 					[`${prefix}padding-left-general`]: '16',
 					[`${prefix}padding-right-general`]: '16',
-					[`${prefix}font-size-general`]: 14,
+					'font-size-general': 14,
 				};
 			} else if (value === 'large') {
 				changes = {
@@ -451,7 +453,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 					[`${prefix}padding-bottom-general`]: '20',
 					[`${prefix}padding-left-general`]: '40',
 					[`${prefix}padding-right-general`]: '40',
-					[`${prefix}font-size-general`]: 20,
+					'font-size-general': 20,
 				};
 			}
 			break;
@@ -477,17 +479,20 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_text':
-			// Placeholder logic from original file
-			changes = { buttonContent: 'Click Me' };
+			if (value !== undefined) {
+				changes = { buttonContent: String(value) };
+			}
 			break;
 
 		case 'button_url':
-			changes = {
-				linkSettings: {
-					...block.attributes.linkSettings,
-					url: 'https://example.com' // Placeholder
-				}
-			};
+			if (value) {
+				changes = {
+					linkSettings: {
+						...block.attributes.linkSettings,
+						url: String(value)
+					}
+				};
+			}
 			break;
 
 		case 'link_target':
@@ -503,7 +508,9 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			changes = {
 				linkSettings: {
 					...block.attributes.linkSettings,
-					noFollow: value === 'nofollow'
+					...(value === 'nofollow' ? { noFollow: true } : {}),
+					...(value === 'sponsored' ? { sponsored: true } : {}),
+					...(value === 'ugc' ? { ugc: true } : {})
 				}
 			};
 			break;
@@ -526,7 +533,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'icon_size':
-			changes = { 'icon-width-general': value };
+			changes = { 'icon-width-general': value, 'icon-height-general': value };
 			break;
 
 		case 'button_icon_change':
@@ -538,7 +545,25 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'icon_color':
-			changes = { 'icon-color': value };
+			if (value !== undefined && value !== 'use_prompt') {
+				const colorValue = typeof value === 'object' ? value.color : value;
+				const target = typeof value === 'object' && value?.target === 'stroke' ? 'stroke' : 'fill';
+				const prefixKey = target === 'stroke' ? 'icon-stroke' : 'icon-fill';
+				const isPalette = typeof colorValue === 'number';
+
+				if (isPalette) {
+					changes = {
+						[`${prefixKey}-palette-status`]: true,
+						[`${prefixKey}-palette-color`]: colorValue,
+						[`${prefixKey}-color`]: ''
+					};
+				} else {
+					changes = {
+						[`${prefixKey}-color`]: colorValue,
+						[`${prefixKey}-palette-status`]: false
+					};
+				}
+			}
 			break;
 
 		case 'icon_style':
@@ -582,33 +607,43 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		case 'button_border':
 			changes = {
 				[`${prefix}border-style-general`]: 'solid',
-				[`${prefix}border-top-width-general`]: '1',
-				[`${prefix}border-bottom-width-general`]: '1',
-				[`${prefix}border-left-width-general`]: '1',
-				[`${prefix}border-right-width-general`]: '1',
+				[`${prefix}border-top-width-general`]: 1,
+				[`${prefix}border-bottom-width-general`]: 1,
+				[`${prefix}border-left-width-general`]: 1,
+				[`${prefix}border-right-width-general`]: 1,
 				[`${prefix}border-color-general`]: 'grey',
 				[`${prefix}border-palette-status-general`]: false
 			};
 			break;
 
 		case 'button_shadow_color':
-			changes = {
-				[`${prefix}box-shadow-color-general`]: value,
-				[`${prefix}box-shadow-palette-status-general`]: false,
-				[`${prefix}box-shadow-status-general`]: true
-			};
+			if (value !== undefined) {
+				const isPalette = typeof value === 'number';
+				changes = {
+					[`${prefix}box-shadow-status-general`]: true,
+					...(isPalette
+						? {
+							[`${prefix}box-shadow-palette-status-general`]: true,
+							[`${prefix}box-shadow-palette-color-general`]: value
+						}
+						: {
+							[`${prefix}box-shadow-color-general`]: value,
+							[`${prefix}box-shadow-palette-status-general`]: false
+						})
+				};
+			}
 			break;
 
 		case 'button_transform':
-			changes = { [`${prefix}text-transform-general`]: value };
+			changes = { 'text-transform-general': value };
 			break;
 
 		case 'button_decoration':
-			changes = { [`${prefix}text-decoration-general`]: value };
+			changes = { 'text-decoration-general': value };
 			break;
 
 		case 'button_weight':
-			changes = { [`${prefix}font-weight-general`]: value };
+			changes = { 'font-weight-general': value };
 			break;
 
 		case 'button_responsive_width':
@@ -620,7 +655,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			}
 
 		case 'button_font_style':
-			changes = { [`${prefix}font-style-general`]: value };
+			changes = { 'font-style-general': value };
 			break;
 
 		case 'button_responsive_hide':
@@ -635,18 +670,53 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				};
 			} else if (value === 'desktop') {
 				changes = {
-					[`${prefix}display-l`]: 'none',
+					[`${prefix}display-lg`]: 'none',
 					[`${prefix}display-xl`]: 'none'
 				};
 			}
 			break;
 
+		case 'button_responsive_only':
+			if (value === 'mobile') {
+				changes = {
+					[`${prefix}display-sm`]: 'none',
+					[`${prefix}display-md`]: 'none',
+					[`${prefix}display-lg`]: 'none',
+					[`${prefix}display-xl`]: 'none'
+				};
+			} else if (value === 'tablet') {
+				changes = {
+					[`${prefix}display-xs`]: 'none',
+					[`${prefix}display-lg`]: 'none',
+					[`${prefix}display-xl`]: 'none'
+				};
+			} else if (value === 'desktop') {
+				changes = {
+					[`${prefix}display-xs`]: 'none',
+					[`${prefix}display-sm`]: 'none',
+					[`${prefix}display-md`]: 'none'
+				};
+			}
+			break;
+
 		case 'button_active_bg':
-			changes = {
-				[`${prefix}background-color-active`]: value,
-				[`${prefix}background-palette-status-active`]: false,
-				[`${prefix}state-active`]: true
-			};
+			if (value !== undefined) {
+				const isPalette = typeof value === 'number';
+				changes = {
+					[`${prefix}background-status-hover`]: true,
+					[`${prefix}background-active-media-general-hover`]: 'color',
+					...(isPalette
+						? {
+							[`${prefix}background-palette-status-general-hover`]: true,
+							[`${prefix}background-palette-color-general-hover`]: value,
+							[`${prefix}background-color-general-hover`]: ''
+						}
+						: {
+							[`${prefix}background-palette-status-general-hover`]: false,
+							[`${prefix}background-color-general-hover`]: value
+						})
+				};
+			}
 			break;
 
 		case 'high_contrast_mode':
@@ -655,31 +725,55 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				[`${prefix}background-active-media-general`]: 'color',
 				[`${prefix}background-color-general`]: '#000000',
 				[`${prefix}background-palette-status-general`]: false,
-				[`${prefix}color-general`]: '#ffffff',
-				[`${prefix}palette-status-general`]: false,
+				'color-general': '#ffffff',
+				'palette-status-general': false,
 				[`${prefix}border-style-general`]: 'solid',
-				[`${prefix}border-top-width-general`]: '2',
-				[`${prefix}border-bottom-width-general`]: '2',
-				[`${prefix}border-left-width-general`]: '2',
-				[`${prefix}border-right-width-general`]: '2',
+				[`${prefix}border-top-width-general`]: 2,
+				[`${prefix}border-bottom-width-general`]: 2,
+				[`${prefix}border-left-width-general`]: 2,
+				[`${prefix}border-right-width-general`]: 2,
 				[`${prefix}border-color-general`]: '#ffffff',
 				[`${prefix}border-palette-status-general`]: false
 			};
 			break;
 
 		case 'button_hover_bg':
-			changes = {
-				[`${prefix}background-color-hover`]: value,
-				[`${prefix}background-palette-status-hover`]: false,
-				[`${prefix}state-hover`]: true
-			};
+			if (value !== undefined) {
+				const isPalette = typeof value === 'number';
+				changes = {
+					[`${prefix}background-status-hover`]: true,
+					[`${prefix}background-active-media-general-hover`]: 'color',
+					...(isPalette
+						? {
+							[`${prefix}background-palette-status-general-hover`]: true,
+							[`${prefix}background-palette-color-general-hover`]: value,
+							[`${prefix}background-color-general-hover`]: ''
+						}
+						: {
+							[`${prefix}background-palette-status-general-hover`]: false,
+							[`${prefix}background-color-general-hover`]: value
+						})
+				};
+			}
 			break;
 
 		case 'button_hover_text':
-			changes = {
-				[`${prefix}color-hover`]: value,
-				[`${prefix}palette-status-hover`]: false
-			};
+			if (value !== undefined) {
+				const isPalette = typeof value === 'number';
+				changes = {
+					'typography-status-hover': true,
+					...(isPalette
+						? {
+							'palette-status-general-hover': true,
+							'palette-color-general-hover': value,
+							'color-general-hover': ''
+						}
+						: {
+							'color-general-hover': value,
+							'palette-status-general-hover': false
+						})
+				};
+			}
 			break;
 
 		case 'button_dynamic_text':

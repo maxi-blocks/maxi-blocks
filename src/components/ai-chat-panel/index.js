@@ -15,7 +15,7 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
-import { BUTTON_PATTERNS, handleButtonUpdate } from './buttonHandlers';
+import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
@@ -252,7 +252,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /cut.*diamond|diamond.*shape/, property: 'clip_path', value: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', selectionMsg: 'Cut into diamond shape.', pageMsg: 'Applied diamond clip.' },
 	
 	// GROUP 16: CONSTRAINTS & SIZING
-	{ regex: /don'?t.*too.*wide|max.*width|limit.*width|constrain.*width/, property: 'max_width', value: 'fit-content', selectionMsg: 'Constrained max width.', pageMsg: 'Limited maximum width.' },
+	{ regex: /don'?t.*too.*wide|max.*width|limit.*width|constrain.*width/, property: 'max_width', value: 1200, selectionMsg: 'Constrained max width.', pageMsg: 'Limited maximum width.' },
 	{ regex: /full.*width|stretch.*wide|100.*width/, property: 'full_width', value: true, selectionMsg: 'Set to full width.', pageMsg: 'Made containers full width.' },
 	{ regex: /minimum.*height|at.*least.*tall|min.*height/, property: 'min_height', value: 400, selectionMsg: 'Set minimum height.', pageMsg: 'Applied minimum height.' },
 	
@@ -300,8 +300,8 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
-	// GROUP 24: BUTTON ACTIONS (Imported)
-	...BUTTON_PATTERNS,
+	// GROUP 24: BLOCK ACTIONS (Imported)
+	...AI_BLOCK_PATTERNS,
 
 	// GROUP 25: CREATE BLOCK PATTERNS (from Cloud Library)
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
@@ -543,18 +543,240 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	};
 
 	const updateTextColor = (color, prefix = '') => {
+		const normalizedPrefix = prefix === 'button-' ? '' : prefix;
 		const isPalette = typeof color === 'number';
 		if (isPalette) {
 			return {
-				[`${prefix}palette-status-general`]: true,
-				[`${prefix}palette-color-general`]: color,
-				[`${prefix}color-general`]: '', // Clear custom color
+				[`${normalizedPrefix}palette-status-general`]: true,
+				[`${normalizedPrefix}palette-color-general`]: color,
+				[`${normalizedPrefix}color-general`]: '', // Clear custom color
 			};
 		}
 		return {
-			[`${prefix}color-general`]: color,
-			[`${prefix}palette-status-general`]: false,
+			[`${normalizedPrefix}color-general`]: color,
+			[`${normalizedPrefix}palette-status-general`]: false,
 		};
+	};
+
+	const HEX_COLOR_REGEX = /#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})(?![0-9a-fA-F])/;
+
+	const extractHexColor = message => {
+		if (!message) return null;
+		const match = message.match(HEX_COLOR_REGEX);
+		return match ? match[0] : null;
+	};
+
+	const extractQuotedText = message => {
+		if (!message) return null;
+		const match = message.match(/["']([^"']+)["']/);
+		return match ? match[1].trim() : null;
+	};
+
+	const extractUrl = message => {
+		if (!message) return null;
+		const match = message.match(/https?:\/\/[^\s"'<>]+/i);
+		if (match) return match[0];
+		const wwwMatch = message.match(/\bwww\.[^\s"'<>]+/i);
+		if (wwwMatch) return `https://${wwwMatch[0]}`;
+		const relativeMatch = message.match(/(?:to|link)\s+(\/[^\s"'<>]+)/i);
+		if (relativeMatch) return relativeMatch[1];
+		return null;
+	};
+
+	const extractValueFromPatterns = (message, patterns) => {
+		for (const pattern of patterns) {
+			const match = message.match(pattern);
+			if (match && match[1]) return match[1].trim();
+		}
+		return null;
+	};
+
+	const extractButtonText = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:button\s*)?(?:text|label|copy)\s*(?:to|=|is|:)\s*(.+)$/i,
+			/(?:button\s*)?(?:text|label|copy)\s+(?!colou?r\b)(.+)$/i,
+			/(?:rename|change)\s*button\s*(?:to|as)\s*(.+)$/i,
+			/(?:button\s*)?(?:says|say|reads)\s*(.+)$/i,
+		]);
+	};
+
+	const extractCaptionText = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:caption|description)\s*(?:to|=|is|:)\s*(.+)$/i,
+		]);
+	};
+
+	const extractAltText = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:alt\s*text|alt)\s*(?:to|=|is|:)\s*(.+)$/i,
+		]);
+	};
+
+	const resolveButtonIconTarget = lowerMessage =>
+		lowerMessage.includes('stroke') ||
+		lowerMessage.includes('line') ||
+		lowerMessage.includes('outline')
+			? 'stroke'
+			: 'fill';
+
+	const resolvePromptValue = (property, message) => {
+		if (!message) return null;
+		switch (property) {
+			case 'button_text':
+				return extractButtonText(message);
+			case 'captionContent':
+				return extractCaptionText(message);
+			case 'mediaAlt':
+				return extractAltText(message);
+			case 'button_url':
+			case 'mediaURL':
+				return extractUrl(message);
+			case 'icon_color':
+			case 'button_hover_bg':
+			case 'button_hover_text':
+			case 'button_active_bg':
+				return extractHexColor(message);
+			default:
+				return null;
+		}
+	};
+
+	const getColorTargetForProperty = (property, lowerMessage) => {
+		switch (property) {
+			case 'button_hover_bg':
+				return 'button-hover-background';
+			case 'button_hover_text':
+				return 'button-hover-text';
+			case 'button_active_bg':
+				return 'button-active-background';
+			case 'icon_color':
+				return resolveButtonIconTarget(lowerMessage) === 'stroke'
+					? 'button-icon-stroke'
+					: 'button-icon-fill';
+			default:
+				return 'element';
+		}
+	};
+
+	const getColorTargetFromMessage = lowerMessage => {
+		const isButtonContext =
+			lowerMessage.includes('button') ||
+			selectedBlock?.name?.includes('button');
+		const isHover = lowerMessage.includes('hover');
+		const isActive =
+			lowerMessage.includes('active') || lowerMessage.includes('pressed');
+		const isText =
+			lowerMessage.includes('text') ||
+			lowerMessage.includes('label') ||
+			lowerMessage.includes('font');
+		const isBackground =
+			lowerMessage.includes('background') || lowerMessage.includes('bg');
+		const isIcon = lowerMessage.includes('icon');
+
+		if (isIcon && isButtonContext) {
+			return resolveButtonIconTarget(lowerMessage) === 'stroke'
+				? 'button-icon-stroke'
+				: 'button-icon-fill';
+		}
+		if (lowerMessage.includes('border') && isButtonContext) return 'button-border';
+		if (isIcon) {
+			return resolveButtonIconTarget(lowerMessage) === 'stroke'
+				? 'stroke'
+				: 'fill';
+		}
+		if (isHover && isButtonContext) {
+			if (isText) return 'button-hover-text';
+			if (isBackground) return 'button-hover-background';
+		}
+		if (isActive && isButtonContext) return 'button-active-background';
+		if (isButtonContext && isText) return 'button-text';
+		if (isButtonContext && isBackground) return 'button-background';
+		if (isButtonContext) return 'button-background';
+		if (isBackground) return 'background';
+		if (isText) return 'text';
+		if (lowerMessage.includes('border')) return 'border';
+		return 'element';
+	};
+
+	const buildColorUpdate = (colorTarget, colorValue) => {
+		let property = '';
+		let targetBlock = 'container';
+		let value = colorValue;
+		let msgText = '';
+
+		if (colorTarget === 'button' || colorTarget === 'button-background') {
+			property = 'background_color';
+			targetBlock = 'button';
+			msgText = 'button background';
+		} else if (colorTarget === 'button-text') {
+			property = 'text_color';
+			targetBlock = 'button';
+			msgText = 'button text';
+		} else if (colorTarget === 'button-border') {
+			property = 'border';
+			targetBlock = 'button';
+			msgText = 'button border';
+		} else if (colorTarget === 'button-hover-background') {
+			property = 'button_hover_bg';
+			targetBlock = 'button';
+			msgText = 'button hover background';
+		} else if (colorTarget === 'button-hover-text') {
+			property = 'button_hover_text';
+			targetBlock = 'button';
+			msgText = 'button hover text';
+		} else if (colorTarget === 'button-active-background') {
+			property = 'button_active_bg';
+			targetBlock = 'button';
+			msgText = 'button active background';
+		} else if (colorTarget === 'button-icon-fill') {
+			property = 'icon_color';
+			targetBlock = 'button';
+			value = { target: 'fill', color: colorValue };
+			msgText = 'button icon fill';
+		} else if (colorTarget === 'button-icon-stroke') {
+			property = 'icon_color';
+			targetBlock = 'button';
+			value = { target: 'stroke', color: colorValue };
+			msgText = 'button icon stroke';
+		} else if (colorTarget === 'background') {
+			property = 'background_color';
+			targetBlock = 'container';
+			msgText = 'background';
+		} else if (colorTarget === 'text') {
+			property = 'text_color';
+			targetBlock = 'text';
+			msgText = 'text';
+		} else if (colorTarget === 'element') {
+			property = 'background_color';
+			targetBlock = selectedBlock?.name?.includes('button')
+				? 'button'
+				: 'container';
+			msgText = 'element';
+		} else if (colorTarget === 'icon-line-hover') {
+			property = 'svg_line_color_hover';
+			targetBlock = 'svg-icon';
+			msgText = 'icon line hover';
+		} else if (colorTarget === 'icon-hover') {
+			property = 'svg_fill_color_hover';
+			targetBlock = 'svg-icon';
+			msgText = 'icon fill hover';
+		} else if (colorTarget === 'stroke') {
+			property = 'svg_line_color';
+			targetBlock = 'svg-icon';
+			msgText = 'icon stroke';
+		} else {
+			property = 'svg_fill_color';
+			targetBlock = 'svg-icon';
+			msgText = 'icon fill';
+		}
+
+		return { property, targetBlock, value, msgText };
 	};
 
 	const updatePadding = (value, side = null, prefix = '') => {
@@ -932,6 +1154,77 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		[`${prefix}height-general`]: value,
 		[`${prefix}height-unit-general`]: unit,
 	});
+
+	const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
+		if (rawValue === null || rawValue === undefined) {
+			return { value: 0, unit: fallbackUnit };
+		}
+
+		if (typeof rawValue === 'number') {
+			return { value: rawValue, unit: fallbackUnit };
+		}
+
+		const raw = String(rawValue).trim();
+		const match = raw.match(/^(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem)?$/i);
+		if (match) {
+			return { value: Number(match[1]), unit: match[2] || fallbackUnit };
+		}
+
+		const parsed = Number.parseFloat(raw);
+		return { value: Number.isNaN(parsed) ? 0 : parsed, unit: fallbackUnit };
+	};
+
+	const getActiveBreakpoint = () => {
+		const maxiStore = select('maxiBlocks');
+		return maxiStore?.receiveMaxiDeviceType?.() || 'general';
+	};
+
+	const getBaseBreakpoint = () => {
+		const maxiStore = select('maxiBlocks');
+		return maxiStore?.receiveBaseBreakpoint?.() || null;
+	};
+
+	const buildSizeChanges = (key, value, unit) => {
+		const bp = getActiveBreakpoint();
+		const base = getBaseBreakpoint();
+		const strValue = String(value);
+		const changes = {
+			[`${key}-${bp}`]: strValue,
+			[`${key}-unit-${bp}`]: unit,
+			'size-advanced-options': true,
+		};
+
+		if (bp === 'general' && base) {
+			changes[`${key}-${base}`] = strValue;
+			changes[`${key}-unit-${base}`] = unit;
+		}
+
+		return changes;
+	};
+
+	const buildContextLoopChanges = (value = {}) => {
+		if (!value || typeof value !== 'object') return null;
+
+		const changes = {
+			'cl-status': value.status === undefined ? true : Boolean(value.status),
+			'cl-source': value.source,
+			'cl-type': value.type,
+			'cl-relation': value.relation,
+			'cl-id': value.id,
+			'cl-author': value.author,
+			'cl-order-by': value.orderBy,
+			'cl-order': value.order,
+			'cl-pagination': value.pagination,
+		};
+
+		if (value.perPage !== undefined) {
+			changes['cl-pagination-per-page'] = Number(value.perPage);
+		}
+
+		return Object.fromEntries(
+			Object.entries(changes).filter(([, val]) => val !== undefined)
+		);
+	};
 
 	// Typography helpers
 	const updateFontFamily = (value) => ({
@@ -1687,8 +1980,51 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								changes = updateStacking(value.zIndex, value.position || 'relative');
 							}
 							break;
+						case 'z_index':
+							changes = updateZIndex(value);
+							break;
 						case 'position':
 							changes = updatePosition(value);
+							break;
+						case 'position_top':
+							{
+								const posTop = parseUnitValue(value);
+								changes = {
+									'position-top-general': posTop.value,
+									'position-top-unit-general': posTop.unit,
+									'position-sync-general': 'none',
+								};
+							}
+							break;
+						case 'position_right':
+							{
+								const posRight = parseUnitValue(value);
+								changes = {
+									'position-right-general': posRight.value,
+									'position-right-unit-general': posRight.unit,
+									'position-sync-general': 'none',
+								};
+							}
+							break;
+						case 'position_bottom':
+							{
+								const posBottom = parseUnitValue(value);
+								changes = {
+									'position-bottom-general': posBottom.value,
+									'position-bottom-unit-general': posBottom.unit,
+									'position-sync-general': 'none',
+								};
+							}
+							break;
+						case 'position_left':
+							{
+								const posLeft = parseUnitValue(value);
+								changes = {
+									'position-left-general': posLeft.value,
+									'position-left-unit-general': posLeft.unit,
+									'position-sync-general': 'none',
+								};
+							}
 							break;
 						case 'display':
 							changes = updateDisplay(value);
@@ -1725,12 +2061,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							};
 							break;
 
-						// ======= BUTTON ACTIONS (Delegated) =======
+						// ======= BLOCK ACTIONS (Delegated) =======
 						default:
-							// Try delegating to buttonHandlers
-							const buttonChanges = handleButtonUpdate(block, property, value, prefix);
-							if (buttonChanges) {
-								changes = buttonChanges;
+							// Try delegating to block-specific handlers
+							const blockHandler = getAiHandlerForBlock(block);
+							if (blockHandler) {
+								const handlerChanges = blockHandler(block, property, value, prefix);
+								if (handlerChanges) {
+									changes = handlerChanges;
+								}
 							}
 							break;
 
@@ -1785,20 +2124,39 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						// ======= SHAPES & DIVIDERS =======
 						case 'shape_divider':
-							changes = { 
-								'shape-divider-bottom-status': true,
-								'shape-divider-bottom-shape': value,
-							};
+							if (!value || value === 'none' || value === 'off') {
+								changes = { 'shape-divider-bottom-status': false };
+							} else {
+								changes = { 
+									'shape-divider-bottom-status': true,
+									'shape-divider-bottom-shape-style': value,
+								};
+							}
 							break;
 						case 'clip_path':
 							changes = { 
 								'clip-path-general': value,
-								'clip-path-status-general': true,
+								'clip-path-status-general': value !== 'none',
 							};
 							break;
 						// ======= CONSTRAINTS & SIZING =======
 						case 'max_width':
-							changes = { 'max-width-general': value };
+							{
+								const maxWidth = parseUnitValue(value);
+								changes = buildSizeChanges('max-width', maxWidth.value, maxWidth.unit);
+							}
+							break;
+						case 'min_width':
+							{
+								const minWidth = parseUnitValue(value);
+								changes = buildSizeChanges('min-width', minWidth.value, minWidth.unit);
+							}
+							break;
+						case 'max_height':
+							{
+								const maxHeight = parseUnitValue(value);
+								changes = buildSizeChanges('max-height', maxHeight.value, maxHeight.unit);
+							}
 							break;
 						case 'full_width':
 							changes = { 
@@ -1807,15 +2165,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							};
 							break;
 						case 'min_height':
-							changes = { 
-								'min-height-general': Number(value),
-								'min-height-unit-general': 'px',
-							};
+							{
+								const minHeight = parseUnitValue(value);
+								changes = buildSizeChanges('min-height', minHeight.value, minHeight.unit);
+							}
 							break;
 						// ======= ROW PATTERNS =======
 						case 'row_pattern':
 							// Row patterns are complex - just set a marker attribute
 							changes = { 'row-pattern-general': value };
+							break;
+						// ======= CONTEXT LOOP =======
+						case 'context_loop':
+							changes = buildContextLoopChanges(value);
 							break;
 						// ======= RELATIVE SIZING =======
 						case 'relative_size':
@@ -2240,8 +2602,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'fontWeight':
 							c = updateFontWeight(val);
 							break;
-						// ======= BUTTON ACTIONS =======
-						// ======= BUTTON ACTIONS (Delegated) =======
+						// ======= BLOCK ACTIONS (Delegated) =======
 						default:
 							// Pass current conversation data if this flow matches the active conversation
 							// Check payload for explicit data override (from handleSuggestion loop)
@@ -2255,12 +2616,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							const updateContext = { ...currentData, mode: scope };
 
 							// Call handler for THIS SPECIFIC BLOCK
-							const result = handleButtonUpdate(targetBlock, prop, val, blkPrefix, updateContext);
-							let btnChanges = null;
+							const blockHandler = getAiHandlerForBlock(targetBlock);
+							const result = blockHandler
+								? blockHandler(targetBlock, prop, val, blkPrefix, updateContext)
+								: null;
+							let handlerChanges = null;
 
 							if (result) {
 								if (result.action === 'apply') {
-									btnChanges = result.attributes;
+									handlerChanges = result.attributes;
 									if (result.done) {
                                         // Mark flow as finishing, but we might have other blocks.
                                         // Wait, if one block says done, are they all done? Usually yes for same flow.
@@ -2277,11 +2641,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									};
 								} else {
                                     // Legacy/Simple return (just changes)
-                                    btnChanges = result;
+                                    handlerChanges = result;
                                 }
 							}
 							
-							if (btnChanges) c = btnChanges;
+							if (handlerChanges) c = handlerChanges;
 							break;
 					}
 					
@@ -2695,7 +3059,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const sendMessage = async () => {
 		if (!input.trim()) return;
 
-		const userMessage = { role: 'user', content: input };
+		const rawMessage = input;
+		const userMessage = { role: 'user', content: rawMessage };
 		setMessages(prev => [...prev, userMessage]);
 		setInput('');
 		setIsLoading(true);
@@ -2731,7 +3096,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		// Process predefined flows (client-side interception)
-		const lowerMessage = input.toLowerCase();
+		const lowerMessage = rawMessage.toLowerCase();
+		const hexColor = extractHexColor(rawMessage);
 		const currentScope = conversationContext?.mode || scope; // Use context mode if in a flow, or tab state
 		
 		// 0. SELECTION CHECK: If in Selection mode, enforce that a block MUST be selected
@@ -2772,12 +3138,120 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}]);
 			return;
 		}
-		
+
+		// Image numeric overrides (width/height/ratio)
+		const isImageRequest = lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture') || selectedBlock?.name?.includes('image');
+		if (isImageRequest) {
+			const ratioMatch = lowerMessage.match(/(?:aspect\s*ratio|ratio)\s*(?:to|=|is)?\s*(\d+)\s*[:/]\s*(\d+)/i);
+			if (ratioMatch) {
+				const ratioValue = `custom:${ratioMatch[1]}/${ratioMatch[2]}`;
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` }
+					: { action: 'update_page', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+
+			const widthMatch = lowerMessage.match(/(?:image|img).*(?:width|wide)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i);
+			if (widthMatch) {
+				const value = Number(widthMatch[1]);
+				const unit = widthMatch[2];
+				const prop = unit === '%' ? 'img_width' : 'width';
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: prop, value, target_block: 'image', message: `Image width set to ${value}${unit}.` }
+					: { action: 'update_page', property: prop, value, target_block: 'image', message: `Image width set to ${value}${unit}.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+
+			const heightMatch = lowerMessage.match(/(?:image|img).*(?:height|tall)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i);
+			if (heightMatch) {
+				const value = Number(heightMatch[1]);
+				const unit = heightMatch[2];
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: 'height', value, target_block: 'image', message: `Image height set to ${value}${unit}.` }
+					: { action: 'update_page', property: 'height', value, target_block: 'image', message: `Image height set to ${value}${unit}.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+		}
+
+		// Container sizing overrides (min/max width/height)
+		const resolveSizeTarget = () => {
+			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
+			if (lowerMessage.includes('button')) return 'button';
+			if (lowerMessage.includes('container') || lowerMessage.includes('section') || lowerMessage.includes('row') || lowerMessage.includes('column')) return 'container';
+
+			if (selectedBlock?.name) {
+				if (selectedBlock.name.includes('image')) return 'image';
+				if (selectedBlock.name.includes('button')) return 'button';
+				if (selectedBlock.name.includes('container')) return 'container';
+			}
+
+			return 'container';
+		};
+
+		const limitMatch = lowerMessage.match(/\b(max(?:imum)?|min(?:imum)?)\s*[- ]*(width|height)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i);
+		const limitMatchAlt = lowerMessage.match(/\b(width|height)\s*(max(?:imum)?|min(?:imum)?)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i);
+
+		if (limitMatch || limitMatchAlt) {
+			const match = limitMatch || limitMatchAlt;
+			const isAlt = Boolean(limitMatchAlt);
+			const limitTypeRaw = isAlt ? match[2] : match[1];
+			const dimension = isAlt ? match[1] : match[2];
+			const numberValue = Number(match[3]);
+			const unitValue = match[4];
+
+			if (!Number.isNaN(numberValue)) {
+				const limitType = limitTypeRaw.toLowerCase().startsWith('max') ? 'max' : 'min';
+				const prop = `${limitType}_${dimension.toLowerCase()}`;
+				const value = unitValue ? `${numberValue}${unitValue}` : numberValue;
+				const targetBlock = resolveSizeTarget();
+				const labelUnit = unitValue || 'px';
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` }
+					: { action: 'update_page', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+		}
+
 		// Rounded corners requests - detect target from user message (exclude removal commands)
 
 		
 		// ICON LINE HOVER requests - show colour palette for stroke hover
 		if (lowerMessage.includes('icon') && (lowerMessage.includes('line') || lowerMessage.includes('stroke')) && lowerMessage.includes('hover') && !lowerMessage.includes('remove')) {
+			if (hexColor) {
+				const colorUpdate = buildColorUpdate('icon-line-hover', hexColor);
+				setIsLoading(true);
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon line hover colour.' }
+					: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon line hover colour.' };
+
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+
 			setMessages(prev => [...prev, {
 				role: 'assistant',
 				content: 'Which colour for the icon line hover?',
@@ -2791,6 +3265,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		
 		// ICON FILL HOVER requests - show colour palette for fill hover
 		if (lowerMessage.includes('icon') && lowerMessage.includes('hover') && !lowerMessage.includes('line') && !lowerMessage.includes('stroke') && !lowerMessage.includes('remove')) {
+			if (hexColor) {
+				const colorUpdate = buildColorUpdate('icon-hover', hexColor);
+				setIsLoading(true);
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon fill hover colour.' }
+					: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon fill hover colour.' };
+
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+
 			setMessages(prev => [...prev, {
 				role: 'assistant',
 				content: 'Which colour for the icon fill hover?',
@@ -2842,15 +3331,41 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			&& (lowerMessage.includes('icon') || lowerMessage.includes('fill') || lowerMessage.includes('stroke') || lowerMessage.includes('line'))
 			&& !lowerMessage.includes('width')
 			&& !lowerMessage.includes('remove')) {
-			// Determine if fill or stroke
 			const isStroke = lowerMessage.includes('stroke') || lowerMessage.includes('line') || lowerMessage.includes('border');
+			const isButtonIcon =
+				lowerMessage.includes('button') || selectedBlock?.name?.includes('button');
+			
+			if (hexColor) {
+				const iconValue = isButtonIcon
+					? { target: isStroke ? 'stroke' : 'fill', color: hexColor }
+					: hexColor;
+				const iconProperty = isButtonIcon
+					? 'icon_color'
+					: isStroke
+						? 'svg_line_color'
+						: 'svg_fill_color';
+				const iconTarget = isButtonIcon ? 'button' : 'svg-icon';
+
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: iconProperty, value: iconValue, target_block: iconTarget, message: 'Applied icon colour.' }
+					: { action: 'update_page', property: iconProperty, value: iconValue, target_block: iconTarget, message: 'Applied icon colour.' };
+
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
 			
 			setMessages(prev => [...prev, {
 				role: 'assistant',
 				content: isStroke ? 'Which colour for the icon stroke?' : 'Which colour for the icon fill?',
 				options: ['palette'],
 				optionsType: 'palette',
-				colorTarget: isStroke ? 'stroke' : 'fill',
+				colorTarget: isButtonIcon
+					? (isStroke ? 'button-icon-stroke' : 'button-icon-fill')
+					: (isStroke ? 'stroke' : 'fill'),
 				executed: false
 			}]);
 			return;
@@ -2886,12 +3401,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 		
-			// DIRECT ACTION: "Remove border"
+		// DIRECT ACTION: "Remove border"
 		if (lowerMessage.includes('remove') && lowerMessage.includes('border') && !lowerMessage.includes('radius')) {
+			let explicitTarget = null;
+			if (lowerMessage.includes('image')) explicitTarget = 'image';
+			else if (lowerMessage.includes('button')) explicitTarget = 'button';
+			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) explicitTarget = 'container';
+
 			setIsLoading(true);
 			const directAction = currentScope === 'selection'
-				? { action: 'update_selection', property: 'border', value: 'none', message: 'Removed border from selected block.' }
-				: { action: 'update_page', property: 'border', value: 'none', message: 'Removed borders.' };
+				? { action: 'update_selection', property: 'border', value: 'none', target_block: explicitTarget, message: 'Removed border from selected block.' }
+				: { action: 'update_page', property: 'border', value: 'none', target_block: explicitTarget, message: 'Removed borders.' };
 			
 			setTimeout(async () => {
 				const result = await parseAndExecuteAction(directAction);
@@ -2901,15 +3421,68 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 
+		// HEX COLOUR: apply directly when hex is present (skip palette)
+		if (hexColor) {
+			const isFlowIntent =
+				lowerMessage.includes('border') ||
+				lowerMessage.includes('outline') ||
+				lowerMessage.includes('shadow') ||
+				lowerMessage.includes('glow');
 
+			if (!isFlowIntent) {
+				const colorTarget = getColorTargetFromMessage(lowerMessage);
+				const colorUpdate = buildColorUpdate(colorTarget, hexColor);
+
+				if (colorUpdate.property) {
+					setIsLoading(true);
+					const directAction = currentScope === 'selection'
+						? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` }
+						: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` };
+
+					setTimeout(async () => {
+						const result = await parseAndExecuteAction(directAction);
+						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+						setIsLoading(false);
+					}, 50);
+					return;
+				}
+			}
+		}
+
+
+
+		const getRequestedTarget = () => {
+			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
+			if (lowerMessage.includes('button')) return 'button';
+			if (lowerMessage.includes('container') || lowerMessage.includes('section')) return 'container';
+
+			if (selectedBlock?.name) {
+				if (selectedBlock.name.includes('image')) return 'image';
+				if (selectedBlock.name.includes('button')) return 'button';
+				if (selectedBlock.name.includes('container')) return 'container';
+			}
+
+			return null;
+		};
 
 		// ============================================================
 		// LAYOUT INTENT INTERCEPTION (Lookup Table Pattern Matching)
 		// ============================================================
 		// Uses LAYOUT_PATTERNS constant for zero-latency, maintainable pattern matching
-		
+		const requestedTarget = getRequestedTarget();
+
 		for (const pattern of LAYOUT_PATTERNS) {
+			if (requestedTarget === 'image' && !pattern.target) {
+				if (pattern.property === 'hover_effect' || pattern.property.startsWith('hover_')) {
+					continue;
+				}
+			}
 			if (lowerMessage.match(pattern.regex)) {
+				const isTargetedPattern = pattern.target === 'button' || pattern.target === 'image' || pattern.target === 'container';
+				if (requestedTarget && isTargetedPattern && pattern.target !== requestedTarget) {
+					continue;
+				}
+
 				setIsLoading(true);
 
 				// === FSM FLOW TRIGGER ===
@@ -2920,7 +3493,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					let flowScope = currentScope;
 					if (/all|page|everywhere/i.test(lowerMessage)) flowScope = 'page';
 					
-					const matchName = pattern.target || 'button';
+					const matchName = pattern.target || requestedTarget || 'container';
 					
 					if (flowScope === 'selection') {
 						if (!selectedBlock) {
@@ -2952,14 +3525,28 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					// We assume all blocks of same type respond to flow same way.
 					const primaryBlock = targetBlocks[0];
 					const prefix = getBlockPrefix(primaryBlock.name);
-					const startResponse = handleButtonUpdate(primaryBlock, pattern.property, 'start', prefix, {});
+					const flowHandler = getAiHandlerForBlock(primaryBlock) || getAiHandlerForTarget(matchName);
+					const flowData = {};
+
+					if (hexColor) {
+						if (pattern.property === 'flow_outline' || pattern.property === 'flow_border') {
+							flowData.border_color = hexColor;
+						}
+						if (pattern.property === 'flow_shadow') {
+							flowData.shadow_color = hexColor;
+						}
+					}
+
+					const startResponse = flowHandler
+						? flowHandler(primaryBlock, pattern.property, 'start', prefix, flowData)
+						: null;
 
 					if (startResponse) {
 						// Setup Context with ALL block IDs
 						setConversationContext({
 							flow: pattern.property,
 							pendingTarget: startResponse.target || null,
-							data: {},
+							data: flowData,
 							mode: flowScope,
 							currentOptions: startResponse.options || [],
 							blockIds: targetBlocks.map(b => b.clientId) // Track all targets
@@ -3068,14 +3655,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				if (pattern.property === 'color_clarify') {
 					// Prioity 1: Use specific target from pattern (e.g. 'button-background')
 					// Priority 2: Heuristic detection from message
-					let colorTarget = pattern.colorTarget || 'element';
-					
-					if (!pattern.colorTarget) {
-						if (lowerMessage.includes('button') && (lowerMessage.includes('background') || lowerMessage.includes('bg') || lowerMessage.includes('colour') || lowerMessage.includes('color'))) colorTarget = 'button-background';
-					else if (lowerMessage.includes('background') || lowerMessage.includes('bg')) colorTarget = 'background';
-						else if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('font')) colorTarget = 'text';
-						else if (lowerMessage.includes('button')) colorTarget = 'button';
-						else if (lowerMessage.includes('border')) colorTarget = 'border';
+					const colorTarget = pattern.colorTarget || getColorTargetFromMessage(lowerMessage);
+
+					if (hexColor) {
+						const colorUpdate = buildColorUpdate(colorTarget, hexColor);
+						const directAction = currentScope === 'selection'
+							? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` }
+							: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` };
+
+						setTimeout(async () => {
+							const result = await parseAndExecuteAction(directAction);
+							setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+							setIsLoading(false);
+						}, 50);
+						return;
 					}
 					
 					setMessages(prev => [...prev, { 
@@ -3089,11 +3682,55 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					setIsLoading(false);
 					return;
 				}
+
+				// Handle use_prompt patterns (text/url/color parsing)
+				let resolvedValue = pattern.value;
+				if (pattern.value === 'use_prompt') {
+					const promptValue = resolvePromptValue(pattern.property, rawMessage);
+					if (!promptValue) {
+						const isColorPrompt = ['icon_color', 'button_hover_bg', 'button_hover_text', 'button_active_bg'].includes(pattern.property);
+						if (isColorPrompt) {
+							const colorTarget = getColorTargetForProperty(pattern.property, lowerMessage);
+							setMessages(prev => [...prev, {
+								role: 'assistant',
+								content: `Choose a colour for the ${colorTarget.replace('button-', '')}:`,
+								options: ['palette'],
+								optionsType: 'palette',
+								colorTarget: colorTarget,
+								executed: false
+							}]);
+							setIsLoading(false);
+							return;
+						}
+
+						const missingMsg = pattern.property === 'button_text'
+							? 'Please include the button text, e.g. "Set button text to Buy now".'
+							: pattern.property === 'button_url'
+								? 'Please include the URL, e.g. "Link the button to https://example.com".'
+								: pattern.property === 'captionContent'
+									? 'Please include the caption text, e.g. "Set caption to Summer Sale".'
+									: pattern.property === 'mediaAlt'
+										? 'Please include the alt text, e.g. "Set alt text to smiling customer".'
+										: pattern.property === 'mediaURL'
+											? 'Please include the image URL, e.g. "Replace image with https://example.com/photo.jpg".'
+											: 'Please include the value in your request.';
+
+						setMessages(prev => [...prev, { role: 'assistant', content: missingMsg, executed: false }]);
+						setIsLoading(false);
+						return;
+					}
+
+					resolvedValue = promptValue;
+					if (pattern.property === 'icon_color') {
+						resolvedValue = { target: resolveButtonIconTarget(lowerMessage), color: promptValue };
+					}
+				}
 				
 				// Standard pattern handling
+				const resolvedTarget = pattern.target || requestedTarget || 'container';
 				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: pattern.property, value: pattern.value, message: pattern.selectionMsg }
-					: { action: 'update_page', property: pattern.property, value: pattern.value, target_block: pattern.target || 'container', message: pattern.pageMsg };
+					? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
+					: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
 				setTimeout(async () => {
 					const result = await parseAndExecuteAction(directAction);
 					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
@@ -3189,6 +3826,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 
+			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
+			const systemPrompt = blockPrompt ? `${SYSTEM_PROMPT}\n\n${blockPrompt}` : SYSTEM_PROMPT;
+
 			const response = await fetch(`${window.wpApiSettings?.root || '/wp-json/'}maxi-blocks/v1.0/ai/chat`, {
 				method: 'POST',
 				headers: {
@@ -3197,7 +3837,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				},
 				body: JSON.stringify({
 					messages: [
-						{ role: 'system', content: SYSTEM_PROMPT },
+						{ role: 'system', content: systemPrompt },
 						{ role: 'system', content: 'Context: ' + context + (selectedBlock ? '\n\nBlock Skills: ' + getSkillContextForBlock(selectedBlock.name) : '') },
 						...messages.filter(m => m.role !== 'assistant' || !m.executed).slice(-6).map(m => ({ 
 							role: m.role === 'assistant' ? 'assistant' : 'user', 
@@ -3359,7 +3999,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
             // We'll process Logic on the first block to get the 'Action'
             const primaryBlock = fullBlocks[0];
             const prefix = getBlockPrefix(primaryBlock.name);
-            const logicResult = handleButtonUpdate(primaryBlock, conversationContext.flow, null, prefix, updatedData);
+			const flowHandler = getAiHandlerForBlock(primaryBlock);
+            const logicResult = flowHandler
+				? flowHandler(primaryBlock, conversationContext.flow, null, prefix, updatedData)
+				: null;
 
             if (logicResult) {
                 if (logicResult.action === 'ask_options' || logicResult.action === 'ask_palette') {
@@ -3372,8 +4015,11 @@ const AIChatPanel = ({ isOpen, onClose }) => {
                     
                     fullBlocks.forEach(blk => {
                         const p = getBlockPrefix(blk.name);
+						const blockHandler = getAiHandlerForBlock(blk);
                         // Re-run handler for specific block to get correct attributes
-                        const res = handleButtonUpdate(blk, conversationContext.flow, null, p, updatedData);
+                        const res = blockHandler
+							? blockHandler(blk, conversationContext.flow, null, p, updatedData)
+							: null;
                         
                         if (res && res.action === 'apply' && res.attributes) {
                             dispatch('core/block-editor').updateBlockAttributes(blk.clientId, res.attributes);
@@ -3387,7 +4033,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						if (logicResult.message) {
 							finalMsg = logicResult.message;
 						} else {
-							const pattern = BUTTON_PATTERNS.find(p => p.property === conversationContext.flow);
+							const pattern = AI_BLOCK_PATTERNS.find(p => p.property === conversationContext.flow);
 							if (pattern && pattern.pageMsg) finalMsg = pattern.pageMsg; // Or selectionMsg depending on mode
 						}
                     }
@@ -3515,70 +4161,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}]);
 				return;
 			} else {
-				// APPLY COLOR BASED ON TARGET
 				const target = prevMsg?.colorTarget;
-				let property = '';
-				let msgText = '';
-				let targetBlock = 'container';
-				
-				// BUTTON COLOUR (Generic)
-				if (target === 'button') {
-					property = 'background_color';
-					targetBlock = 'button';
-					msgText = 'button background';
-				}
-				// BUTTON SPECIFIC TARGETS
-				else if (target === 'button-background') {
-					property = 'background_color';
-					targetBlock = 'button';
-					msgText = 'button background';
-				}
-				else if (target === 'button-text') {
-					property = 'text_color';
-					targetBlock = 'button';
-					msgText = 'button text';
-				}
-				else if (target === 'button-border') {
-					property = 'border'; // Will default to 1px solid in handler
-					targetBlock = 'button';
-					msgText = 'button border';
-				}
-				else if (target === 'button-hover-background') {
-					property = 'button_hover_bg';
-					targetBlock = 'button';
-					msgText = 'button hover background';
-				}
-				// BACKGROUND COLOUR (containers)
-				// BACKGROUND COLOUR (containers)
-				else if (target === 'background') {
-					property = 'background_color';
-					targetBlock = 'container';
-					msgText = 'background';
-				}
-				// TEXT COLOUR
-				else if (target === 'text') {
-					property = 'text_color';
-					targetBlock = 'text';
-					msgText = 'text';
-				}
-				// ELEMENT (generic) - apply to selected block
-				else if (target === 'element') {
-					property = 'background_color';
-					targetBlock = selectedBlock?.name?.includes('button') ? 'button' : 'container';
-					msgText = 'element';
-				}
-				// ICON COLOURS (fallback)
-				else if (target === 'icon-line-hover') { property = 'svg_line_color_hover'; targetBlock = 'svg-icon'; msgText = 'icon line hover colour'; }
-				else if (target === 'icon-hover') { property = 'svg_fill_color_hover'; targetBlock = 'svg-icon'; msgText = 'icon fill hover colour'; }
-				else if (target === 'stroke') { property = 'svg_line_color'; targetBlock = 'svg-icon'; msgText = 'icon stroke colour'; }
-				else { property = 'svg_fill_color'; targetBlock = 'svg-icon'; msgText = 'icon fill colour'; }
+				const colorUpdate = buildColorUpdate(target, colorValue);
 
 				directAction = { 
 					action: 'update_page', 
-					property, 
-					value: colorValue, 
-					target_block: targetBlock,
-					message: `Applied ${isPalette ? 'Colour ' + colorValue : 'Custom Colour'} to ${msgText}.` 
+					property: colorUpdate.property, 
+					value: colorUpdate.value, 
+					target_block: colorUpdate.targetBlock,
+					message: `Applied ${isPalette ? 'Colour ' + colorValue : 'Custom Colour'} to ${colorUpdate.msgText}.` 
 				};
 			}
 		}

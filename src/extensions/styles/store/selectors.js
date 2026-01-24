@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash';
+import { select } from '@wordpress/data';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 
 /**
@@ -51,6 +52,28 @@ export const getBlockMarginValue = state => {
 
 export const getAllStylesAreSaved = state => {
 	if (state.styles) {
+		const maxiBlocksStore = select('maxiBlocks/blocks');
+		const maxiBlocks = maxiBlocksStore?.getBlocks?.();
+		const maxiClientIds = maxiBlocksStore?.getBlockClientIds?.() ?? [];
+		const maxiBlocksCount = Object.keys(maxiBlocks ?? {}).length;
+		const hasCompleteStore =
+			maxiBlocksCount > 0 &&
+			maxiBlocksCount === maxiClientIds.length;
+
+		if (maxiBlocks && maxiBlocksCount > 0) {
+			const hasAllStyles = Object.keys(maxiBlocks).every(
+				uniqueID => !!state.styles[uniqueID]
+			);
+
+			if (!hasAllStyles) {
+				return false;
+			}
+
+			if (hasCompleteStore) {
+				return true;
+			}
+		}
+
 		let allStylesAreSaved = true;
 
 		goThroughMaxiBlocks(block => {

@@ -327,8 +327,15 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			? { [`${prefix}box-shadow-palette-status-general`]: true, [`${prefix}box-shadow-palette-color-general`]: color }
 			: { [`${prefix}box-shadow-color-general`]: color, [`${prefix}box-shadow-palette-status-general`]: false };
 
+		const intensityLabel = {
+			soft: 'Soft',
+			crisp: 'Crisp',
+			bold: 'Bold',
+			glow: 'Glow',
+		}[intensity] || 'Custom';
+
 		changes = { ...baseShadow, ...colorAttr };
-		return changes;
+		return { action: 'apply', attributes: changes, done: true, message: `Applied ${intensityLabel} shadow to buttons.` };
 	}
 
 	// 3. RADIUS FLOW
@@ -367,7 +374,15 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			changes[`${prefix}border-bottom-left-radius-general`] = 50;
 		}
 
-		return changes;
+		const radiusLabel = {
+			0: 'Sharp',
+			5: 'Soft (5px)',
+			15: 'Rounded (15px)',
+			50: 'Pill (50px)',
+			999: 'Circle',
+		}[r] || `${r}px`;
+
+		return { action: 'apply', attributes: changes, done: true, message: `Applied ${radiusLabel} corners to buttons.` };
 	}
 
 

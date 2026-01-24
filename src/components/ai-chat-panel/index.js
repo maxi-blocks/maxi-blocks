@@ -3383,12 +3383,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
                     if (logicResult.done) {
                         nextStepResponse = { done: true };
-                        // Use the message from the pattern if available? logicResult doesn't have it.
-                        // We can look up the pattern again or just say "Done."
-						
-						// Try to find the pattern message for success
-						const pattern = BUTTON_PATTERNS.find(p => p.property === conversationContext.flow);
-						if (pattern && pattern.pageMsg) finalMsg = pattern.pageMsg; // Or selectionMsg depending on mode
+						// Prefer explicit handler message, otherwise fall back to pattern copy
+						if (logicResult.message) {
+							finalMsg = logicResult.message;
+						} else {
+							const pattern = BUTTON_PATTERNS.find(p => p.property === conversationContext.flow);
+							if (pattern && pattern.pageMsg) finalMsg = pattern.pageMsg; // Or selectionMsg depending on mode
+						}
                     }
                 }
             }

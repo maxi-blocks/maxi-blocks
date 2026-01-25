@@ -3,6 +3,7 @@
  */
 import { subscribe } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -21,16 +22,74 @@ import { main } from '@maxi-icons';
 /**
  * Component
  */
+const getUserToolbarPreference = () => {
+	if (typeof window === 'undefined') return undefined;
+
+	const storedPreference = window.maxiSettings?.user_settings
+		?.master_toolbar_open;
+
+	if (storedPreference === '' || storedPreference === undefined) {
+		return undefined;
+	}
+
+	if (storedPreference === '0' || storedPreference === 0) return false;
+	if (storedPreference === '1' || storedPreference === 1) return true;
+
+	if (typeof storedPreference === 'boolean') return storedPreference;
+
+	return undefined;
+};
+
+const getInitialOpenState = () => {
+	const preference = getUserToolbarPreference();
+	return preference ?? true;
+};
+
+const persistToolbarState = async isOpen => {
+	try {
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/user-settings',
+			method: 'POST',
+			data: {
+				master_toolbar_open: isOpen,
+			},
+		});
+
+		if (typeof window !== 'undefined' && window.maxiSettings?.user_settings) {
+			window.maxiSettings.user_settings.master_toolbar_open = isOpen;
+		}
+	} catch (error) {
+		console.error('Unable to persist Maxi toolbar preference:', error);
+	}
+};
+
 const ToolbarButtons = () => {
-	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
+	const [isResponsiveOpen, setIsResponsiveOpen] = useState(
+		getInitialOpenState
+	);
 	const [isAIChatOpen, setIsAIChatOpen] = useState(false);
 
+	const handleClose = () => {
+		persistToolbarState(false);
+		setIsResponsiveOpen(false);
+	};
+
+	const handleToggle = () => {
+		setIsResponsiveOpen(prevState => {
+			const nextState = !prevState;
+			persistToolbarState(nextState);
+			return nextState;
+		});
+	};
+
 	const toggleAIChat = () => {
-		const newState = !isAIChatOpen;
-		setIsAIChatOpen(newState);
-		if (window.maxiToggleAIChat) {
-			window.maxiToggleAIChat();
-		}
+		setIsAIChatOpen(prevState => {
+			const nextState = !prevState;
+			if (window.maxiToggleAIChat) {
+				window.maxiToggleAIChat();
+			}
+			return nextState;
+		});
 	};
 
 	return (
@@ -39,7 +98,7 @@ const ToolbarButtons = () => {
 				<Button
 					className='maxi-toolbar-layout__button'
 					aria-pressed={isResponsiveOpen}
-					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
+					onClick={handleToggle}
 				>
 					<Icon icon={main} />
 				</Button>
@@ -54,7 +113,7 @@ const ToolbarButtons = () => {
 			</div>
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}
-				onClose={() => setIsResponsiveOpen(false)}
+				onClose={handleClose}
 			/>
 		</>
 	);

@@ -91,8 +91,15 @@ describe('ColumnPattern', () => {
 	});
 
 	it('Check responsive row-pattern', async () => {
+		// Ensure the row block is still selected
+		await page.$eval('.maxi-row-block', row => row.focus());
+		await page.waitForTimeout(500);
+
 		// s responsive
 		await changeResponsive(page, 's');
+
+		// Wait for responsive change to take effect and sidebar to update
+		await page.waitForTimeout(1000);
 
 		let accordionControl = await openSidebarTab(
 			page,
@@ -145,6 +152,9 @@ describe('ColumnPattern', () => {
 		// xs responsive
 		await changeResponsive(page, 'xs');
 
+		// Wait for responsive change to take effect and sidebar to update
+		await page.waitForTimeout(1000);
+
 		accordionControl = await openSidebarTab(page, 'style', 'column picker');
 
 		const rowSelectedXs = await accordionControl.$$eval(
@@ -180,6 +190,9 @@ describe('ColumnPattern', () => {
 
 		// m responsive
 		await changeResponsive(page, 'm');
+
+		// Wait for responsive change to take effect and sidebar to update
+		await page.waitForTimeout(1000);
 
 		accordionControl = await openSidebarTab(page, 'style', 'column picker');
 

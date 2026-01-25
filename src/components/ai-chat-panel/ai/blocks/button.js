@@ -245,6 +245,26 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		};
 	};
 
+	const buildActiveBgChanges = (activeValue) => {
+		if (activeValue === undefined) return null;
+		const isPalette = typeof activeValue === 'number';
+		const activePrefix = `${prefix}active-`;
+		return {
+			[`${prefix}background-status-active`]: true,
+			[`${activePrefix}background-active-media-general`]: 'color',
+			...(isPalette
+				? {
+					[`${activePrefix}background-palette-status-general`]: true,
+					[`${activePrefix}background-palette-color-general`]: activeValue,
+					[`${activePrefix}background-color-general`]: ''
+				}
+				: {
+					[`${activePrefix}background-palette-status-general`]: false,
+					[`${activePrefix}background-color-general`]: activeValue
+				})
+		};
+	};
+
 	const buildHoverTextChanges = (hoverValue) => {
 		if (hoverValue === undefined) return null;
 		const isPalette = typeof hoverValue === 'number';
@@ -493,7 +513,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			return { action: 'ask_palette', target: 'button_active_bg', msg: 'Which colour for the active background?' };
 		}
 
-		changes = buildHoverBgChanges(context.button_active_bg);
+		changes = buildActiveBgChanges(context.button_active_bg);
 		return changes
 			? { action: 'apply', attributes: changes, done: true, message: 'Updated button active background.' }
 			: null;
@@ -566,6 +586,20 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 					[`${prefix}padding-left-general`]: '40',
 					[`${prefix}padding-right-general`]: '40',
 					'font-size-general': 20,
+				};
+			}
+			break;
+
+		case 'width':
+			if (value === '100%') {
+				changes = {
+					[`${prefix}width-general`]: '100',
+					[`${prefix}width-unit-general`]: '%',
+					[`${prefix}width-fit-content-general`]: false,
+				};
+			} else if (value === 'auto') {
+				changes = {
+					[`${prefix}width-fit-content-general`]: true,
 				};
 			}
 			break;
@@ -816,7 +850,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_active_bg':
-			changes = buildHoverBgChanges(value);
+			changes = buildActiveBgChanges(value);
 			break;
 
 		case 'high_contrast_mode':

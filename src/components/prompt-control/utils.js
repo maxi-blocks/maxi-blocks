@@ -134,17 +134,24 @@ ${humanMessageTemplate}`,
 
 
 
+const parseJsonPayload = content => {
+	if (!content || typeof content !== 'string') return null;
+
+	const startIndex = content.indexOf('{');
+	const endIndex = content.lastIndexOf('}');
+	if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+		return null;
+	}
+
+	const jsonStr = content.slice(startIndex, endIndex + 1);
+	return JSON.parse(jsonStr);
+};
+
 const handleUiTarget = responseContent => {
 	if (typeof responseContent !== 'string') return;
 
-	const startIndex = responseContent.indexOf('{');
-	const endIndex = responseContent.lastIndexOf('}');
-	if (startIndex === -1 || endIndex === -1) return;
-
 	try {
-		const parsed = JSON.parse(
-			responseContent.slice(startIndex, endIndex + 1)
-		);
+		const parsed = parseJsonPayload(responseContent);
 		if (!parsed?.ui_target) return;
 
 		const target = parsed.ui_target;
@@ -463,6 +470,10 @@ export const callBackendAIProxy = async ({
 			});
 			const lines = buffer.split('\n');
 			buffer = lines.pop();
+			if (done && buffer.trim()) {
+				lines.push(buffer);
+				buffer = '';
+			}
 
 			for (const line of lines) {
 				const trimmedLine = line.trim();
@@ -738,16 +749,8 @@ export const getContext = (contextOption, clientId) => {
  */
 export const parseClarifyPayload = content => {
 	try {
-		if (!content || typeof content !== 'string') return null;
-
-		const startIndex = content.indexOf('{');
-		const endIndex = content.lastIndexOf('}');
-		if (startIndex === -1 || endIndex === -1) {
-			return null;
-		}
-
-		const jsonStr = content.substring(startIndex, endIndex + 1);
-		const parsed = JSON.parse(jsonStr);
+		const parsed = parseJsonPayload(content);
+		if (!parsed) return null;
 
 		if (parsed.intent === 'CLARIFY' && Array.isArray(parsed.options)) {
 			return parsed;

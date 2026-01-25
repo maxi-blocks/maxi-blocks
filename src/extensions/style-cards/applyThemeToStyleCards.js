@@ -7,6 +7,7 @@ import { cloneDeep, merge } from 'lodash';
  * Internal dependencies
  */
 import standardSC from '@maxi-core/defaults/defaultSC.json';
+import { openStyleCardsEditor } from '@editor/style-cards/utils';
 import getActiveStyleCard from './getActiveStyleCard';
 
 const THEME_PALETTES = {
@@ -393,13 +394,7 @@ export const shouldOpenStyleCardEditorFromPrompt = prompt => {
 	].some(keyword => normalizedPrompt.includes(keyword));
 };
 
-export const openStyleCardsEditor = () => {
-	if (typeof document === 'undefined') return;
-	const button = document.getElementById('maxi-button__style-cards');
-	if (button) {
-		button.click();
-	}
-};
+export { openStyleCardsEditor };
 
 const shouldLighten = prompt => {
 	if (!prompt) return false;

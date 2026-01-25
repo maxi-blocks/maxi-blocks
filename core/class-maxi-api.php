@@ -676,8 +676,28 @@ if (!class_exists('MaxiBlocks_API')):
             $target_scheme = $target_parts['scheme'] ?? null;
             $allowed_port = $allowed_parts['port'] ?? null;
             $target_port = $target_parts['port'] ?? null;
-            $allowed_path = rtrim($allowed_parts['path'] ?? '/', '/');
-            $target_path = rtrim($target_parts['path'] ?? '', '/');
+            $normalize_path = function ($path) {
+                $path = rawurldecode($path ?? '');
+                $path = wp_normalize_path($path);
+                $segments = [];
+
+                foreach (explode('/', $path) as $segment) {
+                    if ($segment === '' || $segment === '.') {
+                        continue;
+                    }
+                    if ($segment === '..') {
+                        array_pop($segments);
+                        continue;
+                    }
+                    $segments[] = $segment;
+                }
+
+                $normalized = '/' . implode('/', $segments);
+                return $normalized === '' ? '/' : $normalized;
+            };
+
+            $allowed_path = $normalize_path($allowed_parts['path'] ?? '/');
+            $target_path = $normalize_path($target_parts['path'] ?? '');
 
             $normalise_port = function ($scheme, $port) {
                 if ($port !== null) {
@@ -698,8 +718,6 @@ if (!class_exists('MaxiBlocks_API')):
             $allowed_port = $normalise_port($allowed_scheme, $allowed_port);
             $target_port = $normalise_port($target_scheme, $target_port);
 
-            $allowed_path = $allowed_path === '' ? '/' : $allowed_path;
-            $target_path = $target_path === '' ? '/' : $target_path;
             $allowed_path = strtolower($allowed_path);
             $target_path = strtolower($target_path);
 

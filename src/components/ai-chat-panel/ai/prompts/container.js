@@ -44,7 +44,7 @@ Preset defaults:
 - Presets:
   - A (Theme): "Primary background." (Payload: { "background_color": "var(--bg-1)" })
   - B (Inverted): "Dark mode / high contrast." (Payload: { "background_color": "var(--h1)" })
-  - C (Glass): "Frosted glass effect." (Payload: { "background_color": "rgba(255,255,255,0.1)", "opacity": 0.9 })
+  - C (Glass): "Frosted glass effect." (Payload: { "background_color": "var(--glass-bg)", "opacity": 0.9 })
 
 #### 4. SPACING ("Padding", "Space")
 - Target property: responsive_padding (desktop/tablet/mobile).

@@ -507,12 +507,16 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		});
 
 		// Handle API key changes for all providers
+		const apiKeyDebounceTimers = {};
 		['openai', 'anthropic', 'gemini', 'mistral'].forEach(provider => {
 			const input = getApiKeyInputByProvider(provider);
 			if (input) {
 				input.addEventListener('input', () => {
 					// Debounce or just run? The original ran immediately.
-					testProviderApiKey(provider);
+					clearTimeout(apiKeyDebounceTimers[provider]);
+					apiKeyDebounceTimers[provider] = setTimeout(() => {
+						testProviderApiKey(provider);
+					}, 400);
 				});
 			}
 		});

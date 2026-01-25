@@ -781,7 +781,8 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			} else if (value === 'desktop') {
 				changes = {
 					[`${prefix}display-l`]: 'none',
-					[`${prefix}display-xl`]: 'none'
+					[`${prefix}display-xl`]: 'none',
+					[`${prefix}display-xxl`]: 'none'
 				};
 			}
 			break;
@@ -798,13 +799,15 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				changes = {
 					[`${prefix}display-xs`]: 'none',
 					[`${prefix}display-l`]: 'none',
-					[`${prefix}display-xl`]: 'none'
+					[`${prefix}display-xl`]: 'none',
+					[`${prefix}display-xxl`]: 'none'
 				};
 			} else if (value === 'desktop') {
 				changes = {
 					[`${prefix}display-xs`]: 'none',
 					[`${prefix}display-s`]: 'none',
-					[`${prefix}display-m`]: 'none'
+					[`${prefix}display-m`]: 'none',
+					[`${prefix}display-xxl`]: 'none'
 				};
 			}
 			break;

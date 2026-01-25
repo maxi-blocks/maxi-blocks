@@ -531,6 +531,12 @@ if (!class_exists('MaxiBlocks_API')):
                             return is_string($param);
                         },
                     ],
+                    'selected_block_id' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
                     'model' => [
                         'validate_callback' => function ($param) {
                             return is_string($param);
@@ -555,6 +561,28 @@ if (!class_exists('MaxiBlocks_API')):
                         'validate_callback' => function ($param) {
                             return is_numeric($param);
                         },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/ai/models', [
+                'methods' => 'POST',
+                'callback' => [$this, 'get_ai_models'],
+                'args' => [
+                    'provider' => [
+                        'required' => true,
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ],
+                    'api_key' => [
+                        'validate_callback' => function ($param) {
+                            return is_string($param);
+                        },
+                        'sanitize_callback' => 'sanitize_text_field',
                     ],
                 ],
                 'permission_callback' => function () {
@@ -623,47 +651,71 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             $allowed_base = get_option('maxi_blocks_acp_base_url');
-            if (!empty($allowed_base)) {
-                $allowed_parts = wp_parse_url($allowed_base);
-                $target_parts = wp_parse_url($validated_url);
+            if (empty($allowed_base)) {
+                return new WP_Error(
+                    'maxi_blocks_acp_disallowed_url',
+                    'ACP URL does not match the configured base URL.',
+                    ['status' => 403],
+                );
+            }
 
-                $allowed_host = $allowed_parts['host'] ?? null;
-                $target_host = $target_parts['host'] ?? null;
-                $allowed_scheme = $allowed_parts['scheme'] ?? null;
-                $target_scheme = $target_parts['scheme'] ?? null;
-                $allowed_port = $allowed_parts['port'] ?? null;
-                $target_port = $target_parts['port'] ?? null;
+            $allowed_parts = wp_parse_url($allowed_base);
+            $target_parts = wp_parse_url($validated_url);
 
-                $normalise_port = function ($scheme, $port) {
-                    if ($port !== null) {
-                        return (int) $port;
-                    }
+            if (!$allowed_parts || !$target_parts) {
+                return new WP_Error(
+                    'maxi_blocks_acp_disallowed_url',
+                    'ACP URL does not match the configured base URL.',
+                    ['status' => 403],
+                );
+            }
 
-                    $scheme = $scheme ? strtolower($scheme) : null;
-                    if ($scheme === 'https') {
-                        return 443;
-                    }
-                    if ($scheme === 'http') {
-                        return 80;
-                    }
+            $allowed_host = $allowed_parts['host'] ?? null;
+            $target_host = $target_parts['host'] ?? null;
+            $allowed_scheme = $allowed_parts['scheme'] ?? null;
+            $target_scheme = $target_parts['scheme'] ?? null;
+            $allowed_port = $allowed_parts['port'] ?? null;
+            $target_port = $target_parts['port'] ?? null;
+            $allowed_path = rtrim($allowed_parts['path'] ?? '/', '/');
+            $target_path = rtrim($target_parts['path'] ?? '', '/');
 
-                    return null;
-                };
-
-                $allowed_port = $normalise_port($allowed_scheme, $allowed_port);
-                $target_port = $normalise_port($target_scheme, $target_port);
-
-                $host_matches = $allowed_host && $target_host && strtolower($allowed_host) === strtolower($target_host);
-                $scheme_matches = $allowed_scheme && $target_scheme && strtolower($allowed_scheme) === strtolower($target_scheme);
-                $port_matches = $allowed_port === $target_port;
-
-                if (!$host_matches || !$scheme_matches || !$port_matches) {
-                    return new WP_Error(
-                        'maxi_blocks_acp_disallowed_url',
-                        'ACP URL does not match the configured base URL.',
-                        ['status' => 403],
-                    );
+            $normalise_port = function ($scheme, $port) {
+                if ($port !== null) {
+                    return (int) $port;
                 }
+
+                $scheme = $scheme ? strtolower($scheme) : null;
+                if ($scheme === 'https') {
+                    return 443;
+                }
+                if ($scheme === 'http') {
+                    return 80;
+                }
+
+                return null;
+            };
+
+            $allowed_port = $normalise_port($allowed_scheme, $allowed_port);
+            $target_port = $normalise_port($target_scheme, $target_port);
+
+            $allowed_path = $allowed_path === '' ? '/' : $allowed_path;
+            $target_path = $target_path === '' ? '/' : $target_path;
+            $allowed_path = strtolower($allowed_path);
+            $target_path = strtolower($target_path);
+
+            $host_matches = $allowed_host && $target_host && strtolower($allowed_host) === strtolower($target_host);
+            $scheme_matches = $allowed_scheme && $target_scheme && strtolower($allowed_scheme) === strtolower($target_scheme);
+            $port_matches = $allowed_port === $target_port;
+            $path_matches = $allowed_path === '/' ||
+                $target_path === $allowed_path ||
+                strpos($target_path, $allowed_path . '/') === 0;
+
+            if (!$host_matches || !$scheme_matches || !$port_matches || !$path_matches) {
+                return new WP_Error(
+                    'maxi_blocks_acp_disallowed_url',
+                    'ACP URL does not match the configured base URL.',
+                    ['status' => 403],
+                );
             }
 
             $response = MaxiBlocks_ACP_Client::request(
@@ -3593,6 +3645,283 @@ if (!class_exists('MaxiBlocks_API')):
                 sprintf('Provider "%s" is not yet implemented.', $provider),
                 ['status' => 501],
             );
+        }
+
+        public function get_ai_models($request)
+        {
+            $provider = strtolower($request->get_param('provider') ?: 'openai');
+            $api_key = $request->get_param('api_key');
+
+            $supported_providers = ['openai', 'anthropic', 'gemini', 'mistral'];
+            if (!in_array($provider, $supported_providers, true)) {
+                return new WP_Error(
+                    'unsupported_provider',
+                    'Unsupported AI provider',
+                    ['status' => 400],
+                );
+            }
+
+            $provider_labels = [
+                'openai' => 'OpenAI',
+                'anthropic' => 'Anthropic',
+                'gemini' => 'Gemini',
+                'mistral' => 'Mistral',
+            ];
+            $provider_label = $provider_labels[$provider] ?? ucfirst($provider);
+
+            if ($provider === 'anthropic') {
+                return rest_ensure_response([
+                    'claude-opus-4-1-20250805',
+                    'claude-sonnet-4-20250514',
+                    'claude-3-7-sonnet-20250219',
+                    'claude-3-5-haiku-20241022',
+                    'claude-3-5-sonnet-20240620',
+                    'claude-3-opus-20240229',
+                    'claude-3-sonnet-20240229',
+                    'claude-3-haiku-20240307',
+                ]);
+            }
+
+            $api_key = $this->get_ai_provider_api_key($provider, $api_key);
+            if (!$api_key) {
+                return new WP_Error(
+                    'no_api_key',
+                    sprintf('%s API key not configured', $provider_label),
+                    ['status' => 400],
+                );
+            }
+
+            switch ($provider) {
+                case 'openai':
+                    $models = $this->fetch_openai_models($api_key);
+                    break;
+                case 'gemini':
+                    $models = $this->fetch_gemini_models($api_key);
+                    break;
+                case 'mistral':
+                    $models = $this->fetch_mistral_models($api_key);
+                    break;
+                default:
+                    return new WP_Error(
+                        'provider_not_implemented',
+                        sprintf('Provider "%s" is not yet implemented.', $provider),
+                        ['status' => 501],
+                    );
+            }
+
+            if (is_wp_error($models)) {
+                return $models;
+            }
+
+            return rest_ensure_response($models);
+        }
+
+        private function get_ai_provider_api_key($provider, $override = null)
+        {
+            if (is_string($override)) {
+                $trimmed = trim($override);
+                if ($trimmed !== '') {
+                    return $trimmed;
+                }
+            }
+
+            switch ($provider) {
+                case 'openai':
+                    return get_option('openai_api_key_option');
+                case 'gemini':
+                    return get_option('gemini_api_key_option');
+                case 'mistral':
+                    return get_option('mistral_api_key_option');
+                case 'anthropic':
+                    return get_option('anthropic_api_key_option');
+                default:
+                    return null;
+            }
+        }
+
+        private function build_model_fetch_error($provider_label, $status = 500)
+        {
+            return new WP_Error(
+                'maxi_blocks_ai_model_fetch_error',
+                sprintf('Failed to fetch %s models', $provider_label),
+                ['status' => $status],
+            );
+        }
+
+        private function fetch_openai_models($api_key)
+        {
+            $response = wp_remote_get('https://api.openai.com/v1/models', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $api_key,
+                    'Content-Type' => 'application/json',
+                ],
+                'timeout' => 20,
+            ]);
+
+            if (is_wp_error($response)) {
+                return $this->build_model_fetch_error('OpenAI');
+            }
+
+            $status = wp_remote_retrieve_response_code($response);
+            if ($status !== 200) {
+                return $this->build_model_fetch_error('OpenAI', $status);
+            }
+
+            $data = json_decode(wp_remote_retrieve_body($response), true);
+            if (!is_array($data) || !isset($data['data']) || !is_array($data['data'])) {
+                return new WP_Error(
+                    'maxi_blocks_ai_model_invalid_response',
+                    'Invalid response from OpenAI models endpoint.',
+                    ['status' => 500],
+                );
+            }
+
+            $excluded_patterns = [
+                'audio',
+                'gpt-3.5-turbo-instruct',
+                'gpt-4o-mini-realtime-preview',
+                'gpt-4o-realtime-preview',
+                'gpt-image',
+                'gpt-realtime',
+                'transcribe',
+                'tts',
+                'search-preview',
+                'o1-pro',
+            ];
+            $included_patterns = ['o1', 'o3', 'gpt'];
+
+            $models = [];
+            foreach ($data['data'] as $model) {
+                $model_id = $model['id'] ?? null;
+                if (!$model_id || !is_string($model_id)) {
+                    continue;
+                }
+
+                $is_excluded = false;
+                foreach ($excluded_patterns as $pattern) {
+                    if (str_contains($model_id, $pattern)) {
+                        $is_excluded = true;
+                        break;
+                    }
+                }
+
+                if ($is_excluded) {
+                    continue;
+                }
+
+                $is_included = false;
+                foreach ($included_patterns as $pattern) {
+                    if (str_contains($model_id, $pattern)) {
+                        $is_included = true;
+                        break;
+                    }
+                }
+
+                if ($is_included) {
+                    $models[] = $model_id;
+                }
+            }
+
+            sort($models, SORT_STRING);
+            return $models;
+        }
+
+        private function fetch_gemini_models($api_key)
+        {
+            $url = add_query_arg(
+                'key',
+                $api_key,
+                'https://generativelanguage.googleapis.com/v1beta/models',
+            );
+
+            $response = wp_remote_get($url, [
+                'timeout' => 20,
+            ]);
+
+            if (is_wp_error($response)) {
+                return $this->build_model_fetch_error('Gemini');
+            }
+
+            $status = wp_remote_retrieve_response_code($response);
+            if ($status !== 200) {
+                return $this->build_model_fetch_error('Gemini', $status);
+            }
+
+            $data = json_decode(wp_remote_retrieve_body($response), true);
+            if (!is_array($data) || !isset($data['models']) || !is_array($data['models'])) {
+                return new WP_Error(
+                    'maxi_blocks_ai_model_invalid_response',
+                    'Invalid response from Gemini models endpoint.',
+                    ['status' => 500],
+                );
+            }
+
+            $models = [];
+            foreach ($data['models'] as $model) {
+                $name = $model['name'] ?? '';
+                if (!$name || !is_string($name)) {
+                    continue;
+                }
+
+                if (!str_contains($name, 'gemini')) {
+                    continue;
+                }
+
+                $methods = $model['supportedGenerationMethods'] ?? [];
+                if (!is_array($methods) || !in_array('generateContent', $methods, true)) {
+                    continue;
+                }
+
+                $models[] = str_replace('models/', '', $name);
+            }
+
+            sort($models, SORT_STRING);
+            return $models;
+        }
+
+        private function fetch_mistral_models($api_key)
+        {
+            $response = wp_remote_get('https://api.mistral.ai/v1/models', [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $api_key,
+                ],
+                'timeout' => 20,
+            ]);
+
+            if (is_wp_error($response)) {
+                return $this->build_model_fetch_error('Mistral');
+            }
+
+            $status = wp_remote_retrieve_response_code($response);
+            if ($status !== 200) {
+                return $this->build_model_fetch_error('Mistral', $status);
+            }
+
+            $data = json_decode(wp_remote_retrieve_body($response), true);
+            if (!is_array($data) || !isset($data['data']) || !is_array($data['data'])) {
+                return new WP_Error(
+                    'maxi_blocks_ai_model_invalid_response',
+                    'Invalid response from Mistral models endpoint.',
+                    ['status' => 500],
+                );
+            }
+
+            $models = [];
+            foreach ($data['data'] as $model) {
+                $model_id = $model['id'] ?? null;
+                if (!$model_id || !is_string($model_id)) {
+                    continue;
+                }
+
+                if (str_contains($model_id, 'embed')) {
+                    continue;
+                }
+
+                $models[] = $model_id;
+            }
+
+            sort($models, SORT_STRING);
+            return $models;
         }
 
         private function get_design_agent_system_prompt($context = '')

@@ -133,13 +133,34 @@ const parseColor = prompt => {
 };
 
 const parseSize = prompt => {
-	const sizeMatch = prompt.match(/\b(\d+(?:\.\d+)?)(px|em|rem|%|vw|vh)?\b/);
-	if (!sizeMatch) return null;
+	if (!prompt || typeof prompt !== 'string') return null;
 
-	const value = Number.parseFloat(sizeMatch[1]);
-	const unit = sizeMatch[2] || 'px';
+	const withUnitMatch = prompt.match(
+		/\b(\d+(?:\.\d+)?)(px|em|rem|%|vw|vh)\b/i
+	);
+	if (withUnitMatch) {
+		const value = Number.parseFloat(withUnitMatch[1]);
+		const unit = withUnitMatch[2].toLowerCase();
+		return `${value}${unit}`;
+	}
 
-	return `${value}${unit}`;
+	const keywordMatch = prompt.match(
+		/\b(?:font\s*size|font-size|size|width|height|padding|margin|radius|border\s*radius)\b[^\d]*(\d+(?:\.\d+)?)/i
+	);
+	if (keywordMatch) {
+		const value = Number.parseFloat(keywordMatch[1]);
+		return `${value}px`;
+	}
+
+	const reverseKeywordMatch = prompt.match(
+		/(\d+(?:\.\d+)?)[^\d]*(?:font\s*size|font-size|size|width|height|padding|margin|radius|border\s*radius)\b/i
+	);
+	if (reverseKeywordMatch) {
+		const value = Number.parseFloat(reverseKeywordMatch[1]);
+		return `${value}px`;
+	}
+
+	return null;
 };
 
 const parseAlignment = prompt => {

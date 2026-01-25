@@ -762,11 +762,12 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 				'overlay-mediaURL': String(urlValue),
 			};
 		}
-		case 'overlay_media_id':
+		case 'overlay_media_id': {
 			if (value === undefined || value === null || value === '') return null;
 			const numericId = Number(value);
 			if (Number.isNaN(numericId)) return null;
 			return { 'overlay-mediaID': numericId };
+		}
 		case 'overlay_hide_image':
 			return { hideImage: normalizeBoolean(value) };
 		case 'overlay_media_width':

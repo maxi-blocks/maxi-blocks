@@ -765,7 +765,7 @@ const applyTypographyToStyleCard = (styleCard, vibe, prompt) => {
 		}
 		nextSC.light.styleCard.color[4] = hexToRgbString('#f5f5f4');
 		headingLevels.forEach(level => {
-			nextSC.light.styleCard[level]['color'] = '#444444';
+			nextSC.light.styleCard[level]['color'] = hexToRgbString('#444444');
 			nextSC.light.styleCard[level]['color-global'] = false;
 			nextSC.light.styleCard[level]['palette-status'] = false;
 		});

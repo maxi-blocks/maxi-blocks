@@ -317,95 +317,44 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		];
 	};
 
-	const buildModelFetchError = (response, providerLabel) => {
-		const error = new Error(`Failed to fetch ${providerLabel} models`);
-		if (response?.status) {
-			error.status = response.status;
-		}
-		return error;
-	};
-
-	const fetchGeminiModels = async apiKey => {
-		const response = await fetch(
-			`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+	const buildModelFetchError = (error, providerLabel) => {
+		const modelError = new Error(
+			`Failed to fetch ${providerLabel} models`
 		);
-		if (!response.ok) {
-			throw buildModelFetchError(response, 'Gemini');
+		const status = error?.status || error?.data?.status;
+		if (status) {
+			modelError.status = status;
 		}
-		const data = await response.json();
-		return (data.models || [])
-			.filter(
-				model =>
-					model.name.includes('gemini') &&
-					model.supportedGenerationMethods?.includes(
-						'generateContent'
-					)
-			)
-			.map(model => model.name.replace('models/', ''))
-			.sort();
+		return modelError;
 	};
 
-	const fetchMistralModels = async apiKey => {
-		const response = await fetch('https://api.mistral.ai/v1/models', {
-			headers: {
-				Authorization: `Bearer ${apiKey}`,
-			},
-		});
-		if (!response.ok) {
-			throw buildModelFetchError(response, 'Mistral');
-		}
-		const data = await response.json();
-		return (data.data || [])
-			.filter(model => !model.id.includes('embed'))
-			.map(model => model.id)
-			.sort();
-	};
-
-	const fetchOpenAIModels = async apiKey => {
-		const response = await fetch('https://api.openai.com/v1/models', {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${apiKey}`,
-				'Content-Type': 'application/json',
-			},
-		});
-
-		if (!response.ok) {
-			throw buildModelFetchError(response, 'OpenAI');
+	const fetchProviderModels = async (provider, apiKey, providerLabel) => {
+		if (!window.wp?.apiFetch) {
+			throw buildModelFetchError({ status: 500 }, providerLabel);
 		}
 
-		const data = await response.json();
-
-		const excludedPatterns = [
-			'audio',
-			'gpt-3.5-turbo-instruct',
-			'gpt-4o-mini-realtime-preview',
-			'gpt-4o-realtime-preview',
-			'gpt-image',
-			'gpt-realtime',
-			'transcribe',
-			'tts',
-			'search-preview',
-			'o1-pro',
-		];
-
-		const includedPatterns = ['o1', 'o3', 'gpt'];
-
-		return data.data
-			.filter(model => {
-				const modelId = model.id;
-				const isExcluded = excludedPatterns.some(pattern =>
-					modelId.includes(pattern)
-				);
-				const isIncluded = includedPatterns.some(pattern =>
-					modelId.includes(pattern)
-				);
-
-				return !isExcluded && isIncluded;
-			})
-			.map(model => model.id)
-			.sort();
+		try {
+			return await window.wp.apiFetch({
+				path: '/maxi-blocks/v1.0/ai/models',
+				method: 'POST',
+				data: {
+					provider,
+					...(apiKey ? { api_key: apiKey } : {}),
+				},
+			});
+		} catch (error) {
+			throw buildModelFetchError(error, providerLabel);
+		}
 	};
+
+	const fetchGeminiModels = async apiKey =>
+		fetchProviderModels('gemini', apiKey, 'Gemini');
+
+	const fetchMistralModels = async apiKey =>
+		fetchProviderModels('mistral', apiKey, 'Mistral');
+
+	const fetchOpenAIModels = async apiKey =>
+		fetchProviderModels('openai', apiKey, 'OpenAI');
 
 	let isUpdatingDropdown = false;
 	let pendingModelUpdate = null;

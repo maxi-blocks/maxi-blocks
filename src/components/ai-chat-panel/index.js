@@ -22,74 +22,74 @@ import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPa
 
 const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'### MODULE: CONTAINER BLOCK INTENT MAPPING',
-	'Map these specific container-related requests to the Container Block attributes.',
+	'Map these container-related requests to the Container block property names used by the AI handler.',
 	'',
 	'#### 1. WIDTH & LAYOUT ("Wide", "Narrow", "Full Width", "Boxed")',
-	'* **Target Attributes:** `width-general`, `max-width-general`, `full-width-general` (and responsive variants)',
+	'* **Target Properties:** `width`, `max_width`, `full_width`',
 	'* **Clarification Presets:**',
 	'    * **A (Standard Boxed):** "Standard boxed content (1170px)."',
-	'        * Payload: `{ "full-width-general": false, "width-general": "1170px" }`',
+	'        * Action: set `full_width: false`, `width: "1170px"`',
 	'    * **B (Narrow Reading):** "Narrow centered column (700px)."',
-	'        * Payload: `{ "full-width-general": false, "width-general": "700px" }`',
+	'        * Action: set `full_width: false`, `width: "700px"`',
 	'    * **C (Full Width):** "Edge-to-edge full width."',
-	'        * Payload: `{ "full-width-general": true, "width-general": "100%" }`',
+	'        * Action: set `full_width: true`',
 	'* **UI Target:** `dimension-panel`',
 	'',
 	'#### 2. BACKGROUND & STYLE ("Color", "Image", "Gradient")',
-	'* **Target Attributes:** `blockBackground`, `opacity-general`',
+	'* **Target Properties:** `background_color`, `opacity`',
 	'* **Clarification Presets:**',
 	'    * **A (Theme Color):** "Apply Brand Background."',
-	'        * Payload: `{ "blockBackground": { "type": "color", "value": "var(--bg-2)" } }`',
+	'        * Action: set `background_color: "var(--bg-2)"`',
 	'    * **B (Dark Mode):** "Inverted Dark Background."',
-	'        * Payload: `{ "blockBackground": { "type": "color", "value": "var(--h1)" } }`',
-	'    * **C (Glass):** "Glassmorphism (Blur + Transparency)."',
-	'        * Payload: `{ "blockBackground": { "type": "color", "value": "rgba(255,255,255,0.1)" }, "backdrop-filter": "blur(10px)" }`',
+	'        * Action: set `background_color: "var(--h1)"`',
+	'    * **C (Glass):** "Glassmorphism (Translucent)."',
+	'        * Action: set `background_color: "rgba(255,255,255,0.1)"`, optional `opacity: 0.9`',
 	'* **UI Target:** `background-layer`',
 	'',
 	'#### 3. SHAPE DIVIDERS ("Wave", "Curve", "Slant", "Divider")',
-	'* **Target Attributes:** `shape-divider-top-status`, `shape-divider-bottom-status`, `shape-divider` settings',
+	'* **Target Properties:** `shape_divider_top`, `shape_divider_bottom`',
 	'* **Clarification:** "Where do you want the shape divider?"',
 	'    * **A (Top):** "Add a Wave to the Top."',
-	'        * Payload: `{ "shape-divider-top-status": true, "shape-divider-top": { "style": "wave", "color": "var(--bg-1)" } }`',
+	'        * Action: set `shape_divider_top: "wave"`',
 	'    * **B (Bottom):** "Add a Curve to the Bottom."',
-	'        * Payload: `{ "shape-divider-bottom-status": true, "shape-divider-bottom": { "style": "curve", "color": "var(--bg-1)" } }`',
+	'        * Action: set `shape_divider_bottom: "curve"`',
 	'    * **C (Both):** "Add Slants to Top & Bottom."',
-	'        * Payload: `{ "shape-divider-top-status": true, "shape-divider-bottom-status": true }`',
+	'        * Action: set `shape_divider_top: "slant"`, `shape_divider_bottom: "slant"`',
 	'* **UI Target:** `shape-divider-panel`',
 	'',
 	'#### 4. CONTEXT LOOP / DYNAMIC CONTENT ("Loop", "Query", "Repeater")',
-	'* **Target Attributes:** `cl-status` (Context Loop), `cl-type`, `cl-author`',
+	'* **Target Property:** `context_loop`',
 	'* **Action:** This turns the container into a Loop Provider (like a Query Loop).',
 	'* **Clarification Presets:**',
 	'    * **A (Recent Posts):** "Loop recent Blog Posts."',
-	'        * Payload: `{ "cl-status": true, "cl-type": "post", "count": 6 }`',
+	'        * Action: `context_loop: { status: true, type: "post", perPage: 6 }`',
 	'    * **B (Products):** "Loop WooCommerce Products."',
-	'        * Payload: `{ "cl-status": true, "cl-type": "product", "count": 4 }`',
+	'        * Action: `context_loop: { status: true, type: "product", perPage: 4 }`',
 	'    * **C (Related):** "Loop Related Posts (Same Category)."',
-	'        * Payload: `{ "cl-status": true, "cl-type": "related" }`',
+	'        * Action: `context_loop: { status: true, relation: "related" }`',
 	'* **UI Target:** `context-loop-panel`',
 	'',
 	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
-	'* **Target Attributes:** `padding-general`, `margin-general`',
-	'* **Responsive Logic:** ALWAYS scale mobile values to 40% of desktop.',
+	'* **Target Property:** `responsive_padding`',
+	'* **Responsive Logic:** always provide desktop/tablet/mobile values.',
 	'* **Clarification Presets:**',
 	'    * **A (Compact):** "Tight section (60px)."',
-	'        * Payload: `{ "padding-top-general": "60px", "padding-bottom-general": "60px", "padding-top-xs": "30px" }`',
+	'        * Action: `responsive_padding: { desktop: "60px", tablet: "40px", mobile: "20px" }`',
 	'    * **B (Standard):** "Regular section (100px)."',
-	'        * Payload: `{ "padding-top-general": "100px", "padding-bottom-general": "100px", "padding-top-xs": "50px" }`',
+	'        * Action: `responsive_padding: { desktop: "100px", tablet: "60px", mobile: "40px" }`',
 	'    * **C (Hero):** "Tall Hero section (180px)."',
-	'        * Payload: `{ "padding-top-general": "180px", "padding-bottom-general": "180px", "padding-top-xs": "80px" }`',
+	'        * Action: `responsive_padding: { desktop: "180px", tablet: "110px", mobile: "80px" }`',
 	'* **UI Target:** `spacing-panel`',
 	'',
 	'#### 6. VISIBILITY & SCROLL EFFECTS ("Sticky", "Hide on mobile", "Fade in")',
-	'* **Target Attributes:** `position` (sticky), `display-xs` (none), `scrollEffects`',
+	'* **Target Properties:** `position`, `position_top`, `z_index`, `display_mobile`, `scroll_fade`',
 	'* **Clarification Presets:**',
 	'    * **A (Sticky):** "Stick to top when scrolling."',
-	'        * Payload: `{ "position": "sticky", "top": "0px", "z-index": "100" }`',
+	'        * Action: set `position: "sticky"`, `position_top: "0px"`, `z_index: 100`',
 	'    * **B (Mobile Hidden):** "Hide this container on phones."',
-	'        * Payload: `{ "display-xs": "none" }`',
+	'        * Action: set `display_mobile: "none"`',
 	'    * **C (Fade In):** "Animate in when scrolled to."',
-	'        * Payload: `{ "scrollEffects": { "animation": "fade-up", "duration": 800 } }`',
+	'        * Action: set `scroll_fade: true`',
 	'* **UI Target:** `advanced-panel` (or scroll effects)',
 	'',
 	'### Suggested "Quick Action" Chips for Container',
@@ -100,7 +100,73 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'2. **"Add top wave divider"** (Triggers Shape Divider Preset A)',
 	'3. **"Turn into Post Loop"** (Triggers Context Loop Preset A)',
 	'4. **"Increase section padding"** (Triggers Spacing Preset C)',
-	'5. **"Hide on mobile"** (Sets `display-xs: none`)',
+	'5. **"Hide on mobile"** (Sets `display_mobile: none`)',
+].join('\n');
+
+const FLEX_LAYOUT_INTENT_MAPPING_MODULE = [
+	'### MODULE: FLEX LAYOUT INTENT MAPPING',
+	'Map "human" layout requests to the Flexbox properties used by the AI handler.',
+	'',
+	'#### 1. ALIGNMENT ("Center", "Middle", "Align")',
+	'* **Target Properties:** `justify_content`, `align_items_flex`, `dead_center`',
+	'* **Clarification Presets:**',
+	'    * **A (Dead Center):** "Center everything perfectly in the middle."',
+	'        * Action: set `dead_center: true`',
+	'    * **B (Spread Apart):** "Push items to the far edges (Left & Right)."',
+	'        * Action: set `justify_content: "space-between"`, `align_items_flex: "center"`',
+	'    * **C (Top Left):** "Reset to top-left corner."',
+	'        * Action: set `justify_content: "flex-start"`, `align_items_flex: "flex-start"`',
+	'* **UI Target:** `layout-flex-panel`',
+	'',
+	'#### 2. DIRECTION ("Stack", "Row", "Column", "Side by Side")',
+	'* **Target Property:** `flex_direction`',
+	'* **Clarification Presets:**',
+	'    * **A (Side-by-Side):** "Put items in a horizontal Row."',
+	'        * Action: set `flex_direction: "row"`',
+	'    * **B (Stack Vertical):** "Stack items in a vertical Column."',
+	'        * Action: set `flex_direction: "column"`',
+	'    * **C (Reverse):** "Flip the order (Swap Left/Right)."',
+	'        * Action: set `flex_direction: "row-reverse"`',
+	'* **UI Target:** `layout-flex-panel`',
+	'',
+	'#### 3. SPACING / GAP ("Space between", "Gap", "Breathing room")',
+	'* **Target Property:** `gap` (number, px)',
+	'* **Clarification Presets:**',
+	'    * **A (Tight):** "Small 10px gap."',
+	'        * Action: set `gap: 10`',
+	'    * **B (Standard):** "Regular 30px gap."',
+	'        * Action: set `gap: 30`',
+	'    * **C (Wide):** "Large 60px gap."',
+	'        * Action: set `gap: 60`',
+	'* **UI Target:** `spacing-panel`',
+	'',
+	'#### 4. WRAPPING ("Wrap", "Fit on screen", "Multi-line")',
+	'* **Target Property:** `flex_wrap`',
+	'* **Clarification:** "If items run out of space, should they drop to the next line?"',
+	'    * **A (Wrap):** "Yes, drop to next line (Multi-line)."',
+	'        * Action: set `flex_wrap: "wrap"`',
+	'    * **B (Squeeze):** "No, keep them on one line (Scroll/Squish)."',
+	'        * Action: set `flex_wrap: "nowrap"`',
+	'* **UI Target:** `layout-flex-panel`',
+	'',
+	'#### 5. STRETCHING ("Full Height", "Stretch items", "Equal Height")',
+	'* **Target Property:** `align_items_flex`',
+	'* **Clarification Presets:**',
+	'    * **A (Stretch):** "Force all items to be the same height."',
+	'        * Action: set `align_items_flex: "stretch"`',
+	'    * **B (Natural):** "Let items be their natural size."',
+	'        * Action: set `align_items_flex: "flex-start"`',
+	'* **UI Target:** `layout-flex-panel`',
+	'',
+	'### Suggested "Quick Action" Chips for Flex Containers',
+	'',
+	'Add these to your UI when a Flex Container (Row/Column) is selected:',
+	'',
+	'1. **"Center Everything"** (Triggers Alignment Preset A)',
+	'2. **"Stack Vertically"** (Triggers Direction Preset B)',
+	'3. **"Push to Edges"** (Triggers Alignment Preset B - Space Between)',
+	'4. **"Equal Height Items"** (Sets `align_items_flex: stretch`)',
+	'5. **"Add Space Between"** (Triggers Gap Preset B)',
 ].join('\n');
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
@@ -200,6 +266,8 @@ MODIFY_BLOCK: {"action":"MODIFY_BLOCK","payload":{...},"message":"Done."}
 
 ${CONTAINER_BLOCK_INTENT_MAPPING_MODULE}
 
+${FLEX_LAYOUT_INTENT_MAPPING_MODULE}
+
 REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
 `;
 
@@ -229,7 +297,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /bottom\s*up|reverse.*vertical|reverse.*stack|upwards?\s*stack/, property: 'flex_direction', value: 'column-reverse', selectionMsg: 'Reversed vertical order (column-reverse).', pageMsg: 'Reversed vertical order.' },
 	
 	// GROUP 2: JUSTIFY CONTENT (main axis distribution)
-	{ regex: /spread.*wall|space\s*between|first.*last.*edge|push.*apart|stretch.*apart/, property: 'justify_content', value: 'space-between', selectionMsg: 'Spread items to edges (space-between).', pageMsg: 'Applied space-between layout.' },
+	{ regex: /spread.*wall|space\s*between|first.*last.*edge|push.*apart|stretch.*apart|push.*edges|edges.*apart|to.*edges/, property: 'justify_content', value: 'space-between', selectionMsg: 'Spread items to edges (space-between).', pageMsg: 'Applied space-between layout.' },
 	{ regex: /breathing\s*room|balanced\s*spac|space\s*around|equal\s*margin/, property: 'justify_content', value: 'space-around', selectionMsg: 'Added balanced spacing (space-around).', pageMsg: 'Applied balanced spacing.' },
 	{ regex: /equal\s*gap|evenly\s*spac|space\s*evenly|perfectly\s*even/, property: 'justify_content', value: 'space-evenly', selectionMsg: 'Applied even spacing (space-evenly).', pageMsg: 'Applied evenly distributed spacing.' },
 	{ regex: /push.*start|bunch.*start|items?.*left(?!.*text)|align.*items?.*left/, property: 'justify_content', value: 'flex-start', selectionMsg: 'Pushed items to start (flex-start).', pageMsg: 'Aligned items to start.' },
@@ -249,7 +317,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /wrap.*upward|wrap.*reverse|reverse.*wrap/, property: 'flex_wrap', value: 'wrap-reverse', selectionMsg: 'Enabled reverse wrapping (flex-wrap: wrap-reverse).', pageMsg: 'Enabled reverse wrapping.' },
 	
 	// GROUP 5: EXTENDED - DEAD CENTER & FLEX SIZING
-	{ regex: /dead\s*cent(er|re)|perfect(ly)?\s*cent(er|re)(ed)?|absolute(ly)?\s*cent(er|re)/, property: 'dead_center', value: true, selectionMsg: 'Perfectly centred items (horizontally + vertically).', pageMsg: 'Dead-centred all containers.' },
+	{ regex: /dead\s*cent(er|re)|perfect(ly)?\s*cent(er|re)(ed)?|absolute(ly)?\s*cent(er|re)|center.*everything|everything.*center/, property: 'dead_center', value: true, selectionMsg: 'Perfectly centred items (horizontally + vertically).', pageMsg: 'Dead-centred all containers.' },
 	{ regex: /fill.*remaining|fill.*rest|take.*rest|expand.*fill|grow.*space|use.*remaining/, property: 'flex_grow', value: 1, selectionMsg: 'Set to fill remaining space (flex-grow: 1).', pageMsg: 'Set containers to fill remaining space.' },
 	{ regex: /don'?t\s*shrink|no\s*shrink|keep.*fixed|fixed\s*size|prevent.*shrink/, property: 'flex_shrink', value: 0, selectionMsg: 'Prevented shrinking (flex-shrink: 0).', pageMsg: 'Prevented containers from shrinking.' },
 	
@@ -308,8 +376,22 @@ const LAYOUT_PATTERNS = [
 	{ regex: /pattern.*texture|tile.*background|repeat.*background|honeycomb/, property: 'background_tile', value: true, selectionMsg: 'Added tiled pattern.', pageMsg: 'Applied repeating pattern.' },
 	
 	// GROUP 15: SHAPES & DIVIDERS
-	{ regex: /wavy.*edge|wave.*bottom|wave.*divider/, property: 'shape_divider', value: 'wave', selectionMsg: 'Added wave shape divider.', pageMsg: 'Applied wave divider.' },
-	{ regex: /triangle.*edge|angle.*divider|slant.*edge/, property: 'shape_divider', value: 'triangle', selectionMsg: 'Added triangle shape divider.', pageMsg: 'Applied angled divider.' },
+	{ regex: /wave.*(top.*bottom|both)|(?:top.*bottom|both).*wave/, property: 'shape_divider_both', value: 'wave', selectionMsg: 'Added wave shape dividers to top and bottom.', pageMsg: 'Applied wave dividers to top and bottom.' },
+	{ regex: /wave.*top|top.*wave|wavy.*top/, property: 'shape_divider_top', value: 'wave', selectionMsg: 'Added wave shape divider to the top.', pageMsg: 'Applied wave divider to the top.' },
+	{ regex: /wave.*bottom|bottom.*wave|wavy.*bottom/, property: 'shape_divider_bottom', value: 'wave', selectionMsg: 'Added wave shape divider to the bottom.', pageMsg: 'Applied wave divider to the bottom.' },
+	{ regex: /wavy.*edge|wave.*divider/, property: 'shape_divider_bottom', value: 'wave', selectionMsg: 'Added wave shape divider.', pageMsg: 'Applied wave divider.' },
+	{ regex: /curve.*(top.*bottom|both)|(?:top.*bottom|both).*curve/, property: 'shape_divider_both', value: 'curve', selectionMsg: 'Added curve shape dividers to top and bottom.', pageMsg: 'Applied curve dividers to top and bottom.' },
+	{ regex: /curve.*top|top.*curve/, property: 'shape_divider_top', value: 'curve', selectionMsg: 'Added curve shape divider to the top.', pageMsg: 'Applied curve divider to the top.' },
+	{ regex: /curve.*bottom|bottom.*curve/, property: 'shape_divider_bottom', value: 'curve', selectionMsg: 'Added curve shape divider to the bottom.', pageMsg: 'Applied curve divider to the bottom.' },
+	{ regex: /curve.*divider/, property: 'shape_divider_bottom', value: 'curve', selectionMsg: 'Added curve shape divider.', pageMsg: 'Applied curve divider.' },
+	{ regex: /slant.*(top.*bottom|both)|(?:top.*bottom|both).*slant|angle.*(top.*bottom|both)|(?:top.*bottom|both).*angle/, property: 'shape_divider_both', value: 'slant', selectionMsg: 'Added slant shape dividers to top and bottom.', pageMsg: 'Applied slant dividers to top and bottom.' },
+	{ regex: /slant.*top|top.*slant|angle.*top/, property: 'shape_divider_top', value: 'slant', selectionMsg: 'Added slant shape divider to the top.', pageMsg: 'Applied slant divider to the top.' },
+	{ regex: /slant.*bottom|bottom.*slant|angle.*bottom/, property: 'shape_divider_bottom', value: 'slant', selectionMsg: 'Added slant shape divider to the bottom.', pageMsg: 'Applied slant divider to the bottom.' },
+	{ regex: /slant.*edge|angle.*divider/, property: 'shape_divider_bottom', value: 'slant', selectionMsg: 'Added slant shape divider.', pageMsg: 'Applied slant divider.' },
+	{ regex: /triangle.*(top.*bottom|both)|(?:top.*bottom|both).*triangle/, property: 'shape_divider_both', value: 'triangle', selectionMsg: 'Added triangle shape dividers to top and bottom.', pageMsg: 'Applied triangle dividers to top and bottom.' },
+	{ regex: /triangle.*top|top.*triangle/, property: 'shape_divider_top', value: 'triangle', selectionMsg: 'Added triangle shape divider to the top.', pageMsg: 'Applied triangle divider to the top.' },
+	{ regex: /triangle.*bottom|bottom.*triangle/, property: 'shape_divider_bottom', value: 'triangle', selectionMsg: 'Added triangle shape divider to the bottom.', pageMsg: 'Applied triangle divider to the bottom.' },
+	{ regex: /triangle.*edge/, property: 'shape_divider_bottom', value: 'triangle', selectionMsg: 'Added triangle shape divider.', pageMsg: 'Applied triangle divider.' },
 	{ regex: /cut.*triangle|triangle.*shape|clip.*triangle/, property: 'clip_path', value: 'polygon(50% 0%, 0% 100%, 100% 100%)', selectionMsg: 'Cut into triangle shape.', pageMsg: 'Applied triangle clip.' },
 	{ regex: /cut.*circle|circle.*shape|round.*clip/, property: 'clip_path', value: 'circle(50%)', selectionMsg: 'Cut into circle shape.', pageMsg: 'Applied circle clip.' },
 	{ regex: /cut.*diamond|diamond.*shape/, property: 'clip_path', value: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', selectionMsg: 'Cut into diamond shape.', pageMsg: 'Applied diamond clip.' },
@@ -370,6 +452,15 @@ const LAYOUT_PATTERNS = [
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];
+
+const ACTION_PROPERTY_ALIASES = {
+	justifyContent: 'justify_content',
+	alignItems: 'align_items_flex',
+	flexDirection: 'flex_direction',
+	flexWrap: 'flex_wrap',
+	rowGap: 'gap',
+	columnGap: 'gap',
+};
 
 const AIChatPanel = ({ isOpen, onClose }) => {
 	const [messages, setMessages] = useState([]);
@@ -678,9 +769,36 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			lowerMessage.includes('font');
 		const isBackground =
 			lowerMessage.includes('background') || lowerMessage.includes('bg');
+		const isShapeKeyword =
+			lowerMessage.includes('shape divider') ||
+			lowerMessage.includes('shape-divider') ||
+			lowerMessage.includes('wave') ||
+			lowerMessage.includes('waves') ||
+			lowerMessage.includes('curve') ||
+			lowerMessage.includes('slant') ||
+			lowerMessage.includes('triangle');
+		const isContainer = selectedBlock?.name?.includes('container');
+		const hasShapeDivider =
+			!!selectedBlock?.attributes?.['shape-divider-top-status'] ||
+			!!selectedBlock?.attributes?.['shape-divider-bottom-status'];
+		const wantsTop = lowerMessage.includes('top');
+		const wantsBottom = lowerMessage.includes('bottom');
 		const isDivider =
 			lowerMessage.includes('divider') ||
 			selectedBlock?.name?.includes('divider');
+
+		if (isShapeKeyword || (isDivider && isContainer)) {
+			if (wantsTop && !wantsBottom) return 'shape-divider-top';
+			if (wantsBottom && !wantsTop) return 'shape-divider-bottom';
+			if (wantsTop && wantsBottom) return 'shape-divider';
+			if (hasShapeDivider) {
+				const hasTop = !!selectedBlock?.attributes?.['shape-divider-top-status'];
+				const hasBottom = !!selectedBlock?.attributes?.['shape-divider-bottom-status'];
+				if (hasTop && !hasBottom) return 'shape-divider-top';
+				if (hasBottom && !hasTop) return 'shape-divider-bottom';
+			}
+			return 'shape-divider';
+		}
 
 		if (isDivider) return 'divider';
 		if (lowerMessage.includes('border') && isButtonContext) return 'button-border';
@@ -696,6 +814,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (isText) return 'text';
 		if (lowerMessage.includes('border')) return 'border';
 		return 'element';
+	};
+
+	const getColorTargetLabel = colorTarget => {
+		if (colorTarget === 'shape-divider') return 'shape divider';
+		if (colorTarget === 'shape-divider-top') return 'shape divider (top)';
+		if (colorTarget === 'shape-divider-bottom') return 'shape divider (bottom)';
+		return colorTarget.replace('button-', '');
 	};
 
 	const buildColorUpdate = (colorTarget, colorValue) => {
@@ -750,6 +875,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			property = 'text_color';
 			targetBlock = 'text';
 			msgText = 'text';
+		} else if (colorTarget === 'shape-divider-top') {
+			property = 'shape_divider_color_top';
+			targetBlock = 'container';
+			msgText = 'shape divider (top)';
+		} else if (colorTarget === 'shape-divider-bottom') {
+			property = 'shape_divider_color_bottom';
+			targetBlock = 'container';
+			msgText = 'shape divider (bottom)';
+		} else if (colorTarget === 'shape-divider') {
+			property = 'shape_divider_color';
+			targetBlock = 'container';
+			msgText = 'shape divider';
 		} else if (colorTarget === 'divider') {
 			property = 'divider_color';
 			targetBlock = 'divider';
@@ -1312,6 +1449,70 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		'column-gap-general': Number(value),
 		'column-gap-unit-general': unit,
 	});
+
+	const clampNumber = (value, min, max) => {
+		const numeric = Number(value);
+		if (Number.isNaN(numeric)) return min;
+		return Math.min(Math.max(numeric, min), max);
+	};
+
+	const normalizeShapeDividerStyle = (position, rawStyle) => {
+		const base = String(rawStyle || '').trim().toLowerCase();
+		if (!base) return '';
+
+		const map = {
+			wave: 'wave',
+			waves: 'waves',
+			curve: 'curve',
+			slant: 'slant',
+			triangle: 'triangle',
+		};
+		const mapped = map[base] || base;
+		if (mapped.endsWith(`-${position}`)) return mapped;
+		return `${mapped}-${position}`;
+	};
+
+	const buildShapeDividerChanges = (position, rawValue) => {
+		if (rawValue === undefined || rawValue === null) return null;
+
+		const normalized = String(rawValue).trim().toLowerCase();
+		if (['none', 'off', 'remove'].includes(normalized)) {
+			return { [`shape-divider-${position}-status`]: false };
+		}
+
+		const valueObj = rawValue && typeof rawValue === 'object' ? rawValue : null;
+		const styleInput = valueObj?.style || valueObj?.shape || valueObj?.value || rawValue;
+		const style = normalizeShapeDividerStyle(position, styleInput);
+		if (!style) return null;
+
+		const changes = {
+			[`shape-divider-${position}-status`]: true,
+			[`shape-divider-${position}-shape-style`]: style,
+		};
+
+		if (valueObj?.color !== undefined) {
+			const isPalette = typeof valueObj.color === 'number';
+			changes[`shape-divider-${position}-palette-status-general`] = isPalette;
+			changes[`shape-divider-${position}-palette-color-general`] = isPalette ? valueObj.color : '';
+			changes[`shape-divider-${position}-color-general`] = isPalette ? '' : valueObj.color;
+		}
+
+		if (valueObj?.opacity !== undefined) {
+			changes[`shape-divider-${position}-opacity-general`] = clampNumber(valueObj.opacity, 0, 1);
+		}
+
+		return changes;
+	};
+
+	const buildShapeDividerColorChanges = (position, colorValue) => {
+		if (colorValue === undefined || colorValue === null || colorValue === '') return null;
+		const isPalette = typeof colorValue === 'number';
+		return {
+			[`shape-divider-${position}-palette-status-general`]: isPalette,
+			[`shape-divider-${position}-palette-color-general`]: isPalette ? colorValue : '',
+			[`shape-divider-${position}-color-general`]: isPalette ? '' : colorValue,
+		};
+	};
 
 	// Flex sizing helpers
 	const updateFlexGrow = (value) => ({
@@ -1943,15 +2144,36 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						// ======= SHAPES & DIVIDERS =======
 						case 'shape_divider':
-							if (!value || value === 'none' || value === 'off') {
-								changes = { 'shape-divider-bottom-status': false };
-							} else {
-								changes = { 
-									'shape-divider-bottom-status': true,
-									'shape-divider-bottom-shape-style': value,
-								};
+							changes = buildShapeDividerChanges('bottom', value);
+							break;
+						case 'shape_divider_top':
+							changes = buildShapeDividerChanges('top', value);
+							break;
+						case 'shape_divider_bottom':
+							changes = buildShapeDividerChanges('bottom', value);
+							break;
+						case 'shape_divider_both': {
+							const topChanges = buildShapeDividerChanges('top', value);
+							const bottomChanges = buildShapeDividerChanges('bottom', value);
+							if (topChanges || bottomChanges) {
+								changes = { ...topChanges, ...bottomChanges };
 							}
 							break;
+						}
+						case 'shape_divider_color_top':
+							changes = buildShapeDividerColorChanges('top', value);
+							break;
+						case 'shape_divider_color_bottom':
+							changes = buildShapeDividerColorChanges('bottom', value);
+							break;
+						case 'shape_divider_color': {
+							const topChanges = buildShapeDividerColorChanges('top', value);
+							const bottomChanges = buildShapeDividerColorChanges('bottom', value);
+							if (topChanges || bottomChanges) {
+								changes = { ...topChanges, ...bottomChanges };
+							}
+							break;
+						}
 						case 'clip_path':
 							changes = { 
 								'clip-path-general': value,
@@ -1977,12 +2199,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								changes = buildSizeChanges(prefix, 'max-height', maxHeight.value, maxHeight.unit, true);
 							}
 							break;
-						case 'full_width':
-							changes = { 
-								...buildBreakpointChanges(prefix, 'full-width', true),
+						case 'full_width': {
+							const isFull = value === undefined ? true : Boolean(value);
+							changes = {
+								...buildBreakpointChanges(prefix, 'full-width', isFull),
 								[`${prefix}size-advanced-options`]: true,
 							};
 							break;
+						}
 						case 'min_height':
 							{
 								const minHeight = parseUnitValue(value);
@@ -2302,6 +2526,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						}
 					}
 				}
+			}
+
+			if (action?.property && ACTION_PROPERTY_ALIASES[action.property]) {
+				action.property = ACTION_PROPERTY_ALIASES[action.property];
 			}
 
 			// FALLBACK: If AI returned plain text for known clarification patterns, synthesize the response
@@ -3120,7 +3348,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		// ALIGNMENT - "Align everything" (Generic)
-		if (lowerMessage.includes('align') && (lowerMessage.includes('everything') || lowerMessage.includes('all')) && !lowerMessage.includes('left') && !lowerMessage.includes('right') && !lowerMessage.includes('center')) {
+		if (lowerMessage.includes('align') && (lowerMessage.includes('everything') || lowerMessage.includes('all')) && !lowerMessage.includes('left') && !lowerMessage.includes('right') && !lowerMessage.includes('center') && !lowerMessage.includes('bottom') && !lowerMessage.includes('top')) {
 			setMessages(prev => [...prev, {
 				role: 'assistant',
 				content: 'How would you like to align everything?',
@@ -3444,7 +3672,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					
 					setMessages(prev => [...prev, { 
 						role: 'assistant', 
-						content: `Choose a colour for the ${colorTarget.replace('button-', '')}:`, // Clean up label
+						content: `Choose a colour for the ${getColorTargetLabel(colorTarget)}:`,
 						options: true, // Signals that we have options
 						optionsType: 'palette', // Use palette swatches (rendered at lines 3348-3373)
 						colorTarget: colorTarget,

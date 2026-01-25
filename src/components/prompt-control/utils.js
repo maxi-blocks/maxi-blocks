@@ -171,7 +171,10 @@ const handleUiTarget = responseContent => {
 			openSidebarAccordion(0, mapping[target]);
 		}
 	} catch (e) {
-		// ignore
+		// Parse failures are expected when content is not a UI-target JSON.
+		if (process.env.NODE_ENV === 'development') {
+			console.debug('handleUiTarget parse attempt:', e.message);
+		}
 	}
 };
 
@@ -252,7 +255,6 @@ export const callChatAndUpdateResults = async ({
 	messages,
 	newId,
 	abortControllerRef,
-	prompt,
 	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
@@ -349,7 +351,6 @@ export const callBackendAIProxy = async ({
 			const newResults = [...prevResults];
 			const addedResult = newResults.find(result => result.id === newId);
 
-
 			if (addedResult) {
 				addedResult.content = sanitizeContent(
 					finalContent ?? addedResult.content,
@@ -358,8 +359,8 @@ export const callBackendAIProxy = async ({
 				addedResult.loading = false;
 				addedResult.progress = addedResult.content.length;
 
-                // Handle UI Target expansion
-                handleUiTarget(addedResult.content);
+				// Handle UI Target expansion
+				handleUiTarget(addedResult.content);
 			}
 
 			return newResults;
@@ -440,8 +441,8 @@ export const callBackendAIProxy = async ({
 					addedResult.loading = false;
 					addedResult.progress = content.length;
 
-                    // Handle UI Target expansion
-                    handleUiTarget(content);
+					// Handle UI Target expansion
+					handleUiTarget(content);
 				}
 
 				return newResults;
@@ -753,15 +754,15 @@ export const getContext = (contextOption, clientId) => {
  * @param {string} content - The content to parse.
  * @return {Object|null} - The parsed payload if intent is CLARIFY, otherwise null.
  */
-export const parseClarifyPayload = (content) => {
+export const parseClarifyPayload = content => {
 	try {
-        if (!content || typeof content !== 'string') return null;
+		if (!content || typeof content !== 'string') return null;
 
 		const startIndex = content.indexOf('{');
 		const endIndex = content.lastIndexOf('}');
 		if (startIndex === -1 || endIndex === -1) {
-            return null;
-        }
+			return null;
+		}
 
 		const jsonStr = content.substring(startIndex, endIndex + 1);
 		const parsed = JSON.parse(jsonStr);

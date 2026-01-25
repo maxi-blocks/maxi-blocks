@@ -59,7 +59,9 @@ Scroll/Parallax:
 
 Shapes:
 - clip_path: CSS clip-path string (or "none").
-- shape_divider: string shape name (applies bottom divider).
+- shape_divider_top: string shape name (applies top divider).
+- shape_divider_bottom: string shape name (applies bottom divider).
+- shape_divider: string shape name (defaults to bottom divider).
 
 Context loop (basic):
 - context_loop: { status, source, type, relation, orderBy, order, perPage, pagination }.

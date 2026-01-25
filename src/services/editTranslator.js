@@ -151,15 +151,20 @@ const parseAlignment = prompt => {
 	return null;
 };
 
+const clampOpacity = value => Math.min(1, Math.max(0, value));
+
 const parseOpacity = prompt => {
 	const percentMatch = prompt.match(/\b(\d+(?:\.\d+)?)%\b/);
 	if (percentMatch) {
-		return Number.parseFloat(percentMatch[1]) / 100;
+		return clampOpacity(Number.parseFloat(percentMatch[1]) / 100);
 	}
 
 	const valueMatch = prompt.match(/\bopacity\s*(\d+(?:\.\d+)?)\b/);
 	if (valueMatch) {
-		return Number.parseFloat(valueMatch[1]);
+		const rawValue = Number.parseFloat(valueMatch[1]);
+		const normalisedValue =
+			rawValue > 1 && rawValue <= 100 ? rawValue / 100 : rawValue;
+		return clampOpacity(normalisedValue);
 	}
 
 	return null;

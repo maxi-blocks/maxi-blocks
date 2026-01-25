@@ -283,9 +283,12 @@ export const removeNavigationHoverUnderline = remove => {
 };
 
 export const openStyleCardsEditor = (options = {}) => {
+	let openedViaGlobal = false;
+
 	if (typeof window !== 'undefined') {
 		if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
 			window.maxiBlocksOpenStyleCardsEditor(options);
+			openedViaGlobal = true;
 		}
 	}
 
@@ -294,7 +297,7 @@ export const openStyleCardsEditor = (options = {}) => {
 			? document.getElementById('maxi-button__style-cards')
 			: null;
 
-	if (styleCardsButton) {
+	if (styleCardsButton && !openedViaGlobal) {
 		styleCardsButton.click();
 	}
 
@@ -324,5 +327,5 @@ export const openStyleCardsEditor = (options = {}) => {
 		}, delay);
 	}
 
-	return !!styleCardsButton;
+	return openedViaGlobal || !!styleCardsButton;
 };

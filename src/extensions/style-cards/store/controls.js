@@ -16,8 +16,7 @@ import {
 } from '@extensions/style-cards/styleCardsCacheDB';
 
 // Expose cache clearing function for debugging (development/test only)
-// Expose cache clearing function for debugging (development/test only)
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
 	window.maxiBlocksClearStyleCardsCache = clearIndexedDB;
 }
 

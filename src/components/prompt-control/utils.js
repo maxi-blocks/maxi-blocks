@@ -438,6 +438,7 @@ export const callBackendAIProxy = async ({
 		const decoder = new TextDecoder('utf-8');
 		let buffer = '';
 		let responseContent = '';
+		let abortStream = false;
 
 		while (true) {
 			const { value, done } = await reader.read();
@@ -471,7 +472,8 @@ export const callBackendAIProxy = async ({
 						if (isModelUnavailableError(errorMessage)) {
 							onModelUnavailable?.();
 						}
-						throw new Error(errorMessage);
+						abortStream = true;
+						break;
 					}
 
 					const delta =
@@ -498,6 +500,13 @@ export const callBackendAIProxy = async ({
 				} catch (error) {
 					console.error('MaxiBlocks AI stream parse error:', error);
 				}
+			}
+
+			if (abortStream) {
+				await reader.cancel();
+				setIsGenerating(false);
+				abortControllerRef.current = null;
+				return;
 			}
 
 			if (done) {

@@ -317,110 +317,107 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		];
 	};
 
-	const fetchGeminiModels = async apiKey => {
-		try {
-			const response = await fetch(
-				`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
-			);
-			if (!response.ok) throw new Error('Failed to fetch Gemini models');
-			const data = await response.json();
-			return (data.models || [])
-				.filter(
-					model =>
-						model.name.includes('gemini') &&
-						model.supportedGenerationMethods?.includes(
-							'generateContent'
-						)
-				)
-				.map(model => model.name.replace('models/', ''))
-				.sort();
-		} catch (error) {
-			console.error('Error fetching Gemini models:', error);
-			return [];
+	const buildModelFetchError = (response, providerLabel) => {
+		const error = new Error(`Failed to fetch ${providerLabel} models`);
+		if (response?.status) {
+			error.status = response.status;
 		}
+		return error;
+	};
+
+	const fetchGeminiModels = async apiKey => {
+		const response = await fetch(
+			`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+		);
+		if (!response.ok) {
+			throw buildModelFetchError(response, 'Gemini');
+		}
+		const data = await response.json();
+		return (data.models || [])
+			.filter(
+				model =>
+					model.name.includes('gemini') &&
+					model.supportedGenerationMethods?.includes(
+						'generateContent'
+					)
+			)
+			.map(model => model.name.replace('models/', ''))
+			.sort();
 	};
 
 	const fetchMistralModels = async apiKey => {
-		try {
-			const response = await fetch('https://api.mistral.ai/v1/models', {
-				headers: {
-					Authorization: `Bearer ${apiKey}`,
-				},
-			});
-			if (!response.ok) throw new Error('Failed to fetch Mistral models');
-			const data = await response.json();
-			return (data.data || [])
-				.filter(model => !model.id.includes('embed'))
-				.map(model => model.id)
-				.sort();
-		} catch (error) {
-			console.error('Error fetching Mistral models:', error);
-			return [];
+		const response = await fetch('https://api.mistral.ai/v1/models', {
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+			},
+		});
+		if (!response.ok) {
+			throw buildModelFetchError(response, 'Mistral');
 		}
+		const data = await response.json();
+		return (data.data || [])
+			.filter(model => !model.id.includes('embed'))
+			.map(model => model.id)
+			.sort();
 	};
 
 	const fetchOpenAIModels = async apiKey => {
-		try {
-			const response = await fetch('https://api.openai.com/v1/models', {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${apiKey}`,
-					'Content-Type': 'application/json',
-				},
-			});
+		const response = await fetch('https://api.openai.com/v1/models', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+				'Content-Type': 'application/json',
+			},
+		});
 
-			if (!response.ok) {
-				throw new Error('Failed to fetch models');
-			}
-
-			const data = await response.json();
-
-			const excludedPatterns = [
-				'audio',
-				'gpt-3.5-turbo-instruct',
-				'gpt-4o-mini-realtime-preview',
-				'gpt-4o-realtime-preview',
-				'gpt-image',
-				'gpt-realtime',
-				'transcribe',
-				'tts',
-				'search-preview',
-				'o1-pro',
-			];
-
-			const includedPatterns = ['o1', 'o3', 'gpt'];
-
-			return data.data
-				.filter(model => {
-					const modelId = model.id;
-					const isExcluded = excludedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-					const isIncluded = includedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-
-					return !isExcluded && isIncluded;
-				})
-				.map(model => model.id)
-				.sort();
-		} catch (error) {
-			console.error('Error fetching OpenAI models:', error);
-			return [];
+		if (!response.ok) {
+			throw buildModelFetchError(response, 'OpenAI');
 		}
+
+		const data = await response.json();
+
+		const excludedPatterns = [
+			'audio',
+			'gpt-3.5-turbo-instruct',
+			'gpt-4o-mini-realtime-preview',
+			'gpt-4o-realtime-preview',
+			'gpt-image',
+			'gpt-realtime',
+			'transcribe',
+			'tts',
+			'search-preview',
+			'o1-pro',
+		];
+
+		const includedPatterns = ['o1', 'o3', 'gpt'];
+
+		return data.data
+			.filter(model => {
+				const modelId = model.id;
+				const isExcluded = excludedPatterns.some(pattern =>
+					modelId.includes(pattern)
+				);
+				const isIncluded = includedPatterns.some(pattern =>
+					modelId.includes(pattern)
+				);
+
+				return !isExcluded && isIncluded;
+			})
+			.map(model => model.id)
+			.sort();
 	};
 
 	let isUpdatingDropdown = false;
 
 	const updateModelDropdown = async (provider, apiKey) => {
-		if (isUpdatingDropdown) return;
+		if (isUpdatingDropdown) return null;
 		isUpdatingDropdown = true;
 
 		const modelSelect = document.getElementById('maxi_ai_model');
 
 		if (!modelSelect) {
 			isUpdatingDropdown = false;
-			return;
+			return null;
 		}
 
 		// Only show loading message if we have a valid API key
@@ -429,7 +426,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		} else {
 			modelSelect.innerHTML = `<option value="">${window.localization.please_add_api_key}</option>`;
 			isUpdatingDropdown = false;
-			return;
+			return null;
 		}
 
 		try {
@@ -458,8 +455,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				option.value = '';
 				option.textContent = window.localization.no_models_available;
 				modelSelect.appendChild(option);
-				isUpdatingDropdown = false;
-				return;
+				return { ok: true };
 			}
 
 			// Add available models
@@ -483,15 +479,17 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				// eslint-disable-next-line prefer-destructuring
 				modelSelect.value = models[0];
 			}
+			return { ok: true };
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
 			modelSelect.innerHTML = `<option value="">${window.localization.error_loading_models}</option>`;
+			return { ok: false, error };
 		} finally {
 			isUpdatingDropdown = false;
 		}
 	};
 
-	const testProviderApiKey = provider => {
+	const testProviderApiKey = async provider => {
 		const apiKey = getProviderApiKey(provider);
 
 		if (apiKey === '') {
@@ -502,18 +500,26 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		customApiKeyValidation(provider, 'validating');
 
 		// For validation, we'll try to update the dropdown which does a fetch
-		updateModelDropdown(provider, apiKey)
-			.then(() => {
-				// We assume if models loaded (or even if 0 models but valid request), key is valid
-				// However, updateModelDropdown swallows errors.
-				// We should improve this by checking if updateModelDropdown succeeded.
-				// For now, simpler check:
+		try {
+			const result = await updateModelDropdown(provider, apiKey);
+			if (!result) return;
+
+			if (result.ok) {
 				customApiKeyValidation(provider, true);
-			})
-			.catch(error => {
-				console.error(error);
-				customApiKeyValidation(provider, 'ServerError');
-			});
+				return;
+			}
+
+			const status = result.error?.status;
+			if (status === 401 || status === 403) {
+				customApiKeyValidation(provider, 'InvalidKeyError');
+				return;
+			}
+
+			customApiKeyValidation(provider, 'ServerError');
+		} catch (error) {
+			console.error(error);
+			customApiKeyValidation(provider, 'ServerError');
+		}
 	};
 
 	// Initialization logic
@@ -664,7 +670,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			return;
 		}
 
-		dispatch(MCP_STORE_NAME).setToken(trimmedToken);
+		const requestToken = trimmedToken;
+
+		dispatch(MCP_STORE_NAME).setToken(requestToken);
 		dispatch(MCP_STORE_NAME).setStatus('loading');
 		dispatch(MCP_STORE_NAME).setError(null);
 		updateMcpUiFromStore();
@@ -672,13 +680,22 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		try {
 			const client = createMcpClient({
 				baseUrl: getMcpBaseUrl(),
-				token: trimmedToken,
+				token: requestToken,
 			});
 			const abilities = await client.getAbilities();
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken !== requestToken) {
+				return;
+			}
 			dispatch(MCP_STORE_NAME).setAbilities(abilities);
 			dispatch(MCP_STORE_NAME).setStatus('connected');
 			dispatch(MCP_STORE_NAME).setError(null);
 		} catch (error) {
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken !== requestToken) {
+				return;
+			}
+
 			let status = 'error';
 			let message = window.localization.mcp_error_generic;
 
@@ -697,7 +714,10 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			dispatch(MCP_STORE_NAME).setError(message);
 			dispatch(MCP_STORE_NAME).setAbilities([]);
 		} finally {
-			updateMcpUiFromStore();
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken === requestToken) {
+				updateMcpUiFromStore();
+			}
 		}
 	};
 

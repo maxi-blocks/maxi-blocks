@@ -2429,40 +2429,15 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $option_value = $default_value;
             }
             
-            // DEBUG: Log dropdown rendering
-            if ($option === 'maxi_ai_provider') {
-                $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
-                $log = date('Y-m-d H:i:s') . " - DROPDOWN RENDER\n";
-                $log .= "option: $option\n";
-                $log .= "default_value: $default_value\n";
-                $log .= "raw get_option: " . get_option($option, 'RAW_FALLBACK') . "\n";
-                $log .= "option_value used: $option_value\n";
-                $log .= "---\n";
-                file_put_contents($log_file, $log, FILE_APPEND);
-            }
-
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
                 $dropdown .= '<option value=""></option>';
             } else {
                 $is_associative = array_keys($list) !== range(0, count($list) - 1);
 
-                // DEBUG: Log selection logic
-                if ($option === 'maxi_ai_provider') {
-                    $log_file = MAXI_PLUGIN_DIR_PATH . 'core/admin/provider_save_log.txt';
-                    $log = date('Y-m-d H:i:s') . " - SELECTION LOOP\n";
-                    $log .= "option_value being compared: '$option_value'\n";
-                }
-
                 foreach ($list as $key => $value) {
                     $option_key = $is_associative ? $key : $value;
                     $selected = selected($option_value, $option_key, false);
-                    
-                    // DEBUG: Log each comparison
-                    if ($option === 'maxi_ai_provider') {
-                        $log .= "  option_key: '$option_key' | selected(): '$selected'\n";
-                    }
-                    
                     $dropdown .=
                         '<option value="' .
                         $option_key .
@@ -2471,12 +2446,6 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         '>' .
                         $value .
                         '</option>';
-                }
-                
-                // DEBUG: Write log
-                if ($option === 'maxi_ai_provider') {
-                    $log .= "---\n";
-                    file_put_contents($log_file, $log, FILE_APPEND);
                 }
             }
 

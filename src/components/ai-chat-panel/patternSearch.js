@@ -14,11 +14,17 @@
  * @returns {Promise<Array>} Array of pattern hits with gutenberg_code
  */
 export const searchPatterns = async (query, limit = 5) => {
+	const trimmedQuery = typeof query === 'string' ? query.trim() : '';
 	const apiKey = process.env.REACT_APP_TYPESENSE_API_KEY;
 	const apiHost = process.env.REACT_APP_TYPESENSE_API_URL;
 
+	// NOTE: This key is bundled client-side; use a search-only key scoped to maxi_patterns.
 	if (!apiKey || !apiHost) {
 		console.error('[Maxi AI] Typesense credentials not configured');
+		return [];
+	}
+
+	if (!trimmedQuery) {
 		return [];
 	}
 
@@ -26,7 +32,7 @@ export const searchPatterns = async (query, limit = 5) => {
 		const response = await fetch(
 			`https://${apiHost}/collections/maxi_patterns/documents/search?` +
 				new URLSearchParams({
-					q: query,
+					q: trimmedQuery,
 					query_by: 'post_title,category.lvl0,category.lvl1',
 					per_page: limit.toString(),
 					sort_by: 'post_date_int:desc',

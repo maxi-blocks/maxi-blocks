@@ -58,7 +58,7 @@ When changing padding/margin/spacing, NEVER apply a single large value. Always u
 ### CLARIFICATION EXAMPLES (COPY EXACTLY)
 
 When user says "add shadow" or "give shadow":
-{"action":"CLARIFY","message":"What style of shadow would you like?","options":[{"label":"Soft"},{"label":"Crisp"},{"label":"Bold"}]}
+{"action":"CLARIFY","message":"What style of shadow would you like?","options":[{"label":"Soft"},{"label":"Crisp"},{"label":"Bold"},{"label":"Glow"}]}
 
 When user says "make rounded" or "round corners":
 {"action":"CLARIFY","message":"How rounded should the corners be?","options":[{"label":"Subtle (8px)"},{"label":"Soft (24px)"},{"label":"Full (50px)"}]}
@@ -76,7 +76,7 @@ IF user selects/types these options, YOU MUST use the corresponding property:
  
 - "Compact" / "Comfortable" / "Spacious" -> ACTION: update_page, PROPERTY: responsive_padding
 - "Subtle (8px)" / "Soft (24px)" / "Full (50px)" -> ACTION: update_page, PROPERTY: border_radius
-- "Soft" / "Crisp" / "Bold" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
+- "Soft" / "Crisp" / "Bold" / "Glow" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
 
 
@@ -95,6 +95,7 @@ You MUST show the buttons for generic requests.
 Shadow Soft: {"x":0,"y":10,"blur":30,"spread":0}
 Shadow Crisp: {"x":0,"y":2,"blur":4,"spread":0}
 Shadow Bold: {"x":0,"y":20,"blur":25,"spread":-5}
+Shadow Glow: {"x":0,"y":0,"blur":15,"spread":2}
 Rounded Subtle: 8, Soft: 24, Full: 50
 
 ### ACTION SCHEMAS
@@ -2241,7 +2242,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					return {
 						executed: false,
 						message: 'What style of shadow would you like?',
-						options: ['Soft', 'Crisp', 'Bold']
+						options: ['Soft', 'Crisp', 'Bold', 'Glow']
 					};
 				}
 
@@ -2906,9 +2907,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			&& !lowerMessage.includes('compact') && !lowerMessage.includes('comfortable') && !lowerMessage.includes('spacious') && !lowerMessage.includes('square')) {
 			// Detect what the user wants to target
 			let target = null;
-			if (lowerMessage.includes('image')) target = 'image';
+			if (lowerMessage.includes('video')) target = 'video';
+			else if (lowerMessage.includes('image')) target = 'image';
 			else if (lowerMessage.includes('button')) target = 'button';
 			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) target = 'container';
+
+			if (!target && currentScope === 'selection' && selectedBlock?.name?.includes('video')) {
+				target = 'video';
+			}
 			
 			setMessages(prev => [...prev, {
 				role: 'assistant',
@@ -3764,11 +3770,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			typeof lastClarificationMsg?.content === 'string' &&
 			lastClarificationMsg.content.toLowerCase().includes('shadow');
 
-		if (lastShadowPrompt && ['Soft', 'Crisp', 'Bold'].includes(suggestion)) {
+		if (lastShadowPrompt && ['Soft', 'Crisp', 'Bold', 'Glow'].includes(suggestion)) {
 			const styleMap = {
 				Soft: { x: 0, y: 10, blur: 30, spread: 0 },
 				Crisp: { x: 0, y: 2, blur: 4, spread: 0 },
 				Bold: { x: 0, y: 20, blur: 25, spread: -5 },
+				Glow: { x: 0, y: 0, blur: 15, spread: 2 },
 			};
 			const isVideoTarget = selectedBlock?.name?.includes('video');
 			const property = isVideoTarget ? 'video_box_shadow' : 'box_shadow';
@@ -3795,6 +3802,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 2. RESPONSIVE SPACING
 		// Uses dedicated createResponsiveSpacing function for consistent breakpoint handling
 		// Action type 'apply_responsive_spacing' signals special handling in parseAndExecuteAction
+		else if (targetContext === 'video' && ['Compact', 'Comfortable', 'Spacious'].includes(suggestion)) {
+			const presetValue = {
+				Compact: 60,
+				Comfortable: 100,
+				Spacious: 140,
+			}[suggestion];
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			const message = scope === 'selection'
+				? `Applied ${suggestion} top/bottom padding to the selected video.`
+				: `Applied ${suggestion} top/bottom padding to all videos.`;
+
+			directAction = {
+				action: actionType,
+				property: 'video_padding_vertical',
+				value: presetValue,
+				target_block: 'video',
+				message,
+			};
+		}
 		else if (suggestion === 'Compact') directAction = { action: 'apply_responsive_spacing', preset: 'compact', target_block: targetContext || 'container', message: 'Applied Compact spacing across all breakpoints.' };
 		else if (suggestion === 'Comfortable') directAction = { action: 'apply_responsive_spacing', preset: 'comfortable', target_block: targetContext || 'container', message: 'Applied Comfortable spacing across all breakpoints.' };
 		else if (suggestion === 'Spacious') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: targetContext || 'container', message: 'Applied Spacious spacing across all breakpoints.' };
@@ -3862,7 +3888,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				setMessages(prev => [...prev, {
 					role: 'assistant',
 					content: 'Which shadow style?',
-					options: ['Soft', 'Medium', 'Hard'],
+					options: ['Soft', 'Crisp', 'Bold', 'Glow'],
 					shadowColorChoice: colorValue,
 					targetContext: prevMsg.targetContext,
 					executed: false
@@ -3978,7 +4004,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		// 9. SHADOW STYLE PRESETS - Only trigger if we have a shadow color choice in context
-		else if (['Soft', 'Medium', 'Hard'].includes(suggestion)) {
+		else if (['Soft', 'Crisp', 'Bold', 'Glow'].includes(suggestion)) {
 			const prevMsg = messagesRef.current?.findLast(m => m.shadowColorChoice !== undefined);
 			// Only handle as shadow preset if we have shadow context
 			if (prevMsg?.shadowColorChoice !== undefined) {
@@ -3986,9 +4012,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				const targetBlock = prevMsg?.targetContext;
 
 			const styleMap = {
-				'Soft': { x: 0, y: 10, blur: 30, spread: -10, opacity: 50 },
-				'Medium': { x: 0, y: 15, blur: 50, spread: -15 },
-				'Hard': { x: 10, y: 10, blur: 0, spread: 0 }
+				Soft: { x: 0, y: 10, blur: 30, spread: 0 },
+				Crisp: { x: 0, y: 2, blur: 4, spread: 0 },
+				Bold: { x: 0, y: 20, blur: 25, spread: -5 },
+				Glow: { x: 0, y: 0, blur: 15, spread: 2 },
 			};
 
 			const style = styleMap[suggestion];
@@ -4002,7 +4029,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				message: targetBlock ? `Applied ${suggestion} shadow to all ${targetBlock}s.` : `Applied ${suggestion} shadow.`
 			};
 			} // Close inner if (prevMsg?.shadowColorChoice)
-		} // Close else if (['Soft', 'Medium', 'Hard'])
+		} // Close else if (['Soft', 'Crisp', 'Bold', 'Glow'])
 
 		// 10. ICON LINE WIDTH PRESETS
 		else if (['Thin', 'Medium', 'Thick'].includes(suggestion)) {

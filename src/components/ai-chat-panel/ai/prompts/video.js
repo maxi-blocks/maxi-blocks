@@ -25,7 +25,7 @@ Video-specific mappings:
 - Popup animation duration: property "popup_animation_duration" with number (seconds) or string with unit (e.g. "0.4s", "300ms"). Optional "popup_animation_duration_unit" ("s" | "ms").
 - Video frame styling: property "video_border" with { width, style, color }, "video_border_radius" with number or percent, "video_box_shadow" with { x, y, blur, spread, color } or "none".
 - Video frame size: property "video_width" | "video_height" | "video_min_width" | "video_max_width" | "video_min_height" | "video_max_height" with number/string (optionally with units).
-- Video frame padding: property "video_padding" (all sides) or "video_padding_top" | "video_padding_right" | "video_padding_bottom" | "video_padding_left".
+- Video frame padding: property "video_padding" (all sides), "video_padding_vertical" (top/bottom), or "video_padding_top" | "video_padding_right" | "video_padding_bottom" | "video_padding_left".
 - Play icon styling: property "play_icon_color" | "play_icon_color_hover" (palette 1-8 or CSS color), "play_icon_size" (number/string) and optional "play_icon_size_unit".
 - Close icon styling: property "close_icon_color" | "close_icon_color_hover" (palette 1-8 or CSS color), "close_icon_size" (number/string) and optional "close_icon_size_unit", "close_icon_position" ("top-screen-right" | "top-right-above-video"), "close_icon_spacing" with optional "close_icon_spacing_unit".
 

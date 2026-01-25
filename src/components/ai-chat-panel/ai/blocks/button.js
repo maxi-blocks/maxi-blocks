@@ -193,15 +193,24 @@ export const BUTTON_PATTERNS = [
 	{ regex: /high\s*contrast|accessib(le|ility)|WCAG/i, property: 'high_contrast_mode', value: true, selectionMsg: 'High contrast mode.', pageMsg: 'Applied high-contrast style.', target: 'button' },
 ];
 
+const parseBorderStyle = borderStyle => {
+	if (typeof borderStyle !== 'string') return null;
+	const [style, widthValue] = borderStyle.split('-');
+	if (!style || !widthValue) return null;
+	const width = parseInt(widthValue.replace('px', ''), 10);
+	if (Number.isNaN(width)) return null;
+	return { style, width };
+};
+
 export const handleButtonUpdate = (block, property, value, prefix, context = {}) => {
 	let changes = null;
-	// const isButton = block.name.includes('button'); // Removed duplicate
-	
 
-
+	if (!block?.name) return null;
 	const isButton = block.name.includes('button');
 	
 	if (!isButton) return null;
+
+	const linkSettings = block?.attributes?.linkSettings || {};
 
 	const buildIconColorChanges = (iconValue) => {
 		if (iconValue === undefined || iconValue === 'use_prompt') return null;
@@ -265,6 +274,14 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 
 	// 1. OUTLINE FLOW
 	if (property === 'flow_outline') {
+		const borderStyleOptions = [
+			{ label: 'Solid Thin', value: 'solid-1px' },
+			{ label: 'Solid Medium', value: 'solid-2px' },
+			{ label: 'Solid Fat', value: 'solid-4px' },
+			{ label: 'Dashed', value: 'dashed-2px' },
+			{ label: 'Dotted', value: 'dotted-2px' },
+		];
+
 		// Step 1: Ask for Color
 		if (!context.border_color) {
 			return { 
@@ -279,13 +296,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				action: 'ask_options',
 				target: 'border_style',
 				msg: 'Which border style?',
-				options: [
-					{ label: 'Solid Thin', value: 'solid-1px' },
-					{ label: 'Solid Medium', value: 'solid-2px' },
-					{ label: 'Solid Fat', value: 'solid-4px' },
-					{ label: 'Dashed', value: 'dashed-2px' },
-					{ label: 'Dotted', value: 'dotted-2px' }
-				]
+				options: borderStyleOptions
 			};
 		}
 
@@ -294,8 +305,17 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		console.log('[Maxi AI Button Handler] context.border_style:', context.border_style);
 		console.log('[Maxi AI Button Handler] context.border_color:', context.border_color);
 		
-		const style = context.border_style.split('-')[0];
-		const width = parseInt(context.border_style.split('-')[1].replace('px', ''), 10); // Must be number, not string!
+		const borderConfig = parseBorderStyle(context.border_style);
+		if (!borderConfig) {
+			return {
+				action: 'ask_options',
+				target: 'border_style',
+				msg: 'Which border style?',
+				options: borderStyleOptions
+			};
+		}
+
+		const { style, width } = borderConfig;
 		const color = context.border_color;
 		
 		console.log('[Maxi AI Button Handler] Parsed - style:', style, 'width:', width, 'typeof width:', typeof width, 'color:', color);
@@ -595,7 +615,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			if (value) {
 				changes = {
 					linkSettings: {
-						...block.attributes.linkSettings,
+						...linkSettings,
 						url: String(value)
 					}
 				};
@@ -605,7 +625,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		case 'link_target':
 			changes = {
 				linkSettings: {
-					...block.attributes.linkSettings,
+					...linkSettings,
 					opensInNewTab: value === '_blank'
 				}
 			};
@@ -614,7 +634,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		case 'link_rel':
 			changes = {
 				linkSettings: {
-					...block.attributes.linkSettings,
+					...linkSettings,
 					...(value === 'nofollow' ? { noFollow: true } : {}),
 					...(value === 'sponsored' ? { sponsored: true } : {}),
 					...(value === 'ugc' ? { ugc: true } : {})
@@ -850,12 +870,4 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 	}
 
 	return changes;
-};
-// Helper to get prefix (duplicated from index.js but needed for self-containment)
-const getBlockPrefix = (blockName) => {
-	if (!blockName) return '';
-	if (blockName.includes('button-maxi')) return 'button-';
-	if (blockName.includes('image-maxi')) return 'image-';
-	if (blockName.includes('icon-maxi')) return 'icon-';
-	return '';
 };

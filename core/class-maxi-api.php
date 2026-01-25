@@ -634,6 +634,25 @@ if (!class_exists('MaxiBlocks_API')):
                 $allowed_port = $allowed_parts['port'] ?? null;
                 $target_port = $target_parts['port'] ?? null;
 
+                $normalise_port = function ($scheme, $port) {
+                    if ($port !== null) {
+                        return (int) $port;
+                    }
+
+                    $scheme = $scheme ? strtolower($scheme) : null;
+                    if ($scheme === 'https') {
+                        return 443;
+                    }
+                    if ($scheme === 'http') {
+                        return 80;
+                    }
+
+                    return null;
+                };
+
+                $allowed_port = $normalise_port($allowed_scheme, $allowed_port);
+                $target_port = $normalise_port($target_scheme, $target_port);
+
                 $host_matches = $allowed_host && $target_host && strtolower($allowed_host) === strtolower($target_host);
                 $scheme_matches = $allowed_scheme && $target_scheme && strtolower($allowed_scheme) === strtolower($target_scheme);
                 $port_matches = $allowed_port === $target_port;

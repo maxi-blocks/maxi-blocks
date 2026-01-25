@@ -98,6 +98,8 @@ const VIDEO_PROPERTY_ALIASES = {
 	video_padding_bottom: 'video_padding_bottom',
 	videoPaddingLeft: 'video_padding_left',
 	video_padding_left: 'video_padding_left',
+	videoPaddingVertical: 'video_padding_vertical',
+	video_padding_vertical: 'video_padding_vertical',
 	playIconColor: 'play_icon_color',
 	play_icon_color: 'play_icon_color',
 	playIconColorHover: 'play_icon_color_hover',
@@ -548,6 +550,14 @@ export const VIDEO_PATTERNS = [
 		target: 'video',
 	},
 	{
+		regex: /shadow|glow|lift|depth|drop.*shadow|elevat(ed|e)?/i,
+		property: 'flow_video_shadow',
+		value: 'start',
+		selectionMsg: '',
+		pageMsg: null,
+		target: 'video',
+	},
+	{
 		regex: /border|frame|stroke|outline/i,
 		property: 'flow_video_border',
 		value: 'start',
@@ -574,6 +584,43 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 	const videoPrefix = 'video-';
 
 	switch (normalizedProperty) {
+		case 'flow_video_shadow': {
+			if (!context.shadow_color) {
+				return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
+			}
+			if (!context.shadow_style) {
+				return {
+					action: 'ask_options',
+					target: 'shadow_style',
+					msg: 'What style of shadow would you like?',
+					options: [
+						{ label: 'Soft', value: 'soft' },
+						{ label: 'Crisp', value: 'crisp' },
+						{ label: 'Bold', value: 'bold' },
+						{ label: 'Glow', value: 'glow' },
+					],
+				};
+			}
+
+			const styleMap = {
+				soft: { x: 0, y: 10, blur: 30, spread: 0 },
+				crisp: { x: 0, y: 2, blur: 4, spread: 0 },
+				bold: { x: 0, y: 20, blur: 25, spread: -5 },
+				glow: { x: 0, y: 0, blur: 15, spread: 2 },
+			};
+			const style = styleMap[String(context.shadow_style).toLowerCase()];
+			if (!style) return null;
+
+			const changes = buildVideoBoxShadowChanges(videoPrefix, {
+				...style,
+				color: context.shadow_color,
+			});
+			if (!changes) return null;
+
+			const label = String(context.shadow_style).toLowerCase();
+			const displayLabel = label.charAt(0).toUpperCase() + label.slice(1);
+			return { action: 'apply', attributes: changes, done: true, message: `Applied ${displayLabel} shadow to the video.` };
+		}
 		case 'flow_video_border': {
 			if (!context.border_color) {
 				return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the video border?' };
@@ -785,6 +832,12 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 			return buildVideoSizeChanges('min-height', value);
 		case 'video_max_height':
 			return buildVideoSizeChanges('max-height', value);
+		case 'video_padding_vertical': {
+			const topChanges = buildVideoPaddingChanges('top', value, null);
+			const bottomChanges = buildVideoPaddingChanges('bottom', value, null);
+			if (!topChanges && !bottomChanges) return null;
+			return { ...topChanges, ...bottomChanges };
+		}
 		case 'video_padding':
 			return buildVideoPaddingChanges('all', value, null);
 		case 'video_padding_top':

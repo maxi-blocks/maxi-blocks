@@ -797,45 +797,36 @@ export const applyThemeToStyleCards = ({
 	const activeSC = getActiveStyleCard(styleCards);
 	if (!activeSC) return null;
 
-	console.log('[ThemeEngine] Processing prompt:', prompt);
-	const vibeKey = getVibeFromPrompt(prompt);
-	console.log('[ThemeEngine] Vibe key detected:', vibeKey);
+	const promptText = typeof prompt === 'string' ? prompt : '';
+	const vibeKey = getVibeFromPrompt(promptText);
 	
 	const vibe = vibeKey ? VIBE_DICTIONARY[vibeKey] : null;
 	const resolvedTheme =
-		normalizeThemeValue(theme) || getThemeFromPrompt(prompt);
+		normalizeThemeValue(theme) || getThemeFromPrompt(promptText);
 	const resolvedColor =
 		normalizeThemeValue(color) ||
-		parseColorFromPrompt(prompt) ||
+		parseColorFromPrompt(promptText) ||
 		(resolvedTheme && CSS_COLOR_KEYWORDS[resolvedTheme]);
-	
-	console.log('[ThemeEngine] Resolved Theme:', resolvedTheme);
-	console.log('[ThemeEngine] Resolved Color:', resolvedColor);
 
 	const defaultPalette =
 		(vibe?.palette || (resolvedTheme && THEME_PALETTES[resolvedTheme])) ||
 		(resolvedColor ? generatePaletteFromBase(resolvedColor) : null);
-	
-	console.log('[ThemeEngine] Default Palette found:', !!defaultPalette);
 
 	const fallbackPalette = getPaletteFromStyleCard(activeSC.value);
 	const palette =
 		defaultPalette ||
-		((shouldLighten(prompt) || shouldDarken(prompt)) &&
+		((shouldLighten(promptText) || shouldDarken(promptText)) &&
 		fallbackPalette
 			? fallbackPalette
 			: null);
-	
-	console.log('[ThemeEngine] Final Palette:', !!palette);
-	
+
 	if (!palette) {
-		console.warn('[ThemeEngine] No palette found. Returning null.');
 		return null;
 	}
 
-	const adjustedPalette = shouldLighten(prompt)
+	const adjustedPalette = shouldLighten(promptText)
 		? adjustPaletteLightness(palette, 10)
-		: shouldDarken(prompt)
+		: shouldDarken(promptText)
 			? adjustPaletteLightness(palette, -10)
 			: palette;
 
@@ -844,7 +835,7 @@ export const applyThemeToStyleCards = ({
 	const shouldOpenEditor =
 		typeof openEditor === 'boolean'
 			? openEditor
-			: shouldOpenStyleCardEditorFromPrompt(prompt);
+			: shouldOpenStyleCardEditorFromPrompt(promptText);
 
 	Object.keys(nextStyleCards).forEach(key => {
 		delete nextStyleCards[key].selected;
@@ -853,14 +844,13 @@ export const applyThemeToStyleCards = ({
 	if (isCustom) {
 		// Check if this is a heading-only color request
 		const isHeadingOnlyRequest = resolvedColor && 
-			/\b(heading|headers?|title)\b/i.test(prompt) &&
-			!/\b(palette|theme|site|everything|all colors?)\b/i.test(prompt);
+			/\b(heading|headers?|title)\b/i.test(promptText) &&
+			!/\b(palette|theme|site|everything|all colors?)\b/i.test(promptText);
 		
 		if (isHeadingOnlyRequest) {
 			// Only apply heading colors, skip palette changes
 			// Convert hex to RGB format (style cards use 'r,g,b' format)
 			const rgbColor = hexToRgbString(resolvedColor);
-			console.log('[ThemeEngine] Heading-only request detected. Hex:', resolvedColor, 'RGB:', rgbColor);
 			
 			// Ensure the light.styleCard structure exists
 			if (!nextStyleCards[activeSC.key].light) {
@@ -881,7 +871,6 @@ export const applyThemeToStyleCards = ({
 				nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = true;
 				nextStyleCards[activeSC.key].light.styleCard[level]['color'] = rgbColor;
 				nextStyleCards[activeSC.key].light.styleCard[level]['palette-opacity'] = 1;
-				console.log(`[ThemeEngine] Set ${level} color to RGB:`, rgbColor);
 			});
 		} else {
 			// Apply full palette changes
@@ -893,12 +882,12 @@ export const applyThemeToStyleCards = ({
 				nextStyleCards[activeSC.key] = applyTypographyToStyleCard(
 					nextStyleCards[activeSC.key],
 					vibe,
-					prompt
+					promptText
 				);
 			}
 			
 			// [NEW] Smart Element Coloring (for non-heading-only requests)
-			if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
+			if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
 				const rgb = hexToRgbString(resolvedColor);
 				const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 				headingLevels.forEach(level => {
@@ -930,8 +919,8 @@ export const applyThemeToStyleCards = ({
 	
 	// Check if this is a heading-only color request (same logic as above)
 	const isHeadingOnlyRequest = resolvedColor && 
-		/\b(heading|headers?|title)\b/i.test(prompt) &&
-		!/\b(palette|theme|site|everything|all colors?)\b/i.test(prompt);
+		/\b(heading|headers?|title)\b/i.test(promptText) &&
+		!/\b(palette|theme|site|everything|all colors?)\b/i.test(promptText);
 	
 	// For heading-only requests, use original palette from source card
 	const paletteForNewCard = isHeadingOnlyRequest 
@@ -951,7 +940,7 @@ export const applyThemeToStyleCards = ({
 		nextStyleCards[newKey] = applyTypographyToStyleCard(
 			newCard,
 			vibe,
-			prompt
+			promptText
 		);
 	} else {
 		nextStyleCards[newKey] = newCard;
@@ -961,7 +950,6 @@ export const applyThemeToStyleCards = ({
 	if (isHeadingOnlyRequest) {
 		// Convert hex to RGB format (style cards use 'r,g,b' format)
 		const rgbColor = hexToRgbString(resolvedColor);
-		console.log('[ThemeEngine] Heading-only request for new card. Hex:', resolvedColor, 'RGB:', rgbColor);
 		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 		headingLevels.forEach(level => {
 			if (!nextStyleCards[newKey].light.styleCard[level]) {
@@ -972,12 +960,10 @@ export const applyThemeToStyleCards = ({
 			nextStyleCards[newKey].light.styleCard[level]['color-global'] = true;
 			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
 			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
-			console.log(`[ThemeEngine] Set ${level} color to RGB:`, rgbColor);
 		});
-	} else if (resolvedColor && (prompt.includes('heading') || prompt.includes('title'))) {
+	} else if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
 		// Fallback for combined requests
 		const rgbColor = hexToRgbString(resolvedColor);
-		console.log('[ThemeEngine] Combined request - applying heading color. Hex:', resolvedColor, 'RGB:', rgbColor);
 		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 		headingLevels.forEach(level => {
 			if (!nextStyleCards[newKey].light.styleCard[level]) {
@@ -988,8 +974,6 @@ export const applyThemeToStyleCards = ({
 			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
 			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
 		});
-	} else {
-		console.log('[ThemeEngine] No heading color match. Resolved:', resolvedColor, 'Prompt:', prompt);
 	}
 	nextStyleCards[newKey].pendingChanges = true;
 	nextStyleCards[newKey].selected = true;

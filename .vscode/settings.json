@@ -22,6 +22,5 @@
 	},
 	"eslint.alwaysShowStatus": true,
 	"prettier.tabWidth": 4,
-	"php-cs-fixer.rules": "@PSR2",
-	"chatgpt.openOnStartup": true
+	"php-cs-fixer.rules": "@PSR2"
 }

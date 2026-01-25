@@ -3,6 +3,8 @@
  * Extracts button-specific natural language patterns and update logic.
  */
 
+import { parseBorderStyle } from './utils';
+
 export const BUTTON_PATTERNS = [
 	// ============================================================
 	// GROUP 1: PRIORITY FLOWS (Multi-step interactions - MUST come first!)
@@ -193,15 +195,6 @@ export const BUTTON_PATTERNS = [
 	{ regex: /high\s*contrast|accessib(le|ility)|WCAG/i, property: 'high_contrast_mode', value: true, selectionMsg: 'High contrast mode.', pageMsg: 'Applied high-contrast style.', target: 'button' },
 ];
 
-const parseBorderStyle = borderStyle => {
-	if (typeof borderStyle !== 'string') return null;
-	const [style, widthValue] = borderStyle.split('-');
-	if (!style || !widthValue) return null;
-	const width = parseInt(widthValue.replace('px', ''), 10);
-	if (Number.isNaN(width)) return null;
-	return { style, width };
-};
-
 export const handleButtonUpdate = (block, property, value, prefix, context = {}) => {
 	let changes = null;
 
@@ -301,10 +294,6 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		}
 
 		// Final Action: Apply Changes
-		console.log('[Maxi AI Button Handler] flow_outline APPLY STEP');
-		console.log('[Maxi AI Button Handler] context.border_style:', context.border_style);
-		console.log('[Maxi AI Button Handler] context.border_color:', context.border_color);
-		
 		const borderConfig = parseBorderStyle(context.border_style);
 		if (!borderConfig) {
 			return {
@@ -317,8 +306,6 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 
 		const { style, width } = borderConfig;
 		const color = context.border_color;
-		
-		console.log('[Maxi AI Button Handler] Parsed - style:', style, 'width:', width, 'typeof width:', typeof width, 'color:', color);
 		
 		// Correct Palette Index Detection
 		const isPalette = typeof color === 'number';
@@ -358,8 +345,6 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				changes[`${prefix}border-palette-status-${bp}`] = false;
 			}
 		});
-		
-		console.log('[Maxi AI Button Handler] Final changes:', JSON.stringify(changes, null, 2));
 		return { action: 'apply', attributes: changes, done: true };
 	}
 
@@ -790,12 +775,12 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				};
 			} else if (value === 'tablet') {
 				changes = {
-					[`${prefix}display-sm`]: 'none',
-					[`${prefix}display-md`]: 'none'
+					[`${prefix}display-s`]: 'none',
+					[`${prefix}display-m`]: 'none'
 				};
 			} else if (value === 'desktop') {
 				changes = {
-					[`${prefix}display-lg`]: 'none',
+					[`${prefix}display-l`]: 'none',
 					[`${prefix}display-xl`]: 'none'
 				};
 			}
@@ -804,22 +789,22 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		case 'button_responsive_only':
 			if (value === 'mobile') {
 				changes = {
-					[`${prefix}display-sm`]: 'none',
-					[`${prefix}display-md`]: 'none',
-					[`${prefix}display-lg`]: 'none',
+					[`${prefix}display-s`]: 'none',
+					[`${prefix}display-m`]: 'none',
+					[`${prefix}display-l`]: 'none',
 					[`${prefix}display-xl`]: 'none'
 				};
 			} else if (value === 'tablet') {
 				changes = {
 					[`${prefix}display-xs`]: 'none',
-					[`${prefix}display-lg`]: 'none',
+					[`${prefix}display-l`]: 'none',
 					[`${prefix}display-xl`]: 'none'
 				};
 			} else if (value === 'desktop') {
 				changes = {
 					[`${prefix}display-xs`]: 'none',
-					[`${prefix}display-sm`]: 'none',
-					[`${prefix}display-md`]: 'none'
+					[`${prefix}display-s`]: 'none',
+					[`${prefix}display-m`]: 'none'
 				};
 			}
 			break;

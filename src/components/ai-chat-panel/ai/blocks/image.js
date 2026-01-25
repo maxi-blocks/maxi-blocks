@@ -3,6 +3,8 @@
  * Maps natural language to Image Maxi attributes.
  */
 
+import { parseBorderStyle } from './utils';
+
 const CLIP_PATH_PRESETS = {
 	circle: 'circle(50% at 50% 50%)',
 	oval: 'ellipse(50% 40% at 50% 50%)',
@@ -38,7 +40,8 @@ const mergeCustomCss = (attributes, category, index, css) => {
 	const categoryObj = next[category] ? { ...next[category] } : {};
 
 	if (css) {
-		categoryObj[index] = css;
+		const currentCss = categoryObj[index];
+		categoryObj[index] = currentCss ? `${currentCss}\n${css}` : css;
 		next[category] = categoryObj;
 	} else {
 		delete categoryObj[index];
@@ -217,15 +220,6 @@ export const IMAGE_PATTERNS = [
 	{ regex: /remove.*dynamic|disable.*dynamic/i, property: 'dynamic_image', value: { off: true }, selectionMsg: 'Dynamic content removed.', pageMsg: 'Dynamic content removed.', target: 'image' },
 ];
 
-const parseBorderStyle = borderStyle => {
-	if (typeof borderStyle !== 'string') return null;
-	const [style, widthValue] = borderStyle.split('-');
-	if (!style || !widthValue) return null;
-	const width = parseInt(widthValue.replace('px', ''), 10);
-	if (Number.isNaN(width)) return null;
-	return { style, width };
-};
-
 export const handleImageUpdate = (block, property, value, prefix, context = {}) => {
 	let changes = null;
 	const isImage = block?.name?.includes('image');
@@ -244,13 +238,16 @@ export const handleImageUpdate = (block, property, value, prefix, context = {}) 
 					{ label: 'Subtle (8px)', value: 8 },
 					{ label: 'Soft (24px)', value: 24 },
 					{ label: 'Full (50px)', value: 50 },
-					{ label: 'Circle', value: 50 },
+					{ label: 'Circle', value: '50%' },
 				],
 			};
 		}
 
-		const r = context.radius_value;
-		const unit = r === 50 ? '%' : 'px';
+		const rawRadius = context.radius_value;
+		const isPercent =
+			typeof rawRadius === 'string' && rawRadius.trim().endsWith('%');
+		const r = isPercent ? parseFloat(rawRadius) : rawRadius;
+		const unit = isPercent ? '%' : 'px';
 
 		changes = {
 			[`${prefix}border-top-left-radius-general`]: r,
@@ -261,7 +258,7 @@ export const handleImageUpdate = (block, property, value, prefix, context = {}) 
 			[`${prefix}border-unit-radius-general`]: unit,
 		};
 
-		if (r === 50) {
+		if (isPercent) {
 			changes.imageRatio = 'ar11';
 		}
 

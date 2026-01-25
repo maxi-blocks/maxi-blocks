@@ -326,7 +326,8 @@ export const translateEditPrompt = ({ prompt, blockSchema }) => {
 			intentConfig.intent,
 			valueType
 		);
-		const paletteIndex = parsePaletteIndex(normalizedPrompt);
+		const paletteIndex =
+			valueType === 'color' ? parsePaletteIndex(normalizedPrompt) : null;
 
 		if (value === null && paletteIndex === null) {
 			return;

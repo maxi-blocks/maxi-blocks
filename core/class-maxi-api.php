@@ -3468,6 +3468,10 @@ if (!class_exists('MaxiBlocks_API')):
                     }
                 }
 
+                if ($max_tokens !== null && $max_tokens !== '') {
+                    $body['max_tokens'] = (int) $max_tokens;
+                }
+
                 if ($streaming) {
                     @ini_set('output_buffering', 'off');
                     @ini_set('zlib.output_compression', '0');
@@ -3583,6 +3587,12 @@ if (!class_exists('MaxiBlocks_API')):
 
             return rest_ensure_response($data);
             }
+
+            return new WP_Error(
+                'provider_not_implemented',
+                sprintf('Provider "%s" is not yet implemented.', $provider),
+                ['status' => 501],
+            );
         }
 
         private function get_design_agent_system_prompt($context = '')
@@ -3594,10 +3604,7 @@ if (!class_exists('MaxiBlocks_API')):
 You are the MaxiBlocks Design Partner. Your goal is to execute technical design changes or offer expert guidance when a request is unclear.
 
 ### CONTEXT & STATE
-- Active Style Card: {{active_sc}}
-- Site Category: {{site_profile}}
-- Page Type: {{current_page_type}}
-- Selected Block: {{selected_block_id}}
+Use the Context section below.
 
 ### CLARIFICATION PROTOCOL (The A/B/C Rule)
 If a user's request is vague (e.g., "make it pop," "fix this," "jazz it up"), you MUST NOT execute any changes. Instead, you must return a `CLARIFY` action.

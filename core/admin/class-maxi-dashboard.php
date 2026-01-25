@@ -52,15 +52,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             add_action('admin_menu', [$this, 'maxi_register_menu']);
 
             // Explicitly handle saving of AI Provider to ensure persistence
-            add_action('admin_init', function() {
-                 if (isset($_POST['option_page']) && $_POST['option_page'] === 'maxi-blocks-settings-group') {
-                     if (isset($_POST['maxi_ai_provider'])) {
-                         $provider = sanitize_text_field($_POST['maxi_ai_provider']);
-                         if (in_array($provider, ['openai', 'anthropic', 'gemini', 'mistral'])) {
-                              update_option('maxi_ai_provider', $provider);
-                         }
-                     }
-                 }
+            add_action('admin_init', function () {
+                if (!current_user_can('manage_options')) {
+                    return;
+                }
+
+                if (
+                    !isset($_POST['option_page']) ||
+                    $_POST['option_page'] !== 'maxi-blocks-settings-group'
+                ) {
+                    return;
+                }
+
+                check_admin_referer('maxi-blocks-settings-group-options');
+
+                if (isset($_POST['maxi_ai_provider'])) {
+                    $provider = sanitize_key($_POST['maxi_ai_provider']);
+                    if (in_array($provider, ['openai', 'anthropic', 'gemini', 'mistral'], true)) {
+                        update_option('maxi_ai_provider', $provider);
+                    }
+                }
             });
 
             add_action('admin_init', [$this, 'register_maxi_blocks_settings']);
@@ -2440,11 +2451,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $selected = selected($option_value, $option_key, false);
                     $dropdown .=
                         '<option value="' .
-                        $option_key .
+                        esc_attr($option_key) .
                         '" ' .
                         $selected .
                         '>' .
-                        $value .
+                        esc_html($value) .
                         '</option>';
                 }
             }
@@ -3477,22 +3488,22 @@ INSTRUCTIONS;
             $mistral_api_key = get_option('mistral_api_key_option', '');
             $mcp_token = get_option('maxi_mcp_token', '');
 
-            echo '<input type="hidden" name="google_api_key_option" value="' .
+            echo '<input type="hidden" id="google_api_key_option_hidden" name="google_api_key_option" value="' .
                 esc_attr($google_api_key) .
                 '">';
-            echo '<input type="hidden" name="openai_api_key_option" value="' .
+            echo '<input type="hidden" id="openai_api_key_option_hidden" name="openai_api_key_option" value="' .
                 esc_attr($openai_api_key) .
                 '">';
-            echo '<input type="hidden" name="anthropic_api_key_option" value="' .
+            echo '<input type="hidden" id="anthropic_api_key_option_hidden" name="anthropic_api_key_option" value="' .
                 esc_attr($anthropic_api_key) .
                 '">';
-            echo '<input type="hidden" name="gemini_api_key_option" value="' .
+            echo '<input type="hidden" id="gemini_api_key_option_hidden" name="gemini_api_key_option" value="' .
                 esc_attr($gemini_api_key) .
                 '">';
-            echo '<input type="hidden" name="mistral_api_key_option" value="' .
+            echo '<input type="hidden" id="mistral_api_key_option_hidden" name="mistral_api_key_option" value="' .
                 esc_attr($mistral_api_key) .
                 '">';
-            echo '<input type="hidden" name="maxi_mcp_token" value="' .
+            echo '<input type="hidden" id="maxi_mcp_token_hidden" name="maxi_mcp_token" value="' .
                 esc_attr($mcp_token) .
                 '">';
         }

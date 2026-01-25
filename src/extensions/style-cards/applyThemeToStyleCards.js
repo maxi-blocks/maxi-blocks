@@ -331,6 +331,10 @@ const CSS_COLOR_KEYWORDS = {
 	yellowgreen: '#9acd32',
 };
 
+const CSS_COLOR_KEYWORDS_SORTED = Object.keys(CSS_COLOR_KEYWORDS).sort(
+	(a, b) => b.length - a.length
+);
+
 const normalizeThemeValue = themeValue => {
 	if (!themeValue) return null;
 	return String(themeValue).trim().toLowerCase();
@@ -537,11 +541,9 @@ export const parseColorFromPrompt = prompt => {
 	if (rgbMatch) return rgbMatch;
 
 	const condensedPrompt = normalizedPrompt.replace(/[\s-]+/g, '');
-	const colorName = Object.keys(CSS_COLOR_KEYWORDS)
-		.sort((a, b) => b.length - a.length)
-		.find(keyword =>
+	const colorName = CSS_COLOR_KEYWORDS_SORTED.find(keyword =>
 		condensedPrompt.includes(keyword)
-		);
+	);
 
 	return colorName ? CSS_COLOR_KEYWORDS[colorName] : null;
 };
@@ -784,6 +786,34 @@ const createCustomStyleCard = (sourceSC, timestamp, palette, name) => {
 	return { key: newKey, card: themedCard };
 };
 
+const HEADING_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+
+const applyHeadingColor = (styleCard, hexColor, includePaletteOpacity = false) => {
+	if (!styleCard || !hexColor) return styleCard;
+	const rgbColor = hexToRgbString(hexColor);
+
+	if (!styleCard.light) {
+		styleCard.light = { styleCard: {}, defaultStyleCard: {} };
+	}
+	if (!styleCard.light.styleCard) {
+		styleCard.light.styleCard = {};
+	}
+
+	HEADING_LEVELS.forEach(level => {
+		if (!styleCard.light.styleCard[level]) {
+			styleCard.light.styleCard[level] = {};
+		}
+		styleCard.light.styleCard[level]['palette-status'] = false;
+		styleCard.light.styleCard[level]['color-global'] = true;
+		styleCard.light.styleCard[level]['color'] = rgbColor;
+		if (includePaletteOpacity) {
+			styleCard.light.styleCard[level]['palette-opacity'] = 1;
+		}
+	});
+
+	return styleCard;
+};
+
 export const applyThemeToStyleCards = ({
 	styleCards,
 	theme,
@@ -804,7 +834,7 @@ export const applyThemeToStyleCards = ({
 	const resolvedTheme =
 		normalizeThemeValue(theme) || getThemeFromPrompt(promptText);
 	const resolvedColor =
-		normalizeThemeValue(color) ||
+		parseColorFromPrompt(color) ||
 		parseColorFromPrompt(promptText) ||
 		(resolvedTheme && CSS_COLOR_KEYWORDS[resolvedTheme]);
 
@@ -849,29 +879,7 @@ export const applyThemeToStyleCards = ({
 		
 		if (isHeadingOnlyRequest) {
 			// Only apply heading colors, skip palette changes
-			// Convert hex to RGB format (style cards use 'r,g,b' format)
-			const rgbColor = hexToRgbString(resolvedColor);
-			
-			// Ensure the light.styleCard structure exists
-			if (!nextStyleCards[activeSC.key].light) {
-				nextStyleCards[activeSC.key].light = { styleCard: {}, defaultStyleCard: {} };
-			}
-			if (!nextStyleCards[activeSC.key].light.styleCard) {
-				nextStyleCards[activeSC.key].light.styleCard = {};
-			}
-			
-			const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-			headingLevels.forEach(level => {
-				if (!nextStyleCards[activeSC.key].light.styleCard[level]) {
-					nextStyleCards[activeSC.key].light.styleCard[level] = {};
-				}
-				// Set custom color - disable palette, set RGB color
-				// IMPORTANT: color-global must be TRUE for the CSS variable to be output
-				nextStyleCards[activeSC.key].light.styleCard[level]['palette-status'] = false;
-				nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = true;
-				nextStyleCards[activeSC.key].light.styleCard[level]['color'] = rgbColor;
-				nextStyleCards[activeSC.key].light.styleCard[level]['palette-opacity'] = 1;
-			});
+			applyHeadingColor(nextStyleCards[activeSC.key], resolvedColor, true);
 		} else {
 			// Apply full palette changes
 			nextStyleCards[activeSC.key] = applyPaletteToLight(
@@ -888,16 +896,7 @@ export const applyThemeToStyleCards = ({
 			
 			// [NEW] Smart Element Coloring (for non-heading-only requests)
 			if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
-				const rgb = hexToRgbString(resolvedColor);
-				const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-				headingLevels.forEach(level => {
-					if (!nextStyleCards[activeSC.key].light.styleCard[level]) {
-						nextStyleCards[activeSC.key].light.styleCard[level] = {};
-					}
-					nextStyleCards[activeSC.key].light.styleCard[level]['color'] = rgb;
-					nextStyleCards[activeSC.key].light.styleCard[level]['palette-status'] = false;
-					nextStyleCards[activeSC.key].light.styleCard[level]['color-global'] = true;
-				});
+				applyHeadingColor(nextStyleCards[activeSC.key], resolvedColor, false);
 			}
 		}
 
@@ -948,32 +947,10 @@ export const applyThemeToStyleCards = ({
 	
 	// Smart Element Coloring for heading-only requests
 	if (isHeadingOnlyRequest) {
-		// Convert hex to RGB format (style cards use 'r,g,b' format)
-		const rgbColor = hexToRgbString(resolvedColor);
-		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-		headingLevels.forEach(level => {
-			if (!nextStyleCards[newKey].light.styleCard[level]) {
-				nextStyleCards[newKey].light.styleCard[level] = {};
-			}
-			// Set custom color - disable palette, set RGB color
-			nextStyleCards[newKey].light.styleCard[level]['palette-status'] = false;
-			nextStyleCards[newKey].light.styleCard[level]['color-global'] = true;
-			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
-			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
-		});
+		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);
 	} else if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
 		// Fallback for combined requests
-		const rgbColor = hexToRgbString(resolvedColor);
-		const headingLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-		headingLevels.forEach(level => {
-			if (!nextStyleCards[newKey].light.styleCard[level]) {
-				nextStyleCards[newKey].light.styleCard[level] = {};
-			}
-			nextStyleCards[newKey].light.styleCard[level]['palette-status'] = false;
-			nextStyleCards[newKey].light.styleCard[level]['color-global'] = true;
-			nextStyleCards[newKey].light.styleCard[level]['color'] = rgbColor;
-			nextStyleCards[newKey].light.styleCard[level]['palette-opacity'] = 1;
-		});
+		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);
 	}
 	nextStyleCards[newKey].pendingChanges = true;
 	nextStyleCards[newKey].selected = true;

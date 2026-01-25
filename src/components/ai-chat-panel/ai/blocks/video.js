@@ -339,7 +339,10 @@ const buildIconFillChanges = (prefixKey, colorValue, opacityValue, isHover = fal
 
 	if (typeof colorValue === 'string') {
 		changes[`${prefixKey}icon-fill-palette-status${suffix}`] = false;
-		changes[`${prefixKey}icon-fill-color${suffix}`] = colorValue;
+		changes[`${prefixKey}icon-fill-color${suffix}`] =
+			opacityValue !== undefined && opacityValue !== null && opacityValue !== ''
+				? applyOpacityToColor(colorValue, opacityValue)
+				: colorValue;
 		return changes;
 	}
 
@@ -754,12 +757,16 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 			}
 			return {
 				hideImage: false,
+				'overlay-mediaID': null,
+				'overlay-mediaAlt': '',
 				'overlay-mediaURL': String(urlValue),
 			};
 		}
 		case 'overlay_media_id':
 			if (value === undefined || value === null || value === '') return null;
-			return { 'overlay-mediaID': Number(value) };
+			const numericId = Number(value);
+			if (Number.isNaN(numericId)) return null;
+			return { 'overlay-mediaID': numericId };
 		case 'overlay_hide_image':
 			return { hideImage: normalizeBoolean(value) };
 		case 'overlay_media_width':

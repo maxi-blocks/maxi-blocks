@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		'.google-api-key-option-visible-input'
 	);
 	const googleApiKeyHiddenInput = document.getElementById(
-		'google_api_key_option'
+		'google_api_key_option_hidden'
 	);
 	const googleValidationDiv = document.getElementById(
 		'maxi-api-test__validation-message'
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	};
 
 	const getHiddenApiKeyInputByProvider = provider => {
-		return document.getElementById(`${provider}_api_key_option`);
+		return document.getElementById(`${provider}_api_key_option_hidden`);
 	};
 
 	const getValidationDivByProvider = provider => {
@@ -408,10 +408,15 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	};
 
 	let isUpdatingDropdown = false;
+	let pendingModelUpdate = null;
 
 	const updateModelDropdown = async (provider, apiKey) => {
-		if (isUpdatingDropdown) return null;
+		if (isUpdatingDropdown) {
+			pendingModelUpdate = { provider, apiKey };
+			return null;
+		}
 		isUpdatingDropdown = true;
+		const requestKey = apiKey;
 
 		const modelSelect = document.getElementById('maxi_ai_model');
 
@@ -445,6 +450,11 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				default:
 					models = await fetchOpenAIModels(apiKey);
 					break;
+			}
+
+			// Ignore stale responses
+			if (getProviderApiKey(provider) !== requestKey) {
+				return { ok: false, stale: true };
 			}
 
 			// Clear existing options
@@ -486,11 +496,17 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			return { ok: false, error };
 		} finally {
 			isUpdatingDropdown = false;
+			if (pendingModelUpdate) {
+				const next = pendingModelUpdate;
+				pendingModelUpdate = null;
+				updateModelDropdown(next.provider, next.apiKey);
+			}
 		}
 	};
 
 	const testProviderApiKey = async provider => {
 		const apiKey = getProviderApiKey(provider);
+		const requestKey = apiKey;
 
 		if (apiKey === '') {
 			customApiKeyValidation(provider, 'EmptyKeyError');
@@ -501,8 +517,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 		// For validation, we'll try to update the dropdown which does a fetch
 		try {
-			const result = await updateModelDropdown(provider, apiKey);
+			const result = await updateModelDropdown(provider, requestKey);
 			if (!result) return;
+			if (getProviderApiKey(provider) !== requestKey) return;
 
 			if (result.ok) {
 				customApiKeyValidation(provider, true);

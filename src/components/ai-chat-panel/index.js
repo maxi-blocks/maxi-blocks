@@ -20,6 +20,89 @@ import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPr
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
+const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
+	'### MODULE: CONTAINER BLOCK INTENT MAPPING',
+	'Map these specific container-related requests to the Container Block attributes.',
+	'',
+	'#### 1. WIDTH & LAYOUT ("Wide", "Narrow", "Full Width", "Boxed")',
+	'* **Target Attributes:** `width-general`, `max-width-general`, `full-width-general` (and responsive variants)',
+	'* **Clarification Presets:**',
+	'    * **A (Standard Boxed):** "Standard boxed content (1170px)."',
+	'        * Payload: `{ "full-width-general": false, "width-general": "1170px" }`',
+	'    * **B (Narrow Reading):** "Narrow centered column (700px)."',
+	'        * Payload: `{ "full-width-general": false, "width-general": "700px" }`',
+	'    * **C (Full Width):** "Edge-to-edge full width."',
+	'        * Payload: `{ "full-width-general": true, "width-general": "100%" }`',
+	'* **UI Target:** `dimension-panel`',
+	'',
+	'#### 2. BACKGROUND & STYLE ("Color", "Image", "Gradient")',
+	'* **Target Attributes:** `blockBackground`, `opacity-general`',
+	'* **Clarification Presets:**',
+	'    * **A (Theme Color):** "Apply Brand Background."',
+	'        * Payload: `{ "blockBackground": { "type": "color", "value": "var(--bg-2)" } }`',
+	'    * **B (Dark Mode):** "Inverted Dark Background."',
+	'        * Payload: `{ "blockBackground": { "type": "color", "value": "var(--h1)" } }`',
+	'    * **C (Glass):** "Glassmorphism (Blur + Transparency)."',
+	'        * Payload: `{ "blockBackground": { "type": "color", "value": "rgba(255,255,255,0.1)" }, "backdrop-filter": "blur(10px)" }`',
+	'* **UI Target:** `background-layer`',
+	'',
+	'#### 3. SHAPE DIVIDERS ("Wave", "Curve", "Slant", "Divider")',
+	'* **Target Attributes:** `shape-divider-top-status`, `shape-divider-bottom-status`, `shape-divider` settings',
+	'* **Clarification:** "Where do you want the shape divider?"',
+	'    * **A (Top):** "Add a Wave to the Top."',
+	'        * Payload: `{ "shape-divider-top-status": true, "shape-divider-top": { "style": "wave", "color": "var(--bg-1)" } }`',
+	'    * **B (Bottom):** "Add a Curve to the Bottom."',
+	'        * Payload: `{ "shape-divider-bottom-status": true, "shape-divider-bottom": { "style": "curve", "color": "var(--bg-1)" } }`',
+	'    * **C (Both):** "Add Slants to Top & Bottom."',
+	'        * Payload: `{ "shape-divider-top-status": true, "shape-divider-bottom-status": true }`',
+	'* **UI Target:** `shape-divider-panel`',
+	'',
+	'#### 4. CONTEXT LOOP / DYNAMIC CONTENT ("Loop", "Query", "Repeater")',
+	'* **Target Attributes:** `cl-status` (Context Loop), `cl-type`, `cl-author`',
+	'* **Action:** This turns the container into a Loop Provider (like a Query Loop).',
+	'* **Clarification Presets:**',
+	'    * **A (Recent Posts):** "Loop recent Blog Posts."',
+	'        * Payload: `{ "cl-status": true, "cl-type": "post", "count": 6 }`',
+	'    * **B (Products):** "Loop WooCommerce Products."',
+	'        * Payload: `{ "cl-status": true, "cl-type": "product", "count": 4 }`',
+	'    * **C (Related):** "Loop Related Posts (Same Category)."',
+	'        * Payload: `{ "cl-status": true, "cl-type": "related" }`',
+	'* **UI Target:** `context-loop-panel`',
+	'',
+	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
+	'* **Target Attributes:** `padding-general`, `margin-general`',
+	'* **Responsive Logic:** ALWAYS scale mobile values to 40% of desktop.',
+	'* **Clarification Presets:**',
+	'    * **A (Compact):** "Tight section (60px)."',
+	'        * Payload: `{ "padding-top-general": "60px", "padding-bottom-general": "60px", "padding-top-xs": "30px" }`',
+	'    * **B (Standard):** "Regular section (100px)."',
+	'        * Payload: `{ "padding-top-general": "100px", "padding-bottom-general": "100px", "padding-top-xs": "50px" }`',
+	'    * **C (Hero):** "Tall Hero section (180px)."',
+	'        * Payload: `{ "padding-top-general": "180px", "padding-bottom-general": "180px", "padding-top-xs": "80px" }`',
+	'* **UI Target:** `spacing-panel`',
+	'',
+	'#### 6. VISIBILITY & SCROLL EFFECTS ("Sticky", "Hide on mobile", "Fade in")',
+	'* **Target Attributes:** `position` (sticky), `display-xs` (none), `scrollEffects`',
+	'* **Clarification Presets:**',
+	'    * **A (Sticky):** "Stick to top when scrolling."',
+	'        * Payload: `{ "position": "sticky", "top": "0px", "z-index": "100" }`',
+	'    * **B (Mobile Hidden):** "Hide this container on phones."',
+	'        * Payload: `{ "display-xs": "none" }`',
+	'    * **C (Fade In):** "Animate in when scrolled to."',
+	'        * Payload: `{ "scrollEffects": { "animation": "fade-up", "duration": 800 } }`',
+	'* **UI Target:** `advanced-panel` (or scroll effects)',
+	'',
+	'### Suggested "Quick Action" Chips for Container',
+	'',
+	'Add these to your UI when a Container block is selected:',
+	'',
+	'1. **"Make it full width"** (Triggers Layout Preset C)',
+	'2. **"Add top wave divider"** (Triggers Shape Divider Preset A)',
+	'3. **"Turn into Post Loop"** (Triggers Context Loop Preset A)',
+	'4. **"Increase section padding"** (Triggers Spacing Preset C)',
+	'5. **"Hide on mobile"** (Sets `display-xs: none`)',
+].join('\n');
+
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
 ### SCOPE RULES
@@ -114,6 +197,8 @@ update_page (Rounded): {"action":"update_page","property":"border_radius","value
 update_selection (Border): {"action":"update_selection","property":"border","value":{...},"target_block":"image","message":"Applied border to all images in selection."}
 update_page (Shadow): {"action":"update_page","property":"box_shadow","value":{...},"target_block":"button","message":"Applied Soft shadow."}
 MODIFY_BLOCK: {"action":"MODIFY_BLOCK","payload":{...},"message":"Done."}
+
+${CONTAINER_BLOCK_INTENT_MAPPING_MODULE}
 
 REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
 `;

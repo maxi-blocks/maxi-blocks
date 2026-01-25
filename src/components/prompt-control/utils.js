@@ -136,8 +136,16 @@ ${humanMessageTemplate}`,
 
 
 const handleUiTarget = responseContent => {
+	if (typeof responseContent !== 'string') return;
+
+	const startIndex = responseContent.indexOf('{');
+	const endIndex = responseContent.lastIndexOf('}');
+	if (startIndex === -1 || endIndex === -1) return;
+
 	try {
-		const parsed = JSON.parse(responseContent);
+		const parsed = JSON.parse(
+			responseContent.slice(startIndex, endIndex + 1)
+		);
 		if (!parsed?.ui_target) return;
 
 		const target = parsed.ui_target;
@@ -313,7 +321,14 @@ export const callBackendAIProxy = async ({
 	setIsGenerating(true);
 	const wpApiRoot = window.wpApiSettings?.root || '/wp-json/';
 	const wpNonce = window.wpApiSettings?.nonce;
+	const temperature =
+		!modelName?.includes('o1') &&
+		!modelName?.includes('o3') &&
+		!modelName?.includes('gpt-5')
+			? additionalParams?.temperature
+			: undefined;
 
+	let handledError = false;
 	const updateResultWithError = errorMessage => {
 		setResults(prevResults => {
 			const newResults = [...prevResults];
@@ -369,7 +384,7 @@ export const callBackendAIProxy = async ({
 			body: JSON.stringify({
 				messages,
 				model: modelName,
-				temperature: additionalParams?.temperature,
+				...(temperature !== undefined ? { temperature } : {}),
 				streaming: true,
 				prompt,
 			}),
@@ -379,6 +394,7 @@ export const callBackendAIProxy = async ({
 		if (!response.ok) {
 			const errorText = await response.text();
 			console.error('MaxiBlocks AI request failed:', errorText);
+			handledError = true;
 			updateResultWithError(errorText);
 			if (isModelUnavailableError(errorText)) {
 				onModelUnavailable?.();
@@ -397,7 +413,7 @@ export const callBackendAIProxy = async ({
 				data: {
 					messages,
 					model: modelName,
-					temperature: additionalParams?.temperature,
+					...(temperature !== undefined ? { temperature } : {}),
 					streaming: false,
 					prompt,
 				},
@@ -521,11 +537,11 @@ export const callBackendAIProxy = async ({
 		setIsGenerating(false);
 		abortControllerRef.current = null;
 
-		if (error?.name !== 'AbortError') {
+		if (!handledError && error?.name !== 'AbortError') {
 			updateResultWithError(error.message || 'AI request failed');
 		}
 
-		if (isModelUnavailableError(error.message)) {
+		if (!handledError && isModelUnavailableError(error.message)) {
 			onModelUnavailable?.();
 		}
 

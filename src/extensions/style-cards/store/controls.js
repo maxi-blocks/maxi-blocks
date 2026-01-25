@@ -9,6 +9,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { createSCStyleString } from '@extensions/style-cards/updateSCOnEditor';
 import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 import getSCStyles from '@extensions/style-cards/getSCStyles';
+import { formatError } from '@extensions/common/indexedDBManager';
 import {
 	loadFromIndexedDB,
 	saveToIndexedDB,
@@ -19,14 +20,6 @@ import {
 if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
 	window.maxiBlocksClearStyleCardsCache = clearIndexedDB;
 }
-
-const formatError = error => {
-	if (!error) return 'Unknown error';
-	if (typeof error === 'string') return error;
-	const name = error.name || 'Error';
-	const message = error.message || JSON.stringify(error);
-	return `[${name}] ${message}`;
-};
 
 /**
  * Controls

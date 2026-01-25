@@ -28,6 +28,9 @@ export const searchPatterns = async (query, limit = 5) => {
 		return [];
 	}
 
+	const controller = new AbortController();
+	const timeoutId = setTimeout(() => controller.abort(), 8000);
+
 	try {
 		const response = await fetch(
 			`https://${apiHost}/collections/maxi_patterns/documents/search?` +
@@ -42,9 +45,9 @@ export const searchPatterns = async (query, limit = 5) => {
 				headers: {
 					'X-TYPESENSE-API-KEY': apiKey,
 				},
+				signal: controller.signal,
 			}
 		);
-
 		if (!response.ok) {
 			throw new Error(`Typesense search failed: ${response.status}`);
 		}
@@ -54,6 +57,8 @@ export const searchPatterns = async (query, limit = 5) => {
 	} catch (error) {
 		console.error('[Maxi AI] Pattern search error:', error);
 		return [];
+	} finally {
+		clearTimeout(timeoutId);
 	}
 };
 
@@ -91,7 +96,7 @@ export const findBestPattern = async query => {
 export const extractPatternQuery = message => {
 	// Remove common prefixes
 	let query = message.toLowerCase()
-		.replace(/^(create|make|add|insert|build|generate)\s*(a|an|the|me|us)?\s*/i, '')
+		.replace(/^(create|make|add|insert|build|generate)\s*(a|an|the|me|us)?\s*/, '')
 		.replace(/\s*(using|with|in)\s*maxi(blocks)?$/i, '')
 		.replace(/\s*for\s*(me|us)$/i, '')
 		.trim();

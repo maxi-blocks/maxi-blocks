@@ -960,17 +960,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Validates email format
-	 * @param {string} email - Email to validate
-	 * @returns {boolean} - True if valid email
-	 */
-	function isValidEmail(email) {
-		const emailPattern =
-			/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return emailPattern.test(email);
-	}
-
-	/**
 	 * Validate license (email or purchase code)
 	 */
 	function validateLicense() {
@@ -2013,8 +2002,9 @@ function updateNetworkLicenseUI(data) {
  * Validate email format
  */
 function isValidEmail(email) {
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
+	const emailPattern =
+		/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return emailPattern.test(email);
 }
 
 /**

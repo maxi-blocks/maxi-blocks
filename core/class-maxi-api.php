@@ -3504,20 +3504,18 @@ if (!class_exists('MaxiBlocks_API')):
                 ];
 
                 // Add temperature based on model support
-                // o1 and o3 models don't support temperature at all
-                if (
-                    !str_contains($model, 'o1') &&
-                    !str_contains($model, 'o3')
-                ) {
-                    // Only GPT-5 models require temperature = 1, others support custom values
-                    if (str_contains($model, 'gpt-5')) {
-                        $body['temperature'] = 1;
-                    } else {
-                        // Most models (including gpt-4o) support custom temperature
-                        if ($temperature !== null) {
-                            $body['temperature'] = (float) $temperature;
-                        }
-                    }
+                // o1/o3 accept temperature (default 1). GPT-5 supports temperature only on 5.1+ variants.
+                $is_o1_or_o3 = str_contains($model, 'o1') || str_contains($model, 'o3');
+                $is_gpt5 = str_contains($model, 'gpt-5');
+                $is_gpt5_5_1_plus = $is_gpt5 &&
+                    preg_match('/gpt-5[.-](\d+)/', $model, $gpt5_matches) &&
+                    (int) $gpt5_matches[1] >= 1;
+
+                if ($is_o1_or_o3 || $is_gpt5_5_1_plus) {
+                    $body['temperature'] =
+                        $temperature !== null ? (float) $temperature : 1;
+                } elseif (!$is_gpt5 && $temperature !== null) {
+                    $body['temperature'] = (float) $temperature;
                 }
 
                 if ($max_tokens !== null && $max_tokens !== '') {

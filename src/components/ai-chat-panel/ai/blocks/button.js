@@ -742,6 +742,9 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 
 		case 'button_responsive_width':
 			{
+				if (!value || typeof value !== 'object') {
+					break;
+				}
 				const { device, width } = value;
 				const suffix = device === 'mobile' ? '-xs' : '-general';
 				const rawWidth = String(width ?? '').trim().toLowerCase();
@@ -793,7 +796,8 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 					[`${prefix}display-s`]: 'none',
 					[`${prefix}display-m`]: 'none',
 					[`${prefix}display-l`]: 'none',
-					[`${prefix}display-xl`]: 'none'
+					[`${prefix}display-xl`]: 'none',
+					[`${prefix}display-xxl`]: 'none'
 				};
 			} else if (value === 'tablet') {
 				changes = {
@@ -806,8 +810,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 				changes = {
 					[`${prefix}display-xs`]: 'none',
 					[`${prefix}display-s`]: 'none',
-					[`${prefix}display-m`]: 'none',
-					[`${prefix}display-xxl`]: 'none'
+					[`${prefix}display-m`]: 'none'
 				};
 			}
 			break;

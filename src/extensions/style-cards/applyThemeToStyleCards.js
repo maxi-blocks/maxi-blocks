@@ -540,6 +540,9 @@ export const parseColorFromPrompt = prompt => {
 	const rgbMatch = parseRgbColor(normalizedPrompt);
 	if (rgbMatch) return rgbMatch;
 
+	const rgbStringMatch = parseRgbString(normalizedPrompt);
+	if (rgbStringMatch) return rgbStringMatch;
+
 	const condensedPrompt = normalizedPrompt.replace(/[\s-]+/g, '');
 	const colorName = CSS_COLOR_KEYWORDS_SORTED.find(keyword =>
 		condensedPrompt.includes(keyword)
@@ -828,6 +831,7 @@ export const applyThemeToStyleCards = ({
 	if (!activeSC) return null;
 
 	const promptText = typeof prompt === 'string' ? prompt : '';
+	const promptTextLower = promptText.toLowerCase();
 	const vibeKey = getVibeFromPrompt(promptText);
 	
 	const vibe = vibeKey ? VIBE_DICTIONARY[vibeKey] : null;
@@ -895,7 +899,10 @@ export const applyThemeToStyleCards = ({
 			}
 			
 			// [NEW] Smart Element Coloring (for non-heading-only requests)
-			if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
+			if (
+				resolvedColor &&
+				(promptTextLower.includes('heading') || promptTextLower.includes('title'))
+			) {
 				applyHeadingColor(nextStyleCards[activeSC.key], resolvedColor, false);
 			}
 		}
@@ -948,7 +955,10 @@ export const applyThemeToStyleCards = ({
 	// Smart Element Coloring for heading-only requests
 	if (isHeadingOnlyRequest) {
 		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);
-	} else if (resolvedColor && (promptText.includes('heading') || promptText.includes('title'))) {
+	} else if (
+		resolvedColor &&
+		(promptTextLower.includes('heading') || promptTextLower.includes('title'))
+	) {
 		// Fallback for combined requests
 		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);
 	}

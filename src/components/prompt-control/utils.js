@@ -13,7 +13,6 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { openStyleCardsEditor } from '@extensions/style-cards/applyThemeToStyleCards';
 import {
 	CONTENT_TYPE_EXAMPLES,
-	DESIGN_AGENT_SYSTEM_PROMPT,
 } from './constants';
 
 /**
@@ -595,24 +594,7 @@ export const handleContentGeneration = async ({
 		});
 	} catch (error) {
 		// Error handling logic
-		if (error.response) {
-			setResults(prevResults => {
-				const newResults = [...prevResults];
-				const addedResult = newResults.find(
-					result => result.id === newId
-				);
-
-				if (addedResult) {
-					addedResult.content = error.response.data.error.message;
-					addedResult.loading = false;
-					addedResult.error = true;
-				}
-
-				return newResults;
-			});
-
-			console.error(error.response.data.error);
-		} else if (
+		if (
 			error.name !== 'AbortError' &&
 			error.message !== 'Cancel: canceled'
 		) {

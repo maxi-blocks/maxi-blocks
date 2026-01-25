@@ -4,8 +4,9 @@ This folder keeps AI logic modular per block so `ai-chat-panel` stays maintainab
 
 Structure:
 - `blocks/`: patterns + handlers per block.
-- `prompts/`: optional block-specific system prompt snippets.
+- `prompts/`: block-specific system prompt snippets (text, image, container, button, icon, divider, accordion, column, group, row, pane, slide, slider, map, search, number-counter, video).
 - `registry.js`: single place to register blocks (patterns, handler, prompt).
+- `style-card.js`: Style Card patterns, selectors, and handlers (global scope).
 
 To add a new block:
 1) Create `blocks/<block>.js` exporting `<BLOCK>_PATTERNS` and `handle<Block>Update`.
@@ -16,3 +17,4 @@ Notes:
 - Patterns are appended into the global matcher, so order matters.
 - Use `target` to keep prompts scoped to the correct block type.
 - For complex updates, prefer handler-driven changes instead of generic property mapping.
+- Prompts document canonical properties; internal `flow_*` and `color_clarify` triggers stay pattern-only.

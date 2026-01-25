@@ -10,12 +10,14 @@ import { cloneDeep } from 'lodash';
  * Internal dependencies
  */
 import './editor.scss';
-import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCards';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
+import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue';
+import { getLastBreakpointAttribute } from '@extensions/styles';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
+import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
@@ -28,7 +30,6 @@ const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEV
 ### BLOCK TARGETING
 Include "target_block" when user mentions specific types:
 - "all images" / "the images" → target_block: "image"
-- "all buttons" → target_block: "button"
 - "all sections" / "containers" → target_block: "container"
 
 ### INTENT MAPPING
@@ -65,25 +66,11 @@ When user says "make rounded" or "round corners":
 When user says "add space" or "more padding":
 {"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
 
-When user says "style buttons":
-{"action":"CLARIFY","message":"What button style would you like?","options":[{"label":"Solid"},{"label":"Outline"},{"label":"Flat"}]}
-
 ### THEME-AWARE RULES (CRITICAL)
 - **Theme Border:** use "var(--p)" (Subtle), "var(--h1)" (Strong), "var(--highlight)" (Brand).
 - **Brand Glow:** Use "box_shadow" with color "var(--highlight)".
-- **Ghost Button:** use "button_style" value "outline".
 - **Invert Section:** Set background "var(--h1)", color "white".
 
-### SVG ICON COLORS (STYLE CARD PALETTE)
-When user asks to change icon color, fill, stroke, or border:
-- "change icon color" / "fill color" → property: svg_fill_color, value: palette number (1-8)
-- "change icon stroke" / "line color" / "icon border" → property: svg_line_color, value: palette number (1-8)
-- "change icon line width" / "stroke width" → property: svg_stroke_width, value: 1-4
-- Default: Use palette number based on request (1=Primary, 2=Secondary, 3=Accent, 4=Highlight, 5=Text, 8=Dark)
-- If user says "brand color" → use palette 4 (highlight)
-- If user says "match headings" → use palette 2
-- For icon color requests, the client will show a palette picker - no need to clarify.
- 
 ### OPTION TRIGGER MAPPING (CRITICAL)
 IF user selects/types these options, YOU MUST use the corresponding property:
  
@@ -91,8 +78,6 @@ IF user selects/types these options, YOU MUST use the corresponding property:
 - "Subtle (8px)" / "Soft (24px)" / "Full (50px)" -> ACTION: update_page, PROPERTY: border_radius
 - "Soft" / "Crisp" / "Bold" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
-- "Thin" / "Medium" / "Thick" (line width) -> ACTION: update_page, PROPERTY: svg_stroke_width
-- "Solid" / "Outline" / "Flat" -> ACTION: update_selection, PROPERTY: button_style
 
 
 ### WHEN TO APPLY DIRECTLY
@@ -100,7 +85,6 @@ Only when user specifies EXACT style/preset name:
 - "Soft shadow" → Apply directly
 - "Comfortable spacing" → Apply responsive_padding directly
 - "Subtle corners" → Apply directly
-- "Outline button" → Apply directly
 
 ### CRITICAL: NEVER ASSUME DEFAULTS
 If user says "add shadow" (generic), DO NOT apply Soft shadow. ASK FIRST.
@@ -151,7 +135,6 @@ REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
  */
 const LAYOUT_PATTERNS = [
 	// EMERGENCY PRIORITY RULE
-	{ regex: /change.*button.*text.*colou?r|button.*text.*colou?r/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?', target: 'button', colorTarget: 'button-text' },
 
 	// GROUP 1: DIRECTIONAL INTENT (flex-direction)
 	{ regex: /side\s*by\s*side|horizontal(?!ly)|in\s*a\s*line|beside\s*(each\s*other)?|next\s*to\s*(each\s*other)?/, property: 'flex_direction', value: 'row', selectionMsg: 'Arranged items side by side (row layout).', pageMsg: 'Arranged containers horizontally.' },
@@ -214,15 +197,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /parallax|slow.*background|background.*slower/, property: 'parallax', value: true, selectionMsg: 'Added parallax effect.', pageMsg: 'Added parallax to backgrounds.' },
 	
 	// GROUP 12: AESTHETIC STYLES (triggers apply_theme via special handling)
-	{ regex: /minimalis(m|t)|clean.*look|simple.*design|white.*space/, property: 'aesthetic', value: 'minimalism', selectionMsg: 'Applied minimalist style.', pageMsg: 'Applied minimalist aesthetic.' },
-	{ regex: /brutalis(m|t)|raw.*html|harsh|industrial/, property: 'aesthetic', value: 'brutalism', selectionMsg: 'Applied brutalist style.', pageMsg: 'Applied brutalist aesthetic.' },
-	{ regex: /neobrutalis(m|t)|thick.*border.*pastel|block.*shadow|modern.*figma/, property: 'aesthetic', value: 'neobrutalism', selectionMsg: 'Applied neobrutalist style.', pageMsg: 'Applied neobrutalist aesthetic.' },
-	{ regex: /swiss|helvetica|grid.*layout|typograph/, property: 'aesthetic', value: 'swiss', selectionMsg: 'Applied Swiss style.', pageMsg: 'Applied Swiss typography aesthetic.' },
-	{ regex: /editorial|magazine|newspaper|pull.*quote/, property: 'aesthetic', value: 'editorial', selectionMsg: 'Applied editorial style.', pageMsg: 'Applied editorial layout.' },
-	{ regex: /masculine|bold.*dark|strong.*geometric/, property: 'aesthetic', value: 'masculine', selectionMsg: 'Applied masculine style.', pageMsg: 'Applied masculine aesthetic.' },
-	{ regex: /feminine|soft.*pastel|delicate|script.*font/, property: 'aesthetic', value: 'feminine', selectionMsg: 'Applied feminine style.', pageMsg: 'Applied feminine aesthetic.' },
-	{ regex: /corporate|professional|business|navy.*slate/, property: 'aesthetic', value: 'corporate', selectionMsg: 'Applied corporate style.', pageMsg: 'Applied corporate aesthetic.' },
-	{ regex: /natural|organic|earth.*tone|terracotta|sage/, property: 'aesthetic', value: 'natural', selectionMsg: 'Applied natural style.', pageMsg: 'Applied natural/organic aesthetic.' },
+	...STYLE_CARD_PATTERNS,
 	
 	// GROUP 13: TYPOGRAPHY READABILITY
 	{ regex: /lines.*crash|wall.*text|too.*close.*lines|line.*height|more.*space.*lines/, property: 'line_height', value: 1.8, selectionMsg: 'Increased line spacing (line-height: 1.8).', pageMsg: 'Improved line spacing for readability.' },
@@ -235,7 +210,9 @@ const LAYOUT_PATTERNS = [
 	
 	// GROUP: COLOUR CLARIFICATION (show palette picker)
 	// Match colour requests that need clarification - will show 8-colour palette
-	{ regex: /(make|change|set|turn|paint|color|colour|give).*(red|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey|dark|light)|(\bred|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey)\b.*(background|button|text|heading|container|box|section|color|colour)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	{ regex: /\bbackground\s*(?:colou?r|color)\b|\bbg\s*(?:colou?r|color)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	{ regex: /(make|change|set|turn|paint|color|colour|give).*(red|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey|dark|light)|(\bred|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey)\b.*(background|text|heading|container|box|section|color|colour)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	{ regex: /\b(change|set|switch|update)\b.*\b(colou?r|color)\b|\b(colou?r|color)\b.*\b(change|set|switch|update)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
 	
 	// GROUP 14: BACKGROUNDS & MEDIA
 	{ regex: /video.*behind|movie.*behind|background.*video/, property: 'background_media', value: 'video', selectionMsg: 'Set video as background.', pageMsg: 'Applied video background.' },
@@ -261,10 +238,10 @@ const LAYOUT_PATTERNS = [
 	{ regex: /masonry|pinterest|grid.*flow/, property: 'row_pattern', value: 'masonry', selectionMsg: 'Applied masonry layout.', pageMsg: 'Created masonry grid.' },
 	
 	// GROUP 18: RELATIVE SIZING (±20% adjustment)
+	{ regex: /\b(bigger|larger)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(bigger|larger)\b|\bincrease\b.*\bfont\b|\b(text|font)\s*size\b.*\bincrease\b|\bincrease\b.*\b(text|font)\s*size\b/, property: 'font_size_relative', value: 1.2, selectionMsg: 'Increased font size by 20%.', pageMsg: 'Enlarged text.' },
+	{ regex: /\b(smaller|tinier)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(smaller|tinier)\b|\b(decrease|reduce)\b.*\bfont\b|\b(text|font)\s*size\b.*\b(decrease|reduce)\b|\b(decrease|reduce)\b.*\b(text|font)\s*size\b|\breduce\b.*\btext\b/, property: 'font_size_relative', value: 0.8, selectionMsg: 'Decreased font size by 20%.', pageMsg: 'Reduced text size.' },
 	{ regex: /bigger(?!.*hover)|larger|increase.*size|more.*size|scale.*up/, property: 'relative_size', value: 1.2, selectionMsg: 'Increased size by 20%.', pageMsg: 'Scaled up by 20%.' },
 	{ regex: /smaller|reduce.*size|decrease.*size|less.*size|scale.*down/, property: 'relative_size', value: 0.8, selectionMsg: 'Decreased size by 20%.', pageMsg: 'Scaled down by 20%.' },
-	{ regex: /bigger.*text|larger.*text|increase.*font|larger.*font/, property: 'font_size_relative', value: 1.2, selectionMsg: 'Increased font size by 20%.', pageMsg: 'Enlarged text.' },
-	{ regex: /smaller.*text|reduce.*text|decrease.*font|tinier/, property: 'font_size_relative', value: 0.8, selectionMsg: 'Decreased font size by 20%.', pageMsg: 'Reduced text size.' },
 	{ regex: /wider|more.*width|increase.*width|stretch.*horizontal/, property: 'width_relative', value: 1.2, selectionMsg: 'Increased width by 20%.', pageMsg: 'Made wider.' },
 	{ regex: /narrower|less.*width|decrease.*width|thinner/, property: 'width_relative', value: 0.8, selectionMsg: 'Decreased width by 20%.', pageMsg: 'Made narrower.' },
 	{ regex: /taller|more.*height|increase.*height|stretch.*vertical/, property: 'height_relative', value: 1.2, selectionMsg: 'Increased height by 20%.', pageMsg: 'Made taller.' },
@@ -334,54 +311,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const registry = useRegistry();
 
 	// Style Card Data
-	const activeStyleCard = useSelect(
-		select => select('maxiBlocks/style-cards')?.receiveMaxiSelectedStyleCard(),
-		[]
-	);
-	const allStyleCards = useSelect(
-		select => select('maxiBlocks/style-cards')?.receiveMaxiStyleCards(),
-		[]
-	);
-	const { saveMaxiStyleCards, resetSC, setActiveStyleCard } = useDispatch('maxiBlocks/style-cards') || {};
-	
-	// Fetch Custom Colors
-	const customColors = useSelect(select => {
-		const {
-			receiveSelectedStyleCardValue,
-			receiveMaxiSelectedStyleCardValue,
-		} = select('maxiBlocks/style-cards') || {};
+	const {
+		activeStyleCard,
+		allStyleCards,
+		customColors,
+		saveMaxiStyleCards,
+		resetSC,
+		setActiveStyleCard,
+	} = useStyleCardData();
 
-		if (!receiveSelectedStyleCardValue) return [];
-
-		// Try multiple strategies to get custom colors in order of preference
-		// First check if we can get them directly from receiveSelectedStyleCardValue
-		let colors = receiveSelectedStyleCardValue(
-			'customColors',
-			null,
-			'color'
-		);
-
-		// If that fails, try the direct selector
-		if (!colors || colors.length === 0) {
-			colors = receiveMaxiSelectedStyleCardValue?.('customColors') || [];
-		}
-
-		// If still no colors, try to get the styleCard directly
-		if (!colors || colors.length === 0) {
-			const styleCard = select('maxiBlocks/style-cards')?.receiveMaxiSelectedStyleCard();
-
-			if (styleCard && styleCard.value) {
-				// Check multiple possible locations for custom colors
-				colors =
-					styleCard.value.light?.styleCard?.color?.customColors ||
-					styleCard.value.dark?.styleCard?.color?.customColors ||
-					styleCard.value.color?.customColors ||
-					[];
-			}
-		}
-
-		return colors || [];
-	}, []);
+	const { handleUpdateStyleCard, handleApplyTheme } = createStyleCardHandlers({
+		allStyleCards,
+		saveMaxiStyleCards,
+		resetSC,
+		setActiveStyleCard,
+	});
 
 	const { updateBlockAttributes } = useDispatch('core/block-editor');
 	
@@ -618,13 +562,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		]);
 	};
 
-	const resolveButtonIconTarget = lowerMessage =>
-		lowerMessage.includes('stroke') ||
-		lowerMessage.includes('line') ||
-		lowerMessage.includes('outline')
-			? 'stroke'
-			: 'fill';
-
 	const resolvePromptValue = (property, message) => {
 		if (!message) return null;
 		switch (property) {
@@ -637,30 +574,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			case 'button_url':
 			case 'mediaURL':
 				return extractUrl(message);
-			case 'icon_color':
-			case 'button_hover_bg':
-			case 'button_hover_text':
-			case 'button_active_bg':
-				return extractHexColor(message);
 			default:
 				return null;
-		}
-	};
-
-	const getColorTargetForProperty = (property, lowerMessage) => {
-		switch (property) {
-			case 'button_hover_bg':
-				return 'button-hover-background';
-			case 'button_hover_text':
-				return 'button-hover-text';
-			case 'button_active_bg':
-				return 'button-active-background';
-			case 'icon_color':
-				return resolveButtonIconTarget(lowerMessage) === 'stroke'
-					? 'button-icon-stroke'
-					: 'button-icon-fill';
-			default:
-				return 'element';
 		}
 	};
 
@@ -677,19 +592,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			lowerMessage.includes('font');
 		const isBackground =
 			lowerMessage.includes('background') || lowerMessage.includes('bg');
-		const isIcon = lowerMessage.includes('icon');
+		const isDivider =
+			lowerMessage.includes('divider') ||
+			selectedBlock?.name?.includes('divider');
 
-		if (isIcon && isButtonContext) {
-			return resolveButtonIconTarget(lowerMessage) === 'stroke'
-				? 'button-icon-stroke'
-				: 'button-icon-fill';
-		}
+		if (isDivider) return 'divider';
 		if (lowerMessage.includes('border') && isButtonContext) return 'button-border';
-		if (isIcon) {
-			return resolveButtonIconTarget(lowerMessage) === 'stroke'
-				? 'stroke'
-				: 'fill';
-		}
 		if (isHover && isButtonContext) {
 			if (isText) return 'button-hover-text';
 			if (isBackground) return 'button-hover-background';
@@ -748,32 +656,30 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			property = 'background_color';
 			targetBlock = 'container';
 			msgText = 'background';
+		} else if (['group', 'row', 'column', 'accordion', 'pane', 'slide', 'slider', 'video', 'map', 'search', 'number-counter'].includes(colorTarget)) {
+			property = 'background_color';
+			targetBlock = colorTarget;
+			msgText = `${colorTarget.replace('-', ' ')} background`;
 		} else if (colorTarget === 'text') {
 			property = 'text_color';
 			targetBlock = 'text';
 			msgText = 'text';
+		} else if (colorTarget === 'divider') {
+			property = 'divider_color';
+			targetBlock = 'divider';
+			msgText = 'divider';
 		} else if (colorTarget === 'element') {
 			property = 'background_color';
 			targetBlock = selectedBlock?.name?.includes('button')
 				? 'button'
 				: 'container';
 			msgText = 'element';
-		} else if (colorTarget === 'icon-line-hover') {
-			property = 'svg_line_color_hover';
-			targetBlock = 'svg-icon';
-			msgText = 'icon line hover';
-		} else if (colorTarget === 'icon-hover') {
-			property = 'svg_fill_color_hover';
-			targetBlock = 'svg-icon';
-			msgText = 'icon fill hover';
-		} else if (colorTarget === 'stroke') {
-			property = 'svg_line_color';
-			targetBlock = 'svg-icon';
-			msgText = 'icon stroke';
-		} else {
-			property = 'svg_fill_color';
-			targetBlock = 'svg-icon';
-			msgText = 'icon fill';
+		}
+
+		if (!property) {
+			property = 'background_color';
+			targetBlock = 'container';
+			msgText = 'background';
 		}
 
 		return { property, targetBlock, value, msgText };
@@ -1140,21 +1046,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		};
 	};
 
-	// Width
-
-
-	// Width
-	const updateWidth = (value, unit = 'px', prefix = '') => ({
-		[`${prefix}width-general`]: value,
-		[`${prefix}width-unit-general`]: unit,
-	});
-
-	// Height
-	const updateHeight = (value, unit = 'px', prefix = '') => ({
-		[`${prefix}height-general`]: value,
-		[`${prefix}height-unit-general`]: unit,
-	});
-
 	const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 		if (rawValue === null || rawValue === undefined) {
 			return { value: 0, unit: fallbackUnit };
@@ -1184,22 +1075,59 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return maxiStore?.receiveBaseBreakpoint?.() || null;
 	};
 
-	const buildSizeChanges = (key, value, unit) => {
+	const buildBreakpointChanges = (prefix, key, value) => {
+		const bp = getActiveBreakpoint();
+		const base = getBaseBreakpoint();
+		const changes = {
+			[`${prefix}${key}-${bp}`]: value,
+		};
+
+		if (bp === 'general' && base) {
+			changes[`${prefix}${key}-${base}`] = value;
+		}
+
+		return changes;
+	};
+
+	const buildSizeChanges = (prefix, key, value, unit, includeAdvancedOptions = false) => {
 		const bp = getActiveBreakpoint();
 		const base = getBaseBreakpoint();
 		const strValue = String(value);
 		const changes = {
-			[`${key}-${bp}`]: strValue,
-			[`${key}-unit-${bp}`]: unit,
-			'size-advanced-options': true,
+			[`${prefix}${key}-${bp}`]: strValue,
+			[`${prefix}${key}-unit-${bp}`]: unit,
 		};
 
+		if (includeAdvancedOptions) {
+			changes[`${prefix}size-advanced-options`] = true;
+		}
+
 		if (bp === 'general' && base) {
-			changes[`${key}-${base}`] = strValue;
-			changes[`${key}-unit-${base}`] = unit;
+			changes[`${prefix}${key}-${base}`] = strValue;
+			changes[`${prefix}${key}-unit-${base}`] = unit;
 		}
 
 		return changes;
+	};
+
+	const buildWidthChanges = (rawValue, prefix = '') => {
+		if (typeof rawValue === 'string') {
+			const normalized = rawValue.trim().toLowerCase();
+			if (normalized === 'auto' || normalized === 'fit-content' || normalized === 'fit content') {
+				return buildBreakpointChanges(prefix, 'width-fit-content', true);
+			}
+		}
+
+		const parsed = parseUnitValue(rawValue);
+		return {
+			...buildSizeChanges(prefix, 'width', parsed.value, parsed.unit, false),
+			...buildBreakpointChanges(prefix, 'width-fit-content', false),
+		};
+	};
+
+	const buildHeightChanges = (rawValue, prefix = '') => {
+		const parsed = parseUnitValue(rawValue);
+		return buildSizeChanges(prefix, 'height', parsed.value, parsed.unit, false);
 	};
 
 	const buildContextLoopChanges = (value = {}) => {
@@ -1474,222 +1402,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		};
 	};
 
-	const handleUpdateStyleCard = (updates) => {
-		if (!allStyleCards || !saveMaxiStyleCards) {
-			return __('Style Cards System is not ready.', 'maxi-blocks');
-		}
-
-		const newStyleCards = cloneDeep(allStyleCards);
-		let activeKey = Object.keys(newStyleCards).find(key => newStyleCards[key].status === 'active');
-		
-		if (!activeKey) {
-			// Fallback to first key if no active status found
-			activeKey = Object.keys(newStyleCards)[0];
-		}
-
-		// SANITY CHECK: Detect corrupted data (e.g., 'light', 'dark', 'status' as root keys)
-		const corruptedKeys = ['light', 'dark', 'status', 'value', 'styleCard'];
-		const isCorrupted = Object.keys(newStyleCards).some(key => corruptedKeys.includes(key));
-
-		if (!activeKey || !newStyleCards[activeKey] || isCorrupted) {
-			// RECOVERY: If corrupted data caused no cards, reset to defaults.
-			if (resetSC) {
-				resetSC();
-				return __('Style Cards data was corrupted. Resetting to defaults... Please try again after page reload.', 'maxi-blocks');
-			}
-			return __('No active Style Card found.', 'maxi-blocks');
-		}
-
-		// LOGIC: If default card (sc_maxi), CLONE it. If Custom, UPDATE in-place.
-		let targetKey = activeKey;
-		let message = '';
-
-		if (activeKey === 'sc_maxi') {
-			// CLONE Strategy
-			const timestamp = Date.now();
-			const newKey = `sc_ai_${timestamp}`;
-			targetKey = newKey;
-
-			newStyleCards[newKey] = cloneDeep(newStyleCards[activeKey]);
-			newStyleCards[newKey].id = newKey;
-			newStyleCards[newKey].name = `AI Generated - ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-			newStyleCards[newKey].status = 'active';
-
-			// Deactivate original
-			newStyleCards[activeKey].status = 'inactive';
-			
-			message = __('New Style Card created and activated.', 'maxi-blocks');
-		} else {
-			// UPDATE Strategy
-			message = __('Style Card updated.', 'maxi-blocks');
-		}
-
-		const targetCard = newStyleCards[targetKey];
-		let changesCount = 0;
-
-		// Helper to safely set deeply nested values
-		const setStyleValue = (key, value) => {
-			['light', 'dark'].forEach(mode => {
-				if (!targetCard[mode]) targetCard[mode] = {};
-				if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
-				
-				// Identify category
-				let category = 'color'; // Default
-				if (key.startsWith('font-')) category = 'typography';
-				
-				if (!targetCard[mode].styleCard[category]) {
-					targetCard[mode].styleCard[category] = {};
-				}
-
-				targetCard[mode].styleCard[category][key] = value;
-			});
-			changesCount++;
-		};
-
-		Object.entries(updates).forEach(([key, value]) => {
-			setStyleValue(key, value);
-		});
-
-		if (changesCount > 0) {
-			saveMaxiStyleCards(newStyleCards, true);
-			
-			// Switch UI if we changed cards
-			if (setActiveStyleCard && targetKey !== activeKey) {
-				setActiveStyleCard(targetKey);
-			}
-			
-			return message;
-		}
-		return __('No valid Style Card updates found.', 'maxi-blocks');
-	};
-
-	const handleApplyTheme = (theme, prompt) => {
-		if (!allStyleCards || !saveMaxiStyleCards) {
-			return __('Style Cards System is not ready.', 'maxi-blocks');
-		}
-
-		// Detect if request is about headings
-		const isHeadingRequest = prompt && /heading|header|title|h1|h2|h3|h4|h5|h6/i.test(prompt);
-		const isBlueRequest = prompt && /blue/i.test(prompt);
-
-		const result = applyThemeToStyleCards({
-			styleCards: allStyleCards,
-			theme,
-			prompt,
-			openEditor: false, // We'll handle opening manually with options
-			timestamp: Date.now(),
-		});
-
-		if (!result) {
-			return __('Could not apply theme. Try specifying a color like "make it green".', 'maxi-blocks');
-		}
-
-		// Save with pendingChanges: true to enable save button
-		saveMaxiStyleCards(result.styleCards, false);
-
-		if (setActiveStyleCard && result.updatedKey) {
-			setActiveStyleCard(result.updatedKey);
-		}
-
-		// Open Style Card editor with enhanced options
-		setTimeout(() => {
-			const editorOptions = {};
-			
-			if (isHeadingRequest) {
-				editorOptions.focusHeadingsGlobals = true;
-				
-				// Determine which level to focus and apply
-				let detectedLevel = null;
-				const levels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-				for (const level of levels) {
-					if (new RegExp(level, 'i').test(prompt)) {
-						detectedLevel = level;
-						break;
-					}
-				}
-				
-				const isAll = /all|every/i.test(prompt);
-				
-				// Focus level: default to H1 unless a specific one is mentioned
-				editorOptions.headingLevel = detectedLevel || 'h1';
-				
-				// Apply level: 'all' if requested, otherwise the specific one (or all if generic 'heading' used without level)
-				editorOptions.applyHeadingLevel = isAll ? 'all' : (detectedLevel || 'all');
-				
-				editorOptions.delay = 400;
-				
-				// If user asked for blue headings, apply palette blue
-				if (isBlueRequest) {
-					editorOptions.applyHeadingPaletteColor = true;
-				}
-			}
-			
-			if (typeof window.maxiBlocksOpenStyleCardsEditor === 'function') {
-				window.maxiBlocksOpenStyleCardsEditor(editorOptions);
-			} else {
-				// Fallback: click the button
-				const styleCardsButton = document.getElementById('maxi-button__style-cards');
-				if (styleCardsButton) {
-					styleCardsButton.click();
-					
-					// If heading request, try to focus headings after editor opens
-					if (isHeadingRequest) {
-						setTimeout(() => {
-							// Try to find Headings accordion - look for the accordion item wrapper first
-							// The accordion item has class maxi-blocks-sc__type--heading
-							// The button inside it has class maxi-accordion-control__item__button
-							const headingAccordionItem = document.querySelector('.maxi-blocks-sc__type--heading');
-							
-							if (headingAccordionItem) {
-								// Accordion button is a div with role="button" and class .maxi-accordion-control__item__button
-								// NOT a <button> tag
-								const accordionBtn = headingAccordionItem.querySelector('.maxi-accordion-control__item__button');
-								
-								if (accordionBtn) {
-									// Check if already expanded to avoid closing it
-									const isExpanded = accordionBtn.getAttribute('aria-expanded') === 'true';
-									if (!isExpanded) {
-										accordionBtn.click();
-									}
-									
-									// Now try to switch to the specific H-tag tab if needed
-									setTimeout(() => {
-										const headingPanel = headingAccordionItem.querySelector('.maxi-accordion-control__item__panel');
-										if (headingPanel) {
-											const tabButtons = Array.from(headingPanel.querySelectorAll('[role="tab"], button'));
-											const targetTab = tabButtons.find(btn => 
-												btn.textContent.trim().toLowerCase() === editorOptions.headingLevel.toLowerCase()
-											);
-											
-											if (targetTab) {
-												targetTab.click();
-											}
-										}
-									}, 100);
-								}
-							} else {
-								// Fallback: try to find by text content
-								const allAccordionButtons = document.querySelectorAll('.maxi-accordion-control__item__button');
-								
-								for (const btn of allAccordionButtons) {
-									if (btn.textContent.toLowerCase().includes('heading')) {
-										btn.click();
-										break;
-									}
-								}
-							}
-						}, 500);
-					}
-				}
-			}
-		}, 300);
-
-		if (result.createdNew) {
-			return __('Created new Style Card. Review and save in the editor.', 'maxi-blocks');
-		}
-		return __('Style Card updated. Review and save in the editor.', 'maxi-blocks');
-	};
-
 	/*
 	 * ============================================================================
 	 * UNIVERSAL BLOCK UPDATER
@@ -1722,6 +1434,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (lowerTarget === 'icon') {
 				return lowerName.includes('icon-maxi') || lowerName.includes('svg-icon');
 			}
+			if (lowerTarget === 'divider') return lowerName.includes('divider');
+			if (lowerTarget === 'row') return lowerName.includes('row');
+			if (lowerTarget === 'column') return lowerName.includes('column');
+			if (lowerTarget === 'group') return lowerName.includes('group');
+			if (lowerTarget === 'accordion') return lowerName.includes('accordion');
+			if (lowerTarget === 'pane') return lowerName.includes('pane');
+			if (lowerTarget === 'slide') return lowerName.includes('slide') && !lowerName.includes('slider');
+			if (lowerTarget === 'slider') return lowerName.includes('slider');
+			if (lowerTarget === 'video') return lowerName.includes('video');
+			if (lowerTarget === 'map') return lowerName.includes('map');
+			if (lowerTarget === 'search') return lowerName.includes('search');
+			if (lowerTarget === 'number-counter') return lowerName.includes('number-counter');
 			return true;
 		};
 
@@ -1748,11 +1472,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 						case 'background_color':
 							// Apply to containers, rows, columns, buttons OR if it's a direct clientId match (Selection)
-							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button')) {
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button') || block.name.includes('group') || block.name.includes('accordion') || block.name.includes('pane') || block.name.includes('slide') || block.name.includes('slider') || block.name.includes('video') || block.name.includes('map') || block.name.includes('search') || block.name.includes('number-counter')) {
 								// Fix: Pass prefix to ensure buttons get button-background-color-general
 								changes = updateBackgroundColor(block.clientId, value, block.attributes, prefix);
 							}
 							break;
+						case 'divider_color': {
+							if (specificClientId || block.name.includes('divider')) {
+								const isPalette = typeof value === 'number';
+								changes = {
+									'divider-border-palette-status-general': isPalette,
+									'divider-border-palette-color-general': isPalette ? value : '',
+									'divider-border-color-general': isPalette ? '' : value,
+								};
+							}
+							break;
+						}
 						case 'text_color':
 							// Apply to text and buttons OR direct selection
 							if (specificClientId || block.name.includes('text-maxi') || block.name.includes('button-maxi')) {
@@ -1855,12 +1590,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							changes = createResponsiveSpacing(value, prefix);
 							break;
 						case 'width':
-							const wStr = String(value);
-							changes = updateWidth(value, wStr.includes('%') || wStr.includes('vw') ? '' : 'px', prefix);
+							changes = buildWidthChanges(value, prefix);
 							break;
 						case 'height':
-							const hStr = String(value);
-							changes = updateHeight(value, hStr.includes('%') || hStr.includes('vh') ? '' : 'px', prefix);
+							changes = buildHeightChanges(value, prefix);
 							break;
 						case 'object_fit':
 						case 'objectFit':
@@ -2143,31 +1876,31 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'max_width':
 							{
 								const maxWidth = parseUnitValue(value);
-								changes = buildSizeChanges('max-width', maxWidth.value, maxWidth.unit);
+								changes = buildSizeChanges(prefix, 'max-width', maxWidth.value, maxWidth.unit, true);
 							}
 							break;
 						case 'min_width':
 							{
 								const minWidth = parseUnitValue(value);
-								changes = buildSizeChanges('min-width', minWidth.value, minWidth.unit);
+								changes = buildSizeChanges(prefix, 'min-width', minWidth.value, minWidth.unit, true);
 							}
 							break;
 						case 'max_height':
 							{
 								const maxHeight = parseUnitValue(value);
-								changes = buildSizeChanges('max-height', maxHeight.value, maxHeight.unit);
+								changes = buildSizeChanges(prefix, 'max-height', maxHeight.value, maxHeight.unit, true);
 							}
 							break;
 						case 'full_width':
 							changes = { 
-								'full-width-general': true,
-								'size-advanced-options': true,
+								...buildBreakpointChanges(prefix, 'full-width', true),
+								[`${prefix}size-advanced-options`]: true,
 							};
 							break;
 						case 'min_height':
 							{
 								const minHeight = parseUnitValue(value);
-								changes = buildSizeChanges('min-height', minHeight.value, minHeight.unit);
+								changes = buildSizeChanges(prefix, 'min-height', minHeight.value, minHeight.unit, true);
 							}
 							break;
 						// ======= ROW PATTERNS =======
@@ -2189,10 +1922,51 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								'height-general': Math.round(currentHeight * Number(value)),
 							};
 							break;
-						case 'font_size_relative':
-							const currentFontSize = block.attributes['font-size-general'] || 16;
-							changes = { 'font-size-general': Math.round(currentFontSize * Number(value)) };
+						case 'font_size_relative': {
+							const maxiStore = select('maxiBlocks');
+							const deviceType = maxiStore?.receiveMaxiDeviceType?.() || 'general';
+							const baseBreakpoint = maxiStore?.receiveBaseBreakpoint?.();
+							const valueBreakpoint = deviceType !== 'general'
+								? deviceType
+								: (baseBreakpoint || 'general');
+							const textLevel = block.attributes?.textLevel || 'p';
+
+							const currentFontSize = getCustomFormatValue({
+								typography: block.attributes,
+								prop: 'font-size',
+								breakpoint: valueBreakpoint,
+								textLevel,
+							});
+							const currentUnit = getCustomFormatValue({
+								typography: block.attributes,
+								prop: 'font-size-unit',
+								breakpoint: valueBreakpoint,
+								textLevel,
+							});
+
+							const parsedSize = Number(currentFontSize);
+							const sizeValue = Number.isFinite(parsedSize) && parsedSize > 0 ? parsedSize : 16;
+							const nextSize = Math.round(sizeValue * Number(value));
+
+							const breakpointsToUpdate = new Set();
+							if (deviceType && deviceType !== 'general') {
+								breakpointsToUpdate.add(deviceType);
+							} else {
+								breakpointsToUpdate.add('general');
+								if (baseBreakpoint && baseBreakpoint !== 'general') {
+									breakpointsToUpdate.add(baseBreakpoint);
+								}
+							}
+
+							changes = {};
+							breakpointsToUpdate.forEach(bp => {
+								changes[`font-size-${bp}`] = nextSize;
+								if (currentUnit) {
+									changes[`font-size-unit-${bp}`] = currentUnit;
+								}
+							});
 							break;
+						}
 						case 'width_relative':
 							const currentW = block.attributes['width-general'] || 100;
 							changes = { 'width-general': Math.round(currentW * Number(value)) };
@@ -2435,14 +2209,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				} catch {
 					const jsonMatch = responseText.match(/\{[\s\S]*\}/);
 					if (jsonMatch) {
-						action = JSON.parse(jsonMatch[0]);
+						try {
+							action = JSON.parse(jsonMatch[0]);
+						} catch (parseError) {
+							console.warn('[Maxi AI Debug] Failed to parse JSON from response:', parseError);
+						}
 					}
 				}
 			}
 
 			// FALLBACK: If AI returned plain text for known clarification patterns, synthesize the response
 			if (!action || !action.action) {
-				const lowerText = responseText.toLowerCase();
+				const responseString = typeof responseText === 'string'
+					? responseText
+					: JSON.stringify(responseText || '');
+				const lowerText = responseString.toLowerCase();
 				
 				// Detect rounded corners clarification
 				if (lowerText.includes('rounded') || lowerText.includes('corner')) {
@@ -2485,7 +2266,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 				
 				// No pattern matched, return as regular message
-				return { executed: false, message: responseText };
+				return { executed: false, message: responseString };
 			}
 
 			// DEBUG: Log parsed action
@@ -2583,8 +2364,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							else if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, blkPrefix);
 							else c = { [`${blkPrefix}box-shadow-general`]: val, [`${blkPrefix}box-shadow-status-general`]: true };
 							break;
-						case 'width': c = updateWidth(val, String(val).includes('%') ? '' : 'px', blkPrefix); break;
-						case 'height': c = updateHeight(val, String(val).includes('%') ? '' : 'px', blkPrefix); break;
+						case 'width': c = buildWidthChanges(val, blkPrefix); break;
+						case 'height': c = buildHeightChanges(val, blkPrefix); break;
 						case 'objectFit':
 						case 'object_fit': c = updateImageFit(val); break;
 						case 'opacity': c = updateOpacity(val); break;
@@ -3235,62 +3016,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// Rounded corners requests - detect target from user message (exclude removal commands)
 
 		
-		// ICON LINE HOVER requests - show colour palette for stroke hover
-		if (lowerMessage.includes('icon') && (lowerMessage.includes('line') || lowerMessage.includes('stroke')) && lowerMessage.includes('hover') && !lowerMessage.includes('remove')) {
-			if (hexColor) {
-				const colorUpdate = buildColorUpdate('icon-line-hover', hexColor);
-				setIsLoading(true);
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon line hover colour.' }
-					: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon line hover colour.' };
-
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'Which colour for the icon line hover?',
-				options: ['palette'],
-				optionsType: 'palette',
-				colorTarget: 'icon-line-hover',
-				executed: false
-			}]);
-			return;
-		}
-		
-		// ICON FILL HOVER requests - show colour palette for fill hover
-		if (lowerMessage.includes('icon') && lowerMessage.includes('hover') && !lowerMessage.includes('line') && !lowerMessage.includes('stroke') && !lowerMessage.includes('remove')) {
-			if (hexColor) {
-				const colorUpdate = buildColorUpdate('icon-hover', hexColor);
-				setIsLoading(true);
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon fill hover colour.' }
-					: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: 'Applied custom icon fill hover colour.' };
-
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'Which colour for the icon fill hover?',
-				options: ['palette'],
-				optionsType: 'palette',
-				colorTarget: 'icon-hover',
-				executed: false
-			}]);
-			return;
-		}
-
 		// ALIGNMENT - "Center align everything" (Text vs Items)
 		if (lowerMessage.includes('align') && lowerMessage.includes('center') && (lowerMessage.includes('everything') || lowerMessage.includes('all'))) {
 			setMessages(prev => [...prev, {
@@ -3314,65 +3039,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			return;
 		}
 
-		// ICON LINE WIDTH requests - show width presets
-		if (lowerMessage.includes('icon') && lowerMessage.includes('line') && lowerMessage.includes('width') && !lowerMessage.includes('remove')) {
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'What line width would you like for the icons?',
-				options: ['Thin', 'Medium', 'Thick'],
-				lineWidthTarget: 'icon',
-				executed: false
-			}]);
-			return;
-		}
-		
-		// COLOR requests - show palette swatches (exclude width requests)
-		if ((lowerMessage.includes('color') || lowerMessage.includes('colour')) 
-			&& (lowerMessage.includes('icon') || lowerMessage.includes('fill') || lowerMessage.includes('stroke') || lowerMessage.includes('line'))
-			&& !lowerMessage.includes('width')
-			&& !lowerMessage.includes('remove')) {
-			const isStroke = lowerMessage.includes('stroke') || lowerMessage.includes('line') || lowerMessage.includes('border');
-			const isButtonIcon =
-				lowerMessage.includes('button') || selectedBlock?.name?.includes('button');
-			
-			if (hexColor) {
-				const iconValue = isButtonIcon
-					? { target: isStroke ? 'stroke' : 'fill', color: hexColor }
-					: hexColor;
-				const iconProperty = isButtonIcon
-					? 'icon_color'
-					: isStroke
-						? 'svg_line_color'
-						: 'svg_fill_color';
-				const iconTarget = isButtonIcon ? 'button' : 'svg-icon';
-
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: iconProperty, value: iconValue, target_block: iconTarget, message: 'Applied icon colour.' }
-					: { action: 'update_page', property: iconProperty, value: iconValue, target_block: iconTarget, message: 'Applied icon colour.' };
-
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-			
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: isStroke ? 'Which colour for the icon stroke?' : 'Which colour for the icon fill?',
-				options: ['palette'],
-				optionsType: 'palette',
-				colorTarget: isButtonIcon
-					? (isStroke ? 'button-icon-stroke' : 'button-icon-fill')
-					: (isStroke ? 'stroke' : 'fill'),
-				executed: false
-			}]);
-			return;
-		}
-		
+		const hasRoundIntent = /\bround(?:ed|ing|er)?\b/.test(lowerMessage);
 		// DIRECT ACTION: "Make it square" / "remove rounded corners" / "remove border radius"
-		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (lowerMessage.includes('round') || lowerMessage.includes('radius')))) {
+		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (hasRoundIntent || lowerMessage.includes('radius')))) {
 			setIsLoading(true);
 			const directAction = currentScope === 'selection' 
 				? { action: 'update_selection', property: 'border_radius', value: 0, message: 'Removed rounded corners from selected block.' }
@@ -3452,13 +3121,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 
 		const getRequestedTarget = () => {
+			if (lowerMessage.includes('video')) return 'video';
 			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
 			if (lowerMessage.includes('button')) return 'button';
+			if (lowerMessage.includes('divider')) return 'divider';
+			if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('paragraph')) return 'text';
 			if (lowerMessage.includes('container') || lowerMessage.includes('section')) return 'container';
 
 			if (selectedBlock?.name) {
+				if (selectedBlock.name.includes('video')) return 'video';
 				if (selectedBlock.name.includes('image')) return 'image';
 				if (selectedBlock.name.includes('button')) return 'button';
+				if (selectedBlock.name.includes('divider')) return 'divider';
+				if (selectedBlock.name.includes('text') || selectedBlock.name.includes('heading')) return 'text';
 				if (selectedBlock.name.includes('container')) return 'container';
 			}
 
@@ -3478,7 +3153,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 			if (lowerMessage.match(pattern.regex)) {
-				const isTargetedPattern = pattern.target === 'button' || pattern.target === 'image' || pattern.target === 'container';
+				const isTargetedPattern = ['button', 'image', 'container', 'text', 'video'].includes(pattern.target);
 				if (requestedTarget && isTargetedPattern && pattern.target !== requestedTarget) {
 					continue;
 				}
@@ -3504,6 +3179,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							}]);
 							setIsLoading(false);
 							return;
+						}
+						if (matchName && selectedBlock?.name && !selectedBlock.name.includes(matchName)) {
+							setIsLoading(false);
+							continue;
 						}
 						targetBlocks = [selectedBlock];
 					} else {
@@ -3541,29 +3220,30 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						? flowHandler(primaryBlock, pattern.property, 'start', prefix, flowData)
 						: null;
 
-					if (startResponse) {
-						// Setup Context with ALL block IDs
-						setConversationContext({
-							flow: pattern.property,
-							pendingTarget: startResponse.target || null,
-							data: flowData,
-							mode: flowScope,
-							currentOptions: startResponse.options || [],
-							blockIds: targetBlocks.map(b => b.clientId) // Track all targets
-						});
-						
-						// Show Trigger Message
-						setMessages(prev => [...prev, {
-							role: 'assistant',
-							content: startResponse.msg,
-							options: startResponse.options ? startResponse.options.map(o => o.label || o) : (startResponse.action === 'ask_palette' ? ['palette'] : []),
-							optionsType: startResponse.action === 'ask_palette' ? 'palette' : 'text',
-							colorTarget: startResponse.target, 
-							executed: false
-						}]);
-					} else {
-						setMessages(prev => [...prev, { role: 'assistant', content: "Flow started but no action required.", executed: false }]);
+					if (!startResponse) {
+						setIsLoading(false);
+						continue;
 					}
+
+					// Setup Context with ALL block IDs
+					setConversationContext({
+						flow: pattern.property,
+						pendingTarget: startResponse.target || null,
+						data: flowData,
+						mode: flowScope,
+						currentOptions: startResponse.options || [],
+						blockIds: targetBlocks.map(b => b.clientId) // Track all targets
+					});
+					
+					// Show Trigger Message
+					setMessages(prev => [...prev, {
+						role: 'assistant',
+						content: startResponse.msg,
+						options: startResponse.options ? startResponse.options.map(o => o.label || o) : (startResponse.action === 'ask_palette' ? ['palette'] : []),
+						optionsType: startResponse.action === 'ask_palette' ? 'palette' : 'text',
+						colorTarget: startResponse.target, 
+						executed: false
+					}]);
 					
 					setIsLoading(false);
 					return;
@@ -3688,21 +3368,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				if (pattern.value === 'use_prompt') {
 					const promptValue = resolvePromptValue(pattern.property, rawMessage);
 					if (!promptValue) {
-						const isColorPrompt = ['icon_color', 'button_hover_bg', 'button_hover_text', 'button_active_bg'].includes(pattern.property);
-						if (isColorPrompt) {
-							const colorTarget = getColorTargetForProperty(pattern.property, lowerMessage);
-							setMessages(prev => [...prev, {
-								role: 'assistant',
-								content: `Choose a colour for the ${colorTarget.replace('button-', '')}:`,
-								options: ['palette'],
-								optionsType: 'palette',
-								colorTarget: colorTarget,
-								executed: false
-							}]);
-							setIsLoading(false);
-							return;
-						}
-
 						const missingMsg = pattern.property === 'button_text'
 							? 'Please include the button text, e.g. "Set button text to Buy now".'
 							: pattern.property === 'button_url'
@@ -3813,17 +3478,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				context += '\n\nNo block is currently selected.';
 			}
 			// Add Style Card Context
-			if (activeStyleCard) {
-				// Use light mode colors as reference
-				const colors = activeStyleCard.light?.styleCard?.color || {};
-				const colorContext = Object.entries(colors)
-					.filter(([k]) => k.startsWith('color-'))
-					.map(([k, v]) => `${k}: ${v}`)
-					.join(', ');
-				
-				if (colorContext) {
-					context += `\n\nCurrent Style Card Colors: ${colorContext}\n(Use these keys to update global colors)`;
-				}
+			const styleCardContext = buildStyleCardContext(activeStyleCard);
+			if (styleCardContext) {
+				context += styleCardContext;
 			}
 
 			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
@@ -3843,7 +3500,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							role: m.role === 'assistant' ? 'assistant' : 'user', 
 							content: typeof m.content === 'string' ? m.content : String(m.content || '')
 						})),
-						{ role: 'user', content: userMessage },
+						{ role: 'user', content: rawMessage },
 					],
 					model: 'gpt-4o-mini',
 					temperature: 0.2, // Low temperature for consistent JSON
@@ -3895,15 +3552,39 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			]);
 		} catch (error) {
 			console.error('AI Chat error:', error);
-			
+			const rawError = String(error?.message || '');
+			let parsedError = null;
+			if (rawError.trim().startsWith('{')) {
+				try {
+					parsedError = JSON.parse(rawError);
+				} catch (parseError) {
+					parsedError = null;
+				}
+			}
+
+			const errorCode = parsedError?.code;
+			const errorText = parsedError?.message || rawError;
+
 			// Attempt to show a more helpful error message
-			let errorMessage = __('Error: Please check your OpenAI API key in Maxi AI settings.', 'maxi-blocks');
-			if (error.message) {
+			let errorMessage = __(
+				'Error: I could not match that request to a supported prompt. Try rephrasing or update the prompt mapping.',
+				'maxi-blocks'
+			);
+
+			if (errorCode === 'no_api_key' || /OpenAI API key/i.test(errorText)) {
+				errorMessage = __('Error: Please check your OpenAI API key in Maxi AI settings.', 'maxi-blocks');
+			} else if (errorCode === 'unsupported_provider') {
+				errorMessage = __('Error: Unsupported AI provider configured.', 'maxi-blocks');
+			} else if (errorCode === 'openai_api_error') {
+				errorMessage = __('Error: The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks');
+			} else if (errorCode === 'invalid_messages' || errorCode === 'invalid_prompt') {
+				errorMessage = __('Error: The AI request payload was invalid. Try rephrasing or check prompt mappings.', 'maxi-blocks');
+			} else if (errorText) {
 				// Don't show entire HTML responses if something crashed badly
-				if (error.message.includes('<') && error.message.includes('>')) {
-					errorMessage = __('Server Error: Recieved HTML instead of JSON. Check server logs.', 'maxi-blocks');
-				} else if (error.message.length < 150) {
-					errorMessage = `Error: ${error.message}`;
+				if (errorText.includes('<') && errorText.includes('>')) {
+					errorMessage = __('Server Error: Received HTML instead of JSON. Check server logs.', 'maxi-blocks');
+				} else if (errorText.length < 150) {
+					errorMessage = `Error: ${errorText}`;
 				}
 			}
 
@@ -4079,8 +3760,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		const lastClarificationMsg = [...messages].reverse().find(m => m.role === 'assistant' && m.options);
 		const targetContext = lastClarificationMsg?.targetContext;
 
+		const lastShadowPrompt =
+			typeof lastClarificationMsg?.content === 'string' &&
+			lastClarificationMsg.content.toLowerCase().includes('shadow');
+
+		if (lastShadowPrompt && ['Soft', 'Crisp', 'Bold'].includes(suggestion)) {
+			const styleMap = {
+				Soft: { x: 0, y: 10, blur: 30, spread: 0 },
+				Crisp: { x: 0, y: 2, blur: 4, spread: 0 },
+				Bold: { x: 0, y: 20, blur: 25, spread: -5 },
+			};
+			const isVideoTarget = selectedBlock?.name?.includes('video');
+			const property = isVideoTarget ? 'video_box_shadow' : 'box_shadow';
+			const value = isVideoTarget
+				? { ...styleMap[suggestion], color: 8 }
+				: styleMap[suggestion];
+			const targetBlock = isVideoTarget ? 'video' : targetContext;
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+
+			directAction = {
+				action: actionType,
+				property,
+				value,
+				target_block: targetBlock,
+				message: targetBlock ? `Applied ${suggestion} shadow to all ${targetBlock}s.` : `Applied ${suggestion} shadow.`,
+			};
+		}
+
 		// 1. ROUNDED CORNERS
-		if (suggestion.includes('Subtle (8px)')) directAction = { action: 'update_page', property: 'border_radius', value: 8, target_block: targetContext, message: 'Applied Subtle rounded corners (8px).' };
+		else if (suggestion.includes('Subtle (8px)')) directAction = { action: 'update_page', property: 'border_radius', value: 8, target_block: targetContext, message: 'Applied Subtle rounded corners (8px).' };
 		else if (suggestion.includes('Soft (24px)')) directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: targetContext, message: 'Applied Soft rounded corners (24px).' };
 		else if (suggestion.includes('Full (50px)')) directAction = { action: 'update_page', property: 'border_radius', value: 50, target_block: targetContext, message: 'Applied Full rounded corners (50px).' };
 		

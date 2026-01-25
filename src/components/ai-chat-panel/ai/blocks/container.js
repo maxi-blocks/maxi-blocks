@@ -10,7 +10,7 @@ export const CONTAINER_PATTERNS = [
 
 	// 1. RADIUS / SHAPE FLOW
 	{
-		regex: /round|curve|curved|radius|soft.*corner|rounded/i,
+		regex: /\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner/i,
 		property: 'flow_radius',
 		value: 'start',
 		selectionMsg: '',

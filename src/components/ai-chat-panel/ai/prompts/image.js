@@ -9,6 +9,7 @@ Image-specific mappings:
 - Fit/crop: property "image_fit" with values "cover", "contain", or "original".
 - Image width: property "img_width" (percentage number) or "image_full_width" (true/false).
 - Image size (WP): property "image_size" with values "full", "large", "medium", "thumbnail".
+- Use original size: property "use_init_size" with true.
 - Object position: property "object_position" with {x, y} values (0-100).
 - Crop zoom: property "object_size" with a number from 1 to 5.
 - Alignment: property "alignment" with values "left", "center", "right".
@@ -16,6 +17,7 @@ Image-specific mappings:
 - Caption text: property "caption_content" (string) and set "caption_type" to "custom".
 - Alt text: property "media_alt" (string or null) and "alt_selector" ("custom", "wordpress", "title", "none").
 - Media source: property "media_url" (string URL).
+- Dynamic image: property "dynamic_image" with { type: "posts", field: "featured_media" | "author_avatar" } or { type: "settings", field: "site_logo" } or { type: "products", field: "featured_media" | "gallery" } or { source: "acf", field: "acf" } or { off: true }.
 - Clip shape: property "clip_path" with a CSS clip-path value (or "none").
 - Filters: property "image_filter" with a CSS filter string (e.g. "grayscale(100%)").
 - Hover: property "hover_basic" ("zoom-in", "zoom-out", "rotate", "slide", "blur") or "hover_off".

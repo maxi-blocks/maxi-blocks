@@ -64,7 +64,7 @@ export const IMAGE_PATTERNS = [
 	// GROUP 1: PRIORITY FLOWS (Complex interactions)
 	// ============================================================
 	{
-		regex: /round(ed)?|radius|soft.*corner|rounded.*corner|pill|capsule/i,
+		regex: /\bround(?:ed|ing|er)?\b|\bradius\b|soft.*corner|rounded.*corner|pill|capsule/i,
 		property: 'flow_radius',
 		value: 'start',
 		selectionMsg: '',

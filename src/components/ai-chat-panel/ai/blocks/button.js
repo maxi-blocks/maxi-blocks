@@ -11,7 +11,7 @@ export const BUTTON_PATTERNS = [
 	// 1. RADIUS / SHAPE FLOW (The "Round" Trap)
 	// Catches shape-related requests before the outline flow can grab "border"
 	{ 
-		regex: /round|curve|curved|radius|soft.*corner|pill|capsule|oval|circle|rounded/i, 
+		regex: /\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner|pill|capsule|oval|circle/i, 
 		property: 'flow_radius', 
 		value: 'start', 
 		selectionMsg: '', 
@@ -115,7 +115,12 @@ export const BUTTON_PATTERNS = [
 	{ regex: /space.*icon.*text|gap.*icon|more.*space.*icon/i, property: 'icon_spacing', value: 10, selectionMsg: 'Increased icon spacing.', pageMsg: 'Added space between icon and text.', target: 'button' },
 	{ regex: /remove.*space.*icon|less.*gap.*icon|no.*space.*icon|closer.*icon/i, property: 'icon_spacing', value: 2, selectionMsg: 'Decreased icon spacing.', pageMsg: 'Reduced space between icon and text.', target: 'button' },
 	{ regex: /white.*icon|light.*icon/i, property: 'icon_color', value: '#ffffff', selectionMsg: 'Icon coloured white.', pageMsg: 'Changed icon colour to white.', target: 'button' },
-	{ regex: /icon.*colou?r/i, property: 'icon_color', value: 'use_prompt', selectionMsg: 'Icon colour updated.', pageMsg: 'Changed icon colour.', target: 'button' },
+	{ regex: /icon.*colou?r/i, property: 'flow_button_icon_color', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+
+	// Button text color (palette prompt)
+	{ regex: /button.*text.*colou?r|button.*text.*color|text.*button.*colou?r|text.*button.*color/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour for the button text?', pageMsg: 'Which colour for the button text?', target: 'button', colorTarget: 'button-text' },
+	// Button background color (palette prompt)
+	{ regex: /button.*(background|bg).*(colou?r|color)|\b(colou?r|color)\b.*button.*(background|bg)|button.*colou?r\b|button.*color\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour for the button background?', pageMsg: 'Which colour for the button background?', target: 'button', colorTarget: 'button-background' },
 
 	// ============================================================
 	// GROUP 5: TYPOGRAPHY
@@ -141,10 +146,10 @@ export const BUTTON_PATTERNS = [
 	// GROUP 7: HOVER & ACTIVE STATES
 	// ============================================================
 
-	{ regex: /hover.*(colou?r|background|bg).*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'button_hover_bg', value: 'use_prompt', selectionMsg: 'Hover background set.', pageMsg: 'Updated hover background colour.', target: 'button' },
-	{ regex: /hover.*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'button_hover_bg', value: 'use_prompt', selectionMsg: 'Hover background set.', pageMsg: 'Updated hover background colour.', target: 'button' },
-	{ regex: /hover.*text.*(red|blue|green|yellow|white|black)/i, property: 'button_hover_text', value: 'use_prompt', selectionMsg: 'Hover text colour set.', pageMsg: 'Updated hover text colour.', target: 'button' },
-	{ regex: /active.*state|on\s*click.*colou?r|active.*colou?r|active.*background/i, property: 'button_active_bg', value: 'use_prompt', selectionMsg: 'Active state updated.', pageMsg: 'Changed active/pressed style.', target: 'button' },
+	{ regex: /hover.*(colou?r|background|bg).*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	{ regex: /hover.*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	{ regex: /hover.*text.*(red|blue|green|yellow|white|black)/i, property: 'flow_button_hover_text', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	{ regex: /active.*state|on\s*click.*colou?r|active.*colou?r|active.*background/i, property: 'flow_button_active_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 
 	// ============================================================
 	// GROUP 8: RESPONSIVE DESIGN
@@ -197,6 +202,64 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 	const isButton = block.name.includes('button');
 	
 	if (!isButton) return null;
+
+	const buildIconColorChanges = (iconValue) => {
+		if (iconValue === undefined || iconValue === 'use_prompt') return null;
+		const colorValue = typeof iconValue === 'object' ? iconValue.color : iconValue;
+		const target = typeof iconValue === 'object' && iconValue?.target === 'stroke' ? 'stroke' : 'fill';
+		const prefixKey = target === 'stroke' ? 'icon-stroke' : 'icon-fill';
+		const isPalette = typeof colorValue === 'number';
+
+		if (isPalette) {
+			return {
+				[`${prefixKey}-palette-status`]: true,
+				[`${prefixKey}-palette-color`]: colorValue,
+				[`${prefixKey}-color`]: ''
+			};
+		}
+
+		return {
+			[`${prefixKey}-color`]: colorValue,
+			[`${prefixKey}-palette-status`]: false
+		};
+	};
+
+	const buildHoverBgChanges = (hoverValue) => {
+		if (hoverValue === undefined) return null;
+		const isPalette = typeof hoverValue === 'number';
+		return {
+			[`${prefix}background-status-hover`]: true,
+			[`${prefix}background-active-media-general-hover`]: 'color',
+			...(isPalette
+				? {
+					[`${prefix}background-palette-status-general-hover`]: true,
+					[`${prefix}background-palette-color-general-hover`]: hoverValue,
+					[`${prefix}background-color-general-hover`]: ''
+				}
+				: {
+					[`${prefix}background-palette-status-general-hover`]: false,
+					[`${prefix}background-color-general-hover`]: hoverValue
+				})
+		};
+	};
+
+	const buildHoverTextChanges = (hoverValue) => {
+		if (hoverValue === undefined) return null;
+		const isPalette = typeof hoverValue === 'number';
+		return {
+			'typography-status-hover': true,
+			...(isPalette
+				? {
+					'palette-status-general-hover': true,
+					'palette-color-general-hover': hoverValue,
+					'color-general-hover': ''
+				}
+				: {
+					'color-general-hover': hoverValue,
+					'palette-status-general-hover': false
+				})
+		};
+	};
 
 	// === INTERACTION FLOWS ===
 
@@ -387,6 +450,50 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		return { action: 'apply', attributes: changes, done: true, message: `Applied ${radiusLabel} corners to buttons.` };
 	}
 
+	if (property === 'flow_button_icon_color') {
+		if (context.icon_color === undefined) {
+			return { action: 'ask_palette', target: 'icon_color', msg: 'Which colour for the button icon?' };
+		}
+
+		changes = buildIconColorChanges(context.icon_color);
+		return changes
+			? { action: 'apply', attributes: changes, done: true, message: 'Updated button icon colour.' }
+			: null;
+	}
+
+	if (property === 'flow_button_hover_bg') {
+		if (context.button_hover_bg === undefined) {
+			return { action: 'ask_palette', target: 'button_hover_bg', msg: 'Which colour for the hover background?' };
+		}
+
+		changes = buildHoverBgChanges(context.button_hover_bg);
+		return changes
+			? { action: 'apply', attributes: changes, done: true, message: 'Updated button hover background.' }
+			: null;
+	}
+
+	if (property === 'flow_button_hover_text') {
+		if (context.button_hover_text === undefined) {
+			return { action: 'ask_palette', target: 'button_hover_text', msg: 'Which colour for the hover text?' };
+		}
+
+		changes = buildHoverTextChanges(context.button_hover_text);
+		return changes
+			? { action: 'apply', attributes: changes, done: true, message: 'Updated button hover text.' }
+			: null;
+	}
+
+	if (property === 'flow_button_active_bg') {
+		if (context.button_active_bg === undefined) {
+			return { action: 'ask_palette', target: 'button_active_bg', msg: 'Which colour for the active background?' };
+		}
+
+		changes = buildHoverBgChanges(context.button_active_bg);
+		return changes
+			? { action: 'apply', attributes: changes, done: true, message: 'Updated button active background.' }
+			: null;
+	}
+
 
 	// === STANDARD ACTIONS ===
 	
@@ -545,25 +652,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'icon_color':
-			if (value !== undefined && value !== 'use_prompt') {
-				const colorValue = typeof value === 'object' ? value.color : value;
-				const target = typeof value === 'object' && value?.target === 'stroke' ? 'stroke' : 'fill';
-				const prefixKey = target === 'stroke' ? 'icon-stroke' : 'icon-fill';
-				const isPalette = typeof colorValue === 'number';
-
-				if (isPalette) {
-					changes = {
-						[`${prefixKey}-palette-status`]: true,
-						[`${prefixKey}-palette-color`]: colorValue,
-						[`${prefixKey}-color`]: ''
-					};
-				} else {
-					changes = {
-						[`${prefixKey}-color`]: colorValue,
-						[`${prefixKey}-palette-status`]: false
-					};
-				}
-			}
+			changes = buildIconColorChanges(value);
 			break;
 
 		case 'icon_style':
@@ -650,7 +739,23 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			{
 				const { device, width } = value;
 				const suffix = device === 'mobile' ? '-xs' : '-general';
-				changes = { [`${prefix}width${suffix}`]: width };
+				const rawWidth = String(width ?? '').trim().toLowerCase();
+
+				if (rawWidth === 'auto' || rawWidth === 'fit-content' || rawWidth === 'fit content') {
+					changes = { [`${prefix}width-fit-content${suffix}`]: true };
+					break;
+				}
+
+				const match = rawWidth.match(/^(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem)?$/i);
+				const numeric = match ? Number(match[1]) : Number.parseFloat(rawWidth);
+				const unit = match?.[2] || (rawWidth.includes('%') ? '%' : 'px');
+				const safeValue = Number.isNaN(numeric) ? 0 : numeric;
+
+				changes = {
+					[`${prefix}width${suffix}`]: String(safeValue),
+					[`${prefix}width-unit${suffix}`]: unit,
+					[`${prefix}width-fit-content${suffix}`]: false,
+				};
 				break;
 			}
 
@@ -700,23 +805,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_active_bg':
-			if (value !== undefined) {
-				const isPalette = typeof value === 'number';
-				changes = {
-					[`${prefix}background-status-hover`]: true,
-					[`${prefix}background-active-media-general-hover`]: 'color',
-					...(isPalette
-						? {
-							[`${prefix}background-palette-status-general-hover`]: true,
-							[`${prefix}background-palette-color-general-hover`]: value,
-							[`${prefix}background-color-general-hover`]: ''
-						}
-						: {
-							[`${prefix}background-palette-status-general-hover`]: false,
-							[`${prefix}background-color-general-hover`]: value
-						})
-				};
-			}
+			changes = buildHoverBgChanges(value);
 			break;
 
 		case 'high_contrast_mode':
@@ -738,42 +827,11 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_hover_bg':
-			if (value !== undefined) {
-				const isPalette = typeof value === 'number';
-				changes = {
-					[`${prefix}background-status-hover`]: true,
-					[`${prefix}background-active-media-general-hover`]: 'color',
-					...(isPalette
-						? {
-							[`${prefix}background-palette-status-general-hover`]: true,
-							[`${prefix}background-palette-color-general-hover`]: value,
-							[`${prefix}background-color-general-hover`]: ''
-						}
-						: {
-							[`${prefix}background-palette-status-general-hover`]: false,
-							[`${prefix}background-color-general-hover`]: value
-						})
-				};
-			}
+			changes = buildHoverBgChanges(value);
 			break;
 
 		case 'button_hover_text':
-			if (value !== undefined) {
-				const isPalette = typeof value === 'number';
-				changes = {
-					'typography-status-hover': true,
-					...(isPalette
-						? {
-							'palette-status-general-hover': true,
-							'palette-color-general-hover': value,
-							'color-general-hover': ''
-						}
-						: {
-							'color-general-hover': value,
-							'palette-status-general-hover': false
-						})
-				};
-			}
+			changes = buildHoverTextChanges(value);
 			break;
 
 		case 'button_dynamic_text':

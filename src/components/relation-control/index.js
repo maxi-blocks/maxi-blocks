@@ -48,13 +48,6 @@ import {
 import './editor.scss';
 
 const RelationControl = props => {
-	console.log(
-		JSON.stringify({
-			message: 'RelationControl render',
-			relationsCount: props.relations?.length || 0,
-		})
-	);
-
 	const {
 		updateBlockAttributes,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
@@ -301,71 +294,45 @@ const RelationControl = props => {
 							selectedSettings?.prefix || ''
 						),
 						attributes: attributesWithId,
-						blockAttributes: currentActualAttributes,
-						onChange: async newValues => {
-							console.log(
-								JSON.stringify({
-									message: 'Start tab onChange',
-									itemId: item.id,
-									itemUniqueID: item.uniqueID,
-									targetClientId,
-									newValues,
-									currentRelationsCount:
-										rawRelations?.length || 0,
-								})
-							);
+					blockAttributes: currentActualAttributes,
+					onChange: async newValues => {
+						if (isUpdating.current) {
+							return;
+						}
 
-							if (isUpdating.current) {
-								return;
-							}
+						const { isReset, meta, ...cleanValues } =
+							newValues || {};
 
-							const { isReset, meta, ...cleanValues } =
-								newValues || {};
+						// USE DEEP EQUALITY: Prevents false positives with nested objects
+						const hasChanged = Object.keys(cleanValues).some(
+							key =>
+								!isEqual(
+									cleanValues[key],
+									currentActualAttributes[key]
+								)
+						);
 
-							// USE DEEP EQUALITY: Prevents false positives with nested objects
-							const hasChanged = Object.keys(cleanValues).some(
-								key =>
-									!isEqual(
-										cleanValues[key],
-										currentActualAttributes[key]
+						if (hasChanged) {
+							try {
+								isUpdating.current = true;
+								await Promise.resolve(
+									updateBlockAttributes(
+										targetClientId,
+										cleanValues
 									)
-							);
-
-							if (hasChanged) {
-								try {
-									isUpdating.current = true;
-									console.log(
-										JSON.stringify({
-											message:
-												'Updating target block attributes',
-											targetClientId,
-											cleanValues,
-										})
-									);
-									await Promise.resolve(
-										updateBlockAttributes(
-											targetClientId,
-											cleanValues
-										)
-									);
-									console.log(
-										JSON.stringify({
-											message:
-												'Target block updated successfully',
-										})
-									);
-								} catch (error) {
-									// eslint-disable-next-line no-console
-									console.error(
-										'Failed to update relation block attributes:',
-										error
-									);
-								} finally {
-									// Release lock after async work completes
-									isUpdating.current = false;
-								}
+								);
+							} catch (error) {
+								// eslint-disable-next-line no-console
+								console.error(
+									'Failed to update relation block attributes:',
+									error
+								);
+							} finally {
+								// Release lock after async work completes
+								isUpdating.current = false;
 							}
-						},
+						}
+					},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,
@@ -758,6 +725,7 @@ const RelationControl = props => {
 									)}
 									{item.uniqueID && item.sid && (
 										<SettingTabsControl
+											depth={`interaction-${item.id}`}
 											deviceType={deviceType}
 											className='maxi-relation-control__interaction-tabs'
 											items={[

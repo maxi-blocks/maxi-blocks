@@ -394,33 +394,17 @@ const withMaxiProps = createHigherOrderComponent(
 				// No cleanup needed for this effect
 			}, [isSelected]);
 
-			// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
-			useEffect(() => {
-				const currentRelations = attributes?.relations;
-				const prevRelations = prevRelationsRef.current;
+		// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
+		useEffect(() => {
+			const currentRelations = attributes?.relations;
+			const prevRelations = prevRelationsRef.current;
 
-				console.log(
-					JSON.stringify({
-						message: 'withMaxiProps relations effect',
-						currentCount: currentRelations?.length || 0,
-						prevCount: prevRelations?.length || 0,
-						isSettingAttributes: isSettingAttributesRef.current,
-						clientId,
-					})
-				);
-
-				// If we're intentionally setting relations (through maxiSetAttributes), don't restore
-				if (isSettingAttributesRef.current) {
-					isSettingAttributesRef.current = false;
-					prevRelationsRef.current = currentRelations;
-					console.log(
-						JSON.stringify({
-							message:
-								'withMaxiProps: intentional set, updating ref',
-						})
-					);
-					return;
-				}
+			// If we're intentionally setting relations (through maxiSetAttributes), don't restore
+			if (isSettingAttributesRef.current) {
+				isSettingAttributesRef.current = false;
+				prevRelationsRef.current = currentRelations;
+				return;
+			}
 
 			// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
 			if (
@@ -432,25 +416,18 @@ const withMaxiProps = createHigherOrderComponent(
 						currentRelations.length < prevRelations.length))
 			) {
 				// Restore the previous relations
-				console.log(
-					JSON.stringify({
-						message: 'withMaxiProps: restoring lost relations',
-						prevCount: prevRelations.length,
-						currentCount: currentRelations?.length || 0
-					})
-				);
 				setAttributes({ relations: prevRelations });
 			}
 
-				// Update the ref for next render
-				if (
-					currentRelations &&
-					Array.isArray(currentRelations) &&
-					currentRelations.length > 0
-				) {
-					prevRelationsRef.current = currentRelations;
-				}
-			}, [attributes?.relations, setAttributes, clientId]);
+			// Update the ref for next render
+			if (
+				currentRelations &&
+				Array.isArray(currentRelations) &&
+				currentRelations.length > 0
+			) {
+				prevRelationsRef.current = currentRelations;
+			}
+		}, [attributes?.relations, setAttributes, clientId]);
 
 			// Effect for handling repeater block moves with proper cleanup
 			useEffect(() => {

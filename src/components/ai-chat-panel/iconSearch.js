@@ -70,6 +70,25 @@ const normalizeText = value =>
 		.replace(/[^a-z0-9]+/g, ' ')
 		.trim();
 
+const normalizeSvg = value =>
+	String(value || '')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+const cleanIconQuery = value =>
+	String(value || '')
+		.replace(/\b(different|another|alternative|new|other)\b/gi, '')
+		.replace(/\b(this|these|those|that|them|my|our|your|their)\b/gi, '')
+		.replace(/\b(theme|themes)\b/gi, '')
+		.replace(/\b(more|less)\b/gi, '')
+		.replace(/\ball\b/gi, '')
+		.replace(/\b(change|swap|replace|use|add|set|insert|make|give|apply)\b/gi, '')
+		.replace(/\b(icon|icons|from|in|the|cloud|library|cloud library|for|of|called|named|to|a|an)\b/gi, '')
+		.replace(/\s+/g, ' ')
+		.trim();
+
+const isProIcon = icon => icon?.cost?.[0] === 'Pro';
+
 const toList = value => {
 	if (!value) return [];
 	if (Array.isArray(value)) return value.flat(Infinity).filter(Boolean);
@@ -88,28 +107,65 @@ const scoreTextMatch = (needle, haystack) => {
 const scoreListMatch = (needle, list) =>
 	list.reduce((best, item) => Math.max(best, scoreTextMatch(needle, item)), 0);
 
-const scoreIconMatch = (query, icon) => {
+const getMatchStats = (query, icon) => {
 	const normalizedQuery = normalizeText(query);
-	if (!normalizedQuery) return 0;
+	if (!normalizedQuery) {
+		return {
+			score: 0,
+			tokenMatches: 0,
+			tokenCount: 0,
+			strongMatch: false,
+		};
+	}
 
 	const title = normalizeText(icon?.post_title || '');
 	const tags = toList(icon?.svg_tag).map(normalizeText).filter(Boolean);
 	const categories = toList(icon?.svg_category).map(normalizeText).filter(Boolean);
 
 	let score = 0;
-	score += scoreTextMatch(normalizedQuery, title);
-	score += scoreListMatch(normalizedQuery, tags) * 0.7;
-	score += scoreListMatch(normalizedQuery, categories) * 0.5;
+	const titleScore = scoreTextMatch(normalizedQuery, title);
+	const tagScore = scoreListMatch(normalizedQuery, tags);
+	const categoryScore = scoreListMatch(normalizedQuery, categories);
+	score += titleScore;
+	score += tagScore * 0.7;
+	score += categoryScore * 0.5;
 
 	const tokens = normalizedQuery.split(' ').filter(Boolean);
+	let tokenMatches = 0;
 	for (const token of tokens) {
-		if (title.includes(token)) score += 8;
-		if (tags.some(tag => tag.includes(token))) score += 4;
-		if (categories.some(cat => cat.includes(token))) score += 2;
+		let matched = false;
+		if (title.includes(token)) {
+			score += 8;
+			matched = true;
+		}
+		if (tags.some(tag => tag.includes(token))) {
+			score += 4;
+			matched = true;
+		}
+		if (categories.some(cat => cat.includes(token))) {
+			score += 2;
+			matched = true;
+		}
+		if (matched) {
+			tokenMatches += 1;
+		}
 	}
 
-	return score;
+	const requiredTokens = tokens.length >= 2 ? 2 : 1;
+	const strongMatch =
+		titleScore >= 40 ||
+		tagScore >= 40 ||
+		categoryScore >= 40 ||
+		(tokenMatches >= requiredTokens && tokens.length > 0);
+
+	return {
+		score,
+		tokenMatches,
+		tokenCount: tokens.length,
+		strongMatch,
+	};
 };
+
 
 /**
  * Find the best matching SVG icon for a given intent.
@@ -120,18 +176,43 @@ const scoreIconMatch = (query, icon) => {
  * @returns {Promise<Object|null>} Best matching icon or null
  */
 export const findBestIcon = async (query, options = {}) => {
-	const { target = 'icon' } = options;
+	const {
+		target = 'icon',
+		excludeSvgCodes = [],
+		preferDifferent = false,
+		requireStrongMatch = false,
+	} = options;
 	const results = await searchIcons(query, 12);
+	const total = results.length;
 
-	if (results.length === 0) {
-		return null;
+	if (total === 0) {
+		return { total: 0 };
 	}
 
-	const scored = results.map(icon => ({
-		icon,
-		score: scoreIconMatch(query, icon),
-		isPro: icon.cost?.[0] === 'Pro',
-	}));
+	const excludeSet = new Set(excludeSvgCodes.map(normalizeSvg).filter(Boolean));
+	const scored = results
+		.map(icon => {
+			const svgType = Array.isArray(icon.svg_category)
+				? icon.svg_category[0]
+				: icon.svg_category;
+			const rawSvg = icon.svg_code || '';
+			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
+			const matchStats = getMatchStats(query, icon);
+			return {
+				icon,
+				svgType,
+				svgCode,
+				score: matchStats.score,
+				strongMatch: matchStats.strongMatch,
+				isPro: isProIcon(icon),
+				isExcluded: excludeSet.has(normalizeSvg(svgCode)),
+			};
+		})
+		.filter(item => item.svgCode);
+
+	if (scored.length === 0) {
+		return { total: 0 };
+	}
 
 	scored.sort((a, b) => {
 		if (b.score !== a.score) return b.score - a.score;
@@ -139,22 +220,142 @@ export const findBestIcon = async (query, options = {}) => {
 		return 0;
 	});
 
-	const best = scored[0];
-	const nonProMatch = scored.find(item => !item.isPro && item.score > 0);
-	const picked = nonProMatch || best;
-	const icon = picked?.icon || results[0];
-	const svgType = Array.isArray(icon.svg_category)
-		? icon.svg_category[0]
-		: icon.svg_category;
-	const rawSvg = icon.svg_code || '';
-	const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
+	let picked = null;
+	const eligible = requireStrongMatch
+		? scored.filter(item => item.strongMatch)
+		: scored;
+	if (preferDifferent) {
+		picked =
+			eligible.find(item => !item.isExcluded && !item.isPro) ||
+			eligible.find(item => !item.isExcluded) ||
+			null;
+	} else {
+		picked = eligible.find(item => !item.isPro) || eligible[0];
+	}
+
+	if (!picked) {
+		return { total, noAlternative: true, noStrongMatch: requireStrongMatch };
+	}
 
 	return {
-		title: icon.post_title,
-		svgCode,
-		svgType: svgType || 'Line',
-		isPro: icon.cost?.[0] === 'Pro',
+		title: picked.icon?.post_title,
+		svgCode: picked.svgCode,
+		svgType: picked.svgType || 'Line',
+		isPro: picked.isPro,
+		total,
+		strongMatch: picked.strongMatch,
 	};
+};
+
+export const findIconCandidates = async (query, options = {}) => {
+	const { target = 'icon', limit = 24 } = options;
+	const results = await searchIcons(query, limit);
+	const total = results.length;
+
+	if (total === 0) {
+		return { icons: [], total, hasOnlyPro: false };
+	}
+
+	const scored = results
+		.map(icon => {
+			const svgType = Array.isArray(icon.svg_category)
+				? icon.svg_category[0]
+				: icon.svg_category;
+			const rawSvg = icon.svg_code || '';
+			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
+			const matchStats = getMatchStats(query, icon);
+			return {
+				icon,
+				svgType,
+				svgCode,
+				score: matchStats.score,
+				isPro: isProIcon(icon),
+				normalizedSvg: normalizeSvg(svgCode),
+			};
+		})
+		.filter(item => item.svgCode);
+
+	scored.sort((a, b) => {
+		if (b.score !== a.score) return b.score - a.score;
+		if (a.isPro !== b.isPro) return a.isPro ? 1 : -1;
+		return 0;
+	});
+
+	const icons = [];
+	const seen = new Set();
+	for (const item of scored) {
+		if (item.isPro) {
+			continue;
+		}
+		if (item.score <= 0) {
+			continue;
+		}
+		if (!item.normalizedSvg || seen.has(item.normalizedSvg)) {
+			continue;
+		}
+		seen.add(item.normalizedSvg);
+		icons.push({
+			title: item.icon?.post_title,
+			svgCode: item.svgCode,
+			svgType: item.svgType || 'Line',
+		});
+	}
+
+	const hasOnlyPro = icons.length === 0 && scored.some(item => item.isPro);
+	return { icons, total, hasOnlyPro };
+};
+
+export const extractIconQueries = message => {
+	if (typeof message !== 'string') {
+		return [];
+	}
+
+	const listPatterns = [
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^.;]+)$/i,
+		/\bicons?\b\s*(?:to|with|as|of|for|called|named)\s*([^.;]+)$/i,
+	];
+
+	let listText = '';
+	for (const pattern of listPatterns) {
+		const match = message.match(pattern);
+		if (match?.[1]) {
+			listText = match[1];
+			break;
+		}
+	}
+
+	if (!listText) {
+		return [];
+	}
+
+	if (!/[,&]|\band\b/i.test(listText)) {
+		return [];
+	}
+
+	const normalized = listText.replace(/\s*&\s*/g, ' and ');
+	const parts = [];
+	normalized.split(',').forEach(chunk => {
+		chunk.split(/\band\b/i).forEach(part => {
+			const cleaned = cleanIconQuery(part);
+			if (cleaned) {
+				parts.push(cleaned);
+			}
+		});
+	});
+
+	if (parts.length < 2) {
+		return [];
+	}
+
+	const unique = [];
+	const seen = new Set();
+	for (const part of parts) {
+		if (seen.has(part)) continue;
+		seen.add(part);
+		unique.push(part);
+	}
+
+	return unique;
 };
 
 /**
@@ -174,22 +375,23 @@ export const extractIconQuery = message => {
 	}
 
 	const patterns = [
-		/(?:change|swap|replace|use|set|add|insert|make)\s+(?:the\s+)?icon\s*(?:to|with|as|of|for|called|named)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
-		/\bicon\b\s*(?:to|with|as|of|for|called|named)\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
-		/(?:change|swap|replace|use|set|add|insert|make)\s+(?:the\s+|a\s+|an\s+)?([^,.;]+?)\s+icon\b(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/\bicons?\b\s*(?:to|with|as|of|for|called|named)\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/\bicons?\b\s*(?:are|look|feel|more|very)?\s*([^,.;]+)$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+([^,.;]+)$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:the\s+|a\s+|an\s+)?([^,.;]+?)\s+icons?\b(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
 		/(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library)\s+icon\s*(?:called|named)?\s*([^,.;]+)$/i,
 	];
 
 	for (const pattern of patterns) {
 		const match = message.match(pattern);
 		if (match?.[1]) {
-			return match[1].trim();
+			const cleaned = cleanIconQuery(match[1]);
+			if (cleaned) {
+				return cleaned;
+			}
 		}
 	}
 
-	return message
-		.replace(/\b(change|swap|replace|use|add|set|insert|make)\b/gi, '')
-		.replace(/\b(icon|icons|from|in|the|cloud|library|cloud library|for|of|called|named)\b/gi, '')
-		.replace(/\s+/g, ' ')
-		.trim();
+	return cleanIconQuery(message);
 };

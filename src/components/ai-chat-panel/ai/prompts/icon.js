@@ -32,6 +32,9 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 #### STROKE
 - Stroke width: property "svg_stroke_width" with number (px).
 
+#### ALIGNMENT
+- Alignment: property "alignment" with values "left", "center", "right".
+
 ### INTERNAL META / FLOW (DOCUMENTED)
 
 These properties are used by handlers for multi-step interactions.

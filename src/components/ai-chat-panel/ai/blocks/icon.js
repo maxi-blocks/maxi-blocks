@@ -1,6 +1,6 @@
 /**
  * SVG Icon Logic Handler for AI Chat Panel
- * Focused on icon fill/stroke colour changes.
+ * Focused on icon fill/stroke colour and alignment changes.
  */
 
 export const ICON_PATTERNS = [
@@ -42,6 +42,30 @@ export const ICON_PATTERNS = [
 		value: 'start',
 		selectionMsg: '',
 		pageMsg: null,
+		target: 'icon',
+	},
+	{
+		regex: /(?=.*\bicons?\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bleft\b)/i,
+		property: 'alignment',
+		value: 'left',
+		selectionMsg: 'Aligned icon left.',
+		pageMsg: 'Aligned icons left.',
+		target: 'icon',
+	},
+	{
+		regex: /(?=.*\bicons?\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bright\b)/i,
+		property: 'alignment',
+		value: 'right',
+		selectionMsg: 'Aligned icon right.',
+		pageMsg: 'Aligned icons right.',
+		target: 'icon',
+	},
+	{
+		regex: /(?=.*\bicons?\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\b(center|centre|centered|centred|middle)\b)/i,
+		property: 'alignment',
+		value: 'center',
+		selectionMsg: 'Aligned icon center.',
+		pageMsg: 'Aligned icons center.',
 		target: 'icon',
 	},
 ];
@@ -162,6 +186,15 @@ export const handleIconUpdate = (block, property, value, _prefix, context = {}) 
 			attributes: buildSvgLineColor(context.icon_stroke, false),
 			done: true,
 			message: 'Updated icon stroke colour.',
+		};
+	}
+
+	if (property === 'alignment') {
+		return {
+			action: 'apply',
+			attributes: { 'alignment-general': value },
+			done: true,
+			message: 'Updated icon alignment.',
 		};
 	}
 

@@ -42,11 +42,11 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 Clarify when request is generic:
 - Text size: Subtitle (1.25rem), Title (2.5rem), Display (4rem).
 - Font weight: Regular (400), Medium (600), Heavy (800).
-- Text color: Brand (var(--highlight)), Dark (var(--h1)), Subtle (var(--p)).
+- Text color: Brand (var(--highlight)), Dark (var(--h1)), Subtle (var(--p)), Palette 3 (text_color: 3).
 - Line height: Compact (1.1), Standard (1.5), Loose (1.8).
 - Text width: Reading (65ch), Card (300px), Full (1200px).
 - Text level: Main title (h1), Section heading (h2), Body text (p).
-- Lists: Bullets (ul, disc), Numbered (ol, decimal), Checkmarks (ul, custom "check-circle").
+- Lists: Bullets ({ isList: true, typeOfList: "ul", listStyle: "disc" }), Numbered ({ isList: true, typeOfList: "ol", listStyle: "decimal" }), Checkmarks ({ isList: true, typeOfList: "ul", listStyle: "custom", listStyleCustom: "check-circle" }).
 - Text decoration: None, Underline, Line-through.
 - Text casing: Uppercase, Small caps, Lowercase.
 

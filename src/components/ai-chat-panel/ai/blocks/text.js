@@ -1,10 +1,46 @@
 /**
  * Text Logic Handler for AI Chat Panel
  * Maps natural language to Text Maxi attributes.
+ *
+ * Upgrades included:
+ * - Style Card enforcement (no hardcoded hex in defaults)
+ * - True "3-option clarify" flow for vague/subjective requests
+ * - Responsive automation for font-size + max-width (100/60/40) with sensible safeguards
+ * - Property normalization (aliases -> canonical)
+ * - Reset/off support for highlight/border/shadow/list
+ * - Custom CSS dedupe + upsert (prevents CSS bloat and stale styles)
+ * - Added flows: alignment, letter spacing, font family
+ * - Basic color accessibility guardrails (rejects transparent/low-alpha text colors in flow)
  */
 
 import { parseBorderStyle } from './utils';
 
+/**
+ * Breakpoints used by MaxiBlocks.
+ *
+ * @type {string[]}
+ */
+const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+/**
+ * Scaling factors per breakpoint for the 100/60/40 rule.
+ *
+ * @param {string} breakpoint
+ * @returns {number}
+ */
+const getScaleFactor = breakpoint => {
+	if (breakpoint === 'm' || breakpoint === 's') return 0.6;
+	if (breakpoint === 'xs') return 0.4;
+	return 1; // general/xxl/xl/l
+};
+
+/**
+ * Safely parses a unit value.
+ *
+ * @param {*} rawValue
+ * @param {string} fallbackUnit
+ * @returns {{value:number, unit:string}}
+ */
 const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 	if (rawValue === null || rawValue === undefined) {
 		return { value: 0, unit: fallbackUnit };
@@ -30,29 +66,101 @@ const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 	return { value: Number.isNaN(parsed) ? 0 : parsed, unit: fallbackUnit };
 };
 
+/**
+ * Normalizes a CSS declaration block.
+ *
+ * @param {string} css
+ * @returns {string}
+ */
 const normalizeCss = css => {
 	if (!css) return '';
 	const trimmed = String(css).trim();
 	return trimmed.endsWith(';') ? trimmed : `${trimmed};`;
 };
 
-const combineCss = (baseCss, nextCss) => {
-	const normalizedNext = normalizeCss(nextCss);
-	if (!normalizedNext) return baseCss || '';
-	const normalizedBase = normalizeCss(baseCss);
-	return normalizedBase ? `${normalizedBase}\n${normalizedNext}` : normalizedNext;
+/**
+ * Splits CSS into declarations (prop:value) chunks.
+ *
+ * @param {string} css
+ * @returns {string[]}
+ */
+const splitDeclarations = css =>
+	normalizeCss(css)
+		.split(';')
+		.map(part => String(part).trim())
+		.filter(Boolean);
+
+/**
+ * Parses "prop: value" into an object.
+ *
+ * @param {string} declaration
+ * @returns {{prop: string, value: string} | null}
+ */
+const parseDeclaration = declaration => {
+	const raw = String(declaration || '').trim();
+	const idx = raw.indexOf(':');
+	if (idx === -1) return null;
+
+	const prop = raw.slice(0, idx).trim();
+	const value = raw.slice(idx + 1).trim();
+	if (!prop) return null;
+
+	return { prop, value };
 };
 
-const mergeCustomCss = (attributes, category, index, css) => {
+/**
+ * Upserts declarations from patchCss into baseCss.
+ * - Ensures 1 declaration per property (last wins)
+ * - Prevents duplication/bloat
+ *
+ * @param {string} baseCss
+ * @param {string} patchCss
+ * @returns {string}
+ */
+const upsertCss = (baseCss, patchCss) => {
+	const map = new Map();
+
+	// Base first
+	splitDeclarations(baseCss).forEach(decl => {
+		const parsed = parseDeclaration(decl);
+		if (!parsed) return;
+		map.set(parsed.prop.toLowerCase(), parsed);
+	});
+
+	// Patch overrides
+	splitDeclarations(patchCss).forEach(decl => {
+		const parsed = parseDeclaration(decl);
+		if (!parsed) return;
+		map.set(parsed.prop.toLowerCase(), parsed);
+	});
+
+	return Array.from(map.values())
+		.map(({ prop, value }) => `${prop}: ${value};`)
+		.join('\n')
+		.trim();
+};
+
+/**
+ * Merges CSS into custom-css-general[text][normal] via upsert.
+ *
+ * @param {Object} attributes
+ * @param {string} category
+ * @param {string} index
+ * @param {string} cssPatch
+ * @returns {Object}
+ */
+const mergeCustomCss = (attributes, category, index, cssPatch) => {
 	const existing = attributes?.['custom-css-general'];
 	const next = existing ? { ...existing } : {};
 	const categoryObj = next[category] ? { ...next[category] } : {};
-	const currentCss = categoryObj[index];
+	const currentCss = categoryObj[index] || '';
 
-	if (css) {
-		categoryObj[index] = combineCss(currentCss, css);
+	const updatedCss = upsertCss(currentCss, cssPatch);
+	if (updatedCss) {
+		categoryObj[index] = updatedCss;
 		next[category] = categoryObj;
 	} else {
+		// Remove empty bucket
 		delete categoryObj[index];
 		if (Object.keys(categoryObj).length) next[category] = categoryObj;
 		else delete next[category];
@@ -61,8 +169,49 @@ const mergeCustomCss = (attributes, category, index, css) => {
 	return { 'custom-css-general': next };
 };
 
+/**
+ * Normalizes AI-layer property names to canonical names.
+ *
+ * @param {string} property
+ * @returns {string}
+ */
+const normalizeTextProperty = property => {
+	const map = {
+		text_level: 'textLevel',
+		textLevel: 'textLevel',
+	};
+	return map[property] || property;
+};
+
+/**
+ * Detects risky text colors that reduce readability (transparent / low-alpha rgba).
+ *
+ * @param {*} colorValue
+ * @returns {boolean}
+ */
+const isRiskyTextColor = colorValue => {
+	if (typeof colorValue !== 'string') return false;
+
+	const raw = colorValue.trim().toLowerCase();
+	if (raw === 'transparent') return true;
+
+	// rgba(r,g,b,a) with a < 0.5
+	const rgbaMatch = raw.match(/^rgba\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*,\s*(0?\.\d+|0)\s*\)$/i);
+	if (!rgbaMatch) return false;
+
+	const alpha = Number(rgbaMatch[1]);
+	return Number.isFinite(alpha) && alpha < 0.5;
+};
+
+/**
+ * Builds palette vs custom color changes for text.
+ *
+ * @param {*} colorValue
+ * @returns {Object}
+ */
 const buildTextColorChanges = colorValue => {
 	const isPalette = typeof colorValue === 'number';
+
 	if (isPalette) {
 		return {
 			'palette-status-general': true,
@@ -78,6 +227,12 @@ const buildTextColorChanges = colorValue => {
 	};
 };
 
+/**
+ * Builds font-weight changes.
+ *
+ * @param {*} weightValue
+ * @returns {Object}
+ */
 const buildFontWeightChanges = weightValue => {
 	const weightMap = {
 		thin: 100,
@@ -101,8 +256,17 @@ const buildFontWeightChanges = weightValue => {
 	return { 'font-weight-general': String(weight) };
 };
 
+/**
+ * Builds text transform changes.
+ * Handles small-caps by setting font-variant through Advanced CSS (deduped/upserted).
+ *
+ * @param {Object} attributes
+ * @param {*} transformValue
+ * @returns {Object}
+ */
 const buildTextTransformChanges = (attributes, transformValue) => {
 	const normalized = String(transformValue || '').toLowerCase();
+
 	if (normalized === 'small-caps') {
 		return {
 			'text-transform-general': 'none',
@@ -116,12 +280,63 @@ const buildTextTransformChanges = (attributes, transformValue) => {
 	};
 };
 
+/**
+ * Highlight styles (Style Card compliant: uses vars, no hex).
+ *
+ * Includes resets so switching styles does not leave stale properties behind.
+ *
+ * @param {Object} attributes
+ * @param {*} highlightStyle
+ * @returns {Object|null}
+ */
 const buildTextHighlightChanges = (attributes, highlightStyle) => {
 	const style = String(highlightStyle || '').toLowerCase();
+
 	const styleMap = {
-		marker: 'background: linear-gradient(to top, #fffa00 50%, transparent 50%); border-bottom: none;',
-		underline: 'border-bottom: 3px solid var(--highlight); background: none; padding: 0; border-radius: 0;',
-		badge: 'background: var(--highlight); color: #ffffff; padding: 4px 8px; border-radius: 4px; display: inline-block; border-bottom: none;',
+		// Uses brand var instead of hardcoded #fffa00
+		marker:
+			'background: linear-gradient(to top, var(--highlight) 50%, transparent 50%);' +
+			' border-bottom: none;' +
+			' padding: 0;' +
+			' border-radius: 0;' +
+			' display: inline;' +
+			' color: inherit;',
+		underline:
+			'border-bottom: 3px solid var(--highlight);' +
+			' background: none;' +
+			' padding: 0;' +
+			' border-radius: 0;' +
+			' display: inline;' +
+			' color: inherit;',
+		badge:
+			'background: var(--highlight);' +
+			' color: var(--bg-1);' +
+			' padding: 4px 8px;' +
+			' border-radius: 4px;' +
+			' display: inline-block;' +
+			' border-bottom: none;',
+		// Off/reset
+		off:
+			'background: none;' +
+			' border-bottom: none;' +
+			' padding: 0;' +
+			' border-radius: 0;' +
+			' display: inline;' +
+			' color: inherit;',
+		none:
+			'background: none;' +
+			' border-bottom: none;' +
+			' padding: 0;' +
+			' border-radius: 0;' +
+			' display: inline;' +
+			' color: inherit;',
+		remove:
+			'background: none;' +
+			' border-bottom: none;' +
+			' padding: 0;' +
+			' border-radius: 0;' +
+			' display: inline;' +
+			' color: inherit;',
 	};
 
 	const css = styleMap[style];
@@ -129,9 +344,14 @@ const buildTextHighlightChanges = (attributes, highlightStyle) => {
 
 	return mergeCustomCss(attributes, 'text', 'normal', css);
 };
-
+/**
+ * Builds list changes.
+ *
+ * @param {*} listValue
+ * @returns {Object}
+ */
 const buildTextListChanges = listValue => {
-	if (listValue === 'off') {
+	if (listValue === 'off' || listValue === 'none' || listValue === false) {
 		return { isList: false };
 	}
 
@@ -145,11 +365,23 @@ const buildTextListChanges = listValue => {
 	};
 };
 
+/**
+ * Text level changes.
+ *
+ * @param {*} levelValue
+ * @returns {Object}
+ */
 const buildTextLevelChanges = levelValue => ({
 	textLevel: String(levelValue || 'p'),
 	isList: false,
 });
 
+/**
+ * Builds dynamic content changes.
+ *
+ * @param {*} fieldValue
+ * @returns {Object}
+ */
 const buildTextDynamicChanges = fieldValue => {
 	if (!fieldValue || fieldValue === 'off') {
 		return { 'dc-status': false };
@@ -173,6 +405,13 @@ const buildTextDynamicChanges = fieldValue => {
 	};
 };
 
+/**
+ * Builds text link changes.
+ *
+ * @param {Object} block
+ * @param {*} linkValue
+ * @returns {Object|null}
+ */
 const buildTextLinkChanges = (block, linkValue) => {
 	const url =
 		typeof linkValue === 'object' && linkValue
@@ -195,10 +434,244 @@ const buildTextLinkChanges = (block, linkValue) => {
 	};
 };
 
+/**
+ * Builds alignment changes across breakpoints.
+ *
+ * @param {*} alignValue
+ * @returns {Object}
+ */
+const buildTextAlignChanges = (alignValue, block) => {
+	const raw = String(alignValue || '').toLowerCase();
+	const normalized = raw === 'centre' ? 'center' : raw;
+	const cleaned = normalized === 'justified' ? 'justify' : normalized;
+
+	const allowed = new Set(['left', 'center', 'right', 'justify']);
+	const value = allowed.has(cleaned) ? cleaned : 'left';
+
+	const changes = {};
+	BREAKPOINTS.forEach(bp => {
+		changes[`text-alignment-${bp}`] = value;
+	});
+	if (block?.name?.startsWith('core/')) {
+		changes.textAlign = value;
+	}
+
+	return changes;
+};
+
+/**
+ * Builds letter spacing changes across breakpoints.
+ *
+ * @param {*} spacingValue
+ * @returns {Object}
+ */
+const buildTextLetterSpacingChanges = spacingValue => {
+	const raw = String(spacingValue ?? '').trim().toLowerCase();
+	const parsed =
+		raw === 'normal' || raw === 'reset' || raw === 'off' || raw === 'none'
+			? { value: 0, unit: 'em' }
+			: parseUnitValue(spacingValue, 'em');
+
+	const unit = parsed.unit === '-' ? 'em' : parsed.unit;
+	const changes = {};
+	BREAKPOINTS.forEach(bp => {
+		changes[`letter-spacing-${bp}`] = parsed.value;
+		changes[`letter-spacing-unit-${bp}`] = unit;
+	});
+
+	return changes;
+};
+
+/**
+ * Builds font-family changes across breakpoints (brand-safe generic options).
+ *
+ * @param {*} familyValue
+ * @returns {Object}
+ */
+const buildTextFontFamilyChanges = familyValue => {
+	const raw = String(familyValue || '').trim().toLowerCase();
+
+	const familyMap = {
+		sans: 'sans-serif',
+		'sans-serif': 'sans-serif',
+		serif: 'serif',
+		mono: 'monospace',
+		monospace: 'monospace',
+		inherit: 'inherit',
+		reset: 'inherit',
+		off: 'inherit',
+		system: 'system-ui',
+	};
+
+	const family = familyMap[raw] || raw || 'inherit';
+	const changes = {};
+	BREAKPOINTS.forEach(bp => {
+		changes[`font-family-${bp}`] = family;
+	});
+
+	return changes;
+};
+
+/**
+ * Builds a responsive change-set for numeric dimension attributes (100/60/40),
+ * with optional scaling safeguards.
+ *
+ * @param {Object} params
+ * @param {string} params.keyBase e.g. "font-size"
+ * @param {string} params.unitKeyBase e.g. "font-size-unit"
+ * @param {number} params.value
+ * @param {string} params.unit
+ * @param {boolean} params.scale
+ * @param {string} params.kind "fontSize" | "maxWidth"
+ * @returns {Object}
+ */
+const buildResponsiveNumericChanges = ({ keyBase, unitKeyBase, value, unit, scale, kind }) => {
+	const changes = {};
+
+	// Decide if scaling makes sense for this unit/kind.
+	const shouldScaleUnit =
+		!['-', '%', 'ch'].includes(String(unit || '').toLowerCase());
+
+	const shouldScale =
+		Boolean(scale) &&
+		shouldScaleUnit &&
+		!(
+			kind === 'maxWidth' &&
+			String(unit).toLowerCase() === 'px' &&
+			Number(value) > 0 &&
+			Number(value) < 480
+		);
+
+	// Helper to clamp font sizes so mobile does not go microscopic.
+	const clamp = (nextValue, breakpoint) => {
+		if (kind !== 'fontSize') return nextValue;
+
+		const u = String(unit || '').toLowerCase();
+		if (u === 'px') {
+			// Min readable ~12px
+			return Math.max(12, nextValue);
+		}
+		if (u === 'rem' || u === 'em') {
+			// Min readable ~0.75rem/em
+			return Math.max(0.75, nextValue);
+		}
+		return nextValue;
+	};
+
+	// Rounded outputs keep attributes cleaner.
+	const round = num => {
+		const n = Number(num);
+		if (!Number.isFinite(n)) return 0;
+		return Math.round(n * 100) / 100;
+	};
+
+	BREAKPOINTS.forEach(bp => {
+		const factor = shouldScale ? getScaleFactor(bp) : 1;
+		const nextValue = clamp(round(value * factor), bp);
+
+		changes[`${keyBase}-${bp}`] = nextValue;
+		changes[`${unitKeyBase}-${bp}`] = unit;
+	});
+
+	return changes;
+};
+
+/**
+ * Builds border reset changes across breakpoints.
+ *
+ * @param {string} prefix
+ * @returns {Object}
+ */
+const buildTextBorderResetChanges = prefix => {
+	const changes = {};
+	BREAKPOINTS.forEach(bp => {
+		changes[`${prefix}border-style-${bp}`] = 'none';
+		changes[`${prefix}border-top-width-${bp}`] = 0;
+		changes[`${prefix}border-bottom-width-${bp}`] = 0;
+		changes[`${prefix}border-left-width-${bp}`] = 0;
+		changes[`${prefix}border-right-width-${bp}`] = 0;
+		changes[`${prefix}border-sync-width-${bp}`] = 'all';
+		changes[`${prefix}border-unit-width-${bp}`] = 'px';
+
+		changes[`${prefix}border-palette-status-${bp}`] = false;
+		changes[`${prefix}border-palette-color-${bp}`] = '';
+		changes[`${prefix}border-color-${bp}`] = '';
+	});
+
+	return changes;
+};
+
+/**
+ * Builds shadow reset changes across breakpoints.
+ *
+ * @param {string} prefix
+ * @returns {Object}
+ */
+const buildTextShadowResetChanges = prefix => {
+	const changes = {};
+	BREAKPOINTS.forEach(bp => {
+		changes[`${prefix}box-shadow-status-${bp}`] = false;
+		changes[`${prefix}box-shadow-horizontal-${bp}`] = 0;
+		changes[`${prefix}box-shadow-vertical-${bp}`] = 0;
+		changes[`${prefix}box-shadow-blur-${bp}`] = 0;
+		changes[`${prefix}box-shadow-spread-${bp}`] = 0;
+		changes[`${prefix}box-shadow-inset-${bp}`] = false;
+
+		changes[`${prefix}box-shadow-palette-status-${bp}`] = false;
+		changes[`${prefix}box-shadow-palette-color-${bp}`] = '';
+		changes[`${prefix}box-shadow-color-${bp}`] = '';
+	});
+
+	return changes;
+};
 export const TEXT_PATTERNS = [
+	// ============================================================
+	// GROUP 0: PRIORITY DIRECT REMOVALS (must come before flows)
+	// ============================================================
+	{
+		regex: /\b(remove|disable|clear|off|no)\b.*\b(highlight|marker|highlighter|badge|pill)\b/i,
+		property: 'text_highlight',
+		value: 'off',
+		selectionMsg: 'Removed text highlight.',
+		pageMsg: 'Removed text highlight.',
+		target: 'text',
+	},
+	{
+		regex: /\b(remove|disable|clear|off|no)\b.*\b(border|bordr|outline|frame|stroke)\b/i,
+		property: 'text_border',
+		value: 'off',
+		selectionMsg: 'Removed text border.',
+		pageMsg: 'Removed text border.',
+		target: 'text',
+	},
+	{
+		regex: /\b(remove|disable|clear|off|no)\b.*\b(shadow|glow|drop\s*shadow|text\s*shadow)\b/i,
+		property: 'text_shadow',
+		value: 'off',
+		selectionMsg: 'Removed text shadow.',
+		pageMsg: 'Removed text shadow.',
+		target: 'text',
+	},
+	{
+		regex: /\b(remove|disable|clear|off|no)\b.*\b(list|bullets?|bullet\s*points?|numbered|checkmarks?)\b/i,
+		property: 'text_list',
+		value: 'off',
+		selectionMsg: 'Removed list formatting.',
+		pageMsg: 'Removed list formatting.',
+		target: 'text',
+	},
+
 	// ============================================================
 	// GROUP 1: PRIORITY FLOWS (Clarifications)
 	// ============================================================
+	{
+		regex: /\b(improve|polish|refine|tidy|clean\s*up|make\s*(it\s*)?(better|nicer|cleaner|more\s*modern))\b.*\b(text|typography|heading|title|paragraph)\b|\b(text|typography|heading|title|paragraph)\b.*\b(improve|polish|refine|tidy|clean\s*up)\b/i,
+		property: 'flow_text_polish',
+		value: 'start',
+		selectionMsg: '',
+		pageMsg: 'Polished text style.',
+		target: 'text',
+	},
 	{
 		regex: /\b(text|font)\b.*\b(size|sizing)\b|\b(make|increase|decrease|bigger|larger|smaller)\b.*\b(text|font)\b/i,
 		property: 'flow_text_size',
@@ -221,6 +694,30 @@ export const TEXT_PATTERNS = [
 		value: 'start',
 		selectionMsg: '',
 		pageMsg: 'Updated text color.',
+		target: 'text',
+	},
+	{
+		regex: /\b(align|alignment|center(?:ed)?|centre(?:d)?|left(?:-aligned)?|right(?:-aligned)?|justify(?:ied)?)\b.*\b(text|heading|title|paragraph)\b|\b(text|heading|title|paragraph)\b.*\b(center(?:ed)?|centre(?:d)?|left|right|justify(?:ied)?)\b/i,
+		property: 'flow_text_align',
+		value: 'start',
+		selectionMsg: '',
+		pageMsg: 'Updated text alignment.',
+		target: 'text',
+	},
+	{
+		regex: /\b(letter\s*spacing|tracking|space\s*out\s*letters|kerning)\b/i,
+		property: 'flow_text_letter_spacing',
+		value: 'start',
+		selectionMsg: '',
+		pageMsg: 'Updated letter spacing.',
+		target: 'text',
+	},
+	{
+		regex: /\b(font\s*family|typeface|serif|sans\s*serif|monospace)\b.*\b(text|heading|title|paragraph)\b|\b(text|heading|title|paragraph)\b.*\b(serif|sans\s*serif|monospace)\b/i,
+		property: 'flow_text_font_family',
+		value: 'start',
+		selectionMsg: '',
+		pageMsg: 'Updated font family.',
 		target: 'text',
 	},
 	{
@@ -318,28 +815,95 @@ export const TEXT_PATTERNS = [
 	{
 		regex: /\b(invert|reverse)\b.*\btext\b.*\b(colou?r|color)\b/i,
 		property: 'text_color',
-		value: '#ffffff',
+		// Style Card compliant: no hex
+		value: 'var(--bg-1)',
 		selectionMsg: 'Inverted text color.',
 		pageMsg: 'Inverted text color.',
 		target: 'text',
 	},
-	{ regex: /\bh1\b|heading\s*1|title\s*1/i, property: 'text_level', value: 'h1', selectionMsg: 'Set to H1.', pageMsg: 'Set to H1.', target: 'text' },
-	{ regex: /\bh2\b|heading\s*2|title\s*2|subheading/i, property: 'text_level', value: 'h2', selectionMsg: 'Set to H2.', pageMsg: 'Set to H2.', target: 'text' },
-	{ regex: /\bparagraph\b|body\s*text\b/i, property: 'text_level', value: 'p', selectionMsg: 'Set to paragraph.', pageMsg: 'Set to paragraph.', target: 'text' },
+	{ regex: /\bh1\b|heading\s*1|title\s*1/i, property: 'textLevel', value: 'h1', selectionMsg: 'Set to H1.', pageMsg: 'Set to H1.', target: 'text' },
+	{ regex: /\bh2\b|heading\s*2|title\s*2|subheading/i, property: 'textLevel', value: 'h2', selectionMsg: 'Set to H2.', pageMsg: 'Set to H2.', target: 'text' },
+	{ regex: /\bparagraph\b|body\s*text\b/i, property: 'textLevel', value: 'p', selectionMsg: 'Set to paragraph.', pageMsg: 'Set to paragraph.', target: 'text' },
 	{ regex: /\b(post\s*title|dynamic\s*title)\b/i, property: 'text_dynamic', value: 'title', selectionMsg: 'Dynamic title enabled.', pageMsg: 'Dynamic title enabled.', target: 'text' },
 	{ regex: /\b(post\s*date|publish(ed)?\s*date|dynamic\s*date)\b/i, property: 'text_dynamic', value: 'date', selectionMsg: 'Dynamic date enabled.', pageMsg: 'Dynamic date enabled.', target: 'text' },
 	{ regex: /\b(author\s*name|post\s*author|dynamic\s*author)\b/i, property: 'text_dynamic', value: 'author', selectionMsg: 'Dynamic author enabled.', pageMsg: 'Dynamic author enabled.', target: 'text' },
 	{ regex: /\b(remove|disable)\b.*\bdynamic\b/i, property: 'text_dynamic', value: 'off', selectionMsg: 'Dynamic content removed.', pageMsg: 'Dynamic content removed.', target: 'text' },
 ];
-
 export const handleTextUpdate = (block, property, value, prefix, context = {}) => {
 	let changes = null;
+
+	const normalizedProperty = normalizeTextProperty(property);
+
 	const isText =
 		block?.name?.includes('text') || block?.name?.includes('heading');
 	if (!isText) return null;
 
 	// === INTERACTION FLOWS ===
-	if (property === 'flow_text_size') {
+	if (normalizedProperty === 'flow_text_polish') {
+		if (context.text_polish === undefined) {
+			return {
+				action: 'ask_options',
+				target: 'text_polish',
+				msg: 'How should I polish the typography?',
+				options: [
+					{ label: 'Standard / Safe (readability-first)', value: 'standard' },
+					{ label: 'Modern / Clean (crisper hierarchy)', value: 'modern' },
+					{ label: 'Bold / Full (high-impact emphasis)', value: 'bold' },
+				],
+			};
+		}
+
+		const mode = String(context.text_polish || '').toLowerCase();
+
+		// Shared safe polish baseline (non-destructive).
+		const baseLineHeight = {
+			...buildResponsiveNumericChanges({
+				keyBase: 'line-height',
+				unitKeyBase: 'line-height-unit',
+				value: 1.5,
+				unit: '-',
+				scale: false,
+				kind: 'lineHeight',
+			}),
+		};
+
+		if (mode === 'standard') {
+			changes = {
+				...baseLineHeight,
+				...buildFontWeightChanges(400),
+				...buildTextColorChanges('var(--p)'),
+				'text-decoration-general': 'none',
+				...buildTextHighlightChanges(block.attributes, 'off'),
+				...buildTextLetterSpacingChanges('normal'),
+			};
+			return { action: 'apply', attributes: changes, done: true, message: 'Applied a safe, readable text polish.' };
+		}
+
+		if (mode === 'modern') {
+			changes = {
+				...baseLineHeight,
+				...buildFontWeightChanges(600),
+				...buildTextColorChanges('var(--h1)'),
+				'text-decoration-general': 'none',
+				...buildTextHighlightChanges(block.attributes, 'off'),
+				...buildTextLetterSpacingChanges('normal'),
+			};
+			return { action: 'apply', attributes: changes, done: true, message: 'Applied a modern, clean typographic polish.' };
+		}
+
+		// Bold / Full
+		changes = {
+			...baseLineHeight,
+			...buildFontWeightChanges(700),
+			...buildTextColorChanges('var(--highlight)'),
+			'text-decoration-general': 'none',
+			...buildTextHighlightChanges(block.attributes, 'underline'),
+			...buildTextLetterSpacingChanges('normal'),
+		};
+		return { action: 'apply', attributes: changes, done: true, message: 'Applied a bold, high-impact text polish.' };
+	}
+
+	if (normalizedProperty === 'flow_text_size') {
 		if (context.text_size === undefined) {
 			return {
 				action: 'ask_options',
@@ -354,14 +918,20 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		}
 
 		const sizeValue = parseUnitValue(context.text_size, 'rem');
-		changes = {
-			'font-size-general': sizeValue.value,
-			'font-size-unit-general': sizeValue.unit,
-		};
-		return { action: 'apply', attributes: changes, done: true, message: 'Updated text size.' };
+
+		changes = buildResponsiveNumericChanges({
+			keyBase: 'font-size',
+			unitKeyBase: 'font-size-unit',
+			value: sizeValue.value,
+			unit: sizeValue.unit,
+			scale: true,
+			kind: 'fontSize',
+		});
+
+		return { action: 'apply', attributes: changes, done: true, message: 'Updated text size (responsive 100/60/40).' };
 	}
 
-	if (property === 'flow_text_weight') {
+	if (normalizedProperty === 'flow_text_weight') {
 		if (context.text_weight === undefined) {
 			return {
 				action: 'ask_options',
@@ -379,7 +949,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text weight.' };
 	}
 
-	if (property === 'flow_text_color') {
+	if (normalizedProperty === 'flow_text_color') {
 		if (context.text_color === undefined) {
 			return {
 				action: 'ask_options',
@@ -393,20 +963,90 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			};
 		}
 
+		// Accessibility guardrail: reject transparent/low-alpha colors in flow.
+		if (isRiskyTextColor(context.text_color)) {
+			return {
+				action: 'ask_options',
+				target: 'text_color',
+				msg: 'That color may reduce readability. Choose a safer option:',
+				options: [
+					{ label: 'Brand (var(--highlight))', value: 'var(--highlight)' },
+					{ label: 'Dark (var(--h1))', value: 'var(--h1)' },
+					{ label: 'Subtle (var(--p))', value: 'var(--p)' },
+				],
+			};
+		}
+
 		changes = buildTextColorChanges(context.text_color);
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text color.' };
 	}
 
-	if (property === 'flow_border') {
-		if (!context.border_color) {
-			return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the border?' };
+	if (normalizedProperty === 'flow_text_align') {
+		if (context.text_align === undefined) {
+			return {
+				action: 'ask_options',
+				target: 'text_align',
+				msg: 'Choose text alignment:',
+				options: [
+					{ label: 'Left', value: 'left' },
+					{ label: 'Center', value: 'center' },
+					{ label: 'Right', value: 'right' },
+					{ label: 'Justify', value: 'justify' },
+				],
+			};
 		}
+
+		changes = buildTextAlignChanges(context.text_align, block);
+		return { action: 'apply', attributes: changes, done: true, message: 'Updated text alignment.' };
+	}
+
+	if (normalizedProperty === 'flow_text_letter_spacing') {
+		if (context.text_letter_spacing === undefined) {
+			return {
+				action: 'ask_options',
+				target: 'text_letter_spacing',
+				msg: 'Choose letter spacing (tracking):',
+				options: [
+					{ label: 'Tight (-0.02em)', value: { value: -0.02, unit: 'em' } },
+					{ label: 'Normal', value: 'normal' },
+					{ label: 'Wide (0.05em)', value: { value: 0.05, unit: 'em' } },
+					{ label: 'Extra (0.1em)', value: { value: 0.1, unit: 'em' } },
+				],
+			};
+		}
+
+		changes = buildTextLetterSpacingChanges(context.text_letter_spacing);
+		return { action: 'apply', attributes: changes, done: true, message: 'Updated letter spacing.' };
+	}
+
+	if (normalizedProperty === 'flow_text_font_family') {
+		if (context.text_font_family === undefined) {
+			return {
+				action: 'ask_options',
+				target: 'text_font_family',
+				msg: 'Choose a font family style:',
+				options: [
+					{ label: 'Inherit (theme default)', value: 'inherit' },
+					{ label: 'Sans-serif', value: 'sans-serif' },
+					{ label: 'Serif', value: 'serif' },
+					{ label: 'Monospace', value: 'monospace' },
+				],
+			};
+		}
+
+		changes = buildTextFontFamilyChanges(context.text_font_family);
+		return { action: 'apply', attributes: changes, done: true, message: 'Updated font family.' };
+	}
+
+	if (normalizedProperty === 'flow_border') {
+		// Ask style first (allows Off without color selection)
 		if (!context.border_style) {
 			return {
 				action: 'ask_options',
 				target: 'border_style',
 				msg: 'Which border style?',
 				options: [
+					{ label: 'None (remove border)', value: 'off' },
 					{ label: 'Solid Thin', value: 'solid-1px' },
 					{ label: 'Solid Medium', value: 'solid-2px' },
 					{ label: 'Solid Thick', value: 'solid-4px' },
@@ -414,6 +1054,15 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 					{ label: 'Dotted', value: 'dotted-2px' },
 				],
 			};
+		}
+
+		if (context.border_style === 'off' || context.border_style === 'none') {
+			changes = buildTextBorderResetChanges(prefix);
+			return { action: 'apply', attributes: changes, done: true, message: 'Removed text border.' };
+		}
+
+		if (!context.border_color) {
+			return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the border?' };
 		}
 
 		const borderConfig = parseBorderStyle(context.border_style);
@@ -423,6 +1072,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 				target: 'border_style',
 				msg: 'Which border style?',
 				options: [
+					{ label: 'None (remove border)', value: 'off' },
 					{ label: 'Solid Thin', value: 'solid-1px' },
 					{ label: 'Solid Medium', value: 'solid-2px' },
 					{ label: 'Solid Thick', value: 'solid-4px' },
@@ -431,13 +1081,13 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 				],
 			};
 		}
+
 		const { style, width } = borderConfig;
 		const color = context.border_color;
 		const isPalette = typeof color === 'number';
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 		changes = {};
-		breakpoints.forEach(bp => {
+		BREAKPOINTS.forEach(bp => {
 			changes[`${prefix}border-style-${bp}`] = style;
 			changes[`${prefix}border-top-width-${bp}`] = width;
 			changes[`${prefix}border-bottom-width-${bp}`] = width;
@@ -449,31 +1099,41 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			if (isPalette) {
 				changes[`${prefix}border-palette-status-${bp}`] = true;
 				changes[`${prefix}border-palette-color-${bp}`] = color;
+				changes[`${prefix}border-color-${bp}`] = '';
 			} else {
 				changes[`${prefix}border-color-${bp}`] = color;
 				changes[`${prefix}border-palette-status-${bp}`] = false;
+				changes[`${prefix}border-palette-color-${bp}`] = '';
 			}
 		});
 
 		return { action: 'apply', attributes: changes, done: true, message: 'Applied border to text.' };
 	}
 
-	if (property === 'flow_shadow') {
-		if (!context.shadow_color) {
-			return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
-		}
+	if (normalizedProperty === 'flow_shadow') {
+		// Ask intensity first (allows Off without color selection)
 		if (!context.shadow_intensity) {
 			return {
 				action: 'ask_options',
 				target: 'shadow_intensity',
 				msg: 'Choose intensity:',
 				options: [
+					{ label: 'None (remove shadow)', value: 'off' },
 					{ label: 'Soft', value: 'soft' },
 					{ label: 'Crisp', value: 'crisp' },
 					{ label: 'Bold', value: 'bold' },
 					{ label: 'Glow', value: 'glow' },
 				],
 			};
+		}
+
+		if (context.shadow_intensity === 'off') {
+			changes = buildTextShadowResetChanges(prefix);
+			return { action: 'apply', attributes: changes, done: true, message: 'Removed text shadow.' };
+		}
+
+		if (!context.shadow_color) {
+			return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
 		}
 
 		const color = context.shadow_color;
@@ -488,18 +1148,26 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		if (intensity === 'bold') { x = 0; y = 20; blur = 25; spread = -5; }
 		if (intensity === 'glow') { x = 0; y = 0; blur = 15; spread = 2; }
 
-		const baseShadow = {
-			[`${prefix}box-shadow-status-general`]: true,
-			[`${prefix}box-shadow-horizontal-general`]: x,
-			[`${prefix}box-shadow-vertical-general`]: y,
-			[`${prefix}box-shadow-blur-general`]: blur,
-			[`${prefix}box-shadow-spread-general`]: spread,
-			[`${prefix}box-shadow-inset-general`]: false,
-		};
+		// Apply across breakpoints for consistency
+		changes = {};
+		BREAKPOINTS.forEach(bp => {
+			changes[`${prefix}box-shadow-status-${bp}`] = true;
+			changes[`${prefix}box-shadow-horizontal-${bp}`] = x;
+			changes[`${prefix}box-shadow-vertical-${bp}`] = y;
+			changes[`${prefix}box-shadow-blur-${bp}`] = blur;
+			changes[`${prefix}box-shadow-spread-${bp}`] = spread;
+			changes[`${prefix}box-shadow-inset-${bp}`] = false;
 
-		const colorAttr = typeof color === 'number'
-			? { [`${prefix}box-shadow-palette-status-general`]: true, [`${prefix}box-shadow-palette-color-general`]: color }
-			: { [`${prefix}box-shadow-color-general`]: color, [`${prefix}box-shadow-palette-status-general`]: false };
+			if (typeof color === 'number') {
+				changes[`${prefix}box-shadow-palette-status-${bp}`] = true;
+				changes[`${prefix}box-shadow-palette-color-${bp}`] = color;
+				changes[`${prefix}box-shadow-color-${bp}`] = '';
+			} else {
+				changes[`${prefix}box-shadow-color-${bp}`] = color;
+				changes[`${prefix}box-shadow-palette-status-${bp}`] = false;
+				changes[`${prefix}box-shadow-palette-color-${bp}`] = '';
+			}
+		});
 
 		const intensityLabel = {
 			soft: 'Soft',
@@ -508,11 +1176,10 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			glow: 'Glow',
 		}[intensity] || 'Custom';
 
-		changes = { ...baseShadow, ...colorAttr };
 		return { action: 'apply', attributes: changes, done: true, message: `Applied ${intensityLabel} shadow to text.` };
 	}
 
-	if (property === 'flow_text_line_height') {
+	if (normalizedProperty === 'flow_text_line_height') {
 		if (context.text_line_height === undefined) {
 			return {
 				action: 'ask_options',
@@ -527,14 +1194,21 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		}
 
 		const lineValue = parseUnitValue(context.text_line_height, '-');
-		changes = {
-			'line-height-general': lineValue.value,
-			'line-height-unit-general': lineValue.unit || '-',
-		};
+
+		// Do not scale line-height; apply consistently.
+		changes = buildResponsiveNumericChanges({
+			keyBase: 'line-height',
+			unitKeyBase: 'line-height-unit',
+			value: lineValue.value,
+			unit: lineValue.unit || '-',
+			scale: false,
+			kind: 'lineHeight',
+		});
+
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated line spacing.' };
 	}
 
-	if (property === 'flow_text_width') {
+	if (normalizedProperty === 'flow_text_width') {
 		if (context.text_max_width === undefined) {
 			return {
 				action: 'ask_options',
@@ -549,15 +1223,23 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		}
 
 		const widthValue = parseUnitValue(context.text_max_width, 'px');
+
 		changes = {
-			'max-width-general': widthValue.value,
-			'max-width-unit-general': widthValue.unit,
+			...buildResponsiveNumericChanges({
+				keyBase: 'max-width',
+				unitKeyBase: 'max-width-unit',
+				value: widthValue.value,
+				unit: widthValue.unit,
+				scale: true,
+				kind: 'maxWidth',
+			}),
 			'size-advanced-options': true,
 		};
-		return { action: 'apply', attributes: changes, done: true, message: 'Updated text width.' };
+
+		return { action: 'apply', attributes: changes, done: true, message: 'Updated text width (responsive 100/60/40 where appropriate).' };
 	}
 
-	if (property === 'flow_text_transform') {
+	if (normalizedProperty === 'flow_text_transform') {
 		if (context.text_transform === undefined) {
 			return {
 				action: 'ask_options',
@@ -575,14 +1257,15 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text casing.' };
 	}
 
-	if (property === 'flow_text_highlight') {
+	if (normalizedProperty === 'flow_text_highlight') {
 		if (context.text_highlight === undefined) {
 			return {
 				action: 'ask_options',
 				target: 'text_highlight',
 				msg: 'Choose a highlight style:',
 				options: [
-					{ label: 'Yellow marker', value: 'marker' },
+					{ label: 'None (remove highlight)', value: 'off' },
+					{ label: 'Marker (var(--highlight))', value: 'marker' },
 					{ label: 'Brand underline', value: 'underline' },
 					{ label: 'Badge', value: 'badge' },
 				],
@@ -590,16 +1273,17 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		}
 
 		changes = buildTextHighlightChanges(block.attributes, context.text_highlight);
-		return { action: 'apply', attributes: changes, done: true, message: 'Updated text highlight.' };
+		return { action: 'apply', attributes: changes || {}, done: true, message: 'Updated text highlight.' };
 	}
 
-	if (property === 'flow_text_list') {
+	if (normalizedProperty === 'flow_text_list') {
 		if (context.text_list === undefined) {
 			return {
 				action: 'ask_options',
 				target: 'text_list',
 				msg: 'Choose list style:',
 				options: [
+					{ label: 'None (remove list)', value: 'off' },
 					{ label: 'Bullets', value: { isList: true, typeOfList: 'ul', listStyle: 'disc' } },
 					{ label: 'Numbered', value: { isList: true, typeOfList: 'ol', listStyle: 'decimal' } },
 					{ label: 'Checkmarks', value: { isList: true, typeOfList: 'ul', listStyle: 'custom', listStyleCustom: 'check-circle' } },
@@ -611,7 +1295,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated list style.' };
 	}
 
-	if (property === 'flow_text_level') {
+	if (normalizedProperty === 'flow_text_level') {
 		if (context.text_level === undefined) {
 			return {
 				action: 'ask_options',
@@ -629,7 +1313,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text level.' };
 	}
 
-	if (property === 'flow_text_decoration') {
+	if (normalizedProperty === 'flow_text_decoration') {
 		if (context.text_decoration === undefined) {
 			return {
 				action: 'ask_options',
@@ -647,7 +1331,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text decoration.' };
 	}
 
-	if (property === 'flow_text_dynamic') {
+	if (normalizedProperty === 'flow_text_dynamic') {
 		if (context.text_dynamic === undefined) {
 			return {
 				action: 'ask_options',
@@ -657,6 +1341,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 					{ label: 'Post title', value: 'title' },
 					{ label: 'Post date', value: 'date' },
 					{ label: 'Author name', value: 'author' },
+					{ label: 'None (remove dynamic)', value: 'off' },
 				],
 			};
 		}
@@ -665,7 +1350,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated dynamic content.' };
 	}
 
-	if (property === 'flow_text_link') {
+	if (normalizedProperty === 'flow_text_link') {
 		if (context.text_link === undefined) {
 			return {
 				action: 'ask_options',
@@ -680,70 +1365,116 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 	}
 
 	// === STANDARD ACTIONS ===
-	switch (property) {
+	switch (normalizedProperty) {
 		case 'text_color':
 			changes = buildTextColorChanges(value);
 			break;
+
 		case 'text_font_size': {
 			const sizeValue = parseUnitValue(value, 'px');
-			changes = {
-				'font-size-general': sizeValue.value,
-				'font-size-unit-general': sizeValue.unit,
-			};
+
+			changes = buildResponsiveNumericChanges({
+				keyBase: 'font-size',
+				unitKeyBase: 'font-size-unit',
+				value: sizeValue.value,
+				unit: sizeValue.unit,
+				scale: true,
+				kind: 'fontSize',
+			});
 			break;
 		}
+
 		case 'text_line_height': {
 			const lineValue = parseUnitValue(value, '-');
-			changes = {
-				'line-height-general': lineValue.value,
-				'line-height-unit-general': lineValue.unit || '-',
-			};
+
+			changes = buildResponsiveNumericChanges({
+				keyBase: 'line-height',
+				unitKeyBase: 'line-height-unit',
+				value: lineValue.value,
+				unit: lineValue.unit || '-',
+				scale: false,
+				kind: 'lineHeight',
+			});
 			break;
 		}
+
 		case 'text_max_width': {
 			const widthValue = parseUnitValue(value, 'px');
+
 			changes = {
-				'max-width-general': widthValue.value,
-				'max-width-unit-general': widthValue.unit,
+				...buildResponsiveNumericChanges({
+					keyBase: 'max-width',
+					unitKeyBase: 'max-width-unit',
+					value: widthValue.value,
+					unit: widthValue.unit,
+					scale: true,
+					kind: 'maxWidth',
+				}),
 				'size-advanced-options': true,
 			};
 			break;
 		}
+
 		case 'text_weight':
 			changes = buildFontWeightChanges(value);
 			break;
+
 		case 'text_transform':
 			changes = buildTextTransformChanges(block.attributes, value);
 			break;
+
 		case 'text_highlight':
 			changes = buildTextHighlightChanges(block.attributes, value);
 			break;
+
 		case 'text_list':
 			changes = buildTextListChanges(value);
 			break;
-		case 'text_level':
+
 		case 'textLevel':
 			changes = buildTextLevelChanges(value);
 			break;
+
 		case 'text_dynamic':
 			changes = buildTextDynamicChanges(value);
 			break;
+
 		case 'text_link':
 			changes = buildTextLinkChanges(block, value);
 			break;
+
 		case 'text_decoration':
 			changes = { 'text-decoration-general': value };
 			break;
+
+		case 'text_align':
+			changes = buildTextAlignChanges(value, block);
+			break;
+
+		case 'text_letter_spacing':
+			changes = buildTextLetterSpacingChanges(value);
+			break;
+
+		case 'text_font_family':
+			changes = buildTextFontFamilyChanges(value);
+			break;
+
+		case 'text_border':
+			if (value === 'off' || value === 'none' || value === false) {
+				changes = buildTextBorderResetChanges(prefix);
+			}
+			break;
+
+		case 'text_shadow':
+			if (value === 'off' || value === 'none' || value === false) {
+				changes = buildTextShadowResetChanges(prefix);
+			}
+			break;
 	}
 
-	if (changes) {
-		return { action: 'apply', attributes: changes, done: true, message: 'Applied text property change.' };
+	if (!changes && typeof normalizedProperty === 'string' && normalizedProperty.startsWith('dc-')) {
+		changes = { [normalizedProperty]: value };
 	}
 
-	if (!changes && typeof property === 'string' && property.startsWith('dc-')) {
-		changes = { [property]: value };
-		return { action: 'apply', attributes: changes, done: true, message: 'Applied text property change.' };
-	}
-
-	return null;
+	return changes;
 };

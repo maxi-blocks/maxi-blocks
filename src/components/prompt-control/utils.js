@@ -169,11 +169,11 @@ const handleUiTarget = responseContent => {
 		}
 
 		const mapping = {
-			'margin-padding': 'Margin / Padding',
-			'height-width': 'Height / Width',
-			'background-layer': 'Background / Layer',
-			border: 'Border',
-			'box-shadow': 'Box shadow',
+			'margin-padding': 'margin padding',
+			'height-width': 'height width',
+			'background-layer': 'background layer',
+			border: 'border',
+			'box-shadow': 'box shadow',
 		};
 
 		if (mapping[target]) {
@@ -357,24 +357,30 @@ export const callBackendAIProxy = async ({
 	};
 
 	const finalizeResult = finalContent => {
+		let sanitizedContent = sanitizeContent(
+			finalContent ?? '',
+			shouldRemoveQuotes
+		);
+
 		setResults(prevResults => {
 			const newResults = [...prevResults];
 			const addedResult = newResults.find(result => result.id === newId);
 
 			if (addedResult) {
-				addedResult.content = sanitizeContent(
+				sanitizedContent = sanitizeContent(
 					finalContent ?? addedResult.content,
 					shouldRemoveQuotes
 				);
+				addedResult.content = sanitizedContent;
 				addedResult.loading = false;
 				addedResult.progress = addedResult.content.length;
-
-				// Handle UI Target expansion
-				handleUiTarget(addedResult.content);
 			}
 
 			return newResults;
 		});
+
+		// Handle UI Target expansion
+		handleUiTarget(sanitizedContent);
 	};
 
 	const isModelUnavailableError = errorMessage =>

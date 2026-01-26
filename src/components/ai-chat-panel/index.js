@@ -16,7 +16,7 @@ import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue'
 import { getLastBreakpointAttribute } from '@extensions/styles';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
-import { findBestIcon, extractIconQuery } from './iconSearch';
+import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -407,8 +407,8 @@ const LAYOUT_PATTERNS = [
 	{ regex: /masonry|pinterest|grid.*flow/, property: 'row_pattern', value: 'masonry', selectionMsg: 'Applied masonry layout.', pageMsg: 'Created masonry grid.' },
 	
 	// GROUP 18: RELATIVE SIZING (±20% adjustment)
-	{ regex: /\b(bigger|larger)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(bigger|larger)\b|\bincrease\b.*\bfont\b|\b(text|font)\s*size\b.*\bincrease\b|\bincrease\b.*\b(text|font)\s*size\b/, property: 'font_size_relative', value: 1.2, selectionMsg: 'Increased font size by 20%.', pageMsg: 'Enlarged text.' },
-	{ regex: /\b(smaller|tinier)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(smaller|tinier)\b|\b(decrease|reduce)\b.*\bfont\b|\b(text|font)\s*size\b.*\b(decrease|reduce)\b|\b(decrease|reduce)\b.*\b(text|font)\s*size\b|\breduce\b.*\btext\b/, property: 'font_size_relative', value: 0.8, selectionMsg: 'Decreased font size by 20%.', pageMsg: 'Reduced text size.' },
+	{ regex: /\b(bigger|larger)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(bigger|larger)\b|\bincrease\b.*\bfont\b|\b(text|font)\s*size\b.*\bincrease\b|\bincrease\b.*\b(text|font)\s*size\b/, property: 'font_size_relative', value: 1.2, selectionMsg: 'Increased font size by 20% across all breakpoints.', pageMsg: 'Enlarged text across all breakpoints.' },
+	{ regex: /\b(smaller|tinier)\b.*\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b|\b(text|font|heading|title|subtitle|headline|paragraph|body\s*text)\b.*\b(smaller|tinier)\b|\b(decrease|reduce)\b.*\bfont\b|\b(text|font)\s*size\b.*\b(decrease|reduce)\b|\b(decrease|reduce)\b.*\b(text|font)\s*size\b|\breduce\b.*\btext\b/, property: 'font_size_relative', value: 0.8, selectionMsg: 'Decreased font size by 20% across all breakpoints.', pageMsg: 'Reduced text size across all breakpoints.' },
 	{ regex: /bigger(?!.*hover)|larger|increase.*size|more.*size|scale.*up/, property: 'relative_size', value: 1.2, selectionMsg: 'Increased size by 20%.', pageMsg: 'Scaled up by 20%.' },
 	{ regex: /smaller|reduce.*size|decrease.*size|less.*size|scale.*down/, property: 'relative_size', value: 0.8, selectionMsg: 'Decreased size by 20%.', pageMsg: 'Scaled down by 20%.' },
 	{ regex: /wider|more.*width|increase.*width|stretch.*horizontal/, property: 'width_relative', value: 1.2, selectionMsg: 'Increased width by 20%.', pageMsg: 'Made wider.' },
@@ -447,7 +447,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
 	// GROUP 24: CLOUD ICON SEARCH (Typesense)
-	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicon\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicon\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icon\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
+	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicons?\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicons?\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icons?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+[^,.;]+|\ball\s+icons?\b|\b(?:theme|style|vibe|look)\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
 
 	// GROUP 25: BLOCK ACTIONS (Imported)
 	...AI_BLOCK_PATTERNS,
@@ -630,6 +630,75 @@ const AIChatPanel = ({ isOpen, onClose }) => {
         walk(blocks);
         return result;
     };
+
+	const findBlockByClientId = (blocks, id) => {
+		for (const block of blocks) {
+			if (block.clientId === id) return block;
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				const found = findBlockByClientId(block.innerBlocks, id);
+				if (found) return found;
+			}
+		}
+		return null;
+	};
+
+	const stripHtml = value =>
+		String(value || '')
+			.replace(/<[^>]*>/g, ' ')
+			.replace(/\s+/g, ' ')
+			.trim();
+
+	const isLabelBlock = blockName =>
+		typeof blockName === 'string' &&
+		(blockName.includes('text-maxi') ||
+			blockName.includes('list-item-maxi') ||
+			blockName.includes('heading') ||
+			blockName.includes('paragraph'));
+
+	const getBlockLabelText = block => {
+		if (!block || !block.attributes || !isLabelBlock(block.name)) {
+			return '';
+		}
+		const raw =
+			block.attributes.content ||
+			block.attributes.text ||
+			block.attributes.title ||
+			block.attributes.label ||
+			'';
+		return stripHtml(raw);
+	};
+
+	const findLabelInBlocks = blocks => {
+		for (const block of blocks) {
+			const direct = getBlockLabelText(block);
+			if (direct) return direct;
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				const nested = findLabelInBlocks(block.innerBlocks);
+				if (nested) return nested;
+			}
+		}
+		return '';
+	};
+
+	const findLabelForIconBlock = iconBlock => {
+		if (!iconBlock?.clientId) return '';
+		const { getBlockParents, getBlock } = select('core/block-editor');
+		const parentIds = getBlockParents(iconBlock.clientId) || [];
+		for (const parentId of parentIds) {
+			const parent = getBlock(parentId);
+			if (!parent?.innerBlocks?.length) continue;
+			const siblings = parent.innerBlocks;
+			const index = siblings.findIndex(block => block.clientId === iconBlock.clientId);
+			if (index === -1) continue;
+			const after = siblings.slice(index + 1);
+			const labelAfter = findLabelInBlocks(after);
+			if (labelAfter) return labelAfter;
+			const before = siblings.slice(0, index);
+			const labelBefore = findLabelInBlocks(before);
+			if (labelBefore) return labelBefore;
+		}
+		return '';
+	};
 
 	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
 		const newAttributes = {};
@@ -2254,46 +2323,67 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							};
 							break;
 						case 'font_size_relative': {
-							const maxiStore = select('maxiBlocks');
-							const deviceType = maxiStore?.receiveMaxiDeviceType?.() || 'general';
-							const baseBreakpoint = maxiStore?.receiveBaseBreakpoint?.();
-							const valueBreakpoint = deviceType !== 'general'
-								? deviceType
-								: (baseBreakpoint || 'general');
 							const textLevel = block.attributes?.textLevel || 'p';
+							const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+							const multiplier = Number(value);
+							const getNumeric = raw => {
+								const num = Number(raw);
+								return Number.isFinite(num) && num > 0 ? num : null;
+							};
+							const getSizeForBreakpoint = bp => {
+								const fromCustom = getCustomFormatValue({
+									typography: block.attributes,
+									prop: 'font-size',
+									breakpoint: bp,
+									textLevel,
+								});
+								const customSize = getNumeric(fromCustom);
+								if (customSize !== null) return customSize;
 
-							const currentFontSize = getCustomFormatValue({
-								typography: block.attributes,
-								prop: 'font-size',
-								breakpoint: valueBreakpoint,
-								textLevel,
-							});
-							const currentUnit = getCustomFormatValue({
-								typography: block.attributes,
-								prop: 'font-size-unit',
-								breakpoint: valueBreakpoint,
-								textLevel,
-							});
+								const fallbackSize = getLastBreakpointAttribute({
+									target: 'font-size',
+									breakpoint: bp,
+									attributes: block.attributes,
+									forceSingle: true,
+									forceUseBreakpoint: true,
+									avoidXXL: false,
+								});
+								return getNumeric(fallbackSize);
+							};
+							const getUnitForBreakpoint = bp => {
+								const fromCustom = getCustomFormatValue({
+									typography: block.attributes,
+									prop: 'font-size-unit',
+									breakpoint: bp,
+									textLevel,
+								});
+								if (fromCustom) return fromCustom;
 
-							const parsedSize = Number(currentFontSize);
-							const sizeValue = Number.isFinite(parsedSize) && parsedSize > 0 ? parsedSize : 16;
-							const nextSize = Math.round(sizeValue * Number(value));
-
-							const breakpointsToUpdate = new Set();
-							if (deviceType && deviceType !== 'general') {
-								breakpointsToUpdate.add(deviceType);
-							} else {
-								breakpointsToUpdate.add('general');
-								if (baseBreakpoint && baseBreakpoint !== 'general') {
-									breakpointsToUpdate.add(baseBreakpoint);
-								}
-							}
+								const fallbackUnit = getLastBreakpointAttribute({
+									target: 'font-size-unit',
+									breakpoint: bp,
+									attributes: block.attributes,
+									forceSingle: true,
+									forceUseBreakpoint: true,
+									avoidXXL: false,
+								});
+								return fallbackUnit || 'px';
+							};
+							const roundSize = (size, unit) => {
+								if (!Number.isFinite(size)) return size;
+								const normalizedUnit = String(unit || 'px').toLowerCase();
+								if (normalizedUnit === 'px') return Math.round(size);
+								return Math.round(size * 100) / 100;
+							};
 
 							changes = {};
-							breakpointsToUpdate.forEach(bp => {
+							breakpoints.forEach(bp => {
+								const currentSize = getSizeForBreakpoint(bp) ?? 16;
+								const unit = getUnitForBreakpoint(bp);
+								const nextSize = roundSize(currentSize * multiplier, unit);
 								changes[`font-size-${bp}`] = nextSize;
-								if (currentUnit) {
-									changes[`font-size-unit-${bp}`] = currentUnit;
+								if (unit) {
+									changes[`font-size-unit-${bp}`] = unit;
 								}
 							});
 							break;
@@ -3610,11 +3700,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 			const wantsButton = /\bbutton\b/.test(lowerMessage);
 			const wantsIconBlock = /\b(icon block|svg icon|svg-icon|icon maxi)\b/.test(lowerMessage);
+			const mentionsIcons = /\bicons?\b/.test(lowerMessage);
 
 			if (wantsButton) {
 				return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
 			}
 			if (wantsIconBlock) {
+				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+			}
+			if (mentionsIcons) {
 				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
 			}
 
@@ -3687,6 +3781,37 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					if (/all|page|everywhere/i.test(lowerMessage)) flowScope = 'page';
 					
 					const matchName = pattern.target || requestedTarget || 'container';
+					const selectionRoot = selectedBlock
+						? findBlockByClientId(allBlocks, selectedBlock.clientId) || selectedBlock
+						: null;
+					const isTextTarget = matchName === 'text';
+					const wantsHeading = /\b(heading|headline|title|subheading|h[1-6])\b/.test(lowerMessage);
+					const wantsParagraph = /\b(paragraph|body\s*text|body)\b/.test(lowerMessage);
+					const getTextLevel = block =>
+						String(block?.attributes?.textLevel || '').toLowerCase();
+					const collectTextBlocks = blocks => {
+						const textBlocks = collectBlocks(blocks, block =>
+							block?.name &&
+							(block.name.includes('text') || block.name.includes('heading'))
+						);
+						if (!textBlocks.length) return textBlocks;
+
+						if (wantsHeading) {
+							const headingBlocks = textBlocks.filter(block => {
+								if (block?.name?.includes('heading')) return true;
+								const level = getTextLevel(block);
+								return /^h[1-6]$/.test(level);
+							});
+							if (headingBlocks.length) return headingBlocks;
+						}
+
+						if (wantsParagraph) {
+							const paragraphBlocks = textBlocks.filter(block => getTextLevel(block) === 'p');
+							if (paragraphBlocks.length) return paragraphBlocks;
+						}
+
+						return textBlocks;
+					};
 					
 					if (flowScope === 'selection') {
 						if (!selectedBlock) {
@@ -3698,19 +3823,37 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							setIsLoading(false);
 							return;
 						}
-						if (matchName && selectedBlock?.name && !selectedBlock.name.includes(matchName)) {
-							setIsLoading(false);
-							continue;
+						if (isTextTarget) {
+							const textBlocks = selectionRoot ? collectTextBlocks([selectionRoot]) : [];
+							if (!textBlocks.length) {
+								setMessages(prev => [...prev, {
+									role: 'assistant',
+									content: "Please select a text or heading block.",
+									executed: false
+								}]);
+								setIsLoading(false);
+								return;
+							}
+							targetBlocks = textBlocks;
+						} else {
+							if (matchName && selectedBlock?.name && !selectedBlock.name.includes(matchName)) {
+								setIsLoading(false);
+								continue;
+							}
+							targetBlocks = [selectionRoot || selectedBlock];
 						}
-						targetBlocks = [selectedBlock];
 					} else {
 						// Page Scope: Find ALL matching blocks
-						targetBlocks = collectBlocks(allBlocks, b => b.name.includes(matchName));
+						targetBlocks = isTextTarget
+							? collectTextBlocks(allBlocks)
+							: collectBlocks(allBlocks, b => b.name.includes(matchName));
 						
 						if (targetBlocks.length === 0) {
 							setMessages(prev => [...prev, { 
 								role: 'assistant', 
-								content: `No ${matchName}s found on this page.`, 
+								content: isTextTarget
+									? "No text blocks found on this page."
+									: `No ${matchName}s found on this page.`,
 								executed: false 
 							}]);
 							setIsLoading(false);
@@ -3724,6 +3867,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					const prefix = getBlockPrefix(primaryBlock.name);
 					const flowHandler = getAiHandlerForBlock(primaryBlock) || getAiHandlerForTarget(matchName);
 					const flowData = {};
+					const inferTextAlignment = message => {
+						if (/\bjustif(y|ied)\b/.test(message)) return 'justify';
+						if (/\b(center|centre|centered|centred)\b/.test(message)) return 'center';
+						if (/\bright\b/.test(message)) return 'right';
+						if (/\bleft\b/.test(message)) return 'left';
+						return null;
+					};
 
 					if (hexColor) {
 						if (pattern.property === 'flow_outline' || pattern.property === 'flow_border') {
@@ -3731,6 +3881,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						}
 						if (pattern.property === 'flow_shadow') {
 							flowData.shadow_color = hexColor;
+						}
+					}
+					if (pattern.property === 'flow_text_align') {
+						const inferredAlignment = inferTextAlignment(lowerMessage);
+						if (inferredAlignment) {
+							flowData.text_align = inferredAlignment;
 						}
 					}
 
@@ -3741,6 +3897,33 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					if (!startResponse) {
 						setIsLoading(false);
 						continue;
+					}
+
+					if (startResponse.action === 'apply') {
+						let didApply = false;
+						registry.batch(() => {
+							targetBlocks.forEach(blk => {
+								const p = getBlockPrefix(blk.name);
+								const handler = getAiHandlerForBlock(blk) || getAiHandlerForTarget(matchName);
+								const res = handler
+									? handler(blk, pattern.property, null, p, flowData)
+									: null;
+								if (res && res.action === 'apply' && res.attributes) {
+									updateBlockAttributes(blk.clientId, res.attributes);
+									didApply = true;
+								}
+							});
+						});
+
+						const fallbackMsg = flowScope === 'selection' ? pattern.selectionMsg : pattern.pageMsg;
+						const finalMsg = startResponse.message || fallbackMsg || 'Done.';
+						setMessages(prev => [...prev, {
+							role: 'assistant',
+							content: finalMsg,
+							executed: didApply
+						}]);
+						setIsLoading(false);
+						return;
 					}
 
 					// Setup Context with ALL block IDs
@@ -3787,18 +3970,196 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					const isIconColorIntent =
 						/\b(colou?r|fill|stroke)\b/.test(lowerMessage) ||
 						/\bline\s*width\b/.test(lowerMessage);
+					const selectedName = selectedBlock?.name || '';
+					const hasIconKeyword = /\bicons?\b/.test(lowerMessage);
+					const hasCloudKeyword = /\b(cloud|library)\b/.test(lowerMessage);
+					const hasThemeIntent = /\b(?:theme|style|vibe|look)\b/.test(lowerMessage);
+					const hasPronounIntent = /\b(this|these|those|them)\b/.test(lowerMessage);
+					const hasChangeIntent = /\b(change|swap|replace|use|set|add|insert|make|give|update)\b/.test(lowerMessage);
+					const matchTitlesIntent =
+						/\b(match|use|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(below|under|beneath|underneath|following|next)\b/.test(lowerMessage);
+					const mentionsOtherTargets = /\b(text|heading|paragraph|container|section|background|layout|spacing|padding|margin|row|column|group|divider|image|video|button)\b/.test(lowerMessage);
 
 					if (isIconColorIntent) {
 						setIsLoading(false);
 						continue;
 					}
 
+					const selectionRoot = currentScope === 'selection' && selectedBlock
+						? findBlockByClientId(allBlocks, selectedBlock.clientId) || selectedBlock
+						: null;
+					const scopeBlocks = currentScope === 'selection' && selectionRoot
+						? [selectionRoot]
+						: allBlocks;
+					const iconBlocksInScope = collectBlocks(scopeBlocks, block =>
+						block.name.includes('icon-maxi') || block.name.includes('svg-icon'));
+					const buttonBlocksInScope = collectBlocks(scopeBlocks, block =>
+						block.name.includes('button'));
+					const hasIconBlocksInScope = iconBlocksInScope.length > 0;
+					const hasIconSelection =
+						selectedName.includes('button') ||
+						selectedName.includes('icon-maxi') ||
+						selectedName.includes('svg-icon');
+					const shouldTreatAsIconTheme =
+						hasIconBlocksInScope &&
+						hasThemeIntent &&
+						(hasPronounIntent || hasChangeIntent) &&
+						!mentionsOtherTargets;
+
+					if (!hasIconKeyword && !hasCloudKeyword && !hasIconSelection && !shouldTreatAsIconTheme && !matchTitlesIntent) {
+						setIsLoading(false);
+						continue;
+					}
+
+					const wantsMultipleIcons =
+						/\ball\b.*\bicons?\b|\bicons\b/.test(lowerMessage) ||
+						(shouldTreatAsIconTheme && iconBlocksInScope.length > 1);
+
 					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library for icons...' }]);
 
 					setTimeout(async () => {
 						try {
+							const formatList = items =>
+								items.length > 3
+									? `${items.slice(0, 3).join(', ')} and ${items.length - 3} more`
+									: items.join(', ');
+
+							const explicitQueries = extractIconQueries(rawMessage);
+							const hasExplicitList = explicitQueries.length > 1;
 							const searchQuery = extractIconQuery(rawMessage);
-							if (!searchQuery) {
+
+							if (matchTitlesIntent) {
+								if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: currentScope === 'selection'
+												? 'No icon blocks found in the selection.'
+												: 'No icon blocks found on this page.',
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								const labeledBlocks = [];
+								const missingLabels = [];
+								iconBlocksInScope.forEach((block, index) => {
+									const label = findLabelForIconBlock(block);
+									if (label) {
+										labeledBlocks.push({ block, label });
+									} else {
+										missingLabels.push(`icon ${index + 1}`);
+									}
+								});
+
+								if (labeledBlocks.length === 0) {
+									let message = 'I could not find any text labels below the icons. Make sure each icon has a text or heading block beneath it.';
+									if (missingLabels.length) {
+										message += ` Missing labels for ${formatList(missingLabels)}.`;
+									}
+									setMessages(prev => [
+										...prev,
+										{ role: 'assistant', content: message, executed: false },
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								const results = await Promise.all(
+									labeledBlocks.map(item =>
+										findBestIcon(item.label, {
+											target: 'svg',
+											requireStrongMatch: true,
+										})
+									)
+								);
+
+								const updates = [];
+								const missingMatches = [];
+								const proOnly = [];
+
+								results.forEach((result, index) => {
+									const { block, label } = labeledBlocks[index];
+									if (!result || !result.svgCode || result.noStrongMatch) {
+										missingMatches.push(label);
+										return;
+									}
+									if (result.isPro) {
+										proOnly.push(label);
+										return;
+									}
+									updates.push({ block, result });
+								});
+
+								if (updates.length === 0) {
+									let message = 'I could not find matching icons for the titles below in the Cloud Library.';
+									if (missingLabels.length) {
+										message += ` Missing labels for ${formatList(missingLabels)}.`;
+									}
+									if (missingMatches.length) {
+										message += ` No matches for: ${formatList(missingMatches)}.`;
+									}
+									if (proOnly.length) {
+										message += ` Pro only: ${formatList(proOnly)}.`;
+									}
+									setMessages(prev => [
+										...prev,
+										{ role: 'assistant', content: message, executed: false },
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								let updatedCount = 0;
+								registry.batch(() => {
+									updates.forEach(({ block, result }) => {
+										const blockHandler = getAiHandlerForBlock(block);
+										if (!blockHandler) return;
+										const prefix = getBlockPrefix(block.name);
+										const handlerResult = blockHandler(
+											block,
+											'icon_svg',
+											{ svgCode: result.svgCode, svgType: result.svgType },
+											prefix,
+											{ mode: currentScope }
+										);
+										let changes = null;
+										if (handlerResult?.action === 'apply') {
+											changes = handlerResult.attributes;
+										} else if (handlerResult && !handlerResult.action) {
+											changes = handlerResult;
+										}
+										if (changes) {
+											updateBlockAttributes(block.clientId, changes);
+											updatedCount += 1;
+										}
+									});
+								});
+
+								let message = currentScope === 'selection'
+									? `Updated ${updatedCount} icons to match the titles below.`
+									: `Updated ${updatedCount} icons on the page to match the titles below.`;
+								if (missingLabels.length) {
+									message += ` Missing labels for ${formatList(missingLabels)}.`;
+								}
+								if (missingMatches.length) {
+									message += ` No matches for: ${formatList(missingMatches)}.`;
+								}
+								if (proOnly.length) {
+									message += ` Pro only: ${formatList(proOnly)}.`;
+								}
+
+								setMessages(prev => [
+									...prev,
+									{ role: 'assistant', content: message, executed: true },
+								]);
+								setIsLoading(false);
+								return;
+							}
+							if (!searchQuery && !hasExplicitList) {
 								setMessages(prev => [
 									...prev,
 									{
@@ -3811,12 +4172,27 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								return;
 							}
 
-							const targetMeta = resolveCloudIconTarget();
+							const wantsDifferent = /\b(different|another|alternative|new|other)\b/.test(lowerMessage);
+							let targetMeta = resolveCloudIconTarget();
+
+							if (shouldTreatAsIconTheme && hasIconBlocksInScope && !selectedName.includes('button')) {
+								targetMeta = { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+							}
+
 							const isButtonTarget = targetMeta.targetBlock === 'button';
 							const isIconTarget = targetMeta.targetBlock === 'icon';
-							const selectedName = selectedBlock?.name || '';
+							const currentSvg = isButtonTarget
+								? selectedBlock?.attributes?.['icon-content']
+								: selectedBlock?.attributes?.content;
+							const excludeSvgCodes =
+								wantsDifferent && currentSvg ? [currentSvg] : [];
 
-							if (currentScope === 'selection') {
+							const isMultiIconRequest = wantsMultipleIcons || hasExplicitList;
+							const targetBlocks = isMultiIconRequest
+								? (isButtonTarget ? buttonBlocksInScope : iconBlocksInScope)
+								: [];
+
+							if (currentScope === 'selection' && !isMultiIconRequest) {
 								const mismatch = (isButtonTarget && !selectedName.includes('button')) ||
 									(isIconTarget && !selectedName.includes('icon'));
 								if (mismatch) {
@@ -3835,15 +4211,250 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								}
 							}
 
+							if (isMultiIconRequest && targetBlocks.length === 0) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: currentScope === 'selection'
+											? 'No icon blocks found in the selection.'
+											: 'No icon blocks found on this page.',
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
+
 							console.log('[Maxi AI] Searching Cloud Library icons for:', searchQuery);
-							const iconResult = await findBestIcon(searchQuery, { target: targetMeta.svgTarget });
+
+							if (hasExplicitList && isMultiIconRequest && targetBlocks.length > 1) {
+								const maxQueries = Math.min(12, explicitQueries.length);
+								const queryList = explicitQueries.slice(0, maxQueries);
+								const results = await Promise.all(
+									queryList.map(query =>
+										findBestIcon(query, {
+											target: targetMeta.svgTarget,
+											requireStrongMatch: true,
+										})
+									)
+								);
+
+								const usable = [];
+								const missing = [];
+								const proOnly = [];
+
+								results.forEach((result, index) => {
+									const query = queryList[index];
+									if (!result || !result.svgCode) {
+										missing.push(query);
+										return;
+									}
+									if (result.noStrongMatch) {
+										missing.push(query);
+										return;
+									}
+									if (result.isPro) {
+										proOnly.push(query);
+										return;
+									}
+									usable.push({
+										title: result.title,
+										svgCode: result.svgCode,
+										svgType: result.svgType,
+									});
+								});
+
+								const normalizeSvgCode = value =>
+									String(value || '').replace(/\s+/g, ' ').trim();
+								const uniqueUsable = [];
+								const seenSvg = new Set();
+								for (const item of usable) {
+									const key = normalizeSvgCode(item.svgCode);
+									if (!key || seenSvg.has(key)) {
+										continue;
+									}
+									seenSvg.add(key);
+									uniqueUsable.push(item);
+								}
+
+								if (uniqueUsable.length < 2) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: `I could only find one matching icon for that list. Try different keywords.`,
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								let updatedCount = 0;
+								registry.batch(() => {
+									targetBlocks.forEach((block, index) => {
+										const choice = uniqueUsable[index % uniqueUsable.length];
+										const blockHandler = getAiHandlerForBlock(block);
+										if (!blockHandler) return;
+										const prefix = getBlockPrefix(block.name);
+										const result = blockHandler(
+											block,
+											targetMeta.property,
+											{ svgCode: choice.svgCode, svgType: choice.svgType },
+											prefix,
+											{ mode: currentScope }
+										);
+										let changes = null;
+										if (result?.action === 'apply') {
+											changes = result.attributes;
+										} else if (result && !result.action) {
+											changes = result;
+										}
+										if (changes) {
+											updateBlockAttributes(block.clientId, changes);
+											updatedCount += 1;
+										}
+									});
+								});
+
+								let message = currentScope === 'selection'
+									? `Updated ${updatedCount} icons using the requested list.`
+									: `Updated ${updatedCount} icons on the page using the requested list.`;
+								if (missing.length) {
+									message += ` Missing: ${formatList(missing)}.`;
+								}
+								if (proOnly.length) {
+									message += ` Pro only: ${formatList(proOnly)}.`;
+								}
+
+								setMessages(prev => [
+									...prev,
+									{ role: 'assistant', content: message, executed: true },
+								]);
+								setIsLoading(false);
+								return;
+							}
+
+							if (isMultiIconRequest && targetBlocks.length > 1) {
+								const candidateLimit = Math.min(
+									24,
+									Math.max(12, targetBlocks.length * 3)
+								);
+								const candidateResult = await findIconCandidates(searchQuery, {
+									target: targetMeta.svgTarget,
+									limit: candidateLimit,
+								});
+
+								if (candidateResult?.hasOnlyPro) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: `Found icons for "${searchQuery}" but they are Pro. Upgrade to MaxiBlocks Pro to use them.`,
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								if (!candidateResult?.icons || candidateResult.icons.length === 0) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: `I couldn't find icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								if (candidateResult.icons.length <= 1) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: `I only found one icon for "${searchQuery}" in the Cloud Library.`,
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								let updatedCount = 0;
+								registry.batch(() => {
+									targetBlocks.forEach((block, index) => {
+										const choice = candidateResult.icons[index % candidateResult.icons.length];
+										const blockHandler = getAiHandlerForBlock(block);
+										if (!blockHandler) return;
+										const prefix = getBlockPrefix(block.name);
+										const result = blockHandler(
+											block,
+											targetMeta.property,
+											{ svgCode: choice.svgCode, svgType: choice.svgType },
+											prefix,
+											{ mode: currentScope }
+										);
+										let changes = null;
+										if (result?.action === 'apply') {
+											changes = result.attributes;
+										} else if (result && !result.action) {
+											changes = result;
+										}
+										if (changes) {
+											updateBlockAttributes(block.clientId, changes);
+											updatedCount += 1;
+										}
+									});
+								});
+
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: currentScope === 'selection'
+											? `Updated ${updatedCount} icons with "${searchQuery}" variations.`
+											: `Updated ${updatedCount} icons on the page with "${searchQuery}" variations.`,
+										executed: true,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
+
+							const fallbackQuery =
+								hasExplicitList && explicitQueries.length > 0
+									? explicitQueries[0]
+									: searchQuery;
+							const iconResult = await findBestIcon(fallbackQuery, {
+								target: targetMeta.svgTarget,
+								excludeSvgCodes,
+								preferDifferent: wantsDifferent && excludeSvgCodes.length > 0,
+							});
+
+							if (wantsDifferent && (iconResult?.noAlternative || iconResult?.total === 1)) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: `I only found one icon for "${fallbackQuery}" in the Cloud Library.`,
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
 
 							if (!iconResult || !iconResult.svgCode) {
 								setMessages(prev => [
 									...prev,
 									{
 										role: 'assistant',
-										content: `I couldn't find an icon for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+										content: `I couldn't find an icon for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
 										executed: false,
 									},
 								]);

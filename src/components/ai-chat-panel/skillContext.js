@@ -73,6 +73,7 @@ export const BLOCK_SKILLS = {
 			'SVG fill color (palette 1-8)',
 			'SVG line/stroke color',
 			'Stroke width',
+			'Alignment (left/center/right)',
 		],
 		patterns: [
 			'Feature list (icon + heading + description)',

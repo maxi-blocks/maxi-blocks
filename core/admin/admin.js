@@ -1083,6 +1083,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
+					console.error('License validation error:', error);
 					showMessage(
 						window.localization.failed_to_validate_license,
 						true

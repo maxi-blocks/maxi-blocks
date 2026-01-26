@@ -25,7 +25,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 
 - Text size: property "text_font_size" with { size, unit } (unit "rem" or "px").
 - Font weight: property "text_weight" with number (400, 600, 800).
-- Line height: property "text_line_height" with { value, unit } (unit "-" for unitless).
+- Line height: property "text_line_height" with { size, unit } (unit "-" for unitless).
 - Text color: property "text_color" with palette number (1-8) or CSS var (var(--highlight), var(--h1), var(--p), var(--bg-1), var(--bg-2)).
 - Invert text: property "text_color" value "var(--bg-1)" when a light foreground is needed.
 - Max width: property "text_max_width" with { size, unit } (px or ch).
@@ -33,7 +33,8 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - Highlight: property "text_highlight" with "marker" | "underline" | "badge".
 - Text decoration: property "text_decoration" with "none" | "underline" | "line-through".
 - Text alignment: property "text_align" with "left" | "center" | "right" | "justify".
-- Text level: property "text_level" with "h1"..."h6" or "p".
+- Text level: property "text_level" or "textLevel" with "h1"..."h6" or "p".
+  Use for semantic level changes ("make this an H2", etc).
 - Lists: property "text_list" with { isList, typeOfList, listStyle, listStyleCustom }.
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".
 - Link: property "text_link" with { url, target }.
@@ -52,6 +53,24 @@ Clarify when request is generic:
 When user says "center the text", ask if they mean text alignment or centering the text block itself.
 If they want the text block centered, ask them to select the parent layout block.
 When user asks to justify text, warn that it can cause uneven gaps on mobile and confirm.
+
+### INTERNAL META / FLOW (DOCUMENTED)
+
+These properties are used by handlers for multi-step interactions.
+
+- "color_clarify" (boolean):
+  If the user asks for a color change but is vague (e.g. "make it pop", "make it nicer"),
+  set "color_clarify": true AND return action "CLARIFY" with 3 options.
+  Do not guess.
+
+- "flow_*":
+  If you set any flow_* keys, keep output JSON minimal and valid.
+  Use only when needed for multi-step clarification or internal routing.
+
+  Recommended:
+  - "flow_step": string (e.g. "choose_style", "choose_color", "confirm")
+  - "flow_context": object (temporary context)
+  - "flow_message": string (short instruction)
 
 ---
 

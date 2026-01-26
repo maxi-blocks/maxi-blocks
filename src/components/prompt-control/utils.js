@@ -144,7 +144,11 @@ const parseJsonPayload = content => {
 	}
 
 	const jsonStr = content.slice(startIndex, endIndex + 1);
-	return JSON.parse(jsonStr);
+	try {
+		return JSON.parse(jsonStr);
+	} catch (error) {
+		return null;
+	}
 };
 
 const handleUiTarget = responseContent => {
@@ -462,6 +466,8 @@ export const callBackendAIProxy = async ({
 		let buffer = '';
 		let responseContent = '';
 		let abortStream = false;
+		let parseErrorCount = 0;
+		const maxParseErrors = 5;
 
 		while (true) {
 			const { value, done } = await reader.read();
@@ -489,6 +495,7 @@ export const callBackendAIProxy = async ({
 				}
 				try {
 					const parsed = JSON.parse(dataString);
+					parseErrorCount = 0;
 					if (parsed?.type === 'error' || parsed?.error) {
 						const errorMessage =
 							parsed?.message ||
@@ -525,7 +532,15 @@ export const callBackendAIProxy = async ({
 						});
 					}
 				} catch (error) {
+					parseErrorCount += 1;
 					console.error('MaxiBlocks AI stream parse error:', error);
+					if (parseErrorCount >= maxParseErrors) {
+						console.error('MaxiBlocks AI stream parse error: too many malformed chunks, aborting.');
+						handledError = true;
+						updateResultWithError('AI response stream was malformed.');
+						abortStream = true;
+						break;
+					}
 				}
 			}
 

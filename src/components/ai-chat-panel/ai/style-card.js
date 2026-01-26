@@ -79,8 +79,8 @@ export const buildStyleCardContext = activeStyleCard => {
 	if (!activeStyleCard) return '';
 	const colors = activeStyleCard.light?.styleCard?.color || {};
 	const colorContext = Object.entries(colors)
-		.filter(([k]) => k.startsWith('color-'))
-		.map(([k, v]) => `${k}: ${v}`)
+		.filter(([k]) => k.startsWith('color-') || /^\d+$/.test(k))
+		.map(([k, v]) => `${/^\d+$/.test(k) ? `color-${k}` : k}: ${v}`)
 		.join(', ');
 
 	if (!colorContext) return '';
@@ -96,6 +96,9 @@ export const createStyleCardHandlers = ({
 	const handleUpdateStyleCard = (updates) => {
 		if (!allStyleCards || !saveMaxiStyleCards) {
 			return __('Style Cards System is not ready.', 'maxi-blocks');
+		}
+		if (!updates || typeof updates !== 'object') {
+			return __('No valid Style Card updates found.', 'maxi-blocks');
 		}
 
 		const newStyleCards = cloneDeep(allStyleCards);

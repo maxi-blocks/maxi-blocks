@@ -332,6 +332,8 @@ const CSS_COLOR_KEYWORDS = {
 	yellowgreen: '#9acd32',
 };
 
+const HEADING_PROMPT_REGEX = /\b(heading|headers?|title|h[1-6])\b/i;
+
 const CSS_COLOR_KEYWORDS_SORTED = Object.keys(CSS_COLOR_KEYWORDS).sort(
 	(a, b) => b.length - a.length
 );
@@ -826,7 +828,6 @@ export const applyThemeToStyleCards = ({
 	if (!activeSC) return null;
 
 	const promptText = typeof prompt === 'string' ? prompt : '';
-	const promptTextLower = promptText.toLowerCase();
 	const vibeKey = getVibeFromPrompt(promptText);
 	
 	const vibe = vibeKey ? VIBE_DICTIONARY[vibeKey] : null;
@@ -873,7 +874,7 @@ export const applyThemeToStyleCards = ({
 	if (isCustom) {
 		// Check if this is a heading-only color request
 		const isHeadingOnlyRequest = resolvedColor && 
-			/\b(heading|headers?|title)\b/i.test(promptText) &&
+			HEADING_PROMPT_REGEX.test(promptText) &&
 			!/\b(palette|theme|site|everything|all colors?)\b/i.test(promptText);
 		
 		if (isHeadingOnlyRequest) {
@@ -894,10 +895,7 @@ export const applyThemeToStyleCards = ({
 			}
 			
 			// [NEW] Smart Element Coloring (for non-heading-only requests)
-			if (
-				resolvedColor &&
-				(promptTextLower.includes('heading') || promptTextLower.includes('title'))
-			) {
+			if (resolvedColor && HEADING_PROMPT_REGEX.test(promptText)) {
 				applyHeadingColor(nextStyleCards[activeSC.key], resolvedColor, false);
 			}
 		}
@@ -920,7 +918,7 @@ export const applyThemeToStyleCards = ({
 	
 	// Check if this is a heading-only color request (same logic as above)
 	const isHeadingOnlyRequest = resolvedColor && 
-		/\b(heading|headers?|title)\b/i.test(promptText) &&
+		HEADING_PROMPT_REGEX.test(promptText) &&
 		!/\b(palette|theme|site|everything|all colors?)\b/i.test(promptText);
 	
 	// For heading-only requests, use original palette from source card
@@ -952,7 +950,7 @@ export const applyThemeToStyleCards = ({
 		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);
 	} else if (
 		resolvedColor &&
-		(promptTextLower.includes('heading') || promptTextLower.includes('title'))
+		HEADING_PROMPT_REGEX.test(promptText)
 	) {
 		// Fallback for combined requests
 		applyHeadingColor(nextStyleCards[newKey], resolvedColor, true);

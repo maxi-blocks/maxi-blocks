@@ -5,7 +5,7 @@
 
 export const ICON_PATTERNS = [
 	{
-		regex: /\bicon\b.*\bline\s*width\b|\bline\s*width\b.*\bicon\b|\bstroke\s*width\b/i,
+		regex: /\bicon\b.*\b(?:line|stroke)\s*width\b|\b(?:line|stroke)\s*width\b.*\bicon\b/i,
 		property: 'flow_icon_line_width',
 		value: 'start',
 		selectionMsg: '',
@@ -46,7 +46,7 @@ export const ICON_PATTERNS = [
 	},
 ];
 
-export const handleIconUpdate = (block, property, value, prefix, context = {}) => {
+export const handleIconUpdate = (block, property, value, _prefix, context = {}) => {
 	const isIcon = block?.name?.includes('icon');
 	if (!isIcon) return null;
 
@@ -95,10 +95,23 @@ export const handleIconUpdate = (block, property, value, prefix, context = {}) =
 				],
 			};
 		}
+		const lineWidth = Number(context.icon_line_width);
+		if (!Number.isFinite(lineWidth)) {
+			return {
+				action: 'ask_options',
+				target: 'icon_line_width',
+				msg: 'What line width would you like for the icons?',
+				options: [
+					{ label: 'Thin', value: 1 },
+					{ label: 'Medium', value: 2 },
+					{ label: 'Thick', value: 4 },
+				],
+			};
+		}
 
 		return {
 			action: 'apply',
-			attributes: { 'svg-stroke-general': Number(context.icon_line_width) },
+			attributes: { 'svg-stroke-general': lineWidth },
 			done: true,
 			message: 'Updated icon line width.',
 		};

@@ -72,6 +72,11 @@ If width or visibility is mentioned:
 - Download label: property "button_custom_text_link" with string (e.g. "Download").
 - High contrast mode: property "high_contrast_mode" with true.
 
+### MISSING-IN-DOCS (NOW DOCUMENTED)
+- Button width: property "width" with "auto" | "100%".
+  Use "button_responsive_width" for other sizes.
+- Border radius: property "border_radius" with number (px; pill look -> 999).
+
 ---
 
 ### MODULE: BUTTON INTENT MAPPING
@@ -287,6 +292,24 @@ Payload:
 {
   "button_responsive_only": "desktop"
 }
+
+### INTERNAL META / FLOW (DOCUMENTED)
+
+These properties are used by handlers for multi-step interactions.
+
+- "color_clarify" (boolean):
+  If the user asks for a color change but is vague (e.g. "make it pop", "make it nicer"),
+  set "color_clarify": true AND return action "CLARIFY" with 3 options.
+  Do not guess.
+
+- "flow_*":
+  If you set any flow_* keys, keep output JSON minimal and valid.
+  Use only when needed for multi-step clarification or internal routing.
+
+  Recommended:
+  - "flow_step": string (e.g. "choose_style", "choose_color", "confirm")
+  - "flow_context": object (temporary context)
+  - "flow_message": string (short instruction)
 
 ---
 

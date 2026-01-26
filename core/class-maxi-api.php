@@ -3547,9 +3547,10 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 if ($streaming) {
+                    $initial_ob_level = ob_get_level();
                     @ini_set('output_buffering', 'off');
                     @ini_set('zlib.output_compression', '0');
-                    while (ob_get_level() > 0) {
+                    while (ob_get_level() > $initial_ob_level) {
                         ob_end_flush();
                     }
 
@@ -3577,7 +3578,7 @@ if (!class_exists('MaxiBlocks_API')):
                     curl_setopt(
                         $curl_handle,
                         CURLOPT_WRITEFUNCTION,
-                        function ($curl, $data) use (&$response_buffer) {
+                        function ($_curl, $data) use (&$response_buffer) {
                             $response_buffer .= $data;
                             echo $data;
                             if (function_exists('ob_flush')) {
@@ -3611,6 +3612,9 @@ if (!class_exists('MaxiBlocks_API')):
                             @ob_flush();
                         }
                         flush();
+                        if (function_exists('do_action')) {
+                            do_action('shutdown');
+                        }
                         exit;
                     }
                     exit;
@@ -3692,6 +3696,7 @@ if (!class_exists('MaxiBlocks_API')):
             $provider_label = $provider_labels[$provider] ?? ucfirst($provider);
 
             if ($provider === 'anthropic') {
+                // Anthropic does not expose a public models endpoint yet.
                 return rest_ensure_response([
                     'claude-opus-4-1-20250805',
                     'claude-sonnet-4-20250514',
@@ -4129,7 +4134,7 @@ PROMPT;
             ];
 
             foreach ($keywords as $keyword) {
-                if (strpos($normalized, $keyword) !== false) {
+                if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/', $normalized)) {
                     return true;
                 }
             }

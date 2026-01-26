@@ -34,6 +34,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - Custom aspect ratio: property "video_ratio_custom" with "16/9" or "1.7778".
 - Popup ratio: property "popup_ratio" or "popup_ratio_custom" with the same values as video_ratio.
 - Cover image (popup): property "overlay_media_url" with image URL, or "overlay_hide_image" true to show icon only.
+- Overlay image by ID (popup): property "overlay_media_id" with number.
 - Overlay image size: property "overlay_media_width" | "overlay_media_height" with number/string (optionally with units). Optional "overlay_media_width_unit" | "overlay_media_height_unit".
 - Overlay image opacity: property "overlay_media_opacity" with 0-1.
 - Overlay color: property "overlay_color" with palette number (1-8) or CSS var (preferred). Optional "overlay_opacity" 0-1.
@@ -52,6 +53,24 @@ Clarify when request is generic:
 - Playback mode: Background Mode (autoplay + loop + muted + no controls) | Player Mode (controls, no autoplay) | Presentation (autoplay + controls).
 - Cover image: Custom image URL | Icon only | Keep current.
 - Lightbox: Inline | Popup | Keep current.
+
+### INTERNAL META / FLOW (DOCUMENTED)
+
+These properties are used by handlers for multi-step interactions.
+
+- "color_clarify" (boolean):
+  If the user asks for a color change but is vague (e.g. "make it pop", "make it nicer"),
+  set "color_clarify": true AND return action "CLARIFY" with 3 options.
+  Do not guess.
+
+- "flow_*":
+  If you set any flow_* keys, keep output JSON minimal and valid.
+  Use only when needed for multi-step clarification or internal routing.
+
+  Recommended:
+  - "flow_step": string (e.g. "choose_style", "choose_color", "confirm")
+  - "flow_context": object (temporary context)
+  - "flow_message": string (short instruction)
 
 ---
 

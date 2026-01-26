@@ -3,6 +3,8 @@
  * Maps natural language to Text Maxi attributes.
  */
 
+import { parseBorderStyle } from './utils';
+
 const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 	if (rawValue === null || rawValue === undefined) {
 		return { value: 0, unit: fallbackUnit };
@@ -414,8 +416,22 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			};
 		}
 
-		const style = context.border_style.split('-')[0];
-		const width = parseInt(context.border_style.split('-')[1].replace('px', ''), 10);
+		const borderConfig = parseBorderStyle(context.border_style);
+		if (!borderConfig) {
+			return {
+				action: 'ask_options',
+				target: 'border_style',
+				msg: 'Which border style?',
+				options: [
+					{ label: 'Solid Thin', value: 'solid-1px' },
+					{ label: 'Solid Medium', value: 'solid-2px' },
+					{ label: 'Solid Thick', value: 'solid-4px' },
+					{ label: 'Dashed', value: 'dashed-2px' },
+					{ label: 'Dotted', value: 'dotted-2px' },
+				],
+			};
+		}
+		const { style, width } = borderConfig;
 		const color = context.border_color;
 		const isPalette = typeof color === 'number';
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

@@ -54,7 +54,7 @@ const getDividerOrientation = block => {
 
 export const DIVIDER_PATTERNS = [
 	{
-		regex: /\bshadow|glow|drop\s*shadow|depth|lift|raised|elevat(ed|e)?\b/i,
+		regex: /\b(?:shadow|glow|drop\s*shadow|depth|lift|raised|elevat(?:ed|e)?)\b/i,
 		property: 'flow_shadow',
 		value: 'start',
 		selectionMsg: '',

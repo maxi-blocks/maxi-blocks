@@ -182,7 +182,7 @@ export const BUTTON_PATTERNS = [
 	// ============================================================
 
 	{ regex: /dynamic.*title|bind.*title|post.*title/i, property: 'button_dynamic_text', value: 'post-title', selectionMsg: 'Bound to post title.', pageMsg: 'Button text now dynamic.', target: 'button' },
-	{ regex: /dynamic.*(link|url)|bind.*url|post.*url/i, property: 'button_dynamic_link', value: 'post-url', selectionMsg: 'Bound to post URL.', pageMsg: 'Button link now dynamic.', target: 'button' },
+	{ regex: /dynamic.*(link|url)|bind.*url|post.*url/i, property: 'button_dynamic_link', value: 'entity', selectionMsg: 'Bound to post URL.', pageMsg: 'Button link now dynamic.', target: 'button' },
 
 	// ============================================================
 	// GROUP 11: SLANG & JARGON (Catch-all patterns at the end)
@@ -674,6 +674,19 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			};
 			break;
 
+		case 'button_icon_svg': {
+			const rawSvg = typeof value === 'string' ? value : value?.svgCode;
+			const nextSvgType = typeof value === 'object' ? value?.svgType : null;
+			if (rawSvg) {
+				changes = {
+					'icon-content': rawSvg,
+					'icon-only': false,
+					...(nextSvgType ? { svgType: nextSvgType } : {}),
+				};
+			}
+			break;
+		}
+
 		case 'icon_position':
 			changes = { 'icon-position': value };
 			break;
@@ -887,10 +900,13 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_dynamic_link':
-			changes = {
-				'dc-link-status': true,
-				'dc-link-field': value
-			};
+			{
+				const targetValue = (value === 'post-url' || value === 'post_url') ? 'entity' : value;
+				changes = {
+					'dc-link-status': true,
+					'dc-link-target': targetValue
+				};
+			}
 			break;
 	}
 

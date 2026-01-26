@@ -99,14 +99,15 @@ export const createStyleCardHandlers = ({
 		}
 
 		const newStyleCards = cloneDeep(allStyleCards);
-		let activeKey = Object.keys(newStyleCards).find(key => newStyleCards[key].status === 'active');
+		const sortedKeys = Object.keys(newStyleCards).sort();
+		let activeKey = sortedKeys.find(key => newStyleCards[key].status === 'active');
 
 		if (!activeKey) {
-			activeKey = Object.keys(newStyleCards)[0];
+			activeKey = sortedKeys.length ? sortedKeys[0] : null;
 		}
 
 		const corruptedKeys = ['light', 'dark', 'status', 'value', 'styleCard'];
-		const isCorrupted = Object.keys(newStyleCards).some(key => corruptedKeys.includes(key));
+		const isCorrupted = sortedKeys.some(key => corruptedKeys.includes(key));
 
 		if (!activeKey || !newStyleCards[activeKey] || isCorrupted) {
 			if (resetSC) {

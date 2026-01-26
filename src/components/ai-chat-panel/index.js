@@ -16,6 +16,7 @@ import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue'
 import { getLastBreakpointAttribute } from '@extensions/styles';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
+import { findBestIcon, extractIconQuery } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -445,10 +446,13 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
-	// GROUP 24: BLOCK ACTIONS (Imported)
+	// GROUP 24: CLOUD ICON SEARCH (Typesense)
+	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
+
+	// GROUP 25: BLOCK ACTIONS (Imported)
 	...AI_BLOCK_PATTERNS,
 
-	// GROUP 25: CREATE BLOCK PATTERNS (from Cloud Library)
+	// GROUP 26: CREATE BLOCK PATTERNS (from Cloud Library)
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];
@@ -737,6 +741,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return extractValueFromPatterns(message, [
 			/(?:alt\s*text|alt)\s*(?:to|=|is|:)\s*(.+)$/i,
 		]);
+	};
+
+	const resolveImageRatioValue = (width, height) => {
+		const ratioKey = `${width}/${height}`;
+		const ratioMap = {
+			'1/1': 'ar11',
+			'4/3': 'ar43',
+			'16/9': 'ar169',
+			'3/2': 'ar32',
+			'2/3': 'ar23',
+			'9/16': 'custom:9/16',
+			'4/5': 'custom:4/5',
+			'5/4': 'custom:5/4',
+		};
+
+		return ratioMap[ratioKey] || `custom:${ratioKey}`;
 	};
 
 	const resolvePromptValue = (property, message) => {
@@ -1959,7 +1979,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'align_items_flex':
 							// Apply to layout containers (different from text align_items)
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
-								changes = updateAlignItems(value);
+								const direction = String(block.attributes?.['flex-direction-general'] || '').toLowerCase();
+								const isColumn = direction.startsWith('column');
+								const isMainAxisAlign = ['flex-start', 'center', 'flex-end'].includes(value);
+								changes = isColumn && isMainAxisAlign
+									? updateJustifyContent(value)
+									: updateAlignItems(value);
 							}
 							break;
 						case 'flex_wrap':
@@ -2048,10 +2073,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						case 'display':
 							changes = updateDisplay(value);
-							break;
-						// ======= OPACITY & TRANSPARENCY =======
-						case 'opacity':
-							changes = { 'opacity-general': Number(value) };
 							break;
 						// ======= TRANSFORM EFFECTS =======
 						case 'transform_rotate':
@@ -2420,11 +2441,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return count;
 	};
 
+	const SHAPE_DIVIDER_PROPERTIES = new Set([
+		'shape_divider',
+		'shape_divider_top',
+		'shape_divider_bottom',
+		'shape_divider_both',
+		'shape_divider_color',
+		'shape_divider_color_top',
+		'shape_divider_color_bottom',
+	]);
+
+	const normalizeTargetBlock = (property, targetBlock) =>
+		SHAPE_DIVIDER_PROPERTIES.has(property) ? 'container' : targetBlock;
+
 	const handleUpdatePage = (property, value, targetBlock = null, clientId = null) => {
 		let count = 0;
+		const normalizedTarget = normalizeTargetBlock(property, targetBlock);
 		// Wrap in batch to prevent multiple re-renders
 		registry.batch(() => {
-			count = applyUpdatesToBlocks(allBlocks, property, value, targetBlock, clientId);
+			count = applyUpdatesToBlocks(allBlocks, property, value, normalizedTarget, clientId);
 		});
 		return `Updated ${count} blocks on the page.`;
 	};
@@ -2433,6 +2468,16 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (!selectedBlock) return __('Please select a block first.', 'maxi-blocks');
 		
 		let count = 0;
+		let usedParentFallback = false;
+		const parentFallbackProps = new Set([
+			'align_items_flex',
+			'justify_content',
+			'flex_direction',
+			'flex_wrap',
+			'gap',
+			'dead_center',
+			'align_everything',
+		]);
 		// IMPORTANT: getSelectedBlock() often returns a "light" object or the recursion fails if innerBlocks aren't fully hydrated in that specific reference.
 		// Instead, we should find the selected block within the full 'allBlocks' tree to ensure we have the complete structure with innerBlocks.
 		
@@ -2455,17 +2500,43 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		const blocksToProcess = [fullSelectedBlock || selectedBlock];
+		const normalizedTarget = normalizeTargetBlock(property, targetBlock);
 		
 		// Wrap in batch
 		registry.batch(() => {
-			count = applyUpdatesToBlocks(blocksToProcess, property, value, targetBlock);
+			count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
 		});
+
+		if (count === 0 && parentFallbackProps.has(property)) {
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parentIds = getBlockParents(selectedBlock.clientId) || [];
+			const layoutParent = parentIds
+				.map(parentId => getBlock(parentId))
+				.find(parent =>
+					parent &&
+					(parent.name.includes('column') ||
+						parent.name.includes('row') ||
+						parent.name.includes('group') ||
+						parent.name.includes('container'))
+				);
+
+			if (layoutParent) {
+				registry.batch(() => {
+					count = applyUpdatesToBlocks([layoutParent], property, value, null, layoutParent.clientId);
+				});
+				usedParentFallback = count > 0;
+			}
+		}
 
 
 		if (count === 0) {
 			return __('No matching components found in selection.', 'maxi-blocks');
 		}
-		
+
+		if (usedParentFallback) {
+			return __('Updated the parent layout block.', 'maxi-blocks');
+		}
+
 		return count === 1 
 			? __('Updated the selected block.', 'maxi-blocks')
 			: `Updated ${count} items in the selection.`;
@@ -3171,11 +3242,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			// The user requirement says "Pause NLU". 
 			// But if they type "Soft", we should probably accept it if it matches an option.
 			
-			const isOptionMatch = conversationContext.currentOptions?.some(o => 
+			const options = conversationContext.currentOptions;
+			const hasOptions = Array.isArray(options) && options.length > 0;
+			const isOptionMatch = hasOptions && options.some(o =>
 				(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === input.toLowerCase()
 			);
 
-            if (isOptionMatch) {
+            if (isOptionMatch || !hasOptions) {
                 // Let handleSuggestion handle it via the standard flow re-entry
                 handleSuggestion(input);
                 return;
@@ -3194,6 +3267,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		const lowerMessage = rawMessage.toLowerCase();
 		const hexColor = extractHexColor(rawMessage);
 		const currentScope = conversationContext?.mode || scope; // Use context mode if in a flow, or tab state
+		const lastClarificationMsg = messagesRef.current?.findLast(
+			m => m.role === 'assistant' && m.options
+		);
+		const lastClarifyContent =
+			typeof lastClarificationMsg?.content === 'string'
+				? lastClarificationMsg.content.toLowerCase()
+				: '';
 		
 		// 0. SELECTION CHECK: If in Selection mode, enforce that a block MUST be selected
 		if (currentScope === 'selection' && !selectedBlock) {
@@ -3240,11 +3320,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		}
 
 		// Image numeric overrides (width/height/ratio)
-		const isImageRequest = lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture') || selectedBlock?.name?.includes('image');
+		const isImageClarifyContext =
+			lastClarifyContent.includes('image') ||
+			lastClarifyContent.includes('images') ||
+			lastClarifyContent.includes('photo') ||
+			lastClarifyContent.includes('picture');
+		const isImageRequest =
+			lowerMessage.includes('image') ||
+			lowerMessage.includes('photo') ||
+			lowerMessage.includes('picture') ||
+			selectedBlock?.name?.includes('image') ||
+			isImageClarifyContext;
 		if (isImageRequest) {
-			const ratioMatch = lowerMessage.match(/(?:aspect\s*ratio|ratio)\s*(?:to|=|is)?\s*(\d+)\s*[:/]\s*(\d+)/i);
+			const ratioMatch = lowerMessage.match(/(\d+)\s*[:/]\s*(\d+)/);
 			if (ratioMatch) {
-				const ratioValue = `custom:${ratioMatch[1]}/${ratioMatch[2]}`;
+				const ratioValue = resolveImageRatioValue(ratioMatch[1], ratioMatch[2]);
 				const directAction = currentScope === 'selection'
 					? { action: 'update_selection', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` }
 					: { action: 'update_page', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` };
@@ -3437,14 +3527,48 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}
 		}
 
+		const hasShapeDividerIntent = /\bshape\s*-?\s*divider\b/.test(lowerMessage);
+		const hasShapeDividerStyle = /\b(wave|waves|curve|slant|triangle)\b/.test(lowerMessage);
+		if (hasShapeDividerIntent && !hasShapeDividerStyle) {
+			const wantsTop = /\btop\b/.test(lowerMessage);
+			const wantsBottom = /\bbottom\b/.test(lowerMessage);
+
+			if (!wantsTop && !wantsBottom) {
+				setMessages(prev => [...prev, {
+					role: 'assistant',
+					content: 'Where do you want the shape divider?',
+					options: ['Top', 'Bottom', 'Both'],
+					shapeDividerLocation: true,
+					executed: false
+				}]);
+				setIsLoading(false);
+				return;
+			}
+
+			const location = wantsTop && wantsBottom ? 'both' : (wantsTop ? 'top' : 'bottom');
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'Which shape style should the divider use?',
+				options: ['Wave', 'Curve', 'Slant', 'Triangle'],
+				shapeDividerTarget: location,
+				executed: false
+			}]);
+			setIsLoading(false);
+			return;
+		}
+
 
 
 		const getRequestedTarget = () => {
 			if (lowerMessage.includes('video')) return 'video';
 			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
 			if (lowerMessage.includes('button')) return 'button';
+			if (hasShapeDividerIntent) return 'container';
 			if (lowerMessage.includes('divider')) return 'divider';
 			if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('paragraph')) return 'text';
+			if (/\brow\b/.test(lowerMessage)) return 'row';
+			if (/\bcolumn\b/.test(lowerMessage)) return 'column';
+			if (/\bgroup\b/.test(lowerMessage)) return 'group';
 			if (lowerMessage.includes('container') || lowerMessage.includes('section')) return 'container';
 
 			if (selectedBlock?.name) {
@@ -3453,9 +3577,68 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				if (selectedBlock.name.includes('button')) return 'button';
 				if (selectedBlock.name.includes('divider')) return 'divider';
 				if (selectedBlock.name.includes('text') || selectedBlock.name.includes('heading')) return 'text';
+				if (selectedBlock.name.includes('row')) return 'row';
+				if (selectedBlock.name.includes('column')) return 'column';
+				if (selectedBlock.name.includes('group')) return 'group';
 				if (selectedBlock.name.includes('container')) return 'container';
 			}
 
+			return null;
+		};
+
+		const resolveCloudIconTarget = () => {
+			const selectedName = selectedBlock?.name || '';
+			if (selectedName.includes('button')) {
+				return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+			}
+			if (selectedName.includes('icon-maxi') || selectedName.includes('svg-icon')) {
+				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+			}
+
+			const wantsButton = /\bbutton\b/.test(lowerMessage);
+			const wantsIconBlock = /\b(icon block|svg icon|svg-icon|icon maxi)\b/.test(lowerMessage);
+
+			if (wantsButton) {
+				return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+			}
+			if (wantsIconBlock) {
+				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+			}
+
+			return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+		};
+
+		const resolveSelectionLayoutTarget = () => {
+			if (!selectedBlock) return null;
+
+			const hasChild = (block, name) =>
+				block?.innerBlocks?.some(child => child.name.includes(name));
+
+			if (selectedBlock.name.includes('row')) return 'row';
+			if (selectedBlock.name.includes('column')) return 'column';
+			if (selectedBlock.name.includes('group')) return 'group';
+			if (selectedBlock.name.includes('container')) {
+				if (hasChild(selectedBlock, 'row')) return 'row';
+				if (hasChild(selectedBlock, 'column')) return 'column';
+				if (hasChild(selectedBlock, 'group')) return 'group';
+				return 'container';
+			}
+
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parentIds = getBlockParents(selectedBlock.clientId) || [];
+			const parentBlocks = parentIds.map(parentId => getBlock(parentId)).filter(Boolean);
+			const layoutParent = parentBlocks.find(parent =>
+				parent.name.includes('column') ||
+				parent.name.includes('row') ||
+				parent.name.includes('group') ||
+				parent.name.includes('container')
+			);
+
+			if (!layoutParent) return null;
+			if (layoutParent.name.includes('column')) return 'column';
+			if (layoutParent.name.includes('row')) return 'row';
+			if (layoutParent.name.includes('group')) return 'group';
+			if (layoutParent.name.includes('container')) return 'container';
 			return null;
 		};
 
@@ -3472,7 +3655,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				}
 			}
 			if (lowerMessage.match(pattern.regex)) {
-				const isTargetedPattern = ['button', 'image', 'container', 'text', 'video'].includes(pattern.target);
+				if (hasShapeDividerIntent && pattern.target === 'divider') {
+					continue;
+				}
+				const isTargetedPattern = ['button', 'image', 'container', 'divider', 'text', 'video'].includes(pattern.target);
 				if (requestedTarget && isTargetedPattern && pattern.target !== requestedTarget) {
 					continue;
 				}
@@ -3580,6 +3766,115 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
 						setIsLoading(false);
 					}, 50);
+					return;
+				}
+
+				// SPECIAL: Cloud icon search - search Cloud Library and apply icon
+				if (pattern.property === 'cloud_icon') {
+					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library for icons...' }]);
+
+					setTimeout(async () => {
+						try {
+							const searchQuery = extractIconQuery(rawMessage);
+							if (!searchQuery) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: 'Which icon should I search for in the Cloud Library?',
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
+
+							const targetMeta = resolveCloudIconTarget();
+							const isButtonTarget = targetMeta.targetBlock === 'button';
+							const isIconTarget = targetMeta.targetBlock === 'icon';
+							const selectedName = selectedBlock?.name || '';
+
+							if (currentScope === 'selection') {
+								const mismatch = (isButtonTarget && !selectedName.includes('button')) ||
+									(isIconTarget && !selectedName.includes('icon'));
+								if (mismatch) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: isButtonTarget
+												? 'Please select a button block to change its icon.'
+												: 'Please select an Icon block to change its icon.',
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+							}
+
+							console.log('[Maxi AI] Searching Cloud Library icons for:', searchQuery);
+							const iconResult = await findBestIcon(searchQuery, { target: targetMeta.svgTarget });
+
+							if (!iconResult || !iconResult.svgCode) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: `I couldn't find an icon for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
+
+							if (iconResult.isPro) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: `Found "${iconResult.title}" but it's a Pro icon. Upgrade to MaxiBlocks Pro to use it.`,
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
+
+							const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+							const targetLabel = isIconTarget ? 'icon blocks' : 'button icons';
+							const directAction = {
+								action: actionType,
+								property: targetMeta.property,
+								value: {
+									svgCode: iconResult.svgCode,
+									svgType: iconResult.svgType,
+								},
+								target_block: targetMeta.targetBlock,
+								message: actionType === 'selection'
+									? `Updated icon to "${iconResult.title}".`
+									: `Updated ${targetLabel} to "${iconResult.title}".`,
+							};
+
+							const result = await parseAndExecuteAction(directAction);
+							setMessages(prev => [
+								...prev,
+								{ role: 'assistant', content: result.message, executed: result.executed },
+							]);
+						} catch (error) {
+							console.error('[Maxi AI] Cloud icon error:', error);
+							setMessages(prev => [
+								...prev,
+								{
+									role: 'assistant',
+									content: 'Sorry, there was an error searching the Cloud Library for icons.',
+									executed: false,
+								},
+							]);
+						}
+						setIsLoading(false);
+					}, 100);
 					return;
 				}
 				
@@ -3710,11 +4005,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					}
 				}
 				
-				// Standard pattern handling
-				const resolvedTarget = pattern.target || requestedTarget || 'container';
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
-					: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
+		// Standard pattern handling
+		const isLayoutAlign = pattern.property === 'align_items_flex' || pattern.property === 'justify_content';
+		let resolvedTarget = pattern.target || requestedTarget || 'container';
+		if (!pattern.target && currentScope === 'selection' && isLayoutAlign) {
+			const selectionLayoutTarget = resolveSelectionLayoutTarget();
+			if (selectionLayoutTarget) resolvedTarget = selectionLayoutTarget;
+		}
+		if (pattern.property.startsWith('shape_divider')) {
+			resolvedTarget = 'container';
+		}
+		const directAction = currentScope === 'selection'
+			? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
+			: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
 				setTimeout(async () => {
 					const result = await parseAndExecuteAction(directAction);
 					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
@@ -4078,12 +4381,74 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// Get target context from the last clarification message (if any)
 		const lastClarificationMsg = [...messages].reverse().find(m => m.role === 'assistant' && m.options);
 		const targetContext = lastClarificationMsg?.targetContext;
+		const lastClarifyContent =
+			typeof lastClarificationMsg?.content === 'string'
+				? lastClarificationMsg.content.toLowerCase()
+				: '';
+		const ratioOptionMatch =
+			typeof suggestion === 'string'
+				? suggestion.trim().match(/^(\d+)\s*[:/]\s*(\d+)$/)
+				: null;
+		const isImageRatioContext =
+			lastClarifyContent.includes('image') ||
+			lastClarifyContent.includes('images') ||
+			selectedBlock?.name?.includes('image') ||
+			targetContext === 'image';
+		const lastShadowPrompt = lastClarifyContent.includes('shadow');
+		const lastShapeDividerMsg = [...messages].reverse().find(m => m.shapeDividerLocation || m.shapeDividerTarget);
+		const shapeDividerLocations = ['Top', 'Bottom', 'Both'];
+		const shapeDividerStyles = ['Wave', 'Curve', 'Slant', 'Triangle'];
 
-		const lastShadowPrompt =
-			typeof lastClarificationMsg?.content === 'string' &&
-			lastClarificationMsg.content.toLowerCase().includes('shadow');
+		if (lastShapeDividerMsg?.shapeDividerLocation && shapeDividerLocations.includes(suggestion)) {
+			const location = suggestion.toLowerCase();
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			setMessages(prev => [...prev, {
+				role: 'assistant',
+				content: 'Which shape style should the divider use?',
+				options: shapeDividerStyles,
+				shapeDividerTarget: location,
+				executed: false
+			}]);
+			return;
+		}
 
-		if (lastShadowPrompt && ['Soft', 'Crisp', 'Bold', 'Glow'].includes(suggestion)) {
+		if (lastShapeDividerMsg?.shapeDividerTarget && shapeDividerStyles.includes(suggestion)) {
+			const target = lastShapeDividerMsg.shapeDividerTarget;
+			const property = target === 'top'
+				? 'shape_divider_top'
+				: target === 'bottom'
+					? 'shape_divider_bottom'
+					: 'shape_divider_both';
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			const shape = suggestion.toLowerCase();
+			const message = target === 'both'
+				? `Added ${shape} shape dividers to the top and bottom.`
+				: `Added ${shape} shape divider to the ${target}.`;
+
+			directAction = {
+				action: actionType,
+				property,
+				value: shape,
+				target_block: 'container',
+				message
+			};
+		}
+
+		if (ratioOptionMatch && (lastClarifyContent.includes('ratio') || lastClarifyContent.includes('aspect')) && isImageRatioContext) {
+			const ratioValue = resolveImageRatioValue(ratioOptionMatch[1], ratioOptionMatch[2]);
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			const targetBlock =
+				isImageRatioContext ? 'image' : targetContext;
+
+			directAction = {
+				action: actionType,
+				property: 'image_ratio',
+				value: ratioValue,
+				target_block: targetBlock || 'image',
+				message: `Aspect ratio set to ${ratioOptionMatch[1]}:${ratioOptionMatch[2]}.`,
+			};
+		}
+		else if (lastShadowPrompt && ['Soft', 'Crisp', 'Bold', 'Glow'].includes(suggestion)) {
 			const styleMap = {
 				Soft: { x: 0, y: 10, blur: 30, spread: 0 },
 				Crisp: { x: 0, y: 2, blur: 4, spread: 0 },
@@ -4466,8 +4831,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					×
 				</button>
 			</div>
-
-
 
 			<div className='maxi-ai-chat-panel__messages'>
 				{messages.map((msg, index) => (

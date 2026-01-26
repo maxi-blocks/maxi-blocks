@@ -677,11 +677,12 @@ if (!class_exists('MaxiBlocks_API')):
             $allowed_port = $allowed_parts['port'] ?? null;
             $target_port = $target_parts['port'] ?? null;
             $normalize_path = function ($path) {
-                $path = rawurldecode($path ?? '');
-                $path = wp_normalize_path($path);
+                $decoded = rawurldecode($path ?? '');
+                $decoded = wp_normalize_path($decoded);
+                $decoded = '/' . ltrim($decoded, '/');
                 $segments = [];
 
-                foreach (explode('/', $path) as $segment) {
+                foreach (explode('/', $decoded) as $segment) {
                     if ($segment === '' || $segment === '.') {
                         continue;
                     }
@@ -3431,10 +3432,15 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 $context = $this->get_ai_context_text($site_profile, $page_type, $selected_block_id);
+                $prompt_vars = $this->get_design_prompt_vars(
+                    $site_profile,
+                    $page_type,
+                    $selected_block_id
+                );
                 $messages = [
                     [
                         'role' => 'system',
-                        'content' => $this->get_design_agent_system_prompt($context),
+                        'content' => $this->get_design_agent_system_prompt($context, $prompt_vars),
                     ],
                     [
                         'role' => 'user',
@@ -3940,11 +3946,77 @@ if (!class_exists('MaxiBlocks_API')):
             return $models;
         }
 
-        private function get_design_agent_system_prompt($context = '')
+        private function get_design_prompt_vars($site_profile = null, $page_type = null, $selected_block_id = null)
         {
+            $active_sc_name = 'Unknown';
+            if (class_exists('MaxiBlocks_StyleCards')) {
+                $active_sc = MaxiBlocks_StyleCards::get_maxi_blocks_active_style_card();
+                if (is_array($active_sc)) {
+                    $name = $active_sc['name'] ?? null;
+                    if (is_string($name) && $name !== '') {
+                        $active_sc_name = $name;
+                    }
+                }
+            }
+
+            $site_profile_value = $site_profile ?: get_option('maxi_ai_site_description');
+            if (!$site_profile_value) {
+                $site_profile_value = get_option('maxi_ai_business_name');
+            }
+
+            $page_type_value = $page_type ?: 'Unknown';
+
+            return [
+                'active_sc' => $active_sc_name,
+                'site_profile' => $site_profile_value ?: 'unknown',
+                'current_page_type' => $page_type_value ?: 'Unknown',
+                'selected_block_id' => $selected_block_id ?: 'none',
+            ];
+        }
+
+        private function get_design_agent_system_prompt($context = '', $vars = [])
+        {
+            if (!is_array($vars)) {
+                $args = func_get_args();
+                $vars = [
+                    'active_sc' => $args[1] ?? null,
+                    'site_profile' => $args[2] ?? null,
+                    'current_page_type' => $args[3] ?? null,
+                    'selected_block_id' => $args[4] ?? null,
+                ];
+            }
+
+            $normalize_value = function ($value, $fallback) {
+                if ($value === null) {
+                    return $fallback;
+                }
+
+                if (is_string($value)) {
+                    $value = trim($value);
+                    return $value === '' ? $fallback : $value;
+                }
+
+                if (is_bool($value)) {
+                    return $value ? 'true' : 'false';
+                }
+
+                if (is_scalar($value)) {
+                    return (string) $value;
+                }
+
+                $encoded = wp_json_encode($value);
+                return $encoded !== false ? $encoded : $fallback;
+            };
+
+            $replacements = [
+                '{{active_sc}}' => $normalize_value($vars['active_sc'] ?? null, 'Unknown'),
+                '{{site_profile}}' => $normalize_value($vars['site_profile'] ?? null, 'unknown'),
+                '{{current_page_type}}' => $normalize_value($vars['current_page_type'] ?? null, 'Unknown'),
+                '{{selected_block_id}}' => $normalize_value($vars['selected_block_id'] ?? null, 'none'),
+            ];
             $context_section = $context ? "\n\nContext:\n{$context}\n" : "\n";
 
-            return <<<PROMPT
+            $prompt = <<<PROMPT
 ### ROLE
 You are the MaxiBlocks Design Partner. Your goal is to execute technical design changes or offer expert guidance when a request is unclear.
 
@@ -4030,6 +4102,7 @@ When you modify a block attribute, you must also include a `ui_target` in your J
 }
 $context_section
 PROMPT;
+            return strtr($prompt, $replacements);
         }
 
         private function is_design_prompt($prompt)

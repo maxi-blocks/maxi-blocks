@@ -186,7 +186,7 @@ const buildTextLinkChanges = (block, linkValue) => {
 
 	return {
 		linkSettings: {
-			...block.attributes.linkSettings,
+			...(block.attributes?.linkSettings || {}),
 			url: String(url),
 			opensInNewTab: target === '_blank',
 		},

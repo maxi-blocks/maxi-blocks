@@ -72,6 +72,16 @@ export const handleIconUpdate = (block, property, value, prefix, context = {}) =
 		};
 	};
 
+	if (property === 'icon_svg') {
+		const rawSvg = typeof value === 'string' ? value : value?.svgCode;
+		const nextSvgType = typeof value === 'object' ? value?.svgType : null;
+		if (!rawSvg) return null;
+		return {
+			content: rawSvg,
+			...(nextSvgType ? { svgType: nextSvgType } : {}),
+		};
+	}
+
 	if (property === 'flow_icon_line_width') {
 		if (context.icon_line_width === undefined) {
 			return {

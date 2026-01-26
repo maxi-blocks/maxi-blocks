@@ -37,8 +37,9 @@ export const searchIcons = async (query, limit = 5) => {
 				new URLSearchParams({
 					q: trimmedQuery,
 					query_by: 'post_title,svg_tag.lvl0,svg_tag.lvl1,svg_tag.lvl2,svg_category',
+					query_by_weights: '4,2,2,1,1',
 					per_page: limit.toString(),
-					sort_by: 'post_date_int:desc',
+					sort_by: '_text_match:desc,post_date_int:desc',
 				}),
 			{
 				method: 'GET',
@@ -63,6 +64,53 @@ export const searchIcons = async (query, limit = 5) => {
 	}
 };
 
+const normalizeText = value =>
+	String(value || '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, ' ')
+		.trim();
+
+const toList = value => {
+	if (!value) return [];
+	if (Array.isArray(value)) return value.flat(Infinity).filter(Boolean);
+	if (typeof value === 'object') return Object.values(value).flat(Infinity).filter(Boolean);
+	return [value];
+};
+
+const scoreTextMatch = (needle, haystack) => {
+	if (!needle || !haystack) return 0;
+	if (haystack === needle) return 100;
+	if (haystack.startsWith(needle)) return 70;
+	if (haystack.includes(needle)) return 40;
+	return 0;
+};
+
+const scoreListMatch = (needle, list) =>
+	list.reduce((best, item) => Math.max(best, scoreTextMatch(needle, item)), 0);
+
+const scoreIconMatch = (query, icon) => {
+	const normalizedQuery = normalizeText(query);
+	if (!normalizedQuery) return 0;
+
+	const title = normalizeText(icon?.post_title || '');
+	const tags = toList(icon?.svg_tag).map(normalizeText).filter(Boolean);
+	const categories = toList(icon?.svg_category).map(normalizeText).filter(Boolean);
+
+	let score = 0;
+	score += scoreTextMatch(normalizedQuery, title);
+	score += scoreListMatch(normalizedQuery, tags) * 0.7;
+	score += scoreListMatch(normalizedQuery, categories) * 0.5;
+
+	const tokens = normalizedQuery.split(' ').filter(Boolean);
+	for (const token of tokens) {
+		if (title.includes(token)) score += 8;
+		if (tags.some(tag => tag.includes(token))) score += 4;
+		if (categories.some(cat => cat.includes(token))) score += 2;
+	}
+
+	return score;
+};
+
 /**
  * Find the best matching SVG icon for a given intent.
  *
@@ -73,13 +121,28 @@ export const searchIcons = async (query, limit = 5) => {
  */
 export const findBestIcon = async (query, options = {}) => {
 	const { target = 'icon' } = options;
-	const results = await searchIcons(query, 1);
+	const results = await searchIcons(query, 12);
 
 	if (results.length === 0) {
 		return null;
 	}
 
-	const icon = results[0];
+	const scored = results.map(icon => ({
+		icon,
+		score: scoreIconMatch(query, icon),
+		isPro: icon.cost?.[0] === 'Pro',
+	}));
+
+	scored.sort((a, b) => {
+		if (b.score !== a.score) return b.score - a.score;
+		if (a.isPro !== b.isPro) return a.isPro ? 1 : -1;
+		return 0;
+	});
+
+	const best = scored[0];
+	const nonProMatch = scored.find(item => !item.isPro && item.score > 0);
+	const picked = nonProMatch || best;
+	const icon = picked?.icon || results[0];
 	const svgType = Array.isArray(icon.svg_category)
 		? icon.svg_category[0]
 		: icon.svg_category;
@@ -111,8 +174,9 @@ export const extractIconQuery = message => {
 	}
 
 	const patterns = [
-		/(?:change|swap|replace|use|add)\s+(?:the\s+)?icon\s*(?:to|with|as)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
-		/\bicon\b\s*(?:to|with|as)\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/(?:change|swap|replace|use|set|add|insert|make)\s+(?:the\s+)?icon\s*(?:to|with|as|of|for|called|named)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/\bicon\b\s*(?:to|with|as|of|for|called|named)\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/(?:change|swap|replace|use|set|add|insert|make)\s+(?:the\s+|a\s+|an\s+)?([^,.;]+?)\s+icon\b(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
 		/(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library)\s+icon\s*(?:called|named)?\s*([^,.;]+)$/i,
 	];
 
@@ -124,8 +188,8 @@ export const extractIconQuery = message => {
 	}
 
 	return message
-		.replace(/\b(change|swap|replace|use|add|set)\b/gi, '')
-		.replace(/\b(icon|icons|from|in|the|cloud|library|cloud library)\b/gi, '')
+		.replace(/\b(change|swap|replace|use|add|set|insert|make)\b/gi, '')
+		.replace(/\b(icon|icons|from|in|the|cloud|library|cloud library|for|of|called|named)\b/gi, '')
 		.replace(/\s+/g, ' ')
 		.trim();
 };

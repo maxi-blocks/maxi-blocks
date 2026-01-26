@@ -447,7 +447,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
 	// GROUP 24: CLOUD ICON SEARCH (Typesense)
-	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
+	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicon\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicon\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icon\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
 
 	// GROUP 25: BLOCK ACTIONS (Imported)
 	...AI_BLOCK_PATTERNS,
@@ -2413,6 +2413,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					}
 				}
 
+				// Fallback: let block-specific handlers process unsupported properties
+				if (isMaxi && isMatch && !changes && !String(property || '').startsWith('flow_')) {
+					const blockHandler = getAiHandlerForBlock(block);
+					if (blockHandler) {
+						const handlerResult = blockHandler(block, property, value, prefix, { mode: scope });
+						if (handlerResult?.action === 'apply') {
+							changes = handlerResult.attributes;
+						} else if (handlerResult && !handlerResult.action) {
+							changes = handlerResult;
+						}
+					}
+				}
+
 				if (changes) {
 					// console.log(`[Maxi AI Debug] Dispatching update to ${block.clientId}:`, changes);
 					updateBlockAttributes(block.clientId, changes);
@@ -3771,6 +3784,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 				// SPECIAL: Cloud icon search - search Cloud Library and apply icon
 				if (pattern.property === 'cloud_icon') {
+					const isIconColorIntent =
+						/\b(colou?r|fill|stroke)\b/.test(lowerMessage) ||
+						/\bline\s*width\b/.test(lowerMessage);
+
+					if (isIconColorIntent) {
+						setIsLoading(false);
+						continue;
+					}
+
 					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library for icons...' }]);
 
 					setTimeout(async () => {

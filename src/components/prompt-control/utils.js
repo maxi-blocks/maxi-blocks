@@ -487,6 +487,9 @@ export const callBackendAIProxy = async ({
 					continue;
 				}
 				const dataString = trimmedLine.replace(/^data:\s*/, '');
+				if (dataString === '') {
+					continue;
+				}
 				if (dataString === '[DONE]') {
 					finalizeResult(responseContent);
 					setIsGenerating(false);

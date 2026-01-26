@@ -33,7 +33,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - Highlight: property "text_highlight" with "marker" | "underline" | "badge".
 - Text decoration: property "text_decoration" with "none" | "underline" | "line-through".
 - Text alignment: property "text_align" with "left" | "center" | "right" | "justify".
-- Text level: property "text_level" or "textLevel" with "h1"..."h6" or "p".
+- Text level: property "text_level" with "h1"..."h6" or "p".
   Use for semantic level changes ("make this an H2", etc).
 - Lists: property "text_list" with { isList, typeOfList, listStyle, listStyleCustom }.
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".

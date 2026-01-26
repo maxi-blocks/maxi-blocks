@@ -736,9 +736,14 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			break;
 	}
 
-	if (!changes && typeof property === 'string' && property.startsWith('dc-')) {
-		changes = { [property]: value };
+	if (changes) {
+		return { action: 'apply', attributes: changes, done: true, message: 'Applied text property change.' };
 	}
 
-	return changes;
+	if (!changes && typeof property === 'string' && property.startsWith('dc-')) {
+		changes = { [property]: value };
+		return { action: 'apply', attributes: changes, done: true, message: 'Applied text property change.' };
+	}
+
+	return null;
 };

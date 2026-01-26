@@ -11,6 +11,12 @@ import RelationControl from '@components/relation-control';
 
 const relation = ({ props, isButton = false }) => {
 	const { attributes, name, clientId, maxiSetAttributes, deviceType } = props;
+	
+	console.log(JSON.stringify({
+		message: 'inspector-relation function called',
+		relationsCount: attributes?.relations?.length || 0,
+		clientId
+	}));
 
 	const filterUndefinedProperties = obj => {
 		if (typeof obj !== 'object' || obj === null) {
@@ -32,13 +38,25 @@ const relation = ({ props, isButton = false }) => {
 				.filter(([key, value]) => value !== undefined)
 		);
 	};
-	const handleChange = useCallback(
-		obj => {
-			const filteredObj = filterUndefinedProperties(obj);
-			maxiSetAttributes(filteredObj);
-		},
-		[maxiSetAttributes]
-	);
+	
+	const handleChange = obj => {
+		console.log(
+			JSON.stringify({
+				message: 'inspector-relation handleChange',
+				obj,
+				currentRelationsCount: attributes?.relations?.length || 0,
+			})
+		);
+		const filteredObj = filterUndefinedProperties(obj);
+		console.log(
+			JSON.stringify({
+				message: 'inspector-relation calling maxiSetAttributes',
+				filteredObj,
+				hasRelations: !!filteredObj.relations,
+			})
+		);
+		maxiSetAttributes(filteredObj);
+	};
 
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),

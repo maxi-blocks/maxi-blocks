@@ -55,12 +55,12 @@ const withMaxiProps = createHigherOrderComponent(
 				contextLoopContext,
 			} = ownProps;
 
-	const repeaterContext = useContext(RepeaterContext);
-	
-	// Track previous relations to detect unexpected clearing
-	const prevRelationsRef = useRef(attributes?.relations);
-	// Track if we're in the middle of a setAttributes call
-	const isSettingAttributesRef = useRef(false);
+			const repeaterContext = useContext(RepeaterContext);
+
+			// Track previous relations to detect unexpected clearing
+			const prevRelationsRef = useRef(attributes?.relations);
+			// Track if we're in the middle of a setAttributes call
+			const isSettingAttributesRef = useRef(false);
 
 			// Memoize selectors to prevent recreation on every render
 			const blockEditorSelectors = useMemo(() => {
@@ -198,21 +198,21 @@ const withMaxiProps = createHigherOrderComponent(
 				[styleObjKeys, ref]
 			);
 
-	const maxiSetAttributes = useCallback(
-		obj => {
-			// Mark that we're setting attributes intentionally
-			if ('relations' in obj) {
-				isSettingAttributesRef.current = true;
-			}
-			
-			// First, check if we already have a blockStyle that needs to be preserved
-			const originalBlockStyle = attributes.blockStyle;
+			const maxiSetAttributes = useCallback(
+				obj => {
+					// Mark that we're setting attributes intentionally
+					if ('relations' in obj) {
+						isSettingAttributesRef.current = true;
+					}
 
-			return handleSetAttributes({
-				obj,
-				attributes,
-				clientId,
-				onChangeInline: (changedAttributes, inlineOptions) => {
+					// First, check if we already have a blockStyle that needs to be preserved
+					const originalBlockStyle = attributes.blockStyle;
+
+					return handleSetAttributes({
+						obj,
+						attributes,
+						clientId,
+						onChangeInline: (changedAttributes, inlineOptions) => {
 							const { attributesToStyles } = getBlockData(name);
 							if (!attributesToStyles) return;
 
@@ -260,16 +260,16 @@ const withMaxiProps = createHigherOrderComponent(
 								}
 							);
 						},
-					onChange: newAttributes => {
-						// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
-						if (
-							originalBlockStyle &&
-							!('blockStyle' in newAttributes) &&
-							!('blockStyle' in obj)
-						) {
-							// Preserve the original blockStyle if it's not being explicitly changed
-							newAttributes.blockStyle = originalBlockStyle;
-						}
+						onChange: newAttributes => {
+							// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
+							if (
+								originalBlockStyle &&
+								!('blockStyle' in newAttributes) &&
+								!('blockStyle' in obj)
+							) {
+								// Preserve the original blockStyle if it's not being explicitly changed
+								newAttributes.blockStyle = originalBlockStyle;
+							}
 
 							if (!repeaterContext?.repeaterStatus) {
 								return setAttributes(newAttributes);
@@ -386,42 +386,71 @@ const withMaxiProps = createHigherOrderComponent(
 				return getTarget().getBoundingClientRect();
 			}, []);
 
-	// Clean up effect for selected state changes
-	useEffect(() => {
-		if (isSelected) {
-			dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
-		}
-		// No cleanup needed for this effect
-	}, [isSelected]);
-	
-	// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
-	useEffect(() => {
-		const currentRelations = attributes?.relations;
-		const prevRelations = prevRelationsRef.current;
-		
-		// If we're intentionally setting relations (through maxiSetAttributes), don't restore
-		if (isSettingAttributesRef.current) {
-			isSettingAttributesRef.current = false;
-			prevRelationsRef.current = currentRelations;
-			return;
-		}
-		
-		// Check if relations unexpectedly became empty (without going through setAttributes)
-		if (
-			prevRelations &&
-			Array.isArray(prevRelations) &&
-			prevRelations.length > 0 &&
-			(!currentRelations || (Array.isArray(currentRelations) && currentRelations.length === 0))
-		) {
-			// Restore the previous relations
-			setAttributes({ relations: prevRelations });
-		}
-		
-		// Update the ref for next render
-		if (currentRelations && Array.isArray(currentRelations) && currentRelations.length > 0) {
-			prevRelationsRef.current = currentRelations;
-		}
-	}, [attributes?.relations, setAttributes]);
+			// Clean up effect for selected state changes
+			useEffect(() => {
+				if (isSelected) {
+					dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
+				}
+				// No cleanup needed for this effect
+			}, [isSelected]);
+
+			// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
+			useEffect(() => {
+				const currentRelations = attributes?.relations;
+				const prevRelations = prevRelationsRef.current;
+
+				console.log(
+					JSON.stringify({
+						message: 'withMaxiProps relations effect',
+						currentCount: currentRelations?.length || 0,
+						prevCount: prevRelations?.length || 0,
+						isSettingAttributes: isSettingAttributesRef.current,
+						clientId,
+					})
+				);
+
+				// If we're intentionally setting relations (through maxiSetAttributes), don't restore
+				if (isSettingAttributesRef.current) {
+					isSettingAttributesRef.current = false;
+					prevRelationsRef.current = currentRelations;
+					console.log(
+						JSON.stringify({
+							message:
+								'withMaxiProps: intentional set, updating ref',
+						})
+					);
+					return;
+				}
+
+			// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
+			if (
+				prevRelations &&
+				Array.isArray(prevRelations) &&
+				prevRelations.length > 0 &&
+				(!currentRelations ||
+					(Array.isArray(currentRelations) &&
+						currentRelations.length < prevRelations.length))
+			) {
+				// Restore the previous relations
+				console.log(
+					JSON.stringify({
+						message: 'withMaxiProps: restoring lost relations',
+						prevCount: prevRelations.length,
+						currentCount: currentRelations?.length || 0
+					})
+				);
+				setAttributes({ relations: prevRelations });
+			}
+
+				// Update the ref for next render
+				if (
+					currentRelations &&
+					Array.isArray(currentRelations) &&
+					currentRelations.length > 0
+				) {
+					prevRelationsRef.current = currentRelations;
+				}
+			}, [attributes?.relations, setAttributes, clientId]);
 
 			// Effect for handling repeater block moves with proper cleanup
 			useEffect(() => {

@@ -48,6 +48,13 @@ import {
 import './editor.scss';
 
 const RelationControl = props => {
+	console.log(
+		JSON.stringify({
+			message: 'RelationControl render',
+			relationsCount: props.relations?.length || 0,
+		})
+	);
+
 	const {
 		updateBlockAttributes,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
@@ -295,43 +302,70 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 						blockAttributes: currentActualAttributes,
-					onChange: async newValues => {
-						if (isUpdating.current) {
-							return;
-						}
+						onChange: async newValues => {
+							console.log(
+								JSON.stringify({
+									message: 'Start tab onChange',
+									itemId: item.id,
+									itemUniqueID: item.uniqueID,
+									targetClientId,
+									newValues,
+									currentRelationsCount:
+										rawRelations?.length || 0,
+								})
+							);
 
-						const { isReset, meta, ...cleanValues } = newValues || {};
-
-						// USE DEEP EQUALITY: Prevents false positives with nested objects
-						const hasChanged = Object.keys(cleanValues).some(
-							key =>
-								!isEqual(
-									cleanValues[key],
-									currentActualAttributes[key]
-								)
-						);
-
-						if (hasChanged) {
-							try {
-								isUpdating.current = true;
-								await Promise.resolve(
-									updateBlockAttributes(
-										targetClientId,
-										cleanValues
-									)
-								);
-							} catch (error) {
-								// eslint-disable-next-line no-console
-								console.error(
-									'Failed to update relation block attributes:',
-									error
-								);
-							} finally {
-								// Release lock after async work completes
-								isUpdating.current = false;
+							if (isUpdating.current) {
+								return;
 							}
-						}
-					},
+
+							const { isReset, meta, ...cleanValues } =
+								newValues || {};
+
+							// USE DEEP EQUALITY: Prevents false positives with nested objects
+							const hasChanged = Object.keys(cleanValues).some(
+								key =>
+									!isEqual(
+										cleanValues[key],
+										currentActualAttributes[key]
+									)
+							);
+
+							if (hasChanged) {
+								try {
+									isUpdating.current = true;
+									console.log(
+										JSON.stringify({
+											message:
+												'Updating target block attributes',
+											targetClientId,
+											cleanValues,
+										})
+									);
+									await Promise.resolve(
+										updateBlockAttributes(
+											targetClientId,
+											cleanValues
+										)
+									);
+									console.log(
+										JSON.stringify({
+											message:
+												'Target block updated successfully',
+										})
+									);
+								} catch (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'Failed to update relation block attributes:',
+										error
+									);
+								} finally {
+									// Release lock after async work completes
+									isUpdating.current = false;
+								}
+							}
+						},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,
@@ -422,76 +456,76 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 						blockAttributes: blockAttributesWithId,
-				onChange: obj => {
-					const newAttributesObj = {
-						...item.attributes,
-						...obj,
-						...transformGeneralAttributesToBaseBreakpoint(
-							obj
-						),
-					};
+						onChange: obj => {
+							const newAttributesObj = {
+								...item.attributes,
+								...obj,
+								...transformGeneralAttributesToBaseBreakpoint(
+									obj
+								),
+							};
 
-					const { cleanAttributesObject, tempAttributes } =
-						getCleanResponseIBAttributes(
-							newAttributesObj,
-							blockAttributes,
-							item.uniqueID,
-							selectedSettings,
-							deviceType,
-							selectedSettings?.prefix || '',
-							item.sid,
-							targetClientId
-						);
+							const { cleanAttributesObject, tempAttributes } =
+								getCleanResponseIBAttributes(
+									newAttributesObj,
+									blockAttributes,
+									item.uniqueID,
+									selectedSettings,
+									deviceType,
+									selectedSettings?.prefix || '',
+									item.sid,
+									targetClientId
+								);
 
-					const mergedAttributes = merge(
-						{},
-						cleanAttributesObject,
-						tempAttributes
-					);
-					const stylesObj = getIBStylesObj({
-						clientId: targetClientId,
-						sid: item.sid,
-						attributes: mergedAttributes,
-						blockAttributes,
-						breakpoint: deviceType,
-					});
-					const styles = getIBStyles({
-						stylesObj,
-						blockAttributes,
-						isFirst: true,
-					});
-					// Remove empty/default border styles from XXL
-					if (styles.xxl?.styles?.border === 'none') {
-						delete styles.xxl.styles.border;
-						if (
-							Object.keys(styles.xxl.styles).length === 0
-						) {
-							delete styles.xxl;
-						}
-					}
-					const newAttributes = omitBy(
-						{
-							...item.attributes,
-							...cleanAttributesObject,
+							const mergedAttributes = merge(
+								{},
+								cleanAttributesObject,
+								tempAttributes
+							);
+							const stylesObj = getIBStylesObj({
+								clientId: targetClientId,
+								sid: item.sid,
+								attributes: mergedAttributes,
+								blockAttributes,
+								breakpoint: deviceType,
+							});
+							const styles = getIBStyles({
+								stylesObj,
+								blockAttributes,
+								isFirst: true,
+							});
+							// Remove empty/default border styles from XXL
+							if (styles.xxl?.styles?.border === 'none') {
+								delete styles.xxl.styles.border;
+								if (
+									Object.keys(styles.xxl.styles).length === 0
+								) {
+									delete styles.xxl;
+								}
+							}
+							const newAttributes = omitBy(
+								{
+									...item.attributes,
+									...cleanAttributesObject,
+								},
+								isNil
+							);
+
+							// Convert empty string units to "px" for explicit representation
+							Object.keys(newAttributes).forEach(key => {
+								if (
+									key.includes('-unit-') &&
+									newAttributes[key] === ''
+								) {
+									newAttributes[key] = 'px';
+								}
+							});
+
+							onChangeRelation(relations, item.id, {
+								attributes: newAttributes,
+								css: styles,
+							});
 						},
-						isNil
-					);
-
-					// Convert empty string units to "px" for explicit representation
-					Object.keys(newAttributes).forEach(key => {
-						if (
-							key.includes('-unit-') &&
-							newAttributes[key] === ''
-						) {
-							newAttributes[key] = 'px';
-						}
-					});
-
-					onChangeRelation(relations, item.id, {
-						attributes: newAttributes,
-						css: styles,
-					});
-				},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,

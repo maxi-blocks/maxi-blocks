@@ -99,10 +99,12 @@ export const handleIconUpdate = (block, property, value, _prefix, context = {}) 
 	if (property === 'icon_svg') {
 		const rawSvg = typeof value === 'string' ? value : value?.svgCode;
 		const nextSvgType = typeof value === 'object' ? value?.svgType : null;
+		const nextAltTitle = typeof value === 'object' ? value?.title || value?.label : null;
 		if (!rawSvg) return null;
 		return {
 			content: rawSvg,
 			...(nextSvgType ? { svgType: nextSvgType } : {}),
+			...(nextAltTitle ? { altTitle: String(nextAltTitle) } : {}),
 		};
 	}
 
@@ -190,12 +192,7 @@ export const handleIconUpdate = (block, property, value, _prefix, context = {}) 
 	}
 
 	if (property === 'alignment') {
-		return {
-			action: 'apply',
-			attributes: { 'alignment-general': value },
-			done: true,
-			message: 'Updated icon alignment.',
-		};
+		return { 'alignment-general': value };
 	}
 
 	return null;

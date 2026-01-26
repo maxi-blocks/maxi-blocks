@@ -16,7 +16,7 @@ import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue'
 import { getLastBreakpointAttribute } from '@extensions/styles';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
-import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries } from './iconSearch';
+import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -343,7 +343,7 @@ const LAYOUT_PATTERNS = [
 	// GROUP 10: TRANSFORM EFFECTS
 	{ regex: /tilt|askew|skew|slant/, property: 'transform_rotate', value: 5, selectionMsg: 'Tilted element (rotate: 5deg).', pageMsg: 'Tilted containers.' },
 	{ regex: /rotate|spin|turn.*degrees/, property: 'transform_rotate', value: 45, selectionMsg: 'Rotated element (45deg).', pageMsg: 'Rotated containers.' },
-	{ regex: /flip.*horizontal|mirror/, property: 'transform_scale', value: { x: -1, y: 1 }, selectionMsg: 'Flipped horizontally.', pageMsg: 'Flipped containers horizontally.' },
+	{ regex: /flip.*horizontal|mirror\s*(?:horizontally|vertically|image|this|that|the\s+(?:layout|section|block|container|element))\b/i, property: 'transform_scale', value: { x: -1, y: 1 }, selectionMsg: 'Flipped horizontally.', pageMsg: 'Flipped containers horizontally.' },
 	{ regex: /flip.*vertical|upside.*down/, property: 'transform_scale', value: { x: 1, y: -1 }, selectionMsg: 'Flipped vertically.', pageMsg: 'Flipped containers vertically.' },
 	{ regex: /zoom.*hover|bigger.*hover|enlarge.*hover|scale.*hover|grow.*hover/, property: 'transform_scale_hover', value: 1.1, selectionMsg: 'Added zoom on hover (scale: 1.1).', pageMsg: 'Added hover zoom effect.' },
 	
@@ -447,7 +447,7 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
 	// GROUP 24: CLOUD ICON SEARCH (Typesense)
-	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicons?\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicons?\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icons?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+[^,.;]+|\ball\s+icons?\b|\b(?:theme|style|vibe|look)\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
+	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicons?\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicons?\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icons?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+[^,.;]+|\ball\s+icons?\b|\b(?:theme|style|vibe|look)\b|\bmatch\b[^.]*\b(text|titles?|labels?|headings?)\b[^.]*\bicons?\b|\b(text|titles?|labels?|headings?)\b[^.]*\bmatch\b[^.]*\bicons?\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
 
 	// GROUP 25: BLOCK ACTIONS (Imported)
 	...AI_BLOCK_PATTERNS,
@@ -648,12 +648,27 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			.replace(/\s+/g, ' ')
 			.trim();
 
+	const isIconBlock = block =>
+		block?.name?.includes('icon-maxi') || block?.name?.includes('svg-icon');
+
 	const isLabelBlock = blockName =>
 		typeof blockName === 'string' &&
 		(blockName.includes('text-maxi') ||
 			blockName.includes('list-item-maxi') ||
 			blockName.includes('heading') ||
 			blockName.includes('paragraph'));
+
+	const isHeadingTextBlock = block =>
+		block?.name?.includes('heading') ||
+		/^h[1-6]$/i.test(block?.attributes?.textLevel || '');
+
+	const toTitleCase = value =>
+		String(value || '')
+			.toLowerCase()
+			.split(' ')
+			.filter(Boolean)
+			.map(word => word.charAt(0).toUpperCase() + word.slice(1))
+			.join(' ');
 
 	const getBlockLabelText = block => {
 		if (!block || !block.attributes || !isLabelBlock(block.name)) {
@@ -680,6 +695,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return '';
 	};
 
+	const findLabelBlockInBlocks = blocks => {
+		for (const block of blocks) {
+			if (isLabelBlock(block?.name)) {
+				return block;
+			}
+			if (block.innerBlocks && block.innerBlocks.length > 0) {
+				const nested = findLabelBlockInBlocks(block.innerBlocks);
+				if (nested) return nested;
+			}
+		}
+		return null;
+	};
+
 	const findLabelForIconBlock = iconBlock => {
 		if (!iconBlock?.clientId) return '';
 		const { getBlockParents, getBlock } = select('core/block-editor');
@@ -698,6 +726,133 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (labelBefore) return labelBefore;
 		}
 		return '';
+	};
+
+	const findLabelBlockForIconBlock = iconBlock => {
+		if (!iconBlock?.clientId) return null;
+		const { getBlockParents, getBlock } = select('core/block-editor');
+		const parentIds = getBlockParents(iconBlock.clientId) || [];
+		for (const parentId of parentIds) {
+			const parent = getBlock(parentId);
+			if (!parent?.innerBlocks?.length) continue;
+			const siblings = parent.innerBlocks;
+			const index = siblings.findIndex(block => block.clientId === iconBlock.clientId);
+			if (index === -1) continue;
+			const after = siblings.slice(index + 1);
+			const labelAfter = findLabelBlockInBlocks(after);
+			if (labelAfter) return labelAfter;
+			const before = siblings.slice(0, index);
+			const labelBefore = findLabelBlockInBlocks(before);
+			if (labelBefore) return labelBefore;
+		}
+		return null;
+	};
+
+	const findGroupRootForIconBlock = iconBlock => {
+		if (!iconBlock?.clientId) return null;
+		const { getBlockParents, getBlock } = select('core/block-editor');
+		const parentIds = getBlockParents(iconBlock.clientId) || [];
+		for (const parentId of parentIds) {
+			const parent = getBlock(parentId);
+			if (!parent?.innerBlocks?.length) continue;
+			const hasDirectIconChild = parent.innerBlocks.some(
+				block => block.clientId === iconBlock.clientId
+			);
+			if (!hasDirectIconChild) continue;
+			const textBlocks = collectBlocks(parent.innerBlocks, block =>
+				isLabelBlock(block?.name)
+			);
+			if (textBlocks.length > 0) return parent;
+		}
+		return null;
+	};
+
+	const extractSvgLabel = svgCode => {
+		if (!svgCode) return '';
+		const titleMatch = String(svgCode).match(/<title[^>]*>([^<]+)<\/title>/i);
+		if (titleMatch?.[1]) return stripHtml(titleMatch[1]);
+		const descMatch = String(svgCode).match(/<desc[^>]*>([^<]+)<\/desc>/i);
+		if (descMatch?.[1]) return stripHtml(descMatch[1]);
+		const ariaMatch = String(svgCode).match(/aria-label=["']([^"']+)["']/i);
+		if (ariaMatch?.[1]) return stripHtml(ariaMatch[1]);
+		return '';
+	};
+
+	const getIconLabelFromBlock = iconBlock => {
+		if (!iconBlock?.attributes) return '';
+		const altTitle = stripHtml(iconBlock.attributes.altTitle || '');
+		if (altTitle) return altTitle;
+		const altDescription = stripHtml(iconBlock.attributes.altDescription || '');
+		if (altDescription) return altDescription;
+		const ariaLabel = stripHtml(
+			iconBlock.attributes.ariaLabels?.icon ||
+				iconBlock.attributes.ariaLabels?.canvas ||
+				''
+		);
+		if (ariaLabel) return ariaLabel;
+		const svgContent =
+			iconBlock.attributes.content ||
+			iconBlock.attributes['icon-content'] ||
+			'';
+		return extractSvgLabel(svgContent);
+	};
+
+	const buildTextContentChange = (block, value) => {
+		if (!block?.attributes) return null;
+		const nextValue = stripHtml(value || '');
+		if (!nextValue) return null;
+		if (Object.prototype.hasOwnProperty.call(block.attributes, 'content')) {
+			return { content: nextValue };
+		}
+		if (Object.prototype.hasOwnProperty.call(block.attributes, 'text')) {
+			return { text: nextValue };
+		}
+		if (Object.prototype.hasOwnProperty.call(block.attributes, 'title')) {
+			return { title: nextValue };
+		}
+		if (Object.prototype.hasOwnProperty.call(block.attributes, 'label')) {
+			return { label: nextValue };
+		}
+		return { content: nextValue };
+	};
+
+	const buildIconRelatedText = (iconLabel, block, index) => {
+		const rawLabel = stripHtml(iconLabel);
+		if (!rawLabel) return '';
+		const label = /^[A-Z0-9\s&+.-]+$/.test(rawLabel)
+			? rawLabel
+			: toTitleCase(rawLabel);
+
+		if (isHeadingTextBlock(block)) {
+			return label;
+		}
+
+		const currentText = getBlockLabelText(block);
+		const lowerCurrent = currentText.toLowerCase();
+		if (currentText && lowerCurrent.includes(label.toLowerCase())) {
+			return currentText;
+		}
+
+		const hasNumber = /\d/.test(currentText);
+		const statWordMatch = lowerCurrent.match(
+			/\b(courses?|classes?|lessons?|events?|sessions?|programs?)\b/
+		);
+		if (hasNumber && statWordMatch) {
+			const numberMatch = currentText.match(/\d+\+?|\d+%/);
+			const numberPart = numberMatch ? numberMatch[0] : currentText;
+			return `${numberPart} ${label} ${statWordMatch[1]}`;
+		}
+		if (hasNumber) {
+			return `${label} ${currentText}`;
+		}
+
+		const templates = [
+			`Explore ${label}.`,
+			`Learn about ${label}.`,
+			`Discover ${label}.`,
+			`Find out more about ${label}.`,
+		];
+		return templates[index % templates.length];
 	};
 
 	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
@@ -998,30 +1153,28 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	};
 
 	const updatePadding = (value, side = null, prefix = '') => {
-		const valStr = String(value);
-		
-		// If a specific side is provided, only update that side
-		if (side && ['top', 'bottom', 'left', 'right'].includes(side.toLowerCase())) {
-			const sideLower = side.toLowerCase();
-			return {
-				[`${prefix}padding-${sideLower}-general`]: valStr,
-				[`${prefix}padding-${sideLower}-unit-general`]: 'px',
-				[`${prefix}padding-sync-general`]: 'none', // Disable sync when setting individual sides
-			};
-		}
-		
-		// Otherwise, update all sides equally
-		return {
-			[`${prefix}padding-top-general`]: valStr,
-			[`${prefix}padding-bottom-general`]: valStr,
-			[`${prefix}padding-left-general`]: valStr,
-			[`${prefix}padding-right-general`]: valStr,
-			[`${prefix}padding-top-unit-general`]: 'px',
-			[`${prefix}padding-bottom-unit-general`]: 'px',
-			[`${prefix}padding-left-unit-general`]: 'px',
-			[`${prefix}padding-right-unit-general`]: 'px',
-			[`${prefix}padding-sync-general`]: 'all',
-		};
+		const parsed = parseUnitValue(value);
+		const sideLower = side ? side.toLowerCase() : null;
+		const values = buildResponsiveScaledValues({
+			value: parsed.value,
+			unit: parsed.unit,
+		});
+		const changes = {};
+		const sides = sideLower && ['top', 'bottom', 'left', 'right'].includes(sideLower)
+			? [sideLower]
+			: ['top', 'bottom', 'left', 'right'];
+		const syncValue = sides.length === 1 ? 'none' : 'all';
+
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			const suffix = `-${bp}`;
+			sides.forEach(sideKey => {
+				changes[`${prefix}padding-${sideKey}${suffix}`] = values[bp];
+				changes[`${prefix}padding-${sideKey}-unit${suffix}`] = parsed.unit;
+			});
+			changes[`${prefix}padding-sync${suffix}`] = syncValue;
+		});
+
+		return changes;
 	};
 
 	const updateFontSize = (value) => ({
@@ -1032,28 +1185,28 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	// Margin - same pattern as padding
 	// Margin - same pattern as padding
 	const updateMargin = (value, side = null, prefix = '') => {
-		const valStr = String(value);
-		
-		if (side && ['top', 'bottom', 'left', 'right'].includes(side.toLowerCase())) {
-			const sideLower = side.toLowerCase();
-			return {
-				[`${prefix}margin-${sideLower}-general`]: valStr,
-				[`${prefix}margin-${sideLower}-unit-general`]: 'px',
-				[`${prefix}margin-sync-general`]: 'none',
-			};
-		}
-		
-		return {
-			[`${prefix}margin-top-general`]: valStr,
-			[`${prefix}margin-bottom-general`]: valStr,
-			[`${prefix}margin-left-general`]: valStr,
-			[`${prefix}margin-right-general`]: valStr,
-			[`${prefix}margin-top-unit-general`]: 'px',
-			[`${prefix}margin-bottom-unit-general`]: 'px',
-			[`${prefix}margin-left-unit-general`]: 'px',
-			[`${prefix}margin-right-unit-general`]: 'px',
-			[`${prefix}margin-sync-general`]: 'all',
-		};
+		const parsed = parseUnitValue(value);
+		const sideLower = side ? side.toLowerCase() : null;
+		const values = buildResponsiveScaledValues({
+			value: parsed.value,
+			unit: parsed.unit,
+		});
+		const changes = {};
+		const sides = sideLower && ['top', 'bottom', 'left', 'right'].includes(sideLower)
+			? [sideLower]
+			: ['top', 'bottom', 'left', 'right'];
+		const syncValue = sides.length === 1 ? 'none' : 'all';
+
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			const suffix = `-${bp}`;
+			sides.forEach(sideKey => {
+				changes[`${prefix}margin-${sideKey}${suffix}`] = values[bp];
+				changes[`${prefix}margin-${sideKey}-unit${suffix}`] = parsed.unit;
+			});
+			changes[`${prefix}margin-sync${suffix}`] = syncValue;
+		});
+
+		return changes;
 	};
 
 
@@ -1377,6 +1530,85 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return { value: Number.isNaN(parsed) ? 0 : parsed, unit: fallbackUnit };
 	};
 
+	const RESPONSIVE_BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+	const getResponsiveScaleFactor = breakpoint => {
+		if (breakpoint === 'm' || breakpoint === 's') return 0.6;
+		if (breakpoint === 'xs') return 0.4;
+		return 1;
+	};
+
+	const roundResponsiveValue = (value, unit) => {
+		const numeric = Number(value);
+		if (!Number.isFinite(numeric)) return value;
+		const normalizedUnit = String(unit || '').toLowerCase();
+		if (normalizedUnit === 'px') {
+			if (Math.abs(numeric) < 2) return Math.round(numeric * 100) / 100;
+			return Math.round(numeric);
+		}
+		return Math.round(numeric * 100) / 100;
+	};
+
+	const shouldScaleResponsiveUnit = (unit, forceScale) => {
+		if (forceScale) return true;
+		const normalizedUnit = String(unit || '').toLowerCase();
+		return !['', '-', '%', 'vw', 'vh', 'ch'].includes(normalizedUnit);
+	};
+
+	const buildResponsiveScaledValues = ({ value, unit, forceScale = false, min = null } = {}) => {
+		const numericValue = Number(value);
+		const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+		const canScale = shouldScaleResponsiveUnit(unit, forceScale);
+		const values = {};
+
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			const factor = canScale ? getResponsiveScaleFactor(bp) : 1;
+			let nextValue = safeValue * factor;
+			if (Number.isFinite(nextValue) && min !== null) {
+				nextValue = Math.max(min, nextValue);
+			}
+			values[bp] = roundResponsiveValue(nextValue, unit);
+		});
+
+		return values;
+	};
+
+	const buildResponsiveBooleanChanges = (prefix, key, value) => {
+		const changes = {};
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			changes[`${prefix}${key}-${bp}`] = value;
+		});
+		return changes;
+	};
+
+	const buildResponsiveSizeChanges = (
+		prefix,
+		key,
+		value,
+		unit,
+		includeAdvancedOptions = false,
+		options = {}
+	) => {
+		const values = buildResponsiveScaledValues({
+			value,
+			unit,
+			forceScale: options.forceScale,
+			min: options.min,
+		});
+		const changes = {};
+
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			changes[`${prefix}${key}-${bp}`] = values[bp];
+			changes[`${prefix}${key}-unit-${bp}`] = unit;
+		});
+
+		if (includeAdvancedOptions) {
+			changes[`${prefix}size-advanced-options`] = true;
+		}
+
+		return changes;
+	};
+
 	const getActiveBreakpoint = () => {
 		const maxiStore = select('maxiBlocks');
 		return maxiStore?.receiveMaxiDeviceType?.() || 'general';
@@ -1426,20 +1658,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		if (typeof rawValue === 'string') {
 			const normalized = rawValue.trim().toLowerCase();
 			if (normalized === 'auto' || normalized === 'fit-content' || normalized === 'fit content') {
-				return buildBreakpointChanges(prefix, 'width-fit-content', true);
+				return buildResponsiveBooleanChanges(prefix, 'width-fit-content', true);
 			}
 		}
 
 		const parsed = parseUnitValue(rawValue);
 		return {
-			...buildSizeChanges(prefix, 'width', parsed.value, parsed.unit, false),
-			...buildBreakpointChanges(prefix, 'width-fit-content', false),
+			...buildResponsiveSizeChanges(prefix, 'width', parsed.value, parsed.unit, false),
+			...buildResponsiveBooleanChanges(prefix, 'width-fit-content', false),
 		};
 	};
 
 	const buildHeightChanges = (rawValue, prefix = '') => {
 		const parsed = parseUnitValue(rawValue);
-		return buildSizeChanges(prefix, 'height', parsed.value, parsed.unit, false);
+		return buildResponsiveSizeChanges(prefix, 'height', parsed.value, parsed.unit, false);
 	};
 
 	const buildContextLoopChanges = (value = {}) => {
@@ -1496,15 +1728,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		};
 	};
 
-	const updateLineHeight = (value, unit = 'em') => ({
-		'line-height-general': Number(value),
-		'line-height-unit-general': unit,
-	});
+	const updateLineHeight = (value, unit = '-') => {
+		const parsed = parseUnitValue(value, unit);
+		const values = buildResponsiveScaledValues({
+			value: parsed.value,
+			unit: parsed.unit,
+			forceScale: true,
+			min: 1,
+		});
+		const changes = {};
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			changes[`line-height-${bp}`] = values[bp];
+			changes[`line-height-unit-${bp}`] = parsed.unit;
+		});
+		return changes;
+	};
 
-	const updateLetterSpacing = (value, unit = 'px') => ({
-		'letter-spacing-general': Number(value),
-		'letter-spacing-unit-general': unit,
-	});
+	const updateLetterSpacing = (value, unit = 'px') => {
+		const parsed = parseUnitValue(value, unit);
+		const values = buildResponsiveScaledValues({
+			value: parsed.value,
+			unit: parsed.unit,
+		});
+		const changes = {};
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			changes[`letter-spacing-${bp}`] = values[bp];
+			changes[`letter-spacing-unit-${bp}`] = parsed.unit;
+		});
+		return changes;
+	};
 
 	const updateTextTransform = (value) => ({
 		'text-transform-general': value,
@@ -1532,12 +1784,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		'align-items-general': value,
 	});
 
-	const updateGap = (value, unit = 'px') => ({
-		'row-gap-general': Number(value),
-		'row-gap-unit-general': unit,
-		'column-gap-general': Number(value),
-		'column-gap-unit-general': unit,
-	});
+	const updateGap = (value, unit = 'px') => {
+		const parsed = parseUnitValue(value, unit);
+		const values = buildResponsiveScaledValues({
+			value: parsed.value,
+			unit: parsed.unit,
+		});
+		const changes = {};
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			const suffix = `-${bp}`;
+			changes[`row-gap${suffix}`] = values[bp];
+			changes[`row-gap-unit${suffix}`] = parsed.unit;
+			changes[`column-gap${suffix}`] = values[bp];
+			changes[`column-gap-unit${suffix}`] = parsed.unit;
+		});
+		return changes;
+	};
 
 	const clampNumber = (value, min, max) => {
 		const numeric = Number(value);
@@ -2067,8 +2329,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'gap':
 							// Apply to layout containers
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
-								const gapVal = typeof value === 'number' ? value : parseInt(value) || 0;
-								changes = updateGap(gapVal);
+								changes = updateGap(value);
 							}
 							break;
 						// ======= EXTENDED LAYOUT PROPERTIES =======
@@ -2199,12 +2460,34 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							changes = null; // Handled in the loop with special logic
 							break;
 						// ======= TYPOGRAPHY =======
-						case 'line_height':
-							changes = { 'line-height-general': Number(value) };
+						case 'line_height': {
+							const parsed = parseUnitValue(value, '-');
+							const values = buildResponsiveScaledValues({
+								value: parsed.value,
+								unit: parsed.unit,
+								forceScale: true,
+								min: 1,
+							});
+							changes = {};
+							RESPONSIVE_BREAKPOINTS.forEach(bp => {
+								changes[`line-height-${bp}`] = values[bp];
+								changes[`line-height-unit-${bp}`] = parsed.unit;
+							});
 							break;
-						case 'letter_spacing':
-							changes = { 'letter-spacing-general': Number(value) };
+						}
+						case 'letter_spacing': {
+							const parsed = parseUnitValue(value, 'px');
+							const values = buildResponsiveScaledValues({
+								value: parsed.value,
+								unit: parsed.unit,
+							});
+							changes = {};
+							RESPONSIVE_BREAKPOINTS.forEach(bp => {
+								changes[`letter-spacing-${bp}`] = values[bp];
+								changes[`letter-spacing-unit-${bp}`] = parsed.unit;
+							});
 							break;
+						}
 						case 'font_weight':
 							changes = { 'font-weight-general': Number(value) };
 							break;
@@ -2274,19 +2557,19 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'max_width':
 							{
 								const maxWidth = parseUnitValue(value);
-								changes = buildSizeChanges(prefix, 'max-width', maxWidth.value, maxWidth.unit, true);
+								changes = buildResponsiveSizeChanges(prefix, 'max-width', maxWidth.value, maxWidth.unit, true);
 							}
 							break;
 						case 'min_width':
 							{
 								const minWidth = parseUnitValue(value);
-								changes = buildSizeChanges(prefix, 'min-width', minWidth.value, minWidth.unit, true);
+								changes = buildResponsiveSizeChanges(prefix, 'min-width', minWidth.value, minWidth.unit, true);
 							}
 							break;
 						case 'max_height':
 							{
 								const maxHeight = parseUnitValue(value);
-								changes = buildSizeChanges(prefix, 'max-height', maxHeight.value, maxHeight.unit, true);
+								changes = buildResponsiveSizeChanges(prefix, 'max-height', maxHeight.value, maxHeight.unit, true);
 							}
 							break;
 						case 'full_width': {
@@ -2300,7 +2583,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'min_height':
 							{
 								const minHeight = parseUnitValue(value);
-								changes = buildSizeChanges(prefix, 'min-height', minHeight.value, minHeight.unit, true);
+								changes = buildResponsiveSizeChanges(prefix, 'min-height', minHeight.value, minHeight.unit, true);
 							}
 							break;
 						// ======= ROW PATTERNS =======
@@ -2398,53 +2681,29 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 							break;
 						// ======= DIRECTIONAL MARGIN =======
 						case 'margin_top':
-							changes = { 
-								[`${prefix}margin-top-general`]: Number(value),
-								[`${prefix}margin-top-unit-general`]: 'px',
-							};
+							changes = updateMargin(value, 'top', prefix);
 							break;
 						case 'margin_bottom':
-							changes = { 
-								[`${prefix}margin-bottom-general`]: Number(value),
-								[`${prefix}margin-bottom-unit-general`]: 'px',
-							};
+							changes = updateMargin(value, 'bottom', prefix);
 							break;
 						case 'margin_left':
-							changes = { 
-								[`${prefix}margin-left-general`]: Number(value),
-								[`${prefix}margin-left-unit-general`]: 'px',
-							};
+							changes = updateMargin(value, 'left', prefix);
 							break;
 						case 'margin_right':
-							changes = { 
-								[`${prefix}margin-right-general`]: Number(value),
-								[`${prefix}margin-right-unit-general`]: 'px',
-							};
+							changes = updateMargin(value, 'right', prefix);
 							break;
 						// ======= DIRECTIONAL PADDING =======
 						case 'padding_top':
-							changes = { 
-								[`${prefix}padding-top-general`]: Number(value),
-								[`${prefix}padding-top-unit-general`]: 'px',
-							};
+							changes = updatePadding(value, 'top', prefix);
 							break;
 						case 'padding_bottom':
-							changes = { 
-								[`${prefix}padding-bottom-general`]: Number(value),
-								[`${prefix}padding-bottom-unit-general`]: 'px',
-							};
+							changes = updatePadding(value, 'bottom', prefix);
 							break;
 						case 'padding_left':
-							changes = { 
-								[`${prefix}padding-left-general`]: Number(value),
-								[`${prefix}padding-left-unit-general`]: 'px',
-							};
+							changes = updatePadding(value, 'left', prefix);
 							break;
 						case 'padding_right':
-							changes = { 
-								[`${prefix}padding-right-general`]: Number(value),
-								[`${prefix}padding-right-unit-general`]: 'px',
-							};
+							changes = updatePadding(value, 'right', prefix);
 							break;
 						// ======= RESPONSIVE OVERRIDES =======
 						case 'display_mobile':
@@ -3978,6 +4237,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					const hasChangeIntent = /\b(change|swap|replace|use|set|add|insert|make|give|update)\b/.test(lowerMessage);
 					const matchTitlesIntent =
 						/\b(match|use|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(below|under|beneath|underneath|following|next)\b/.test(lowerMessage);
+					const matchTitlesToIconsIntent =
+						/\b(match|sync|update|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\bicons?\b/.test(lowerMessage) ||
+						/\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(match|sync|update|set|make|change)\b[^.]*\bicons?\b/.test(lowerMessage);
 					const mentionsOtherTargets = /\b(text|heading|paragraph|container|section|background|layout|spacing|padding|margin|row|column|group|divider|image|video|button)\b/.test(lowerMessage);
 
 					if (isIconColorIntent) {
@@ -4006,7 +4268,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						(hasPronounIntent || hasChangeIntent) &&
 						!mentionsOtherTargets;
 
-					if (!hasIconKeyword && !hasCloudKeyword && !hasIconSelection && !shouldTreatAsIconTheme && !matchTitlesIntent) {
+					if (!hasIconKeyword && !hasCloudKeyword && !hasIconSelection && !shouldTreatAsIconTheme && !matchTitlesIntent && !matchTitlesToIconsIntent) {
 						setIsLoading(false);
 						continue;
 					}
@@ -4015,7 +4277,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						/\ball\b.*\bicons?\b|\bicons\b/.test(lowerMessage) ||
 						(shouldTreatAsIconTheme && iconBlocksInScope.length > 1);
 
-					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library for icons...' }]);
+					const cloudStatusMessage = matchTitlesToIconsIntent
+						? 'Matching text to icons...'
+						: 'Searching Cloud Library for icons...';
+					setMessages(prev => [...prev, { role: 'assistant', content: cloudStatusMessage }]);
 
 					setTimeout(async () => {
 						try {
@@ -4024,9 +4289,122 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									? `${items.slice(0, 3).join(', ')} and ${items.length - 3} more`
 									: items.join(', ');
 
-							const explicitQueries = extractIconQueries(rawMessage);
+							const styleIntent = extractIconStyleIntent(rawMessage);
+							const styleLabel = styleIntent
+								? styleIntent === 'line'
+									? 'line'
+									: styleIntent === 'shape'
+									? 'shape'
+									: 'filled'
+								: '';
+							const messageForQuery = styleIntent
+								? stripIconStylePhrases(rawMessage)
+								: rawMessage;
+
+							const explicitQueries = extractIconQueries(messageForQuery);
 							const hasExplicitList = explicitQueries.length > 1;
-							const searchQuery = extractIconQuery(rawMessage);
+							const searchQuery = extractIconQuery(messageForQuery);
+
+							if (matchTitlesToIconsIntent) {
+								if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: currentScope === 'selection'
+												? 'No icon blocks found in the selection.'
+												: 'No icon blocks found on this page.',
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								const updates = [];
+								const missingIconLabels = [];
+								const missingTextTargets = [];
+								const processedTextBlocks = new Set();
+
+								iconBlocksInScope.forEach((iconBlock, index) => {
+									const iconLabel = getIconLabelFromBlock(iconBlock);
+									if (!iconLabel) {
+										missingIconLabels.push(`icon ${index + 1}`);
+										return;
+									}
+
+									const groupRoot = findGroupRootForIconBlock(iconBlock);
+									const groupTextBlocks = groupRoot
+										? collectBlocks(groupRoot.innerBlocks || [], block =>
+												isLabelBlock(block?.name)
+											)
+										: [];
+
+									if (groupTextBlocks.length === 0) {
+										missingTextTargets.push(iconLabel);
+										return;
+									}
+
+									let bodyIndex = 0;
+									groupTextBlocks.forEach(textBlock => {
+										if (processedTextBlocks.has(textBlock.clientId)) {
+											return;
+										}
+										const nextText = buildIconRelatedText(
+											iconLabel,
+											textBlock,
+											bodyIndex
+										);
+										const changes = buildTextContentChange(textBlock, nextText);
+										if (changes) {
+											updates.push({ block: textBlock, changes });
+											processedTextBlocks.add(textBlock.clientId);
+										}
+										if (!isHeadingTextBlock(textBlock)) {
+											bodyIndex += 1;
+										}
+									});
+								});
+
+								if (updates.length === 0) {
+									let message = 'I could not match titles to the icons.';
+									if (missingIconLabels.length) {
+										message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
+									}
+									if (missingTextTargets.length) {
+										message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
+									}
+									setMessages(prev => [
+										...prev,
+										{ role: 'assistant', content: message, executed: false },
+									]);
+									setIsLoading(false);
+									return;
+								}
+
+								registry.batch(() => {
+									updates.forEach(({ block, changes }) => {
+										updateBlockAttributes(block.clientId, changes);
+									});
+								});
+
+								let message = currentScope === 'selection'
+									? `Updated ${updates.length} text blocks to match the icons.`
+									: `Updated ${updates.length} text blocks on the page to match the icons.`;
+								if (missingIconLabels.length) {
+									message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
+								}
+								if (missingTextTargets.length) {
+									message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
+								}
+
+								setMessages(prev => [
+									...prev,
+									{ role: 'assistant', content: message, executed: true },
+								]);
+								setIsLoading(false);
+								return;
+							}
 
 							if (matchTitlesIntent) {
 								if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
@@ -4073,6 +4451,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 										findBestIcon(item.label, {
 											target: 'svg',
 											requireStrongMatch: true,
+											style: styleIntent,
+											requireStyleMatch: Boolean(styleIntent),
 										})
 									)
 								);
@@ -4080,6 +4460,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								const updates = [];
 								const missingMatches = [];
 								const proOnly = [];
+								const missingStyles = [];
 
 								results.forEach((result, index) => {
 									const { block, label } = labeledBlocks[index];
@@ -4087,11 +4468,15 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 										missingMatches.push(label);
 										return;
 									}
+									if (result.noStyleMatch) {
+										missingStyles.push(label);
+										return;
+									}
 									if (result.isPro) {
 										proOnly.push(label);
 										return;
 									}
-									updates.push({ block, result });
+									updates.push({ block, result, label });
 								});
 
 								if (updates.length === 0) {
@@ -4101,6 +4486,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									}
 									if (missingMatches.length) {
 										message += ` No matches for: ${formatList(missingMatches)}.`;
+									}
+									if (missingStyles.length) {
+										message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
 									}
 									if (proOnly.length) {
 										message += ` Pro only: ${formatList(proOnly)}.`;
@@ -4115,14 +4503,18 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 								let updatedCount = 0;
 								registry.batch(() => {
-									updates.forEach(({ block, result }) => {
+									updates.forEach(({ block, result, label }) => {
 										const blockHandler = getAiHandlerForBlock(block);
 										if (!blockHandler) return;
 										const prefix = getBlockPrefix(block.name);
 										const handlerResult = blockHandler(
 											block,
 											'icon_svg',
-											{ svgCode: result.svgCode, svgType: result.svgType },
+											{
+												svgCode: result.svgCode,
+												svgType: result.svgType,
+												title: result.title || label,
+											},
 											prefix,
 											{ mode: currentScope }
 										);
@@ -4147,6 +4539,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								}
 								if (missingMatches.length) {
 									message += ` No matches for: ${formatList(missingMatches)}.`;
+								}
+								if (missingStyles.length) {
+									message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
 								}
 								if (proOnly.length) {
 									message += ` Pro only: ${formatList(proOnly)}.`;
@@ -4236,6 +4631,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 										findBestIcon(query, {
 											target: targetMeta.svgTarget,
 											requireStrongMatch: true,
+											style: styleIntent,
+											requireStyleMatch: Boolean(styleIntent),
 										})
 									)
 								);
@@ -4243,6 +4640,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								const usable = [];
 								const missing = [];
 								const proOnly = [];
+								const missingStyles = [];
 
 								results.forEach((result, index) => {
 									const query = queryList[index];
@@ -4252,6 +4650,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									}
 									if (result.noStrongMatch) {
 										missing.push(query);
+										return;
+									}
+									if (result.noStyleMatch) {
+										missingStyles.push(query);
 										return;
 									}
 									if (result.isPro) {
@@ -4301,7 +4703,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 										const result = blockHandler(
 											block,
 											targetMeta.property,
-											{ svgCode: choice.svgCode, svgType: choice.svgType },
+											{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
 											prefix,
 											{ mode: currentScope }
 										);
@@ -4324,6 +4726,9 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								if (missing.length) {
 									message += ` Missing: ${formatList(missing)}.`;
 								}
+								if (missingStyles.length) {
+									message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
+								}
 								if (proOnly.length) {
 									message += ` Pro only: ${formatList(proOnly)}.`;
 								}
@@ -4344,7 +4749,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								const candidateResult = await findIconCandidates(searchQuery, {
 									target: targetMeta.svgTarget,
 									limit: candidateLimit,
+									style: styleIntent,
+									requireStyleMatch: Boolean(styleIntent),
 								});
+
+								if (candidateResult?.noStyleMatch) {
+									setMessages(prev => [
+										...prev,
+										{
+											role: 'assistant',
+											content: `I couldn't find ${styleLabel} icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+											executed: false,
+										},
+									]);
+									setIsLoading(false);
+									return;
+								}
 
 								if (candidateResult?.hasOnlyPro) {
 									setMessages(prev => [
@@ -4395,7 +4815,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 										const result = blockHandler(
 											block,
 											targetMeta.property,
-											{ svgCode: choice.svgCode, svgType: choice.svgType },
+											{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
 											prefix,
 											{ mode: currentScope }
 										);
@@ -4434,7 +4854,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								target: targetMeta.svgTarget,
 								excludeSvgCodes,
 								preferDifferent: wantsDifferent && excludeSvgCodes.length > 0,
+								style: styleIntent,
+								requireStyleMatch: Boolean(styleIntent),
 							});
+
+							if (iconResult?.noStyleMatch) {
+								setMessages(prev => [
+									...prev,
+									{
+										role: 'assistant',
+										content: `I couldn't find ${styleLabel} icons for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
+										executed: false,
+									},
+								]);
+								setIsLoading(false);
+								return;
+							}
 
 							if (wantsDifferent && (iconResult?.noAlternative || iconResult?.total === 1)) {
 								setMessages(prev => [
@@ -4483,6 +4918,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								value: {
 									svgCode: iconResult.svgCode,
 									svgType: iconResult.svgType,
+									title: iconResult.title,
 								},
 								target_block: targetMeta.targetBlock,
 								message: actionType === 'selection'

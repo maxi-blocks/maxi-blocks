@@ -86,7 +86,22 @@ export const BUTTON_PATTERNS = [
 	{ regex: /smaller.*text|decrease.*font/i, property: 'button_size', value: 'small', selectionMsg: 'Decreased text size.', pageMsg: 'Made text smaller.', target: 'button' },
 
 	// ============================================================
-	// GROUP 4: ICONS
+	// GROUP 4: ALIGNMENT
+	// ============================================================
+
+	// Button text alignment
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(text|label)\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bleft\b)/i, property: 'text_align', value: 'left', selectionMsg: 'Aligned button text left.', pageMsg: 'Aligned button text left.', target: 'button' },
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(text|label)\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\b(center|centre|centered|centred|middle)\b)/i, property: 'text_align', value: 'center', selectionMsg: 'Aligned button text center.', pageMsg: 'Aligned button text center.', target: 'button' },
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(text|label)\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bright\b)/i, property: 'text_align', value: 'right', selectionMsg: 'Aligned button text right.', pageMsg: 'Aligned button text right.', target: 'button' },
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(text|label)\b)(?=.*\b(justify|justified)\b)/i, property: 'text_align', value: 'justify', selectionMsg: 'Justified button text.', pageMsg: 'Justified button text.', target: 'button' },
+
+	// Button block alignment
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bleft\b)(?!.*\bicon\b)/i, property: 'alignment', value: 'left', selectionMsg: 'Aligned button left.', pageMsg: 'Aligned buttons left.', target: 'button' },
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\b(center|centre|centered|centred|middle)\b)(?!.*\bicon\b)/i, property: 'alignment', value: 'center', selectionMsg: 'Aligned button center.', pageMsg: 'Aligned buttons center.', target: 'button' },
+	{ regex: /(?=.*\bbutton\b)(?=.*\b(align|aligned|alignment)\b)(?=.*\bright\b)(?!.*\bicon\b)/i, property: 'alignment', value: 'right', selectionMsg: 'Aligned button right.', pageMsg: 'Aligned buttons right.', target: 'button' },
+
+	// ============================================================
+	// GROUP 5: ICONS
 	// ============================================================
 
 	// Icon-only mode
@@ -125,7 +140,7 @@ export const BUTTON_PATTERNS = [
 	{ regex: /button.*(background|bg).*(colou?r|color)|\b(colou?r|color)\b.*button.*(background|bg)|button.*colou?r\b|button.*color\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour for the button background?', pageMsg: 'Which colour for the button background?', target: 'button', colorTarget: 'button-background' },
 
 	// ============================================================
-	// GROUP 5: TYPOGRAPHY
+	// GROUP 6: TYPOGRAPHY
 	// ============================================================
 
 	{ regex: /uppercase|caps|capitali[sz]e/i, property: 'button_transform', value: 'uppercase', selectionMsg: 'Uppercase applied.', pageMsg: 'Text transformed to uppercase.', target: 'button' },
@@ -136,7 +151,7 @@ export const BUTTON_PATTERNS = [
 	{ regex: /strikethrough|strike.*text|line.*through/i, property: 'button_decoration', value: 'line-through', selectionMsg: 'Strikethrough applied.', pageMsg: 'Text struck through.', target: 'button' },
 
 	// ============================================================
-	// GROUP 6: STYLING
+	// GROUP 7: STYLING
 	// ============================================================
 
 	{ regex: /transparent.*background|clear.*background/i, property: 'button_bg_color', value: 'transparent', selectionMsg: 'Made background transparent.', pageMsg: 'Backgrounds made transparent.', target: 'button' },
@@ -145,7 +160,7 @@ export const BUTTON_PATTERNS = [
 	{ regex: /shadow.*grey|shadow.*gray/i, property: 'button_shadow_color', value: 'grey', selectionMsg: 'Set shadow to grey.', pageMsg: 'Set shadow to grey.', target: 'button' },
 
 	// ============================================================
-	// GROUP 7: HOVER & ACTIVE STATES
+	// GROUP 8: HOVER & ACTIVE STATES
 	// ============================================================
 
 	{ regex: /hover.*(colou?r|background|bg).*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
@@ -154,7 +169,7 @@ export const BUTTON_PATTERNS = [
 	{ regex: /active.*state|on\s*click.*colou?r|active.*colou?r|active.*background/i, property: 'flow_button_active_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 
 	// ============================================================
-	// GROUP 8: RESPONSIVE DESIGN
+	// GROUP 9: RESPONSIVE DESIGN
 	// ============================================================
 
 	{ regex: /full.*(mobile|phone)|mobile.*full/i, property: 'button_responsive_width', value: { device: 'mobile', width: '100%' }, selectionMsg: 'Full width on mobile.', pageMsg: 'Set to full width on mobile.', target: 'button' },
@@ -166,7 +181,7 @@ export const BUTTON_PATTERNS = [
 	{ regex: /(tablet.*only|only.*tablet)/i, property: 'button_responsive_only', value: 'tablet', selectionMsg: 'Tablet only.', pageMsg: 'Button shown only on tablet.', target: 'button' },
 
 	// ============================================================
-	// GROUP 9: CONTENT & LINKS
+	// GROUP 10: CONTENT & LINKS
 	// ============================================================
 
 	{ regex: /change.*text|set.*text|set.*label|rename.*button|button\s*(?:text|label|copy)\b|(?:text|label|copy)\s*(?:for|on)?\s*button|cta\s*(?:text|label)|call\s*to\s*action/i, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated text.', pageMsg: 'Button text updated.', target: 'button' },
@@ -178,14 +193,14 @@ export const BUTTON_PATTERNS = [
 	{ regex: /download|pdf/i, property: 'button_custom_text_link', value: 'Download', selectionMsg: 'Changed to download button.', pageMsg: 'Button set as download link.', target: 'button' },
 
 	// ============================================================
-	// GROUP 10: DYNAMIC CONTENT BINDING
+	// GROUP 11: DYNAMIC CONTENT BINDING
 	// ============================================================
 
 	{ regex: /dynamic.*title|bind.*title|post.*title/i, property: 'button_dynamic_text', value: 'post-title', selectionMsg: 'Bound to post title.', pageMsg: 'Button text now dynamic.', target: 'button' },
 	{ regex: /dynamic.*(link|url)|bind.*url|post.*url/i, property: 'button_dynamic_link', value: 'entity', selectionMsg: 'Bound to post URL.', pageMsg: 'Button link now dynamic.', target: 'button' },
 
 	// ============================================================
-	// GROUP 11: SLANG & JARGON (Catch-all patterns at the end)
+	// GROUP 12: SLANG & JARGON (Catch-all patterns at the end)
 	// ============================================================
 
 	// "Make it pop" / "Stand out" -> triggers shadow flow for emphasis
@@ -202,6 +217,10 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 	const isButton = block.name.includes('button');
 	
 	if (!isButton) return null;
+
+	if (property === 'alignment') {
+		return { 'alignment-general': value };
+	}
 
 	const linkSettings = block?.attributes?.linkSettings || {};
 

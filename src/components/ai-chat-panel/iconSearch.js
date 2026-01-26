@@ -87,6 +87,100 @@ const cleanIconQuery = value =>
 		.replace(/\s+/g, ' ')
 		.trim();
 
+const normalizeIconStyle = value => {
+	const normalized = String(value || '').toLowerCase();
+	if (/(filled|solid|fill)/.test(normalized)) return 'filled';
+	if (/(line|outline|stroke)/.test(normalized)) return 'line';
+	if (/(shape|shapes|geometric)/.test(normalized)) return 'shape';
+	return '';
+};
+
+const getIconStyleTokens = icon => {
+	const title = normalizeText(icon?.post_title || '');
+	const categories = toList(icon?.svg_category).map(normalizeText).filter(Boolean);
+	const tags = toList(icon?.svg_tag).map(normalizeText).filter(Boolean);
+	const svgType = normalizeText(
+		Array.isArray(icon?.svg_category) ? icon?.svg_category[0] : icon?.svg_category
+	);
+	const tokens = new Set(
+		[title, svgType, ...categories, ...tags]
+			.join(' ')
+			.split(' ')
+			.filter(Boolean)
+	);
+	return tokens;
+};
+
+const matchesIconStyle = (icon, style) => {
+	const normalizedStyle = normalizeIconStyle(style);
+	if (!normalizedStyle) return true;
+	const tokens = getIconStyleTokens(icon);
+	if (normalizedStyle === 'filled') {
+		return (
+			tokens.has('filled') ||
+			tokens.has('fill') ||
+			tokens.has('solid') ||
+			tokens.has('filled-icon') ||
+			tokens.has('solid-icon')
+		);
+	}
+	if (normalizedStyle === 'line') {
+		return (
+			tokens.has('line') ||
+			tokens.has('outline') ||
+			tokens.has('stroke') ||
+			tokens.has('outlined')
+		);
+	}
+	if (normalizedStyle === 'shape') {
+		return tokens.has('shape') || tokens.has('shapes') || tokens.has('geometric');
+	}
+	return true;
+};
+
+export const extractIconStyleIntent = message => {
+	if (typeof message !== 'string') {
+		return '';
+	}
+	const lower = message.toLowerCase();
+	if (
+		/\b(filled|solid|fill)\s+icons?\b/.test(lower) ||
+		/\bicons?\b\s+(?:only\s+)?(filled|solid|fill)\b/.test(lower) ||
+		/\bicons?\b\s+(?:in|with)\s+(?:a\s+)?(filled|solid|fill)\s+style\b/.test(lower)
+	) {
+		return 'filled';
+	}
+	if (
+		/\b(line|outline|stroke)\s+icons?\b/.test(lower) ||
+		/\bicons?\b\s+(?:only\s+)?(line|outline|stroke)\b/.test(lower) ||
+		/\bicons?\b\s+(?:in|with)\s+(?:a\s+)?(line|outline|stroke)\s+style\b/.test(lower)
+	) {
+		return 'line';
+	}
+	if (
+		/\b(shape|shapes|geometric)\s+icons?\b/.test(lower) ||
+		/\bicons?\b\s+(?:only\s+)?(shape|shapes|geometric)\b/.test(lower) ||
+		/\bicons?\b\s+(?:in|with)\s+(?:a\s+)?(shape|shapes|geometric)\s+style\b/.test(lower)
+	) {
+		return 'shape';
+	}
+	return '';
+};
+
+export const stripIconStylePhrases = message => {
+	if (typeof message !== 'string') {
+		return '';
+	}
+	return message
+		.replace(/\b(filled|solid|fill)\s+icons?\b(\s+only)?/gi, 'icons')
+		.replace(/\b(line|outline|stroke)\s+icons?\b(\s+only)?/gi, 'icons')
+		.replace(/\b(shape|shapes|geometric)\s+icons?\b(\s+only)?/gi, 'icons')
+		.replace(/\bicons?\b\s+(?:only\s+)?(filled|solid|fill|line|outline|stroke|shape|shapes|geometric)\b/gi, 'icons')
+		.replace(/\bicons?\b\s+(?:in|with)\s+(?:a\s+)?(filled|solid|fill|line|outline|stroke|shape|shapes|geometric)\s+style\b/gi, 'icons')
+		.replace(/\s+/g, ' ')
+		.trim();
+};
+
 const isProIcon = icon => icon?.cost?.[0] === 'Pro';
 
 const toList = value => {
@@ -181,9 +275,12 @@ export const findBestIcon = async (query, options = {}) => {
 		excludeSvgCodes = [],
 		preferDifferent = false,
 		requireStrongMatch = false,
+		style = '',
+		requireStyleMatch = false,
 	} = options;
 	const results = await searchIcons(query, 12);
 	const total = results.length;
+	const normalizedStyle = normalizeIconStyle(style);
 
 	if (total === 0) {
 		return { total: 0 };
@@ -198,6 +295,9 @@ export const findBestIcon = async (query, options = {}) => {
 			const rawSvg = icon.svg_code || '';
 			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
 			const matchStats = getMatchStats(query, icon);
+			const styleMatch = normalizedStyle
+				? matchesIconStyle(icon, normalizedStyle)
+				: true;
 			return {
 				icon,
 				svgType,
@@ -206,6 +306,7 @@ export const findBestIcon = async (query, options = {}) => {
 				strongMatch: matchStats.strongMatch,
 				isPro: isProIcon(icon),
 				isExcluded: excludeSet.has(normalizeSvg(svgCode)),
+				styleMatch,
 			};
 		})
 		.filter(item => item.svgCode);
@@ -224,17 +325,32 @@ export const findBestIcon = async (query, options = {}) => {
 	const eligible = requireStrongMatch
 		? scored.filter(item => item.strongMatch)
 		: scored;
+	const styleEligible = normalizedStyle
+		? eligible.filter(item => item.styleMatch)
+		: eligible;
+
+	if (normalizedStyle && requireStyleMatch && styleEligible.length === 0) {
+		return { total, noStyleMatch: true };
+	}
+
+	const finalPool =
+		normalizedStyle && styleEligible.length > 0 ? styleEligible : eligible;
 	if (preferDifferent) {
 		picked =
-			eligible.find(item => !item.isExcluded && !item.isPro) ||
-			eligible.find(item => !item.isExcluded) ||
+			finalPool.find(item => !item.isExcluded && !item.isPro) ||
+			finalPool.find(item => !item.isExcluded) ||
 			null;
 	} else {
-		picked = eligible.find(item => !item.isPro) || eligible[0];
+		picked = finalPool.find(item => !item.isPro) || finalPool[0];
 	}
 
 	if (!picked) {
-		return { total, noAlternative: true, noStrongMatch: requireStrongMatch };
+		return {
+			total,
+			noAlternative: true,
+			noStrongMatch: requireStrongMatch,
+			noStyleMatch: normalizedStyle ? true : false,
+		};
 	}
 
 	return {
@@ -244,13 +360,15 @@ export const findBestIcon = async (query, options = {}) => {
 		isPro: picked.isPro,
 		total,
 		strongMatch: picked.strongMatch,
+		styleMatch: picked.styleMatch,
 	};
 };
 
 export const findIconCandidates = async (query, options = {}) => {
-	const { target = 'icon', limit = 24 } = options;
+	const { target = 'icon', limit = 24, style = '', requireStyleMatch = false } = options;
 	const results = await searchIcons(query, limit);
 	const total = results.length;
+	const normalizedStyle = normalizeIconStyle(style);
 
 	if (total === 0) {
 		return { icons: [], total, hasOnlyPro: false };
@@ -264,6 +382,9 @@ export const findIconCandidates = async (query, options = {}) => {
 			const rawSvg = icon.svg_code || '';
 			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
 			const matchStats = getMatchStats(query, icon);
+			const styleMatch = normalizedStyle
+				? matchesIconStyle(icon, normalizedStyle)
+				: true;
 			return {
 				icon,
 				svgType,
@@ -271,6 +392,7 @@ export const findIconCandidates = async (query, options = {}) => {
 				score: matchStats.score,
 				isPro: isProIcon(icon),
 				normalizedSvg: normalizeSvg(svgCode),
+				styleMatch,
 			};
 		})
 		.filter(item => item.svgCode);
@@ -281,9 +403,18 @@ export const findIconCandidates = async (query, options = {}) => {
 		return 0;
 	});
 
+	const stylePool = normalizedStyle
+		? scored.filter(item => item.styleMatch)
+		: scored;
+
+	if (normalizedStyle && requireStyleMatch && stylePool.length === 0) {
+		return { icons: [], total, hasOnlyPro: false, noStyleMatch: true };
+	}
+
 	const icons = [];
 	const seen = new Set();
-	for (const item of scored) {
+	const pool = normalizedStyle && stylePool.length > 0 ? stylePool : scored;
+	for (const item of pool) {
 		if (item.isPro) {
 			continue;
 		}
@@ -301,7 +432,8 @@ export const findIconCandidates = async (query, options = {}) => {
 		});
 	}
 
-	const hasOnlyPro = icons.length === 0 && scored.some(item => item.isPro);
+	const hasOnlyPro =
+		icons.length === 0 && pool.some(item => item.isPro);
 	return { icons, total, hasOnlyPro };
 };
 

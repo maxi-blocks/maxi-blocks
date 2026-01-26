@@ -46,6 +46,7 @@ export const BLOCK_SKILLS = {
 		keyControls: [
 			'Button hover color/background/border settings',
 			'Style card hooks for theming',
+			'Alignment (button + text)',
 		],
 		patterns: [
 			'Primary CTA in hero sections',

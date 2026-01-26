@@ -46,6 +46,8 @@ If width or visibility is mentioned:
 - Button background (palette or custom): property "background_color" with palette number (1-8) or CSS colour string.
 - Force transparent/custom background: property "button_bg_color" with "transparent" or CSS colour string (avoid palette numbers).
 - Button text colour: property "text_color" with palette number (1-8) or CSS colour string.
+- Button alignment: property "alignment" with "left" | "center" | "right".
+- Button text alignment: property "text_align" with "left" | "center" | "right" | "justify".
 - Icon visibility: property "button_icon" with "only" | "none".
 - Add icon: property "button_icon_add" with icon name (e.g. "arrow-right").
 - Change icon: property "button_icon_change" with icon name.

@@ -1,192 +1,154 @@
-<p align="center">
-  <a href="https://maxiblocks.com/">
-    <img src="https://maxiblocks.com/wp-content/uploads/2025/03/Maxi-Black_logo.svg" alt="MaxiBlocks" width="300">
-  </a>
-</p>
+[![MaxiBlocks - Build professional WordPress sites faster](https://ps.w.org/maxi-blocks/assets/banner-1544x500.jpg)](https://maxiblocks.com/)
 
-<h3 align="center">MaxiBlocks Builder</h3>
+# MaxiBlocks Builder
 
-<p align="center">
-  Build professional WordPress sites faster. All features free forever.
-  <br>
-  <a href="https://maxiblocks.com/"><strong>Website</strong></a> · <a href="https://maxiblocks.com/demo/"><strong>Cloud Library</strong></a> · <a href="https://maxiblocks.com/starter-sites/"><strong>Starter Sites</strong></a> · <a href="https://maxiblocks.com/go/maxi-discord"><strong>Discord</strong></a>
-</p>
+A free, open source page builder for WordPress with 17,000+ design assets. Starter sites, patterns, icons, style cards — everything you need to build professional websites.
 
-<p align="center">
-  <a href="https://github.com/maxi-blocks/maxi-blocks/blob/master/license.txt"><img src="https://img.shields.io/badge/License-GPLV%203%20or%20later-purple" alt="License"></a>
-  <a href="https://wordpress.org/plugins/maxi-blocks/"><img src="https://img.shields.io/wordpress/plugin/installs/maxi-blocks" alt="WordPress Plugin Active Installs"></a>
-  <a href="https://wordpress.org/plugins/maxi-blocks/"><img src="https://img.shields.io/wordpress/plugin/rating/maxi-blocks" alt="WordPress Plugin Rating"></a>
-  <a href="https://wordpress.org/plugins/maxi-blocks/"><img src="https://img.shields.io/wordpress/plugin/v/maxi-blocks" alt="WordPress Plugin Version"></a>
-  <a href="https://maxiblocks.com/go/maxi-discord"><img src="https://img.shields.io/discord/812371093947023450?label=Discord&logo=discord&logoColor=%23fff" alt="Discord"></a>
-</p>
+[Browse the library →](https://maxiblocks.com/demo/)
+
+[Website](https://maxiblocks.com/) | [Starter Sites](https://maxiblocks.com/starter-sites/) | [Discord](https://maxiblocks.com/go/maxi-discord)
+
+[![License](https://img.shields.io/badge/License-GPLV%203%20or%20later-purple)](https://github.com/maxi-blocks/maxi-blocks/blob/master/license.txt)
+[![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/installs/maxi-blocks)](https://wordpress.org/plugins/maxi-blocks/)
+[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/rating/maxi-blocks)](https://wordpress.org/plugins/maxi-blocks/)
+[![WordPress Plugin Version](https://img.shields.io/wordpress/plugin/v/maxi-blocks)](https://wordpress.org/plugins/maxi-blocks/)
+[![Discord](https://img.shields.io/discord/812371093947023450?label=Discord&logo=discord&logoColor=%23fff)](https://maxiblocks.com/go/maxi-discord)
 
 ---
 
-## What is MaxiBlocks?
+## Why MaxiBlocks?
 
-MaxiBlocks is a complete website building solution for WordPress. It combines the **MaxiBlocks Builder** plugin, **MaxiBlocks Go Theme**, and **MaxiBlocks Cloud Library** to help you build professional websites faster.
+Most page builders lock their best features behind paywalls. We took a different approach — everything works from day one. Install the plugin, pick a pattern, and start building. That's it.
 
-The Builder and Go Theme are free and open source forever. The optional Cloud Library offers premium designs to save you time.
-
-**No locked blocks. No feature restrictions. No forced upgrades.**
+[Watch the introductory video →](https://youtu.be/EFXhXGFfMF8)
 
 ---
 
-## The Complete Ecosystem 🎈
+## What You Get 🎈
 
-| Component | Description | Price |
-|-----------|-------------|-------|
-| **[MaxiBlocks Builder](https://wordpress.org/plugins/maxi-blocks/)** | 19 foundation blocks, visual style controls, advanced design tools, dynamic content, animations, custom CSS | Free |
-| **[MaxiBlocks Go Theme](https://wordpress.org/themes/maxiblocks-go/)** | Full Site Editing theme, responsive templates, performance optimised | Free |
-| **[MaxiBlocks Cloud Library](https://maxiblocks.com/demo/)** | 2,180+ patterns, 231 pages, 14,417 icons, 100 style cards, 11 starter sites | Free + Paid |
+| | |
+|---|---|
+| **[MaxiBlocks Builder](https://wordpress.org/plugins/maxi-blocks/)** | 19 blocks with visual style controls, dynamic content, animations, and custom CSS |
+| **[MaxiBlocks Go Theme](https://wordpress.org/themes/maxiblocks-go/)** | Full Site Editing theme, performance optimised |
+| **Design Library** | 542 patterns, 17 pages, 14,417 icons, 100 style cards |
 
-**17,000+ total design assets** available in the Cloud Library.
+All free. All open source. Unlimited sites.
 
 ---
 
 ## Starter Sites
 
-Complete websites ready to install with one click:
+Complete websites you can install with one click. Each includes homepage, about, services, contact, blog, archives, and 404 pages.
 
-| | | | |
-|---|---|---|---|
-| Interior Design | Acupuncture | Coffee Shop | Cafe |
-| Business | SaaS | Invest | Conference |
-| Architecture | Co-working | Hair Dresser | *More coming* |
+**Interior Design** · **Acupuncture** · **Coffee Shop** · **Cafe** · **Business** · **SaaS** · **Invest** · **Conference** · **Architecture** · **Co-working** · **Hair Dresser**
 
-Each starter site includes homepage, about, services, contact, blog templates, archive pages, search results, and 404 pages.
+More on the way.
 
 [Browse starter sites →](https://maxiblocks.com/starter-sites/)
 
 ---
 
-## Quick Start
+## Features
 
-```bash
-# Install from WordPress admin
+**Style Cards**
+Transform your entire site with one click. 100 style cards included, each with light and dark modes. Customise colours, typography, and spacing globally.
+
+**Responsive Design**
+Six breakpoints from 4K displays to mobile. Flexbox-based grid with precise control at every size.
+
+**Dynamic Content**
+Advanced Custom Fields integration, context loops, and style repeaters for testimonials, team profiles, and galleries.
+
+**Design Tools**
+Layer backgrounds, shape masks, scroll animations, hover effects, and CSS transformations — all built in.
+
+---
+
+## Blocks
+
+19 foundation blocks designed to work together:
+
+| | | |
+|---|---|---|
+| Container | Row | Column |
+| Group | Text | Heading |
+| Button | Image | Icon |
+| Video | Divider | Accordion |
+| Slider | Map | Number Counter |
+| Search | List Item | Template Library |
+
+Each block includes full responsive controls, styling options, and dynamic content support.
+
+---
+
+## Installation
+
+**From WordPress:**
+
+```
 Plugins → Add New → Search "MaxiBlocks" → Install → Activate
+```
 
-# Install the theme
+```
 Appearance → Themes → Add New → Search "MaxiBlocks Go" → Install → Activate
 ```
 
-Or download directly:
+**Direct download:**
 
-- [Download MaxiBlocks Builder](https://downloads.wordpress.org/plugin/maxi-blocks.latest-stable.zip)
-- [Download MaxiBlocks Go Theme](https://downloads.wordpress.org/theme/maxiblocks-go.latest-stable.zip)
+- [MaxiBlocks Builder](https://downloads.wordpress.org/plugin/maxi-blocks.latest-stable.zip)
+- [MaxiBlocks Go Theme](https://downloads.wordpress.org/theme/maxiblocks-go.latest-stable.zip)
 
----
+**First steps:**
 
-## Key Features
-
-**Powerful Blocks**
-19 foundation blocks that handle any layout. No bloat, no complexity.
-
-**Instant Designs**
-2,180+ patterns. Drag, drop, customise.
-
-**Massive Icon Library**
-14,417 SVG icons and shapes built in. No extra plugins.
-
-**One-Click Styles**
-100 style cards to transform your entire site instantly.
-
-**Full Site Editing**
-Edit headers, footers, and templates visually with the Go Theme.
-
-**Dynamic Content**
-ACF integration. Display custom fields and real-time updates.
-
-**Scroll Effects**
-CSS transformations, hover effects, and animations.
-
-**Lightning Fast**
-Clean, optimised code. No domain limits. Zero hidden fees.
+1. Open any page in the editor
+2. Click the MaxiBlocks icon in the toolbar
+3. Browse patterns or choose a starter site
+4. Pick a style card to set your look
 
 ---
 
-## What's Free vs Cloud
+## Screenshots
 
-**Always Free:**
-- MaxiBlocks Builder plugin (19 blocks, all features)
-- MaxiBlocks Go Theme (Full Site Editing)
-- 542 patterns and 17 pages
-- 14,417 icons and shapes
-- 100 style cards
-- Animations, dynamic content, custom CSS
-- Unlimited websites
-
-**Cloud Library (Optional):**
-- 2,180+ patterns
-- 231 complete pages
-- 11 starter sites
-- Priority support
-
-The Cloud Library saves you 10+ hours per project. You can build the same sites with free tools — Cloud just makes it faster.
+| | |
+|---|---|
+| ![Style Cards](https://ps.w.org/maxi-blocks/assets/screenshot-1.gif) | ![Template Library](https://ps.w.org/maxi-blocks/assets/screenshot-2.jpg) |
+| *Style cards transform your site instantly* | *Browse patterns and pages* |
+| ![Button Presets](https://ps.w.org/maxi-blocks/assets/screenshot-3.gif) | ![Background Layers](https://ps.w.org/maxi-blocks/assets/screenshot-4.gif) |
+| *Button presets and hover states* | *Layered backgrounds and effects* |
 
 ---
 
-## Foundation Blocks
+## Documentation
 
-| Block | Description |
-|-------|-------------|
-| **Container** | Wrapper for layout structure |
-| **Row** | Horizontal grouping with columns |
-| **Column** | Flexible column layouts |
-| **Group** | Bind blocks together into patterns |
-| **Text** | Rich text with advanced styling |
-| **Heading** | Headings with full typography control |
-| **Button** | Buttons with hover states and icons |
-| **Image** | Images with masks, layers, and effects |
-| **Icon** | 14,417 SVG icons with styling options |
-| **Video** | Video embeds with lightbox support |
-| **Divider** | Visual separators |
-| **Accordion** | Expandable content panels |
-| **Slider** | Horizontal block sliders |
-| **Map** | Google Maps integration |
-| **Number Counter** | Animated counters |
-| **Search** | Search bar with styling |
-| **List Item** | Styled list elements |
-| **Template Library** | Access patterns and pages |
-
----
-
-## Documentation & Support
-
-| Resource | Link |
-|----------|------|
-| Documentation | [help.maxiblocks.com](https://help.maxiblocks.com) |
-| Video Tutorials | [YouTube Playlist](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda) |
+| | |
+|---|---|
+| Docs | [help.maxiblocks.com](https://help.maxiblocks.com) |
+| Videos | [YouTube](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda) |
 | Support | [Help Desk](https://maxiblocks.com/go/help-desk) |
-| Changelog | [GitHub Releases](https://github.com/maxi-blocks/maxi-blocks/releases) |
+| Changelog | [Releases](https://github.com/maxi-blocks/maxi-blocks/releases) |
 | Roadmap | [Public Roadmap](https://maxiblocks.com/go/roadmap) |
 
 ---
 
 ## Community
 
-- [Discord](https://maxiblocks.com/go/maxi-discord) — Connect with other users
-- [Twitter](https://twitter.com/maxiblocks) — Updates and tips
-- [GitHub Issues](https://github.com/maxi-blocks/maxi-blocks/issues) — Report bugs and request features
+We'd love to have you involved.
 
-Share your work with **#maxiblocks** or **#madewithmaxi**
+- [Discord](https://maxiblocks.com/go/maxi-discord) — Chat with other users
+- [Twitter](https://twitter.com/maxiblocks) — Follow for updates
+- [GitHub Issues](https://github.com/maxi-blocks/maxi-blocks/issues) — Report bugs, request features
 
----
+Share your work: **#maxiblocks** or **#madewithmaxi**
 
-## Contributing
-
-We welcome contributions. Please read our contributing guidelines before submitting pull requests.
+### Contributing
 
 ```bash
-# Clone the repository
 git clone https://github.com/maxi-blocks/maxi-blocks.git
-
-# Install dependencies
 npm install
-
-# Start development
 npm run start
 ```
+
+Pull requests welcome.
 
 ---
 
@@ -195,58 +157,57 @@ npm run start
 <details>
 <summary><strong>How many sites can I build?</strong></summary>
 
-Unlimited. The Builder and Go Theme are free with no domain restrictions.
+As many as you want. No limits.
 </details>
 
 <details>
-<summary><strong>Do I need to pay for advanced blocks?</strong></summary>
+<summary><strong>Do I need an account?</strong></summary>
 
-No. All 19 blocks and all features are free. The Cloud Library offers premium designs, not premium features.
+No. Install and start building immediately.
 </details>
 
 <details>
-<summary><strong>What happens if I cancel my Cloud subscription?</strong></summary>
+<summary><strong>Will it work with my theme?</strong></summary>
 
-Your sites keep working. Any designs you've downloaded stay functional. The Builder and Theme continue to receive updates. You just can't download new Cloud Library items.
+Yes. MaxiBlocks works with most themes. For the full experience, use MaxiBlocks Go or any Full Site Editing theme.
 </details>
 
 <details>
-<summary><strong>Is MaxiBlocks compatible with my theme?</strong></summary>
+<summary><strong>Is it compatible with Gutenberg?</strong></summary>
 
-MaxiBlocks works with most themes. For best results, use the MaxiBlocks Go Theme or any Full Site Editing theme.
+Fully. MaxiBlocks extends the block editor — it doesn't replace it.
 </details>
 
 <details>
-<summary><strong>Does MaxiBlocks work with Gutenberg?</strong></summary>
+<summary><strong>Can I use designs commercially?</strong></summary>
 
-Yes. MaxiBlocks is built on top of Gutenberg and fully integrated with the block editor.
+Yes. All patterns and icons are CC0 licensed.
 </details>
+
+---
+
+## Support the Project
+
+MaxiBlocks is free and open source. If you find it useful, consider supporting development through our **Cloud Library** — 2,180+ additional patterns, 231 page templates, and priority support.
+
+Your sites keep working even if you cancel. We don't believe in lock-in.
+
+[Learn more →](https://maxiblocks.com/pricing/)
 
 ---
 
 ## License
 
-MaxiBlocks is licensed under the [GNU General Public License v3.0](license.txt).
-
-All templates, patterns, and icons carry the CC0 1.0 license — use them freely for personal or commercial projects.
+[GNU General Public License v3.0](license.txt)
 
 ---
 
 ## Links
 
-| | |
-|---|---|
-| Website | [maxiblocks.com](https://maxiblocks.com/) |
-| Cloud Library | [maxiblocks.com/demo](https://maxiblocks.com/demo/) |
-| Starter Sites | [maxiblocks.com/starter-sites](https://maxiblocks.com/starter-sites/) |
-| WordPress Plugin | [wordpress.org/plugins/maxi-blocks](https://wordpress.org/plugins/maxi-blocks/) |
-| WordPress Theme | [wordpress.org/themes/maxiblocks-go](https://wordpress.org/themes/maxiblocks-go/) |
-| Pricing | [maxiblocks.com/pricing](https://maxiblocks.com/pricing/) |
+[maxiblocks.com](https://maxiblocks.com/) · [Demo Library](https://maxiblocks.com/demo/) · [Starter Sites](https://maxiblocks.com/starter-sites/) · [WordPress Plugin](https://wordpress.org/plugins/maxi-blocks/) · [WordPress Theme](https://wordpress.org/themes/maxiblocks-go/)
 
 ---
 
-<p align="center">
-  <em>"We're on a mission to make website creation faster, easier, and more enjoyable."</em>
-  <br><br>
-  <strong>— Kyra, Design Lead & Co-founder</strong>
-</p>
+*"We're on a mission to make website creation faster, easier, and more enjoyable."*
+
+**— Kyra & Christiaan, Co-founders**

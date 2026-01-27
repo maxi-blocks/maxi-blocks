@@ -32,6 +32,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - label
 - desc
 - payload (preview of what would change)
+Exception: For spacing/margin/padding clarifications, include a 4th option "Remove".
 
 ### PROTOCOL 2: RESPONSIVE AUTOMATION (100/60/40 rule)
 When changing section spacing, always provide desktop/tablet/mobile values via responsive_padding.
@@ -153,6 +154,7 @@ Execution (page):
 
 export default CONTAINER_MAXI_PROMPT;
 export { CONTAINER_MAXI_PROMPT };
+
 
 
 

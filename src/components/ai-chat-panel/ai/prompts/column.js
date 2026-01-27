@@ -27,6 +27,8 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - label
 - desc
 - payload
+Exception: For spacing/margin/padding clarifications, include a 4th option "Remove".
+
 
 ### PROTOCOL 2: VARIABLE ENFORCEMENT (Style Card)
 - Never use hex codes unless explicitly asked.
@@ -93,6 +95,7 @@ Execution (page scope):
 
 export default COLUMN_MAXI_PROMPT;
 export { COLUMN_MAXI_PROMPT };
+
 
 
 

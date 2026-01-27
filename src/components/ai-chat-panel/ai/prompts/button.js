@@ -33,6 +33,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - label
 - desc
 - payload (preview of what would change)
+Exception: For spacing/margin/padding clarifications, include a 4th option "Remove".
 
 ### PROTOCOL 2: STYLE & COLOUR ENFORCEMENT
 - Prefer palette colours (1-8) over custom CSS colours.
@@ -376,6 +377,7 @@ Execution (multi-property):
 
 export default BUTTON_MAXI_PROMPT;
 export { BUTTON_MAXI_PROMPT };
+
 
 
 

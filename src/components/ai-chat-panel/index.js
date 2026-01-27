@@ -192,7 +192,7 @@ Include "target_block" when user mentions specific types:
 When changing padding/margin/spacing, NEVER apply a single large value. Always use responsive_padding with auto-scaled values for all devices.
 
 **Spacing presets:**
-{"action":"CLARIFY","message":"How much spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
+{"action":"CLARIFY","message":"How much spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"},{"label":"Remove"}]}
 
 **Preset values:**
 - Compact: {"desktop":"60px","tablet":"40px","mobile":"20px"}
@@ -214,7 +214,7 @@ When user says "make rounded" or "round corners":
 {"action":"CLARIFY","message":"How rounded should the corners be?","options":[{"label":"Subtle (8px)"},{"label":"Soft (24px)"},{"label":"Full (50px)"}]}
 
 When user says "add space" or "more padding":
-{"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"}]}
+{"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"},{"label":"Remove"}]}
 
 ### THEME-AWARE RULES (CRITICAL)
 - **Theme Border:** use "var(--p)" (Subtle), "var(--h1)" (Strong), "var(--highlight)" (Brand).
@@ -225,6 +225,7 @@ When user says "add space" or "more padding":
 IF user selects/types these options, YOU MUST use the corresponding property:
  
 - "Compact" / "Comfortable" / "Spacious" -> ACTION: update_page, PROPERTY: responsive_padding
+- "Remove" -> ACTION: update_page, PROPERTY: padding (set to 0) or margin (set to 0 if margin context)
 - "Subtle (8px)" / "Soft (24px)" / "Full (50px)" -> ACTION: update_page, PROPERTY: border_radius
 - "Soft" / "Crisp" / "Bold" / "Glow" / "Brand Glow" -> ACTION: update_page, PROPERTY: box_shadow
 - "Subtle Border" / "Strong Border" / "Brand Border" -> ACTION: update_page, PROPERTY: border
@@ -3080,7 +3081,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					return {
 						executed: false,
 						message: 'How much vertical spacing would you like?',
-						options: ['Compact', 'Comfortable', 'Spacious']
+						options: ['Compact', 'Comfortable', 'Spacious', 'Remove']
 					};
 				}
 
@@ -5701,6 +5702,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				value,
 				target_block: targetBlock,
 				message: targetBlock ? `Applied ${suggestion} shadow to all ${targetBlock}s.` : `Applied ${suggestion} shadow.`,
+			};
+		}
+		else if (suggestion === 'Remove' && (lastClarifyContent.includes('spacing') || lastClarifyContent.includes('padding') || lastClarifyContent.includes('margin'))) {
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			const base = lastClarifyContent.includes('margin') ? 'margin' : 'padding';
+			let property = base;
+			if (base === 'padding' && targetContext === 'video') {
+				property = 'video_padding';
+			}
+			directAction = {
+				action: actionType,
+				property,
+				value: 0,
+				...(targetContext ? { target_block: targetContext } : {}),
+				message: `Removed ${base}.`,
 			};
 		}
 

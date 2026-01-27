@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { subscribe } from '@wordpress/data';
-import { render, useState, createRoot } from '@wordpress/element';
+import { render, useEffect, useState, createRoot } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
@@ -18,6 +18,8 @@ import { getIsSiteEditor, getIsTemplatesListOpened } from '@extensions/fse';
  */
 import './editor.scss';
 import { main } from '@maxi-icons';
+
+const AI_CHAT_STATE_EVENT = 'maxi-ai-chat-state';
 
 /**
  * Component
@@ -45,6 +47,11 @@ const getInitialOpenState = () => {
 	return preference ?? true;
 };
 
+const getInitialAIChatOpenState = () => {
+	if (typeof window === 'undefined') return false;
+	return Boolean(window.maxiAIChatIsOpen);
+};
+
 const persistToolbarState = async isOpen => {
 	try {
 		await apiFetch({
@@ -67,6 +74,23 @@ const ToolbarButtons = () => {
 	const [isResponsiveOpen, setIsResponsiveOpen] = useState(
 		getInitialOpenState
 	);
+	const [isAIChatOpen, setIsAIChatOpen] = useState(
+		getInitialAIChatOpenState
+	);
+
+	useEffect(() => {
+		if (typeof window === 'undefined') return undefined;
+
+		const handleAIChatState = event => {
+			setIsAIChatOpen(Boolean(event?.detail?.isOpen));
+		};
+
+		window.addEventListener(AI_CHAT_STATE_EVENT, handleAIChatState);
+
+		return () => {
+			window.removeEventListener(AI_CHAT_STATE_EVENT, handleAIChatState);
+		};
+	}, []);
 
 	const handleClose = () => {
 		persistToolbarState(false);
@@ -81,6 +105,12 @@ const ToolbarButtons = () => {
 		});
 	};
 
+	const toggleAIChat = () => {
+		if (window.maxiToggleAIChat) {
+			window.maxiToggleAIChat();
+		}
+	};
+
 	return (
 		<>
 			<div className='maxi-toolbar-layout'>
@@ -90,6 +120,14 @@ const ToolbarButtons = () => {
 					onClick={handleToggle}
 				>
 					<Icon icon={main} />
+				</Button>
+				<Button
+					className='maxi-toolbar-layout__button maxi-toolbar-layout__button--ai'
+					aria-pressed={isAIChatOpen}
+					onClick={toggleAIChat}
+					title='Maxi AI Assistant'
+				>
+					<span style={{ fontSize: '16px' }}>✨</span>
 				</Button>
 			</div>
 			<ResponsiveSelector

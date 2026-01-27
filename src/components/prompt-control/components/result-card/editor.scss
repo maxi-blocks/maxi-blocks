@@ -92,6 +92,12 @@
 		}
 	}
 
+	&__progress {
+		margin-top: 6px;
+		font-size: 12px;
+		color: var(--maxi-grey-dark);
+	}
+
 	& &__content-length {
 		color: var(--maxi-grey-dark);
 		text-align: end;

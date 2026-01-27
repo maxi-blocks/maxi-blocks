@@ -1,3 +1,12 @@
+import { dispatch, select } from '@wordpress/data';
+
+import '../../src/store/mcpAbilities';
+import { STORE_NAME as MCP_STORE_NAME } from '../../src/store/mcpAbilities';
+import {
+	createMcpClient,
+	getMcpBaseUrl,
+} from '../../src/services/mcpClient';
+
 // Keep track of active polling to prevent multiple instances
 let activePollingEmail = null;
 
@@ -47,31 +56,16 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		});
 	}
 
-	const select = document.getElementById('maxi-versions');
+	const versionSelect = document.getElementById('maxi-versions');
 	const version = document.getElementById('maxi-rollback-version');
 
-	select?.addEventListener('change', function updateBreakpoints() {
-		const { value } = select;
+	versionSelect?.addEventListener('change', function updateBreakpoints() {
+		const { value } = versionSelect;
 		version.value = value;
 	});
 
-	const dropdowns = document.querySelectorAll(
-		'.maxi-dashboard_main-content_accordion-item-content-switcher__dropdown select'
-	);
-
-	if (dropdowns) {
-		Array.from(dropdowns).forEach(dropdown => {
-			const dropdownInput = document.querySelector(
-				`input#${dropdown.id}`
-			);
-
-			dropdownInput.value = dropdown.value;
-
-			dropdown.addEventListener('change', function updateInputs() {
-				dropdownInput.value = dropdown.value;
-			});
-		});
-	}
+	// Generic dropdown sync logic removed (handled standard form submission now)
+	// old block lines 67-85 removed
 
 	// test map for google api key
 	// Initialize and add the map
@@ -166,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		'.google-api-key-option-visible-input'
 	);
 	const googleApiKeyHiddenInput = document.getElementById(
-		'google_api_key_option'
+		'google_api_key_option_hidden'
 	);
 	const googleValidationDiv = document.getElementById(
 		'maxi-api-test__validation-message'
@@ -268,93 +262,116 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		catchGoogleMapsApiErrors();
 	});
 
-	// OpenAI API Key validation
-	const openAIApiKeyVisibleInput = document.querySelector(
-		'.openai-api-key-option-visible-input'
-	);
-	const openAIApiKeyHiddenInput = document.getElementById(
-		'openai_api_key_option'
-	);
-	const openAIValidationDiv = document.getElementById(
-		'maxi-api-test__validation-message'
-	);
+	// AI Provider and API Key validation
+	const getProviderApiKey = provider => {
+		const selector = `.${provider}-api-key-option-visible-input`;
+		const input = document.querySelector(selector);
+		return input?.value || '';
+	};
 
-	makeInputPasswordVisible(openAIApiKeyVisibleInput);
+	const getApiKeyInputByProvider = provider => {
+		const selector = `.${provider}-api-key-option-visible-input`;
+		return document.querySelector(selector);
+	};
 
-	const getOpenAIApiKey = () => openAIApiKeyVisibleInput.value;
+	const getHiddenApiKeyInputByProvider = provider => {
+		return document.getElementById(`${provider}_api_key_option_hidden`);
+	};
 
-	const openAIApiKeyCustomValidation = type => {
-		customValidation(
-			type,
-			getOpenAIApiKey,
-			openAIApiKeyHiddenInput,
-			openAIValidationDiv
+	const getValidationDivByProvider = provider => {
+		return document.getElementById(
+			`maxi-api-test__validation-message-${provider}_api_key_option`
 		);
 	};
 
-	const fetchOpenAIModels = async apiKey => {
-		try {
-			const response = await fetch('https://api.openai.com/v1/models', {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${apiKey}`,
-					'Content-Type': 'application/json',
-				},
-			});
+	// Initialize password visibility for all provider inputs
+	['openai', 'anthropic', 'gemini', 'mistral'].forEach(provider => {
+		const input = getApiKeyInputByProvider(provider);
+		if (input) {
+			makeInputPasswordVisible(input);
+		}
+	});
 
-			if (!response.ok) {
-				throw new Error('Failed to fetch models');
-			}
+	const customApiKeyValidation = (provider, type) => {
+		const getKey = () => getProviderApiKey(provider);
+		const hiddenInput = getHiddenApiKeyInputByProvider(provider);
+		const validationDiv = getValidationDivByProvider(provider);
 
-			const data = await response.json();
-
-			const excludedPatterns = [
-				'audio',
-				'gpt-3.5-turbo-instruct',
-				'gpt-4o-mini-realtime-preview',
-				'gpt-4o-realtime-preview',
-				'gpt-image',
-				'gpt-realtime',
-				'transcribe',
-				'tts',
-				'search-preview',
-				'o1-pro',
-			];
-
-			const includedPatterns = ['o1', 'o3', 'gpt'];
-
-			return data.data
-				.filter(model => {
-					const modelId = model.id;
-					const isExcluded = excludedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-					const isIncluded = includedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-
-					return !isExcluded && isIncluded;
-				})
-				.map(model => model.id)
-				.sort();
-		} catch (error) {
-			console.error('Error fetching OpenAI models:', error);
-			return [];
+		if (hiddenInput && validationDiv) {
+			customValidation(type, getKey, hiddenInput, validationDiv);
 		}
 	};
 
-	let isUpdatingDropdown = false;
+	const fetchAnthropicModels = async apiKey => {
+		// Anthropic models are static for now as they don't have a public models endpoint that is easily accessible from frontend without proxy
+		// We will return a predefined list of supported models (updated January 2026)
+		return [
+			'claude-opus-4-1-20250805',
+			'claude-sonnet-4-20250514',
+			'claude-3-7-sonnet-20250219',
+			'claude-3-5-haiku-20241022',
+			'claude-3-5-sonnet-20240620',
+			'claude-3-opus-20240229',
+			'claude-3-sonnet-20240229',
+			'claude-3-haiku-20240307',
+		];
+	};
 
-	const updateModelDropdown = async apiKey => {
-		if (isUpdatingDropdown) return;
+	const buildModelFetchError = (error, providerLabel) => {
+		const modelError = new Error(
+			`Failed to fetch ${providerLabel} models`
+		);
+		const status = error?.status || error?.data?.status;
+		if (status) {
+			modelError.status = status;
+		}
+		return modelError;
+	};
+
+	const fetchProviderModels = async (provider, apiKey, providerLabel) => {
+		if (!window.wp?.apiFetch) {
+			throw buildModelFetchError({ status: 500 }, providerLabel);
+		}
+
+		try {
+			return await window.wp.apiFetch({
+				path: '/maxi-blocks/v1.0/ai/models',
+				method: 'POST',
+				data: {
+					provider,
+					...(apiKey ? { api_key: apiKey } : {}),
+				},
+			});
+		} catch (error) {
+			throw buildModelFetchError(error, providerLabel);
+		}
+	};
+
+	const fetchGeminiModels = async apiKey =>
+		fetchProviderModels('gemini', apiKey, 'Gemini');
+
+	const fetchMistralModels = async apiKey =>
+		fetchProviderModels('mistral', apiKey, 'Mistral');
+
+	const fetchOpenAIModels = async apiKey =>
+		fetchProviderModels('openai', apiKey, 'OpenAI');
+
+	let isUpdatingDropdown = false;
+	let pendingModelUpdate = null;
+
+	const updateModelDropdown = async (provider, apiKey) => {
+		if (isUpdatingDropdown) {
+			pendingModelUpdate = { provider, apiKey };
+			return null;
+		}
 		isUpdatingDropdown = true;
+		const requestKey = apiKey;
 
 		const modelSelect = document.getElementById('maxi_ai_model');
-		const modelInput = document.querySelector('input#maxi_ai_model');
 
-		if (!modelSelect || !modelInput) {
+		if (!modelSelect) {
 			isUpdatingDropdown = false;
-			return;
+			return null;
 		}
 
 		// Only show loading message if we have a valid API key
@@ -362,13 +379,32 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			modelSelect.innerHTML = `<option value="">${window.localization.loading_available_models}</option>`;
 		} else {
 			modelSelect.innerHTML = `<option value="">${window.localization.please_add_api_key}</option>`;
-			modelInput.value = '';
 			isUpdatingDropdown = false;
-			return;
+			return null;
 		}
 
 		try {
-			const models = await fetchOpenAIModels(apiKey);
+			let models = [];
+			switch (provider) {
+				case 'anthropic':
+					models = await fetchAnthropicModels(apiKey);
+					break;
+				case 'gemini':
+					models = await fetchGeminiModels(apiKey);
+					break;
+				case 'mistral':
+					models = await fetchMistralModels(apiKey);
+					break;
+				case 'openai':
+				default:
+					models = await fetchOpenAIModels(apiKey);
+					break;
+			}
+
+			// Ignore stale responses
+			if (getProviderApiKey(provider) !== requestKey) {
+				return { ok: false, stale: true };
+			}
 
 			// Clear existing options
 			modelSelect.innerHTML = '';
@@ -378,9 +414,7 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 				option.value = '';
 				option.textContent = window.localization.no_models_available;
 				modelSelect.appendChild(option);
-				modelInput.value = '';
-				isUpdatingDropdown = false;
-				return;
+				return { ok: true };
 			}
 
 			// Add available models
@@ -393,91 +427,285 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 
 			// Get the saved value from WordPress options via localized script
 			const currentValue =
-				window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
-			modelInput.value = currentValue;
+				window.maxiAiSettings?.defaultModel ||
+				(provider === 'openai' ? 'gpt-3.5-turbo' : models[0]);
 
-			// Try to restore previous selection if available
+			// If the stored model matches one of the new provider's models, use it
+			// Otherwise default to the first available model
 			if (models.includes(currentValue)) {
 				modelSelect.value = currentValue;
 			} else {
-				// If previous selection not available, use first model
 				// eslint-disable-next-line prefer-destructuring
 				modelSelect.value = models[0];
-				// eslint-disable-next-line prefer-destructuring
-				modelInput.value = models[0];
 			}
+			return { ok: true };
 		} catch (error) {
 			console.error('Error updating model dropdown:', error);
 			modelSelect.innerHTML = `<option value="">${window.localization.error_loading_models}</option>`;
-			modelInput.value = '';
+			return { ok: false, error };
 		} finally {
 			isUpdatingDropdown = false;
+			if (pendingModelUpdate) {
+				const next = pendingModelUpdate;
+				pendingModelUpdate = null;
+				updateModelDropdown(next.provider, next.apiKey);
+			}
 		}
 	};
 
-	const testOpenAIApiKey = () => {
-		const openAIApiKey = getOpenAIApiKey();
+	const testProviderApiKey = async provider => {
+		const apiKey = getProviderApiKey(provider);
+		const requestKey = apiKey;
 
-		if (openAIApiKey === '') {
-			openAIApiKeyCustomValidation('');
+		if (apiKey === '') {
+			customApiKeyValidation(provider, 'EmptyKeyError');
 			return;
 		}
 
-		openAIApiKeyCustomValidation('validating');
+		customApiKeyValidation(provider, 'validating');
 
-		// Test the API key and update models
-		Promise.all([
-			fetch('https://api.openai.com/v1/chat/completions', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${openAIApiKey}`,
-				},
-				body: JSON.stringify({
-					messages: [{ role: 'user', content: 'Hello' }],
-					model: 'gpt-3.5-turbo',
-					max_tokens: 1,
-				}),
-			}),
-			updateModelDropdown(openAIApiKey),
-		])
-			.then(([response]) => {
-				if (response.ok) {
-					openAIApiKeyCustomValidation(true);
-				} else {
-					openAIApiKeyCustomValidation('InvalidKeyError');
-				}
-			})
-			.catch(error => {
-				console.error(error);
-				openAIApiKeyCustomValidation('ServerError');
-			});
+		// For validation, we'll try to update the dropdown which does a fetch
+		try {
+			const result = await updateModelDropdown(provider, requestKey);
+			if (!result) return;
+			if (getProviderApiKey(provider) !== requestKey) return;
+
+			if (result.ok) {
+				customApiKeyValidation(provider, true);
+				return;
+			}
+
+			const status = result.error?.status;
+			if (status === 401 || status === 403) {
+				customApiKeyValidation(provider, 'InvalidKeyError');
+				return;
+			}
+
+			customApiKeyValidation(provider, 'ServerError');
+		} catch (error) {
+			console.error(error);
+			customApiKeyValidation(provider, 'ServerError');
+		}
 	};
 
-	// Check if openAIApiKeyVisibleInput exists before executing related code
-	if (openAIApiKeyVisibleInput) {
-		const openAIApiKey = getOpenAIApiKey();
-		if (openAIApiKey) {
-			updateModelDropdown(openAIApiKey);
+	// Initialization logic
+	const providerSelect = document.getElementById('maxi_ai_provider');
+	if (providerSelect) {
+		const initialProvider = providerSelect.value || 'openai';
+		const initialKey = getProviderApiKey(initialProvider);
+
+		// Initial load
+		if (initialKey) {
+			updateModelDropdown(initialProvider, initialKey);
 		}
 
-		// Handle select changes
-		const modelSelect = document.getElementById('maxi_ai_model');
-		if (modelSelect) {
-			modelSelect.addEventListener('change', function () {
-				const modelInput = document.querySelector(
-					'input#maxi_ai_model'
-				);
-				if (modelInput) {
-					modelInput.value = this.value;
-				}
-			});
-		}
-
-		// Handle API key changes
-		openAIApiKeyVisibleInput.addEventListener('input', () => {
-			testOpenAIApiKey();
+		// Handle provider change
+		providerSelect.addEventListener('change', function () {
+			const newProvider = this.value;
+			const newKey = getProviderApiKey(newProvider);
+			updateModelDropdown(newProvider, newKey);
 		});
+
+		// Handle API key changes for all providers
+		const apiKeyDebounceTimers = {};
+		['openai', 'anthropic', 'gemini', 'mistral'].forEach(provider => {
+			const input = getApiKeyInputByProvider(provider);
+			if (input) {
+				input.addEventListener('input', () => {
+					// Debounce or just run? The original ran immediately.
+					clearTimeout(apiKeyDebounceTimers[provider]);
+					apiKeyDebounceTimers[provider] = setTimeout(() => {
+						testProviderApiKey(provider);
+					}, 400);
+				});
+			}
+		});
+
+		// Handle model select changes (no longer needed for sync, just for any other listeners if needed)
+		// const modelSelect = document.getElementById('maxi_ai_model');
+	}
+
+	// MCP API token and abilities
+	const mcpTokenInput = document.getElementById('maxi_mcp_token');
+	const mcpStatusElement = document.getElementById(
+		'maxi-mcp-connection-status'
+	);
+	const mcpAbilitiesElement = document.getElementById('maxi-mcp-abilities');
+	const mcpErrorElement = document.getElementById('maxi-mcp-error');
+	const mcpStatusClassMap = {
+		connected: 'is-connected',
+		loading: 'is-loading',
+		unauthorized: 'is-error',
+		unreachable: 'is-error',
+		error: 'is-error',
+		idle: 'is-idle',
+	};
+
+	const formatAbilityLabel = ability => {
+		if (typeof ability === 'string') {
+			return ability;
+		}
+
+		if (ability?.name) {
+			return ability.name;
+		}
+
+		if (ability?.id) {
+			return ability.id;
+		}
+
+		return JSON.stringify(ability);
+	};
+
+	const renderMcpAbilities = abilities => {
+		if (!mcpAbilitiesElement) return;
+
+		mcpAbilitiesElement.innerHTML = '';
+
+		if (!abilities?.length) {
+			const emptyItem = document.createElement('li');
+			emptyItem.textContent = window.localization.mcp_no_abilities;
+			emptyItem.classList.add('maxi-mcp-abilities__empty');
+			mcpAbilitiesElement.appendChild(emptyItem);
+			return;
+		}
+
+		abilities.forEach(ability => {
+			const item = document.createElement('li');
+			item.textContent = formatAbilityLabel(ability);
+			mcpAbilitiesElement.appendChild(item);
+		});
+	};
+
+	const updateMcpUiFromStore = () => {
+		if (!mcpStatusElement || !mcpErrorElement || !mcpAbilitiesElement) {
+			return;
+		}
+
+		const store = select(MCP_STORE_NAME);
+		if (!store) {
+			return;
+		}
+
+		const status = store.getStatus();
+		const abilities = store.getAbilities();
+		const error = store.getError();
+
+		const statusMessageMap = {
+			connected: window.localization.mcp_status_connected,
+			loading: window.localization.mcp_status_loading,
+			unauthorized: window.localization.mcp_status_unauthorized,
+			unreachable: window.localization.mcp_status_unreachable,
+			error: window.localization.mcp_status_error,
+			idle: window.localization.mcp_status_idle,
+		};
+
+		mcpStatusElement.textContent =
+			statusMessageMap[status] || window.localization.mcp_status_idle;
+
+		mcpStatusElement.classList.remove(...Object.values(mcpStatusClassMap));
+		if (mcpStatusClassMap[status]) {
+			mcpStatusElement.classList.add(mcpStatusClassMap[status]);
+		}
+
+		mcpErrorElement.textContent = error || '';
+
+		if (status === 'connected') {
+			renderMcpAbilities(abilities);
+		} else {
+			mcpAbilitiesElement.innerHTML = '';
+		}
+	};
+
+	const fetchMcpAbilities = async token => {
+		const trimmedToken = token.trim();
+
+		if (!trimmedToken) {
+			dispatch(MCP_STORE_NAME).reset();
+			updateMcpUiFromStore();
+			return;
+		}
+
+		const store = select(MCP_STORE_NAME);
+		const cachedToken = store?.getToken();
+		const cachedAbilities = store?.getAbilities();
+		const cachedStatus = store?.getStatus();
+
+		if (
+			cachedStatus === 'connected' &&
+			cachedToken === trimmedToken &&
+			cachedAbilities?.length
+		) {
+			updateMcpUiFromStore();
+			return;
+		}
+
+		const requestToken = trimmedToken;
+
+		dispatch(MCP_STORE_NAME).setToken(requestToken);
+		dispatch(MCP_STORE_NAME).setStatus('loading');
+		dispatch(MCP_STORE_NAME).setError(null);
+		updateMcpUiFromStore();
+
+		try {
+			const client = createMcpClient({
+				baseUrl: getMcpBaseUrl(),
+				token: requestToken,
+			});
+			const abilities = await client.getAbilities();
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken !== requestToken) {
+				return;
+			}
+			dispatch(MCP_STORE_NAME).setAbilities(abilities);
+			dispatch(MCP_STORE_NAME).setStatus('connected');
+			dispatch(MCP_STORE_NAME).setError(null);
+		} catch (error) {
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken !== requestToken) {
+				return;
+			}
+
+			let status = 'error';
+			let message = window.localization.mcp_error_generic;
+
+			if (error?.code === 'unauthorized') {
+				status = 'unauthorized';
+				message = window.localization.mcp_error_unauthorized;
+			} else if (
+				error?.code === 'unreachable' ||
+				error?.code === 'missing_base_url'
+			) {
+				status = 'unreachable';
+				message = window.localization.mcp_error_unreachable;
+			}
+
+			dispatch(MCP_STORE_NAME).setStatus(status);
+			dispatch(MCP_STORE_NAME).setError(message);
+			dispatch(MCP_STORE_NAME).setAbilities([]);
+		} finally {
+			const latestToken = select(MCP_STORE_NAME)?.getToken();
+			if (latestToken === requestToken) {
+				updateMcpUiFromStore();
+			}
+		}
+	};
+
+	let mcpDebounceTimer;
+
+	const handleMcpTokenUpdate = () => {
+		if (!mcpTokenInput) return;
+		clearTimeout(mcpDebounceTimer);
+		mcpDebounceTimer = setTimeout(() => {
+			fetchMcpAbilities(mcpTokenInput.value);
+		}, 400);
+	};
+
+	if (mcpTokenInput) {
+		makeInputPasswordVisible(mcpTokenInput);
+		handleMcpTokenUpdate();
+		mcpTokenInput.addEventListener('input', handleMcpTokenUpdate);
+		mcpTokenInput.addEventListener('blur', handleMcpTokenUpdate);
 	}
 
 	function autoResize(textarea) {
@@ -736,17 +964,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	/**
-	 * Validates email format
-	 * @param {string} email - Email to validate
-	 * @returns {boolean} - True if valid email
-	 */
-	function isValidEmail(email) {
-		const emailPattern =
-			/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return emailPattern.test(email);
-	}
-
-	/**
 	 * Validate license (email or purchase code)
 	 */
 	function validateLicense() {
@@ -866,6 +1083,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					}
 				})
 				.catch(error => {
+					console.error('License validation error:', error);
 					showMessage(
 						window.localization.failed_to_validate_license,
 						true
@@ -1348,6 +1566,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 
 			let html = '';
+			
+			// Helper to escape HTML to prevent XSS
+			const escapeHtml = str => {
+				const div = document.createElement('div');
+				div.textContent = str;
+				return div.innerHTML;
+			};
 
 			fontsArray.forEach(font => {
 				const family = font.value || '';
@@ -1373,23 +1598,19 @@ document.addEventListener('DOMContentLoaded', () => {
 				weights.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
 
 				const weightsHtml = weights.length
-					? `<span class="maxi-font-weights">${weights.join(
-							', '
-					  )}</span>`
+					? `<span class="maxi-font-weights">${escapeHtml(weights.join(', '))}</span>`
 					: '—';
 				const stylesHtml = styles.length
-					? `<span class="maxi-font-styles">${styles.join(
-							', '
-					  )}</span>`
+					? `<span class="maxi-font-styles">${escapeHtml(styles.join(', '))}</span>`
 					: '—';
 
 				html += '<tr>';
-				html += `<td><strong>${family}</strong></td>`;
+				html += `<td><strong>${escapeHtml(family)}</strong></td>`;
 				html += `<td>${weightsHtml}</td>`;
 				html += `<td>${stylesHtml}</td>`;
 				html += '<td>';
 				if (font.id) {
-					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${font.id}">Remove</button>`;
+					html += `<button type="button" class="button-link-delete maxi-delete-custom-font" data-font-id="${escapeHtml(String(font.id))}">Remove</button>`;
 				}
 				html += '</td></tr>';
 			});
@@ -1786,8 +2007,9 @@ function updateNetworkLicenseUI(data) {
  * Validate email format
  */
 function isValidEmail(email) {
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	return emailRegex.test(email);
+	const emailPattern =
+		/^(?![.])(([^<>()[\]\\.,;:\s@"']+(\.[^<>()[\]\\.,;:\s@"']+)*|"(.+?)")|(".+?"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	return emailPattern.test(email);
 }
 
 /**

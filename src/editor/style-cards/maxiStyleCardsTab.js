@@ -48,6 +48,10 @@ const generateCustomColorId = () => {
 	return Number(timestampPart + randomPart);
 };
 
+const isRawRgbTriplet = value =>
+	typeof value === 'string' &&
+	/^\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*$/.test(value);
+
 /**
  * Propagates custom colors to all style card variants and updates the editor
  *
@@ -120,7 +124,10 @@ const GlobalColor = props => {
 
 	const currentPaletteOpacity =
 		processSCAttribute(SC, paletteOpacity, groupAttr) || 1;
-	const currentColor = processSCAttribute(SC, color, groupAttr);
+	const rawColor = processSCAttribute(SC, color, groupAttr);
+	const currentColor = isRawRgbTriplet(rawColor)
+		? `rgba(${rawColor},${currentPaletteOpacity})`
+		: rawColor;
 
 	let processedDefaultPaletteColorValue = getDefaultSCValue({
 		target: paletteColor,

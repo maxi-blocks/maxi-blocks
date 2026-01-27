@@ -38,6 +38,7 @@ const ModifyTab = ({
 	selectedResultId,
 	setSelectedResultId,
 	setResults,
+	onModelUnavailable,
 	switchToResultsTab,
 }) => {
 	const className = 'maxi-prompt-control-modify-tab';
@@ -98,7 +99,11 @@ ${getContentAttributesSection(contentType, tone, writingStyle, language)}
 
 		const systemTemplate = `${getSiteInformation(AISettings)}
 ${getContextSection(getContext(contextOption, clientId))}
-${generatedTextExplanation}`;
+${generatedTextExplanation}${
+			AISettings.systemInstructions
+				? `\n\n${AISettings.systemInstructions}`
+				: ''
+		}`;
 
 		const humanTemplate = `Please ${modificationType}${languageExplanation} the following text${customExplanation}.${getAdditionalInstruction()} Ensure the ${
 			MODIFICATION_MODIFICATORS[modificationType]
@@ -139,6 +144,7 @@ Original text: ${
 			setResults,
 			setSelectedResultId,
 			setIsGenerating,
+			onModelUnavailable,
 		});
 	};
 

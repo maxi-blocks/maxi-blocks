@@ -42,6 +42,7 @@ const ResultCards = ({
 	switchToGenerateTab,
 	switchToModifyTab,
 	isModifyTab = false,
+	onClarifySelect,
 }) => {
 	const [loadUntilIndex, setLoadUntilIndex] = useState(LOAD_MORE_COUNT);
 
@@ -187,6 +188,7 @@ const ResultCards = ({
 						onUseSettings={handleResultUseSettings}
 						onModify={handleResultModification}
 						onDelete={handleResultDeletion}
+						onClarifySelect={onClarifySelect}
 					/>
 				);
 			})}

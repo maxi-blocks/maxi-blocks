@@ -24,7 +24,7 @@ import { useAISettings, useResultsHandling, useSettings } from './hooks';
 import {
 	getContext,
 	getContextSection,
-	getExamplesSection,
+    getExamplesSection,
 	getFormattedMessages,
 	getSiteInformation,
 	handleContentGeneration,
@@ -69,6 +69,7 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 	const [selectedResultId, setSelectedResultId] = useState(results[0]?.id);
 
 	const [isGenerating, setIsGenerating] = useState(false);
+	const [isManualMode, setIsManualMode] = useState(false);
 
 	const [modifyOption, setModifyOption] = useState(MODIFY_OPTIONS[0]);
 	const [customValue, setCustomValue] = useState('');
@@ -132,11 +133,37 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		);
 	}
 
-	const getMessages = async () => {
+	if (isManualMode) {
+		return (
+			<InfoBox
+				message={__(
+					'The selected AI model is unavailable. Continue by editing content manually, or select another model in the Maxi AI settings.',
+					'maxi-blocks'
+				)}
+				links={[
+					{
+						title: __(
+							'Maxi AI Settings',
+							'maxi-blocks'
+						),
+						href: getMaxiAdminSettingsUrl('maxi_blocks_maxi_ai'),
+					},
+				]}
+			/>
+		);
+	}
+
+	const getMessages = async (promptOverride) => {
+        const currentPrompt = typeof promptOverride === 'string' ? promptOverride : prompt;
+
 		const systemTemplate = `${getSiteInformation(
 			AISettings
 		)}${getContextSection(getContext(contextOption, clientId))}
-${getExamplesSection(contentType)}`;
+${getExamplesSection(contentType)}${
+			AISettings.systemInstructions
+				? `\n\n${AISettings.systemInstructions}`
+				: ''
+		}`;
 
 		const humanTemplate = `Please craft a ${lowerCase(tone)} ${lowerCase(
 			writingStyle
@@ -151,7 +178,7 @@ ${getExamplesSection(contentType)}`;
 				? ', and avoid using quotation marks'
 				: ''
 		}. Ensure it aligns with the site details and is polished for the website.${
-			prompt ? `\nUser's custom instructions: ${prompt}` : ''
+			currentPrompt ? `\nUser's custom instructions: ${currentPrompt}` : ''
 		}`;
 
 		return getFormattedMessages(
@@ -161,7 +188,8 @@ ${getExamplesSection(contentType)}`;
 		);
 	};
 
-	const generateContent = async () => {
+	const generateContent = async (promptOverride) => {
+        const currentPrompt = typeof promptOverride === 'string' ? promptOverride : prompt;
 		switchToResultsTab();
 
 		handleContentGeneration({
@@ -172,14 +200,31 @@ ${getExamplesSection(contentType)}`;
 			},
 			additionalData: {
 				settings,
+				prompt: currentPrompt,
 			},
 			results,
 			abortControllerRef,
-			getMessages,
+			getMessages: () => getMessages(currentPrompt),
 			setResults,
 			setSelectedResultId,
 			setIsGenerating,
+			onModelUnavailable: () => setIsManualMode(true),
 		});
+	};
+
+	const handleClarifySelect = option => {
+		if (!option) {
+			return;
+		}
+
+		if (option.id === 'cancel') {
+			switchToGenerateTab();
+			return;
+		}
+
+		const clarifyPrompt = option.prompt || option.value || option.label || '';
+		updateSettings({ prompt: clarifyPrompt });
+		generateContent(clarifyPrompt);
 	};
 
 	const handleAbort = () => {
@@ -225,6 +270,7 @@ ${getExamplesSection(contentType)}`;
 								setCustomValue={setCustomValue}
 								setSelectedResultId={setSelectedResultId}
 								onContentChange={onContentChange}
+                                onClarifySelect={handleClarifySelect}
 								onChangeTextFormat={
 									textContext.onChangeTextFormat
 								}
@@ -254,6 +300,7 @@ ${getExamplesSection(contentType)}`;
 								selectedResultId={selectedResultId}
 								setSelectedResultId={setSelectedResultId}
 								setResults={setResults}
+								onModelUnavailable={() => setIsManualMode(true)}
 								switchToGenerateTab={switchToGenerateTab}
 								switchToResultsTab={switchToResultsTab}
 							/>

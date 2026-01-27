@@ -2,11 +2,18 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { lazy, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
-import PromptControl from '@components/prompt-control';
+import ContentLoader from '@components/content-loader';
+
+const PromptControl = lazy(() =>
+	import(
+		/* webpackChunkName: "maxi-ai" */ '@components/prompt-control'
+	)
+);
 
 /**
  * Component
@@ -19,13 +26,15 @@ const prompt = ({ props }) => {
 		!isList && {
 			label: __('Maxi AI writer', 'maxi-blocks'),
 			content: (
-				<PromptControl
-					clientId={clientId}
-					content={content}
-					onContentChange={newContent =>
-						maxiSetAttributes({ content: newContent })
-					}
-				/>
+				<Suspense fallback={<ContentLoader />}>
+					<PromptControl
+						clientId={clientId}
+						content={content}
+						onContentChange={newContent =>
+							maxiSetAttributes({ content: newContent })
+						}
+					/>
+				</Suspense>
 			),
 			indicatorProps: ['prompt'],
 		}

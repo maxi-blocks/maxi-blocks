@@ -51,6 +51,29 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             // Register regular admin menu (not for network admin)
             add_action('admin_menu', [$this, 'maxi_register_menu']);
 
+            // Explicitly handle saving of AI Provider to ensure persistence
+            add_action('admin_init', function () {
+                if (!current_user_can('manage_options')) {
+                    return;
+                }
+
+                if (
+                    !isset($_POST['option_page']) ||
+                    $_POST['option_page'] !== 'maxi-blocks-settings-group'
+                ) {
+                    return;
+                }
+
+                check_admin_referer('maxi-blocks-settings-group-options');
+
+                if (isset($_POST['maxi_ai_provider'])) {
+                    $provider = sanitize_key($_POST['maxi_ai_provider']);
+                    if (in_array($provider, ['openai', 'anthropic', 'gemini', 'mistral'], true)) {
+                        update_option('maxi_ai_provider', $provider);
+                    }
+                }
+            });
+
             add_action('admin_init', [$this, 'register_maxi_blocks_settings']);
 
             add_action('admin_enqueue_scripts', [
@@ -385,12 +408,44 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'Network error occurred',
                         'maxi-blocks',
                     ),
+                    'mcp_status_idle' => __('Not connected', 'maxi-blocks'),
+                    'mcp_status_loading' => __('Connecting…', 'maxi-blocks'),
+                    'mcp_status_connected' => __('Connected', 'maxi-blocks'),
+                    'mcp_status_unauthorized' => __(
+                        'Unauthorized',
+                        'maxi-blocks',
+                    ),
+                    'mcp_status_unreachable' => __(
+                        'Unavailable',
+                        'maxi-blocks',
+                    ),
+                    'mcp_status_error' => __('Error', 'maxi-blocks'),
+                    'mcp_error_unauthorized' => __(
+                        'The MCP token is invalid or lacks access.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_error_unreachable' => __(
+                        'Unable to reach the MCP endpoint.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_error_generic' => __(
+                        'Unexpected MCP error. Please try again.',
+                        'maxi-blocks',
+                    ),
+                    'mcp_no_abilities' => __(
+                        'No abilities returned.',
+                        'maxi-blocks',
+                    ),
                 ]);
 
                 wp_localize_script('maxi-admin', 'maxiAiSettings', [
                     'defaultModel' => get_option(
                         'maxi_ai_model',
                         'gpt-3.5-turbo',
+                    ),
+                    'defaultProvider' => get_option(
+                        'maxi_ai_provider',
+                        'openai',
                     ),
                 ]);
 
@@ -1773,6 +1828,26 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $description =
                 '<h4>' .
+                __('AI Provider', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_provider',
+                '',
+                'dropdown',
+                [
+                    'list' => [
+                        'openai' => __('OpenAI', 'maxi-blocks'),
+                        'anthropic' => __('Anthropic', 'maxi-blocks'),
+                        'gemini' => __('Gemini', 'maxi-blocks'),
+                        'mistral' => __('Mistral', 'maxi-blocks'),
+                    ],
+                    'default' => 'openai',
+                ],
+            );
+
+            $description =
+                '<h4>' .
                 __('Insert OpenAI API Key here', 'maxi-blocks') .
                 '</h4>';
             $content .= $this->generate_setting(
@@ -1783,7 +1858,72 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $description =
-                '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
+                '<h4>' .
+                __('Insert Anthropic API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'anthropic_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert Gemini API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'gemini_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert Mistral API Key here', 'maxi-blocks') .
+                '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'mistral_api_key_option',
+                '',
+                'password',
+            );
+
+            $description =
+                '<h4>' .
+                __('Insert MCP API token here', 'maxi-blocks') .
+                '</h4>';
+            $description .=
+                '<p>' .
+                __(
+                    'Connect to the MCP API to fetch available abilities.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_mcp_token',
+                '',
+                'password',
+                [
+                    'placeholder' => __(
+                        'Paste your MCP access token',
+                        'maxi-blocks',
+                    ),
+                ],
+            );
+            $content .=
+                '<div class="maxi-mcp-status" aria-live="polite">' .
+                '<p><strong>' .
+                __('MCP connection', 'maxi-blocks') .
+                ':</strong> <span id="maxi-mcp-connection-status" class="maxi-mcp-status__state"></span></p>' .
+                '<p id="maxi-mcp-error" class="maxi-mcp-status__error"></p>' .
+                '<ul id="maxi-mcp-abilities" class="maxi-mcp-abilities"></ul>' .
+                '</div>';
+
+            $description =
+                '<h4>' . __('AI Model', 'maxi-blocks') . '</h4>';
             $content .= $this->generate_setting(
                 $description,
                 'maxi_ai_model',
@@ -1946,6 +2086,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi-blocks',
                     ),
                 ],
+            );
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->generate_item_header(
+                __('System instructions', 'maxi-blocks'),
+                true,
+            );
+
+            $description =
+                '
+				<h4>' .
+                __('System instructions for Maxi AI', 'maxi-blocks') .
+                '</h4>
+				<p>' .
+                __(
+                    'Use these rules to guide the AI when interpreting design requests. These instructions are sent as the system prompt.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_system_instructions',
+                '',
+                'textarea',
             );
 
             $content .= get_submit_button();
@@ -2178,6 +2344,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
 
+            // For hidden inputs, return just the raw input without wrapper divs
+            if ($type === 'hidden') {
+                return $visible_input;
+            }
+
             $input = <<<HTML
 			    <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
 			        <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
@@ -2257,35 +2428,39 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $option .
                 '" id="' .
                 $option .
-                '" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
+                '" autocomplete="off" class="maxi-dashboard_main-content_accordion-item-input regular-text">';
 
-            $option_value = get_option($option)
-                ? get_option($option)
+            $default_value = isset($args['default'])
+                ? $args['default']
                 : 'gpt-3.5-turbo';
+            $option_value = get_option($option, $default_value);
 
+            // Handle case where get_option returns false/empty but we want default
+            if (!$option_value && $default_value) {
+                $option_value = $default_value;
+            }
+            
             if ($is_ai_model) {
                 // For AI model dropdown, show loading placeholder
                 $dropdown .= '<option value=""></option>';
             } else {
-                // For other dropdowns, process the static list
-                if (($key = array_search($option_value, $list)) !== false) {
-                    unset($list[$key]);
-                    array_unshift($list, $option_value);
-                }
+                $is_associative = array_keys($list) !== range(0, count($list) - 1);
 
-                foreach ($list as $value) {
+                foreach ($list as $key => $value) {
+                    $option_key = $is_associative ? $key : $value;
+                    $selected = selected($option_value, $option_key, false);
                     $dropdown .=
                         '<option value="' .
-                        $value .
-                        '">' .
-                        $value .
+                        esc_attr($option_key) .
+                        '" ' .
+                        $selected .
+                        '>' .
+                        esc_html($value) .
                         '</option>';
                 }
             }
 
             $dropdown .= '</select>';
-
-            $dropdown .= $this->generate_input($option, '', 'hidden');
 
             $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher__dropdown
             $dropdown .= '</div>'; // maxi-dashboard_main-content_accordion-item-content-switcher
@@ -2316,8 +2491,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             ) {
                 $is_api_input = $type === 'password';
 
-                if ($is_api_input) {
-                    $api_name = str_replace('_api_key_option', '', $option);
+                if ($is_api_input && $option === 'google_api_key_option') {
                     $content .= '<div id="maxi-api-test"></div>';
                 }
 
@@ -2332,7 +2506,9 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
                 if (str_contains($option, 'api_key_option')) {
                     $content .=
-                        '<div id="maxi-api-test__validation-message"></div>';
+                        '<div id="maxi-api-test__validation-message-' .
+                        esc_attr($option) .
+                        '"></div>';
                 }
             } else {
                 $content .= $this->generate_toggle($option, $function);
@@ -2372,8 +2548,110 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'default' => 'gpt-3.5-turbo',
             ];
+            $args_ai_provider = [
+                'type' => 'string',
+                'default' => 'openai',
+            ];
             $args_ai_description = [
                 'type' => 'string',
+            ];
+            $ai_system_instructions = <<<'INSTRUCTIONS'
+### RULE: GLOBAL VS. COMPONENT SPECIFICITY
+When a user asks to change the color of a specific element (like "Headings"), you must NOT modify the "Base Palette" or "Background" variables unless explicitly told to "Change the site's main color".
+
+### EXECUTION LOGIC FOR HEADINGS
+1. Identify Target: The user said "Headings." Target variables: h1-color, h2-color, h3-color, h4-color, h5-color, h6-color.
+2. Preserve Foundation: Do NOT change bg-1, bg-2, or brand-base. Keep the user's existing background exactly as it is.
+3. UI Sync: Use ui_target: "global-style-typography". This opens the Heading settings in the Style Card so the user can see that ONLY the text color changed.
+
+### RULE: DESIGN SPECIFICITY & UI TRIGGERS
+You are a UI Controller. Your priority is to target the most specific variable requested without altering the global base palette unless explicitly asked.
+
+### 1. SPECIFICITY LOGIC (Heading vs. Base)
+- Component Request: If the user says "Make headings [Color/Font]," ONLY update the h1-h6 variables. Do NOT touch brand-primary or bg-1.
+- Global Request: Only change the base palette if the user says "Change the whole site theme" or "Change the primary brand color."
+
+### 2. UI PANEL SYNC (MANDATORY)
+Every command MUST trigger the corresponding sidebar panel to open so the user sees the change:
+- Block Padding/Margin: ui_target: "margin-padding"
+- Block Height/Width: ui_target: "height-width"
+- Global Typography (Headings/Text): ui_target: "style-card-typography"
+- Global Colors (Palette): ui_target: "style-card-colors"
+
+### 3. CLARIFICATION TRIGGER
+If the request is vague (e.g., "Make it green"), ask:
+"Should I change only the Headings to green, or should I update the entire site's primary color palette?"
+
+### 4. JSON EXECUTION FORMAT
+{
+  "action": "UPDATE_SC",
+  "ui_target": "style-card-typography",
+  "payload": {
+    "h1_color": "#008000",
+    "h2_color": "#008000",
+    "h3_color": "#008000"
+  },
+  "message": "I've updated the headings to green. I've opened the Style Card Typography panel so you can see the change."
+}
+
+### SAFETY CHECK: BRAND INTEGRITY PROTOCOL
+Before executing any UPDATE_SC (Style Card) command, run this internal checklist:
+
+1. Target Specificity Check: Does the user want a "Site Theme" change or a "Component" change?
+   - If "Component" (e.g., Headings, Buttons, Links), ONLY modify those specific variables.
+   - PROTECT: bg-1, bg-2, and brand-primary. Do not overwrite these unless the user says "Change the whole palette."
+
+2. Contrast Validation: If changing Heading colors, ensure they remain readable against the current bg-1. If contrast is too low, suggest a complementary shade instead of applying a bad one.
+
+3. Panel Synchronization:
+   - You MUST identify the correct sub-panel ID.
+   - For Headings: ui_target: "style-card-typography"
+   - For Buttons: ui_target: "style-card-buttons"
+   - For Global Palette: ui_target: "style-card-colors"
+
+4. The "Confirm & Open" Output:
+   - Always state exactly what was saved and what was changed.
+   - Example: "I've updated the Headings to Green. I kept your Blue brand colors safe. Opening the Typography panel now."
+
+### RULE: REVIEW & PREVIEW MODE
+To ensure brand safety, use a "Double-Check" workflow for Global Style Card changes.
+
+1. The Proposal Stage:
+   - Instead of applying changes immediately to the database, generate a "Proposed Change" summary.
+   - Message: "I've analyzed your request for Green Headings. I will update H1-H6 colors while protecting your Blue brand palette. Would you like to see a preview or apply this now?"
+
+2. The "Apply & Open" Stage:
+   - Once the user says "Yes" or "Apply":
+   - Execute UPDATE_SC.
+   - Execute ui_target to open the relevant sidebar panel (e.g., style-card-typography).
+   - Final Message: "Applied! I've opened the Typography panel so you can verify the green shades against your blue base."
+
+3. Prevention of "Green Site" Error:
+   - Always log the variables being skipped.
+   - Example (Internal Reasoning): "Changing h1-h6 color. Skipping brand-primary and bg-1 to maintain specificity."
+
+### RULE: PROPOSAL WORKFLOW
+For Global Style Card changes (Typography/Colors), do not execute immediately.
+
+1. Format: Output a PROPOSE_CHANGE action.
+2. Summary: List exactly what is changing and what is being PROTECTED.
+   - Example: "Change Headings to Green; Keep Brand Palette Blue."
+3. Execution on Confirm: Only when the user clicks 'Apply', send the UPDATE_SC command and the ui_target.
+
+### JSON STRUCTURE
+{
+  "action": "PROPOSE_CHANGE",
+  "status": "PROPOSED",
+  "summary": ["Update H1-H6 to Green", "Maintain Blue Brand Colors"],
+  "payload": { "h1_color": "#008000", "h2_color": "#008000" },
+  "ui_target": "style-card-typography",
+  "message": "I've drafted the green heading update for you. Ready to apply?"
+}
+INSTRUCTIONS;
+            $args_ai_system_instructions = [
+                'type' => 'string',
+                'default' => $ai_system_instructions,
+                'sanitize_callback' => 'sanitize_textarea_field',
             ];
 
             // Add arguments for API keys
@@ -2395,6 +2673,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_gutenberg_responsive_preview' => $args_true,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
+                'anthropic_api_key_option' => $args_api_key,
+                'gemini_api_key_option' => $args_api_key,
+                'mistral_api_key_option' => $args_api_key,
+                'maxi_mcp_token' => $args_api_key,
+                'maxi_ai_provider' => $args_ai_provider,
                 'maxi_ai_model' => $args_ai_model,
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
@@ -2402,6 +2685,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_ai_services' => $args_ai_description,
                 'maxi_ai_business_name' => $args_ai_description,
                 'maxi_ai_business_info' => $args_ai_description,
+                'maxi_ai_system_instructions' => $args_ai_system_instructions,
                 'maxi_breakpoints' => null,
                 'maxi_rollback_version' => $args_rollback,
                 'maxi_sc_gutenberg_blocks' => $args,
@@ -3199,12 +3483,28 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             $google_api_key = get_option('google_api_key_option', '');
             $openai_api_key = get_option('openai_api_key_option', '');
+            $anthropic_api_key = get_option('anthropic_api_key_option', '');
+            $gemini_api_key = get_option('gemini_api_key_option', '');
+            $mistral_api_key = get_option('mistral_api_key_option', '');
+            $mcp_token = get_option('maxi_mcp_token', '');
 
-            echo '<input type="hidden" name="google_api_key_option" value="' .
+            echo '<input type="hidden" id="google_api_key_option_hidden" name="google_api_key_option" value="' .
                 esc_attr($google_api_key) .
                 '">';
-            echo '<input type="hidden" name="openai_api_key_option" value="' .
+            echo '<input type="hidden" id="openai_api_key_option_hidden" name="openai_api_key_option" value="' .
                 esc_attr($openai_api_key) .
+                '">';
+            echo '<input type="hidden" id="anthropic_api_key_option_hidden" name="anthropic_api_key_option" value="' .
+                esc_attr($anthropic_api_key) .
+                '">';
+            echo '<input type="hidden" id="gemini_api_key_option_hidden" name="gemini_api_key_option" value="' .
+                esc_attr($gemini_api_key) .
+                '">';
+            echo '<input type="hidden" id="mistral_api_key_option_hidden" name="mistral_api_key_option" value="' .
+                esc_attr($mistral_api_key) .
+                '">';
+            echo '<input type="hidden" id="maxi_mcp_token_hidden" name="maxi_mcp_token" value="' .
+                esc_attr($mcp_token) .
                 '">';
         }
 

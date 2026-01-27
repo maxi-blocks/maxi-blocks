@@ -259,7 +259,7 @@ $breakpoints: (
 
 body .maxi-style-cards__popover {
 	position: fixed !important;
-	top: 0;
+	top: 0 !important;
 	right: 0;
 	z-index: 98;
 	height: 100%;
@@ -267,6 +267,8 @@ body .maxi-style-cards__popover {
 	box-shadow: 0 4px 0px rgba(0, 0, 0, 0.1);
 	background-color: var(--maxi-white);
 	border-left: 1.5px solid var(--maxi-grey-light);
+	margin: 0 !important;
+	max-width: 100vw;
 
 	button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button):hover {
 		background-color: var(--maxi-whisper-green) !important;

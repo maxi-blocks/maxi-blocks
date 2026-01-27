@@ -19,6 +19,7 @@ import useInterval from '@extensions/dom/useInterval';
 import InfiniteHits from './InfiniteHits';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { ContentLoader } from '@components';
+import PreviewEditor from './preview-editor';
 
 /**
  * External dependencies
@@ -409,6 +410,7 @@ const LibraryContainer = props => {
 		title,
 		useSCStyles,
 		onUseSCStylesChange,
+		gutenbergCode,
 		prefix = '',
 		isMaxiProActive,
 		onClickConnect,
@@ -1475,6 +1477,7 @@ const LibraryContainer = props => {
 			{(type === 'preview' || type === 'switch-tone') && (
 				<div className='maxi-cloud-container__patterns'>
 					{maxiPreviewIframe(url, title)}
+					<PreviewEditor gutenbergCode={gutenbergCode} />
 				</div>
 			)}
 

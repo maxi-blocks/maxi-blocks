@@ -16,11 +16,14 @@ import classnames from 'classnames';
 import Button from '@components/button';
 import DialogBox from '@components/dialog-box';
 import ResultModifyBar from '@components/prompt-control/components/result-modify-bar';
+import MaxiClarifyUI from '@components/prompt-control/components/clarify-ui';
 import Icon from '@components/icon';
 import {
 	CONTENT_LIMIT,
 	MODIFICATION_MODIFICATORS,
 } from '@components/prompt-control/constants';
+import { parseClarifyPayload } from '@components/prompt-control/utils';
+
 
 /**
  * Styles
@@ -49,7 +52,9 @@ const ResultCard = ({
 	onSelect,
 	onUseSettings,
 	onModify,
+
 	onDelete,
+	onClarifySelect,
 }) => {
 	const className = 'maxi-prompt-control-results-card';
 
@@ -63,6 +68,7 @@ const ResultCard = ({
 	const endOfContentRef = useRef();
 
 	const [copySuccess, setCopySuccess] = useState(false);
+	const clarifyPayload = parseClarifyPayload(result.content);
 
 	const limitContent = (content, limit = CONTENT_LIMIT) => {
 		if (content.length <= limit) {
@@ -186,6 +192,15 @@ const ResultCard = ({
 					className={`${className}__end-of-content__inner`}
 				/>
 			</div>
+			{clarifyPayload && (
+				<div className={`${className}__clarify`}>
+					<MaxiClarifyUI
+						message={clarifyPayload.message}
+						options={clarifyPayload.options}
+						onSelect={onClarifySelect}
+					/>
+				</div>
+			)}
 			{result.content.length > CONTENT_LIMIT && !result.loading && (
 				<Button
 					className={`${className}__show-more`}

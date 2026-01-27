@@ -9,6 +9,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { createSCStyleString } from '@extensions/style-cards/updateSCOnEditor';
 import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 import getSCStyles from '@extensions/style-cards/getSCStyles';
+import { formatError } from '@extensions/common/indexedDBManager';
 import {
 	loadFromIndexedDB,
 	saveToIndexedDB,
@@ -16,7 +17,7 @@ import {
 } from '@extensions/style-cards/styleCardsCacheDB';
 
 // Expose cache clearing function for debugging (development/test only)
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && typeof window !== 'undefined') {
 	window.maxiBlocksClearStyleCardsCache = clearIndexedDB;
 }
 
@@ -34,7 +35,7 @@ const controls = {
 				// eslint-disable-next-line no-console
 				console.warn(
 					'[RECEIVE_STYLE_CARDS] IndexedDB load failed, continuing with network fetch:',
-					JSON.stringify(cacheError)
+					formatError(cacheError)
 				);
 				cachedData = null;
 			}
@@ -68,7 +69,7 @@ const controls = {
 							// eslint-disable-next-line no-console
 							console.warn(
 								'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
-								JSON.stringify(cacheError)
+								formatError(cacheError)
 							);
 						}
 
@@ -78,7 +79,7 @@ const controls = {
 					// eslint-disable-next-line no-console
 					console.warn(
 						'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:',
-						JSON.stringify(validationError)
+						formatError(validationError)
 					);
 					// Fall through to fresh fetch below
 				}
@@ -103,7 +104,7 @@ const controls = {
 						// eslint-disable-next-line no-console
 						console.warn(
 							'[RECEIVE_STYLE_CARDS] IndexedDB save failed (non-fatal):',
-							JSON.stringify(cacheError)
+							formatError(cacheError)
 						);
 					}
 				}
@@ -119,7 +120,7 @@ const controls = {
 			// eslint-disable-next-line no-console
 			console.warn(
 				'[RECEIVE_STYLE_CARDS] Error fetching style cards:',
-				JSON.stringify(error)
+				formatError(error)
 			);
 			throw error;
 		}
@@ -140,7 +141,7 @@ const controls = {
 			// eslint-disable-next-line no-console
 			console.warn(
 				'Error saving Style Card. Code error: ',
-				JSON.stringify(err, null, 2)
+				formatError(err)
 			);
 		}
 	},

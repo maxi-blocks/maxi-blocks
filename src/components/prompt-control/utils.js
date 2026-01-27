@@ -9,7 +9,11 @@ import apiFetch from '@wordpress/api-fetch';
  * Internal dependencies
  */
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
-import { CONTENT_TYPE_EXAMPLES } from './constants';
+import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
+import { openStyleCardsEditor } from '@extensions/style-cards/applyThemeToStyleCards';
+import {
+	CONTENT_TYPE_EXAMPLES,
+} from './constants';
 
 /**
  * External dependencies
@@ -125,6 +129,65 @@ ${humanMessageTemplate}`,
 	return messages;
 };
 
+
+
+
+
+
+const parseJsonPayload = content => {
+	if (!content || typeof content !== 'string') return null;
+
+	const startIndex = content.indexOf('{');
+	const endIndex = content.lastIndexOf('}');
+	if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+		return null;
+	}
+
+	const jsonStr = content.slice(startIndex, endIndex + 1);
+	try {
+		return JSON.parse(jsonStr);
+	} catch (error) {
+		return null;
+	}
+};
+
+const handleUiTarget = responseContent => {
+	if (typeof responseContent !== 'string') return;
+
+	try {
+		const parsed = parseJsonPayload(responseContent);
+		if (!parsed?.ui_target) return;
+
+		const target = parsed.ui_target;
+
+		if (
+			target === 'global-style-colors' ||
+			target === 'global-style-typography'
+		) {
+			openStyleCardsEditor();
+			return;
+		}
+
+		const mapping = {
+			'margin-padding': 'margin padding',
+			'height-width': 'height width',
+			'background-layer': 'background layer',
+			border: 'border',
+			'box-shadow': 'box shadow',
+		};
+
+		if (mapping[target]) {
+			// Tab 0 is usually 'Settings'
+			openSidebarAccordion(0, mapping[target]);
+		}
+	} catch (e) {
+		// Parse failures are expected when content is not a UI-target JSON.
+		if (process.env.NODE_ENV === 'development') {
+			console.debug('handleUiTarget parse attempt:', e.message);
+		}
+	}
+};
+
 export const getUniqueId = results =>
 	!isEmpty(results)
 		? Math.max(
@@ -169,6 +232,7 @@ export const updateResultsWithLoading = (
 			id: newId,
 			content: '',
 			loading: true,
+			progress: 0,
 			...additionalData,
 		},
 		...prevResults,
@@ -258,63 +322,263 @@ export const callBackendAIProxy = async ({
 	additionalParams,
 	newId,
 	abortControllerRef,
+	prompt,
 	shouldRemoveQuotes = true,
 	setIsGenerating,
 	setResults,
+	onModelUnavailable,
 }) => {
 	abortControllerRef.current = new AbortController();
 
 	setIsGenerating(true);
+	const wpApiRoot = window.wpApiSettings?.root || '/wp-json/';
+	const wpNonce = window.wpApiSettings?.nonce;
+	const temperature =
+		!modelName?.includes('o1') &&
+		!modelName?.includes('o3') &&
+		!modelName?.includes('gpt-5')
+			? additionalParams?.temperature
+			: undefined;
 
-	try {
-		const response = await apiFetch({
-			path: '/maxi-blocks/v1.0/ai/chat',
-			method: 'POST',
-			data: {
-				messages,
-				model: modelName,
-				temperature: additionalParams?.temperature,
-				streaming: false, // Start with non-streaming for simplicity
-			},
-			signal: abortControllerRef.current.signal,
-		});
-
-		setIsGenerating(false);
-		abortControllerRef.current = null;
-
-		// Extract content from OpenAI response
-		const content = response?.choices?.[0]?.message?.content || '';
-
+	let handledError = false;
+	const updateResultWithError = errorMessage => {
 		setResults(prevResults => {
 			const newResults = [...prevResults];
 			const addedResult = newResults.find(result => result.id === newId);
 
 			if (addedResult) {
-				addedResult.content = sanitizeContent(
-					content,
-					shouldRemoveQuotes
-				);
-				addedResult.loading = false;
-			}
-
-			return newResults;
-		});
-	} catch (error) {
-		setIsGenerating(false);
-		abortControllerRef.current = null;
-
-		setResults(prevResults => {
-			const newResults = [...prevResults];
-			const addedResult = newResults.find(result => result.id === newId);
-
-			if (addedResult) {
-				addedResult.content = error.message || 'AI request failed';
+				addedResult.content = errorMessage || 'AI request failed';
 				addedResult.loading = false;
 				addedResult.error = true;
 			}
 
 			return newResults;
 		});
+	};
+
+	const finalizeResult = finalContent => {
+		let sanitizedContent = sanitizeContent(
+			finalContent ?? '',
+			shouldRemoveQuotes
+		);
+
+		setResults(prevResults => {
+			const newResults = [...prevResults];
+			const addedResult = newResults.find(result => result.id === newId);
+
+			if (addedResult) {
+				sanitizedContent = sanitizeContent(
+					finalContent ?? addedResult.content,
+					shouldRemoveQuotes
+				);
+				addedResult.content = sanitizedContent;
+				addedResult.loading = false;
+				addedResult.progress = addedResult.content.length;
+			}
+
+			return newResults;
+		});
+
+		// Handle UI Target expansion
+		handleUiTarget(sanitizedContent);
+	};
+
+	const isModelUnavailableError = errorMessage =>
+		Boolean(
+			errorMessage?.includes('model_not_found') ||
+				errorMessage?.toLowerCase().includes('model not found') ||
+				errorMessage?.toLowerCase().includes('model is not available')
+		);
+
+	try {
+		const response = await fetch(`${wpApiRoot}maxi-blocks/v1.0/ai/chat`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'text/event-stream',
+				...(wpNonce ? { 'X-WP-Nonce': wpNonce } : {}),
+			},
+			body: JSON.stringify({
+				messages,
+				model: modelName,
+				...(temperature !== undefined ? { temperature } : {}),
+				streaming: true,
+				prompt,
+			}),
+			signal: abortControllerRef.current.signal,
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			console.error('MaxiBlocks AI request failed:', errorText);
+			handledError = true;
+			updateResultWithError(errorText);
+			if (isModelUnavailableError(errorText)) {
+				onModelUnavailable?.();
+			}
+			throw new Error(errorText);
+		}
+
+		const isEventStream = response.headers
+			.get('content-type')
+			?.includes('text/event-stream');
+
+		if (!isEventStream || !response.body) {
+			const fallbackResponse = await apiFetch({
+				path: '/maxi-blocks/v1.0/ai/chat',
+				method: 'POST',
+				data: {
+					messages,
+					model: modelName,
+					...(temperature !== undefined ? { temperature } : {}),
+					streaming: false,
+					prompt,
+				},
+				signal: abortControllerRef.current.signal,
+			});
+
+			setIsGenerating(false);
+			abortControllerRef.current = null;
+
+			const content =
+				fallbackResponse?.choices?.[0]?.message?.content || '';
+
+			setResults(prevResults => {
+				const newResults = [...prevResults];
+				const addedResult = newResults.find(
+					result => result.id === newId
+				);
+
+				if (addedResult) {
+					addedResult.content = sanitizeContent(
+						content,
+						shouldRemoveQuotes
+					);
+					addedResult.loading = false;
+					addedResult.progress = content.length;
+
+					// Handle UI Target expansion
+					handleUiTarget(content);
+				}
+
+				return newResults;
+			});
+
+			return;
+		}
+
+		const reader = response.body.getReader();
+		const decoder = new TextDecoder('utf-8');
+		let buffer = '';
+		let responseContent = '';
+		let abortStream = false;
+		let parseErrorCount = 0;
+		const maxParseErrors = 5;
+
+		while (true) {
+			const { value, done } = await reader.read();
+			buffer += decoder.decode(value || new Uint8Array(), {
+				stream: !done,
+			});
+			const lines = buffer.split('\n');
+			buffer = lines.pop();
+			if (done && buffer.trim()) {
+				lines.push(buffer);
+				buffer = '';
+			}
+
+			for (const line of lines) {
+				const trimmedLine = line.trim();
+				if (!trimmedLine.startsWith('data:')) {
+					continue;
+				}
+				const dataString = trimmedLine.replace(/^data:\s*/, '');
+				if (dataString === '') {
+					continue;
+				}
+				if (dataString === '[DONE]') {
+					finalizeResult(responseContent);
+					setIsGenerating(false);
+					abortControllerRef.current = null;
+					return;
+				}
+				try {
+					const parsed = JSON.parse(dataString);
+					parseErrorCount = 0;
+					if (parsed?.type === 'error' || parsed?.error) {
+						const errorMessage =
+							parsed?.message ||
+							parsed?.error?.message ||
+							'AI request failed';
+						console.error('MaxiBlocks AI stream error:', parsed);
+						updateResultWithError(errorMessage);
+						if (isModelUnavailableError(errorMessage)) {
+							onModelUnavailable?.();
+						}
+						abortStream = true;
+						break;
+					}
+
+					const delta =
+						parsed?.choices?.[0]?.delta?.content || '';
+					if (delta) {
+						responseContent = sanitizeContent(
+							responseContent + delta,
+							shouldRemoveQuotes
+						);
+						setResults(prevResults => {
+							const newResults = [...prevResults];
+							const addedResult = newResults.find(
+								result => result.id === newId
+							);
+
+							if (addedResult?.loading) {
+								addedResult.content = responseContent;
+								addedResult.progress = responseContent.length;
+							}
+
+							return newResults;
+						});
+					}
+				} catch (error) {
+					parseErrorCount += 1;
+					console.error('MaxiBlocks AI stream parse error:', error);
+					if (parseErrorCount >= maxParseErrors) {
+						console.error('MaxiBlocks AI stream parse error: too many malformed chunks, aborting.');
+						handledError = true;
+						updateResultWithError('AI response stream was malformed.');
+						abortStream = true;
+						break;
+					}
+				}
+			}
+
+			if (abortStream) {
+				await reader.cancel();
+				setIsGenerating(false);
+				abortControllerRef.current = null;
+				return;
+			}
+
+			if (done) {
+				break;
+			}
+		}
+
+		finalizeResult(responseContent);
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+	} catch (error) {
+		setIsGenerating(false);
+		abortControllerRef.current = null;
+
+		if (!handledError && error?.name !== 'AbortError') {
+			updateResultWithError(error.message || 'AI request failed');
+		}
+
+		if (!handledError && isModelUnavailableError(error.message)) {
+			onModelUnavailable?.();
+		}
 
 		throw error;
 	}
@@ -331,11 +595,13 @@ export const handleContentGeneration = async ({
 	setResults,
 	setSelectedResultId,
 	setIsGenerating,
+	onModelUnavailable,
 }) => {
 	const newId = getUniqueId(results);
 
 	try {
 		const messages = await getMessages(additionalData);
+		const prompt = additionalData?.prompt;
 
 		// Updating results with loading state
 		setResults(prevResults =>
@@ -351,6 +617,7 @@ export const handleContentGeneration = async ({
 			additionalParams,
 			newId,
 			abortControllerRef,
+			prompt,
 			shouldRemoveQuotes: additionalData?.settings?.contentType
 				? !['Quotes', 'Pull quotes Testimonial'].includes(
 						additionalData.settings.contentType
@@ -358,27 +625,11 @@ export const handleContentGeneration = async ({
 				: true,
 			setIsGenerating,
 			setResults,
+			onModelUnavailable,
 		});
 	} catch (error) {
 		// Error handling logic
-		if (error.response) {
-			setResults(prevResults => {
-				const newResults = [...prevResults];
-				const addedResult = newResults.find(
-					result => result.id === newId
-				);
-
-				if (addedResult) {
-					addedResult.content = error.response.data.error.message;
-					addedResult.loading = false;
-					addedResult.error = true;
-				}
-
-				return newResults;
-			});
-
-			console.error(error.response.data.error);
-		} else if (
+		if (
 			error.name !== 'AbortError' &&
 			error.message !== 'Cancel: canceled'
 		) {
@@ -512,4 +763,24 @@ export const getContext = (contextOption, clientId) => {
 	goThroughMaxiBlocks(buildBlockStructure, false, blocks);
 
 	return result;
+};
+
+/**
+ * Parse the AI response to check for clarification requests.
+ *
+ * @param {string} content - The content to parse.
+ * @return {Object|null} - The parsed payload if intent is CLARIFY, otherwise null.
+ */
+export const parseClarifyPayload = content => {
+	try {
+		const parsed = parseJsonPayload(content);
+		if (!parsed) return null;
+
+		if (parsed.intent === 'CLARIFY' && Array.isArray(parsed.options)) {
+			return parsed;
+		}
+		return null;
+	} catch (e) {
+		return null;
+	}
 };

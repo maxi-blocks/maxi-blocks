@@ -614,6 +614,43 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return '';
 	};
 
+	const matchesTargetBlockName = (blockName, targetBlockArg) => {
+		if (!targetBlockArg) return true;
+		if (!blockName) return false;
+		const lowerName = blockName.toLowerCase();
+		const lowerTarget = targetBlockArg.toLowerCase();
+
+		// STRICTER TARGETING
+		if (lowerTarget === 'image') {
+			// Only target actual Image blocks
+			return lowerName === 'maxi-blocks/image-maxi' || lowerName === 'maxi-blocks/image'; 
+		}
+		if (lowerTarget === 'button') {
+			return lowerName.includes('button-maxi') || lowerName.includes('button');
+		}
+		if (lowerTarget === 'text') return lowerName.includes('text') || lowerName.includes('heading');
+		if (lowerTarget === 'container') {
+			// Exclude groups/rows if looking for main container
+			return lowerName.includes('container') && !lowerName.includes('group'); 
+		}
+		if (lowerTarget === 'icon') {
+			return lowerName.includes('icon-maxi') || lowerName.includes('svg-icon');
+		}
+		if (lowerTarget === 'divider') return lowerName.includes('divider');
+		if (lowerTarget === 'row') return lowerName.includes('row');
+		if (lowerTarget === 'column') return lowerName.includes('column');
+		if (lowerTarget === 'group') return lowerName.includes('group');
+		if (lowerTarget === 'accordion') return lowerName.includes('accordion');
+		if (lowerTarget === 'pane') return lowerName.includes('pane');
+		if (lowerTarget === 'slide') return lowerName.includes('slide') && !lowerName.includes('slider');
+		if (lowerTarget === 'slider') return lowerName.includes('slider');
+		if (lowerTarget === 'video') return lowerName.includes('video');
+		if (lowerTarget === 'map') return lowerName.includes('map');
+		if (lowerTarget === 'search') return lowerName.includes('search');
+		if (lowerTarget === 'number-counter') return lowerName.includes('number-counter');
+		return true;
+	};
+
     // Recursive helper to find blocks regardless of nesting
     const collectBlocks = (blocks, matcher) => {
         const result = [];
@@ -705,6 +742,67 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				if (nested) return nested;
 			}
 		}
+		return null;
+	};
+
+	const getSpacingIntent = (message = '') => {
+		const lower = String(message || '').toLowerCase();
+		if (!/(padding|margin)/.test(lower)) return null;
+
+		const baseMatch = lower.match(/\b(padding|margin)\b/);
+		if (!baseMatch) return null;
+
+		const sidePattern = /\b(padding|margin)\b[\s-]*(top|right|bottom|left)\b|\b(top|right|bottom|left)\b[\s-]*(padding|margin)\b/;
+		const sideMatch = lower.match(sidePattern);
+		const base = sideMatch ? (sideMatch[1] || sideMatch[4]) : baseMatch[1];
+		const side = sideMatch ? (sideMatch[2] || sideMatch[3]) : null;
+
+		return { base, side };
+	};
+
+	const parseRemoveSpacingRequest = (message = '') => {
+		const lower = String(message || '').toLowerCase();
+		if (!/(padding|margin)/.test(lower)) return null;
+
+		const removeMatch = /\b(remove|clear|reset|delete|unset|none|zero)\b/.test(lower)
+			|| /\bno\s+(padding|margin)\b/.test(lower)
+			|| /\bwithout\s+(padding|margin)\b/.test(lower);
+
+		if (!removeMatch) return null;
+
+		const intent = getSpacingIntent(message);
+		if (!intent) return null;
+
+		const property = intent.side ? `${intent.base}_${intent.side}` : intent.base;
+		return { property, value: '0px' };
+	};
+
+	const parseNumericSpacingRequest = (message = '') => {
+		const spacingIntent = getSpacingIntent(message);
+		if (!spacingIntent) return null;
+
+		const numberMatch = String(message || '').toLowerCase().match(/(-?\d+(?:\.\d+)?)\s*(px|%|em|rem|vh|vw)?/);
+		if (!numberMatch) return null;
+
+		const value = numberMatch[1];
+		const unit = numberMatch[2] || 'px';
+		const property = spacingIntent.side
+			? `${spacingIntent.base}_${spacingIntent.side}`
+			: spacingIntent.base;
+
+		return { property, value: `${value}${unit}` };
+	};
+
+	const detectSpacingTarget = (message = '') => {
+		const lower = String(message || '').toLowerCase();
+		if (lower.includes('video')) return 'video';
+		if (lower.includes('image') || lower.includes('photo') || lower.includes('picture')) return 'image';
+		if (lower.includes('button')) return 'button';
+		if (lower.includes('text') || lower.includes('heading')) return 'text';
+		if (lower.includes('column')) return 'column';
+		if (lower.includes('row')) return 'row';
+		if (lower.includes('group')) return 'group';
+		if (lower.includes('container') || lower.includes('section')) return 'container';
 		return null;
 	};
 
@@ -2050,43 +2148,6 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBlock = null, specificClientId = null) => {
 		let count = 0;
 
-		// Block type matching helper
-		const matchesTarget = (blockName, targetBlockArg) => {
-			if (!targetBlockArg) return true; // No filter, apply to all
-			const lowerName = blockName.toLowerCase();
-			const lowerTarget = targetBlockArg.toLowerCase();
-			
-			// STRICTER TARGETING
-			if (lowerTarget === 'image') {
-				// Only target actual Image blocks
-				return lowerName === 'maxi-blocks/image-maxi' || lowerName === 'maxi-blocks/image'; 
-			}
-			if (lowerTarget === 'button') {
-				return lowerName.includes('button-maxi') || lowerName.includes('button');
-			}
-			if (lowerTarget === 'text') return lowerName.includes('text') || lowerName.includes('heading');
-			if (lowerTarget === 'container') {
-				// Exclude groups/rows if looking for main container
-				return lowerName.includes('container') && !lowerName.includes('group'); 
-			}
-			if (lowerTarget === 'icon') {
-				return lowerName.includes('icon-maxi') || lowerName.includes('svg-icon');
-			}
-			if (lowerTarget === 'divider') return lowerName.includes('divider');
-			if (lowerTarget === 'row') return lowerName.includes('row');
-			if (lowerTarget === 'column') return lowerName.includes('column');
-			if (lowerTarget === 'group') return lowerName.includes('group');
-			if (lowerTarget === 'accordion') return lowerName.includes('accordion');
-			if (lowerTarget === 'pane') return lowerName.includes('pane');
-			if (lowerTarget === 'slide') return lowerName.includes('slide') && !lowerName.includes('slider');
-			if (lowerTarget === 'slider') return lowerName.includes('slider');
-			if (lowerTarget === 'video') return lowerName.includes('video');
-			if (lowerTarget === 'map') return lowerName.includes('map');
-			if (lowerTarget === 'search') return lowerName.includes('search');
-			if (lowerTarget === 'number-counter') return lowerName.includes('number-counter');
-			return true;
-		};
-
 		const recursiveUpdate = (blocks) => {
 			if (!Array.isArray(blocks)) {
 				return;
@@ -2099,7 +2160,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				const prefix = getBlockPrefix(block.name);
 				
 				// MATCHING LOGIC
-				const isMatch = specificClientId ? block.clientId === specificClientId : matchesTarget(block.name, targetBlock);
+				const isMatch = specificClientId ? block.clientId === specificClientId : matchesTargetBlockName(block.name, targetBlock);
 
 				// console.log(`[Maxi AI Debug] Checking block: ${block.name} (${block.clientId}). isMaxi: ${isMaxi}, isMatch: ${isMatch}, Target: ${targetBlock}`);
 
@@ -2869,22 +2930,43 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
 		});
 
-		if (count === 0 && parentFallbackProps.has(property)) {
+		if (count === 0 && (parentFallbackProps.has(property) || normalizedTarget)) {
 			const { getBlockParents, getBlock } = select('core/block-editor');
 			const parentIds = getBlockParents(selectedBlock.clientId) || [];
-			const layoutParent = parentIds
+			const parentBlocks = parentIds
 				.map(parentId => getBlock(parentId))
-				.find(parent =>
+				.filter(Boolean);
+
+			let fallbackParent = null;
+			if (normalizedTarget) {
+				fallbackParent = parentBlocks.find(parent =>
+					matchesTargetBlockName(parent.name, normalizedTarget)
+				);
+			}
+
+			if (!fallbackParent && normalizedTarget && String(normalizedTarget).toLowerCase() === 'container') {
+				fallbackParent = parentBlocks.find(parent =>
 					parent &&
 					(parent.name.includes('column') ||
 						parent.name.includes('row') ||
 						parent.name.includes('group') ||
 						parent.name.includes('container'))
 				);
+			}
 
-			if (layoutParent) {
+			if (!fallbackParent && parentFallbackProps.has(property)) {
+				fallbackParent = parentBlocks.find(parent =>
+					parent &&
+					(parent.name.includes('column') ||
+						parent.name.includes('row') ||
+						parent.name.includes('group') ||
+						parent.name.includes('container'))
+				);
+			}
+
+			if (fallbackParent) {
 				registry.batch(() => {
-					count = applyUpdatesToBlocks([layoutParent], property, value, null, layoutParent.clientId);
+					count = applyUpdatesToBlocks([fallbackParent], property, value, null, fallbackParent.clientId);
 				});
 				usedParentFallback = count > 0;
 			}
@@ -3437,6 +3519,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						value = action.payload.padding;
 					}
 				}
+
+				if (typeof property === 'string') {
+					property = property.replace(/-/g, '_');
+				}
 				
 				console.log('[Maxi AI Debug] update_page action received:', property, value, 'target:', action.target_block);
 				
@@ -3506,6 +3592,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					if (action.payload.shadow) { property = 'box_shadow'; value = action.payload.shadow; }
 					else if (action.payload.border_radius !== undefined) { property = 'border_radius'; value = action.payload.border_radius; }
 					else if (action.payload.padding !== undefined) { property = 'padding'; value = action.payload.padding; }
+				}
+				
+				if (typeof property === 'string') {
+					property = property.replace(/-/g, '_');
 				}
 				
 				// Normalizations
@@ -3657,8 +3747,36 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		
 
 		
+		// Spacing removals (explicit remove/clear/reset)
+		const removeSpacing = parseRemoveSpacingRequest(rawMessage);
+		if (removeSpacing) {
+			const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+			const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
+			const propertyParts = removeSpacing.property.split('_');
+			const spacingLabel = propertyParts.length === 2
+				? `${propertyParts[1]} ${propertyParts[0]}`
+				: removeSpacing.property;
+			const directAction = {
+				action: actionType,
+				property: removeSpacing.property,
+				value: removeSpacing.value,
+				...(targetBlock ? { target_block: targetBlock } : {}),
+				message: `Removed ${spacingLabel}.`,
+			};
+
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
+
 		// Spacing requests - detect target from user message
-		if ((lowerMessage.includes('spacing') || lowerMessage.includes('space') || lowerMessage.includes('padding') || lowerMessage.includes('taller')) 
+		const hasExplicitNumericValue = /\b\d+(?:\.\d+)?\s*(px|%|em|rem|vh|vw)?\b/.test(lowerMessage);
+		const spacingIntent = getSpacingIntent(rawMessage);
+		if ((lowerMessage.includes('spacing') || lowerMessage.includes('space') || lowerMessage.includes('padding') || lowerMessage.includes('margin') || lowerMessage.includes('taller')) 
+			&& !hasExplicitNumericValue
 			&& !lowerMessage.includes('compact') && !lowerMessage.includes('comfortable') && !lowerMessage.includes('spacious') && !lowerMessage.includes('square')) {
 			// Detect what the user wants to target
 			let target = null;
@@ -3670,14 +3788,47 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (!target && currentScope === 'selection' && selectedBlock?.name?.includes('video')) {
 				target = 'video';
 			}
-			
+
+			const spacingBase = spacingIntent?.base || (lowerMessage.includes('margin') ? 'margin' : 'padding');
+			const spacingSide = spacingIntent?.side || null;
+			const spacingLabel = spacingSide ? `${spacingSide} ${spacingBase}` : spacingBase;
+
 			setMessages(prev => [...prev, {
 				role: 'assistant',
-				content: target ? `How much spacing for the ${target}s?` : 'How much spacing would you like?',
-				options: ['Compact', 'Comfortable', 'Spacious'],
+				content: target
+					? `How much ${spacingLabel} for the ${target}s?`
+					: `How much ${spacingLabel} would you like?`,
+				options: ['Compact', 'Comfortable', 'Spacious', 'Remove'],
 				targetContext: target || 'container', // Default to container for spacing
+				spacingBase,
+				spacingSide,
 				executed: false
 			}]);
+			return;
+		}
+
+		// Numeric padding/margin: apply directly when a number is provided
+		const numericSpacing = parseNumericSpacingRequest(rawMessage);
+		if (numericSpacing) {
+			const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+			const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
+			const propertyParts = numericSpacing.property.split('_');
+			const spacingLabel = propertyParts.length === 2
+				? `${propertyParts[1]} ${propertyParts[0]}`
+				: numericSpacing.property;
+			const directAction = {
+				action: actionType,
+				property: numericSpacing.property,
+				value: numericSpacing.value,
+				...(targetBlock ? { target_block: targetBlock } : {}),
+				message: `Applied ${numericSpacing.value} ${spacingLabel}.`,
+			};
+
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
 			return;
 		}
 
@@ -5463,10 +5614,22 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			lastClarifyContent.includes('images') ||
 			selectedBlock?.name?.includes('image') ||
 			targetContext === 'image';
+		const spacingBase = lastClarificationMsg?.spacingBase;
+		const spacingSide = lastClarificationMsg?.spacingSide;
+		const spacingPresetValue = {
+			Compact: 60,
+			Comfortable: 100,
+			Spacious: 140,
+		};
 		const lastShadowPrompt = lastClarifyContent.includes('shadow');
 		const lastShapeDividerMsg = [...messages].reverse().find(m => m.shapeDividerLocation || m.shapeDividerTarget);
 		const shapeDividerLocations = ['Top', 'Bottom', 'Both'];
 		const shapeDividerStyles = ['Wave', 'Curve', 'Slant', 'Triangle'];
+		const spacingPresets = {
+			Compact: { desktop: '60px', tablet: '40px', mobile: '20px' },
+			Comfortable: { desktop: '100px', tablet: '60px', mobile: '40px' },
+			Spacious: { desktop: '140px', tablet: '80px', mobile: '60px' },
+		};
 
 		if (lastShapeDividerMsg?.shapeDividerLocation && shapeDividerLocations.includes(suggestion)) {
 			const location = suggestion.toLowerCase();
@@ -5549,6 +5712,37 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// 2. RESPONSIVE SPACING
 		// Uses dedicated createResponsiveSpacing function for consistent breakpoint handling
 		// Action type 'apply_responsive_spacing' signals special handling in parseAndExecuteAction
+		else if (spacingSide && spacingBase && ['Compact', 'Comfortable', 'Spacious', 'Remove'].includes(suggestion)) {
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			let property = `${spacingBase}_${spacingSide}`;
+			if (spacingBase === 'padding' && targetContext === 'video') {
+				property = `video_padding_${spacingSide}`;
+			}
+			const value = suggestion === 'Remove' ? 0 : spacingPresetValue[suggestion];
+			directAction = {
+				action: actionType,
+				property,
+				value,
+				...(targetContext ? { target_block: targetContext } : {}),
+				message: suggestion === 'Remove'
+					? `Removed ${spacingSide} ${spacingBase}.`
+					: `Applied ${suggestion} ${spacingSide} ${spacingBase}.`,
+			};
+		}
+		else if (spacingBase && suggestion === 'Remove') {
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			let property = spacingBase;
+			if (spacingBase === 'padding' && targetContext === 'video') {
+				property = 'video_padding';
+			}
+			directAction = {
+				action: actionType,
+				property,
+				value: 0,
+				...(targetContext ? { target_block: targetContext } : {}),
+				message: `Removed ${spacingBase}.`,
+			};
+		}
 		else if (targetContext === 'video' && ['Compact', 'Comfortable', 'Spacious'].includes(suggestion)) {
 			const presetValue = {
 				Compact: 60,
@@ -5568,9 +5762,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				message,
 			};
 		}
-		else if (suggestion === 'Compact') directAction = { action: 'apply_responsive_spacing', preset: 'compact', target_block: targetContext || 'container', message: 'Applied Compact spacing across all breakpoints.' };
-		else if (suggestion === 'Comfortable') directAction = { action: 'apply_responsive_spacing', preset: 'comfortable', target_block: targetContext || 'container', message: 'Applied Comfortable spacing across all breakpoints.' };
-		else if (suggestion === 'Spacious') directAction = { action: 'apply_responsive_spacing', preset: 'spacious', target_block: targetContext || 'container', message: 'Applied Spacious spacing across all breakpoints.' };
+		else if (['Compact', 'Comfortable', 'Spacious'].includes(suggestion)) {
+			const preset = suggestion.toLowerCase();
+			if (scope === 'selection') {
+				directAction = {
+					action: 'update_selection',
+					property: 'responsive_padding',
+					value: spacingPresets[suggestion],
+					target_block: targetContext || 'container',
+					message: `Applied ${suggestion} spacing across selected breakpoints.`,
+				};
+			} else {
+				directAction = {
+					action: 'apply_responsive_spacing',
+					preset,
+					target_block: targetContext || 'container',
+					message: `Applied ${suggestion} spacing across all breakpoints.`,
+				};
+			}
+		}
 
 		// 3. SHADOW & GLOW - Handled by two-step flow (color selection → style selection)
 		// Old direct handlers removed - see section 9 for the new context-aware handler

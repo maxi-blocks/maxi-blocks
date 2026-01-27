@@ -1582,6 +1582,10 @@ class MaxiBlockComponent extends Component {
 				this.editorIframe
 			);
 			addBlockStyles(uniqueID, this.xxlStyleCache, target);
+			this.updateResponsiveClasses(
+				this.editorIframe,
+				this.props.deviceType
+			);
 			recordPerf('displayStyles', perfStart);
 			return;
 		}

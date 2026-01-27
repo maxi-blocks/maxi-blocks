@@ -29,18 +29,78 @@ import 'react-image-crop/src/ReactCrop.scss';
  */
 const GeneralInput = props => {
 	const { target, value, onChange, inputState } = props;
+	const minValue = 0;
 
 	return (
-		<label htmlFor={`maxi-image-crop-${target}-control`}>
-			{capitalize(target)}
-			<input
-				type='number'
-				id={`maxi-image-crop-${target}-control`}
-				name={`maxi-image-crop-${target}-control`}
-				value={isNumber(value) ? +value.toFixed() : ''}
-				onChange={e => onChange(+e.target.value)}
-				disabled={!inputState}
-			/>
+		<label
+			htmlFor={`maxi-image-crop-${target}-control`}
+			className='maxi-base-control'
+		>
+			<span className='maxi-base-control__label-crop'>
+				{capitalize(target)}
+			</span>
+			<div className='maxi-image-crop-control__input-wrapper'>
+				<input
+					type='number'
+					id={`maxi-image-crop-${target}-control`}
+					name={`maxi-image-crop-${target}-control`}
+					value={isNumber(value) ? +value.toFixed() : ''}
+					onChange={e => onChange(+e.target.value)}
+					disabled={!inputState}
+				/>
+				<div className='maxi-image-crop-control__spinner-container'>
+					<button
+						type='button'
+						className='maxi-image-crop-control__spinner-button maxi-image-crop-control__spinner-button--up'
+						onClick={e => {
+							e.preventDefault();
+							onChange((value || 0) + 1);
+						}}
+						disabled={!inputState}
+					>
+						<svg
+							width='8'
+							height='5'
+							viewBox='0 0 8 5'
+							fill='none'
+							xmlns='http://www.w3.org/2000/svg'
+						>
+							<path
+								d='M1 4L4 1L7 4'
+								stroke='currentColor'
+								strokeWidth='1.5'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+							/>
+						</svg>
+					</button>
+					<button
+						type='button'
+						className='maxi-image-crop-control__spinner-button maxi-image-crop-control__spinner-button--down'
+						onClick={e => {
+							e.preventDefault();
+							onChange(Math.max(minValue, (value || 0) - 1));
+						}}
+						disabled={!inputState || (value || 0) <= minValue}
+					>
+						<svg
+							width='8'
+							height='5'
+							viewBox='0 0 8 5'
+							fill='none'
+							xmlns='http://www.w3.org/2000/svg'
+						>
+							<path
+								d='M7 1L4 4L1 1'
+								stroke='currentColor'
+								strokeWidth='1.5'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
 		</label>
 	);
 };
@@ -321,60 +381,64 @@ const ImageCropControl = props => {
 					</ReactCrop>
 					{imgNode.current && (
 						<div className='maxi-image-crop-control__options'>
-							<GeneralInput
-								target='width'
-								value={
-									(crop.crop.width &&
-										crop.crop.width *
-											scaleX() *
-											getScale()) ||
-									null
-								}
-								onChange={value =>
-									onInputChange(
-										'width',
-										value / scaleX() / getScale()
-									)
-								}
-								inputState={inputState}
-							/>
-							<GeneralInput
-								target='height'
-								value={
-									(crop.crop.height &&
-										crop.crop.height *
-											scaleY() *
-											getScale()) ||
-									null
-								}
-								onChange={value =>
-									onInputChange(
-										'height',
-										value / scaleY() / getScale()
-									)
-								}
-								inputState={inputState}
-							/>
-							<GeneralInput
-								target='x'
-								value={crop.crop.x}
-								onChange={value => onInputChange('x', value)}
-								inputState={inputState}
-							/>
-							<GeneralInput
-								target='y'
-								value={crop.crop.y}
-								onChange={value => onInputChange('y', value)}
-								inputState={inputState}
-							/>
-							<GeneralInput
-								target='scale'
-								value={Number(crop.crop.scale)}
-								onChange={scale =>
-									onInputChange('scale', scale)
-								}
-								inputState={inputState}
-							/>
+							<div className='maxi-image-crop-control__row maxi-image-crop-control__row--top'>
+								<GeneralInput
+									target='width'
+									value={
+										(crop.crop.width &&
+											crop.crop.width *
+												scaleX() *
+												getScale()) ||
+										null
+									}
+									onChange={value =>
+										onInputChange(
+											'width',
+											value / scaleX() / getScale()
+										)
+									}
+									inputState={inputState}
+								/>
+								<GeneralInput
+									target='height'
+									value={
+										(crop.crop.height &&
+											crop.crop.height *
+												scaleY() *
+												getScale()) ||
+										null
+									}
+									onChange={value =>
+										onInputChange(
+											'height',
+											value / scaleY() / getScale()
+										)
+									}
+									inputState={inputState}
+								/>
+							</div>
+							<div className='maxi-image-crop-control__row maxi-image-crop-control__row--bottom'>
+								<GeneralInput
+									target='x'
+									value={crop.crop.x}
+									onChange={value => onInputChange('x', value)}
+									inputState={inputState}
+								/>
+								<GeneralInput
+									target='y'
+									value={crop.crop.y}
+									onChange={value => onInputChange('y', value)}
+									inputState={inputState}
+								/>
+								<GeneralInput
+									target='scale'
+									value={Number(crop.crop.scale)}
+									onChange={scale =>
+										onInputChange('scale', scale)
+									}
+									inputState={inputState}
+								/>
+							</div>
 						</div>
 					)}
 				</>

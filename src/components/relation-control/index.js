@@ -2,14 +2,13 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, select } from '@wordpress/data';
-import { useContext } from '@wordpress/element';
+import { useDispatch, useSelect, select } from '@wordpress/data';
+import { useRef, useEffect, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import Button from '@components/button';
-import InfoBox from '@components/info-box';
 import ListControl from '@components/list-control';
 import ListItemControl from '@components/list-control/list-item-control';
 import SelectControl from '@components/select-control';
@@ -17,27 +16,31 @@ import SettingTabsControl from '@components/setting-tabs-control';
 import TextControl from '@components/text-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
-import { openSidebarAccordion } from '@extensions/inspector';
-import {
-	createTransitionObj,
-	getDefaultAttribute,
-	getGroupAttributes,
-} from '@extensions/styles';
+import BlockSelectControl from './BlockSelectControl';
+import { createTransitionObj, getGroupAttributes } from '@extensions/styles';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+import { getSiteEditorIframeBody } from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
-import { getHoverStatus } from '@extensions/relations';
 import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
 import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
 import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
-import getCleanDisplayIBAttributes from '@extensions/relations/getCleanDisplayIBAttributes';
-import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import getHoverStatus from '@extensions/relations/getHoverStatus';
+import SettingTabsIndicatorContext from '@extensions/indicators/context';
 
 /**
  * External dependencies
  */
-import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
+import {
+	capitalize,
+	cloneDeep,
+	isEmpty,
+	isEqual,
+	isNil,
+	merge,
+	omitBy,
+} from 'lodash';
 
 /**
  * Styles
@@ -45,16 +48,12 @@ import { capitalize, cloneDeep, isEmpty, omitBy } from 'lodash';
 import './editor.scss';
 
 const RelationControl = props => {
-	const { getBlock } = select('core/block-editor');
 	const {
-		selectBlock,
+		updateBlockAttributes,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = useDispatch('core/block-editor');
 
-	const repeaterContext = useContext(RepeaterContext);
-
 	const {
-		clientId,
 		deviceType,
 		isButton,
 		onChange,
@@ -62,121 +61,333 @@ const RelationControl = props => {
 		uniqueID,
 	} = props;
 
-	const cloneRelations = relations =>
-		!isEmpty(relations) ? cloneDeep(relations) : [];
+	// UseRef to prevent infinite loops during attribute updates
+	const isUpdating = useRef(false);
+	const prevRawRelationsRef = useRef(rawRelations);
 
-	// Ensure that each relation of `relations` array has a valid block
-	const relations = cloneRelations(rawRelations).filter(
-		relation =>
-			isEmpty(relation.uniqueID) ||
-			!!getClientIdFromUniqueId(relation.uniqueID)
+	useEffect(() => {
+		if (prevRawRelationsRef.current !== rawRelations) {
+			prevRawRelationsRef.current = rawRelations;
+		}
+	}, [rawRelations]);
+
+	// Track highlighted blocks for cleanup
+	const highlightedBlocks = useRef(new Set());
+	const hoveredUniqueIdRef = useRef(null);
+	const onChangeRef = useRef(null);
+	const lastCleanedRef = useRef(null);
+
+	const relations = useMemo(() => {
+		const filtered = (rawRelations || []).filter(
+			r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+		);
+		return filtered;
+	}, [rawRelations]);
+
+	const blockDataByClientId = useSelect(
+		selectFn => {
+			const { getBlock } = selectFn('core/block-editor');
+			const blockMap = new Map();
+
+			relations.forEach(relation => {
+				const clientId = getClientIdFromUniqueId(relation.uniqueID);
+				if (clientId) {
+					const block = getBlock(clientId);
+					if (block) {
+						blockMap.set(clientId, {
+							attributes: block.attributes,
+							name: block.name,
+						});
+					}
+				}
+			});
+
+			return blockMap;
+		},
+		[relations]
 	);
 
-	const getRelationId = relations => {
-		return relations && !isEmpty(relations)
-			? Math.max(
-					...relations.map(relation =>
-						typeof relation.id === 'number' ? relation.id : 0
-					)
-			  ) + 1
-			: 1;
-	};
-
-	const getParsedOptions = rawOptions => {
-		const parseOptionsArray = options =>
-			options?.map(({ sid, label }) => ({
-				label,
-				value: sid,
-			})) ?? [];
-
-		const defaultSetting = {
-			label: __('Choose settings', 'maxi-blocks'),
-			value: '',
-		};
-
-		const parsedOptions =
-			Object.keys(rawOptions).length > 1
-				? {
-						'': [defaultSetting],
-						...Object.entries(rawOptions).reduce(
-							(acc, [groupLabel, groupOptions]) => ({
-								...acc,
-								[capitalize(groupLabel)]:
-									parseOptionsArray(groupOptions),
-							}),
-							{}
-						),
-				  }
-				: [
-						...defaultSetting,
-						...parseOptionsArray(
-							rawOptions[Object.keys(rawOptions)[0]]
-						),
-				  ];
-
-		return parsedOptions;
-	};
-
 	const transitionDefaultAttributes = createTransitionObj();
+	const getDefaultTransitionAttribute = target =>
+		transitionDefaultAttributes[`${target}-${deviceType}`];
 
-	const onAddRelation = relations => {
-		const newRelations = cloneRelations(relations);
+	const getBlockElement = clientId => {
+		const iframeBody = getSiteEditorIframeBody();
+		const searchContexts = [iframeBody, document].filter(Boolean);
 
-		const relation = {
-			title: '',
-			uniqueID: '',
-			target: '',
-			action: '',
-			sid: '',
-			attributes: {},
-			css: {},
-			id: getRelationId(relations),
-			effects: transitionDefaultAttributes,
-			isButton,
-		};
-
-		onChange({ relations: [...newRelations, relation] });
+		return searchContexts
+			.map(context => context.querySelector(`[data-block="${clientId}"]`))
+			.find(Boolean);
 	};
 
-	const onChangeRelation = (relations, id, obj) => {
-		const newRelations = cloneRelations(relations);
+	const handleHighlight = (uid, isHighlighting) => {
+		if (!uid) return;
+		const targetClientId = getClientIdFromUniqueId(uid);
+		if (!targetClientId) return;
 
-		newRelations.forEach(relation => {
-			if (relation.id === id) {
-				Object.keys(obj).forEach(key => {
-					relation[key] = obj[key];
+		const blockElement = getBlockElement(targetClientId);
+		if (blockElement) {
+			if (isHighlighting) {
+				blockElement.classList.add('maxi-block--highlighted');
+				highlightedBlocks.current.add(targetClientId);
+			} else {
+				blockElement.classList.remove('maxi-block--highlighted');
+				highlightedBlocks.current.delete(targetClientId);
+			}
+		}
+	};
+
+	useEffect(() => {
+		onChangeRef.current = onChange;
+	}, [onChange]);
+
+	// Cleanup on unmount
+	useEffect(() => {
+		return () => {
+			for (const clientId of Array.from(highlightedBlocks.current)) {
+				const blockElement = getBlockElement(clientId);
+				if (blockElement) {
+					blockElement.classList.remove('maxi-block--highlighted');
+				}
+			}
+			highlightedBlocks.current.clear();
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!rawRelations || !onChangeRef.current) return;
+
+		// Only clean up relations if blocks were actually deleted
+		// Don't trigger on every render or attribute change
+		const hasInvalidRelations = rawRelations.some(
+			r =>
+				r.uniqueID &&
+				!isEmpty(r.uniqueID) &&
+				!getClientIdFromUniqueId(r.uniqueID)
+		);
+
+		if (hasInvalidRelations && rawRelations.length !== relations.length) {
+			// Prevent infinite loop by checking if we've already processed this cleanup
+			if (isEqual(lastCleanedRef.current, relations)) {
+				return;
+			}
+
+			lastCleanedRef.current = cloneDeep(relations);
+			onChangeRef.current({ relations });
+		}
+	}, [rawRelations, relations]);
+
+	useEffect(() => {
+		const currentHovered = hoveredUniqueIdRef.current;
+		if (!currentHovered) return;
+		handleHighlight(currentHovered, true);
+
+		for (const clientId of Array.from(highlightedBlocks.current)) {
+			const currentClientId = getClientIdFromUniqueId(currentHovered);
+			if (currentClientId && clientId === currentClientId) {
+				continue;
+			}
+			const blockElement = getBlockElement(clientId);
+			if (blockElement) {
+				blockElement.classList.remove('maxi-block--highlighted');
+			}
+			highlightedBlocks.current.delete(clientId);
+		}
+	}, [relations]);
+
+	const getRelationId = rels =>
+		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;
+
+	const onChangeRelation = (rels, id, obj) => {
+		const newRels = cloneDeep(rels).map(r =>
+			r.id === id ? { ...r, ...obj } : r
+		);
+		onChange({ relations: newRels });
+	};
+
+	/**
+	 * FIX: Proper Deletion Logic
+	 * Ensures the filtered array is passed to onChange and resets preview if empty
+	 */
+	const onRemoveRelation = id => {
+		const removedRelation = relations.find(relation => relation.id === id);
+		if (removedRelation?.uniqueID) {
+			handleHighlight(removedRelation.uniqueID, false);
+		}
+
+		// 1. Create a clean filtered array
+		const newRelations = relations.filter(relation => relation.id !== id);
+
+		// 2. Prepare the update object
+		const updateObj = {
+			relations: newRelations,
+		};
+
+		// 3. If no interactions left, kill the preview mode
+		if (newRelations.length === 0) {
+			updateObj['relations-preview'] = false;
+		}
+
+		// 4. Dispatch the change
+		onChange(updateObj);
+	};
+
+	// Simplified block list logic
+	const getBlocksToAffect = () => {
+		const arr = [];
+		goThroughMaxiBlocks(block => {
+			const attrs = block?.attributes || {};
+			if (attrs.customLabel) {
+				arr.push({
+					label:
+						attrs.uniqueID === uniqueID
+							? `${attrs.customLabel} (Current)`
+							: attrs.customLabel,
+					value: attrs.uniqueID,
 				});
 			}
 		});
-
-		onChange({ relations: newRelations });
+		return arr;
 	};
 
-	const onRemoveRelation = (id, relations) => {
-		const newRelations = cloneRelations(relations);
+	/**
+	 * FIX: Deep Equality Sync
+	 * Uses isEqual for nested object comparison to prevent false positives
+	 */
+	const displayBeforeSetting = item => {
+		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId))
+			return null;
+		const selectedSettings = getSelectedIBSettings(
+			targetClientId,
+			item.sid
+		);
+		const blockData = blockDataByClientId.get(targetClientId);
+		const currentActualAttributes = blockData?.attributes;
 
+		if (!selectedSettings || !currentActualAttributes) return null;
+
+		const mergedAttributes = merge(
+			{},
+			cloneDeep(currentActualAttributes),
+			item.attributes
+		);
+		const attributesWithId = {
+			...currentActualAttributes,
+			uniqueID: currentActualAttributes?.uniqueID ?? item.uniqueID,
+		};
+
+		return (
+			<SettingTabsIndicatorContext.Provider
+				value={{
+					currentAttributes: mergedAttributes,
+					blockName: blockData?.name,
+				}}
+			>
+				<div className='maxi-relation-control__interaction-setting'>
+					{selectedSettings.component({
+						...currentActualAttributes,
+						...getGroupAttributes(
+							currentActualAttributes,
+							selectedSettings.attrGroupName,
+							false,
+							selectedSettings?.prefix || ''
+						),
+						attributes: attributesWithId,
+					blockAttributes: currentActualAttributes,
+					onChange: async newValues => {
+						if (isUpdating.current) {
+							return;
+						}
+
+						const { isReset, meta, ...cleanValues } =
+							newValues || {};
+
+						// USE DEEP EQUALITY: Prevents false positives with nested objects
+						const hasChanged = Object.keys(cleanValues).some(
+							key =>
+								!isEqual(
+									cleanValues[key],
+									currentActualAttributes[key]
+								)
+						);
+
+						if (hasChanged) {
+							try {
+								isUpdating.current = true;
+								await Promise.resolve(
+									updateBlockAttributes(
+										targetClientId,
+										cleanValues
+									)
+								);
+							} catch (error) {
+								// eslint-disable-next-line no-console
+								console.error(
+									'Failed to update relation block attributes:',
+									error
+								);
+							} finally {
+								// Release lock after async work completes
+								isUpdating.current = false;
+							}
+						}
+					},
+						prefix: selectedSettings?.prefix || '',
+						breakpoint: deviceType,
+						clientId: targetClientId,
+					})}
+				</div>
+			</SettingTabsIndicatorContext.Provider>
+		);
+	};
+
+	const onAddRelation = () => {
 		onChange({
-			relations: newRelations.filter(relation => relation.id !== id),
+			relations: [
+				...relations,
+				{
+					id: getRelationId(relations),
+					title: '',
+					uniqueID: '',
+					target: '',
+					action: '',
+					sid: '',
+					attributes: {},
+					css: {},
+					effects: createTransitionObj(),
+					isButton,
+				},
+			],
 		});
 	};
 
 	const displaySelectedSetting = item => {
-		if (!item) return null;
+		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!targetClientId || !blockDataByClientId.has(targetClientId))
+			return null;
+		const selectedSettings = getSelectedIBSettings(
+			targetClientId,
+			item.sid
+		);
+		const blockData = blockDataByClientId.get(targetClientId);
+		const blockAttributes = blockData?.attributes;
 
-		const clientId = getClientIdFromUniqueId(item.uniqueID);
+		if (!selectedSettings || !blockAttributes) return null;
 
-		const selectedSettings = getSelectedIBSettings(clientId, item.sid);
-
-		if (!selectedSettings) return null;
-
-		const settingsComponent = selectedSettings.component;
-		const prefix = selectedSettings?.prefix || '';
-		const blockAttributes = cloneDeep(getBlock(clientId)?.attributes);
-
-		const mergedAttributes = getCleanDisplayIBAttributes(
-			blockAttributes,
+		const mergedAttributes = merge(
+			{},
+			cloneDeep(blockAttributes),
 			item.attributes
 		);
+		const attributesWithId = {
+			...mergedAttributes,
+			uniqueID: mergedAttributes?.uniqueID ?? item.uniqueID,
+		};
+		const blockAttributesWithId = {
+			...cloneDeep(blockAttributes),
+			uniqueID: blockAttributes?.uniqueID ?? item.uniqueID,
+		};
 
 		const transformGeneralAttributesToBaseBreakpoint = obj => {
 			if (deviceType !== 'general') return {};
@@ -188,192 +399,146 @@ const RelationControl = props => {
 			return Object.keys(obj).reduce((acc, key) => {
 				if (key.includes('-general')) {
 					const newKey = key.replace('general', baseBreakpoint);
-
 					acc[newKey] = obj[key];
 				}
-
 				return acc;
 			}, {});
 		};
 
-		const getNewAttributesOnReset = obj => {
-			const newAttributes = { ...item.attributes };
-			const resetTargets = Object.keys({
-				...obj,
-				...transformGeneralAttributesToBaseBreakpoint(obj),
-			});
+		return (
+			<SettingTabsIndicatorContext.Provider
+				value={{
+					currentAttributes: mergedAttributes,
+					blockName: blockData?.name,
+				}}
+			>
+				<div className='maxi-relation-control__interaction-setting'>
+					{selectedSettings.component({
+						...attributesWithId,
+						...getGroupAttributes(
+							mergedAttributes,
+							selectedSettings.attrGroupName,
+							false,
+							selectedSettings?.prefix || ''
+						),
+						attributes: attributesWithId,
+						blockAttributes: blockAttributesWithId,
+						onChange: obj => {
+							const newAttributesObj = {
+								...item.attributes,
+								...obj,
+								...transformGeneralAttributesToBaseBreakpoint(
+									obj
+								),
+							};
 
-			resetTargets.forEach(target => {
-				newAttributes[target] = undefined;
-			});
+							const { cleanAttributesObject, tempAttributes } =
+								getCleanResponseIBAttributes(
+									newAttributesObj,
+									blockAttributes,
+									item.uniqueID,
+									selectedSettings,
+									deviceType,
+									selectedSettings?.prefix || '',
+									item.sid,
+									targetClientId
+								);
 
-			return newAttributes;
+							const mergedAttributes = merge(
+								{},
+								cleanAttributesObject,
+								tempAttributes
+							);
+							const stylesObj = getIBStylesObj({
+								clientId: targetClientId,
+								sid: item.sid,
+								attributes: mergedAttributes,
+								blockAttributes,
+								breakpoint: deviceType,
+							});
+							const styles = getIBStyles({
+								stylesObj,
+								blockAttributes,
+								isFirst: true,
+							});
+							// Remove empty/default border styles from XXL
+							if (styles.xxl?.styles?.border === 'none') {
+								delete styles.xxl.styles.border;
+								if (
+									Object.keys(styles.xxl.styles).length === 0
+								) {
+									delete styles.xxl;
+								}
+							}
+							const newAttributes = omitBy(
+								{
+									...item.attributes,
+									...cleanAttributesObject,
+								},
+								isNil
+							);
+
+							// Convert empty string units to "px" for explicit representation
+							Object.keys(newAttributes).forEach(key => {
+								if (
+									key.includes('-unit-') &&
+									newAttributes[key] === ''
+								) {
+									newAttributes[key] = 'px';
+								}
+							});
+
+							onChangeRelation(relations, item.id, {
+								attributes: newAttributes,
+								css: styles,
+							});
+						},
+						prefix: selectedSettings?.prefix || '',
+						breakpoint: deviceType,
+						clientId: targetClientId,
+					})}
+				</div>
+			</SettingTabsIndicatorContext.Provider>
+		);
+	};
+
+	// Helper for select options
+	const getParsedOptions = rawOptions => {
+		if (!rawOptions) return [];
+
+		const parseOptionsArray = options =>
+			options?.map(({ sid, label }) => ({
+				label,
+				value: sid,
+			})) ?? [];
+
+		const defaultSetting = {
+			label: __('Choose settings', 'maxi-blocks'),
+			value: '',
 		};
 
-		return settingsComponent({
-			...blockAttributes,
-			...getGroupAttributes(
-				mergedAttributes,
-				selectedSettings.attrGroupName,
-				false,
-				prefix
-			),
-			attributes: mergedAttributes,
-			blockAttributes,
-			onChange: ({ isReset, ...obj }) => {
-				const newAttributesObj = isReset
-					? getNewAttributesOnReset(obj)
-					: {
-							...item.attributes,
-							...obj,
-							...transformGeneralAttributesToBaseBreakpoint(obj),
-					  };
+		const rawGroups = Object.keys(rawOptions);
 
-				const { cleanAttributesObject, tempAttributes } =
-					getCleanResponseIBAttributes(
-						newAttributesObj,
-						blockAttributes,
-						item.uniqueID,
-						selectedSettings,
-						deviceType,
-						prefix,
-						item.sid,
-						clientId
-					);
+		if (rawGroups.length === 0) {
+			return [defaultSetting];
+		}
 
-				const stylesObj = getIBStylesObj({
-					clientId,
-					sid: item.sid,
-					attributes: omitBy(
-						{
-							...tempAttributes,
-							...cleanAttributesObject,
-						},
-						val => val === undefined
-					),
-					blockAttributes,
-					breakpoint: deviceType,
-				});
-
-				const styles = getIBStyles({
-					stylesObj,
-					blockAttributes,
-					isFirst: true,
-				});
-
-				const newAttributes = omitBy(
-					{
-						...item.attributes,
-						...cleanAttributesObject,
-					},
-					val => val === undefined
-				);
-
-				onChangeRelation(relations, item.id, {
-					attributes: newAttributes,
-					css: styles,
-					...(item.sid === 't' && {
-						effects: {
-							...item.effects,
-							transitionTarget: Object.keys(styles),
-						},
+		if (rawGroups.length > 1) {
+			return {
+				'': [defaultSetting],
+				...Object.entries(rawOptions).reduce(
+					(acc, [groupLabel, groupOptions]) => ({
+						...acc,
+						[capitalize(groupLabel)]:
+							parseOptionsArray(groupOptions),
 					}),
-				});
-			},
-			prefix,
-			blockStyle: blockAttributes.blockStyle,
-			breakpoint: deviceType,
-			clientId,
-		});
+					{}
+				),
+			};
+		}
+
+		return [defaultSetting, ...parseOptionsArray(rawOptions[rawGroups[0]])];
 	};
-
-	const getBlocksToAffect = () => {
-		const arr = [];
-
-		const {
-			getBlockAttributes,
-			getBlockOrder,
-			getBlockParentsByBlockName,
-		} = select('core/block-editor');
-
-		const innerBlockPositions =
-			repeaterContext?.getInnerBlocksPositions?.();
-
-		const triggerParentRepeaterColumnClientId =
-			repeaterContext?.repeaterStatus &&
-			(innerBlockPositions?.[[-1]]?.includes(clientId)
-				? clientId
-				: getBlockParentsByBlockName(
-						clientId,
-						'maxi-blocks/column-maxi'
-				  ).find(clientId =>
-						innerBlockPositions?.[[-1]]?.includes(clientId)
-				  ));
-
-		goThroughMaxiBlocks(block => {
-			if (
-				block.attributes.customLabel !==
-				getDefaultAttribute('customLabel', block.clientId)
-			) {
-				const targetParentRows = getBlockParentsByBlockName(
-					block.clientId,
-					'maxi-blocks/row-maxi'
-				);
-
-				const targetParentRepeaterRowClientId = targetParentRows.find(
-					clientId => getBlockAttributes(clientId)['repeater-status']
-				);
-
-				const targetParentRepeaterColumnClientId =
-					getBlockParentsByBlockName(
-						block.clientId,
-						'maxi-blocks/column-maxi'
-					)[
-						targetParentRows.indexOf(
-							targetParentRepeaterRowClientId
-						)
-					] ||
-					(block.name === 'maxi-blocks/column-maxi' &&
-						block.clientId);
-
-				const isBlockInRepeaterAndInAnotherColumn =
-					repeaterContext?.repeaterStatus &&
-					repeaterContext?.repeaterRowClientId ===
-						targetParentRepeaterRowClientId &&
-					triggerParentRepeaterColumnClientId !==
-						targetParentRepeaterColumnClientId;
-
-				const isTargetInRepeaterAndTriggerNot =
-					!repeaterContext?.repeaterStatus &&
-					targetParentRepeaterRowClientId;
-
-				if (isBlockInRepeaterAndInAnotherColumn) {
-					return;
-				}
-
-				arr.push({
-					label: `${block.attributes.customLabel}${
-						isTargetInRepeaterAndTriggerNot
-							? `(${
-									getBlockOrder(
-										targetParentRepeaterRowClientId
-									).indexOf(
-										targetParentRepeaterColumnClientId
-									) + 1
-							  })`
-							: ''
-					}`,
-					value: block.attributes.uniqueID,
-				});
-			}
-		});
-		return arr;
-	};
-
-	const blocksToAffect = getBlocksToAffect();
-
-	const getDefaultTransitionAttribute = target =>
-		transitionDefaultAttributes[`${target}-${deviceType}`];
 
 	return (
 		<div className='maxi-relation-control'>
@@ -389,22 +554,30 @@ const RelationControl = props => {
 			)}
 			<Button
 				className='maxi-relation-control__button'
-				type='button'
 				variant='secondary'
-				onClick={() => onAddRelation(relations)}
+				onClick={onAddRelation}
 			>
 				{__('Add new interaction', 'maxi-blocks')}
 			</Button>
+
 			{!isEmpty(relations) && (
 				<ListControl>
 					{relations.map(item => (
 						<ListItemControl
 							key={item.id}
-							className='maxi-relation-control__item'
+							id={item.id}
 							title={
 								item.title ||
 								__('Untitled interaction', 'maxi-blocks')
 							}
+							onMouseEnter={() => {
+								hoveredUniqueIdRef.current = item.uniqueID;
+								handleHighlight(item.uniqueID, true);
+							}}
+							onMouseLeave={() => {
+								hoveredUniqueIdRef.current = null;
+								handleHighlight(item.uniqueID, false);
+							}}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
@@ -414,34 +587,22 @@ const RelationControl = props => {
 											'Give memorable name…',
 											'maxi-blocks'
 										)}
-										newStyle
-										onChange={value =>
+										onChange={v =>
 											onChangeRelation(
 												relations,
 												item.id,
 												{
-													title: value,
+													title: v,
 												}
 											)
 										}
 									/>
-									{blocksToAffect.length === 0 && (
-										<InfoBox
-											className='maxi-relation-control__item__content__info-box'
-											message={__(
-												'Add names to blocks which you want to be able to select them here.',
-												'maxi-blocks'
-											)}
-										/>
-									)}
-									<SelectControl
-										__nextHasNoMarginBottom
+									<BlockSelectControl
 										label={__(
 											'Block to affect',
 											'maxi-blocks'
 										)}
 										value={item.uniqueID}
-										newStyle
 										options={[
 											{
 												label: __(
@@ -450,268 +611,182 @@ const RelationControl = props => {
 												),
 												value: '',
 											},
-											...blocksToAffect,
+											...getBlocksToAffect(),
 										]}
-										onChange={value =>
+										onOptionHover={handleHighlight}
+										onChange={v =>
 											onChangeRelation(
 												relations,
 												item.id,
 												{
-													uniqueID: value,
+													uniqueID: v,
+												}
+											)
+										}
+									/>
+									<SelectControl
+										label={__('Action', 'maxi-blocks')}
+										value={item.action}
+										options={[
+											{
+												label: __(
+													'Choose action',
+													'maxi-blocks'
+												),
+												value: '',
+											},
+											{
+												label: __(
+													'On click',
+													'maxi-blocks'
+												),
+												value: 'click',
+											},
+											{
+												label: __(
+													'On hover',
+													'maxi-blocks'
+												),
+												value: 'hover',
+											},
+										]}
+										onChange={v =>
+											onChangeRelation(
+												relations,
+												item.id,
+												{
+													action: v,
 												}
 											)
 										}
 									/>
 									{item.uniqueID && (
-										<>
-											<SelectControl
-												__nextHasNoMarginBottom
-												label={__(
-													'Action',
-													'maxi-blocks'
-												)}
-												value={item.action}
-												options={[
-													{
-														label: __(
-															'Choose action',
-															'maxi-blocks'
-														),
-														value: '',
-													},
-													{
-														label: __(
-															'On click',
-															'maxi-blocks'
-														),
-														value: 'click',
-													},
-													{
-														label: __(
-															'On hover',
-															'maxi-blocks'
-														),
-														value: 'hover',
-													},
-												]}
-												newStyle
-												onChange={value =>
-													onChangeRelation(
-														relations,
-														item.id,
-														{
-															action: value,
-														}
+										<SelectControl
+											label={__(
+												'Settings',
+												'maxi-blocks'
+											)}
+											value={item.sid}
+											options={getParsedOptions(
+												getIBOptionsFromBlockData(
+													getClientIdFromUniqueId(
+														item.uniqueID
 													)
-												}
-											/>
-											<SelectControl
-												__nextHasNoMarginBottom
-												label={__(
-													'Settings',
-													'maxi-blocks'
-												)}
-												value={item.sid}
-												options={getParsedOptions(
-													getIBOptionsFromBlockData(
-														getClientIdFromUniqueId(
-															item.uniqueID
-														)
-													)
-												)}
-												newStyle
-												onChange={value => {
-													const clientId =
-														getClientIdFromUniqueId(
-															item.uniqueID
-														);
-
-													const selectedSettings =
-														getSelectedIBSettings(
-															clientId,
-															value
-														) || {};
-													const {
-														transitionTarget,
-														transitionTrigger,
-														hoverProp,
-													} = selectedSettings;
-
-													const blockAttributes =
-														getBlock(
-															clientId
-														)?.attributes;
-
-													const hoverStatus =
-														getHoverStatus(
-															hoverProp,
-															blockAttributes
-														);
-
-													const getTarget = () => {
-														const clientId =
-															getClientIdFromUniqueId(
-																item.uniqueID
-															);
-
-														const target =
-															selectedSettings?.target ||
-															'';
-
-														const textMaxiPrefix =
-															getBlock(clientId)
-																?.name ===
-																'maxi-blocks/text-maxi' &&
-															value === 'ty';
-
-														if (textMaxiPrefix) {
-															const blockAttributes =
-																getBlock(
-																	clientId
-																)?.attributes;
-
-															const {
-																isList,
-																typeOfList,
-																textLevel,
-															} = blockAttributes;
-
-															const trimmedTarget =
-																target.startsWith(
-																	' '
-																)
-																	? target.slice(
-																			1
-																	  )
-																	: target;
-
-															return `${
-																isList
-																	? typeOfList
-																	: textLevel
-															}${trimmedTarget}`;
-														}
-
-														return target;
-													};
-
-													onChangeRelation(
-														relations,
-														item.id,
-														{
-															attributes: {},
-															css: {},
-															target: getTarget(),
-															sid: value,
-															effects: {
-																...item.effects,
-																transitionTarget,
-																transitionTrigger,
-																hoverStatus:
-																	!!hoverStatus,
-																disableTransition:
-																	!!selectedSettings?.disableTransition,
-															},
-														}
+												)
+											)}
+											onChange={v => {
+												const targetClientId =
+													getClientIdFromUniqueId(
+														item.uniqueID
 													);
-												}}
-											/>
-											<div className='maxi-relation-control__block-access maxi-warning-box__links'>
-												<a
-													onClick={() =>
-														selectBlock(
-															getClientIdFromUniqueId(
-																item.uniqueID
-															),
-															openSidebarAccordion(
-																0
-															)
-														)
+												const selectedSettings =
+													getSelectedIBSettings(
+														targetClientId,
+														v
+													);
+												const {
+													transitionTarget,
+													transitionTrigger,
+													hoverProp,
+												} = selectedSettings || {};
+												const blockData =
+													blockDataByClientId.get(
+														targetClientId
+													);
+												const hoverStatus =
+													hoverProp &&
+													getHoverStatus(
+														hoverProp,
+														blockData?.attributes ||
+															{},
+														item.attributes
+													);
+												onChangeRelation(
+													relations,
+													item.id,
+													{
+														sid: v,
+														target:
+															selectedSettings?.target ||
+															'',
+														effects: {
+															...item.effects,
+															transitionTarget,
+															transitionTrigger,
+															hoverStatus:
+																!!hoverStatus,
+															disableTransition:
+																!!selectedSettings?.disableTransition,
+														},
 													}
-												>
-													{__(
-														'Open block settings',
-														'maxi-blocks'
-													)}
-												</a>
-											</div>
-										</>
+												);
+											}}
+										/>
 									)}
-									{item.uniqueID &&
-										item.sid &&
-										(item.effects.disableTransition ? (
-											displaySelectedSetting(item)
-										) : (
-											<SettingTabsControl
-												deviceType={deviceType}
-												items={[
-													{
-														label: __(
-															'Settings',
-															'maxi-blocks'
+									{item.uniqueID && item.sid && (
+										<SettingTabsControl
+											depth={`interaction-${item.id}`}
+											deviceType={deviceType}
+											className='maxi-relation-control__interaction-tabs'
+											items={[
+												{
+													label: __(
+														'Start',
+														'maxi-blocks'
+													),
+													content:
+														displayBeforeSetting(
+															item
 														),
-														content:
-															displaySelectedSetting(
-																item
-															),
-													},
-													{
-														label: __(
-															'Effects',
-															'maxi-blocks'
+												},
+												{
+													label: __(
+														'End',
+														'maxi-blocks'
+													),
+													content:
+														displaySelectedSetting(
+															item
 														),
-														content: (
-															<TransitionControl
-																className='maxi-relation-control__item__effects'
-																newStyle
-																onChange={(
-																	obj,
-																	splitMode
-																) =>
-																	onChangeRelation(
-																		relations,
-																		item.id,
-																		{
-																			effects:
-																				splitMode ===
-																				'out'
-																					? {
-																							...item.effects,
-																							out: {
-																								...item
-																									.effects
-																									.out,
-																								...obj,
-																							},
-																					  }
-																					: {
-																							...item.effects,
-																							...obj,
-																					  },
-																		}
-																	)
-																}
-																transition={
-																	item.effects
-																}
-																getDefaultTransitionAttribute={
-																	getDefaultTransitionAttribute
-																}
-																breakpoint={
-																	deviceType
-																}
-															/>
-														),
-													},
-												]}
-											/>
-										))}
+												},
+												{
+													label: __(
+														'Effects',
+														'maxi-blocks'
+													),
+													content: (
+														<TransitionControl
+															transition={
+																item.effects
+															}
+															breakpoint={
+																deviceType
+															}
+															getDefaultTransitionAttribute={
+																getDefaultTransitionAttribute
+															}
+															onChange={obj =>
+																onChangeRelation(
+																	relations,
+																	item.id,
+																	{
+																		effects:
+																			{
+																				...item.effects,
+																				...obj,
+																			},
+																	}
+																)
+															}
+														/>
+													),
+												},
+											]}
+										/>
+									)}
 								</div>
 							}
-							id={item.id}
-							onRemove={() =>
-								onRemoveRelation(item.id, relations)
-							}
+							onRemove={() => onRemoveRelation(item.id)}
 						/>
 					))}
 				</ListControl>

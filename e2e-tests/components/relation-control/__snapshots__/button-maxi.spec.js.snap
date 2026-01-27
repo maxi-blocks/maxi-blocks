@@ -178,8 +178,8 @@ exports[`Button Maxi hover simple actions Button border 1`] = `
       "button-border-top-right-radius-xl": 11,
       "button-border-top-width-general": 2,
       "button-border-top-width-xl": 2,
-      "button-border-unit-width-general": "",
-      "button-border-unit-width-xl": "",
+      "button-border-unit-width-general": "px",
+      "button-border-unit-width-xl": "px",
     },
     "css": {
       "general": {
@@ -694,8 +694,6 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
   {
     "action": "hover",
     "attributes": {
-      "color-general": null,
-      "color-xl": null,
       "font-size-general": 24,
       "font-size-unit-general": "px",
       "font-size-unit-xl": "px",
@@ -766,7 +764,7 @@ exports[`Button Maxi hover simple actions Button typography 1`] = `
     "isButton": true,
     "sid": "bty",
     "target": ".maxi-button-block__content",
-    "title": "Hello World!Montserrat",
+    "title": "Hello World!",
     "uniqueID": "button-maxi-1se8ef1z-u",
   },
 ]

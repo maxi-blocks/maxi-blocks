@@ -1,5 +1,6 @@
 .maxi-relation-control {
 	margin-top: 10px;
+	padding-bottom: 20px;
 	&__button {
 		display: flex;
 		width: 100%;
@@ -95,7 +96,7 @@
 	}
 
 	> .maxi-tabs-content:not(.maxi-tabs-content--disable-padding) {
-		padding: 0;
+		padding: 0 0 12px;
 	}
 }
 

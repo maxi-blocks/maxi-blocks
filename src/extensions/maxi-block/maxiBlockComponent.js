@@ -1446,14 +1446,13 @@ class MaxiBlockComponent extends Component {
 		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
 			this.updateDOMReferences();
 		}
-		const isSiteEditor = getIsSiteEditor();
-		const breakpoints = this.getBreakpoints;
-		let obj;
-		let customDataRelations;
-
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
 		const shouldGenerateNewStyles =
 			!isBreakpointChange || this.props.deviceType === 'xxl';
+		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
+		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
+		let obj;
+		let customDataRelations;
 
 		if (shouldGenerateNewStyles) {
 			obj = this.getStylesObject || {};
@@ -1612,10 +1611,9 @@ class MaxiBlockComponent extends Component {
 			this.handleIframeStyles(iframe, currentBreakpoint);
 		}
 
-		const target = this.getStyleTarget(isSiteEditor, iframe);
-
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
 		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+			const target = this.getStyleTarget(isSiteEditor, iframe);
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -2171,6 +2169,28 @@ class MaxiBlockComponent extends Component {
 
 	// Add new method for FSE iframe styles
 	addMaxiFSEIframeStyles() {
+		const cache =
+			MaxiBlockComponent.fseIframeStylesCache ||
+			(MaxiBlockComponent.fseIframeStylesCache = {
+				scheduled: false,
+			});
+
+		if (cache.scheduled) return;
+
+		cache.scheduled = true;
+
+		const schedule =
+			typeof requestAnimationFrame === 'function'
+				? requestAnimationFrame
+				: cb => setTimeout(cb, 0);
+
+		schedule(() => {
+			cache.scheduled = false;
+			this.addMaxiFSEIframeStylesNow();
+		});
+	}
+
+	addMaxiFSEIframeStylesNow() {
 		// Get the FSE iframe
 		const fseIframe = document.querySelector(
 			'iframe.edit-site-visual-editor__editor-canvas'

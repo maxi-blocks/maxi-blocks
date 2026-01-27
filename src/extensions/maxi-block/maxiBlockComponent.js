@@ -141,6 +141,7 @@ class MaxiBlockComponent extends Component {
 		};
 
 		this.areFontsLoaded = createRef(false);
+		this.attributesMutated = false;
 
 		const { clientId } = this.props;
 
@@ -573,12 +574,15 @@ class MaxiBlockComponent extends Component {
 
 		if (
 			wasBreakpointChanged &&
+			!this.attributesMutated &&
 			prevProps.attributes === this.props.attributes
 		) {
 			// Avoid expensive diff when only breakpoints changed
 			this.cachedDiffAttributes = {};
 			return false;
 		}
+
+		this.attributesMutated = false;
 
 		// OPTIMIZATION: Calculate diff once and cache for componentDidUpdate
 		// This avoids expensive diff() recalculation in componentDidUpdate
@@ -1037,6 +1041,7 @@ class MaxiBlockComponent extends Component {
 
 		if (!maxiAttributes) return;
 
+		let didMutate = false;
 		Object.entries(maxiAttributes).forEach(([key, value]) => {
 			const currentValue = this.props.attributes[key];
 			const defaultValue = getDefaultAttribute(key, this.props.clientId);
@@ -1052,7 +1057,12 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes[key] = value;
 			this.isXxlStyleCacheDirty = true;
+			didMutate = true;
 		});
+
+		if (didMutate) {
+			this.invalidateAttributeCaches();
+		}
 	}
 
 	setRelations() {
@@ -1090,6 +1100,13 @@ class MaxiBlockComponent extends Component {
 		this.cachedBreakpointsAttributes = this.props.attributes;
 		this.cachedBreakpoints = getBreakpoints(this.props.attributes);
 		return this.cachedBreakpoints;
+	}
+
+	invalidateAttributeCaches() {
+		this.cachedDiffAttributes = null;
+		this.cachedBreakpointsAttributes = null;
+		this.cachedBreakpoints = null;
+		this.attributesMutated = true;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1170,6 +1187,7 @@ class MaxiBlockComponent extends Component {
 		if (blockStyle !== newBlockStyle) {
 			this.props.attributes.blockStyle = newBlockStyle;
 			this.isXxlStyleCacheDirty = true;
+			this.invalidateAttributeCaches();
 			return true;
 		}
 
@@ -1373,6 +1391,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.uniqueID
 				);
 				this.isXxlStyleCacheDirty = true;
+				this.invalidateAttributeCaches();
 			}
 			return idToCheck;
 		}
@@ -1400,6 +1419,7 @@ class MaxiBlockComponent extends Component {
 
 			this.props.attributes.uniqueID = newUniqueID;
 			this.isXxlStyleCacheDirty = true;
+			this.invalidateAttributeCaches();
 
 			/**
 			 * Use `updateBlockAttributes` for `uniqueID` update in case if
@@ -1422,6 +1442,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.uniqueID
 				);
 				this.isXxlStyleCacheDirty = true;
+				this.invalidateAttributeCaches();
 			}
 
 			if (this.maxiBlockDidChangeUniqueID)
@@ -1436,6 +1457,7 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.uniqueID
 			);
 			this.isXxlStyleCacheDirty = true;
+			this.invalidateAttributeCaches();
 		}
 
 		return idToCheck;
@@ -2088,24 +2110,6 @@ class MaxiBlockComponent extends Component {
 		) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
-			const cssCache =
-				!forceGenerate &&
-				select('maxiBlocks/styles').getCSSCache(uniqueID);
-
-			if (cssCache) {
-				styleContent = cssCache[currentBreakpoint];
-				const previousBlockStyle =
-					blockStyle === 'light' ? 'dark' : 'light';
-				const previousBlockStyleRegex = new RegExp(
-					`--maxi-${previousBlockStyle}-`,
-					'g'
-				);
-				styleContent = styleContent?.replace(
-					previousBlockStyleRegex,
-					`--maxi-${blockStyle}-`
-				);
-			}
-
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,

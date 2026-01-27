@@ -33,7 +33,7 @@ Return action "CLARIFY" with exactly 3 options. Each option must include:
 - Highlight: property "text_highlight" with "marker" | "underline" | "badge".
 - Text decoration: property "text_decoration" with "none" | "underline" | "line-through".
 - Text alignment: property "text_align" with "left" | "center" | "right" | "justify".
-- Text level: property "text_level" with "h1"..."h6" or "p".
+- Text level: property "text_level" (alias "textLevel") with "h1"..."h6", "p", or "span".
   Use for semantic level changes ("make this an H2", etc).
 - Lists: property "text_list" with { isList, typeOfList, listStyle, listStyleCustom }.
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".
@@ -45,7 +45,7 @@ Clarify when request is generic:
 - Text color: Brand (var(--highlight)), Dark (var(--h1)), Subtle (var(--p)), Palette 3 (text_color: 3).
 - Line height: Compact (1.1), Standard (1.5), Loose (1.8).
 - Text width: Reading (65ch), Card (300px), Full (1200px).
-- Text level: Main title (h1), Section heading (h2), Body text (p).
+- Text level: Main title (h1), Section heading (h2), Body text (p), Inline (span).
 - Lists: Bullets ({ isList: true, typeOfList: "ul", listStyle: "disc" }), Numbered ({ isList: true, typeOfList: "ol", listStyle: "decimal" }), Checkmarks ({ isList: true, typeOfList: "ul", listStyle: "custom", listStyleCustom: "check-circle" }).
 - Text decoration: None, Underline, Line-through.
 - Text casing: Uppercase, Small caps, Lowercase.

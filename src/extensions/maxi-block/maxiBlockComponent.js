@@ -68,6 +68,62 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
 
+const getPerfStart = () => {
+	if (
+		typeof window === 'undefined' ||
+		!window.__MAXI_PROFILE_MAXI_BLOCKS__ ||
+		typeof performance === 'undefined' ||
+		!performance.now
+	) {
+		return null;
+	}
+
+	return performance.now();
+};
+
+const recordPerf = (label, start) => {
+	if (start === null || typeof performance === 'undefined') {
+		return;
+	}
+
+	const duration = performance.now() - start;
+	const perfRoot = typeof window !== 'undefined' ? window : globalThis;
+	const perf =
+		perfRoot.__maxiBlocksPerfCounters__ ||
+		(perfRoot.__maxiBlocksPerfCounters__ = {
+			totals: {},
+			counts: {},
+			logScheduled: false,
+		});
+
+	perf.totals[label] = (perf.totals[label] || 0) + duration;
+	perf.counts[label] = (perf.counts[label] || 0) + 1;
+
+	if (!perf.logScheduled && typeof setTimeout === 'function') {
+		perf.logScheduled = true;
+		setTimeout(() => {
+			perf.logScheduled = false;
+			if (typeof console === 'undefined' || !console.info) {
+				perf.totals = {};
+				perf.counts = {};
+				return;
+			}
+
+			const totals = perf.totals;
+			const counts = perf.counts;
+			perf.totals = {};
+			perf.counts = {};
+
+			const parts = Object.keys(totals).map(
+				key => `${key} ${totals[key].toFixed(1)}ms/${counts[key]}`
+			);
+			if (parts.length) {
+				console.info('MaxiBlocks perf (1s):', parts.join(', '));
+			}
+		}, 1000);
+	}
+};
+
 /**
  * Class
  */
@@ -598,6 +654,13 @@ class MaxiBlockComponent extends Component {
 			Object.keys(diffAttributes).length === 1 &&
 			Object.keys(diffAttributes)[0] === 'relations';
 
+		const contextLoopChanged =
+			this.props.attributes['dc-status'] &&
+			!isEqual(
+				this.props?.contextLoopContext,
+				prevProps?.contextLoopContext
+			);
+
 		const hasNonRelationChanges = Object.keys(diffAttributes).some(
 			key => key !== 'relations'
 		);
@@ -611,6 +674,8 @@ class MaxiBlockComponent extends Component {
 			this.isXxlStyleCacheDirty = true;
 		}
 
+		const attributesUnchanged = isEmpty(diffAttributes) && !contextLoopChanged;
+
 		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
@@ -622,7 +687,8 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.blockStyle !==
 						prevProps.attributes.blockStyle,
 					this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
-						!!prevProps.baseBreakpoint
+						!!prevProps.baseBreakpoint,
+					attributesUnchanged
 				);
 			// For reusable blocks, also call directly
 			this.isReusable && this.displayStyles();
@@ -918,9 +984,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
+		const perfStart = getPerfStart();
 		const iframeDocument = iframe?.contentDocument;
 		const editorWrapper = iframeDocument?.body;
-		if (!iframeDocument || !editorWrapper) return;
+		if (!iframeDocument || !editorWrapper) {
+			recordPerf('handleIframeStyles', perfStart);
+			return;
+		}
 
 		const cache =
 			MaxiBlockComponent.iframeStylesCache ||
@@ -933,6 +1003,7 @@ class MaxiBlockComponent extends Component {
 			cache.doc === iframeDocument &&
 			cache.breakpoint === currentBreakpoint
 		) {
+			recordPerf('handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -956,6 +1027,7 @@ class MaxiBlockComponent extends Component {
 
 		cache.doc = iframeDocument;
 		cache.breakpoint = currentBreakpoint;
+		recordPerf('handleIframeStyles', perfStart);
 	}
 
 	setMaxiAttributes() {
@@ -979,6 +1051,7 @@ class MaxiBlockComponent extends Component {
 				return;
 
 			this.props.attributes[key] = value;
+			this.isXxlStyleCacheDirty = true;
 		});
 	}
 
@@ -1007,7 +1080,16 @@ class MaxiBlockComponent extends Component {
 	}
 
 	get getBreakpoints() {
-		return getBreakpoints(this.props.attributes);
+		if (
+			this.cachedBreakpoints &&
+			this.cachedBreakpointsAttributes === this.props.attributes
+		) {
+			return this.cachedBreakpoints;
+		}
+
+		this.cachedBreakpointsAttributes = this.props.attributes;
+		this.cachedBreakpoints = getBreakpoints(this.props.attributes);
+		return this.cachedBreakpoints;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1087,6 +1169,7 @@ class MaxiBlockComponent extends Component {
 
 		if (blockStyle !== newBlockStyle) {
 			this.props.attributes.blockStyle = newBlockStyle;
+			this.isXxlStyleCacheDirty = true;
 			return true;
 		}
 
@@ -1289,6 +1372,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.customLabel,
 					this.props.attributes.uniqueID
 				);
+				this.isXxlStyleCacheDirty = true;
 			}
 			return idToCheck;
 		}
@@ -1315,6 +1399,7 @@ class MaxiBlockComponent extends Component {
 			);
 
 			this.props.attributes.uniqueID = newUniqueID;
+			this.isXxlStyleCacheDirty = true;
 
 			/**
 			 * Use `updateBlockAttributes` for `uniqueID` update in case if
@@ -1336,6 +1421,7 @@ class MaxiBlockComponent extends Component {
 					this.props.attributes.customLabel,
 					this.props.attributes.uniqueID
 				);
+				this.isXxlStyleCacheDirty = true;
 			}
 
 			if (this.maxiBlockDidChangeUniqueID)
@@ -1349,6 +1435,7 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes.customLabel,
 				this.props.attributes.uniqueID
 			);
+			this.isXxlStyleCacheDirty = true;
 		}
 
 		return idToCheck;
@@ -1433,18 +1520,78 @@ class MaxiBlockComponent extends Component {
 	displayStyles(
 		isBreakpointChange = false,
 		isBlockStyleChange = false,
-		isBaseBreakpointChange = false
+		isBaseBreakpointChange = false,
+		attributesUnchanged = false
 	) {
+		const perfStart = getPerfStart();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
+			recordPerf('displayStyles', perfStart);
 			return;
 		}
 
 		// Update references if they're null (but don't do it too frequently)
 		if (!this.editorIframe || !this.isElementInDOM(this.editorIframe)) {
 			this.updateDOMReferences();
+		}
+
+		// Fast path: breakpoints switch to XXL with no attribute changes
+		if (
+			attributesUnchanged &&
+			isBreakpointChange &&
+			this.props.deviceType === 'xxl' &&
+			!isBlockStyleChange &&
+			!isBaseBreakpointChange &&
+			this.xxlStyleCache &&
+			!this.isXxlStyleCacheDirty
+		) {
+			const isSiteEditor = getIsSiteEditor();
+			if (this.editorIframe?.contentDocument?.body) {
+				this.handleIframeStyles(
+					this.editorIframe,
+					this.props.deviceType
+				);
+			}
+
+			const target = this.getStyleTarget(
+				isSiteEditor,
+				this.editorIframe
+			);
+			addBlockStyles(uniqueID, this.xxlStyleCache, target);
+			recordPerf('displayStyles', perfStart);
+			return;
+		}
+
+		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
+		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
+			const iframeDoc = this.editorIframe?.contentDocument || null;
+			const cache =
+				MaxiBlockComponent.breakpointSwitchCache ||
+				(MaxiBlockComponent.breakpointSwitchCache = {
+					doc: null,
+					breakpoint: null,
+				});
+
+			if (
+				cache.doc !== iframeDoc ||
+				cache.breakpoint !== this.props.deviceType
+			) {
+				this.handleIframeStyles(
+					this.editorIframe,
+					this.props.deviceType
+				);
+				this.updateResponsiveClasses(
+					this.editorIframe,
+					this.props.deviceType
+				);
+				cache.doc = iframeDoc;
+				cache.breakpoint = this.props.deviceType;
+			}
+
+			recordPerf('displayStyles', perfStart);
+			return;
 		}
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
 		const shouldGenerateNewStyles =
@@ -1455,7 +1602,9 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		if (shouldGenerateNewStyles) {
+			const stylesObjStart = getPerfStart();
 			obj = this.getStylesObject || {};
+			recordPerf('getStylesObject', stylesObjStart);
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1467,13 +1616,18 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
+			const customDataStart = getPerfStart();
 			const customData = this.getCustomData;
+			recordPerf('getCustomData', customDataStart);
 			if (customData) {
+				const updateCustomDataStart = getPerfStart();
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
+				recordPerf('updateCustomData', updateCustomDataStart);
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
 
+		const injectStart = getPerfStart();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1485,6 +1639,7 @@ class MaxiBlockComponent extends Component {
 			isBaseBreakpointChange,
 			this.editorIframe
 		);
+		recordPerf('injectStyles', injectStart);
 
 		// Update responsive classes for non-XXL breakpoint changes
 		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
@@ -1496,11 +1651,14 @@ class MaxiBlockComponent extends Component {
 
 		// Handle relations if they exist
 		if (customDataRelations) {
+			const relationsStart = getPerfStart();
 			const isRelationsPreview =
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
+				const processRelationsStart = getPerfStart();
 				this.relationInstances = processRelations(customDataRelations);
+				recordPerf('processRelations', processRelationsStart);
 			}
 
 			this.relationInstances?.forEach(relationInstance => {
@@ -1575,16 +1733,24 @@ class MaxiBlockComponent extends Component {
 				);
 
 				if (removed !== null) {
+					const processRemoveStart = getPerfStart();
 					processRelations(
 						this.previousRelationInstances,
 						'remove',
 						removed
 					);
+					recordPerf('processRelationsRemove', processRemoveStart);
+					const processRelationsStart = getPerfStart();
 					processRelations(this.relationInstances);
+					recordPerf('processRelations', processRelationsStart);
 				}
 				if (updated !== null) {
+					const processRemoveStart = getPerfStart();
 					processRelations(this.relationInstances, 'remove', removed);
+					recordPerf('processRelationsRemove', processRemoveStart);
+					const processRelationsStart = getPerfStart();
 					processRelations(this.relationInstances);
+					recordPerf('processRelations', processRelationsStart);
 				}
 			}
 
@@ -1593,7 +1759,10 @@ class MaxiBlockComponent extends Component {
 			}
 
 			this.previousRelationInstances = this.relationInstances;
+			recordPerf('relationsBlock', relationsStart);
 		}
+
+		recordPerf('displayStyles', perfStart);
 	}
 
 	injectStyles(
@@ -1791,10 +1960,27 @@ class MaxiBlockComponent extends Component {
 	}
 
 	getStyleTarget(isSiteEditor, iframe) {
-		// No caching - just return the target directly
+		// Cache site editor iframe document to reduce repeated lookups
 		if (isSiteEditor) {
+			const now =
+				typeof performance !== 'undefined' && performance.now
+					? performance.now()
+					: Date.now();
+			const cache =
+				MaxiBlockComponent.siteEditorIframeCache ||
+				(MaxiBlockComponent.siteEditorIframeCache = {
+					lastUpdate: 0,
+					doc: null,
+				});
+
+			if (now - cache.lastUpdate < 100 && cache.doc) {
+				return cache.doc;
+			}
+
 			const target = getSiteEditorIframe();
-			return target || document;
+			cache.doc = target || document;
+			cache.lastUpdate = now;
+			return cache.doc;
 		}
 		return iframe?.contentDocument || document;
 	}
@@ -1810,6 +1996,7 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
+		const perfStart = getPerfStart();
 		let styleContent;
 		let styles;
 
@@ -1854,25 +2041,29 @@ class MaxiBlockComponent extends Component {
 					`--maxi-${previousBlockStyle}-`,
 					'g'
 				);
-				styleContent = styleContent?.replace(
-					previousBlockStyleRegex,
-					`--maxi-${blockStyle}-`
-				);
-			}
+			styleContent = styleContent?.replace(
+				previousBlockStyleRegex,
+				`--maxi-${blockStyle}-`
+			);
+		}
 
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
+			const styleGenStart = getPerfStart();
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			recordPerf('styleGenerator', styleGenStart);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
+			const styleGenStart = getPerfStart();
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			recordPerf('styleGenerator', styleGenStart);
 		}
 
 		if (styles) {
@@ -1896,11 +2087,13 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		recordPerf('generateStyleContent', perfStart);
 		return styleContent;
 	}
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
+		const perfStart = getPerfStart();
 		const styles = styleResolver({
 			styles: stylesObj,
 			remove: false,
@@ -1908,6 +2101,7 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 		});
 
+		recordPerf('styleResolver', perfStart);
 		return styles;
 	}
 
@@ -2192,9 +2386,31 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiFSEIframeStylesNow() {
 		// Get the FSE iframe
-		const fseIframe = document.querySelector(
-			'iframe.edit-site-visual-editor__editor-canvas'
-		);
+		const now =
+			typeof performance !== 'undefined' && performance.now
+				? performance.now()
+				: Date.now();
+		const iframeCache =
+			MaxiBlockComponent.fseIframeCache ||
+			(MaxiBlockComponent.fseIframeCache = {
+				lastUpdate: 0,
+				iframe: null,
+			});
+
+		let fseIframe = null;
+		if (
+			now - iframeCache.lastUpdate < 100 &&
+			iframeCache.iframe &&
+			iframeCache.iframe.contentDocument
+		) {
+			fseIframe = iframeCache.iframe;
+		} else {
+			fseIframe = document.querySelector(
+				'iframe.edit-site-visual-editor__editor-canvas'
+			);
+			iframeCache.iframe = fseIframe;
+			iframeCache.lastUpdate = now;
+		}
 
 		if (!fseIframe || !fseIframe.contentDocument) return;
 

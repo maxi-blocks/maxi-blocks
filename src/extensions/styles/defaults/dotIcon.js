@@ -32,9 +32,6 @@ const dotIcon = {
 			'navigation-dot-icon-fill-palette-color': 3,
 			'navigation-dot-icon-border-unit-radius-general': 'px',
 			'navigation-dot-icon-background-active-media-general': 'none',
-			'navigation-dot-icon-content':
-				'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',
-			'navigation-dot-svgType': 'Shape',
 		},
 		exclAttr: [
 			'icon-inherit',
@@ -57,6 +54,15 @@ const dotIcon = {
 			},
 		},
 	}),
+	'navigation-dot-icon-content': {
+		type: 'string',
+		default:
+			'<svg class="circle-2-shape-maxi-svg__3" width="64px" height="64px" viewBox="0 0 36.1 36.1"><circle cx="18" cy="18" r="17.2" data-fill  fill="var(--maxi-light-icon-fill,rgba(var(--maxi-light-color-5,0,0,0),1))"/></svg>',
+	},
+	'navigation-dot-svgType': {
+		type: 'string',
+		default: 'Shape',
+	},
 	...breakpointAttributesCreator({
 		obj: {
 			'navigation-dot-icon-spacing-horizontal': {

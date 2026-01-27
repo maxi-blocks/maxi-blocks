@@ -3,6 +3,7 @@
  */
 import { subscribe } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * Internal dependencies
@@ -21,8 +22,64 @@ import { main } from '@maxi-icons';
 /**
  * Component
  */
+const getUserToolbarPreference = () => {
+	if (typeof window === 'undefined') return undefined;
+
+	const storedPreference = window.maxiSettings?.user_settings
+		?.master_toolbar_open;
+
+	if (storedPreference === '' || storedPreference === undefined) {
+		return undefined;
+	}
+
+	if (storedPreference === '0' || storedPreference === 0) return false;
+	if (storedPreference === '1' || storedPreference === 1) return true;
+
+	if (typeof storedPreference === 'boolean') return storedPreference;
+
+	return undefined;
+};
+
+const getInitialOpenState = () => {
+	const preference = getUserToolbarPreference();
+	return preference ?? true;
+};
+
+const persistToolbarState = async isOpen => {
+	try {
+		await apiFetch({
+			path: '/maxi-blocks/v1.0/user-settings',
+			method: 'POST',
+			data: {
+				master_toolbar_open: isOpen,
+			},
+		});
+
+		if (typeof window !== 'undefined' && window.maxiSettings?.user_settings) {
+			window.maxiSettings.user_settings.master_toolbar_open = isOpen;
+		}
+	} catch (error) {
+		console.error('Unable to persist Maxi toolbar preference:', error);
+	}
+};
+
 const ToolbarButtons = () => {
-	const [isResponsiveOpen, setIsResponsiveOpen] = useState(false);
+	const [isResponsiveOpen, setIsResponsiveOpen] = useState(
+		getInitialOpenState
+	);
+
+	const handleClose = () => {
+		persistToolbarState(false);
+		setIsResponsiveOpen(false);
+	};
+
+	const handleToggle = () => {
+		setIsResponsiveOpen(prevState => {
+			const nextState = !prevState;
+			persistToolbarState(nextState);
+			return nextState;
+		});
+	};
 
 	return (
 		<>
@@ -30,14 +87,14 @@ const ToolbarButtons = () => {
 				<Button
 					className='maxi-toolbar-layout__button'
 					aria-pressed={isResponsiveOpen}
-					onClick={() => setIsResponsiveOpen(!isResponsiveOpen)}
+					onClick={handleToggle}
 				>
 					<Icon icon={main} />
 				</Button>
 			</div>
 			<ResponsiveSelector
 				isOpen={isResponsiveOpen}
-				onClose={() => setIsResponsiveOpen(false)}
+				onClose={handleClose}
 			/>
 		</>
 	);
@@ -96,27 +153,6 @@ wp.domReady(() => {
 				isReact18 = false;
 				currentRoot = null;
 				render(<ToolbarButtons />, toolbarButtonsWrapper);
-			}
-
-			if (getIsSiteEditor()) {
-				const toolbarButtonMaxi = document.querySelector(
-					'#maxi-blocks__toolbar-buttons button'
-				);
-
-				if (!toolbarButtonMaxi) return;
-
-				const widthLeftMenu = document.querySelector(
-					'div.edit-site-header-edit-mode__start'
-				)?.offsetWidth;
-
-				const widthSiteIcon = document.querySelector(
-					'div.edit-site-site-hub'
-				)?.offsetWidth;
-
-				if (!widthLeftMenu || !widthSiteIcon) return;
-
-				const leftSpace = widthLeftMenu + widthSiteIcon;
-				toolbarButtonMaxi.style.left = `${leftSpace}px`;
 			}
 
 			isMaxiToolbar = true;

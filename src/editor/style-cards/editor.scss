@@ -1,17 +1,111 @@
+// ============================================
+// Variables & Mixins
+// ============================================
+$grey-light: var(--maxi-grey-light);
+$grey-dark: var(--maxi-grey-dark);
+$white: var(--maxi-white);
+$primary: var(--maxi-primary-color);
+$black: var(--maxi-black);
+$border-val: 1.5px;
+$border-style: $border-val solid $grey-light;
+$radius-pill: 20px;
+$radius-sm: 5px;
+$transition-fast: all 0.2s ease;
+$transition: all 0.3s ease;
+$control-spacing: 8px;
+
+// Breakpoint map - single source of truth
+$breakpoints: (
+	'xs': 347px,
+	'sm': 768px,
+	'md': 782px,
+	'xxl': 2500px,
+);
+
+@mixin flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+@mixin respond-to($breakpoint) {
+	$width: map-get($breakpoints, $breakpoint);
+	@if $breakpoint == 'xxl' {
+		@media only screen and (min-width: $width) {
+			@content;
+		}
+	} @else {
+		@media only screen and (max-width: $width) {
+			@content;
+		}
+	}
+}
+
+@mixin rtl {
+	html[dir='rtl'] & {
+		@content;
+	}
+}
+
+@mixin control-row {
+	margin-bottom: $control-spacing;
+	display: flex;
+	flex-direction: column;
+}
+
+@mixin action-button {
+	@include flex-center;
+	border: $border-style;
+	border-radius: $radius-pill;
+	padding: 8px;
+	color: $grey-dark;
+	transition: $transition;
+}
+
+// Preset box mixin for color presets
+@mixin preset-box-base {
+	@include flex-center;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	border: $border-style;
+	border-radius: 50% !important;
+	background-color: $white;
+	cursor: pointer;
+	transition: $transition-fast;
+
+	&:hover {
+		background: $white;
+		border-color: var(--maxi-grey);
+	}
+}
+
+// Placeholder for shared button styles
+%card-button-base {
+	@include action-button;
+
+	&:disabled {
+		opacity: 0.3;
+	}
+}
+
 .has-tooltip {
 	.tooltip {
 		display: none;
 	}
+
 	&:hover {
 		.tooltip {
 			opacity: 1;
 			transition-delay: 1s;
 		}
 	}
+
 	padding: 0 !important;
 	height: 32px !important;
 	border-radius: 100px !important;
 }
+
 .active-style-card {
 	position: relative;
 	display: flex;
@@ -31,12 +125,11 @@
 			margin-top: 1px;
 		}
 	}
+
 	.maxi-responsive-close {
 		position: absolute;
 		right: 10px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		@include flex-center;
 		height: 20px !important;
 		width: 20px !important;
 		padding: 0 0 1px !important;
@@ -57,12 +150,14 @@
 		svg {
 			height: 9.11px;
 			width: 9.11px;
+
 			path {
 				stroke: var(--maxi-white);
 			}
 		}
 	}
 }
+
 .maxi-style-cards__sc {
 	&__more-sc--select {
 		.css-swenwd-Control {
@@ -71,6 +166,7 @@
 		}
 	}
 }
+
 .maxi-style-cards-customise-card-button,
 .maxi-style-cards__sc__more-sc--select,
 .components-button.maxi-style-cards__sc__actions--apply,
@@ -86,11 +182,13 @@
 		}
 	}
 }
+
 .maxi-style-cards__popover .maxi-library-modal__action-section__export {
 	width: 100% !important;
 	padding-bottom: 7px;
 	padding-top: 2px;
 }
+
 .maxi-style-cards__card-already-exists {
 	&.create-new-section {
 		margin-left: 8px;
@@ -102,11 +200,13 @@
 		display: block;
 	}
 }
+
 .maxi-style-cards__active-edit-options {
 	display: flex;
 }
+
 .maxi-style-cards__settings {
-	padding: 0 !important;
+	padding: 0;
 
 	.maxi-style-cards__sc-cancel-save {
 		display: flex;
@@ -114,27 +214,33 @@
 		padding: 10px 0 10px 0;
 		z-index: 5;
 	}
+
 	.maxi-components-button.components-button.maxi-style-cards__sc__actions--save {
 		margin-left: 10px;
 	}
 }
 
 .maxi-style-cards__sc-custom-name {
-	padding: 0 8px;
+	padding: 0;
+
 	h3 {
 		margin: 0 0 5px 0;
+		font-size: 15px;
 
 		b {
-			font-weight: 700 !important;
+			font-weight: 700;
 		}
 	}
 }
+
 .maxi-style-cards__sc__actions--save {
 	border: 1.5px solid var(--maxi-grey-light) !important;
 }
+
 .maxi-style-card-settings-disabled {
 	display: none;
 }
+
 .maxi-style-cards__active-edit-title {
 	padding-bottom: 10px;
 
@@ -144,6 +250,7 @@
 		color: var(--maxi-black);
 	}
 }
+
 .edit-activate {
 	button {
 		border: 1.5px solid var(--maxi-grey-light) !important;
@@ -165,20 +272,23 @@ body .maxi-style-cards__popover {
 		background-color: var(--maxi-whisper-green) !important;
 		opacity: 1;
 		color: var(--maxi-primary-color) !important;
-		transition: all 0.3s ease !important;
+		transition: $transition;
 	}
 
 	.maxi-accordion-control__item {
 		hr {
 			margin: 0 0 8px;
 		}
+
 		&.maxi-blocks-sc__type--color:not(.maxi-blocks-sc__type--custom-color-presets) {
 			position: relative;
+
 			.maxi-color-control__color {
 				.chrome-picker {
 					& > div {
 						&:last-child {
 							padding-bottom: 0 !important;
+
 							.flexbox-fix {
 								&:last-child {
 									padding-right: 60px;
@@ -202,12 +312,13 @@ body .maxi-style-cards__popover {
 	.maxi-color-control {
 		.chrome-picker {
 			width: 100% !important;
+
 			& div {
 				&:nth-child(2) {
 					& > div {
 						&:not(.flexbox-fix) {
 							margin-right: 0 !important;
-							//justify-content: end;
+
 							svg {
 								border-radius: 0 !important;
 							}
@@ -216,9 +327,11 @@ body .maxi-style-cards__popover {
 				}
 			}
 		}
+
 		.maxi-opacity-control {
 			margin-top: 8px;
 		}
+
 		.maxi-toggle-switch {
 			&:last-child {
 				margin-bottom: 8px;
@@ -227,7 +340,8 @@ body .maxi-style-cards__popover {
 	}
 
 	.maxi-color-control__palette-container {
-		gap: 8px;
+		gap: 6px;
+
 		.maxi-color-control__palette-box {
 			width: 32px !important;
 			border: 1.5px solid var(--maxi-grey-light) !important;
@@ -242,27 +356,13 @@ body .maxi-style-cards__popover {
 		margin-bottom: 8px;
 
 		&__box {
-			display: flex;
-			width: 32px;
-			height: 32px;
-			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
+			@include preset-box-base;
 			margin: 0;
-			border-radius: 50% !important;
-			background-color: var(--maxi-white);
-			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
-			cursor: pointer;
 
-			&:hover {
-				background: var(--maxi-white);
-				border-color: var(--maxi-grey);
-			}
 			&--active {
 				border: 1.5px solid var(--maxi-primary-color);
 			}
+
 			&__item {
 				width: 24px;
 				height: 24px;
@@ -275,27 +375,13 @@ body .maxi-style-cards__popover {
 	.maxi-style-cards__custom-color-presets {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: 6px;
 		margin-bottom: 8px;
 
 		&__box {
+			@include preset-box-base;
 			position: relative;
-			display: flex;
-			width: 32px;
-			height: 32px;
-			padding: 0;
-			border: 1.5px solid var(--maxi-grey-light);
-			border-radius: 50% !important;
-			background-color: #fff;
-			cursor: pointer;
-			transition: all 0.2s;
-			align-items: center;
-			justify-content: center;
-
-			&:hover {
-				background: var(--maxi-white);
-				border-color: var(--maxi-grey);
-			}
+			background-color: #fff; // Override for custom presets
 
 			&--active {
 				border: 2px solid var(--maxi-primary-color);
@@ -344,7 +430,6 @@ body .maxi-style-cards__popover {
 			display: none;
 			align-items: center;
 			justify-content: center;
-			border: none !important;
 			font-size: 20px;
 			font-weight: bold;
 			line-height: 24px;
@@ -359,6 +444,7 @@ body .maxi-style-cards__popover {
 				background-color: var(--maxi-grey-dark) !important;
 			}
 		}
+
 		.maxi-style-cards__custom-color-presets__box:hover {
 			.maxi-style-cards__custom-color-presets__remove-button {
 				transition: all 0.5s ease;
@@ -371,8 +457,10 @@ body .maxi-style-cards__popover {
 		.maxi-reset-button {
 			display: none;
 		}
+
 		.maxi-color-control__display__color {
 			margin-bottom: 3px;
+
 			span {
 				width: 20px;
 				height: 20px;
@@ -402,16 +490,16 @@ body .maxi-style-cards__popover {
 			border: 1.5px solid var(--maxi-grey-light);
 			margin-left: 5px;
 		}
+
 		&-button {
 			flex: 1;
 			width: 24px;
 			height: 24px;
 			padding: 0;
 			display: flex;
-			justify-content: center;
+			justify-content: space-around;
 			border-radius: 50%;
 			transition: all 0.3s;
-			justify-content: space-around;
 
 			&:hover:not(:disabled) {
 				background: var(--maxi-white);
@@ -429,12 +517,14 @@ body .maxi-style-cards__popover {
 			transition: all 0.3s;
 		}
 	}
+
 	hr {
 		border: 0;
 		border-top: 1.5px solid var(--maxi-grey-light);
 		margin: 0;
 		height: 1px;
 	}
+
 	&__sub-title {
 		font-size: 14px;
 		color: var(--maxi-grey-dark);
@@ -442,6 +532,7 @@ body .maxi-style-cards__popover {
 		padding: 10px;
 		margin-bottom: 1px;
 	}
+
 	&__title {
 		display: flex;
 		align-items: center;
@@ -458,26 +549,20 @@ body .maxi-style-cards__popover {
 			margin-right: 10px;
 		}
 	}
+
 	.maxi-style-cards__sc {
 		&:not(.maxi-style-cards__settings) {
 			z-index: 9;
 			position: relative;
+
 			button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button),
 			a.components-button {
-				&:disabled {
-					opacity: 0.3;
-				}
-				display: flex;
-				align-items: center;
-				justify-content: center;
+				@extend %card-button-base;
 				transition: all 0.5s;
-				border: 1.5px solid var(--maxi-grey-light);
-				border-radius: 20px;
-				padding: 8px;
-				color: var(--maxi-grey-dark);
 				line-height: 90%;
 			}
 		}
+
 		padding: 8px 8px 1px;
 		background: var(--maxi-white);
 
@@ -523,6 +608,7 @@ body .maxi-style-cards__popover {
 				margin-right: 8px;
 				padding: 0;
 			}
+
 			&--select {
 				flex: 1;
 				margin-right: 8px;
@@ -541,15 +627,18 @@ body .maxi-style-cards__popover {
 						white-space: normal;
 					}
 				}
+
 				& > div {
 					& > .css-26l3qy-menu {
 						margin: 0;
+
 						& > div {
 							padding: 0;
 						}
 					}
 				}
 			}
+
 			&--reset,
 			&--delete {
 				&:disabled {
@@ -557,6 +646,7 @@ body .maxi-style-cards__popover {
 						display: none;
 					}
 				}
+
 				background: none;
 				border: 1.5px solid var(--maxi-grey-light) !important;
 				padding: 0;
@@ -571,21 +661,30 @@ body .maxi-style-cards__popover {
 					stroke: var(--maxi-primary-color) !important;
 				}
 			}
+
 			&--reset[type='button'] {
 				position: relative;
 				right: -2px;
 			}
+
 			&--delete[type='button'] {
 				position: relative;
 				width: 15%;
 			}
 		}
+
 		&__actions {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
-			column-gap: 8px;
+			column-gap: 4px;
+
+			&.edit-activate {
+				button,
+				.components-button {
+					width: auto !important;
+					padding: 8px 4px !important;
+				}
+			}
 
 			button {
 				flex: 1;
@@ -595,10 +694,9 @@ body .maxi-style-cards__popover {
 				}
 			}
 		}
+
 		&__ie {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 0;
 			width: calc(35% - 13px);
 
@@ -611,52 +709,59 @@ body .maxi-style-cards__popover {
 				}
 			}
 		}
+
 		&__save {
-			display: flex;
-			align-items: center;
-			justify-content: center;
+			@include flex-center;
 			margin-bottom: 8px;
 
 			button {
 				flex: 2;
-				margin-right: 8px;
+				margin-right: 5px;
 				justify-content: center;
-				border: 1.5px solid var(--maxi-grey-light);
+				border: 1px solid var(--maxi-grey-light);
 				border-radius: 20px;
 				transition: 0.1s;
 			}
+
 			input[type='text'] {
 				height: 36px !important;
-				margin-right: 8px;
-				flex: 7;
-				border-radius: 15px !important;
+				margin-right: 5px;
+				flex: 10;
+				border-radius: 5px !important;
+				width: 100%;
 			}
 		}
 	}
+
 	.maxi-settingstab-control {
 		.maxi-tabs-content {
 			padding-left: 0;
 			padding-right: 0;
+
 			.maxi-tab-content__box {
 				padding: 0;
 				border: 0;
+
 				.maxi-accordion-control__item {
 					&:first-child {
 						.maxi-accordion-control__item__button {
 							border-top: 0;
 						}
 					}
+
 					&:last-child {
 						.maxi-accordion-control__item__button {
 							border-bottom: 0;
 						}
 					}
+
 					.maxi-accordion-control__item__panel {
 						padding-bottom: 8px;
 					}
 				}
 			}
 		}
+
 		.maxi-tabs-control {
 			margin-bottom: 0;
 
@@ -667,32 +772,39 @@ body .maxi-style-cards__popover {
 			}
 		}
 	}
+
 	.components-popover__content {
 		min-width: 350px;
 		height: calc(100% - 127px);
 		border-radius: 0;
 		outline: none;
 		box-shadow: none;
+
 		&-bigger {
-			overflow: scroll !important;
+			overflow: scroll;
 			padding-bottom: 7px;
 		}
+
 		> * {
 			border-right: 1.5px solid var(--maxi-grey-light);
 		}
+
 		> :last-child {
 			border-bottom: 1.5px solid var(--maxi-grey-light);
 		}
+
 		background-color: var(--maxi-white);
 		border-right: 1.5px solid var(--maxi-grey-light);
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 		position: relative;
 	}
+
 	.maxi-base-control__field {
 		.components-range-control {
 			margin-bottom: 8px !important;
 		}
 	}
+
 	.maxi-typography-control {
 		&__weight,
 		&__transform,
@@ -700,21 +812,37 @@ body .maxi-style-cards__popover {
 		&__decoration,
 		&__orientation,
 		&__direction {
-			margin-bottom: 8px;
+			@include control-row;
 		}
+
 		&__word-spacing,
 		&__size {
-			margin-top: 8px;
+			margin-top: $control-spacing;
+		}
+		.maxi-typography-control__spacing-controls
+			.maxi-typography-control__line-height {
+			margin-right: 10px !important;
 		}
 	}
+
 	.maxi-toggle-switch {
 		&:last-child {
 			margin-bottom: 8px;
 		}
 	}
+
 	.maxi-font-family-selector {
-		z-index: 1;
+		z-index: 10;
+		position: relative;
+
+		// Ensure the dropdown menu appears above everything
+		.maxi-font-family-selector__control__menu {
+			position: absolute;
+			z-index: 100 !important;
+			background: var(--maxi-white);
+		}
 	}
+
 	.components-range-control
 		.components-base-control__field
 		.components-range-control__track
@@ -722,28 +850,32 @@ body .maxi-style-cards__popover {
 		z-index: 0;
 	}
 
-	.maxi-advanced-number-control
-		.maxi-dimensions-control__units
-		select.maxi-select-control__input {
-		min-width: 78px !important;
-	}
-	.maxi-typography-control
-		.maxi-typography-control__weight
-		.maxi-select-control__input {
-		font-size: 13px !important;
-	}
 	.maxi-advanced-number-control__input-wrapper {
 		width: 63px !important;
 	}
+
 	.maxi-typography-control .maxi-typography-control__weight-size-row {
 		gap: 12px !important;
+
+		&:has(.maxi-typography-control__weight-warning) {
+			width: 100%;
+			display: block;
+		}
 	}
-	.maxi-typography-control__weight-size-row > div:first-child {
-		width: 158px !important;
+
+	.maxi-typography-control
+		.maxi-typography-control__weight-size-row
+		.maxi-typography-control__weight-warning {
+		width: 100% !important;
 	}
+
 	.maxi-typography-control__weight .maxi-components-button.maxi-reset-button {
 		margin-left: -1px !important;
 		margin-right: 4px !important;
+	}
+
+	.maxi-select-control__second-style .maxi-base-control__field {
+		margin-right: 7px !important;
 	}
 }
 
@@ -755,16 +887,19 @@ body .maxi-style-cards__popover {
 				border-width: 1.5px !important;
 				border-radius: 5px !important;
 			}
+
 			.maxi-style-cards__sc__ie--import,
 			.maxi-style-cards__sc__ie--export {
 				border-width: 1.5px !important;
 				border-radius: 5px !important;
 			}
 		}
+
 		.maxi-style-cards__sc__save button {
 			border-width: 1.5px !important;
 			border-radius: 5px !important;
 		}
+
 		.maxi-style-cards__sc__save {
 			input[type='text'] {
 				border-width: 1.5px !important;
@@ -772,42 +907,39 @@ body .maxi-style-cards__popover {
 			}
 		}
 	}
+
 	.edit-activate button,
 	.maxi-style-cards__sc__actions--save {
 		border-width: 1.5px !important;
 		border-radius: 5px !important;
 	}
 }
-@media only screen and (max-width: 768px) {
-	body {
-		.maxi-responsive-selector {
-			.maxi-style-cards__popover {
-				max-height: 90vh !important;
-			}
-		}
+
+@include respond-to('sm') {
+	body .maxi-responsive-selector .maxi-style-cards__popover {
+		max-height: 90vh !important;
 	}
 }
-@media only screen and (max-width: 782px) {
-	body {
-		&:not(.is-fullscreen-mode, .folded)
-			.maxi-responsive-selector
-			.maxi-style-cards__popover {
-			margin: 148px 0 0 25px;
-		}
-	}
-}
-@media only screen and (max-width: 347px) {
-	.maxi-responsive-selector {
+
+@include respond-to('md') {
+	body:not(.is-fullscreen-mode):not(.folded)
+		.maxi-responsive-selector
 		.maxi-style-cards__popover {
-			.components-popover__content {
-				margin-left: -25px;
-				left: 100%;
-				transform: none;
-				min-width: 309px;
-			}
-		}
+		margin: 148px 0 0 25px;
 	}
 }
+
+@include respond-to('xs') {
+	.maxi-responsive-selector
+		.maxi-style-cards__popover
+		.components-popover__content {
+		margin-left: -25px;
+		left: 100%;
+		transform: none;
+		min-width: 309px;
+	}
+}
+
 /*******************************
 * RTL
 *******************************/
@@ -816,20 +948,24 @@ html[dir='rtl'] {
 		left: unset !important;
 		right: 0 !important;
 		transform: translateX(0) translateY(102px) !important;
+
 		.maxi-style-cards__sc__more-sc--select {
 			margin-right: unset;
 			margin-left: 8px;
 		}
+
 		.maxi-style-cards__sc__save button,
 		.maxi-style-cards__sc__save input[type='text'] {
 			margin-left: 8px;
 			margin-right: unset;
 		}
 	}
+
 	.maxi-select-control__second-style .maxi-base-control__label {
 		left: unset;
 		right: 8px;
 	}
+
 	.maxi-base-control__field .maxi-select-control__input {
 		padding-right: 8px !important;
 		background-position: center left 8px;
@@ -840,20 +976,21 @@ html[dir='rtl'] {
 	width: 100%;
 	margin-top: 8px;
 	padding: 8px;
-	border: 1px solid #e0e0e0;
+	border: 1px solid var(--maxi-grey-light) !important;
 	border-radius: 4px;
 	font-size: 13px;
 
 	&:focus {
 		outline: none;
-		border-color: #007cba;
-		box-shadow: 0 0 0 1px #007cba;
+		border-color: var(--maxi-primary-color);
+		box-shadow: 0 0 0 1px var(--maxi-primary-color);
 	}
 
 	&::placeholder {
-		color: #757575;
+		color: var(--maxi-grey-dark);
 	}
 }
+
 .maxi-style-cards__sc__more-sc--delete {
 	padding: 0 !important;
 }
@@ -868,4 +1005,61 @@ html[dir='rtl'] {
 	&:hover svg {
 		stroke: var(--maxi-primary-color) !important;
 	}
+}
+
+.maxi-style-cards-headings-tabs {
+	.maxi-tabs-control {
+		display: flex;
+		gap: 4px;
+		padding: 0;
+		margin-bottom: 8px;
+
+		.maxi-tabs-control__button {
+			flex: 1;
+			padding: 4px 8px;
+			border: 1.5px solid var(--maxi-grey-light) !important;
+			border-radius: 5px;
+			background-color: var(--maxi-white);
+			color: var(--maxi-grey-dark);
+			font-size: 14px;
+			font-weight: 400;
+			text-align: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+
+			&:hover {
+				background-color: var(--maxi-whisper-green);
+				border: 1.5px solid var(--maxi-primary-color) !important;
+				color: var(--maxi-primary-color);
+			}
+
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-pastel-green);
+				border: 1.5px solid var(--maxi-primary-color) !important;
+				color: var(--maxi-primary-color);
+				font-weight: 700;
+			}
+		}
+	}
+
+	.maxi-tabs-content {
+		padding: 0;
+
+		.maxi-tab-content__box {
+			padding: 0;
+			border: none;
+
+			&:after {
+				display: none;
+			}
+		}
+	}
+}
+
+// Fix z-index for font-family dropdown menu in style cards
+// React-select can portal menu to body, so we need a global rule
+// Scoped to maxi-blocks context to avoid affecting other libraries
+body.maxi-blocks--active [class*='menu'][class*='css-'],
+.maxi-style-cards__popover [class*='menu'][class*='css-'] {
+	z-index: 100 !important;
 }

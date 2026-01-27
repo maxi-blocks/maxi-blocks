@@ -56,8 +56,8 @@ const ArrowControl = props => {
 		return response;
 	};
 
-	const onChangeValue = (target, value) => {
-		onChange({ [`${target}-${breakpoint}`]: value });
+	const onChangeValue = (target, value, meta) => {
+		onChange({ [`${target}-${breakpoint}`]: value, meta });
 	};
 
 	const minMaxSettings = {
@@ -151,10 +151,11 @@ const ArrowControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							onChangeValue(
 								'arrow-position',
-								val !== undefined && val !== '' ? val : ''
+								val !== undefined && val !== '' ? val : '',
+								meta
 							);
 						}}
 						min={0}
@@ -179,14 +180,14 @@ const ArrowControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
-						onChangeValue={val => {
+						onChangeValue={(val, meta) => {
 							const value = isNil(val)
 								? getDefaultAttribute(
 										`arrow-width-${breakpoint}`
 								  )
 								: val;
 
-							onChangeValue('arrow-width', value);
+							onChangeValue('arrow-width', value, meta);
 						}}
 						onReset={() =>
 							onChange({

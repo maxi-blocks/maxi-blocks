@@ -10,6 +10,7 @@
 	--typography-button-transition: all 200ms ease;
 	--typography-interactive-border: 1px solid var(--maxi-grey-light);
 	--typography-button-radius: 4px;
+	--typography-chevron-icon: url('data:image/svg+xml; utf8, <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 6"><path fill="rgb(147, 147, 147)" d="M4.82 5.783a.963.963 0 0 1-.684-.283L.283 1.651A.967.967 0 0 1 1.651.283L4.82 3.462 7.988.293a.963.963 0 0 1 1.358 1.358L5.494 5.5a.963.963 0 0 1-.674.283Z"/></svg>');
 
 	/*-------------------------------------------
 	 SHARED COMPONENT PATTERNS
@@ -27,7 +28,7 @@
 		padding: 0 5px !important;
 		pointer-events: none !important;
 		box-sizing: border-box !important;
-		z-index: 999 !important;
+		z-index: 1 !important;
 	}
 
 	// Shared flexbox center pattern
@@ -113,20 +114,34 @@
 		}
 	}
 
+	.maxi-select-control__input {
+		-webkit-appearance: none;
+		appearance: none;
+		background-image: var(--typography-chevron-icon) !important;
+		background-repeat: no-repeat !important;
+		background-size: 10px 6px !important;
+		background-position: right 10px center !important;
+		padding-right: 26px !important;
+	}
+
 	/*-------------------------------------------
 	 WEIGHT & SIZE ROW LAYOUT
 	-------------------------------------------*/
 	.maxi-typography-control__weight-size-row {
 		display: flex;
 		flex-wrap: nowrap; /* Change from wrap to nowrap */
-		gap: 10px;
+		gap: 8px;
 		width: 100%;
-		align-items: flex-end; /* Align items to the bottom */
+		align-items: stretch;
 
 		> div {
 			flex: 1 1 auto; /* Allow items to grow and shrink */
 			position: relative;
 			width: auto !important; /* Remove fixed width */
+		}
+
+		.maxi-base-control__field {
+			align-items: stretch !important;
 		}
 
 		&:has(.maxi-typography-control__weight-warning) {
@@ -170,7 +185,9 @@
 	.maxi-typography-control__weight {
 		.maxi-select-control__input {
 			padding-left: 5px !important;
-			padding-right: 19px !important;
+			padding-right: 10px !important;
+			height: 36px !important;
+			min-height: 36px !important;
 			font-size: 11px !important;
 		}
 	}
@@ -194,7 +211,7 @@
 		}
 
 		.maxi-typography-control__line-height {
-			margin-right: 10px !important;
+			margin-right: 8px !important;
 		}
 
 		.maxi-base-control__field {
@@ -287,15 +304,6 @@
 	/*-------------------------------------------
 	 ADVANCED CONTROLS & ANIMATIONS
 	-------------------------------------------*/
-	.maxi-typography-control__toggle-arrow {
-		transition: transform 200ms ease;
-		transform: rotate(0);
-
-		&--expanded {
-			transform: rotate(180deg);
-		}
-	}
-
 	.maxi-typography-control-button {
 		@extend %flex-center-pattern;
 		justify-content: space-between;
@@ -309,7 +317,18 @@
 	}
 
 	.maxi-typography-control-arrow-span {
+		display: inline-block;
+		width: 10px;
+		height: 6px;
+		margin-left: 8px;
+		background-image: var(--typography-chevron-icon);
+		background-repeat: no-repeat;
+		background-size: 10px 6px;
 		transition: transform 300ms ease;
+
+		&.maxi-typography-control__toggle-arrow--expanded {
+			transform: rotate(180deg);
+		}
 	}
 
 	.maxi-typography-control__advanced-options {
@@ -396,4 +415,10 @@
 ===============================================*/
 .maxi-link-settings-panel {
 	padding: 0px 8px;
+}
+
+.maxi-typography-control:not([class*='maxi-style-cards-control']) {
+	.maxi-advanced-number-control__input-wrapper {
+		width: 50px !important;
+	}
 }

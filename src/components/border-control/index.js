@@ -120,21 +120,36 @@ const BorderColorControl = props => {
 					color,
 				}) => {
 					onChange({
-						[`${prefix}border-palette-status-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteStatus,
-						[`${prefix}border-palette-sc-status-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteSCStatus,
-						[`${prefix}border-palette-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteColor,
-						[`${prefix}border-palette-opacity-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: paletteOpacity,
-						[`${prefix}border-color-${breakpoint}${
-							isHover ? '-hover' : ''
-						}`]: color,
+						[getAttributeKey(
+							`${prefix}border-palette-status`,
+							isHover,
+							'',
+							breakpoint
+						)]: paletteStatus,
+						[getAttributeKey(
+							`${prefix}border-palette-sc-status`,
+							isHover,
+							'',
+							breakpoint
+						)]: paletteSCStatus,
+						[getAttributeKey(
+							`${prefix}border-palette-color`,
+							isHover,
+							'',
+							breakpoint
+						)]: paletteColor,
+						[getAttributeKey(
+							`${prefix}border-palette-opacity`,
+							isHover,
+							'',
+							breakpoint
+						)]: paletteOpacity,
+						[getAttributeKey(
+							`${prefix}border-color`,
+							isHover,
+							'',
+							breakpoint
+						)]: color,
 					});
 				}}
 				disableImage
@@ -191,7 +206,12 @@ const BorderWidthControl = props => {
 					if (!isToolbar) onChange(obj);
 					else
 						onChange({
-							[`${prefix}border-sync-width-${breakpoint}`]: 'all',
+							[getAttributeKey(
+								`${prefix}border-sync-width`,
+								isHover,
+								'',
+								breakpoint
+							)]: 'all',
 							...obj,
 						});
 				}}
@@ -284,7 +304,7 @@ const BorderControl = props => {
 		const response = {};
 
 		Object.entries(defaultProp).forEach(([key, value]) => {
-			response[`${key}-${breakpoint}${isHover ? '-hover' : ''}`] = value;
+			response[getAttributeKey(key, isHover, '', breakpoint)] = value;
 		});
 
 		onChange(response);
@@ -407,9 +427,12 @@ const BorderControl = props => {
 					]}
 					onChange={val => {
 						onChange({
-							[`${prefix}border-style-${breakpoint}${
-								isHover ? '-hover' : ''
-							}`]: val,
+							[getAttributeKey(
+								`${prefix}border-style`,
+								isHover,
+								'',
+								breakpoint
+							)]: val,
 						});
 					}}
 				/>

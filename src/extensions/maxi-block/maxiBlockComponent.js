@@ -1564,8 +1564,31 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
+		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
+		let shouldGenerateNewStyles =
+			!isBreakpointChange ||
+			this.props.deviceType === 'xxl' ||
+			isBaseBreakpointChange ||
+			!attributesUnchanged;
+
+		let stylesForViewportCheck;
+
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			const stylesObjStart = getPerfStart();
+			stylesForViewportCheck = this.getStylesObject || {};
+			recordPerf('getStylesObject', stylesObjStart);
+
+			if (this.hasViewportUnits(stylesForViewportCheck)) {
+				shouldGenerateNewStyles = true;
+			}
+		}
+
 		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
-		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
+		if (
+			isBreakpointChange &&
+			this.props.deviceType !== 'xxl' &&
+			!shouldGenerateNewStyles
+		) {
 			const iframeDoc = this.editorIframe?.contentDocument || null;
 			const cache =
 				MaxiBlockComponent.breakpointSwitchCache ||
@@ -1593,18 +1616,20 @@ class MaxiBlockComponent extends Component {
 			recordPerf('displayStyles', perfStart);
 			return;
 		}
-		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
-		const shouldGenerateNewStyles =
-			!isBreakpointChange || this.props.deviceType === 'xxl';
+
 		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
 		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
 		let obj;
 		let customDataRelations;
 
 		if (shouldGenerateNewStyles) {
-			const stylesObjStart = getPerfStart();
-			obj = this.getStylesObject || {};
-			recordPerf('getStylesObject', stylesObjStart);
+			if (stylesForViewportCheck) {
+				obj = stylesForViewportCheck;
+			} else {
+				const stylesObjStart = getPerfStart();
+				obj = this.getStylesObject || {};
+				recordPerf('getStylesObject', stylesObjStart);
+			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1636,7 +1661,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
-			isBaseBreakpointChange,
+			shouldGenerateNewStyles,
 			this.editorIframe
 		);
 		recordPerf('injectStyles', injectStart);
@@ -1765,6 +1790,34 @@ class MaxiBlockComponent extends Component {
 		recordPerf('displayStyles', perfStart);
 	}
 
+	hasViewportUnits(stylesObj) {
+		if (!stylesObj) return false;
+
+		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
+		// Requires: number (with optional sign/decimal) + viewport unit
+		// Boundaries prevent matching "overview", URLs, or identifiers
+		const viewportUnitRegex =
+			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+
+		const stack = [stylesObj];
+
+		while (stack.length) {
+			const current = stack.pop();
+
+			if (typeof current === 'string') {
+				if (viewportUnitRegex.test(current)) {
+					return true;
+				}
+			} else if (isArray(current)) {
+				stack.push(...current);
+			} else if (isObject(current)) {
+				stack.push(...Object.values(current));
+			}
+		}
+
+		return false;
+	}
+
 	injectStyles(
 		uniqueID,
 		stylesObj,
@@ -1773,7 +1826,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
-		isBaseBreakpointChange,
+		forceGenerate,
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
@@ -1781,7 +1834,11 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
-		if (!isBreakpointChange || currentBreakpoint === 'xxl') {
+		if (
+			forceGenerate ||
+			!isBreakpointChange ||
+			currentBreakpoint === 'xxl'
+		) {
 			const target = this.getStyleTarget(isSiteEditor, iframe);
 			const styleContent = this.generateStyleContent(
 				uniqueID,
@@ -1790,7 +1847,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
-				isBaseBreakpointChange,
+				forceGenerate,
 				iframe,
 				isSiteEditor
 			);
@@ -1992,7 +2049,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
-		isBaseBreakpointChange,
+		forceGenerate,
 		iframe,
 		isSiteEditor
 	) {
@@ -2025,13 +2082,15 @@ class MaxiBlockComponent extends Component {
 			isBreakpointChange &&
 			currentBreakpoint === 'xxl' &&
 			!isBlockStyleChange &&
-			!isBaseBreakpointChange &&
+			!forceGenerate &&
 			this.xxlStyleCache &&
 			!this.isXxlStyleCacheDirty
 		) {
 			styleContent = this.xxlStyleCache;
-		} else if (isBlockStyleChange) {
-			const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		} else if (isBlockStyleChange || forceGenerate) {
+			const cssCache =
+				!forceGenerate &&
+				select('maxiBlocks/styles').getCSSCache(uniqueID);
 
 			if (cssCache) {
 				styleContent = cssCache[currentBreakpoint];
@@ -2041,11 +2100,11 @@ class MaxiBlockComponent extends Component {
 					`--maxi-${previousBlockStyle}-`,
 					'g'
 				);
-			styleContent = styleContent?.replace(
-				previousBlockStyleRegex,
-				`--maxi-${blockStyle}-`
-			);
-		}
+				styleContent = styleContent?.replace(
+					previousBlockStyleRegex,
+					`--maxi-${blockStyle}-`
+				);
+			}
 
 			styles = this.generateStyles(
 				updatedStylesObj,
@@ -2053,7 +2112,12 @@ class MaxiBlockComponent extends Component {
 				uniqueID
 			);
 			const styleGenStart = getPerfStart();
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 			recordPerf('styleGenerator', styleGenStart);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
@@ -2062,7 +2126,12 @@ class MaxiBlockComponent extends Component {
 				uniqueID
 			);
 			const styleGenStart = getPerfStart();
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor);
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
 			recordPerf('styleGenerator', styleGenStart);
 		}
 

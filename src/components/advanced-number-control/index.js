@@ -3,14 +3,14 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RangeControl } from '@wordpress/components';
-import { useInstanceId } from '@wordpress/compose';
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useInstanceId, useDebounce } from '@wordpress/compose';
+import { useEffect, useState, useRef, useCallback } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber, merge, trim, debounce } from 'lodash';
+import { isEmpty, isNumber, merge, trim } from 'lodash';
 
 /**
  * Internal dependencies
@@ -195,15 +195,18 @@ const AdvancedNumberControl = props => {
 		}
 	};
 
-	const handleChange = debounce(() => {
-		if (onChangeValue) {
-			const val =
-				latestValueRef.current === '' || optionType === 'string'
-					? latestValueRef.current.toString()
-					: +latestValueRef.current;
-			onChangeValue(val);
-		}
-	}, 300);
+	const handleChange = useDebounce(
+		useCallback((onChangeValue, latestValueRef, optionType) => {
+			if (onChangeValue) {
+				const val =
+					latestValueRef.current === '' || optionType === 'string'
+						? latestValueRef.current.toString()
+						: +latestValueRef.current;
+				onChangeValue(val);
+			}
+		}, []),
+		300
+	);
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
@@ -228,7 +231,14 @@ const AdvancedNumberControl = props => {
 		latestValueRef.current =
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
-		handleChange(result);
+
+		const val =
+			result === '' || optionType === 'string'
+				? result.toString()
+				: +result;
+		onChangeValue?.(val, { inline: enableUnit ? { unit } : {} });
+
+		handleChange(onChangeValue, latestValueRef, optionType);
 	};
 
 	const rawPreferredValues = [
@@ -333,8 +343,21 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
-										const newVal =
+										let newVal =
 											currentVal + (stepValue || 1);
+
+										// Fix floating-point precision issues
+										const decimalPlaces = (
+											stepValue
+												.toString()
+												.split('.')[1] || ''
+										).length;
+										newVal = parseFloat(
+											newVal.toFixed(
+												Math.max(decimalPlaces, 10)
+											)
+										);
+
 										const maxVal = enableUnit
 											? maxValue
 											: max;
@@ -345,8 +368,11 @@ const AdvancedNumberControl = props => {
 											onChangeValue(newVal);
 										}
 									}}
-									title='Increase value'
-									aria-label='Increase value'
+									title={__('Increase value', 'maxi-blocks')}
+									aria-label={__(
+										'Increase value',
+										'maxi-blocks'
+									)}
 								>
 									<svg
 										width='8'
@@ -389,8 +415,21 @@ const AdvancedNumberControl = props => {
 										const currentVal = hasRealValue
 											? parseFloat(latestValueRef.current)
 											: parseFloat(placeholder) || 0;
-										const newVal =
+										let newVal =
 											currentVal - (stepValue || 1);
+
+										// Fix floating-point precision issues
+										const decimalPlaces = (
+											stepValue
+												.toString()
+												.split('.')[1] || ''
+										).length;
+										newVal = parseFloat(
+											newVal.toFixed(
+												Math.max(decimalPlaces, 10)
+											)
+										);
+
 										const minVal = enableUnit
 											? minValue
 											: min;
@@ -484,17 +523,37 @@ const AdvancedNumberControl = props => {
 						}`}
 						value={rangeValue ?? placeholder ?? 0}
 						onChange={val => {
-							const result =
+							let result =
 								optionType === 'string' ? val.toString() : +val;
+
+							// Fix floating-point precision issues for numeric values
+							if (optionType !== 'string' && stepValue < 1) {
+								const decimalPlaces = (
+									stepValue.toString().split('.')[1] || ''
+								).length;
+								result = parseFloat(
+									result.toFixed(Math.max(decimalPlaces, 10))
+								);
+							}
+
 							setCurrentValue(result);
 							latestValueRef.current = result;
-							onChangeValue(result);
+
+							onChangeValue?.(result, {
+								inline: enableUnit ? { unit } : {},
+							});
+
+							handleChange(
+								onChangeValue,
+								latestValueRef,
+								optionType
+							);
 						}}
 						min={enableUnit ? minValueRange : min}
 						max={maxRange || (enableUnit ? maxValueRange : max)}
 						step={stepValue}
 						withInputField={false}
-						initialPosition={value ?? initial}
+						initialPosition={value || initial}
 						__nextHasNoMarginBottom
 					/>
 				)}

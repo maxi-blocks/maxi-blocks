@@ -564,7 +564,7 @@ class MaxiBlockComponent extends Component {
 	getSnapshotBeforeUpdate(prevProps, prevState) {
 		if (this.isPatternsPreview || this.templateModal) {
 			// Clear cached diff for consistency
-			this.cachedDiffAttributes = null;
+			this.cachedDiffAttributes = undefined;
 			return false;
 		}
 
@@ -1103,7 +1103,7 @@ class MaxiBlockComponent extends Component {
 	}
 
 	invalidateAttributeCaches() {
-		this.cachedDiffAttributes = null;
+		this.cachedDiffAttributes = undefined;
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
 		this.attributesMutated = true;

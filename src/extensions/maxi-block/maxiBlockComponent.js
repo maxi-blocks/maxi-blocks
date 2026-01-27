@@ -209,21 +209,48 @@ class MaxiBlockComponent extends Component {
 	}
 
 	updateDOMReferences() {
-		// SIMPLIFIED - no caching, just direct queries
+		// Cache DOM lookups across blocks to avoid repeated queries on breakpoint switches
+		const now =
+			typeof performance !== 'undefined' && performance.now
+				? performance.now()
+				: Date.now();
+		const cache =
+			MaxiBlockComponent.domRefCache ||
+			(MaxiBlockComponent.domRefCache = {
+				lastUpdate: 0,
+				editorIframe: null,
+				templateModal: null,
+			});
+
+		if (
+			now - cache.lastUpdate < 100 &&
+			cache.editorIframe &&
+			this.isElementInDOM(cache.editorIframe)
+		) {
+			this.editorIframe = cache.editorIframe;
+			this.templateModal = cache.templateModal;
+			return;
+		}
+
+		// Direct queries when cache is stale
 		const editorIframeSelector =
 			'iframe[name="editor-canvas"]:not(.edit-site-visual-editor__editor-canvas)';
 		const editorIframeSelectorAttemptTwo =
 			'.block-editor-iframe__scale-container iframe[name="editor-canvas"]';
-		this.editorIframe =
+		cache.editorIframe =
 			document.querySelector(editorIframeSelector) ||
 			document.querySelector(editorIframeSelectorAttemptTwo);
 		if (!getIsSiteEditor()) {
 			const templateModalSelector =
 				'.editor-post-template__swap-template-modal';
-			this.templateModal = document.querySelector(templateModalSelector);
+			cache.templateModal = document.querySelector(templateModalSelector);
 		} else {
-			this.templateModal = null;
+			cache.templateModal = null;
 		}
+
+		cache.lastUpdate = now;
+		this.editorIframe = cache.editorIframe;
+		this.templateModal = cache.templateModal;
 	}
 
 	componentDidMount() {
@@ -484,6 +511,19 @@ class MaxiBlockComponent extends Component {
 			return false;
 		}
 
+		const wasBreakpointChanged =
+			this.props.deviceType !== prevProps.deviceType ||
+			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
+
+		if (
+			wasBreakpointChanged &&
+			prevProps.attributes === this.props.attributes
+		) {
+			// Avoid expensive diff when only breakpoints changed
+			this.cachedDiffAttributes = {};
+			return false;
+		}
+
 		// OPTIMIZATION: Calculate diff once and cache for componentDidUpdate
 		// This avoids expensive diff() recalculation in componentDidUpdate
 		this.cachedDiffAttributes = diff(
@@ -492,9 +532,6 @@ class MaxiBlockComponent extends Component {
 		);
 
 		// If deviceType or baseBreakpoint changes, render styles
-		const wasBreakpointChanged =
-			this.props.deviceType !== prevProps.deviceType ||
-			this.props.baseBreakpoint !== prevProps.baseBreakpoint;
 		if (wasBreakpointChanged) return false;
 
 		// Force render styles when changing state
@@ -881,8 +918,24 @@ class MaxiBlockComponent extends Component {
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
-		const iframeDocument = iframe.contentDocument;
-		const editorWrapper = iframeDocument.body;
+		const iframeDocument = iframe?.contentDocument;
+		const editorWrapper = iframeDocument?.body;
+		if (!iframeDocument || !editorWrapper) return;
+
+		const cache =
+			MaxiBlockComponent.iframeStylesCache ||
+			(MaxiBlockComponent.iframeStylesCache = {
+				doc: null,
+				breakpoint: null,
+			});
+
+		if (
+			cache.doc === iframeDocument &&
+			cache.breakpoint === currentBreakpoint
+		) {
+			return;
+		}
+
 		const { isPreview } = this.getPreviewElements(
 			editorWrapper,
 			currentBreakpoint
@@ -900,6 +953,9 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint
 			);
 		}
+
+		cache.doc = iframeDocument;
+		cache.breakpoint = currentBreakpoint;
 	}
 
 	setMaxiAttributes() {
@@ -1991,6 +2047,21 @@ class MaxiBlockComponent extends Component {
 
 	updateResponsiveClasses(iframe, currentBreakpoint) {
 		const target = iframe?.contentDocument?.body || document.body;
+		if (!target) return;
+
+		const cache =
+			MaxiBlockComponent.responsiveClassCache ||
+			(MaxiBlockComponent.responsiveClassCache = {
+				target: null,
+				breakpoint: null,
+			});
+
+		if (
+			cache.target === target &&
+			cache.breakpoint === currentBreakpoint
+		) {
+			return;
+		}
 
 		const editorWrapper = target.classList.contains('editor-styles-wrapper')
 			? target
@@ -2000,6 +2071,8 @@ class MaxiBlockComponent extends Component {
 				'maxi-blocks-responsive',
 				currentBreakpoint
 			);
+			cache.target = target;
+			cache.breakpoint = currentBreakpoint;
 		}
 	}
 

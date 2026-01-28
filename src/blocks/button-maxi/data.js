@@ -185,7 +185,7 @@ const transition = {
 		},
 		'text link': {
 			title: __('Text link', 'maxi-blocks'),
-			target: buttonInlineLinkClass,
+			target: [buttonInlineLinkClass, `${buttonInlineLinkClass} span`],
 			property: 'color',
 		},
 		'button background': {

@@ -48,6 +48,18 @@ const MasonryItem = props => {
 		return response?.toLowerCase();
 	};
 
+	/**
+	 * Gets SVG serial by converting to lowercase and replacing spaces with dashes
+	 * Uses 'svg' as fallback if serial is undefined
+	 *
+	 * @param {string} string - The serial string to process
+	 * @returns {string} Processed serial or 'svg' fallback
+	 */
+	const getSVGSerial = (string = serial) => {
+		if (!string) return 'svg';
+		return string.toLowerCase().replace(/\s+/g, '-');
+	};
+
 	const masonryCardClasses = classnames(
 		'maxi-cloud-masonry-card',
 		`maxi-cloud-masonry-card__${target}`,
@@ -59,7 +71,10 @@ const MasonryItem = props => {
 		className
 	);
 
-	const masonryCardId = `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
+	const masonryCardId =
+		type === 'svg'
+			? `maxi-cloud-masonry-card__svg-${getSVGSerial()}`
+			: `maxi-cloud-masonry-card__pattern-${getCardSerial()}`;
 
 	const patternsScContent = () => {
 		return (

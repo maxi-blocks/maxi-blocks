@@ -22,6 +22,7 @@ import {
 	getSVGPosition,
 	getSVGRatio,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 const ImageShapeResponsiveSettings = ({
 	breakpoint,
@@ -125,6 +126,11 @@ const ImageShape = props => {
 	const shapePosition = getSVGPosition(icon);
 	const shapeRatio = getSVGRatio(icon);
 
+	// Process icon with current colors for preview
+	const processedIcon = icon
+		? svgAttributesReplacer(icon, 'image-shape', 'image-shape')
+		: icon;
+
 	return (
 		<>
 			{!isHover && (
@@ -147,7 +153,7 @@ const ImageShape = props => {
 							onRemove={obj => {
 								onChange(obj);
 							}}
-							icon={icon}
+							icon={processedIcon}
 						/>
 					)}
 					{icon && breakpoint === 'general' && (

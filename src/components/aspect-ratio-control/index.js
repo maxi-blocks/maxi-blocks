@@ -10,6 +10,11 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import SelectControl from '@components/select-control';
 import { convertAspectRatioToDecimal } from '@extensions/styles';
 
+/**
+ * Styles
+ */
+import './editor.scss';
+
 const AspectRatioControl = ({
 	additionalOptions,
 	customValue,
@@ -53,6 +58,7 @@ const AspectRatioControl = ({
 		{props.value === 'custom' && (
 			<>
 				<AdvancedNumberControl
+					className='maxi-aspect-ratio-control__custom-value'
 					newStyle
 					value={customValue}
 					min={0}

@@ -708,7 +708,7 @@ body.maxi-blocks--active .edit-post-visual-editor {
 body.maxi-blocks--active
 	.editor-styles-wrapper
 	.block-editor-block-list__layout.is-root-container.is-desktop-preview {
-	padding-bottom: 40vh;
+	padding-bottom: 40px;
 }
 
 body.maxi-blocks--active
@@ -1092,5 +1092,24 @@ body.maxi-blocks--active {
 			overflow: hidden !important;
 			box-sizing: border-box !important;
 		}
+	}
+}
+
+/*******************************
+* Disable WordPress block move animations
+*******************************/
+.block-editor-block-list__block {
+	// Disable default WordPress move animations
+	transition: none !important;
+	transform: none !important;
+	animation: none !important;
+
+	// Ensure no transition on any state
+	&.is-moving,
+	&[data-is-moving],
+	&.is-dragging {
+		transition: none !important;
+		transform: none !important;
+		animation: none !important;
 	}
 }

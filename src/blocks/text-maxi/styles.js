@@ -658,7 +658,9 @@ const getStyles = (props, getListItemsLength) => {
 	});
 
 	const customFormats = getCustomFormatsStyles(
-		!isList ? ' .maxi-text-block__content' : ' .maxi-text-block__content li',
+		!isList
+			? ' .maxi-text-block__content'
+			: ' .maxi-text-block__content li',
 		props['custom-formats'],
 		false,
 		{ ...getGroupAttributes(props, 'typography') },
@@ -679,7 +681,11 @@ const getStyles = (props, getListItemsLength) => {
 
 	const linkStyles1 = getLinkStyles(
 		{
-			...getGroupAttributes(props, ['link', 'typography', 'typographyHover']),
+			...getGroupAttributes(props, [
+				'link',
+				'typography',
+				'typographyHover',
+			]),
 		},
 		[` a ${element}`],
 		props.blockStyle
@@ -687,7 +693,11 @@ const getStyles = (props, getListItemsLength) => {
 
 	const linkStyles2 = getLinkStyles(
 		{
-			...getGroupAttributes(props, ['link', 'typography', 'typographyHover']),
+			...getGroupAttributes(props, [
+				'link',
+				'typography',
+				'typographyHover',
+			]),
 		},
 		[` ${element} a`],
 		props.blockStyle
@@ -728,14 +738,16 @@ const getStyles = (props, getListItemsLength) => {
 				':hover': hoverObj,
 				...(!isList && {
 					[` ${element}.maxi-text-block__content`]: textTypography,
-					[` ${element}.maxi-text-block__content:hover`]: textTypographyHover,
+					[` ${element}.maxi-text-block__content:hover`]:
+						textTypographyHover,
 				}),
 				...(isList && {
 					[` ${element}`]: listObj,
 					[` ${element} li`]: listItems,
 					[` ${element} li:not(:first-child)`]: listParagraph,
 					[` ${element} li:hover`]: listItemsHover,
-					[` ${element} li .maxi-list-item-block__content::before`]: markerObj,
+					[` ${element} li .maxi-list-item-block__content::before`]:
+						markerObj,
 				}),
 				...blockBgStyles,
 				...blockBgHoverStyles,

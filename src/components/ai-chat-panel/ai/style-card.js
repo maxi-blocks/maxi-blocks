@@ -7,7 +7,34 @@ import { __ } from '@wordpress/i18n';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { cloneDeep } from 'lodash';
 
-import applyThemeToStyleCards from '@extensions/style-cards/applyThemeToStyleCards';
+import applyThemeToStyleCards, { openStyleCardsEditor } from '@extensions/style-cards/applyThemeToStyleCards';
+
+const HEADING_LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+const STYLE_CARD_SECTIONS = new Set([
+	'color',
+	'p',
+	'h1',
+	'h2',
+	'h3',
+	'h4',
+	'h5',
+	'h6',
+	'button',
+	'icon',
+	'divider',
+	'link',
+	'navigation',
+]);
+const HEADING_ALIASES = new Set(['heading', 'headings', 'header', 'headers', 'title', 'titles']);
+const BODY_ALIASES = new Set(['body', 'paragraph', 'text']);
+const isPlainObject = value => !!value && typeof value === 'object' && !Array.isArray(value);
+const normalizeSectionKey = key => {
+	if (!key) return key;
+	const lowerKey = String(key).toLowerCase();
+	if (HEADING_ALIASES.has(lowerKey)) return 'headings';
+	if (BODY_ALIASES.has(lowerKey)) return 'p';
+	return lowerKey;
+};
 
 export const STYLE_CARD_PATTERNS = [
 	{ regex: /minimalis(m|t)|clean.*look|simple.*design|white.*space/, property: 'aesthetic', value: 'minimalism', selectionMsg: 'Applied minimalist style.', pageMsg: 'Applied minimalist aesthetic.' },
@@ -122,6 +149,8 @@ export const createStyleCardHandlers = ({
 
 		let targetKey = activeKey;
 		let message = '';
+		let shouldFocusHeadings = false;
+		let focusHeadingLevel = 'h1';
 
 		if (activeKey === 'sc_maxi') {
 			const timestamp = Date.now();
@@ -135,41 +164,138 @@ export const createStyleCardHandlers = ({
 
 			newStyleCards[activeKey].status = 'inactive';
 
-			message = __('New Style Card created and activated.', 'maxi-blocks');
+			message = __('New Style Card created. Review and save in the editor.', 'maxi-blocks');
 		} else {
-			message = __('Style Card updated.', 'maxi-blocks');
+			message = __('Style Card updated. Review and save in the editor.', 'maxi-blocks');
 		}
 
 		const targetCard = newStyleCards[targetKey];
 		let changesCount = 0;
 
-		const setStyleValue = (key, value) => {
+		const ensureSection = (mode, section) => {
+			if (!targetCard[mode]) targetCard[mode] = {};
+			if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
+			if (!targetCard[mode].styleCard[section]) {
+				targetCard[mode].styleCard[section] = {};
+			}
+		};
+
+		const setSectionValue = (section, key, value) => {
 			['light', 'dark'].forEach(mode => {
-				if (!targetCard[mode]) targetCard[mode] = {};
-				if (!targetCard[mode].styleCard) targetCard[mode].styleCard = {};
-
-				let category = 'color';
-				if (key.startsWith('font-')) category = 'typography';
-
-				if (!targetCard[mode].styleCard[category]) {
-					targetCard[mode].styleCard[category] = {};
-				}
-
-				targetCard[mode].styleCard[category][key] = value;
+				ensureSection(mode, section);
+				targetCard[mode].styleCard[section][key] = value;
 			});
 			changesCount++;
 		};
 
-		Object.entries(updates).forEach(([key, value]) => {
-			setStyleValue(key, value);
+		const setColorValue = (colorKey, value) => {
+			['light', 'dark'].forEach(mode => {
+				ensureSection(mode, 'color');
+				targetCard[mode].styleCard.color[colorKey] = value;
+			});
+			changesCount++;
+		};
+
+		const applySectionUpdates = (section, sectionUpdates) => {
+			Object.entries(sectionUpdates).forEach(([key, value]) => {
+				setSectionValue(section, key, value);
+			});
+		};
+
+		const markHeadingFocus = (level = null) => {
+			shouldFocusHeadings = true;
+			if (level && HEADING_LEVELS.includes(level)) {
+				focusHeadingLevel = level;
+			}
+		};
+
+		Object.entries(updates).forEach(([rawKey, value]) => {
+			const key = normalizeSectionKey(rawKey);
+			if (key === 'headings') {
+				markHeadingFocus();
+			} else if (HEADING_LEVELS.includes(key)) {
+				markHeadingFocus(key);
+			} else if (typeof rawKey === 'string' && rawKey.includes('.')) {
+				const [sectionPart] = rawKey.split('.');
+				const sectionKey = normalizeSectionKey(sectionPart);
+				if (sectionKey === 'headings') {
+					markHeadingFocus();
+				} else if (HEADING_LEVELS.includes(sectionKey)) {
+					markHeadingFocus(sectionKey);
+				}
+			}
+
+			if (key === 'headings') {
+				if (isPlainObject(value)) {
+					HEADING_LEVELS.forEach(level => applySectionUpdates(level, value));
+				} else if (typeof value === 'string') {
+					HEADING_LEVELS.forEach(level => setSectionValue(level, 'font-family-general', value));
+				}
+				return;
+			}
+
+			if (STYLE_CARD_SECTIONS.has(key) && isPlainObject(value)) {
+				applySectionUpdates(key, value);
+				return;
+			}
+
+			if (key === 'color' && isPlainObject(value)) {
+				Object.entries(value).forEach(([colorKey, colorValue]) => {
+					const normalizedColorKey = String(colorKey).replace(/^color-/, '');
+					setColorValue(normalizedColorKey, colorValue);
+				});
+				return;
+			}
+
+			if (typeof rawKey === 'string' && rawKey.includes('.')) {
+				const [sectionPart, attr] = rawKey.split('.');
+				const sectionKey = normalizeSectionKey(sectionPart);
+				if (STYLE_CARD_SECTIONS.has(sectionKey) && attr) {
+					setSectionValue(sectionKey, attr, value);
+					return;
+				}
+				if (sectionKey === 'headings' && attr) {
+					HEADING_LEVELS.forEach(level => setSectionValue(level, attr, value));
+					return;
+				}
+			}
+
+			if (typeof rawKey === 'string' && /^color-\d+$/.test(rawKey)) {
+				setColorValue(rawKey.replace('color-', ''), value);
+				return;
+			}
+
+			if (typeof rawKey === 'string' && /^\d+$/.test(rawKey)) {
+				setColorValue(rawKey, value);
+				return;
+			}
+
+			if (typeof rawKey === 'string' && rawKey.startsWith('font-')) {
+				setSectionValue('p', rawKey, value);
+			}
 		});
 
 		if (changesCount > 0) {
+			Object.keys(newStyleCards).forEach(key => {
+				if (key === targetKey) {
+					newStyleCards[key].pendingChanges = true;
+					newStyleCards[key].selected = true;
+				} else {
+					delete newStyleCards[key].selected;
+				}
+			});
+
 			saveMaxiStyleCards(newStyleCards, true);
 
 			if (setActiveStyleCard && targetKey !== activeKey) {
 				setActiveStyleCard(targetKey);
 			}
+
+			openStyleCardsEditor({
+				focusHeadingsGlobals: shouldFocusHeadings,
+				headingLevel: focusHeadingLevel,
+				delay: 350,
+			});
 
 			return message;
 		}

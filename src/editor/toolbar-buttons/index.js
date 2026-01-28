@@ -126,6 +126,7 @@ const ToolbarButtons = () => {
 					aria-pressed={isAIChatOpen}
 					onClick={toggleAIChat}
 					title='Maxi AI Assistant'
+					data-testid='maxi-ai-open'
 				>
 					<span style={{ fontSize: '16px' }}>✨</span>
 				</Button>

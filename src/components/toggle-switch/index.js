@@ -28,6 +28,7 @@ const ToggleSwitch = ({
 	help,
 	selected,
 	disabled,
+	testId,
 }) => {
 	const instanceId = useInstanceId(ToggleSwitch);
 	const id = `maxi-toggle-switch-${instanceId}`;
@@ -51,6 +52,7 @@ const ToggleSwitch = ({
 					id={id}
 					aria-describedby={help ? `${id}__help` : undefined}
 					disabled={disabled}
+					data-testid={testId}
 				/>
 				<span className='maxi-toggle-switch__toggle__track' />
 				<span className='maxi-toggle-switch__toggle__thumb' />

@@ -109,6 +109,7 @@ const AdvancedNumberControl = props => {
 		newStyle = false,
 		showHelp = false,
 		helpContent = '',
+		testId,
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
@@ -300,6 +301,7 @@ const AdvancedNumberControl = props => {
 								className='maxi-advanced-number-control__value'
 								value={latestValueRef.current || currentValue}
 								onChange={handleInputChange}
+								data-testid={testId}
 								onKeyDown={e => {
 									validateNumberInput(
 										e,

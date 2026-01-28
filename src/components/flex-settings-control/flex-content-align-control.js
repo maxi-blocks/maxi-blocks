@@ -80,6 +80,7 @@ const FlexContentAlignControl = props => {
 			fullWidthMode
 			className='maxi-flex__align-content'
 			hasBorder
+			testIdPrefix={`maxi-control-align-content-${breakpoint}`}
 			items={getOptions()}
 			showTooltip
 			value={

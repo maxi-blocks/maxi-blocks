@@ -62,6 +62,7 @@ const AriaLabelControl = ({ ariaLabels, targets, onChange, getIcon }) => {
 				newStyle
 				value={ariaLabels?.[target] || ''}
 				onChange={onChangeAriaLabel}
+				data-testid={`maxi-control-ariaLabels-${target}`}
 			/>
 		</>
 	);

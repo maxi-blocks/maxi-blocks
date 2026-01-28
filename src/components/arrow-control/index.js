@@ -123,6 +123,7 @@ const ArrowControl = props => {
 				onChange={val =>
 					onChange({ [`arrow-status-${breakpoint}`]: val })
 				}
+				testId={`maxi-control-arrow-status-${breakpoint}`}
 			/>
 			{getLastBreakpointAttribute({
 				target: 'arrow-status',
@@ -134,6 +135,7 @@ const ArrowControl = props => {
 						label=''
 						type='buttons'
 						fullWidthMode
+						testIdPrefix={`maxi-control-arrow-side-${breakpoint}`}
 						selected={getLastBreakpointAttribute({
 							target: 'arrow-side',
 							breakpoint,
@@ -151,6 +153,7 @@ const ArrowControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
+						testId={`maxi-control-arrow-position-${breakpoint}`}
 						onChangeValue={(val, meta) => {
 							onChangeValue(
 								'arrow-position',
@@ -180,6 +183,7 @@ const ArrowControl = props => {
 							breakpoint,
 							attributes: props,
 						})}
+						testId={`maxi-control-arrow-width-${breakpoint}`}
 						onChangeValue={(val, meta) => {
 							const value = isNil(val)
 								? getDefaultAttribute(

@@ -53,6 +53,7 @@ const SettingTabsControl = props => {
 		depth,
 		hasBorder = false,
 		showTooltip = false,
+		testIdPrefix,
 		/**
 		 * Optional class name to be appended to the content wrapper (`.maxi-tabs-content`).
 		 * Useful for one-off styling or visual debugging without affecting other instances.
@@ -162,6 +163,15 @@ const SettingTabsControl = props => {
 									) && 'maxi-tabs-control__button--active',
 									item.className
 								)}
+								data-testid={
+									testIdPrefix
+										? `${testIdPrefix}-${String(
+												item.value ?? buttonLabel
+										  )
+												.toLowerCase()
+												.replace(/[^a-z0-9-]+/g, '-')}`
+										: undefined
+								}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);
 									if (callback) callback(item, i);

@@ -21,6 +21,7 @@ const advancedCss = ({ props }) => {
 			<AdvancedCssControl
 				{...getGroupAttributes(attributes, 'advancedCss')}
 				breakpoint={deviceType}
+				testId={`maxi-control-advanced-css-${deviceType}`}
 				onChange={value =>
 					maxiSetAttributes({
 						[getAttributeKey(

@@ -18,6 +18,7 @@ import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
+import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
@@ -175,7 +176,9 @@ const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEV
 ### SCOPE RULES
 - USER INTENT SCOPE "SELECTION": Use update_selection for selected block and its contents.
 - USER INTENT SCOPE "PAGE": Use update_page for all matching blocks on page.
-- USER INTENT SCOPE "GLOBAL": Use apply_theme for Style Card changes.
+- USER INTENT SCOPE "GLOBAL":
+  - Use update_style_card for specific Style Card token changes (typography, palette slots, heading/body/button fonts, sizes).
+  - Use apply_theme only for overall aesthetic/theme/vibe or palette generation.
 
 ### BLOCK TARGETING
 Include "target_block" when user mentions specific types:
@@ -253,6 +256,8 @@ Rounded Subtle: 8, Soft: 24, Full: 50
 
 CLARIFY: {"action":"CLARIFY","message":"Question?","options":[{"label":"A"},{"label":"B"}]}
 review_mobile: {"action":"switch_viewport","value":"Mobile","message":"Switched to mobile view."}
+update_style_card: {"action":"update_style_card","updates":{"headings":{"font-family-general":"Cormorant Garamond"}},"message":"Updated heading font."}
+apply_theme: {"action":"apply_theme","prompt":"make the theme more minimalist"}
 
 SUCCESS MESSAGES (Use these patterns):
 - Spacing: "Applied [preset] spacing: [val] for desktop, scaled for mobile. Review on mobile?"
@@ -329,9 +334,13 @@ const LAYOUT_PATTERNS = [
 	{ regex: /make.*sticky|sticky|follow.*scroll|stay.*scroll|stick.*top/, property: 'position', value: 'sticky', selectionMsg: 'Made sticky (follows scroll).', pageMsg: 'Made containers sticky.' },
 	{ regex: /float.*corner|fixed\s*position|stay.*corner|pin.*corner|always\s*visible/, property: 'position', value: 'fixed', selectionMsg: 'Fixed to viewport (always visible).', pageMsg: 'Fixed containers to viewport.' },
 	
+	// GROUP 6.5: CALLOUT ARROW
+	{ regex: /\b(callout|container|section)\s*arrow\b|\barrow\s*(?:on|at)\s*boundary\b|\bshow\s+(?:the\s+)?callout\s+arrow\b/i, property: 'arrow_status', value: true, selectionMsg: 'Enabled callout arrow.', pageMsg: 'Enabled callout arrows.', target: 'container' },
+	{ regex: /\bhide\s+(?:the\s+)?callout\s+arrow\b|\bdisable\s+(?:the\s+)?callout\s+arrow\b/i, property: 'arrow_status', value: false, selectionMsg: 'Callout arrow hidden.', pageMsg: 'Callout arrows hidden.', target: 'container' },
+	
 	// GROUP 7: VISIBILITY
-	{ regex: /hide\s*(this|it)?(?!.*mobile)|make.*invisible|disappear|display.*none|remove.*view/, property: 'display', value: 'none', selectionMsg: 'Hidden from view (display: none).', pageMsg: 'Hidden containers.' },
-	{ regex: /show\s*(this|it)?(?!.*mobile)|make.*visible|appear|unhide|display.*block/, property: 'display', value: 'flex', selectionMsg: 'Made visible (display: flex).', pageMsg: 'Made containers visible.' },
+	{ regex: /hide\s*(this|it)?(?!.*mobile)(?!.*arrow)|make.*invisible(?!.*arrow)|disappear(?!.*arrow)|display.*none(?!.*arrow)|remove.*view(?!.*arrow)/, property: 'display', value: 'none', selectionMsg: 'Hidden from view (display: none).', pageMsg: 'Hidden containers.' },
+	{ regex: /show\s*(this|it)?(?!.*mobile)(?!.*arrow)|make.*visible(?!.*arrow)|appear(?!.*arrow)|unhide(?!.*arrow)|display.*block(?!.*arrow)/, property: 'display', value: 'flex', selectionMsg: 'Made visible (display: flex).', pageMsg: 'Made containers visible.' },
 	
 	// GROUP 8: GAP CONTROL (special handling - remove only, add has clarification)
 	{ regex: /remove\s*gap|no\s*gap|zero\s*gap|remove\s*gutter/, property: 'gap', value: 0, selectionMsg: 'Removed gaps between items.', pageMsg: 'Removed gaps from containers.' },
@@ -339,7 +348,7 @@ const LAYOUT_PATTERNS = [
 	// GROUP 9: OPACITY & TRANSPARENCY
 	{ regex: /see.*through|transparent|ghostly|translucent|opacity.*half|semi.*transparent/, property: 'opacity', value: 0.5, selectionMsg: 'Made semi-transparent (opacity: 0.5).', pageMsg: 'Made containers semi-transparent.' },
 	{ regex: /fade.*out.*complete|fully.*transparent|invisible|opacity.*zero|completely.*transparent/, property: 'opacity', value: 0, selectionMsg: 'Made fully transparent (opacity: 0).', pageMsg: 'Made containers invisible.' },
-	{ regex: /fully.*opaque|solid|not.*transparent|opacity.*full|remove.*transparency/, property: 'opacity', value: 1, selectionMsg: 'Made fully opaque (opacity: 1).', pageMsg: 'Restored full opacity.' },
+	{ regex: /fully.*opaque|not.*transparent|opacity.*full|remove.*transparency/, property: 'opacity', value: 1, selectionMsg: 'Made fully opaque (opacity: 1).', pageMsg: 'Restored full opacity.' },
 	
 	// GROUP 10: TRANSFORM EFFECTS
 	{ regex: /tilt|askew|skew|slant/, property: 'transform_rotate', value: 5, selectionMsg: 'Tilted element (rotate: 5deg).', pageMsg: 'Tilted containers.' },
@@ -461,10 +470,20 @@ const LAYOUT_PATTERNS = [
 const ACTION_PROPERTY_ALIASES = {
 	justifyContent: 'justify_content',
 	alignItems: 'align_items_flex',
+	alignItemsFlex: 'align_items_flex',
+	alignContent: 'align_content',
 	flexDirection: 'flex_direction',
 	flexWrap: 'flex_wrap',
 	rowGap: 'gap',
 	columnGap: 'gap',
+	arrowStatus: 'arrow_status',
+	arrowSide: 'arrow_side',
+	arrowPosition: 'arrow_position',
+	arrowWidth: 'arrow_width',
+	anchorLink: 'anchor_link',
+	ariaLabel: 'aria_label',
+	advancedCss: 'advanced_css',
+	advancedCSS: 'advanced_css',
 };
 
 const AIChatPanel = ({ isOpen, onClose }) => {
@@ -538,6 +557,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		});
 	};
 
+	const handleScopeChange = nextScope => {
+		if (nextScope === scope) return;
+		setScope(nextScope);
+		if (conversationContext) setConversationContext(null);
+	};
+
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
@@ -597,6 +622,16 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	useEffect(() => {
 		messagesRef.current = messages;
 	}, [messages]);
+
+	useEffect(() => {
+		if (scope === 'global') {
+			if (conversationContext) setConversationContext(null);
+			return;
+		}
+		if (conversationContext?.mode && conversationContext.mode !== scope) {
+			setConversationContext(null);
+		}
+	}, [scope, conversationContext]);
 
 	// Get Style Card palette colors for visual swatches
 	// Uses CSS variables that are already set on the page (same approach as sidebar palette)
@@ -954,6 +989,35 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return templates[index % templates.length];
 	};
 
+	const isBackgroundDebugEnabled = () => {
+		if (typeof window === 'undefined') return false;
+		if (window.__MAXI_AI_DEBUG_BG) return true;
+		try {
+			return window.localStorage?.getItem('maxiAiDebugBackground') === '1';
+		} catch (e) {
+			return false;
+		}
+	};
+
+	const summarizeBackgroundLayers = layers => {
+		if (!Array.isArray(layers)) return layers;
+		return layers.map(layer => ({
+			id: layer?.id,
+			order: layer?.order,
+			type: layer?.type,
+			display: layer?.['display-general'],
+			paletteStatus: layer?.['background-palette-status-general'],
+			paletteColor: layer?.['background-palette-color-general'],
+			color: layer?.['background-color-general'],
+		}));
+	};
+
+	const logBackgroundDebug = (label, payload) => {
+		if (!isBackgroundDebugEnabled()) return;
+		// Keep payload small and readable.
+		console.log(`[Maxi AI BG] ${label}`, payload);
+	};
+
 	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
 		const newAttributes = {};
 		const isPalette = typeof color === 'number';
@@ -965,18 +1029,21 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			newAttributes[`${prefix}background-palette-status-general`] = true;
 			newAttributes[`${prefix}background-palette-color-general`] = color;
 			// Explicitly clear custom color to ensure editor UI reflects palette status
-			newAttributes[`${prefix}background-color-general`] = ''; 
+			newAttributes[`${prefix}background-color-general`] = '';
 		} else {
 			newAttributes[`${prefix}background-palette-status-general`] = false;
 			newAttributes[`${prefix}background-color-general`] = color;
 		}
 
-		if (currentAttributes['background-layers'] && Array.isArray(currentAttributes['background-layers'])) {
+		if (
+			currentAttributes['background-layers'] &&
+			Array.isArray(currentAttributes['background-layers'])
+		) {
 			const layers = cloneDeep(currentAttributes['background-layers']);
 			if (layers.length > 0) {
 				layers[0].type = 'color';
 				layers[0]['display-general'] = 'block';
-				
+
 				if (isPalette) {
 					layers[0]['background-palette-status-general'] = true;
 					layers[0]['background-palette-color-general'] = color;
@@ -987,6 +1054,17 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				newAttributes['background-layers'] = layers;
 			}
 		}
+		logBackgroundDebug('updateBackgroundColor', {
+			clientId,
+			prefix,
+			color,
+			isPalette,
+			backgroundActiveMedia: newAttributes[`${prefix}background-active-media-general`],
+			paletteStatus: newAttributes[`${prefix}background-palette-status-general`],
+			paletteColor: newAttributes[`${prefix}background-palette-color-general`],
+			customColor: newAttributes[`${prefix}background-color-general`],
+			layers: summarizeBackgroundLayers(newAttributes['background-layers']),
+		});
 		return newAttributes;
 	};
 
@@ -1036,6 +1114,93 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			const match = message.match(pattern);
 			if (match && match[1]) return match[1].trim();
 		}
+		return null;
+	};
+
+	const extractNumericValue = (message, patterns) => {
+		for (const pattern of patterns) {
+			const match = message.match(pattern);
+			if (match && match[1]) {
+				const num = Number.parseFloat(match[1]);
+				if (Number.isFinite(num)) return num;
+			}
+		}
+		return null;
+	};
+
+	const sanitizeAnchorId = value =>
+		String(value || '').replace(/[^a-zA-Z0-9-_]/g, '');
+
+	const extractAnchorLink = message => {
+		const quoted = extractQuotedText(message);
+		const raw =
+			quoted ||
+			extractValueFromPatterns(message, [
+				/(?:anchor(?:[\s_-]*link|[\s_-]*id)?)\s*(?:to|=|:|is)?\s*([a-zA-Z0-9-_]+)/i,
+			]);
+		if (!raw) return null;
+		const cleaned = sanitizeAnchorId(raw);
+		return cleaned || null;
+	};
+
+	const extractAriaLabel = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:aria[\s_-]*label)\s*(?:to|=|:|is)?\s*(.+)$/i,
+		]);
+	};
+
+	const extractAdvancedCss = message => {
+		const raw = extractValueFromPatterns(message, [
+			/(?:advanced|custom)[\s_-]*css\s*(?:to|=|:|is)?\s*([\s\S]+)$/i,
+			/add\s*css\s*(?:to|=|:)?\s*([\s\S]+)$/i,
+		]);
+		if (!raw) return null;
+		if (!/[{};]/.test(raw)) return null;
+		return raw.trim();
+	};
+
+	const extractArrowSide = lowerMessage => {
+		if (!lowerMessage.includes('arrow')) return null;
+		if (/\barrow\b.*\btop\b|\btop\b.*\barrow\b/.test(lowerMessage)) return 'top';
+		if (/\barrow\b.*\bbottom\b|\bbottom\b.*\barrow\b/.test(lowerMessage)) return 'bottom';
+		if (/\barrow\b.*\bleft\b|\bleft\b.*\barrow\b/.test(lowerMessage)) return 'left';
+		if (/\barrow\b.*\bright\b|\bright\b.*\barrow\b/.test(lowerMessage)) return 'right';
+		return null;
+	};
+
+	const extractArrowPosition = message =>
+		extractNumericValue(message, [
+			/(?:arrow\s*(?:position|pos)|position\s*of\s*arrow)\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)/i,
+			/\barrow\b.*\bposition\b.*?(\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractArrowWidth = message =>
+		extractNumericValue(message, [
+			/(?:arrow\s*width|width\s*of\s*arrow)\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)/i,
+			/\barrow\b.*?(\d+(?:\.\d+)?)\s*(?:px)?\s*(?:wide|width)/i,
+		]);
+
+	const extractAlignItemsValue = lowerMessage => {
+		if (!/align[\s_-]*items/.test(lowerMessage)) return null;
+		if (/\b(top|start)\b/.test(lowerMessage)) return 'flex-start';
+		if (/\b(bottom|end)\b/.test(lowerMessage)) return 'flex-end';
+		if (/\b(center|centre|middle)\b/.test(lowerMessage)) return 'center';
+		if (/\bstretch\b/.test(lowerMessage)) return 'stretch';
+		if (/\bbaseline\b/.test(lowerMessage)) return 'baseline';
+		return null;
+	};
+
+	const extractAlignContentValue = lowerMessage => {
+		if (!/align[\s_-]*content/.test(lowerMessage)) return null;
+		if (/space[-\s]*between/.test(lowerMessage)) return 'space-between';
+		if (/space[-\s]*around/.test(lowerMessage)) return 'space-around';
+		if (/space[-\s]*evenly/.test(lowerMessage)) return 'space-evenly';
+		if (/\b(center|centre)\b/.test(lowerMessage)) return 'center';
+		if (/\bstretch\b/.test(lowerMessage)) return 'stretch';
+		if (/\b(start|top)\b/.test(lowerMessage)) return 'flex-start';
+		if (/\b(end|bottom)\b/.test(lowerMessage)) return 'flex-end';
 		return null;
 	};
 
@@ -1314,9 +1479,24 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 	// Border Radius
 	// Border Radius
 	const updateBorderRadius = (value, corner = null, prefix = '') => {
+		const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
 		// Fix: Allow 0 to be passed validly
-		let finalValue = (value === undefined || value === null || value === '') ? 8 : Number(value);
+		let finalValue = (rawValue === undefined || rawValue === null || rawValue === '') ? 8 : Number(rawValue);
 		if (isNaN(finalValue)) finalValue = 8;
+
+		const maxiStore = select('maxiBlocks');
+		const activeBreakpoint = maxiStore?.receiveMaxiDeviceType?.() || 'general';
+		const baseBreakpoint = maxiStore?.receiveBaseBreakpoint?.() || null;
+		const breakpoints = breakpoint ? [breakpoint] : [activeBreakpoint];
+		if (breakpoint === 'general' && activeBreakpoint !== 'general') {
+			breakpoints.push(activeBreakpoint);
+		}
+		if (breakpoint === 'general' && baseBreakpoint) {
+			breakpoints.push(baseBreakpoint);
+		} else if (!breakpoint && activeBreakpoint === 'general' && baseBreakpoint) {
+			breakpoints.push(baseBreakpoint);
+		}
+		const uniqueBreakpoints = Array.from(new Set(breakpoints));
 
 		const corners = {
 			'top-left': 'border-top-left-radius',
@@ -1324,25 +1504,25 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			'bottom-left': 'border-bottom-left-radius',
 			'bottom-right': 'border-bottom-right-radius',
 		};
-		
-		let changes = {};
-		if (corner && corners[corner.toLowerCase()]) {
-			changes = {
-				[`${prefix}${corners[corner.toLowerCase()]}-general`]: finalValue,
-				[`${prefix}border-sync-radius-general`]: 'none',
-				[`${prefix}border-unit-radius-general`]: 'px',
-			};
-		} else {
-			changes = {
-				[`${prefix}border-top-left-radius-general`]: finalValue,
-				[`${prefix}border-top-right-radius-general`]: finalValue,
-				[`${prefix}border-bottom-left-radius-general`]: finalValue,
-				[`${prefix}border-bottom-right-radius-general`]: finalValue,
-				[`${prefix}border-sync-radius-general`]: 'all',
-				[`${prefix}border-unit-radius-general`]: 'px',
-			};
-		}
-		
+
+		const lowerCorner = corner?.toLowerCase?.() || null;
+		const changes = {};
+		uniqueBreakpoints.forEach(bp => {
+			const suffix = `-${bp}`;
+			if (lowerCorner && corners[lowerCorner]) {
+				changes[`${prefix}${corners[lowerCorner]}${suffix}`] = finalValue;
+				changes[`${prefix}border-sync-radius${suffix}`] = 'none';
+				changes[`${prefix}border-unit-radius${suffix}`] = 'px';
+			} else {
+				changes[`${prefix}border-top-left-radius${suffix}`] = finalValue;
+				changes[`${prefix}border-top-right-radius${suffix}`] = finalValue;
+				changes[`${prefix}border-bottom-left-radius${suffix}`] = finalValue;
+				changes[`${prefix}border-bottom-right-radius${suffix}`] = finalValue;
+				changes[`${prefix}border-sync-radius${suffix}`] = 'all';
+				changes[`${prefix}border-unit-radius${suffix}`] = 'px';
+			}
+		});
+
 		console.log('[Maxi AI Debug] updateBorderRadius:', prefix, changes);
 		return changes;
 	};
@@ -1680,6 +1860,30 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		return changes;
 	};
 
+	const buildResponsiveValueChanges = (key, value) => {
+		const changes = {};
+		RESPONSIVE_BREAKPOINTS.forEach(bp => {
+			changes[`${key}-${bp}`] = value;
+		});
+		return changes;
+	};
+
+	const normalizeValueWithBreakpoint = rawValue => {
+		if (
+			rawValue &&
+			typeof rawValue === 'object' &&
+			!Array.isArray(rawValue) &&
+			Object.prototype.hasOwnProperty.call(rawValue, 'value')
+		) {
+			return {
+				value: rawValue.value,
+				breakpoint: rawValue.breakpoint || null,
+			};
+		}
+
+		return { value: rawValue, breakpoint: null };
+	};
+
 	const buildResponsiveSizeChanges = (
 		prefix,
 		key,
@@ -1881,6 +2085,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 	const updateAlignItems = (value) => ({
 		'align-items-general': value,
+	});
+
+	const updateAlignContent = (value) => ({
+		'align-content-general': value,
 	});
 
 	const updateGap = (value, unit = 'px') => {
@@ -2177,6 +2385,24 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 								changes = updateBackgroundColor(block.clientId, value, block.attributes, prefix);
 							}
 							break;
+						case 'background_layers': {
+							const layers = Array.isArray(value)
+								? value
+								: (value && Array.isArray(value.layers) ? value.layers : null);
+							if (layers && (specificClientId || (block.attributes && 'background-layers' in block.attributes))) {
+								changes = { 'background-layers': layers };
+							}
+							break;
+						}
+						case 'background_layers_hover': {
+							const layers = Array.isArray(value)
+								? value
+								: (value && Array.isArray(value.layers) ? value.layers : null);
+							if (layers && (specificClientId || (block.attributes && 'background-layers-hover' in block.attributes))) {
+								changes = { 'background-layers-hover': layers };
+							}
+							break;
+						}
 						case 'divider_color': {
 							if (specificClientId || block.name.includes('divider')) {
 								const isPalette = typeof value === 'number';
@@ -2380,6 +2606,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 									: updateAlignItems(value);
 							}
 							break;
+						case 'align_content':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = updateAlignContent(value);
+							}
+							break;
 						case 'flex_wrap':
 							// Apply to layout containers
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
@@ -2466,6 +2698,63 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 						case 'display':
 							changes = updateDisplay(value);
 							break;
+						// ======= CALLOUT ARROW =======
+						case 'arrow_status': {
+							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+							const status = Boolean(rawValue);
+							changes = breakpoint
+								? { [`arrow-status-${breakpoint}`]: status }
+								: buildResponsiveBooleanChanges('', 'arrow-status', status);
+							break;
+						}
+						case 'arrow_side': {
+							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+							const side = String(rawValue || 'bottom');
+							changes = breakpoint
+								? { [`arrow-side-${breakpoint}`]: side }
+								: buildResponsiveValueChanges('arrow-side', side);
+							break;
+						}
+						case 'arrow_position': {
+							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+							const pos = Number(rawValue);
+							const finalPos = Number.isFinite(pos) ? pos : 0;
+							changes = breakpoint
+								? { [`arrow-position-${breakpoint}`]: finalPos }
+								: buildResponsiveValueChanges('arrow-position', finalPos);
+							break;
+						}
+						case 'arrow_width': {
+							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+							const width = Number(rawValue);
+							const finalWidth = Number.isFinite(width) ? width : 0;
+							changes = breakpoint
+								? { [`arrow-width-${breakpoint}`]: finalWidth }
+								: buildResponsiveValueChanges('arrow-width', finalWidth);
+							break;
+						}
+						// ======= META / ACCESSIBILITY =======
+						case 'anchor_link':
+							changes = { anchorLink: String(value || '') };
+							break;
+						case 'aria_label': {
+							const nextLabel = String(value || '');
+							changes = {
+								ariaLabels: {
+									...(block.attributes?.ariaLabels || {}),
+									container: nextLabel,
+								},
+							};
+							break;
+						}
+						case 'advanced_css': {
+							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+							const cssValue = String(rawValue || '');
+							changes = breakpoint
+								? { [`advanced-css-${breakpoint}`]: cssValue }
+								: buildResponsiveValueChanges('advanced-css', cssValue);
+							break;
+						}
 						// ======= TRANSFORM EFFECTS =======
 						case 'transform_rotate':
 							changes = {
@@ -3022,8 +3311,258 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		};
 	};
 
+	const normalizeActionProperty = (property, value) => {
+		if (!property) return { property, value };
+
+		let nextProperty = ACTION_PROPERTY_ALIASES[property] || property;
+		nextProperty = String(nextProperty).replace(/-/g, '_');
+
+		const breakpointMatch = nextProperty.match(/_(general|xxl|xl|l|m|s|xs)$/);
+		const breakpoint = breakpointMatch ? breakpointMatch[1] : null;
+		const baseProperty = breakpoint
+			? nextProperty.slice(0, -(`_${breakpoint}`.length))
+			: nextProperty;
+
+		if (
+			baseProperty === 'background_palette_color' ||
+			baseProperty === 'background_color'
+		) {
+			let nextValue = value;
+			if (typeof nextValue === 'string') {
+				const trimmed = nextValue.trim();
+				if (/^\d+$/.test(trimmed)) {
+					nextValue = Number(trimmed);
+				} else {
+					const paletteMatch = trimmed.match(
+						/^var\(--(?:bg|maxi-light-color|maxi-color)-(\d+)\)$/
+					);
+					if (paletteMatch) {
+						nextValue = Number(paletteMatch[1]);
+					}
+				}
+			}
+			return {
+				property: 'background_color',
+				value: breakpoint ? { value: nextValue, breakpoint } : nextValue,
+			};
+		}
+
+		if (baseProperty === 'border_radius' && breakpoint) {
+			return {
+				property: 'border_radius',
+				value: { value, breakpoint },
+			};
+		}
+
+		if (
+			['arrow_status', 'arrow_side', 'arrow_position', 'arrow_width', 'advanced_css'].includes(baseProperty) &&
+			breakpoint
+		) {
+			return {
+				property: baseProperty,
+				value: { value, breakpoint },
+			};
+		}
+
+		return { property: baseProperty, value };
+	};
+
 	const parseAndExecuteAction = async responseText => {
+		const openSidebarForProperty = rawProperty => {
+			if (!rawProperty) return;
+			const property = String(rawProperty).replace(/-/g, '_');
+			const baseProperty = property.replace(/_(general|xxl|xl|l|m|s|xs)$/, '');
+			const normalizedProperty = baseProperty;
+
+			switch (normalizedProperty) {
+				case 'responsive_padding':
+				case 'padding':
+				case 'margin':
+					openSidebarAccordion(0, 'margin / padding');
+					return;
+				case 'size':
+				case 'width':
+				case 'height':
+				case 'min_width':
+				case 'max_width':
+				case 'min_height':
+				case 'max_height':
+				case 'full_width':
+				case 'width_fit_content':
+				case 'height_fit_content':
+					openSidebarAccordion(0, 'height / width');
+					return;
+				case 'background_color':
+				case 'background_palette_color':
+				case 'background_palette_status':
+				case 'background_palette_opacity':
+				case 'background':
+				case 'background_layers':
+				case 'background_layers_hover':
+				case 'block_background_status_hover':
+					openSidebarAccordion(0, 'background / layer');
+					return;
+				case 'border':
+				case 'border_radius':
+				case 'border_hover':
+					openSidebarAccordion(0, 'border');
+					return;
+				case 'box_shadow':
+				case 'box_shadow_hover':
+				case 'hover_glow':
+					openSidebarAccordion(0, 'box shadow');
+					return;
+				case 'shape_divider':
+				case 'shape_divider_top':
+				case 'shape_divider_bottom':
+				case 'shape_divider_both':
+				case 'shape_divider_color':
+				case 'shape_divider_color_top':
+				case 'shape_divider_color_bottom':
+					openSidebarAccordion(0, 'shape divider');
+					return;
+				case 'context_loop':
+					openSidebarAccordion(0, 'context loop');
+					return;
+				case 'arrow_status':
+				case 'arrow_side':
+				case 'arrow_position':
+				case 'arrow_width':
+					openSidebarAccordion(0, 'callout arrow');
+					return;
+				case 'anchor_link':
+					openSidebarAccordion(1, 'add anchor link');
+					return;
+				case 'aria_label':
+					openSidebarAccordion(1, 'aria label');
+					return;
+				case 'custom_css':
+					openSidebarAccordion(1, 'custom css');
+					return;
+				case 'advanced_css':
+					openSidebarAccordion(1, 'advanced css');
+					return;
+				case 'scroll_fade':
+					openSidebarAccordion(1, 'scroll effects');
+					return;
+				case 'transform':
+				case 'transform_scale_hover':
+				case 'hover_effect':
+				case 'hover_lift':
+					openSidebarAccordion(1, 'transform');
+					return;
+				case 'transition':
+					openSidebarAccordion(1, 'hover transition');
+					return;
+				case 'display':
+				case 'display_mobile':
+				case 'display_tablet':
+				case 'display_desktop':
+				case 'show_mobile_only':
+					openSidebarAccordion(1, 'show/hide block');
+					return;
+				case 'opacity':
+				case 'opacity_hover':
+				case 'opacity_status_hover':
+				case 'hover_darken':
+				case 'hover_lighten':
+					openSidebarAccordion(1, 'opacity');
+					return;
+				case 'position':
+				case 'position_top':
+				case 'position_right':
+				case 'position_bottom':
+				case 'position_left':
+					openSidebarAccordion(1, 'position');
+					return;
+				case 'overflow':
+					openSidebarAccordion(1, 'overflow');
+					return;
+				case 'z_index':
+					openSidebarAccordion(1, 'z-index');
+					return;
+				case 'align_items':
+				case 'align_items_flex':
+				case 'align_content':
+				case 'justify_content':
+				case 'flex_direction':
+				case 'flex_wrap':
+				case 'gap':
+				case 'row_gap':
+				case 'column_gap':
+					openSidebarAccordion(1, 'flexbox');
+					return;
+				default:
+			}
+		};
+
+		const extractJsonChunks = text => {
+			if (typeof text !== 'string') return [];
+			const chunks = [];
+			let depth = 0;
+			let start = -1;
+			let inString = false;
+			let escapeNext = false;
+
+			for (let i = 0; i < text.length; i += 1) {
+				const ch = text[i];
+
+				if (escapeNext) {
+					escapeNext = false;
+					continue;
+				}
+
+				if (ch === '\\\\') {
+					escapeNext = true;
+					continue;
+				}
+
+				if (ch === '"') {
+					inString = !inString;
+					continue;
+				}
+
+				if (inString) continue;
+
+				if (ch === '{' || ch === '[') {
+					if (depth === 0) start = i;
+					depth += 1;
+				} else if (ch === '}' || ch === ']') {
+					depth -= 1;
+					if (depth === 0 && start !== -1) {
+						chunks.push(text.slice(start, i + 1));
+						start = -1;
+					}
+				}
+			}
+
+			return chunks;
+		};
+
 		try {
+			if (typeof responseText === 'string') {
+				const chunks = extractJsonChunks(responseText);
+				if (chunks.length > 1) {
+					const parsedChunks = [];
+					chunks.forEach(chunk => {
+						try {
+							parsedChunks.push(JSON.parse(chunk));
+						} catch (parseError) {
+							console.warn(
+								'[Maxi AI Debug] Failed to parse JSON chunk:',
+								parseError
+							);
+						}
+					});
+
+					let lastResult = { executed: false };
+					for (const item of parsedChunks) {
+						lastResult = await parseAndExecuteAction(item);
+					}
+					return lastResult;
+				}
+			}
+
 			let action;
 			
 			// If already an object (from client-side interception), use it directly
@@ -3033,19 +3572,44 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				try {
 					action = JSON.parse(responseText.trim());
 				} catch {
-					const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-					if (jsonMatch) {
+					const chunks = extractJsonChunks(responseText);
+					if (chunks.length === 1) {
 						try {
-							action = JSON.parse(jsonMatch[0]);
+							action = JSON.parse(chunks[0]);
 						} catch (parseError) {
 							console.warn('[Maxi AI Debug] Failed to parse JSON from response:', parseError);
 						}
+					} else if (chunks.length > 1) {
+						const parsedChunks = [];
+						chunks.forEach(chunk => {
+							try {
+								parsedChunks.push(JSON.parse(chunk));
+							} catch (parseError) {
+								console.warn('[Maxi AI Debug] Failed to parse JSON chunk:', parseError);
+							}
+						});
+						if (parsedChunks.length === 1) action = parsedChunks[0];
+						else if (parsedChunks.length > 1) action = parsedChunks;
 					}
 				}
 			}
 
-			if (action?.property && ACTION_PROPERTY_ALIASES[action.property]) {
-				action.property = ACTION_PROPERTY_ALIASES[action.property];
+			if (action?.actions && Array.isArray(action.actions)) {
+				action = action.actions;
+			}
+
+			if (Array.isArray(action)) {
+				let lastResult = { executed: false };
+				for (const item of action) {
+					lastResult = await parseAndExecuteAction(item);
+				}
+				return lastResult;
+			}
+
+			if (action?.property) {
+				const normalized = normalizeActionProperty(action.property, action.value);
+				action.property = normalized.property;
+				action.value = normalized.value;
 			}
 
 			// FALLBACK: If AI returned plain text for known clarification patterns, synthesize the response
@@ -3415,12 +3979,14 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 				// 4. Trigger Sidebar Expand based on properties (Enhanced Selection Feedback)
 				const targetProp = action.property || (action.payload ? Object.keys(action.payload)[0] : null);
-				if (targetProp === 'padding' || targetProp === 'margin' || targetProp === 'responsive_padding' || action.payload?.spacing_preset) {
-					openSidebarAccordion(0, 'dimension-panel');
-				} else if (targetProp === 'box_shadow' || action.payload?.shadow) {
-					openSidebarAccordion(0, 'shadow-panel');
-				} else if (targetProp === 'border' || targetProp === 'border_radius' || action.payload?.border) {
-					openSidebarAccordion(0, 'border-panel');
+				if (action.payload?.spacing_preset) {
+					openSidebarForProperty('responsive_padding');
+				} else if (action.payload?.shadow) {
+					openSidebarForProperty('box_shadow');
+				} else if (action.payload?.border) {
+					openSidebarForProperty('border');
+				} else {
+					openSidebarForProperty(targetProp);
 				}
 
 				if (action.ui_target) {
@@ -3521,8 +4087,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					}
 				}
 
-				if (typeof property === 'string') {
-					property = property.replace(/-/g, '_');
+				if (property) {
+					const normalized = normalizeActionProperty(property, value);
+					property = normalized.property;
+					value = normalized.value;
 				}
 				
 				console.log('[Maxi AI Debug] update_page action received:', property, value, 'target:', action.target_block);
@@ -3553,13 +4121,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 				// EXPAND SIDEBAR based on property
 				// This ensures "settings are showing" as requested by user
-				if (property === 'responsive_padding' || property === 'padding' || property === 'margin') {
-					openSidebarAccordion(0, 'dimension-panel');
-				} else if (property === 'box_shadow') {
-					openSidebarAccordion(0, 'shadow-panel');
-				} else if (property === 'border_radius' || property === 'border') {
-					openSidebarAccordion(0, 'border-panel');
-				}
+				openSidebarForProperty(property);
 
 				return { executed: true, message: action.message || resultMsg };
 			}
@@ -3595,8 +4157,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					else if (action.payload.padding !== undefined) { property = 'padding'; value = action.payload.padding; }
 				}
 				
-				if (typeof property === 'string') {
-					property = property.replace(/-/g, '_');
+				if (property) {
+					const normalized = normalizeActionProperty(property, value);
+					property = normalized.property;
+					value = normalized.value;
 				}
 				
 				// Normalizations
@@ -3612,9 +4176,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				console.log('[Maxi AI Debug] handleUpdateSelection result:', resultMsg);
 
 				// EXPAND SIDEBAR
-				if (property === 'responsive_padding' || property === 'padding' || property === 'margin') openSidebarAccordion(0, 'dimension-panel');
-				else if (property === 'box_shadow') openSidebarAccordion(0, 'shadow-panel');
-				else if (property === 'border_radius' || property === 'border') openSidebarAccordion(0, 'border-panel');
+				openSidebarForProperty(property);
 
 				// Combine AI message with technical result if mismatch
 				// If resultMsg says "No matching components", we should probably show that.
@@ -3682,44 +4244,48 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		const userMessage = { role: 'user', content: rawMessage };
 		setMessages(prev => [...prev, userMessage]);
 		setInput('');
-		setIsLoading(true);
 
 		// === FLOW STATE MACHINE BYPASS ===
 		// If we are in an active flow, do NOT run standard pattern matching.
 		// Instead, assume the user's input is the answer to the previous question and route it back to MODIFY_BLOCK.
 		if (conversationContext && conversationContext.flow) {
-			console.log('[Maxi AI Conversation] Active flow detected:', conversationContext.flow);
+			if (scope === 'global') {
+				setConversationContext(null);
+			} else {
+				console.log('[Maxi AI Conversation] Active flow detected:', conversationContext.flow);
 			
-			// FSM Strict Mode: Ignore natural language during flow, require selection
-			// UNLESS it's a valid option text that matches our current options?
-			// The user requirement says "Pause NLU". 
-			// But if they type "Soft", we should probably accept it if it matches an option.
-			
-			const options = conversationContext.currentOptions;
-			const hasOptions = Array.isArray(options) && options.length > 0;
-			const isOptionMatch = hasOptions && options.some(o =>
-				(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === input.toLowerCase()
-			);
+				// FSM Strict Mode: Ignore natural language during flow, require selection
+				// UNLESS it's a valid option text that matches our current options?
+				// The user requirement says "Pause NLU". 
+				// But if they type "Soft", we should probably accept it if it matches an option.
+				
+				const options = conversationContext.currentOptions;
+				const hasOptions = Array.isArray(options) && options.length > 0;
+				const isOptionMatch = hasOptions && options.some(o =>
+					(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === input.toLowerCase()
+				);
 
-            if (isOptionMatch || !hasOptions) {
-                // Let handleSuggestion handle it via the standard flow re-entry
-                handleSuggestion(input);
-                return;
-            }
+				if (isOptionMatch || !hasOptions) {
+					// Let handleSuggestion handle it via the standard flow re-entry
+					handleSuggestion(input);
+					return;
+				}
 
-			setMessages(prev => [...prev, { 
-				role: 'assistant', 
-				content: "Please select an option or colour to continue.", 
-				executed: false 
-			}]);
-			setIsLoading(false);
-			return;
+				setMessages(prev => [...prev, { 
+					role: 'assistant', 
+					content: "Please select an option or colour to continue.", 
+					executed: false 
+				}]);
+				setIsLoading(false);
+				return;
+			}
 		}
 
 		// Process predefined flows (client-side interception)
 		const lowerMessage = rawMessage.toLowerCase();
 		const hexColor = extractHexColor(rawMessage);
-		const currentScope = conversationContext?.mode || scope; // Use context mode if in a flow, or tab state
+		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope); // Use context mode if in a flow, or tab state
+		const isGlobalScope = currentScope === 'global';
 		const lastClarificationMsg = messagesRef.current?.findLast(
 			m => m.role === 'assistant' && m.options
 		);
@@ -3736,8 +4302,128 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					role: 'assistant',
 					content: 'Please select a block on the page first so I know what to modify.',
 					executed: false,
+					testId: 'maxi-ai-selection-required',
 				},
 			]);
+			return;
+		}
+
+		setIsLoading(true);
+
+		const queueDirectAction = directAction => {
+			setIsLoading(true);
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction(directAction);
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: result.message,
+						executed: result.executed,
+					},
+				]);
+				setIsLoading(false);
+			}, 50);
+		};
+
+		const actionType = currentScope === 'page' ? 'update_page' : 'update_selection';
+		const actionTarget =
+			actionType === 'update_page' ? { target_block: 'container' } : {};
+
+		// A-group: anchor, aria, advanced CSS, arrows, align content/items (explicit phrasing)
+		const anchorLink = extractAnchorLink(rawMessage);
+		if (anchorLink) {
+			queueDirectAction({
+				action: actionType,
+				property: 'anchor_link',
+				value: anchorLink,
+				message: 'Anchor set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const ariaLabel = extractAriaLabel(rawMessage);
+		if (ariaLabel) {
+			queueDirectAction({
+				action: actionType,
+				property: 'aria_label',
+				value: ariaLabel,
+				message: 'Aria label set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const advancedCss = extractAdvancedCss(rawMessage);
+		if (advancedCss) {
+			queueDirectAction({
+				action: actionType,
+				property: 'advanced_css',
+				value: advancedCss,
+				message: 'Advanced CSS set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const arrowSide = extractArrowSide(lowerMessage);
+		if (arrowSide) {
+			queueDirectAction({
+				action: actionType,
+				property: 'arrow_side',
+				value: arrowSide,
+				message: 'Arrow side set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const arrowPosition = extractArrowPosition(rawMessage);
+		if (Number.isFinite(arrowPosition)) {
+			queueDirectAction({
+				action: actionType,
+				property: 'arrow_position',
+				value: arrowPosition,
+				message: 'Arrow position set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const arrowWidth = extractArrowWidth(rawMessage);
+		if (Number.isFinite(arrowWidth)) {
+			queueDirectAction({
+				action: actionType,
+				property: 'arrow_width',
+				value: arrowWidth,
+				message: 'Arrow width set.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const alignItemsValue = extractAlignItemsValue(lowerMessage);
+		if (alignItemsValue) {
+			queueDirectAction({
+				action: actionType,
+				property: 'align_items',
+				value: alignItemsValue,
+				message: 'Aligned items.',
+				...actionTarget,
+			});
+			return;
+		}
+
+		const alignContentValue = extractAlignContentValue(lowerMessage);
+		if (alignContentValue) {
+			queueDirectAction({
+				action: actionType,
+				property: 'align_content',
+				value: alignContentValue,
+				message: 'Aligned content.',
+				...actionTarget,
+			});
 			return;
 		}
 
@@ -3749,28 +4435,30 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 
 		
 		// Spacing removals (explicit remove/clear/reset)
-		const removeSpacing = parseRemoveSpacingRequest(rawMessage);
-		if (removeSpacing) {
-			const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
-			const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
-			const propertyParts = removeSpacing.property.split('_');
-			const spacingLabel = propertyParts.length === 2
-				? `${propertyParts[1]} ${propertyParts[0]}`
-				: removeSpacing.property;
-			const directAction = {
-				action: actionType,
-				property: removeSpacing.property,
-				value: removeSpacing.value,
-				...(targetBlock ? { target_block: targetBlock } : {}),
-				message: `Removed ${spacingLabel}.`,
-			};
+		if (!isGlobalScope) {
+			const removeSpacing = parseRemoveSpacingRequest(rawMessage);
+			if (removeSpacing) {
+				const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+				const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
+				const propertyParts = removeSpacing.property.split('_');
+				const spacingLabel = propertyParts.length === 2
+					? `${propertyParts[1]} ${propertyParts[0]}`
+					: removeSpacing.property;
+				const directAction = {
+					action: actionType,
+					property: removeSpacing.property,
+					value: removeSpacing.value,
+					...(targetBlock ? { target_block: targetBlock } : {}),
+					message: `Removed ${spacingLabel}.`,
+				};
 
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
 		}
 
 		// Spacing requests - detect target from user message
@@ -3927,6 +4615,27 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				const directAction = currentScope === 'selection'
 					? { action: 'update_selection', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` }
 					: { action: 'update_page', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+		}
+
+		// Rounded corners requests - numeric values should apply directly (no clarify)
+		const radiusMatch = lowerMessage.match(
+			/\b(?:corner|corners|radius|rounded)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|em|rem)?/i
+		);
+		if (radiusMatch) {
+			const numericValue = Number(radiusMatch[1]);
+			if (!Number.isNaN(numericValue)) {
+				setIsLoading(true);
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: 'border_radius', value: numericValue, message: `Applied border radius (${numericValue}px).` }
+					: { action: 'update_page', property: 'border_radius', value: numericValue, message: `Applied border radius (${numericValue}px).` };
+
 				setTimeout(async () => {
 					const result = await parseAndExecuteAction(directAction);
 					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
@@ -4165,8 +4874,12 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 		// ============================================================
 		// Uses LAYOUT_PATTERNS constant for zero-latency, maintainable pattern matching
 		const requestedTarget = getRequestedTarget();
+		const skipLayoutPatterns = requestedTarget === 'border';
 
-		for (const pattern of LAYOUT_PATTERNS) {
+		if (!skipLayoutPatterns) for (const pattern of LAYOUT_PATTERNS) {
+			if (isGlobalScope) {
+				break;
+			}
 			if (requestedTarget === 'image' && !pattern.target) {
 				if (pattern.property === 'hover_effect' || pattern.property.startsWith('hover_')) {
 					continue;
@@ -5226,19 +5939,20 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					}
 				}
 				
-		// Standard pattern handling
-		const isLayoutAlign = pattern.property === 'align_items_flex' || pattern.property === 'justify_content';
-		let resolvedTarget = pattern.target || requestedTarget || 'container';
-		if (!pattern.target && currentScope === 'selection' && isLayoutAlign) {
-			const selectionLayoutTarget = resolveSelectionLayoutTarget();
-			if (selectionLayoutTarget) resolvedTarget = selectionLayoutTarget;
-		}
-		if (pattern.property.startsWith('shape_divider')) {
-			resolvedTarget = 'container';
-		}
-		const directAction = currentScope === 'selection'
-			? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
-			: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
+				// Standard pattern handling
+				const isLayoutAlign = pattern.property === 'align_items_flex' || pattern.property === 'justify_content';
+				let resolvedTarget = pattern.target || requestedTarget || 'container';
+				if (!pattern.target && currentScope === 'selection' && isLayoutAlign) {
+					const selectionLayoutTarget = resolveSelectionLayoutTarget();
+					if (selectionLayoutTarget) resolvedTarget = selectionLayoutTarget;
+				}
+				if (pattern.property.startsWith('shape_divider')) {
+					resolvedTarget = 'container';
+				}
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
+					: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
+
 				setTimeout(async () => {
 					const result = await parseAndExecuteAction(directAction);
 					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
@@ -5248,32 +5962,34 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}
 		}
 		
-		// SPECIAL: Gap with number extraction (not in lookup table)
-		const gapMatch = lowerMessage.match(/(\d+)\s*(?:px)?\s*(?:gap|gutter|air\s*between|space\s*between\s*items)/i);
-		if (gapMatch) {
-			const gapValue = parseInt(gapMatch[1]);
-			setIsLoading(true);
-			const directAction = currentScope === 'selection'
-				? { action: 'update_selection', property: 'gap', value: gapValue, message: `Applied ${gapValue}px gap between items.` }
-				: { action: 'update_page', property: 'gap', value: gapValue, target_block: 'container', message: `Applied ${gapValue}px gap to containers.` };
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
-		}
-		
-		// SPECIAL: Gap clarification (add gaps without number)
-		if (lowerMessage.match(/add\s*(gap|gutter)|gap\s*between|gutter\s*between/) && !gapMatch) {
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'How much gap would you like between items?',
-				options: ['Small (10px)', 'Medium (20px)', 'Large (40px)'],
-				gapTarget: currentScope === 'selection' ? 'selection' : 'container',
-				executed: false
-			}]);
-			return;
+		if (!isGlobalScope) {
+			// SPECIAL: Gap with number extraction (not in lookup table)
+			const gapMatch = lowerMessage.match(/(\d+)\s*(?:px)?\s*(?:gap|gutter|air\s*between|space\s*between\s*items)/i);
+			if (gapMatch) {
+				const gapValue = parseInt(gapMatch[1]);
+				setIsLoading(true);
+				const directAction = currentScope === 'selection'
+					? { action: 'update_selection', property: 'gap', value: gapValue, message: `Applied ${gapValue}px gap between items.` }
+					: { action: 'update_page', property: 'gap', value: gapValue, target_block: 'container', message: `Applied ${gapValue}px gap to containers.` };
+				setTimeout(async () => {
+					const result = await parseAndExecuteAction(directAction);
+					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+					setIsLoading(false);
+				}, 50);
+				return;
+			}
+			
+			// SPECIAL: Gap clarification (add gaps without number)
+			if (lowerMessage.match(/add\s*(gap|gutter)|gap\s*between|gutter\s*between/) && !gapMatch) {
+				setMessages(prev => [...prev, {
+					role: 'assistant',
+					content: 'How much gap would you like between items?',
+					options: ['Small (10px)', 'Medium (20px)', 'Large (40px)'],
+					gapTarget: currentScope === 'selection' ? 'selection' : 'container',
+					executed: false
+				}]);
+				return;
+			}
 		}
 
 		setIsLoading(true);
@@ -5284,12 +6000,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			context += `\n\nUSER INTENT SCOPE: ${scope.toUpperCase()}`;
 			context += `\n- SELECTION: Apply change only to the selected block.`;
 			context += `\n- PAGE: Apply change to all relevant blocks on the entire page (use update_page).`;
-			context += `\n- GLOBAL: Apply change to the site-wide Style Card (MUST use apply_theme action).`;
+			context += `\n- GLOBAL: Apply change to the site-wide Style Card (use update_style_card for specific tokens; apply_theme for vibes/palettes).`;
 			context += `\n\nIMPORTANT: The user has explicitly selected to apply changes to "${scope.toUpperCase()}".`;
 			
 			if (scope === 'global') {
-				context += `\nYou MUST respond with the apply_theme action for any design change request.`;
-				context += `\nExample: { "action": "apply_theme", "prompt": "${userMessage}" }`;
+				context += `\nUse "update_style_card" for specific token changes (fonts, sizes, heading/body/button colors, palette slots).`;
+				context += `\nUse "apply_theme" only for overall theme/aesthetic or palette generation requests.`;
+				context += `\nExample: { "action": "update_style_card", "updates": { "headings": { "font-family-general": "Cormorant Garamond" } }, "message": "Updated heading font." }`;
 			} else if (scope === 'selection') {
 				context += `\n\nCRITICAL: You are in SELECTION mode. You MUST use the "update_selection" action.`;
 				context += `\nThis targets the selected block AND its inner blocks (recursively).`;
@@ -5327,7 +6044,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			}
 
 			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
-			const systemPrompt = blockPrompt ? `${SYSTEM_PROMPT}\n\n${blockPrompt}` : SYSTEM_PROMPT;
+			const scopePrompt = scope === 'global' ? STYLE_CARD_MAXI_PROMPT : blockPrompt;
+			const systemPrompt = scopePrompt ? `${SYSTEM_PROMPT}\n\n${scopePrompt}` : SYSTEM_PROMPT;
 
 			const response = await fetch(`${window.wpApiSettings?.root || '/wp-json/'}maxi-blocks/v1.0/ai/chat`, {
 				method: 'POST',
@@ -5365,7 +6083,8 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 			if (scope === 'global') {
 				try {
 					const parsed = JSON.parse(assistantContent.trim());
-					if (parsed.action && parsed.action !== 'apply_theme' && parsed.action !== 'message') {
+					const allowedGlobalActions = new Set(['apply_theme', 'update_style_card', 'message']);
+					if (parsed.action && !allowedGlobalActions.has(parsed.action)) {
 						console.log('[Maxi AI] Forcing apply_theme for global scope');
 						assistantContent = JSON.stringify({ action: 'apply_theme', prompt: userMessage });
 					}
@@ -6102,21 +6821,23 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 				<div className='maxi-ai-chat-panel__scope-options'>
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${scope === 'page' ? 'is-active' : ''}`}
-						onClick={() => setScope('page')}
+						onClick={() => handleScopeChange('page')}
 						title={__('Apply changes to the entire page', 'maxi-blocks')}
+						data-testid='maxi-ai-apply-page'
 					>
 						{__('Page', 'maxi-blocks')}
 					</button>
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${scope === 'selection' ? 'is-active' : ''}`}
-						onClick={() => setScope('selection')}
+						onClick={() => handleScopeChange('selection')}
 						title={__('Apply changes only to the selected block', 'maxi-blocks')}
+						data-testid='maxi-ai-apply-section'
 					>
 						{__('Selection', 'maxi-blocks')}
 					</button>
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${scope === 'global' ? 'is-active' : ''}`}
-						onClick={() => setScope('global')}
+						onClick={() => handleScopeChange('global')}
 						title={__('Apply changes globally via Style Cards', 'maxi-blocks')}
 					>
 						{__('Style Card', 'maxi-blocks')}
@@ -6132,6 +6853,7 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					<div
 						key={index}
 						className={`maxi-ai-chat-panel__message maxi-ai-chat-panel__message--${msg.role}${msg.isError ? ' maxi-ai-chat-panel__message--error' : ''}`}
+						data-testid={msg.testId}
 					>
 						{msg.content}
 						{msg.options && (
@@ -6195,7 +6917,10 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					</div>
 				))}
 				{isLoading && (
-					<div className='maxi-ai-chat-panel__message maxi-ai-chat-panel__message--assistant'>
+					<div
+						className='maxi-ai-chat-panel__message maxi-ai-chat-panel__message--assistant'
+						data-testid='maxi-ai-loading'
+					>
 						<div className='maxi-ai-chat-panel__typing'>
 							<span />
 							<span />
@@ -6215,11 +6940,13 @@ const AIChatPanel = ({ isOpen, onClose }) => {
 					onChange={e => setInput(e.target.value)}
 					onKeyDown={handleKeyDown}
 					disabled={isLoading}
+					data-testid='maxi-ai-prompt'
 				/>
 				<button
 					className='maxi-ai-chat-panel__send'
 					onClick={sendMessage}
 					disabled={isLoading || !input.trim()}
+					data-testid='maxi-ai-send'
 				>
 					<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2'>
 						<path d='M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z' />

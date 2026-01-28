@@ -115,6 +115,7 @@ const FlexAlignControl = props => {
 				showTooltip
 				className='maxi-flex-align-control__justify-content'
 				hasBorder
+				testIdPrefix={`maxi-control-justify-content-${breakpoint}`}
 				items={getOptions()}
 				value={
 					getLastBreakpointAttribute({
@@ -152,6 +153,7 @@ const FlexAlignControl = props => {
 				showTooltip
 				className='maxi-flex-align-control__align-items'
 				hasBorder
+				testIdPrefix={`maxi-control-align-items-${breakpoint}`}
 				items={getOptionsVertical()}
 				value={
 					getLastBreakpointAttribute({

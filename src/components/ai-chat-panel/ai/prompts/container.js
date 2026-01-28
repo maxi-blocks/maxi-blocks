@@ -51,7 +51,7 @@ Preset defaults:
 ### MODULE: CONTAINER INTENT MAPPING
 
 #### 1. LAYOUT & FLEXBOX ("Align", "Center", "Row", "Stack")
-- Target properties: display, flex_direction, justify_content, align_items_flex, flex_wrap, gap, dead_center.
+- Target properties: display, flex_direction, justify_content, align_items_flex, align_content, flex_wrap, gap, dead_center.
 - Presets:
   - A (Center All): "Dead center." Payload: { "display": "flex", "dead_center": true }
   - B (Row Spread): "Side-by-side spread." Payload: { "display": "flex", "flex_direction": "row", "justify_content": "space-between", "align_items_flex": "center" }
@@ -70,6 +70,34 @@ Preset defaults:
   - A (Theme): "Primary background." Payload: { "background_color": "var(--bg-1)" }
   - B (Inverted): "High contrast." Payload: { "background_color": "var(--h1)" }
   - C (Glass): "Frosted glass effect." Payload: { "background_color": "var(--bg-2)", "opacity": 0.9 }
+
+#### 3.5 BACKGROUND LAYERS ("Layer", "Overlay", "Hover")
+- Target properties: background_layers, background_layers_hover, block_background_status_hover.
+- For layers, return the full layers array (deterministic).
+- Examples:
+  - "Add a second background layer with palette 5." -> { "background_layers": [ ...layer1, layer2 ] }
+  - "Enable hover background layers." -> { "block_background_status_hover": true }
+  - "On hover, add a dark overlay layer." -> { "background_layers_hover": [ ... ] }
+
+#### 3.6 BORDER ("Border", "Outline")
+- Target property: border (base) or border_hover (hover).
+- Examples:
+  - "Add a 2px solid border with palette 3." -> { "border": { "width": 2, "style": "solid", "color": 3 } }
+  - "Remove the border." -> { "border": "none" }
+  - "On hover, make the border 4px." -> { "border_hover": { "width": 4, "style": "solid" } }
+
+#### 3.7 BORDER RADIUS ("Corners", "Rounded")
+- Target property: border_radius.
+- Examples:
+  - "Make corners 24px." -> { "border_radius": 24 }
+  - "Square corners." -> { "border_radius": 0 }
+
+#### 3.8 BOX SHADOW ("Shadow", "Depth")
+- Target property: box_shadow (base) or box_shadow_hover (hover).
+- Examples:
+  - "Add a soft shadow with palette 8." -> { "box_shadow": { "x": 0, "y": 10, "blur": 30, "spread": 0, "color": 8, "opacity": 12 } }
+  - "Remove the shadow." -> { "box_shadow": "none" }
+  - "On hover, add a stronger shadow." -> { "box_shadow_hover": { "x": 0, "y": 16, "blur": 32, "spread": 0, "color": 8, "opacity": 18 } }
 
 #### 4. SPACING ("Padding", "Space")
 - Target property: responsive_padding.
@@ -99,6 +127,24 @@ Preset defaults:
   - A (Sticky): "Stick to top when scrolling." Payload: { "position": "sticky", "position_top": "0px", "z_index": 100 }
   - B (Mobile Hidden): "Hide this container on phones." Payload: { "display_mobile": "none" }
   - C (Fade In): "Animate in when scrolled to." Payload: { "scroll_fade": true }
+
+#### 8. CALLOUT ARROW ("Arrow", "Callout")
+- Target properties: arrow_status, arrow_side, arrow_position, arrow_width.
+- Examples:
+  - "Show the callout arrow." -> { "arrow_status": true }
+  - "Move the arrow to the top." -> { "arrow_side": "top" }
+  - "Set arrow position to 60." -> { "arrow_position": 60 }
+  - "Make the arrow 40px wide." -> { "arrow_width": 40 }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|m|xs" }
+
+#### 9. META & ACCESSIBILITY ("Anchor", "ARIA", "Custom CSS")
+- Target properties: anchor_link, aria_label, advanced_css.
+- Anchor: "Set the anchor to hero-section." -> { "anchor_link": "hero-section" }
+- Aria: "Set aria label to Hero Section." -> { "aria_label": "Hero Section" }
+- Advanced CSS: only when explicitly requested.
+  - "Add custom CSS: ..." -> { "advanced_css": ".maxi-container-block { ... }" }
+  - Breakpoint override (optional): { "value": "<css>", "breakpoint": "general|m|xs" }
 
 ### INTERNAL META / FLOW (DOCUMENTED)
 

@@ -17,7 +17,7 @@ import { getLastBreakpointAttribute } from '@extensions/styles';
 import './editor.scss';
 import withRTC from '@extensions/maxi-block/withRTC';
 
-const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
+const AdvancedCssControl = ({ breakpoint, onChange, testId, ...attributes }) => {
 	const [isExampleShown, setIsExampleShown] = useState(false);
 
 	const value = getLastBreakpointAttribute({
@@ -59,6 +59,7 @@ const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 			value={value}
 			onChange={onChange}
 			transformCssCode={transformCssCode}
+			testId={testId}
 		>
 			<div className='maxi-advanced-css-control__example-wrapper'>
 				<Button

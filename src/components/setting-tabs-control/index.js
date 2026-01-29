@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useState, useEffect, cloneElement } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	cloneElement,
+	useContext,
+} from '@wordpress/element';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { Tooltip } from '@wordpress/components';
 
@@ -14,6 +19,7 @@ import { getForcedTabFromPath } from '@extensions/inspector';
 import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
+	SettingTabsIndicatorContext,
 } from '@extensions/indicators';
 
 /**
@@ -65,6 +71,7 @@ const SettingTabsControl = props => {
 	const { updateInspectorPath } = useDispatch('maxiBlocks');
 
 	const [localTab, setLocalTab] = useState(0);
+	const indicatorContext = useContext(SettingTabsIndicatorContext);
 
 	const tab = tabProp ?? localTab;
 	const setTab = setTabProp ?? setLocalTab;
@@ -131,17 +138,18 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
+						const buttonLabelSlug = String(buttonLabel).toLowerCase();
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
 
 						const showButton = (
 							<Button
-								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}`}
 								label={item.value}
 								className={classnames(
 									'maxi-tabs-control__button',
-									`maxi-tabs-control__button-${buttonLabel.toLowerCase()}`,
+									`maxi-tabs-control__button-${buttonLabelSlug}`,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&
@@ -158,7 +166,9 @@ const SettingTabsControl = props => {
 										item.breakpoint,
 										item.extraIndicators,
 										item.extraIndicatorsResponsive,
-										item.ignoreIndicator
+										item.ignoreIndicator,
+										item.ignoreIndicatorGroups,
+										indicatorContext
 									) && 'maxi-tabs-control__button--active',
 									item.className
 								)}
@@ -184,7 +194,7 @@ const SettingTabsControl = props => {
 						);
 						return showTooltip ? (
 							<Tooltip
-								key={`maxi-tabs-control__button-${buttonLabel.toLowerCase()}__tooltip`}
+								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}__tooltip`}
 								text={item.label || item.value}
 								placement='top'
 							>

@@ -198,16 +198,23 @@ export const sanitizeDCContent = content =>
 		? __(content, 'maxi-blocks')
 		: __('No content found', 'maxi-blocks');
 
-export const getItemLinkContent = (item, linkStatus) =>
-	linkStatus
-		? `<a class="maxi-text-block--link"><span>${item}</span></a>`
+export const getItemLinkContent = (item, linkStatus, contentType = 'text') => {
+	const linkClass =
+		contentType === 'text'
+			? 'maxi-text-block--link'
+			: 'maxi-button-block--link';
+
+	return linkStatus
+		? `<a class="${linkClass}"><span>${item}</span></a>`
 		: item;
+};
 
 export const getTaxonomyContent = async (
 	taxonomyIds,
 	delimiterContent,
 	linkStatus,
-	taxonomyType
+	taxonomyType,
+	contentType
 ) => {
 	if (!taxonomyIds || !taxonomyIds.length) return null;
 
@@ -220,7 +227,7 @@ export const getTaxonomyContent = async (
 	if (!taxonomyArray || !taxonomyArray.length) return null;
 
 	const namesArray = taxonomyArray.map(({ name }) =>
-		getItemLinkContent(name, linkStatus)
+		getItemLinkContent(name, linkStatus, contentType)
 	);
 
 	return linkStatus

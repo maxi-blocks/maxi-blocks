@@ -192,9 +192,13 @@ describe('getDCContent', () => {
 
 		const result = await getDCContent(dataRequest);
 
-		expect(getProductsContent).toHaveBeenCalledWith(dataRequest, {
-			title: 'Product title',
-		});
+		expect(getProductsContent).toHaveBeenCalledWith(
+			dataRequest,
+			{
+				title: 'Product title',
+			},
+			undefined
+		);
 		expect(result).toBe('Product content');
 	});
 
@@ -293,7 +297,8 @@ describe('getDCContent', () => {
 			1,
 			dataRequest.delimiterContent,
 			false,
-			'rating'
+			'rating',
+			undefined
 		);
 		expect(result).toBe('4.5');
 	});

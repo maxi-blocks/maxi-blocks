@@ -1,0 +1,8 @@
+.maxi-prompt-control-modify-tab {
+	display: flex;
+	flex-direction: column;
+
+	&--select-open {
+		min-height: 280px;
+	}
+}

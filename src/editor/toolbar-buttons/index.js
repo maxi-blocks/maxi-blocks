@@ -3,6 +3,7 @@
  */
 import { subscribe } from '@wordpress/data';
 import { render, useState, createRoot } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
 /**
@@ -81,6 +82,11 @@ const ToolbarButtons = () => {
 		});
 	};
 
+	const handleAiToggle = () => {
+		if (typeof window === 'undefined') return;
+		window.dispatchEvent(new CustomEvent('maxi-ai-toggle'));
+	};
+
 	return (
 		<>
 			<div className='maxi-toolbar-layout'>
@@ -90,6 +96,14 @@ const ToolbarButtons = () => {
 					onClick={handleToggle}
 				>
 					<Icon icon={main} />
+				</Button>
+				<Button
+					className='maxi-toolbar-layout__ai-button'
+					onClick={handleAiToggle}
+					title={__('Maxi AI', 'maxi-blocks')}
+					aria-label={__('Toggle Maxi AI', 'maxi-blocks')}
+				>
+					<span className='maxi-toolbar-layout__ai-icon'>*</span>
 				</Button>
 			</div>
 			<ResponsiveSelector

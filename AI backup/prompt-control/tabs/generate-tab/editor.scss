@@ -1,0 +1,40 @@
+.maxi-prompt-control-generate-tab {
+	&__textarea {
+		.maxi-base-control__field {
+			flex-direction: column;
+			align-items: baseline;
+			padding-top: 10px;
+		}
+	}
+
+	.maxi-prompt-control-results-card {
+		margin: 0px 0 20px 0;
+	}
+
+	&__temperature-guidance {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 12px;
+		margin-top: -15px;
+		border-bottom: 1px solid var(--maxi-grey-light) !important;
+
+		span {
+			color: var(--maxi-grey-dark);
+		}
+	}
+
+	&__ai-model {
+		p {
+			font-size: small;
+			color: var(--maxi-grey-dark);
+		}
+
+		p strong {
+			font-weight: 600;
+			color: var(--maxi-grey-dark);
+		}
+	}
+}
+.maxi-prompt-control-generate-tab__ai-model {
+	margin: 1px 10px -5px !important;
+}

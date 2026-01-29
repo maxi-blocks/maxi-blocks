@@ -11,6 +11,8 @@
 		"packages-update": "wp-scripts packages-update",
 		"wp-env": "wp-env",
 		"test": "wp-scripts test-unit-jest -c ./jest/jest-unit.config.js",
+		"test:unit": "wp-scripts test-unit-jest -c ./src/components/ai-chat-panel/jest/jest-unit.config.js",
+		"test:unit:watch": "wp-scripts test-unit-jest -c ./src/components/ai-chat-panel/jest/jest-unit.config.js --watch",
 		"test:coverage": "wp-scripts test-unit-jest -c ./jest/jest-unit.config.js --coverage",
 		"test:debug": "wp-scripts --inspect-brk test-unit-jest -c ./jest/jest-unit.config.js --runInBand --no-cache --verbose",
 		"test:e2e": "wp-scripts test-e2e -c ./jest/jest-e2e.config.js",

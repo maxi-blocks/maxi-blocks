@@ -1,0 +1,15 @@
+.maxi-prompt-control-history-tab {
+	.maxi-prompt-control__buttons {
+		margin: 8px 0;
+	}
+
+	&__abort {
+		position: sticky;
+		bottom: 0;
+		padding: 8px 0;
+		border-top: 2px solid var(--maxi-grey);
+		background: var(--maxi-white);
+		justify-content: center;
+		width: 100%;
+	}
+}

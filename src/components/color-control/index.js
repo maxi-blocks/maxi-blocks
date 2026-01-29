@@ -351,20 +351,22 @@ const ColorControl = props => {
 
 							onChangeValue({
 								paletteStatus: !val,
+								// When toggling TO custom color mode (val=true), set the current palette color
 								...(val && {
 									color: initialCustomColor,
 								}),
-								// When switching back to palette mode, clear the custom color
-								// and preserve the opacity from the custom color
+								// When toggling BACK to palette mode (!val=true), clear the color attribute
+								// so frontend uses palette colors instead of the old custom value
 								...(!val && {
 									color: undefined,
-									...(!disableOpacity &&
-										color && {
-											paletteOpacity:
-												tinycolor(color).getAlpha() ??
-												paletteOpacity,
-										}),
 								}),
+								...(!disableOpacity &&
+									!val &&
+									color && {
+										paletteOpacity:
+											tinycolor(color).getAlpha() ||
+											paletteOpacity,
+									}),
 							});
 						}}
 					/>

@@ -18,6 +18,7 @@ const dc = ({
 	contentType,
 }) => ({
 	label: __('Dynamic content', 'maxi-blocks'),
+	indicatorProps: ['dc-status'],
 	content: !attributes.isList ? (
 		<DynamicContent
 			{...getGroupAttributes(attributes, 'dynamicContent')}

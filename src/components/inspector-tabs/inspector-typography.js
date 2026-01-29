@@ -175,6 +175,7 @@ const typography = ({
 										blockStyle={blockStyle}
 										styleCardPrefix={styleCardPrefix}
 										isList={isList}
+										allowLink={allowLink}
 										globalProps={hoverGlobalProps}
 										textLevel={textLevel}
 										prefix={prefix}

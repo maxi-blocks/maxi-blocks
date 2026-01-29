@@ -56,4 +56,3 @@ if (typeof wp !== 'undefined' && typeof wp.domReady === 'function') {
 }
 
 export default mountAiChatPanel;
-

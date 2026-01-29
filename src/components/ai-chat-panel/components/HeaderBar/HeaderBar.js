@@ -28,7 +28,7 @@ const HeaderBar = ({
 		style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
 	>
 		<h3>
-			<span>*</span>
+			<span aria-hidden='true'>✨</span>
 			{title}
 			{selectedBlockName && formatBlockLabel(selectedBlockName)}
 		</h3>

@@ -1,4 +1,8 @@
 .maxi-toolbar-layout {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+
 	&__button {
 		display: flex;
 		align-items: center;
@@ -27,31 +31,21 @@
 		&[aria-pressed='true'] {
 			border-color: var(--maxi-primary-color);
 		}
-	}
 
-	&__ai-button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-left: 8px;
-		border-radius: 8px;
-		border: 2px solid var(--maxi-grey-light);
-		background: var(--maxi-white);
-		color: var(--maxi-black);
-		width: 40px;
-		height: 45px;
-		padding: 0;
-		box-shadow: none !important;
+		&--ai {
+			min-width: 45px;
+			padding: 10px;
+			margin-left: 0;
 
-		&:hover,
-		&[aria-pressed='true'] {
-			border-color: var(--maxi-primary-color);
+			&:hover,
+			&[aria-pressed='true'] {
+				border-color: transparent;
+				background-image: linear-gradient(var(--maxi-white), var(--maxi-white)),
+					linear-gradient(135deg, var(--maxi-orange-red), var(--maxi-golden-orange), var(--maxi-bright-yellow), var(--maxi-deep-golden));
+				background-origin: border-box;
+				background-clip: padding-box, border-box;
+			}
 		}
-	}
-
-	&__ai-icon {
-		font-size: 16px;
-		line-height: 1;
 	}
 }
 

@@ -21,6 +21,7 @@ const marginPadding = ({
 	prefix = '',
 	customLabel,
 	disableMargin = false,
+	ignoreIndicator,
 }) => {
 	const { attributes, deviceType, maxiSetAttributes } = props;
 
@@ -32,6 +33,7 @@ const marginPadding = ({
 
 	return {
 		label: customLabel ?? __('Margin / Padding', 'maxi-blocks'),
+		...(ignoreIndicator && { ignoreIndicator }),
 		content: (
 			<>
 				{!disableMargin && (

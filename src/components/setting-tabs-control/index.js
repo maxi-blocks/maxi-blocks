@@ -38,15 +38,30 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value === 'none' || value === 'unset') return true;
 	if (Array.isArray(value) && value.length === 0) return true;
 	if (isPlainObject(value) && isEmpty(value)) return true;
+
+	// Extract actual default from attribute definition object if needed
+	// (getBlockAttributes returns { type, default } objects, not raw defaults)
+	const actualDefault =
+		isPlainObject(defaultValue) && 'default' in defaultValue
+			? defaultValue.default
+			: defaultValue;
+
+	// If no default is registered, treat as "cleared" (don't trigger indicator)
+	// This handles responsive breakpoint values that don't have explicit defaults
+	if (actualDefault === undefined) return true;
+
 	// Treat 1 as cleared when default is undefined, only for opacity attributes
-	if (
-		value === 1 &&
-		defaultValue === undefined &&
-		/opacity/i.test(attributeName)
-	) {
+	if (value === 1 && /opacity/i.test(attributeName)) {
 		return true;
 	}
-	return isEqual(value, defaultValue);
+
+	// Handle numeric string comparison (e.g., '15' vs 15)
+	// This handles cases where defaults are strings but stored values are numbers
+	if (!isNaN(Number(value)) && !isNaN(Number(actualDefault))) {
+		return Number(value) === Number(actualDefault);
+	}
+
+	return isEqual(value, actualDefault);
 };
 
 /**

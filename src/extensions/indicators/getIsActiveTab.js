@@ -3,8 +3,44 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray } from 'lodash';
+import { isArray, isPlainObject } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
+
+/**
+ * Extract actual default value from attribute definition object.
+ * getBlockAttributes returns { type, default } objects, not raw defaults.
+ *
+ * @param {*} attrDef The attribute definition (or raw value)
+ * @return {*} The actual default value
+ */
+const getDefaultValue = attrDef =>
+	isPlainObject(attrDef) && 'default' in attrDef ? attrDef.default : attrDef;
+
+/**
+ * Compare current value with default, handling numeric string comparison.
+ * Returns true if values are equal (not modified).
+ *
+ * @param {*} currentValue The current attribute value
+ * @param {*} defaultValue The default value (from getDefaultValue)
+ * @return {boolean} True if equal (not modified)
+ */
+const valuesAreEqual = (currentValue, defaultValue) => {
+	// If no default is registered, treat as "not modified" (don't trigger indicator)
+	// This handles responsive breakpoint values that don't have explicit defaults
+	if (defaultValue === undefined) return true;
+
+	if (currentValue === defaultValue) return true;
+
+	// Handle numeric string comparison (e.g., '15' vs 15)
+	if (
+		!isNaN(Number(currentValue)) &&
+		!isNaN(Number(defaultValue))
+	) {
+		return Number(currentValue) === Number(defaultValue);
+	}
+
+	return false;
+};
 
 const getIsActiveTab = (
 	attributes,
@@ -73,7 +109,7 @@ const getIsActiveTab = (
 		if (
 			attribute.includes('opacity') &&
 			currentAttributes[attribute] === 1 &&
-			defaultAttributes[attribute] === undefined
+			getDefaultValue(defaultAttributes[attribute]) === undefined
 		)
 			return true;
 
@@ -97,9 +133,9 @@ const getIsActiveTab = (
 					attribute.lastIndexOf(`-${bp}`) ===
 					attribute.length - `-${bp}`.length
 				) {
-					return (
-						currentAttributes[attribute] ===
-						defaultAttributes[attribute]
+					return valuesAreEqual(
+						currentAttributes[attribute],
+						getDefaultValue(defaultAttributes[attribute])
 					);
 				}
 
@@ -119,13 +155,17 @@ const getIsActiveTab = (
 			isArray(currentAttributes[attribute]) &&
 			currentAttributes[attribute].length === 0
 		) {
-			return (
-				currentAttributes[attribute] !== defaultAttributes[attribute]
+			return !valuesAreEqual(
+				currentAttributes[attribute],
+				getDefaultValue(defaultAttributes[attribute])
 			);
 		}
 		if (currentAttributes[attribute] === '') return true;
 
-		return currentAttributes[attribute] === defaultAttributes[attribute];
+		return valuesAreEqual(
+			currentAttributes[attribute],
+			getDefaultValue(defaultAttributes[attribute])
+		);
 	});
 };
 

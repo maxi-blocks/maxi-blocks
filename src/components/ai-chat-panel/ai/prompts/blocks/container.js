@@ -56,6 +56,12 @@ Preset defaults:
   - A (Center All): "Dead center." Payload: { "display": "flex", "dead_center": true }
   - B (Row Spread): "Side-by-side spread." Payload: { "display": "flex", "flex_direction": "row", "justify_content": "space-between", "align_items_flex": "center" }
   - C (Vertical Stack): "Standard column." Payload: { "display": "flex", "flex_direction": "column", "align_items_flex": "flex-start" }
+- Examples:
+  - "Align items to the top." -> { "align_items_flex": "flex-start" }
+  - "Stretch items to equal height." -> { "align_items_flex": "stretch" }
+  - "Align content space between." -> { "align_content": "space-between" }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|xxl|xl|l|m|s|xs" }
 
 #### 2. WIDTH & SIZING ("Wide", "Full width", "Narrow")
 - Target properties: width, max_width, full_width.
@@ -132,6 +138,7 @@ Preset defaults:
 - Target properties: arrow_status, arrow_side, arrow_position, arrow_width.
 - Examples:
   - "Show the callout arrow." -> { "arrow_status": true }
+  - "Hide the callout arrow." -> { "arrow_status": false }
   - "Move the arrow to the top." -> { "arrow_side": "top" }
   - "Set arrow position to 60." -> { "arrow_position": 60 }
   - "Make the arrow 40px wide." -> { "arrow_width": 40 }

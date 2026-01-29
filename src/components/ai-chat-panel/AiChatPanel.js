@@ -20,10 +20,13 @@ import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries,
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import {
 	buildContainerMetaAttributeChanges,
-	extractAnchorLink,
-	extractAriaLabel,
 	getContainerMetaSidebarTarget,
 } from './ai/utils/containerMeta';
+import {
+	buildContainerAGroupAction,
+	buildContainerAGroupAttributeChanges,
+	getContainerAGroupSidebarTarget,
+} from './ai/utils/containerAGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -1134,58 +1137,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		return null;
 	};
 
-	const extractAdvancedCss = message => {
-		const raw = extractValueFromPatterns(message, [
-			/(?:advanced|custom)[\s_-]*css\s*(?:to|=|:|is)?\s*([\s\S]+)$/i,
-			/add\s*css\s*(?:to|=|:)?\s*([\s\S]+)$/i,
-		]);
-		if (!raw) return null;
-		if (!/[{};]/.test(raw)) return null;
-		return raw.trim();
-	};
-
-	const extractArrowSide = lowerMessage => {
-		if (!lowerMessage.includes('arrow')) return null;
-		if (/\barrow\b.*\btop\b|\btop\b.*\barrow\b/.test(lowerMessage)) return 'top';
-		if (/\barrow\b.*\bbottom\b|\bbottom\b.*\barrow\b/.test(lowerMessage)) return 'bottom';
-		if (/\barrow\b.*\bleft\b|\bleft\b.*\barrow\b/.test(lowerMessage)) return 'left';
-		if (/\barrow\b.*\bright\b|\bright\b.*\barrow\b/.test(lowerMessage)) return 'right';
-		return null;
-	};
-
-	const extractArrowPosition = message =>
-		extractNumericValue(message, [
-			/(?:arrow\s*(?:position|pos)|position\s*of\s*arrow)\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)/i,
-			/\barrow\b.*\bposition\b.*?(\d+(?:\.\d+)?)/i,
-		]);
-
-	const extractArrowWidth = message =>
-		extractNumericValue(message, [
-			/(?:arrow\s*width|width\s*of\s*arrow)\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)/i,
-			/\barrow\b.*?(\d+(?:\.\d+)?)\s*(?:px)?\s*(?:wide|width)/i,
-		]);
-
-	const extractAlignItemsValue = lowerMessage => {
-		if (!/align[\s_-]*items/.test(lowerMessage)) return null;
-		if (/\b(top|start)\b/.test(lowerMessage)) return 'flex-start';
-		if (/\b(bottom|end)\b/.test(lowerMessage)) return 'flex-end';
-		if (/\b(center|centre|middle)\b/.test(lowerMessage)) return 'center';
-		if (/\bstretch\b/.test(lowerMessage)) return 'stretch';
-		if (/\bbaseline\b/.test(lowerMessage)) return 'baseline';
-		return null;
-	};
-
-	const extractAlignContentValue = lowerMessage => {
-		if (!/align[\s_-]*content/.test(lowerMessage)) return null;
-		if (/space[-\s]*between/.test(lowerMessage)) return 'space-between';
-		if (/space[-\s]*around/.test(lowerMessage)) return 'space-around';
-		if (/space[-\s]*evenly/.test(lowerMessage)) return 'space-evenly';
-		if (/\b(center|centre)\b/.test(lowerMessage)) return 'center';
-		if (/\bstretch\b/.test(lowerMessage)) return 'stretch';
-		if (/\b(start|top)\b/.test(lowerMessage)) return 'flex-start';
-		if (/\b(end|bottom)\b/.test(lowerMessage)) return 'flex-end';
-		return null;
-	};
+	// A-group helpers moved to ai/utils/containerAGroup.
 
 	const extractButtonText = message => {
 		const quoted = extractQuotedText(message);
@@ -2581,18 +2533,19 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 						case 'align_items_flex':
 							// Apply to layout containers (different from text align_items)
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
-								const direction = String(block.attributes?.['flex-direction-general'] || '').toLowerCase();
-								const isColumn = direction.startsWith('column');
-								const isMainAxisAlign = ['flex-start', 'center', 'flex-end'].includes(value);
-								changes = isColumn && isMainAxisAlign
-									? updateJustifyContent(value)
-									: updateAlignItems(value);
+								changes = buildContainerAGroupAttributeChanges(property, value, {
+									block,
+									attributes: block.attributes,
+								});
 							}
 							break;
 						case 'align_content':
 							// Apply to layout containers
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
-								changes = updateAlignContent(value);
+								changes = buildContainerAGroupAttributeChanges(property, value, {
+									block,
+									attributes: block.attributes,
+								});
 							}
 							break;
 						case 'flex_wrap':
@@ -2682,38 +2635,14 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							changes = updateDisplay(value);
 							break;
 						// ======= CALLOUT ARROW =======
-						case 'arrow_status': {
-							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-							const status = Boolean(rawValue);
-							changes = breakpoint
-								? { [`arrow-status-${breakpoint}`]: status }
-								: buildResponsiveBooleanChanges('', 'arrow-status', status);
-							break;
-						}
-						case 'arrow_side': {
-							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-							const side = String(rawValue || 'bottom');
-							changes = breakpoint
-								? { [`arrow-side-${breakpoint}`]: side }
-								: buildResponsiveValueChanges('arrow-side', side);
-							break;
-						}
-						case 'arrow_position': {
-							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-							const pos = Number(rawValue);
-							const finalPos = Number.isFinite(pos) ? pos : 0;
-							changes = breakpoint
-								? { [`arrow-position-${breakpoint}`]: finalPos }
-								: buildResponsiveValueChanges('arrow-position', finalPos);
-							break;
-						}
+						case 'arrow_status':
+						case 'arrow_side':
+						case 'arrow_position':
 						case 'arrow_width': {
-							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-							const width = Number(rawValue);
-							const finalWidth = Number.isFinite(width) ? width : 0;
-							changes = breakpoint
-								? { [`arrow-width-${breakpoint}`]: finalWidth }
-								: buildResponsiveValueChanges('arrow-width', finalWidth);
+							changes = buildContainerAGroupAttributeChanges(property, value, {
+								block,
+								attributes: block.attributes,
+							});
 							break;
 						}
 						// ======= META / ACCESSIBILITY =======
@@ -2730,11 +2659,10 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							break;
 						}
 						case 'advanced_css': {
-							const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-							const cssValue = String(rawValue || '');
-							changes = breakpoint
-								? { [`advanced-css-${breakpoint}`]: cssValue }
-								: buildResponsiveValueChanges('advanced-css', cssValue);
+							changes = buildContainerAGroupAttributeChanges(property, value, {
+								block,
+								attributes: block.attributes,
+							});
 							break;
 						}
 						// ======= TRANSFORM EFFECTS =======
@@ -3355,6 +3283,11 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			const property = String(rawProperty).replace(/-/g, '_');
 			const baseProperty = property.replace(/_(general|xxl|xl|l|m|s|xs)$/, '');
 			const normalizedProperty = baseProperty;
+			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
+			if (aGroupTarget) {
+				openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
+				return;
+			}
 
 			switch (normalizedProperty) {
 				case 'responsive_padding':
@@ -4318,99 +4251,11 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			actionType === 'update_page' ? { target_block: 'container' } : {};
 
 		// A-group: anchor, aria, advanced CSS, arrows, align content/items (explicit phrasing)
-		const anchorLink = extractAnchorLink(rawMessage);
-		if (anchorLink) {
-			queueDirectAction({
-				action: actionType,
-				property: 'anchor_link',
-				value: anchorLink,
-				message: 'Anchor set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const ariaLabel = extractAriaLabel(rawMessage);
-		if (ariaLabel) {
-			queueDirectAction({
-				action: actionType,
-				property: 'aria_label',
-				value: ariaLabel,
-				message: 'Aria label set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const advancedCss = extractAdvancedCss(rawMessage);
-		if (advancedCss) {
-			queueDirectAction({
-				action: actionType,
-				property: 'advanced_css',
-				value: advancedCss,
-				message: 'Advanced CSS set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const arrowSide = extractArrowSide(lowerMessage);
-		if (arrowSide) {
-			queueDirectAction({
-				action: actionType,
-				property: 'arrow_side',
-				value: arrowSide,
-				message: 'Arrow side set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const arrowPosition = extractArrowPosition(rawMessage);
-		if (Number.isFinite(arrowPosition)) {
-			queueDirectAction({
-				action: actionType,
-				property: 'arrow_position',
-				value: arrowPosition,
-				message: 'Arrow position set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const arrowWidth = extractArrowWidth(rawMessage);
-		if (Number.isFinite(arrowWidth)) {
-			queueDirectAction({
-				action: actionType,
-				property: 'arrow_width',
-				value: arrowWidth,
-				message: 'Arrow width set.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const alignItemsValue = extractAlignItemsValue(lowerMessage);
-		if (alignItemsValue) {
-			queueDirectAction({
-				action: actionType,
-				property: 'align_items',
-				value: alignItemsValue,
-				message: 'Aligned items.',
-				...actionTarget,
-			});
-			return;
-		}
-
-		const alignContentValue = extractAlignContentValue(lowerMessage);
-		if (alignContentValue) {
-			queueDirectAction({
-				action: actionType,
-				property: 'align_content',
-				value: alignContentValue,
-				message: 'Aligned content.',
-				...actionTarget,
-			});
+		const aGroupAction = buildContainerAGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (aGroupAction) {
+			queueDirectAction(aGroupAction);
 			return;
 		}
 

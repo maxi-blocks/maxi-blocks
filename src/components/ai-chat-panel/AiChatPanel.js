@@ -18,6 +18,12 @@ import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
+import {
+	buildContainerMetaAttributeChanges,
+	extractAnchorLink,
+	extractAriaLabel,
+	getContainerMetaSidebarTarget,
+} from './ai/utils/containerMeta';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -1126,29 +1132,6 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			}
 		}
 		return null;
-	};
-
-	const sanitizeAnchorId = value =>
-		String(value || '').replace(/[^a-zA-Z0-9-_]/g, '');
-
-	const extractAnchorLink = message => {
-		const quoted = extractQuotedText(message);
-		const raw =
-			quoted ||
-			extractValueFromPatterns(message, [
-				/(?:anchor(?:[\s_-]*link|[\s_-]*id)?)\s*(?:to|=|:|is)?\s*([a-zA-Z0-9-_]+)/i,
-			]);
-		if (!raw) return null;
-		const cleaned = sanitizeAnchorId(raw);
-		return cleaned || null;
-	};
-
-	const extractAriaLabel = message => {
-		const quoted = extractQuotedText(message);
-		if (quoted) return quoted;
-		return extractValueFromPatterns(message, [
-			/(?:aria[\s_-]*label)\s*(?:to|=|:|is)?\s*(.+)$/i,
-		]);
 	};
 
 	const extractAdvancedCss = message => {
@@ -2735,16 +2718,15 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 						}
 						// ======= META / ACCESSIBILITY =======
 						case 'anchor_link':
-							changes = { anchorLink: String(value || '') };
-							break;
 						case 'aria_label': {
-							const nextLabel = String(value || '');
-							changes = {
-								ariaLabels: {
-									...(block.attributes?.ariaLabels || {}),
-									container: nextLabel,
-								},
-							};
+							const metaChanges = buildContainerMetaAttributeChanges(
+								property,
+								value,
+								block?.attributes
+							);
+							if (metaChanges) {
+								changes = metaChanges;
+							}
 							break;
 						}
 						case 'advanced_css': {
@@ -3431,11 +3413,16 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 					openSidebarAccordion(0, 'callout arrow');
 					return;
 				case 'anchor_link':
-					openSidebarAccordion(1, 'add anchor link');
+				case 'aria_label': {
+					const sidebarTarget = getContainerMetaSidebarTarget(property);
+					if (sidebarTarget) {
+						openSidebarAccordion(
+							sidebarTarget.tabIndex,
+							sidebarTarget.accordion
+						);
+					}
 					return;
-				case 'aria_label':
-					openSidebarAccordion(1, 'aria label');
-					return;
+				}
 				case 'custom_css':
 					openSidebarAccordion(1, 'custom css');
 					return;

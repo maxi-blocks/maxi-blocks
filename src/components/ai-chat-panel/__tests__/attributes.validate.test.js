@@ -1,5 +1,6 @@
 import rawAttributes from '../ai/attributes/maxi-block-attributes.json';
 import { validateAttributesForBlock } from '../ai/attributes/attributes.validate';
+import { ATTRIBUTE_TYPES, inferAttributeType, normalizeAttributeName } from '../ai/attributes/attributeTypes';
 
 const findAttribute = tokens => {
 	const tokenList = Array.isArray(tokens) ? tokens : [tokens];
@@ -7,6 +8,17 @@ const findAttribute = tokens => {
 		const found = attrs.find(attr =>
 			tokenList.some(token => attr.toLowerCase().includes(token))
 		);
+		if (found) return { blockName, attrName: found };
+	}
+	return null;
+};
+
+const findNumberAttribute = () => {
+	for (const [blockName, attrs] of Object.entries(rawAttributes.blocks)) {
+		const found = attrs.find(attr => {
+			const normalized = normalizeAttributeName(attr);
+			return inferAttributeType(normalized) === ATTRIBUTE_TYPES.NUMBER;
+		});
 		if (found) return { blockName, attrName: found };
 	}
 	return null;
@@ -20,7 +32,7 @@ describe('attributes.validate', () => {
 	});
 
 	test('rejects wrong type for numbers', () => {
-		const target = findAttribute(['opacity', 'width', 'height', 'size', 'radius']);
+		const target = findNumberAttribute() || findAttribute(['opacity', 'width', 'height', 'size', 'radius']);
 		expect(target).toBeTruthy();
 		const result = validateAttributesForBlock(target.blockName, {
 			[target.attrName]: 'not-a-number',

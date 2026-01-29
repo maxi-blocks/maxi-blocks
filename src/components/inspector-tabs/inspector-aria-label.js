@@ -21,6 +21,7 @@ const ariaLabel = ({ props, targets, blockName, getIcon, onChange }) => {
 
 	return {
 		label: __('Aria label', 'maxi-blocks'),
+		extraIndicators: ['ariaLabels'],
 		content: (
 			<AriaLabelControl
 				targets={filterAriaLabelCategories(

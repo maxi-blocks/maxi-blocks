@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray } from 'lodash';
+import { isArray, isPlainObject, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 
 const getIsActiveTab = (
@@ -124,6 +124,12 @@ const getIsActiveTab = (
 			);
 		}
 		if (currentAttributes[attribute] === '') return true;
+		// Treat empty objects as cleared (e.g., ariaLabels: {})
+		if (
+			isPlainObject(currentAttributes[attribute]) &&
+			isEmpty(currentAttributes[attribute])
+		)
+			return true;
 
 		return currentAttributes[attribute] === defaultAttributes[attribute];
 	});

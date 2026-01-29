@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-26T12:16:20+00:00\n"
+"POT-Creation-Date: 2026-01-29T15:53:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -220,7 +220,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:1310
 #: plugin.php:90
 #: src/blocks/accordion-maxi/inspector.js:84
-#: src/blocks/button-maxi/inspector.js:207
+#: src/blocks/button-maxi/inspector.js:212
 #: src/blocks/column-maxi/inspector.js:40
 #: src/blocks/container-maxi/inspector.js:63
 #: src/blocks/divider-maxi/inspector.js:51
@@ -239,8 +239,7 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:57
 #: src/components/background-control/imageLayer.js:789
 #: src/components/inspector-tabs/inspector-transition.js:140
-#: src/components/relation-control/index.js:510
-#: src/components/relation-control/index.js:649
+#: src/components/relation-control/index.js:665
 msgid "Settings"
 msgstr ""
 
@@ -1635,14 +1634,14 @@ msgstr ""
 #: core/admin/status-report/maxi-system-status-report.php:73
 #: core/admin/status-report/maxi-system-status-report.php:936
 #: core/admin/status-report/maxi-system-status-report.php:938
-#: src/extensions/DC/constants.js:671
+#: src/extensions/DC/constants.js:678
 msgid "Yes"
 msgstr ""
 
 #: core/admin/status-report/maxi-system-status-report.php:71
 #: core/admin/status-report/maxi-system-status-report.php:74
 #: core/admin/status-report/maxi-system-status-report.php:939
-#: src/extensions/DC/constants.js:670
+#: src/extensions/DC/constants.js:677
 msgid "No"
 msgstr ""
 
@@ -2232,32 +2231,32 @@ msgstr ""
 msgid "Unable to determine the font file URL."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:225
+#: core/class-maxi-dynamic-content.php:223
 msgid "Categories are not associated with this post type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:243
+#: core/class-maxi-dynamic-content.php:241
 msgid "Tags are not associated with this post type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:276
+#: core/class-maxi-dynamic-content.php:274
 msgid "Unsupported archive type."
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:758
+#: core/class-maxi-dynamic-content.php:756
 msgid "Error in render_pagination for uniqueID "
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1212
-#: core/class-maxi-dynamic-content.php:2330
+#: core/class-maxi-dynamic-content.php:1209
+#: core/class-maxi-dynamic-content.php:2332
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1214
+#: core/class-maxi-dynamic-content.php:1211
 msgid "date"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:2762
+#: core/class-maxi-dynamic-content.php:2765
 msgid "Failed to create DateTime object: "
 msgstr ""
 
@@ -2664,8 +2663,8 @@ msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:23
 #: src/blocks/accordion-maxi/data.js:41
-#: src/blocks/button-maxi/data.js:57
-#: src/blocks/button-maxi/data.js:59
+#: src/blocks/button-maxi/data.js:58
+#: src/blocks/button-maxi/data.js:60
 #: src/blocks/button-maxi/utils.js:7
 #: src/blocks/search-maxi/components/button-control/index.js:29
 #: src/blocks/search-maxi/data.js:60
@@ -2807,7 +2806,7 @@ msgid "Active icon"
 msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:46
-#: src/blocks/button-maxi/data.js:125
+#: src/blocks/button-maxi/data.js:126
 #: src/blocks/column-maxi/data.js:36
 #: src/blocks/container-maxi/data.js:72
 #: src/blocks/divider-maxi/data.js:77
@@ -2833,9 +2832,9 @@ msgid "Background"
 msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:49
-#: src/blocks/button-maxi/data.js:104
-#: src/blocks/button-maxi/data.js:128
-#: src/blocks/button-maxi/data.js:188
+#: src/blocks/button-maxi/data.js:105
+#: src/blocks/button-maxi/data.js:129
+#: src/blocks/button-maxi/data.js:198
 #: src/blocks/column-maxi/data.js:39
 #: src/blocks/container-maxi/data.js:75
 #: src/blocks/divider-maxi/data.js:80
@@ -2880,8 +2879,8 @@ msgid "Border"
 msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:52
-#: src/blocks/button-maxi/data.js:108
-#: src/blocks/button-maxi/data.js:131
+#: src/blocks/button-maxi/data.js:109
+#: src/blocks/button-maxi/data.js:132
 #: src/blocks/column-maxi/data.js:42
 #: src/blocks/container-maxi/data.js:78
 #: src/blocks/divider-maxi/data.js:68
@@ -2922,8 +2921,8 @@ msgid "Box shadow"
 msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:55
-#: src/blocks/button-maxi/data.js:112
-#: src/blocks/button-maxi/data.js:122
+#: src/blocks/button-maxi/data.js:113
+#: src/blocks/button-maxi/data.js:123
 #: src/blocks/column-maxi/data.js:45
 #: src/blocks/container-maxi/data.js:81
 #: src/blocks/divider-maxi/data.js:74
@@ -2948,8 +2947,8 @@ msgid "Size"
 msgstr ""
 
 #: src/blocks/accordion-maxi/data.js:58
-#: src/blocks/button-maxi/data.js:116
-#: src/blocks/button-maxi/data.js:137
+#: src/blocks/button-maxi/data.js:117
+#: src/blocks/button-maxi/data.js:138
 #: src/blocks/column-maxi/data.js:48
 #: src/blocks/container-maxi/data.js:84
 #: src/blocks/divider-maxi/data.js:89
@@ -3341,7 +3340,7 @@ msgid "Line settings"
 msgstr ""
 
 #: src/blocks/accordion-maxi/inspector.js:220
-#: src/blocks/button-maxi/inspector.js:325
+#: src/blocks/button-maxi/inspector.js:345
 #: src/blocks/column-maxi/inspector.js:98
 #: src/blocks/container-maxi/inspector.js:122
 #: src/blocks/divider-maxi/inspector.js:309
@@ -3365,19 +3364,19 @@ msgstr ""
 msgid "Pane transition"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:56
-#: src/blocks/button-maxi/edit.js:241
+#: src/blocks/button-maxi/data.js:57
+#: src/blocks/button-maxi/edit.js:246
 #: src/blocks/search-maxi/components/button-control/index.js:46
 #: src/blocks/search-maxi/data.js:56
 msgid "Button text"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:62
+#: src/blocks/button-maxi/data.js:63
 #: src/blocks/svg-icon-maxi/data.js:249
 msgid "Icon border"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:72
+#: src/blocks/button-maxi/data.js:73
 #: src/blocks/svg-icon-maxi/data.js:74
 #: src/blocks/svg-icon-maxi/data.js:221
 #: src/components/icon-control/index.js:611
@@ -3386,13 +3385,13 @@ msgstr ""
 msgid "Icon background"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:82
+#: src/blocks/button-maxi/data.js:83
 #: src/components/icon-control/index.js:749
 msgid "Icon padding"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:87
-#: src/blocks/button-maxi/data.js:89
+#: src/blocks/button-maxi/data.js:88
+#: src/blocks/button-maxi/data.js:90
 #: src/blocks/divider-maxi/data.js:39
 #: src/blocks/divider-maxi/inspector.js:57
 #: src/blocks/image-maxi/data.js:66
@@ -3405,15 +3404,15 @@ msgstr ""
 msgid "Alignment"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:92
+#: src/blocks/button-maxi/data.js:93
 #: src/blocks/image-maxi/data.js:86
 #: src/blocks/list-item-maxi/data.js:34
 #: src/blocks/text-maxi/data.js:100
 msgid "Text alignment"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:97
-#: src/blocks/button-maxi/data.js:176
+#: src/blocks/button-maxi/data.js:98
+#: src/blocks/button-maxi/data.js:181
 #: src/blocks/image-maxi/data.js:83
 #: src/blocks/list-item-maxi/data.js:37
 #: src/blocks/list-item-maxi/data.js:115
@@ -3428,14 +3427,14 @@ msgstr ""
 msgid "Typography"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:100
-#: src/blocks/button-maxi/data.js:182
-#: src/blocks/button-maxi/data.js:307
+#: src/blocks/button-maxi/data.js:101
+#: src/blocks/button-maxi/data.js:192
+#: src/blocks/button-maxi/data.js:317
 #: src/blocks/search-maxi/data.js:71
 msgid "Button background"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:134
+#: src/blocks/button-maxi/data.js:135
 #: src/blocks/divider-maxi/data.js:86
 #: src/blocks/group-maxi/data.js:45
 #: src/blocks/image-maxi/data.js:163
@@ -3456,33 +3455,38 @@ msgstr ""
 msgid "Opacity"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:210
+#: src/blocks/button-maxi/data.js:187
+#: src/blocks/button-maxi/inspector.js:259
+msgid "Text link"
+msgstr ""
+
+#: src/blocks/button-maxi/data.js:220
 msgid "Button icon"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:261
+#: src/blocks/button-maxi/data.js:271
 msgid "Button typography"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:283
+#: src/blocks/button-maxi/data.js:293
 msgid "Button border"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:339
+#: src/blocks/button-maxi/data.js:349
 msgid "Button box shadow"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:365
+#: src/blocks/button-maxi/data.js:375
 msgid "Button margin/padding"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:151
+#: src/blocks/button-maxi/inspector.js:156
 #: src/blocks/search-maxi/data.js:53
 #: src/blocks/search-maxi/inspector.js:171
 msgid "Button"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:152
+#: src/blocks/button-maxi/inspector.js:157
 #: src/blocks/number-counter-maxi/components/number-counter-control/index.js:399
 #: src/blocks/search-maxi/components/button-control/index.js:33
 #: src/blocks/text-maxi/components/list-options-control/index.js:840
@@ -3490,11 +3494,11 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:213
+#: src/blocks/button-maxi/inspector.js:218
 msgid "Quick styles"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:299
+#: src/blocks/button-maxi/inspector.js:319
 #: src/blocks/divider-maxi/inspector.js:282
 #: src/blocks/image-maxi/inspector.js:468
 #: src/blocks/number-counter-maxi/inspector.js:122
@@ -3987,7 +3991,7 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:176
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
-#: src/extensions/DC/constants.js:242
+#: src/extensions/DC/constants.js:249
 msgid "Image"
 msgstr ""
 
@@ -4037,7 +4041,7 @@ msgstr ""
 
 #: src/blocks/image-maxi/data.js:89
 #: src/blocks/text-maxi/data.js:167
-#: src/components/inspector-tabs/inspector-link-settings.js:39
+#: src/components/inspector-tabs/inspector-link-settings.js:38
 #: src/components/toolbar/components/link/index.js:128
 #: src/components/toolbar/components/text-link/index.js:293
 #: src/components/typography-control/index.js:92
@@ -4257,7 +4261,7 @@ msgstr ""
 #: src/extensions/DC/constants.js:152
 #: src/extensions/DC/constants.js:161
 #: src/extensions/DC/constants.js:185
-#: src/extensions/DC/constants.js:271
+#: src/extensions/DC/constants.js:278
 msgid "Description"
 msgstr ""
 
@@ -5929,7 +5933,7 @@ msgid "Static Text"
 msgstr ""
 
 #: src/components/dynamic-content/acf-settings-control/utils.js:113
-#: src/extensions/DC/constants.js:330
+#: src/extensions/DC/constants.js:337
 msgid "Static"
 msgstr ""
 
@@ -7511,7 +7515,7 @@ msgstr ""
 msgid "Maxi AI writer"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-relation.js:36
+#: src/components/inspector-tabs/inspector-relation.js:42
 msgid "Interaction builder"
 msgstr ""
 
@@ -7813,66 +7817,76 @@ msgstr ""
 msgid "Site Details:"
 msgstr ""
 
-#: src/components/relation-control/index.js:93
-msgid "Choose settings"
-msgstr ""
-
-#: src/components/relation-control/index.js:382
-msgid "Preview all interactions"
-msgstr ""
-
-#: src/components/relation-control/index.js:396
-msgid "Add new interaction"
-msgstr ""
-
-#: src/components/relation-control/index.js:406
-msgid "Untitled interaction"
-msgstr ""
-
-#: src/components/relation-control/index.js:411
-#: src/extensions/DC/constants.js:171
-#: src/extensions/DC/constants.js:184
-#: src/extensions/DC/constants.js:270
-msgid "Name"
-msgstr ""
-
-#: src/components/relation-control/index.js:413
-msgid "Give memorable name…"
-msgstr ""
-
-#: src/components/relation-control/index.js:431
-msgid "Add names to blocks which you want to be able to select them here."
-msgstr ""
-
-#: src/components/relation-control/index.js:439
-msgid "Block to affect"
-msgstr ""
-
-#: src/components/relation-control/index.js:447
+#: src/components/relation-control/BlockSelectControl.js:127
+#: src/components/relation-control/index.js:608
 msgid "Select block…"
 msgstr ""
 
-#: src/components/relation-control/index.js:469
+#: src/components/relation-control/BlockSelectControl.js:300
+#: src/components/relation-control/BlockSelectControl.js:304
+msgid "Search blocks…"
+msgstr ""
+
+#: src/components/relation-control/BlockSelectControl.js:393
+msgid "No blocks found"
+msgstr ""
+
+#: src/components/relation-control/index.js:516
+msgid "Choose settings"
+msgstr ""
+
+#: src/components/relation-control/index.js:547
+msgid "Preview all interactions"
+msgstr ""
+
+#: src/components/relation-control/index.js:560
+msgid "Add new interaction"
+msgstr ""
+
+#: src/components/relation-control/index.js:571
+msgid "Untitled interaction"
+msgstr ""
+
+#: src/components/relation-control/index.js:584
+#: src/extensions/DC/constants.js:171
+#: src/extensions/DC/constants.js:184
+#: src/extensions/DC/constants.js:277
+msgid "Name"
+msgstr ""
+
+#: src/components/relation-control/index.js:586
+msgid "Give memorable name…"
+msgstr ""
+
+#: src/components/relation-control/index.js:601
+msgid "Block to affect"
+msgstr ""
+
+#: src/components/relation-control/index.js:628
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:476
+#: src/components/relation-control/index.js:632
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:483
+#: src/components/relation-control/index.js:639
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:490
+#: src/components/relation-control/index.js:646
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:632
-msgid "Open block settings"
+#: src/components/relation-control/index.js:733
+msgid "Start"
 msgstr ""
 
-#: src/components/relation-control/index.js:659
+#: src/components/relation-control/index.js:743
+msgid "End"
+msgstr ""
+
+#: src/components/relation-control/index.js:753
 msgid "Effects"
 msgstr ""
 
@@ -9093,7 +9107,7 @@ msgid "Get by id"
 msgstr ""
 
 #: src/extensions/DC/constants.js:46
-#: src/extensions/DC/utils.js:416
+#: src/extensions/DC/utils.js:423
 msgid "Get by tag"
 msgstr ""
 
@@ -9114,12 +9128,12 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:55
 #: src/extensions/DC/constants.js:63
-#: src/extensions/DC/utils.js:398
+#: src/extensions/DC/utils.js:405
 msgid "Get alphabetical"
 msgstr ""
 
 #: src/extensions/DC/constants.js:56
-#: src/extensions/DC/utils.js:404
+#: src/extensions/DC/utils.js:411
 msgid "Get by author"
 msgstr ""
 
@@ -9134,24 +9148,23 @@ msgstr ""
 
 #: src/extensions/DC/constants.js:140
 #: src/extensions/DC/constants.js:180
-#: src/extensions/DC/constants.js:200
-#: src/extensions/DC/constants.js:207
 #: src/extensions/DC/constants.js:214
-#: src/extensions/DC/constants.js:223
+#: src/extensions/DC/constants.js:221
 #: src/extensions/DC/constants.js:230
-#: src/extensions/DC/constants.js:298
-#: src/extensions/DC/constants.js:326
+#: src/extensions/DC/constants.js:237
+#: src/extensions/DC/constants.js:305
+#: src/extensions/DC/constants.js:333
 msgid "Static text"
 msgstr ""
 
 #: src/extensions/DC/constants.js:146
-#: src/extensions/DC/constants.js:284
+#: src/extensions/DC/constants.js:291
 #: src/extensions/DC/store/initConstants.js:22
 msgid "Categories"
 msgstr ""
 
 #: src/extensions/DC/constants.js:147
-#: src/extensions/DC/constants.js:285
+#: src/extensions/DC/constants.js:292
 #: src/extensions/DC/store/initConstants.js:23
 msgid "Tags"
 msgstr ""
@@ -9197,7 +9210,7 @@ msgid "Website"
 msgstr ""
 
 #: src/extensions/DC/constants.js:186
-#: src/extensions/DC/constants.js:276
+#: src/extensions/DC/constants.js:283
 msgid "Slug"
 msgstr ""
 
@@ -9205,172 +9218,172 @@ msgstr ""
 msgid "Count"
 msgstr ""
 
-#: src/extensions/DC/constants.js:234
+#: src/extensions/DC/constants.js:241
 msgid "Featured media"
 msgstr ""
 
-#: src/extensions/DC/constants.js:235
+#: src/extensions/DC/constants.js:242
 msgid "Author's avatar"
 msgstr ""
 
-#: src/extensions/DC/constants.js:239
+#: src/extensions/DC/constants.js:246
 msgid "Logo"
 msgstr ""
 
-#: src/extensions/DC/constants.js:245
+#: src/extensions/DC/constants.js:252
 msgid "Avatar"
 msgstr ""
 
-#: src/extensions/DC/constants.js:273
+#: src/extensions/DC/constants.js:280
 msgid "Short description"
 msgstr ""
 
-#: src/extensions/DC/constants.js:277
+#: src/extensions/DC/constants.js:284
 msgid "SKU"
 msgstr ""
 
-#: src/extensions/DC/constants.js:278
+#: src/extensions/DC/constants.js:285
 msgid "Review count"
 msgstr ""
 
-#: src/extensions/DC/constants.js:279
+#: src/extensions/DC/constants.js:286
 msgid "Average rating"
 msgstr ""
 
-#: src/extensions/DC/constants.js:280
+#: src/extensions/DC/constants.js:287
 msgid "Price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:281
+#: src/extensions/DC/constants.js:288
 msgid "Regular price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:282
+#: src/extensions/DC/constants.js:289
 msgid "Sale price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:283
+#: src/extensions/DC/constants.js:290
 msgid "Price range"
 msgstr ""
 
-#: src/extensions/DC/constants.js:302
+#: src/extensions/DC/constants.js:309
 msgid "Featured image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:303
+#: src/extensions/DC/constants.js:310
 msgid "Gallery image"
 msgstr ""
 
-#: src/extensions/DC/constants.js:307
+#: src/extensions/DC/constants.js:314
 msgid "Total price"
 msgstr ""
 
-#: src/extensions/DC/constants.js:308
+#: src/extensions/DC/constants.js:315
 msgid "Total tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:309
+#: src/extensions/DC/constants.js:316
 msgid "Total shipping"
 msgstr ""
 
-#: src/extensions/DC/constants.js:311
+#: src/extensions/DC/constants.js:318
 msgid "Total shipping tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:314
+#: src/extensions/DC/constants.js:321
 msgid "Total discount"
 msgstr ""
 
-#: src/extensions/DC/constants.js:315
+#: src/extensions/DC/constants.js:322
 msgid "Total items"
 msgstr ""
 
-#: src/extensions/DC/constants.js:317
+#: src/extensions/DC/constants.js:324
 msgid "Total items tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:320
+#: src/extensions/DC/constants.js:327
 msgid "Total fees"
 msgstr ""
 
-#: src/extensions/DC/constants.js:321
+#: src/extensions/DC/constants.js:328
 msgid "Total fees tax"
 msgstr ""
 
-#: src/extensions/DC/constants.js:403
+#: src/extensions/DC/constants.js:410
 msgid "Add to cart"
 msgstr ""
 
-#: src/extensions/DC/constants.js:406
-#: src/extensions/DC/constants.js:433
-#: src/extensions/DC/constants.js:441
+#: src/extensions/DC/constants.js:413
+#: src/extensions/DC/constants.js:440
+#: src/extensions/DC/constants.js:448
 msgid "Author email"
 msgstr ""
 
-#: src/extensions/DC/constants.js:407
-#: src/extensions/DC/constants.js:434
-#: src/extensions/DC/constants.js:442
+#: src/extensions/DC/constants.js:414
+#: src/extensions/DC/constants.js:441
+#: src/extensions/DC/constants.js:449
 msgid "Author site"
 msgstr ""
 
-#: src/extensions/DC/constants.js:418
+#: src/extensions/DC/constants.js:425
 msgid "Categories links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:424
+#: src/extensions/DC/constants.js:431
 msgid "Tags links"
 msgstr ""
 
-#: src/extensions/DC/constants.js:430
-#: src/extensions/DC/constants.js:438
+#: src/extensions/DC/constants.js:437
+#: src/extensions/DC/constants.js:445
 msgid "Author profile page"
 msgstr ""
 
-#: src/extensions/DC/constants.js:585
+#: src/extensions/DC/constants.js:592
 msgid "Sorry, there is no next post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:589
+#: src/extensions/DC/constants.js:596
 msgid "Sorry, there is no previous post, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:593
+#: src/extensions/DC/constants.js:600
 msgid "Value is not an object."
 msgstr ""
 
-#: src/extensions/DC/constants.js:594
+#: src/extensions/DC/constants.js:601
 msgid "Sorry, this author has no posts yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:598
+#: src/extensions/DC/constants.js:605
 msgid "Sorry, you do not have any images yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:602
+#: src/extensions/DC/constants.js:609
 msgid "Sorry, you do not have any tags yet, please choose something else."
 msgstr ""
 
-#: src/extensions/DC/constants.js:652
+#: src/extensions/DC/constants.js:659
 msgid "By date"
 msgstr ""
 
-#: src/extensions/DC/constants.js:653
+#: src/extensions/DC/constants.js:660
 msgid "Alphabetical"
 msgstr ""
 
-#: src/extensions/DC/constants.js:660
+#: src/extensions/DC/constants.js:667
 msgid "New/old"
 msgstr ""
 
-#: src/extensions/DC/constants.js:661
+#: src/extensions/DC/constants.js:668
 msgid "Old/new"
 msgstr ""
 
-#: src/extensions/DC/constants.js:664
+#: src/extensions/DC/constants.js:671
 msgid "A/Z"
 msgstr ""
 
-#: src/extensions/DC/constants.js:665
+#: src/extensions/DC/constants.js:672
 msgid "Z/A"
 msgstr ""
 
@@ -9436,20 +9449,20 @@ msgstr ""
 msgid "links"
 msgstr ""
 
-#: src/extensions/DC/utils.js:377
+#: src/extensions/DC/utils.js:384
 msgid "Archive type's name"
 msgstr ""
 
-#: src/extensions/DC/utils.js:410
+#: src/extensions/DC/utils.js:417
 msgid "Get by category"
 msgstr ""
 
-#: src/extensions/DC/utils.js:458
-#: src/extensions/DC/utils.js:478
+#: src/extensions/DC/utils.js:465
+#: src/extensions/DC/utils.js:485
 msgid "Get the current item's data"
 msgstr ""
 
-#: src/extensions/DC/utils.js:468
+#: src/extensions/DC/utils.js:475
 msgid "Get the current archive's posts"
 msgstr ""
 

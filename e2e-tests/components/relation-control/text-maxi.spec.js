@@ -70,11 +70,19 @@ describe('Text Maxi hover simple actions', () => {
 		await page.keyboard.type('Test', { delay: 350 });
 		await page.waitForTimeout(150);
 
-		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('text-maxi-1se8ef1z-u');
+		// Add target
+		await page.waitForSelector('.maxi-block-select-control__trigger');
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForSelector('.maxi-block-select-control__dropdown');
+		await page.click(
+			'.maxi-block-select-control__options li[value="text-maxi-1se8ef1z-u"]'
+		);
+		await page.waitForTimeout(200);
 
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[2].select('hover');
+		// Add action
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('hover');
+		await page.waitForTimeout(200);
 	});
 
 	const checkFrontend = async (disableTransition = false) => {
@@ -127,8 +135,17 @@ describe('Text Maxi hover simple actions', () => {
 	};
 
 	it('Alignment', async () => {
+		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('a');
+		await selectControls[2].select('a');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',
@@ -144,8 +161,17 @@ describe('Text Maxi hover simple actions', () => {
 
 	// Needs #3767 to be fixed
 	it.skip('Typography', async () => {
+		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('ty');
+		await selectControls[2].select('ty');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		await page.$eval(
 			'.maxi-typography-control .maxi-typography-control__font-family',

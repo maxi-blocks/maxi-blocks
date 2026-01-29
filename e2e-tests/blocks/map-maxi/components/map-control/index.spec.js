@@ -83,7 +83,7 @@ describe('Map Control', () => {
 		const resetMaxZoom = await resettingAttributes({
 			page,
 			instance: 'maxi-map-control__max-zoom',
-			expectValue: '22',
+			expectValue: '18',
 		});
 
 		expect(resetMaxZoom).toBeTruthy();

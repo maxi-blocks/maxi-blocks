@@ -118,7 +118,8 @@ const extractOrderValue = message => {
 const normalizeOverflowValue = value => {
 	if (!value) return null;
 	const lower = String(value).toLowerCase();
-	if (/(hidden|clip)/.test(lower)) return 'hidden';
+	if (/clip/.test(lower)) return 'clip';
+	if (/hidden/.test(lower)) return 'hidden';
 	if (/scroll/.test(lower)) return 'scroll';
 	if (/auto/.test(lower)) return 'auto';
 	if (/visible/.test(lower)) return 'visible';

@@ -67,6 +67,11 @@ import {
 	buildContainerMGroupAttributeChanges,
 	getContainerMGroupSidebarTarget,
 } from './ai/utils/containerMGroup';
+import {
+	buildContainerOGroupAction,
+	buildContainerOGroupAttributeChanges,
+	getContainerOGroupSidebarTarget,
+} from './ai/utils/containerOGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -617,6 +622,10 @@ const ACTION_PROPERTY_ALIASES = {
 	borderHover: 'border_hover',
 	borderRadiusHover: 'border_radius_hover',
 	boxShadowHover: 'box_shadow_hover',
+	opacityHover: 'opacity_hover',
+	opacityStatusHover: 'opacity_status_hover',
+	overflowX: 'overflow_x',
+	overflowY: 'overflow_y',
 	paginationStyle: 'pagination_style',
 	paginationSpacing: 'pagination_spacing',
 	paginationText: 'pagination_text',
@@ -2663,7 +2672,13 @@ const ACTION_PROPERTY_ALIASES = {
 							}
 							break;
 						case 'opacity':
-							changes = updateOpacity(value);
+						case 'opacity_hover':
+						case 'opacity_status_hover':
+						case 'order':
+						case 'overflow':
+						case 'overflow_x':
+						case 'overflow_y':
+							changes = buildContainerOGroupAttributeChanges(property, value);
 							break;
 						case 'svg_fill_color':
 							// Only apply to SVG icon blocks
@@ -3703,13 +3718,22 @@ const ACTION_PROPERTY_ALIASES = {
 		const openLinkToolbar = () => {
 			const targetClientId = selectedBlock?.clientId;
 			if (!targetClientId || typeof window === 'undefined') return;
+			try {
+				dispatch('core/block-editor').selectBlock(targetClientId);
+				logAIDebug('Re-selected block before opening link toolbar', {
+					clientId: targetClientId,
+					block: selectedBlock?.name,
+				});
+			} catch (err) {
+				logAIDebug('Failed to re-select block before opening link toolbar', err);
+			}
 			setTimeout(() => {
 				queueToolbarOpen('link', targetClientId, { force: true });
 				scheduleToolbarClick(
 					'.toolbar-item__link.toolbar-item__button, .toolbar-item__link',
 					'link'
 				);
-			}, 80);
+			}, 150);
 			logAIDebug('Requested link toolbar open', {
 				clientId: targetClientId,
 				block: selectedBlock?.name,
@@ -3718,13 +3742,25 @@ const ACTION_PROPERTY_ALIASES = {
 		const openTextLinkToolbar = () => {
 			const targetClientId = selectedBlock?.clientId;
 			if (!targetClientId || typeof window === 'undefined') return;
+			try {
+				dispatch('core/block-editor').selectBlock(targetClientId);
+				logAIDebug('Re-selected block before opening text-link toolbar', {
+					clientId: targetClientId,
+					block: selectedBlock?.name,
+				});
+			} catch (err) {
+				logAIDebug(
+					'Failed to re-select block before opening text-link toolbar',
+					err
+				);
+			}
 			setTimeout(() => {
 				queueToolbarOpen('text-link', targetClientId, { force: true });
 				scheduleToolbarClick(
 					'.toolbar-item__text-link.toolbar-item__button, .toolbar-item__text-link .toolbar-item__button',
 					'text-link'
 				);
-			}, 80);
+			}, 150);
 			logAIDebug('Requested text-link toolbar open', {
 				clientId: targetClientId,
 				block: selectedBlock?.name,
@@ -3806,6 +3842,11 @@ const ACTION_PROPERTY_ALIASES = {
 			const mGroupTarget = getContainerMGroupSidebarTarget(normalizedProperty);
 			if (mGroupTarget) {
 				openSidebarAccordion(mGroupTarget.tabIndex, mGroupTarget.accordion);
+				return;
+			}
+			const oGroupTarget = getContainerOGroupSidebarTarget(normalizedProperty);
+			if (oGroupTarget) {
+				openSidebarAccordion(oGroupTarget.tabIndex, oGroupTarget.accordion);
 				return;
 			}
 
@@ -4202,7 +4243,15 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'height': c = buildHeightChanges(val, blkPrefix); break;
 						case 'objectFit':
 						case 'object_fit': c = updateImageFit(val); break;
-						case 'opacity': c = updateOpacity(val); break;
+						case 'opacity':
+						case 'opacity_hover':
+						case 'opacity_status_hover':
+						case 'order':
+						case 'overflow':
+						case 'overflow_x':
+						case 'overflow_y':
+							c = buildContainerOGroupAttributeChanges(prop, val);
+							break;
 						// Typography properties
 						case 'text_color':
 						case 'color':
@@ -4907,6 +4956,15 @@ const ACTION_PROPERTY_ALIASES = {
 		});
 		if (mGroupAction) {
 			queueDirectAction(mGroupAction);
+			return;
+		}
+
+		// O-group: opacity, order, overflow (explicit phrasing)
+		const oGroupAction = buildContainerOGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (oGroupAction) {
+			queueDirectAction(oGroupAction);
 			return;
 		}
 

@@ -206,6 +206,32 @@ Preset defaults:
   - "Open in new tab with nofollow." -> { "link_settings": { "url": "https://example.com", "target": "_blank", "rel": "nofollow noopener" } }
   - "Link to current post (dynamic)." -> { "dc_link": { "status": true, "target": "entity" } }
 
+#### 6.9 OPACITY ("Opacity", "Transparency")
+- Target properties: opacity, opacity_hover, opacity_status_hover.
+- Examples:
+  - "Set opacity to 60%." -> { "opacity": 0.6 }
+  - "On hover, set opacity to 20%." -> { "opacity_hover": 0.2 }
+  - "Disable opacity hover." -> { "opacity_status_hover": false }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.10 ORDER ("Order", "Stack order")
+- Target property: order.
+- Examples:
+  - "Set order to 2." -> { "order": 2 }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.11 OVERFLOW ("Overflow", "Clip", "Scroll")
+- Target properties: overflow, overflow_x, overflow_y.
+- Allowed values: hidden, scroll, auto, visible, clip.
+- Examples:
+  - "Set overflow to hidden." -> { "overflow": "hidden" }
+  - "Set overflow x to scroll." -> { "overflow_x": "scroll" }
+  - "Set overflow y to clip." -> { "overflow_y": "clip" }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": "<overflow>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
 - Presets:

@@ -23,6 +23,11 @@ import {
 	getContainerMetaSidebarTarget,
 } from './ai/utils/containerMeta';
 import {
+	buildButtonAGroupAction,
+	buildButtonAGroupAttributeChanges,
+	getButtonAGroupSidebarTarget,
+} from './ai/utils/buttonAGroup';
+import {
 	buildContainerAGroupAction,
 	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
@@ -77,6 +82,21 @@ import {
 	buildContainerPGroupAttributeChanges,
 	getContainerPGroupSidebarTarget,
 } from './ai/utils/containerPGroup';
+import {
+	buildContainerRGroupAction,
+	buildContainerRGroupAttributeChanges,
+	getContainerRGroupSidebarTarget,
+} from './ai/utils/containerRGroup';
+import {
+	buildContainerSGroupAction,
+	buildContainerSGroupAttributeChanges,
+	getContainerSGroupSidebarTarget,
+} from './ai/utils/containerSGroup';
+import {
+	buildContainerTGroupAction,
+	buildContainerTGroupAttributeChanges,
+	getContainerTGroupSidebarTarget,
+} from './ai/utils/containerTGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -607,7 +627,7 @@ const ACTION_PROPERTY_ALIASES = {
 	alignContent: 'align_content',
 	flexDirection: 'flex_direction',
 	flexWrap: 'flex_wrap',
-	rowGap: 'gap',
+	rowGap: 'row_gap',
 	columnGap: 'column_gap',
 	arrowStatus: 'arrow_status',
 	arrowSide: 'arrow_side',
@@ -668,6 +688,18 @@ const ACTION_PROPERTY_ALIASES = {
 	linkSettings: 'link_settings',
 	linkSetting: 'link_settings',
 	link: 'link_settings',
+	shortcutEffect: 'shortcut_effect',
+	shortcutEffectType: 'shortcut_effect_type',
+	sizeAdvancedOptions: 'size_advanced_options',
+	showWarningBox: 'show_warning_box',
+	transformTarget: 'transform_target',
+	transformOrigin: 'transform_origin',
+	transformRotate: 'transform_rotate',
+	transformScale: 'transform_scale',
+	transformTranslate: 'transform_translate',
+	transitionChangeAll: 'transition_change_all',
+	transitionCanvasSelected: 'transition_canvas_selected',
+	transitionTransformSelected: 'transition_transform_selected',
 };
 
 	const AiChatPanelView = ({ isOpen, onClose }) => {
@@ -2729,11 +2761,17 @@ const ACTION_PROPERTY_ALIASES = {
 							changes = { 'text-alignment-general': value };
 							break;
 						case 'align_items':
-							// Item alignment for container blocks
-							changes = { 
-								'justify-content-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
-								'align-items-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
-							};
+							if (block.name.includes('button')) {
+								changes = buildButtonAGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								});
+							} else {
+								// Item alignment for container blocks
+								changes = { 
+									'justify-content-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
+									'align-items-general': value === 'left' ? 'flex-start' : value === 'right' ? 'flex-end' : 'center',
+								};
+							}
 							break;
 						case 'align_everything':
 							// Universal alignment: text + flex items together
@@ -2767,8 +2805,17 @@ const ACTION_PROPERTY_ALIASES = {
 							}
 							break;
 						case 'align_content':
-							// Apply to layout containers
-							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+							if (block.name.includes('button')) {
+								changes = buildButtonAGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								});
+							} else if (
+								specificClientId ||
+								block.name.includes('container') ||
+								block.name.includes('row') ||
+								block.name.includes('column') ||
+								block.name.includes('group')
+							) {
 								changes = buildContainerAGroupAttributeChanges(property, value, {
 									block,
 									attributes: block.attributes,
@@ -2787,6 +2834,12 @@ const ACTION_PROPERTY_ALIASES = {
 							// Apply to layout containers
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
 								changes = updateGap(value);
+							}
+							break;
+						case 'row_gap':
+							// Apply to layout containers
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('group')) {
+								changes = buildContainerRGroupAttributeChanges(property, value);
 							}
 							break;
 						// ======= EXTENDED LAYOUT PROPERTIES =======
@@ -2871,53 +2924,78 @@ const ACTION_PROPERTY_ALIASES = {
 						// ======= META / ACCESSIBILITY =======
 						case 'anchor_link':
 						case 'aria_label': {
-							const metaChanges = buildContainerMetaAttributeChanges(
-								property,
-								value,
-								block?.attributes
-							);
-							if (metaChanges) {
-								changes = metaChanges;
+							if (block.name.includes('button')) {
+								const metaChanges = buildButtonAGroupAttributeChanges(
+									property,
+									value,
+									{ attributes: block?.attributes }
+								);
+								if (metaChanges) {
+									changes = metaChanges;
+								}
+							} else {
+								const metaChanges = buildContainerMetaAttributeChanges(
+									property,
+									value,
+									block?.attributes
+								);
+								if (metaChanges) {
+									changes = metaChanges;
+								}
 							}
 							break;
 						}
 						case 'advanced_css': {
-							changes = buildContainerAGroupAttributeChanges(property, value, {
-								block,
-								attributes: block.attributes,
-							});
+							if (block.name.includes('button')) {
+								changes = buildButtonAGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								});
+							} else {
+								changes = buildContainerAGroupAttributeChanges(property, value, {
+									block,
+									attributes: block.attributes,
+								});
+							}
 							break;
 						}
 						// ======= TRANSFORM EFFECTS =======
 						case 'transform_rotate':
-							changes = {
-								'transform-rotate-general': Number(value),
-								'transform-origin-general': 'center center',
-							};
-							break;
 						case 'transform_scale':
-							if (typeof value === 'object') {
-								changes = {
-									'transform-scale-x-general': value.x || 1,
-									'transform-scale-y-general': value.y || 1,
-								};
-							} else {
-								changes = {
-									'transform-scale-x-general': Number(value),
-									'transform-scale-y-general': Number(value),
-								};
-							}
-							break;
 						case 'transform_scale_hover':
-							changes = {
-								'transform-scale-x-hover': Number(value),
-								'transform-scale-y-hover': Number(value),
-								'transform-status-hover': true,
-							};
+						case 'transform_translate':
+						case 'transform_origin':
+						case 'transform_target':
+						case 'transition':
+						case 'transition_change_all':
+						case 'transition_canvas_selected':
+						case 'transition_transform_selected':
+							changes = buildContainerTGroupAttributeChanges(property, value, {
+								attributes: block.attributes,
+							});
 							break;
 
 						// ======= BLOCK ACTIONS (Delegated) =======
 						default:
+							if (
+								property &&
+								(String(property).startsWith('scroll_') ||
+									String(property).startsWith('shape_divider_') ||
+									[
+										'shortcut_effect',
+										'shortcut_effect_type',
+										'show_warning_box',
+										'size_advanced_options',
+									].includes(property))
+							) {
+								const sChanges = buildContainerSGroupAttributeChanges(
+									property,
+									value
+								);
+								if (sChanges) {
+									changes = sChanges;
+									break;
+								}
+							}
 							if (property && String(property).startsWith('cl_')) {
 								changes = buildContainerCGroupAttributeChanges(property, value, {
 									attributes: block.attributes,
@@ -3349,6 +3427,7 @@ const ACTION_PROPERTY_ALIASES = {
 			'flex_direction',
 			'flex_wrap',
 			'gap',
+			'row_gap',
 			'dead_center',
 			'align_everything',
 		]);
@@ -3784,6 +3863,14 @@ const ACTION_PROPERTY_ALIASES = {
 				}
 				return;
 			}
+			const isButtonBlock = selectedBlock?.name?.includes('button');
+			if (isButtonBlock) {
+				const buttonTarget = getButtonAGroupSidebarTarget(normalizedProperty);
+				if (buttonTarget) {
+					openSidebarAccordion(buttonTarget.tabIndex, buttonTarget.accordion);
+					return;
+				}
+			}
 			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
 			if (aGroupTarget) {
 				openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
@@ -3832,6 +3919,21 @@ const ACTION_PROPERTY_ALIASES = {
 			const pGroupTarget = getContainerPGroupSidebarTarget(normalizedProperty);
 			if (pGroupTarget) {
 				openSidebarAccordion(pGroupTarget.tabIndex, pGroupTarget.accordion);
+				return;
+			}
+			const rGroupTarget = getContainerRGroupSidebarTarget(normalizedProperty);
+			if (rGroupTarget) {
+				openSidebarAccordion(rGroupTarget.tabIndex, rGroupTarget.accordion);
+				return;
+			}
+			const sGroupTarget = getContainerSGroupSidebarTarget(normalizedProperty);
+			if (sGroupTarget) {
+				openSidebarAccordion(sGroupTarget.tabIndex, sGroupTarget.accordion);
+				return;
+			}
+			const tGroupTarget = getContainerTGroupSidebarTarget(normalizedProperty);
+			if (tGroupTarget) {
+				openSidebarAccordion(tGroupTarget.tabIndex, tGroupTarget.accordion);
 				return;
 			}
 			const oGroupTarget = getContainerOGroupSidebarTarget(normalizedProperty);
@@ -4209,6 +4311,9 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'position_left':
 							c = buildContainerPGroupAttributeChanges(prop, val);
 							break;
+						case 'row_gap':
+							c = buildContainerRGroupAttributeChanges(prop, val);
+							break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
 						case 'background_color': c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, blkPrefix); break;
@@ -4253,6 +4358,20 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'overflow_y':
 							c = buildContainerOGroupAttributeChanges(prop, val);
 							break;
+						case 'transform_rotate':
+						case 'transform_scale':
+						case 'transform_scale_hover':
+						case 'transform_translate':
+						case 'transform_origin':
+						case 'transform_target':
+						case 'transition':
+						case 'transition_change_all':
+						case 'transition_canvas_selected':
+						case 'transition_transform_selected':
+							c = buildContainerTGroupAttributeChanges(prop, val, {
+								attributes: targetBlock.attributes,
+							});
+							break;
 						// Typography properties
 						case 'text_color':
 						case 'color':
@@ -4269,6 +4388,20 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						// ======= BLOCK ACTIONS (Delegated) =======
 						default:
+							if (
+								prop &&
+								(String(prop).startsWith('scroll_') ||
+									String(prop).startsWith('shape_divider_') ||
+									[
+										'shortcut_effect',
+										'shortcut_effect_type',
+										'show_warning_box',
+										'size_advanced_options',
+									].includes(prop))
+							) {
+								c = buildContainerSGroupAttributeChanges(prop, val);
+								if (c) break;
+							}
 							// Pass current conversation data if this flow matches the active conversation
 							// Check payload for explicit data override (from handleSuggestion loop)
 							const payloadData = action.payload?._conversationData;
@@ -4896,6 +5029,20 @@ const ACTION_PROPERTY_ALIASES = {
 			return;
 		}
 
+		const isButtonContext =
+			lowerMessage.includes('button') ||
+			selectedBlock?.name?.includes('button');
+		if (isButtonContext) {
+			const buttonAGroupAction = buildButtonAGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (buttonAGroupAction) {
+				logAIDebug('Button A-group action matched', buttonAGroupAction);
+				queueDirectAction(buttonAGroupAction);
+				return;
+			}
+		}
+
 		// A-group: anchor, aria, advanced CSS, arrows, align content/items (explicit phrasing)
 		const aGroupAction = buildContainerAGroupAction(rawMessage, {
 			scope: currentScope,
@@ -4966,6 +5113,33 @@ const ACTION_PROPERTY_ALIASES = {
 		});
 		if (pGroupAction) {
 			queueDirectAction(pGroupAction);
+			return;
+		}
+
+		// R-group: row gap (explicit phrasing)
+		const rGroupAction = buildContainerRGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (rGroupAction) {
+			queueDirectAction(rGroupAction);
+			return;
+		}
+
+		// S-group: scroll effects + shape dividers (explicit phrasing)
+		const sGroupAction = buildContainerSGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (sGroupAction) {
+			queueDirectAction(sGroupAction);
+			return;
+		}
+
+		// T-group: transforms + hover transitions (explicit phrasing)
+		const tGroupAction = buildContainerTGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (tGroupAction) {
+			queueDirectAction(tGroupAction);
 			return;
 		}
 

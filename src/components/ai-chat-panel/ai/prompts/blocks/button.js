@@ -62,6 +62,12 @@ If width or visibility is mentioned:
 - Button text colour: property "text_color" with palette number (1-8) or CSS colour string.
 - Button alignment: property "alignment" with "left" | "center" | "right".
 - Button text alignment: property "text_align" with "left" | "center" | "right" | "justify".
+- Button alignment (responsive): property "alignment" with { "value": "left" | "center" | "right", "breakpoint": "general" | "xxl" | "xl" | "l" | "m" | "s" | "xs" }.
+- Align items (flexbox): property "align_items" with "flex-start" | "center" | "flex-end" | "stretch" | "baseline" (supports { value, breakpoint }).
+- Align content (flexbox): property "align_content" with "space-between" | "space-around" | "space-evenly" | "center" | "stretch" | "flex-start" | "flex-end" (supports { value, breakpoint }).
+- Anchor link (advanced): property "anchor_link" with string (no #).
+- Aria label (advanced): property "aria_label" with string.
+- Advanced CSS (advanced): property "advanced_css" with CSS string (supports { value, breakpoint }).
 - Icon visibility: property "button_icon" with "only" | "none".
 - Add icon: property "button_icon_add" with icon name (e.g. "arrow-right").
 - Change icon: property "button_icon_change" with icon name.
@@ -87,6 +93,15 @@ If width or visibility is mentioned:
 - Dynamic link: property "button_dynamic_link" with "entity" (current post URL).
 - Download label: property "button_custom_text_link" with string (e.g. "Download").
 - High contrast mode: property "high_contrast_mode" with true.
+
+### A-ATTRIBUTE EXAMPLES (BUTTON ADVANCED)
+- Anchor: "Set button anchor ID to hero-cta." -> { "anchor_link": "hero-cta" }
+- Aria: "Set button aria label to 'Primary CTA'." -> { "aria_label": "Primary CTA" }
+- Advanced CSS: "Add custom CSS to the button: .maxi-button-block{color:red;}" -> { "advanced_css": ".maxi-button-block{color:red;}" }
+- Advanced CSS (mobile): "On mobile, add custom CSS: .cta{color:red;}" -> { "advanced_css": { "value": ".cta{color:red;}", "breakpoint": "xs" } }
+- Align items: "Align items center." -> { "align_items": "center" }
+- Align content: "Align content space between." -> { "align_content": "space-between" }
+- Alignment (tablet): "On tablet, align button center." -> { "alignment": { "value": "center", "breakpoint": "m" } }
 
 ### MISSING-IN-DOCS (NOW DOCUMENTED)
 - Button width: property "width" with "auto" | "100%".

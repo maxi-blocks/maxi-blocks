@@ -6,6 +6,22 @@ import {
 
 const RESPONSIVE_BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const BREAKPOINT_ALIASES = [
+	{
+		key: 'xxl',
+		regex: /\bxxl\b|extra\s*wide|ultra\s*wide|wide\s*screen|wide\s*desktop/i,
+	},
+	{ key: 'xl', regex: /\bxl\b|desktop|large\s*screen/i },
+	{ key: 'l', regex: /\bl\b|laptop|notebook/i },
+	{ key: 'm', regex: /\bm\b|tablet|medium/i },
+	{ key: 's', regex: /\bs\b|small/i },
+	{ key: 'xs', regex: /\bxs\b|mobile|phone|handset/i },
+	{
+		key: 'general',
+		regex: /\bgeneral\b|base\s*breakpoint|default\s*breakpoint/i,
+	},
+];
+
 const extractQuotedText = message => {
 	if (!message) return null;
 	const match = message.match(/["']([^"']+)["']/);
@@ -29,6 +45,14 @@ const extractNumericValue = (message, patterns) => {
 			const num = Number.parseFloat(match[1]);
 			if (Number.isFinite(num)) return num;
 		}
+	}
+	return null;
+};
+
+const extractBreakpointToken = message => {
+	const lower = String(message || '').toLowerCase();
+	for (const entry of BREAKPOINT_ALIASES) {
+		if (entry.regex.test(lower)) return entry.key;
 	}
 	return null;
 };
@@ -146,6 +170,7 @@ export const extractJustifyContentValue = message => {
 export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
+	const breakpoint = extractBreakpointToken(message);
 
 	const metaAction = buildContainerMetaAction(message, { scope });
 	if (metaAction) return metaAction;
@@ -155,7 +180,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'advanced_css',
-			value: advancedCss,
+			value: breakpoint ? { value: advancedCss, breakpoint } : advancedCss,
 			message: 'Advanced CSS set.',
 			...actionTarget,
 		};
@@ -166,7 +191,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'arrow_status',
-			value: arrowStatus,
+			value: breakpoint ? { value: arrowStatus, breakpoint } : arrowStatus,
 			message: arrowStatus ? 'Callout arrow shown.' : 'Callout arrow hidden.',
 			...actionTarget,
 		};
@@ -177,7 +202,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'arrow_side',
-			value: arrowSide,
+			value: breakpoint ? { value: arrowSide, breakpoint } : arrowSide,
 			message: 'Arrow side set.',
 			...actionTarget,
 		};
@@ -188,7 +213,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'arrow_position',
-			value: arrowPosition,
+			value: breakpoint ? { value: arrowPosition, breakpoint } : arrowPosition,
 			message: 'Arrow position set.',
 			...actionTarget,
 		};
@@ -199,7 +224,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'arrow_width',
-			value: arrowWidth,
+			value: breakpoint ? { value: arrowWidth, breakpoint } : arrowWidth,
 			message: 'Arrow width set.',
 			...actionTarget,
 		};
@@ -210,7 +235,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'align_items_flex',
-			value: alignItemsValue,
+			value: breakpoint ? { value: alignItemsValue, breakpoint } : alignItemsValue,
 			message: 'Aligned items.',
 			...actionTarget,
 		};
@@ -221,7 +246,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'align_content',
-			value: alignContentValue,
+			value: breakpoint ? { value: alignContentValue, breakpoint } : alignContentValue,
 			message: 'Aligned content.',
 			...actionTarget,
 		};
@@ -232,7 +257,7 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		return {
 			action: actionType,
 			property: 'justify_content',
-			value: justifyContentValue,
+			value: breakpoint ? { value: justifyContentValue, breakpoint } : justifyContentValue,
 			message: 'Justify content updated.',
 			...actionTarget,
 		};

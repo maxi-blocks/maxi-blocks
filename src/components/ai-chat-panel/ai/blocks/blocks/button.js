@@ -219,6 +219,10 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 	if (!isButton) return null;
 
 	if (property === 'alignment') {
+		if (value && typeof value === 'object' && 'value' in value) {
+			const targetBreakpoint = value.breakpoint || 'general';
+			return { [`alignment-${targetBreakpoint}`]: value.value };
+		}
 		return { 'alignment-general': value };
 	}
 

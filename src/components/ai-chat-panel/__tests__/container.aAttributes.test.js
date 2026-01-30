@@ -165,13 +165,38 @@ describe('container A attributes', () => {
 				property: 'justify_content',
 				value: 'space-between',
 			},
+			{
+				phrase: 'On mobile, align items center',
+				property: 'align_items_flex',
+				value: { value: 'center', breakpoint: 'xs' },
+			},
+			{
+				phrase: 'On tablet, align content space evenly',
+				property: 'align_content',
+				value: { value: 'space-evenly', breakpoint: 'm' },
+			},
+			{
+				phrase: 'On desktop, hide the callout arrow',
+				property: 'arrow_status',
+				value: { value: false, breakpoint: 'xl' },
+			},
+			{
+				phrase: 'On tablet, make the arrow 40px wide',
+				property: 'arrow_width',
+				value: { value: 40, breakpoint: 'm' },
+			},
+			{
+				phrase: 'On mobile, add custom CSS: .hero{color:red;}',
+				property: 'advanced_css',
+				value: { value: '.hero{color:red;}', breakpoint: 'xs' },
+			},
 		];
 
 		samples.forEach(sample => {
 			const action = buildContainerAGroupAction(sample.phrase);
 			expect(action).toBeTruthy();
 			expect(action.property).toBe(sample.property);
-			expect(action.value).toBe(sample.value);
+			expect(action.value).toEqual(sample.value);
 		});
 	});
 
@@ -213,6 +238,57 @@ describe('container A attributes', () => {
 		});
 
 		expect(missing).toEqual([]);
+	});
+
+	test('A-group breakpoint prompts update the expected attribute and sidebar', () => {
+		const block = { attributes: { 'flex-direction-general': 'row' } };
+		const samples = [
+			{
+				phrase: 'On mobile, align items center',
+				expectedKey: 'align-items-xs',
+				expectedValue: 'center',
+				expectedSidebar: { tabIndex: 1, accordion: 'flexbox' },
+			},
+			{
+				phrase: 'On tablet, align content space evenly',
+				expectedKey: 'align-content-m',
+				expectedValue: 'space-evenly',
+				expectedSidebar: { tabIndex: 1, accordion: 'flexbox' },
+			},
+			{
+				phrase: 'On desktop, hide the callout arrow',
+				expectedKey: 'arrow-status-xl',
+				expectedValue: false,
+				expectedSidebar: { tabIndex: 0, accordion: 'callout arrow' },
+			},
+			{
+				phrase: 'On tablet, make the arrow 40px wide',
+				expectedKey: 'arrow-width-m',
+				expectedValue: 40,
+				expectedSidebar: { tabIndex: 0, accordion: 'callout arrow' },
+			},
+			{
+				phrase: 'On mobile, add custom CSS: .hero{color:red;}',
+				expectedKey: 'advanced-css-xs',
+				expectedValue: '.hero{color:red;}',
+				expectedSidebar: { tabIndex: 1, accordion: 'advanced css' },
+			},
+		];
+
+		samples.forEach(sample => {
+			const action = buildContainerAGroupAction(sample.phrase);
+			expect(action).toBeTruthy();
+			const changes = buildContainerAGroupAttributeChanges(
+				action.property,
+				action.value,
+				{ block, attributes: block.attributes }
+			);
+			expect(changes).toBeTruthy();
+			expect(changes[sample.expectedKey]).toBe(sample.expectedValue);
+
+			const sidebar = getContainerAGroupSidebarTarget(action.property);
+			expect(sidebar).toEqual(sample.expectedSidebar);
+		});
 	});
 
 	test('A-group properties map to sidebar targets', () => {

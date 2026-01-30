@@ -60,6 +60,8 @@ Preset defaults:
   - "Align items to the top." -> { "align_items_flex": "flex-start" }
   - "Stretch items to equal height." -> { "align_items_flex": "stretch" }
   - "Align content space between." -> { "align_content": "space-between" }
+  - "On mobile, align items center." -> { "align_items_flex": { "value": "center", "breakpoint": "xs" } }
+  - "On tablet, align content space evenly." -> { "align_content": { "value": "space-evenly", "breakpoint": "m" } }
 - Breakpoint override (optional):
   - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|xxl|xl|l|m|s|xs" }
 
@@ -257,6 +259,66 @@ Preset defaults:
 - Breakpoint override (optional):
   - If user specifies device, wrap value: { "value": <val>, "unit": "<unit>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
 
+#### 6.15 ROW GAP ("Row gap", "Vertical gap")
+- Target property: row_gap.
+- Examples:
+  - "Set row gap to 24px." -> { "row_gap": { "value": 24, "unit": "px" } }
+  - "Set row gap to 2rem." -> { "row_gap": { "value": 2, "unit": "rem" } }
+  - "Remove row gap." -> { "row_gap": { "value": 0, "unit": "px" } }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "unit": "<unit>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.16 SCROLL EFFECTS ("Scroll fade", "Scroll blur", "Scroll rotate")
+- Target properties (per effect): scroll_<effect>_status, scroll_<effect>_speed, scroll_<effect>_delay, scroll_<effect>_easing, scroll_<effect>_viewport_top, scroll_<effect>_zones, scroll_<effect>_status_reverse, scroll_<effect>_preview_status, scroll_<effect>_is_block_zone, scroll_<effect>_unit.
+- Effects: blur, fade, vertical, horizontal, rotate, rotateX, rotateY, scale, scaleX, scaleY.
+- Examples:
+  - "Enable scroll fade." -> { "scroll_fade_status": true }
+  - "Set scroll blur speed to 600." -> { "scroll_blur_speed": 600 }
+  - "Set scroll rotate easing to ease-in-out." -> { "scroll_rotate_easing": "ease-in-out" }
+  - "Set scroll vertical delay to 200." -> { "scroll_vertical_delay": 200 }
+  - "Set scroll horizontal viewport to top." -> { "scroll_horizontal_viewport_top": "top" }
+  - "Reverse scroll scale." -> { "scroll_scale_status_reverse": true }
+  - "Set scroll fade zones to {0:0,50:50,100:100}." -> { "scroll_fade_zones": { "0": 0, "50": 50, "100": 100 } }
+  - "Set scroll vertical unit to px." -> { "scroll_vertical_unit": "px" }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.17 SHAPE DIVIDER ADVANCED ("Divider height", "Divider opacity")
+- Target properties: shape_divider_top_height, shape_divider_top_opacity, shape_divider_top_color, shape_divider_top_palette_color, shape_divider_top_palette_opacity, shape_divider_top_palette_status, shape_divider_top_palette_sc_status, shape_divider_top_effects_status, shape_divider_top_status, shape_divider_top_shape_style (and same for bottom).
+- Examples:
+  - "Set top shape divider height to 120px." -> { "shape_divider_top_height": { "value": 120, "unit": "px" } }
+  - "Set bottom shape divider opacity to 0.6." -> { "shape_divider_bottom_opacity": 0.6 }
+  - "Set top shape divider color to #ffffff." -> { "shape_divider_top_color": "#ffffff" }
+  - "Set bottom shape divider palette color to 3." -> { "shape_divider_bottom_palette_color": 3 }
+  - "Enable top shape divider effects." -> { "shape_divider_top_effects_status": true }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "unit": "<unit>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.18 TRANSFORMS ("Transform", "Scale", "Rotate", "Move", "Origin")
+- Target properties: transform_target, transform_scale, transform_rotate, transform_translate, transform_origin.
+- Scale values are percentages (100 = 1x).
+- Examples:
+  - "Scale container to 110%." -> { "transform_scale": { "x": 110, "y": 110, "target": "container" } }
+  - "On hover, scale background to 105%." -> { "transform_scale": { "x": 105, "y": 105, "target": "background", "state": "hover" } }
+  - "Rotate container 15 degrees." -> { "transform_rotate": { "z": 15, "target": "container" } }
+  - "Move container right 20px and up 10px." -> { "transform_translate": { "x": 20, "y": -10, "unit": "px", "target": "container" } }
+  - "Set transform origin to top left." -> { "transform_origin": { "x": "left", "y": "top", "target": "container" } }
+  - "Set transform target to background." -> { "transform_target": "background" }
+- Breakpoint override (optional):
+  - If user specifies device, add: { "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.19 HOVER TRANSITIONS ("Transition", "Easing", "Delay", "Duration")
+- Target properties: transition, transition_canvas_selected, transition_transform_selected, transition_change_all.
+- Examples:
+  - "Set border transition duration to 0.4s." -> { "transition": { "type": "canvas", "setting": "border", "attr": "duration", "value": 0.4 } }
+  - "Set transform transition easing to ease-in-out." -> { "transition": { "type": "transform", "setting": "container", "attr": "easing", "value": "ease-in-out" } }
+  - "Disable transitions." -> { "transition": { "type": "canvas", "attr": "status", "value": false } }
+  - "Change all transitions." -> { "transition_change_all": true }
+  - "Select border transition." -> { "transition_canvas_selected": "border" }
+  - "Select container transform transition." -> { "transition_transform_selected": "container" }
+- Breakpoint override (optional):
+  - If user specifies device, add: { "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
 - Presets:
@@ -272,6 +334,8 @@ Preset defaults:
   - "Move the arrow to the top." -> { "arrow_side": "top" }
   - "Set arrow position to 60." -> { "arrow_position": 60 }
   - "Make the arrow 40px wide." -> { "arrow_width": 40 }
+  - "On desktop, hide the callout arrow." -> { "arrow_status": { "value": false, "breakpoint": "xl" } }
+  - "On tablet, make the arrow 40px wide." -> { "arrow_width": { "value": 40, "breakpoint": "m" } }
 - Breakpoint override (optional):
   - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|m|xs" }
 
@@ -286,6 +350,7 @@ Preset defaults:
 - Custom CSS (declarations only, no selectors): "Add container CSS: display: block;" -> { "custom_css": { "css": "display: block;" } }
 - Advanced CSS: only when explicitly requested.
   - "Add custom CSS: ..." -> { "advanced_css": ".maxi-container-block { ... }" }
+  - "On mobile, add custom CSS: .hero{color:red;}" -> { "advanced_css": { "value": ".hero{color:red;}", "breakpoint": "xs" } }
   - Breakpoint override (optional): { "value": "<css>", "breakpoint": "general|m|xs" }
 
 ### INTERNAL META / FLOW (DOCUMENTED)

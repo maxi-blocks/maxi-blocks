@@ -47,6 +47,11 @@ import {
 	buildContainerEGroupAttributeChanges,
 	getContainerEGroupSidebarTarget,
 } from './ai/utils/containerEGroup';
+import {
+	buildContainerFGroupAction,
+	buildContainerFGroupAttributeChanges,
+	getContainerFGroupSidebarTarget,
+} from './ai/utils/containerFGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -143,6 +148,21 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'    * "Add CSS class hero-section." -> `extra_class_name: "hero-section"`',
 	'    * "Set custom classes to hero featured." -> `extra_class_name: "hero featured"`',
 	'* **UI Target:** `add css classes` (Advanced tab)',
+	'',
+	'#### 4.5 FLEX SIZING ("Flex basis", "Flex grow", "Flex shrink")',
+	'* **Target Properties:** `flex_basis`, `flex_grow`, `flex_shrink`',
+	'* **Examples:**',
+	'    * "Set flex basis to 40%." -> `flex_basis: "40%"`',
+	'    * "Set flex grow to 1." -> `flex_grow: 1`',
+	'    * "Set flex shrink to 0." -> `flex_shrink: 0`',
+	'* **UI Target:** `flexbox` (Advanced tab)',
+	'',
+	'#### 4.6 ASPECT RATIO ("Force aspect ratio")',
+	'* **Target Property:** `force_aspect_ratio`',
+	'* **Examples:**',
+	'    * "Force aspect ratio." -> `force_aspect_ratio: true`',
+	'    * "Disable aspect ratio lock." -> `force_aspect_ratio: false`',
+	'* **UI Target:** `size` (Advanced tab)',
 	'',
 	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
 	'* **Target Property:** `responsive_padding`',
@@ -577,6 +597,11 @@ const ACTION_PROPERTY_ALIASES = {
 	extraClass: 'extra_class_name',
 	customClassName: 'extra_class_name',
 	customClasses: 'extra_class_name',
+	flexBasis: 'flex_basis',
+	flexGrow: 'flex_grow',
+	flexShrink: 'flex_shrink',
+	forceAspectRatio: 'force_aspect_ratio',
+	fullWidth: 'full_width',
 };
 
 const AiChatPanelView = ({ isOpen, onClose }) => {
@@ -2761,6 +2786,15 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 						case 'extra_class':
 							changes = buildContainerEGroupAttributeChanges(property, value);
 							break;
+						case 'flex_basis':
+						case 'flex_grow':
+						case 'flex_shrink':
+						case 'flex_direction':
+						case 'flex_wrap':
+						case 'force_aspect_ratio':
+						case 'full_width':
+							changes = buildContainerFGroupAttributeChanges(property, value);
+							break;
 						// ======= CALLOUT ARROW =======
 						case 'arrow_status':
 						case 'arrow_side':
@@ -3419,7 +3453,22 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		}
 
 		if (
-			['arrow_status', 'arrow_side', 'arrow_position', 'arrow_width', 'advanced_css', 'custom_css', 'column_gap'].includes(baseProperty) &&
+			[
+				'arrow_status',
+				'arrow_side',
+				'arrow_position',
+				'arrow_width',
+				'advanced_css',
+				'custom_css',
+				'column_gap',
+				'flex_basis',
+				'flex_grow',
+				'flex_shrink',
+				'flex_direction',
+				'flex_wrap',
+				'force_aspect_ratio',
+				'full_width',
+			].includes(baseProperty) &&
 			breakpoint
 		) {
 			return {
@@ -3474,6 +3523,11 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			const eGroupTarget = getContainerEGroupSidebarTarget(normalizedProperty);
 			if (eGroupTarget) {
 				openSidebarAccordion(eGroupTarget.tabIndex, eGroupTarget.accordion);
+				return;
+			}
+			const fGroupTarget = getContainerFGroupSidebarTarget(normalizedProperty);
+			if (fGroupTarget) {
+				openSidebarAccordion(fGroupTarget.tabIndex, fGroupTarget.accordion);
 				return;
 			}
 
@@ -4480,6 +4534,15 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		});
 		if (eGroupAction) {
 			queueDirectAction(eGroupAction);
+			return;
+		}
+
+		// F-group: flex sizing / aspect ratio / full width (explicit phrasing)
+		const fGroupAction = buildContainerFGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (fGroupAction) {
+			queueDirectAction(fGroupAction);
 			return;
 		}
 

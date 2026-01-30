@@ -180,6 +180,19 @@ Preset defaults:
   - "Add CSS class hero-section." -> { "extra_class_name": "hero-section" }
   - "Set custom classes to hero featured." -> { "extra_class_name": "hero featured" }
 
+#### 6.5 FLEX SIZING ("Flex basis", "Flex grow", "Flex shrink")
+- Target properties: flex_basis, flex_grow, flex_shrink.
+- Examples:
+  - "Set flex basis to 40%." -> { "flex_basis": "40%" }
+  - "Set flex grow to 1." -> { "flex_grow": 1 }
+  - "Set flex shrink to 0." -> { "flex_shrink": 0 }
+
+#### 6.6 ASPECT RATIO ("Force aspect ratio")
+- Target property: force_aspect_ratio.
+- Examples:
+  - "Force aspect ratio." -> { "force_aspect_ratio": true }
+  - "Disable aspect ratio lock." -> { "force_aspect_ratio": false }
+
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
 - Presets:

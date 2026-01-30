@@ -52,7 +52,7 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
   Use for semantic level changes ("make this an H2", etc).
 - Lists: property "text_list" with { isList, typeOfList, listStyle, listStyleCustom }.
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".
-- Link: property "text_link" with { url, target }.
+- Link: property "text_link" with { url, target, rel } (rel supports "nofollow", "sponsored", "ugc").
 
 Clarify when request is generic:
 - Text size: Subtitle (1.25rem), Title (2.5rem), Display (4rem).

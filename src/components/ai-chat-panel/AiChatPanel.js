@@ -52,6 +52,21 @@ import {
 	buildContainerFGroupAttributeChanges,
 	getContainerFGroupSidebarTarget,
 } from './ai/utils/containerFGroup';
+import {
+	buildContainerHGroupAction,
+	buildContainerHGroupAttributeChanges,
+	getContainerHGroupSidebarTarget,
+} from './ai/utils/containerHGroup';
+import {
+	buildContainerLGroupAction,
+	buildContainerLGroupAttributeChanges,
+	getContainerLGroupSidebarTarget,
+} from './ai/utils/containerLGroup';
+import {
+	buildContainerMGroupAction,
+	buildContainerMGroupAttributeChanges,
+	getContainerMGroupSidebarTarget,
+} from './ai/utils/containerMGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -163,6 +178,21 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'    * "Force aspect ratio." -> `force_aspect_ratio: true`',
 	'    * "Disable aspect ratio lock." -> `force_aspect_ratio: false`',
 	'* **UI Target:** `size` (Advanced tab)',
+	'',
+	'#### 4.7 HEIGHT ("Height", "Tall")',
+	'* **Target Property:** `height`',
+	'* **Examples:**',
+	'    * "Set height to 420px." -> `height: "420px"`',
+	'    * "Set tablet height to 320px." -> `height: { value: 320, unit: "px", breakpoint: "m" }`',
+	'* **UI Target:** `height / width`',
+	'',
+	'#### 4.8 CONTAINER LINKS ("Make clickable", "Link card")',
+	'* **Target Properties:** `link_settings`, `dc_link`',
+	'* **Presets:**',
+	'    * Simple URL -> `link_settings: { url: "https://example.com", target: "_self", rel: "" }`',
+	'    * External (New tab + nofollow) -> `link_settings: { url: "https://example.com", target: "_blank", rel: "nofollow noopener" }`',
+	'    * Dynamic (Current post) -> `dc_link: { status: true, target: "entity" }`',
+	'* **UI Target:** `link` (toolbar)',
 	'',
 	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
 	'* **Target Property:** `responsive_padding`',
@@ -602,6 +632,20 @@ const ACTION_PROPERTY_ALIASES = {
 	flexShrink: 'flex_shrink',
 	forceAspectRatio: 'force_aspect_ratio',
 	fullWidth: 'full_width',
+	height: 'height',
+	maxWidth: 'max_width',
+	minWidth: 'min_width',
+	maxHeight: 'max_height',
+	minHeight: 'min_height',
+	marginTop: 'margin_top',
+	marginBottom: 'margin_bottom',
+	marginLeft: 'margin_left',
+	marginRight: 'margin_right',
+	maxiVersionCurrent: 'maxi_version_current',
+	maxiVersionOrigin: 'maxi_version_origin',
+	linkSettings: 'link_settings',
+	linkSetting: 'link_settings',
+	link: 'link_settings',
 };
 
 const AiChatPanelView = ({ isOpen, onClose }) => {
@@ -2594,7 +2638,9 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							changes = buildWidthChanges(value, prefix);
 							break;
 						case 'height':
-							changes = buildHeightChanges(value, prefix);
+							changes =
+								buildContainerHGroupAttributeChanges(property, value) ||
+								buildHeightChanges(value, prefix);
 							break;
 						case 'block_style':
 							changes = buildContainerBGroupAttributeChanges(property, value);
@@ -2794,6 +2840,15 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 						case 'force_aspect_ratio':
 						case 'full_width':
 							changes = buildContainerFGroupAttributeChanges(property, value);
+							break;
+						case 'link_settings':
+						case 'dc_link':
+						case 'dc_link_status':
+						case 'dc_link_target':
+						case 'dc_link_url':
+							changes = buildContainerLGroupAttributeChanges(property, value, {
+								attributes: block.attributes,
+							});
 							break;
 						// ======= CALLOUT ARROW =======
 						case 'arrow_status':
@@ -3013,6 +3068,10 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 								const minHeight = parseUnitValue(value);
 								changes = buildResponsiveSizeChanges(prefix, 'min-height', minHeight.value, minHeight.unit, true);
 							}
+							break;
+						case 'maxi_version_current':
+						case 'maxi_version_origin':
+							changes = buildContainerMGroupAttributeChanges(property, value);
 							break;
 						// ======= ROW PATTERNS =======
 						case 'row_pattern':
@@ -3411,7 +3470,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 
 		let nextProperty = ACTION_PROPERTY_ALIASES[property] || property;
 		nextProperty = String(nextProperty).replace(/-/g, '_');
-		if (nextProperty.startsWith('cl_')) {
+		if (nextProperty.startsWith('cl_') || nextProperty.startsWith('dc_')) {
 			return { property: nextProperty, value };
 		}
 
@@ -3468,6 +3527,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 				'flex_wrap',
 				'force_aspect_ratio',
 				'full_width',
+				'height',
 			].includes(baseProperty) &&
 			breakpoint
 		) {
@@ -3489,6 +3549,27 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 				property: 'breakpoints',
 				value: { value, breakpoint },
 			};
+		}
+
+		if (baseProperty === 'link_target') {
+			let targetValue = value;
+			if (typeof targetValue === 'string') {
+				const lowered = targetValue.toLowerCase();
+				if (lowered.includes('blank') || lowered.includes('new')) {
+					targetValue = '_blank';
+				} else if (lowered.includes('self') || lowered.includes('same')) {
+					targetValue = '_self';
+				}
+			}
+			return { property: 'link_settings', value: { target: targetValue } };
+		}
+
+		if (baseProperty === 'link_rel') {
+			return { property: 'link_settings', value: { rel: value } };
+		}
+
+		if (baseProperty === 'link_url') {
+			return { property: 'link_settings', value: { url: value } };
 		}
 
 		return { property: baseProperty, value };
@@ -3528,6 +3609,21 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			const fGroupTarget = getContainerFGroupSidebarTarget(normalizedProperty);
 			if (fGroupTarget) {
 				openSidebarAccordion(fGroupTarget.tabIndex, fGroupTarget.accordion);
+				return;
+			}
+			const hGroupTarget = getContainerHGroupSidebarTarget(normalizedProperty);
+			if (hGroupTarget) {
+				openSidebarAccordion(hGroupTarget.tabIndex, hGroupTarget.accordion);
+				return;
+			}
+			const lGroupTarget = getContainerLGroupSidebarTarget(normalizedProperty);
+			if (lGroupTarget) {
+				openSidebarAccordion(lGroupTarget.tabIndex, lGroupTarget.accordion);
+				return;
+			}
+			const mGroupTarget = getContainerMGroupSidebarTarget(normalizedProperty);
+			if (mGroupTarget) {
+				openSidebarAccordion(mGroupTarget.tabIndex, mGroupTarget.accordion);
 				return;
 			}
 
@@ -4334,7 +4430,14 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 					else value = parseInt(value) || 8;
 				}
 
-				const resultMsg = handleUpdateSelection(property, value, action.target_block);
+				const isLinkProperty =
+					property === 'link_settings' ||
+					String(property || '').startsWith('dc_link');
+				const resultMsg = handleUpdateSelection(
+					property,
+					value,
+					isLinkProperty ? null : action.target_block
+				);
 				console.log('[Maxi AI Debug] handleUpdateSelection result:', resultMsg);
 
 				// EXPAND SIDEBAR
@@ -4492,6 +4595,48 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		const actionTarget =
 			actionType === 'update_page' ? { target_block: 'container' } : {};
 
+		const isTextSelection =
+			selectedBlock?.name?.includes('text-maxi') ||
+			selectedBlock?.name?.includes('list-item-maxi');
+		const textLinkUrl = isTextSelection ? extractUrl(rawMessage) : null;
+		if (isTextSelection && textLinkUrl) {
+			const lowerRaw = rawMessage.toLowerCase();
+			const opensInNewTab = /new\s*tab|_blank|external/.test(lowerRaw);
+			const noFollow = /nofollow/.test(lowerRaw);
+			const sponsored = /sponsored/.test(lowerRaw);
+			const ugc = /\bugc\b/.test(lowerRaw);
+			const relParts = [];
+			if (noFollow) relParts.push('nofollow');
+			if (sponsored) relParts.push('sponsored');
+			if (ugc) relParts.push('ugc');
+			const rel = relParts.join(' ');
+
+			queueDirectAction({
+				action: actionType,
+				property: 'text_link',
+				value: {
+					url: textLinkUrl,
+					target: opensInNewTab ? '_blank' : '_self',
+					...(rel ? { rel } : {}),
+					...(noFollow ? { noFollow: true } : {}),
+					...(sponsored ? { sponsored: true } : {}),
+					...(ugc ? { ugc: true } : {}),
+				},
+				message: 'Applied link settings to the selected text.',
+				...(actionType === 'update_page' ? { target_block: 'text' } : {}),
+			});
+			return;
+		}
+
+		// L-group: container links (explicit phrasing)
+		const lGroupAction = buildContainerLGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (lGroupAction) {
+			queueDirectAction(lGroupAction);
+			return;
+		}
+
 		// A-group: anchor, aria, advanced CSS, arrows, align content/items (explicit phrasing)
 		const aGroupAction = buildContainerAGroupAction(rawMessage, {
 			scope: currentScope,
@@ -4543,6 +4688,24 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		});
 		if (fGroupAction) {
 			queueDirectAction(fGroupAction);
+			return;
+		}
+
+		// H-group: height (explicit phrasing)
+		const hGroupAction = buildContainerHGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (hGroupAction) {
+			queueDirectAction(hGroupAction);
+			return;
+		}
+
+		// M-group: margin + min/max sizing + versions (explicit phrasing)
+		const mGroupAction = buildContainerMGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (mGroupAction) {
+			queueDirectAction(mGroupAction);
 			return;
 		}
 
@@ -6469,6 +6632,45 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			Comfortable: { desktop: '100px', tablet: '60px', mobile: '40px' },
 			Spacious: { desktop: '140px', tablet: '80px', mobile: '60px' },
 		};
+
+		const linkOptionLabels = ['Open in new tab', 'Make it nofollow', 'Both'];
+		const lastOptions = Array.isArray(lastClarificationMsg?.options)
+			? lastClarificationMsg.options
+			: [];
+		const isLinkOptionContext =
+			linkOptionLabels.includes(suggestion) &&
+			(lastClarifyContent.includes('link') ||
+				lastOptions.some(option => linkOptionLabels.includes(option)));
+		if (isLinkOptionContext) {
+			const recentMessages = messagesRef.current || [];
+			let lastUrl = null;
+			for (let i = recentMessages.length - 1; i >= 0; i -= 1) {
+				const msg = recentMessages[i];
+				if (msg?.role !== 'user' || typeof msg.content !== 'string') continue;
+				lastUrl = extractUrl(msg.content);
+				if (lastUrl) break;
+			}
+			if (!lastUrl) {
+				lastUrl = selectedBlock?.attributes?.linkSettings?.url || null;
+			}
+
+			const opensInNewTab = suggestion === 'Open in new tab' || suggestion === 'Both';
+			const noFollow = suggestion === 'Make it nofollow' || suggestion === 'Both';
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			directAction = {
+				action: actionType,
+				property: 'link_settings',
+				value: {
+					...(lastUrl ? { url: lastUrl } : {}),
+					opensInNewTab,
+					noFollow,
+				},
+				...(actionType === 'update_page' ? { target_block: 'container' } : {}),
+				message: lastUrl
+					? 'Updated the link options.'
+					: 'Updated link options. Add a URL to activate the link.',
+			};
+		}
 
 		if (lastShapeDividerMsg?.shapeDividerLocation && shapeDividerLocations.includes(suggestion)) {
 			const location = suggestion.toLowerCase();

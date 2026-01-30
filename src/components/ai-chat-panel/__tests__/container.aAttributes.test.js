@@ -160,6 +160,11 @@ describe('container A attributes', () => {
 				property: 'align_content',
 				value: 'space-between',
 			},
+			{
+				phrase: 'Justify content space between',
+				property: 'justify_content',
+				value: 'space-between',
+			},
 		];
 
 		samples.forEach(sample => {

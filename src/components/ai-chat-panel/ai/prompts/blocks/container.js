@@ -193,6 +193,19 @@ Preset defaults:
   - "Force aspect ratio." -> { "force_aspect_ratio": true }
   - "Disable aspect ratio lock." -> { "force_aspect_ratio": false }
 
+#### 6.7 HEIGHT ("Height", "Tall")
+- Target property: height.
+- Examples:
+  - "Set height to 420px." -> { "height": "420px" }
+  - "Set tablet height to 320px." -> { "height": { "value": 320, "unit": "px", "breakpoint": "m" } }
+
+#### 6.8 CONTAINER LINKS ("Make clickable", "Link card")
+- Target property: link_settings.
+- Examples:
+  - "Link this section to https://example.com." -> { "link_settings": { "url": "https://example.com", "target": "_self" } }
+  - "Open in new tab with nofollow." -> { "link_settings": { "url": "https://example.com", "target": "_blank", "rel": "nofollow noopener" } }
+  - "Link to current post (dynamic)." -> { "dc_link": { "status": true, "target": "entity" } }
+
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
 - Presets:

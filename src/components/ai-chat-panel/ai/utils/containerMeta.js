@@ -18,6 +18,9 @@ const sanitizeAnchorId = value =>
 
 export const extractAnchorLink = message => {
 	const lowerMessage = String(message || '').toLowerCase();
+	if (/https?:\/\//.test(lowerMessage) || /\bwww\./.test(lowerMessage)) {
+		return null;
+	}
 	const hasAnchorHint = /anchor|section\s*(?:id|anchor)|jump\s*link|in[-\s]*page\s*link/.test(
 		lowerMessage
 	);

@@ -13,7 +13,11 @@
  * - Basic color accessibility guardrails (rejects transparent/low-alpha text colors in flow)
  */
 
+import { create } from '@wordpress/rich-text';
 import { parseBorderStyle } from './utils';
+import { getGroupAttributes } from '@extensions/styles';
+import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
+import { createLinkAttributes } from '@components/toolbar/components/text-link/utils';
 
 /**
  * Breakpoints used by MaxiBlocks.
@@ -413,25 +417,52 @@ const buildTextDynamicChanges = fieldValue => {
  * @returns {Object|null}
  */
 const buildTextLinkChanges = (block, linkValue) => {
-	const url =
-		typeof linkValue === 'object' && linkValue
-			? linkValue.url
-			: linkValue;
-
+	const incoming =
+		typeof linkValue === 'object' && linkValue ? linkValue : { url: linkValue };
+	const url = incoming?.url ? String(incoming.url) : '';
 	if (!url) return null;
 
-	const target =
-		typeof linkValue === 'object' && linkValue?.target
-			? linkValue.target
-			: '_self';
+	const content = block?.attributes?.content || '';
+	if (!content) return null;
 
-	return {
-		linkSettings: {
-			...(block.attributes?.linkSettings || {}),
-			url: String(url),
-			opensInNewTab: target === '_blank',
-		},
+	const rel = String(incoming.rel || '');
+	const opensInNewTab =
+		incoming.opensInNewTab === true || incoming.target === '_blank';
+	const noFollow =
+		incoming.noFollow === true || /nofollow/i.test(rel);
+	const sponsored =
+		incoming.sponsored === true || /sponsored/i.test(rel);
+	const ugc = incoming.ugc === true || /\bugc\b/i.test(rel);
+
+	const linkAttributes = createLinkAttributes({
+		url,
+		opensInNewTab,
+		noFollow,
+		sponsored,
+		ugc,
+		title: incoming.title || '',
+		linkValue: {},
+	});
+
+	const formatValue = create({ html: content });
+	formatValue.start = 0;
+	formatValue.end = formatValue.formats ? formatValue.formats.length : 0;
+
+	const typography = {
+		...getGroupAttributes(block.attributes, 'typography'),
 	};
+
+	const applied = applyLinkFormat({
+		formatValue,
+		typography,
+		linkAttributes,
+		isList: block.attributes?.isList,
+		textLevel: block.attributes?.textLevel,
+		returnFormatValue: true,
+	});
+
+	const { formatValue: _unused, ...changes } = applied || {};
+	return changes || null;
 };
 
 /**

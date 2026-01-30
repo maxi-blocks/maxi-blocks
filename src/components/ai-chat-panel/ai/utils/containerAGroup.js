@@ -129,6 +129,20 @@ export const extractAlignContentValue = message => {
 	return null;
 };
 
+export const extractJustifyContentValue = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/justify[\s_-]*content|space[-\s]*between|space[-\s]*around|space[-\s]*evenly/.test(lower)) {
+		return null;
+	}
+	if (/space[-\s]*between/.test(lower)) return 'space-between';
+	if (/space[-\s]*around/.test(lower)) return 'space-around';
+	if (/space[-\s]*evenly/.test(lower)) return 'space-evenly';
+	if (/\b(center|centre|middle)\b/.test(lower)) return 'center';
+	if (/\b(start|left)\b/.test(lower)) return 'flex-start';
+	if (/\b(end|right)\b/.test(lower)) return 'flex-end';
+	return null;
+};
+
 export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
@@ -213,6 +227,17 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		};
 	}
 
+	const justifyContentValue = extractJustifyContentValue(message);
+	if (justifyContentValue) {
+		return {
+			action: actionType,
+			property: 'justify_content',
+			value: justifyContentValue,
+			message: 'Justify content updated.',
+			...actionTarget,
+		};
+	}
+
 	return null;
 };
 
@@ -283,6 +308,13 @@ export const buildContainerAGroupAttributeChanges = (
 				? { [`align-content-${breakpoint}`]: alignValue }
 				: { 'align-content-general': alignValue };
 		}
+		case 'justify_content': {
+			const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+			const justifyValue = String(rawValue || '');
+			return breakpoint
+				? { [`justify-content-${breakpoint}`]: justifyValue }
+				: { 'justify-content-general': justifyValue };
+		}
 		default:
 			return null;
 	}
@@ -338,4 +370,5 @@ export default {
 	extractArrowWidth,
 	extractAlignItemsValue,
 	extractAlignContentValue,
+	extractJustifyContentValue,
 };

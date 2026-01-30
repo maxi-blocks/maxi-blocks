@@ -121,6 +121,11 @@ describe('container M attributes', () => {
 				value: '24px',
 			},
 			{
+				phrase: 'Set margin-top to 24px',
+				property: 'margin_top',
+				value: '24px',
+			},
+			{
 				phrase: 'Set margin to 16px',
 				property: 'margin',
 				value: '16px',
@@ -132,6 +137,11 @@ describe('container M attributes', () => {
 			},
 			{
 				phrase: 'Set max width to 1200px',
+				property: 'max_width',
+				value: '1200px',
+			},
+			{
+				phrase: 'Set max-width to 1200px',
 				property: 'max_width',
 				value: '1200px',
 			},

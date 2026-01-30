@@ -46,7 +46,7 @@ export const saveToIndexedDB = async (styleCards, hash) => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error saving to IndexedDB:`,
-			JSON.stringify(error)
+			error
 		);
 		throw error;
 	}
@@ -75,7 +75,7 @@ export const loadFromIndexedDB = async () => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error loading from IndexedDB:`,
-			JSON.stringify(error)
+			error
 		);
 		return null;
 	}
@@ -100,7 +100,7 @@ export const clearIndexedDB = async () => {
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error clearing IndexedDB:`,
-			JSON.stringify(error)
+			error
 		);
 		throw error;
 	}

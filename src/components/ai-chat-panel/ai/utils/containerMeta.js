@@ -49,9 +49,15 @@ export const extractAriaLabel = message => {
 export const buildContainerMetaAction = (message, { scope = 'selection' } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
+	const logDebug = (...args) => {
+		if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
+			console.log('[Maxi AI Debug] Meta', ...args);
+		}
+	};
 
 	const anchorLink = extractAnchorLink(message);
 	if (anchorLink) {
+		logDebug('Anchor detected', { message, anchorLink, scope });
 		return {
 			action: actionType,
 			property: 'anchor_link',
@@ -63,6 +69,7 @@ export const buildContainerMetaAction = (message, { scope = 'selection' } = {}) 
 
 	const ariaLabel = extractAriaLabel(message);
 	if (ariaLabel) {
+		logDebug('ARIA label detected', { message, ariaLabel, scope });
 		return {
 			action: actionType,
 			property: 'aria_label',

@@ -648,13 +648,20 @@ const ACTION_PROPERTY_ALIASES = {
 	link: 'link_settings',
 };
 
-const AiChatPanelView = ({ isOpen, onClose }) => {
-	const [messages, setMessages] = useState([]);
-	const [input, setInput] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
-	const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
-	const messagesEndRef = useRef(null);
+	const AiChatPanelView = ({ isOpen, onClose }) => {
+		const [messages, setMessages] = useState([]);
+		const [input, setInput] = useState('');
+		const [isLoading, setIsLoading] = useState(false);
+		const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
+		const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
+		const messagesEndRef = useRef(null);
+		const isAIDebugEnabled = () =>
+			typeof window !== 'undefined' && window.maxiBlocksDebug;
+		const logAIDebug = (...args) => {
+			if (isAIDebugEnabled()) {
+				console.log('[Maxi AI Debug]', ...args);
+			}
+		};
 
 	// Drag state for moveable panel
 	const [position, setPosition] = useState(null); // null = use CSS default, otherwise { x, y }
@@ -3480,6 +3487,30 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			? nextProperty.slice(0, -(`_${breakpoint}`.length))
 			: nextProperty;
 
+		if (baseProperty === 'anchor_link') {
+			const valueString =
+				typeof value === 'string'
+					? value
+					: value && typeof value === 'object'
+						? value.url || value.href || ''
+						: '';
+			if (
+				valueString &&
+				/(https?:\/\/[^\s"']+|www\.[^\s"']+|[a-z0-9.-]+\.[a-z]{2,}(?:\/[^\s"']*)?)/i.test(
+					valueString
+				)
+			) {
+				if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
+					console.log('[Maxi AI Debug] Coercing anchor_link to link_settings for URL:', valueString);
+				}
+				const linkValue =
+					value && typeof value === 'object'
+						? { ...value, url: valueString }
+						: { url: valueString };
+				return { property: 'link_settings', value: linkValue };
+			}
+		}
+
 		if (
 			baseProperty === 'background_palette_color' ||
 			baseProperty === 'background_color'
@@ -3576,11 +3607,162 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 	};
 
 	const parseAndExecuteAction = async responseText => {
+		const getToolbarDocuments = () => {
+			const docs = [];
+			if (typeof document === 'undefined') return docs;
+			docs.push(document);
+			document.querySelectorAll('iframe').forEach(frame => {
+				try {
+					if (frame.contentDocument) docs.push(frame.contentDocument);
+				} catch (err) {
+					logAIDebug('Unable to access iframe document', err);
+				}
+			});
+			return docs;
+		};
+
+		const getToolbarWindows = () => {
+			const wins = [];
+			if (typeof window === 'undefined') return wins;
+			wins.push(window);
+			if (typeof document === 'undefined') return wins;
+			document.querySelectorAll('iframe').forEach(frame => {
+				try {
+					if (frame.contentWindow) wins.push(frame.contentWindow);
+				} catch (err) {
+					logAIDebug('Unable to access iframe window', err);
+				}
+			});
+			return wins;
+		};
+
+		const tryClickToolbarButton = (selector, label) => {
+			if (typeof window === 'undefined') return false;
+			const docs = getToolbarDocuments();
+			for (const doc of docs) {
+				let button = null;
+				const toolbar = doc.querySelector('.maxi-toolbar__popover');
+				if (toolbar) {
+					button = toolbar.querySelector(selector);
+				}
+				if (!button) {
+					button = doc.querySelector(selector);
+				}
+				if (!button) continue;
+				const isExpanded = button.getAttribute('aria-expanded') === 'true';
+				if (isExpanded) {
+					logAIDebug('Toolbar button already open for', label);
+					return true;
+				}
+				if (
+					button.hasAttribute('disabled') ||
+					button.getAttribute('aria-disabled') === 'true'
+				) {
+					logAIDebug('Toolbar button disabled for', label);
+					return false;
+				}
+				button.click();
+				logAIDebug('Toolbar button clicked for', label);
+				return true;
+			}
+			logAIDebug('Toolbar popover or button not found for', label);
+			return false;
+		};
+
+		const scheduleToolbarClick = (selector, label, attempts = 3, delay = 150) => {
+			let tries = 0;
+			const attempt = () => {
+				tries += 1;
+				const success = tryClickToolbarButton(selector, label);
+				if (!success && tries < attempts) {
+					setTimeout(attempt, delay);
+				}
+			};
+			attempt();
+		};
+
+		const queueToolbarOpen = (target, clientId, options = {}) => {
+			if (typeof window === 'undefined' || !target) return;
+			const detail = { target, clientId, ...options };
+			const windows = getToolbarWindows();
+			windows.forEach(win => {
+				try {
+					win.maxiToolbarOpenRequest = {
+						...detail,
+						requestedAt: Date.now(),
+					};
+					win.dispatchEvent(
+						new win.CustomEvent('maxi-toolbar-open', { detail })
+					);
+				} catch (err) {
+					logAIDebug('Failed to dispatch toolbar open event', err);
+				}
+			});
+		};
+
+		const openLinkToolbar = () => {
+			const targetClientId = selectedBlock?.clientId;
+			if (!targetClientId || typeof window === 'undefined') return;
+			setTimeout(() => {
+				queueToolbarOpen('link', targetClientId, { force: true });
+				scheduleToolbarClick(
+					'.toolbar-item__link.toolbar-item__button, .toolbar-item__link',
+					'link'
+				);
+			}, 80);
+			logAIDebug('Requested link toolbar open', {
+				clientId: targetClientId,
+				block: selectedBlock?.name,
+			});
+		};
+		const openTextLinkToolbar = () => {
+			const targetClientId = selectedBlock?.clientId;
+			if (!targetClientId || typeof window === 'undefined') return;
+			setTimeout(() => {
+				queueToolbarOpen('text-link', targetClientId, { force: true });
+				scheduleToolbarClick(
+					'.toolbar-item__text-link.toolbar-item__button, .toolbar-item__text-link .toolbar-item__button',
+					'text-link'
+				);
+			}, 80);
+			logAIDebug('Requested text-link toolbar open', {
+				clientId: targetClientId,
+				block: selectedBlock?.name,
+			});
+		};
+
 		const openSidebarForProperty = rawProperty => {
 			if (!rawProperty) return;
 			const property = String(rawProperty).replace(/-/g, '_');
 			const baseProperty = property.replace(/_(general|xxl|xl|l|m|s|xs)$/, '');
 			const normalizedProperty = baseProperty;
+			const isTextBlock =
+				selectedBlock?.name?.includes('text-maxi') ||
+				selectedBlock?.name?.includes('list-item-maxi');
+			if (normalizedProperty === 'text_link') {
+				logAIDebug('Text link property detected for toolbar open', {
+					property: normalizedProperty,
+					rawProperty,
+				});
+				openTextLinkToolbar();
+				return;
+			}
+			const isLinkProperty =
+				normalizedProperty === 'link_settings' ||
+				normalizedProperty === 'link' ||
+				normalizedProperty.startsWith('dc_link');
+			if (isLinkProperty) {
+				logAIDebug('Link property detected for sidebar open', {
+					property: normalizedProperty,
+					rawProperty,
+				});
+				if (isTextBlock) {
+					openTextLinkToolbar();
+				} else {
+					openLinkToolbar();
+				}
+				return;
+			}
 			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
 			if (aGroupTarget) {
 				openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
@@ -4347,6 +4529,12 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 
 				if (property) {
 					const normalized = normalizeActionProperty(property, value);
+					logAIDebug('update_selection normalization', {
+						original: { property, value },
+						normalized,
+						target: action.target_block,
+						selectedBlock: selectedBlock?.name,
+					});
 					property = normalized.property;
 					value = normalized.value;
 				}
@@ -4417,6 +4605,12 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 				
 				if (property) {
 					const normalized = normalizeActionProperty(property, value);
+					logAIDebug('update_page normalization', {
+						original: { property, value },
+						normalized,
+						target: action.target_block,
+						selectedBlock: selectedBlock?.name,
+					});
 					property = normalized.property;
 					value = normalized.value;
 				}
@@ -4578,6 +4772,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		const queueDirectAction = directAction => {
 			setIsLoading(true);
 			setTimeout(async () => {
+				logAIDebug('Queue direct action', directAction);
 				const result = await parseAndExecuteAction(directAction);
 				setMessages(prev => [
 					...prev,
@@ -4599,6 +4794,14 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			selectedBlock?.name?.includes('text-maxi') ||
 			selectedBlock?.name?.includes('list-item-maxi');
 		const textLinkUrl = isTextSelection ? extractUrl(rawMessage) : null;
+		logAIDebug('Link detection', {
+			selectedBlock: selectedBlock?.name,
+			selectedClientId: selectedBlock?.clientId,
+			scope: currentScope,
+			isTextSelection,
+			textLinkUrl,
+			rawMessage,
+		});
 		if (isTextSelection && textLinkUrl) {
 			const lowerRaw = rawMessage.toLowerCase();
 			const opensInNewTab = /new\s*tab|_blank|external/.test(lowerRaw);
@@ -4625,6 +4828,11 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 				message: 'Applied link settings to the selected text.',
 				...(actionType === 'update_page' ? { target_block: 'text' } : {}),
 			});
+			logAIDebug('Queued text link action', {
+				url: textLinkUrl,
+				opensInNewTab,
+				rel,
+			});
 			return;
 		}
 
@@ -4633,6 +4841,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			scope: currentScope,
 		});
 		if (lGroupAction) {
+			logAIDebug('L-group action matched', lGroupAction);
 			queueDirectAction(lGroupAction);
 			return;
 		}
@@ -4642,6 +4851,7 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			scope: currentScope,
 		});
 		if (aGroupAction) {
+			logAIDebug('A-group action matched', aGroupAction);
 			queueDirectAction(aGroupAction);
 			return;
 		}
@@ -4691,21 +4901,21 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			return;
 		}
 
-		// H-group: height (explicit phrasing)
-		const hGroupAction = buildContainerHGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (hGroupAction) {
-			queueDirectAction(hGroupAction);
-			return;
-		}
-
 		// M-group: margin + min/max sizing + versions (explicit phrasing)
 		const mGroupAction = buildContainerMGroupAction(rawMessage, {
 			scope: currentScope,
 		});
 		if (mGroupAction) {
 			queueDirectAction(mGroupAction);
+			return;
+		}
+
+		// H-group: height (explicit phrasing)
+		const hGroupAction = buildContainerHGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (hGroupAction) {
+			queueDirectAction(hGroupAction);
 			return;
 		}
 

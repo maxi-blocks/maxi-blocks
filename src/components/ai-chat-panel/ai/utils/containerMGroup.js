@@ -214,8 +214,8 @@ const extractMarginIntent = message => {
 	}
 
 	const unitValue = extractUnitValue(message, [
-		/margin(?:\s*(?:top|right|bottom|left))?\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
-		/(?:top|right|bottom|left)\s*margin\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/margin(?:[-\s_]*(?:top|right|bottom|left))?\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/(?:top|right|bottom|left)[-\s_]*margin\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
 	]);
 	if (!unitValue) return null;
 	return { side, ...unitValue };
@@ -223,25 +223,25 @@ const extractMarginIntent = message => {
 
 const extractMaxWidth = message =>
 	extractUnitValue(message, [
-		/max(?:imum)?\s*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
-		/(?:limit|constrain|cap)\s*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/max(?:imum)?[-\s_]*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/(?:limit|constrain|cap)[-\s_]*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
 	]);
 
 const extractMinWidth = message =>
 	extractUnitValue(message, [
-		/min(?:imum)?\s*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/min(?:imum)?[-\s_]*width\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
 		/(?:at\s*least)\s*(\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?\s*wide/i,
 	]);
 
 const extractMaxHeight = message =>
 	extractUnitValue(message, [
-		/max(?:imum)?\s*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
-		/(?:limit|constrain|cap)\s*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/max(?:imum)?[-\s_]*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/(?:limit|constrain|cap)[-\s_]*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
 	]);
 
 const extractMinHeight = message =>
 	extractUnitValue(message, [
-		/min(?:imum)?\s*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
+		/min(?:imum)?[-\s_]*height\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i,
 		/(?:at\s*least)\s*(\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?\s*(?:tall|high)/i,
 	]);
 

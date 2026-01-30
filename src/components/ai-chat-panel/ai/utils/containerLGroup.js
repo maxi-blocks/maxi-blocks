@@ -41,13 +41,25 @@ const isDynamicLinkIntent = message =>
 
 export const buildContainerLGroupAction = (message, { scope = 'selection' } = {}) => {
 	const url = extractUrl(message);
-	if (!isLinkIntent(message) && !isDynamicLinkIntent(message) && !url) return null;
+	const linkIntent = isLinkIntent(message);
+	const dynamicIntent = isDynamicLinkIntent(message);
+	const logDebug = (...args) => {
+		if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
+			console.log('[Maxi AI Debug] L-group', ...args);
+		}
+	};
+	logDebug('Input', { message, url, linkIntent, dynamicIntent, scope });
+	if (!linkIntent && !dynamicIntent && !url) {
+		logDebug('No link intent detected.');
+		return null;
+	}
 
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget =
 		actionType === 'update_page' ? { target_block: 'container' } : {};
 
 	if (isDynamicLinkIntent(message)) {
+		logDebug('Dynamic link intent detected.');
 		return {
 			action: actionType,
 			property: 'dc_link',
@@ -58,6 +70,7 @@ export const buildContainerLGroupAction = (message, { scope = 'selection' } = {}
 	}
 
 	if (shouldRemoveLink(message)) {
+		logDebug('Remove link intent detected.');
 		return {
 			action: actionType,
 			property: 'link_settings',
@@ -71,10 +84,11 @@ export const buildContainerLGroupAction = (message, { scope = 'selection' } = {}
 	const opensInNewTab = shouldOpenInNewTab(message);
 
 	if (!url && !opensInNewTab && !relFlags.noFollow && !relFlags.sponsored && !relFlags.ugc) {
+		logDebug('No actionable link settings detected.');
 		return null;
 	}
 
-	return {
+	const action = {
 		action: actionType,
 		property: 'link_settings',
 		value: {
@@ -85,6 +99,8 @@ export const buildContainerLGroupAction = (message, { scope = 'selection' } = {}
 		message: 'Link settings updated.',
 		...actionTarget,
 	};
+	logDebug('Returning action', action);
+	return action;
 };
 
 export const buildContainerLGroupAttributeChanges = (

@@ -57,7 +57,11 @@ const detectBreakpoint = message => {
 };
 
 const extractHeightValue = message => {
-	const match = String(message || '').match(
+	const lower = String(message || '').toLowerCase();
+	if (/\bmax[-\s_]*height\b/.test(lower) || /\bmin[-\s_]*height\b/.test(lower)) {
+		return null;
+	}
+	const match = lower.match(
 		/(?:height|tall)\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i
 	);
 	if (!match) return null;

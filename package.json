@@ -3,6 +3,8 @@
 	"version": "1.0.0",
 	"main": "./build/index.min.js",
 	"scripts": {
+		"postinstall": "node scripts/fix-core-js-library.js",
+		"fix:core-js-library": "node scripts/fix-core-js-library.js",
 		"build": "wp-scripts build",
 		"format:js": "wp-scripts format-js",
 		"lint:css": "wp-scripts lint-style",

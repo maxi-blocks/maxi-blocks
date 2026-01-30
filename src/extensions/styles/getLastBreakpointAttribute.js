@@ -150,14 +150,19 @@ const getLastBreakpointAttributeSingle = (
 
 	// Fallback for active state: if target starts with 'active-' and no value found,
 	// try without 'active-' prefix to get normal state values as placeholders
-	if (target.startsWith('active-') && !attrFilter(currentAttr))
+	if (
+		typeof target === 'string' &&
+		target.startsWith('active-') &&
+		!attrFilter(currentAttr)
+	)
 		currentAttr = getLastBreakpointAttributeSingle(
 			target.replace('active-', ''),
 			breakpoint,
 			attributes,
 			isHover,
 			avoidXXL,
-			keys
+			keys,
+			forceUseBreakpoint
 		);
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,

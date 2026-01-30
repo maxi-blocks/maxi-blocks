@@ -294,16 +294,26 @@ const resolveCSSVariable = colorValue => {
 	while (hasVar && iterations < maxIterations) {
 		iterations += 1;
 
-		// Match var(--variable-name, fallback)
-		// Use a more sophisticated regex to handle nested parentheses
-		const varMatch = resolved.match(/var\(([^,)]+)(?:,([^)]+))?\)/);
+		// Use parenthesis-aware parser to extract the full var() token
+		const varIndex = resolved.indexOf('var(');
 
-		if (!varMatch) {
+		if (varIndex === -1) {
 			break;
 		}
 
-		const varName = varMatch[1].trim();
-		const fallback = varMatch[2] ? varMatch[2].trim() : '';
+		const varToken = extractColorValue(resolved, varIndex).trim();
+		// Parse variable name and fallback from the extracted token
+		const innerContent = varToken.slice(4, -1); // Remove "var(" and final ")"
+		const firstCommaIndex = innerContent.indexOf(',');
+
+		const varName =
+			firstCommaIndex === -1
+				? innerContent.trim()
+				: innerContent.slice(0, firstCommaIndex).trim();
+		const fallback =
+			firstCommaIndex === -1
+				? ''
+				: innerContent.slice(firstCommaIndex + 1).trim();
 
 		// Try to get computed value from CSS variable
 		const computedValue = window
@@ -313,9 +323,9 @@ const resolveCSSVariable = colorValue => {
 
 		// Replace the var() with either computed value or fallback
 		if (computedValue) {
-			resolved = resolved.replace(varMatch[0], computedValue);
+			resolved = resolved.replace(varToken, computedValue);
 		} else if (fallback) {
-			resolved = resolved.replace(varMatch[0], fallback);
+			resolved = resolved.replace(varToken, fallback);
 		} else {
 			// No value and no fallback
 			return '';

@@ -267,12 +267,12 @@ const transition = {
 	block: {
 		...transitionDefault.canvas,
 		...createIconTransitions({
-			target: '.maxi-row-carousel__arrow',
+			target: ' .maxi-row-carousel__arrow',
 			prefix: 'navigation-arrow-both-icon-',
 			titlePrefix: 'arrow',
 		}),
 		...createIconTransitions({
-			target: '.maxi-row-carousel__dot',
+			target: ' .maxi-row-carousel__dot',
 			prefix: 'navigation-dot-icon-',
 			titlePrefix: 'dot',
 		}),

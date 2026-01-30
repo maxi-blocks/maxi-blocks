@@ -71,6 +71,10 @@ Preset defaults:
   - A (Boxed): "Standard content (1170px)." Payload: { "full_width": false, "width": "1170px" }
   - B (Reading): "Narrow column (700px)." Payload: { "full_width": false, "width": "700px" }
   - C (Full): "Edge-to-edge (100%)." Payload: { "full_width": true, "width": "100%" }
+- Examples:
+  - "Set width to 640px." -> { "width": { "value": 640, "unit": "px" } }
+  - "Set width to fit content." -> { "width": "fit-content" }
+  - "On mobile, set width to 100%." -> { "width": { "value": 100, "unit": "%", "breakpoint": "xs" } }
 
 #### 3. BACKGROUNDS ("Color", "Glass")
 - Target properties: background_color, opacity.
@@ -318,6 +322,12 @@ Preset defaults:
   - "Select container transform transition." -> { "transition_transform_selected": "container" }
 - Breakpoint override (optional):
   - If user specifies device, add: { "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.20 Z-INDEX ("Z-index", "Layer", "Stacking")
+- Target property: z_index.
+- Examples:
+  - "Set z-index to 10." -> { "z_index": 10 }
+  - "On tablet, set z-index to 5." -> { "z_index": { "value": 5, "breakpoint": "m" } }
 
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.

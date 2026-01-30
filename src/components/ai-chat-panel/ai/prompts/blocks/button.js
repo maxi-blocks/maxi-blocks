@@ -103,6 +103,33 @@ If width or visibility is mentioned:
 - Align content: "Align content space between." -> { "align_content": "space-between" }
 - Alignment (tablet): "On tablet, align button center." -> { "alignment": { "value": "center", "breakpoint": "m" } }
 
+### B-ATTRIBUTE EXAMPLES (BUTTON STYLE)
+- Button background: "Set button background to palette 3." -> { "button_background": { "palette": 3 } }
+- Button background (hover): "On hover, set button background palette 5." -> { "button_background_hover": { "palette": 5 } }
+- Button border: "Add a 2px solid button border with palette 3." -> { "button_border": { "width": 2, "style": "solid", "color": 3 } }
+- Button border (hover): "On hover, make the button border 4px dashed palette 5." -> { "button_border_hover": { "width": 4, "style": "dashed", "color": 5 } }
+- Button shadow: "Add a soft button shadow with palette 8." -> { "button_box_shadow": { "x": 0, "y": 10, "blur": 30, "spread": 0, "color": 8, "opacity": 12 } }
+- Button shadow (hover): "On hover, add a bold button shadow palette 6." -> { "button_box_shadow_hover": { "x": 0, "y": 20, "blur": 25, "spread": -5, "color": 6, "opacity": 18 } }
+- Button padding: "Set button padding to 12px." -> { "button_padding": { "value": 12, "unit": "px" } }
+- Button margin: "Set button margin to 8px." -> { "button_margin": { "value": 8, "unit": "px" } }
+- Button size: "Set button width to 320px." -> { "button_width": { "value": 320, "unit": "px" } }
+- Button min width: "Set button min width to 120px." -> { "button_min_width": { "value": 120, "unit": "px" } }
+- Button max width: "Set button max width to 640px." -> { "button_max_width": { "value": 640, "unit": "px" } }
+- Button min height: "Set button min height to 24px." -> { "button_min_height": { "value": 24, "unit": "px" } }
+- Button max height: "Set button max height to 120px." -> { "button_max_height": { "value": 120, "unit": "px" } }
+- Full width: "Make the button full width." -> { "button_full_width": true }
+- Bottom gap: "Set bottom gap to 10px." -> { "bottom_gap": { "value": 10, "unit": "px" } }
+- Canvas background: "Add a background layer with palette 2." -> { "background_layers": [ { "type": "color", "order": 0, "background-palette-status-general": true, "background-palette-color-general": 2, "background-color-general": "var(--maxi-color-2)" } ] }
+- Breakpoint: "Set tablet breakpoint to 900." -> { "breakpoints": { "value": 900, "breakpoint": "m" } }
+
+### C-ATTRIBUTE EXAMPLES (BUTTON TEXT + CUSTOM)
+- Button text color: "Set button text color to palette 3." -> { "text_color": 3 }
+- Button hover text color: "On hover, set button text color to palette 5." -> { "button_hover_text": 5 }
+- Column gap: "Set column gap to 16px." -> { "column_gap": { "value": 16, "unit": "px" } }
+- Custom CSS: "Add custom CSS to the button: color: var(--h1);" -> { "custom_css": { "css": "color: var(--h1);", "category": "button", "index": "normal" } }
+- Custom label: "Set custom label to 'Primary CTA'." -> { "custom_label": "Primary CTA" }
+- Custom formats: "Apply custom format 'cta-highlight' to the button text." -> { "custom_formats": { "cta-highlight": { "text-decoration-general": "underline" } } }
+
 ### MISSING-IN-DOCS (NOW DOCUMENTED)
 - Button width: property "width" with "auto" | "100%".
   Use "button_responsive_width" for other sizes.

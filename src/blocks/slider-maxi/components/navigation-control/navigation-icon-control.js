@@ -146,6 +146,17 @@ const NavigationIconControl = props => {
 	}${isActive ? 'Active' : ''}`;
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
+	// Helper to get status toggle value with fallback to normal state for active mode
+	const getStatusValue = statusKey => {
+		const value = props[`${prefix}${statusKey}`];
+		if (isActive && value === undefined) {
+			// Fallback to normal state value
+			const normalPrefix = prefix.replace('active-', '');
+			return props[`${normalPrefix}${statusKey}`];
+		}
+		return value;
+	};
+
 	return (
 		<div className={classes}>
 			{!isHover &&
@@ -1182,15 +1193,24 @@ const NavigationIconControl = props => {
 							sprintf('Add %s border', label),
 							'maxi-blocks'
 						)}
-						selected={props[`${prefix}status-border`]}
+						selected={getStatusValue('status-border')}
 						onChange={val =>
 							onChange({
 								[`${prefix}status-border`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}status-border`] && (
+					{getStatusValue('status-border') && (
 						<BorderControl
+							{...getGroupAttributes(
+								props,
+								['border', 'borderWidth', 'borderRadius'],
+								isHover,
+								// Include normal prefix attributes for placeholder fallback when in active state
+								isActive
+									? 'navigation-dot-icon-'
+									: prefix
+							)}
 							{...getGroupAttributes(
 								props,
 								['border', 'borderWidth', 'borderRadius'],
@@ -1209,14 +1229,14 @@ const NavigationIconControl = props => {
 							sprintf('Add %s background', label),
 							'maxi-blocks'
 						)}
-						selected={props[`${prefix}status-background`]}
+						selected={getStatusValue('status-background')}
 						onChange={val =>
 							onChange({
 								[`${prefix}status-background`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}status-background`] && (
+					{getStatusValue('status-background') && (
 						<>
 							<SettingTabsControl
 								type='buttons'
@@ -1396,15 +1416,24 @@ const NavigationIconControl = props => {
 							sprintf('Add %s shadow', label),
 							'maxi-blocks'
 						)}
-						selected={props[`${prefix}status-shadow`]}
+						selected={getStatusValue('status-shadow')}
 						onChange={val =>
 							onChange({
 								[`${prefix}status-shadow`]: val,
 							})
 						}
 					/>
-					{props[`${prefix}status-shadow`] && (
+					{getStatusValue('status-shadow') && (
 						<BoxShadowControl
+							{...getGroupAttributes(
+								props,
+								'boxShadow',
+								isHover,
+								// Include normal prefix attributes for placeholder fallback when in active state
+								isActive
+									? 'navigation-dot-icon-'
+									: prefix
+							)}
 							{...getGroupAttributes(
 								props,
 								'boxShadow',

@@ -798,6 +798,15 @@ const NavigationIconControl = props => {
 										props,
 										'padding',
 										false,
+										// Include normal prefix attributes for placeholder fallback when in active state
+										isActive
+											? 'navigation-dot-icon-'
+											: prefix
+									)}
+									{...getGroupAttributes(
+										props,
+										'padding',
+										false,
 										prefix
 									)}
 									label={__(

@@ -143,7 +143,7 @@ const NavigationIconControl = props => {
 	const isActive = prefix.includes('active');
 	const groupLabel = `${
 		shortPrefix === 'navigation-dot-' ? 'dotIcon' : 'arrowIcon'
-	}${isActive ? 'Active' : ''}${isHover ? 'Hover' : ''}`;
+	}${isActive ? 'Active' : ''}`;
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
 	return (

@@ -8,6 +8,8 @@ import { __ } from '@wordpress/i18n';
  */
 import { createSelectors } from '@extensions/styles/custom-css';
 import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
+import { createIconTransitions } from '@extensions/styles';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * Data object
@@ -51,15 +53,63 @@ const copyPasteMapping = {
 	},
 };
 const customCss = {
-	selectors: createSelectors({
-		row: '',
-	}),
+	selectors: {
+		...createSelectors({
+			row: '',
+		}),
+		...createSelectors(
+			{
+				'first arrow': ' .maxi-row-carousel__arrow--prev',
+				'second arrow': ' .maxi-row-carousel__arrow--next',
+				'all dots': ' .maxi-row-carousel__dots',
+				'each dot': ' .maxi-row-carousel__dot',
+			},
+			false
+		),
+		'first arrow icon': {
+			normal: {
+				label: __('first arrow icon', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__arrow--prev svg',
+			},
+			hover: {
+				label: __('first arrow icon on hover', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__arrow--prev:hover svg',
+			},
+		},
+		'second arrow icon': {
+			normal: {
+				label: __('second arrow icon', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__arrow--next svg',
+			},
+			hover: {
+				label: __('second arrow icon on hover', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__arrow--next:hover svg',
+			},
+		},
+		'dot icon': {
+			normal: {
+				label: __('Each dot icon', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__dot svg',
+			},
+			hover: {
+				label: __('Each dot icon on hover', 'maxi-blocks'),
+				target: ' .maxi-row-carousel__dot:hover svg',
+			},
+		},
+	},
 	categories: [
 		'row',
 		'before row',
 		'after row',
 		'background',
 		'background hover',
+		'first arrow',
+		'second arrow',
+		'first arrow icon',
+		'second arrow icon',
+		'all dots',
+		'each dot',
+		'dot icon',
 	],
 };
 const ariaLabelsCategories = ['row'];
@@ -212,10 +262,28 @@ const attributesToStyles = {
 	},
 };
 
+const transition = {
+	...transitionDefault,
+	block: {
+		...transitionDefault.canvas,
+		...createIconTransitions({
+			target: '.maxi-row-carousel__arrow',
+			prefix: 'navigation-arrow-both-icon-',
+			titlePrefix: 'arrow',
+		}),
+		...createIconTransitions({
+			target: '.maxi-row-carousel__dot',
+			prefix: 'navigation-dot-icon-',
+			titlePrefix: 'dot',
+		}),
+	},
+};
+
 const data = {
 	name,
 	copyPasteMapping,
 	customCss,
+	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
 	attributesToStyles,
@@ -224,6 +292,7 @@ const data = {
 export {
 	copyPasteMapping,
 	customCss,
+	transition,
 	interactionBuilderSettings,
 	maxiAttributes,
 	ariaLabelsCategories,

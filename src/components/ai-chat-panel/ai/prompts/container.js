@@ -97,6 +97,7 @@ Preset defaults:
 - Examples:
   - "Make corners 24px." -> { "border_radius": 24 }
   - "Square corners." -> { "border_radius": 0 }
+  - "On hover, make corners 16px." -> { "border_radius_hover": 16 }
 
 #### 3.8 BOX SHADOW ("Shadow", "Depth")
 - Target property: box_shadow (base) or box_shadow_hover (hover).
@@ -104,6 +105,19 @@ Preset defaults:
   - "Add a soft shadow with palette 8." -> { "box_shadow": { "x": 0, "y": 10, "blur": 30, "spread": 0, "color": 8, "opacity": 12 } }
   - "Remove the shadow." -> { "box_shadow": "none" }
   - "On hover, add a stronger shadow." -> { "box_shadow_hover": { "x": 0, "y": 16, "blur": 32, "spread": 0, "color": 8, "opacity": 18 } }
+
+#### 3.9 BLOCK STYLE ("Light", "Dark", "Default")
+- Target property: block_style.
+- Examples:
+  - "Set block style to dark." -> { "block_style": "dark" }
+  - "Switch block style to light." -> { "block_style": "light" }
+  - "Reset block style to default." -> { "block_style": "default" }
+
+#### 3.10 BREAKPOINTS ("Breakpoint", "Responsive")
+- Target property: breakpoints.
+- Examples:
+  - "Set tablet breakpoint to 900." -> { "breakpoints": { "value": 900, "breakpoint": "m" } }
+  - "Set desktop breakpoint to 1400." -> { "breakpoints": { "value": 1400, "breakpoint": "xl" } }
 
 #### 4. SPACING ("Padding", "Space")
 - Target property: responsive_padding.
@@ -124,8 +138,24 @@ Preset defaults:
 - Target property: context_loop.
 - Presets:
   - A (Blog Loop): "Recent posts." Payload: { "context_loop": { "status": true, "type": "post", "perPage": 6 } }
-  - B (Products): "WooCommerce products." Payload: { "context_loop": { "status": true, "type": "product", "perPage": 4 } }
+  - B (Products): "WooCommerce products." Payload: { "context_loop": { "status": true, "type": "product", "perPage": 8 } }
   - C (Related): "Related content." Payload: { "context_loop": { "status": true, "relation": "related" } }
+- Ordering & filtering (same property: context_loop):
+  - "Newest first." -> { "context_loop": { "orderBy": "date", "order": "desc" } }
+  - "Oldest first." -> { "context_loop": { "orderBy": "date", "order": "asc" } }
+  - "Alphabetical A-Z." -> { "context_loop": { "orderBy": "title", "order": "asc" } }
+  - "Random order." -> { "context_loop": { "orderBy": "rand" } }
+
+#### 6.1 PAGINATION ("Pagination", "Page numbers", "Load more")
+- Target properties: pagination, pagination_show_pages, pagination_style, pagination_spacing, pagination_text.
+- Enable: "Add pagination." -> { "pagination": true }
+- Page numbers vs load more: "Show page numbers." -> { "pagination_show_pages": true }
+- Style presets (bundled styling + safe defaults):
+  - Minimal text links -> { "pagination_style": "minimal" }
+  - Boxed buttons -> { "pagination_style": "boxed" }
+  - Pill buttons -> { "pagination_style": "pills" }
+- Spacing: "Space out page numbers to 20px." -> { "pagination_spacing": "20px" }
+- Labels: "Set pagination next text to Next >." -> { "pagination_text": { "next": "Next >" } }
 
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
@@ -146,13 +176,14 @@ Preset defaults:
   - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|m|xs" }
 
 #### 9. META & ACCESSIBILITY ("Anchor", "ARIA", "Custom CSS")
-- Target properties: anchor_link, aria_label, advanced_css.
+- Target properties: anchor_link, aria_label, custom_css, advanced_css.
 - Anchor: "Set the anchor to hero-section." -> { "anchor_link": "hero-section" }
 - Anchor: "Set the anchor ID to hero-section." -> { "anchor_link": "hero-section" }
 - Anchor: "Use #features as the anchor." -> { "anchor_link": "features" }
 - Aria: "Set aria label to Hero Section." -> { "aria_label": "Hero Section" }
 - Aria: "Set accessibility label to Hero Section." -> { "aria_label": "Hero Section" }
 - Aria: "Set screen reader label to 'Primary hero container'." -> { "aria_label": "Primary hero container" }
+- Custom CSS (declarations only, no selectors): "Add container CSS: display: block;" -> { "custom_css": { "css": "display: block;" } }
 - Advanced CSS: only when explicitly requested.
   - "Add custom CSS: ..." -> { "advanced_css": ".maxi-container-block { ... }" }
   - Breakpoint override (optional): { "value": "<css>", "breakpoint": "general|m|xs" }

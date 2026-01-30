@@ -27,6 +27,16 @@ import {
 	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
 } from './ai/utils/containerAGroup';
+import {
+	buildContainerBGroupAction,
+	buildContainerBGroupAttributeChanges,
+	getContainerBGroupSidebarTarget,
+} from './ai/utils/containerBGroup';
+import {
+	buildContainerCGroupAction,
+	buildContainerCGroupAttributeChanges,
+	getContainerCGroupSidebarTarget,
+} from './ai/utils/containerCGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -75,9 +85,26 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'    * **A (Recent Posts):** "Loop recent Blog Posts."',
 	'        * Action: `context_loop: { status: true, type: "post", perPage: 6 }`',
 	'    * **B (Products):** "Loop WooCommerce Products."',
-	'        * Action: `context_loop: { status: true, type: "product", perPage: 4 }`',
+	'        * Action: `context_loop: { status: true, type: "product", perPage: 8 }`',
 	'    * **C (Related):** "Loop Related Posts (Same Category)."',
 	'        * Action: `context_loop: { status: true, relation: "related" }`',
+	'* **Ordering & Filters:**',
+	'    * "Newest first" -> `context_loop: { orderBy: "date", order: "desc" }`',
+	'    * "Oldest first" -> `context_loop: { orderBy: "date", order: "asc" }`',
+	'    * "Alphabetical A-Z" -> `context_loop: { orderBy: "title", order: "asc" }`',
+	'    * "Random order" -> `context_loop: { orderBy: "rand" }`',
+	'* **UI Target:** `context-loop-panel`',
+	'',
+	'#### 4.1 PAGINATION ("Pagination", "Page numbers", "Load more")',
+	'* **Target Properties:** `pagination`, `pagination_show_pages`, `pagination_style`, `pagination_spacing`, `pagination_text`',
+	'* **Enable:** "Add pagination." -> `pagination: true`',
+	'* **Page numbers vs Load more:** "Show page numbers." -> `pagination_show_pages: true`',
+	'* **Vibe Presets:**',
+	'    * Minimal text links -> `pagination_style: "minimal"`',
+	'    * Boxed buttons -> `pagination_style: "boxed"`',
+	'    * Pill buttons -> `pagination_style: "pills"`',
+	'* **Spacing:** "Space out page numbers to 20px." -> `pagination_spacing: "20px"`',
+	'* **Labels:** "Set pagination next text to Next >." -> `pagination_text: { next: "Next >" }`',
 	'* **UI Target:** `context-loop-panel`',
 	'',
 	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
@@ -484,7 +511,7 @@ const ACTION_PROPERTY_ALIASES = {
 	flexDirection: 'flex_direction',
 	flexWrap: 'flex_wrap',
 	rowGap: 'gap',
-	columnGap: 'gap',
+	columnGap: 'column_gap',
 	arrowStatus: 'arrow_status',
 	arrowSide: 'arrow_side',
 	arrowPosition: 'arrow_position',
@@ -493,6 +520,20 @@ const ACTION_PROPERTY_ALIASES = {
 	ariaLabel: 'aria_label',
 	advancedCss: 'advanced_css',
 	advancedCSS: 'advanced_css',
+	customCss: 'custom_css',
+	customCSS: 'custom_css',
+	customLabel: 'custom_label',
+	blockStyle: 'block_style',
+	backgroundLayers: 'background_layers',
+	backgroundLayersHover: 'background_layers_hover',
+	blockBackgroundStatusHover: 'block_background_status_hover',
+	borderHover: 'border_hover',
+	borderRadiusHover: 'border_radius_hover',
+	boxShadowHover: 'box_shadow_hover',
+	paginationStyle: 'pagination_style',
+	paginationSpacing: 'pagination_spacing',
+	paginationText: 'pagination_text',
+	paginationShowPages: 'pagination_show_pages',
 };
 
 const AiChatPanelView = ({ isOpen, onClose }) => {
@@ -2338,6 +2379,12 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							}
 							break;
 						}
+						case 'block_background_status_hover': {
+							if (specificClientId || (block.attributes && 'block-background-status-hover' in block.attributes)) {
+								changes = buildContainerBGroupAttributeChanges(property, value);
+							}
+							break;
+						}
 						case 'divider_color': {
 							if (specificClientId || block.name.includes('divider')) {
 								const isPalette = typeof value === 'number';
@@ -2420,6 +2467,9 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 						case 'border_radius':
 							changes = updateBorderRadius(value, null, prefix);
 							break;
+						case 'border_radius_hover':
+							changes = buildContainerBGroupAttributeChanges(property, value);
+							break;
 						case 'border':
 							// value can be string "1px solid red" or object {width, style, color}
 							if (value === 'none') {
@@ -2438,6 +2488,9 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 								}
 							}
 							break;
+						case 'border_hover':
+							changes = buildContainerBGroupAttributeChanges(property, value);
+							break;
 						case 'box_shadow':
 							// value is expected to be object {x, y, blur, spread, color}
 							if (value === 'none') {
@@ -2445,6 +2498,9 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							} else if (typeof value === 'object') {
 								changes = updateBoxShadow(value.x, value.y, value.blur, value.spread, value.color, prefix, value.opacity);
 							}
+							break;
+						case 'box_shadow_hover':
+							changes = buildContainerBGroupAttributeChanges(property, value);
 							break;
 						case 'apply_responsive_spacing':
 							// value is the preset name: 'compact' | 'comfortable' | 'spacious'
@@ -2455,6 +2511,12 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							break;
 						case 'height':
 							changes = buildHeightChanges(value, prefix);
+							break;
+						case 'block_style':
+							changes = buildContainerBGroupAttributeChanges(property, value);
+							break;
+						case 'breakpoints':
+							changes = buildContainerBGroupAttributeChanges(property, value);
 							break;
 						case 'object_fit':
 						case 'objectFit':
@@ -2695,6 +2757,12 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 
 						// ======= BLOCK ACTIONS (Delegated) =======
 						default:
+							if (property && String(property).startsWith('cl_')) {
+								changes = buildContainerCGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								});
+								if (changes) break;
+							}
 							// Try delegating to block-specific handlers
 							const blockHandler = getAiHandlerForBlock(block);
 							if (blockHandler) {
@@ -2854,7 +2922,23 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							break;
 						// ======= CONTEXT LOOP =======
 						case 'context_loop':
-							changes = buildContextLoopChanges(value);
+							changes =
+								buildContainerCGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								}) || buildContextLoopChanges(value);
+							break;
+						case 'pagination':
+						case 'pagination_show_pages':
+						case 'pagination_spacing':
+						case 'pagination_style':
+						case 'pagination_text':
+						case 'custom_css':
+						case 'custom_label':
+						case 'column_gap':
+						case 'cl_attributes':
+							changes = buildContainerCGroupAttributeChanges(property, value, {
+								attributes: block.attributes,
+							});
 							break;
 						// ======= RELATIVE SIZING =======
 						case 'relative_size':
@@ -3226,6 +3310,9 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 
 		let nextProperty = ACTION_PROPERTY_ALIASES[property] || property;
 		nextProperty = String(nextProperty).replace(/-/g, '_');
+		if (nextProperty.startsWith('cl_')) {
+			return { property: nextProperty, value };
+		}
 
 		const breakpointMatch = nextProperty.match(/_(general|xxl|xl|l|m|s|xs)$/);
 		const breakpoint = breakpointMatch ? breakpointMatch[1] : null;
@@ -3265,11 +3352,18 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		}
 
 		if (
-			['arrow_status', 'arrow_side', 'arrow_position', 'arrow_width', 'advanced_css'].includes(baseProperty) &&
+			['arrow_status', 'arrow_side', 'arrow_position', 'arrow_width', 'advanced_css', 'custom_css', 'column_gap'].includes(baseProperty) &&
 			breakpoint
 		) {
 			return {
 				property: baseProperty,
+				value: { value, breakpoint },
+			};
+		}
+
+		if (baseProperty === 'breakpoints' && breakpoint) {
+			return {
+				property: 'breakpoints',
 				value: { value, breakpoint },
 			};
 		}
@@ -3286,6 +3380,16 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
 			if (aGroupTarget) {
 				openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
+				return;
+			}
+			const bGroupTarget = getContainerBGroupSidebarTarget(normalizedProperty);
+			if (bGroupTarget) {
+				openSidebarAccordion(bGroupTarget.tabIndex, bGroupTarget.accordion);
+				return;
+			}
+			const cGroupTarget = getContainerCGroupSidebarTarget(normalizedProperty);
+			if (cGroupTarget) {
+				openSidebarAccordion(cGroupTarget.tabIndex, cGroupTarget.accordion);
 				return;
 			}
 
@@ -4256,6 +4360,24 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		});
 		if (aGroupAction) {
 			queueDirectAction(aGroupAction);
+			return;
+		}
+
+		// B-group: backgrounds, borders, shadows, block style, breakpoints (explicit phrasing)
+		const bGroupAction = buildContainerBGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (bGroupAction) {
+			queueDirectAction(bGroupAction);
+			return;
+		}
+
+		// C-group: context loop, pagination, column gap, custom css/label (explicit phrasing)
+		const cGroupAction = buildContainerCGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (cGroupAction) {
+			queueDirectAction(cGroupAction);
 			return;
 		}
 

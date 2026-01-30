@@ -133,7 +133,8 @@ const fetchAndUpdateDCData = async (
 		if (contentType !== 'image') {
 			let newContent = await getDCContent(
 				lastDynamicContentProps,
-				clientId
+				clientId,
+				contentType
 			);
 
 			newContent = decodeEntities(newContent);

@@ -41,6 +41,7 @@ import transitionDefault from '@extensions/styles/transitions/transitionDefault'
  */
 const buttonWrapperClass = ' .maxi-button-block';
 const buttonClass = `${buttonWrapperClass}__button`;
+const buttonInlineLinkClass = `${buttonClass} a`;
 const iconClass = `${buttonWrapperClass}__icon`;
 const contentClass = `${buttonWrapperClass}__content`;
 
@@ -148,6 +149,7 @@ const customCss = {
 			canvas: '',
 			button: buttonClass,
 			content: contentClass,
+			'text link': buttonInlineLinkClass,
 		}),
 		...createIconSelectors({ icon: iconClass }),
 	},
@@ -161,6 +163,9 @@ const customCss = {
 		'content',
 		'before content',
 		'after content',
+		'text link',
+		'before text link',
+		'after text link',
 		'icon',
 		'before icon',
 		'after icon',
@@ -177,6 +182,11 @@ const transition = {
 			target: contentClass,
 			property: false,
 			hoverProp: 'typography-status-hover',
+		},
+		'text link': {
+			title: __('Text link', 'maxi-blocks'),
+			target: [`${buttonInlineLinkClass} span`],
+			property: 'color',
 		},
 		'button background': {
 			title: __('Button background', 'maxi-blocks'),

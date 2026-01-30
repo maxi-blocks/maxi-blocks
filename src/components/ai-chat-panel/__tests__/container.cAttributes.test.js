@@ -96,6 +96,21 @@ describe('container C attributes', () => {
 				value: true,
 			},
 			{
+				phrase: 'Switch pagination to load more',
+				property: 'pagination_type',
+				value: 'load_more',
+			},
+			{
+				phrase: 'Use prev/next pagination links only',
+				property: 'pagination_type',
+				value: 'simple',
+			},
+			{
+				phrase: 'Set load more text to "Load more posts"',
+				property: 'pagination_load_more_label',
+				value: 'Load more posts',
+			},
+			{
 				phrase: 'Make pagination look like buttons',
 				property: 'pagination_style',
 				value: 'boxed',
@@ -109,6 +124,27 @@ describe('container C attributes', () => {
 				phrase: 'Set pagination next text to "Next >"',
 				property: 'pagination_text',
 				assert: action => action.value && action.value.nextText === 'Next >',
+			},
+			{
+				phrase: 'Filter posts by author',
+				property: 'context_loop',
+				assert: action => action.value && action.value.relation === 'by-author',
+			},
+			{
+				phrase: 'Show posts by author 12',
+				property: 'context_loop',
+				assert: action =>
+					action.value &&
+					action.value.relation === 'by-author' &&
+					action.value.author === 12,
+			},
+			{
+				phrase: 'Show specific posts 12, 15',
+				property: 'context_loop',
+				assert: action =>
+					action.value &&
+					action.value.relation === 'by-id' &&
+					action.value.id === 12,
 			},
 			{
 				phrase: 'Rename container label to "Hero Section"',
@@ -160,6 +196,23 @@ describe('container C attributes', () => {
 		});
 
 		expect(missing).toEqual([]);
+	});
+
+	test('pagination type mapping sets expected attributes', () => {
+		const loadMore = buildContainerCGroupAttributeChanges('pagination_type', 'load_more');
+		expect(loadMore).toMatchObject({
+			'cl-pagination': true,
+			'cl-pagination-show-page-list': false,
+			'cl-pagination-next-text': 'Load More',
+		});
+
+		const simple = buildContainerCGroupAttributeChanges('pagination_type', 'simple');
+		expect(simple).toMatchObject({
+			'cl-pagination': true,
+			'cl-pagination-show-page-list': false,
+			'cl-pagination-previous-text': 'Previous',
+			'cl-pagination-next-text': 'Next',
+		});
 	});
 
 	test('C-group properties map to sidebar targets', () => {

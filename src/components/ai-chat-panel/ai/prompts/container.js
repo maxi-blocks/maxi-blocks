@@ -147,15 +147,38 @@ Preset defaults:
   - "Random order." -> { "context_loop": { "orderBy": "rand" } }
 
 #### 6.1 PAGINATION ("Pagination", "Page numbers", "Load more")
-- Target properties: pagination, pagination_show_pages, pagination_style, pagination_spacing, pagination_text.
+- Target properties: pagination, pagination_type, pagination_show_pages, pagination_style, pagination_spacing, pagination_text, pagination_load_more_label.
 - Enable: "Add pagination." -> { "pagination": true }
-- Page numbers vs load more: "Show page numbers." -> { "pagination_show_pages": true }
+- Type presets:
+  - Numbers -> { "pagination_type": "numbers" }
+  - Load More -> { "pagination_type": "load_more" }
+  - Prev/Next only -> { "pagination_type": "simple" }
+- Load more label: "Set load more text to Load more posts." -> { "pagination_load_more_label": "Load more posts" }
 - Style presets (bundled styling + safe defaults):
   - Minimal text links -> { "pagination_style": "minimal" }
   - Boxed buttons -> { "pagination_style": "boxed" }
   - Pill buttons -> { "pagination_style": "pills" }
 - Spacing: "Space out page numbers to 20px." -> { "pagination_spacing": "20px" }
 - Labels: "Set pagination next text to Next >." -> { "pagination_text": { "next": "Next >" } }
+#### 6.2 ADVANCED FILTERS ("Filter by author", "Specific IDs")
+- Target property: context_loop.
+- Presets:
+  - Filter by author -> { "context_loop": { "relation": "by-author", "author": 12 } }
+  - Specific post ID -> { "context_loop": { "relation": "by-id", "id": 123 } }
+- Note: Exclude-current is not supported yet; ask for clarification.
+
+#### 6.3 DISPLAY ("Show", "Hide", "Display")
+- Target property: display.
+- Examples:
+  - "Hide this container." -> { "display": "none" }
+  - "Show this container." -> { "display": "flex" }
+  - "Set display to block." -> { "display": "block" }
+
+#### 6.4 CUSTOM CLASSES ("CSS class", "Extra class")
+- Target property: extra_class_name.
+- Examples:
+  - "Add CSS class hero-section." -> { "extra_class_name": "hero-section" }
+  - "Set custom classes to hero featured." -> { "extra_class_name": "hero featured" }
 
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.

@@ -27,6 +27,21 @@ const extractNumericValue = (message, patterns) => {
 	return null;
 };
 
+const extractNumericList = (message, patterns) => {
+	if (!message) return [];
+	for (const pattern of patterns) {
+		const match = message.match(pattern);
+		if (match && match[1]) {
+			const numbers = match[1]
+				.split(/[, ]+/)
+				.map(value => Number.parseInt(value.trim(), 10))
+				.filter(value => Number.isFinite(value));
+			if (numbers.length) return numbers;
+		}
+	}
+	return [];
+};
+
 const normalizeValueWithBreakpoint = rawValue => {
 	if (
 		rawValue &&
@@ -263,6 +278,27 @@ const extractPaginationPageList = message => {
 	return null;
 };
 
+const extractPaginationType = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/(pagination|page\s*numbers?|load\s*more|infinite|prev|next)/.test(lower)) {
+		return null;
+	}
+	if (/load\s*more|infinite/.test(lower)) return 'load_more';
+	if (/page\s*numbers?|numbers?\s*only/.test(lower)) return 'numbers';
+	if (/prev(?:ious)?\s*\/\s*next|prev(?:ious)?\s*and\s*next|prev(?:ious)?\s*next/.test(lower)) {
+		return 'simple';
+	}
+	return null;
+};
+
+const extractLoadMoreLabel = message => {
+	if (!message) return null;
+	if (!/load\s*more/i.test(message)) return null;
+	return extractValueFromPatterns(message, [
+		/(?:load\s*more)\s*(?:text|label)\s*(?:to|=|:|is)?\s*["']?([^"']+)["']?/i,
+	]);
+};
+
 const extractPaginationStyle = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!lower.includes('pagination') && !lower.includes('page numbers')) return null;
@@ -296,6 +332,38 @@ const extractPaginationText = message => {
 		...(prev ? { previousText: prev } : {}),
 		...(next ? { nextText: next } : {}),
 	};
+};
+
+const extractAuthorFilter = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/(author)/.test(lower)) return null;
+	if (!/(filter|by|from|only|show).*(author)/.test(lower) && !/author\s*id/i.test(lower)) {
+		return null;
+	}
+
+	const authorId = extractNumericValue(message, [
+		/author\s*id\s*(?:to|=|:|is)?\s*(\d+)/i,
+		/author\s*(?:to|=|:|is)?\s*(\d+)/i,
+	]);
+
+	const isCurrent = /current\s*author/i.test(lower);
+	return {
+		relation: 'by-author',
+		...(authorId !== null ? { author: authorId } : isCurrent ? { author: 'current' } : {}),
+	};
+};
+
+const extractIdFilter = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/(id|ids|specific\s*posts?|specific\s*pages?)/.test(lower)) return null;
+
+	const ids = extractNumericList(message, [
+		/(?:ids?|posts?)\s*(?:to|=|:|is)?\s*([0-9,\s]+)/i,
+		/(?:include|only)\s*(?:ids?|posts?)\s*(?:to|=|:|is)?\s*([0-9,\s]+)/i,
+		/(?:specific)\s*(?:posts?|pages?)\s*(?:to|=|:|is)?\s*([0-9,\s]+)/i,
+	]);
+	if (!ids.length) return null;
+	return { relation: 'by-id', id: ids[0] };
 };
 
 const buildPaginationSpacingChanges = value => {
@@ -369,6 +437,43 @@ const buildPaginationStyleChanges = (preset, attributes) => {
 	return changes;
 };
 
+const buildPaginationTypeChanges = (type, options = {}) => {
+	const normalized = String(type || '').toLowerCase();
+	const loadMoreLabel = options.label || 'Load More';
+
+	switch (normalized) {
+		case 'load_more':
+		case 'load-more':
+		case 'load more':
+			return {
+				'cl-pagination': true,
+				'cl-pagination-show-page-list': false,
+				'cl-pagination-previous-text': '',
+				'cl-pagination-next-text': loadMoreLabel,
+			};
+		case 'simple':
+		case 'prev_next':
+		case 'prev-next':
+			return {
+				'cl-pagination': true,
+				'cl-pagination-show-page-list': false,
+				'cl-pagination-previous-text': 'Previous',
+				'cl-pagination-next-text': 'Next',
+			};
+		case 'numbers':
+		default:
+			return {
+				'cl-pagination': true,
+				'cl-pagination-show-page-list': true,
+				'cl-pagination-previous-text': 'Previous',
+				'cl-pagination-next-text': 'Next',
+			};
+	}
+};
+
+const buildPaginationLoadMoreLabelChanges = label =>
+	buildPaginationTypeChanges('load_more', { label });
+
 const buildColumnGapChanges = value => {
 	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
 	const parsed = parseUnitValue(rawValue, 'px');
@@ -426,6 +531,9 @@ export const buildContainerCGroupAction = (message, { scope = 'selection' } = {}
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget =
 		actionType === 'update_page' ? { target_block: 'container' } : {};
+	const hasExplicitLoopIntent = /(loop|query|context\s*loop|dynamic\s*content)/i.test(
+		message || ''
+	);
 
 	const quotedLabel = extractQuotedText(message);
 	const labelMatch =
@@ -450,6 +558,17 @@ export const buildContainerCGroupAction = (message, { scope = 'selection' } = {}
 			property: 'pagination_style',
 			value: paginationStyle,
 			message: 'Pagination style updated.',
+			...actionTarget,
+		};
+	}
+
+	let paginationLoadMoreLabel = extractLoadMoreLabel(message);
+	if (paginationLoadMoreLabel && !hasExplicitLoopIntent) {
+		return {
+			action: actionType,
+			property: 'pagination_load_more_label',
+			value: paginationLoadMoreLabel,
+			message: 'Pagination load more label updated.',
 			...actionTarget,
 		};
 	}
@@ -480,9 +599,15 @@ export const buildContainerCGroupAction = (message, { scope = 'selection' } = {}
 	const loopType = extractLoopType(message);
 	const loopOrder = extractLoopOrder(message);
 	const loopRelation = extractLoopRelation(message);
+	const authorFilter = extractAuthorFilter(message);
+	const idFilter = extractIdFilter(message);
 	const perPage = extractLoopPerPage(message);
 	const paginationStatus = extractPaginationStatus(message);
 	const paginationShowPages = extractPaginationPageList(message);
+	const paginationType = extractPaginationType(message);
+	if (!paginationLoadMoreLabel) {
+		paginationLoadMoreLabel = extractLoadMoreLabel(message);
+	}
 
 	const contextLoop = {};
 	if (loopStatus !== null) contextLoop.status = loopStatus;
@@ -498,17 +623,66 @@ export const buildContainerCGroupAction = (message, { scope = 'selection' } = {}
 		contextLoop.order = loopOrder.order;
 	}
 	if (loopRelation) contextLoop.relation = loopRelation;
+	if (authorFilter) {
+		contextLoop.relation = authorFilter.relation;
+		if (authorFilter.author !== undefined) {
+			contextLoop.author = authorFilter.author;
+		}
+	}
+	if (idFilter) {
+		contextLoop.relation = idFilter.relation;
+		contextLoop.id = idFilter.id;
+	}
 
 	const hasLoopIntent = Object.keys(contextLoop).length > 0;
 	if (hasLoopIntent) {
 		if (paginationStatus !== null) contextLoop.pagination = paginationStatus;
 		if (paginationShowPages !== null)
 			contextLoop.showPageList = paginationShowPages;
+		if (paginationType) {
+			const paginationTypeChanges = buildPaginationTypeChanges(paginationType);
+			if ('cl-pagination-show-page-list' in paginationTypeChanges) {
+				contextLoop.showPageList = paginationTypeChanges['cl-pagination-show-page-list'];
+			}
+			if ('cl-pagination-previous-text' in paginationTypeChanges) {
+				contextLoop.previousText = paginationTypeChanges['cl-pagination-previous-text'];
+			}
+			if ('cl-pagination-next-text' in paginationTypeChanges) {
+				contextLoop.nextText = paginationTypeChanges['cl-pagination-next-text'];
+			}
+			contextLoop.pagination = true;
+		}
+		if (paginationLoadMoreLabel) {
+			contextLoop.showPageList = false;
+			contextLoop.previousText = '';
+			contextLoop.nextText = paginationLoadMoreLabel;
+			contextLoop.pagination = true;
+		}
 		return {
 			action: actionType,
 			property: 'context_loop',
 			value: contextLoop,
 			message: 'Context loop updated.',
+			...actionTarget,
+		};
+	}
+
+	if (paginationLoadMoreLabel) {
+		return {
+			action: actionType,
+			property: 'pagination_load_more_label',
+			value: paginationLoadMoreLabel,
+			message: 'Pagination load more label updated.',
+			...actionTarget,
+		};
+	}
+
+	if (paginationType) {
+		return {
+			action: actionType,
+			property: 'pagination_type',
+			value: paginationType,
+			message: 'Pagination type updated.',
 			...actionTarget,
 		};
 	}
@@ -562,6 +736,10 @@ export const buildContainerCGroupAttributeChanges = (
 			return buildContextLoopAttributeChanges(value);
 		case 'pagination':
 			return { 'cl-pagination': Boolean(value) };
+		case 'pagination_type':
+			return buildPaginationTypeChanges(value);
+		case 'pagination_load_more_label':
+			return buildPaginationLoadMoreLabelChanges(value);
 		case 'pagination_show_pages':
 			return { 'cl-pagination-show-page-list': Boolean(value) };
 		case 'pagination_text': {
@@ -600,6 +778,8 @@ export const getContainerCGroupSidebarTarget = property => {
 	if (
 		normalized === 'context_loop' ||
 		normalized === 'pagination' ||
+		normalized === 'pagination_type' ||
+		normalized === 'pagination_load_more_label' ||
 		normalized === 'pagination_style' ||
 		normalized === 'pagination_spacing' ||
 		normalized === 'pagination_text' ||

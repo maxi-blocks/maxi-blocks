@@ -37,6 +37,16 @@ import {
 	buildContainerCGroupAttributeChanges,
 	getContainerCGroupSidebarTarget,
 } from './ai/utils/containerCGroup';
+import {
+	buildContainerDGroupAction,
+	buildContainerDGroupAttributeChanges,
+	getContainerDGroupSidebarTarget,
+} from './ai/utils/containerDGroup';
+import {
+	buildContainerEGroupAction,
+	buildContainerEGroupAttributeChanges,
+	getContainerEGroupSidebarTarget,
+} from './ai/utils/containerEGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -96,9 +106,13 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'* **UI Target:** `context-loop-panel`',
 	'',
 	'#### 4.1 PAGINATION ("Pagination", "Page numbers", "Load more")',
-	'* **Target Properties:** `pagination`, `pagination_show_pages`, `pagination_style`, `pagination_spacing`, `pagination_text`',
+	'* **Target Properties:** `pagination`, `pagination_type`, `pagination_show_pages`, `pagination_style`, `pagination_spacing`, `pagination_text`, `pagination_load_more_label`',
 	'* **Enable:** "Add pagination." -> `pagination: true`',
-	'* **Page numbers vs Load more:** "Show page numbers." -> `pagination_show_pages: true`',
+	'* **Pagination Type Presets:**',
+	'    * Numbers -> `pagination_type: "numbers"`',
+	'    * Load More -> `pagination_type: "load_more"`',
+	'    * Prev/Next only -> `pagination_type: "simple"`',
+	'* **Load More label:** "Set load more text to Load more posts." -> `pagination_load_more_label: "Load more posts"`',
 	'* **Vibe Presets:**',
 	'    * Minimal text links -> `pagination_style: "minimal"`',
 	'    * Boxed buttons -> `pagination_style: "boxed"`',
@@ -106,6 +120,29 @@ const CONTAINER_BLOCK_INTENT_MAPPING_MODULE = [
 	'* **Spacing:** "Space out page numbers to 20px." -> `pagination_spacing: "20px"`',
 	'* **Labels:** "Set pagination next text to Next >." -> `pagination_text: { next: "Next >" }`',
 	'* **UI Target:** `context-loop-panel`',
+	'',
+	'#### 4.2 ADVANCED FILTERS ("Filter by author", "Specific IDs")',
+	'* **Target Property:** `context_loop`',
+	'* **Presets:**',
+	'    * Filter by author -> `context_loop: { relation: "by-author", author: 12 }`',
+	'    * Specific post ID -> `context_loop: { relation: "by-id", id: 123 }`',
+	'* **Note:** Exclude-current is not supported yet; ask for clarification.',
+	'* **UI Target:** `context-loop-panel`',
+	'',
+	'#### 4.3 DISPLAY ("Show", "Hide", "Display")',
+	'* **Target Property:** `display`',
+	'* **Examples:**',
+	'    * "Hide this container." -> `display: "none"`',
+	'    * "Show this container." -> `display: "flex"`',
+	'    * "Set display to block." -> `display: "block"`',
+	'* **UI Target:** `layout-flex-panel`',
+	'',
+	'#### 4.4 CUSTOM CLASSES ("CSS class", "Extra class")',
+	'* **Target Property:** `extra_class_name`',
+	'* **Examples:**',
+	'    * "Add CSS class hero-section." -> `extra_class_name: "hero-section"`',
+	'    * "Set custom classes to hero featured." -> `extra_class_name: "hero featured"`',
+	'* **UI Target:** `add css classes` (Advanced tab)',
 	'',
 	'#### 5. SPACING & MARGINS ("Padding", "Section Height", "Space")',
 	'* **Target Property:** `responsive_padding`',
@@ -534,6 +571,12 @@ const ACTION_PROPERTY_ALIASES = {
 	paginationSpacing: 'pagination_spacing',
 	paginationText: 'pagination_text',
 	paginationShowPages: 'pagination_show_pages',
+	paginationType: 'pagination_type',
+	paginationLoadMoreLabel: 'pagination_load_more_label',
+	extraClassName: 'extra_class_name',
+	extraClass: 'extra_class_name',
+	customClassName: 'extra_class_name',
+	customClasses: 'extra_class_name',
 };
 
 const AiChatPanelView = ({ isOpen, onClose }) => {
@@ -2169,9 +2212,25 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		'position-general': position,
 	});
 
-	const updateDisplay = (value) => ({
-		'display-general': value,
-	});
+	const updateDisplay = value => {
+		let rawValue = value;
+		let breakpoint = null;
+		if (
+			value &&
+			typeof value === 'object' &&
+			!Array.isArray(value) &&
+			Object.prototype.hasOwnProperty.call(value, 'value')
+		) {
+			rawValue = value.value;
+			breakpoint = value.breakpoint || null;
+		}
+
+		if (breakpoint) {
+			return { [`display-${breakpoint}`]: rawValue };
+		}
+
+		return { 'display-general': rawValue };
+	};
 
 	const updatePosition = (value) => ({
 		'position-general': value,
@@ -2694,7 +2753,13 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 							}
 							break;
 						case 'display':
-							changes = updateDisplay(value);
+							changes =
+								buildContainerDGroupAttributeChanges(property, value) ||
+								updateDisplay(value);
+							break;
+						case 'extra_class_name':
+						case 'extra_class':
+							changes = buildContainerEGroupAttributeChanges(property, value);
 							break;
 						// ======= CALLOUT ARROW =======
 						case 'arrow_status':
@@ -2928,6 +2993,8 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 								}) || buildContextLoopChanges(value);
 							break;
 						case 'pagination':
+						case 'pagination_type':
+						case 'pagination_load_more_label':
 						case 'pagination_show_pages':
 						case 'pagination_spacing':
 						case 'pagination_style':
@@ -3361,6 +3428,13 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			};
 		}
 
+		if (baseProperty === 'display' && breakpoint) {
+			return {
+				property: 'display',
+				value: { value, breakpoint },
+			};
+		}
+
 		if (baseProperty === 'breakpoints' && breakpoint) {
 			return {
 				property: 'breakpoints',
@@ -3390,6 +3464,16 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 			const cGroupTarget = getContainerCGroupSidebarTarget(normalizedProperty);
 			if (cGroupTarget) {
 				openSidebarAccordion(cGroupTarget.tabIndex, cGroupTarget.accordion);
+				return;
+			}
+			const dGroupTarget = getContainerDGroupSidebarTarget(normalizedProperty);
+			if (dGroupTarget) {
+				openSidebarAccordion(dGroupTarget.tabIndex, dGroupTarget.accordion);
+				return;
+			}
+			const eGroupTarget = getContainerEGroupSidebarTarget(normalizedProperty);
+			if (eGroupTarget) {
+				openSidebarAccordion(eGroupTarget.tabIndex, eGroupTarget.accordion);
 				return;
 			}
 
@@ -4378,6 +4462,24 @@ const AiChatPanelView = ({ isOpen, onClose }) => {
 		});
 		if (cGroupAction) {
 			queueDirectAction(cGroupAction);
+			return;
+		}
+
+		// D-group: display / visibility (explicit phrasing)
+		const dGroupAction = buildContainerDGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (dGroupAction) {
+			queueDirectAction(dGroupAction);
+			return;
+		}
+
+		// E-group: custom classes (explicit phrasing)
+		const eGroupAction = buildContainerEGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (eGroupAction) {
+			queueDirectAction(eGroupAction);
 			return;
 		}
 

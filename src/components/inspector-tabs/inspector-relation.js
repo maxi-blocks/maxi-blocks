@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useCallback } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -31,6 +32,11 @@ const relation = ({ props, isButton = false }) => {
 				.filter(([key, value]) => value !== undefined)
 		);
 	};
+	
+	const handleChange = obj => {
+		const filteredObj = filterUndefinedProperties(obj);
+		maxiSetAttributes(filteredObj);
+	};
 
 	return {
 		label: __('Interaction builder', 'maxi-blocks'),
@@ -39,10 +45,7 @@ const relation = ({ props, isButton = false }) => {
 				{...attributes}
 				name={name}
 				clientId={clientId}
-				onChange={obj => {
-					const filteredObj = filterUndefinedProperties(obj);
-					maxiSetAttributes(filteredObj);
-				}}
+				onChange={handleChange}
 				deviceType={deviceType}
 				isButton={isButton}
 			/>

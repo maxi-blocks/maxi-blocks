@@ -232,6 +232,31 @@ Preset defaults:
 - Breakpoint override (optional):
   - If user specifies device, wrap value: { "value": "<overflow>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
 
+#### 6.12 PADDING ("Padding", "Inner spacing")
+- Target properties: padding, padding_top, padding_right, padding_bottom, padding_left.
+- Examples:
+  - "Set padding to 24px." -> { "padding": { "value": 24, "unit": "px" } }
+  - "Set padding top to 16px." -> { "padding_top": { "value": 16, "unit": "px" } }
+  - "Remove padding left." -> { "padding_left": { "value": 0, "unit": "px" } }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "unit": "<unit>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.13 POSITION MODE ("Position", "Absolute", "Sticky")
+- Target property: position.
+- Examples:
+  - "Set position to absolute." -> { "position": "absolute" }
+  - "Make it sticky." -> { "position": "sticky" }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": "<mode>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
+#### 6.14 POSITION OFFSETS ("Position top/right/bottom/left")
+- Target properties: position_top, position_right, position_bottom, position_left.
+- Examples:
+  - "Set position top to 20px." -> { "position_top": { "value": 20, "unit": "px" } }
+  - "Set position left to 10%." -> { "position_left": { "value": 10, "unit": "%" } }
+- Breakpoint override (optional):
+  - If user specifies device, wrap value: { "value": <val>, "unit": "<unit>", "breakpoint": "general|xxl|xl|l|m|s|xs" }
+
 #### 7. VISIBILITY & SCROLL ("Sticky", "Hide on mobile", "Fade in")
 - Target properties: position, position_top, z_index, display_mobile, scroll_fade.
 - Presets:

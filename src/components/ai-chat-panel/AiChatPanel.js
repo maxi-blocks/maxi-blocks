@@ -72,6 +72,11 @@ import {
 	buildContainerOGroupAttributeChanges,
 	getContainerOGroupSidebarTarget,
 } from './ai/utils/containerOGroup';
+import {
+	buildContainerPGroupAction,
+	buildContainerPGroupAttributeChanges,
+	getContainerPGroupSidebarTarget,
+} from './ai/utils/containerPGroup';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
@@ -626,6 +631,14 @@ const ACTION_PROPERTY_ALIASES = {
 	opacityStatusHover: 'opacity_status_hover',
 	overflowX: 'overflow_x',
 	overflowY: 'overflow_y',
+	paddingTop: 'padding_top',
+	paddingBottom: 'padding_bottom',
+	paddingLeft: 'padding_left',
+	paddingRight: 'padding_right',
+	positionTop: 'position_top',
+	positionRight: 'position_right',
+	positionBottom: 'position_bottom',
+	positionLeft: 'position_left',
 	paginationStyle: 'pagination_style',
 	paginationSpacing: 'pagination_spacing',
 	paginationText: 'pagination_text',
@@ -2553,7 +2566,7 @@ const ACTION_PROPERTY_ALIASES = {
 							}
 							break;
 						case 'padding':
-							changes = updatePadding(value, null, prefix);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'responsive_padding':
 							if (typeof value === 'object') {
@@ -2803,47 +2816,19 @@ const ACTION_PROPERTY_ALIASES = {
 							changes = updateZIndex(value);
 							break;
 						case 'position':
-							changes = updatePosition(value);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'position_top':
-							{
-								const posTop = parseUnitValue(value);
-								changes = {
-									'position-top-general': posTop.value,
-									'position-top-unit-general': posTop.unit,
-									'position-sync-general': 'none',
-								};
-							}
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'position_right':
-							{
-								const posRight = parseUnitValue(value);
-								changes = {
-									'position-right-general': posRight.value,
-									'position-right-unit-general': posRight.unit,
-									'position-sync-general': 'none',
-								};
-							}
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'position_bottom':
-							{
-								const posBottom = parseUnitValue(value);
-								changes = {
-									'position-bottom-general': posBottom.value,
-									'position-bottom-unit-general': posBottom.unit,
-									'position-sync-general': 'none',
-								};
-							}
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'position_left':
-							{
-								const posLeft = parseUnitValue(value);
-								changes = {
-									'position-left-general': posLeft.value,
-									'position-left-unit-general': posLeft.unit,
-									'position-sync-general': 'none',
-								};
-							}
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'display':
 							changes =
@@ -3221,16 +3206,16 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						// ======= DIRECTIONAL PADDING =======
 						case 'padding_top':
-							changes = updatePadding(value, 'top', prefix);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'padding_bottom':
-							changes = updatePadding(value, 'bottom', prefix);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'padding_left':
-							changes = updatePadding(value, 'left', prefix);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						case 'padding_right':
-							changes = updatePadding(value, 'right', prefix);
+							changes = buildContainerPGroupAttributeChanges(property, value);
 							break;
 						// ======= RESPONSIVE OVERRIDES =======
 						case 'display_mobile':
@@ -3844,6 +3829,11 @@ const ACTION_PROPERTY_ALIASES = {
 				openSidebarAccordion(mGroupTarget.tabIndex, mGroupTarget.accordion);
 				return;
 			}
+			const pGroupTarget = getContainerPGroupSidebarTarget(normalizedProperty);
+			if (pGroupTarget) {
+				openSidebarAccordion(pGroupTarget.tabIndex, pGroupTarget.accordion);
+				return;
+			}
 			const oGroupTarget = getContainerOGroupSidebarTarget(normalizedProperty);
 			if (oGroupTarget) {
 				openSidebarAccordion(oGroupTarget.tabIndex, oGroupTarget.accordion);
@@ -4207,7 +4197,18 @@ const ACTION_PROPERTY_ALIASES = {
 					const isRemoval = val === null || val === 'none' || val === 'remove' || val === 0 || val === '0' || val === 'square';
 					
 					switch (prop) {
-						case 'padding': c = updatePadding(val, null, prefix); break;
+						case 'padding':
+						case 'padding_top':
+						case 'padding_bottom':
+						case 'padding_left':
+						case 'padding_right':
+						case 'position':
+						case 'position_top':
+						case 'position_right':
+						case 'position_bottom':
+						case 'position_left':
+							c = buildContainerPGroupAttributeChanges(prop, val);
+							break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
 						case 'background_color': c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, blkPrefix); break;
@@ -4956,6 +4957,15 @@ const ACTION_PROPERTY_ALIASES = {
 		});
 		if (mGroupAction) {
 			queueDirectAction(mGroupAction);
+			return;
+		}
+
+		// P-group: padding + position (explicit phrasing)
+		const pGroupAction = buildContainerPGroupAction(rawMessage, {
+			scope: currentScope,
+		});
+		if (pGroupAction) {
+			queueDirectAction(pGroupAction);
 			return;
 		}
 

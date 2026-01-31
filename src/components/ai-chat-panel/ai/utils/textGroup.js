@@ -199,6 +199,10 @@ const buildPaletteChanges = (key, value, { isHover = false, transform } = {}) =>
 		changes[`${key}${suffix}`] = transformed;
 	});
 
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
 	return changes;
 };
 

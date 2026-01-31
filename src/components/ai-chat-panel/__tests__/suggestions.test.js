@@ -21,3 +21,7 @@ describe('suggestions builder', () => {
 		expect(hasAttribute).toBe(true);
 	});
 });
+
+describe('suggestionsService', () => {
+	test.todo('add coverage once suggestionsService is implemented');
+});

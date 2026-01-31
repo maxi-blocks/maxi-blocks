@@ -5365,20 +5365,20 @@ const ACTION_PROPERTY_ALIASES = {
 			}
 		}
 		if (isTextContext) {
-			const textCGroupAction = buildTextCGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (textCGroupAction) {
-				logAIDebug('Text C-group action matched', textCGroupAction);
-				queueDirectAction(textCGroupAction);
-				return;
-			}
 			const textPGroupAction = buildTextPGroupAction(rawMessage, {
 				scope: currentScope,
 			});
 			if (textPGroupAction) {
 				logAIDebug('Text P-group action matched', textPGroupAction);
 				queueDirectAction(textPGroupAction);
+				return;
+			}
+			const textCGroupAction = buildTextCGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (textCGroupAction) {
+				logAIDebug('Text C-group action matched', textCGroupAction);
+				queueDirectAction(textCGroupAction);
 				return;
 			}
 		}

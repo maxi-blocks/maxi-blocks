@@ -3,7 +3,7 @@ import {
 	buildButtonAGroupAction,
 	buildButtonAGroupAttributeChanges,
 	getButtonAGroupSidebarTarget,
-} from '../ai/utils/buttonAGroup';
+} from '../ai/utils/buttonGroups';
 
 const buttonAttributes = rawAttributes.blocks['button-maxi'] || [];
 const aAttributes = buttonAttributes.filter(

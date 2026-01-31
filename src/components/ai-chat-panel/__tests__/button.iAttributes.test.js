@@ -3,7 +3,7 @@ import {
 	buildButtonIGroupAction,
 	buildButtonIGroupAttributeChanges,
 	getButtonIGroupSidebarTarget,
-} from '../ai/utils/buttonIGroup';
+} from '../ai/utils/buttonGroups';
 
 const buttonAttributes = rawAttributes.blocks['button-maxi'] || [];
 const iAttributes = buttonAttributes.filter(attr => attr.startsWith('icon'));

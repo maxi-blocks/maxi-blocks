@@ -1,18 +1,25 @@
 import rawAttributes from '../ai/attributes/maxi-block-attributes.json';
 import {
-	buildContainerPGroupAction,
-	buildContainerPGroupAttributeChanges,
-	getContainerPGroupSidebarTarget,
-} from '../ai/utils/containerGroups';
+	buildTextPGroupAction,
+	buildTextPGroupAttributeChanges,
+	getTextPGroupSidebarTarget,
+} from '../ai/utils/textGroup';
 
-const containerAttributes = rawAttributes.blocks['container-maxi'] || [];
-const pAttributes = containerAttributes.filter(attr => /^p/i.test(attr));
+const textAttributes = rawAttributes.blocks['text-maxi'] || [];
+const pAttributes = textAttributes.filter(attr => /^p/i.test(attr));
 
 const PADDING_VALUE = 24;
 const POSITION_VALUE = 16;
 const POSITION_MODE = 'absolute';
-
-const getBreakpoint = attribute => attribute.split('-').pop();
+const PALETTE_COLOR = 3;
+const PALETTE_COLOR_HOVER = 5;
+const PALETTE_OPACITY = 0.7;
+const PALETTE_OPACITY_HOVER = 0.5;
+const PALETTE_STATUS = true;
+const PALETTE_STATUS_HOVER = false;
+const PALETTE_SC_STATUS = true;
+const PALETTE_SC_STATUS_HOVER = false;
+const PREVIEW_VALUE = true;
 
 const buildExpectedForAttribute = attribute => {
 	const paddingSideMatch = attribute.match(
@@ -45,7 +52,9 @@ const buildExpectedForAttribute = attribute => {
 		};
 	}
 
-	const paddingSyncMatch = attribute.match(/^padding-sync-(general|xxl|xl|l|m|s|xs)$/);
+	const paddingSyncMatch = attribute.match(
+		/^padding-sync-(general|xxl|xl|l|m|s|xs)$/
+	);
 	if (paddingSyncMatch) {
 		const breakpoint = paddingSyncMatch[1];
 		return {
@@ -57,7 +66,42 @@ const buildExpectedForAttribute = attribute => {
 		};
 	}
 
-	const positionModeMatch = attribute.match(/^position-(general|xxl|xl|l|m|s|xs)$/);
+	const paletteMatch = attribute.match(
+		/^palette-(color|opacity|status|sc-status)-(general|xxl|xl|l|m|s|xs)(-hover)?$/
+	);
+	if (paletteMatch) {
+		const type = paletteMatch[1];
+		const breakpoint = paletteMatch[2];
+		const isHover = Boolean(paletteMatch[3]);
+
+		const paletteValueMap = {
+			color: isHover ? PALETTE_COLOR_HOVER : PALETTE_COLOR,
+			opacity: isHover ? PALETTE_OPACITY_HOVER : PALETTE_OPACITY,
+			status: isHover ? PALETTE_STATUS_HOVER : PALETTE_STATUS,
+			'sc-status': isHover ? PALETTE_SC_STATUS_HOVER : PALETTE_SC_STATUS,
+		};
+
+		const propertyMap = {
+			color: isHover ? 'palette_color_hover' : 'palette_color',
+			opacity: isHover ? 'palette_opacity_hover' : 'palette_opacity',
+			status: isHover ? 'palette_status_hover' : 'palette_status',
+			'sc-status': isHover
+				? 'palette_sc_status_hover'
+				: 'palette_sc_status',
+		};
+
+		return {
+			property: propertyMap[type],
+			value: { value: paletteValueMap[type], breakpoint },
+			expectedKey: attribute,
+			expectedValue: paletteValueMap[type],
+			expectedSidebar: { tabIndex: 0, accordion: 'typography' },
+		};
+	}
+
+	const positionModeMatch = attribute.match(
+		/^position-(general|xxl|xl|l|m|s|xs)$/
+	);
 	if (positionModeMatch) {
 		const breakpoint = positionModeMatch[1];
 		return {
@@ -99,7 +143,9 @@ const buildExpectedForAttribute = attribute => {
 		};
 	}
 
-	const positionSyncMatch = attribute.match(/^position-sync-(general|xxl|xl|l|m|s|xs)$/);
+	const positionSyncMatch = attribute.match(
+		/^position-sync-(general|xxl|xl|l|m|s|xs)$/
+	);
 	if (positionSyncMatch) {
 		const breakpoint = positionSyncMatch[1];
 		return {
@@ -111,39 +157,44 @@ const buildExpectedForAttribute = attribute => {
 		};
 	}
 
+	if (attribute === 'preview') {
+		return {
+			property: 'preview',
+			value: PREVIEW_VALUE,
+			expectedKey: attribute,
+			expectedValue: PREVIEW_VALUE,
+			expectedSidebar: { tabIndex: 0, accordion: 'block settings' },
+		};
+	}
+
 	return null;
 };
 
-describe('container P attributes', () => {
+describe('text P attributes', () => {
 	test('P-group prompt phrases resolve to expected properties', () => {
 		const samples = [
 			{
-				phrase: 'Set padding top to 24px',
+				phrase: 'Set text padding top to 24px',
 				property: 'padding_top',
 				assert: action => action.value && action.value.value === 24,
 			},
 			{
-				phrase: 'Set padding to 16px',
-				property: 'padding',
-				assert: action => action.value && action.value.value === 16,
-			},
-			{
-				phrase: 'Remove padding left',
+				phrase: 'Remove text padding left',
 				property: 'padding_left',
 				assert: action => action.value && action.value.value === 0,
 			},
 			{
-				phrase: 'Set position to absolute',
+				phrase: 'Set text position to absolute',
 				property: 'position',
 				value: 'absolute',
 			},
 			{
-				phrase: 'Set position top to 12px',
+				phrase: 'Set text position top to 12px',
 				property: 'position_top',
 				assert: action => action.value && action.value.value === 12,
 			},
 			{
-				phrase: 'Set tablet position bottom to 20px',
+				phrase: 'On tablet, set text position bottom to 20px',
 				property: 'position_bottom',
 				assert: action =>
 					action.value &&
@@ -151,18 +202,71 @@ describe('container P attributes', () => {
 					action.value.breakpoint === 'm',
 			},
 			{
+				phrase: 'Set text palette color to 3',
+				property: 'palette_color',
+				value: 3,
+			},
+			{
+				phrase: 'On hover, set text palette color to 5',
+				property: 'palette_color_hover',
+				value: 5,
+			},
+			{
+				phrase: 'Set text palette opacity to 70%',
+				property: 'palette_opacity',
+				value: 0.7,
+			},
+			{
+				phrase: 'Disable text palette',
+				property: 'palette_status',
+				value: false,
+			},
+			{
+				phrase: 'Use style card palette for text',
+				property: 'palette_sc_status',
+				value: true,
+			},
+			{
+				phrase: 'Disable text preview',
+				property: 'preview',
+				value: false,
+			},
+			{
+				phrase: 'On mobile, set text palette opacity to 50%',
+				property: 'palette_opacity',
+				value: { value: 0.5, breakpoint: 'xs' },
+			},
 		];
 
 		samples.forEach(sample => {
-			const action = buildContainerPGroupAction(sample.phrase);
+			const action = buildTextPGroupAction(sample.phrase);
 			expect(action).toBeTruthy();
 			expect(action.property).toBe(sample.property);
 			if (sample.assert) {
 				expect(sample.assert(action)).toBe(true);
-			} else if (sample.value !== undefined) {
-				expect(action.value).toBe(sample.value);
+			} else {
+				expect(action.value).toEqual(sample.value);
 			}
 		});
+	});
+
+	test('P-group prompt updates attribute and sidebar target', () => {
+		const sample = {
+			phrase: 'On hover, set text palette color to 5',
+			expectedKey: 'palette-color-general-hover',
+			expectedValue: 5,
+			expectedSidebar: { tabIndex: 0, accordion: 'typography' },
+		};
+
+		const action = buildTextPGroupAction(sample.phrase);
+		expect(action).toBeTruthy();
+
+		const changes = buildTextPGroupAttributeChanges(action.property, action.value);
+		expect(changes).toBeTruthy();
+		expect(changes[sample.expectedKey]).toBe(sample.expectedValue);
+
+		const sidebar = getTextPGroupSidebarTarget(action.property);
+		expect(sidebar).toEqual(sample.expectedSidebar);
 	});
 
 	test('each P attribute can be updated via P-group mapping', () => {
@@ -175,7 +279,7 @@ describe('container P attributes', () => {
 				return;
 			}
 
-			const changes = buildContainerPGroupAttributeChanges(
+			const changes = buildTextPGroupAttributeChanges(
 				config.property,
 				config.value
 			);
@@ -206,7 +310,7 @@ describe('container P attributes', () => {
 				return;
 			}
 
-			const sidebar = getContainerPGroupSidebarTarget(config.property);
+			const sidebar = getTextPGroupSidebarTarget(config.property);
 			if (!sidebar) {
 				missing.push(attribute);
 				return;

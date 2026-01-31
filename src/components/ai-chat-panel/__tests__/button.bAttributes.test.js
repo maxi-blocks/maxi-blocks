@@ -3,7 +3,7 @@ import {
 	buildButtonBGroupAction,
 	buildButtonBGroupAttributeChanges,
 	getButtonBGroupSidebarTarget,
-} from '../ai/utils/buttonBGroup';
+} from '../ai/utils/buttonGroups';
 
 const buttonAttributes = rawAttributes.blocks['button-maxi'] || [];
 const bAttributes = buttonAttributes.filter(attr => /^b/i.test(attr));
@@ -631,12 +631,27 @@ describe('button B attributes', () => {
 			{
 				phrase: 'Set button background to palette 3',
 				property: 'button_background',
-				value: { palette: 3, color: 'var(--maxi-color-3)' },
+				value: { palette: 3, color: 'var(--maxi-color-3)', activeMedia: 'color' },
+			},
+			{
+				phrase: 'Make the button background a gradient',
+				property: 'button_background',
+				assert: action => action.value && action.value.activeMedia === 'gradient',
+			},
+			{
+				phrase: 'Set button background opacity to 70%',
+				property: 'button_background_opacity',
+				value: 0.7,
+			},
+			{
+				phrase: 'Set button background gradient opacity to 70%',
+				property: 'button_background_gradient_opacity',
+				value: 0.7,
 			},
 			{
 				phrase: 'On hover, set button background palette 5',
 				property: 'button_background_hover',
-				value: { palette: 5, color: 'var(--maxi-color-5)' },
+				value: { palette: 5, color: 'var(--maxi-color-5)', activeMedia: 'color' },
 			},
 			{
 				phrase: 'Add a 2px solid button border with palette 3',
@@ -751,6 +766,11 @@ describe('button B attributes', () => {
 				expect(sample.assert(action)).toBe(true);
 			}
 		});
+	});
+
+	test('B-group background without explicit color defers to palette picker', () => {
+		const action = buildButtonBGroupAction('Set the button background to solid blue');
+		expect(action).toBeNull();
 	});
 
 	test('each B attribute can be updated via B-group mapping', () => {

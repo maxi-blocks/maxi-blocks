@@ -3,7 +3,7 @@ import {
 	buildButtonCGroupAction,
 	buildButtonCGroupAttributeChanges,
 	getButtonCGroupSidebarTarget,
-} from '../ai/utils/buttonCGroup';
+} from '../ai/utils/buttonGroups';
 
 const buttonAttributes = rawAttributes.blocks['button-maxi'] || [];
 const cAttributes = buttonAttributes.filter(attr => /^c/i.test(attr));

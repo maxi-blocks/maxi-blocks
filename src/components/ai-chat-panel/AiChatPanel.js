@@ -33,102 +33,71 @@ import {
 	buildButtonAGroupAction,
 	buildButtonAGroupAttributeChanges,
 	getButtonAGroupSidebarTarget,
-} from './ai/utils/buttonAGroup';
-import {
 	buildButtonBGroupAction,
 	buildButtonBGroupAttributeChanges,
 	getButtonBGroupSidebarTarget,
-} from './ai/utils/buttonBGroup';
-import {
 	buildButtonCGroupAction,
 	buildButtonCGroupAttributeChanges,
 	getButtonCGroupSidebarTarget,
-} from './ai/utils/buttonCGroup';
-import {
 	buildButtonIGroupAction,
 	buildButtonIGroupAttributeChanges,
 	getButtonIGroupSidebarTarget,
-} from './ai/utils/buttonIGroup';
+} from './ai/utils/buttonGroups';
 import {
 	buildContainerAGroupAction,
 	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
-} from './ai/utils/containerAGroup';
-import {
 	buildContainerBGroupAction,
 	buildContainerBGroupAttributeChanges,
 	getContainerBGroupSidebarTarget,
-} from './ai/utils/containerBGroup';
-import {
 	buildContainerCGroupAction,
 	buildContainerCGroupAttributeChanges,
 	getContainerCGroupSidebarTarget,
-} from './ai/utils/containerCGroup';
-import {
 	buildContainerDGroupAction,
 	buildContainerDGroupAttributeChanges,
 	getContainerDGroupSidebarTarget,
-} from './ai/utils/containerDGroup';
-import {
 	buildContainerEGroupAction,
 	buildContainerEGroupAttributeChanges,
 	getContainerEGroupSidebarTarget,
-} from './ai/utils/containerEGroup';
-import {
 	buildContainerFGroupAction,
 	buildContainerFGroupAttributeChanges,
 	getContainerFGroupSidebarTarget,
-} from './ai/utils/containerFGroup';
-import {
 	buildContainerHGroupAction,
 	buildContainerHGroupAttributeChanges,
 	getContainerHGroupSidebarTarget,
-} from './ai/utils/containerHGroup';
-import {
 	buildContainerLGroupAction,
 	buildContainerLGroupAttributeChanges,
 	getContainerLGroupSidebarTarget,
-} from './ai/utils/containerLGroup';
-import {
 	buildContainerMGroupAction,
 	buildContainerMGroupAttributeChanges,
 	getContainerMGroupSidebarTarget,
-} from './ai/utils/containerMGroup';
-import {
 	buildContainerOGroupAction,
 	buildContainerOGroupAttributeChanges,
 	getContainerOGroupSidebarTarget,
-} from './ai/utils/containerOGroup';
-import {
 	buildContainerPGroupAction,
 	buildContainerPGroupAttributeChanges,
 	getContainerPGroupSidebarTarget,
-} from './ai/utils/containerPGroup';
-import {
 	buildContainerRGroupAction,
 	buildContainerRGroupAttributeChanges,
 	getContainerRGroupSidebarTarget,
-} from './ai/utils/containerRGroup';
-import {
 	buildContainerSGroupAction,
 	buildContainerSGroupAttributeChanges,
 	getContainerSGroupSidebarTarget,
-} from './ai/utils/containerSGroup';
-import {
 	buildContainerTGroupAction,
 	buildContainerTGroupAttributeChanges,
 	getContainerTGroupSidebarTarget,
-} from './ai/utils/containerTGroup';
-import {
 	buildContainerWGroupAction,
 	buildContainerWGroupAttributeChanges,
 	getContainerWGroupSidebarTarget,
-} from './ai/utils/containerWGroup';
-import {
 	buildContainerZGroupAction,
 	buildContainerZGroupAttributeChanges,
 	getContainerZGroupSidebarTarget,
-} from './ai/utils/containerZGroup';
+} from './ai/utils/containerGroups';
+import {
+	buildTextPGroupAction,
+	buildTextPGroupAttributeChanges,
+	getTextPGroupSidebarTarget,
+} from './ai/utils/textGroup';
 import ADVANCED_CSS_PROMPT from './ai/prompts/advanced-css';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import META_MAXI_PROMPT from './ai/prompts/meta';
@@ -1421,7 +1390,7 @@ const ACTION_PROPERTY_ALIASES = {
 		return null;
 	};
 
-	// A-group helpers moved to ai/utils/containerAGroup.
+	// A-group helpers moved to ai/utils/containerGroups.
 
 	const extractButtonText = message => {
 		const quoted = extractQuotedText(message);
@@ -2640,6 +2609,10 @@ const ACTION_PROPERTY_ALIASES = {
 						}
 						case 'button_background':
 						case 'button_background_hover':
+						case 'button_background_opacity':
+						case 'button_background_opacity_hover':
+						case 'button_background_gradient_opacity':
+						case 'button_background_gradient_opacity_hover':
 						case 'button_background_status_hover':
 						case 'button_border':
 						case 'button_border_hover':
@@ -2728,6 +2701,23 @@ const ACTION_PROPERTY_ALIASES = {
 							// Apply only to headings (h1-h6)
 							if (block.name.includes('text-maxi') && ['h1','h2','h3','h4','h5','h6'].includes(block.attributes.textLevel)) {
 								changes = updateTextColor(value, prefix);
+							}
+							break;
+						case 'palette_color':
+						case 'palette_color_hover':
+						case 'palette_status':
+						case 'palette_status_hover':
+						case 'palette_opacity':
+						case 'palette_opacity_hover':
+						case 'palette_sc_status':
+						case 'palette_sc_status_hover':
+						case 'preview':
+							if (
+								specificClientId ||
+								block.name.includes('text-maxi') ||
+								block.name.includes('list-item-maxi')
+							) {
+								changes = buildTextPGroupAttributeChanges(property, value);
 							}
 							break;
 						case 'padding':
@@ -4033,6 +4023,13 @@ const ACTION_PROPERTY_ALIASES = {
 					return;
 				}
 			}
+			if (isTextBlock) {
+				const textPTarget = getTextPGroupSidebarTarget(normalizedProperty);
+				if (textPTarget) {
+					openSidebarAccordion(textPTarget.tabIndex, textPTarget.accordion);
+					return;
+				}
+			}
 			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
 			if (aGroupTarget) {
 				openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
@@ -5324,6 +5321,16 @@ const ACTION_PROPERTY_ALIASES = {
 			if (buttonIGroupAction) {
 				logAIDebug('Button I-group action matched', buttonIGroupAction);
 				queueDirectAction(buttonIGroupAction);
+				return;
+			}
+		}
+		if (isTextContext) {
+			const textPGroupAction = buildTextPGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (textPGroupAction) {
+				logAIDebug('Text P-group action matched', textPGroupAction);
+				queueDirectAction(textPGroupAction);
 				return;
 			}
 		}

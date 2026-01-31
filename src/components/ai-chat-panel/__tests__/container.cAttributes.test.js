@@ -3,7 +3,7 @@ import {
 	buildContainerCGroupAction,
 	buildContainerCGroupAttributeChanges,
 	getContainerCGroupSidebarTarget,
-} from '../ai/utils/containerCGroup';
+} from '../ai/utils/containerGroups';
 
 const containerAttributes = rawAttributes.blocks['container-maxi'] || [];
 const cAttributes = containerAttributes.filter(attr => /^c/i.test(attr));

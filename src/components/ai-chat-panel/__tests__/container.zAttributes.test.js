@@ -3,7 +3,7 @@ import {
 	buildContainerZGroupAction,
 	buildContainerZGroupAttributeChanges,
 	getContainerZGroupSidebarTarget,
-} from '../ai/utils/containerZGroup';
+} from '../ai/utils/containerGroups';
 
 const containerAttributes = rawAttributes.blocks['container-maxi'] || [];
 const zAttributes = containerAttributes.filter(attr => /^z/i.test(attr));

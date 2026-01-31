@@ -53,6 +53,14 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - Lists: property "text_list" with { isList, typeOfList, listStyle, listStyleCustom }.
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".
 - Link: property "text_link" with { url, target, rel } (rel supports "nofollow", "sponsored", "ugc").
+- Padding: property "padding" or "padding_top|padding_right|padding_bottom|padding_left" with { value, unit }.
+- Position: property "position" with "relative|absolute|fixed|sticky|static|inherit".
+  Offsets: "position_top|position_right|position_bottom|position_left" with { value, unit }.
+- Palette color: property "palette_color" (or "palette_color_hover") with palette number (1-8).
+- Palette opacity: property "palette_opacity" (or "palette_opacity_hover") with 0-1 value.
+- Palette status: property "palette_status" (or "palette_status_hover") boolean.
+- Palette style card: property "palette_sc_status" (or "palette_sc_status_hover") boolean.
+- Preview: property "preview" with boolean.
 
 Clarify when request is generic:
 - Text size: Subtitle (1.25rem), Title (2.5rem), Display (4rem).

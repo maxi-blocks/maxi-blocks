@@ -6,43 +6,17 @@ import {
 } from '../ai/utils/buttonAGroup';
 
 const buttonAttributes = rawAttributes.blocks['button-maxi'] || [];
-const aAttributes = buttonAttributes.filter(attr => /^a/i.test(attr));
+const aAttributes = buttonAttributes.filter(
+	attr =>
+		/^a/i.test(attr) &&
+		!attr.startsWith('advanced-css-') &&
+		attr !== 'anchorLink' &&
+		attr !== 'ariaLabels'
+);
 
 const getBreakpoint = attribute => attribute.split('-').pop();
 
 const buildExpectedForAttribute = attribute => {
-	if (attribute === 'anchorLink') {
-		return {
-			property: 'anchor_link',
-			value: 'hero-cta',
-			expectedKey: 'anchorLink',
-			expectedValue: 'hero-cta',
-			expectedSidebar: { tabIndex: 2, accordion: 'add anchor link' },
-		};
-	}
-
-	if (attribute === 'ariaLabels') {
-		return {
-			property: 'aria_label',
-			value: 'Primary CTA',
-			expectedKey: 'ariaLabels',
-			expectedValue: { button: 'Primary CTA' },
-			expectedSidebar: { tabIndex: 2, accordion: 'aria label' },
-		};
-	}
-
-	if (attribute.startsWith('advanced-css-')) {
-		const breakpoint = getBreakpoint(attribute);
-		const cssValue = '.cta{color:red;}';
-		return {
-			property: 'advanced_css',
-			value: { value: cssValue, breakpoint },
-			expectedKey: `advanced-css-${breakpoint}`,
-			expectedValue: cssValue,
-			expectedSidebar: { tabIndex: 2, accordion: 'advanced css' },
-		};
-	}
-
 	if (attribute.startsWith('align-content-')) {
 		const breakpoint = getBreakpoint(attribute);
 		return {
@@ -93,11 +67,6 @@ describe('button A attributes', () => {
 				value: 'Primary CTA',
 			},
 			{
-				phrase: 'Add custom CSS to the button: .maxi-button-block{color:red;}',
-				property: 'advanced_css',
-				value: '.maxi-button-block{color:red;}',
-			},
-			{
 				phrase: 'Align button left',
 				property: 'alignment',
 				value: 'left',
@@ -126,11 +95,6 @@ describe('button A attributes', () => {
 				phrase: 'On desktop, align button right',
 				property: 'alignment',
 				value: { value: 'right', breakpoint: 'xl' },
-			},
-			{
-				phrase: 'On mobile, add custom CSS: .cta{color:red;}',
-				property: 'advanced_css',
-				value: { value: '.cta{color:red;}', breakpoint: 'xs' },
 			},
 		];
 
@@ -164,13 +128,6 @@ describe('button A attributes', () => {
 				return;
 			}
 
-			if (config.expectedKey === 'ariaLabels') {
-				if (!changes.ariaLabels || changes.ariaLabels.button !== config.expectedValue.button) {
-					missing.push(attribute);
-				}
-				return;
-			}
-
 			if (!(config.expectedKey in changes)) {
 				missing.push(attribute);
 				return;
@@ -201,12 +158,6 @@ describe('button A attributes', () => {
 				expectedKey: 'alignment-xl',
 				expectedValue: 'right',
 				expectedSidebar: { tabIndex: 0, accordion: 'alignment' },
-			},
-			{
-				phrase: 'On mobile, add custom CSS: .cta{color:red;}',
-				expectedKey: 'advanced-css-xs',
-				expectedValue: '.cta{color:red;}',
-				expectedSidebar: { tabIndex: 2, accordion: 'advanced css' },
 			},
 		];
 

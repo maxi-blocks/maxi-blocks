@@ -67,7 +67,6 @@ If width or visibility is mentioned:
 - Align content (flexbox): property "align_content" with "space-between" | "space-around" | "space-evenly" | "center" | "stretch" | "flex-start" | "flex-end" (supports { value, breakpoint }).
 - Anchor link (advanced): property "anchor_link" with string (no #).
 - Aria label (advanced): property "aria_label" with string.
-- Advanced CSS (advanced): property "advanced_css" with CSS string (supports { value, breakpoint }).
 - Icon visibility: property "button_icon" with "only" | "none".
 - Add icon: property "button_icon_add" with icon name (e.g. "arrow-right").
 - Change icon: property "button_icon_change" with icon name.
@@ -76,6 +75,19 @@ If width or visibility is mentioned:
 - Icon spacing: property "icon_spacing" with number (px).
 - Icon style: property "icon_style" with "circle".
 - Icon colour: property "icon_color" with palette number (1-8) or CSS colour string, or { color, target: "fill" | "stroke" }.
+- Icon content (advanced): property "icon_content" with icon slug/string (e.g. "arrow-right").
+- Icon only (advanced): property "icon_only" with true | false.
+- Icon inherit (advanced): property "icon_inherit" with true | false.
+- Icon background (advanced): property "icon_background" with palette number (1-8) or CSS colour string.
+- Icon background hover (advanced): property "icon_background_hover" with palette number (1-8) or CSS colour string.
+- Icon border (advanced): property "icon_border" with { width, style, color } (supports hover via "icon_border_hover").
+- Icon border radius (advanced): property "icon_border_radius" with number (px; supports hover via "icon_border_radius_hover").
+- Icon padding (advanced): property "icon_padding" with { value, unit }.
+- Icon width (advanced): property "icon_width" with number (px; supports hover via "icon_width_hover").
+- Icon height (advanced): property "icon_height" with number (px; supports hover via "icon_height_hover").
+- Icon fill colour (advanced): property "icon_fill_color" with palette number (1-8) or CSS colour string (hover via "icon_fill_color_hover").
+- Icon stroke colour (advanced): property "icon_stroke_color" with palette number (1-8) or CSS colour string (hover via "icon_stroke_color_hover").
+- Icon stroke width (advanced): property "icon_stroke_width" with number (px; hover via "icon_stroke_width_hover").
 - Button transform: property "button_transform" with "uppercase" | "lowercase".
 - Button font style: property "button_font_style" with "normal" | "italic".
 - Button weight: property "button_weight" with number (400-900).
@@ -97,8 +109,6 @@ If width or visibility is mentioned:
 ### A-ATTRIBUTE EXAMPLES (BUTTON ADVANCED)
 - Anchor: "Set button anchor ID to hero-cta." -> { "anchor_link": "hero-cta" }
 - Aria: "Set button aria label to 'Primary CTA'." -> { "aria_label": "Primary CTA" }
-- Advanced CSS: "Add custom CSS to the button: .maxi-button-block{color:red;}" -> { "advanced_css": ".maxi-button-block{color:red;}" }
-- Advanced CSS (mobile): "On mobile, add custom CSS: .cta{color:red;}" -> { "advanced_css": { "value": ".cta{color:red;}", "breakpoint": "xs" } }
 - Align items: "Align items center." -> { "align_items": "center" }
 - Align content: "Align content space between." -> { "align_content": "space-between" }
 - Alignment (tablet): "On tablet, align button center." -> { "alignment": { "value": "center", "breakpoint": "m" } }
@@ -129,6 +139,24 @@ If width or visibility is mentioned:
 - Custom CSS: "Add custom CSS to the button: color: var(--h1);" -> { "custom_css": { "css": "color: var(--h1);", "category": "button", "index": "normal" } }
 - Custom label: "Set custom label to 'Primary CTA'." -> { "custom_label": "Primary CTA" }
 - Custom formats: "Apply custom format 'cta-highlight' to the button text." -> { "custom_formats": { "cta-highlight": { "text-decoration-general": "underline" } } }
+
+### I-ATTRIBUTE EXAMPLES (BUTTON ICON)
+- Icon content: "Change icon to arrow-right." -> { "icon_content": "arrow-right" }
+- Icon position: "Move icon to the left." -> { "icon_position": "left" }
+- Icon only: "Make the button icon only." -> { "icon_only": true }
+- Icon inherit: "Let the icon inherit the button text color." -> { "icon_inherit": true }
+- Icon spacing: "Set icon spacing to 12px." -> { "icon_spacing": { "value": 12, "unit": "px" } }
+- Icon padding: "Set icon padding to 6px." -> { "icon_padding": { "value": 6, "unit": "px" } }
+- Icon width: "Set icon width to 24px." -> { "icon_width": { "value": 24, "unit": "px" } }
+- Icon height: "Set icon height to 24px." -> { "icon_height": { "value": 24, "unit": "px" } }
+- Icon background: "Set icon background to palette 4." -> { "icon_background": { "palette": 4 } }
+- Icon background (hover): "On hover, set icon background palette 6." -> { "icon_background_hover": { "palette": 6 } }
+- Icon border: "Add a 2px solid icon border with palette 3." -> { "icon_border": { "width": 2, "style": "solid", "color": 3 } }
+- Icon border (hover): "On hover, make icon border 3px dashed palette 5." -> { "icon_border_hover": { "width": 3, "style": "dashed", "color": 5 } }
+- Icon border radius: "Round icon corners to 8px." -> { "icon_border_radius": 8 }
+- Icon fill color: "Set icon fill to palette 2." -> { "icon_fill_color": 2 }
+- Icon stroke color: "Set icon stroke to palette 5." -> { "icon_stroke_color": 5 }
+- Icon stroke width: "Set icon stroke width to 2." -> { "icon_stroke_width": 2 }
 
 ### MISSING-IN-DOCS (NOW DOCUMENTED)
 - Button width: property "width" with "auto" | "100%".

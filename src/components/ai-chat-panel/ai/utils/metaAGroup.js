@@ -46,18 +46,25 @@ export const extractAriaLabel = message => {
 	]);
 };
 
-export const buildContainerMetaAction = (message, { scope = 'selection' } = {}) => {
+const buildActionTarget = (actionType, targetBlock) => {
+	if (actionType !== 'update_page') {
+		return {};
+	}
+	if (targetBlock) {
+		return { target_block: targetBlock };
+	}
+	return {};
+};
+
+export const buildMetaAGroupAction = (
+	message,
+	{ scope = 'selection', targetBlock } = {}
+) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
-	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
-	const logDebug = (...args) => {
-		if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
-			console.log('[Maxi AI Debug] Meta', ...args);
-		}
-	};
+	const actionTarget = buildActionTarget(actionType, targetBlock);
 
 	const anchorLink = extractAnchorLink(message);
 	if (anchorLink) {
-		logDebug('Anchor detected', { message, anchorLink, scope });
 		return {
 			action: actionType,
 			property: 'anchor_link',
@@ -69,7 +76,6 @@ export const buildContainerMetaAction = (message, { scope = 'selection' } = {}) 
 
 	const ariaLabel = extractAriaLabel(message);
 	if (ariaLabel) {
-		logDebug('ARIA label detected', { message, ariaLabel, scope });
 		return {
 			action: actionType,
 			property: 'aria_label',
@@ -82,56 +88,31 @@ export const buildContainerMetaAction = (message, { scope = 'selection' } = {}) 
 	return null;
 };
 
-export const validateContainerMetaAction = action => {
-	if (!action || typeof action !== 'object') {
-		return { ok: false, error: 'Missing action.' };
-	}
-	if (!['anchor_link', 'aria_label'].includes(action.property)) {
-		return { ok: false, error: 'Unsupported property.' };
-	}
-	if (typeof action.value !== 'string' || !action.value.trim()) {
-		return { ok: false, error: 'Invalid value.' };
-	}
-	return { ok: true };
-};
-
-export const buildContainerMetaAttributeChanges = (
+export const buildMetaAGroupAttributeChanges = (
 	property,
 	value,
-	attributes = {}
+	{ attributes = {}, targetKey = 'container' } = {}
 ) => {
+	if (!property) return null;
 	const textValue = String(value || '');
-
 	switch (property) {
 		case 'anchor_link':
 			return { anchorLink: textValue };
-		case 'aria_label':
+		case 'aria_label': {
 			return {
 				ariaLabels: {
 					...(attributes?.ariaLabels || {}),
-					container: textValue,
+					[targetKey]: textValue,
 				},
 			};
+		}
 		default:
 			return null;
 	}
 };
 
-export const buildContainerMetaPatch = (property, value) => {
-	const textValue = String(value || '');
-	switch (property) {
-		case 'anchor_link':
-			return [{ op: 'set', path: 'anchorLink', value: textValue }];
-		case 'aria_label':
-			return [
-				{ op: 'set', path: 'ariaLabels.container', value: textValue },
-			];
-		default:
-			return [];
-	}
-};
-
-export const getContainerMetaSidebarTarget = property => {
+export const getMetaSidebarTarget = property => {
+	if (!property) return null;
 	if (property === 'anchor_link') {
 		return { tabIndex: 1, accordion: 'add anchor link' };
 	}
@@ -141,12 +122,19 @@ export const getContainerMetaSidebarTarget = property => {
 	return null;
 };
 
+export const resolveMetaTargetKey = blockName => {
+	const name = String(blockName || '').toLowerCase();
+	if (name.includes('button')) return 'button';
+	if (name.includes('text-maxi') || name.includes('list-item-maxi')) return 'text';
+	if (name.includes('container')) return 'container';
+	return 'container';
+};
+
 export default {
 	extractAnchorLink,
 	extractAriaLabel,
-	buildContainerMetaAction,
-	validateContainerMetaAction,
-	buildContainerMetaAttributeChanges,
-	buildContainerMetaPatch,
-	getContainerMetaSidebarTarget,
+	buildMetaAGroupAction,
+	buildMetaAGroupAttributeChanges,
+	getMetaSidebarTarget,
+	resolveMetaTargetKey,
 };

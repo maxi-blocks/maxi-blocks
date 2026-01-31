@@ -6,43 +6,17 @@ import {
 } from '../ai/utils/containerAGroup';
 
 const containerAttributes = rawAttributes.blocks['container-maxi'] || [];
-const aAttributes = containerAttributes.filter(attr => /^a/i.test(attr));
+const aAttributes = containerAttributes.filter(
+	attr =>
+		/^a/i.test(attr) &&
+		!attr.startsWith('advanced-css-') &&
+		attr !== 'anchorLink' &&
+		attr !== 'ariaLabels'
+);
 
 const getBreakpoint = attribute => attribute.split('-').pop();
 
 const buildExpectedForAttribute = attribute => {
-	if (attribute === 'anchorLink') {
-		return {
-			property: 'anchor_link',
-			value: 'hero-section',
-			expectedKey: 'anchorLink',
-			expectedValue: 'hero-section',
-			expectedSidebar: { tabIndex: 1, accordion: 'add anchor link' },
-		};
-	}
-
-	if (attribute === 'ariaLabels') {
-		return {
-			property: 'aria_label',
-			value: 'Hero section',
-			expectedKey: 'ariaLabels',
-			expectedValue: { container: 'Hero section' },
-			expectedSidebar: { tabIndex: 1, accordion: 'aria label' },
-		};
-	}
-
-	if (attribute.startsWith('advanced-css-')) {
-		const breakpoint = getBreakpoint(attribute);
-		const cssValue = '.hero{color:red;}';
-		return {
-			property: 'advanced_css',
-			value: { value: cssValue, breakpoint },
-			expectedKey: `advanced-css-${breakpoint}`,
-			expectedValue: cssValue,
-			expectedSidebar: { tabIndex: 1, accordion: 'advanced css' },
-		};
-	}
-
 	if (attribute.startsWith('align-content-')) {
 		const breakpoint = getBreakpoint(attribute);
 		return {
@@ -126,11 +100,6 @@ describe('container A attributes', () => {
 				value: 'Primary hero container',
 			},
 			{
-				phrase: 'Add custom CSS: .maxi-container-block{color:red;}',
-				property: 'advanced_css',
-				value: '.maxi-container-block{color:red;}',
-			},
-			{
 				phrase: 'Show the callout arrow',
 				property: 'arrow_status',
 				value: true,
@@ -185,11 +154,6 @@ describe('container A attributes', () => {
 				property: 'arrow_width',
 				value: { value: 40, breakpoint: 'm' },
 			},
-			{
-				phrase: 'On mobile, add custom CSS: .hero{color:red;}',
-				property: 'advanced_css',
-				value: { value: '.hero{color:red;}', breakpoint: 'xs' },
-			},
 		];
 
 		samples.forEach(sample => {
@@ -219,13 +183,6 @@ describe('container A attributes', () => {
 
 			if (!changes) {
 				missing.push(attribute);
-				return;
-			}
-
-			if (config.expectedKey === 'ariaLabels') {
-				if (!changes.ariaLabels || changes.ariaLabels.container !== config.expectedValue.container) {
-					missing.push(attribute);
-				}
 				return;
 			}
 
@@ -266,12 +223,6 @@ describe('container A attributes', () => {
 				expectedKey: 'arrow-width-m',
 				expectedValue: 40,
 				expectedSidebar: { tabIndex: 0, accordion: 'callout arrow' },
-			},
-			{
-				phrase: 'On mobile, add custom CSS: .hero{color:red;}',
-				expectedKey: 'advanced-css-xs',
-				expectedValue: '.hero{color:red;}',
-				expectedSidebar: { tabIndex: 1, accordion: 'advanced css' },
 			},
 		];
 

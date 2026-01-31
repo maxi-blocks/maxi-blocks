@@ -350,7 +350,7 @@ Preset defaults:
   - If user specifies device, wrap value: { "value": <val>, "breakpoint": "general|m|xs" }
 
 #### 9. META & ACCESSIBILITY ("Anchor", "ARIA", "Custom CSS")
-- Target properties: anchor_link, aria_label, custom_css, advanced_css.
+- Target properties: anchor_link, aria_label, custom_css.
 - Anchor: "Set the anchor to hero-section." -> { "anchor_link": "hero-section" }
 - Anchor: "Set the anchor ID to hero-section." -> { "anchor_link": "hero-section" }
 - Anchor: "Use #features as the anchor." -> { "anchor_link": "features" }
@@ -359,8 +359,6 @@ Preset defaults:
 - Aria: "Set screen reader label to 'Primary hero container'." -> { "aria_label": "Primary hero container" }
 - Custom CSS (declarations only, no selectors): "Add container CSS: display: block;" -> { "custom_css": { "css": "display: block;" } }
 - Advanced CSS: only when explicitly requested.
-  - "Add custom CSS: ..." -> { "advanced_css": ".maxi-container-block { ... }" }
-  - "On mobile, add custom CSS: .hero{color:red;}" -> { "advanced_css": { "value": ".hero{color:red;}", "breakpoint": "xs" } }
   - Breakpoint override (optional): { "value": "<css>", "breakpoint": "general|m|xs" }
 
 ### INTERNAL META / FLOW (DOCUMENTED)

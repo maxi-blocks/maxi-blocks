@@ -19,9 +19,16 @@ import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
 import {
-	buildContainerMetaAttributeChanges,
-	getContainerMetaSidebarTarget,
-} from './ai/utils/containerMeta';
+	buildAdvancedCssAGroupAction,
+	buildAdvancedCssAGroupAttributeChanges,
+	getAdvancedCssSidebarTarget,
+} from './ai/utils/advancedCssAGroup';
+import {
+	buildMetaAGroupAction,
+	buildMetaAGroupAttributeChanges,
+	getMetaSidebarTarget,
+	resolveMetaTargetKey,
+} from './ai/utils/metaAGroup';
 import {
 	buildButtonAGroupAction,
 	buildButtonAGroupAttributeChanges,
@@ -37,6 +44,11 @@ import {
 	buildButtonCGroupAttributeChanges,
 	getButtonCGroupSidebarTarget,
 } from './ai/utils/buttonCGroup';
+import {
+	buildButtonIGroupAction,
+	buildButtonIGroupAttributeChanges,
+	getButtonIGroupSidebarTarget,
+} from './ai/utils/buttonIGroup';
 import {
 	buildContainerAGroupAction,
 	buildContainerAGroupAttributeChanges,
@@ -117,7 +129,9 @@ import {
 	buildContainerZGroupAttributeChanges,
 	getContainerZGroupSidebarTarget,
 } from './ai/utils/containerZGroup';
+import ADVANCED_CSS_PROMPT from './ai/prompts/advanced-css';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
+import META_MAXI_PROMPT from './ai/prompts/meta';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
@@ -662,6 +676,39 @@ const ACTION_PROPERTY_ALIASES = {
 	customLabel: 'custom_label',
 	customFormats: 'custom_formats',
 	customFormatsHover: 'custom_formats_hover',
+	iconBackground: 'icon_background',
+	iconBackgroundHover: 'icon_background_hover',
+	iconBorder: 'icon_border',
+	iconBorderHover: 'icon_border_hover',
+	iconBorderRadius: 'icon_border_radius',
+	iconBorderRadiusHover: 'icon_border_radius_hover',
+	iconPadding: 'icon_padding',
+	iconSpacing: 'icon_spacing',
+	iconSpacingHover: 'icon_spacing_hover',
+	iconWidth: 'icon_width',
+	iconWidthHover: 'icon_width_hover',
+	iconHeight: 'icon_height',
+	iconHeightHover: 'icon_height_hover',
+	iconSize: 'icon_size',
+	iconSizeHover: 'icon_size_hover',
+	iconForceAspectRatio: 'icon_force_aspect_ratio',
+	iconForceAspectRatioHover: 'icon_force_aspect_ratio_hover',
+	iconFillColor: 'icon_fill_color',
+	iconFillColorHover: 'icon_fill_color_hover',
+	iconStrokeColor: 'icon_stroke_color',
+	iconStrokeColorHover: 'icon_stroke_color_hover',
+	iconStrokeWidth: 'icon_stroke_width',
+	iconStrokeWidthHover: 'icon_stroke_width_hover',
+	iconContent: 'icon_content',
+	iconContentHover: 'icon_content_hover',
+	iconPosition: 'icon_position',
+	iconPositionHover: 'icon_position_hover',
+	iconOnly: 'icon_only',
+	iconOnlyHover: 'icon_only_hover',
+	iconInherit: 'icon_inherit',
+	iconInheritHover: 'icon_inherit_hover',
+	iconStatusHover: 'icon_status_hover',
+	iconStatusHoverTarget: 'icon_status_hover_target',
 	blockStyle: 'block_style',
 	backgroundLayers: 'background_layers',
 	backgroundLayersHover: 'background_layers_hover',
@@ -2617,6 +2664,43 @@ const ACTION_PROPERTY_ALIASES = {
 								changes = buildButtonBGroupAttributeChanges(property, value);
 							}
 							break;
+						case 'icon_background':
+						case 'icon_background_hover':
+						case 'icon_border':
+						case 'icon_border_hover':
+						case 'icon_border_radius':
+						case 'icon_border_radius_hover':
+						case 'icon_padding':
+						case 'icon_spacing':
+						case 'icon_spacing_hover':
+						case 'icon_width':
+						case 'icon_width_hover':
+						case 'icon_height':
+						case 'icon_height_hover':
+						case 'icon_size':
+						case 'icon_size_hover':
+						case 'icon_force_aspect_ratio':
+						case 'icon_force_aspect_ratio_hover':
+						case 'icon_fill_color':
+						case 'icon_fill_color_hover':
+						case 'icon_stroke_color':
+						case 'icon_stroke_color_hover':
+						case 'icon_stroke_width':
+						case 'icon_stroke_width_hover':
+						case 'icon_content':
+						case 'icon_content_hover':
+						case 'icon_position':
+						case 'icon_position_hover':
+						case 'icon_only':
+						case 'icon_only_hover':
+						case 'icon_inherit':
+						case 'icon_inherit_hover':
+						case 'icon_status_hover':
+						case 'icon_status_hover_target':
+							if (specificClientId || block.name.includes('button')) {
+								changes = buildButtonIGroupAttributeChanges(property, value);
+							}
+							break;
 						case 'block_background_status_hover': {
 							if (specificClientId || (block.attributes && 'block-background-status-hover' in block.attributes)) {
 								changes = buildContainerBGroupAttributeChanges(property, value);
@@ -2979,38 +3063,18 @@ const ACTION_PROPERTY_ALIASES = {
 						// ======= META / ACCESSIBILITY =======
 						case 'anchor_link':
 						case 'aria_label': {
-							if (block.name.includes('button')) {
-								const metaChanges = buildButtonAGroupAttributeChanges(
-									property,
-									value,
-									{ attributes: block?.attributes }
-								);
-								if (metaChanges) {
-									changes = metaChanges;
-								}
-							} else {
-								const metaChanges = buildContainerMetaAttributeChanges(
-									property,
-									value,
-									block?.attributes
-								);
-								if (metaChanges) {
-									changes = metaChanges;
-								}
+							const targetKey = resolveMetaTargetKey(block?.name);
+							const metaChanges = buildMetaAGroupAttributeChanges(property, value, {
+								attributes: block?.attributes,
+								targetKey,
+							});
+							if (metaChanges) {
+								changes = metaChanges;
 							}
 							break;
 						}
 						case 'advanced_css': {
-							if (block.name.includes('button')) {
-								changes = buildButtonAGroupAttributeChanges(property, value, {
-									attributes: block.attributes,
-								});
-							} else {
-								changes = buildContainerAGroupAttributeChanges(property, value, {
-									block,
-									attributes: block.attributes,
-								});
-							}
+							changes = buildAdvancedCssAGroupAttributeChanges(property, value);
 							break;
 						}
 						// ======= TRANSFORM EFFECTS =======
@@ -3693,6 +3757,17 @@ const ACTION_PROPERTY_ALIASES = {
 				'advanced_css',
 				'custom_css',
 				'column_gap',
+				'icon_background',
+				'icon_border',
+				'icon_border_radius',
+				'icon_fill_color',
+				'icon_force_aspect_ratio',
+				'icon_height',
+				'icon_padding',
+				'icon_spacing',
+				'icon_stroke_color',
+				'icon_stroke_width',
+				'icon_width',
 				'flex_basis',
 				'flex_grow',
 				'flex_shrink',
@@ -3949,6 +4024,14 @@ const ACTION_PROPERTY_ALIASES = {
 					);
 					return;
 				}
+				const buttonITarget = getButtonIGroupSidebarTarget(normalizedProperty);
+				if (buttonITarget) {
+					openSidebarAccordion(
+						buttonITarget.tabIndex,
+						buttonITarget.accordion
+					);
+					return;
+				}
 			}
 			const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
 			if (aGroupTarget) {
@@ -4089,7 +4172,7 @@ const ACTION_PROPERTY_ALIASES = {
 					return;
 				case 'anchor_link':
 				case 'aria_label': {
-					const sidebarTarget = getContainerMetaSidebarTarget(property);
+					const sidebarTarget = getMetaSidebarTarget(property);
 					if (sidebarTarget) {
 						openSidebarAccordion(
 							sidebarTarget.tabIndex,
@@ -4101,9 +4184,19 @@ const ACTION_PROPERTY_ALIASES = {
 				case 'custom_css':
 					openSidebarAccordion(1, 'custom css');
 					return;
-				case 'advanced_css':
-					openSidebarAccordion(1, 'advanced css');
+				case 'advanced_css': {
+					const sidebarTarget = getAdvancedCssSidebarTarget(
+						'advanced_css',
+						selectedBlock?.name
+					);
+					if (sidebarTarget) {
+						openSidebarAccordion(
+							sidebarTarget.tabIndex,
+							sidebarTarget.accordion
+						);
+					}
 					return;
+				}
 				case 'scroll_fade':
 					openSidebarAccordion(1, 'scroll effects');
 					return;
@@ -4433,6 +4526,43 @@ const ACTION_PROPERTY_ALIASES = {
 							if (isRemoval) c = removeBoxShadow(blkPrefix);
 							else if (typeof val === 'object') c = updateBoxShadow(val.x, val.y, val.blur, val.spread, val.color, blkPrefix);
 							else c = { [`${blkPrefix}box-shadow-general`]: val, [`${blkPrefix}box-shadow-status-general`]: true };
+							break;
+						case 'icon_background':
+						case 'icon_background_hover':
+						case 'icon_border':
+						case 'icon_border_hover':
+						case 'icon_border_radius':
+						case 'icon_border_radius_hover':
+						case 'icon_padding':
+						case 'icon_spacing':
+						case 'icon_spacing_hover':
+						case 'icon_width':
+						case 'icon_width_hover':
+						case 'icon_height':
+						case 'icon_height_hover':
+						case 'icon_size':
+						case 'icon_size_hover':
+						case 'icon_force_aspect_ratio':
+						case 'icon_force_aspect_ratio_hover':
+						case 'icon_fill_color':
+						case 'icon_fill_color_hover':
+						case 'icon_stroke_color':
+						case 'icon_stroke_color_hover':
+						case 'icon_stroke_width':
+						case 'icon_stroke_width_hover':
+						case 'icon_content':
+						case 'icon_content_hover':
+						case 'icon_position':
+						case 'icon_position_hover':
+						case 'icon_only':
+						case 'icon_only_hover':
+						case 'icon_inherit':
+						case 'icon_inherit_hover':
+						case 'icon_status_hover':
+						case 'icon_status_hover_target':
+							if (targetBlock?.name?.includes('button')) {
+								c = buildButtonIGroupAttributeChanges(prop, val);
+							}
 							break;
 						case 'width':
 							if (targetBlock.attributes && Object.prototype.hasOwnProperty.call(targetBlock.attributes, 'width-general')) {
@@ -5130,6 +5260,39 @@ const ACTION_PROPERTY_ALIASES = {
 		const isButtonContext =
 			lowerMessage.includes('button') ||
 			selectedBlock?.name?.includes('button');
+		const isTextContext =
+			lowerMessage.includes('text') ||
+			selectedBlock?.name?.includes('text-maxi') ||
+			selectedBlock?.name?.includes('list-item-maxi');
+		const isContainerContext =
+			lowerMessage.includes('container') ||
+			selectedBlock?.name?.includes('container');
+		const metaTargetBlock = isButtonContext
+			? 'button'
+			: isTextContext
+				? 'text'
+				: isContainerContext
+					? 'container'
+					: null;
+		const metaAction = buildMetaAGroupAction(rawMessage, {
+			scope: currentScope,
+			targetBlock: metaTargetBlock,
+		});
+		if (metaAction) {
+			logAIDebug('Meta A-group action matched', metaAction);
+			queueDirectAction(metaAction);
+			return;
+		}
+		const advancedCssTargetBlock = metaTargetBlock;
+		const advancedCssAction = buildAdvancedCssAGroupAction(rawMessage, {
+			scope: currentScope,
+			targetBlock: advancedCssTargetBlock,
+		});
+		if (advancedCssAction) {
+			logAIDebug('Advanced CSS A-group action matched', advancedCssAction);
+			queueDirectAction(advancedCssAction);
+			return;
+		}
 		if (isButtonContext) {
 			const buttonAGroupAction = buildButtonAGroupAction(rawMessage, {
 				scope: currentScope,
@@ -5155,9 +5318,17 @@ const ACTION_PROPERTY_ALIASES = {
 				queueDirectAction(buttonCGroupAction);
 				return;
 			}
+			const buttonIGroupAction = buildButtonIGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (buttonIGroupAction) {
+				logAIDebug('Button I-group action matched', buttonIGroupAction);
+				queueDirectAction(buttonIGroupAction);
+				return;
+			}
 		}
 
-		// A-group: anchor, aria, advanced CSS, arrows, align content/items (explicit phrasing)
+		// A-group: anchor, aria, arrows, align content/items (explicit phrasing)
 		const aGroupAction = buildContainerAGroupAction(rawMessage, {
 			scope: currentScope,
 		});
@@ -6911,7 +7082,13 @@ const ACTION_PROPERTY_ALIASES = {
 
 			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
 			const scopePrompt = scope === 'global' ? STYLE_CARD_MAXI_PROMPT : blockPrompt;
-			const systemPrompt = scopePrompt ? `${SYSTEM_PROMPT}\n\n${scopePrompt}` : SYSTEM_PROMPT;
+			const sharedPrompts =
+				scope === 'global'
+					? []
+					: [ADVANCED_CSS_PROMPT, META_MAXI_PROMPT].filter(Boolean);
+			const systemPrompt = [SYSTEM_PROMPT, scopePrompt, ...sharedPrompts]
+				.filter(Boolean)
+				.join('\n\n');
 
 			const response = await fetch(`${window.wpApiSettings?.root || '/wp-json/'}maxi-blocks/v1.0/ai/chat`, {
 				method: 'POST',

@@ -1,41 +1,13 @@
 import {
-	buildContainerMetaAction,
-	buildContainerMetaAttributeChanges,
-	getContainerMetaSidebarTarget,
-} from './containerMeta';
-
-const RESPONSIVE_BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-const BREAKPOINT_ALIASES = [
-	{
-		key: 'xxl',
-		regex: /\bxxl\b|extra\s*wide|ultra\s*wide|wide\s*screen|wide\s*desktop/i,
-	},
-	{ key: 'xl', regex: /\bxl\b|desktop|large\s*screen/i },
-	{ key: 'l', regex: /\bl\b|laptop|notebook/i },
-	{ key: 'm', regex: /\bm\b|tablet|medium/i },
-	{ key: 's', regex: /\bs\b|small/i },
-	{ key: 'xs', regex: /\bxs\b|mobile|phone|handset/i },
-	{
-		key: 'general',
-		regex: /\bgeneral\b|base\s*breakpoint|default\s*breakpoint/i,
-	},
-];
-
-const extractQuotedText = message => {
-	if (!message) return null;
-	const match = message.match(/["']([^"']+)["']/);
-	return match ? match[1].trim() : null;
-};
-
-const extractValueFromPatterns = (message, patterns) => {
-	if (!message) return null;
-	for (const pattern of patterns) {
-		const match = message.match(pattern);
-		if (match && match[1]) return match[1].trim();
-	}
-	return null;
-};
+	buildLayoutAGroupAction,
+	buildResponsiveBooleanChanges,
+	buildResponsiveValueChanges,
+	extractBreakpointToken,
+	extractAlignItemsValue,
+	extractAlignContentValue,
+	extractJustifyContentValue,
+	normalizeValueWithBreakpoint,
+} from './layoutAGroup';
 
 const extractNumericValue = (message, patterns) => {
 	if (!message) return null;
@@ -47,56 +19,6 @@ const extractNumericValue = (message, patterns) => {
 		}
 	}
 	return null;
-};
-
-const extractBreakpointToken = message => {
-	const lower = String(message || '').toLowerCase();
-	for (const entry of BREAKPOINT_ALIASES) {
-		if (entry.regex.test(lower)) return entry.key;
-	}
-	return null;
-};
-
-const normalizeValueWithBreakpoint = rawValue => {
-	if (
-		rawValue &&
-		typeof rawValue === 'object' &&
-		!Array.isArray(rawValue) &&
-		Object.prototype.hasOwnProperty.call(rawValue, 'value')
-	) {
-		return {
-			value: rawValue.value,
-			breakpoint: rawValue.breakpoint || null,
-		};
-	}
-
-	return { value: rawValue, breakpoint: null };
-};
-
-const buildResponsiveBooleanChanges = (key, value) => {
-	const changes = {};
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`${key}-${bp}`] = value;
-	});
-	return changes;
-};
-
-const buildResponsiveValueChanges = (key, value) => {
-	const changes = {};
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`${key}-${bp}`] = value;
-	});
-	return changes;
-};
-
-export const extractAdvancedCss = message => {
-	const raw = extractValueFromPatterns(message, [
-		/(?:advanced|custom)[\s_-]*css\s*(?:to|=|:|is)?\s*([\s\S]+)$/i,
-		/add\s*css\s*(?:to|=|:)?\s*([\s\S]+)$/i,
-	]);
-	if (!raw) return null;
-	if (!/[{};]/.test(raw)) return null;
-	return raw.trim();
 };
 
 export const extractArrowStatus = message => {
@@ -129,62 +51,10 @@ export const extractArrowWidth = message =>
 		/\barrow\b.*?(\d+(?:\.\d+)?)\s*(?:px)?\s*(?:wide|width)/i,
 	]);
 
-export const extractAlignItemsValue = message => {
-	const lower = String(message || '').toLowerCase();
-	if (!/align[\s_-]*items/.test(lower)) return null;
-	if (/\b(top|start)\b/.test(lower)) return 'flex-start';
-	if (/\b(bottom|end)\b/.test(lower)) return 'flex-end';
-	if (/\b(center|centre|middle)\b/.test(lower)) return 'center';
-	if (/\bstretch\b/.test(lower)) return 'stretch';
-	if (/\bbaseline\b/.test(lower)) return 'baseline';
-	return null;
-};
-
-export const extractAlignContentValue = message => {
-	const lower = String(message || '').toLowerCase();
-	if (!/align[\s_-]*content/.test(lower)) return null;
-	if (/space[-\s]*between/.test(lower)) return 'space-between';
-	if (/space[-\s]*around/.test(lower)) return 'space-around';
-	if (/space[-\s]*evenly/.test(lower)) return 'space-evenly';
-	if (/\b(center|centre)\b/.test(lower)) return 'center';
-	if (/\bstretch\b/.test(lower)) return 'stretch';
-	if (/\b(start|top)\b/.test(lower)) return 'flex-start';
-	if (/\b(end|bottom)\b/.test(lower)) return 'flex-end';
-	return null;
-};
-
-export const extractJustifyContentValue = message => {
-	const lower = String(message || '').toLowerCase();
-	if (!/justify[\s_-]*content|space[-\s]*between|space[-\s]*around|space[-\s]*evenly/.test(lower)) {
-		return null;
-	}
-	if (/space[-\s]*between/.test(lower)) return 'space-between';
-	if (/space[-\s]*around/.test(lower)) return 'space-around';
-	if (/space[-\s]*evenly/.test(lower)) return 'space-evenly';
-	if (/\b(center|centre|middle)\b/.test(lower)) return 'center';
-	if (/\b(start|left)\b/.test(lower)) return 'flex-start';
-	if (/\b(end|right)\b/.test(lower)) return 'flex-end';
-	return null;
-};
-
 export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
 	const breakpoint = extractBreakpointToken(message);
-
-	const metaAction = buildContainerMetaAction(message, { scope });
-	if (metaAction) return metaAction;
-
-	const advancedCss = extractAdvancedCss(message);
-	if (advancedCss) {
-		return {
-			action: actionType,
-			property: 'advanced_css',
-			value: breakpoint ? { value: advancedCss, breakpoint } : advancedCss,
-			message: 'Advanced CSS set.',
-			...actionTarget,
-		};
-	}
 
 	const arrowStatus = extractArrowStatus(message);
 	if (typeof arrowStatus === 'boolean') {
@@ -230,37 +100,17 @@ export const buildContainerAGroupAction = (message, { scope = 'selection' } = {}
 		};
 	}
 
-	const alignItemsValue = extractAlignItemsValue(message);
-	if (alignItemsValue) {
-		return {
-			action: actionType,
-			property: 'align_items_flex',
-			value: breakpoint ? { value: alignItemsValue, breakpoint } : alignItemsValue,
-			message: 'Aligned items.',
-			...actionTarget,
-		};
-	}
-
-	const alignContentValue = extractAlignContentValue(message);
-	if (alignContentValue) {
-		return {
-			action: actionType,
-			property: 'align_content',
-			value: breakpoint ? { value: alignContentValue, breakpoint } : alignContentValue,
-			message: 'Aligned content.',
-			...actionTarget,
-		};
-	}
-
-	const justifyContentValue = extractJustifyContentValue(message);
-	if (justifyContentValue) {
-		return {
-			action: actionType,
-			property: 'justify_content',
-			value: breakpoint ? { value: justifyContentValue, breakpoint } : justifyContentValue,
-			message: 'Justify content updated.',
-			...actionTarget,
-		};
+	const layoutAction = buildLayoutAGroupAction(message, {
+		scope,
+		targetBlock: 'container',
+		propertyMap: {
+			alignItems: 'align_items_flex',
+			alignContent: 'align_content',
+			justifyContent: 'justify_content',
+		},
+	});
+	if (layoutAction) {
+		return layoutAction;
 	}
 
 	return null;
@@ -274,16 +124,6 @@ export const buildContainerAGroupAttributeChanges = (
 	if (!property) return null;
 
 	switch (property) {
-		case 'anchor_link':
-		case 'aria_label':
-			return buildContainerMetaAttributeChanges(property, value, attributes);
-		case 'advanced_css': {
-			const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-			const cssValue = String(rawValue || '');
-			return breakpoint
-				? { [`advanced-css-${breakpoint}`]: cssValue }
-				: buildResponsiveValueChanges('advanced-css', cssValue);
-		}
 		case 'arrow_status': {
 			const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
 			const status = Boolean(rawValue);
@@ -349,14 +189,6 @@ export const getContainerAGroupSidebarTarget = property => {
 	if (!property) return null;
 	const normalized = String(property).replace(/-/g, '_');
 
-	if (normalized === 'anchor_link' || normalized === 'aria_label') {
-		return getContainerMetaSidebarTarget(normalized);
-	}
-
-	if (normalized === 'advanced_css') {
-		return { tabIndex: 1, accordion: 'advanced css' };
-	}
-
 	if (
 		['arrow_status', 'arrow_side', 'arrow_position', 'arrow_width'].includes(
 			normalized
@@ -388,7 +220,6 @@ export default {
 	buildContainerAGroupAction,
 	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
-	extractAdvancedCss,
 	extractArrowStatus,
 	extractArrowSide,
 	extractArrowPosition,

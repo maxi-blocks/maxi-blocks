@@ -7,6 +7,7 @@ import {
 	extractBreakpointToken,
 	normalizeValueWithBreakpoint,
 } from './layoutAGroup';
+import { parsePaletteColor } from './shared/attributeParsers';
 
 const textPGroup = (() => {
 const clampOpacity = value => Math.min(1, Math.max(0, value));
@@ -341,3 +342,208 @@ export const {
 	buildTextPGroupAttributeChanges,
 	getTextPGroupSidebarTarget,
 } = textPGroup;
+
+// textCGroup
+const textCGroup = (() => {
+const extractCssVar = message => {
+	const match = String(message || '').match(/var\(--[a-z0-9-_]+\)/i);
+	return match ? match[0] : null;
+};
+
+const extractHexColor = message => {
+	const match = String(message || '').match(
+		/#(?:[0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})(?![0-9a-fA-F])/i
+	);
+	return match ? match[0] : null;
+};
+
+const extractTypographyHoverStatus = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/\bhover\b/.test(lower)) return null;
+	if (!/(text|typography|font)/.test(lower)) return null;
+	if (/(disable|off|remove|no)\b/.test(lower)) return false;
+	if (/(enable|on|show|use|activate)\b/.test(lower)) return true;
+	return null;
+};
+
+const extractTextColorIntent = message => {
+	const lower = String(message || '').toLowerCase();
+	if (/(background|bg|highlight)/.test(lower)) return null;
+	if (!/(text|font|colou?r)/.test(lower)) return null;
+
+	const isHover = /\bhover\b/.test(lower);
+	const palette = parsePaletteColor(message);
+	const cssVar = extractCssVar(message);
+	const hex = extractHexColor(message);
+	const value = palette ?? cssVar ?? hex;
+	if (value === null || value === undefined) return null;
+	return { isHover, value };
+};
+
+const extractCustomFormats = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/custom\s*formats?/.test(lower)) return null;
+	const start = message.indexOf('{');
+	const end = message.lastIndexOf('}');
+	if (start === -1 || end <= start) return null;
+	const jsonSlice = message.slice(start, end + 1);
+	try {
+		return JSON.parse(jsonSlice);
+	} catch (error) {
+		return null;
+	}
+};
+
+const normalizeColorValue = rawValue => {
+	if (
+		rawValue &&
+		typeof rawValue === 'object' &&
+		!Array.isArray(rawValue)
+	) {
+		if (rawValue.palette !== undefined) {
+			return { isPalette: true, value: rawValue.palette };
+		}
+		if (rawValue.color !== undefined) {
+			return { isPalette: false, value: rawValue.color };
+		}
+		if (rawValue.value !== undefined) {
+			const isPalette = typeof rawValue.value === 'number';
+			return { isPalette, value: rawValue.value };
+		}
+	}
+	const isPalette = typeof rawValue === 'number';
+	return { isPalette, value: rawValue };
+};
+
+const buildTextColorChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	if (rawValue === null || rawValue === undefined) return null;
+
+	const { isPalette, value: colorValue } = normalizeColorValue(rawValue);
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`palette-status-${bp}${suffix}`] = isPalette;
+		changes[`palette-color-${bp}${suffix}`] = isPalette ? colorValue : '';
+		changes[`color-${bp}${suffix}`] = isPalette ? '' : colorValue;
+	});
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
+};
+
+const buildCustomFormatsChanges = (value, { isHover = false } = {}) => {
+	if (!value || typeof value !== 'object') return null;
+	return {
+		[isHover ? 'custom-formats-hover' : 'custom-formats']: value,
+	};
+};
+
+const buildTextCGroupAction = (message, { scope = 'selection' } = {}) => {
+	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
+	const actionTarget = actionType === 'update_page' ? { target_block: 'text' } : {};
+	const lower = String(message || '').toLowerCase();
+	const breakpoint = extractBreakpointToken(message);
+
+	const typographyHoverStatus = extractTypographyHoverStatus(message);
+	if (typeof typographyHoverStatus === 'boolean') {
+		return {
+			action: actionType,
+			property: 'typography_status_hover',
+			value: typographyHoverStatus,
+			message: typographyHoverStatus
+				? 'Text hover styles enabled.'
+				: 'Text hover styles disabled.',
+			...actionTarget,
+		};
+	}
+
+	const customFormats = extractCustomFormats(message);
+	if (customFormats) {
+		return {
+			action: actionType,
+			property: /\bhover\b/.test(lower)
+				? 'custom_formats_hover'
+				: 'custom_formats',
+			value: customFormats,
+			message: 'Custom formats updated.',
+			...actionTarget,
+		};
+	}
+
+	const colorIntent = extractTextColorIntent(message);
+	if (colorIntent) {
+		const property = colorIntent.isHover ? 'text_color_hover' : 'text_color';
+		const value = breakpoint
+			? { value: colorIntent.value, breakpoint }
+			: colorIntent.value;
+		return {
+			action: actionType,
+			property,
+			value,
+			message: colorIntent.isHover
+				? 'Text hover color updated.'
+				: 'Text color updated.',
+			...actionTarget,
+		};
+	}
+
+	return null;
+};
+
+const buildTextCGroupAttributeChanges = (property, value) => {
+	if (!property) return null;
+	const normalized = String(property).replace(/-/g, '_');
+
+	switch (normalized) {
+		case 'text_color':
+			return buildTextColorChanges(value, { isHover: false });
+		case 'text_color_hover':
+			return buildTextColorChanges(value, { isHover: true });
+		case 'custom_formats':
+			return buildCustomFormatsChanges(value, { isHover: false });
+		case 'custom_formats_hover':
+			return buildCustomFormatsChanges(value, { isHover: true });
+		case 'typography_status_hover':
+			return { 'typography-status-hover': Boolean(value) };
+		default:
+			return null;
+	}
+};
+
+const getTextCGroupSidebarTarget = property => {
+	if (!property) return null;
+	const normalized = String(property).replace(/-/g, '_');
+
+	if (
+		[
+			'text_color',
+			'text_color_hover',
+			'custom_formats',
+			'custom_formats_hover',
+			'typography_status_hover',
+		].includes(normalized)
+	) {
+		return { tabIndex: 0, accordion: 'typography' };
+	}
+
+	return null;
+};
+
+return {
+	buildTextCGroupAction,
+	buildTextCGroupAttributeChanges,
+	getTextCGroupSidebarTarget,
+};
+})();
+
+export const {
+	buildTextCGroupAction,
+	buildTextCGroupAttributeChanges,
+	getTextCGroupSidebarTarget,
+} = textCGroup;

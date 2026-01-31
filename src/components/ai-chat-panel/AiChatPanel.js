@@ -94,6 +94,9 @@ import {
 	getContainerZGroupSidebarTarget,
 } from './ai/utils/containerGroups';
 import {
+	buildTextCGroupAction,
+	buildTextCGroupAttributeChanges,
+	getTextCGroupSidebarTarget,
 	buildTextPGroupAction,
 	buildTextPGroupAttributeChanges,
 	getTextPGroupSidebarTarget,
@@ -2692,11 +2695,26 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						}
 						case 'text_color':
-							// Apply to text and buttons OR direct selection
-							if (specificClientId || block.name.includes('text-maxi') || block.name.includes('button-maxi')) {
+						case 'text_color_hover':
+						case 'button_hover_text': {
+							if (block.name.includes('button-maxi')) {
+								changes = buildButtonCGroupAttributeChanges(property, value, {
+									attributes: block.attributes,
+								});
+								break;
+							}
+							if (
+								block.name.includes('text-maxi') ||
+								block.name.includes('list-item-maxi')
+							) {
+								changes = buildTextCGroupAttributeChanges(property, value);
+								break;
+							}
+							if (specificClientId || block.name.includes('button-maxi') || block.name.includes('text-maxi')) {
 								changes = updateTextColor(value, prefix);
 							}
 							break;
+						}
 						case 'heading_color':
 							// Apply only to headings (h1-h6)
 							if (block.name.includes('text-maxi') && ['h1','h2','h3','h4','h5','h6'].includes(block.attributes.textLevel)) {
@@ -3296,6 +3314,11 @@ const ACTION_PROPERTY_ALIASES = {
 								changes = buildButtonCGroupAttributeChanges(property, value, {
 									attributes: block.attributes,
 								});
+							} else if (
+								block.name.includes('text-maxi') ||
+								block.name.includes('list-item-maxi')
+							) {
+								changes = buildTextCGroupAttributeChanges(property, value);
 							} else {
 								changes = buildContainerCGroupAttributeChanges(property, value, {
 									attributes: block.attributes,
@@ -4024,6 +4047,11 @@ const ACTION_PROPERTY_ALIASES = {
 				}
 			}
 			if (isTextBlock) {
+				const textCTarget = getTextCGroupSidebarTarget(normalizedProperty);
+				if (textCTarget) {
+					openSidebarAccordion(textCTarget.tabIndex, textCTarget.accordion);
+					return;
+				}
 				const textPTarget = getTextPGroupSidebarTarget(normalizedProperty);
 				if (textPTarget) {
 					openSidebarAccordion(textPTarget.tabIndex, textPTarget.accordion);
@@ -4599,9 +4627,21 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						// Typography properties
 						case 'text_color':
+						case 'text_color_hover':
+						case 'button_hover_text':
 						case 'color':
-							// Apply to text, headings, buttons, etc.
-							c = updateTextColor(val, blkPrefix);
+							if (targetBlock?.name?.includes('button')) {
+								c = buildButtonCGroupAttributeChanges(prop, val, {
+									attributes: targetBlock.attributes,
+								});
+							} else if (
+								targetBlock?.name?.includes('text-maxi') ||
+								targetBlock?.name?.includes('list-item-maxi')
+							) {
+								c = buildTextCGroupAttributeChanges(prop, val);
+							} else {
+								c = updateTextColor(val, blkPrefix);
+							}
 							break;
 						case 'font_size':
 						case 'fontSize':
@@ -5325,6 +5365,14 @@ const ACTION_PROPERTY_ALIASES = {
 			}
 		}
 		if (isTextContext) {
+			const textCGroupAction = buildTextCGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (textCGroupAction) {
+				logAIDebug('Text C-group action matched', textCGroupAction);
+				queueDirectAction(textCGroupAction);
+				return;
+			}
 			const textPGroupAction = buildTextPGroupAction(rawMessage, {
 				scope: currentScope,
 			});

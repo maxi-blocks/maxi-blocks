@@ -729,9 +729,12 @@ class MaxiRowCarouselEditor {
 			}
 
 			// Click on dot navigates to that slide (index * slidesPerView)
-			dot.addEventListener('click', () =>
-				this.exactColumn(i * this.slidesPerView)
-			);
+			// Don't add click listener to active dot - it's already active
+			if (!isActive) {
+				dot.addEventListener('click', () =>
+					this.exactColumn(i * this.slidesPerView)
+				);
+			}
 			this._dotsContainer.appendChild(dot);
 		}
 	}

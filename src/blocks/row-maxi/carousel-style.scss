@@ -118,6 +118,12 @@ body.maxi-blocks--active {
 
 				&--active {
 					opacity: 1;
+					cursor: default;
+					pointer-events: none;
+
+					&:hover {
+						opacity: 1;
+					}
 				}
 			}
 		}

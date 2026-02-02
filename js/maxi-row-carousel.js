@@ -797,9 +797,13 @@ class MaxiRowCarousel {
 				dot.appendChild(iconWrapper);
 			}
 			// Click on dot navigates to that slide (index * slidesPerView)
-			dot.addEventListener('click', () =>
-				this.exactColumn(i * this.slidesPerView)
-			);
+			// Don't add click listener to active dot - it's already active
+			if (!isActive) {
+				dot.addEventListener('click', () =>
+					this.exactColumn(i * this.slidesPerView)
+				);
+				dot._hasClickListener = true;
+			}
 			this._dotsContainer.appendChild(dot);
 		}
 		this._dots = this._dotsContainer.querySelectorAll(
@@ -881,6 +885,9 @@ class MaxiRowCarousel {
 			dotIconContent;
 
 		this._dots.forEach((dot, i) => {
+			const wasActive = dot.classList.contains(
+				'maxi-row-carousel__dot--active'
+			);
 			const isActive = i === slideIndex;
 			dot.classList.toggle('maxi-row-carousel__dot--active', isActive);
 
@@ -892,6 +899,15 @@ class MaxiRowCarousel {
 				iconWrapper.innerHTML = isActive
 					? activeDotIconContent
 					: dotIconContent;
+			}
+
+			// Add/remove click listener based on active state
+			// If dot became inactive, ensure it has a click listener
+			if (wasActive && !isActive && !dot._hasClickListener) {
+				dot.addEventListener('click', () =>
+					this.exactColumn(i * this.slidesPerView)
+				);
+				dot._hasClickListener = true;
 			}
 		});
 	}

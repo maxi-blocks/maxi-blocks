@@ -44,6 +44,10 @@ import {
 	getButtonIGroupSidebarTarget,
 } from './ai/utils/buttonGroups';
 import {
+	applyBackgroundLayerCommand,
+	isBackgroundLayerCommand,
+} from './ai/utils/shared/backgroundLayers';
+import {
 	buildContainerAGroupAction,
 	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
@@ -2593,20 +2597,73 @@ const ACTION_PROPERTY_ALIASES = {
 							}
 							break;
 						case 'background_layers': {
-							const layers = Array.isArray(value)
-								? value
-								: (value && Array.isArray(value.layers) ? value.layers : null);
-							if (layers && (specificClientId || (block.attributes && 'background-layers' in block.attributes))) {
-								changes = { 'background-layers': layers };
+							if (
+								specificClientId ||
+								(block.attributes && 'background-layers' in block.attributes)
+							) {
+								if (isBackgroundLayerCommand(value)) {
+									const currentLayers =
+										block.attributes?.['background-layers'] || [];
+									const updatedLayers = applyBackgroundLayerCommand(
+										currentLayers,
+										value
+									);
+									if (updatedLayers) {
+										changes = { 'background-layers': updatedLayers };
+										if (value.enableHover === true) {
+											changes['block-background-status-hover'] = true;
+										}
+										if (value.disableHover === true) {
+											changes['block-background-status-hover'] = false;
+										}
+									}
+									break;
+								}
+								const layers = Array.isArray(value)
+									? value
+									: value && Array.isArray(value.layers)
+										? value.layers
+										: null;
+								if (layers) {
+									changes = { 'background-layers': layers };
+								}
 							}
 							break;
 						}
 						case 'background_layers_hover': {
-							const layers = Array.isArray(value)
-								? value
-								: (value && Array.isArray(value.layers) ? value.layers : null);
-							if (layers && (specificClientId || (block.attributes && 'background-layers-hover' in block.attributes))) {
-								changes = { 'background-layers-hover': layers };
+							if (
+								specificClientId ||
+								(block.attributes &&
+									'background-layers-hover' in block.attributes)
+							) {
+								if (isBackgroundLayerCommand(value)) {
+									const currentLayers =
+										block.attributes?.['background-layers-hover'] || [];
+									const updatedLayers = applyBackgroundLayerCommand(
+										currentLayers,
+										value
+									);
+									if (updatedLayers) {
+										changes = {
+											'background-layers-hover': updatedLayers,
+										};
+										if (value.enableHover === true) {
+											changes['block-background-status-hover'] = true;
+										}
+										if (value.disableHover === true) {
+											changes['block-background-status-hover'] = false;
+										}
+									}
+									break;
+								}
+								const layers = Array.isArray(value)
+									? value
+									: value && Array.isArray(value.layers)
+										? value.layers
+										: null;
+								if (layers) {
+									changes = { 'background-layers-hover': layers };
+								}
 							}
 							break;
 						}

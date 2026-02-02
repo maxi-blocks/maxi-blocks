@@ -85,11 +85,23 @@ Preset defaults:
 
 #### 3.5 BACKGROUND LAYERS ("Layer", "Overlay", "Hover")
 - Target properties: background_layers, background_layers_hover, block_background_status_hover.
-- For layers, return the full layers array (deterministic).
+- For layer operations, return a background-layer command object with { action, type, updates, target, direction, relativeTo, position }.
 - Examples:
-  - "Add a second background layer with palette 5." -> { "background_layers": [ ...layer1, layer2 ] }
+  - "Add another background layer with palette 4." -> { "background_layers": { "action": "add", "type": "color", "updates": { "background-palette-status-general": true, "background-palette-color-general": 4, "background-color-general": "var(--maxi-color-4)" } } }
+  - "Remove the top background layer." -> { "background_layers": { "action": "remove", "target": "top" } }
+  - "Move the gradient behind the image layer." -> { "background_layers": { "action": "reorder", "type": "gradient", "relativeTo": "image", "position": "behind" } }
+  - "Move the active layer up." -> { "background_layers": { "action": "move", "direction": "up", "target": "active" } }
   - "Enable hover background layers." -> { "block_background_status_hover": true }
-  - "On hover, add a dark overlay layer." -> { "background_layers_hover": [ ... ] }
+  - "On hover, add a dark overlay layer." -> { "background_layers_hover": { "action": "add", "type": "color", "updates": { "background-palette-status-general-hover": true, "background-palette-color-general-hover": 7, "background-palette-opacity-general-hover": 0.6, "background-color-general-hover": "var(--maxi-color-7)" } } }
+  - "Add a background image layer and set it to cover." -> { "background_layers": { "action": "add", "type": "image", "updates": { "background-image-size-general": "cover" } } }
+  - "Repeat the background image and set it to fixed." -> { "background_layers": { "action": "update", "type": "image", "updates": { "background-image-repeat-general": "repeat", "background-image-attachment-general": "fixed" } } }
+  - "Clip the background image to a circle." -> { "background_layers": { "action": "update", "type": "image", "updates": { "background-image-clip-path-general": "circle(50% at 50% 50%)", "background-image-clip-path-status-general": true } } }
+  - "Set the gradient wrapper height to 60%." -> { "background_layers": { "action": "update", "type": "gradient", "updates": { "background-gradient-wrapper-height-general": 60, "background-gradient-wrapper-height-unit-general": "%" } } }
+  - "Enable parallax on the background image." -> { "background_layers": { "action": "update", "type": "image", "updates": { "background-image-parallax-status": true } } }
+  - "On mobile, move the background image to the top." -> { "background_layers": { "action": "update", "type": "image", "updates": { "background-image-position-xs": "center top" } } }
+  - "Add a gradient background layer with 70% opacity." -> { "background_layers": { "action": "add", "type": "gradient", "updates": { "background-gradient-general": "linear-gradient(90deg, rgba(0,0,0,0.2), rgba(0,0,0,0.6))", "background-gradient-opacity-general": 0.7 } } }
+  - "Add a video background layer and loop it." -> { "background_layers": { "action": "add", "type": "video", "updates": { "background-video-loop": true } } }
+  - "Add an SVG background layer with palette 4." -> { "background_layers": { "action": "add", "type": "shape", "updates": { "background-svg-palette-status-general": true, "background-svg-palette-color-general": 4 } } }
 
 #### 3.6 BORDER ("Border", "Outline")
 - Target property: border (base) or border_hover (hover).

@@ -13,6 +13,11 @@ import {
 	parseBorderRadius,
 	parseShadowPreset,
 } from './shared/attributeParsers';
+import {
+	parseBackgroundLayerCommand,
+	applyBackgroundLayerCommand,
+	isBackgroundLayerCommand,
+} from './shared/backgroundLayers';
 
 // buttonAGroup
 const buttonAGroup = (() => {
@@ -206,31 +211,19 @@ const extractBlockStyle = message => {
 	return null;
 };
 
-const extractBackgroundLayerIntent = message => {
-	const lower = String(message || '').toLowerCase();
-	if (!/(background\s*layer|overlay\s*layer|background\s*overlay)/.test(lower)) {
-		return null;
-	}
-	const palette = parsePaletteColor(message) || 2;
-	const layers = [
-		{
-			type: 'color',
-			order: 0,
-			'background-palette-status-general': true,
-			'background-palette-color-general': palette,
-			'background-color-general': `var(--maxi-color-${palette})`,
-		},
-	];
-	return {
-		layers,
-		isHover: /hover/.test(lower),
-	};
-};
-
 const extractButtonBackgroundStatusIntent = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!lower.includes('button') || !lower.includes('background')) return null;
 	if (!lower.includes('hover')) return null;
+	if (/(enable|show|turn\s*on|activate)/.test(lower)) return true;
+	if (/(disable|hide|turn\s*off|deactivate)/.test(lower)) return false;
+	return null;
+};
+
+const extractBackgroundHoverStatus = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!lower.includes('hover') || !lower.includes('background')) return null;
+	if (!/(layer|overlay)/.test(lower)) return null;
 	if (/(enable|show|turn\s*on|activate)/.test(lower)) return true;
 	if (/(disable|hide|turn\s*off|deactivate)/.test(lower)) return false;
 	return null;
@@ -905,6 +898,19 @@ const buildButtonBGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
+	const backgroundHoverStatus = extractBackgroundHoverStatus(message);
+	if (typeof backgroundHoverStatus === 'boolean') {
+		return {
+			action: actionType,
+			property: 'block_background_status_hover',
+			value: backgroundHoverStatus,
+			message: backgroundHoverStatus
+				? 'Hover background enabled.'
+				: 'Hover background disabled.',
+			...actionTarget,
+		};
+	}
+
 	const backgroundOpacityIntent = extractButtonBackgroundOpacityIntent(message);
 	if (backgroundOpacityIntent && backgroundOpacityIntent.isGradient) {
 		const value = backgroundOpacityIntent.breakpoint
@@ -1140,14 +1146,14 @@ const buildButtonBGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	const backgroundLayerIntent = extractBackgroundLayerIntent(message);
-	if (backgroundLayerIntent) {
+	const backgroundLayerCommand = parseBackgroundLayerCommand(message);
+	if (backgroundLayerCommand) {
 		return {
 			action: actionType,
-			property: backgroundLayerIntent.isHover
+			property: backgroundLayerCommand.isHover
 				? 'background_layers_hover'
 				: 'background_layers',
-			value: backgroundLayerIntent.layers,
+			value: backgroundLayerCommand,
 			message: 'Background layer updated.',
 			...actionTarget,
 		};
@@ -1156,12 +1162,34 @@ const buildButtonBGroupAction = (message, { scope = 'selection' } = {}) => {
 	return null;
 };
 
-const buildButtonBGroupAttributeChanges = (property, value) => {
+const buildButtonBGroupAttributeChanges = (
+	property,
+	value,
+	{ attributes } = {}
+) => {
 	if (!property) return null;
 	const normalized = String(property).replace(/-/g, '_');
 
 	switch (normalized) {
 		case 'background_layers': {
+			if (isBackgroundLayerCommand(value)) {
+				const currentLayers = attributes?.['background-layers'] || [];
+				const updatedLayers = applyBackgroundLayerCommand(
+					currentLayers,
+					value
+				);
+				const changes = updatedLayers
+					? { 'background-layers': updatedLayers }
+					: null;
+				if (!changes) return null;
+				if (value.enableHover === true) {
+					changes['block-background-status-hover'] = true;
+				}
+				if (value.disableHover === true) {
+					changes['block-background-status-hover'] = false;
+				}
+				return changes;
+			}
 			const layers = Array.isArray(value)
 				? value
 				: value && Array.isArray(value.layers)
@@ -1170,6 +1198,24 @@ const buildButtonBGroupAttributeChanges = (property, value) => {
 			return layers ? { 'background-layers': layers } : null;
 		}
 		case 'background_layers_hover': {
+			if (isBackgroundLayerCommand(value)) {
+				const currentLayers = attributes?.['background-layers-hover'] || [];
+				const updatedLayers = applyBackgroundLayerCommand(
+					currentLayers,
+					value
+				);
+				const changes = updatedLayers
+					? { 'background-layers-hover': updatedLayers }
+					: null;
+				if (!changes) return null;
+				if (value.enableHover === true) {
+					changes['block-background-status-hover'] = true;
+				}
+				if (value.disableHover === true) {
+					changes['block-background-status-hover'] = false;
+				}
+				return changes;
+			}
 			const layers = Array.isArray(value)
 				? value
 				: value && Array.isArray(value.layers)

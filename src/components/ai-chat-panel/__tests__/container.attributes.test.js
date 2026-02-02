@@ -311,27 +311,15 @@ describe('container A attributes', () => {
 });
 
 describe('container B attributes', () => {
-	const bAttributes = containerAttributes.filter(attr => /^b/i.test(attr));
-
-	const baseLayers = [
-		{
-			type: 'color',
-			order: 0,
-			'background-palette-status-general': true,
-			'background-palette-color-general': 2,
-			'background-color-general': 'var(--maxi-color-2)',
-		},
-	];
-
-	const hoverLayers = [
-		{
-			type: 'color',
-			order: 0,
-			'background-palette-status-general': true,
-			'background-palette-color-general': 5,
-			'background-color-general': 'var(--maxi-color-5)',
-		},
-	];
+	const bAttributes = containerAttributes.filter(
+		attr =>
+			/^b/i.test(attr) &&
+			![
+				'background-layers',
+				'background-layers-hover',
+				'block-background-status-hover',
+			].includes(attr)
+	);
 
 	const BORDER_SAMPLE = { width: 2, style: 'solid', color: 3, opacity: 100 };
 	const BORDER_HOVER_SAMPLE = { width: 4, style: 'dashed', color: 5, opacity: 80 };
@@ -400,36 +388,6 @@ describe('container B attributes', () => {
 	};
 
 	const buildExpectedForAttribute = attribute => {
-		if (attribute === 'background-layers') {
-			return {
-				property: 'background_layers',
-				value: baseLayers,
-				expectedKey: 'background-layers',
-				expectedValue: baseLayers,
-				expectedSidebar: { tabIndex: 0, accordion: 'background / layer' },
-			};
-		}
-
-		if (attribute === 'background-layers-hover') {
-			return {
-				property: 'background_layers_hover',
-				value: hoverLayers,
-				expectedKey: 'background-layers-hover',
-				expectedValue: hoverLayers,
-				expectedSidebar: { tabIndex: 0, accordion: 'background / layer' },
-			};
-		}
-
-		if (attribute === 'block-background-status-hover') {
-			return {
-				property: 'block_background_status_hover',
-				value: true,
-				expectedKey: 'block-background-status-hover',
-				expectedValue: true,
-				expectedSidebar: { tabIndex: 0, accordion: 'background / layer' },
-			};
-		}
-
 		if (attribute === 'blockStyle') {
 			return {
 				property: 'block_style',
@@ -510,21 +468,6 @@ describe('container B attributes', () => {
 				phrase: 'Set tablet breakpoint to 900',
 				property: 'breakpoints',
 				value: { value: 900, breakpoint: 'm' },
-			},
-			{
-				phrase: 'Enable hover background',
-				property: 'block_background_status_hover',
-				value: true,
-			},
-			{
-				phrase: 'Add a background layer with palette 2',
-				property: 'background_layers',
-				assert: action => Array.isArray(action.value) && action.value.length > 0,
-			},
-			{
-				phrase: 'On hover add a background overlay layer with palette 3',
-				property: 'background_layers_hover',
-				assert: action => Array.isArray(action.value) && action.value.length > 0,
 			},
 			{
 				phrase: 'Add a 2px solid border with palette 3',

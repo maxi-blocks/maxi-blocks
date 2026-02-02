@@ -129,7 +129,10 @@ If width or visibility is mentioned:
 - Button max height: "Set button max height to 120px." -> { "button_max_height": { "value": 120, "unit": "px" } }
 - Full width: "Make the button full width." -> { "button_full_width": true }
 - Bottom gap: "Set bottom gap to 10px." -> { "bottom_gap": { "value": 10, "unit": "px" } }
-- Canvas background: "Add a background layer with palette 2." -> { "background_layers": [ { "type": "color", "order": 0, "background-palette-status-general": true, "background-palette-color-general": 2, "background-color-general": "var(--maxi-color-2)" } ] }
+- Canvas background (layer ops): "Add another background layer with palette 2." -> { "background_layers": { "action": "add", "type": "color", "updates": { "background-palette-status-general": true, "background-palette-color-general": 2, "background-color-general": "var(--maxi-color-2)" } } }
+- Canvas background (reorder): "Move the gradient behind the image layer." -> { "background_layers": { "action": "reorder", "type": "gradient", "relativeTo": "image", "position": "behind" } }
+- Canvas background (hover): "On hover, add a background overlay layer with palette 3." -> { "background_layers_hover": { "action": "add", "type": "color", "updates": { "background-palette-status-general-hover": true, "background-palette-color-general-hover": 3, "background-color-general-hover": "var(--maxi-color-3)" } } }
+- Canvas background (hover toggle): "Enable hover background layers." -> { "block_background_status_hover": true }
 - Breakpoint: "Set tablet breakpoint to 900." -> { "breakpoints": { "value": 900, "breakpoint": "m" } }
 
 ### C-ATTRIBUTE EXAMPLES (BUTTON TEXT + CUSTOM)

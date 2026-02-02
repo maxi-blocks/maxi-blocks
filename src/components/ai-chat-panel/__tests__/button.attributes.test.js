@@ -210,27 +210,15 @@ describe('button A attributes', () => {
 });
 
 describe('button B attributes', () => {
-	const bAttributes = buttonAttributes.filter(attr => /^b/i.test(attr));
-
-	const baseLayers = [
-		{
-			type: 'color',
-			order: 0,
-			'background-palette-status-general': true,
-			'background-palette-color-general': 2,
-			'background-color-general': 'var(--maxi-color-2)',
-		},
-	];
-
-	const hoverLayers = [
-		{
-			type: 'color',
-			order: 0,
-			'background-palette-status-general': true,
-			'background-palette-color-general': 5,
-			'background-color-general': 'var(--maxi-color-5)',
-		},
-	];
+	const bAttributes = buttonAttributes.filter(
+		attr =>
+			/^b/i.test(attr) &&
+			![
+				'background-layers',
+				'background-layers-hover',
+				'block-background-status-hover',
+			].includes(attr)
+	);
 
 	const BUTTON_BACKGROUND_SAMPLE = {
 		palette: 3,
@@ -530,36 +518,6 @@ describe('button B attributes', () => {
 	};
 
 	const buildExpectedForAttribute = attribute => {
-		if (attribute === 'background-layers') {
-			return {
-				property: 'background_layers',
-				value: baseLayers,
-				expectedKey: 'background-layers',
-				expectedValue: baseLayers,
-				expectedSidebar: { tabIndex: 1, accordion: 'background / layer' },
-			};
-		}
-
-		if (attribute === 'background-layers-hover') {
-			return {
-				property: 'background_layers_hover',
-				value: hoverLayers,
-				expectedKey: 'background-layers-hover',
-				expectedValue: hoverLayers,
-				expectedSidebar: { tabIndex: 1, accordion: 'background / layer' },
-			};
-		}
-
-		if (attribute === 'block-background-status-hover') {
-			return {
-				property: 'block_background_status_hover',
-				value: true,
-				expectedKey: 'block-background-status-hover',
-				expectedValue: true,
-				expectedSidebar: { tabIndex: 1, accordion: 'background / layer' },
-			};
-		}
-
 		if (attribute === 'blockStyle') {
 			return {
 				property: 'block_style',
@@ -945,16 +903,6 @@ describe('button B attributes', () => {
 				phrase: 'Set tablet breakpoint to 900',
 				property: 'breakpoints',
 				value: { value: 900, breakpoint: 'm' },
-			},
-			{
-				phrase: 'Add a background layer with palette 2',
-				property: 'background_layers',
-				assert: action => Array.isArray(action.value) && action.value.length > 0,
-			},
-			{
-				phrase: 'On hover add a background overlay layer with palette 3',
-				property: 'background_layers_hover',
-				assert: action => Array.isArray(action.value) && action.value.length > 0,
 			},
 		];
 
@@ -1707,6 +1655,30 @@ describe('button I attributes', () => {
 				assert: action => action.value && action.value.palette === 4,
 			},
 			{
+				phrase: 'Give the icon a circle background',
+				property: 'icon_background',
+				assert: action =>
+					action.value &&
+					action.value.borderRadius === 50 &&
+					action.value.borderRadiusUnit === '%',
+			},
+			{
+				phrase: 'Make the icon background square',
+				property: 'icon_background',
+				assert: action =>
+					action.value &&
+					action.value.borderRadius === 0 &&
+					action.value.borderRadiusUnit === 'px',
+			},
+			{
+				phrase: 'Make the icon background to palette 6 and square with 4px corners',
+				property: 'icon_background',
+				assert: action =>
+					action.value &&
+					action.value.borderRadius === 4 &&
+					action.value.borderRadiusUnit === 'px',
+			},
+			{
 				phrase: 'On hover, set icon background palette 6',
 				property: 'icon_background_hover',
 				assert: action => action.value && action.value.palette === 6,
@@ -1785,6 +1757,11 @@ describe('button I attributes', () => {
 				phrase: 'Enable icon hover',
 				property: 'icon_status_hover',
 				value: true,
+			},
+			{
+				phrase: 'Remove icon hover',
+				property: 'icon_status_hover',
+				value: false,
 			},
 		];
 

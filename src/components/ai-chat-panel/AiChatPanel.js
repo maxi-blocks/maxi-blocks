@@ -101,10 +101,22 @@ import {
 	buildTextCGroupAction,
 	buildTextCGroupAttributeChanges,
 	getTextCGroupSidebarTarget,
+	buildTextLGroupAction,
+	buildTextLGroupAttributeChanges,
+	getTextLGroupSidebarTarget,
 	buildTextPGroupAction,
 	buildTextPGroupAttributeChanges,
 	getTextPGroupSidebarTarget,
+	buildTextListGroupAction,
+	buildTextListGroupAttributeChanges,
+	getTextListGroupSidebarTarget,
+	getTextTypographySidebarTarget,
 } from './ai/utils/textGroup';
+import {
+	buildDcGroupAction,
+	buildDcGroupAttributeChanges,
+	getDcGroupSidebarTarget,
+} from './ai/utils/dcGroup';
 import ADVANCED_CSS_PROMPT from './ai/prompts/advanced-css';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import META_MAXI_PROMPT from './ai/prompts/meta';
@@ -733,6 +745,27 @@ const ACTION_PROPERTY_ALIASES = {
 	linkSettings: 'link_settings',
 	linkSetting: 'link_settings',
 	link: 'link_settings',
+	isList: 'is_list',
+	listStart: 'list_start',
+	listReversed: 'list_reversed',
+	listStyle: 'list_style',
+	listStyleCustom: 'list_style_custom',
+	typeOfList: 'list_type',
+	listColor: 'list_color',
+	listPaletteColor: 'list_palette_color',
+	listPaletteOpacity: 'list_palette_opacity',
+	listPaletteStatus: 'list_palette_status',
+	listPaletteScStatus: 'list_palette_sc_status',
+	listGap: 'list_gap',
+	listIndent: 'list_indent',
+	listMarkerIndent: 'list_marker_indent',
+	listMarkerSize: 'list_marker_size',
+	listMarkerHeight: 'list_marker_height',
+	listMarkerLineHeight: 'list_marker_line_height',
+	listMarkerVerticalOffset: 'list_marker_vertical_offset',
+	listParagraphSpacing: 'list_paragraph_spacing',
+	listStylePosition: 'list_style_position',
+	listTextPosition: 'list_text_position',
 	shortcutEffect: 'shortcut_effect',
 	shortcutEffectType: 'shortcut_effect_type',
 	sizeAdvancedOptions: 'size_advanced_options',
@@ -2578,6 +2611,7 @@ const ACTION_PROPERTY_ALIASES = {
 				const isMaxi = block.name.startsWith('maxi-blocks/');
 				
 				const prefix = getBlockPrefix(block.name);
+				let handledBySetAttributes = false;
 				
 				// MATCHING LOGIC
 				const isMatch = specificClientId ? block.clientId === specificClientId : matchesTargetBlockName(block.name, targetBlock);
@@ -2753,7 +2787,24 @@ const ACTION_PROPERTY_ALIASES = {
 						}
 						case 'text_color':
 						case 'text_color_hover':
-						case 'button_hover_text': {
+						case 'button_hover_text':
+						case 'text_decoration':
+						case 'text_decoration_hover':
+						case 'text_direction':
+						case 'text_direction_hover':
+						case 'text_indent':
+						case 'text_indent_hover':
+						case 'text_orientation':
+						case 'text_orientation_hover':
+						case 'text_shadow':
+						case 'text_shadow_hover':
+						case 'text_wrap':
+						case 'text_wrap_hover': {
+							const isTextColorProperty = [
+								'text_color',
+								'text_color_hover',
+								'button_hover_text',
+							].includes(property);
 							if (block.name.includes('button-maxi')) {
 								changes = buildButtonCGroupAttributeChanges(property, value, {
 									attributes: block.attributes,
@@ -2767,11 +2818,60 @@ const ACTION_PROPERTY_ALIASES = {
 								changes = buildTextCGroupAttributeChanges(property, value);
 								break;
 							}
-							if (specificClientId || block.name.includes('button-maxi') || block.name.includes('text-maxi')) {
+							if (
+								isTextColorProperty &&
+								(specificClientId ||
+									block.name.includes('button-maxi') ||
+									block.name.includes('text-maxi'))
+							) {
 								changes = updateTextColor(value, prefix);
 							}
 							break;
 						}
+						case 'link_color':
+						case 'link_color_hover':
+						case 'link_color_active':
+						case 'link_color_visited':
+						case 'link_palette_color':
+						case 'link_palette_color_hover':
+						case 'link_palette_color_active':
+						case 'link_palette_color_visited':
+						case 'link_palette_opacity':
+						case 'link_palette_opacity_hover':
+						case 'link_palette_opacity_active':
+						case 'link_palette_opacity_visited':
+						case 'link_palette_status':
+						case 'link_palette_status_hover':
+						case 'link_palette_status_active':
+						case 'link_palette_status_visited':
+						case 'link_palette_sc_status':
+						case 'link_palette_sc_status_hover':
+						case 'link_palette_sc_status_active':
+						case 'link_palette_sc_status_visited':
+							if (
+								block.name.includes('text-maxi') ||
+								block.name.includes('list-item-maxi')
+							) {
+								const linkChanges = buildTextLGroupAttributeChanges(
+									property,
+									value
+								);
+								if (linkChanges) {
+									handleSetAttributes({
+										obj: linkChanges,
+										attributes: block.attributes,
+										clientId: block.clientId,
+										onChange: newAttributes =>
+											updateBlockAttributes(
+												block.clientId,
+												newAttributes
+											),
+									});
+									handledBySetAttributes = true;
+									count++;
+								}
+							}
+							break;
 						case 'heading_color':
 							// Apply only to headings (h1-h6)
 							if (block.name.includes('text-maxi') && ['h1','h2','h3','h4','h5','h6'].includes(block.attributes.textLevel)) {
@@ -2793,6 +2893,35 @@ const ACTION_PROPERTY_ALIASES = {
 								block.name.includes('list-item-maxi')
 							) {
 								changes = buildTextPGroupAttributeChanges(property, value);
+							}
+							break;
+						case 'list_color':
+						case 'list_palette_color':
+						case 'list_palette_opacity':
+						case 'list_palette_status':
+						case 'list_palette_sc_status':
+						case 'list_gap':
+						case 'list_indent':
+						case 'list_marker_indent':
+						case 'list_marker_size':
+						case 'list_marker_height':
+						case 'list_marker_line_height':
+						case 'list_marker_vertical_offset':
+						case 'list_paragraph_spacing':
+						case 'list_style_position':
+						case 'list_text_position':
+						case 'is_list':
+						case 'list_type':
+						case 'list_style':
+						case 'list_style_custom':
+						case 'list_start':
+						case 'list_reversed':
+							if (
+								specificClientId ||
+								block.name.includes('text-maxi') ||
+								block.name.includes('list-item-maxi')
+							) {
+								changes = buildTextListGroupAttributeChanges(property, value);
 							}
 							break;
 						case 'padding':
@@ -3186,6 +3315,16 @@ const ACTION_PROPERTY_ALIASES = {
 								});
 								if (changes) break;
 							}
+							if (property && /^dc[-_]/.test(String(property))) {
+								const dcChanges = buildDcGroupAttributeChanges(
+									property,
+									value
+								);
+								if (dcChanges) {
+									changes = dcChanges;
+									break;
+								}
+							}
 							// Try delegating to block-specific handlers
 							const blockHandler = getAiHandlerForBlock(block);
 							if (blockHandler) {
@@ -3242,9 +3381,6 @@ const ACTION_PROPERTY_ALIASES = {
 						}
 						case 'font_weight':
 							changes = { 'font-weight-general': Number(value) };
-							break;
-						case 'text_decoration':
-							changes = { 'text-decoration-general': value };
 							break;
 						// ======= BACKGROUNDS & MEDIA =======
 						case 'background_media':
@@ -3550,7 +3686,13 @@ const ACTION_PROPERTY_ALIASES = {
 				}
 
 				// Fallback: let block-specific handlers process unsupported properties
-				if (isMaxi && isMatch && !changes && !String(property || '').startsWith('flow_')) {
+				if (
+					isMaxi &&
+					isMatch &&
+					!changes &&
+					!handledBySetAttributes &&
+					!String(property || '').startsWith('flow_')
+				) {
 					const blockHandler = getAiHandlerForBlock(block);
 					if (blockHandler) {
 						const handlerResult = blockHandler(block, property, value, prefix, { mode: scope });
@@ -3562,7 +3704,7 @@ const ACTION_PROPERTY_ALIASES = {
 					}
 				}
 
-				if (changes) {
+				if (changes && !handledBySetAttributes) {
 					// console.log(`[Maxi AI Debug] Dispatching update to ${block.clientId}:`, changes);
 					updateBlockAttributes(block.clientId, changes);
 					count++;
@@ -3855,6 +3997,17 @@ const ACTION_PROPERTY_ALIASES = {
 			};
 		}
 
+		if (
+			breakpoint &&
+			(baseProperty.startsWith('link_color') ||
+				baseProperty.startsWith('link_palette_'))
+		) {
+			return {
+				property: baseProperty,
+				value: { value, breakpoint },
+			};
+		}
+
 		if (baseProperty === 'display' && breakpoint) {
 			return {
 				property: 'display',
@@ -3891,6 +4044,75 @@ const ACTION_PROPERTY_ALIASES = {
 		}
 
 		return { property: baseProperty, value };
+	};
+
+	const normalizeIconQueryValue = value => {
+		const raw = String(value || '').trim();
+		if (!raw) return '';
+		const normalized = raw.replace(/[-_]+/g, ' ');
+		return extractIconQuery(normalized) || normalized;
+	};
+
+	const resolveButtonIconFromTypesense = async ({ property, value, targetBlock }) => {
+		if (!property) return null;
+
+		const iconProperties = new Set([
+			'button_icon_add',
+			'button_icon_change',
+			'icon_content',
+			'icon_content_hover',
+		]);
+
+		if (!iconProperties.has(property)) return null;
+
+		if (targetBlock && targetBlock !== 'button') return null;
+
+		const isButtonTarget =
+			targetBlock === 'button' ||
+			String(property).startsWith('button_icon') ||
+			selectedBlock?.name?.includes('button');
+		if (!isButtonTarget) return null;
+
+		if (typeof value !== 'string') return null;
+		const trimmed = value.trim();
+		if (!trimmed) return null;
+		if (/^(none|null|remove|delete|clear)$/i.test(trimmed)) return null;
+		if (/<svg\b/i.test(trimmed)) return null;
+
+		const query = normalizeIconQueryValue(trimmed);
+		if (!query) return null;
+
+		const iconResult = await findBestIcon(query, { target: 'icon' });
+
+		if (!iconResult || !iconResult.svgCode) {
+			return { error: `I couldn't find an icon for "${query}" in the Cloud Library.` };
+		}
+
+		if (iconResult.isPro) {
+			return {
+				error: `Found "${iconResult.title}" but it's a Pro icon. Upgrade to MaxiBlocks Pro to use it.`,
+			};
+		}
+
+		if (property === 'icon_content_hover') {
+			return {
+				property: 'icon_content_hover',
+				value: iconResult.svgCode,
+				targetBlock: 'button',
+				message: `Updated hover icon to "${iconResult.title}".`,
+			};
+		}
+
+		return {
+			property: 'button_icon_svg',
+			value: {
+				svgCode: iconResult.svgCode,
+				svgType: iconResult.svgType,
+				title: iconResult.title,
+			},
+			targetBlock: 'button',
+			message: `Updated icon to "${iconResult.title}".`,
+		};
 	};
 
 	const parseAndExecuteAction = async responseText => {
@@ -4039,6 +4261,40 @@ const ACTION_PROPERTY_ALIASES = {
 			});
 		};
 
+		const openLinkSettingsTab = state => {
+			if (!state || state === 'link') return;
+			if (typeof document === 'undefined') return;
+
+			const labelMap = {
+				link: 'Link',
+				hover: 'Hover',
+				active: 'Active',
+				visited: 'Visited',
+			};
+			const label = labelMap[state];
+			if (!label) return;
+
+			setTimeout(() => {
+				const containers = document.querySelectorAll(
+					'.maxi-typography-control__link-options'
+				);
+				if (!containers.length) return;
+				const targetLabel = label.toLowerCase();
+				for (const container of containers) {
+					const buttons = container.querySelectorAll(
+						'button, [role="tab"]'
+					);
+					for (const button of buttons) {
+						const text = button.textContent?.trim().toLowerCase();
+						if (text === targetLabel) {
+							button.click();
+							return;
+						}
+					}
+				}
+			}, 200);
+		};
+
 		const openSidebarForProperty = rawProperty => {
 			if (!rawProperty) return;
 			const property = String(rawProperty).replace(/-/g, '_');
@@ -4069,6 +4325,14 @@ const ACTION_PROPERTY_ALIASES = {
 				} else {
 					openLinkToolbar();
 				}
+				return;
+			}
+			const dcTarget = getDcGroupSidebarTarget(
+				normalizedProperty,
+				selectedBlock?.name
+			);
+			if (dcTarget) {
+				openSidebarAccordion(dcTarget.tabIndex, dcTarget.accordion);
 				return;
 			}
 			const isButtonBlock = selectedBlock?.name?.includes('button');
@@ -4104,6 +4368,20 @@ const ACTION_PROPERTY_ALIASES = {
 				}
 			}
 			if (isTextBlock) {
+				const textListTarget = getTextListGroupSidebarTarget(normalizedProperty);
+				if (textListTarget) {
+					openSidebarAccordion(
+						textListTarget.tabIndex,
+						textListTarget.accordion
+					);
+					return;
+				}
+				const textLTarget = getTextLGroupSidebarTarget(normalizedProperty);
+				if (textLTarget) {
+					openSidebarAccordion(textLTarget.tabIndex, textLTarget.accordion);
+					openLinkSettingsTab(textLTarget.state);
+					return;
+				}
 				const textCTarget = getTextCGroupSidebarTarget(normalizedProperty);
 				if (textCTarget) {
 					openSidebarAccordion(textCTarget.tabIndex, textCTarget.accordion);
@@ -4112,6 +4390,16 @@ const ACTION_PROPERTY_ALIASES = {
 				const textPTarget = getTextPGroupSidebarTarget(normalizedProperty);
 				if (textPTarget) {
 					openSidebarAccordion(textPTarget.tabIndex, textPTarget.accordion);
+					return;
+				}
+				const textTypographyTarget = getTextTypographySidebarTarget(
+					normalizedProperty
+				);
+				if (textTypographyTarget) {
+					openSidebarAccordion(
+						textTypographyTarget.tabIndex,
+						textTypographyTarget.accordion
+					);
 					return;
 				}
 			}
@@ -4700,6 +4988,33 @@ const ACTION_PROPERTY_ALIASES = {
 								c = updateTextColor(val, blkPrefix);
 							}
 							break;
+						case 'link_color':
+						case 'link_color_hover':
+						case 'link_color_active':
+						case 'link_color_visited':
+						case 'link_palette_color':
+						case 'link_palette_color_hover':
+						case 'link_palette_color_active':
+						case 'link_palette_color_visited':
+						case 'link_palette_opacity':
+						case 'link_palette_opacity_hover':
+						case 'link_palette_opacity_active':
+						case 'link_palette_opacity_visited':
+						case 'link_palette_status':
+						case 'link_palette_status_hover':
+						case 'link_palette_status_active':
+						case 'link_palette_status_visited':
+						case 'link_palette_sc_status':
+						case 'link_palette_sc_status_hover':
+						case 'link_palette_sc_status_active':
+						case 'link_palette_sc_status_visited':
+							if (
+								targetBlock?.name?.includes('text-maxi') ||
+								targetBlock?.name?.includes('list-item-maxi')
+							) {
+								c = buildTextLGroupAttributeChanges(prop, val);
+							}
+							break;
 						case 'font_size':
 						case 'fontSize':
 							c = updateFontSize(val);
@@ -5017,6 +5332,8 @@ const ACTION_PROPERTY_ALIASES = {
 			if (action.action === 'update_page') {
 				let property = action.property;
 				let value = action.value;
+				let targetBlock = action.target_block;
+				let actionMessage = action.message;
 				
 				// Handle AI returning payload wrapper (legacy fix)
 				if (action.payload) {
@@ -5037,14 +5354,37 @@ const ACTION_PROPERTY_ALIASES = {
 					logAIDebug('update_selection normalization', {
 						original: { property, value },
 						normalized,
-						target: action.target_block,
+						target: targetBlock,
 						selectedBlock: selectedBlock?.name,
 					});
 					property = normalized.property;
 					value = normalized.value;
 				}
+
+				if (property === 'padding' && targetBlock === 'button') {
+					property = 'button_padding';
+				}
+
+				const iconResolution = await resolveButtonIconFromTypesense({
+					property,
+					value,
+					targetBlock,
+				});
+
+				if (iconResolution?.error) {
+					return { executed: false, message: iconResolution.error };
+				}
+
+				if (iconResolution?.property) {
+					property = iconResolution.property;
+					value = iconResolution.value;
+					targetBlock = iconResolution.targetBlock || targetBlock;
+					if (iconResolution.message) {
+						actionMessage = iconResolution.message;
+					}
+				}
 				
-				console.log('[Maxi AI Debug] update_page action received:', property, value, 'target:', action.target_block);
+				console.log('[Maxi AI Debug] update_page action received:', property, value, 'target:', targetBlock);
 				
 				// Normalize border_radius values - AI sometimes sends wrong numbers
 				if (property === 'border_radius') {
@@ -5067,14 +5407,14 @@ const ACTION_PROPERTY_ALIASES = {
 					console.log('[Maxi AI Debug] Normalized border_radius to:', value);
 				}
 				
-				const resultMsg = handleUpdatePage(property, value, action.target_block);
+				const resultMsg = handleUpdatePage(property, value, targetBlock);
 				console.log('[Maxi AI Debug] handleUpdatePage returned:', resultMsg);
 
 				// EXPAND SIDEBAR based on property
 				// This ensures "settings are showing" as requested by user
 				openSidebarForProperty(property);
 
-				return { executed: true, message: action.message || resultMsg };
+				return { executed: true, message: actionMessage || resultMsg };
 			}
 
 			if (action.action === 'apply_responsive_spacing') {
@@ -5100,6 +5440,8 @@ const ACTION_PROPERTY_ALIASES = {
 			if (action.action === 'update_selection') {
 				let property = action.property;
 				let value = action.value;
+				let targetBlock = action.target_block;
+				let actionMessage = action.message;
 				
 				// Handle same payload wrapper if needed
 				if (action.payload) {
@@ -5113,11 +5455,38 @@ const ACTION_PROPERTY_ALIASES = {
 					logAIDebug('update_page normalization', {
 						original: { property, value },
 						normalized,
-						target: action.target_block,
+						target: targetBlock,
 						selectedBlock: selectedBlock?.name,
 					});
 					property = normalized.property;
 					value = normalized.value;
+				}
+
+				if (
+					property === 'padding' &&
+					(targetBlock === 'button' ||
+						selectedBlock?.name?.includes('button'))
+				) {
+					property = 'button_padding';
+				}
+
+				const iconResolution = await resolveButtonIconFromTypesense({
+					property,
+					value,
+					targetBlock,
+				});
+
+				if (iconResolution?.error) {
+					return { executed: false, message: iconResolution.error };
+				}
+
+				if (iconResolution?.property) {
+					property = iconResolution.property;
+					value = iconResolution.value;
+					targetBlock = iconResolution.targetBlock || targetBlock;
+					if (iconResolution.message) {
+						actionMessage = iconResolution.message;
+					}
 				}
 				
 				// Normalizations
@@ -5135,7 +5504,7 @@ const ACTION_PROPERTY_ALIASES = {
 				const resultMsg = handleUpdateSelection(
 					property,
 					value,
-					isLinkProperty ? null : action.target_block
+					isLinkProperty ? null : targetBlock
 				);
 				console.log('[Maxi AI Debug] handleUpdateSelection result:', resultMsg);
 
@@ -5144,9 +5513,9 @@ const ACTION_PROPERTY_ALIASES = {
 
 				// Combine AI message with technical result if mismatch
 				// If resultMsg says "No matching components", we should probably show that.
-				let finalMessage = action.message || resultMsg;
+				let finalMessage = actionMessage || resultMsg;
 				if (typeof resultMsg === 'string' && resultMsg.includes('No matching')) {
-					finalMessage = `${action.message} (${resultMsg})`;
+					finalMessage = `${actionMessage || 'No changes applied'} (${resultMsg})`;
 				}
 
 				return { executed: true, message: finalMessage };
@@ -5358,6 +5727,12 @@ const ACTION_PROPERTY_ALIASES = {
 			lowerMessage.includes('text') ||
 			selectedBlock?.name?.includes('text-maxi') ||
 			selectedBlock?.name?.includes('list-item-maxi');
+		const isImageContext =
+			lowerMessage.includes('image') ||
+			selectedBlock?.name?.includes('image-maxi');
+		const isDividerContext =
+			lowerMessage.includes('divider') ||
+			selectedBlock?.name?.includes('divider-maxi');
 		const isContainerContext =
 			lowerMessage.includes('container') ||
 			selectedBlock?.name?.includes('container');
@@ -5385,6 +5760,24 @@ const ACTION_PROPERTY_ALIASES = {
 		if (advancedCssAction) {
 			logAIDebug('Advanced CSS A-group action matched', advancedCssAction);
 			queueDirectAction(advancedCssAction);
+			return;
+		}
+		const dcTargetBlock = isButtonContext
+			? 'button'
+			: isImageContext
+				? 'image'
+				: isDividerContext
+					? 'divider'
+					: isTextContext
+						? 'text'
+						: null;
+		const dcGroupAction = buildDcGroupAction(rawMessage, {
+			scope: currentScope,
+			targetBlock: dcTargetBlock,
+		});
+		if (dcGroupAction) {
+			logAIDebug('DC group action matched', dcGroupAction);
+			queueDirectAction(dcGroupAction);
 			return;
 		}
 		if (isButtonContext) {
@@ -5422,6 +5815,22 @@ const ACTION_PROPERTY_ALIASES = {
 			}
 		}
 		if (isTextContext) {
+			const textListGroupAction = buildTextListGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (textListGroupAction) {
+				logAIDebug('Text list-group action matched', textListGroupAction);
+				queueDirectAction(textListGroupAction);
+				return;
+			}
+			const textLGroupAction = buildTextLGroupAction(rawMessage, {
+				scope: currentScope,
+			});
+			if (textLGroupAction) {
+				logAIDebug('Text L-group action matched', textLGroupAction);
+				queueDirectAction(textLGroupAction);
+				return;
+			}
 			const textPGroupAction = buildTextPGroupAction(rawMessage, {
 				scope: currentScope,
 			});

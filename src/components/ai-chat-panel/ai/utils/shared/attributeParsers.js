@@ -68,7 +68,7 @@ const parseBorderWidth = message =>
 const parseBorderRadius = message =>
 	extractNumericValue(message, [
 		/\b(?:corner|corners|radius|rounded)\b[^\d]*(\d+(?:\.\d+)?)/i,
-		/(\d+(?:\.\d+)?)\s*px\b.*\b(?:corner|radius|rounded)\b/i,
+		/(\d+(?:\.\d+)?)\s*px\b.*\b(?:corner|corners|radius|rounded)\b/i,
 	]);
 
 const parseShadowPreset = message => {

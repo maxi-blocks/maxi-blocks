@@ -47,27 +47,36 @@ const getScaleFactor = breakpoint => {
  */
 const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 	if (rawValue === null || rawValue === undefined) {
-		return { value: 0, unit: fallbackUnit };
+		return { value: 0, unit: fallbackUnit, breakpoint: null };
 	}
 
 	if (typeof rawValue === 'number') {
-		return { value: rawValue, unit: fallbackUnit };
+		return { value: rawValue, unit: fallbackUnit, breakpoint: null };
 	}
 
 	if (typeof rawValue === 'object') {
 		const size = rawValue.size ?? rawValue.value ?? rawValue.width ?? rawValue.height;
 		const unit = rawValue.unit || fallbackUnit;
-		return { value: Number(size) || 0, unit };
+		const breakpoint = rawValue.breakpoint || null;
+		return { value: Number(size) || 0, unit, breakpoint };
 	}
 
 	const raw = String(rawValue).trim();
 	const match = raw.match(/^(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?$/i);
 	if (match) {
-		return { value: Number(match[1]), unit: match[2] || fallbackUnit };
+		return {
+			value: Number(match[1]),
+			unit: match[2] || fallbackUnit,
+			breakpoint: null,
+		};
 	}
 
 	const parsed = Number.parseFloat(raw);
-	return { value: Number.isNaN(parsed) ? 0 : parsed, unit: fallbackUnit };
+	return {
+		value: Number.isNaN(parsed) ? 0 : parsed,
+		unit: fallbackUnit,
+		breakpoint: null,
+	};
 };
 
 /**
@@ -181,6 +190,7 @@ const mergeCustomCss = (attributes, category, index, cssPatch) => {
  */
 const normalizeTextProperty = property => {
 	const map = {
+		text_content: 'content',
 		text_level: 'textLevel',
 		textLevel: 'textLevel',
 	};
@@ -237,7 +247,7 @@ const buildTextColorChanges = colorValue => {
  * @param {*} weightValue
  * @returns {Object}
  */
-const buildFontWeightChanges = weightValue => {
+const buildFontWeightChanges = (weightValue, { breakpoint = null, isHover = false } = {}) => {
 	const weightMap = {
 		thin: 100,
 		'extra-light': 200,
@@ -257,7 +267,19 @@ const buildFontWeightChanges = weightValue => {
 	const normalized = String(weightValue ?? '').toLowerCase();
 	const weight = weightMap[normalized] ?? weightValue;
 
-	return { 'font-weight-general': String(weight) };
+	const breakpoints = breakpoint ? [breakpoint] : BREAKPOINTS;
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		const suffix = `-${bp}${isHover ? '-hover' : ''}`;
+		changes[`font-weight${suffix}`] = String(weight);
+	});
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
 /**
@@ -496,7 +518,7 @@ const buildTextAlignChanges = (alignValue, block) => {
  * @param {*} spacingValue
  * @returns {Object}
  */
-const buildTextLetterSpacingChanges = spacingValue => {
+const buildTextLetterSpacingChanges = (spacingValue, { isHover = false } = {}) => {
 	const raw = String(spacingValue ?? '').trim().toLowerCase();
 	const parsed =
 		raw === 'normal' || raw === 'reset' || raw === 'off' || raw === 'none'
@@ -505,10 +527,14 @@ const buildTextLetterSpacingChanges = spacingValue => {
 
 	const unit = parsed.unit === '-' ? 'em' : parsed.unit;
 	const changes = {};
+	const suffix = isHover ? '-hover' : '';
 	BREAKPOINTS.forEach(bp => {
-		changes[`letter-spacing-${bp}`] = parsed.value;
-		changes[`letter-spacing-unit-${bp}`] = unit;
+		changes[`letter-spacing-${bp}${suffix}`] = parsed.value;
+		changes[`letter-spacing-unit-${bp}${suffix}`] = unit;
 	});
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
 
 	return changes;
 };
@@ -519,8 +545,9 @@ const buildTextLetterSpacingChanges = spacingValue => {
  * @param {*} familyValue
  * @returns {Object}
  */
-const buildTextFontFamilyChanges = familyValue => {
-	const raw = String(familyValue || '').trim().toLowerCase();
+const buildTextFontFamilyChanges = (familyValue, { breakpoint = null, isHover = false } = {}) => {
+	const raw = String(familyValue || '').trim();
+	const normalized = raw.toLowerCase();
 
 	const familyMap = {
 		sans: 'sans-serif',
@@ -534,11 +561,57 @@ const buildTextFontFamilyChanges = familyValue => {
 		system: 'system-ui',
 	};
 
-	const family = familyMap[raw] || raw || 'inherit';
+	const family = familyMap[normalized] || raw || 'inherit';
 	const changes = {};
-	BREAKPOINTS.forEach(bp => {
-		changes[`font-family-${bp}`] = family;
+
+	const breakpoints = breakpoint ? [breakpoint] : BREAKPOINTS;
+	breakpoints.forEach(bp => {
+		const suffix = `-${bp}${isHover ? '-hover' : ''}`;
+		changes[`font-family${suffix}`] = family;
 	});
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
+};
+
+/**
+ * Builds font-style changes across breakpoints.
+ *
+ * @param {*} styleValue
+ * @param {Object} options
+ * @param {string|null} options.breakpoint
+ * @param {boolean} options.isHover
+ * @returns {Object}
+ */
+const buildTextFontStyleChanges = (styleValue, { breakpoint = null, isHover = false } = {}) => {
+	const normalized = String(styleValue || '').trim().toLowerCase();
+	const styleMap = {
+		italic: 'italic',
+		oblique: 'oblique',
+		normal: 'normal',
+		regular: 'normal',
+		upright: 'normal',
+		roman: 'normal',
+		none: 'normal',
+		reset: 'normal',
+		off: 'normal',
+	};
+
+	const style = styleMap[normalized] || normalized || 'normal';
+	const changes = {};
+	const breakpoints = breakpoint ? [breakpoint] : BREAKPOINTS;
+
+	breakpoints.forEach(bp => {
+		const suffix = `-${bp}${isHover ? '-hover' : ''}`;
+		changes[`font-style${suffix}`] = style;
+	});
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
 
 	return changes;
 };
@@ -556,7 +629,16 @@ const buildTextFontFamilyChanges = familyValue => {
  * @param {string} params.kind "fontSize" | "maxWidth"
  * @returns {Object}
  */
-const buildResponsiveNumericChanges = ({ keyBase, unitKeyBase, value, unit, scale, kind }) => {
+const buildResponsiveNumericChanges = ({
+	keyBase,
+	unitKeyBase,
+	value,
+	unit,
+	scale,
+	kind,
+	breakpoint = null,
+	isHover = false,
+}) => {
 	const changes = {};
 
 	// Decide if scaling makes sense for this unit/kind.
@@ -596,13 +678,20 @@ const buildResponsiveNumericChanges = ({ keyBase, unitKeyBase, value, unit, scal
 		return Math.round(n * 100) / 100;
 	};
 
-	BREAKPOINTS.forEach(bp => {
-		const factor = shouldScale ? getScaleFactor(bp) : 1;
+	const targetBreakpoints = breakpoint ? [breakpoint] : BREAKPOINTS;
+
+	targetBreakpoints.forEach(bp => {
+		const factor = breakpoint ? 1 : shouldScale ? getScaleFactor(bp) : 1;
 		const nextValue = clamp(round(value * factor), bp);
 
-		changes[`${keyBase}-${bp}`] = nextValue;
-		changes[`${unitKeyBase}-${bp}`] = unit;
+		const suffix = `-${bp}${isHover ? '-hover' : ''}`;
+		changes[`${keyBase}${suffix}`] = nextValue;
+		changes[`${unitKeyBase}${suffix}`] = unit;
 	});
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
 
 	return changes;
 };
@@ -864,13 +953,17 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 	let changes = null;
 
 	const normalizedProperty = normalizeTextProperty(property);
+	const isHover = normalizedProperty.endsWith('_hover');
+	const baseProperty = isHover
+		? normalizedProperty.replace(/_hover$/, '')
+		: normalizedProperty;
 
 	const isText =
 		block?.name?.includes('text') || block?.name?.includes('heading');
 	if (!isText) return null;
 
 	// === INTERACTION FLOWS ===
-	if (normalizedProperty === 'flow_text_polish') {
+if (baseProperty === 'flow_text_polish') {
 		if (context.text_polish === undefined) {
 			return {
 				action: 'ask_options',
@@ -934,7 +1027,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Applied a bold, high-impact text polish.' };
 	}
 
-	if (normalizedProperty === 'flow_text_size') {
+if (baseProperty === 'flow_text_size') {
 		if (context.text_size === undefined) {
 			return {
 				action: 'ask_options',
@@ -957,12 +1050,13 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			unit: sizeValue.unit,
 			scale: true,
 			kind: 'fontSize',
+			breakpoint: sizeValue.breakpoint,
 		});
 
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text size (responsive 100/60/40).' };
 	}
 
-	if (normalizedProperty === 'flow_text_weight') {
+if (baseProperty === 'flow_text_weight') {
 		if (context.text_weight === undefined) {
 			return {
 				action: 'ask_options',
@@ -980,7 +1074,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text weight.' };
 	}
 
-	if (normalizedProperty === 'flow_text_color') {
+if (baseProperty === 'flow_text_color') {
 		if (context.text_color === undefined) {
 			return {
 				action: 'ask_options',
@@ -1012,7 +1106,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text color.' };
 	}
 
-	if (normalizedProperty === 'flow_text_align') {
+if (baseProperty === 'flow_text_align') {
 		if (context.text_align === undefined) {
 			return {
 				action: 'ask_options',
@@ -1031,7 +1125,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text alignment.' };
 	}
 
-	if (normalizedProperty === 'flow_text_letter_spacing') {
+if (baseProperty === 'flow_text_letter_spacing') {
 		if (context.text_letter_spacing === undefined) {
 			return {
 				action: 'ask_options',
@@ -1050,7 +1144,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated letter spacing.' };
 	}
 
-	if (normalizedProperty === 'flow_text_font_family') {
+if (baseProperty === 'flow_text_font_family') {
 		if (context.text_font_family === undefined) {
 			return {
 				action: 'ask_options',
@@ -1210,7 +1304,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: `Applied ${intensityLabel} shadow to text.` };
 	}
 
-	if (normalizedProperty === 'flow_text_line_height') {
+if (baseProperty === 'flow_text_line_height') {
 		if (context.text_line_height === undefined) {
 			return {
 				action: 'ask_options',
@@ -1239,7 +1333,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated line spacing.' };
 	}
 
-	if (normalizedProperty === 'flow_text_width') {
+if (baseProperty === 'flow_text_width') {
 		if (context.text_max_width === undefined) {
 			return {
 				action: 'ask_options',
@@ -1270,7 +1364,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text width (responsive 100/60/40 where appropriate).' };
 	}
 
-	if (normalizedProperty === 'flow_text_transform') {
+if (baseProperty === 'flow_text_transform') {
 		if (context.text_transform === undefined) {
 			return {
 				action: 'ask_options',
@@ -1288,7 +1382,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text casing.' };
 	}
 
-	if (normalizedProperty === 'flow_text_highlight') {
+if (baseProperty === 'flow_text_highlight') {
 		if (context.text_highlight === undefined) {
 			return {
 				action: 'ask_options',
@@ -1307,7 +1401,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes || {}, done: true, message: 'Updated text highlight.' };
 	}
 
-	if (normalizedProperty === 'flow_text_list') {
+if (baseProperty === 'flow_text_list') {
 		if (context.text_list === undefined) {
 			return {
 				action: 'ask_options',
@@ -1326,7 +1420,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated list style.' };
 	}
 
-	if (normalizedProperty === 'flow_text_level') {
+if (baseProperty === 'flow_text_level') {
 		if (context.text_level === undefined) {
 			return {
 				action: 'ask_options',
@@ -1344,7 +1438,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text level.' };
 	}
 
-	if (normalizedProperty === 'flow_text_decoration') {
+if (baseProperty === 'flow_text_decoration') {
 		if (context.text_decoration === undefined) {
 			return {
 				action: 'ask_options',
@@ -1362,7 +1456,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated text decoration.' };
 	}
 
-	if (normalizedProperty === 'flow_text_dynamic') {
+if (baseProperty === 'flow_text_dynamic') {
 		if (context.text_dynamic === undefined) {
 			return {
 				action: 'ask_options',
@@ -1381,7 +1475,7 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		return { action: 'apply', attributes: changes, done: true, message: 'Updated dynamic content.' };
 	}
 
-	if (normalizedProperty === 'flow_text_link') {
+if (baseProperty === 'flow_text_link') {
 		if (context.text_link === undefined) {
 			return {
 				action: 'ask_options',
@@ -1396,24 +1490,26 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 	}
 
 	// === STANDARD ACTIONS ===
-	switch (normalizedProperty) {
+switch (baseProperty) {
 		case 'text_color':
 			changes = buildTextColorChanges(value);
 			break;
 
-		case 'text_font_size': {
-			const sizeValue = parseUnitValue(value, 'px');
+	case 'text_font_size': {
+		const sizeValue = parseUnitValue(value, 'px');
 
-			changes = buildResponsiveNumericChanges({
-				keyBase: 'font-size',
-				unitKeyBase: 'font-size-unit',
-				value: sizeValue.value,
-				unit: sizeValue.unit,
-				scale: true,
-				kind: 'fontSize',
-			});
-			break;
-		}
+		changes = buildResponsiveNumericChanges({
+			keyBase: 'font-size',
+			unitKeyBase: 'font-size-unit',
+			value: sizeValue.value,
+			unit: sizeValue.unit,
+			scale: true,
+			kind: 'fontSize',
+			breakpoint: sizeValue.breakpoint,
+			isHover,
+		});
+		break;
+	}
 
 		case 'text_line_height': {
 			const lineValue = parseUnitValue(value, '-');
@@ -1446,9 +1542,27 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			break;
 		}
 
-		case 'text_weight':
-			changes = buildFontWeightChanges(value);
+		case 'text_weight': {
+			const weightValue =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				Object.prototype.hasOwnProperty.call(value, 'value')
+					? value.value
+					: value;
+			const breakpoint =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				value.breakpoint
+					? value.breakpoint
+					: null;
+			changes = buildFontWeightChanges(weightValue, {
+				breakpoint,
+				isHover,
+			});
 			break;
+		}
 
 		case 'text_transform':
 			changes = buildTextTransformChanges(block.attributes, value);
@@ -1470,6 +1584,10 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 			changes = buildTextDynamicChanges(value);
 			break;
 
+		case 'content':
+			changes = { content: String(value || '') };
+			break;
+
 		case 'text_link':
 			changes = buildTextLinkChanges(block, value);
 			break;
@@ -1485,10 +1603,53 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 		case 'text_letter_spacing':
 			changes = buildTextLetterSpacingChanges(value);
 			break;
-
-		case 'text_font_family':
-			changes = buildTextFontFamilyChanges(value);
+		case 'text_letter_spacing_hover':
+			changes = buildTextLetterSpacingChanges(value, { isHover: true });
 			break;
+
+		case 'text_font_family': {
+			const familyValue =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				Object.prototype.hasOwnProperty.call(value, 'value')
+					? value.value
+					: value;
+			const breakpoint =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				value.breakpoint
+					? value.breakpoint
+					: null;
+			changes = buildTextFontFamilyChanges(familyValue, {
+				breakpoint,
+				isHover,
+			});
+			break;
+		}
+
+		case 'text_font_style': {
+			const styleValue =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				Object.prototype.hasOwnProperty.call(value, 'value')
+					? value.value
+					: value;
+			const breakpoint =
+				value &&
+				typeof value === 'object' &&
+				!Array.isArray(value) &&
+				value.breakpoint
+					? value.breakpoint
+					: null;
+			changes = buildTextFontStyleChanges(styleValue, {
+				breakpoint,
+				isHover,
+			});
+			break;
+		}
 
 		case 'text_border':
 			if (value === 'off' || value === 'none' || value === false) {

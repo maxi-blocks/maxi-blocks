@@ -496,7 +496,7 @@ const buildTextAlignChanges = (alignValue, block) => {
  * @param {*} spacingValue
  * @returns {Object}
  */
-const buildTextLetterSpacingChanges = spacingValue => {
+const buildTextLetterSpacingChanges = (spacingValue, { isHover = false } = {}) => {
 	const raw = String(spacingValue ?? '').trim().toLowerCase();
 	const parsed =
 		raw === 'normal' || raw === 'reset' || raw === 'off' || raw === 'none'
@@ -505,10 +505,14 @@ const buildTextLetterSpacingChanges = spacingValue => {
 
 	const unit = parsed.unit === '-' ? 'em' : parsed.unit;
 	const changes = {};
+	const suffix = isHover ? '-hover' : '';
 	BREAKPOINTS.forEach(bp => {
-		changes[`letter-spacing-${bp}`] = parsed.value;
-		changes[`letter-spacing-unit-${bp}`] = unit;
+		changes[`letter-spacing-${bp}${suffix}`] = parsed.value;
+		changes[`letter-spacing-unit-${bp}${suffix}`] = unit;
 	});
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
 
 	return changes;
 };
@@ -1484,6 +1488,9 @@ export const handleTextUpdate = (block, property, value, prefix, context = {}) =
 
 		case 'text_letter_spacing':
 			changes = buildTextLetterSpacingChanges(value);
+			break;
+		case 'text_letter_spacing_hover':
+			changes = buildTextLetterSpacingChanges(value, { isHover: true });
 			break;
 
 		case 'text_font_family':

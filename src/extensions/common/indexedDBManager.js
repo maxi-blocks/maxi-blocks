@@ -75,6 +75,8 @@ const normalizeError = error => {
 	return { name, message, code };
 };
 
+const isVersionError = error => normalizeError(error).name === 'VersionError';
+
 const logDebug = (callerName, message, details) => {
 	if (!isDebugEnabled()) {
 		return;
@@ -131,45 +133,91 @@ export const openDB = callerName => {
 			return;
 		}
 
-		const request = indexedDB.open(DB_NAME, DB_VERSION);
+		const attemptOpen = allowDeleteOnVersionMismatch => {
+			const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-		request.onerror = () => {
-			logEnvOnce(callerName);
-			logError(callerName, 'Failed to open database', request.error);
-			reject(request.error);
-		};
+			request.onerror = () => {
+				const error = request.error;
+				const isVersionMismatch =
+					allowDeleteOnVersionMismatch && isVersionError(error);
 
-		request.onsuccess = () => {
-			logDebug(callerName, 'Opened database', {
-				name: request.result?.name,
-				version: request.result?.version,
-			});
-			resolve(request.result);
-		};
+				if (isVersionMismatch) {
+					logError(
+						callerName,
+						'Database version mismatch detected, clearing cache',
+						error,
+						{ requestedVersion: DB_VERSION }
+					);
 
-		request.onblocked = event => {
-			logDebug(callerName, 'Open blocked by another connection', {
-				oldVersion: event?.oldVersion,
-				newVersion: event?.newVersion,
-			});
-		};
+					const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
 
-		request.onupgradeneeded = event => {
-			const db = event.target.result;
+					deleteRequest.onsuccess = () => {
+						logDebug(callerName, 'Deleted database, retrying open');
+						attemptOpen(false);
+					};
 
-			logDebug(callerName, 'Upgrade needed', {
-				oldVersion: event.oldVersion,
-				newVersion: event.newVersion,
-				stores: Array.from(db.objectStoreNames || []),
-			});
+					deleteRequest.onerror = () => {
+						logEnvOnce(callerName);
+						logError(
+							callerName,
+							'Failed to delete database after version mismatch',
+							deleteRequest.error || error
+						);
+						reject(deleteRequest.error || error);
+					};
 
-			// Create all required object stores (shared database across all cache modules)
-			Object.values(STORE_NAMES).forEach(storeName => {
-				if (!db.objectStoreNames.contains(storeName)) {
-					db.createObjectStore(storeName, { keyPath: 'key' });
+					deleteRequest.onblocked = event => {
+						logDebug(callerName, 'Delete blocked by another connection', {
+							oldVersion: event?.oldVersion,
+							newVersion: event?.newVersion,
+						});
+						reject(deleteRequest.error || error);
+					};
+
+					return;
 				}
-			});
+
+				logEnvOnce(callerName);
+				logError(callerName, 'Failed to open database', error, {
+					requestedVersion: DB_VERSION,
+				});
+				reject(error);
+			};
+
+			request.onsuccess = () => {
+				logDebug(callerName, 'Opened database', {
+					name: request.result?.name,
+					version: request.result?.version,
+				});
+				resolve(request.result);
+			};
+
+			request.onblocked = event => {
+				logDebug(callerName, 'Open blocked by another connection', {
+					oldVersion: event?.oldVersion,
+					newVersion: event?.newVersion,
+				});
+			};
+
+			request.onupgradeneeded = event => {
+				const db = event.target.result;
+
+				logDebug(callerName, 'Upgrade needed', {
+					oldVersion: event.oldVersion,
+					newVersion: event.newVersion,
+					stores: Array.from(db.objectStoreNames || []),
+				});
+
+				// Create all required object stores (shared database across all cache modules)
+				Object.values(STORE_NAMES).forEach(storeName => {
+					if (!db.objectStoreNames.contains(storeName)) {
+						db.createObjectStore(storeName, { keyPath: 'key' });
+					}
+				});
+			};
 		};
+
+		attemptOpen(true);
 	});
 };
 

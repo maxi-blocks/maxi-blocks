@@ -13,7 +13,7 @@ export const BUTTON_PATTERNS = [
 	// 1. RADIUS / SHAPE FLOW (The "Round" Trap)
 	// Catches shape-related requests before the outline flow can grab "border"
 	{ 
-		regex: /\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner|pill|capsule|oval|circle/i, 
+		regex: /(?!.*\bicon\b)(?:\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner|pill|capsule|oval|circle)/i, 
 		property: 'flow_radius', 
 		value: 'start', 
 		selectionMsg: '', 
@@ -70,10 +70,10 @@ export const BUTTON_PATTERNS = [
 	{ regex: /auto.*width|fit.*content|shrink|normal.*width/i, property: 'width', value: 'auto', selectionMsg: 'Width set to auto.', pageMsg: 'Set button width to auto.', target: 'button' },
 	
 	// Small size (with extra synonyms)
-	{ regex: /small|tiny|compact|mini|smaller|minute|micro/i, property: 'button_size', value: 'small', selectionMsg: 'Made smaller.', pageMsg: 'Decreased button size.', target: 'button' },
+	{ regex: /(?!.*\bicon\b)(?:small|tiny|compact|mini|smaller|minute|micro)/i, property: 'button_size', value: 'small', selectionMsg: 'Made smaller.', pageMsg: 'Decreased button size.', target: 'button' },
 	
 	// Large size (with extra synonyms)
-	{ regex: /large|big|huge|giant|massive|enormous|gigantic|bigger/i, property: 'button_size', value: 'large', selectionMsg: 'Made larger.', pageMsg: 'Increased button size.', target: 'button' },
+	{ regex: /(?!.*\bicon\b)(?:large|big|huge|giant|massive|enormous|gigantic|bigger)/i, property: 'button_size', value: 'large', selectionMsg: 'Made larger.', pageMsg: 'Increased button size.', target: 'button' },
 	
 	// Padding increase
 	{ regex: /fatter|taller|increase.*padding|more.*padding|bigger.*button/i, property: 'button_padding_increase', value: 'increase', selectionMsg: 'Increased padding.', pageMsg: 'Added padding.', target: 'button' },
@@ -105,13 +105,13 @@ export const BUTTON_PATTERNS = [
 	// ============================================================
 
 	// Icon-only mode
-	{ regex: /icon.*only|remove.*text|hide.*text/i, property: 'button_icon', value: 'only', selectionMsg: 'Icon only mode.', pageMsg: 'Switched to icon-only.', target: 'button' },
+	{ regex: /(?!.*\b(space|gap)\b)(?:icon.*only|remove.*text|hide.*text)/i, property: 'button_icon', value: 'only', selectionMsg: 'Icon only mode.', pageMsg: 'Switched to icon-only.', target: 'button' },
 	
 	// Remove icon
-	{ regex: /no.*icon|remove.*icon|text.*only|hide.*icon/i, property: 'button_icon', value: 'none', selectionMsg: 'Removed icon.', pageMsg: 'Removed icon.', target: 'button' },
+	{ regex: /(?!.*\b(space|gap)\b)(?:no.*icon|remove.*icon|text.*only|hide.*icon)/i, property: 'button_icon', value: 'none', selectionMsg: 'Removed icon.', pageMsg: 'Removed icon.', target: 'button' },
 	
 	// Add icon
-	{ regex: /add.*icon|put.*icon|with.*icon/i, property: 'button_icon_add', value: 'arrow-right', selectionMsg: 'Added icon.', pageMsg: 'Added default icon.', target: 'button' },
+	{ regex: /(?!.*\b(left|right|top|bottom|before|after|start|end)\b)\b(?:add|put|with|insert|include|use)\b.*\bicon\b/i, property: 'button_icon_add', value: 'arrow-right', selectionMsg: 'Added icon.', pageMsg: 'Added default icon.', target: 'button' },
 
 	// Icon positions
 	{ regex: /icon.*left|icon.*before|start.*icon/i, property: 'icon_position', value: 'left', selectionMsg: 'Icon moved left.', pageMsg: 'Moved icon to left.', target: 'button' },
@@ -129,8 +129,8 @@ export const BUTTON_PATTERNS = [
 	{ regex: /circle.*icon|round.*bg.*icon/i, property: 'icon_style', value: 'circle', selectionMsg: 'Circular icon style.', pageMsg: 'Applied circular icon style.', target: 'button' },
 	{ regex: /icon.*size|bigger.*icon|larger.*icon/i, property: 'icon_size', value: 24, selectionMsg: 'Made icon larger.', pageMsg: 'Icon size increased.', target: 'button' },
 	{ regex: /smaller.*icon/i, property: 'icon_size', value: 16, selectionMsg: 'Made icon smaller.', pageMsg: 'Icon size decreased.', target: 'button' },
-	{ regex: /space.*icon.*text|gap.*icon|more.*space.*icon/i, property: 'icon_spacing', value: 10, selectionMsg: 'Increased icon spacing.', pageMsg: 'Added space between icon and text.', target: 'button' },
 	{ regex: /remove.*space.*icon|less.*gap.*icon|no.*space.*icon|closer.*icon/i, property: 'icon_spacing', value: 2, selectionMsg: 'Decreased icon spacing.', pageMsg: 'Reduced space between icon and text.', target: 'button' },
+	{ regex: /(?!.*\b(remove|less|no|closer)\b)(?:space.*icon.*text|gap.*icon|more.*space.*icon)/i, property: 'icon_spacing', value: 10, selectionMsg: 'Increased icon spacing.', pageMsg: 'Added space between icon and text.', target: 'button' },
 	{ regex: /white.*icon|light.*icon/i, property: 'icon_color', value: '#ffffff', selectionMsg: 'Icon coloured white.', pageMsg: 'Changed icon colour to white.', target: 'button' },
 	{ regex: /icon.*colou?r/i, property: 'flow_button_icon_color', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 
@@ -589,7 +589,12 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			if (value === 'only') {
 				changes = { 'icon-only': true };
 			} else if (value === 'none') {
-				changes = { 'icon-only': false, 'icon-content': '' }; // Removing content effectively removes icon
+				changes = {
+					'icon-only': false,
+					'icon-content': '',
+					'icon-content-hover': '',
+					'icon-status-hover': false,
+				}; // Removing content effectively removes icon
 			}
 			break;
 

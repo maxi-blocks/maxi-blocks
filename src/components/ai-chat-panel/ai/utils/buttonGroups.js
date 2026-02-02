@@ -2,6 +2,7 @@ import {
 	buildLayoutAGroupAction,
 	normalizeValueWithBreakpoint as normalizeLayoutValueWithBreakpoint,
 } from './layoutAGroup';
+import { extractAnchorLink, extractAriaLabel } from './metaAGroup';
 import {
 	RESPONSIVE_BREAKPOINTS,
 	extractNumericValue,
@@ -18,10 +19,40 @@ import {
 	applyBackgroundLayerCommand,
 	isBackgroundLayerCommand,
 } from './shared/backgroundLayers';
+import {
+	buildTextStyleGroupAction,
+	buildTextStyleGroupAttributeChanges,
+	getTextStyleGroupSidebarTarget,
+} from './shared/textStyleGroup';
 
 // buttonAGroup
 const buttonAGroup = (() => {
 const buildButtonAGroupAction = (message, options = {}) => {
+	const actionType = options?.scope === 'page' ? 'update_page' : 'update_selection';
+	const actionTarget = actionType === 'update_page' ? { target_block: 'button' } : {};
+
+	const anchorLink = extractAnchorLink(message);
+	if (anchorLink) {
+		return {
+			action: actionType,
+			property: 'anchor_link',
+			value: anchorLink,
+			message: 'Anchor set.',
+			...actionTarget,
+		};
+	}
+
+	const ariaLabel = extractAriaLabel(message);
+	if (ariaLabel) {
+		return {
+			action: actionType,
+			property: 'aria_label',
+			value: ariaLabel,
+			message: 'Aria label set.',
+			...actionTarget,
+		};
+	}
+
 	const layoutAction = buildLayoutAGroupAction(message, {
 		...options,
 		targetBlock: 'button',
@@ -139,10 +170,11 @@ const normalizeValueWithBreakpoint = rawValue => {
 		return {
 			value: rawValue.value,
 			breakpoint: rawValue.breakpoint || null,
+			unit: rawValue.unit || null,
 		};
 	}
 
-	return { value: rawValue, breakpoint: null };
+	return { value: rawValue, breakpoint: null, unit: null };
 };
 
 
@@ -1613,9 +1645,9 @@ const extractCustomLabel = message => {
 
 const extractCustomCss = message => {
 	const raw = extractValueFromPatterns(message, [
-		/(?:custom|button)\s*css\s*(?:to|for|=|:|is)?\s*([\s\S]+)$/i,
 		/add\s*custom\s*css\s*(?:to|for)\s*(?:the\s*)?button\s*(?:=|:)?\s*([\s\S]+)$/i,
 		/add\s*css\s*(?:to|for)\s*(?:the\s*)?button\s*(?:=|:)?\s*([\s\S]+)$/i,
+		/(?:custom|button)\s*css\s*(?:to|for|=|:|is)?\s*([\s\S]+)$/i,
 	]);
 	if (!raw) return null;
 	const trimmed = raw.trim();
@@ -1775,6 +1807,14 @@ const buildButtonCGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
+	const sharedStyleAction = buildTextStyleGroupAction(message, {
+		scope,
+		targetBlock: 'button',
+	});
+	if (sharedStyleAction) {
+		return sharedStyleAction;
+	}
+
 	return null;
 };
 
@@ -1803,7 +1843,7 @@ const buildButtonCGroupAttributeChanges = (
 		case 'custom_formats_hover':
 			return buildCustomFormatsChanges(value, { isHover: true });
 		default:
-			return null;
+			return buildTextStyleGroupAttributeChanges(property, value);
 	}
 };
 
@@ -1831,7 +1871,7 @@ const getButtonCGroupSidebarTarget = property => {
 		return { tabIndex: 2, accordion: 'custom css' };
 	}
 
-	return null;
+	return getTextStyleGroupSidebarTarget(property);
 };
 
 return {
@@ -1917,6 +1957,19 @@ const normalizeValueWithBreakpoint = rawValue => {
 	return { value: rawValue, breakpoint: null };
 };
 
+const normalizeBooleanValue = rawValue => {
+	if (typeof rawValue === 'string') {
+		const normalized = rawValue.trim().toLowerCase();
+		if (['false', '0', 'no', 'off', 'disable', 'disabled'].includes(normalized)) {
+			return false;
+		}
+		if (['true', '1', 'yes', 'on', 'enable', 'enabled'].includes(normalized)) {
+			return true;
+		}
+	}
+	return Boolean(rawValue);
+};
+
 const parsePaletteColor = message => {
 	const match = message.match(/\b(?:palette|color)\s*(\d{1,2})\b/i);
 	if (!match) return null;
@@ -1986,6 +2039,11 @@ const extractIconName = message => {
 	]);
 	if (!raw) return null;
 
+	const normalizedRaw = String(raw).trim().toLowerCase().replace(/^the\s+/, '');
+	if (['left', 'right', 'top', 'bottom', 'start', 'end'].includes(normalizedRaw)) {
+		return null;
+	}
+
 	if (/(background|border|padding|spacing|size|width|height|color|stroke|fill)/i.test(raw)) {
 		return null;
 	}
@@ -2010,8 +2068,16 @@ const extractIconOnlyIntent = message => {
 	if (/(icon\s*only|only\s*icon|hide\s*text|remove\s*text|no\s*text)/.test(lower)) {
 		return true;
 	}
-	if (/(text\s*only|hide\s*icon|remove\s*icon|no\s*icon)/.test(lower)) {
-		return false;
+	return null;
+};
+
+const extractRemoveIconIntent = message => {
+	const lower = String(message || '').toLowerCase();
+	if (/(remove|hide|clear|disable|turn\s*off|no)\s*(?:the\s*)?icon/.test(lower)) {
+		return true;
+	}
+	if (/\btext\s*only\b/.test(lower)) {
+		return true;
 	}
 	return null;
 };
@@ -2028,11 +2094,23 @@ const extractIconInheritIntent = message => {
 	return null;
 };
 
+const extractArrowIconIntent = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!/arrow/.test(lower)) return null;
+	if (/callout/.test(lower)) return null;
+	if (/\bright\b/.test(lower)) return 'arrow-right';
+	if (/\bleft\b/.test(lower)) return 'arrow-left';
+	if (/\b(up|top)\b/.test(lower)) return 'arrow-up';
+	if (/\b(down|bottom)\b/.test(lower)) return 'arrow-down';
+	return 'arrow-right';
+};
+
 const extractIconHoverStatusIntent = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!lower.includes('icon') || !lower.includes('hover')) return null;
 	if (/(enable|show|turn\s*on|activate)/.test(lower)) return true;
-	if (/(disable|hide|turn\s*off|deactivate)/.test(lower)) return false;
+	if (/(disable|hide|turn\s*off|deactivate|remove|clear|\bno\b)/.test(lower))
+		return false;
 	return null;
 };
 
@@ -2072,6 +2150,31 @@ const extractIconBackgroundIntent = message => {
 		baseValue.color = `var(--maxi-color-${resolvedPalette})`;
 	}
 
+	const explicitRadius = parseBorderRadius(message);
+	const fallbackRadius = extractNumericValue(message, [
+		/(\d+(?:\.\d+)?)\s*px\b[^\d]*(?:corner|corners|radius|rounded)/i,
+		/(?:corner|corners|radius|rounded)\b[^\d]*(\d+(?:\.\d+)?)/i,
+	]);
+	const resolvedRadius = Number.isFinite(explicitRadius)
+		? explicitRadius
+		: fallbackRadius;
+	if (Number.isFinite(resolvedRadius)) {
+		baseValue.borderRadius = resolvedRadius;
+		baseValue.borderRadiusUnit = 'px';
+	} else if (/(circle|circular)\b/.test(lower)) {
+		baseValue.borderRadius = 50;
+		baseValue.borderRadiusUnit = '%';
+	} else if (/(pill|capsule)\b/.test(lower)) {
+		baseValue.borderRadius = 999;
+		baseValue.borderRadiusUnit = 'px';
+	} else if (/(square|sharp|no\s*round|no\s*rounded|straight\s*corners)\b/.test(lower)) {
+		baseValue.borderRadius = 0;
+		baseValue.borderRadiusUnit = 'px';
+	} else if (/\brounded\b/.test(lower) || /\bround\b/.test(lower)) {
+		baseValue.borderRadius = 8;
+		baseValue.borderRadiusUnit = 'px';
+	}
+
 	if (/gradient/.test(lower)) {
 		baseValue.activeMedia = 'gradient';
 		baseValue.activeMediaHover = 'gradient';
@@ -2088,6 +2191,7 @@ const extractIconBackgroundIntent = message => {
 		value: baseValue,
 	};
 };
+
 
 const extractIconBorderConfig = message => {
 	const lower = String(message || '').toLowerCase();
@@ -2115,11 +2219,13 @@ const extractIconBorderConfig = message => {
 const extractIconBorderRadius = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!lower.includes('icon')) return null;
+	if (/(background|bg)/.test(lower)) return null;
 	if (!/(corner|radius|rounded)/.test(lower)) return null;
 	const radius = parseBorderRadius(message);
 	if (!Number.isFinite(radius)) return null;
 	return { isHover: /hover/.test(lower), value: radius };
 };
+
 
 const extractIconPaddingValue = message => {
 	const lower = String(message || '').toLowerCase();
@@ -2178,6 +2284,7 @@ const extractIconStrokeWidth = message => {
 	if (!/(stroke\s*width|line\s*width|stroke\s*thickness)/.test(lower)) return null;
 	const value = extractNumericValue(message, [
 		/(\d+(?:\.\d+)?)\s*(?:px)?\s*(?:stroke\s*width|line\s*width|stroke\s*thickness)/i,
+		/(?:stroke\s*width|line\s*width|stroke\s*thickness)\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)(?:\s*px)?/i,
 	]);
 	if (!Number.isFinite(value)) return null;
 	return { isHover: /hover/.test(lower), value };
@@ -2255,10 +2362,14 @@ const normalizeIconBackgroundValue = rawValue => {
 };
 
 const buildIconBackgroundChanges = (value, { isHover = false } = {}) => {
-	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	const { value: rawValue, breakpoint, unit } = normalizeValueWithBreakpoint(value);
 	const base = normalizeIconBackgroundValue(rawValue);
 	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
 	const changes = {};
+	const radiusValue =
+		Number.isFinite(Number(base.borderRadius)) ? Number(base.borderRadius) : null;
+	const radiusUnit =
+		base.borderRadiusUnit || unit || (radiusValue !== null ? 'px' : null);
 
 	const state = isHover
 		? {
@@ -2340,6 +2451,15 @@ const buildIconBackgroundChanges = (value, { isHover = false } = {}) => {
 			base.position.unit;
 		changes[`icon-background-gradient-wrapper-position-sync${suffix}`] =
 			base.position.sync;
+
+		if (radiusValue !== null) {
+			changes[`icon-border-top-left-radius${suffix}`] = radiusValue;
+			changes[`icon-border-top-right-radius${suffix}`] = radiusValue;
+			changes[`icon-border-bottom-left-radius${suffix}`] = radiusValue;
+			changes[`icon-border-bottom-right-radius${suffix}`] = radiusValue;
+			changes[`icon-border-sync-radius${suffix}`] = 'all';
+			changes[`icon-border-unit-radius${suffix}`] = radiusUnit || 'px';
+		}
 	});
 
 	if (isHover) {
@@ -2516,7 +2636,7 @@ const buildBooleanBreakpointChanges = (
 	{ prefix = 'icon-', isHover = false } = {}
 ) => {
 	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-	const boolValue = Boolean(rawValue);
+	const boolValue = normalizeBooleanValue(rawValue);
 	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
 	const changes = {};
 
@@ -2577,29 +2697,25 @@ const buildIconColorChanges = (
 	value,
 	{ target = 'fill', isHover = false } = {}
 ) => {
-	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	const { value: rawValue } = normalizeValueWithBreakpoint(value);
 	if (rawValue === null || rawValue === undefined) return null;
 
 	const normalized = normalizeIconColorValue(rawValue);
-	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
 	const changes = {};
-
-	breakpoints.forEach(bp => {
-		const suffix = `-${bp}${isHover ? '-hover' : ''}`;
-		changes[`icon-${target}-palette-status${suffix}`] = normalized.isPalette;
-		changes[`icon-${target}-palette-color${suffix}`] = normalized.isPalette
-			? normalized.palette
-			: '';
-		changes[`icon-${target}-palette-opacity${suffix}`] = normalized.isPalette
-			? normalized.opacity
-			: '';
-		changes[`icon-${target}-palette-sc-status${suffix}`] = normalized.isPalette
-			? normalized.scStatus
-			: '';
-		changes[`icon-${target}-color${suffix}`] = normalized.isPalette
-			? ''
-			: normalized.color;
-	});
+	const suffix = isHover ? '-hover' : '';
+	changes[`icon-${target}-palette-status${suffix}`] = normalized.isPalette;
+	changes[`icon-${target}-palette-color${suffix}`] = normalized.isPalette
+		? normalized.palette
+		: '';
+	changes[`icon-${target}-palette-opacity${suffix}`] = normalized.isPalette
+		? normalized.opacity
+		: '';
+	changes[`icon-${target}-palette-sc-status${suffix}`] = normalized.isPalette
+		? normalized.scStatus
+		: '';
+	changes[`icon-${target}-color${suffix}`] = normalized.isPalette
+		? ''
+		: normalized.color;
 
 	changes['icon-inherit'] = false;
 
@@ -2652,6 +2768,17 @@ const buildButtonIGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
+	const removeIcon = extractRemoveIconIntent(message);
+	if (removeIcon) {
+		return {
+			action: actionType,
+			property: 'button_icon',
+			value: 'none',
+			message: 'Removed icon.',
+			...actionTarget,
+		};
+	}
+
 	const iconOnly = extractIconOnlyIntent(message);
 	if (typeof iconOnly === 'boolean') {
 		return {
@@ -2672,6 +2799,28 @@ const buildButtonIGroupAction = (message, { scope = 'selection' } = {}) => {
 			message: iconInherit
 				? 'Icon inherits text color.'
 				: 'Icon uses its own color.',
+			...actionTarget,
+		};
+	}
+
+	const arrowIcon = extractArrowIconIntent(message);
+	if (arrowIcon) {
+		return {
+			action: actionType,
+			property: 'icon_content',
+			value: arrowIcon,
+			message: 'Icon updated.',
+			...actionTarget,
+		};
+	}
+
+	const iconName = extractIconName(message);
+	if (iconName) {
+		return {
+			action: actionType,
+			property: 'icon_content',
+			value: iconName,
+			message: 'Icon updated.',
 			...actionTarget,
 		};
 	}
@@ -2824,17 +2973,6 @@ const buildButtonIGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	const iconName = extractIconName(message);
-	if (iconName) {
-		return {
-			action: actionType,
-			property: 'icon_content',
-			value: iconName,
-			message: 'Icon updated.',
-			...actionTarget,
-		};
-	}
-
 	return null;
 };
 
@@ -2916,17 +3054,23 @@ const buildButtonIGroupAttributeChanges = (property, value) => {
 				'icon-status-hover': true,
 			};
 		case 'icon_only':
-			return { 'icon-only': Boolean(value) };
+			return { 'icon-only': normalizeBooleanValue(value) };
 		case 'icon_only_hover':
-			return { 'icon-only-hover': Boolean(value), 'icon-status-hover': true };
+			return {
+				'icon-only-hover': normalizeBooleanValue(value),
+				'icon-status-hover': true,
+			};
 		case 'icon_inherit':
-			return { 'icon-inherit': Boolean(value) };
+			return { 'icon-inherit': normalizeBooleanValue(value) };
 		case 'icon_inherit_hover':
-			return { 'icon-inherit-hover': Boolean(value), 'icon-status-hover': true };
+			return {
+				'icon-inherit-hover': normalizeBooleanValue(value),
+				'icon-status-hover': true,
+			};
 		case 'icon_status_hover':
-			return { 'icon-status-hover': Boolean(value) };
+			return { 'icon-status-hover': normalizeBooleanValue(value) };
 		case 'icon_status_hover_target':
-			return { 'icon-status-hover-target': Boolean(value) };
+			return { 'icon-status-hover-target': normalizeBooleanValue(value) };
 		default:
 			return null;
 	}

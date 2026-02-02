@@ -472,7 +472,7 @@ class MaxiRowCarouselEditor {
 		// Set up drag events
 		this._wrapper.addEventListener('mousedown', this.onDragStart);
 		this._wrapper.addEventListener('touchstart', this.onDragStart, {
-			passive: true,
+			passive: false,
 		});
 	}
 
@@ -619,8 +619,10 @@ class MaxiRowCarouselEditor {
 		const offset = this.calculateOffset(index);
 		this._wrapper.style.transform = `translateX(-${offset}px)`;
 
-		this._columns.forEach((col, i) => {
-			col.isActive = i === index;
+		// Get the active column's id and pass it to each column's isActive setter
+		const activeColumnId = column._id;
+		this._columns.forEach(col => {
+			col.isActive = activeColumnId;
 		});
 
 		this.updateDots();
@@ -641,15 +643,22 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnNext() {
+		const maxColumn = Math.max(
+			0,
+			this._columns.length - this.slidesPerView
+		);
+
 		// If loop is disabled, prevent going beyond last valid position
 		if (!this.loop) {
-			const maxColumn = this._columns.length - this.slidesPerView;
 			if (this.currentColumn >= maxColumn) {
 				return; // Already at the end
 			}
+			this.currentColumn += this.slidesPerView;
+		} else {
+			// Wrap around when loop is enabled
+			this.currentColumn =
+				(this.currentColumn + this.slidesPerView) % (maxColumn + 1);
 		}
-
-		this.currentColumn += this.slidesPerView;
 
 		this.columnAction();
 		this.updateArrowStates();
@@ -660,14 +669,23 @@ class MaxiRowCarouselEditor {
 	}
 
 	columnPrev() {
+		const maxColumn = Math.max(
+			0,
+			this._columns.length - this.slidesPerView
+		);
+
 		// If loop is disabled, prevent going before first slide
 		if (!this.loop) {
 			if (this.currentColumn <= 0) {
 				return; // Already at the beginning
 			}
+			this.currentColumn -= this.slidesPerView;
+		} else {
+			// Wrap around when loop is enabled
+			this.currentColumn =
+				(this.currentColumn - this.slidesPerView + (maxColumn + 1)) %
+				(maxColumn + 1);
 		}
-
-		this.currentColumn -= this.slidesPerView;
 
 		this.columnAction();
 		this.updateArrowStates();
@@ -1078,6 +1096,7 @@ class MaxiRowCarouselEditor {
 					// Remove inline styles
 					resizer.style.width = '';
 					resizer.style.minWidth = '';
+					resizer.style.flexBasis = '';
 					resizer.style.marginRight = '';
 					resizer.style.opacity = '';
 

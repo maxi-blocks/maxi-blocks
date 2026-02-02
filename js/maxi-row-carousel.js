@@ -599,11 +599,13 @@ class MaxiRowCarousel {
 			this.peekOffset;
 		this._tracker.style.width = `${trackerWidth}px`;
 
-		// Set each column to its original width explicitly
+		// Set each column to its original width explicitly and update cached size
 		this._columns.forEach(column => {
 			column._column.style.width = `${firstColumnWidth}px`;
 			column._column.style.minWidth = `${firstColumnWidth}px`;
 			column._column.style.flexBasis = `${firstColumnWidth}px`;
+			// Update cached size to reflect new width after setting styles
+			column.size = column._column.getBoundingClientRect();
 		});
 
 		// Also set widths for cloned columns
@@ -780,6 +782,12 @@ class MaxiRowCarousel {
 			this._container.getAttribute('data-active-dot-icon') ||
 			dotIconContent;
 
+		// Calculate last valid start position to prevent overshoot
+		const lastStart = Math.max(
+			0,
+			this.numberOfColumns - this.slidesPerView
+		);
+
 		// Create dots based on number of slides, not columns
 		for (let i = 0; i < this.numberOfSlides; i++) {
 			const dot = document.createElement('span');
@@ -797,11 +805,11 @@ class MaxiRowCarousel {
 				dot.appendChild(iconWrapper);
 			}
 			// Click on dot navigates to that slide (index * slidesPerView)
+			// Clamp target to lastStart to prevent overshooting
 			// Don't add click listener to active dot - it's already active
 			if (!isActive) {
-				dot.addEventListener('click', () =>
-					this.exactColumn(i * this.slidesPerView)
-				);
+				const target = Math.min(i * this.slidesPerView, lastStart);
+				dot.addEventListener('click', () => this.exactColumn(target));
 				dot._hasClickListener = true;
 			}
 			this._dotsContainer.appendChild(dot);
@@ -913,15 +921,24 @@ class MaxiRowCarousel {
 	}
 
 	columnNext() {
+		// Calculate last valid start position to prevent overshoot
+		const lastStart = Math.max(
+			0,
+			this.numberOfColumns - this.slidesPerView
+		);
+
 		// If loop is disabled, prevent going beyond last slide
 		if (!this.isLoop) {
-			const maxColumn = this.numberOfColumns - this.slidesPerView;
-			if (this.currentColumn >= maxColumn) {
+			if (this.currentColumn >= lastStart) {
 				return; // Already at the end
 			}
 		}
 
-		this.currentColumn += this.slidesPerView;
+		// Clamp to lastStart to prevent overshooting
+		this.currentColumn = Math.min(
+			this.currentColumn + this.slidesPerView,
+			lastStart
+		);
 		this.columnAction();
 		this.updateArrowStates();
 	}
@@ -934,13 +951,23 @@ class MaxiRowCarousel {
 			}
 		}
 
-		this.currentColumn -= this.slidesPerView;
+		// Clamp to 0 to prevent going negative
+		this.currentColumn = Math.max(
+			0,
+			this.currentColumn - this.slidesPerView
+		);
 		this.columnAction();
 		this.updateArrowStates();
 	}
 
 	exactColumn(column) {
-		this.currentColumn = column;
+		// Calculate last valid start position to prevent overshoot
+		const lastStart = Math.max(
+			0,
+			this.numberOfColumns - this.slidesPerView
+		);
+		// Clamp column to valid range [0, lastStart]
+		this.currentColumn = Math.min(Math.max(0, column), lastStart);
 		this.columnAction();
 		this.updateArrowStates();
 	}

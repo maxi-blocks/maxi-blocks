@@ -584,6 +584,13 @@ const NavigationIconControl = props => {
 							)}
 							{svgType !== 'Shape' && (
 								<SvgStrokeWidthControl
+									// Include normal prefix attributes for placeholder fallback when in active state
+									{...(isActive &&
+										getGroupAttributes(
+											props,
+											'dotIcon',
+											isHover
+										))}
 									{...getGroupAttributes(
 										props,
 										groupLabel,
@@ -636,6 +643,11 @@ const NavigationIconControl = props => {
 											});
 									}}
 									prefix={prefix}
+									normalPrefix={
+										isActive
+											? 'navigation-dot-icon-'
+											: undefined
+									}
 									customLabel={`${capitalize(
 										label
 									)} stroke width`}

@@ -883,47 +883,141 @@ const buildListValueChanges = (key, value) => {
 	return changes;
 };
 
-const buildListPaletteColorChanges = value => {
-	const numeric = Number(normalizePaletteValue(value));
+const buildListPaletteColorChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	const numeric = Number(normalizePaletteValue(rawValue));
 	if (!Number.isFinite(numeric)) return null;
-	return {
-		'list-palette-status': true,
-		'list-palette-color': numeric,
-		'list-color': '',
-	};
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`list-palette-status-${bp}${suffix}`] = true;
+		changes[`list-palette-color-${bp}${suffix}`] = numeric;
+		changes[`list-color-${bp}${suffix}`] = '';
+	});
+
+	if (!breakpoint && !isHover) {
+		changes['list-palette-status'] = true;
+		changes['list-palette-color'] = numeric;
+		changes['list-color'] = '';
+	}
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
-const buildListPaletteOpacityChanges = value => {
-	const opacity = normalizeOpacityValue(value);
+const buildListPaletteOpacityChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	const opacity = normalizeOpacityValue(rawValue);
 	if (opacity === null || opacity === undefined) return null;
-	return { 'list-palette-opacity': opacity };
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`list-palette-opacity-${bp}${suffix}`] = opacity;
+	});
+
+	if (!breakpoint && !isHover) {
+		changes['list-palette-opacity'] = opacity;
+	}
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
-const buildListPaletteStatusChanges = value => {
-	if (value === null || value === undefined) return null;
-	return { 'list-palette-status': Boolean(value) };
+const buildListPaletteStatusChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	if (rawValue === null || rawValue === undefined) return null;
+	const status = Boolean(rawValue);
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`list-palette-status-${bp}${suffix}`] = status;
+	});
+
+	if (!breakpoint && !isHover) {
+		changes['list-palette-status'] = status;
+	}
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
-const buildListPaletteScStatusChanges = value => {
-	if (value === null || value === undefined) return null;
-	return { 'list-palette-sc-status': Boolean(value) };
+const buildListPaletteScStatusChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	if (rawValue === null || rawValue === undefined) return null;
+	const status = Boolean(rawValue);
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`list-palette-sc-status-${bp}${suffix}`] = status;
+	});
+
+	if (!breakpoint && !isHover) {
+		changes['list-palette-sc-status'] = status;
+	}
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
-const buildListColorChanges = value => {
-	const normalized = normalizePaletteValue(value);
+const buildListColorChanges = (value, { isHover = false } = {}) => {
+	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
+	const normalized = normalizePaletteValue(rawValue);
 	if (normalized === null || normalized === undefined) return null;
 	const numeric = Number(normalized);
 	if (Number.isFinite(numeric) && typeof normalized !== 'string') {
-		return buildListPaletteColorChanges(numeric);
+		return buildListPaletteColorChanges(
+			{ value: numeric, breakpoint },
+			{ isHover }
+		);
 	}
 	if (Number.isFinite(numeric) && /^\d+$/.test(String(normalized))) {
-		return buildListPaletteColorChanges(numeric);
+		return buildListPaletteColorChanges(
+			{ value: numeric, breakpoint },
+			{ isHover }
+		);
 	}
-	return {
-		'list-palette-status': false,
-		'list-palette-color': '',
-		'list-color': normalized,
-	};
+
+	const breakpoints = breakpoint ? [breakpoint] : RESPONSIVE_BREAKPOINTS;
+	const suffix = isHover ? '-hover' : '';
+	const changes = {};
+
+	breakpoints.forEach(bp => {
+		changes[`list-palette-status-${bp}${suffix}`] = false;
+		changes[`list-palette-color-${bp}${suffix}`] = '';
+		changes[`list-color-${bp}${suffix}`] = normalized;
+	});
+
+	if (!breakpoint && !isHover) {
+		changes['list-palette-status'] = false;
+		changes['list-palette-color'] = '';
+		changes['list-color'] = normalized;
+	}
+
+	if (isHover) {
+		changes['typography-status-hover'] = true;
+	}
+
+	return changes;
 };
 
 const extractListStatus = message => {
@@ -1112,6 +1206,7 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget = actionType === 'update_page' ? { target_block: 'text' } : {};
 	const breakpoint = extractBreakpointToken(message);
+	const isHover = /\bhover\b/.test(lower);
 
 	const listStatus = extractListStatus(message);
 	if (listStatus === false) {
@@ -1353,8 +1448,8 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	if (Number.isFinite(paletteOpacity)) {
 		return {
 			action: actionType,
-			property: 'list_palette_opacity',
-			value: paletteOpacity,
+			property: isHover ? 'list_palette_opacity_hover' : 'list_palette_opacity',
+			value: breakpoint ? { value: paletteOpacity, breakpoint } : paletteOpacity,
 			message: 'List palette opacity updated.',
 			...actionTarget,
 		};
@@ -1364,8 +1459,8 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	if (typeof paletteScStatus === 'boolean') {
 		return {
 			action: actionType,
-			property: 'list_palette_sc_status',
-			value: paletteScStatus,
+			property: isHover ? 'list_palette_sc_status_hover' : 'list_palette_sc_status',
+			value: breakpoint ? { value: paletteScStatus, breakpoint } : paletteScStatus,
 			message: 'List style card palette status updated.',
 			...actionTarget,
 		};
@@ -1375,8 +1470,8 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	if (typeof paletteStatus === 'boolean') {
 		return {
 			action: actionType,
-			property: 'list_palette_status',
-			value: paletteStatus,
+			property: isHover ? 'list_palette_status_hover' : 'list_palette_status',
+			value: breakpoint ? { value: paletteStatus, breakpoint } : paletteStatus,
 			message: 'List palette status updated.',
 			...actionTarget,
 		};
@@ -1386,8 +1481,8 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	if (Number.isFinite(paletteColor)) {
 		return {
 			action: actionType,
-			property: 'list_palette_color',
-			value: paletteColor,
+			property: isHover ? 'list_palette_color_hover' : 'list_palette_color',
+			value: breakpoint ? { value: paletteColor, breakpoint } : paletteColor,
 			message: 'List palette color updated.',
 			...actionTarget,
 		};
@@ -1397,8 +1492,8 @@ const buildTextListGroupAction = (message, { scope = 'selection' } = {}) => {
 	if (listColor !== null) {
 		return {
 			action: actionType,
-			property: 'list_color',
-			value: listColor,
+			property: isHover ? 'list_color_hover' : 'list_color',
+			value: breakpoint ? { value: listColor, breakpoint } : listColor,
 			message: 'List color updated.',
 			...actionTarget,
 		};
@@ -1428,10 +1523,15 @@ const LIST_PROPERTY_ALIASES = {
 	liststyleposition: 'list_style_position',
 	listtextposition: 'list_text_position',
 	listpalettecolor: 'list_palette_color',
+	listpalettecolorhover: 'list_palette_color_hover',
 	listpaletteopacity: 'list_palette_opacity',
+	listpaletteopacityhover: 'list_palette_opacity_hover',
 	listpalettestatus: 'list_palette_status',
+	listpalettestatushover: 'list_palette_status_hover',
 	listpalettescstatus: 'list_palette_sc_status',
+	listpalettescstatushover: 'list_palette_sc_status_hover',
 	listcolor: 'list_color',
+	listcolorhover: 'list_color_hover',
 	listgap: 'list_gap',
 	listmarkerheight: 'list_marker_height',
 	listmarkerlineheight: 'list_marker_line_height',
@@ -1446,15 +1546,25 @@ const buildTextListGroupAttributeChanges = (property, value) => {
 
 	switch (mapped) {
 		case 'list_color':
-			return buildListColorChanges(rawValue);
+			return buildListColorChanges(value, { isHover: false });
+		case 'list_color_hover':
+			return buildListColorChanges(value, { isHover: true });
 		case 'list_palette_color':
-			return buildListPaletteColorChanges(rawValue);
+			return buildListPaletteColorChanges(value, { isHover: false });
+		case 'list_palette_color_hover':
+			return buildListPaletteColorChanges(value, { isHover: true });
 		case 'list_palette_opacity':
-			return buildListPaletteOpacityChanges(rawValue);
+			return buildListPaletteOpacityChanges(value, { isHover: false });
+		case 'list_palette_opacity_hover':
+			return buildListPaletteOpacityChanges(value, { isHover: true });
 		case 'list_palette_status':
-			return buildListPaletteStatusChanges(rawValue);
+			return buildListPaletteStatusChanges(value, { isHover: false });
+		case 'list_palette_status_hover':
+			return buildListPaletteStatusChanges(value, { isHover: true });
 		case 'list_palette_sc_status':
-			return buildListPaletteScStatusChanges(rawValue);
+			return buildListPaletteScStatusChanges(value, { isHover: false });
+		case 'list_palette_sc_status_hover':
+			return buildListPaletteScStatusChanges(value, { isHover: true });
 		case 'list_gap':
 			return buildListUnitChanges('list-gap', value, 'em');
 		case 'list_indent':
@@ -1576,10 +1686,15 @@ const getTextListGroupSidebarTarget = property => {
 			'list_start',
 			'list_reversed',
 			'list_color',
+			'list_color_hover',
 			'list_palette_color',
+			'list_palette_color_hover',
 			'list_palette_opacity',
+			'list_palette_opacity_hover',
 			'list_palette_status',
+			'list_palette_status_hover',
 			'list_palette_sc_status',
+			'list_palette_sc_status_hover',
 			'list_gap',
 			'list_indent',
 			'list_marker_indent',

@@ -42,6 +42,28 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - Target property: background_color.
 - Value: palette number (1-8) or CSS var (preferred).
 
+#### CALLOUT ARROW
+- Target properties: arrow_status, arrow_side, arrow_position, arrow_width.
+  - "Show the callout arrow." -> { "arrow_status": true }
+  - "Hide the callout arrow." -> { "arrow_status": false }
+  - "Move the arrow to the top." -> { "arrow_side": "top" }
+  - "Set arrow position to 60." -> { "arrow_position": 60 }
+  - "Make the arrow 40px wide." -> { "arrow_width": 40 }
+  - "On tablet, make the arrow 40px wide." -> { "arrow_width": { "value": 40, "breakpoint": "m" } }
+
+#### CONTEXT LOOP
+- Target property: context_loop.
+  - "Enable a blog loop." -> { "context_loop": { "status": true, "type": "post", "perPage": 6 } }
+  - "Enable a product loop." -> { "context_loop": { "status": true, "type": "product", "perPage": 8 } }
+  - "Related content loop." -> { "context_loop": { "status": true, "relation": "related" } }
+  - "Newest first." -> { "context_loop": { "orderBy": "date", "order": "desc" } }
+  - "Oldest first." -> { "context_loop": { "orderBy": "date", "order": "asc" } }
+  - "Alphabetical A-Z." -> { "context_loop": { "orderBy": "title", "order": "asc" } }
+  - "Random order." -> { "context_loop": { "orderBy": "rand" } }
+  - "Enable pagination." -> { "pagination": true }
+  - "Use load more pagination." -> { "pagination_type": "load_more" }
+  - "Set load more text to View more." -> { "pagination_load_more_label": "View more" }
+
 ### INTERNAL META / FLOW (DOCUMENTED)
 
 These properties are used by handlers for multi-step interactions.

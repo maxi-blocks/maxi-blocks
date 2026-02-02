@@ -42,6 +42,12 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - Target property: background_color.
 - Value: palette number (1-8) or CSS var (preferred).
 
+#### COLUMN SIZE
+- Column size (percentage): property "column_size" with number (0-100).
+  - Example: "Set column width to 40%." -> { "column_size": 40 }
+- Fit content (auto width): property "column_fit_content" with true | false.
+  - Example: "Fit column to content." -> { "column_fit_content": true }
+
 ### INTERNAL META / FLOW (DOCUMENTED)
 
 These properties are used by handlers for multi-step interactions.
@@ -82,6 +88,22 @@ Execution:
   "property": "background_color",
   "value": "var(--bg-1)",
   "message": "Applied a theme background."
+}
+
+Execution (column size):
+{
+  "action": "update_selection",
+  "property": "column_size",
+  "value": 40,
+  "message": "Column size updated."
+}
+
+Execution (fit content):
+{
+  "action": "update_selection",
+  "property": "column_fit_content",
+  "value": true,
+  "message": "Column set to fit content."
 }
 
 Execution (page scope):

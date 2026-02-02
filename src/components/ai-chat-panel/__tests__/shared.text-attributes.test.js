@@ -71,6 +71,49 @@ const SHARED_SAMPLES = [
 		expectedKey: 'text-shadow-general',
 		expectedValue: '2px 4px 6px #000000',
 	},
+	{
+		phrase: 'Set vertical align to middle',
+		property: 'text_vertical_align',
+		expectedKey: 'vertical-align-general',
+		expectedValue: 'middle',
+	},
+	{
+		phrase: 'On hover, set vertical align to super',
+		property: 'text_vertical_align_hover',
+		expectedKey: 'vertical-align-general-hover',
+		expectedValue: 'super',
+		expectHoverStatus: true,
+	},
+	{
+		phrase: 'Set white space to nowrap',
+		property: 'text_white_space',
+		expectedKey: 'white-space-general',
+		expectedValue: 'nowrap',
+	},
+	{
+		phrase: 'On hover, set white space to pre-wrap',
+		property: 'text_white_space_hover',
+		expectedKey: 'white-space-general-hover',
+		expectedValue: 'pre-wrap',
+		expectHoverStatus: true,
+	},
+	{
+		phrase: 'Set word spacing to 0.2em',
+		property: 'text_word_spacing',
+		expectedKey: 'word-spacing-general',
+		expectedValue: 0.2,
+		expectedUnitKey: 'word-spacing-unit-general',
+		expectedUnitValue: 'em',
+	},
+	{
+		phrase: 'On hover, set word spacing to 0.3em',
+		property: 'text_word_spacing_hover',
+		expectedKey: 'word-spacing-general-hover',
+		expectedValue: 0.3,
+		expectedUnitKey: 'word-spacing-unit-general-hover',
+		expectedUnitValue: 'em',
+		expectHoverStatus: true,
+	},
 ];
 
 const runSuite = ({ label, buildAction, buildChanges, getSidebar }) => {

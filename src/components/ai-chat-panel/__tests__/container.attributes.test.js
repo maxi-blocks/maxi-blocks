@@ -1,3 +1,16 @@
+jest.mock(
+	'@components/background-control/utils',
+	() => ({
+		getDefaultLayerWithBreakpoint: () => ({
+			id: 1,
+			order: 0,
+			type: 'color',
+		}),
+		getLayerLabel: () => 'Color',
+	}),
+	{ virtual: true }
+);
+
 import rawAttributes from '../ai/attributes/maxi-block-attributes.json';
 import {
 	buildContainerAGroupAction,
@@ -1229,6 +1242,13 @@ describe('container H attributes', () => {
 				property: 'height',
 				value: { value: 420, unit: 'px' },
 				assert: action => action.value && action.value.value === 420,
+			},
+			{
+				phrase: 'Set height to 10 vh',
+				property: 'height',
+				value: { value: 10, unit: 'vh' },
+				assert: action =>
+					action.value && action.value.value === 10 && action.value.unit === 'vh',
 			},
 			{
 				phrase: 'Set tablet height to 320px',
@@ -2653,7 +2673,7 @@ describe('container T attributes', () => {
 			border: {
 				'transition-duration-general': 0.3,
 				'transition-delay-general': 0,
-				easing-general: 'ease',
+				'easing-general': 'ease',
 				'transition-status-general': true,
 			},
 		},
@@ -2661,7 +2681,7 @@ describe('container T attributes', () => {
 			container: {
 				'transition-duration-general': 0.3,
 				'transition-delay-general': 0,
-				easing-general: 'ease',
+				'easing-general': 'ease',
 				'transition-status-general': true,
 			},
 		},

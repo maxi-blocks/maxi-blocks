@@ -18,6 +18,10 @@ import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
+import { getAccordionSidebarTarget } from './ai/blocks/accordion';
+import { getColumnSidebarTarget } from './ai/blocks/column';
+import { getDividerSidebarTarget } from './ai/blocks/divider';
+import { getImageSidebarTarget } from './ai/blocks/image';
 import {
 	buildAdvancedCssAGroupAction,
 	buildAdvancedCssAGroupAttributeChanges,
@@ -651,6 +655,9 @@ const ACTION_PROPERTY_ALIASES = {
 	flexWrap: 'flex_wrap',
 	rowGap: 'row_gap',
 	columnGap: 'column_gap',
+	columnSize: 'column_size',
+	columnWidth: 'column_size',
+	columnFitContent: 'column_fit_content',
 	arrowStatus: 'arrow_status',
 	arrowSide: 'arrow_side',
 	arrowPosition: 'arrow_position',
@@ -1459,6 +1466,42 @@ const ACTION_PROPERTY_ALIASES = {
 		]);
 	};
 
+	const extractColumnSize = message => {
+		if (!message) return null;
+		const percentMatch = message.match(
+			/(\d+(?:\.\d+)?)\s*(%|percent|percentage)\b/i
+		);
+		if (percentMatch) {
+			const numeric = Number(percentMatch[1]);
+			return Number.isFinite(numeric) ? numeric : null;
+		}
+		const columnMatch = message.match(
+			/\bcolumn\b.*\b(?:width|size)\b.*?(\d+(?:\.\d+)?)/i
+		);
+		if (columnMatch) {
+			const numeric = Number(columnMatch[1]);
+			return Number.isFinite(numeric) ? numeric : null;
+		}
+		return null;
+	};
+
+	const extractDividerValue = message => {
+		if (!message) return null;
+		const percentMatch = message.match(
+			/(-?\d+(?:\.\d+)?)\s*(%|percent|percentage)\b/i
+		);
+		if (percentMatch) return `${percentMatch[1]}%`;
+
+		const unitMatch = message.match(
+			/(-?\d+(?:\.\d+)?)\s*(px|em|rem|vw)\b/i
+		);
+		if (unitMatch) return `${unitMatch[1]}${unitMatch[2]}`;
+
+		const numericMatch = message.match(/(-?\d+(?:\.\d+)?)/);
+		if (numericMatch) return Number(numericMatch[1]);
+		return null;
+	};
+
 	const resolveImageRatioValue = (width, height) => {
 		const ratioKey = `${width}/${height}`;
 		const ratioMap = {
@@ -1487,6 +1530,11 @@ const ACTION_PROPERTY_ALIASES = {
 			case 'button_url':
 			case 'mediaURL':
 				return extractUrl(message);
+			case 'column_size':
+				return extractColumnSize(message);
+			case 'divider_weight':
+			case 'divider_size':
+				return extractDividerValue(message);
 			default:
 				return null;
 		}
@@ -2027,8 +2075,19 @@ const ACTION_PROPERTY_ALIASES = {
 			return { value: rawValue, unit: fallbackUnit };
 		}
 
+		if (typeof rawValue === 'object') {
+			const size =
+				rawValue.value ??
+				rawValue.size ??
+				rawValue.height ??
+				rawValue.width ??
+				rawValue.amount;
+			const unit = rawValue.unit || fallbackUnit;
+			return { value: Number(size) || 0, unit };
+		}
+
 		const raw = String(rawValue).trim();
-		const match = raw.match(/^(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem)?$/i);
+		const match = raw.match(/^(-?\d+(?:\.\d+)?)(?:\s*(px|%|vh|vw|em|rem|ch))?$/i);
 		if (match) {
 			return { value: Number(match[1]), unit: match[2] || fallbackUnit };
 		}
@@ -3959,6 +4018,18 @@ const ACTION_PROPERTY_ALIASES = {
 				value: { value, breakpoint },
 			};
 		}
+		if (baseProperty === 'column_size' && breakpoint) {
+			return {
+				property: 'column_size',
+				value: { value, breakpoint },
+			};
+		}
+		if (baseProperty === 'column_fit_content' && breakpoint) {
+			return {
+				property: 'column_fit_content',
+				value: { value, breakpoint },
+			};
+		}
 
 		if (
 			[
@@ -4334,6 +4405,50 @@ const ACTION_PROPERTY_ALIASES = {
 			if (dcTarget) {
 				openSidebarAccordion(dcTarget.tabIndex, dcTarget.accordion);
 				return;
+			}
+			const isAccordionBlock = selectedBlock?.name?.includes('accordion');
+			if (isAccordionBlock) {
+				const accordionTarget = getAccordionSidebarTarget(normalizedProperty);
+				if (accordionTarget) {
+					openSidebarAccordion(
+						accordionTarget.tabIndex,
+						accordionTarget.accordion
+					);
+					return;
+				}
+			}
+			const isColumnBlock = selectedBlock?.name?.includes('column');
+			if (isColumnBlock) {
+				const columnTarget = getColumnSidebarTarget(normalizedProperty);
+				if (columnTarget) {
+					openSidebarAccordion(
+						columnTarget.tabIndex,
+						columnTarget.accordion
+					);
+					return;
+				}
+			}
+			const isDividerBlock = selectedBlock?.name?.includes('divider');
+			if (isDividerBlock) {
+				const dividerTarget = getDividerSidebarTarget(normalizedProperty);
+				if (dividerTarget) {
+					openSidebarAccordion(
+						dividerTarget.tabIndex,
+						dividerTarget.accordion
+					);
+					return;
+				}
+			}
+			const isImageBlock = selectedBlock?.name?.includes('image');
+			if (isImageBlock) {
+				const imageTarget = getImageSidebarTarget(normalizedProperty);
+				if (imageTarget) {
+					openSidebarAccordion(
+						imageTarget.tabIndex,
+						imageTarget.accordion
+					);
+					return;
+				}
 			}
 			const isButtonBlock = selectedBlock?.name?.includes('button');
 			if (isButtonBlock) {
@@ -5916,6 +6031,8 @@ const ACTION_PROPERTY_ALIASES = {
 		// W-group: width + fit-content (explicit phrasing)
 		const wGroupAction = buildContainerWGroupAction(rawMessage, {
 			scope: currentScope,
+			targetBlock: selectedBlock?.name?.includes('column') ? 'column' : null,
+			blockName: selectedBlock?.name,
 		});
 		if (wGroupAction) {
 			queueDirectAction(wGroupAction);
@@ -6341,6 +6458,7 @@ const ACTION_PROPERTY_ALIASES = {
 
 
 		const getRequestedTarget = () => {
+			if (lowerMessage.includes('accordion')) return 'accordion';
 			if (lowerMessage.includes('video')) return 'video';
 			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
 			if (lowerMessage.includes('button')) return 'button';
@@ -6353,6 +6471,7 @@ const ACTION_PROPERTY_ALIASES = {
 			if (lowerMessage.includes('container') || lowerMessage.includes('section')) return 'container';
 
 			if (selectedBlock?.name) {
+				if (selectedBlock.name.includes('accordion')) return 'accordion';
 				if (selectedBlock.name.includes('video')) return 'video';
 				if (selectedBlock.name.includes('image')) return 'image';
 				if (selectedBlock.name.includes('button')) return 'button';
@@ -6447,7 +6566,7 @@ const ACTION_PROPERTY_ALIASES = {
 				if (hasShapeDividerIntent && pattern.target === 'divider') {
 					continue;
 				}
-				const isTargetedPattern = ['button', 'image', 'container', 'divider', 'text', 'video'].includes(pattern.target);
+				const isTargetedPattern = ['accordion', 'button', 'image', 'container', 'column', 'divider', 'text', 'video'].includes(pattern.target);
 				if (requestedTarget && isTargetedPattern && pattern.target !== requestedTarget) {
 					continue;
 				}

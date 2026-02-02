@@ -385,7 +385,9 @@ describe('text list attributes', () => {
 		/^list-style-position-(general|xxl|xl|l|m|s|xs)$/,
 		/^list-text-position-(general|xxl|xl|l|m|s|xs)$/,
 		/^list-color$/,
+		/^list-color-(general|xxl|xl|l|m|s|xs)(-hover)?$/,
 		/^list-palette-(color|opacity|status|sc-status)$/,
+		/^list-palette-(color|opacity|status|sc-status)-(general|xxl|xl|l|m|s|xs)(-hover)?$/,
 	];
 
 	const listAttributes = textAttributes.filter(
@@ -412,8 +414,15 @@ describe('text list attributes', () => {
 	const LIST_STYLE_POSITION = 'inside';
 	const LIST_TEXT_POSITION = 'middle';
 	const LIST_COLOR = '#ff0055';
+	const LIST_COLOR_HOVER = '#00aaee';
 	const LIST_PALETTE_COLOR = 4;
+	const LIST_PALETTE_COLOR_HOVER = 6;
 	const LIST_PALETTE_OPACITY = 0.6;
+	const LIST_PALETTE_OPACITY_HOVER = 0.4;
+	const LIST_PALETTE_STATUS = true;
+	const LIST_PALETTE_STATUS_HOVER = false;
+	const LIST_PALETTE_SC_STATUS = true;
+	const LIST_PALETTE_SC_STATUS_HOVER = false;
 	const LIST_START = 3;
 
 	const buildExpectedForAttribute = attribute => {
@@ -477,12 +486,63 @@ describe('text list attributes', () => {
 			};
 		}
 
+		const listColorMatch = attribute.match(
+			/^list-color-(general|xxl|xl|l|m|s|xs)(-hover)?$/
+		);
+		if (listColorMatch) {
+			const breakpoint = listColorMatch[1];
+			const isHover = Boolean(listColorMatch[2]);
+			const color = isHover ? LIST_COLOR_HOVER : LIST_COLOR;
+			return {
+				property: isHover ? 'list_color_hover' : 'list_color',
+				value: { value: color, breakpoint },
+				expectedKey: attribute,
+				expectedValue: color,
+				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
+			};
+		}
+
 		if (attribute === 'list-color') {
 			return {
 				property: 'list_color',
 				value: LIST_COLOR,
 				expectedKey: attribute,
 				expectedValue: LIST_COLOR,
+				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
+			};
+		}
+
+		const listPaletteMatch = attribute.match(
+			/^list-palette-(color|opacity|status|sc-status)-(general|xxl|xl|l|m|s|xs)(-hover)?$/
+		);
+		if (listPaletteMatch) {
+			const type = listPaletteMatch[1];
+			const breakpoint = listPaletteMatch[2];
+			const isHover = Boolean(listPaletteMatch[3]);
+			const paletteValueMap = {
+				color: isHover ? LIST_PALETTE_COLOR_HOVER : LIST_PALETTE_COLOR,
+				opacity: isHover ? LIST_PALETTE_OPACITY_HOVER : LIST_PALETTE_OPACITY,
+				status: isHover ? LIST_PALETTE_STATUS_HOVER : LIST_PALETTE_STATUS,
+				'sc-status': isHover
+					? LIST_PALETTE_SC_STATUS_HOVER
+					: LIST_PALETTE_SC_STATUS,
+			};
+			const propertyMap = {
+				color: isHover ? 'list_palette_color_hover' : 'list_palette_color',
+				opacity: isHover
+					? 'list_palette_opacity_hover'
+					: 'list_palette_opacity',
+				status: isHover ? 'list_palette_status_hover' : 'list_palette_status',
+				'sc-status': isHover
+					? 'list_palette_sc_status_hover'
+					: 'list_palette_sc_status',
+			};
+
+			return {
+				property: propertyMap[type],
+				value: { value: paletteValueMap[type], breakpoint },
+				expectedKey: attribute,
+				expectedValue: paletteValueMap[type],
 				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
 			};
 		}
@@ -510,9 +570,9 @@ describe('text list attributes', () => {
 		if (attribute === 'list-palette-status') {
 			return {
 				property: 'list_palette_status',
-				value: true,
+				value: LIST_PALETTE_STATUS,
 				expectedKey: attribute,
-				expectedValue: true,
+				expectedValue: LIST_PALETTE_STATUS,
 				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
 			};
 		}
@@ -520,9 +580,9 @@ describe('text list attributes', () => {
 		if (attribute === 'list-palette-sc-status') {
 			return {
 				property: 'list_palette_sc_status',
-				value: true,
+				value: LIST_PALETTE_SC_STATUS,
 				expectedKey: attribute,
-				expectedValue: true,
+				expectedValue: LIST_PALETTE_SC_STATUS,
 				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
 			};
 		}
@@ -870,6 +930,11 @@ describe('text list attributes', () => {
 				value: 4,
 			},
 			{
+				phrase: 'On hover, set list palette color to 6',
+				property: 'list_palette_color_hover',
+				value: 6,
+			},
+			{
 				phrase: 'Set list palette opacity to 60%',
 				property: 'list_palette_opacity',
 				value: 0.6,
@@ -888,6 +953,16 @@ describe('text list attributes', () => {
 				phrase: 'Set list color to #ff0055',
 				property: 'list_color',
 				value: '#ff0055',
+			},
+			{
+				phrase: 'On hover, set list color to #00aaee',
+				property: 'list_color_hover',
+				value: '#00aaee',
+			},
+			{
+				phrase: 'On tablet, set list color to #00aaee',
+				property: 'list_color',
+				value: { value: '#00aaee', breakpoint: 'm' },
 			},
 			{
 				phrase: 'On tablet, set list text position baseline',
@@ -938,28 +1013,53 @@ describe('text list attributes', () => {
 	});
 
 	test('List-group prompt updates attribute and sidebar target', () => {
-		const sample = {
-			phrase: 'Set list marker size to 1.5em',
-			expectedKey: 'list-marker-size-general',
-			expectedValue: 1.5,
-			expectedUnitKey: 'list-marker-size-unit-general',
-			expectedUnitValue: 'em',
-			expectedSidebar: { tabIndex: 0, accordion: 'list options' },
-		};
+		const samples = [
+			{
+				phrase: 'Set list marker size to 1.5em',
+				expectedKey: 'list-marker-size-general',
+				expectedValue: 1.5,
+				expectedUnitKey: 'list-marker-size-unit-general',
+				expectedUnitValue: 'em',
+				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
+			},
+			{
+				phrase: 'On hover, set list palette color to 6',
+				expectedKey: 'list-palette-color-general-hover',
+				expectedValue: 6,
+				expectHoverStatus: true,
+				expectedSidebar: { tabIndex: 0, accordion: 'list options' },
+			},
+		];
 
-		const action = buildTextListGroupAction(sample.phrase);
-		expect(action).toBeTruthy();
+		samples.forEach(sample => {
+			const action = buildTextListGroupAction(sample.phrase);
+			expect(action).toBeTruthy();
 
+			const changes = buildTextListGroupAttributeChanges(
+				action.property,
+				action.value
+			);
+			expect(changes).toBeTruthy();
+			expect(changes[sample.expectedKey]).toBe(sample.expectedValue);
+			if (sample.expectedUnitKey) {
+				expect(changes[sample.expectedUnitKey]).toBe(sample.expectedUnitValue);
+			}
+			if (sample.expectHoverStatus) {
+				expect(changes['typography-status-hover']).toBe(true);
+			}
+
+			const sidebar = getTextListGroupSidebarTarget(action.property);
+			expect(sidebar).toEqual(sample.expectedSidebar);
+		});
+	});
+
+	test('List-group hover palette enables typography hover', () => {
 		const changes = buildTextListGroupAttributeChanges(
-			action.property,
-			action.value
+			'list_palette_color_hover',
+			LIST_PALETTE_COLOR_HOVER
 		);
-		expect(changes).toBeTruthy();
-		expect(changes[sample.expectedKey]).toBe(sample.expectedValue);
-		expect(changes[sample.expectedUnitKey]).toBe(sample.expectedUnitValue);
 
-		const sidebar = getTextListGroupSidebarTarget(action.property);
-		expect(sidebar).toEqual(sample.expectedSidebar);
+		expect(changes['typography-status-hover']).toBe(true);
 	});
 
 	test('each list attribute can be updated via list-group mapping', () => {

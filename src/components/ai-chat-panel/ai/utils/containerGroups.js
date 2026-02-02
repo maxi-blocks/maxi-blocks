@@ -2042,7 +2042,7 @@ const extractHeightValue = message => {
 		return null;
 	}
 	const match = lower.match(
-		/(?:height|tall)\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(px|%|vh|vw|em|rem|ch)?/i
+		/(?:height|tall)\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)(?:\s*(px|%|vh|vw|em|rem|ch))?/i
 	);
 	if (!match) return null;
 	return {
@@ -5073,20 +5073,59 @@ const extractWidthIntent = message => {
 	return { type: 'width', value: unitValue.value, unit: unitValue.unit };
 };
 
-const buildContainerWGroupAction = (message, { scope = 'selection' } = {}) => {
+const buildContainerWGroupAction = (
+	message,
+	{ scope = 'selection', targetBlock = null, blockName = null } = {}
+) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
-	const actionTarget = actionType === 'update_page' ? { target_block: 'container' } : {};
+	const isColumnContext =
+		targetBlock === 'column' ||
+		String(blockName || '').includes('column') ||
+		/\bcolumns?\b/i.test(String(message || ''));
+	const actionTarget =
+		actionType === 'update_page'
+			? { target_block: isColumnContext ? 'column' : 'container' }
+			: isColumnContext
+				? { target_block: 'column' }
+				: {};
+
+	const lowerMessage = String(message || '').toLowerCase();
+	if (isColumnContext) {
+		const disableFitContent = /(disable|turn\s*off|remove|clear)\s*fit\s*content|fixed\s*width|fixed\s*size|use\s*percent(?:age)?\s*width/.test(
+			lowerMessage
+		);
+		if (disableFitContent) {
+			return {
+				action: actionType,
+				property: 'column_fit_content',
+				value: false,
+				message: 'Column fit content disabled.',
+				...actionTarget,
+			};
+		}
+	}
 
 	const intent = extractWidthIntent(message);
 	if (!intent) return null;
 
 	const breakpoint = extractBreakpointToken(message);
 	if (intent.type === 'fit-content') {
+		const fitValue = breakpoint ? { value: true, breakpoint } : true;
 		return {
 			action: actionType,
-			property: 'width',
-			value: breakpoint ? { value: 'fit-content', breakpoint } : 'fit-content',
-			message: 'Width updated.',
+			property: isColumnContext ? 'column_fit_content' : 'width',
+			value: isColumnContext ? fitValue : (breakpoint ? { value: 'fit-content', breakpoint } : 'fit-content'),
+			message: isColumnContext ? 'Column set to fit content.' : 'Width updated.',
+			...actionTarget,
+		};
+	}
+
+	if (isColumnContext) {
+		return {
+			action: actionType,
+			property: 'column_size',
+			value: breakpoint ? { value: intent.value, breakpoint } : intent.value,
+			message: 'Column size updated.',
 			...actionTarget,
 		};
 	}

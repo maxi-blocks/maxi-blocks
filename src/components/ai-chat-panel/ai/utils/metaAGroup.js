@@ -16,6 +16,7 @@ const extractValueFromPatterns = (message, patterns) => {
 const sanitizeAnchorId = value =>
 	String(value || '').replace(/[^a-zA-Z0-9-_]/g, '');
 
+
 export const extractAnchorLink = message => {
 	const lowerMessage = String(message || '').toLowerCase();
 	if (/https?:\/\//.test(lowerMessage) || /\bwww\./.test(lowerMessage)) {
@@ -44,6 +45,43 @@ export const extractAriaLabel = message => {
 	return extractValueFromPatterns(message, [
 		/(?:aria[\s_-]*label|accessibility\s*label|screen\s*reader\s*label)\s*(?:to|=|:|is)?\s*(.+)$/i,
 	]);
+};
+
+export const extractFirstOnHierarchy = message => {
+	const lowerMessage = String(message || '').toLowerCase();
+	if (
+		!/(first\s*on\s*hierarchy|top[-\s]*level|root\s*level|top\s*of\s*hierarchy|primary\s*level)/.test(
+			lowerMessage
+		)
+	) {
+		return null;
+	}
+
+	if (/(disable|off|remove|unset|false|no)\b/.test(lowerMessage)) return false;
+	if (/(enable|on|set|true|make|mark)\b/.test(lowerMessage)) return true;
+	return true;
+};
+
+export const extractRelations = message => {
+	const lowerMessage = String(message || '').toLowerCase();
+	if (!/\brelations?\b/.test(lowerMessage)) return null;
+
+	if (/(clear|remove|reset)\s*relations?/.test(lowerMessage)) {
+		return [];
+	}
+
+	const start = message.indexOf('[');
+	const end = message.lastIndexOf(']');
+	if (start !== -1 && end > start) {
+		try {
+			const parsed = JSON.parse(message.slice(start, end + 1));
+			return Array.isArray(parsed) ? parsed : null;
+		} catch (error) {
+			return null;
+		}
+	}
+
+	return null;
 };
 
 const buildActionTarget = (actionType, targetBlock) => {
@@ -85,6 +123,28 @@ export const buildMetaAGroupAction = (
 		};
 	}
 
+	const relations = extractRelations(message);
+	if (Array.isArray(relations)) {
+		return {
+			action: actionType,
+			property: 'relations',
+			value: relations,
+			message: 'Relations updated.',
+			...actionTarget,
+		};
+	}
+
+	const firstOnHierarchy = extractFirstOnHierarchy(message);
+	if (typeof firstOnHierarchy === 'boolean') {
+		return {
+			action: actionType,
+			property: 'is_first_on_hierarchy',
+			value: firstOnHierarchy,
+			message: 'Hierarchy position updated.',
+			...actionTarget,
+		};
+	}
+
 	return null;
 };
 
@@ -106,6 +166,10 @@ export const buildMetaAGroupAttributeChanges = (
 				},
 			};
 		}
+		case 'relations':
+			return { relations: Array.isArray(value) ? value : [] };
+		case 'is_first_on_hierarchy':
+			return { isFirstOnHierarchy: Boolean(value) };
 		default:
 			return null;
 	}
@@ -118,6 +182,12 @@ export const getMetaSidebarTarget = property => {
 	}
 	if (property === 'aria_label') {
 		return { tabIndex: 1, accordion: 'aria label' };
+	}
+	if (property === 'is_first_on_hierarchy') {
+		return { tabIndex: 0, accordion: 'block settings' };
+	}
+	if (property === 'relations') {
+		return { tabIndex: 1, accordion: 'interaction builder' };
 	}
 	return null;
 };
@@ -137,4 +207,6 @@ export default {
 	buildMetaAGroupAttributeChanges,
 	getMetaSidebarTarget,
 	resolveMetaTargetKey,
+	extractFirstOnHierarchy,
+	extractRelations,
 };

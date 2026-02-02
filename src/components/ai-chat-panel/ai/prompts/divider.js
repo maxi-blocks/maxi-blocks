@@ -51,6 +51,37 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - Target property: divider_color.
 - Value: palette number (1-8) or CSS var (preferred).
 
+#### STYLE
+- Target property: divider_style.
+- Value: "solid" | "dashed" | "dotted" | "double" | "none".
+  - Example: "Make the divider dashed." -> { "divider_style": "dashed" }
+
+#### WEIGHT (THICKNESS)
+- Target property: divider_weight.
+- Value: number or { "value": number, "unit": "px" | "%" | "em" | "rem" }.
+  - Example: "Set divider thickness to 3px." -> { "divider_weight": "3px" }
+
+#### SIZE (LENGTH)
+- Target property: divider_size.
+- Value: number or { "size": number, "unit": "px" | "%" | "em" | "rem" }.
+  - Example: "Set divider length to 40%." -> { "divider_size": "40%" }
+
+#### ORIENTATION
+- Target property: divider_orientation.
+- Value: "horizontal" | "vertical".
+  - Example: "Make the divider vertical." -> { "divider_orientation": "vertical" }
+
+#### ALIGNMENT
+- Horizontal: divider_align_horizontal ("left" | "center" | "right")
+  - Example: "Align the divider right." -> { "divider_align_horizontal": "right" }
+- Vertical: divider_align_vertical ("top" | "center" | "bottom")
+  - Example: "Align the divider to the bottom." -> { "divider_align_vertical": "bottom" }
+
+#### RADIUS
+- Target property: divider_border_radius.
+- Value: boolean (true for rounded ends).
+  - Example: "Round the divider ends." -> { "divider_border_radius": true }
+
 ### INTERNAL META / FLOW (DOCUMENTED)
 
 These properties are used by handlers for multi-step interactions.

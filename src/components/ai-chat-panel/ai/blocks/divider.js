@@ -52,6 +52,31 @@ const getDividerOrientation = block => {
 	return attrs['line-orientation-general'] || attrs['line-orientation'] || 'horizontal';
 };
 
+export const getDividerSidebarTarget = property => {
+	const normalized = String(property || '').replace(/-/g, '_');
+	if (!normalized) return null;
+	const baseProperty = normalized.replace(/_(general|xxl|xl|l|m|s|xs)$/, '');
+
+	const alignmentProps = new Set([
+		'divider_align_horizontal',
+		'divider_align_vertical',
+		'divider_orientation',
+		'line_horizontal',
+		'line_vertical',
+		'line_orientation',
+	]);
+
+	if (alignmentProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'alignment' };
+	}
+
+	if (baseProperty.startsWith('divider_')) {
+		return { tabIndex: 0, accordion: 'line settings' };
+	}
+
+	return null;
+};
+
 export const DIVIDER_PATTERNS = [
 	{
 		regex: /\b(?:shadow|glow|drop\s*shadow|depth|lift|raised|elevat(?:ed|e)?)\b/i,
@@ -134,6 +159,22 @@ export const DIVIDER_PATTERNS = [
 		target: 'divider',
 	},
 	{
+		regex: /\bdivider\b.*\b(weight|thickness|line\s*weight|line\s*thickness)\b.*\d|\b(weight|thickness|line\s*weight|line\s*thickness)\b.*\d.*\bdivider\b/i,
+		property: 'divider_weight',
+		value: 'use_prompt',
+		selectionMsg: 'Updated divider weight.',
+		pageMsg: 'Updated divider weight.',
+		target: 'divider',
+	},
+	{
+		regex: /\bdivider\b.*\b(width|line\s*width|stroke\s*width|border\s*width)\b.*\d+(?:\.\d+)?\s*px\b|\b(width|line\s*width|stroke\s*width|border\s*width)\b.*\d+(?:\.\d+)?\s*px\b.*\bdivider\b/i,
+		property: 'divider_weight',
+		value: 'use_prompt',
+		selectionMsg: 'Updated divider weight.',
+		pageMsg: 'Updated divider weight.',
+		target: 'divider',
+	},
+	{
 		regex: /\bdivider\b.*\b(thick|bold|heavy)\b|\b(thick|bold|heavy)\b.*\bdivider\b/i,
 		property: 'divider_weight',
 		value: 4,
@@ -171,6 +212,14 @@ export const DIVIDER_PATTERNS = [
 		value: { size: 100, unit: '%' },
 		selectionMsg: 'Extended the divider.',
 		pageMsg: 'Extended the divider.',
+		target: 'divider',
+	},
+	{
+		regex: /\bdivider\b.*\b(size|length|width|height)\b.*\d|\b(size|length|width|height)\b.*\d.*\bdivider\b/i,
+		property: 'divider_size',
+		value: 'use_prompt',
+		selectionMsg: 'Updated divider length.',
+		pageMsg: 'Updated divider length.',
 		target: 'divider',
 	},
 	{

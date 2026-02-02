@@ -24,6 +24,42 @@ describe('meta A attributes', () => {
 		expect(ariaAction.value).toBe('Primary hero container');
 	});
 
+	test('relations and hierarchy phrases map to meta actions', () => {
+		const relationsAction = buildMetaAGroupAction(
+			'Set relations to [{"source":"button","target":"form"}]',
+			{ scope: 'selection', targetBlock: 'container' }
+		);
+		expect(relationsAction).toBeTruthy();
+		expect(relationsAction.property).toBe('relations');
+		expect(relationsAction.value).toEqual([
+			{ source: 'button', target: 'form' },
+		]);
+
+		const clearRelationsAction = buildMetaAGroupAction('Clear relations', {
+			scope: 'selection',
+			targetBlock: 'container',
+		});
+		expect(clearRelationsAction).toBeTruthy();
+		expect(clearRelationsAction.property).toBe('relations');
+		expect(clearRelationsAction.value).toEqual([]);
+
+		const hierarchyAction = buildMetaAGroupAction('Mark as top level', {
+			scope: 'selection',
+			targetBlock: 'container',
+		});
+		expect(hierarchyAction).toBeTruthy();
+		expect(hierarchyAction.property).toBe('is_first_on_hierarchy');
+		expect(hierarchyAction.value).toBe(true);
+
+		const hierarchyOffAction = buildMetaAGroupAction('Disable top level', {
+			scope: 'selection',
+			targetBlock: 'container',
+		});
+		expect(hierarchyOffAction).toBeTruthy();
+		expect(hierarchyOffAction.property).toBe('is_first_on_hierarchy');
+		expect(hierarchyOffAction.value).toBe(false);
+	});
+
 	test('page scope retains target_block on meta action', () => {
 		const action = buildMetaAGroupAction('Set anchor to hero', {
 			scope: 'page',
@@ -44,6 +80,19 @@ describe('meta A attributes', () => {
 		expect(ariaChanges).toEqual({
 			ariaLabels: { icon: 'Decorative', button: 'CTA' },
 		});
+
+		const relationsChanges = buildMetaAGroupAttributeChanges('relations', [
+			{ source: 'button', target: 'form' },
+		]);
+		expect(relationsChanges).toEqual({
+			relations: [{ source: 'button', target: 'form' }],
+		});
+
+		const hierarchyChanges = buildMetaAGroupAttributeChanges(
+			'is_first_on_hierarchy',
+			true
+		);
+		expect(hierarchyChanges).toEqual({ isFirstOnHierarchy: true });
 	});
 
 	test('sidebar target information matches expectations', () => {
@@ -54,6 +103,14 @@ describe('meta A attributes', () => {
 		expect(getMetaSidebarTarget('aria_label')).toEqual({
 			tabIndex: 1,
 			accordion: 'aria label',
+		});
+		expect(getMetaSidebarTarget('is_first_on_hierarchy')).toEqual({
+			tabIndex: 0,
+			accordion: 'block settings',
+		});
+		expect(getMetaSidebarTarget('relations')).toEqual({
+			tabIndex: 1,
+			accordion: 'interaction builder',
 		});
 	});
 

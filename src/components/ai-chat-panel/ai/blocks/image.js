@@ -62,6 +62,73 @@ const toAspectRatio = value => {
 	return { imageRatio: value };
 };
 
+export const getImageSidebarTarget = property => {
+	const normalized = String(property || '').replace(/-/g, '_');
+	if (!normalized) return null;
+	const baseProperty = normalized.replace(/_(general|xxl|xl|l|m|s|xs)$/, '');
+
+	const dimensionProps = new Set([
+		'image_ratio',
+		'imageRatio',
+		'imageRatioCustom',
+		'img_width',
+		'imgWidth',
+		'image_full_width',
+		'imageSize',
+		'image_size',
+		'use_init_size',
+		'image_fit',
+		'object_size',
+		'object_position',
+		'object_position_horizontal',
+		'object_position_vertical',
+		'mediaURL',
+	]);
+
+	const alignmentProps = new Set(['alignment']);
+	const altProps = new Set(['media_alt', 'mediaAlt', 'alt_selector']);
+	const captionProps = new Set([
+		'caption_type',
+		'captionType',
+		'caption_position',
+		'caption_gap',
+		'caption_content',
+		'captionContent',
+	]);
+	const hoverProps = new Set(['hover_basic', 'hover_basic_effect_type', 'hover_off']);
+	const clipProps = new Set(['clip_path', 'clip_path_status', 'clip_path_status_hover']);
+
+	if (dimensionProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'dimension' };
+	}
+	if (alignmentProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'alignment' };
+	}
+	if (altProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'alt tag' };
+	}
+	if (captionProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'caption' };
+	}
+	if (hoverProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'hover effect' };
+	}
+	if (clipProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'clip path' };
+	}
+	if (baseProperty === 'dynamic_image') {
+		return { tabIndex: 1, accordion: 'dynamic content' };
+	}
+	if (baseProperty === 'scroll_effect') {
+		return { tabIndex: 1, accordion: 'scroll effects' };
+	}
+	if (baseProperty === 'image_filter') {
+		return { tabIndex: 1, accordion: 'custom css' };
+	}
+
+	return null;
+};
+
 export const IMAGE_PATTERNS = [
 	// ============================================================
 	// GROUP 1: PRIORITY FLOWS (Complex interactions)
@@ -152,11 +219,14 @@ export const IMAGE_PATTERNS = [
 	{ regex: /attachment.*caption|use.*attachment.*caption/i, property: 'caption_type', value: 'attachment', selectionMsg: 'Using attachment caption.', pageMsg: 'Using attachment caption.', target: 'image' },
 	{ regex: /caption.*top|caption.*above/i, property: 'caption_position', value: 'top', selectionMsg: 'Caption moved to top.', pageMsg: 'Caption moved to top.', target: 'image' },
 	{ regex: /caption.*bottom|caption.*below/i, property: 'caption_position', value: 'bottom', selectionMsg: 'Caption moved to bottom.', pageMsg: 'Caption moved to bottom.', target: 'image' },
+	{ regex: /\b(set|change|update|edit)\b.*\bcaption\b.*\b(text|content)\b|\bcaption\s*(text|content)\b/i, property: 'captionContent', value: 'use_prompt', selectionMsg: 'Caption updated.', pageMsg: 'Caption updated.', target: 'image' },
 	{ regex: /more.*space.*caption|increase.*caption.*gap/i, property: 'caption_gap', value: 2, selectionMsg: 'Increased caption gap.', pageMsg: 'Increased caption gap.', target: 'image' },
 	{ regex: /less.*space.*caption|reduce.*caption.*gap/i, property: 'caption_gap', value: 0.5, selectionMsg: 'Reduced caption gap.', pageMsg: 'Reduced caption gap.', target: 'image' },
 	{ regex: /remove.*alt|no.*alt\s*text/i, property: 'media_alt', value: null, selectionMsg: 'Alt text removed.', pageMsg: 'Alt text removed.', target: 'image' },
+	{ regex: /\b(set|change|update|edit)\b.*\balt\s*(text|tag)\b|\balt\s*text\b/i, property: 'mediaAlt', value: 'use_prompt', selectionMsg: 'Alt text updated.', pageMsg: 'Alt text updated.', target: 'image' },
 	{ regex: /use.*wordpress.*alt|wp\s*alt/i, property: 'alt_selector', value: 'wordpress', selectionMsg: 'Using WordPress alt.', pageMsg: 'Using WordPress alt.', target: 'image' },
 	{ regex: /use.*image.*title|title.*alt/i, property: 'alt_selector', value: 'title', selectionMsg: 'Using image title.', pageMsg: 'Using image title for alt.', target: 'image' },
+	{ regex: /\b(replace|change|update|set)\b.*\b(image|photo|picture)\b.*\b(with|to|url|link)\b|\bimage\s*url\b/i, property: 'mediaURL', value: 'use_prompt', selectionMsg: 'Image updated.', pageMsg: 'Image updated.', target: 'image' },
 
 	// ============================================================
 	// GROUP 6: CLIP PATH & SHAPES

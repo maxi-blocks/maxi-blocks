@@ -1101,7 +1101,6 @@ body.maxi-blocks--active {
 .block-editor-block-list__block {
 	// Disable default WordPress move animations
 	transition: none !important;
-	transform: none !important;
 	animation: none !important;
 
 	// Ensure no transition on any state

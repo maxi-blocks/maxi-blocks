@@ -809,7 +809,9 @@ class MaxiRowCarousel {
 			// Don't add click listener to active dot - it's already active
 			if (!isActive) {
 				const target = Math.min(i * this.slidesPerView, lastStart);
-				dot.addEventListener('click', () => this.exactColumn(target));
+				const handler = () => this.exactColumn(target);
+				dot.addEventListener('click', handler);
+				dot._clickHandler = handler;
 				dot._hasClickListener = true;
 			}
 			this._dotsContainer.appendChild(dot);
@@ -892,6 +894,12 @@ class MaxiRowCarousel {
 			this._container.getAttribute('data-active-dot-icon') ||
 			dotIconContent;
 
+		// Calculate last valid start position to prevent overshoot
+		const lastStart = Math.max(
+			0,
+			this.numberOfColumns - this.slidesPerView
+		);
+
 		this._dots.forEach((dot, i) => {
 			const wasActive = dot.classList.contains(
 				'maxi-row-carousel__dot--active'
@@ -909,12 +917,19 @@ class MaxiRowCarousel {
 					: dotIconContent;
 			}
 
-			// Add/remove click listener based on active state
-			// If dot became inactive, ensure it has a click listener
+			// Remove click listener when dot becomes active
+			if (!wasActive && isActive && dot._clickHandler) {
+				dot.removeEventListener('click', dot._clickHandler);
+				dot._clickHandler = null;
+				dot._hasClickListener = false;
+			}
+
+			// Add click listener when dot becomes inactive
 			if (wasActive && !isActive && !dot._hasClickListener) {
-				dot.addEventListener('click', () =>
-					this.exactColumn(i * this.slidesPerView)
-				);
+				const target = Math.min(i * this.slidesPerView, lastStart);
+				const handler = () => this.exactColumn(target);
+				dot.addEventListener('click', handler);
+				dot._clickHandler = handler;
 				dot._hasClickListener = true;
 			}
 		});

@@ -786,7 +786,10 @@ class MaxiRowCarouselEditor {
 				this.currentColumn <= 0 ? 'none' : '';
 		}
 		if (this._arrowNext) {
-			const maxColumn = this._columns.length - this.slidesPerView;
+			const maxColumn = Math.max(
+				0,
+				this._columns.length - this.slidesPerView
+			);
 			this._arrowNext.style.display =
 				this.currentColumn >= maxColumn ? 'none' : '';
 		}

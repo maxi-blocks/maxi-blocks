@@ -3184,7 +3184,7 @@ const parseUnitValue = (rawValue, fallbackUnit = 'px') => {
 	return { value: Number.isNaN(parsed) ? 0 : parsed, unit: fallbackUnit };
 };
 
-const buildPaddingChanges = (value, { side = null } = {}) => {
+const buildPaddingChanges = (value, { side = null, prefix = '' } = {}) => {
 	const { value: rawValue, unit, breakpoint } = normalizeValueWithBreakpoint(value);
 	const parsed = parseUnitValue({ value: rawValue, unit });
 	const sides = side ? [side] : ['top', 'right', 'bottom', 'left'];
@@ -3194,10 +3194,10 @@ const buildPaddingChanges = (value, { side = null } = {}) => {
 	if (breakpoint) {
 		const suffix = `-${breakpoint}`;
 		sides.forEach(sideKey => {
-			changes[`padding-${sideKey}${suffix}`] = parsed.value;
-			changes[`padding-${sideKey}-unit${suffix}`] = parsed.unit;
+			changes[`${prefix}padding-${sideKey}${suffix}`] = parsed.value;
+			changes[`${prefix}padding-${sideKey}-unit${suffix}`] = parsed.unit;
 		});
-		changes[`padding-sync${suffix}`] = syncValue;
+		changes[`${prefix}padding-sync${suffix}`] = syncValue;
 		return changes;
 	}
 
@@ -3209,10 +3209,10 @@ const buildPaddingChanges = (value, { side = null } = {}) => {
 	RESPONSIVE_BREAKPOINTS.forEach(bp => {
 		const suffix = `-${bp}`;
 		sides.forEach(sideKey => {
-			changes[`padding-${sideKey}${suffix}`] = values[bp];
-			changes[`padding-${sideKey}-unit${suffix}`] = parsed.unit;
+			changes[`${prefix}padding-${sideKey}${suffix}`] = values[bp];
+			changes[`${prefix}padding-${sideKey}-unit${suffix}`] = parsed.unit;
 		});
-		changes[`padding-sync${suffix}`] = syncValue;
+		changes[`${prefix}padding-sync${suffix}`] = syncValue;
 	});
 
 	return changes;
@@ -3356,21 +3356,21 @@ const buildContainerPGroupAction = (message, { scope = 'selection' } = {}) => {
 	return null;
 };
 
-const buildContainerPGroupAttributeChanges = (property, value) => {
+const buildContainerPGroupAttributeChanges = (property, value, { prefix = '' } = {}) => {
 	if (!property) return null;
 	const normalized = String(property).replace(/-/g, '_');
 
 	switch (normalized) {
 		case 'padding':
-			return buildPaddingChanges(value);
+			return buildPaddingChanges(value, { prefix });
 		case 'padding_top':
-			return buildPaddingChanges(value, { side: 'top' });
+			return buildPaddingChanges(value, { side: 'top', prefix });
 		case 'padding_bottom':
-			return buildPaddingChanges(value, { side: 'bottom' });
+			return buildPaddingChanges(value, { side: 'bottom', prefix });
 		case 'padding_left':
-			return buildPaddingChanges(value, { side: 'left' });
+			return buildPaddingChanges(value, { side: 'left', prefix });
 		case 'padding_right':
-			return buildPaddingChanges(value, { side: 'right' });
+			return buildPaddingChanges(value, { side: 'right', prefix });
 		case 'position':
 			return buildPositionModeChanges(value);
 		case 'position_top':
@@ -4491,6 +4491,15 @@ const extractTransformIntent = message => {
 	const breakpoint = extractBreakpointToken(message);
 	const target = resolveTransformTarget(message) || 'container';
 	const state = /\bhover\b/.test(lower) ? 'hover' : 'normal';
+	// "zoom" is ambiguous (e.g. Map Maxi zoom level). Avoid treating map zoom
+	// requests as container transform scaling.
+	const isMapZoomRequest =
+		/\bmap\b/.test(lower) &&
+		/\bzoom\b/.test(lower) &&
+		!/\bhover\b/.test(lower);
+	const isZoomLimitRequest =
+		/\b(min(?:imum)?|max(?:imum)?)\s*zoom\b/.test(lower) &&
+		!/\bhover\b/.test(lower);
 
 	if (/(transform\s*target|target\s*transform|transform\s*on)/.test(lower)) {
 		return {
@@ -4519,7 +4528,7 @@ const extractTransformIntent = message => {
 		}
 	}
 
-	if (/(scale|zoom|grow|shrink)/.test(lower)) {
+	if (!isMapZoomRequest && !isZoomLimitRequest && /(scale|zoom|grow|shrink)/.test(lower)) {
 		const scale = extractScaleValue(message);
 		if (scale && scale.value !== null) {
 			return {
@@ -4647,7 +4656,7 @@ const extractTransitionIntent = message => {
 
 const buildTransformChanges = (type, rawValue, { defaultTarget = 'container' } = {}) => {
 	const { value: rawVal, unit, breakpoint } = normalizeValueWithBreakpoint(rawValue);
-	const bp = breakpoint || getActiveBreakpoint() || 'general';
+	const bp = rawValue?.breakpoint || breakpoint || getActiveBreakpoint() || 'general';
 	const target = rawValue?.target || defaultTarget;
 	const state = rawValue?.state === 'hover' || rawValue?.hover ? 'hover' : 'normal';
 	const transformTarget = target || defaultTarget;
@@ -5000,32 +5009,32 @@ const isFitContentValue = value => {
 	);
 };
 
-const buildFitContentChanges = breakpoint => {
+const buildFitContentChanges = (breakpoint, prefix = '') => {
 	if (breakpoint) {
-		return { [`width-fit-content-${breakpoint}`]: true };
+		return { [`${prefix}width-fit-content-${breakpoint}`]: true };
 	}
 
 	const changes = {};
 	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`width-fit-content-${bp}`] = true;
+		changes[`${prefix}width-fit-content-${bp}`] = true;
 	});
 	return changes;
 };
 
-const buildWidthChanges = value => {
+const buildWidthChanges = (value, prefix = '') => {
 	const { value: rawValue, unit, breakpoint } = normalizeValueWithBreakpoint(value);
 
 	if (isFitContentValue(rawValue)) {
-		return buildFitContentChanges(breakpoint);
+		return buildFitContentChanges(breakpoint, prefix);
 	}
 
 	const parsed = parseUnitValue({ value: rawValue, unit });
 	const changes = {};
 
 	if (breakpoint) {
-		changes[`width-${breakpoint}`] = parsed.value;
-		changes[`width-unit-${breakpoint}`] = parsed.unit;
-		changes[`width-fit-content-${breakpoint}`] = false;
+		changes[`${prefix}width-${breakpoint}`] = parsed.value;
+		changes[`${prefix}width-unit-${breakpoint}`] = parsed.unit;
+		changes[`${prefix}width-fit-content-${breakpoint}`] = false;
 		return changes;
 	}
 
@@ -5035,9 +5044,9 @@ const buildWidthChanges = value => {
 	});
 
 	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`width-${bp}`] = values[bp];
-		changes[`width-unit-${bp}`] = parsed.unit;
-		changes[`width-fit-content-${bp}`] = false;
+		changes[`${prefix}width-${bp}`] = values[bp];
+		changes[`${prefix}width-unit-${bp}`] = parsed.unit;
+		changes[`${prefix}width-fit-content-${bp}`] = false;
 	});
 
 	return changes;
@@ -5141,18 +5150,18 @@ const buildContainerWGroupAction = (
 	};
 };
 
-const buildContainerWGroupAttributeChanges = (property, value) => {
+const buildContainerWGroupAttributeChanges = (property, value, { prefix = '' } = {}) => {
 	if (!property) return null;
 	const normalized = String(property).replace(/-/g, '_');
 
 	switch (normalized) {
 		case 'width':
-			return buildWidthChanges(value);
+			return buildWidthChanges(value, prefix);
 		case 'width_fit_content': {
 			const { breakpoint } = normalizeValueWithBreakpoint(value);
 			const isEnabled = value === undefined ? true : Boolean(value);
 			if (!isEnabled) return null;
-			return buildFitContentChanges(breakpoint);
+			return buildFitContentChanges(breakpoint, prefix);
 		}
 		default:
 			return null;

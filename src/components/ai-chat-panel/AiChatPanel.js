@@ -21,7 +21,9 @@ import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPr
 import { getAccordionSidebarTarget } from './ai/blocks/accordion';
 import { getColumnSidebarTarget } from './ai/blocks/column';
 import { getDividerSidebarTarget } from './ai/blocks/divider';
+import { getIconSidebarTarget } from './ai/blocks/icon';
 import { getImageSidebarTarget } from './ai/blocks/image';
+import { getNumberCounterSidebarTarget } from './ai/blocks/number-counter';
 import {
 	buildAdvancedCssAGroupAction,
 	buildAdvancedCssAGroupAttributeChanges,
@@ -952,9 +954,12 @@ const ACTION_PROPERTY_ALIASES = {
 
 	const getBlockPrefix = (blockName) => {
 		if (!blockName) return '';
-		if (blockName.includes('button-maxi')) return 'button-';
-		if (blockName.includes('image-maxi')) return 'image-';
-		if (blockName.includes('icon-maxi')) return 'icon-';
+		const lowerName = String(blockName).toLowerCase();
+		if (lowerName.includes('button-maxi')) return 'button-';
+		if (lowerName.includes('image-maxi')) return 'image-';
+		if (lowerName.includes('svg-icon')) return 'svg-';
+		if (lowerName.includes('number-counter')) return 'number-counter-';
+		if (lowerName.includes('icon-maxi')) return 'icon-';
 		// Add other prefixed blocks here if needed
 		return '';
 	};
@@ -1466,6 +1471,22 @@ const ACTION_PROPERTY_ALIASES = {
 		]);
 	};
 
+	const extractIconAltTitle = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:alt\s*title|icon\s*title|svg\s*title|title\s*tag)\s*(?:to|=|is|:)\s*(.+)$/i,
+		]);
+	};
+
+	const extractIconAltDescription = message => {
+		const quoted = extractQuotedText(message);
+		if (quoted) return quoted;
+		return extractValueFromPatterns(message, [
+			/(?:alt\s*(?:description|desc)|icon\s*(?:description|desc)|svg\s*(?:description|desc)|description)\s*(?:to|=|is|:)\s*(.+)$/i,
+		]);
+	};
+
 	const extractColumnSize = message => {
 		if (!message) return null;
 		const percentMatch = message.match(
@@ -1502,6 +1523,77 @@ const ACTION_PROPERTY_ALIASES = {
 		return null;
 	};
 
+	const extractNumberCounterRangeValue = message => {
+		if (!message) return null;
+
+		const fromToMatch = message.match(
+			/\bfrom\b\s*(-?\d+(?:\.\d+)?)\b.*\bto\b\s*(-?\d+(?:\.\d+)?)\b/i
+		);
+		if (fromToMatch) {
+			return { start: Number(fromToMatch[1]), end: Number(fromToMatch[2]) };
+		}
+
+		const startEndMatch = message.match(
+			/\bstart(?:ing)?\s*(?:number|value)?\b.*?(-?\d+(?:\.\d+)?)\b.*\bend(?:ing)?\s*(?:number|value)?\b.*?(-?\d+(?:\.\d+)?)\b/i
+		);
+		if (startEndMatch) {
+			return { start: Number(startEndMatch[1]), end: Number(startEndMatch[2]) };
+		}
+
+		return null;
+	};
+
+	const extractNumberCounterStartValue = message =>
+		extractNumericValue(message, [
+			/\bstart(?:ing)?\s*(?:number|value)?\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+			/\bfrom\b\s*(-?\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractNumberCounterEndValue = message =>
+		extractNumericValue(message, [
+			/\bend(?:ing)?\s*(?:number|value)?\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+			/\bto\b\s*(-?\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractNumberCounterDurationValue = message => {
+		const secondsMatch = message.match(
+			/\b(-?\d+(?:\.\d+)?)\s*(?:s|sec|secs|second|seconds)\b/i
+		);
+		if (secondsMatch) return Number(secondsMatch[1]);
+		return extractNumericValue(message, [
+			/\bduration\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+		]);
+	};
+
+	const extractNumberCounterStrokeValue = message =>
+		extractNumericValue(message, [
+			/\bstroke(?:\s*width)?\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+			/\bthickness\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+			/\bline\s*width\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractNumberCounterStartOffsetValue = message =>
+		extractNumericValue(message, [
+			/\boffset\b\s*(?:to|=|:|is)?\s*(\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractNumberCounterTitleFontSizeValue = message =>
+		extractNumericValue(message, [
+			/\btitle\b.*\b(?:font\s*)?size\b\s*(?:to|=|:|is)?\s*(-?\d+(?:\.\d+)?)/i,
+		]);
+
+	const extractNumberCounterTextColorValue = message => {
+		const hex = extractHexColor(message);
+		if (hex) return hex;
+		const varMatch = String(message || '').match(/var\(--[^)]+\)/i);
+		if (varMatch) return varMatch[0];
+		const paletteMatch = String(message || '').match(/\bpalette\s*([1-8])\b/i);
+		if (paletteMatch) return Number(paletteMatch[1]);
+		const colorNumberMatch = String(message || '').match(/\bcolou?r\s*([1-8])\b/i);
+		if (colorNumberMatch) return Number(colorNumberMatch[1]);
+		return null;
+	};
+
 	const resolveImageRatioValue = (width, height) => {
 		const ratioKey = `${width}/${height}`;
 		const ratioMap = {
@@ -1527,6 +1619,10 @@ const ACTION_PROPERTY_ALIASES = {
 				return extractCaptionText(message);
 			case 'mediaAlt':
 				return extractAltText(message);
+			case 'altTitle':
+				return extractIconAltTitle(message);
+			case 'altDescription':
+				return extractIconAltDescription(message);
 			case 'button_url':
 			case 'mediaURL':
 				return extractUrl(message);
@@ -1535,6 +1631,22 @@ const ACTION_PROPERTY_ALIASES = {
 			case 'divider_weight':
 			case 'divider_size':
 				return extractDividerValue(message);
+			case 'number_counter_range':
+				return extractNumberCounterRangeValue(message);
+			case 'number_counter_start':
+				return extractNumberCounterStartValue(message);
+			case 'number_counter_end':
+				return extractNumberCounterEndValue(message);
+			case 'number_counter_duration':
+				return extractNumberCounterDurationValue(message);
+			case 'number_counter_stroke':
+				return extractNumberCounterStrokeValue(message);
+			case 'number_counter_start_offset':
+				return extractNumberCounterStartOffsetValue(message);
+			case 'number_counter_title_font_size':
+				return extractNumberCounterTitleFontSizeValue(message);
+			case 'number_counter_text_color':
+				return extractNumberCounterTextColorValue(message);
 			default:
 				return null;
 		}
@@ -2685,8 +2797,9 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'background_color':
 							// Apply to containers, rows, columns, buttons OR if it's a direct clientId match (Selection)
 							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button') || block.name.includes('group') || block.name.includes('accordion') || block.name.includes('pane') || block.name.includes('slide') || block.name.includes('slider') || block.name.includes('video') || block.name.includes('map') || block.name.includes('search') || block.name.includes('number-counter')) {
-								// Fix: Pass prefix to ensure buttons get button-background-color-general
-								changes = updateBackgroundColor(block.clientId, value, block.attributes, prefix);
+								// Number Counter backgrounds live on the Canvas (un-prefixed) group.
+								const backgroundPrefix = block.name.includes('number-counter') ? '' : prefix;
+								changes = updateBackgroundColor(block.clientId, value, block.attributes, backgroundPrefix);
 							}
 							break;
 						case 'background_layers': {
@@ -3084,10 +3197,21 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'width':
 							if (block.attributes && Object.prototype.hasOwnProperty.call(block.attributes, 'width-general')) {
 								changes =
-									buildContainerWGroupAttributeChanges(property, value) ||
+									buildContainerWGroupAttributeChanges(property, value, { prefix }) ||
 									buildWidthChanges(value, prefix);
 							} else {
 								changes = buildWidthChanges(value, prefix);
+							}
+							if (
+								changes &&
+								block?.name?.includes('number-counter') &&
+								prefix === 'number-counter-'
+							) {
+								Object.keys(changes).forEach(key => {
+									const match = key.match(/^number-counter-width-(general|xxl|xl|l|m|s|xs)$/);
+									if (!match) return;
+									changes[`number-counter-width-auto-${match[1]}`] = false;
+								});
 							}
 							break;
 						case 'height':
@@ -4450,6 +4574,30 @@ const ACTION_PROPERTY_ALIASES = {
 					return;
 				}
 			}
+			const isIconBlock =
+				selectedBlock?.name?.includes('svg-icon') ||
+				selectedBlock?.name?.includes('icon-maxi');
+			if (isIconBlock) {
+				const iconTarget = getIconSidebarTarget(normalizedProperty);
+				if (iconTarget) {
+					openSidebarAccordion(
+						iconTarget.tabIndex,
+						iconTarget.accordion
+					);
+					return;
+				}
+			}
+			const isNumberCounterBlock = selectedBlock?.name?.includes('number-counter');
+			if (isNumberCounterBlock) {
+				const counterTarget = getNumberCounterSidebarTarget(normalizedProperty);
+				if (counterTarget) {
+					openSidebarAccordion(
+						counterTarget.tabIndex,
+						counterTarget.accordion
+					);
+					return;
+				}
+			}
 			const isButtonBlock = selectedBlock?.name?.includes('button');
 			if (isButtonBlock) {
 				const buttonTarget = getButtonAGroupSidebarTarget(normalizedProperty);
@@ -4983,7 +5131,11 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						case 'margin': c = updateMargin(val, null, prefix); break;
 						case 'spacing_preset': c = createResponsiveSpacing(val, prefix); break;
-						case 'background_color': c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, blkPrefix); break;
+						case 'background_color': {
+							const backgroundPrefix = targetBlock?.name?.includes('number-counter') ? '' : blkPrefix;
+							c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, backgroundPrefix);
+							break;
+						}
 						case 'border': 
 							if (isRemoval) c = updateBorder(0, 'none', null, blkPrefix);
 							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, blkPrefix);
@@ -5051,9 +5203,20 @@ const ACTION_PROPERTY_ALIASES = {
 							break;
 						case 'width':
 							if (targetBlock.attributes && Object.prototype.hasOwnProperty.call(targetBlock.attributes, 'width-general')) {
-								c = buildContainerWGroupAttributeChanges(prop, val) || buildWidthChanges(val, blkPrefix);
+								c = buildContainerWGroupAttributeChanges(prop, val, { prefix: blkPrefix }) || buildWidthChanges(val, blkPrefix);
 							} else {
 								c = buildWidthChanges(val, blkPrefix);
+							}
+							if (
+								c &&
+								targetBlock?.name?.includes('number-counter') &&
+								blkPrefix === 'number-counter-'
+							) {
+								Object.keys(c).forEach(key => {
+									const match = key.match(/^number-counter-width-(general|xxl|xl|l|m|s|xs)$/);
+									if (!match) return;
+									c[`number-counter-width-auto-${match[1]}`] = false;
+								});
 							}
 							break;
 						case 'height': c = buildHeightChanges(val, blkPrefix); break;

@@ -153,8 +153,6 @@
 		"lodash": "4.17.23",
 		"lodash-es": "4.17.23",
 		"eslint": "^9.26.0",
-		"@isaacs/brace-expansion": "5.0.1",
-		"@babel/runtime": "^7.26.10",
-		"fast-xml-parser": "^5.3.4"
+		"minimatch": "^10.1.2"
 	}
 }

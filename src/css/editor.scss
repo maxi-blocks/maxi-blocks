@@ -124,16 +124,17 @@ body {
 	}
 }
 .maxi-block {
-	transition: all 0.5s ease;
+	// Exclude transform from transitions to prevent jiggle during block movement
+	transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
 
 	.block-editor-block-list__layout {
-		transition: all 0.5s ease;
+		transition: opacity 0.5s ease, visibility 0.5s ease;
 		&:focus:after {
 			box-shadow: none !important;
 		}
 	}
 	&:hover {
-		transition: all 0.5s ease;
+		transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
 		& > .block-editor-block-list__layout {
 			& > .block-list-appender {
 				.block-editor-button-block-appender {
@@ -1099,16 +1100,14 @@ body.maxi-blocks--active {
 * Disable WordPress block move animations
 *******************************/
 .block-editor-block-list__block {
-	// Disable default WordPress move animations
+	// Disable CSS transitions on the Gutenberg wrapper to prevent animation jitter
 	transition: none !important;
 	animation: none !important;
 
-	// Ensure no transition on any state
+	// During active movement/drag states, also suppress transforms on the wrapper
 	&.is-moving,
 	&[data-is-moving],
 	&.is-dragging {
-		transition: none !important;
 		transform: none !important;
-		animation: none !important;
 	}
 }

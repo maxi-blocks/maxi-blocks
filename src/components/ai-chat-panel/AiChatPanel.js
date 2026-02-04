@@ -4,7 +4,6 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { dispatch, select, useDispatch, useSelect, useRegistry } from '@wordpress/data';
-import { cloneDeep } from 'lodash';
 
 /**
  * Internal dependencies
@@ -18,12 +17,21 @@ import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from './ai/registry';
+import { CLOUD_ICON_PATTERN } from './ai/patterns/cloudIcon';
+import { getRequestedTargetFromMessage, isTargetedPatternTarget } from './ai/patterns/targeting';
 import { getAccordionSidebarTarget } from './ai/blocks/accordion';
 import { getColumnSidebarTarget } from './ai/blocks/column';
 import { getDividerSidebarTarget } from './ai/blocks/divider';
 import { getIconSidebarTarget } from './ai/blocks/icon';
 import { getImageSidebarTarget } from './ai/blocks/image';
 import { getNumberCounterSidebarTarget } from './ai/blocks/number-counter';
+import {
+	buildColorUpdate,
+	getColorTargetFromMessage,
+	getColorTargetLabel,
+} from './ai/color/colorClarify';
+import updateBackgroundColor from './ai/color/backgroundUpdate';
+import { isTextContextForMessage } from './ai/utils/contextDetection';
 import {
 	buildAdvancedCssAGroupAction,
 	buildAdvancedCssAGroupAttributeChanges,
@@ -554,12 +562,6 @@ const LAYOUT_PATTERNS = [
 	{ regex: /remove.*underline|no.*underline|plain.*link/, property: 'text_decoration', value: 'none', selectionMsg: 'Removed underline.', pageMsg: 'Removed underlines from links.' },
 	{ regex: /add.*underline|underline.*text/, property: 'text_decoration', value: 'underline', selectionMsg: 'Added underline.', pageMsg: 'Underlined text.' },
 	
-	// GROUP: COLOUR CLARIFICATION (show palette picker)
-	// Match colour requests that need clarification - will show 8-colour palette
-	{ regex: /\bbackground\s*(?:colou?r|color)\b|\bbg\s*(?:colou?r|color)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
-	{ regex: /(make|change|set|turn|paint|color|colour|give).*(red|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey|dark|light)|(\bred|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey)\b.*(background|text|heading|container|box|section|color|colour)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
-	{ regex: /\b(change|set|switch|update)\b.*\b(colou?r|color)\b|\b(colou?r|color)\b.*\b(change|set|switch|update)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
-	
 	// GROUP 14: BACKGROUNDS & MEDIA
 	{ regex: /video.*behind|movie.*behind|background.*video/, property: 'background_media', value: 'video', selectionMsg: 'Set video as background.', pageMsg: 'Applied video background.' },
 	{ regex: /darken.*screen|overlay|dim.*background|dark.*overlay/, property: 'background_overlay', value: 0.5, selectionMsg: 'Added dark overlay (50%).', pageMsg: 'Darkened background with overlay.' },
@@ -637,13 +639,19 @@ const LAYOUT_PATTERNS = [
 	{ regex: /align.*everything.*center|everything.*center|center.*align.*all|centre.*everything/, property: 'align_everything', value: 'center', selectionMsg: 'Centred all content.', pageMsg: 'Centred everything.' },
 	{ regex: /align.*everything.*right|everything.*right.*align|right.*align.*all|flush.*right/, property: 'align_everything', value: 'right', selectionMsg: 'Right-aligned all content.', pageMsg: 'Right-aligned everything.' },
 	
-	// GROUP 24: CLOUD ICON SEARCH (Typesense)
-	{ regex: /\b(icon|icons)\b.*\b(cloud|library)\b|\b(cloud|library)\b.*\bicon(s)?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b[^.]*\bicons?\b[^.]*\b(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\bicons?\b\s*(?:to|with|as|of|for|called|named)\b\s+[^,.;]+|\b(?:use|set|add|insert|make|change|swap|replace)\b\s+(?:the\s+|a\s+|an\s+)?[^,.;]+?\s+icons?\b|\b(?:change|swap|replace|use|set|add|insert|make)\b\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+[^,.;]+|\ball\s+icons?\b|\b(?:theme|style|vibe|look)\b|\bmatch\b[^.]*\b(text|titles?|labels?|headings?)\b[^.]*\bicons?\b|\b(text|titles?|labels?|headings?)\b[^.]*\bmatch\b[^.]*\bicons?\b/i, property: 'cloud_icon', value: 'typesense', selectionMsg: 'Searching Cloud Library for icons...', pageMsg: 'Searching Cloud Library for icons...' },
-
-	// GROUP 25: BLOCK ACTIONS (Imported)
+	// GROUP 24: BLOCK ACTIONS (Imported)
 	...AI_BLOCK_PATTERNS,
 
-	// GROUP 26: CREATE BLOCK PATTERNS (from Cloud Library)
+	// GROUP 25: COLOUR CLARIFICATION (show palette picker)
+	// Match colour requests that need clarification - will show 8-colour palette
+	{ regex: /\bbackground\s*(?:colou?r|color)\b|\bbg\s*(?:colou?r|color)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	{ regex: /(make|change|set|turn|paint|color|colour|give).*(red|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey|dark|light)|(\bred|blue|green|yellow|orange|purple|pink|teal|cyan|black|white|gray|grey)\b.*(background|text|heading|container|box|section|color|colour)/, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+	{ regex: /\b(change|set|switch|update)\b.*\b(colou?r|color)\b|\b(colou?r|color)\b.*\b(change|set|switch|update)\b/i, property: 'color_clarify', value: 'show_palette', selectionMsg: 'Which colour from your palette?', pageMsg: 'Which colour from your palette?' },
+
+	// GROUP 26: CLOUD ICON SEARCH (Typesense)
+	CLOUD_ICON_PATTERN,
+
+	// GROUP 27: CREATE BLOCK PATTERNS (from Cloud Library)
 	// Must include pattern-related keywords to avoid matching style changes like "make button red"
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];
@@ -1303,85 +1311,6 @@ const ACTION_PROPERTY_ALIASES = {
 		return templates[index % templates.length];
 	};
 
-	const isBackgroundDebugEnabled = () => {
-		if (typeof window === 'undefined') return false;
-		if (window.__MAXI_AI_DEBUG_BG) return true;
-		try {
-			return window.localStorage?.getItem('maxiAiDebugBackground') === '1';
-		} catch (e) {
-			return false;
-		}
-	};
-
-	const summarizeBackgroundLayers = layers => {
-		if (!Array.isArray(layers)) return layers;
-		return layers.map(layer => ({
-			id: layer?.id,
-			order: layer?.order,
-			type: layer?.type,
-			display: layer?.['display-general'],
-			paletteStatus: layer?.['background-palette-status-general'],
-			paletteColor: layer?.['background-palette-color-general'],
-			color: layer?.['background-color-general'],
-		}));
-	};
-
-	const logBackgroundDebug = (label, payload) => {
-		if (!isBackgroundDebugEnabled()) return;
-		// Keep payload small and readable.
-		console.log(`[Maxi AI BG] ${label}`, payload);
-	};
-
-	const updateBackgroundColor = (clientId, color, currentAttributes, prefix = '') => {
-		const newAttributes = {};
-		const isPalette = typeof color === 'number';
-
-		newAttributes[`${prefix}background-active-media-general`] = 'color';
-		newAttributes[`${prefix}background-class-general`] = ''; // clear class based colors
-
-		if (isPalette) {
-			newAttributes[`${prefix}background-palette-status-general`] = true;
-			newAttributes[`${prefix}background-palette-color-general`] = color;
-			// Explicitly clear custom color to ensure editor UI reflects palette status
-			newAttributes[`${prefix}background-color-general`] = '';
-		} else {
-			newAttributes[`${prefix}background-palette-status-general`] = false;
-			newAttributes[`${prefix}background-color-general`] = color;
-		}
-
-		if (
-			currentAttributes['background-layers'] &&
-			Array.isArray(currentAttributes['background-layers'])
-		) {
-			const layers = cloneDeep(currentAttributes['background-layers']);
-			if (layers.length > 0) {
-				layers[0].type = 'color';
-				layers[0]['display-general'] = 'block';
-
-				if (isPalette) {
-					layers[0]['background-palette-status-general'] = true;
-					layers[0]['background-palette-color-general'] = color;
-				} else {
-					layers[0]['background-palette-status-general'] = false;
-					layers[0]['background-color-general'] = color;
-				}
-				newAttributes['background-layers'] = layers;
-			}
-		}
-		logBackgroundDebug('updateBackgroundColor', {
-			clientId,
-			prefix,
-			color,
-			isPalette,
-			backgroundActiveMedia: newAttributes[`${prefix}background-active-media-general`],
-			paletteStatus: newAttributes[`${prefix}background-palette-status-general`],
-			paletteColor: newAttributes[`${prefix}background-palette-color-general`],
-			customColor: newAttributes[`${prefix}background-color-general`],
-			layers: summarizeBackgroundLayers(newAttributes['background-layers']),
-		});
-		return newAttributes;
-	};
-
 	const updateTextColor = (color, prefix = '') => {
 		const normalizedPrefix = prefix === 'button-' ? '' : prefix;
 		const isPalette = typeof color === 'number';
@@ -1650,158 +1579,6 @@ const ACTION_PROPERTY_ALIASES = {
 			default:
 				return null;
 		}
-	};
-
-	const getColorTargetFromMessage = lowerMessage => {
-		const isButtonContext =
-			lowerMessage.includes('button') ||
-			selectedBlock?.name?.includes('button');
-		const isHover = lowerMessage.includes('hover');
-		const isActive =
-			lowerMessage.includes('active') || lowerMessage.includes('pressed');
-		const isText =
-			lowerMessage.includes('text') ||
-			lowerMessage.includes('label') ||
-			lowerMessage.includes('font');
-		const isBackground =
-			lowerMessage.includes('background') || lowerMessage.includes('bg');
-		const isShapeKeyword =
-			lowerMessage.includes('shape divider') ||
-			lowerMessage.includes('shape-divider') ||
-			lowerMessage.includes('wave') ||
-			lowerMessage.includes('waves') ||
-			lowerMessage.includes('curve') ||
-			lowerMessage.includes('slant') ||
-			lowerMessage.includes('triangle');
-		const isContainer = selectedBlock?.name?.includes('container');
-		const hasShapeDivider =
-			!!selectedBlock?.attributes?.['shape-divider-top-status'] ||
-			!!selectedBlock?.attributes?.['shape-divider-bottom-status'];
-		const wantsTop = lowerMessage.includes('top');
-		const wantsBottom = lowerMessage.includes('bottom');
-		const isDivider =
-			lowerMessage.includes('divider') ||
-			selectedBlock?.name?.includes('divider');
-
-		if (isShapeKeyword || (isDivider && isContainer)) {
-			if (wantsTop && !wantsBottom) return 'shape-divider-top';
-			if (wantsBottom && !wantsTop) return 'shape-divider-bottom';
-			if (wantsTop && wantsBottom) return 'shape-divider';
-			if (hasShapeDivider) {
-				const hasTop = !!selectedBlock?.attributes?.['shape-divider-top-status'];
-				const hasBottom = !!selectedBlock?.attributes?.['shape-divider-bottom-status'];
-				if (hasTop && !hasBottom) return 'shape-divider-top';
-				if (hasBottom && !hasTop) return 'shape-divider-bottom';
-			}
-			return 'shape-divider';
-		}
-
-		if (isDivider) return 'divider';
-		if (lowerMessage.includes('border') && isButtonContext) return 'button-border';
-		if (isHover && isButtonContext) {
-			if (isText) return 'button-hover-text';
-			if (isBackground) return 'button-hover-background';
-		}
-		if (isActive && isButtonContext) return 'button-active-background';
-		if (isButtonContext && isText) return 'button-text';
-		if (isButtonContext && isBackground) return 'button-background';
-		if (isButtonContext) return 'button-background';
-		if (isBackground) return 'background';
-		if (isText) return 'text';
-		if (lowerMessage.includes('border')) return 'border';
-		return 'element';
-	};
-
-	const getColorTargetLabel = colorTarget => {
-		if (colorTarget === 'shape-divider') return 'shape divider';
-		if (colorTarget === 'shape-divider-top') return 'shape divider (top)';
-		if (colorTarget === 'shape-divider-bottom') return 'shape divider (bottom)';
-		return colorTarget.replace('button-', '');
-	};
-
-	const buildColorUpdate = (colorTarget, colorValue) => {
-		let property = '';
-		let targetBlock = 'container';
-		let value = colorValue;
-		let msgText = '';
-
-		if (colorTarget === 'button' || colorTarget === 'button-background') {
-			property = 'background_color';
-			targetBlock = 'button';
-			msgText = 'button background';
-		} else if (colorTarget === 'button-text') {
-			property = 'text_color';
-			targetBlock = 'button';
-			msgText = 'button text';
-		} else if (colorTarget === 'button-border') {
-			property = 'border';
-			targetBlock = 'button';
-			msgText = 'button border';
-		} else if (colorTarget === 'button-hover-background') {
-			property = 'button_hover_bg';
-			targetBlock = 'button';
-			msgText = 'button hover background';
-		} else if (colorTarget === 'button-hover-text') {
-			property = 'button_hover_text';
-			targetBlock = 'button';
-			msgText = 'button hover text';
-		} else if (colorTarget === 'button-active-background') {
-			property = 'button_active_bg';
-			targetBlock = 'button';
-			msgText = 'button active background';
-		} else if (colorTarget === 'button-icon-fill') {
-			property = 'icon_color';
-			targetBlock = 'button';
-			value = { target: 'fill', color: colorValue };
-			msgText = 'button icon fill';
-		} else if (colorTarget === 'button-icon-stroke') {
-			property = 'icon_color';
-			targetBlock = 'button';
-			value = { target: 'stroke', color: colorValue };
-			msgText = 'button icon stroke';
-		} else if (colorTarget === 'background') {
-			property = 'background_color';
-			targetBlock = 'container';
-			msgText = 'background';
-		} else if (['group', 'row', 'column', 'accordion', 'pane', 'slide', 'slider', 'video', 'map', 'search', 'number-counter'].includes(colorTarget)) {
-			property = 'background_color';
-			targetBlock = colorTarget;
-			msgText = `${colorTarget.replace('-', ' ')} background`;
-		} else if (colorTarget === 'text') {
-			property = 'text_color';
-			targetBlock = 'text';
-			msgText = 'text';
-		} else if (colorTarget === 'shape-divider-top') {
-			property = 'shape_divider_color_top';
-			targetBlock = 'container';
-			msgText = 'shape divider (top)';
-		} else if (colorTarget === 'shape-divider-bottom') {
-			property = 'shape_divider_color_bottom';
-			targetBlock = 'container';
-			msgText = 'shape divider (bottom)';
-		} else if (colorTarget === 'shape-divider') {
-			property = 'shape_divider_color';
-			targetBlock = 'container';
-			msgText = 'shape divider';
-		} else if (colorTarget === 'divider') {
-			property = 'divider_color';
-			targetBlock = 'divider';
-			msgText = 'divider';
-		} else if (colorTarget === 'element') {
-			property = 'background_color';
-			targetBlock = selectedBlock?.name?.includes('button')
-				? 'button'
-				: 'container';
-			msgText = 'element';
-		}
-
-		if (!property) {
-			property = 'background_color';
-			targetBlock = 'container';
-			msgText = 'background';
-		}
-
-		return { property, targetBlock, value, msgText };
 	};
 
 	const updatePadding = (value, side = null, prefix = '') => {
@@ -2796,7 +2573,7 @@ const ACTION_PROPERTY_ALIASES = {
 
 						case 'background_color':
 							// Apply to containers, rows, columns, buttons OR if it's a direct clientId match (Selection)
-							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button') || block.name.includes('group') || block.name.includes('accordion') || block.name.includes('pane') || block.name.includes('slide') || block.name.includes('slider') || block.name.includes('video') || block.name.includes('map') || block.name.includes('search') || block.name.includes('number-counter')) {
+							if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button') || block.name.includes('group') || block.name.includes('accordion') || block.name.includes('pane') || block.name.includes('slide') || block.name.includes('slider') || block.name.includes('video') || block.name.includes('map') || block.name.includes('search') || block.name.includes('number-counter') || block.name.includes('icon-maxi') || block.name.includes('svg-icon')) {
 								// Number Counter backgrounds live on the Canvas (un-prefixed) group.
 								const backgroundPrefix = block.name.includes('number-counter') ? '' : prefix;
 								changes = updateBackgroundColor(block.clientId, value, block.attributes, backgroundPrefix);
@@ -6001,10 +5778,7 @@ const ACTION_PROPERTY_ALIASES = {
 		const isButtonContext =
 			lowerMessage.includes('button') ||
 			selectedBlock?.name?.includes('button');
-		const isTextContext =
-			lowerMessage.includes('text') ||
-			selectedBlock?.name?.includes('text-maxi') ||
-			selectedBlock?.name?.includes('list-item-maxi');
+		const isTextContext = isTextContextForMessage(lowerMessage, selectedBlock?.name);
 		const isImageContext =
 			lowerMessage.includes('image') ||
 			selectedBlock?.name?.includes('image-maxi');
@@ -6569,8 +6343,8 @@ const ACTION_PROPERTY_ALIASES = {
 				lowerMessage.includes('glow');
 
 			if (!isFlowIntent) {
-				const colorTarget = getColorTargetFromMessage(lowerMessage);
-				const colorUpdate = buildColorUpdate(colorTarget, hexColor);
+				const colorTarget = getColorTargetFromMessage(lowerMessage, { selectedBlock });
+				const colorUpdate = buildColorUpdate(colorTarget, hexColor, { selectedBlock });
 
 				if (colorUpdate.property) {
 					setIsLoading(true);
@@ -6619,35 +6393,6 @@ const ACTION_PROPERTY_ALIASES = {
 		}
 
 
-
-		const getRequestedTarget = () => {
-			if (lowerMessage.includes('accordion')) return 'accordion';
-			if (lowerMessage.includes('video')) return 'video';
-			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
-			if (lowerMessage.includes('button')) return 'button';
-			if (hasShapeDividerIntent) return 'container';
-			if (lowerMessage.includes('divider')) return 'divider';
-			if (lowerMessage.includes('text') || lowerMessage.includes('heading') || lowerMessage.includes('paragraph')) return 'text';
-			if (/\brow\b/.test(lowerMessage)) return 'row';
-			if (/\bcolumn\b/.test(lowerMessage)) return 'column';
-			if (/\bgroup\b/.test(lowerMessage)) return 'group';
-			if (lowerMessage.includes('container') || lowerMessage.includes('section')) return 'container';
-
-			if (selectedBlock?.name) {
-				if (selectedBlock.name.includes('accordion')) return 'accordion';
-				if (selectedBlock.name.includes('video')) return 'video';
-				if (selectedBlock.name.includes('image')) return 'image';
-				if (selectedBlock.name.includes('button')) return 'button';
-				if (selectedBlock.name.includes('divider')) return 'divider';
-				if (selectedBlock.name.includes('text') || selectedBlock.name.includes('heading')) return 'text';
-				if (selectedBlock.name.includes('row')) return 'row';
-				if (selectedBlock.name.includes('column')) return 'column';
-				if (selectedBlock.name.includes('group')) return 'group';
-				if (selectedBlock.name.includes('container')) return 'container';
-			}
-
-			return null;
-		};
 
 		const resolveCloudIconTarget = () => {
 			const selectedName = selectedBlock?.name || '';
@@ -6713,7 +6458,10 @@ const ACTION_PROPERTY_ALIASES = {
 		// LAYOUT INTENT INTERCEPTION (Lookup Table Pattern Matching)
 		// ============================================================
 		// Uses LAYOUT_PATTERNS constant for zero-latency, maintainable pattern matching
-		const requestedTarget = getRequestedTarget();
+		const requestedTarget = getRequestedTargetFromMessage(lowerMessage, {
+			selectedBlockName: selectedBlock?.name,
+			hasShapeDividerIntent,
+		});
 		const skipLayoutPatterns = requestedTarget === 'border';
 
 		if (!skipLayoutPatterns) for (const pattern of LAYOUT_PATTERNS) {
@@ -6729,8 +6477,11 @@ const ACTION_PROPERTY_ALIASES = {
 				if (hasShapeDividerIntent && pattern.target === 'divider') {
 					continue;
 				}
-				const isTargetedPattern = ['accordion', 'button', 'image', 'container', 'column', 'divider', 'text', 'video'].includes(pattern.target);
-				if (requestedTarget && isTargetedPattern && pattern.target !== requestedTarget) {
+				if (
+					requestedTarget &&
+					isTargetedPatternTarget(pattern.target) &&
+					pattern.target !== requestedTarget
+				) {
 					continue;
 				}
 
@@ -6854,6 +6605,18 @@ const ACTION_PROPERTY_ALIASES = {
 						}
 					}
 
+					if (pattern.property === 'flow_icon_line_width') {
+						const widthMatch = lowerMessage.match(
+							/\b(?:stroke|line)\s*(?:width|thickness|weight)\b[^0-9]*([0-9]+(?:\.[0-9]+)?)/
+						);
+						if (widthMatch) {
+							const widthValue = Number(widthMatch[1]);
+							if (Number.isFinite(widthValue)) {
+								flowData.icon_line_width = widthValue;
+							}
+						}
+					}
+
 					const startResponse = flowHandler
 						? flowHandler(primaryBlock, pattern.property, 'start', prefix, flowData)
 						: null;
@@ -6879,6 +6642,10 @@ const ACTION_PROPERTY_ALIASES = {
 							});
 						});
 
+						if (flowScope === 'selection') {
+							openSidebarForProperty(pattern.property);
+						}
+
 						const fallbackMsg = flowScope === 'selection' ? pattern.selectionMsg : pattern.pageMsg;
 						const finalMsg = startResponse.message || fallbackMsg || 'Done.';
 						setMessages(prev => [...prev, {
@@ -6899,6 +6666,9 @@ const ACTION_PROPERTY_ALIASES = {
 						currentOptions: startResponse.options || [],
 						blockIds: targetBlocks.map(b => b.clientId) // Track all targets
 					});
+					if (flowScope === 'selection') {
+						openSidebarForProperty(pattern.property);
+					}
 					
 					// Show Trigger Message
 					setMessages(prev => [...prev, {
@@ -7723,10 +7493,10 @@ const ACTION_PROPERTY_ALIASES = {
 				if (pattern.property === 'color_clarify') {
 					// Prioity 1: Use specific target from pattern (e.g. 'button-background')
 					// Priority 2: Heuristic detection from message
-					const colorTarget = pattern.colorTarget || getColorTargetFromMessage(lowerMessage);
+					const colorTarget = pattern.colorTarget || getColorTargetFromMessage(lowerMessage, { selectedBlock });
 
 					if (hexColor) {
-						const colorUpdate = buildColorUpdate(colorTarget, hexColor);
+						const colorUpdate = buildColorUpdate(colorTarget, hexColor, { selectedBlock });
 						const directAction = currentScope === 'selection'
 							? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` }
 							: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` };
@@ -8473,10 +8243,11 @@ const ACTION_PROPERTY_ALIASES = {
 				return;
 			} else {
 				const target = prevMsg?.colorTarget;
-				const colorUpdate = buildColorUpdate(target, colorValue);
+				const colorUpdate = buildColorUpdate(target, colorValue, { selectedBlock });
+				const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
 
 				directAction = { 
-					action: 'update_page', 
+					action: actionType, 
 					property: colorUpdate.property, 
 					value: colorUpdate.value, 
 					target_block: colorUpdate.targetBlock,
@@ -8728,8 +8499,13 @@ const ACTION_PROPERTY_ALIASES = {
 						{__('Style Card', 'maxi-blocks')}
 					</button>
 				</div>
-				<button className='maxi-ai-chat-panel__close' onClick={onClose}>
-					--
+				<button
+					className='maxi-ai-chat-panel__close'
+					onClick={onClose}
+					type='button'
+					aria-label={__('Close', 'maxi-blocks')}
+				>
+					X
 				</button>
 			</div>
 

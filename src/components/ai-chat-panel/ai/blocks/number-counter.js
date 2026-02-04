@@ -11,7 +11,7 @@ export const NUMBER_COUNTER_PATTERNS = [
 		selectionMsg: 'Which colour for the counter background?',
 		pageMsg: 'Which colour for the counter background?',
 		target: 'number-counter',
-		colorTarget: 'number-counter',
+		colorTarget: 'number-counter-circle-background',
 	},
 	{
 		regex: /\b(number\s*counter|counter)\b.*\b(from)\b.*\b(to)\b|\bfrom\b.*\bto\b.*\b(number\s*counter|counter)\b/i,
@@ -217,6 +217,16 @@ export const handleNumberCounterUpdate = (block, property, value, prefix, contex
 		};
 	}
 
+	if (normalized === 'number_counter_circle_background_color') {
+		const isPalette = typeof value === 'number';
+		return {
+			'number-counter-circle-background-palette-status': isPalette,
+			'number-counter-circle-background-palette-sc-status': isPalette,
+			'number-counter-circle-background-palette-color': isPalette ? value : '',
+			'number-counter-circle-background-color': isPalette ? '' : String(value || ''),
+		};
+	}
+
 	if (normalized === 'number_counter_title_font_size') {
 		const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
 		const size = asNumber(rawValue);
@@ -243,6 +253,7 @@ export const getNumberCounterSidebarTarget = property => {
 		'number_counter_start_animation',
 		'number_counter_start_offset',
 		'number_counter_text_color',
+		'number_counter_circle_background_color',
 		'number_counter_title_font_size',
 		'width',
 		'height',

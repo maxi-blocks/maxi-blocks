@@ -137,11 +137,12 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             $index_js = 'build/index.min.js';
             $script_asset = require $script_asset_path;
+            $asset_version = isset($script_asset['version']) ? $script_asset['version'] : MAXI_PLUGIN_VERSION;
             wp_register_script(
                 'maxi-blocks-block-editor',
                 plugins_url($index_js, dirname(__FILE__)),
                 $script_asset['dependencies'],
-                MAXI_PLUGIN_VERSION,
+                $asset_version,
                 true,
             );
 
@@ -332,7 +333,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION,
+                $asset_version,
             );
 
             register_block_type('maxi-blocks/block-settings', [
@@ -345,7 +346,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION,
+                $asset_version,
             );
             wp_enqueue_style('maxi-blocks-block');
         }

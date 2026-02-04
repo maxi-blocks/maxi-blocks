@@ -16,6 +16,7 @@ import {
 	handleNumberCounterUpdate,
 	getNumberCounterSidebarTarget,
 } from '../ai/blocks/number-counter';
+import { buildColorUpdate } from '../ai/color/colorClarify';
 import {
 	buildContainerPGroupAction,
 	buildContainerPGroupAttributeChanges,
@@ -33,6 +34,10 @@ const counterBlock = {
 
 describe('number counter prompt patterns', () => {
 	test.each([
+		[
+			'Set number counter background to #ff0000',
+			{ property: 'color_clarify', value: 'show_palette' },
+		],
 		[
 			'Set number counter from 0 to 250',
 			{ property: 'number_counter_range', value: 'use_prompt' },
@@ -82,6 +87,16 @@ describe('number counter prompt patterns', () => {
 		expect(pattern).toBeTruthy();
 		expect(pattern.property).toBe(expected.property);
 		expect(pattern.value).toBe(expected.value);
+	});
+
+	test('targets circle background for counter background prompts', () => {
+		const pattern = matchPattern('Set number counter background to #ff0000');
+		expect(pattern.colorTarget).toBe('number-counter-circle-background');
+
+		const update = buildColorUpdate(pattern.colorTarget, '#ff0000');
+		expect(update.property).toBe('number_counter_circle_background_color');
+		expect(update.targetBlock).toBe('number-counter');
+		expect(update.msgText).toBe('counter circle background');
 	});
 });
 
@@ -139,6 +154,34 @@ describe('number counter prompt to attributes', () => {
 		});
 	});
 
+	test('maps circle background palette/custom values', () => {
+		expect(
+			handleNumberCounterUpdate(
+				counterBlock,
+				'number_counter_circle_background_color',
+				4
+			)
+		).toEqual({
+			'number-counter-circle-background-palette-status': true,
+			'number-counter-circle-background-palette-sc-status': true,
+			'number-counter-circle-background-palette-color': 4,
+			'number-counter-circle-background-color': '',
+		});
+
+		expect(
+			handleNumberCounterUpdate(
+				counterBlock,
+				'number_counter_circle_background_color',
+				'#ff0000'
+			)
+		).toEqual({
+			'number-counter-circle-background-palette-status': false,
+			'number-counter-circle-background-palette-sc-status': false,
+			'number-counter-circle-background-palette-color': '',
+			'number-counter-circle-background-color': '#ff0000',
+		});
+	});
+
 	test('maps title font size', () => {
 		expect(
 			handleNumberCounterUpdate(
@@ -189,6 +232,10 @@ describe('number counter sidebar targets', () => {
 		['number_counter_end', { tabIndex: 0, accordion: 'number' }],
 		['number_counter_duration', { tabIndex: 0, accordion: 'number' }],
 		['number_counter_text_color', { tabIndex: 0, accordion: 'number' }],
+		[
+			'number_counter_circle_background_color',
+			{ tabIndex: 0, accordion: 'number' },
+		],
 		['width', { tabIndex: 0, accordion: 'number' }],
 		['border', { tabIndex: 0, accordion: 'border' }],
 		['box_shadow', { tabIndex: 0, accordion: 'box shadow' }],
@@ -199,4 +246,3 @@ describe('number counter sidebar targets', () => {
 		expect(sidebar).toEqual(expected);
 	});
 });
-

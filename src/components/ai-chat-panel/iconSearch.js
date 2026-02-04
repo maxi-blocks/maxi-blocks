@@ -164,6 +164,17 @@ export const extractIconStyleIntent = message => {
 	) {
 		return 'shape';
 	}
+
+	// Adjective-style phrasing ("Outline shopping cart icon")
+	if (/\b(outline|outlined)\b(?=[^,.;]*\bicons?\b)/.test(lower)) {
+		return 'line';
+	}
+	if (/\b(filled|solid)\b(?=[^,.;]*\bicons?\b)/.test(lower)) {
+		return 'filled';
+	}
+	if (/\b(shape|shapes|geometric)\b(?=[^,.;]*\bicons?\b)/.test(lower)) {
+		return 'shape';
+	}
 	return '';
 };
 
@@ -177,6 +188,9 @@ export const stripIconStylePhrases = message => {
 		.replace(/\b(shape|shapes|geometric)\s+icons?\b(\s+only)?/gi, 'icons')
 		.replace(/\bicons?\b\s+(?:only\s+)?(filled|solid|fill|line|outline|stroke|shape|shapes|geometric)\b/gi, 'icons')
 		.replace(/\bicons?\b\s+(?:in|with)\s+(?:a\s+)?(filled|solid|fill|line|outline|stroke|shape|shapes|geometric)\s+style\b/gi, 'icons')
+		.replace(/\b(outline|outlined)\b(?=[^,.;]*\bicons?\b)/gi, '')
+		.replace(/\b(filled|solid)\b(?=[^,.;]*\bicons?\b)/gi, '')
+		.replace(/\b(shape|shapes|geometric)\b(?=[^,.;]*\bicons?\b)/gi, '')
 		.replace(/\s+/g, ' ')
 		.trim();
 };

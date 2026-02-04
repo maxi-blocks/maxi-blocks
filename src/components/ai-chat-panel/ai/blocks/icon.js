@@ -3,6 +3,8 @@
  * Focused on icon fill/stroke colour and alignment changes.
  */
 
+import { setSVGStrokeWidth } from '@extensions/svg';
+
 export const getIconSidebarTarget = property => {
 	const normalized = String(property || '').replace(/-/g, '_');
 	if (!normalized) return null;
@@ -15,6 +17,7 @@ export const getIconSidebarTarget = property => {
 		'alt_title',
 		'alt_description',
 	]);
+	const iconProps = new Set(['icon_svg', 'content', 'svgType', 'svg_type']);
 	const colorProps = new Set([
 		'flow_icon_fill',
 		'flow_icon_stroke',
@@ -62,6 +65,9 @@ export const getIconSidebarTarget = property => {
 	if (altProps.has(baseProperty)) {
 		return { tabIndex: 0, accordion: 'icon alt' };
 	}
+	if (iconProps.has(baseProperty)) {
+		return { tabIndex: 0, accordion: 'icon' };
+	}
 	if (colorProps.has(baseProperty)) {
 		return { tabIndex: 0, accordion: 'fill & stroke color' };
 	}
@@ -105,7 +111,7 @@ export const ICON_PATTERNS = [
 		target: 'icon',
 	},
 	{
-		regex: /\bicon\b.*\b(?:line|stroke)\s*(?:width|thickness|weight)\b|\b(?:line|stroke)\s*(?:width|thickness|weight)\b.*\bicon\b/i,
+		regex: /\bicon\b.*\b(?:line|stroke)\s*(?:width|thickness|weight)\b|\b(?:line|stroke)\s*(?:width|thickness|weight)\b.*\bicon\b|\b(?:line|stroke)\s*(?:width|thickness|weight)\b/i,
 		property: 'flow_icon_line_width',
 		value: 'start',
 		selectionMsg: '',
@@ -263,7 +269,12 @@ export const handleIconUpdate = (block, property, value, _prefix, context = {}) 
 
 		return {
 			action: 'apply',
-			attributes: { 'svg-stroke-general': lineWidth },
+			attributes: {
+				'svg-stroke-general': lineWidth,
+				...(typeof block?.attributes?.content === 'string'
+					? { content: setSVGStrokeWidth(block.attributes.content, lineWidth) }
+					: {}),
+			},
 			done: true,
 			message: 'Updated icon line width.',
 		};

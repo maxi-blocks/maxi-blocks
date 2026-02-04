@@ -5063,6 +5063,11 @@ const extractWidthIntent = message => {
 		return null;
 	}
 
+	// Avoid misclassifying stroke/line width as layout width.
+	if (/\b(?:line|stroke|border|outline)[-\s]*width\b/.test(lower)) {
+		return null;
+	}
+
 	if (
 		/fit[-\s]*content/.test(lower) ||
 		/\bwidth\s*auto\b/.test(lower) ||

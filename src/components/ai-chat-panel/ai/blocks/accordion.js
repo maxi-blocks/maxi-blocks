@@ -292,7 +292,7 @@ export const ACCORDION_PATTERNS = [
 		target: 'accordion',
 	},
 	{
-		regex: /\baccordion\b.*\b(fast|faster|quick|snappy)\b.*\b(animation|transition|speed)\b|\b(animation|transition|speed)\b.*\b(fast|faster|quick|snappy)\b.*\baccordion\b/i,
+		regex: /(?=.*\baccordion\b)(?=.*\b(animation|transition|speed)\b)(?=.*\b(fast|faster|quick|snappy)\b)/i,
 		property: 'accordion_animation_duration',
 		value: 0.2,
 		selectionMsg: 'Sped up the accordion animation.',
@@ -300,7 +300,7 @@ export const ACCORDION_PATTERNS = [
 		target: 'accordion',
 	},
 	{
-		regex: /\baccordion\b.*\b(slow|slower|smooth)\b.*\b(animation|transition|speed)\b|\b(animation|transition|speed)\b.*\b(slow|slower|smooth)\b.*\baccordion\b/i,
+		regex: /(?=.*\baccordion\b)(?=.*\b(animation|transition|speed)\b)(?=.*\b(slow|slower|smooth)\b)/i,
 		property: 'accordion_animation_duration',
 		value: 0.6,
 		selectionMsg: 'Slowed down the accordion animation.',

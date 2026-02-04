@@ -370,8 +370,13 @@ const extractTypographyHoverStatus = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!/\bhover\b/.test(lower)) return null;
 	if (!/(text|typography|font)/.test(lower)) return null;
+	// Only treat this as a hover-style toggle if the user is explicitly referring
+	// to hover styling (otherwise "on hover, remove ..." would be misclassified).
+	if (!/\bhover\b.*\b(styles?|styling|effects?|state)\b/.test(lower)) return null;
 	if (/(disable|off|remove|no)\b/.test(lower)) return false;
-	if (/(enable|on|show|use|activate)\b/.test(lower)) return true;
+	// Avoid treating the "on" in "on hover ..." as an enable intent.
+	if (/(enable|show|use|activate)\b/.test(lower)) return true;
+	if (/\b(turn|switch)\s+on\b/.test(lower)) return true;
 	return null;
 };
 
@@ -457,6 +462,7 @@ const extractFontWeightValue = message => {
 
 const extractFontStyleValue = message => {
 	const lower = String(message || '').toLowerCase();
+	if (/(text\s*orientation|orientation)\b/.test(lower)) return null;
 	const hasStyleKeyword = /(italic|oblique|upright|regular|normal|roman)/.test(lower);
 	const hasStyleContext = /(font|text)\s*style/.test(lower);
 	if (!hasStyleKeyword && !hasStyleContext) return null;
@@ -470,6 +476,9 @@ const extractFontStyleValue = message => {
 const extractFontFamilyValue = message => {
 	const lower = String(message || '').toLowerCase();
 	if (/font\s*size|text\s*size|type\s*size/.test(lower)) return null;
+	// Avoid treating JSON (e.g. custom formats) as a quoted font family.
+	if (/\bcustom\s*formats?\b/.test(lower)) return null;
+	if (/[{}]/.test(message)) return null;
 
 	const quoted = message.match(/["']([^"']+)["']/);
 	if (quoted && quoted[1]) return quoted[1].trim();

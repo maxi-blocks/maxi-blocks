@@ -44,7 +44,13 @@ const extractBreakpointValue = message =>
 	]);
 
 const parsePaletteColor = message => {
-	const match = message.match(/\b(?:palette|color)\s*(\d{1,2})\b/i);
+	if (!message) return null;
+
+	const match =
+		message.match(
+			/\bpalette\s*(?:colou?r\s*)?(?:to|is|=|:)?\s*#?(\d{1,2})\b/i
+		) ||
+		message.match(/\bcolou?r\s*(?:to|is|=|:)?\s*#?(\d{1,2})\b/i);
 	if (!match) return null;
 	const num = Number.parseInt(match[1], 10);
 	return Number.isFinite(num) ? num : null;

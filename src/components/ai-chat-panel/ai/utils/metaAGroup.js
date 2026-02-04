@@ -16,6 +16,8 @@ const extractValueFromPatterns = (message, patterns) => {
 const sanitizeAnchorId = value =>
 	String(value || '').replace(/[^a-zA-Z0-9-_]/g, '');
 
+const sanitizeUniqueID = sanitizeAnchorId;
+
 
 export const extractAnchorLink = message => {
 	const lowerMessage = String(message || '').toLowerCase();
@@ -45,6 +47,24 @@ export const extractAriaLabel = message => {
 	return extractValueFromPatterns(message, [
 		/(?:aria[\s_-]*label|accessibility\s*label|screen\s*reader\s*label)\s*(?:to|=|:|is)?\s*(.+)$/i,
 	]);
+};
+
+export const extractUniqueID = message => {
+	const lowerMessage = String(message || '').toLowerCase();
+	const hasUniqueHint = /\bunique[\s_-]*id\b|\buniqueid\b|\bunique_id\b/.test(
+		lowerMessage
+	);
+	if (!hasUniqueHint) return null;
+
+	const quoted = extractQuotedText(message);
+	const raw =
+		quoted ||
+		extractValueFromPatterns(message, [
+			/(?:unique[\s_-]*id|uniqueid|unique_id)\s*(?:to|=|:|is)?\s*([a-zA-Z0-9-_]+)/i,
+		]);
+	if (!raw) return null;
+	const cleaned = sanitizeUniqueID(raw);
+	return cleaned || null;
 };
 
 export const extractFirstOnHierarchy = message => {
@@ -123,6 +143,17 @@ export const buildMetaAGroupAction = (
 		};
 	}
 
+	const uniqueID = extractUniqueID(message);
+	if (uniqueID) {
+		return {
+			action: actionType,
+			property: 'unique_id',
+			value: uniqueID,
+			message: 'Unique ID set.',
+			...actionTarget,
+		};
+	}
+
 	const relations = extractRelations(message);
 	if (Array.isArray(relations)) {
 		return {
@@ -158,6 +189,8 @@ export const buildMetaAGroupAttributeChanges = (
 	switch (property) {
 		case 'anchor_link':
 			return { anchorLink: textValue };
+		case 'unique_id':
+			return { uniqueID: textValue };
 		case 'aria_label': {
 			return {
 				ariaLabels: {
@@ -179,6 +212,9 @@ export const getMetaSidebarTarget = property => {
 	if (!property) return null;
 	if (property === 'anchor_link') {
 		return { tabIndex: 1, accordion: 'add anchor link' };
+	}
+	if (property === 'unique_id') {
+		return { tabIndex: 0, accordion: 'block settings' };
 	}
 	if (property === 'aria_label') {
 		return { tabIndex: 1, accordion: 'aria label' };

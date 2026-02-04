@@ -569,10 +569,10 @@ const reorderLayers = (layers, { subject, relative, position }) => {
 };
 
 const reindexLayers = layers => {
-	const sorted = sortByOrder(layers);
-	const { min } = getOrderRange(sorted);
-	let nextId = getNextId(sorted);
-	return sorted.map((layer, index) => ({
+	const ordered = Array.isArray(layers) ? layers : [];
+	const { min } = getOrderRange(ordered);
+	let nextId = getNextId(ordered);
+	return ordered.map((layer, index) => ({
 		...layer,
 		order: min + index,
 		id: Number.isFinite(layer.id) ? layer.id : nextId++,

@@ -15,7 +15,7 @@
 
 import { create } from '@wordpress/rich-text';
 import { parseBorderStyle } from './utils';
-import { getGroupAttributes } from '@extensions/styles';
+import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
 import { createLinkAttributes } from '@components/toolbar/components/text-link/utils';
 
@@ -1601,10 +1601,7 @@ switch (baseProperty) {
 			break;
 
 		case 'text_letter_spacing':
-			changes = buildTextLetterSpacingChanges(value);
-			break;
-		case 'text_letter_spacing_hover':
-			changes = buildTextLetterSpacingChanges(value, { isHover: true });
+			changes = buildTextLetterSpacingChanges(value, { isHover });
 			break;
 
 		case 'text_font_family': {

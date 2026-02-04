@@ -1,3 +1,30 @@
+jest.mock(
+	'@components/background-control/utils',
+	() => ({
+		getDefaultLayerWithBreakpoint: (_label, _breakpoint, isHover = false) => ({
+			display: 'block',
+			isHover,
+		}),
+		getLayerLabel: type => {
+			switch (type) {
+				case 'color':
+					return 'colorOptions';
+				case 'image':
+					return 'imageOptions';
+				case 'video':
+					return 'videoOptions';
+				case 'gradient':
+					return 'gradientOptions';
+				case 'shape':
+					return 'SVGOptions';
+				default:
+					return false;
+			}
+		},
+	}),
+	{ virtual: true }
+);
+
 import { cloneDeep } from 'lodash';
 import {
 	buildContainerBGroupAction,

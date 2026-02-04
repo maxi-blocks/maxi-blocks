@@ -2044,12 +2044,40 @@ const extractIconName = message => {
 		return null;
 	}
 
-	if (/(background|border|padding|spacing|size|width|height|color|stroke|fill)/i.test(raw)) {
+	if (
+		/(background|border|padding|spacing|size|width|height|color|stroke|fill|style|type|variant|shape|line|outline|filled)/i.test(
+			raw
+		)
+	) {
 		return null;
 	}
 
 	const slug = slugifyIconName(raw);
 	return slug || null;
+};
+
+const extractIconSvgTypeIntent = message => {
+	const lower = String(message || '').toLowerCase();
+	if (!lower.includes('icon')) return null;
+	const hasTypeKeyword = /(svg\s*type|icon\s*type|icon\s*style)/.test(lower);
+
+	if (!hasTypeKeyword && !/\b(outline|line|shape|filled)\b/.test(lower)) return null;
+
+	const hasColorHint =
+		/\bpalette\b|#|var\(--|rgb\(|rgba\(|hsl\(|hsla\(|\bcolor\b/.test(lower);
+	if (hasColorHint && !hasTypeKeyword) return null;
+
+	const isHover = /\bhover\b/.test(lower);
+
+	if (/\b(line|outline)\b/.test(lower) || (hasTypeKeyword && /\bstroke\b/.test(lower))) {
+		return { isHover, value: 'Line' };
+	}
+
+	if (/\b(shape|filled)\b/.test(lower) || (hasTypeKeyword && /\bfill\b/.test(lower))) {
+		return { isHover, value: 'Shape' };
+	}
+
+	return null;
 };
 
 const extractIconPosition = message => {
@@ -2803,6 +2831,17 @@ const buildButtonIGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
+	const svgTypeIntent = extractIconSvgTypeIntent(message);
+	if (svgTypeIntent) {
+		return {
+			action: actionType,
+			property: svgTypeIntent.isHover ? 'icon_svg_type_hover' : 'icon_svg_type',
+			value: svgTypeIntent.value,
+			message: 'Icon type updated.',
+			...actionTarget,
+		};
+	}
+
 	const arrowIcon = extractArrowIconIntent(message);
 	if (arrowIcon) {
 		return {
@@ -3039,6 +3078,10 @@ const buildButtonIGroupAttributeChanges = (property, value) => {
 			return buildIconStrokeWidthChanges(value, { isHover: false });
 		case 'icon_stroke_width_hover':
 			return buildIconStrokeWidthChanges(value, { isHover: true });
+		case 'icon_svg_type':
+			return { svgType: String(value || '') };
+		case 'icon_svg_type_hover':
+			return { 'svgType-hover': String(value || ''), 'icon-status-hover': true };
 		case 'icon_content':
 			return { 'icon-content': String(value || '') };
 		case 'icon_content_hover':
@@ -3105,6 +3148,8 @@ const getButtonIGroupSidebarTarget = property => {
 			'icon_stroke_color_hover',
 			'icon_stroke_width',
 			'icon_stroke_width_hover',
+			'icon_svg_type',
+			'icon_svg_type_hover',
 			'icon_status_hover',
 			'icon_status_hover_target',
 		].includes(normalized)

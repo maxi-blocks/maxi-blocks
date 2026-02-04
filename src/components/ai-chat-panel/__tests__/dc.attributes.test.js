@@ -13,12 +13,14 @@ const DC_BLOCKS = ['text-maxi', 'image-maxi', 'button-maxi', 'divider-maxi'];
 const dcAttributes = [
 	...new Set(
 		DC_BLOCKS.flatMap(blockName =>
-			(rawAttributes.blocks[blockName] || []).filter(attr =>
-				attr.startsWith('dc-')
+			(rawAttributes.blocks[blockName] || []).filter(
+				attr => typeof attr === 'string' && attr.startsWith('dc-')
 			)
 		)
 	),
-].sort();
+]
+	.filter(attr => typeof attr === 'string')
+	.sort();
 
 const getSampleValue = attribute => {
 	if (DC_BOOLEAN_ATTRIBUTES.has(attribute)) return true;
@@ -84,7 +86,9 @@ describe('dynamic content attributes', () => {
 			const prompt = buildPrompt(attribute, value);
 			const action = buildDcGroupAction(prompt);
 
-			expect(action).toBeTruthy();
+			if (!action) {
+				throw new Error(`buildDcGroupAction returned null for "${prompt}"`);
+			}
 			expect(action.property).toBe(attribute.replace(/-/g, '_'));
 			expect(action.value).toEqual(value);
 		});

@@ -1,3 +1,12 @@
+jest.mock(
+	'@components/background-control/utils',
+	() => ({
+		getDefaultLayerWithBreakpoint: () => ({ display: 'block', isHover: false }),
+		getLayerLabel: () => 'colorOptions',
+	}),
+	{ virtual: true }
+);
+
 import rawAttributes from '../ai/attributes/maxi-block-attributes.json';
 import {
 	buildTextCGroupAction,

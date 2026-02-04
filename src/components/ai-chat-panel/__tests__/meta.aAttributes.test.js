@@ -24,6 +24,16 @@ describe('meta A attributes', () => {
 		expect(ariaAction.value).toBe('Primary hero container');
 	});
 
+	test('unique id phrases map to meta actions', () => {
+		const action = buildMetaAGroupAction('Set unique id to hero-cta-01', {
+			scope: 'selection',
+			targetBlock: 'button',
+		});
+		expect(action).toBeTruthy();
+		expect(action.property).toBe('unique_id');
+		expect(action.value).toBe('hero-cta-01');
+	});
+
 	test('relations and hierarchy phrases map to meta actions', () => {
 		const relationsAction = buildMetaAGroupAction(
 			'Set relations to [{"source":"button","target":"form"}]',
@@ -73,6 +83,9 @@ describe('meta A attributes', () => {
 		const anchorChanges = buildMetaAGroupAttributeChanges('anchor_link', 'hero');
 		expect(anchorChanges).toEqual({ anchorLink: 'hero' });
 
+		const uniqueChanges = buildMetaAGroupAttributeChanges('unique_id', 'hero-cta-01');
+		expect(uniqueChanges).toEqual({ uniqueID: 'hero-cta-01' });
+
 		const ariaChanges = buildMetaAGroupAttributeChanges('aria_label', 'CTA', {
 			attributes: { ariaLabels: { icon: 'Decorative' } },
 			targetKey: 'button',
@@ -99,6 +112,10 @@ describe('meta A attributes', () => {
 		expect(getMetaSidebarTarget('anchor_link')).toEqual({
 			tabIndex: 1,
 			accordion: 'add anchor link',
+		});
+		expect(getMetaSidebarTarget('unique_id')).toEqual({
+			tabIndex: 0,
+			accordion: 'block settings',
 		});
 		expect(getMetaSidebarTarget('aria_label')).toEqual({
 			tabIndex: 1,

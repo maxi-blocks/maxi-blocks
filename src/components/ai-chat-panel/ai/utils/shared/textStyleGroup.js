@@ -153,7 +153,7 @@ const extractTextIndent = message => {
 	}
 
 	const primaryMatch = message.match(
-		/(?:text\s*)?indent(?:ation)?\s*(?:to|=|:|is|by)?\s*(-?\d+(?:\.\d+)?)(px|%|em|rem|ch)?/i
+		/(?:text\s*)?indent(?:ation)?(?:\s*text)?\s*(?:to|=|:|is|by)?\s*(-?\d+(?:\.\d+)?)(px|%|em|rem|ch)?/i
 	);
 	if (primaryMatch) {
 		return {
@@ -254,7 +254,9 @@ const extractVerticalAlign = message => {
 	if (!hasTextContext(message) && !hasVerticalContext) return null;
 
 	if (/superscript|super\s*script/.test(lower)) return 'super';
+	if (/\bsuper\b/.test(lower)) return 'super';
 	if (/subscript|sub\s*script/.test(lower)) return 'sub';
+	if (/\bsub\b/.test(lower)) return 'sub';
 	if (/text[-\s]?top/.test(lower)) return 'text-top';
 	if (/text[-\s]?bottom/.test(lower)) return 'text-bottom';
 	if (/\bmiddle\b/.test(lower)) return 'middle';

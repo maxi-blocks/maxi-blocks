@@ -704,6 +704,8 @@ const ACTION_PROPERTY_ALIASES = {
 	iconStrokeColorHover: 'icon_stroke_color_hover',
 	iconStrokeWidth: 'icon_stroke_width',
 	iconStrokeWidthHover: 'icon_stroke_width_hover',
+	iconSvgType: 'icon_svg_type',
+	iconSvgTypeHover: 'icon_svg_type_hover',
 	iconContent: 'icon_content',
 	iconContentHover: 'icon_content_hover',
 	iconPosition: 'icon_position',
@@ -1377,8 +1379,8 @@ const ACTION_PROPERTY_ALIASES = {
 		const quoted = extractQuotedText(message);
 		if (quoted) return quoted;
 		return extractValueFromPatterns(message, [
-			/(?:button\s*)?(?:text|label|copy)\s*(?:to|=|is|:)\s*(.+)$/i,
-			/(?:button\s*)?(?:text|label|copy)\s+(?!colou?r\b)(.+)$/i,
+			/(?:button\s*)?(?:text|label|copy|content)\s*(?:to|=|is|:)\s*(.+)$/i,
+			/(?:button\s*)?(?:text|label|copy|content)\s+(?!colou?r\b)(.+)$/i,
 			/(?:rename|change)\s*button\s*(?:to|as)\s*(.+)$/i,
 			/(?:button\s*)?(?:says|say|reads)\s*(.+)$/i,
 		]);
@@ -2703,6 +2705,8 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'icon_stroke_color_hover':
 						case 'icon_stroke_width':
 						case 'icon_stroke_width_hover':
+						case 'icon_svg_type':
+						case 'icon_svg_type_hover':
 						case 'icon_content':
 						case 'icon_content_hover':
 						case 'icon_position':
@@ -3216,6 +3220,7 @@ const ACTION_PROPERTY_ALIASES = {
 						}
 						// ======= META / ACCESSIBILITY =======
 						case 'anchor_link':
+						case 'unique_id':
 						case 'aria_label': {
 							const targetKey = resolveMetaTargetKey(block?.name);
 							const metaChanges = buildMetaAGroupAttributeChanges(property, value, {
@@ -4581,6 +4586,7 @@ const ACTION_PROPERTY_ALIASES = {
 					openSidebarAccordion(0, 'callout arrow');
 					return;
 				case 'anchor_link':
+				case 'unique_id':
 				case 'aria_label': {
 					const sidebarTarget = getMetaSidebarTarget(property);
 					if (sidebarTarget) {
@@ -4964,6 +4970,8 @@ const ACTION_PROPERTY_ALIASES = {
 						case 'icon_stroke_color_hover':
 						case 'icon_stroke_width':
 						case 'icon_stroke_width_hover':
+						case 'icon_svg_type':
+						case 'icon_svg_type_hover':
 						case 'icon_content':
 						case 'icon_content_hover':
 						case 'icon_position':

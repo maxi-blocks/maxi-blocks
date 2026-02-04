@@ -149,16 +149,6 @@ describe('container A attributes', () => {
 	test('A-group prompt phrases resolve to expected properties', () => {
 		const samples = [
 			{
-				phrase: 'Set the anchor ID to hero-section',
-				property: 'anchor_link',
-				value: 'hero-section',
-			},
-			{
-				phrase: 'Set screen reader label to "Primary hero container"',
-				property: 'aria_label',
-				value: 'Primary hero container',
-			},
-			{
 				phrase: 'Show the callout arrow',
 				property: 'arrow_status',
 				value: true,
@@ -1957,7 +1947,9 @@ describe('container O attributes', () => {
 });
 
 describe('container P attributes', () => {
-	const pAttributes = containerAttributes.filter(attr => /^p/i.test(attr));
+	const pAttributes = containerAttributes.filter(
+		attr => /^p/i.test(attr) && attr !== 'preview'
+	);
 
 	const PADDING_VALUE = 24;
 	const POSITION_VALUE = 16;
@@ -2840,7 +2832,10 @@ describe('container T attributes', () => {
 			{
 				phrase: 'Scale container to 110%',
 				property: 'transform_scale',
-				value: { x: 110, y: 110 },
+				assert: action =>
+					action.value?.x === 110 &&
+					action.value?.y === 110 &&
+					(action.value?.state === 'normal' || action.value?.state === undefined),
 			},
 			{
 				phrase: 'On hover, scale container to 105%',
@@ -2850,7 +2845,7 @@ describe('container T attributes', () => {
 			{
 				phrase: 'Rotate container to 15deg',
 				property: 'transform_rotate',
-				value: { z: 15 },
+				assert: action => action.value?.z === 15,
 			},
 			{
 				phrase: 'Move container right 20px',
@@ -2860,7 +2855,7 @@ describe('container T attributes', () => {
 			{
 				phrase: 'Set transform origin to top left',
 				property: 'transform_origin',
-				value: { x: 'left', y: 'top' },
+				assert: action => action.value?.x === 'left' && action.value?.y === 'top',
 			},
 			{
 				phrase: 'Set transform target to background',

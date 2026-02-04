@@ -1,3 +1,30 @@
+jest.mock(
+	'@components/background-control/utils',
+	() => ({
+		getDefaultLayerWithBreakpoint: (_label, _breakpoint, isHover = false) => ({
+			display: 'block',
+			isHover,
+		}),
+		getLayerLabel: type => {
+			switch (type) {
+				case 'color':
+					return 'colorOptions';
+				case 'image':
+					return 'imageOptions';
+				case 'video':
+					return 'videoOptions';
+				case 'gradient':
+					return 'gradientOptions';
+				case 'shape':
+					return 'SVGOptions';
+				default:
+					return false;
+			}
+		},
+	}),
+	{ virtual: true }
+);
+
 import rawAttributes from '../ai/attributes/maxi-block-attributes.json';
 import {
 	buildButtonAGroupAction,
@@ -1734,6 +1761,16 @@ describe('button I attributes', () => {
 				value: 2,
 			},
 			{
+				phrase: 'Set icon type to line',
+				property: 'icon_svg_type',
+				value: 'Line',
+			},
+			{
+				phrase: 'On hover set icon type to shape',
+				property: 'icon_svg_type_hover',
+				value: 'Shape',
+			},
+			{
 				phrase: 'Move icon to the left',
 				property: 'icon_position',
 				value: 'left',
@@ -1775,6 +1812,28 @@ describe('button I attributes', () => {
 			if (sample.assert) {
 				expect(sample.assert(action)).toBe(true);
 			}
+		});
+	});
+
+	test('icon svgType properties map to attribute changes and sidebar targets', () => {
+		expect(buildButtonIGroupAttributeChanges('icon_svg_type', 'Line')).toEqual({
+			svgType: 'Line',
+		});
+
+		expect(
+			buildButtonIGroupAttributeChanges('icon_svg_type_hover', 'Shape')
+		).toEqual({
+			'svgType-hover': 'Shape',
+			'icon-status-hover': true,
+		});
+
+		expect(getButtonIGroupSidebarTarget('icon_svg_type')).toEqual({
+			tabIndex: 0,
+			accordion: 'icon',
+		});
+		expect(getButtonIGroupSidebarTarget('icon_svg_type_hover')).toEqual({
+			tabIndex: 0,
+			accordion: 'icon',
 		});
 	});
 

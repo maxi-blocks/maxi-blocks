@@ -184,7 +184,7 @@ export const BUTTON_PATTERNS = [
 	// GROUP 10: CONTENT & LINKS
 	// ============================================================
 
-	{ regex: /change.*text|set.*text|set.*label|rename.*button|button\s*(?:text|label|copy)\b|(?:text|label|copy)\s*(?:for|on)?\s*button|cta\s*(?:text|label)|call\s*to\s*action/i, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated text.', pageMsg: 'Button text updated.', target: 'button' },
+	{ regex: /change.*text|set.*text|set.*label|set.*content|rename.*button|button\s*(?:text|label|copy|content)\b|(?:text|label|copy|content)\s*(?:for|on)?\s*button|cta\s*(?:text|label|content)|call\s*to\s*action/i, property: 'button_text', value: 'use_prompt', selectionMsg: 'Updated text.', pageMsg: 'Button text updated.', target: 'button' },
 	{ regex: /change.*link|update.*url|set.*link|link.*to/i, property: 'button_url', value: 'use_prompt', selectionMsg: 'Updated link.', pageMsg: 'Button link updated.', target: 'button' },
 	{ regex: /open.*new.*(tab|window)/i, property: 'link_target', value: '_blank', selectionMsg: 'Opens in new tab.', pageMsg: 'Configured to open in new tab.', target: 'button' },
 	{ regex: /nofollow/i, property: 'link_rel', value: 'nofollow', selectionMsg: 'Set to nofollow.', pageMsg: 'Added rel="nofollow" to link.', target: 'button' },

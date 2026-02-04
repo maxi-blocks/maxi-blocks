@@ -41,7 +41,7 @@ export const handleParentField = async (contentValue, type) => {
 const cache = {};
 const MAX_CACHE_SIZE = 200;
 
-const getDCContent = async (dataRequest, clientId) => {
+const getDCContent = async (dataRequest, clientId, contentType) => {
 	if (isEmpty(dataRequest)) return null;
 	const { field } = dataRequest;
 
@@ -137,7 +137,7 @@ const getDCContent = async (dataRequest, clientId) => {
 	}
 
 	if (type === 'products') {
-		return getProductsContent(dataRequest, data);
+		return getProductsContent(dataRequest, data, contentType);
 	}
 
 	if (type === 'cart') {
@@ -171,7 +171,8 @@ const getDCContent = async (dataRequest, clientId) => {
 		const user = await getUsers({ include: contentValue });
 		contentValue = getItemLinkContent(
 			user[0]?.[userField],
-			postTaxonomyLinksStatus
+			postTaxonomyLinksStatus,
+			contentType
 		);
 	}
 
@@ -215,7 +216,8 @@ const getDCContent = async (dataRequest, clientId) => {
 			contentValue,
 			delimiterContent,
 			linkTarget === field,
-			nameDictionary[field] || field
+			nameDictionary[field] || field,
+			contentType
 		);
 	}
 

@@ -106,12 +106,18 @@ describe('Column Maxi hover simple actions', () => {
 		await page.waitForTimeout(150);
 
 		// Add target
-		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('column-maxi-1se8ef1z-u');
+		await page.waitForSelector('.maxi-block-select-control__trigger');
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForSelector('.maxi-block-select-control__dropdown');
+		await page.click(
+			'.maxi-block-select-control__options li[value="column-maxi-1se8ef1z-u"]'
+		);
+		await page.waitForTimeout(200);
 
 		// Add action
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[2].select('hover');
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('hover');
+		await page.waitForTimeout(200);
 	});
 
 	const checkFrontend = async () => {
@@ -161,7 +167,15 @@ describe('Column Maxi hover simple actions', () => {
 	it('Column size', async () => {
 		// Select setting
 		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('cs');
+		await selectControls[2].select('cs');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		// Column size
 		await page.waitForSelector(
@@ -176,7 +190,7 @@ describe('Column Maxi hover simple actions', () => {
 
 		// Vertical align
 		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[4].select('space-between');
+		await selectControls[3].select('space-between');
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

@@ -25,8 +25,8 @@ import { main } from '@maxi-icons';
 const getUserToolbarPreference = () => {
 	if (typeof window === 'undefined') return undefined;
 
-	const storedPreference = window.maxiSettings?.user_settings
-		?.master_toolbar_open;
+	const storedPreference =
+		window.maxiSettings?.user_settings?.master_toolbar_open;
 
 	if (storedPreference === '' || storedPreference === undefined) {
 		return undefined;
@@ -55,7 +55,10 @@ const persistToolbarState = async isOpen => {
 			},
 		});
 
-		if (typeof window !== 'undefined' && window.maxiSettings?.user_settings) {
+		if (
+			typeof window !== 'undefined' &&
+			window.maxiSettings?.user_settings
+		) {
 			window.maxiSettings.user_settings.master_toolbar_open = isOpen;
 		}
 	} catch (error) {
@@ -64,9 +67,8 @@ const persistToolbarState = async isOpen => {
 };
 
 const ToolbarButtons = () => {
-	const [isResponsiveOpen, setIsResponsiveOpen] = useState(
-		getInitialOpenState
-	);
+	const [isResponsiveOpen, setIsResponsiveOpen] =
+		useState(getInitialOpenState);
 
 	const handleClose = () => {
 		persistToolbarState(false);
@@ -197,17 +199,8 @@ wp.domReady(() => {
 		subtree: true,
 	});
 
-	// Cleanup function for when the page unloads
-	window.addEventListener('beforeunload', () => {
-		unsubscribe();
-		observer.disconnect();
-		// Only attempt to unmount if using React 18
-		if (currentRoot && isReact18) {
-			try {
-				currentRoot.unmount();
-			} catch (error) {
-				console.error('Error unmounting root on cleanup:', error);
-			}
-		}
-	});
+	// Note: We intentionally don't add a beforeunload handler here.
+	// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+	// and if the user clicks Cancel, the toolbar would already be destroyed.
+	// For true page unloads, the browser will garbage collect everything anyway.
 });

@@ -13,7 +13,7 @@ const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
 };
 
 const normalizeTarget = target =>
-	target.replace('>', match => `:scope ${match}`);
+	target.replaceAll('>', match => `:scope ${match}`);
 
 const handleInsertInlineStyles = ({
 	styleObj,

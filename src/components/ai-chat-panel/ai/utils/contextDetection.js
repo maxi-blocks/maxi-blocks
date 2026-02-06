@@ -19,3 +19,35 @@ export const isTextContextForMessage = (lowerMessage, selectedBlockName = '') =>
 		message
 	);
 };
+
+export const isInteractionBuilderMessage = lowerMessage => {
+	const message = String(lowerMessage || '').toLowerCase();
+	const clickWord = /\bclick(?:ed|ing)?\b|\btap(?:ped|ping)?\b/;
+	const hoverWord = /\bhover(?:ed|ing)?\b/;
+
+	const isInteractionBuilderPhrase =
+		/\binteraction\s*builder\b|\binteraction-builder\b|\binteraction\b.*\bbuilder\b/.test(
+			message
+		) ||
+		/\binterecation\s*builder\b|\binterecation-builder\b|\binterecation\b.*\bbuilder\b/.test(
+			message
+		);
+
+	const hasClickTrigger =
+		/\bon\s*(click|tap)\b|\bwhen\s+i\s+(click|tap)\b/.test(message) ||
+		(clickWord.test(message) &&
+			/\b(show|hide|toggle|open|close|reveal|expand|collapse)\b/.test(
+				message
+			));
+
+	const hasHoverTrigger =
+		/\bon\s*hover\b|\bwhen\s+i\s+hover\b|\bmouse\s*over\b|\bmouseover\b|\bmouseenter\b/.test(
+			message
+		) ||
+		(hoverWord.test(message) &&
+			/\b(effect|animate|animation|fade|opacity|scale|grow|shrink|move|slide|lift|transform|show|hide|toggle|open|close|reveal|disappear|vanish|reset)\b/.test(
+				message
+			));
+
+	return isInteractionBuilderPhrase || hasClickTrigger || hasHoverTrigger;
+};

@@ -12,7 +12,12 @@ import './editor.scss';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue';
-import { getLastBreakpointAttribute } from '@extensions/styles';
+import { createTransitionObj, getLastBreakpointAttribute } from '@extensions/styles';
+import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
+import getIBStyles from '@extensions/relations/getIBStyles';
+import getIBStylesObj from '@extensions/relations/getIBStylesObj';
+import { getSelectedIBSettings } from '@extensions/relations/utils';
 import { getSkillContextForBlock, getAllSkillsContext } from './skillContext';
 import { findBestPattern, extractPatternQuery } from './patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from './iconSearch';
@@ -31,7 +36,11 @@ import {
 	getColorTargetLabel,
 } from './ai/color/colorClarify';
 import updateBackgroundColor from './ai/color/backgroundUpdate';
-import { isTextContextForMessage } from './ai/utils/contextDetection';
+import {
+	isInteractionBuilderMessage,
+	isTextContextForMessage,
+} from './ai/utils/contextDetection';
+import { maybeOpenFlowSidebar } from './ai/utils/openFlowSidebar';
 import {
 	buildAdvancedCssAGroupAction,
 	buildAdvancedCssAGroupAttributeChanges,
@@ -43,6 +52,7 @@ import {
 	getMetaSidebarTarget,
 	resolveMetaTargetKey,
 } from './ai/utils/metaAGroup';
+import { applyRelationsOps, ensureRelationDefaults } from './ai/utils/relationsOps';
 import {
 	buildButtonAGroupAction,
 	buildButtonAGroupAttributeChanges,
@@ -134,6 +144,7 @@ import {
 import ADVANCED_CSS_PROMPT from './ai/prompts/advanced-css';
 import STYLE_CARD_MAXI_PROMPT from './ai/prompts/style-card';
 import META_MAXI_PROMPT from './ai/prompts/meta';
+import INTERACTION_BUILDER_PROMPT from './ai/prompts/interaction-builder';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from './ai/style-card';
 import onRequestInsertPattern from '../../editor/library/utils/onRequestInsertPattern';
 
@@ -3221,7 +3232,9 @@ const ACTION_PROPERTY_ALIASES = {
 						// ======= META / ACCESSIBILITY =======
 						case 'anchor_link':
 						case 'unique_id':
-						case 'aria_label': {
+						case 'aria_label':
+						case 'relations':
+						case 'is_first_on_hierarchy': {
 							const targetKey = resolveMetaTargetKey(block?.name);
 							const metaChanges = buildMetaAGroupAttributeChanges(property, value, {
 								attributes: block?.attributes,
@@ -3754,6 +3767,481 @@ const ACTION_PROPERTY_ALIASES = {
 
 		if (!fullSelectedBlock) {
 			console.warn('[Maxi AI] Could not find full selected block in allBlocks tree. Using selectedBlock state as fallback.');
+		}
+
+		const normalizedProperty = String(property || '').replace(/-/g, '_');
+
+		if (
+			normalizedProperty === 'relations' ||
+			normalizedProperty === 'relations_ops' ||
+			normalizedProperty === 'is_first_on_hierarchy'
+		) {
+			const triggerBlock = fullSelectedBlock || selectedBlock;
+			const isButtonDefault =
+				String(triggerBlock?.name || '').toLowerCase().includes('button');
+
+			const recomputeRelationCss = relation => {
+				const rel = ensureRelationDefaults(relation, { isButtonDefault });
+				if (!rel.uniqueID || !rel.sid) return rel;
+
+				const targetClientId = getClientIdFromUniqueId(rel.uniqueID);
+				if (!targetClientId) return rel;
+
+				const targetBlockAttributes =
+					select('core/block-editor').getBlockAttributes(targetClientId) ||
+					{};
+				const selectedSettings = getSelectedIBSettings(
+					targetClientId,
+					rel.sid
+				);
+				if (!selectedSettings) return rel;
+
+				const prefix = selectedSettings?.prefix || '';
+				const { cleanAttributesObject, tempAttributes } =
+					getCleanResponseIBAttributes(
+						rel.attributes || {},
+						targetBlockAttributes,
+						rel.uniqueID,
+						selectedSettings,
+						'general',
+						prefix,
+						rel.sid,
+						triggerBlock.clientId
+					);
+
+				const mergedAttributes = {
+					...cleanAttributesObject,
+					...tempAttributes,
+				};
+
+				const stylesObj = getIBStylesObj({
+					clientId: targetClientId,
+					sid: rel.sid,
+					attributes: mergedAttributes,
+					blockAttributes: targetBlockAttributes,
+					breakpoint: 'general',
+				});
+
+				const styles = getIBStyles({
+					stylesObj,
+					blockAttributes: targetBlockAttributes,
+					isFirst: true,
+				});
+
+				const nextEffects = rel.effects || createTransitionObj();
+				if (rel.sid === 't' && styles && typeof styles === 'object') {
+					nextEffects.transitionTarget = Object.keys(styles);
+				}
+
+				return {
+					...rel,
+					attributes: { ...(rel.attributes || {}), ...cleanAttributesObject },
+					css: styles && typeof styles === 'object' ? styles : rel.css,
+					effects: nextEffects,
+					target: selectedSettings?.target || rel.target || '',
+				};
+			};
+
+			if (normalizedProperty === 'relations_ops') {
+				const guessDefaultTransformTarget = blockName => {
+					const lower = String(blockName || '').toLowerCase();
+					if (
+						lower.includes('container') ||
+						lower.includes('row') ||
+						lower.includes('column') ||
+						lower.includes('group')
+					) {
+						return 'container';
+					}
+					return 'canvas';
+				};
+
+				const normalizeScalePercent = raw => {
+					if (raw === null || raw === undefined) return raw;
+					const numeric =
+						typeof raw === 'string'
+							? Number(String(raw).trim().replace('%', ''))
+							: Number(raw);
+					if (!Number.isFinite(numeric)) return raw;
+					// Accept 0-3 as multiplier (e.g. 1.1 => 110).
+					if (numeric > 0 && numeric <= 3) {
+						return Math.round(numeric * 10000) / 100;
+					}
+					return Math.round(numeric * 100) / 100;
+				};
+
+				const inferTransformTargetFromAttributes = attrs => {
+					if (!attrs || typeof attrs !== 'object') return null;
+					const direct = attrs['transform-target'] || attrs['transform_target'];
+					if (direct && direct !== 'none') return direct;
+
+					const keyPattern =
+						/^transform-(scale|translate|rotate|origin)-(general|xxl|xl|l|m|s|xs)$/;
+					for (const [key, value] of Object.entries(attrs)) {
+						if (!keyPattern.test(key)) continue;
+						if (!value || typeof value !== 'object') continue;
+						const candidates = Object.keys(value);
+						if (candidates.length) return candidates[0];
+					}
+
+					return null;
+				};
+
+				const buildTransformEntry = (type, rawValue) => {
+					const raw =
+						rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)
+							? rawValue
+							: {};
+
+					if (type === 'scale') {
+						const x = normalizeScalePercent(raw.x ?? raw.value ?? rawValue ?? 100);
+						const y = normalizeScalePercent(raw.y ?? raw.value ?? rawValue ?? 100);
+						return {
+							x: Number.isFinite(Number(x)) ? Number(x) : 100,
+							y: Number.isFinite(Number(y)) ? Number(y) : 100,
+						};
+					}
+
+					if (type === 'translate') {
+						const x = Number(raw.x ?? 0);
+						const y = Number(raw.y ?? 0);
+						const xUnit = raw['x-unit'] || raw.unit || 'px';
+						const yUnit = raw['y-unit'] || raw.unit || 'px';
+						return {
+							x: Number.isFinite(x) ? x : 0,
+							y: Number.isFinite(y) ? y : 0,
+							'x-unit': xUnit,
+							'y-unit': yUnit,
+						};
+					}
+
+					if (type === 'rotate') {
+						const entry = {};
+						const x = Number(raw.x);
+						const y = Number(raw.y);
+						const z = Number(raw.z ?? raw.value ?? rawValue ?? 0);
+						if (Number.isFinite(x)) entry.x = x;
+						if (Number.isFinite(y)) entry.y = y;
+						entry.z = Number.isFinite(z) ? z : 0;
+						return entry;
+					}
+
+					if (type === 'origin') {
+						const entry = {};
+						const x = raw.x ?? raw.value ?? rawValue ?? 'middle';
+						const y = raw.y ?? raw.value ?? rawValue ?? 'center';
+						entry.x = x;
+						entry.y = y;
+						if (raw['x-unit']) entry['x-unit'] = raw['x-unit'];
+						if (raw['y-unit']) entry['y-unit'] = raw['y-unit'];
+						return entry;
+					}
+
+					return {};
+				};
+
+				const normalizeTransformAttributeValue = (rawValue, type, transformTarget) => {
+					if (
+						rawValue &&
+						typeof rawValue === 'object' &&
+						!Array.isArray(rawValue)
+					) {
+						// Already in expected shape (target -> normal/hover)
+						if (Object.prototype.hasOwnProperty.call(rawValue, transformTarget)) {
+							const currentTarget = rawValue[transformTarget];
+							if (
+								currentTarget &&
+								typeof currentTarget === 'object' &&
+								('normal' in currentTarget ||
+									'hover' in currentTarget ||
+									'hover-status' in currentTarget)
+							) {
+								return rawValue;
+							}
+							// Wrap entry into normal state
+							if (currentTarget && typeof currentTarget === 'object') {
+								return {
+									...rawValue,
+									[transformTarget]: { normal: currentTarget },
+								};
+							}
+						}
+
+						// If the object looks like a single-target wrapper, keep it (we'll set transform-target separately).
+						const keys = Object.keys(rawValue);
+						if (keys.length === 1) {
+							const onlyKey = keys[0];
+							const candidate = rawValue[onlyKey];
+							if (
+								candidate &&
+								typeof candidate === 'object' &&
+								('normal' in candidate ||
+									'hover' in candidate ||
+									'hover-status' in candidate)
+							) {
+								return rawValue;
+							}
+						}
+
+						// Treat as entry (x/y/z etc)
+						return {
+							[transformTarget]: { normal: buildTransformEntry(type, rawValue) },
+						};
+					}
+
+					return {
+						[transformTarget]: { normal: buildTransformEntry(type, rawValue) },
+					};
+				};
+
+				const normalizeIBRelationAttributes = (
+					rawAttributes,
+					{ sid, targetBlockName, fallbackAttributes } = {}
+				) => {
+					if (!rawAttributes || typeof rawAttributes !== 'object') return {};
+					const attrs = { ...rawAttributes };
+					const normalizedSid = String(sid || '').toLowerCase();
+					const targetName = String(targetBlockName || '');
+
+					if ('transform_target' in attrs && !('transform-target' in attrs)) {
+						attrs['transform-target'] = attrs.transform_target;
+						delete attrs.transform_target;
+					}
+
+					const guessedTransformTarget =
+						attrs['transform-target'] ||
+						fallbackAttributes?.['transform-target'] ||
+						guessDefaultTransformTarget(targetName);
+
+					// Convert shorthand keys (common when AI mixes "hover" style props into IB relations)
+					Object.entries(rawAttributes).forEach(([key, rawValue]) => {
+						const normalizedKey = String(key).replace(/-/g, '_').toLowerCase();
+
+						if (normalizedKey === 'opacity_hover' && normalizedSid === 'o') {
+							delete attrs[key];
+							Object.assign(
+								attrs,
+								buildContainerOGroupAttributeChanges('opacity', rawValue) || {}
+							);
+						}
+
+						if (normalizedKey === 'opacity' && normalizedSid === 'o') {
+							delete attrs[key];
+							Object.assign(
+								attrs,
+								buildContainerOGroupAttributeChanges('opacity', rawValue) || {}
+							);
+						}
+
+						if (
+							normalizedSid === 't' &&
+							[
+								'transform_scale',
+								'transform_scale_hover',
+								'transform_translate',
+								'transform_translate_hover',
+								'transform_rotate',
+								'transform_rotate_hover',
+								'transform_origin',
+								'transform_origin_hover',
+							].includes(normalizedKey)
+						) {
+							delete attrs[key];
+							const baseKey = normalizedKey.replace('_hover', '');
+							const property = baseKey;
+							const nextValue =
+								rawValue && typeof rawValue === 'object' && !Array.isArray(rawValue)
+									? { ...rawValue, state: 'normal' }
+									: rawValue;
+							Object.assign(
+								attrs,
+								buildContainerTGroupAttributeChanges(property, nextValue, {
+									attributes: {
+										...(fallbackAttributes || {}),
+										'transform-target': guessedTransformTarget,
+									},
+								}) || {}
+							);
+						}
+					});
+
+					// Normalize transform target + value shapes for Transform relations.
+					if (normalizedSid === 't') {
+						let transformTarget =
+							inferTransformTargetFromAttributes(attrs) ||
+							fallbackAttributes?.['transform-target'] ||
+							guessDefaultTransformTarget(targetName);
+
+						if (!transformTarget || transformTarget === 'none') {
+							transformTarget = guessDefaultTransformTarget(targetName);
+						}
+
+						attrs['transform-target'] = transformTarget;
+
+						const transformKeyPattern =
+							/^transform-(scale|translate|rotate|origin)-(general|xxl|xl|l|m|s|xs)$/;
+						Object.entries(attrs).forEach(([attrKey, attrValue]) => {
+							const match = attrKey.match(transformKeyPattern);
+							if (!match) return;
+							const type = match[1];
+							const normalizedValue = normalizeTransformAttributeValue(
+								attrValue,
+								type,
+								transformTarget
+							);
+							attrs[attrKey] = normalizedValue;
+						});
+					}
+
+					return attrs;
+				};
+
+				const ops = Array.isArray(value?.ops)
+					? value.ops
+					: Array.isArray(value)
+						? value
+						: [];
+
+				const existingRelations = Array.isArray(triggerBlock?.attributes?.relations)
+					? triggerBlock.attributes.relations
+					: [];
+				const existingRelationsById = new Map(
+					existingRelations
+						.map(relation => ensureRelationDefaults(relation, { isButtonDefault }))
+						.map(relation => [Number(relation.id), relation])
+				);
+
+				const normalizeOpPayload = rawOp => {
+					if (!rawOp || typeof rawOp !== 'object') return rawOp;
+					if (rawOp.op !== 'add' && rawOp.op !== 'update') return rawOp;
+
+					if (rawOp.op === 'add') {
+						const relation = rawOp.relation || {};
+						const targetClientId = relation?.uniqueID
+							? getClientIdFromUniqueId(relation.uniqueID)
+							: null;
+						const targetBlockName = targetClientId
+							? select('core/block-editor')?.getBlock?.(targetClientId)?.name
+							: '';
+						const targetBlockAttributes = targetClientId
+							? select('core/block-editor')?.getBlockAttributes?.(targetClientId) || {}
+							: {};
+
+						const normalizedRelation = {
+							...relation,
+							attributes: normalizeIBRelationAttributes(relation.attributes, {
+								sid: relation.sid,
+								targetBlockName,
+								fallbackAttributes: targetBlockAttributes,
+							}),
+						};
+
+						return { ...rawOp, relation: normalizedRelation };
+					}
+
+					if (rawOp.op === 'update') {
+						const id = Number(rawOp.id);
+						const existing = existingRelationsById.get(id);
+						const patch = rawOp.patch || {};
+						const uniqueID = patch.uniqueID || existing?.uniqueID;
+						const sid = patch.sid || existing?.sid;
+						const targetClientId = uniqueID ? getClientIdFromUniqueId(uniqueID) : null;
+						const targetBlockName = targetClientId
+							? select('core/block-editor')?.getBlock?.(targetClientId)?.name
+							: '';
+						const targetBlockAttributes = targetClientId
+							? select('core/block-editor')?.getBlockAttributes?.(targetClientId) || {}
+							: {};
+						const normalizedPatch = {
+							...patch,
+							attributes: normalizeIBRelationAttributes(patch.attributes, {
+								sid,
+								targetBlockName,
+								fallbackAttributes: targetBlockAttributes,
+							}),
+						};
+						return { ...rawOp, patch: normalizedPatch };
+					}
+
+					return rawOp;
+				};
+
+				const normalizedOps = ops.map(normalizeOpPayload);
+				const { relations: nextRelations, touchedIds } = applyRelationsOps(
+					triggerBlock?.attributes?.relations,
+					normalizedOps,
+					{ isButtonDefault }
+				);
+
+				const recomputed = nextRelations.map(relation => {
+					const safeRelation = ensureRelationDefaults(relation, {
+						isButtonDefault,
+					});
+					const targetClientId = safeRelation.uniqueID
+						? getClientIdFromUniqueId(safeRelation.uniqueID)
+						: null;
+					const targetBlockName = targetClientId
+						? select('core/block-editor')?.getBlock?.(targetClientId)?.name
+						: '';
+					const targetBlockAttributes = targetClientId
+						? select('core/block-editor')?.getBlockAttributes?.(targetClientId) || {}
+						: {};
+					safeRelation.attributes = normalizeIBRelationAttributes(
+						safeRelation.attributes,
+						{
+							sid: safeRelation.sid,
+							targetBlockName,
+							fallbackAttributes: targetBlockAttributes,
+						}
+					);
+					const shouldRecompute =
+						touchedIds.has(safeRelation.id) ||
+						!safeRelation.css ||
+						(typeof safeRelation.css === 'object' &&
+							Object.keys(safeRelation.css).length === 0);
+					return shouldRecompute
+						? recomputeRelationCss(safeRelation)
+						: safeRelation;
+				});
+
+				registry.batch(() => {
+					updateBlockAttributes(triggerBlock.clientId, {
+						relations: recomputed,
+					});
+				});
+
+				return __('Updated Interaction Builder relations.', 'maxi-blocks');
+			}
+
+			if (normalizedProperty === 'relations') {
+				const nextRelations = Array.isArray(value) ? value : [];
+				const normalized = nextRelations.map(relation =>
+					ensureRelationDefaults(relation, { isButtonDefault })
+				);
+				registry.batch(() => {
+					updateBlockAttributes(triggerBlock.clientId, {
+						relations: normalized,
+					});
+				});
+				return __('Updated Interaction Builder relations.', 'maxi-blocks');
+			}
+
+			if (normalizedProperty === 'is_first_on_hierarchy') {
+				const metaChanges = buildMetaAGroupAttributeChanges(
+					'is_first_on_hierarchy',
+					value,
+					{
+						attributes: triggerBlock?.attributes,
+						targetKey: resolveMetaTargetKey(triggerBlock?.name),
+					}
+				);
+				if (metaChanges) {
+					registry.batch(() => {
+						updateBlockAttributes(triggerBlock.clientId, metaChanges);
+					});
+				}
+				return __('Updated block settings.', 'maxi-blocks');
+			}
 		}
 
 		const blocksToProcess = [fullSelectedBlock || selectedBlock];
@@ -4587,8 +5075,15 @@ const ACTION_PROPERTY_ALIASES = {
 					return;
 				case 'anchor_link':
 				case 'unique_id':
-				case 'aria_label': {
-					const sidebarTarget = getMetaSidebarTarget(property);
+				case 'aria_label':
+				case 'relations':
+				case 'relations_ops':
+				case 'is_first_on_hierarchy': {
+					const metaProperty =
+						normalizedProperty === 'relations_ops'
+							? 'relations'
+							: normalizedProperty;
+					const sidebarTarget = getMetaSidebarTarget(metaProperty);
 					if (sidebarTarget) {
 						openSidebarAccordion(
 							sidebarTarget.tabIndex,
@@ -5229,7 +5724,7 @@ const ACTION_PROPERTY_ALIASES = {
 						return {
 							executed: false,
 							message: c.msg,
-							options: displayOptions,
+							options: displayOptions || (c.action === 'ask_palette' ? ['palette'] : []),
 							optionsType: c.action === 'ask_palette' ? 'palette' : 'text'
 						};
 					}
@@ -5284,7 +5779,7 @@ const ACTION_PROPERTY_ALIASES = {
 						return {
 							executed: false,
 							message: c.msg,
-							options: displayOptions,
+							options: displayOptions || (c.action === 'ask_palette' ? ['palette'] : []),
 							optionsType: c.action === 'ask_palette' ? 'palette' : 'text'
 						};
 					}
@@ -5426,6 +5921,20 @@ const ACTION_PROPERTY_ALIASES = {
 
 				if (property === 'padding' && targetBlock === 'button') {
 					property = 'button_padding';
+				}
+
+				if (
+					property === 'relations' ||
+					property === 'relations_ops' ||
+					property === 'is_first_on_hierarchy'
+				) {
+					return {
+						executed: false,
+						message: __(
+							'Interaction Builder updates are only supported in Selection scope. Switch scope to Selection and try again.',
+							'maxi-blocks'
+						),
+					};
 				}
 
 				const iconResolution = await resolveButtonIconFromTypesense({
@@ -5602,6 +6111,393 @@ const ACTION_PROPERTY_ALIASES = {
 			return { executed: false, message: __('Error parsing AI response.', 'maxi-blocks') };
 		}
 
+	};
+
+	const openSidebarForProperty = rawProperty => {
+		if (!rawProperty) return;
+
+		const property = String(rawProperty).replace(/-/g, '_');
+		const normalizedProperty = property.replace(
+			/_(general|xxl|xl|l|m|s|xs)$/,
+			''
+		);
+		let selectedBlockName = selectedBlock?.name;
+		try {
+			const storeSelectedBlock = select('core/block-editor')?.getSelectedBlock?.();
+			if (storeSelectedBlock?.name) selectedBlockName = storeSelectedBlock.name;
+		} catch {}
+
+		// Flow patterns (e.g. flow_border) are internal intents; map them to real panels.
+		if (normalizedProperty.startsWith('flow_')) {
+			switch (normalizedProperty) {
+				case 'flow_outline':
+				case 'flow_border':
+					openSidebarForProperty('border');
+					return;
+				case 'flow_shadow':
+					openSidebarForProperty('box_shadow');
+					return;
+				case 'flow_text_align':
+					openSidebarAccordion(0, 'typography');
+					return;
+				default:
+			}
+		}
+
+		const isTextBlock =
+			selectedBlockName?.includes('text-maxi') ||
+			selectedBlockName?.includes('list-item-maxi');
+
+		const dcTarget = getDcGroupSidebarTarget(
+			normalizedProperty,
+			selectedBlockName
+		);
+		if (dcTarget) {
+			openSidebarAccordion(dcTarget.tabIndex, dcTarget.accordion);
+			return;
+		}
+
+		const isAccordionBlock = selectedBlockName?.includes('accordion');
+		if (isAccordionBlock) {
+			const accordionTarget = getAccordionSidebarTarget(normalizedProperty);
+			if (accordionTarget) {
+				openSidebarAccordion(accordionTarget.tabIndex, accordionTarget.accordion);
+				return;
+			}
+		}
+
+		const isColumnBlock = selectedBlockName?.includes('column');
+		if (isColumnBlock) {
+			const columnTarget = getColumnSidebarTarget(normalizedProperty);
+			if (columnTarget) {
+				openSidebarAccordion(columnTarget.tabIndex, columnTarget.accordion);
+				return;
+			}
+		}
+
+		const isDividerBlock = selectedBlockName?.includes('divider');
+		if (isDividerBlock) {
+			const dividerTarget = getDividerSidebarTarget(normalizedProperty);
+			if (dividerTarget) {
+				openSidebarAccordion(dividerTarget.tabIndex, dividerTarget.accordion);
+				return;
+			}
+		}
+
+		const isImageBlock = selectedBlockName?.includes('image');
+		if (isImageBlock) {
+			const imageTarget = getImageSidebarTarget(normalizedProperty);
+			if (imageTarget) {
+				openSidebarAccordion(imageTarget.tabIndex, imageTarget.accordion);
+				return;
+			}
+		}
+
+		const isIconBlock =
+			selectedBlockName?.includes('svg-icon') ||
+			selectedBlockName?.includes('icon-maxi');
+		if (isIconBlock) {
+			const iconTarget = getIconSidebarTarget(normalizedProperty);
+			if (iconTarget) {
+				openSidebarAccordion(iconTarget.tabIndex, iconTarget.accordion);
+				return;
+			}
+		}
+
+		const isNumberCounterBlock = selectedBlockName?.includes('number-counter');
+		if (isNumberCounterBlock) {
+			const counterTarget = getNumberCounterSidebarTarget(normalizedProperty);
+			if (counterTarget) {
+				openSidebarAccordion(counterTarget.tabIndex, counterTarget.accordion);
+				return;
+			}
+		}
+
+		const isButtonBlock = selectedBlockName?.includes('button');
+		if (isButtonBlock) {
+			const buttonTarget = getButtonAGroupSidebarTarget(normalizedProperty);
+			if (buttonTarget) {
+				openSidebarAccordion(buttonTarget.tabIndex, buttonTarget.accordion);
+				return;
+			}
+			const buttonBTarget = getButtonBGroupSidebarTarget(normalizedProperty);
+			if (buttonBTarget) {
+				openSidebarAccordion(buttonBTarget.tabIndex, buttonBTarget.accordion);
+				return;
+			}
+			const buttonCTarget = getButtonCGroupSidebarTarget(normalizedProperty);
+			if (buttonCTarget) {
+				openSidebarAccordion(buttonCTarget.tabIndex, buttonCTarget.accordion);
+				return;
+			}
+			const buttonITarget = getButtonIGroupSidebarTarget(normalizedProperty);
+			if (buttonITarget) {
+				openSidebarAccordion(buttonITarget.tabIndex, buttonITarget.accordion);
+				return;
+			}
+		}
+
+		if (isTextBlock) {
+			const textListTarget = getTextListGroupSidebarTarget(normalizedProperty);
+			if (textListTarget) {
+				openSidebarAccordion(textListTarget.tabIndex, textListTarget.accordion);
+				return;
+			}
+
+			const textLTarget = getTextLGroupSidebarTarget(normalizedProperty);
+			if (textLTarget) {
+				openSidebarAccordion(textLTarget.tabIndex, textLTarget.accordion);
+				return;
+			}
+
+			const textCTarget = getTextCGroupSidebarTarget(normalizedProperty);
+			if (textCTarget) {
+				openSidebarAccordion(textCTarget.tabIndex, textCTarget.accordion);
+				return;
+			}
+
+			const textPTarget = getTextPGroupSidebarTarget(normalizedProperty);
+			if (textPTarget) {
+				openSidebarAccordion(textPTarget.tabIndex, textPTarget.accordion);
+				return;
+			}
+
+			const textTypographyTarget = getTextTypographySidebarTarget(normalizedProperty);
+			if (textTypographyTarget) {
+				openSidebarAccordion(
+					textTypographyTarget.tabIndex,
+					textTypographyTarget.accordion
+				);
+				return;
+			}
+		}
+
+		const aGroupTarget = getContainerAGroupSidebarTarget(normalizedProperty);
+		if (aGroupTarget) {
+			openSidebarAccordion(aGroupTarget.tabIndex, aGroupTarget.accordion);
+			return;
+		}
+
+		const bGroupTarget = getContainerBGroupSidebarTarget(normalizedProperty);
+		if (bGroupTarget) {
+			openSidebarAccordion(bGroupTarget.tabIndex, bGroupTarget.accordion);
+			return;
+		}
+
+		const cGroupTarget = getContainerCGroupSidebarTarget(normalizedProperty);
+		if (cGroupTarget) {
+			openSidebarAccordion(cGroupTarget.tabIndex, cGroupTarget.accordion);
+			return;
+		}
+
+		const dGroupTarget = getContainerDGroupSidebarTarget(normalizedProperty);
+		if (dGroupTarget) {
+			openSidebarAccordion(dGroupTarget.tabIndex, dGroupTarget.accordion);
+			return;
+		}
+
+		const eGroupTarget = getContainerEGroupSidebarTarget(normalizedProperty);
+		if (eGroupTarget) {
+			openSidebarAccordion(eGroupTarget.tabIndex, eGroupTarget.accordion);
+			return;
+		}
+
+		const fGroupTarget = getContainerFGroupSidebarTarget(normalizedProperty);
+		if (fGroupTarget) {
+			openSidebarAccordion(fGroupTarget.tabIndex, fGroupTarget.accordion);
+			return;
+		}
+
+		const hGroupTarget = getContainerHGroupSidebarTarget(normalizedProperty);
+		if (hGroupTarget) {
+			openSidebarAccordion(hGroupTarget.tabIndex, hGroupTarget.accordion);
+			return;
+		}
+
+		const lGroupTarget = getContainerLGroupSidebarTarget(normalizedProperty);
+		if (lGroupTarget) {
+			openSidebarAccordion(lGroupTarget.tabIndex, lGroupTarget.accordion);
+			return;
+		}
+
+		const mGroupTarget = getContainerMGroupSidebarTarget(normalizedProperty);
+		if (mGroupTarget) {
+			openSidebarAccordion(mGroupTarget.tabIndex, mGroupTarget.accordion);
+			return;
+		}
+
+		const wGroupTarget = getContainerWGroupSidebarTarget(normalizedProperty);
+		if (wGroupTarget) {
+			openSidebarAccordion(wGroupTarget.tabIndex, wGroupTarget.accordion);
+			return;
+		}
+
+		const pGroupTarget = getContainerPGroupSidebarTarget(normalizedProperty);
+		if (pGroupTarget) {
+			openSidebarAccordion(pGroupTarget.tabIndex, pGroupTarget.accordion);
+			return;
+		}
+
+		const rGroupTarget = getContainerRGroupSidebarTarget(normalizedProperty);
+		if (rGroupTarget) {
+			openSidebarAccordion(rGroupTarget.tabIndex, rGroupTarget.accordion);
+			return;
+		}
+
+		const sGroupTarget = getContainerSGroupSidebarTarget(normalizedProperty);
+		if (sGroupTarget) {
+			openSidebarAccordion(sGroupTarget.tabIndex, sGroupTarget.accordion);
+			return;
+		}
+
+		const tGroupTarget = getContainerTGroupSidebarTarget(normalizedProperty);
+		if (tGroupTarget) {
+			openSidebarAccordion(tGroupTarget.tabIndex, tGroupTarget.accordion);
+			return;
+		}
+
+		const oGroupTarget = getContainerOGroupSidebarTarget(normalizedProperty);
+		if (oGroupTarget) {
+			openSidebarAccordion(oGroupTarget.tabIndex, oGroupTarget.accordion);
+			return;
+		}
+
+		const zGroupTarget = getContainerZGroupSidebarTarget(normalizedProperty);
+		if (zGroupTarget) {
+			openSidebarAccordion(zGroupTarget.tabIndex, zGroupTarget.accordion);
+			return;
+		}
+
+		switch (normalizedProperty) {
+			case 'responsive_padding':
+			case 'padding':
+			case 'margin':
+				openSidebarAccordion(0, 'margin / padding');
+				return;
+			case 'size':
+			case 'width':
+			case 'height':
+			case 'min_width':
+			case 'max_width':
+			case 'min_height':
+			case 'max_height':
+			case 'full_width':
+			case 'width_fit_content':
+			case 'height_fit_content':
+				openSidebarAccordion(0, 'height / width');
+				return;
+			case 'background_color':
+			case 'background_palette_color':
+			case 'background_palette_status':
+			case 'background_palette_opacity':
+			case 'background':
+			case 'background_layers':
+			case 'background_layers_hover':
+			case 'block_background_status_hover':
+				openSidebarAccordion(0, 'background / layer');
+				return;
+			case 'border':
+			case 'border_radius':
+			case 'border_hover':
+				openSidebarAccordion(0, 'border');
+				return;
+			case 'box_shadow':
+			case 'box_shadow_hover':
+			case 'hover_glow':
+				openSidebarAccordion(0, 'box shadow');
+				return;
+			case 'shape_divider':
+			case 'shape_divider_top':
+			case 'shape_divider_bottom':
+			case 'shape_divider_both':
+			case 'shape_divider_color':
+			case 'shape_divider_color_top':
+			case 'shape_divider_color_bottom':
+				openSidebarAccordion(0, 'shape divider');
+				return;
+			case 'context_loop':
+				openSidebarAccordion(0, 'context loop');
+				return;
+			case 'arrow_status':
+			case 'arrow_side':
+			case 'arrow_position':
+			case 'arrow_width':
+				openSidebarAccordion(0, 'callout arrow');
+				return;
+			case 'anchor_link':
+			case 'unique_id':
+			case 'aria_label': {
+				const sidebarTarget = getMetaSidebarTarget(property);
+				if (sidebarTarget) {
+					openSidebarAccordion(sidebarTarget.tabIndex, sidebarTarget.accordion);
+				}
+				return;
+			}
+			case 'custom_css':
+				openSidebarAccordion(1, 'custom css');
+				return;
+			case 'advanced_css': {
+				const sidebarTarget = getAdvancedCssSidebarTarget(
+					'advanced_css',
+					selectedBlockName
+				);
+				if (sidebarTarget) {
+					openSidebarAccordion(sidebarTarget.tabIndex, sidebarTarget.accordion);
+				}
+				return;
+			}
+			case 'scroll_fade':
+				openSidebarAccordion(1, 'scroll effects');
+				return;
+			case 'transform':
+			case 'transform_scale_hover':
+			case 'hover_effect':
+			case 'hover_lift':
+				openSidebarAccordion(1, 'transform');
+				return;
+			case 'transition':
+				openSidebarAccordion(1, 'hover transition');
+				return;
+			case 'display':
+			case 'display_mobile':
+			case 'display_tablet':
+			case 'display_desktop':
+			case 'show_mobile_only':
+				openSidebarAccordion(1, 'show/hide block');
+				return;
+			case 'opacity':
+			case 'opacity_hover':
+			case 'opacity_status_hover':
+			case 'hover_darken':
+			case 'hover_lighten':
+				openSidebarAccordion(1, 'opacity');
+				return;
+			case 'position':
+			case 'position_top':
+			case 'position_right':
+			case 'position_bottom':
+			case 'position_left':
+				openSidebarAccordion(1, 'position');
+				return;
+			case 'overflow':
+				openSidebarAccordion(1, 'overflow');
+				return;
+			case 'z_index':
+				openSidebarAccordion(1, 'z-index');
+				return;
+			case 'align_items':
+			case 'align_items_flex':
+			case 'align_content':
+			case 'justify_content':
+			case 'flex_direction':
+			case 'flex_wrap':
+			case 'gap':
+			case 'row_gap':
+			case 'column_gap':
+				openSidebarAccordion(1, 'flexbox');
+				return;
+			default:
+		}
 	};
 
 	// Helper to summarize block structure recursively (to save tokens)
@@ -6470,7 +7366,8 @@ const ACTION_PROPERTY_ALIASES = {
 			selectedBlockName: selectedBlock?.name,
 			hasShapeDividerIntent,
 		});
-		const skipLayoutPatterns = requestedTarget === 'border';
+		const skipLayoutPatterns =
+			requestedTarget === 'border' || isInteractionBuilderMessage(lowerMessage);
 
 		if (!skipLayoutPatterns) for (const pattern of LAYOUT_PATTERNS) {
 			if (isGlobalScope) {
@@ -7662,11 +8559,19 @@ const ACTION_PROPERTY_ALIASES = {
 			}
 
 			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
-			const scopePrompt = scope === 'global' ? STYLE_CARD_MAXI_PROMPT : blockPrompt;
+			const wantsInteractionBuilder = isInteractionBuilderMessage(lowerMessage);
+			const scopePrompt =
+				scope === 'global'
+					? STYLE_CARD_MAXI_PROMPT
+					: wantsInteractionBuilder
+						? INTERACTION_BUILDER_PROMPT
+						: blockPrompt;
 			const sharedPrompts =
 				scope === 'global'
 					? []
-					: [ADVANCED_CSS_PROMPT, META_MAXI_PROMPT].filter(Boolean);
+					: wantsInteractionBuilder
+						? []
+						: [ADVANCED_CSS_PROMPT, META_MAXI_PROMPT, INTERACTION_BUILDER_PROMPT].filter(Boolean);
 			const systemPrompt = [SYSTEM_PROMPT, scopePrompt, ...sharedPrompts]
 				.filter(Boolean)
 				.join('\n\n');
@@ -7907,7 +8812,19 @@ const ACTION_PROPERTY_ALIASES = {
                 }
             }
 
+			const sidebarMode = conversationContext.mode;
+			const sidebarFlowProperty = conversationContext.flow;
+			const sidebarClientId = primaryBlock?.clientId || null;
+
             setTimeout(() => {
+				maybeOpenFlowSidebar({
+					flow: sidebarFlowProperty,
+					mode: sidebarMode,
+					clientId: sidebarClientId,
+					selectBlock: clientId =>
+						dispatch('core/block-editor').selectBlock(clientId),
+					openSidebarForProperty,
+				});
                 if (nextStepResponse) {
                     if (nextStepResponse.done) {
                          setConversationContext(null); // Clear Context

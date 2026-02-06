@@ -1076,16 +1076,7 @@ if (baseProperty === 'flow_text_weight') {
 
 if (baseProperty === 'flow_text_color') {
 		if (context.text_color === undefined) {
-			return {
-				action: 'ask_options',
-				target: 'text_color',
-				msg: 'Choose a text color:',
-				options: [
-					{ label: 'Brand (var(--highlight))', value: 'var(--highlight)' },
-					{ label: 'Dark (var(--h1))', value: 'var(--h1)' },
-					{ label: 'Subtle (var(--p))', value: 'var(--p)' },
-				],
-			};
+			return { action: 'ask_palette', target: 'text_color', msg: 'Which colour for the text?' };
 		}
 
 		// Accessibility guardrail: reject transparent/low-alpha colors in flow.

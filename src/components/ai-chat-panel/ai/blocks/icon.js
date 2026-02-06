@@ -69,10 +69,10 @@ export const getIconSidebarTarget = property => {
 		return { tabIndex: 0, accordion: 'icon' };
 	}
 	if (colorProps.has(baseProperty)) {
-		return { tabIndex: 0, accordion: 'fill & stroke color' };
+		return { tabIndex: 0, accordion: 'icon colour' };
 	}
 	if (backgroundProps.has(baseProperty)) {
-		return { tabIndex: 0, accordion: 'icon' };
+		return { tabIndex: 0, accordion: 'icon background' };
 	}
 	if (lineWidthProps.has(baseProperty)) {
 		return { tabIndex: 0, accordion: 'icon line width' };

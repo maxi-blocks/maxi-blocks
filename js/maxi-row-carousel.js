@@ -947,13 +947,15 @@ class MaxiRowCarousel {
 			if (this.currentColumn >= lastStart) {
 				return; // Already at the end
 			}
+			// Clamp to lastStart to prevent overshooting (only when not looping)
+			this.currentColumn = Math.min(
+				this.currentColumn + this.slidesPerView,
+				lastStart
+			);
+		} else {
+			// When looping, allow going beyond to trigger loop()
+			this.currentColumn += this.slidesPerView;
 		}
-
-		// Clamp to lastStart to prevent overshooting
-		this.currentColumn = Math.min(
-			this.currentColumn + this.slidesPerView,
-			lastStart
-		);
 		this.columnAction();
 		this.updateArrowStates();
 	}
@@ -964,13 +966,15 @@ class MaxiRowCarousel {
 			if (this.currentColumn <= 0) {
 				return; // Already at the beginning
 			}
+			// Clamp to 0 to prevent going negative (only when not looping)
+			this.currentColumn = Math.max(
+				0,
+				this.currentColumn - this.slidesPerView
+			);
+		} else {
+			// When looping, allow going negative to trigger loop()
+			this.currentColumn -= this.slidesPerView;
 		}
-
-		// Clamp to 0 to prevent going negative
-		this.currentColumn = Math.max(
-			0,
-			this.currentColumn - this.slidesPerView
-		);
 		this.columnAction();
 		this.updateArrowStates();
 	}

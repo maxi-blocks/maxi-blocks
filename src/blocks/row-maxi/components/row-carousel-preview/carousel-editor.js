@@ -941,11 +941,13 @@ class MaxiRowCarouselEditor {
 	dragStart(e) {
 		if (this.transition === 'fade') return;
 
-		e.preventDefault();
+		// Don't call preventDefault here - allow clicks to propagate for block selection
+		// preventDefault will be called in dragAction when actual movement occurs
 
 		const clientX =
 			e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
 		this.initPosition = clientX;
+		this.isDragging = false; // Track if actual drag has started
 
 		this._wrapper.addEventListener('mousemove', this.onDragAction);
 		this._wrapper.addEventListener('mouseup', this.onDragEnd);
@@ -964,6 +966,17 @@ class MaxiRowCarouselEditor {
 		this.dragPosition = clientX;
 
 		const movement = this.initPosition - this.dragPosition;
+
+		// Only start actual drag if movement exceeds threshold (5px)
+		// This allows clicks to pass through for block selection
+		if (!this.isDragging && Math.abs(movement) > 5) {
+			this.isDragging = true;
+			e.preventDefault(); // Now prevent default since we're actually dragging
+		}
+
+		// Only move the carousel if we're actually dragging
+		if (!this.isDragging) return;
+
 		const currentOffset = this.calculateOffset(this.currentColumn);
 		let newOffset = currentOffset + movement;
 
@@ -985,7 +998,8 @@ class MaxiRowCarouselEditor {
 
 		this.endPosition = this.dragPosition;
 
-		if (this.endPosition) {
+		// Only perform navigation if actual drag occurred
+		if (this.isDragging && this.endPosition) {
 			const movement = this.initPosition - this.endPosition;
 			const threshold = 75;
 
@@ -1006,6 +1020,7 @@ class MaxiRowCarouselEditor {
 
 		setTimeout(() => {
 			this.isInteracting = false;
+			this.isDragging = false;
 			this.initPosition = 0;
 			this.dragPosition = 0;
 			this.endPosition = 0;

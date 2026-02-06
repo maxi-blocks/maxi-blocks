@@ -1,14 +1,6 @@
 import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
-import {
-	icon,
-	iconBackground,
-	iconBackgroundColor,
-	iconBackgroundGradient,
-	iconBoxShadow,
-	iconPadding,
-} from './icon';
-import { iconBorder, iconBorderRadius, iconBorderWidth } from './iconBorder';
+import { icon } from './icon';
 
 const prefix = 'navigation-dot-';
 
@@ -16,22 +8,12 @@ const dotIcon = {
 	...prefixAttributesCreator({
 		obj: {
 			...icon,
-			...iconPadding,
-			...iconBackground,
-			...iconBackgroundColor,
-			...iconBackgroundGradient,
-			...iconBorder,
-			...iconBorderRadius,
-			...iconBorderWidth,
-			...iconBoxShadow,
 		},
 		prefix,
 		diffValAttr: {
 			'navigation-dot-icon-width-general': '10',
 			'navigation-dot-icon-stroke-palette-color': 5,
 			'navigation-dot-icon-fill-palette-color': 3,
-			'navigation-dot-icon-border-unit-radius-general': 'px',
-			'navigation-dot-icon-background-active-media-general': 'none',
 		},
 		exclAttr: [
 			'icon-inherit',
@@ -39,20 +21,6 @@ const dotIcon = {
 			'icon-position',
 			'icon-spacing',
 		],
-		newAttr: {
-			'navigation-dot-icon-status-border': {
-				type: 'boolean',
-				default: false,
-			},
-			'navigation-dot-icon-status-background': {
-				type: 'boolean',
-				default: false,
-			},
-			'navigation-dot-icon-status-shadow': {
-				type: 'boolean',
-				default: false,
-			},
-		},
 	}),
 	'navigation-dot-icon-content': {
 		type: 'string',

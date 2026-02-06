@@ -815,17 +815,8 @@ const NavigationIconControl = props => {
 									)}
 								</>
 							)}
-							{!isHover && (
+							{!isHover && !prefix.includes('dot') && (
 								<AxisControl
-									{...getGroupAttributes(
-										props,
-										'padding',
-										false,
-										// Include normal prefix attributes for placeholder fallback when in active state
-										isActive
-											? 'navigation-dot-icon-'
-											: prefix
-									)}
 									{...getGroupAttributes(
 										props,
 										'padding',
@@ -1200,265 +1191,245 @@ const NavigationIconControl = props => {
 							isHover={isHover}
 						/>
 					)}
-					<ToggleSwitch
-						label={__(
-							sprintf('Add %s border', label),
-							'maxi-blocks'
-						)}
-						selected={getStatusValue('status-border')}
-						onChange={val =>
-							onChange({
-								[`${prefix}status-border`]: val,
-							})
-						}
-					/>
-					{getStatusValue('status-border') && (
-						<BorderControl
-							{...getGroupAttributes(
-								props,
-								['border', 'borderWidth', 'borderRadius'],
-								isHover,
-								// Include normal prefix attributes for placeholder fallback when in active state
-								isActive
-									? 'navigation-dot-icon-'
-									: prefix
-							)}
-							{...getGroupAttributes(
-								props,
-								['border', 'borderWidth', 'borderRadius'],
-								isHover,
-								prefix
-							)}
-							prefix={prefix}
-							onChange={onChange}
-							breakpoint={breakpoint}
-							clientId={clientId}
-							isHover={isHover}
-						/>
-					)}
-					<ToggleSwitch
-						label={__(
-							sprintf('Add %s background', label),
-							'maxi-blocks'
-						)}
-						selected={getStatusValue('status-background')}
-						onChange={val =>
-							onChange({
-								[`${prefix}status-background`]: val,
-							})
-						}
-					/>
-					{getStatusValue('status-background') && (
+					{!prefix.includes('dot') && (
 						<>
-							<SettingTabsControl
-								type='buttons'
-								fullWidthMode
-								selected={iconBgActive}
-								items={getBackgroundOptions()}
-								onChange={val => {
-									setIconBgActive(val);
+							<ToggleSwitch
+								label={__(
+									sprintf('Add %s border', label),
+									'maxi-blocks'
+								)}
+								selected={getStatusValue('status-border')}
+								onChange={val =>
 									onChange({
-										[getAttributeKey(
-											'background-active-media',
-											isHover,
-											prefix,
-											breakpoint
-										)]: val,
-									});
-								}}
+										[`${prefix}status-border`]: val,
+									})
+								}
 							/>
-							{iconBgActive === 'color' && (
-								<ColorControl
-									label={__(
-										`${capitalize(label)} background`,
-										'maxi-blocks'
+							{getStatusValue('status-border') && (
+								<BorderControl
+									{...getGroupAttributes(
+										props,
+										['border', 'borderWidth', 'borderRadius'],
+										isHover,
+										prefix
 									)}
-									paletteStatus={getLastBreakpointAttribute({
-										target: `${prefix}background-palette-status`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									paletteSCStatus={getLastBreakpointAttribute(
-										{
-											target: `${prefix}background-palette-sc-status`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
-									)}
-									paletteColor={getLastBreakpointAttribute({
-										target: `${prefix}background-palette-color`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									paletteOpacity={getLastBreakpointAttribute({
-										target: `${prefix}background-palette-opacity`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									color={getLastBreakpointAttribute({
-										target: `${prefix}background-color`,
-										breakpoint,
-										attributes: props,
-										isHover,
-									})}
-									prefix={`${prefix}background-`}
-									avoidBreakpointForDefault
-									onChangeInline={({ color }) =>
-										onChangeInline &&
-										onChangeInline(
-											{
-												background: color,
-											},
-											`.maxi-slider-block__${
-												shortPrefix === arrowShortPrefix
-													? 'arrow'
-													: 'dot'
-											}`
-										)
-									}
-									onChange={({
-										paletteStatus,
-										paletteSCStatus,
-										paletteColor,
-										paletteOpacity,
-										color,
-									}) => {
-										onChange(
-											{
-												[getAttributeKey(
-													'background-palette-status',
-													isHover,
-													prefix,
-													breakpoint
-												)]: paletteStatus,
-												[getAttributeKey(
-													'background-palette-sc-status',
-													isHover,
-													prefix,
-													breakpoint
-												)]: paletteSCStatus,
-												[getAttributeKey(
-													'background-palette-color',
-													isHover,
-													prefix,
-													breakpoint
-												)]: paletteColor,
-												[getAttributeKey(
-													'background-palette-opacity',
-													isHover,
-													prefix,
-													breakpoint
-												)]: paletteOpacity,
-												[getAttributeKey(
-													'background-color',
-													isHover,
-													prefix,
-													breakpoint
-												)]: color,
-											},
-											shortPrefix === arrowShortPrefix
-												? '.maxi-slider-block__arrow'
-												: '.maxi-slider-block__dot'
-										);
-									}}
+									prefix={prefix}
+									onChange={onChange}
+									breakpoint={breakpoint}
+									clientId={clientId}
 									isHover={isHover}
 								/>
 							)}
-							{iconBgActive === 'gradient' && (
-								<GradientControl
-									label={__(
-										`${capitalize(
-											label
-										)} background gradient`,
-										'maxi-blocks'
+							<ToggleSwitch
+								label={__(
+									sprintf('Add %s background', label),
+									'maxi-blocks'
+								)}
+								selected={getStatusValue('status-background')}
+								onChange={val =>
+									onChange({
+										[`${prefix}status-background`]: val,
+									})
+								}
+							/>
+							{getStatusValue('status-background') && (
+								<>
+									<SettingTabsControl
+										type='buttons'
+										fullWidthMode
+										selected={iconBgActive}
+										items={getBackgroundOptions()}
+										onChange={val => {
+											setIconBgActive(val);
+											onChange({
+												[getAttributeKey(
+													'background-active-media',
+													isHover,
+													prefix,
+													breakpoint
+												)]: val,
+											});
+										}}
+									/>
+									{iconBgActive === 'color' && (
+										<ColorControl
+											label={__(
+												`${capitalize(label)} background`,
+												'maxi-blocks'
+											)}
+											paletteStatus={getLastBreakpointAttribute({
+												target: `${prefix}background-palette-status`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
+											paletteSCStatus={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-palette-sc-status`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
+											paletteColor={getLastBreakpointAttribute({
+												target: `${prefix}background-palette-color`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
+											paletteOpacity={getLastBreakpointAttribute({
+												target: `${prefix}background-palette-opacity`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
+											color={getLastBreakpointAttribute({
+												target: `${prefix}background-color`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
+											prefix={`${prefix}background-`}
+											avoidBreakpointForDefault
+											onChangeInline={({ color }) =>
+												onChangeInline &&
+												onChangeInline(
+													{
+														background: color,
+													},
+													'.maxi-slider-block__arrow'
+												)
+											}
+											onChange={({
+												paletteStatus,
+												paletteSCStatus,
+												paletteColor,
+												paletteOpacity,
+												color,
+											}) => {
+												onChange(
+													{
+														[getAttributeKey(
+															'background-palette-status',
+															isHover,
+															prefix,
+															breakpoint
+														)]: paletteStatus,
+														[getAttributeKey(
+															'background-palette-sc-status',
+															isHover,
+															prefix,
+															breakpoint
+														)]: paletteSCStatus,
+														[getAttributeKey(
+															'background-palette-color',
+															isHover,
+															prefix,
+															breakpoint
+														)]: paletteColor,
+														[getAttributeKey(
+															'background-palette-opacity',
+															isHover,
+															prefix,
+															breakpoint
+														)]: paletteOpacity,
+														[getAttributeKey(
+															'background-color',
+															isHover,
+															prefix,
+															breakpoint
+														)]: color,
+													},
+													'.maxi-slider-block__arrow'
+												);
+											}}
+											isHover={isHover}
+										/>
 									)}
-									gradient={getLastBreakpointAttribute({
-										target: `${prefix}background-gradient`,
-										breakpoint,
-										attributes: props,
+									{iconBgActive === 'gradient' && (
+										<GradientControl
+											label={__(
+												`${capitalize(
+													label
+												)} background gradient`,
+												'maxi-blocks'
+											)}
+											gradient={getLastBreakpointAttribute({
+												target: `${prefix}background-gradient`,
+												breakpoint,
+												attributes: props,
+												isHover,
+											})}
+											gradientOpacity={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-gradient-opacity`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
+											defaultGradient={getDefaultAttribute(
+												getAttributeKey(
+													'background-gradient',
+													isHover,
+													prefix,
+													breakpoint
+												)
+											)}
+											onChange={val =>
+												onChange({
+													[getAttributeKey(
+														'background-gradient',
+														isHover,
+														prefix,
+														breakpoint
+													)]: val,
+												})
+											}
+											onChangeOpacity={val =>
+												onChange({
+													[getAttributeKey(
+														'background-gradient-opacity',
+														isHover,
+														prefix,
+														breakpoint
+													)]: val,
+												})
+											}
+											isHover={isHover}
+										/>
+									)}
+								</>
+							)}
+							<ToggleSwitch
+								label={__(
+									sprintf('Add %s shadow', label),
+									'maxi-blocks'
+								)}
+								selected={getStatusValue('status-shadow')}
+								onChange={val =>
+									onChange({
+										[`${prefix}status-shadow`]: val,
+									})
+								}
+							/>
+							{getStatusValue('status-shadow') && (
+								<BoxShadowControl
+									{...getGroupAttributes(
+										props,
+										'boxShadow',
 										isHover,
-									})}
-									gradientOpacity={getLastBreakpointAttribute(
-										{
-											target: `${prefix}background-gradient-opacity`,
-											breakpoint,
-											attributes: props,
-											isHover,
-										}
+										prefix
 									)}
-									defaultGradient={getDefaultAttribute(
-										getAttributeKey(
-											'background-gradient',
-											isHover,
-											prefix,
-											breakpoint
-										)
-									)}
-									onChange={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient',
-												isHover,
-												prefix,
-												breakpoint
-											)]: val,
-										})
-									}
-									onChangeOpacity={val =>
-										onChange({
-											[getAttributeKey(
-												'background-gradient-opacity',
-												isHover,
-												prefix,
-												breakpoint
-											)]: val,
-										})
-									}
+									prefix={prefix}
+									label={`${capitalize(label)} box shadow`}
+									onChange={onChange}
+									breakpoint={breakpoint}
+									clientId={clientId}
 									isHover={isHover}
 								/>
 							)}
 						</>
-					)}
-					<ToggleSwitch
-						label={__(
-							sprintf('Add %s shadow', label),
-							'maxi-blocks'
-						)}
-						selected={getStatusValue('status-shadow')}
-						onChange={val =>
-							onChange({
-								[`${prefix}status-shadow`]: val,
-							})
-						}
-					/>
-					{getStatusValue('status-shadow') && (
-						<BoxShadowControl
-							{...getGroupAttributes(
-								props,
-								'boxShadow',
-								isHover,
-								// Include normal prefix attributes for placeholder fallback when in active state
-								isActive
-									? 'navigation-dot-icon-'
-									: prefix
-							)}
-							{...getGroupAttributes(
-								props,
-								'boxShadow',
-								isHover,
-								prefix
-							)}
-							prefix={prefix}
-							label={`${capitalize(label)} box shadow`}
-							onChange={onChange}
-							breakpoint={breakpoint}
-							clientId={clientId}
-							isHover={isHover}
-						/>
 					)}
 				</>
 			)}

@@ -14,6 +14,7 @@ import {
 	getAttributes,
 	getBlockStyle,
 	getEditedPostContent,
+	modalMock,
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
@@ -296,6 +297,80 @@ describe('Button Maxi', () => {
 
 		expect(await getEditedPostContent(page)).toMatchSnapshot();
 		expect(await getBlockStyle(page)).toMatchSnapshot();
+	});
+
+	it('Check Button Icon toggles and colors', async () => {
+		await createNewPost();
+		await insertMaxiBlock(page, 'Button Maxi');
+		await updateAllBlockUniqueIds(page);
+		await openSidebarTab(page, 'style', 'icon');
+
+		await modalMock(page, { type: 'button-icon' });
+
+		await page.evaluate(() => {
+			const { dispatch, select } = wp.data;
+			const clientId = select('core/block-editor').getSelectedBlockClientId();
+			dispatch('core/block-editor').updateBlockAttributes(clientId, {
+				svgType: 'Fill',
+			});
+		});
+
+		await page.waitForTimeout(150);
+
+		await page.$eval(
+			'.maxi-icon-styles-control .maxi-tabs-control__button-fill',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		await page.$$eval(
+			'.maxi-icon-control .maxi-color-control__palette-container',
+			(containers, palette) => {
+				const target = containers[0];
+				if (!target) return;
+				const button = target.querySelector(`button[data-item="${palette}"]`);
+				if (button) button.click();
+			},
+			2
+		);
+
+		expect(await getAttributes('icon-fill-palette-color')).toStrictEqual(2);
+
+		await page.$eval(
+			'.maxi-icon-control .maxi-tabs-control__button-solid',
+			button => button.click()
+		);
+
+		await page.waitForTimeout(150);
+
+		await page.$$eval(
+			'.maxi-icon-control .maxi-color-control__palette-container',
+			(containers, palette) => {
+				const target = containers[containers.length - 1];
+				if (!target) return;
+				const button = target.querySelector(`button[data-item="${palette}"]`);
+				if (button) button.click();
+			},
+			3
+		);
+
+		expect(
+			await getAttributes('icon-background-active-media-general')
+		).toStrictEqual('color');
+		expect(
+			await getAttributes('icon-background-palette-color-general')
+		).toStrictEqual(3);
+
+		await page.$eval('.maxi-icon-control__icon-only input', input =>
+			input.click()
+		);
+		expect(await getAttributes('icon-only')).toStrictEqual(true);
+
+		await page.$eval('.maxi-icon-control__inherit input', input =>
+			input.click()
+		);
+		expect(await getAttributes('icon-inherit')).toStrictEqual(true);
 	});
 
 	it('Button Maxi Custom CSS', async () => {

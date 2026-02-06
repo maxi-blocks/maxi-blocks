@@ -25,6 +25,96 @@ export const STORE_NAMES = {
 	wordPressAPI: 'wordPressAPI',
 };
 
+const getLocalStorageFlag = key => {
+	if (typeof window === 'undefined') {
+		return null;
+	}
+
+	try {
+		return window.localStorage ? localStorage.getItem(key) : null;
+	} catch (error) {
+		return null;
+	}
+};
+
+const isDebugEnabled = () => {
+	if (process.env.NODE_ENV === 'development') {
+		return true;
+	}
+
+	if (typeof window === 'undefined') {
+		return false;
+	}
+
+	if (window.__MAXI_DEBUG_IDB || window.__MAXI_DEBUG) {
+		return true;
+	}
+
+	return (
+		getLocalStorageFlag('maxiBlocks-debug') === 'true' ||
+		getLocalStorageFlag('maxiBlocks-debug-idb') === 'true'
+	);
+};
+
+const normalizeError = error => {
+	if (!error) {
+		return { name: 'UnknownError', message: 'Unknown error' };
+	}
+
+	if (typeof error === 'string') {
+		return { name: 'Error', message: error };
+	}
+
+	const name = error.name || error.constructor?.name || 'Error';
+	const message = error.message || `${error}`;
+	const code =
+		typeof error.code === 'number' || typeof error.code === 'string'
+			? error.code
+			: undefined;
+
+	return { name, message, code };
+};
+
+const isVersionError = error => normalizeError(error).name === 'VersionError';
+
+const logDebug = (callerName, message, details) => {
+	if (!isDebugEnabled()) {
+		return;
+	}
+
+	// eslint-disable-next-line no-console
+	console.info(`[${callerName}] ${message}`, details || '');
+};
+
+const logError = (callerName, message, error, extra) => {
+	const normalized = normalizeError(error);
+	const details = { ...normalized, ...extra };
+
+	// eslint-disable-next-line no-console
+	console.warn(`[${callerName}] ${message}`, details);
+};
+
+let hasLoggedEnv = false;
+const logEnvOnce = callerName => {
+	if (!isDebugEnabled() || hasLoggedEnv || typeof window === 'undefined') {
+		return;
+	}
+
+	hasLoggedEnv = true;
+
+	const env = {
+		origin: window.location ? window.location.origin : null,
+		pathname: window.location ? window.location.pathname : null,
+		isSecureContext: window.isSecureContext,
+		isTopWindow: window.top === window.self,
+		userAgent: window.navigator ? window.navigator.userAgent : null,
+		indexedDB: !!window.indexedDB,
+	};
+
+	// eslint-disable-next-line no-console
+	console.info(`[${callerName}] IndexedDB environment`, env);
+};
+
 /**
  * Open IndexedDB connection with all required object stores
  *
@@ -43,31 +133,91 @@ export const openDB = callerName => {
 			return;
 		}
 
-		const request = indexedDB.open(DB_NAME, DB_VERSION);
+		const attemptOpen = allowDeleteOnVersionMismatch => {
+			const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-		request.onerror = () => {
-			// eslint-disable-next-line no-console
-			console.warn(
-				`[${callerName}] Failed to open database:`,
-				JSON.stringify(request.error)
-			);
-			reject(request.error);
-		};
+			request.onerror = () => {
+				const error = request.error;
+				const isVersionMismatch =
+					allowDeleteOnVersionMismatch && isVersionError(error);
 
-		request.onsuccess = () => {
-			resolve(request.result);
-		};
+				if (isVersionMismatch) {
+					logError(
+						callerName,
+						'Database version mismatch detected, clearing cache',
+						error,
+						{ requestedVersion: DB_VERSION }
+					);
 
-		request.onupgradeneeded = event => {
-			const db = event.target.result;
+					const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
 
-			// Create all required object stores (shared database across all cache modules)
-			Object.values(STORE_NAMES).forEach(storeName => {
-				if (!db.objectStoreNames.contains(storeName)) {
-					db.createObjectStore(storeName, { keyPath: 'key' });
+					deleteRequest.onsuccess = () => {
+						logDebug(callerName, 'Deleted database, retrying open');
+						attemptOpen(false);
+					};
+
+					deleteRequest.onerror = () => {
+						logEnvOnce(callerName);
+						logError(
+							callerName,
+							'Failed to delete database after version mismatch',
+							deleteRequest.error || error
+						);
+						reject(deleteRequest.error || error);
+					};
+
+					deleteRequest.onblocked = event => {
+						logDebug(callerName, 'Delete blocked by another connection', {
+							oldVersion: event?.oldVersion,
+							newVersion: event?.newVersion,
+						});
+						reject(deleteRequest.error || error);
+					};
+
+					return;
 				}
-			});
+
+				logEnvOnce(callerName);
+				logError(callerName, 'Failed to open database', error, {
+					requestedVersion: DB_VERSION,
+				});
+				reject(error);
+			};
+
+			request.onsuccess = () => {
+				logDebug(callerName, 'Opened database', {
+					name: request.result?.name,
+					version: request.result?.version,
+				});
+				resolve(request.result);
+			};
+
+			request.onblocked = event => {
+				logDebug(callerName, 'Open blocked by another connection', {
+					oldVersion: event?.oldVersion,
+					newVersion: event?.newVersion,
+				});
+			};
+
+			request.onupgradeneeded = event => {
+				const db = event.target.result;
+
+				logDebug(callerName, 'Upgrade needed', {
+					oldVersion: event.oldVersion,
+					newVersion: event.newVersion,
+					stores: Array.from(db.objectStoreNames || []),
+				});
+
+				// Create all required object stores (shared database across all cache modules)
+				Object.values(STORE_NAMES).forEach(storeName => {
+					if (!db.objectStoreNames.contains(storeName)) {
+						db.createObjectStore(storeName, { keyPath: 'key' });
+					}
+				});
+			};
 		};
+
+		attemptOpen(true);
 	});
 };
 
@@ -89,11 +239,7 @@ export const executeTransaction = (transaction, db, callerName, operation) => {
 
 		transaction.onerror = () => {
 			db.close();
-			// eslint-disable-next-line no-console
-			console.warn(
-				`[${callerName}] Failed to ${operation}:`,
-				JSON.stringify(transaction.error)
-			);
+			logError(callerName, `Failed to ${operation}`, transaction.error);
 			reject(transaction.error);
 		};
 	});
@@ -117,11 +263,7 @@ export const executeRequest = (request, db, callerName, operation) => {
 
 		request.onerror = () => {
 			db.close();
-			// eslint-disable-next-line no-console
-			console.warn(
-				`[${callerName}] Failed to ${operation}:`,
-				JSON.stringify(request.error)
-			);
+			logError(callerName, `Failed to ${operation}`, request.error);
 			reject(request.error);
 		};
 	});

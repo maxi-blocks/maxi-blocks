@@ -25,8 +25,10 @@ body.maxi-blocks--active {
 			flex-wrap: nowrap !important;
 		}
 
-		// Column (slide) styles - normal by default
-		.maxi-column-block {
+		// Column (slide) styles - only direct children of wrapper, not nested columns
+		> .maxi-row-carousel__tracker
+			> .maxi-row-carousel__wrapper
+			> .maxi-column-block {
 			flex-shrink: 0;
 		}
 

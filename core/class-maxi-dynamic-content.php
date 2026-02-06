@@ -2430,7 +2430,7 @@ class MaxiBlocks_DynamicContent
         return null;
     }
 
-    public function get_product_content($attributes, $block_name)
+    public function get_product_content($attributes, $block_name = null)
     {
         @[
             'dc-field' => $dc_field,

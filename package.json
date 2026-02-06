@@ -112,7 +112,7 @@
 		"dotenv": "^16.4.5",
 		"dotenv-webpack": "latest",
 		"enzyme": "latest",
-		"eslint": "^8.0.0",
+		"eslint": "^9.26.0",
 		"eslint-config-airbnb": "latest",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-import-resolver-webpack": "^0.13.10",
@@ -155,6 +155,8 @@
 		"@langchain/textsplitters": "^0.1.0",
 		"diff": "^4.0.4",
 		"lodash": "4.17.23",
-		"lodash-es": "4.17.23"
+		"lodash-es": "4.17.23",
+		"eslint": "^9.26.0",
+		"minimatch": "^10.1.2"
 	}
 }

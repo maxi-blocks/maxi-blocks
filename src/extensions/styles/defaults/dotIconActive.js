@@ -8,10 +8,18 @@ const dotIconActive = activeAttributesCreator({
 	diffValAttr: {
 		[`${prefix}icon-width-general`]: '10',
 		[`${prefix}icon-stroke-palette-color`]: 2,
-		[`${prefix}icon-fill-palette-color`]: 4,
+		[`${prefix}icon-fill-palette-color`]: 5,
 	},
 	newAttr: {
 		[`${prefix}icon-status`]: {
+			type: 'boolean',
+			default: true,
+		},
+		[`${prefix}icon-fill-palette-status`]: {
+			type: 'boolean',
+			default: true,
+		},
+		[`${prefix}icon-stroke-palette-status`]: {
 			type: 'boolean',
 			default: true,
 		},

@@ -1806,14 +1806,14 @@ class MaxiBlockComponent extends Component {
 					processRelations(this.relationInstances);
 					recordPerf('processRelations', processRelationsStart);
 				}
-				if (updated !== null) {
-					const processRemoveStart = getPerfStart();
-					processRelations(this.relationInstances, 'remove', removed);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
-					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
-				}
+			if (updated !== null) {
+				const processRemoveStart = getPerfStart();
+				processRelations(this.relationInstances, 'remove', updated);
+				recordPerf('processRelationsRemove', processRemoveStart);
+				const processRelationsStart = getPerfStart();
+				processRelations(this.relationInstances);
+				recordPerf('processRelations', processRelationsStart);
+			}
 			}
 
 			if (!isRelationsPreview) {
@@ -2468,11 +2468,11 @@ class MaxiBlockComponent extends Component {
 
 		schedule(() => {
 			cache.scheduled = false;
-			this.addMaxiFSEIframeStylesNow();
+			MaxiBlockComponent.addMaxiFSEIframeStylesNow();
 		});
 	}
 
-	addMaxiFSEIframeStylesNow() {
+	static addMaxiFSEIframeStylesNow() {
 		// Get the FSE iframe
 		const now =
 			typeof performance !== 'undefined' && performance.now

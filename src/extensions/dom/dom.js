@@ -17,6 +17,7 @@ import {
 	getSiteEditorIframe,
 } from '@extensions/fse';
 import getWinBreakpoint from './getWinBreakpoint';
+import initHighlightHiddenBlocks from './highlightHiddenBlocks';
 import getEditorWrapper from './getEditorWrapper';
 import { setScreenSize } from '@extensions/styles';
 import { authConnect, getMaxiCookieKey } from '@editor/auth';
@@ -74,6 +75,9 @@ wp.domReady(() => {
 
 	// Initial set of scrollbar width
 	updateScrollbarWidth();
+
+	// Initialize List View highlight for hidden Maxi blocks
+	const cleanupHighlightHiddenBlocks = initHighlightHiddenBlocks();
 
 	const changeHandlesDisplay = (display, wrapper) =>
 		Array.from(
@@ -263,6 +267,7 @@ wp.domReady(() => {
 			) {
 				isNewEditorContentObserver = true;
 				resizeObserver.disconnect();
+				// Do not cleanup highlight here; editor is switching templates, not tearing down
 			}
 
 			// Need to add 'maxi-blocks--active' class to the FSE iframe body
@@ -352,8 +357,14 @@ wp.domReady(() => {
 			if (blockContainer) blockMarginObserver.observe(blockContainer);
 
 			editorContentUnsubscribe();
+			// Keep highlight active during normal editor lifecycle
 		}
 	});
+
+	// Note: We intentionally don't add a beforeunload handler here.
+	// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+	// and if the user clicks Cancel, the observers would already be destroyed.
+	// For true page unloads, the browser will garbage collect everything anyway.
 
 	// authentication for maxi pro
 	const maxiCookie = getMaxiCookieKey();
@@ -370,8 +381,17 @@ wp.domReady(() => {
 		});
 	}
 
+	// Store the preview observer to prevent multiple instances and enable cleanup
+	let previewObserver = null;
+	let previewHideTimeout = null;
+
 	const hideMaxiReusableBlocksPreview = () => {
-		const observer = new MutationObserver(mutationsList => {
+		// Prevent creating multiple observers for the same purpose
+		if (previewObserver) {
+			return;
+		}
+
+		previewObserver = new MutationObserver(mutationsList => {
 			for (const mutation of mutationsList) {
 				if (mutation.addedNodes.length > 0) {
 					const preview = document.querySelector(
@@ -379,12 +399,30 @@ wp.domReady(() => {
 					);
 					if (preview) {
 						preview.style.display = 'none'; // Hide the preview
+
+						// Disconnect observer after successful hide to prevent memory leaks
+						if (previewObserver) {
+							previewObserver.disconnect();
+							previewObserver = null;
+						}
 					}
 				}
 			}
 		});
 
-		observer.observe(document.body, { childList: true, subtree: true });
+		previewObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
+
+		// Failsafe: disconnect observer after 5 seconds if preview never appears
+		clearTimeout(previewHideTimeout);
+		previewHideTimeout = setTimeout(() => {
+			if (previewObserver) {
+				previewObserver.disconnect();
+				previewObserver = null;
+			}
+		}, 5000);
 	};
 
 	const waitForBlockTypeItems = () => {

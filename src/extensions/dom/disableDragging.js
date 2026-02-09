@@ -2,9 +2,23 @@
  * Disables default WordPress 6.8 dragging behavior for Maxi blocks
  */
 wp.domReady(() => {
+	// Store observers to prevent multiple instances
+	let mainObserver = null;
+	let editorModeObserver = null;
+	let iframeCheckInterval = null;
+	let observedIframes = new WeakSet();
+
 	// Apply event listeners to prevent default dragging behavior
 	const disableDefaultDragging = () => {
-		const observer = new MutationObserver(mutations => {
+		// Disconnect existing observer to prevent duplicates
+		if (mainObserver) {
+			mainObserver.disconnect();
+		}
+
+		// Reset iframe tracking when creating a new observer
+		observedIframes = new WeakSet();
+
+		mainObserver = new MutationObserver(mutations => {
 			const maxiBlocks = document.querySelectorAll('.maxi-block');
 
 			maxiBlocks.forEach(block => {
@@ -51,7 +65,7 @@ wp.domReady(() => {
 		});
 
 		// Observe DOM changes to catch newly added blocks
-		observer.observe(document.body, {
+		mainObserver.observe(document.body, {
 			childList: true,
 			subtree: true,
 			attributes: false,
@@ -65,26 +79,33 @@ wp.domReady(() => {
 			if (
 				iframe &&
 				iframe.contentDocument &&
-				iframe.contentDocument.body
+				iframe.contentDocument.body &&
+				!observedIframes.has(iframe.contentDocument.body)
 			) {
-				observer.observe(iframe.contentDocument.body, {
+				mainObserver.observe(iframe.contentDocument.body, {
 					childList: true,
 					subtree: true,
 					attributes: false,
 				});
+				observedIframes.add(iframe.contentDocument.body);
 			}
 		};
 
 		// Check for iframe initially and watch for changes
 		handleIframeEditor();
-		setInterval(handleIframeEditor, 2000);
+
+		// Clear existing interval to prevent multiple intervals
+		if (iframeCheckInterval) {
+			clearInterval(iframeCheckInterval);
+		}
+		iframeCheckInterval = setInterval(handleIframeEditor, 2000);
 	};
 
 	// Run on load and when editor changes
 	disableDefaultDragging();
 
 	// Also run when editor switches between visual/code modes
-	const editorModeObserver = new MutationObserver(mutations => {
+	editorModeObserver = new MutationObserver(mutations => {
 		mutations.forEach(mutation => {
 			if (
 				mutation.type === 'attributes' &&
@@ -100,6 +121,11 @@ wp.domReady(() => {
 		attributes: true,
 		attributeFilter: ['class'],
 	});
+
+	// Note: We intentionally don't add a beforeunload handler here.
+	// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+	// and if the user clicks Cancel, the observers would already be destroyed.
+	// For true page unloads, the browser will garbage collect everything anyway.
 });
 
 export default {};

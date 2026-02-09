@@ -60,8 +60,41 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
 			$block_style = $props['blockStyle'];
 			$player_type = $props['playerType'];
 
+			// transition
+			$defaults = new StylesDefaults();
+			$transition_default_canvas = $defaults->transitionDefault['canvas'];
+
+			$block_class = ' .maxi-video-block';
+			$video_class = $block_class . '__video-player';
+			$overlay_class = $block_class . '__overlay';
+
+			$transition = [
+				'canvas' => $transition_default_canvas,
+				'block' => [
+					'border' => [
+						'title' => 'Border',
+						'target' => [$overlay_class, $video_class],
+						'property' => ['border', 'border-radius'],
+						'hoverProp' => 'video-border-status-hover',
+					],
+					'box shadow' => [
+						'title' => 'Box shadow',
+						'target' => [$overlay_class, $video_class],
+						'property' => 'box-shadow',
+						'hoverProp' => 'video-box-shadow-status-hover',
+					],
+					'overlay colour' => [
+						'title' => 'Overlay colour',
+						'target' => $overlay_class . '-background',
+						'property' => 'background-color',
+						'hoverProp' => 'overlay-background-status-hover',
+					],
+				],
+			];
+
 			$data = [
 				'customCss' => $customCss,
+				'transition' => $transition,
 			];
 
 			$styles_obj = [

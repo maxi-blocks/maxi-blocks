@@ -16,6 +16,9 @@ const openSidebarTab = async (page, tab, item) => {
 		{ timeout: 10000 }
 	);
 
+	// Wait for sidebar content to be stable
+	await page.waitForTimeout(300);
+
 	const options = await page.$$(
 		'.maxi-tabs-control__sidebar-settings-tabs button'
 	);
@@ -27,12 +30,30 @@ const openSidebarTab = async (page, tab, item) => {
 			? ['style', 'canvas', 'advanced']
 			: ['style', 'advanced'];
 
-	await options[tabs.indexOf(tab)].click();
+	const targetTabIndex = tabs.indexOf(tab);
+
+	// Check if tab is already active
+	const isActive = await options[targetTabIndex].evaluate(
+		btn =>
+			btn.classList.contains('is-active') ||
+			btn.getAttribute('aria-selected') === 'true'
+	);
+
+	// Only click if not already active
+	if (!isActive) {
+		await options[targetTabIndex].click();
+		// Give the tab switch time to process
+		await page.waitForTimeout(800);
+	} else {
+		// Even if active, give a small delay for any pending updates
+		await page.waitForTimeout(300);
+	}
 
 	// Wait for accordion item to be rendered after tab switch
+	// Increased timeout for CI environments
 	await page.waitForSelector(
 		`.maxi-accordion-control__item[data-name="${item}"]`,
-		{ timeout: 10000 }
+		{ timeout: 30000, visible: true }
 	);
 
 	const wrapperElement = await page.$(

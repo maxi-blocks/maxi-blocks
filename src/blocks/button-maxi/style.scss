@@ -57,5 +57,11 @@ body.maxi-blocks--active .maxi-button-block {
 				margin-left: 5px;
 			}
 		}
+
+		a {
+			text-decoration: unset;
+			text-underline-offset: inherit !important;
+			text-decoration-skip-ink: auto;
+		}
 	}
 }

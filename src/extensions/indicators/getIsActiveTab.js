@@ -12,24 +12,32 @@ const getIsActiveTab = (
 	extraIndicators = [],
 	extraIndicatorsResponsive = [],
 	ignoreIndicator = [],
-	ignoreIndicatorGroups = []
+	ignoreIndicatorGroups = [],
+	indicatorContext = null
 ) => {
 	const { show_indicators: showIndicators } =
 		(typeof window !== 'undefined' && window.maxiSettings) || {};
 
 	if (!showIndicators) return false;
 
-	const { getBlock, getSelectedBlockClientId } = select('core/block-editor');
+	let blockName = indicatorContext?.blockName;
+	let currentAttributes = indicatorContext?.currentAttributes;
 
-	const block = getBlock(getSelectedBlockClientId());
+	if (!blockName || !currentAttributes) {
+		const { getBlock, getSelectedBlockClientId } =
+			select('core/block-editor');
 
-	if (!block) return null;
+		const block = getBlock(getSelectedBlockClientId());
 
-	const { name, attributes: currentAttributes } = block;
+		if (!block) return null;
 
-	if (!name.includes('maxi-blocks')) return null;
+		blockName = block.name;
+		currentAttributes = block.attributes;
+	}
 
-	const defaultAttributes = getBlockAttributes(name);
+	if (!blockName.includes('maxi-blocks')) return null;
+
+	const defaultAttributes = getBlockAttributes(blockName);
 
 	const ignoreAttributes = [];
 	ignoreIndicatorGroups.forEach(group => {
@@ -115,6 +123,15 @@ const getIsActiveTab = (
 				currentAttributes[attribute] !== defaultAttributes[attribute]
 			);
 		}
+
+		// Check if background layers have any non-color layer
+		if (attribute === 'background-layers') {
+			const hasNonColorLayer = currentAttributes[attribute].some(
+				layer => layer.type !== 'color'
+			);
+			if (!hasNonColorLayer) return true;
+		}
+
 		if (currentAttributes[attribute] === '') return true;
 
 		return currentAttributes[attribute] === defaultAttributes[attribute];

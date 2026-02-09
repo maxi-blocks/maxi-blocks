@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import { isEmpty } from 'lodash';
+import { getAttrKeyWithoutBreakpoint } from '@extensions/styles';
+import { isEmpty, camelCase } from 'lodash';
 
 const modifyStyleElement = (styleElement, modifiedTarget, styleObj) => {
 	styleElement.innerHTML = `${modifiedTarget} { ${Object.entries(
@@ -60,14 +61,14 @@ const handleInsertInlineStyles = ({
 			}
 		} else {
 			Object.entries(styleObj).forEach(([key, val]) => {
-				targetElement.style[key] = val;
+				targetElement.style[camelCase(key)] = val;
 			});
 
 			targetElement.style.transition = 'none';
 		}
 
 		if (pseudoElement === '') {
-			styleObjKeys.current = [...Object.keys(styleObj), 'transition'];
+			styleObjKeys.current.push(...Object.keys(styleObj), 'transition');
 		}
 	});
 };
@@ -78,6 +79,8 @@ const handleCleanInlineStyles = (
 	styleObjKeys,
 	ref
 ) => {
+	if (pseudoElement === '' && styleObjKeys.current.length === 0) return;
+
 	const target = normalizeTarget(rawTarget);
 	const parentElement = ref?.current.blockRef.current;
 	const targetElements =
@@ -97,7 +100,8 @@ const handleCleanInlineStyles = (
 				.remove();
 		} else {
 			styleObjKeys.current.forEach(key => {
-				if (targetElement.style[key]) targetElement.style[key] = '';
+				if (targetElement.style[camelCase(key)])
+					targetElement.style[camelCase(key)] = '';
 			});
 		}
 	});
@@ -105,4 +109,61 @@ const handleCleanInlineStyles = (
 	styleObjKeys.current = [];
 };
 
-export { handleInsertInlineStyles, handleCleanInlineStyles };
+/**
+ * @param {*}       changedAttributes
+ * @param {*}       attributes
+ * @param {*}       attributesToStyles
+ * @param {boolean} skipStyles         - If true, skip the styleObj and return only the target
+ * @returns {Array<Record<string, object>>} - Array of objects with styleObj, target, isMultiplySelector, pseudoElement
+ */
+const getInlineStylesAndTargetsFromAttributes = ({
+	changedAttributes,
+	attributesToStyles,
+	skipStyles = false,
+	inlineOptions = {},
+}) => {
+	return Object.entries(changedAttributes).reduce((acc, [key, value]) => {
+		const pureKey = getAttrKeyWithoutBreakpoint(key);
+
+		if (attributesToStyles[pureKey]) {
+			const {
+				property,
+				target,
+				isMultiplySelector,
+				pseudoElement,
+				unit: constantUnit,
+			} = attributesToStyles[pureKey];
+			const { unit } = inlineOptions;
+			const current = {
+				styleObj: {},
+				target,
+				isMultiplySelector,
+				pseudoElement,
+			};
+
+			if (skipStyles) {
+				acc.push(current);
+				return acc;
+			}
+
+			const properties = Array.isArray(property) ? property : [property];
+			properties.forEach(prop => {
+				if (constantUnit) {
+					current.styleObj[prop] = `${value}${constantUnit}`;
+				} else {
+					current.styleObj[prop] = unit ? `${value}${unit}` : value;
+				}
+			});
+
+			acc.push(current);
+		}
+
+		return acc;
+	}, []);
+};
+
+export {
+	handleInsertInlineStyles,
+	handleCleanInlineStyles,
+	getInlineStylesAndTargetsFromAttributes,
+};

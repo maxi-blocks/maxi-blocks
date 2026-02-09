@@ -40,7 +40,7 @@
 				transition: all 0.5s ease;
 
 				&[aria-pressed='true'] {
-					border-bottom: 1.5px solid var(--maxi-black) !important;
+					border-bottom: 1.5px solid var(--maxi-black);
 					background-color: var(--maxi-whisper-green);
 				}
 			}
@@ -49,6 +49,11 @@
 	.maxi-tabs-control {
 		display: flex;
 		padding-top: 0;
+
+		&--disable-padding {
+			padding-left: 0;
+			padding-right: 0;
+		}
 
 		&--nested {
 			padding: 8px 8px 0;
@@ -229,8 +234,31 @@
 
 	.maxi-tabs-content {
 		&:not(.maxi-tabs-content--disable-padding) {
-			padding: 0px 8px 0px;
+			padding: 6px 8px 0;
 			background-color: var(--maxi-white);
+		}
+
+		&.maxi-clip-path-tabs-content {
+			// padding-left: 0;
+			// padding-right: 0;
+
+			// Hide the empty tabs content inside responsive tabs control
+			.maxi-responsive-tabs-control > .maxi-tabs-content {
+				display: none;
+			}
+		}
+
+		.maxi-tabs-control--disable-padding {
+			margin-left: -8px;
+			margin-right: -8px;
+		}
+
+		&:has(.maxi-tabs-control--disable-padding) {
+			padding-top: 0;
+		}
+
+		.maxi-tabs-control--disable-padding + .maxi-responsive-tabs-control {
+			margin-top: -6px;
 		}
 
 		&--nested {

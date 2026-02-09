@@ -10,7 +10,8 @@
 		&[data-name='box shadow'],
 		&[data-name='icon'],
 		&[data-name='border'],
-		&[data-name='active icon'] {
+		&[data-name='active icon'],
+		&[data-name='clip path'] {
 			.maxi-accordion-control__item__panel {
 				padding: 0;
 			}
@@ -128,6 +129,30 @@
 	.maxi-repeater {
 		> *:last-child {
 			margin-top: 10px !important;
+		}
+	}
+}
+
+// Make the Interaction builder dot and text pink when active
+.maxi-accordion-control__item[data-name='interaction builder'] {
+	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
+		color: var(--maxi-interaction-pink) !important;
+		font-weight: 700 !important;
+
+		&:before {
+			background-color: var(--maxi-interaction-pink) !important;
+		}
+	}
+}
+
+// Make the Background / Layer dot and text blue when active
+.maxi-accordion-control__item[data-name='background / layer'] {
+	.maxi-accordion-control__item__button.maxi-accordion-control__item--active {
+		color: var(--maxi-background-yellow) !important;
+		font-weight: 700 !important;
+
+		&:before {
+			background-color: var(--maxi-background-yellow) !important;
 		}
 	}
 }

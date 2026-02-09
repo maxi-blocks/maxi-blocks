@@ -55,6 +55,8 @@ describe('Video options control', () => {
 
 		expect(await getAttributes('showPlayerControls')).toStrictEqual(false);
 
+		await page.waitForTimeout(1000);
+
 		// Check video content
 		const videoContent = await page.$eval(
 			'.maxi-video-block__video-container',

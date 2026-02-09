@@ -1,11 +1,7 @@
 /**
  * WordPress dependencies
  */
-import {
-	createNewPost,
-	pressKeyTimes,
-	pressKeyWithModifier,
-} from '@wordpress/e2e-test-utils';
+import { createNewPost, pressKeyWithModifier } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
@@ -17,6 +13,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	adjustANC,
 } from '../../utils';
 
 describe('Advanced Number Control', () => {
@@ -159,11 +156,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '998',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowUp', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 3,
+			direction: 'ArrowUp',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'999'
@@ -178,11 +178,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '-998',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowDown', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 3,
+			direction: 'ArrowDown',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'-999'
@@ -228,11 +231,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '298',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowUp', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 2,
+			direction: 'ArrowUp',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'300'
@@ -247,11 +253,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '-298',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowDown', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 2,
+			direction: 'ArrowDown',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'-300'
@@ -285,7 +294,14 @@ describe('Advanced Number Control', () => {
 			'.maxi-axis-control__margin .components-range-control__slider',
 			input => input.focus()
 		);
-		await pressKeyTimes('ArrowUp', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 2,
+			direction: 'ArrowUp',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'300'
@@ -300,11 +316,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '-298',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowDown', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 2,
+			direction: 'ArrowDown',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'-300'
@@ -334,11 +353,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '99',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowUp', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 1,
+			direction: 'ArrowUp',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'100'
@@ -353,11 +375,14 @@ describe('Advanced Number Control', () => {
 			newNumber: '-99',
 		});
 
-		await page.$eval(
-			'.maxi-axis-control__margin .components-range-control__slider',
-			input => input.focus()
-		);
-		await pressKeyTimes('ArrowDown', '3');
+		await adjustANC({
+			page,
+			instance: await page.$(
+				'.maxi-axis-control__margin .maxi-axis-control__content__item__margin'
+			),
+			numberOfTimes: 1,
+			direction: 'ArrowDown',
+		});
 
 		expect(await getAttributes('margin-bottom-general')).toStrictEqual(
 			'-100'

@@ -81,16 +81,25 @@ class edit extends MaxiBlockComponent {
 		);
 	}
 
-	maxiBlockDidUpdate() {
+	removeGutenbergWhiteSpace() {
 		// Ensures white-space is applied from Maxi and not with inline styles
-		Array.from(this.blockRef.current.children[0].children).forEach(el => {
-			if (el.style.whiteSpace) el.style.whiteSpace = null;
-		});
+		if (this.blockRef?.current?.children?.[0]?.children)
+			Array.from(this.blockRef.current.children[0].children).forEach(
+				el => {
+					if (el.style.whiteSpace) el.style.whiteSpace = null;
+				}
+			);
+	}
+
+	maxiBlockDidUpdate() {
+		this.removeGutenbergWhiteSpace();
 	}
 
 	// Apply xxl padding only for new button blocks
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
+
+		this.removeGutenbergWhiteSpace();
 
 		// First check if this is a new button (empty content and empty icon)
 		const isNewButton =
@@ -133,6 +142,7 @@ class edit extends MaxiBlockComponent {
 			status: dcStatus,
 			content: dcContent,
 			field: dcField,
+			containsHtml: dcContainsHTML,
 			subField,
 		} = getDCValues(
 			getGroupAttributes(attributes, 'dynamicContent'),
@@ -194,7 +204,11 @@ class edit extends MaxiBlockComponent {
 						<>
 							{showDCContent && (
 								<div className='maxi-button-block__content'>
-									{dcContent}
+									{dcContainsHTML ? (
+										<RawHTML>{dcContent}</RawHTML>
+									) : (
+										dcContent
+									)}
 								</div>
 							)}
 							{!showDCContent && (

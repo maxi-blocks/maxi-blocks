@@ -283,6 +283,12 @@ let globalStyleManagerInstance = null;
 export const getGlobalStyleManager = () => {
 	if (!globalStyleManagerInstance) {
 		globalStyleManagerInstance = new GlobalStyleManager();
+
+		// Note: We intentionally don't add a beforeunload handler here.
+		// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+		// and if the user clicks Cancel, the styles would already be destroyed.
+		// Memory cleanup is handled by the periodic cleanup interval instead,
+		// and true page unloads will garbage collect everything anyway.
 	}
 
 	return globalStyleManagerInstance;

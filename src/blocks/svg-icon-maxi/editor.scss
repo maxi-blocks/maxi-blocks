@@ -22,21 +22,26 @@
 			font-weight: 800;
 			padding: 22px 22px 22px 10px;
 			border: 1px solid var(--maxi-grey-light);
-			transition: all 0.1s;
 			border-radius: 30px;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			transition: all 0.4s ease;
+			transition: all 0.3s ease;
 
 			svg {
 				width: 36px;
 				height: 36px;
 				padding: 8px;
 
+				defs path,
 				path {
-					fill: var(--maxi-white);
+					fill: var(--maxi-white) !important;
+					transition: fill 0.3s ease;
 				}
+			}
+
+			&:not(:hover) svg {
+				--maxi-primary-color: var(--maxi-white);
 			}
 
 			&:hover {
@@ -44,8 +49,9 @@
 				color: var(--maxi-cloud-primary-contrast) !important;
 				border-color: var(--maxi-primary-color);
 
+				defs path,
 				path {
-					fill: var(--maxi-primary-green) !important;
+					fill: var(--maxi-primary-color) !important;
 				}
 			}
 		}

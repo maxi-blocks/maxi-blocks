@@ -58,11 +58,12 @@ const ImageShapeResponsiveSettings = ({
 		}`;
 
 		return {
-			[getDictionaryValue('value')]: getLastShapeAttribute(target) || '',
-			[getDictionaryValue('onChange')]: value =>
+			[getDictionaryValue('value')]: getLastShapeAttribute(target) ?? '',
+			[getDictionaryValue('onChange')]: (value, meta) =>
 				onChange({
 					[targetWithBreakpoint]:
 						value !== undefined && value !== '' ? value : '',
+					meta,
 				}),
 			...(component === 'AdvancedNumberControl' && {
 				onReset: () =>

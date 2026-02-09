@@ -68,12 +68,18 @@ describe('Image Maxi hover simple actions', () => {
 		await page.waitForTimeout(150);
 
 		// Add target
-		let selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[1].select('image-maxi-1se8ef1z-u');
+		await page.waitForSelector('.maxi-block-select-control__trigger');
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForSelector('.maxi-block-select-control__dropdown');
+		await page.click(
+			'.maxi-block-select-control__options li[value="image-maxi-1se8ef1z-u"]'
+		);
+		await page.waitForTimeout(200);
 
 		// Add action
-		selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[2].select('hover');
+		let selectControls = await page.$$('.maxi-select-control__input');
+		await selectControls[1].select('hover');
+		await page.waitForTimeout(200);
 	});
 
 	const checkFrontend = async (disableTransition = false) => {
@@ -123,8 +129,17 @@ describe('Image Maxi hover simple actions', () => {
 	};
 
 	it('Alignment', async () => {
+		// Select setting
 		const selectControls = await page.$$('.maxi-select-control__input');
-		await selectControls[3].select('a');
+		await selectControls[2].select('a');
+		await page.waitForTimeout(200);
+
+		// Click on "On hover" tab
+		const tabs = await page.$$(
+			'.maxi-relation-control__interaction-tabs .maxi-tabs-control__button'
+		);
+		await tabs[1].click();
+		await page.waitForTimeout(200);
 
 		await page.$eval(
 			'.maxi-alignment-control .maxi-tabs-control__button.maxi-tabs-control__button-right',

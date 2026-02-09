@@ -19,6 +19,7 @@ import {
 	getTypographyStyles,
 	getZIndexStyles,
 	getButtonIconStyles,
+	getLinkStyles,
 } from '@extensions/styles/helpers';
 import data from './data';
 
@@ -303,6 +304,17 @@ const getStyles = (props, scValues, iconWidthHeightRatio) => {
 					wrapperTarget: '.maxi-button-block__button',
 					iconWidthHeightRatio,
 				}),
+				...getLinkStyles(
+					{
+						...getGroupAttributes(props, [
+							'link',
+							'typography',
+							'typographyHover',
+						]),
+					},
+					[' .maxi-button-block__button a'],
+					props.blockStyle
+				),
 			},
 			data,
 			props

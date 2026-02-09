@@ -88,7 +88,7 @@ describe('updateRelationsRemotely', () => {
 		expect(getIBStyles).not.toHaveBeenCalled();
 	});
 
-	it('should skip relations with empty attributes', () => {
+	it('should preserve relations with empty attributes', () => {
 		select.mockReturnValue({
 			getBlockAttributes: jest.fn().mockReturnValue({
 				relations: [
@@ -111,11 +111,7 @@ describe('updateRelationsRemotely', () => {
 		expect(getCleanResponseIBAttributes).not.toHaveBeenCalled();
 		expect(getIBStylesObj).not.toHaveBeenCalled();
 		expect(getIBStyles).not.toHaveBeenCalled();
-		// Empty relations array is still passed to batch updater to clear the relation
-		expect(batchRelationsUpdater.addUpdate).toHaveBeenCalledWith(
-			mockBlockTriggerClientId,
-			[]
-		);
+		expect(batchRelationsUpdater.addUpdate).not.toHaveBeenCalled();
 	});
 
 	it('should skip relations with different uniqueID', () => {

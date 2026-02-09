@@ -207,7 +207,8 @@ describe('getProductsContent', () => {
 			mockEntityData.product_tag,
 			', ',
 			false,
-			'product_tag'
+			'product_tag',
+			undefined
 		);
 		expect(result).toBe('Tag 1, Tag 2');
 	});
@@ -224,7 +225,8 @@ describe('getProductsContent', () => {
 			mockEntityData.product_tag,
 			undefined,
 			true,
-			'product_tag'
+			'product_tag',
+			undefined
 		);
 		expect(result).toBe('Multiple Links');
 	});
@@ -241,7 +243,8 @@ describe('getProductsContent', () => {
 			mockEntityData.product_cat,
 			', ',
 			false,
-			'product_cat'
+			'product_cat',
+			undefined
 		);
 		expect(result).toBe('Category 1, Category 2');
 	});

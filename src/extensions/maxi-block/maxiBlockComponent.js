@@ -242,6 +242,11 @@ class MaxiBlockComponent extends Component {
 			this.setupFSEIframeObserver();
 		}
 
+		// Step 2.5: Disable Gutenberg's block movement animation
+		// Gutenberg applies translate3d() to blocks during arrow-click movement
+		// which causes jiggle when MaxiBlocks transforms are present
+		this.setupBlockMoveAnimationKiller();
+
 		// Step 3: Relations processing
 		const blocksIBRelations = select(
 			'maxiBlocks/relations'
@@ -693,6 +698,12 @@ class MaxiBlockComponent extends Component {
 		if (this.fseIframeObserver) {
 			this.fseIframeObserver.disconnect();
 			this.fseIframeObserver = null;
+		}
+
+		// Remove block move animation killer style
+		if (this.blockMoveStyleBlocker) {
+			this.blockMoveStyleBlocker.remove();
+			this.blockMoveStyleBlocker = null;
 		}
 
 		// Remove temporary popover-hiding styles if still injected
@@ -2230,6 +2241,29 @@ class MaxiBlockComponent extends Component {
 				subtree: true,
 			});
 		}
+	}
+
+	/**
+	 * Disables Gutenberg's block movement animation.
+	 * When clicking up/down mover arrows, Gutenberg applies translate3d() via JS
+	 * which causes visual jiggle when MaxiBlocks transforms are present.
+	 * This injects a CSS rule that blocks translate3d from rendering.
+	 */
+	setupBlockMoveAnimationKiller() {
+		const { clientId } = this.props;
+		const blockId = `block-${clientId}`;
+
+		// Create a style element that blocks translate3d for this specific block
+		// Using CSS is more reliable than MutationObserver because it prevents
+		// the translate3d from ever being rendered (no flash/jump)
+		this.blockMoveStyleBlocker = document.createElement('style');
+		this.blockMoveStyleBlocker.id = `maxi-block-move-blocker-${clientId}`;
+		this.blockMoveStyleBlocker.textContent = `
+			#${blockId}[style*="translate3d"] {
+				transform: none !important;
+			}
+		`;
+		document.head.appendChild(this.blockMoveStyleBlocker);
 	}
 }
 

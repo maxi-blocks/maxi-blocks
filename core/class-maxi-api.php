@@ -65,7 +65,7 @@ if (!class_exists('MaxiBlocks_API')):
             add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
 
             // Enable gzip compression for MaxiBlocks API responses
-            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 10, 4);
+            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 100, 4);
         }
 
         /**

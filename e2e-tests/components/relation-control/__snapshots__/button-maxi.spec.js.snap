@@ -236,7 +236,7 @@ exports[`Button Maxi hover simple actions Button icon 1`] = `
       "icon-background-palette-sc-status-xl": false,
       "icon-background-palette-status-general": true,
       "icon-background-palette-status-xl": true,
-      "icon-content": "<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="5" data-stroke data-hover-stroke stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>",
+      "icon-content": "<svg stroke-miterlimit="10" stroke-linejoin="round" stroke-linecap="round" stroke-width="5" stroke="var(--maxi-light-icon-stroke,rgba(var(--maxi-light-color-8,150,176,203),0.75))" data-hover-stroke="" fill="none" viewBox="0 0 24 24" height="64px" width="64px" class="arrow-right-6-line-maxi-svg"><path d="M14 3.6l8.4 8.4-8.4 8.4m8.4-8.4H1.6"></path></svg>",
       "icon-padding-bottom-general": "44",
       "icon-padding-bottom-unit-general": "%",
       "icon-padding-bottom-unit-xl": "%",

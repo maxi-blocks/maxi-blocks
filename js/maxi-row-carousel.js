@@ -441,6 +441,13 @@ class MaxiRowCarousel {
 			);
 			if (nav) nav.remove();
 
+			// Move CL pagination back to the end (after columns)
+			const pagination =
+				this._container.querySelector('.maxi-pagination');
+			if (pagination) {
+				this._container.appendChild(pagination);
+			}
+
 			// Clear references
 			this._tracker = null;
 			this._wrapper = null;
@@ -519,6 +526,12 @@ class MaxiRowCarousel {
 		this._container.appendChild(tracker);
 		// Add nav as direct child of container (not inside tracker) to prevent overflow clipping of arrows
 		this._container.appendChild(nav);
+
+		// Move CL pagination to the end so it appears below the carousel
+		const pagination = this._container.querySelector('.maxi-pagination');
+		if (pagination) {
+			this._container.appendChild(pagination);
+		}
 
 		// Mark container as carousel-initialized
 		this._container.setAttribute('data-carousel-initialized', 'true');

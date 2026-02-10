@@ -438,10 +438,20 @@ class MaxiRowCarouselEditor {
 		// This prevents arrows from being clipped by tracker's overflow:hidden when positioned outside
 		tracker.appendChild(wrapper);
 
+		// Stack children vertically so pagination doesn't steal horizontal
+		// space from tracker's margin:auto centering
+		this._container.style.flexDirection = 'column';
+
 		// Add tracker to container
 		this._container.appendChild(tracker);
 		// Add nav as direct child of container (not inside tracker) to prevent overflow clipping of arrows
 		this._container.appendChild(nav);
+
+		// Move CL pagination to the end so it appears below the carousel
+		const pagination = this._container.querySelector('.maxi-pagination');
+		if (pagination) {
+			this._container.appendChild(pagination);
+		}
 	}
 
 	init() {
@@ -593,19 +603,12 @@ class MaxiRowCarouselEditor {
 		const nav = this._container.querySelector('.maxi-row-carousel__nav');
 		if (!nav || !this._tracker) return;
 
-		// Get tracker's position and size relative to the row container
-		const trackerRect = this._tracker.getBoundingClientRect();
-		const containerRect = this._container.getBoundingClientRect();
-
-		// Calculate offset of tracker within container
-		const offsetLeft = trackerRect.left - containerRect.left;
-		const offsetTop = trackerRect.top - containerRect.top;
-
-		// Position nav to match tracker's position and size
-		nav.style.left = `${offsetLeft}px`;
-		nav.style.top = `${offsetTop}px`;
-		nav.style.width = `${trackerRect.width}px`;
-		nav.style.height = `${trackerRect.height}px`;
+		// Use offsetLeft/offsetTop which give position relative to the
+		// offset parent's padding edge — matching absolute positioning reference
+		nav.style.left = `${this._tracker.offsetLeft}px`;
+		nav.style.top = `${this._tracker.offsetTop}px`;
+		nav.style.width = `${this._tracker.offsetWidth}px`;
+		nav.style.height = `${this._tracker.offsetHeight}px`;
 	}
 
 	columnAction() {
@@ -1127,6 +1130,13 @@ class MaxiRowCarouselEditor {
 			if (wrapper) wrapper.remove();
 			if (tracker) tracker.remove();
 			if (nav) nav.remove();
+
+			// Move CL pagination back to the end (after columns)
+			const pagination =
+				this._container.querySelector('.maxi-pagination');
+			if (pagination) {
+				this._container.appendChild(pagination);
+			}
 		}
 
 		// Remove active class and initialized flag
@@ -1134,6 +1144,7 @@ class MaxiRowCarouselEditor {
 			this._container.classList.remove('maxi-row-carousel--active');
 			this._container.removeAttribute('data-carousel-initialized');
 			this._container.removeAttribute('data-transition');
+			this._container.style.flexDirection = '';
 		}
 
 		// Clear references

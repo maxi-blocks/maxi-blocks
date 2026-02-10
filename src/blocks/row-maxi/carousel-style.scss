@@ -5,6 +5,9 @@ body.maxi-blocks--active {
 	.maxi-row-block[data-carousel-initialized='true'] {
 		position: relative;
 		overflow: visible; // Allow content to extend outside row
+		// Stack tracker, nav, and pagination vertically so pagination
+		// doesn't steal horizontal space from tracker's margin:auto centering
+		flex-direction: column;
 
 		.maxi-row-carousel__tracker {
 			position: relative; // For wrapper positioning

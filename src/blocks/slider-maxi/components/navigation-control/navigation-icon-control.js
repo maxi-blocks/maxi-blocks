@@ -39,6 +39,7 @@ import {
 	setSVGContentHover,
 	setSVGStrokeWidth,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
@@ -156,6 +157,11 @@ const NavigationIconControl = props => {
 		}
 		return value;
 	};
+	// Process icons with current colors for preview
+	const processIcon = iconContent =>
+		iconContent
+			? svgAttributesReplacer(iconContent, 'icon', 'navigation-icon')
+			: iconContent;
 
 	return (
 		<div className={classes}>
@@ -357,7 +363,9 @@ const NavigationIconControl = props => {
 							});
 						}}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}${current}-icon-content`]}
+						icon={processIcon(
+							props[`${shortPrefix}${current}-icon-content`]
+						)}
 						prefix={`${shortPrefix}${current}-`}
 					/>
 				))}
@@ -557,7 +565,7 @@ const NavigationIconControl = props => {
 							});
 						}}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}icon-content`]}
+						icon={processIcon(props[`${shortPrefix}icon-content`])}
 						prefix={shortPrefix}
 					/>
 				)}
@@ -1209,7 +1217,11 @@ const NavigationIconControl = props => {
 								<BorderControl
 									{...getGroupAttributes(
 										props,
-										['border', 'borderWidth', 'borderRadius'],
+										[
+											'border',
+											'borderWidth',
+											'borderRadius',
+										],
 										isHover,
 										prefix
 									)}
@@ -1254,15 +1266,19 @@ const NavigationIconControl = props => {
 									{iconBgActive === 'color' && (
 										<ColorControl
 											label={__(
-												`${capitalize(label)} background`,
+												`${capitalize(
+													label
+												)} background`,
 												'maxi-blocks'
 											)}
-											paletteStatus={getLastBreakpointAttribute({
-												target: `${prefix}background-palette-status`,
-												breakpoint,
-												attributes: props,
-												isHover,
-											})}
+											paletteStatus={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-palette-status`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
 											paletteSCStatus={getLastBreakpointAttribute(
 												{
 													target: `${prefix}background-palette-sc-status`,
@@ -1271,18 +1287,22 @@ const NavigationIconControl = props => {
 													isHover,
 												}
 											)}
-											paletteColor={getLastBreakpointAttribute({
-												target: `${prefix}background-palette-color`,
-												breakpoint,
-												attributes: props,
-												isHover,
-											})}
-											paletteOpacity={getLastBreakpointAttribute({
-												target: `${prefix}background-palette-opacity`,
-												breakpoint,
-												attributes: props,
-												isHover,
-											})}
+											paletteColor={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-palette-color`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
+											paletteOpacity={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-palette-opacity`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
 											color={getLastBreakpointAttribute({
 												target: `${prefix}background-color`,
 												breakpoint,
@@ -1354,12 +1374,14 @@ const NavigationIconControl = props => {
 												)} background gradient`,
 												'maxi-blocks'
 											)}
-											gradient={getLastBreakpointAttribute({
-												target: `${prefix}background-gradient`,
-												breakpoint,
-												attributes: props,
-												isHover,
-											})}
+											gradient={getLastBreakpointAttribute(
+												{
+													target: `${prefix}background-gradient`,
+													breakpoint,
+													attributes: props,
+													isHover,
+												}
+											)}
 											gradientOpacity={getLastBreakpointAttribute(
 												{
 													target: `${prefix}background-gradient-opacity`,

@@ -18,7 +18,7 @@ const setSVGColor = ({ svg, color, type = 'fill' }) => {
 	const setColor = el => {
 		const { attribs, children } = el;
 
-		if (type in attribs) el.attribs[type] = color;
+		if (attribs && type in attribs) el.attribs[type] = color;
 		if (children && !isEmpty(children)) {
 			el.children = el.children.map(child => setColor(child));
 		}

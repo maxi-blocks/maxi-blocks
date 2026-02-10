@@ -14,6 +14,7 @@ import {
 	executeTransaction,
 	executeRequest,
 	STORE_NAMES,
+	IDB_DISABLED_ERROR_CODE,
 } from '@extensions/common/indexedDBManager';
 
 const STORE_NAME = STORE_NAMES.styleCards;
@@ -43,10 +44,13 @@ export const saveToIndexedDB = async (styleCards, hash) => {
 
 		return executeTransaction(transaction, db, CALLER_NAME, 'save cache');
 	} catch (error) {
+		if (error?.code === IDB_DISABLED_ERROR_CODE) {
+			return;
+		}
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error saving to IndexedDB:`,
-			JSON.stringify(error)
+			String(error?.message || error)
 		);
 		throw error;
 	}
@@ -72,10 +76,13 @@ export const loadFromIndexedDB = async () => {
 		);
 		return result || null;
 	} catch (error) {
+		if (error?.code === IDB_DISABLED_ERROR_CODE) {
+			return null;
+		}
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error loading from IndexedDB:`,
-			JSON.stringify(error)
+			String(error?.message || error)
 		);
 		return null;
 	}
@@ -97,10 +104,13 @@ export const clearIndexedDB = async () => {
 
 		return executeTransaction(transaction, db, CALLER_NAME, 'clear cache');
 	} catch (error) {
+		if (error?.code === IDB_DISABLED_ERROR_CODE) {
+			return;
+		}
 		// eslint-disable-next-line no-console
 		console.warn(
 			`[${CALLER_NAME}] Error clearing IndexedDB:`,
-			JSON.stringify(error)
+			String(error?.message || error)
 		);
 		throw error;
 	}

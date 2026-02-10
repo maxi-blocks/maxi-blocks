@@ -885,8 +885,16 @@ class MaxiRowCarousel {
 	setActiveDot(columnIndex) {
 		if (!this._dots) return;
 
+		// In loop mode, wrap column index so dots stay correct during clone transitions
+		let effectiveIndex = columnIndex;
+		if (this.isLoop && this.numberOfColumns > 0) {
+			effectiveIndex =
+				((columnIndex % this.numberOfColumns) + this.numberOfColumns) %
+				this.numberOfColumns;
+		}
+
 		// Calculate slide index from column index
-		const slideIndex = Math.floor(columnIndex / this.slidesPerView);
+		const slideIndex = Math.floor(effectiveIndex / this.slidesPerView);
 
 		const dotIconContent =
 			this._container.getAttribute('data-dot-icon') || '';
@@ -1024,6 +1032,9 @@ class MaxiRowCarousel {
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump back to the real first column without animation
 			this.columnAction(false);
+			// Force reflow so the browser commits the transition:none state
+			// before the next animated transition (fixes missing animation after loop)
+			void this._wrapper.offsetHeight;
 		}
 		// When we've scrolled before the first real column (into back clones)
 		if (this.currentColumn < 0) {
@@ -1043,10 +1054,14 @@ class MaxiRowCarousel {
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump to the real last column(s) without animation
 			this.columnAction(false);
+			// Force reflow so the browser commits the transition:none state
+			void this._wrapper.offsetHeight;
 		}
 	}
 
-	transitionEnd() {
+	transitionEnd(e) {
+		// Only handle transitions on the wrapper itself, ignore bubbled child events
+		if (e.target !== this._wrapper) return;
 		if (this.isLoop) this.loop();
 	}
 

@@ -38,18 +38,12 @@ import {
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import {
-	backgroundColor,
-	backgroundGradient,
-	styleNone,
-	iconStroke,
-	iconFill,
-} from '@maxi-icons';
 
 /**
  * IconControlResponsiveSettings Component
@@ -788,6 +782,14 @@ const IconControl = props => {
 		disablePadding = false,
 	} = props;
 
+	// Get the current SVG type
+	const svgType = props[`${prefix}svgType`];
+
+	// Process icon with current colors for preview (uses svgAttributesReplacer to get actual colors)
+	const processedIcon = iconContent
+		? svgAttributesReplacer(iconContent, 'icon', type)
+		: iconContent;
+
 	// Build CSS classes for the wrapper
 	const classes = classnames(
 		'maxi-icon-control',
@@ -863,7 +865,7 @@ const IconControl = props => {
 						});
 					}}
 					onRemove={obj => onChange(obj)}
-					icon={iconContent}
+					icon={processedIcon}
 					prefix={prefix}
 				/>
 			)}

@@ -7,7 +7,7 @@ import { RichText } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { HoverPreview, RawHTML } from '@components';
-import { getGroupAttributes } from '@extensions/styles';
+import { getGroupAttributes, getLastBreakpointAttribute } from '@extensions/styles';
 import { getDCImgSVG } from '@extensions/DC';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
@@ -63,6 +63,11 @@ const save = props => {
 		'dc-status': dcStatus,
 		ariaLabels = {},
 	} = attributes;
+	const hoverPreview = getLastBreakpointAttribute({
+		target: 'hover-preview',
+		breakpoint: 'general',
+		attributes,
+	});
 
 	const name = 'maxi-blocks/image-maxi';
 
@@ -79,6 +84,15 @@ const save = props => {
 		hoverType !== 'none' &&
 			`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 	);
+
+	const hoverPreviewAttributes = {
+		...getGroupAttributes(attributes, [
+			'hover',
+			'hoverTitleTypography',
+			'hoverContentTypography',
+		]),
+		'hover-preview': hoverPreview,
+	};
 
 	return (
 		<MaxiBlock.save
@@ -99,11 +113,7 @@ const save = props => {
 					wrapperClassName={wrapperClassName}
 					hoverClassName={hoverClasses}
 					isSVG={!!SVGElement}
-					{...getGroupAttributes(attributes, [
-						'hover',
-						'hoverTitleTypography',
-						'hoverContentTypography',
-					])}
+					{...hoverPreviewAttributes}
 					isSave
 				>
 					{SVGElement &&

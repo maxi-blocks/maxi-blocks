@@ -55,6 +55,7 @@ const getLayerCardContent = props => {
 		isHover,
 		isIB,
 		layer,
+		normalLayer,
 		onChangeInline = null,
 		onChange,
 		previewRef,
@@ -76,6 +77,7 @@ const getLayerCardContent = props => {
 				<ColorLayer
 					key={`background-color-layer--${layer.order}`}
 					colorOptions={layer}
+					normalLayer={normalLayer}
 					onChangeInline={obj => {
 						previewRef.current.style.background =
 							obj['background-color'];
@@ -439,6 +441,7 @@ const BackgroundLayersControl = ({
 	onChangeInline,
 	onChange,
 	clientId,
+	blockAttributes,
 	breakpoint,
 	disableAddLayer,
 	getBounds,
@@ -449,6 +452,10 @@ const BackgroundLayersControl = ({
 	const layers = cloneDeep(layersOptions);
 	const layersHover = cloneDeep(layersHoverOptions);
 	const allLayers = [...layers, ...layersHover];
+	const normalLayersSource =
+		isIB && blockAttributes?.['background-layers']
+			? blockAttributes['background-layers']
+			: layers;
 
 	const getLayerUniqueParameter = (parameter, layers = allLayers) =>
 		layers && !isEmpty(layers)
@@ -548,6 +555,19 @@ const BackgroundLayersControl = ({
 				{!isEmpty(allLayers) && (
 					<ListControl onListItemsDrag={onLayersDrag}>
 						{[...(!isHover ? layers : allLayers)].map(layer => {
+							const normalLayer = layer.isHover
+								? normalLayersSource.find(normalLayer => {
+										if (normalLayer.isHover) return false;
+										if (normalLayer.sid && layer.sid)
+											return normalLayer.sid === layer.sid;
+										if (normalLayer.id && layer.id)
+											return normalLayer.id === layer.id;
+										return (
+											normalLayer.order === layer.order
+										);
+								  })
+								: null;
+
 							return (
 								<ListItemControl
 									key={`maxi-background-layers__${
@@ -574,6 +594,7 @@ const BackgroundLayersControl = ({
 										isHover,
 										isIB,
 										layer,
+										normalLayer,
 										onChangeInline,
 										onChange: (rawLayer, target = false) =>
 											onChangeLayer(

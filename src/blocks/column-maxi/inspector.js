@@ -68,6 +68,7 @@ const Inspector = props => {
 									},
 									...inspectorTabs.blockBackground({
 										props,
+										isIB: props.isIB,
 										disableVideo: true,
 									}),
 									...inspectorTabs.border({

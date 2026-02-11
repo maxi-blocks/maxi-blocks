@@ -37,6 +37,7 @@ const ColorLayer = props => {
 		disableClipPath,
 		isHover = false,
 		isIB = false,
+		normalLayer,
 		prefix = '',
 		clientId,
 		breakpoint,
@@ -147,6 +148,39 @@ const ColorLayer = props => {
 		};
 	};
 
+	const getNormalAttr = (attributesSource = colorOptions) => ({
+		paletteStatus: getLastBreakpointAttribute({
+			target: `${prefix}background-palette-status`,
+			breakpoint,
+			attributes: attributesSource,
+			isHover: false,
+		}),
+		paletteSCStatus: getLastBreakpointAttribute({
+			target: `${prefix}background-palette-sc-status`,
+			breakpoint,
+			attributes: attributesSource,
+			isHover: false,
+		}),
+		paletteColor: getLastBreakpointAttribute({
+			target: `${prefix}background-palette-color`,
+			breakpoint,
+			attributes: attributesSource,
+			isHover: false,
+		}),
+		paletteOpacity: getLastBreakpointAttribute({
+			target: `${prefix}background-palette-opacity`,
+			breakpoint,
+			attributes: attributesSource,
+			isHover: false,
+		}),
+		color: getLastBreakpointAttribute({
+			target: `${prefix}background-color`,
+			breakpoint,
+			attributes: attributesSource,
+			isHover: false,
+		}),
+	});
+
 	const onReset = ({
 		showPalette = false,
 		paletteStatus,
@@ -155,6 +189,33 @@ const ColorLayer = props => {
 		paletteOpacity,
 		color,
 	}) => {
+		if (isHover) {
+			const normalColorAttr = getNormalAttr(normalLayer || colorOptions);
+			let resetColor = normalColorAttr.color;
+
+			if (!resetColor && normalColorAttr.paletteColor) {
+				const paletteColorResult = getPaletteColor({
+					clientId,
+					color: normalColorAttr.paletteColor,
+					blockStyle: getBlockStyle(clientId),
+				});
+
+				resetColor = `rgba(${paletteColorResult},${
+					normalColorAttr.paletteOpacity || 1
+				})`;
+			}
+
+			onChangeColor({
+				paletteStatus: normalColorAttr.paletteStatus,
+				paletteSCStatus: normalColorAttr.paletteSCStatus,
+				paletteColor: normalColorAttr.paletteColor,
+				paletteOpacity: normalColorAttr.paletteOpacity || 1,
+				color: resetColor,
+			});
+
+			return;
+		}
+
 		const defaultColorAttr = getDefaultAttr();
 
 		if (showPalette)

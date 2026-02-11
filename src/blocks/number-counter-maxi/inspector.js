@@ -126,6 +126,7 @@ const Inspector = props => {
 								items={[
 									...inspectorTabs.blockBackground({
 										props,
+										isIB: props.isIB,
 									}),
 									...inspectorTabs.border({
 										props,

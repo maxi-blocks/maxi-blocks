@@ -11,7 +11,7 @@ import { CheckboxControl } from '@wordpress/components';
  * Internal dependencies
  */
 import { updateSCOnEditor } from '@extensions/style-cards';
-import { svgAttributesReplacer, svgCurrentColorStatus, fitSvg } from './util';
+import { svgAttributesReplacer, isSVGColorLight, fitSvg } from './util';
 import { injectImgSVG } from '@extensions/svg';
 import MasonryItem from './MasonryItem';
 import masonryGenerator from './masonryGenerator';
@@ -623,9 +623,12 @@ const LibraryContainer = props => {
 
 	/** SVG Icons Results */
 	const svgResults = hit => {
-		const newContent = svgAttributesReplacer(hit.svg_code);
 		const svgType = hit.svg_category[0];
 		const shapeType = getShapeType(type);
+		const newContent = svgAttributesReplacer(hit.svg_code, shapeType, type);
+
+		// Analyze the processed SVG code (with CSS vars) to detect if it has light colors
+		const colorStatus = isSVGColorLight(newContent);
 
 		return (
 			<MasonryItem
@@ -636,10 +639,7 @@ const LibraryContainer = props => {
 				isPro={hit.cost?.[0] === 'Pro'}
 				serial={hit.post_title}
 				onRequestInsert={() => onRequestInsertSVG(newContent, svgType)}
-				currentItemColorStatus={svgCurrentColorStatus(
-					blockStyle,
-					shapeType
-				)}
+				currentItemColorStatus={colorStatus}
 			/>
 		);
 	};
@@ -764,7 +764,17 @@ const LibraryContainer = props => {
 		const shapeType = getShapeType(type);
 		const svgType = hit.svg_category[0];
 
-		const newContent = svgAttributesReplacer(hit.svg_code, shapeType);
+		const newContent = svgAttributesReplacer(
+			hit.svg_code,
+			shapeType,
+			type,
+			layerOrder
+		);
+
+		// Analyze the processed SVG code to detect if it has light colors
+		// For image-shape, always return false (no inversion needed)
+		const colorStatus =
+			type === 'image-shape' ? false : isSVGColorLight(newContent);
 
 		return (
 			<MasonryItem
@@ -777,11 +787,7 @@ const LibraryContainer = props => {
 				onRequestInsert={() =>
 					onRequestInsertShape(newContent, svgType)
 				}
-				currentItemColorStatus={
-					type === 'image-shape' || type === 'bg-shape'
-						? false
-						: svgCurrentColorStatus(blockStyle, shapeType)
-				}
+				currentItemColorStatus={colorStatus}
 			/>
 		);
 	};

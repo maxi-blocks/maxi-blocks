@@ -1423,7 +1423,12 @@ const LibraryContainer = props => {
 								<CustomSvgMenuSelect
 									className='maxi-cloud-container__content-svg-shape__categories'
 									attribute='svg_category'
-									defaultRefinement='Line'
+									defaultRefinement={
+									type === 'navigation-icon' &&
+									prefix.includes('dot')
+										? 'Shape'
+										: 'Line'
+								}
 									translations={{
 										seeAllOption: __(
 											'All icons',

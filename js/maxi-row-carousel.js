@@ -1232,15 +1232,21 @@ class MaxiRowCarousel {
 				'.maxi-row-carousel__nav'
 			);
 
-			// Move columns back to container
+			// Move real columns (not clones) back to container
 			if (wrapper) {
-				const columns = Array.from(
-					wrapper.querySelectorAll(':scope > .maxi-column-block')
+				const realColumns = Array.from(
+					wrapper.querySelectorAll(
+						':scope > .maxi-column-block:not(.carousel-item-clone)'
+					)
 				);
-				columns.forEach(column => {
-					// Remove carousel classes
+				realColumns.forEach(column => {
+					// Remove carousel classes and attributes
 					column.classList.remove('carousel-item--active');
 					column.removeAttribute('data-carousel-active');
+					// Clear inline style properties
+					column.style.width = '';
+					column.style.minWidth = '';
+					column.style.flexBasis = '';
 					// Move back to container
 					this._container.appendChild(column);
 				});

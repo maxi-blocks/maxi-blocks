@@ -645,7 +645,7 @@ class MaxiRowCarouselEditor {
 		return offset;
 	}
 
-	columnNext() {
+	columnNext(isUserInteraction = true) {
 		const maxColumn = Math.max(
 			0,
 			this._columns.length - this.slidesPerView
@@ -656,7 +656,7 @@ class MaxiRowCarouselEditor {
 			if (this.currentColumn >= maxColumn) {
 				return; // Already at the end
 			}
-			this.currentColumn += this.slidesPerView;
+			this.currentColumn = Math.min(this.currentColumn + this.slidesPerView, maxColumn);
 		} else {
 			// Wrap around when loop is enabled
 			this.currentColumn =
@@ -666,12 +666,12 @@ class MaxiRowCarouselEditor {
 		this.columnAction();
 		this.updateArrowStates();
 
-		if (this.pauseOnInteraction && this.autoplay) {
+		if (isUserInteraction && this.pauseOnInteraction && this.autoplay) {
 			this.stopAutoplay();
 		}
 	}
 
-	columnPrev() {
+	columnPrev(isUserInteraction = true) {
 		const maxColumn = Math.max(
 			0,
 			this._columns.length - this.slidesPerView
@@ -693,7 +693,7 @@ class MaxiRowCarouselEditor {
 		this.columnAction();
 		this.updateArrowStates();
 
-		if (this.pauseOnInteraction && this.autoplay) {
+		if (isUserInteraction && this.pauseOnInteraction && this.autoplay) {
 			this.stopAutoplay();
 		}
 	}
@@ -806,7 +806,7 @@ class MaxiRowCarouselEditor {
 				!this.isInteracting &&
 				(!this.pauseOnHover || !this.isHovering)
 			) {
-				this.columnNext();
+				this.columnNext(false);
 			}
 		}, this.autoplaySpeed * 1000);
 	}

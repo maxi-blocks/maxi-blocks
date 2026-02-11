@@ -150,6 +150,7 @@ const NavigationIconControl = props => {
 		isHover = false,
 		prefix,
 		clientId,
+		normalInlineTarget = '.maxi-slider-block__arrow',
 	} = props;
 	const iconBgActiveMedia = getLastBreakpointAttribute({
 		target: `${prefix}background-active-media`,
@@ -1071,7 +1072,7 @@ const NavigationIconControl = props => {
 													{
 														background: color,
 													},
-													'.maxi-slider-block__arrow'
+													normalInlineTarget
 												)
 											}
 											onChange={({
@@ -1114,7 +1115,7 @@ const NavigationIconControl = props => {
 															breakpoint
 														)]: color,
 													},
-													'.maxi-slider-block__arrow'
+													normalInlineTarget
 												);
 											}}
 											isHover={isHover}

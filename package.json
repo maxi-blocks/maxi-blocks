@@ -46,7 +46,7 @@
 		"@wordpress/icons": "latest",
 		"@wordpress/primitives": "latest",
 		"@wordpress/rich-text": "latest",
-		"axios": "^1.12.2",
+		"axios": "^1.13.5",
 		"bezier-easing-editor": "latest",
 		"ci": "^2.3.0",
 		"classnames": "latest",

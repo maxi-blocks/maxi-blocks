@@ -769,7 +769,8 @@ const LibraryContainer = props => {
 			hit.svg_code,
 			shapeType,
 			type,
-			layerOrder
+			layerOrder,
+			prefix
 		);
 
 		// Analyze the processed SVG code to detect if it has light colors

@@ -39,7 +39,6 @@ import {
 	setSVGContentHover,
 	setSVGStrokeWidth,
 } from '@extensions/svg';
-import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
@@ -250,9 +249,14 @@ const NavigationIconControl = props => {
 	};
 	// Process icons with current colors for preview
 	const processIcon = iconContent =>
-		iconContent
-			? svgAttributesReplacer(iconContent, 'icon', 'navigation-icon')
-			: iconContent;
+		applyColorsToIcon({
+			iconContent,
+			props,
+			svgType,
+			isHover,
+			prefix,
+			blockStyle,
+		}) || iconContent;
 
 	return (
 		<div className={classes}>

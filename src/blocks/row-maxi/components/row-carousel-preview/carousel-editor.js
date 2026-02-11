@@ -922,6 +922,15 @@ class MaxiRowCarouselEditor {
 					':scope > .maxi-block__resizer.maxi-column-block'
 				)
 			).map((column, i) => new RowCarouselColumnEditor(column, i));
+			this._arrowNext = this._container.querySelector(
+				'.maxi-row-carousel__arrow--next'
+			);
+			this._arrowPrev = this._container.querySelector(
+				'.maxi-row-carousel__arrow--prev'
+			);
+			this._dotsContainer = this._container.querySelector(
+				'.maxi-row-carousel__dots'
+			);
 
 			this.init();
 			this.carouselActive = true;
@@ -936,8 +945,8 @@ class MaxiRowCarouselEditor {
 				});
 			});
 		} else if (!shouldBeActive && this.carouselActive) {
-			// Deactivate carousel
-			this.destroy();
+			// Deactivate carousel but keep resize listener for reactivation
+			this.destroy({ keepResizeListener: true });
 		}
 	}
 
@@ -1045,7 +1054,7 @@ class MaxiRowCarouselEditor {
 	/**
 	 * Destroy carousel instance and clean up
 	 */
-	destroy() {
+	destroy({ keepResizeListener = false } = {}) {
 		// Stop autoplay
 		if (this.autoplayInterval) {
 			clearInterval(this.autoplayInterval);
@@ -1085,7 +1094,7 @@ class MaxiRowCarouselEditor {
 			this._arrowPrev.removeEventListener('click', this._boundColumnPrev);
 		}
 
-		if (this.onResize) {
+		if (!keepResizeListener && this.onResize) {
 			window.removeEventListener('resize', this.onResize);
 		}
 
@@ -1148,7 +1157,9 @@ class MaxiRowCarouselEditor {
 		}
 
 		// Clear references
-		this._container = null;
+		if (!keepResizeListener) {
+			this._container = null;
+		}
 		this._wrapper = null;
 		this._tracker = null;
 		this._columns = null;

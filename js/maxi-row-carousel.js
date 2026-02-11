@@ -320,6 +320,9 @@ class MaxiRowCarousel {
 				this.onHoverEnd = this.onHover.bind(this, true);
 				this.onHover = this.onHover.bind(this, false);
 				this.exactColumn = this.exactColumn.bind(this);
+				this.onColumnNext = this.columnNext.bind(this);
+				this.onColumnPrev = this.columnPrev.bind(this);
+				this.onTransitionEnd = this.transitionEnd.bind(this);
 			}
 
 			// Set up hover event listeners
@@ -478,11 +481,11 @@ class MaxiRowCarousel {
 
 		// Check if arrows should be shown for current breakpoint
 		const arrowStatus = this.getBreakpointSetting('arrowStatus', 'true');
-		const showArrows = arrowStatus === 'true' || arrowStatus === true;
+		const showArrows = arrowStatus === 'true';
 
 		// Check if dots should be shown for current breakpoint
 		const dotStatus = this.getBreakpointSetting('dotStatus', 'true');
-		const showDots = dotStatus === 'true' || dotStatus === true;
+		const showDots = dotStatus === 'true';
 
 		// Create arrows if enabled and icon content exists
 		const arrowFirstContent = this._container.getAttribute(
@@ -855,13 +858,19 @@ class MaxiRowCarousel {
 	}
 
 	insertColumnClones(numberOfClones) {
+		if (this.numberOfColumns === 0) return;
+
 		// Get original column width BEFORE adding clones
 		const firstColumn = this._columns[0]._column;
 		const columnWidth = firstColumn.getBoundingClientRect().width;
 
 		for (let i = 0; i < numberOfClones; i += 1) {
-			const frontClone = this.getColumnClone(i);
-			const backClone = this.getColumnClone(this.numberOfColumns - 1 - i);
+			const frontIndex = i % this.numberOfColumns;
+			const backIndex =
+				(this.numberOfColumns - 1 - (i % this.numberOfColumns) + this.numberOfColumns) %
+				this.numberOfColumns;
+			const frontClone = this.getColumnClone(frontIndex);
+			const backClone = this.getColumnClone(backIndex);
 			this._wrapper.append(frontClone);
 			this._wrapper.prepend(backClone);
 			// Add the column width plus gap to offset

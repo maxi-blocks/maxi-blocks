@@ -361,11 +361,10 @@ wp.domReady(() => {
 		}
 	});
 
-	// Also cleanup on window unload/navigation just in case
-	window.addEventListener('beforeunload', () => {
-		if (typeof cleanupHighlightHiddenBlocks === 'function')
-			cleanupHighlightHiddenBlocks();
-	});
+	// Note: We intentionally don't add a beforeunload handler here.
+	// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+	// and if the user clicks Cancel, the observers would already be destroyed.
+	// For true page unloads, the browser will garbage collect everything anyway.
 
 	// authentication for maxi pro
 	const maxiCookie = getMaxiCookieKey();

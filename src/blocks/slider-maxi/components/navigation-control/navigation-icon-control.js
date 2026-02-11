@@ -39,6 +39,7 @@ import {
 	setSVGContentHover,
 	setSVGStrokeWidth,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
@@ -146,6 +147,12 @@ const NavigationIconControl = props => {
 	}${isActive ? 'Active' : ''}${isHover ? 'Hover' : ''}`;
 	const label = shortPrefix.includes('dot') ? 'dots' : 'arrows';
 
+	// Process icons with current colors for preview
+	const processIcon = iconContent =>
+		iconContent
+			? svgAttributesReplacer(iconContent, 'icon', 'navigation-icon')
+			: iconContent;
+
 	return (
 		<div className={classes}>
 			{!isHover &&
@@ -159,7 +166,9 @@ const NavigationIconControl = props => {
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}${current}-icon-content`]}
+						icon={processIcon(
+							props[`${shortPrefix}${current}-icon-content`]
+						)}
 						prefix={`${shortPrefix}${current}-`}
 					/>
 				))}
@@ -173,7 +182,7 @@ const NavigationIconControl = props => {
 						style={blockStyle}
 						onSelect={obj => onChange(obj)}
 						onRemove={obj => onChange(obj)}
-						icon={props[`${shortPrefix}icon-content`]}
+						icon={processIcon(props[`${shortPrefix}icon-content`])}
 						prefix={shortPrefix}
 					/>
 				)}

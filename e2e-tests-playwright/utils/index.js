@@ -1,2 +1,15 @@
 export { default as openSidebarTab } from './openSidebarTab';
 export { default as test } from './test';
+export { default as insertMaxiBlock } from './insertMaxiBlock';
+export { default as updateAllBlockUniqueIds } from './updateAllBlockUniqueIds';
+export { default as getEditedPostContent } from './getEditedPostContent';
+export { default as getBlockStyle } from './getBlockStyle';
+export { default as getAttributes } from './getAttributes';
+export { default as waitForAttribute } from './waitForAttribute';
+export { default as editAdvancedNumberControl } from './editAdvancedNumberControl';
+export { default as editColorControl } from './editColorControl';
+export { default as addCustomCSS } from './addCustomCSS';
+export { default as changeResponsive } from './changeResponsive';
+export { default as editAxisControl } from './editAxisControl';
+export { default as addBackgroundLayer } from './addBackgroundLayer';
+export { default as addResponsiveTest } from './addResponsiveTest';

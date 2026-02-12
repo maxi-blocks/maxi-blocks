@@ -48,56 +48,70 @@ const getCanvasSettings = ({ name }) => [
 			'borderRadius',
 		],
 		component: props => {
-			const { attributes, onChange, blockAttributes } = props;
+			const { attributes, onChange, blockAttributes, isBeforeSetting } =
+				props;
 			const { 'background-layers': currentBgLayers } = attributes;
 			const { 'background-layers': blockBgLayers } = blockAttributes;
 
-			return !isEmpty(currentBgLayers) ? (
-				<BlockBackgroundControl
-					{...props}
-					onChange={obj => {
+			// Start tab directly updates block attributes, so pass
+			// onChange through without stripping media keys or diffing.
+			const ibOnChange = isBeforeSetting
+				? onChange
+				: obj => {
 						const { 'background-layers': bgLayers, ...rest } = obj;
-						const newBgLayers = bgLayers.map((bgLayer, index) => {
-							const newBgLayer = pickBy(
-								bgLayer,
-								(_value, key) =>
-									!key.includes('mediaID') &&
-									!key.includes('mediaURL')
-							);
+						const newBgLayers = bgLayers.map(
+							(bgLayer, index) => {
+								const newBgLayer = pickBy(
+									bgLayer,
+									(_value, key) =>
+										!key.includes('mediaID') &&
+										!key.includes('mediaURL')
+								);
 
-							const IBAttributes = newBgLayer
-								? Object.fromEntries(
-										Object.entries(newBgLayer).filter(
-											([key, attr]) =>
-												!isEqual(
-													attr,
-													blockBgLayers[index][key]
-												)
-										)
-								  )
-								: {};
+								const IBAttributes = newBgLayer
+									? Object.fromEntries(
+											Object.entries(
+												newBgLayer
+											).filter(
+												([key, attr]) =>
+													!isEqual(
+														attr,
+														blockBgLayers[index][
+															key
+														]
+													)
+											)
+									  )
+									: {};
 
-							const { order, type } = blockBgLayers[index];
+								const { order, type } =
+									blockBgLayers[index];
 
-							return {
-								...getRelatedAttributes({
-									props: blockBgLayers[index],
-									IBAttributes,
-									relatedAttributes: [
-										'background-gradient-opacity',
-										'background-gradient',
-									],
-								}),
-								order,
-								type,
-							};
-						});
+								return {
+									...getRelatedAttributes({
+										props: blockBgLayers[index],
+										IBAttributes,
+										relatedAttributes: [
+											'background-gradient-opacity',
+											'background-gradient',
+										],
+									}),
+									order,
+									type,
+								};
+							}
+						);
 
 						onChange({
 							...rest,
 							'background-layers': newBgLayers,
 						});
-					}}
+				  };
+
+			return !isEmpty(currentBgLayers) ? (
+				<BlockBackgroundControl
+					{...props}
+					onChange={ibOnChange}
 					getBounds={() =>
 						getEditorWrapper()
 							.querySelector(`.${props.attributes.uniqueID}`)

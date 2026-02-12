@@ -123,12 +123,12 @@ const getLayerCardContent = props => {
 				<ImageLayer
 					key={`background-image-layer--${layer.order}`}
 					imageOptions={layer}
-					onChange={obj =>
+					onChange={obj => {
 						onChange({
 							...layer,
 							...handleOnChangeLayer(obj, layer),
-						})
-					}
+						});
+					}}
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isIB={isIB}

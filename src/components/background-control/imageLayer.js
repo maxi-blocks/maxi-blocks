@@ -529,52 +529,57 @@ const ImageLayer = props => {
 		});
 	};
 
+	// Layers track hover via layer.isHover, not via key suffixes.
+	// Only use isHover in key construction for non-layer usage.
+	const keyIsHover = isLayer ? false : isHover;
+
 	const handleFocalPointChange = focalPoint => {
-		onChange({
+		const obj = {
 			[getAttributeKey(
 				'background-image-position',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: 'custom',
 			[getAttributeKey(
 				'background-image-position-width',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: Math.round(focalPoint.x * 100),
 			[getAttributeKey(
 				'background-image-position-width-unit',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: '%',
 			[getAttributeKey(
 				'background-image-position-height',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: Math.round(focalPoint.y * 100),
 			[getAttributeKey(
 				'background-image-position-height-unit',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: '%',
-		});
+		};
+		onChange(obj);
 	};
 
 	const handleFocalPointResetLeft = () => {
 		onChange({
 			[getAttributeKey(
 				'background-image-position-width',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-width'),
 			[getAttributeKey(
 				'background-image-position-width-unit',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-width-unit'),
@@ -586,13 +591,13 @@ const ImageLayer = props => {
 		onChange({
 			[getAttributeKey(
 				'background-image-position-height',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-height'),
 			[getAttributeKey(
 				'background-image-position-height-unit',
-				isHover,
+				keyIsHover,
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-height-unit'),
@@ -640,7 +645,7 @@ const ImageLayer = props => {
 									target: `${prefix}background-image-position-width`,
 									breakpoint,
 									attributes: imageOptions,
-									isHover,
+									isHover: keyIsHover,
 								})
 							),
 							y: normalizePositionForPicker(
@@ -648,7 +653,7 @@ const ImageLayer = props => {
 									target: `${prefix}background-image-position-height`,
 									breakpoint,
 									attributes: imageOptions,
-									isHover,
+									isHover: keyIsHover,
 								})
 							),
 						}}

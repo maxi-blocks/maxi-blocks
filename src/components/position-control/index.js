@@ -104,31 +104,21 @@ const PositionControl = props => {
 		};
 	};
 
-	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates
-	// Now uses the explicit unit to prevent misinterpreting small pixel values
+	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates.
+	// Uses the explicit unit to decide whether the value can be mapped.
 	const normalizeCoordinate = (raw, unit) => {
-		if (
-			raw === null ||
-			raw === undefined ||
-			Number.isNaN(parseFloat(raw))
-		) {
-			return 0.5; // Default to center if invalid
-		}
+		if (raw === null || raw === undefined || raw === '') return 0.5;
 
-		const val =
-			typeof raw === 'string' ? parseFloat(raw.replace('%', '')) : raw;
+		const numericValue =
+			typeof raw === 'number' ? raw : parseFloat(raw);
 
-		// If a specific non-percentage unit is provided, we cannot meaningfully
-		// convert to a 0-1 coordinate, so default to center
-		if (unit && unit !== '%') {
-			return 0.5;
-		}
+		if (!Number.isFinite(numericValue)) return 0.5;
 
-		// If the unit is percentage-based or undefined, apply percentage logic
-		if (val > 1 || val < -1) {
-			return Math.max(0, Math.min(1, val / 100));
-		}
-		return Math.max(0, Math.min(1, val));
+		// Non-percentage units (px, em, vw) can't meaningfully map to 0-1
+		if (unit && unit !== '%') return 0.5;
+
+		// Values are stored as 0-100 percentages; convert to 0-1 for the picker
+		return Math.max(0, Math.min(1, numericValue / 100));
 	};
 
 	// Reusable component for the position picker and advanced settings

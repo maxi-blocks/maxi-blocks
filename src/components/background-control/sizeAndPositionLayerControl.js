@@ -23,11 +23,6 @@ import {
 /**
  * Component
  */
-import { cloneDeep } from 'lodash';
-
-/**
- * Component
- */
 const Size = ({
 	options,
 	onChange,
@@ -61,40 +56,43 @@ const Size = ({
 		);
 	};
 
-    const updateDimension = (dimension, value, unit, extras = {}) => {
-        const valKey = getAttributeKey(dimension, isHover, prefix, breakpoint);
-        const unitKey = getAttributeKey(`${dimension}-unit`, isHover, prefix, breakpoint);
-
-        const nextOptions = cloneDeep(options);
-
-        if (value !== undefined) nextOptions[valKey] = value;
-        if (unit !== undefined) nextOptions[unitKey] = unit;
-        
-        Object.assign(nextOptions, extras);
-
-        onChange(nextOptions);
-    };
+	const updateDimension = (dimension, value, unit, extras = {}) => {
+		const result = { ...extras };
+		if (value !== undefined)
+			result[getAttributeKey(dimension, isHover, prefix, breakpoint)] =
+				value;
+		if (unit !== undefined)
+			result[
+				getAttributeKey(
+					`${dimension}-unit`,
+					isHover,
+					prefix,
+					breakpoint
+				)
+			] = unit;
+		onChange(result);
+	};
 
 	const onReset = target => {
-        const defVal = isHover
-            ? getLastBreakpointAttribute({
-                    target: `${prefix}${target}`,
-                    breakpoint,
-                    attributes: options,
-                    isHover: false,
-              })
-            : getDefaultAttr(target);
+		const defVal = isHover
+			? getLastBreakpointAttribute({
+					target: `${prefix}${target}`,
+					breakpoint,
+					attributes: options,
+					isHover: false,
+			  })
+			: getDefaultAttr(target);
 
-        const defUnit = isHover
-            ? getLastBreakpointAttribute({
-                    target: `${prefix}${target}-unit`,
-                    breakpoint,
-                    attributes: options,
-                    isHover: false,
-              })
-            : getDefaultAttr(`${target}-unit`);
-        
-        updateDimension(target, defVal, defUnit, { isReset: true });
+		const defUnit = isHover
+			? getLastBreakpointAttribute({
+					target: `${prefix}${target}-unit`,
+					breakpoint,
+					attributes: options,
+					isHover: false,
+			  })
+			: getDefaultAttr(`${target}-unit`);
+
+		updateDimension(target, defVal, defUnit, { isReset: true });
 	};
 
 	return (
@@ -141,8 +139,8 @@ const Size = ({
 						attributes: options,
 						isHover,
 					})}
-				onChangeValue={val => updateDimension('height', val, undefined)}
-				onChangeUnit={val => updateDimension('height', undefined, val)}
+					onChangeValue={val => updateDimension('height', val, undefined)}
+					onChangeUnit={val => updateDimension('height', undefined, val)}
 					onReset={() => onReset('height')}
 					minMaxSettings={minMaxSettings}
 				/>

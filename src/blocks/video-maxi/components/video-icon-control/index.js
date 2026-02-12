@@ -25,6 +25,7 @@ import {
 	setSVGContent,
 	setSVGContentHover,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * External dependencies
@@ -381,6 +382,13 @@ const IconSettings = props => {
 const VideoIconControl = props => {
 	const { blockStyle, onChange, prefix, label, type, ariaLabels } = props;
 
+	const iconContent = props[`${prefix}icon-content`];
+
+	// Process icon with current colors for preview
+	const processedIcon = iconContent
+		? svgAttributesReplacer(iconContent, 'icon', type)
+		: iconContent;
+
 	return (
 		<>
 			<MaxiModal
@@ -408,7 +416,7 @@ const VideoIconControl = props => {
 					onChange(obj);
 				}}
 				onRemove={obj => onChange(obj)}
-				icon={props[`${prefix}icon-content`]}
+				icon={processedIcon}
 				label={label}
 			/>
 			{!isEmpty(props[`${prefix}icon-content`]) && (

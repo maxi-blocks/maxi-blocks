@@ -41,102 +41,108 @@ const updateRelationsRemotely = ({
 
 	for (const item of Object.values(relations)) {
 		if (isEmpty(item.attributes)) {
-			// Skip items with empty attributes
-		} else if (item.uniqueID !== uniqueID) {
+			// Preserve empty relations so in-progress IB setups aren't discarded
 			newRelations.push(item);
-		} else {
-			const selectedSettings = getSelectedIBSettings(
-				blockTargetClientId,
-				item.sid
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
+		if (item.uniqueID !== uniqueID) {
+			newRelations.push(item);
+			// eslint-disable-next-line no-continue
+			continue;
+		}
+
+		const selectedSettings = getSelectedIBSettings(
+			blockTargetClientId,
+			item.sid
+		);
+
+		// Skip if selectedSettings is undefined (no matching option found)
+		if (!selectedSettings) {
+			// eslint-disable-next-line no-console
+			console.warn(
+				`Skipping relation processing for sid: ${item.sid} - no matching settings found`
 			);
+			// eslint-disable-next-line no-continue
+			continue;
+		}
 
-			// Skip if selectedSettings is undefined (no matching option found)
-			if (!selectedSettings) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					`Skipping relation processing for sid: ${item.sid} - no matching settings found`
-				);
-				// eslint-disable-next-line no-continue
-				continue;
-			}
+		const prefix = selectedSettings?.prefix || '';
+		const relationsAttributes = item.attributes || {};
 
-			const prefix = selectedSettings?.prefix || '';
-			const relationsAttributes = item.attributes || {};
+		// Handle background layers special case
+		if (item.sid === BGL_SID) {
+			const relationBGLayers = relationsAttributes['background-layers'];
+			const blockBGLayers = blockAttributes['background-layers'];
 
-			// Handle background layers special case
-			if (item.sid === BGL_SID) {
-				const relationBGLayers =
-					relationsAttributes['background-layers'];
-				const blockBGLayers = blockAttributes['background-layers'];
-
-				if (
-					relationBGLayers &&
-					blockBGLayers &&
-					relationBGLayers.length !== blockBGLayers.length
-				) {
-					if (blockBGLayers.length === 0) {
-						relationsAttributes['background-layers'] = [];
-					} else {
-						// Use Set for O(1) lookup
-						const blockLayerIds = new Set(
-							blockBGLayers.map(layer => layer.id)
+			if (
+				relationBGLayers &&
+				blockBGLayers &&
+				relationBGLayers.length !== blockBGLayers.length
+			) {
+				if (blockBGLayers.length === 0) {
+					relationsAttributes['background-layers'] = [];
+				} else {
+					// Use Set for O(1) lookup
+					const blockLayerIds = new Set(
+						blockBGLayers.map(layer => layer.id)
+					);
+					relationsAttributes['background-layers'] =
+						relationBGLayers.filter(layer =>
+							blockLayerIds.has(layer.id)
 						);
-						relationsAttributes['background-layers'] =
-							relationBGLayers.filter(layer =>
-								blockLayerIds.has(layer.id)
-							);
-					}
 				}
 			}
+		}
 
-			const { cleanAttributesObject, tempAttributes } =
-				getCleanResponseIBAttributes(
-					item.attributes,
-					blockAttributes,
-					item.uniqueID,
-					selectedSettings,
-					breakpoint,
-					prefix,
-					item.sid,
-					blockTriggerClientId
-				);
-
-			const mergedAttributes = merge(
-				{},
-				cleanAttributesObject,
-				tempAttributes
+		const { cleanAttributesObject, tempAttributes } =
+			getCleanResponseIBAttributes(
+				item.attributes,
+				blockAttributes,
+				item.uniqueID,
+				selectedSettings,
+				breakpoint,
+				prefix,
+				item.sid,
+				blockTriggerClientId
 			);
 
-			const stylesObj = getIBStylesObj({
-				clientId: blockTargetClientId,
-				sid: item.sid,
-				attributes: mergedAttributes,
-				blockAttributes,
-				breakpoint,
-			});
+		const mergedAttributes = merge(
+			{},
+			cleanAttributesObject,
+			tempAttributes
+		);
 
-			const styles = getIBStyles({
-				stylesObj,
-				blockAttributes,
-				isFirst: true,
-			});
+		const stylesObj = getIBStylesObj({
+			clientId: blockTargetClientId,
+			sid: item.sid,
+			attributes: mergedAttributes,
+			blockAttributes,
+			breakpoint,
+		});
 
-			const newItem = {
-				...item,
-				attributes: { ...item.attributes, ...cleanAttributesObject },
-				css: styles,
+		const styles = getIBStyles({
+			stylesObj,
+			blockAttributes,
+			isFirst: true,
+		});
+
+		const newItem = {
+			...item,
+			attributes: { ...item.attributes, ...cleanAttributesObject },
+			css: styles,
+		};
+
+		// Handle transition effects
+		if (item.sid === TRANSITION_SID) {
+			newItem.effects = {
+				...item.effects,
+				transitionTarget: Object.keys(styles),
 			};
-
-			// Handle transition effects
-			if (item.sid === TRANSITION_SID) {
-				newItem.effects = {
-					...item.effects,
-					transitionTarget: Object.keys(styles),
-				};
-			}
-
-			newRelations.push(newItem);
 		}
+
+		newRelations.push(newItem);
 	}
 
 	const diffResult = diff(relations, newRelations);

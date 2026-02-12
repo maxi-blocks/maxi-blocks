@@ -23,17 +23,11 @@ const openSidebarTab = async (page, tab, item) => {
 		await sidebarButton.click();
 	}
 
-	const options = await page.$$(
+	const options = await page.locator(
 		'.maxi-tabs-control__sidebar-settings-tabs button'
 	);
 
-	if (!options || options.length === 0) {
-		throw new Error(
-			'openSidebarTab: Could not find sidebar settings tabs buttons. Make sure the sidebar is open and contains tab buttons.'
-		);
-	}
-
-	const optionsLength = options.length;
+	const optionsLength = await options.count();
 
 	const tabs =
 		optionsLength === 3
@@ -49,37 +43,19 @@ const openSidebarTab = async (page, tab, item) => {
 		);
 	}
 
-	await options[tabIndex].click();
+	await options.nth(tabIndex).click();
 
-	const wrapperElement = await page.$(
+	const wrapperElement = await page.locator(
 		`.maxi-accordion-control__item[data-name="${item}"]`
 	);
 
-	if (!wrapperElement) {
-		throw new Error(
-			`openSidebarTab: Could not find accordion item with data-name="${item}". Make sure the item exists in the current tab.`
-		);
-	}
-
-	const button = await wrapperElement.$(
+	const button = await wrapperElement.locator(
 		'.maxi-accordion-control__item__button'
 	);
 
-	if (!button) {
-		throw new Error(
-			`openSidebarTab: Could not find accordion button for item "${item}". The accordion item may be malformed.`
-		);
-	}
-
-	const content = await wrapperElement.$(
+	const content = await wrapperElement.locator(
 		'.maxi-accordion-control__item__panel'
 	);
-
-	if (!content) {
-		throw new Error(
-			`openSidebarTab: Could not find accordion content panel for item "${item}". The accordion item may be malformed.`
-		);
-	}
 
 	// Open accordion in case is closed
 	await button.evaluate(el => {

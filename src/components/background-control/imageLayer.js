@@ -483,6 +483,7 @@ const ImageLayer = props => {
 		hideSettings = false,
 		isLayer = false,
 		disableUpload = false,
+		fallbackImageUrl,
 	} = props;
 
 	// Use props.imageOptions directly as read-only (no cloning on every render)
@@ -616,52 +617,55 @@ const ImageLayer = props => {
 		[imageOptions]
 	);
 
-	// Use DC URL when DC is active, otherwise use regular image URL
-	const effectiveImageUrl = dcStatus ? dcMediaUrl : imageUrl;
+	// Use DC URL when DC is active, otherwise use regular image URL,
+	// falling back to the normal-state layer URL for hover/IB layers.
+	const effectiveImageUrl = dcStatus
+		? dcMediaUrl
+		: imageUrl || fallbackImageUrl;
 
 	return (
 		<div className='maxi-background-control__image-layer'>
+			{effectiveImageUrl && (
+				<div
+					className='maxi-focal-point-picker'
+					style={{ position: 'relative' }}
+				>
+					<FocalPointPicker
+						className='maxi-background-position-picker'
+						label={__('Image focus', 'maxi-blocks')}
+						url={effectiveImageUrl}
+						value={{
+							x: normalizePositionForPicker(
+								getLastBreakpointAttribute({
+									target: `${prefix}background-image-position-width`,
+									breakpoint,
+									attributes: imageOptions,
+									isHover,
+								})
+							),
+							y: normalizePositionForPicker(
+								getLastBreakpointAttribute({
+									target: `${prefix}background-image-position-height`,
+									breakpoint,
+									attributes: imageOptions,
+									isHover,
+								})
+							),
+						}}
+						onChange={handleFocalPointChange}
+					/>
+					<div className='maxi-focal-point-picker__resets'>
+						<ResetButton
+							onReset={handleFocalPointResetLeft}
+						/>
+						<ResetButton
+							onReset={handleFocalPointResetTop}
+						/>
+					</div>
+				</div>
+			)}
 			{!disableUpload && (
 				<>
-					{effectiveImageUrl && (
-						<div
-							className='maxi-focal-point-picker'
-							style={{ position: 'relative' }}
-						>
-							<FocalPointPicker
-								className='maxi-background-position-picker'
-								label={__('Image focus', 'maxi-blocks')}
-								url={effectiveImageUrl}
-								value={{
-									x: normalizePositionForPicker(
-										getLastBreakpointAttribute({
-											target: `${prefix}background-image-position-width`,
-											breakpoint,
-											attributes: imageOptions,
-											isHover,
-										})
-									),
-									y: normalizePositionForPicker(
-										getLastBreakpointAttribute({
-											target: `${prefix}background-image-position-height`,
-											breakpoint,
-											attributes: imageOptions,
-											isHover,
-										})
-									),
-								}}
-								onChange={handleFocalPointChange}
-							/>
-							<div className='maxi-focal-point-picker__resets'>
-								<ResetButton
-									onReset={handleFocalPointResetLeft}
-								/>
-								<ResetButton
-									onReset={handleFocalPointResetTop}
-								/>
-							</div>
-						</div>
-					)}
 					{!imageOptions['dc-status'] && (
 						<>
 							<MediaUploaderControl

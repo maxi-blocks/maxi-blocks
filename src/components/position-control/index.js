@@ -168,15 +168,18 @@ const PositionControl = props => {
 					}}
 					onChange={focalPoint => {
 						onChange({
-							[`${prefix}position-top-${breakpoint}`]: Math.round(
-								focalPoint.y * 100
-							),
-							[`${prefix}position-top-unit-${breakpoint}`]: '%',
-							[`${prefix}position-left-${breakpoint}`]:
+							[getAttributeKey('position-top', isHover, prefix, breakpoint)]:
+								Math.round(focalPoint.y * 100),
+							[getAttributeKey('position-top-unit', isHover, prefix, breakpoint)]:
+								'%',
+							[getAttributeKey('position-left', isHover, prefix, breakpoint)]:
 								Math.round(focalPoint.x * 100),
-							[`${prefix}position-left-unit-${breakpoint}`]: '%',
-							[`${prefix}position-right-${breakpoint}`]: '',
-							[`${prefix}position-bottom-${breakpoint}`]: '',
+							[getAttributeKey('position-left-unit', isHover, prefix, breakpoint)]:
+								'%',
+							[getAttributeKey('position-right', isHover, prefix, breakpoint)]:
+								'',
+							[getAttributeKey('position-bottom', isHover, prefix, breakpoint)]:
+								'',
 						});
 					}}
 				/>

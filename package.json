@@ -46,7 +46,7 @@
 		"@wordpress/icons": "latest",
 		"@wordpress/primitives": "latest",
 		"@wordpress/rich-text": "latest",
-		"axios": "^1.12.2",
+		"axios": "^1.13.5",
 		"bezier-easing-editor": "latest",
 		"ci": "^2.3.0",
 		"classnames": "latest",
@@ -153,6 +153,9 @@
 		"lodash": "4.17.23",
 		"lodash-es": "4.17.23",
 		"eslint": "^9.26.0",
-		"minimatch": "^10.1.2"
+		"minimatch": "^10.1.2",
+		"axios": "^1.13.5",
+		"langsmith": "^0.5.3",
+		"webpack": "^5.105.1"
 	}
 }

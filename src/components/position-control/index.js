@@ -9,6 +9,7 @@ import { FocalPointPicker } from '@wordpress/components';
  * Internal dependencies
  */
 import Button from '@components/button';
+import ResetButton from '@components/reset-control';
 import SelectControl from '@components/select-control';
 import AxisControl from '@components/axis-control';
 import withRTC from '@extensions/maxi-block/withRTC';
@@ -173,6 +174,38 @@ const PositionControl = props => {
 						});
 					}}
 				/>
+				<div className='maxi-focal-point-picker__resets'>
+					<ResetButton
+						onReset={() =>
+							onChange({
+								[getAttributeKey('position-left', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-left', isHover, prefix, breakpoint)
+									),
+								[getAttributeKey('position-left-unit', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-left-unit', isHover, prefix, breakpoint)
+									),
+								isReset: true,
+							})
+						}
+					/>
+					<ResetButton
+						onReset={() =>
+							onChange({
+								[getAttributeKey('position-top', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-top', isHover, prefix, breakpoint)
+									),
+								[getAttributeKey('position-top-unit', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-top-unit', isHover, prefix, breakpoint)
+									),
+								isReset: true,
+							})
+						}
+					/>
+				</div>
 			</div>
 			<div className='maxi-position-control__advanced-toggle'>
 				<Button onClick={() => setShowAdvanced(!showAdvanced)}>

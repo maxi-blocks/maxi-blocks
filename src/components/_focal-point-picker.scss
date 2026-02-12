@@ -29,6 +29,39 @@
 		}
 	}
 
+	// Per-input reset buttons — absolutely positioned over the Left/Top
+	// labels so they don't affect flow of siblings (Replace/Remove buttons).
+	.maxi-focal-point-picker__resets {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		width: 100%;
+		position: absolute;
+		bottom: 43px;
+		left: -20px;
+		z-index: 2;
+		pointer-events: none;
+
+		.maxi-reset-button {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			padding: 0 !important;
+			margin: 0;
+			border: none;
+			border-radius: 0;
+			background: transparent;
+			height: 20px;
+			pointer-events: auto;
+
+			svg {
+				width: 11px;
+				height: 11px;
+			}
+		}
+	}
+
 	// Value fields container (LEFT/TOP inputs)
 	.focal-point-picker__controls {
 		display: flex;
@@ -37,9 +70,12 @@
 		width: 100%;
 		margin-top: 0px;
 		margin-bottom: -30px;
+		position: relative;
 
 		// Each input control (Left and Top)
 		.focal-point-picker__controls-position-unit-control {
+			position: relative;
+
 			// The input base container - make it column layout
 			.components-input-base {
 				flex-direction: column !important;
@@ -48,10 +84,11 @@
 				width: 100%;
 				border-radius: 5px !important;
 
-				// Label container
+				// Label container — needs room for reset button
 				.components-flex-item {
 					width: 100%;
 					margin-bottom: 2px;
+					position: relative;
 				}
 
 				// Style the LEFT/TOP labels

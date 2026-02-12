@@ -19,6 +19,7 @@ import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
+import ResetButton from '@components/reset-control';
 import ToggleSwitch from '@components/toggle-switch';
 import {
 	getAttributeKey,
@@ -562,6 +563,42 @@ const ImageLayer = props => {
 		});
 	};
 
+	const handleFocalPointResetLeft = () => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position-width',
+				isHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-width'),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-width-unit'),
+			isReset: true,
+		});
+	};
+
+	const handleFocalPointResetTop = () => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position-height',
+				isHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-height'),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				isHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-height-unit'),
+			isReset: true,
+		});
+	};
+
 	// Compute URL once for validation and prop usage
 	const imageUrl = useMemo(
 		() =>
@@ -615,6 +652,14 @@ const ImageLayer = props => {
 								}}
 								onChange={handleFocalPointChange}
 							/>
+							<div className='maxi-focal-point-picker__resets'>
+								<ResetButton
+									onReset={handleFocalPointResetLeft}
+								/>
+								<ResetButton
+									onReset={handleFocalPointResetTop}
+								/>
+							</div>
 						</div>
 					)}
 					{!imageOptions['dc-status'] && (

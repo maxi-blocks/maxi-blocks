@@ -5,6 +5,7 @@ const map = {
 	},
 	'map-type': {
 		type: 'string',
+		default: 'standard',
 	},
 	'map-latitude': {
 		type: 'number',

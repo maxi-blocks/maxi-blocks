@@ -49,9 +49,13 @@ const MapPopupTextControl = ({
 								)}
 								value={attributes['map-marker-heading-level']}
 								onChange={obj => {
+									const { textLevel, ...rest } = obj;
 									onChange({
-										'map-marker-heading-level':
-											obj.textLevel,
+										...(textLevel !== undefined && {
+											'map-marker-heading-level':
+												textLevel,
+										}),
+										...rest,
 									});
 								}}
 							/>

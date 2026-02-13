@@ -35,7 +35,10 @@ const loadGoogleMapsApi = apiKey => {
 			script.async = true;
 			script.defer = true;
 			script.onload = resolve;
-			script.onerror = reject;
+			script.onerror = () => {
+				googleMapsPromise = null;
+				reject(new Error('Failed to load Google Maps API script'));
+			};
 			document.head.appendChild(script);
 		});
 	}
@@ -45,10 +48,13 @@ const loadGoogleMapsApi = apiKey => {
 
 const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 	const map = useMap();
+	const [loadError, setLoadError] = useState(null);
 
 	useEffect(() => {
 		let googleLayer;
 		let cancelled = false;
+
+		setLoadError(null);
 
 		// Clear existing layers
 		map.eachLayer(layer => {
@@ -68,7 +74,16 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 				.addTo(map);
 		};
 
-		loadGoogleMapsApi(apiKey).then(addLayer);
+		loadGoogleMapsApi(apiKey)
+			.then(addLayer)
+			.catch(error => {
+				console.error(
+					`Google Maps API failed to load: ${JSON.stringify(error?.message)}`
+				);
+				if (!cancelled) {
+					setLoadError(error?.message || 'Unknown error');
+				}
+			});
 
 		return () => {
 			cancelled = true;
@@ -77,6 +92,17 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 			}
 		};
 	}, [map, apiKey, mapType]);
+
+	if (loadError) {
+		return (
+			<div className='maxi-map-block__error'>
+				{__(
+					'Google Maps failed to load. Please check your API key and try again.',
+					'maxi-blocks'
+				)}
+			</div>
+		);
+	}
 
 	return null;
 };

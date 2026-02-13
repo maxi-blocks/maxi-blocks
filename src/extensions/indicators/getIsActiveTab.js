@@ -77,6 +77,14 @@ const getIsActiveTab = (
 		if (currentAttributes[attribute] === undefined) return true;
 		if (currentAttributes[attribute] === false)
 			return !defaultAttributes[attribute];
+		// Treat CSS reset values as cleared when default is undefined
+		if (
+			defaultAttributes[attribute] === undefined &&
+			(currentAttributes[attribute] === 'normal' ||
+				currentAttributes[attribute] === 'none' ||
+				currentAttributes[attribute] === 'unset')
+		)
+			return true;
 		// Treat opacity value of 1 as cleared when default is undefined
 		// (1 = 100% opacity is the logical default)
 		if (

@@ -75,7 +75,8 @@ const getIsActiveTab = (
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
-		if (currentAttributes[attribute] === false) return true;
+		if (currentAttributes[attribute] === false)
+			return !defaultAttributes[attribute];
 		// Treat opacity value of 1 as cleared when default is undefined
 		// (1 = 100% opacity is the logical default)
 		if (

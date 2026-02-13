@@ -34,7 +34,7 @@ import { isEmpty, isNumber, isPlainObject, isEqual } from 'lodash';
  */
 const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value == null) return true; // null or undefined
-	if (value === false) return true;
+	if (value === false) return !defaultValue;
 	if (value === '') return true;
 	if (value === 'none' || value === 'unset') return true;
 	if (Array.isArray(value) && value.length === 0) return true;

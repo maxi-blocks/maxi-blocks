@@ -133,7 +133,7 @@ const CssCodeEditor = ({
 					);
 				}}
 				onBlur={textarea => {
-					validateCss(textarea?.target?.value);
+					onChange(textarea?.target?.value);
 				}}
 				disabled={disabled}
 			/>

@@ -8,11 +8,12 @@ const checkCSS = async ({ page, cssInstances }) => {
 			`.maxi-css-code-editor--${i + 1} textarea`
 		);
 		await textarea.fill('background: red');
-
-		const validate = page.locator(
-			`.maxi-css-code-editor__validate-button--${i + 1}`
-		);
-		await validate.click();
+		await textarea.blur();
+		// Wait for debounced onChange and React state update to propagate
+		// before filling next textarea, to avoid race conditions where
+		// the next update overwrites this one due to stale value prop.
+		// eslint-disable-next-line no-await-in-loop, playwright/no-wait-for-timeout
+		await page.waitForTimeout(300);
 	}
 };
 

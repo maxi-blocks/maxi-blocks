@@ -64,7 +64,8 @@ export const svgAttributesReplacer = (
 	svgCode,
 	target = 'svg',
 	iconType = null,
-	layerOrder = null
+	layerOrder = null,
+	iconPrefix = null
 ) => {
 	const { getSelectedBlockClientId, getBlock } = select('core/block-editor');
 	const clientId = getSelectedBlockClientId();
@@ -128,6 +129,22 @@ export const svgAttributesReplacer = (
 					fillPrefix = 'close-icon-fill-';
 					strokePrefix = 'close-icon-stroke-';
 					break;
+				case 'navigation-icon': {
+					// Derive color prefix from the icon prefix
+					// arrow prefixes (navigation-arrow-first-, navigation-arrow-second-) → navigation-arrow-both-icon-
+					// dot prefix (navigation-dot-) → navigation-dot-icon-
+					let colorPrefix;
+					if (iconPrefix && iconPrefix.includes('arrow')) {
+						colorPrefix = 'navigation-arrow-both-icon-';
+					} else if (iconPrefix && iconPrefix.includes('dot')) {
+						colorPrefix = 'navigation-dot-icon-';
+					} else {
+						colorPrefix = 'icon-';
+					}
+					fillPrefix = `${colorPrefix}fill-`;
+					strokePrefix = `${colorPrefix}stroke-`;
+					break;
+				}
 				default:
 					// Fallback for other iconType cases
 					fillPrefix = 'icon-fill-';

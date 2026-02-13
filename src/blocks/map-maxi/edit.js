@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { renderToString } from '@wordpress/element';
+import { lazy, renderToString, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -9,7 +9,6 @@ import { renderToString } from '@wordpress/element';
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { Toolbar } from '@components';
-import { MapContent } from './components';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { getGroupAttributes } from '@extensions/styles';
 import { getBreakpoints } from '@extensions/styles/helpers';
@@ -17,6 +16,8 @@ import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '@maxi-icons/map-icons/markers';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+
+const MapContent = lazy(() => import('./components/map-content'));
 
 /**
  * Edit
@@ -103,13 +104,15 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<MapContent
-					{...this.props}
-					apiKey={googleApiKey}
-					isFirstClick={this.state.isFirstClick}
-					isGoogleMaps={mapProvider === 'googlemaps'}
-					isSelected={isSelected}
-				/>
+				<Suspense fallback={null}>
+					<MapContent
+						{...this.props}
+						apiKey={googleApiKey}
+						isFirstClick={this.state.isFirstClick}
+						isGoogleMaps={mapProvider === 'googlemaps'}
+						isSelected={isSelected}
+					/>
+				</Suspense>
 			</MaxiBlock>,
 		];
 	}

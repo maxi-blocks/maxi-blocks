@@ -58,9 +58,14 @@ function ColumnPicker(props) {
  * Inspector
  */
 const Inspector = props => {
-	const { deviceType, isRepeaterInherited, updateInnerBlocksPositions } =
-		props;
+	const {
+		attributes,
+		deviceType,
+		isRepeaterInherited,
+		updateInnerBlocksPositions,
+	} = props;
 	const { selectors, categories } = customCss;
+	const hasColumnPattern = !!attributes['row-pattern-general'];
 
 	return (
 		<InspectorControls>
@@ -89,17 +94,27 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												{...(!hasColumnPattern && {
+													getIndicatorProps:
+														() => [],
+												})}
 											>
 												<ColumnPicker {...props} />
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											`row-pattern-${deviceType}`,
-										],
-										extraIndicators: [
-											'verticalAlign',
-											'horizontalAlign',
-										],
+										...(hasColumnPattern
+											? {
+													ignoreIndicator: [
+														`row-pattern-${deviceType}`,
+													],
+													extraIndicators: [
+														'verticalAlign',
+														'horizontalAlign',
+													],
+												}
+											: {
+													indicatorProps: [],
+												}),
 									},
 									...inspectorTabs.blockBackground({
 										props,

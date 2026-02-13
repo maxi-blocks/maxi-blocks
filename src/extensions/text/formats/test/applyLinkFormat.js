@@ -6,9 +6,9 @@ import { applyFormat } from '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import applyLinkFormat from '../applyLinkFormat';
-import getFormattedString from '../getFormattedString';
-import setFormat from '../setFormat';
+import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
+import getFormattedString from '@extensions/text/formats/getFormattedString';
+import setFormat from '@extensions/text/formats/setFormat';
 
 jest.mock('@wordpress/rich-text', () => ({
 	applyFormat: jest.fn(value => ({
@@ -17,9 +17,11 @@ jest.mock('@wordpress/rich-text', () => ({
 	})),
 }));
 
-jest.mock('../getFormattedString', () => jest.fn(() => 'formatted content'));
+jest.mock('@extensions/text/formats/getFormattedString', () =>
+	jest.fn(() => 'formatted content')
+);
 
-jest.mock('../setFormat', () =>
+jest.mock('@extensions/text/formats/setFormat', () =>
 	jest.fn(({ formatValue, typography, value }) => ({
 		formatValue,
 		typography,

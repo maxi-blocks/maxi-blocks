@@ -3,7 +3,7 @@
  */
 import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
-import { isArray } from 'lodash';
+import { isArray, isPlainObject, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 
 const getIsActiveTab = (
@@ -15,8 +15,8 @@ const getIsActiveTab = (
 	ignoreIndicatorGroups = [],
 	indicatorContext = null
 ) => {
-	const { show_indicators: showIndicators } =
-		(typeof window !== 'undefined' && window.maxiSettings) || {};
+	const maxiSettings = select('maxiBlocks').receiveMaxiSettings() || {};
+	const { show_indicators: showIndicators } = maxiSettings;
 
 	if (!showIndicators) return false;
 
@@ -75,7 +75,24 @@ const getIsActiveTab = (
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] === undefined) return true;
-		if (currentAttributes[attribute] === false) return true;
+		if (currentAttributes[attribute] === false)
+			return !defaultAttributes[attribute];
+		// Treat CSS reset values as cleared when default is undefined
+		if (
+			defaultAttributes[attribute] === undefined &&
+			(currentAttributes[attribute] === 'normal' ||
+				currentAttributes[attribute] === 'none' ||
+				currentAttributes[attribute] === 'unset')
+		)
+			return true;
+		// Treat opacity value of 1 as cleared when default is undefined
+		// (1 = 100% opacity is the logical default)
+		if (
+			attribute.includes('opacity') &&
+			currentAttributes[attribute] === 1 &&
+			defaultAttributes[attribute] === undefined
+		)
+			return true;
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
@@ -123,16 +140,13 @@ const getIsActiveTab = (
 				currentAttributes[attribute] !== defaultAttributes[attribute]
 			);
 		}
-
-		// Check if background layers have any non-color layer
-		if (attribute === 'background-layers') {
-			const hasNonColorLayer = currentAttributes[attribute].some(
-				layer => layer.type !== 'color'
-			);
-			if (!hasNonColorLayer) return true;
-		}
-
 		if (currentAttributes[attribute] === '') return true;
+		// Treat empty objects as cleared (e.g., ariaLabels: {})
+		if (
+			isPlainObject(currentAttributes[attribute]) &&
+			isEmpty(currentAttributes[attribute])
+		)
+			return true;
 
 		return currentAttributes[attribute] === defaultAttributes[attribute];
 	});

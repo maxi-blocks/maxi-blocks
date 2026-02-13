@@ -105,6 +105,7 @@ class MaxiRowCarousel {
 
 		// States
 		this.currentColumn = 0;
+		this.isAnimating = false;
 		this.initPosition = 0;
 		this.dragPosition = 0;
 		this.endPosition = 0;
@@ -305,6 +306,7 @@ class MaxiRowCarousel {
 
 			// Initialize states
 			this.currentColumn = 0;
+			this.isAnimating = false;
 			this.initPosition = 0;
 			this.dragPosition = 0;
 			this.endPosition = 0;
@@ -893,6 +895,10 @@ class MaxiRowCarousel {
 			? `all ${this.transitionSpeed}ms ease`
 			: 'none';
 
+		if (withAnimation) {
+			this.isAnimating = true;
+		}
+
 		const translateValue = this.activeColumnPosition;
 
 		this.wrapperTranslate = translateValue;
@@ -966,6 +972,8 @@ class MaxiRowCarousel {
 	}
 
 	columnNext() {
+		if (this.isAnimating) return;
+
 		// Calculate last valid start position to prevent overshoot
 		const lastStart = Math.max(
 			0,
@@ -986,11 +994,14 @@ class MaxiRowCarousel {
 			// When looping, allow going beyond to trigger loop()
 			this.currentColumn += this.slidesPerView;
 		}
+
 		this.columnAction();
 		this.updateArrowStates();
 	}
 
 	columnPrev() {
+		if (this.isAnimating) return;
+
 		// If loop is disabled, prevent going before first slide
 		if (!this.isLoop) {
 			if (this.currentColumn <= 0) {
@@ -1005,11 +1016,14 @@ class MaxiRowCarousel {
 			// When looping, allow going negative to trigger loop()
 			this.currentColumn -= this.slidesPerView;
 		}
+
 		this.columnAction();
 		this.updateArrowStates();
 	}
 
 	exactColumn(column) {
+		if (this.isAnimating) return;
+
 		// Calculate last valid start position to prevent overshoot
 		const lastStart = Math.max(
 			0,
@@ -1050,6 +1064,7 @@ class MaxiRowCarousel {
 			// we want to end up at column 0 (start of first slide), not column 1
 			const slideOffset =
 				Math.floor(overshoot / this.slidesPerView) * this.slidesPerView;
+
 			this.currentColumn = slideOffset;
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump back to the real first column without animation
@@ -1069,10 +1084,12 @@ class MaxiRowCarousel {
 				Math.floor((this.numberOfColumns - 1) / this.slidesPerView) *
 				this.slidesPerView;
 			// Go back that many slides from the last slide
-			this.currentColumn = Math.max(
+			const newColumn = Math.max(
 				0,
 				lastSlideStart - (slidesBack - 1) * this.slidesPerView
 			);
+
+			this.currentColumn = newColumn;
 			this.setActiveDot(this.currentColumn);
 			// Instantly jump to the real last column(s) without animation
 			this.columnAction(false);
@@ -1084,6 +1101,9 @@ class MaxiRowCarousel {
 	transitionEnd(e) {
 		// Only handle transitions on the wrapper itself, ignore bubbled child events
 		if (e.target !== this._wrapper) return;
+
+		this.isAnimating = false;
+
 		if (this.isLoop) this.loop();
 	}
 

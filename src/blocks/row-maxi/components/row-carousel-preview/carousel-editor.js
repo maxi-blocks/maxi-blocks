@@ -615,12 +615,22 @@ class MaxiRowCarouselEditor {
 		this.slideTo(this.currentColumn);
 	}
 
-	slideTo(index) {
+	slideTo(index, skipTransition = false) {
 		const column = this._columns[index];
 		if (!column) return;
 
+		if (skipTransition) {
+			this._wrapper.style.transition = 'none';
+		}
+
 		const offset = this.calculateOffset(index);
 		this._wrapper.style.transform = `translateX(-${offset}px)`;
+
+		if (skipTransition) {
+			// Force reflow so browser commits the no-transition state
+			void this._wrapper.offsetHeight;
+			this._wrapper.style.transition = `transform ${this.transitionSpeed}s ease`;
+		}
 
 		// Get the active column's id and pass it to each column's isActive setter
 		const activeColumnId = column._id;
@@ -651,6 +661,8 @@ class MaxiRowCarouselEditor {
 			this._columns.length - this.slidesPerView
 		);
 
+		let didWrap = false;
+
 		// If loop is disabled, prevent going beyond last valid position
 		if (!this.loop) {
 			if (this.currentColumn >= maxColumn) {
@@ -658,12 +670,21 @@ class MaxiRowCarouselEditor {
 			}
 			this.currentColumn = Math.min(this.currentColumn + this.slidesPerView, maxColumn);
 		} else {
-			// Wrap around when loop is enabled
-			this.currentColumn =
-				(this.currentColumn + this.slidesPerView) % (maxColumn + 1);
+			const nextColumn = this.currentColumn + this.slidesPerView;
+			if (nextColumn > maxColumn) {
+				// Wrap around - skip transition to avoid backward scroll
+				didWrap = true;
+				this.currentColumn = 0;
+			} else {
+				this.currentColumn = nextColumn;
+			}
 		}
 
-		this.columnAction();
+		if (didWrap) {
+			this.slideTo(this.currentColumn, true);
+		} else {
+			this.columnAction();
+		}
 		this.updateArrowStates();
 
 		if (isUserInteraction && this.pauseOnInteraction && this.autoplay) {
@@ -677,6 +698,8 @@ class MaxiRowCarouselEditor {
 			this._columns.length - this.slidesPerView
 		);
 
+		let didWrap = false;
+
 		// If loop is disabled, prevent going before first slide
 		if (!this.loop) {
 			if (this.currentColumn <= 0) {
@@ -684,13 +707,21 @@ class MaxiRowCarouselEditor {
 			}
 			this.currentColumn -= this.slidesPerView;
 		} else {
-			// Wrap around when loop is enabled
-			this.currentColumn =
-				(this.currentColumn - this.slidesPerView + (maxColumn + 1)) %
-				(maxColumn + 1);
+			const prevColumn = this.currentColumn - this.slidesPerView;
+			if (prevColumn < 0) {
+				// Wrap around
+				didWrap = true;
+				this.currentColumn = maxColumn;
+			} else {
+				this.currentColumn = prevColumn;
+			}
 		}
 
-		this.columnAction();
+		if (didWrap) {
+			this.slideTo(this.currentColumn, true);
+		} else {
+			this.columnAction();
+		}
 		this.updateArrowStates();
 
 		if (isUserInteraction && this.pauseOnInteraction && this.autoplay) {

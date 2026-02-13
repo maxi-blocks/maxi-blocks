@@ -295,6 +295,7 @@ const RelationControl = props => {
 						),
 						attributes: attributesWithId,
 					blockAttributes: currentActualAttributes,
+					isBeforeSetting: true,
 					onChange: async newValues => {
 						if (isUpdating.current) {
 							return;

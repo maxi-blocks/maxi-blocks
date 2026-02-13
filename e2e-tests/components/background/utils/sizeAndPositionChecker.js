@@ -77,8 +77,24 @@ const sizeAndPositionChecker = async ({
 
 	await page.waitForTimeout(350);
 
-	// position
+	// position - need to expand advanced options first
 	const position = await page.$(positionClass);
+
+	// Check if AxisControl is already visible (advanced options expanded)
+	const axisControlVisible = await position.$(
+		'.maxi-position-control__advanced-options .maxi-axis-control'
+	);
+
+	// Only click toggle if AxisControl is not visible
+	if (!axisControlVisible) {
+		const advancedToggle = await position.$(
+			'.maxi-position-control__advanced-toggle button'
+		);
+		if (advancedToggle) {
+			await advancedToggle.click();
+			await page.waitForTimeout(200);
+		}
+	}
 
 	await editAxisControl({
 		page,

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -327,6 +327,37 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 5 Feb 2026_
+MaxiBlocks v2.1.8
+* Update: Introduced support for Custom fonts from WordPress Site Editor options.
+* Update: Enhanced relation control, hidden blocks, and background interactions with improved highlighting in List View and Editor Experience.
+* Update: Enabled loading patterns and layouts from Cloud modal with Style Cards styles exclusively.
+* Update: Refreshed wordpress.org readme.txt to better reflect MaxiBlocks branding and feature set.
+* Update: Delivered comprehensive UI/UX enhancements for the Style Cards editor, providing a more intuitive interface.
+* Update: Upgraded npm packages and dependencies to latest versions for strengthened security and improved stability across all plugin functionality.
+* Update: Built translation toolkit to generate mo translation files from po files, including German translation.
+* Update: Optimized backend processing speed with comprehensive performance improvements.
+* Update: Accelerated editing speed for settings within Advanced Number Control.
+* Update: Redesigned toolbar and sidebar architecture for enhanced editor compatibility and streamlined editing workflow.
+* Update: Integrated Settings link into plugin action links on the Plugins page.
+* Update: Configured master toolbar to open by default on first launch and memorize state per site user.
+* Update: Eliminated cache notice from admin pages.
+* Update: Aligned start and end time validation for Video block controls.
+* Update: Introduced customizable popup animation duration for Video block.
+* Update: Expanded Dynamic Content options for Button block with tags and categories support.
+* Update: Integrated Text Wrap control in Typography settings with options: Wrap, No Wrap, Balance, Pretty, and Stable.
+* Fix: Background Shape scale 0 values now function correctly.
+* Fix: Video block transition behaviour on hover.
+* Fix: Overflow handling for Image block.
+* Fix: Column exclusion when pasting into column blocks.
+* Fix: Move actions now properly prevented when mover buttons are disabled, with corrected block animation behaviour.
+* Fix: Transition properties for buttons and SVG icons in Editor Experience.
+* Fix: Flex wrapping behaviour in colour control within Editor Experience.
+* Fix: Column Picker tone now adapts based on parent block tone.
+* Fix: Hover border palette toggle and axis unit switching for image hover controls.
+* Fix: Responsive styles with vh/vw units in Editor.
+* Fix: SVG element processing with enhanced error recovery and fallback mechanisms for consistent behaviour across different environments and edge cases.
+
 _Updates 26 Nov 2025_
 MaxiBlocks v2.1.7
 * Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.
@@ -348,24 +379,6 @@ MaxiBlocks v2.1.6
 * Fix: Enhanced template parts rendering and editing experience in the Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
 * Fix: Addressed taxonomy styling issues on the frontend when using the All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
 * Fix: Resolved custom colours in Style Cards breaking frontend styles in specific scenarios, maintaining consistent visual presentation across all pages.
-
-_Updates 13 Oct 2025_
-MaxiBlocks v2.1.5
-* Update: Implemented comprehensive speed optimizations across both backend and frontend operations, resulting in faster load times and improved overall plugin performance.
-* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
-* Update: Reorganized Link settings into a dedicated tab within the Editor Sidebar for improved user experience and better settings organization.
-* Update: Enhanced Block Toolbar layout by re-arranging and optimizing setting controls for more intuitive access and streamlined editing workflow.
-* Fix: Resolved Dynamic Content rendering issues when displaying Advanced Custom Fields data, ensuring proper field values are shown on both backend and frontend.
-* Fix: Corrected border line properties resetting to default values when specific styling configurations were applied, maintaining consistent border appearance.
-* Fix: Addressed compatibility issues with certain clip-path CSS options that were causing block rendering failures.
-
-_Updates 15 Sep 2025_
-MaxiBlocks v2.1.4
-* Update: Enhanced Cloud authentication system by implementing new server middleware for improved security and reliability.
-* Update: Expanded AI model support with full GPT-5 integration, providing access to the latest OpenAI capabilities for enhanced content generation and editing assistance.
-* Fix: Restored MaxiBlocks toolbar functionality in synced blocks editor, ensuring consistent editing experience across all block types and maintaining proper toolbar accessibility.
-* Fix: Resolved toolbar conflicts by returning native Gutenberg toolbar for standard WordPress blocks nested inside Maxi blocks, preventing interface inconsistencies and ensuring proper block functionality.
-* Security: Fixed Broken Access Control vulnerability in MaxiBlocks plugin settings affecting Contributor-level users and above. Thanks to Abu Hurayra for the responsible disclosure.
 
 == Upgrade Notice ==
 

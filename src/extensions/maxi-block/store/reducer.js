@@ -1,6 +1,12 @@
+const isSafeMapKey = key =>
+	key !== '__proto__' && key !== 'prototype' && key !== 'constructor';
+
 const reducer = (
 	state = {
 		blocks: {},
+		blockClientIdsByUniqueID: {},
+		blocksByClientId: {},
+		customLabelClientIds: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
@@ -13,7 +19,35 @@ const reducer = (
 ) => {
 	switch (action.type) {
 		case 'ADD_BLOCK': {
-			const { uniqueID, clientId, blockRoot } = action;
+			const { uniqueID, clientId, blockRoot, customLabel } = action;
+			const existingClientIds =
+				state.blockClientIdsByUniqueID[uniqueID] ?? [];
+			const nextClientIds = existingClientIds.includes(clientId)
+				? existingClientIds
+				: [...existingClientIds, clientId];
+			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
+			const nextBlocksByClientId = {
+				...state.blocksByClientId,
+				[clientId]: {
+					clientId,
+					uniqueID,
+					blockRoot,
+					customLabel,
+				},
+			};
+
+			if (customLabel != null) {
+				const labelKey = String(customLabel);
+				const existingLabelClientIds =
+					state.customLabelClientIds[labelKey] ?? [];
+
+				if (isSafeMapKey(labelKey)) {
+					nextCustomLabelClientIds[labelKey] =
+					existingLabelClientIds.includes(clientId)
+						? existingLabelClientIds
+						: [...existingLabelClientIds, clientId];
+				}
+			}
 
 			return {
 				...state,
@@ -22,8 +56,15 @@ const reducer = (
 					[uniqueID]: {
 						clientId,
 						blockRoot,
+						customLabel,
 					},
 				},
+				blockClientIdsByUniqueID: {
+					...state.blockClientIdsByUniqueID,
+					[uniqueID]: nextClientIds,
+				},
+				blocksByClientId: nextBlocksByClientId,
+				customLabelClientIds: nextCustomLabelClientIds,
 				// Also add to uniqueID cache for O(1) lookup
 				uniqueIDCache: {
 					...state.uniqueIDCache,
@@ -32,12 +73,71 @@ const reducer = (
 			};
 		}
 		case 'REMOVE_BLOCK': {
-			const { uniqueID, clientId } = action;
+			const { uniqueID, clientId, customLabel } = action;
+			const blockData = state.blocks[uniqueID];
+			const blockDataByClientId = state.blocksByClientId[clientId];
+			const resolvedCustomLabel =
+				customLabel ??
+				blockDataByClientId?.customLabel ??
+				blockData?.customLabel;
+			const existingClientIds =
+				state.blockClientIdsByUniqueID[uniqueID] ?? [];
+			const nextClientIds = existingClientIds.filter(
+				existingClientId => existingClientId !== clientId
+			);
+			const nextBlockClientIdsByUniqueID = {
+				...state.blockClientIdsByUniqueID,
+			};
+			const nextCustomLabelClientIds = { ...state.customLabelClientIds };
+			const nextBlocksByClientId = { ...state.blocksByClientId };
 
-			delete state.blocks[uniqueID];
+			delete nextBlocksByClientId[clientId];
+
+			if (nextClientIds.length) {
+				nextBlockClientIdsByUniqueID[uniqueID] = nextClientIds;
+			} else {
+				delete nextBlockClientIdsByUniqueID[uniqueID];
+			}
+
+			if (resolvedCustomLabel != null) {
+				const labelKey = String(resolvedCustomLabel);
+
+				if (isSafeMapKey(labelKey)) {
+					const existingLabelClientIds =
+						state.customLabelClientIds[labelKey] ?? [];
+					const nextLabelClientIds = existingLabelClientIds.filter(
+						existingClientId => existingClientId !== clientId
+					);
+					if (nextLabelClientIds.length) {
+						nextCustomLabelClientIds[labelKey] = nextLabelClientIds;
+					} else {
+						delete nextCustomLabelClientIds[labelKey];
+					}
+				}
+			}
+
+			const remainingClientId = nextClientIds[0];
+			const nextBlocks = { ...state.blocks };
+
+			if (remainingClientId) {
+				const remainingBlockData =
+					nextBlocksByClientId[remainingClientId];
+				nextBlocks[uniqueID] = {
+					...nextBlocks[uniqueID],
+					clientId: remainingClientId,
+					blockRoot: remainingBlockData?.blockRoot,
+					customLabel: remainingBlockData?.customLabel,
+				};
+			} else {
+				delete nextBlocks[uniqueID];
+			}
 
 			return {
 				...state,
+				blocks: nextBlocks,
+				blockClientIdsByUniqueID: nextBlockClientIdsByUniqueID,
+				blocksByClientId: nextBlocksByClientId,
+				customLabelClientIds: nextCustomLabelClientIds,
 				lastInsertedBlocks: state.lastInsertedBlocks.filter(
 					item => item !== clientId
 				),
@@ -165,19 +265,64 @@ const reducer = (
 
 			// Batch add multiple blocks in a single state update (performance optimization)
 			const newBlocks = { ...state.blocks };
+			const newBlockClientIdsByUniqueID = {
+				...state.blockClientIdsByUniqueID,
+			};
+			const newBlocksByClientId = {
+				...state.blocksByClientId,
+			};
+			const newCustomLabelClientIds = {
+				...state.customLabelClientIds,
+			};
 			const newUniqueIDCache = { ...state.uniqueIDCache };
 
-			blocks.forEach(({ uniqueID, clientId, blockRoot }) => {
-				newBlocks[uniqueID] = {
-					clientId,
-					blockRoot,
-				};
-				newUniqueIDCache[uniqueID] = true;
-			});
+			blocks.forEach(
+				({ uniqueID, clientId, blockRoot, customLabel }) => {
+					newBlocks[uniqueID] = {
+						clientId,
+						blockRoot,
+						customLabel,
+					};
+					newBlocksByClientId[clientId] = {
+						clientId,
+						uniqueID,
+						blockRoot,
+						customLabel,
+					};
+
+					const existingClientIds =
+						newBlockClientIdsByUniqueID[uniqueID] ?? [];
+					if (!existingClientIds.includes(clientId)) {
+						newBlockClientIdsByUniqueID[uniqueID] = [
+							...existingClientIds,
+							clientId,
+						];
+					}
+
+					if (customLabel != null) {
+						const labelKey = String(customLabel);
+
+						if (isSafeMapKey(labelKey)) {
+							const existingLabelClientIds =
+								newCustomLabelClientIds[labelKey] ?? [];
+							if (!existingLabelClientIds.includes(clientId)) {
+								newCustomLabelClientIds[labelKey] = [
+									...existingLabelClientIds,
+									clientId,
+								];
+							}
+						}
+					}
+					newUniqueIDCache[uniqueID] = true;
+				}
+			);
 
 			return {
 				...state,
 				blocks: newBlocks,
+				blockClientIdsByUniqueID: newBlockClientIdsByUniqueID,
+				blocksByClientId: newBlocksByClientId,
+				customLabelClientIds: newCustomLabelClientIds,
 				uniqueIDCache: newUniqueIDCache,
 			};
 		}

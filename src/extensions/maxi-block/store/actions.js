@@ -1,19 +1,21 @@
 import { select } from '@wordpress/data';
 
 const actions = {
-	addBlock(uniqueID, clientId, blockRoot) {
+	addBlock(uniqueID, clientId, blockRoot, customLabel = null) {
 		return {
 			type: 'ADD_BLOCK',
 			uniqueID,
 			clientId,
 			blockRoot,
+			customLabel,
 		};
 	},
-	removeBlock(uniqueID, clientId) {
+	removeBlock(uniqueID, clientId, customLabel = null) {
 		return {
 			type: 'REMOVE_BLOCK',
 			uniqueID,
 			clientId,
+			customLabel,
 		};
 	},
 	updateBlockStylesRoot(uniqueID, blockRoot) {
@@ -90,7 +92,7 @@ const actions = {
 	addMultipleBlocks(blocks) {
 		return {
 			type: 'ADD_MULTIPLE_BLOCKS',
-			blocks, // Array of { uniqueID, clientId, blockRoot }
+			blocks, // Array of { uniqueID, clientId, blockRoot, customLabel }
 		};
 	},
 };

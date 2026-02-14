@@ -249,7 +249,12 @@ class MaxiBlockComponent extends Component {
 		this.setRelations();
 
 		// Add block to store (batched for performance)
-		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
+		batchBlockDispatcher.addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot,
+			this.props.attributes.customLabel
+		);
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -873,7 +878,8 @@ class MaxiBlockComponent extends Component {
 					const batchedDispatch = () => {
 						dispatch('maxiBlocks/blocks').removeBlock(
 							uniqueID,
-							clientId
+							clientId,
+							this.props.attributes.customLabel
 						);
 						dispatch('maxiBlocks/customData').removeCustomData(
 							uniqueID

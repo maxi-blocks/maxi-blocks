@@ -22,12 +22,18 @@ class BatchBlockDispatcher {
 
 	/**
 	 * Add a block to the batch queue
-	 * @param {string} uniqueID  - Block's unique ID
-	 * @param {string} clientId  - Block's client ID
-	 * @param {*}      blockRoot - Block's root element
+	 * @param {string} uniqueID     - Block's unique ID
+	 * @param {string} clientId     - Block's client ID
+	 * @param {*}      blockRoot    - Block's root element
+	 * @param {string} [customLabel]  - Block's custom label
 	 */
-	addBlock(uniqueID, clientId, blockRoot) {
-		this.pendingBlocks.push({ uniqueID, clientId, blockRoot });
+	addBlock(uniqueID, clientId, blockRoot, customLabel = null) {
+		this.pendingBlocks.push({
+			uniqueID,
+			clientId,
+			blockRoot,
+			customLabel,
+		});
 
 		// Schedule flush if not already scheduled
 		if (!this.flushTimeout) {
@@ -59,11 +65,13 @@ class BatchBlockDispatcher {
 		// Dispatch batched action
 		if (blocksToAdd.length === 1) {
 			// Single block - use regular action (no overhead)
-			const { uniqueID, clientId, blockRoot } = blocksToAdd[0];
+			const { uniqueID, clientId, blockRoot, customLabel } =
+				blocksToAdd[0];
 			dispatch('maxiBlocks/blocks').addBlock(
 				uniqueID,
 				clientId,
-				blockRoot
+				blockRoot,
+				customLabel
 			);
 		} else {
 			// Multiple blocks - use batch action

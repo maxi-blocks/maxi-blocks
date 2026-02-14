@@ -1350,6 +1350,32 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_gutenberg_responsive_preview');
 
+            $description =
+                '<h4>' . __('Global header scripts', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add scripts that should load on all front-end pages in the <head> tag. Useful for analytics and tracking codes.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_header_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Global footer scripts', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add scripts that should load on all front-end pages before the closing </body> tag.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_footer_option',
+                '',
+                'textarea',
+            );
+
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
 
@@ -2381,6 +2407,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ];
+            $args_custom_js = [
+                'type' => 'string',
+                'sanitize_callback' => [
+                    'MaxiBlocks_Custom_Scripts',
+                    'sanitize_scripts_code',
+                ],
+            ];
 
             // List of settings and corresponding arguments
             $settings = [
@@ -2393,6 +2426,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_tooltips' => $args,
                 'hide_fse_resizable_handles' => $args_true,
                 'hide_gutenberg_responsive_preview' => $args_true,
+                'maxi_custom_js_header_option' => $args_custom_js,
+                'maxi_custom_js_footer_option' => $args_custom_js,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,

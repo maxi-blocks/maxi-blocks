@@ -450,6 +450,18 @@ describe('getOrganizedAttributes', () => {
 						'Image size': 'imageSize',
 						'Use original size': 'useInitSize',
 						'Fit on wrapper': 'fitParentSize',
+						'Adjust size': {
+							props: 'object-size',
+							hasBreakpoints: true,
+						},
+						'Image horizontal position': {
+							props: 'object-position-horizontal',
+							hasBreakpoints: true,
+						},
+						'Image vertical position': {
+							props: 'object-position-vertical',
+							hasBreakpoints: true,
+						},
 						'Image width': 'img-width-general',
 						'Image ratio': 'imageRatio',
 					},
@@ -578,6 +590,9 @@ describe('getOrganizedAttributes', () => {
 			isImageUrl: false,
 			altSelector: 'title',
 			fitParentSize: true,
+			'object-size-general': 2.1,
+			'object-position-horizontal-general': 23,
+			'object-position-vertical-general': 67,
 			'img-width-general': 82,
 			'clip-path-status-general': false,
 			'link-palette-status-general': true,

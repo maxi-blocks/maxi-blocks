@@ -95,7 +95,7 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
 
         private static function can_edit_custom_scripts()
         {
-            return current_user_can('unfiltered_html');
+            return current_user_can('unfiltered_html') || current_user_can('manage_options');
         }
 
         public function register_post_meta_fields()
@@ -189,6 +189,12 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+
+    setTimeout(function() {
+        if (observer && !listenersBound) {
+            observer.disconnect();
+        }
+    }, 30000);
 })();
 JS;
 

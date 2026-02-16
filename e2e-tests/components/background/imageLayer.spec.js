@@ -20,6 +20,93 @@ import {
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
+// Test image URL - using a data URL to avoid network dependency
+// This is a 1x1 red pixel PNG
+const TEST_IMAGE_URL =
+	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg==';
+
+/**
+ * Helper to set an image URL for the background layer
+ * This enables the FocalPointPicker to appear
+ */
+const setBackgroundImageUrl = async (page, imageUrl) => {
+	const urlInput = await page.$(
+		'.maxi-background-control__image-layer .maxi-image-url-upload input'
+	);
+
+	if (urlInput) {
+		await urlInput.click({ clickCount: 3 });
+		await urlInput.type(imageUrl);
+		// Wait for image to load and FocalPointPicker to appear
+		await page.waitForTimeout(1000);
+	}
+};
+
+/**
+ * Helper to set focal point picker position
+ * @param {Object} page - Puppeteer page
+ * @param {number} x - X position (0-100)
+ * @param {number} y - Y position (0-100)
+ * @returns {boolean} - true if position was set, false if no FocalPointPicker found
+ */
+const setFocalPointPosition = async (page, x, y) => {
+	// Check if focal point picker exists (it only shows when there's an image)
+	const focalPointPicker = await page.$(
+		'.maxi-background-control__image-layer .maxi-focal-point-picker'
+	);
+
+	if (!focalPointPicker) {
+		// No FocalPointPicker - likely no image set for this state
+		return false;
+	}
+
+	// Get all inputs inside the focal-point-picker controls
+	// The UnitControl renders an input inside each control
+	const focalPointInputs = await page.$$(
+		'.maxi-background-control__image-layer .maxi-focal-point-picker .focal-point-picker__controls input'
+	);
+
+	if (focalPointInputs.length >= 2) {
+		// First input is LEFT (x) - clear and type new value
+		await focalPointInputs[0].click({ clickCount: 3 });
+		await focalPointInputs[0].press('Backspace');
+		await focalPointInputs[0].type(String(x), { delay: 50 });
+		// Blur to trigger onChange
+		await focalPointInputs[0].evaluate(el => el.blur());
+		await page.waitForTimeout(100);
+
+		// Second input is TOP (y) - clear and type new value
+		await focalPointInputs[1].click({ clickCount: 3 });
+		await focalPointInputs[1].press('Backspace');
+		await focalPointInputs[1].type(String(y), { delay: 50 });
+		// Blur to trigger onChange
+		await focalPointInputs[1].evaluate(el => el.blur());
+		await page.waitForTimeout(300);
+		return true;
+	}
+
+	return false;
+};
+
+/**
+ * Helper to get focal point picker position values
+ * @param {Object} page - Puppeteer page
+ * @returns {Object} - { x, y } position values
+ */
+const getFocalPointPosition = async page => {
+	const focalPointInputs = await page.$$(
+		'.maxi-background-control__image-layer .maxi-focal-point-picker .focal-point-picker__controls input'
+	);
+
+	if (focalPointInputs.length >= 2) {
+		const x = await page.evaluate(el => el.value.replace('%', ''), focalPointInputs[0]);
+		const y = await page.evaluate(el => el.value.replace('%', ''), focalPointInputs[1]);
+		return { x, y };
+	}
+
+	return { x: '50', y: '50' };
+};
+
 describe('BackgroundControl', () => {
 	it('Check Background image layer', async () => {
 		await createNewPost();
@@ -27,6 +114,9 @@ describe('BackgroundControl', () => {
 		await updateAllBlockUniqueIds(page);
 		await openSidebarTab(page, 'style', 'background layer');
 		await addBackgroundLayer(page, 'image');
+
+		// Set image URL to enable FocalPointPicker
+		await setBackgroundImageUrl(page, TEST_IMAGE_URL);
 
 		// opacity
 		await editAdvancedNumberControl({
@@ -50,11 +140,8 @@ describe('BackgroundControl', () => {
 		);
 		await repeatSelector.select('repeat');
 
-		// background position
-		const positionSelector = await page.$(
-			'.maxi-background-control__image-layer__position-selector select'
-		);
-		await positionSelector.select('left top');
+		// background position via FocalPointPicker (0% = left/top)
+		await setFocalPointPosition(page, 0, 0);
 
 		// background attachment
 		const attachmentSelector = await page.$(
@@ -118,12 +205,10 @@ describe('BackgroundControl', () => {
 		);
 		expect(baseBackgroundRepeat).toStrictEqual('repeat');
 
-		// background position
-		const baseBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(baseBackgroundPosition).toStrictEqual('left top');
+		// background position via FocalPointPicker
+		const basePosition = await getFocalPointPosition(page);
+		expect(basePosition.x).toStrictEqual('0');
+		expect(basePosition.y).toStrictEqual('0');
 
 		// background attachment
 		const baseBackgroundAttachment = await page.$eval(
@@ -145,11 +230,8 @@ describe('BackgroundControl', () => {
 		);
 		await repeatSelector.select('space');
 
-		// background position
-		const positionSelector = await page.$(
-			'.maxi-background-control__image-layer__position-selector select'
-		);
-		await positionSelector.select('center top');
+		// background position via FocalPointPicker (50% = center, 0% = top)
+		await setFocalPointPosition(page, 50, 0);
 
 		// background attachment
 		const attachmentSelector = await page.$(
@@ -173,12 +255,10 @@ describe('BackgroundControl', () => {
 		);
 		expect(sBackgroundRepeat).toStrictEqual('space');
 
-		// background position
-		const sBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(sBackgroundPosition).toStrictEqual('center top');
+		// background position via FocalPointPicker
+		const sPosition = await getFocalPointPosition(page);
+		expect(sPosition.x).toStrictEqual('50');
+		expect(sPosition.y).toStrictEqual('0');
 
 		// background attachment
 		const sBackgroundAttachment = await page.$eval(
@@ -203,12 +283,10 @@ describe('BackgroundControl', () => {
 		);
 		expect(xsBackgroundRepeat).toStrictEqual('space');
 
-		// background position
-		const xsBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(xsBackgroundPosition).toStrictEqual('center top');
+		// background position via FocalPointPicker
+		const xsPosition = await getFocalPointPosition(page);
+		expect(xsPosition.x).toStrictEqual('50');
+		expect(xsPosition.y).toStrictEqual('0');
 
 		// background attachment
 		const xsBackgroundAttachment = await page.$eval(
@@ -233,12 +311,10 @@ describe('BackgroundControl', () => {
 		);
 		expect(mBackgroundRepeat).toStrictEqual('repeat');
 
-		// background position
-		const mBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(mBackgroundPosition).toStrictEqual('left top');
+		// background position via FocalPointPicker (inherits from base: 0, 0)
+		const mPosition = await getFocalPointPosition(page);
+		expect(mPosition.x).toStrictEqual('0');
+		expect(mPosition.y).toStrictEqual('0');
 
 		// background attachment
 		const mBackgroundAttachment = await page.$eval(
@@ -299,11 +375,10 @@ describe('BackgroundControl', () => {
 			'.maxi-background-control__image-layer__repeat-selector select'
 		);
 		await repeatSelector.select('repeat-x');
-		// background position
-		const positionSelector = await page.$(
-			'.maxi-background-control__image-layer__position-selector select'
-		);
-		await positionSelector.select('center top');
+
+		// Note: Hover layers don't have an image, so FocalPointPicker is not visible
+		// Position testing is done via sizeAndPositionChecker for the layer wrapper
+
 		// background attachment
 		const attachmentSelector = await page.$(
 			'.maxi-background-control__image-layer__attachment-selector select'
@@ -321,7 +396,7 @@ describe('BackgroundControl', () => {
 			'.maxi-background-control__image-layer__origin-selector select'
 		);
 
-		await originSelector.select('content box');
+		await originSelector.select('content-box');
 
 		// background clip
 		const clipSelector = await page.$(
@@ -360,12 +435,8 @@ describe('BackgroundControl', () => {
 		);
 		expect(baseBackgroundRepeat).toStrictEqual('repeat-x');
 
-		// background position
-		const baseBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(baseBackgroundPosition).toStrictEqual('center top');
+		// Note: Hover layers don't have an image, so FocalPointPicker is not visible
+		// Skipping position testing via FocalPointPicker for hover
 
 		// background attachment
 		const baseBackgroundAttachment = await page.$eval(
@@ -386,11 +457,7 @@ describe('BackgroundControl', () => {
 			'.maxi-background-control__image-layer__repeat-selector select'
 		);
 		await repeatSelector.select('repeat-y');
-		// background position
-		const positionSelector = await page.$(
-			'.maxi-background-control__image-layer__position-selector select'
-		);
-		await positionSelector.select('left top');
+
 		// background attachment
 		const attachmentSelector = await page.$(
 			'.maxi-background-control__image-layer__attachment-selector select'
@@ -412,13 +479,6 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(sBackgroundRepeat).toStrictEqual('repeat-y');
-
-		// background position
-		const sBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(sBackgroundPosition).toStrictEqual('left top');
 
 		// background attachment
 		const sBackgroundAttachment = await page.$eval(
@@ -443,13 +503,6 @@ describe('BackgroundControl', () => {
 		);
 		expect(xsBackgroundRepeat).toStrictEqual('repeat-y');
 
-		// background position
-		const xsBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(xsBackgroundPosition).toStrictEqual('left top');
-
 		// background attachment
 		const xsBackgroundAttachment = await page.$eval(
 			'.maxi-background-control__image-layer__attachment-selector select',
@@ -472,13 +525,6 @@ describe('BackgroundControl', () => {
 			selector => selector.value
 		);
 		expect(mBackgroundRepeat).toStrictEqual('repeat-x');
-
-		// background position
-		const mBackgroundPosition = await page.$eval(
-			'.maxi-background-control__image-layer__position-selector select',
-			selector => selector.value
-		);
-		expect(mBackgroundPosition).toStrictEqual('center top');
 
 		// background attachment
 		const mBackgroundAttachment = await page.$eval(

@@ -55,6 +55,7 @@ const getLayerCardContent = props => {
 		isHover,
 		isIB,
 		layer,
+		normalLayers,
 		onChangeInline = null,
 		onChange,
 		previewRef,
@@ -103,17 +104,31 @@ const getLayerCardContent = props => {
 					getBlockClipPath={handleGetBlockClipPath}
 				/>
 			);
-		case 'image':
+		case 'image': {
+			// For hover/IB layers, find the image URL from the
+			// corresponding normal-state layer so FocalPointPicker
+			// can show the image preview.
+			let fallbackImageUrl;
+			if ((isHover || isIB) && normalLayers) {
+				const normalImageLayer = normalLayers.find(
+					l => l.type === 'image'
+				);
+				if (normalImageLayer) {
+					fallbackImageUrl =
+						normalImageLayer['background-image-mediaURL'];
+				}
+			}
+
 			return (
 				<ImageLayer
 					key={`background-image-layer--${layer.order}`}
 					imageOptions={layer}
-					onChange={obj =>
+					onChange={obj => {
 						onChange({
 							...layer,
 							...handleOnChangeLayer(obj, layer),
-						})
-					}
+						});
+					}}
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isIB={isIB}
@@ -121,8 +136,10 @@ const getLayerCardContent = props => {
 					isLayer
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					fallbackImageUrl={fallbackImageUrl}
 				/>
 			);
+		}
 		case 'video':
 			return (
 				<VideoLayer
@@ -574,6 +591,7 @@ const BackgroundLayersControl = ({
 										isHover,
 										isIB,
 										layer,
+										normalLayers: layers,
 										onChangeInline,
 										onChange: (rawLayer, target = false) =>
 											onChangeLayer(

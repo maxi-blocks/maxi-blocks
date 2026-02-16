@@ -1,0 +1,152 @@
+// ============================================
+// Shared FocalPointPicker styles
+// Used by background-control and position-control
+// ============================================
+
+@mixin focal-point-picker-layout {
+	// The label/title should be on top
+	.components-base-control__field {
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: stretch !important;
+		width: 100%;
+
+		// Label styling - order -1 ensures it's always first
+		.components-base-control__label {
+			margin-bottom: 8px !important;
+			order: -1;
+			font-size: 13px;
+			text-transform: none !important;
+		}
+
+		// Image picker container - stack in middle
+		.components-focal-point-picker {
+			order: 1;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	// Per-input reset buttons — absolutely positioned over the Left/Top
+	// labels so they don't affect flow of siblings (Replace/Remove buttons).
+	.maxi-focal-point-picker__resets {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		width: 100%;
+		position: absolute;
+		bottom: 43px;
+		left: -20px;
+		z-index: 2;
+		pointer-events: none;
+
+		.maxi-reset-button {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			padding: 0 !important;
+			margin: 0;
+			border: none;
+			border-radius: 0;
+			background: transparent;
+			height: 20px;
+			pointer-events: auto;
+
+			svg {
+				width: 11px;
+				height: 11px;
+			}
+		}
+	}
+
+	// Value fields container (LEFT/TOP inputs)
+	.focal-point-picker__controls {
+		display: flex;
+		flex-direction: row;
+		gap: 8px;
+		width: 100%;
+		margin-top: 0px;
+		margin-bottom: -30px;
+		position: relative;
+
+		// Each input control (Left and Top)
+		.focal-point-picker__controls-position-unit-control {
+			position: relative;
+
+			// The input base container - make it column layout
+			.components-input-base {
+				flex-direction: column !important;
+				align-items: flex-start !important;
+				gap: 0px;
+				width: 100%;
+				border-radius: 5px !important;
+
+				// Label container — needs room for reset button
+				.components-flex-item {
+					width: 100%;
+					margin-bottom: 2px;
+					position: relative;
+				}
+
+				// Style the LEFT/TOP labels
+				.components-input-control__label {
+					font-size: 13px !important;
+					text-transform: none !important;
+					line-height: 15px !important;
+					min-height: 20px;
+				}
+
+				// Input container should be full width
+				.components-input-control__container {
+					width: 100%;
+				}
+			}
+		}
+	}
+
+	// Fallback targeting for different WordPress versions
+	.components-focal-point-picker__media {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	// Create isolated positioning context for focal point
+	.components-focal-point-picker-wrapper {
+		position: relative !important;
+		isolation: isolate;
+		width: 95%;
+		margin: 10px auto;
+	}
+
+	.components-focal-point-picker {
+		position: relative !important;
+		overflow: visible !important;
+		isolation: isolate;
+	}
+
+	// Fix the focal point circle indicator
+	.components-focal-point-picker__icon_container {
+		position: absolute !important;
+		width: 24px !important;
+		height: 24px !important;
+		margin: 0 !important; // Reset WordPress negative margins
+		transform: translate(-50%, -50%) !important;
+		border-radius: 50% !important;
+		border: 2px solid var(--maxi-primary-color) !important;
+		box-shadow: 0 0 4px rgba(0, 0, 0, 0.5) !important;
+		background: transparent !important;
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+	}
+}

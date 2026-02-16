@@ -476,6 +476,8 @@ export const getImageBackgroundObject = ({
 			response[breakpoint][
 				'background-position'
 			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+			response[breakpoint]['transition-property'] = 'background-position';
+			response[breakpoint]['transition-duration'] = '0s';
 		}
 
 		// Origin
@@ -519,6 +521,8 @@ export const getImageBackgroundObject = ({
 			response[breakpoint][
 				'object-position'
 			] = `${bgImagePositionWidth}${bgImagePositionWidthUnit} ${bgImagePositionHeight}${bgImagePositionHeightUnit}`;
+			response[breakpoint]['transition-property'] = 'object-position';
+			response[breakpoint]['transition-duration'] = '0s';
 		}
 	}
 

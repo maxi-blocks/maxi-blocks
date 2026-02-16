@@ -15,6 +15,40 @@ import {
 	updateAllBlockUniqueIds,
 } from '../../utils';
 
+/**
+ * Helper to expand advanced position options if not already visible
+ */
+const expandAdvancedOptions = async page => {
+	const positionControl = await page.$('.maxi-position-control');
+	if (!positionControl) return;
+
+	// Check if AxisControl is already visible
+	const axisControlVisible = await positionControl.$(
+		'.maxi-position-control__advanced-options .maxi-axis-control'
+	);
+
+	// Only click toggle if AxisControl is not visible
+	if (!axisControlVisible) {
+		const advancedToggle = await positionControl.$(
+			'.maxi-position-control__advanced-toggle button'
+		);
+		if (advancedToggle) {
+			await advancedToggle.click();
+			await page.waitForTimeout(200);
+		}
+	}
+};
+
+/**
+ * Helper to get AxisControl instance after expanding advanced options
+ */
+const getAxisControl = async page => {
+	await expandAdvancedOptions(page);
+	return page.$(
+		'.maxi-position-control .maxi-position-control__advanced-options .maxi-axis-control'
+	);
+};
+
 describe('PositionControl', () => {
 	it('Checking position control', async () => {
 		await createNewPost();
@@ -31,9 +65,15 @@ describe('PositionControl', () => {
 		);
 		await selectPosition.select('relative');
 
+		// Wait for UI to update after position change
+		await page.waitForTimeout(300);
+
+		// Expand advanced options and get AxisControl
+		const axisControl = await getAxisControl(page);
+
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: axisControl,
 			syncOption: 'all',
 			values: '56',
 			unit: '%',
@@ -65,10 +105,14 @@ describe('PositionControl', () => {
 
 		// check static
 		await selectPosition.select('static');
+		await page.waitForTimeout(300);
+
+		// For static position, AxisControl might still be visible
+		const axisControlStatic = await getAxisControl(page);
 
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: axisControlStatic,
 			syncOption: 'all',
 			values: '56',
 		});
@@ -77,10 +121,12 @@ describe('PositionControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('relative');
+		await page.waitForTimeout(300);
 	});
 
 	it('Check Responsive position control', async () => {
 		await changeResponsive(page, 's');
+
 		const positionSelector = await page.$eval(
 			'.maxi-position-control .maxi-base-control__field .maxi-select-control__input',
 			input => input.value
@@ -88,15 +134,18 @@ describe('PositionControl', () => {
 
 		expect(positionSelector).toStrictEqual('relative');
 
+		// Expand advanced options to see AxisControl values
+		await expandAdvancedOptions(page);
+
 		const positionGeneralValue = await page.$$eval(
-			'.maxi-axis-control .maxi-advanced-number-control input',
+			'.maxi-position-control__advanced-options .maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionGeneralValue).toStrictEqual('56');
 
 		const positionGeneralUnit = await page.$eval(
-			'.maxi-dimensions-control__units select',
+			'.maxi-position-control__advanced-options .maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionGeneralUnit).toStrictEqual('%');
@@ -106,10 +155,13 @@ describe('PositionControl', () => {
 			'.maxi-position-control .maxi-base-control__field select'
 		);
 		await selectSPosition.select('fixed');
+		await page.waitForTimeout(300);
+
+		const axisControlS = await getAxisControl(page);
 
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: axisControlS,
 			syncOption: 'all',
 			values: '87',
 			unit: 'px',
@@ -123,14 +175,14 @@ describe('PositionControl', () => {
 		expect(positionSSelector).toStrictEqual('fixed');
 
 		const positionSGeneralValue = await page.$$eval(
-			'.maxi-axis-control .maxi-advanced-number-control input',
+			'.maxi-position-control__advanced-options .maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionSGeneralValue).toStrictEqual('87');
 
 		const positionSGeneralUnit = await page.$eval(
-			'.maxi-dimensions-control__units select',
+			'.maxi-position-control__advanced-options .maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionSGeneralUnit).toStrictEqual('px');
@@ -145,15 +197,18 @@ describe('PositionControl', () => {
 
 		expect(positionXsSelector).toStrictEqual('fixed');
 
+		// Expand advanced options for XS
+		await expandAdvancedOptions(page);
+
 		const positionXsGeneralValue = await page.$$eval(
-			'.maxi-axis-control .maxi-advanced-number-control input',
+			'.maxi-position-control__advanced-options .maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionXsGeneralValue).toStrictEqual('87');
 
 		const positionXsGeneralUnit = await page.$eval(
-			'.maxi-dimensions-control__units select',
+			'.maxi-position-control__advanced-options .maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionXsGeneralUnit).toStrictEqual('px');
@@ -168,21 +223,25 @@ describe('PositionControl', () => {
 
 		expect(positionMSelector).toStrictEqual('relative');
 
+		// Expand advanced options for M
+		await expandAdvancedOptions(page);
+
 		const positionMGeneralValue = await page.$$eval(
-			'.maxi-axis-control .maxi-advanced-number-control input',
+			'.maxi-position-control__advanced-options .maxi-axis-control .maxi-advanced-number-control input',
 			input => input[0].placeholder
 		);
 
 		expect(positionMGeneralValue).toStrictEqual('56');
 
 		const positionMGeneralUnit = await page.$eval(
-			'.maxi-dimensions-control__units select',
+			'.maxi-position-control__advanced-options .maxi-dimensions-control__units select',
 			input => input.value
 		);
 		expect(positionMGeneralUnit).toStrictEqual('%');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 	});
+
 	it('Check position static and sticky', async () => {
 		await changeResponsive(page, 'base');
 
@@ -198,10 +257,13 @@ describe('PositionControl', () => {
 
 		// check static
 		await selectPosition.select('static');
+		await page.waitForTimeout(300);
+
+		const axisControlStatic = await getAxisControl(page);
 
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: axisControlStatic,
 			syncOption: 'all',
 			values: '44',
 		});
@@ -210,10 +272,13 @@ describe('PositionControl', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		await selectPosition.select('sticky');
+		await page.waitForTimeout(300);
+
+		const axisControlSticky = await getAxisControl(page);
 
 		await editAxisControl({
 			page,
-			instance: await page.$('.maxi-position-control .maxi-axis-control'),
+			instance: axisControlSticky,
 			syncOption: 'all',
 			values: '12',
 		});

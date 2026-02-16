@@ -2,10 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
+import Button from '@components/button';
+import ResetButton from '@components/reset-control';
 import SelectControl from '@components/select-control';
 import AxisControl from '@components/axis-control';
 import withRTC from '@extensions/maxi-block/withRTC';
@@ -22,6 +26,16 @@ import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
 /**
+ * Icons
+ */
+import { arrowIcon } from '@maxi-icons';
+
+/**
+ * Styles
+ */
+import './editor.scss';
+
+/**
  * Component
  */
 const PositionControl = props => {
@@ -34,6 +48,8 @@ const PositionControl = props => {
 		isHover = false,
 		defaultAttributes,
 	} = props;
+
+	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	const classes = classnames('maxi-position-control', className);
 
@@ -89,20 +105,138 @@ const PositionControl = props => {
 		};
 	};
 
-	const PositionAxisControl = (
-		<AxisControl
-			{...props}
-			target='position'
-			prefix={prefix}
-			onChange={obj => onChange(obj)}
-			breakpoint={breakpoint}
-			minMaxSettings={minMaxSettings}
-			optionType='string'
-			enableAxisUnits
-			allowedUnits={['px', 'em', 'vw', '%', '-']}
-			isHover={isHover}
-			defaultAttributes={defaultAttributes}
-		/>
+	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates.
+	// Uses the explicit unit to decide whether the value can be mapped.
+	const normalizeCoordinate = (raw, unit) => {
+		if (raw === null || raw === undefined || raw === '') return 0.5;
+
+		const numericValue =
+			typeof raw === 'number' ? raw : parseFloat(raw);
+
+		if (!Number.isFinite(numericValue)) return 0.5;
+
+		// Non-percentage units (px, em, vw) can't meaningfully map to 0-1
+		if (unit && unit !== '%') return 0.5;
+
+		// Values are stored as 0-100 percentages; convert to 0-1 for the picker
+		return Math.max(0, Math.min(1, numericValue / 100));
+	};
+
+	// Reusable component for the position picker and advanced settings
+	const PositionPickerSection = (
+		<>
+			<div
+				className='maxi-position-control__focal-picker'
+				style={{ position: 'relative' }}
+			>
+				<FocalPointPicker
+					label={__('Layer placement', 'maxi-blocks')}
+					value={{
+						x: normalizeCoordinate(
+							getLastBreakpointAttribute({
+								target: `${prefix}position-left`,
+								breakpoint,
+								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-left-unit`,
+								breakpoint,
+								attributes: props,
+							})
+						),
+						y: normalizeCoordinate(
+							getLastBreakpointAttribute({
+								target: `${prefix}position-top`,
+								breakpoint,
+								attributes: props,
+							}),
+							getLastBreakpointAttribute({
+								target: `${prefix}position-top-unit`,
+								breakpoint,
+								attributes: props,
+							})
+						),
+					}}
+					onChange={focalPoint => {
+						onChange({
+							[getAttributeKey('position-top', isHover, prefix, breakpoint)]:
+								Math.round(focalPoint.y * 100),
+							[getAttributeKey('position-top-unit', isHover, prefix, breakpoint)]:
+								'%',
+							[getAttributeKey('position-left', isHover, prefix, breakpoint)]:
+								Math.round(focalPoint.x * 100),
+							[getAttributeKey('position-left-unit', isHover, prefix, breakpoint)]:
+								'%',
+							[getAttributeKey('position-right', isHover, prefix, breakpoint)]:
+								'',
+							[getAttributeKey('position-bottom', isHover, prefix, breakpoint)]:
+								'',
+						});
+					}}
+				/>
+				<div className='maxi-focal-point-picker__resets'>
+					<ResetButton
+						onReset={() =>
+							onChange({
+								[getAttributeKey('position-left', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-left', isHover, prefix, breakpoint)
+									),
+								[getAttributeKey('position-left-unit', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-left-unit', isHover, prefix, breakpoint)
+									),
+								isReset: true,
+							})
+						}
+					/>
+					<ResetButton
+						onReset={() =>
+							onChange({
+								[getAttributeKey('position-top', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-top', isHover, prefix, breakpoint)
+									),
+								[getAttributeKey('position-top-unit', isHover, prefix, breakpoint)]:
+									getDefaultAttribute(
+										getAttributeKey('position-top-unit', isHover, prefix, breakpoint)
+									),
+								isReset: true,
+							})
+						}
+					/>
+				</div>
+			</div>
+			<div className='maxi-position-control__advanced-toggle'>
+				<Button onClick={() => setShowAdvanced(!showAdvanced)}>
+					{__('More layer placement settings', 'maxi-blocks')}
+					<span
+						className={`maxi-position-control__toggle-arrow${
+							showAdvanced ? '--expanded' : ''
+						}`}
+					>
+						{arrowIcon}
+					</span>
+				</Button>
+			</div>
+			{showAdvanced && (
+				<div className='maxi-position-control__advanced-options'>
+					<AxisControl
+						{...props}
+						target='position'
+						prefix={prefix}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						minMaxSettings={minMaxSettings}
+						optionType='string'
+						enableAxisUnits
+						allowedUnits={['px', 'em', 'vw', '%', '-']}
+						isHover={isHover}
+						defaultAttributes={defaultAttributes}
+					/>
+				</div>
+			)}
+		</>
 	);
 
 	return (
@@ -165,10 +299,10 @@ const PositionControl = props => {
 						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
-					}) !== 'inherit' && PositionAxisControl}
+					}) !== 'inherit' && PositionPickerSection}
 				</>
 			) : (
-				PositionAxisControl
+				PositionPickerSection
 			)}
 		</div>
 	);

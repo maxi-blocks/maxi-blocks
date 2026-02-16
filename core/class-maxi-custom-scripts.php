@@ -59,6 +59,7 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
                     'integrity' => true,
                     'referrerpolicy' => true,
                     'nonce' => true,
+                    'data-*' => true,
                 ],
                 'noscript' => [],
                 'iframe' => [
@@ -71,6 +72,7 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
                     'referrerpolicy' => true,
                     'allow' => true,
                     'allowfullscreen' => true,
+                    'data-*' => true,
                 ],
                 'img' => [
                     'src' => true,
@@ -78,15 +80,22 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
                     'width' => true,
                     'style' => true,
                     'alt' => true,
+                    'data-*' => true,
                 ],
                 'div' => [
                     'id' => true,
                     'class' => true,
                     'style' => true,
+                    'data-*' => true,
                 ],
             ];
 
             return trim(wp_kses($value, $allowed_tags));
+        }
+
+        private static function can_edit_custom_scripts()
+        {
+            return current_user_can('unfiltered_html');
         }
 
         public function register_post_meta_fields()
@@ -97,9 +106,7 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
                 'show_in_rest' => true,
                 'sanitize_callback' => [__CLASS__, 'sanitize_scripts_code'],
                 'auth_callback' => function () {
-                    return current_user_can('edit_posts') ||
-                        current_user_can('edit_pages') ||
-                        current_user_can('manage_options');
+                    return self::can_edit_custom_scripts();
                 },
             ];
 
@@ -197,6 +204,10 @@ JS;
             }
 
             if (!current_user_can('edit_post', $post_id)) {
+                return;
+            }
+
+            if (!self::can_edit_custom_scripts()) {
                 return;
             }
 
@@ -407,6 +418,10 @@ JS;
             }
 
             if (!current_user_can('edit_post', $post_id)) {
+                return;
+            }
+
+            if (!self::can_edit_custom_scripts()) {
                 return;
             }
 

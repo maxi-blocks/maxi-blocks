@@ -56,16 +56,6 @@ const getIsActiveTab = (
 		...getBlockData(blockName)?.maxiAttributes,
 	};
 
-	const maxiAttrs = getBlockData(blockName)?.maxiAttributes;
-	console.log('getIsActiveTab check:', JSON.stringify({
-		blockName,
-		breakpoint,
-		maxiAttributes: maxiAttrs,
-		attributesCount: attributes.length,
-		hasMaxWidthUnitGeneral: maxiAttrs && 'max-width-unit-general' in maxiAttrs,
-		maxWidthUnitGeneralValue: maxiAttrs?.['max-width-unit-general'],
-	}, null, 2));
-
 	const ignoreAttributes = [];
 	ignoreIndicatorGroups.forEach(group => {
 		ignoreAttributes.push(
@@ -101,7 +91,6 @@ const getIsActiveTab = (
 		...extraIndicatorsResponsive,
 	];
 
-	const attributeChecks = [];
 	const result = !allAttrs.every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
@@ -208,24 +197,10 @@ const getIsActiveTab = (
 		)
 			return true;
 
-		const isDefault = currentAttributes[attribute] === defaultAttributes[attribute];
-		if (!isDefault && !excludedAttributes.includes(attribute)) {
-			attributeChecks.push({
-				attr: attribute,
-				current: currentAttributes[attribute],
-				default: defaultAttributes[attribute],
-				hasDefault: attribute in defaultAttributes,
-				currentType: typeof currentAttributes[attribute],
-				defaultType: typeof defaultAttributes[attribute],
-			});
-		}
-		return isDefault;
+		return (
+			currentAttributes[attribute] === defaultAttributes[attribute]
+		);
 	});
-
-	if (result && attributeChecks.length > 0) {
-		console.log('  Active attributes:', JSON.stringify(attributeChecks, null, 2));
-	}
-	console.log('  result:', JSON.stringify(result));
 
 	return result;
 };

@@ -136,23 +136,6 @@ const Accordion = props => {
 							...getBlockAttributes(name),
 							...getBlockData(name)?.maxiAttributes,
 						};
-						console.log('Accordion indicatorProps check:', JSON.stringify({
-							label: item.label,
-							indicatorProps: item.indicatorProps,
-							blockName: name,
-							maxiAttributes: getBlockData(name)?.maxiAttributes,
-						}, null, 2));
-						item.indicatorProps.forEach(prop => {
-							console.log(`  ${prop}:`, JSON.stringify({
-								current: attributes?.[prop],
-								default: defaultAttributes?.[prop],
-								isCleared: isClearedValue(
-									attributes?.[prop],
-									defaultAttributes?.[prop],
-									prop
-								),
-							}, null, 2));
-						});
 						isActiveTab = !item.indicatorProps.every(prop =>
 							isClearedValue(
 								attributes?.[prop],
@@ -160,7 +143,6 @@ const Accordion = props => {
 								prop
 							)
 						);
-						console.log('  isActiveTab:', JSON.stringify(isActiveTab));
 					}
 				}
 

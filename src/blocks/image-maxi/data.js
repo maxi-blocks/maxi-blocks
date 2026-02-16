@@ -59,6 +59,7 @@ const copyPasteMapping = {
 			group: {
 				[__('Image size', 'maxi-blocks')]: 'imageSize',
 				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
+				[__('Fit on wrapper', 'maxi-blocks')]: 'fitParentSize',
 				[__('Image width', 'maxi-blocks')]: 'img-width-general',
 				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
 			},

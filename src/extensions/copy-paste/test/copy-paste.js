@@ -449,6 +449,7 @@ describe('getOrganizedAttributes', () => {
 					group: {
 						'Image size': 'imageSize',
 						'Use original size': 'useInitSize',
+						'Fit on wrapper': 'fitParentSize',
 						'Image width': 'img-width-general',
 						'Image ratio': 'imageRatio',
 					},
@@ -576,6 +577,7 @@ describe('getOrganizedAttributes', () => {
 			imageSize: 'full',
 			isImageUrl: false,
 			altSelector: 'title',
+			fitParentSize: true,
 			'img-width-general': 82,
 			'clip-path-status-general': false,
 			'link-palette-status-general': true,

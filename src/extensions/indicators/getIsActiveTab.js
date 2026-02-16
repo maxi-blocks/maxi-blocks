@@ -6,6 +6,19 @@ import { select } from '@wordpress/data';
 import { isArray, isPlainObject, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
 
+/**
+ * CSS initial values for flex properties. When an attribute has no schema
+ * default (undefined), these values are treated as "cleared" because they
+ * represent the browser's default behaviour.
+ */
+const cssInitialValues = {
+	'flex-wrap': ['nowrap'],
+	'flex-direction': ['row'],
+	'justify-content': ['normal', 'flex-start'],
+	'align-items': ['normal', 'stretch'],
+	'align-content': ['normal', 'stretch'],
+};
+
 const getIsActiveTab = (
 	attributes,
 	breakpoint,
@@ -51,6 +64,7 @@ const getIsActiveTab = (
 		'isFirstOnHierarchy',
 		'uniqueID',
 		'svgType',
+		'customLabel',
 		...ignoreIndicator,
 		...ignoreAttributes,
 	];
@@ -67,14 +81,16 @@ const getIsActiveTab = (
 		return attributesArr;
 	};
 
-	return ![
+	const allAttrs = [
 		...attributes,
 		...extraIndicators,
 		...extraIndicatorsResponsive,
-	].every(attribute => {
+	];
+
+	const result = !allAttrs.every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
-		if (currentAttributes[attribute] === undefined) return true;
+		if (currentAttributes[attribute] == null) return true;
 		if (currentAttributes[attribute] === false)
 			return !defaultAttributes[attribute];
 		// Treat CSS reset values as cleared when default is undefined
@@ -93,6 +109,20 @@ const getIsActiveTab = (
 			defaultAttributes[attribute] === undefined
 		)
 			return true;
+
+		// Treat CSS initial values as cleared for flex properties when no default
+		if (
+			defaultAttributes[attribute] === undefined &&
+			typeof currentAttributes[attribute] === 'string'
+		) {
+			const baseName = attribute.replace(
+				/-(?:general|xxl|xl|l|m|s|xs)$/,
+				''
+			);
+			const initials = cssInitialValues[baseName];
+			if (initials && initials.includes(currentAttributes[attribute]))
+				return true;
+		}
 
 		if (breakpoint) {
 			const breakpointAttributeChecker = bp => {
@@ -123,14 +153,14 @@ const getIsActiveTab = (
 				return true;
 			};
 
-			let result = breakpointAttributeChecker(breakpoint);
+			let bpResult = breakpointAttributeChecker(breakpoint);
 
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 
-			if (result && baseBreakpoint === breakpoint)
-				result = breakpointAttributeChecker('general');
+			if (bpResult && baseBreakpoint === breakpoint)
+				bpResult = breakpointAttributeChecker('general');
 
-			return result;
+			return bpResult;
 		}
 		if (
 			isArray(currentAttributes[attribute]) &&
@@ -148,8 +178,12 @@ const getIsActiveTab = (
 		)
 			return true;
 
-		return currentAttributes[attribute] === defaultAttributes[attribute];
+		return (
+			currentAttributes[attribute] === defaultAttributes[attribute]
+		);
 	});
+
+	return result;
 };
 
 export default getIsActiveTab;

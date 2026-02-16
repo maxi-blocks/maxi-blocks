@@ -64,6 +64,7 @@ const Inspector = props => {
 		updateInnerBlocksPositions,
 		attributes,
 	} = props;
+	const hasColumnPattern = !!attributes['row-pattern-general'];
 	const { selectors: allSelectors, categories: allCategories } = customCss;
 
 	// Get carousel status to conditionally show Arrows and Dots tabs

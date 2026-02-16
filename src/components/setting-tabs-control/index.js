@@ -25,6 +25,19 @@ import classnames from 'classnames';
 import { isEmpty, isNumber, isPlainObject, isEqual } from 'lodash';
 
 /**
+ * CSS initial values for flex properties. When an attribute has no schema
+ * default (undefined), these values are treated as "cleared" because they
+ * represent the browser's default behaviour.
+ */
+const cssInitialValues = {
+	'flex-wrap': ['nowrap'],
+	'flex-direction': ['row'],
+	'justify-content': ['normal', 'flex-start'],
+	'align-items': ['normal', 'stretch'],
+	'align-content': ['normal', 'stretch'],
+};
+
+/**
  * Checks if a value is considered "cleared" (inactive/default)
  *
  * @param {*}      value         The current value
@@ -36,7 +49,8 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value == null) return true; // null or undefined
 	if (value === false) return !defaultValue;
 	if (value === '') return true;
-	if (value === 'none' || value === 'unset') return true;
+	if (value === 'none' || value === 'unset' || value === 'normal')
+		return defaultValue === undefined;
 	if (Array.isArray(value) && value.length === 0) return true;
 	if (isPlainObject(value) && isEmpty(value)) return true;
 	// Treat 1 as cleared when default is undefined, only for opacity attributes
@@ -46,6 +60,13 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 		/opacity/i.test(attributeName)
 	) {
 		return true;
+	}
+	// Treat CSS initial values as cleared for flex properties when no default
+	if (defaultValue === undefined && typeof value === 'string') {
+		const baseName = attributeName
+			.replace(/-(?:general|xxl|xl|l|m|s|xs)$/, '');
+		const initials = cssInitialValues[baseName];
+		if (initials && initials.includes(value)) return true;
 	}
 	return isEqual(value, defaultValue);
 };

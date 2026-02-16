@@ -67,6 +67,12 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 			);
 
 		currAttrKeys.forEach(currAttrKey => {
+			// Keep legacy snapshot shape by omitting unset dynamic content keys.
+			const isUnsetDynamicContentAttr =
+				currAttrKey.startsWith('dc-') &&
+				typeof attributes[currAttrKey] === 'undefined';
+			if (isUnsetDynamicContentAttr) return;
+
 			attr[currAttrKey] = attributes[currAttrKey];
 		});
 	});

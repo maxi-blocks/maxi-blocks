@@ -56,6 +56,41 @@ describe('getOrganizedAttributes', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+
+	it('Includes dynamic content link attributes from anchor template', () => {
+		const mapping = {
+			advanced: {
+				Anchor: {
+					template: 'anchor',
+				},
+			},
+		};
+
+		const attributes = {
+			anchor: 'my-anchor',
+			linkSettings: { url: 'https://example.com' },
+			'dc-status': true,
+			'dc-link-status': true,
+			'dc-link-target': 'author_email',
+			'dc-type': 'post',
+			'dc-field': 'author',
+			'dc-sub-field': 'email',
+		};
+
+		const result = getOrganizedAttributes(attributes, mapping, true);
+
+		expect(result).toMatchObject({
+			anchor: 'my-anchor',
+			linkSettings: { url: 'https://example.com' },
+			'dc-status': true,
+			'dc-link-status': true,
+			'dc-link-target': 'author_email',
+			'dc-type': 'post',
+			'dc-field': 'author',
+			'dc-sub-field': 'email',
+		});
+	});
+
 	it('Ensure it works with groups', () => {
 		const copyPasteMapping = {
 			settings: {

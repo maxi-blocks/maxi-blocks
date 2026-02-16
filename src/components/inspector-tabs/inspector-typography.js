@@ -91,6 +91,9 @@ const typography = ({
 			hasNonDefaultTextAlignment === false && {
 				ignoreIndicator: textAlignmentAttributes,
 			}),
+		...(allowLink && {
+			ignoreIndicatorGroups: ['link'],
+		}),
 		content: (
 			<SettingTabsControl
 				items={[

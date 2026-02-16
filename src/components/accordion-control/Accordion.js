@@ -13,6 +13,7 @@ import {
 	getIsActiveTab,
 	getMaxiAttrsFromChildren,
 } from '@extensions/indicators';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies
@@ -46,6 +47,8 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value == null) return true; // null or undefined
 	if (value === false) return !defaultValue;
 	if (value === '') return true;
+	// Check equality first before special value checks
+	if (isEqual(value, defaultValue)) return true;
 	if (value === 'none' || value === 'unset' || value === 'normal')
 		return defaultValue === undefined;
 	if (Array.isArray(value) && value.length === 0) return true;
@@ -65,7 +68,7 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 		const initials = cssInitialValues[baseName];
 		if (initials && initials.includes(value)) return true;
 	}
-	return isEqual(value, defaultValue);
+	return false;
 };
 
 const Accordion = props => {
@@ -129,7 +132,27 @@ const Accordion = props => {
 						block.name.includes('maxi-blocks')
 					) {
 						const { attributes, name } = block;
-						const defaultAttributes = getBlockAttributes(name);
+						const defaultAttributes = {
+							...getBlockAttributes(name),
+							...getBlockData(name)?.maxiAttributes,
+						};
+						console.log('Accordion indicatorProps check:', JSON.stringify({
+							label: item.label,
+							indicatorProps: item.indicatorProps,
+							blockName: name,
+							maxiAttributes: getBlockData(name)?.maxiAttributes,
+						}, null, 2));
+						item.indicatorProps.forEach(prop => {
+							console.log(`  ${prop}:`, JSON.stringify({
+								current: attributes?.[prop],
+								default: defaultAttributes?.[prop],
+								isCleared: isClearedValue(
+									attributes?.[prop],
+									defaultAttributes?.[prop],
+									prop
+								),
+							}, null, 2));
+						});
 						isActiveTab = !item.indicatorProps.every(prop =>
 							isClearedValue(
 								attributes?.[prop],
@@ -137,6 +160,7 @@ const Accordion = props => {
 								prop
 							)
 						);
+						console.log('  isActiveTab:', JSON.stringify(isActiveTab));
 					}
 				}
 

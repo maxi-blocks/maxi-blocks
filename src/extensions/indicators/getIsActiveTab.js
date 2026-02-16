@@ -5,6 +5,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import { select } from '@wordpress/data';
 import { isArray, isPlainObject, isEmpty } from 'lodash';
 import { getGroupAttributes } from '@extensions/styles';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * CSS initial values for flex properties. When an attribute has no schema
@@ -50,7 +51,20 @@ const getIsActiveTab = (
 
 	if (!blockName.includes('maxi-blocks')) return null;
 
-	const defaultAttributes = getBlockAttributes(blockName);
+	const defaultAttributes = {
+		...getBlockAttributes(blockName),
+		...getBlockData(blockName)?.maxiAttributes,
+	};
+
+	const maxiAttrs = getBlockData(blockName)?.maxiAttributes;
+	console.log('getIsActiveTab check:', JSON.stringify({
+		blockName,
+		breakpoint,
+		maxiAttributes: maxiAttrs,
+		attributesCount: attributes.length,
+		hasMaxWidthUnitGeneral: maxiAttrs && 'max-width-unit-general' in maxiAttrs,
+		maxWidthUnitGeneralValue: maxiAttrs?.['max-width-unit-general'],
+	}, null, 2));
 
 	const ignoreAttributes = [];
 	ignoreIndicatorGroups.forEach(group => {
@@ -87,12 +101,28 @@ const getIsActiveTab = (
 		...extraIndicatorsResponsive,
 	];
 
+	const attributeChecks = [];
 	const result = !allAttrs.every(attribute => {
 		if (excludedAttributes.includes(attribute)) return true;
 		if (!(attribute in defaultAttributes)) return true;
 		if (currentAttributes[attribute] == null) return true;
 		if (currentAttributes[attribute] === false)
 			return !defaultAttributes[attribute];
+		// Skip -general attributes when default is undefined and breakpoint overrides exist
+		// This handles cases like max-width-general where the row sets xxl/xl/l but not general
+		if (
+			defaultAttributes[attribute] === undefined &&
+			attribute.endsWith('-general') &&
+			currentAttributes[attribute] != null
+		) {
+			const baseName = attribute.replace(/-general$/, '');
+			const maxiAttrs = getBlockData(blockName)?.maxiAttributes || {};
+			// Check if any breakpoint-specific override exists in maxiAttributes
+			const hasBreakpointOverrides = ['xxl', 'xl', 'l', 'm', 's', 'xs'].some(
+				bp => `${baseName}-${bp}` in maxiAttrs
+			);
+			if (hasBreakpointOverrides) return true;
+		}
 		// Treat CSS reset values as cleared when default is undefined
 		if (
 			defaultAttributes[attribute] === undefined &&
@@ -178,10 +208,24 @@ const getIsActiveTab = (
 		)
 			return true;
 
-		return (
-			currentAttributes[attribute] === defaultAttributes[attribute]
-		);
+		const isDefault = currentAttributes[attribute] === defaultAttributes[attribute];
+		if (!isDefault && !excludedAttributes.includes(attribute)) {
+			attributeChecks.push({
+				attr: attribute,
+				current: currentAttributes[attribute],
+				default: defaultAttributes[attribute],
+				hasDefault: attribute in defaultAttributes,
+				currentType: typeof currentAttributes[attribute],
+				defaultType: typeof defaultAttributes[attribute],
+			});
+		}
+		return isDefault;
 	});
+
+	if (result && attributeChecks.length > 0) {
+		console.log('  Active attributes:', JSON.stringify(attributeChecks, null, 2));
+	}
+	console.log('  result:', JSON.stringify(result));
 
 	return result;
 };

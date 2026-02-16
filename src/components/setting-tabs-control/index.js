@@ -17,6 +17,7 @@ import {
 	getMaxiAttrsFromChildren,
 	SettingTabsIndicatorContext,
 } from '@extensions/indicators';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies
@@ -49,6 +50,8 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 	if (value == null) return true; // null or undefined
 	if (value === false) return !defaultValue;
 	if (value === '') return true;
+	// Check equality first before special value checks
+	if (isEqual(value, defaultValue)) return true;
 	if (value === 'none' || value === 'unset' || value === 'normal')
 		return defaultValue === undefined;
 	if (Array.isArray(value) && value.length === 0) return true;
@@ -68,7 +71,7 @@ const isClearedValue = (value, defaultValue, attributeName = '') => {
 		const initials = cssInitialValues[baseName];
 		if (initials && initials.includes(value)) return true;
 	}
-	return isEqual(value, defaultValue);
+	return false;
 };
 
 /**
@@ -198,8 +201,10 @@ const SettingTabsControl = props => {
 								block.name.includes('maxi-blocks')
 							) {
 								const { attributes, name } = block;
-								const defaultAttributes =
-									getBlockAttributes(name);
+								const defaultAttributes = {
+									...getBlockAttributes(name),
+									...getBlockData(name)?.maxiAttributes,
+								};
 								isActiveTab = !item.indicatorProps.every(prop =>
 									isClearedValue(
 										attributes?.[prop],

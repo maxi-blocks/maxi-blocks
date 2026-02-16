@@ -54,7 +54,9 @@ const shouldDeleteKey = (
 	customAllTimeExclude
 ) => {
 	const isDCLinkBlocksException =
-		prop === 'dc-status' && DC_LINK_BLOCKS.includes(blockName);
+		!isRepeater &&
+		prop === 'dc-status' &&
+		DC_LINK_BLOCKS.includes(blockName);
 
 	if (isNil(attributesToExclude[prop])) {
 		return false;

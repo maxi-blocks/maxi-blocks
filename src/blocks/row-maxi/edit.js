@@ -31,6 +31,7 @@ import Inspector from './inspector';
 import Toolbar from '@components/toolbar';
 import MaxiBlock from '@components/maxi-block/maxiBlock';
 import RowBlockTemplate from './components/row-block-template';
+import RowCarouselPreview from './components/row-carousel-preview';
 
 import RepeaterContext from './repeaterContext';
 import RowContext from './rowContext';
@@ -62,6 +63,8 @@ class edit extends MaxiBlockComponent {
 	state = {
 		displayHandlers: false,
 		innerBlocksPositions: {},
+		carouselCurrentSlide: 0,
+		carouselSlidesWidth: {},
 	};
 
 	columnsSize = {};
@@ -196,6 +199,25 @@ class edit extends MaxiBlockComponent {
 		return maxiAttributes;
 	}
 
+	/**
+	 * Get custom data for row carousel
+	 * @returns {object|null} Custom data object
+	 */
+	get getMaxiCustomData() {
+		const { attributes } = this.props;
+
+		// Check if carousel is enabled (global, not breakpoint-specific)
+		const carouselEnabled = attributes['row-carousel-status'] === true;
+
+		if (carouselEnabled) {
+			return {
+				row_carousel: true,
+			};
+		}
+
+		return null;
+	}
+
 	updateInnerBlocksPositions = () => {
 		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
 			!isEmpty(this.columnsClientIds)
@@ -230,6 +252,11 @@ class edit extends MaxiBlockComponent {
 		return this.state.innerBlocksPositions;
 	};
 
+	isCarouselEnabled = () => {
+		const { attributes } = this.props;
+		return attributes['row-carousel-status'] === true;
+	};
+
 	render() {
 		const {
 			attributes,
@@ -257,10 +284,23 @@ class edit extends MaxiBlockComponent {
 			...(this.context?.repeaterStatus && this.context),
 		};
 
+		// Get carousel preview status
+		const carouselPreviewEnabled =
+			attributes['row-carousel-status'] &&
+			attributes['row-carousel-preview'];
+
+		// Inline styles targets for carousel navigation icons
+		const inlineStylesTargets = {
+			dot: '.maxi-row-carousel__dot:not(.maxi-row-carousel__dot--active)',
+			dotActive: '.maxi-row-carousel__dot--active',
+			arrow: '.maxi-row-carousel__arrow',
+		};
+
 		return [
 			<Inspector
 				key={`block-settings-${uniqueID}`}
 				{...this.props}
+				inlineStylesTargets={inlineStylesTargets}
 				repeaterStatus={repeaterContext.repeaterStatus}
 				repeaterRowClientId={repeaterContext.repeaterRowClientId}
 				isRepeaterInherited={this.isRepeaterInherited}
@@ -329,6 +369,20 @@ class edit extends MaxiBlockComponent {
 						attributes,
 						'borderRadius'
 					),
+					// Carousel context
+					carouselEnabled: this.isCarouselEnabled(),
+					carouselCurrentSlide: this.state.carouselCurrentSlide,
+					setCarouselCurrentSlide: slide =>
+						this.setState({ carouselCurrentSlide: slide }),
+					carouselSlidesWidth: this.state.carouselSlidesWidth,
+					setCarouselSlideWidth: (clientId, width) => {
+						this.setState(prevState => ({
+							carouselSlidesWidth: {
+								...prevState.carouselSlidesWidth,
+								[clientId]: width,
+							},
+						}));
+					},
 				}}
 			>
 				<RepeaterContext.Provider value={repeaterContext}>
@@ -370,6 +424,12 @@ class edit extends MaxiBlockComponent {
 					/>
 				</RepeaterContext.Provider>
 			</RowContext.Provider>,
+			<RowCarouselPreview
+				key={`row-carousel-preview-${uniqueID}`}
+				clientId={clientId}
+				attributes={attributes}
+				isPreviewEnabled={carouselPreviewEnabled}
+			/>,
 		];
 	}
 }

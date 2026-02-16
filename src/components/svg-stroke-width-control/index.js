@@ -27,6 +27,7 @@ const SvgStrokeWidthControl = props => {
 		onChange,
 		breakpoint,
 		prefix,
+		normalPrefix,
 		content,
 		isHover = false,
 		customLabel = 'Stroke width',
@@ -39,18 +40,23 @@ const SvgStrokeWidthControl = props => {
 		isHover ? '-hover' : ''
 	}`;
 	const stroke = props[strokeAttrLabel];
-	let defaultStroke = getDefaultAttribute(strokeAttrLabel);
-	if (defaultStroke === undefined && breakpoint !== 'general') {
-		defaultStroke = getDefaultAttribute(
-			getAttributeKey('stroke', isHover, prefix, 'general')
-		);
-	}
-	const placeholderStroke = getLastBreakpointAttribute({
+	const defaultStroke = getDefaultAttribute(strokeAttrLabel);
+	let placeholderStroke = getLastBreakpointAttribute({
 		target: `${prefix}stroke`,
 		breakpoint,
 		attributes: props,
 		isHover,
 	});
+
+	// Fallback to normal state placeholder when in active state
+	if (placeholderStroke === undefined && normalPrefix) {
+		placeholderStroke = getLastBreakpointAttribute({
+			target: `${normalPrefix}stroke`,
+			breakpoint,
+			attributes: props,
+			isHover,
+		});
+	}
 
 	return (
 		<AdvancedNumberControl
@@ -77,8 +83,10 @@ const SvgStrokeWidthControl = props => {
 			onReset={() => {
 				onChange({
 					[strokeAttrLabel]: defaultStroke,
-					[`${prefix === 'svg-' ? '' : prefix}content`]:
-						setSVGStrokeWidth(content, defaultStroke),
+					...(!prefix.includes('navigation') && {
+						[`${prefix === 'svg-' ? '' : prefix}content`]:
+							setSVGStrokeWidth(content, defaultStroke),
+					}),
 					isReset: true,
 				});
 			}}

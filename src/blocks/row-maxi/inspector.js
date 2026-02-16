@@ -59,13 +59,36 @@ function ColumnPicker(props) {
  */
 const Inspector = props => {
 	const {
-		attributes,
 		deviceType,
 		isRepeaterInherited,
 		updateInnerBlocksPositions,
+		attributes,
 	} = props;
-	const { selectors, categories } = customCss;
-	const hasColumnPattern = !!attributes['row-pattern-general'];
+	const { selectors: allSelectors, categories: allCategories } = customCss;
+
+	// Get carousel status to conditionally show Arrows and Dots tabs
+	const carouselStatus = attributes['row-carousel-status'];
+
+	// Filter out carousel-related custom CSS categories/selectors when carousel is disabled
+	const carouselCssKeys = [
+		'first arrow',
+		'second arrow',
+		'first arrow icon',
+		'second arrow icon',
+		'all dots',
+		'each dot',
+		'dot icon',
+	];
+	const categories = carouselStatus
+		? allCategories
+		: allCategories.filter(cat => !carouselCssKeys.includes(cat));
+	const selectors = carouselStatus
+		? allSelectors
+		: Object.fromEntries(
+				Object.entries(allSelectors).filter(
+					([key]) => !carouselCssKeys.includes(key)
+				)
+		  );
 
 	return (
 		<InspectorControls>
@@ -95,8 +118,7 @@ const Inspector = props => {
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
 												{...(!hasColumnPattern && {
-													getIndicatorProps:
-														() => [],
+													getIndicatorProps: () => [],
 												})}
 											>
 												<ColumnPicker {...props} />
@@ -111,10 +133,10 @@ const Inspector = props => {
 														'verticalAlign',
 														'horizontalAlign',
 													],
-												}
+											  }
 											: {
 													indicatorProps: [],
-												}),
+											  }),
 									},
 									...inspectorTabs.blockBackground({
 										props,
@@ -145,6 +167,31 @@ const Inspector = props => {
 							/>
 						),
 						ignoreIndicator: [`row-pattern-${deviceType}`],
+					},
+					{
+						label: __('Carousel', 'maxi-blocks'),
+						content: (
+							<AccordionControl
+								isPrimary
+								items={[
+									...inspectorTabs.carouselSlider({
+										props,
+									}),
+									...(carouselStatus
+										? [
+												...inspectorTabs.carouselArrows(
+													{
+														props,
+													}
+												),
+												...inspectorTabs.carouselDots({
+													props,
+												}),
+										  ]
+										: []),
+								]}
+							/>
+						),
 					},
 					{
 						label: __('Advanced', 'maxi-blocks'),

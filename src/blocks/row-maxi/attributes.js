@@ -3,7 +3,7 @@
  */
 import * as attributesData from '@extensions/styles/defaults/index';
 import { transitionAttributesCreator } from '@extensions/styles';
-import { customCss } from './data';
+import { customCss, transition } from './data';
 
 /**
  * Attributes
@@ -39,11 +39,22 @@ const attributes = {
 	 * Advanced
 	 */
 	...attributesData.contextLoop,
+	...attributesData.rowCarousel,
+	...attributesData.rowCarouselAlignment,
+	...attributesData.navigation,
+	...attributesData.arrowIcon,
+	...attributesData.arrowIconHover,
+	...attributesData.dotIcon,
+	...attributesData.dotIconActive,
+	...attributesData.dotIconHover,
 	...attributesData.dynamicContentLink,
 	...attributesData.transform,
 	...{
 		...attributesData.transition,
-		...transitionAttributesCreator({ selectors: customCss.selectors }),
+		...transitionAttributesCreator({
+			transition,
+			selectors: customCss.selectors,
+		}),
 	},
 	...attributesData.display,
 	...attributesData.opacity,

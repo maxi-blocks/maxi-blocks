@@ -90,6 +90,11 @@ body.maxi-blocks--active.maxi-blocks--accessibility .maxi-sidebar {
 			transition: 0.1s transform ease;
 		}
 	}
+	&.maxi-carousel-arrows__toggle,
+	&.maxi-carousel-dots__toggle {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
 }
 
 .maxi-toggle-switch__toggle:hover {

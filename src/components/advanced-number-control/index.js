@@ -112,7 +112,7 @@ const AdvancedNumberControl = props => {
 	} = props;
 
 	const [currentValue, setCurrentValue] = useState(
-		value === undefined ? defaultValue : trim(value)
+		value === undefined ? defaultValue : trim(value),
 	);
 
 	const latestValueRef = useRef(currentValue);
@@ -132,13 +132,13 @@ const AdvancedNumberControl = props => {
 		`maxi-advanced-number-control ${
 			newStyle ? 'maxi-advanced-number-control__second-style' : ''
 		}`,
-		className
+		className,
 	);
 
 	const stepValue = unit === '-' || isEmpty(unit) ? 0.01 : step;
 
 	const advancedNumberControlId = `maxi-advanced-number-control__${useInstanceId(
-		AdvancedNumberControl
+		AdvancedNumberControl,
 	)}`;
 
 	const getOptions = () => {
@@ -205,7 +205,7 @@ const AdvancedNumberControl = props => {
 				onChangeValue(val);
 			}
 		}, []),
-		300
+		300,
 	);
 
 	const handleInputChange = e => {
@@ -303,7 +303,7 @@ const AdvancedNumberControl = props => {
 								onKeyDown={e => {
 									validateNumberInput(
 										e,
-										customValidationRegex
+										customValidationRegex,
 									);
 									if (
 										e.key === '-' &&
@@ -324,7 +324,7 @@ const AdvancedNumberControl = props => {
 									disabled={(() => {
 										const currentVal =
 											parseFloat(
-												latestValueRef.current
+												latestValueRef.current,
 											) ||
 											parseFloat(placeholder) ||
 											0;
@@ -354,8 +354,8 @@ const AdvancedNumberControl = props => {
 										).length;
 										newVal = parseFloat(
 											newVal.toFixed(
-												Math.max(decimalPlaces, 10)
-											)
+												Math.max(decimalPlaces, 10),
+											),
 										);
 
 										const maxVal = enableUnit
@@ -365,13 +365,17 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											onChangeValue(newVal, {
+												inline: enableUnit
+													? { unit }
+													: {},
+											});
 										}
 									}}
 									title={__('Increase value', 'maxi-blocks')}
 									aria-label={__(
 										'Increase value',
-										'maxi-blocks'
+										'maxi-blocks',
 									)}
 								>
 									<svg
@@ -396,7 +400,7 @@ const AdvancedNumberControl = props => {
 									disabled={(() => {
 										const currentVal =
 											parseFloat(
-												latestValueRef.current
+												latestValueRef.current,
 											) ||
 											parseFloat(placeholder) ||
 											0;
@@ -426,8 +430,8 @@ const AdvancedNumberControl = props => {
 										).length;
 										newVal = parseFloat(
 											newVal.toFixed(
-												Math.max(decimalPlaces, 10)
-											)
+												Math.max(decimalPlaces, 10),
+											),
 										);
 
 										const minVal = enableUnit
@@ -437,7 +441,11 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											onChangeValue(newVal, {
+												inline: enableUnit
+													? { unit }
+													: {},
+											});
 										}
 									}}
 									title='Decrease value'
@@ -476,9 +484,11 @@ const AdvancedNumberControl = props => {
 											optionType === 'string'
 												? minMaxSettings[
 														val
-												  ]?.max.toString()
+													]?.max.toString()
 												: minMaxSettings[val]?.max,
-											val
+											{
+												inline: { unit: val },
+											},
 										);
 									}
 									onChangeUnit(val);
@@ -495,7 +505,9 @@ const AdvancedNumberControl = props => {
 								onReset={() => {
 									setCurrentValue(defaultValue);
 									latestValueRef.current = defaultValue;
-									onChangeValue(defaultValue);
+									onChangeValue(defaultValue, {
+										inline: enableUnit ? { unit } : {},
+									});
 									onReset();
 								}}
 								isSmall={resetButtonSize === 'small'}
@@ -517,8 +529,8 @@ const AdvancedNumberControl = props => {
 								? (value / max) * 100 <= 10
 									? '--small'
 									: (value / max) * 100 >= 90
-									? '--big'
-									: ''
+										? '--big'
+										: ''
 								: ''
 						}`}
 						value={rangeValue ?? placeholder ?? 0}
@@ -532,7 +544,7 @@ const AdvancedNumberControl = props => {
 									stepValue.toString().split('.')[1] || ''
 								).length;
 								result = parseFloat(
-									result.toFixed(Math.max(decimalPlaces, 10))
+									result.toFixed(Math.max(decimalPlaces, 10)),
 								);
 							}
 
@@ -546,7 +558,7 @@ const AdvancedNumberControl = props => {
 							handleChange(
 								onChangeValue,
 								latestValueRef,
-								optionType
+								optionType,
 							);
 						}}
 						min={enableUnit ? minValueRange : min}

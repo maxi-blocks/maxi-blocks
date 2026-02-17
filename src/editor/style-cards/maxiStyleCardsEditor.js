@@ -364,7 +364,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	const applyCurrentSCGlobally = () => {
 		setActiveStyleCard(selectedSCKey);
-		saveMaxiStyleCards(selectedSCValue);
 		updateSCOnEditor(
 			selectedSCValue,
 			getActiveColourFromSC(selectedSCValue, 4)

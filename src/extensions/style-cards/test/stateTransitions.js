@@ -1,4 +1,44 @@
+/**
+ * External dependencies
+ */
+import { cloneDeep } from 'lodash';
+
+jest.mock('@maxi-core/defaults/defaultSC.json', () => ({
+	sc_maxi: {
+		status: '',
+		meta: {
+			theme: 'default',
+			nested: {
+				level: 1,
+				keep: 'template',
+				arr: [1, 2],
+			},
+		},
+		light: {
+			styleCard: {
+				typography: {
+					'font-size-general': 16,
+				},
+				color: {
+					customColors: [
+						{ id: 1, value: 'rgba(0, 0, 0, 1)', name: 'Default' },
+					],
+					palette: {
+						primary: '#ffffff',
+					},
+				},
+			},
+		},
+		tags: ['baseA', 'baseB'],
+		nullable: {
+			enabled: true,
+		},
+		optional: 'template-value',
+	},
+}));
+
 import {
+	mergeWithStandardStyleCard,
 	setActiveCard,
 	setCardStatus,
 	setSelectedCard,
@@ -49,6 +89,90 @@ describe('style-cards state transitions', () => {
 				},
 			},
 		},
+	});
+
+	it('merges missing defaults from the standard template', () => {
+		const styleCards = {
+			sc_custom: {
+				name: 'Custom',
+			},
+		};
+		const result = mergeWithStandardStyleCard(styleCards);
+
+		expect(result.sc_custom.name).toBe('Custom');
+		expect(result.sc_custom.meta.theme).toBe('default');
+		expect(
+			result.sc_custom.light.styleCard.typography['font-size-general']
+		).toBe(16);
+		expect(result.sc_custom.tags).toEqual(['baseA', 'baseB']);
+	});
+
+	it('deep-merges nested keys and keeps inputs immutable', () => {
+		const styleCards = {
+			sc_custom: {
+				meta: {
+					nested: {
+						level: 99,
+						extra: 'card',
+					},
+				},
+				light: {
+					styleCard: {
+						color: {
+							palette: {
+								primary: '#000000',
+							},
+						},
+					},
+				},
+			},
+		};
+		const originalStyleCards = cloneDeep(styleCards);
+		const result = mergeWithStandardStyleCard(styleCards);
+
+		expect(result.sc_custom.meta.nested.level).toBe(99);
+		expect(result.sc_custom.meta.nested.keep).toBe('template');
+		expect(result.sc_custom.meta.nested.extra).toBe('card');
+		expect(result.sc_custom.light.styleCard.color.palette.primary).toBe(
+			'#000000'
+		);
+		expect(styleCards).toEqual(originalStyleCards);
+	});
+
+	it('merges arrays by index using lodash merge semantics', () => {
+		const styleCards = {
+			sc_custom: {
+				tags: ['customOnly'],
+				meta: {
+					nested: {
+						arr: [9],
+					},
+				},
+			},
+		};
+		const result = mergeWithStandardStyleCard(styleCards);
+
+		expect(result.sc_custom.tags).toEqual(['customOnly', 'baseB']);
+		expect(result.sc_custom.meta.nested.arr).toEqual([9, 2]);
+	});
+
+	it('handles null and undefined values per lodash merge semantics', () => {
+		const styleCards = {
+			sc_custom: {
+				nullable: null,
+				optional: undefined,
+				meta: {
+					nested: {
+						level: undefined,
+					},
+				},
+			},
+		};
+		const result = mergeWithStandardStyleCard(styleCards);
+
+		expect(result.sc_custom.nullable).toBeNull();
+		expect(result.sc_custom.optional).toBe('template-value');
+		expect(result.sc_custom.meta.nested.level).toBe(1);
 	});
 
 	it('toggles active status for the selected card', () => {

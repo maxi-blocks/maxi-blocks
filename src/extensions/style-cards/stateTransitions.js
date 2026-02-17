@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { cloneDeep, merge } from 'lodash';
+import { merge } from 'lodash';
 
 /**
  * Internal dependencies
@@ -13,14 +13,18 @@ const ACTIVE_STATUS = 'active';
 const getCardStatus = isActive => (isActive ? ACTIVE_STATUS : '');
 const omitSelected = ({ selected, ...card }) => card;
 
-export const mergeWithStandardStyleCard = (styleCards = {}) =>
-	Object.entries(styleCards).reduce((mergedStyleCards, [key, value]) => {
-		const standardMerge = cloneDeep(standardSC?.sc_maxi);
-		const mergeWith = cloneDeep(value);
-		mergedStyleCards[key] = merge(standardMerge, mergeWith);
+export const mergeWithStandardStyleCard = (styleCards = {}) => {
+	const standardTemplate = standardSC?.sc_maxi;
 
-		return mergedStyleCards;
-	}, {});
+	return Object.entries(styleCards).reduce(
+		(mergedStyleCards, [key, value]) => {
+			mergedStyleCards[key] = merge({}, standardTemplate, value);
+
+			return mergedStyleCards;
+		},
+		{}
+	);
+};
 
 export const setCardStatus = (styleCards = {}, cardKey, isActive) => {
 	if (!styleCards?.[cardKey]) return { ...styleCards };
@@ -97,7 +101,7 @@ export const updateCardCustomColors = (
 };
 
 export const upsertCard = (styleCards = {}, cardKey, payload = {}) => {
-	if (!cardKey) return { ...styleCards };
+	if (cardKey == null) return { ...styleCards };
 
 	return {
 		...styleCards,

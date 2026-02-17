@@ -269,7 +269,9 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val => (val ? onChangeValue('auto') : onReset())}
+					onChange={val =>
+						val ? onChangeValue?.('auto') : onReset?.()
+					}
 				/>
 			)}
 			<BaseControl
@@ -365,7 +367,16 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											onChangeValue?.(newVal, {
+												inline: enableUnit
+													? { unit }
+													: {},
+											});
+											handleChange(
+												onChangeValue,
+												latestValueRef,
+												optionType
+											);
 										}
 									}}
 									title={__('Increase value', 'maxi-blocks')}
@@ -437,7 +448,16 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											onChangeValue?.(newVal, {
+												inline: enableUnit
+													? { unit }
+													: {},
+											});
+											handleChange(
+												onChangeValue,
+												latestValueRef,
+												optionType
+											);
 										}
 									}}
 									title='Decrease value'
@@ -472,16 +492,25 @@ const AdvancedNumberControl = props => {
 									if (
 										Number(value) > minMaxSettings[val]?.max
 									) {
-										onChangeValue(
+										const clampedValue =
 											optionType === 'string'
 												? minMaxSettings[
 														val
 												  ]?.max.toString()
-												: minMaxSettings[val]?.max,
-											val
+												: minMaxSettings[val]?.max;
+										latestValueRef.current =
+											clampedValue.toString();
+										setCurrentValue(clampedValue);
+										onChangeValue?.(clampedValue, {
+											inline: { unit: val },
+										});
+										handleChange(
+											onChangeValue,
+											latestValueRef,
+											optionType
 										);
 									}
-									onChangeUnit(val);
+									onChangeUnit?.(val);
 								}}
 							/>
 						)}
@@ -495,8 +524,10 @@ const AdvancedNumberControl = props => {
 								onReset={() => {
 									setCurrentValue(defaultValue);
 									latestValueRef.current = defaultValue;
-									onChangeValue(defaultValue);
-									onReset();
+									onChangeValue?.(defaultValue, {
+										inline: enableUnit ? { unit } : {},
+									});
+									onReset?.();
 								}}
 								isSmall={resetButtonSize === 'small'}
 								isLarge={resetButtonSize === 'large'}

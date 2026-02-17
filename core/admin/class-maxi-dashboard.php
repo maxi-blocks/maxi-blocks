@@ -1376,6 +1376,19 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'textarea',
             );
 
+            $description =
+                '<h4>' . __('Admin (wp-admin) scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all wp-admin pages. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Only visible to logged-in users with admin access.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_admin_option',
+                '',
+                'textarea',
+            );
+
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
 
@@ -2429,6 +2442,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_gutenberg_responsive_preview' => $args_true,
                 'maxi_custom_js_header_option' => $args_custom_js,
                 'maxi_custom_js_footer_option' => $args_custom_js,
+                'maxi_custom_js_admin_option' => $args_custom_js,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,

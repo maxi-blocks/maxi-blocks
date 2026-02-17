@@ -31,6 +31,7 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
 
             add_action('wp_head', [$this, 'render_header_scripts'], 1);
             add_action('wp_footer', [$this, 'render_footer_scripts'], 999);
+            add_action('admin_head', [$this, 'render_admin_scripts']);
 
             add_filter('manage_post_posts_columns', [$this, 'add_custom_scripts_column']);
             add_filter('manage_page_posts_columns', [$this, 'add_custom_scripts_column']);
@@ -335,6 +336,20 @@ JS;
                     echo $post_script; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                     echo "\n";
                 }
+            }
+        }
+
+        public function render_admin_scripts()
+        {
+            if (!current_user_can('manage_options')) {
+                return;
+            }
+
+            $admin_scripts = get_option('maxi_custom_js_admin_option', '');
+            if (!empty($admin_scripts)) {
+                echo "\n<!-- MaxiBlocks custom admin scripts -->\n";
+                echo $admin_scripts; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo "\n";
             }
         }
 

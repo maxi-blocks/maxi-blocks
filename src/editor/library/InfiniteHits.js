@@ -20,11 +20,22 @@ class InfiniteHits extends Component {
 	componentDidMount() {
 		this.observer = new IntersectionObserver(this.onSentinelIntersection);
 		this.observer.observe(this.sentinel);
+		this.scheduleLayout();
 	}
 
 	componentWillUnmount() {
 		this.observer.disconnect();
 	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.hits !== this.props.hits) {
+			this.scheduleLayout();
+		}
+	}
+
+	scheduleLayout = () => {
+		window.requestAnimationFrame(() => masonryGenerator(this.props.type));
+	};
 
 	onSentinelIntersection = entries => {
 		const { hasMore, refineNext } = this.props;
@@ -32,7 +43,7 @@ class InfiniteHits extends Component {
 		entries.forEach(entry => {
 			if (entry.isIntersecting && hasMore) {
 				refineNext();
-				masonryGenerator('patterns');
+				masonryGenerator(this.props.type);
 			}
 		});
 	};
@@ -70,6 +81,7 @@ InfiniteHits.propTypes = {
 	hits: PropTypes.arrayOf(PropTypes.object).isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	refineNext: PropTypes.func.isRequired,
+	type: PropTypes.string,
 };
 
 export default connectInfiniteHits(InfiniteHits);

@@ -48,49 +48,15 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
                 return '';
             }
 
-            $allowed_tags = [
-                'script' => [
-                    'src' => true,
-                    'type' => true,
-                    'id' => true,
-                    'async' => true,
-                    'defer' => true,
-                    'crossorigin' => true,
-                    'integrity' => true,
-                    'referrerpolicy' => true,
-                    'nonce' => true,
-                    'data-*' => true,
-                ],
-                'noscript' => [],
-                'iframe' => [
-                    'src' => true,
-                    'height' => true,
-                    'width' => true,
-                    'style' => true,
-                    'title' => true,
-                    'loading' => true,
-                    'referrerpolicy' => true,
-                    'allow' => true,
-                    'allowfullscreen' => true,
-                    'data-*' => true,
-                ],
-                'img' => [
-                    'src' => true,
-                    'height' => true,
-                    'width' => true,
-                    'style' => true,
-                    'alt' => true,
-                    'data-*' => true,
-                ],
-                'div' => [
-                    'id' => true,
-                    'class' => true,
-                    'style' => true,
-                    'data-*' => true,
-                ],
-            ];
-
-            return trim(wp_kses($value, $allowed_tags));
+            // This field is restricted to users with unfiltered_html or
+            // manage_options capability (see auth_callback and
+            // can_edit_custom_scripts).  These users can already insert
+            // arbitrary HTML/JS in WordPress, so heavy HTML-level
+            // sanitisation (wp_kses) is unnecessary and would mangle
+            // legitimate JavaScript (e.g. comparison operators, template
+            // literals).  We trim whitespace and ensure the value is a
+            // valid UTF-8 string.
+            return trim(wp_check_invalid_utf8($value, true));
         }
 
         private static function can_edit_custom_scripts()
@@ -154,7 +120,16 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
             return false;
         }
 
+        var isSaving = function() {
+            var saving = select.isSavingPost && select.isSavingPost();
+            var autosaving = select.isAutosavingPost && select.isAutosavingPost();
+            return saving || autosaving;
+        };
+
         var sync = function() {
+            if (isSaving()) {
+                return;
+            }
             dispatch.editPost({
                 meta: {
                     _maxi_custom_js_header: headerField.value,
@@ -164,6 +139,9 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
         };
 
         var debouncedSync = function() {
+            if (isSaving()) {
+                return;
+            }
             clearTimeout(timeout);
             timeout = setTimeout(sync, 200);
         };
@@ -280,7 +258,7 @@ JS;
         {
             add_meta_box(
                 'maxi-custom-scripts',
-                __('MaxiBlocks custom scripts', 'maxi-blocks'),
+                __('MaxiBlocks custom scripts and styles', 'maxi-blocks'),
                 [$this, 'render_meta_box'],
                 ['post', 'page'],
                 'normal',
@@ -295,12 +273,12 @@ JS;
             $header_script = get_post_meta($post->ID, '_maxi_custom_js_header', true);
             $footer_script = get_post_meta($post->ID, '_maxi_custom_js_footer', true);
 
-            echo '<p><strong>' . esc_html__('Header script', 'maxi-blocks') . '</strong></p>';
-            echo '<p>' . esc_html__('Add scripts for this post/page only. Printed in the <head>.', 'maxi-blocks') . '</p>';
+            echo '<p><strong>' . esc_html__('Header scripts and styles', 'maxi-blocks') . '</strong></p>';
+            echo '<p>' . esc_html__('Add code for this post/page only. Printed in the <head>. Wrap JavaScript in <script> tags and CSS in <style> tags.', 'maxi-blocks') . '</p>';
             echo '<textarea name="maxi_custom_js_header" rows="6" style="width:100%;">' . esc_textarea($header_script) . '</textarea>';
 
-            echo '<p><strong>' . esc_html__('Footer script', 'maxi-blocks') . '</strong></p>';
-            echo '<p>' . esc_html__('Add scripts for this post/page only. Printed before </body>.', 'maxi-blocks') . '</p>';
+            echo '<p><strong>' . esc_html__('Footer scripts and styles', 'maxi-blocks') . '</strong></p>';
+            echo '<p>' . esc_html__('Add code for this post/page only. Printed before </body>. Wrap JavaScript in <script> tags and CSS in <style> tags.', 'maxi-blocks') . '</p>';
             echo '<textarea name="maxi_custom_js_footer" rows="6" style="width:100%;">' . esc_textarea($footer_script) . '</textarea>';
         }
 
@@ -362,7 +340,7 @@ JS;
 
         public function add_custom_scripts_column($columns)
         {
-            $columns['maxi_custom_scripts'] = __('Maxi scripts', 'maxi-blocks');
+            $columns['maxi_custom_scripts'] = __('Maxi scripts/styles', 'maxi-blocks');
             return $columns;
         }
 
@@ -401,11 +379,11 @@ JS;
             echo '<fieldset class="inline-edit-col-right">';
             echo '<div class="inline-edit-col">';
             echo '<label>';
-            echo '<span class="title">' . esc_html__('Header script', 'maxi-blocks') . '</span>';
+            echo '<span class="title">' . esc_html__('Header scripts and styles', 'maxi-blocks') . '</span>';
             echo '<textarea name="maxi_quick_custom_js_header" rows="3"></textarea>';
             echo '</label>';
             echo '<label>';
-            echo '<span class="title">' . esc_html__('Footer script', 'maxi-blocks') . '</span>';
+            echo '<span class="title">' . esc_html__('Footer scripts and styles', 'maxi-blocks') . '</span>';
             echo '<textarea name="maxi_quick_custom_js_footer" rows="3"></textarea>';
             echo '</label>';
             echo '</div>';

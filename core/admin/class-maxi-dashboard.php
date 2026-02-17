@@ -1351,10 +1351,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $content .= $this->generate_setting($description, 'hide_gutenberg_responsive_preview');
 
             $description =
-                '<h4>' . __('Global header scripts', 'maxi-blocks') . '</h4>';
+                '<h4>' . __('Global header scripts and styles', 'maxi-blocks') . '</h4>';
             $description .=
                 '<p>' .
-                __('Add scripts that should load on all front-end pages in the <head> tag. Useful for analytics and tracking codes.', 'maxi-blocks') .
+                __('Add code that loads on all front-end pages in the <head> tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Useful for analytics, tracking codes, and custom CSS.', 'maxi-blocks') .
                 '</p>';
             $content .= $this->generate_setting(
                 $description,
@@ -1364,10 +1364,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             );
 
             $description =
-                '<h4>' . __('Global footer scripts', 'maxi-blocks') . '</h4>';
+                '<h4>' . __('Global footer scripts and styles', 'maxi-blocks') . '</h4>';
             $description .=
                 '<p>' .
-                __('Add scripts that should load on all front-end pages before the closing </body> tag.', 'maxi-blocks') .
+                __('Add code that loads on all front-end pages before the closing &lt;/body&gt; tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags.', 'maxi-blocks') .
                 '</p>';
             $content .= $this->generate_setting(
                 $description,
@@ -2198,7 +2198,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 str_replace('_', '-', $option) . '-visible-input';
 
             if ($type === 'textarea') {
-                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+                $escaped_value = esc_textarea($input_value);
+                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$escaped_value}</textarea>";
             } else {
                 // Always keep the name attribute for all inputs
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";

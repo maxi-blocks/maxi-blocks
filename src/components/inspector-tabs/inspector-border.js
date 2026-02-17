@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 import SettingTabsControl from '@components/setting-tabs-control';
 import BorderControl from '@components/border-control';
 import ToggleSwitch from '@components/toggle-switch';
-import { getAttributeKey, getGroupAttributes } from '@extensions/styles';
+import { getGroupAttributes } from '@extensions/styles';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
 /**
  * Component
@@ -50,21 +50,23 @@ const border = ({
 				? '.maxi-background-displayer'
 				: ''
 			: inlineTarget;
-	const borderIndicatorProp = getAttributeKey(
-		'border-style',
-		false,
-		prefix,
-		deviceType
+	// Get all border-related attributes for proper indicator detection
+	const groupAttributes = ['border', 'borderWidth', 'borderRadius'];
+	const normalIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, false, prefix)
 	);
+	const hoverIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, true, prefix)
+	).filter(key => !normalIndicatorProps.includes(key));
 
 	return {
 		label: __('Border', 'maxi-blocks'),
-		indicatorProps: [borderIndicatorProp],
 		content: (
 			<SettingTabsControl
 				items={[
 					{
 						label: __('Normal', 'maxi-blocks'),
+						indicatorProps: normalIndicatorProps,
 						content: (
 							<BorderControl
 								{...getGroupAttributes(
@@ -92,6 +94,8 @@ const border = ({
 					},
 					{
 						label: __('Hover', 'maxi-blocks'),
+						indicatorProps: hoverStatus ? hoverIndicatorProps : [],
+						extraIndicators: [`${prefix}border-status-hover`],
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -133,7 +137,6 @@ const border = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}border-status-hover`],
 					},
 					enableActiveState && {
 						label: __('Active', 'maxi-blocks'),

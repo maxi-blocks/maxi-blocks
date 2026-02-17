@@ -209,6 +209,21 @@ describe('getOrganizedAttributes', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Includes anchorLink from the advanced template anchor settings', () => {
+		const copyPasteMapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const attributes = {
+			anchorLink: 'section-anchor',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result.advanced.Anchor.anchorLink).toBe('section-anchor');
+	});
+
 	it('Ensure it works with group attributes with prefix', () => {
 		const copyPasteMapping = {
 			settings: {

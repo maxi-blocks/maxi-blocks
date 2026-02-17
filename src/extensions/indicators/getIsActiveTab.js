@@ -129,6 +129,22 @@ const getIsActiveTab = (
 		)
 			return true;
 
+		// Skip background-related attributes when background-active-media is 'none'
+		// When no background is active, palette/color/gradient attributes are irrelevant
+		if (
+			(attribute.includes('background-palette') ||
+				attribute.includes('background-color') ||
+				attribute.includes('background-gradient')) &&
+			!attribute.includes('active-media')
+		) {
+			// Extract the prefix (e.g., 'svg-', 'icon-', or empty)
+			const prefixMatch = attribute.match(/^(.*?)background-/);
+			const prefix = prefixMatch ? prefixMatch[1] : '';
+			// Check all breakpoints for active-media being 'none'
+			const activeMediaAttr = `${prefix}background-active-media-general`;
+			if (currentAttributes[activeMediaAttr] === 'none') return true;
+		}
+
 		// Treat CSS initial values as cleared for flex properties when no default
 		if (
 			defaultAttributes[attribute] === undefined &&

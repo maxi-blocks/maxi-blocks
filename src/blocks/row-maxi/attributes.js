@@ -66,10 +66,6 @@ const attributes = {
 	...attributesData.advancedCss,
 	...{
 		...attributesData.flex,
-		'flex-wrap-general': {
-			type: 'string',
-			default: 'wrap',
-		},
 		'row-gap-general': {
 			type: 'number',
 			default: 20,

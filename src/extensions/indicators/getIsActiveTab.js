@@ -13,7 +13,7 @@ import { getBlockData } from '@extensions/attributes';
  * represent the browser's default behaviour.
  */
 const cssInitialValues = {
-	'flex-wrap': ['nowrap'],
+	'flex-wrap': ['nowrap', 'wrap'],
 	'flex-direction': ['row'],
 	'justify-content': ['normal', 'flex-start'],
 	'align-items': ['normal', 'stretch'],

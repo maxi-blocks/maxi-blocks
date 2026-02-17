@@ -269,7 +269,9 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val => (val ? onChangeValue('auto') : onReset())}
+					onChange={val =>
+						val ? onChangeValue?.('auto') : onReset?.()
+					}
 				/>
 			)}
 			<BaseControl
@@ -365,7 +367,7 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal, {
+											onChangeValue?.(newVal, {
 												inline: enableUnit
 													? { unit }
 													: {},
@@ -446,7 +448,7 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal, {
+											onChangeValue?.(newVal, {
 												inline: enableUnit
 													? { unit }
 													: {},
@@ -499,7 +501,7 @@ const AdvancedNumberControl = props => {
 										latestValueRef.current =
 											clampedValue.toString();
 										setCurrentValue(clampedValue);
-										onChangeValue(clampedValue, {
+										onChangeValue?.(clampedValue, {
 											inline: { unit: val },
 										});
 										handleChange(
@@ -508,7 +510,7 @@ const AdvancedNumberControl = props => {
 											optionType
 										);
 									}
-									onChangeUnit(val);
+									onChangeUnit?.(val);
 								}}
 							/>
 						)}
@@ -522,10 +524,10 @@ const AdvancedNumberControl = props => {
 								onReset={() => {
 									setCurrentValue(defaultValue);
 									latestValueRef.current = defaultValue;
-									onChangeValue(defaultValue, {
+									onChangeValue?.(defaultValue, {
 										inline: enableUnit ? { unit } : {},
 									});
-									onReset();
+									onReset?.();
 								}}
 								isSmall={resetButtonSize === 'small'}
 								isLarge={resetButtonSize === 'large'}

@@ -267,8 +267,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		tagName,
 		className: classes,
 		ref,
-		id: uniqueID,
 		key: `maxi-block-${uniqueID}`,
+		uniqueid: uniqueID,
 		uniqueID,
 		anchorLink,
 		background,
@@ -277,6 +277,9 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isDisabled,
 		showLoader,
 		isSave,
+		...(isSave && {
+			id: uniqueID,
+		}),
 		...(!isSave &&
 			INNER_BLOCKS.includes(blockName) && {
 				onDragLeave,

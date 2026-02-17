@@ -56,7 +56,7 @@ const MainBlock = forwardRef(
 
 		return (
 			// eslint-disable-next-line react-hooks/rules-of-hooks
-			<TagName uniqueid={uniqueID} {...useBlockProps({ ...props, ref })}>
+			<TagName {...useBlockProps({ ...props, ref })}>
 				{isDisabled && !isChild && (
 					<DisabledMaxiBlock
 						key={`maxi-block-disabled__${uniqueID}`}

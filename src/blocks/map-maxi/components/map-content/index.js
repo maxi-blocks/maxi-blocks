@@ -21,12 +21,40 @@ import { MapContainer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.gridlayer.googlemutant';
 
+let googleMapsPromise = null;
+
+const loadGoogleMapsApi = apiKey => {
+	if (window.google?.maps) {
+		return Promise.resolve();
+	}
+
+	if (!googleMapsPromise) {
+		googleMapsPromise = new Promise((resolve, reject) => {
+			const script = document.createElement('script');
+			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
+			script.async = true;
+			script.defer = true;
+			script.onload = resolve;
+			script.onerror = () => {
+				googleMapsPromise = null;
+				reject(new Error('Failed to load Google Maps API script'));
+			};
+			document.head.appendChild(script);
+		});
+	}
+
+	return googleMapsPromise;
+};
+
 const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 	const map = useMap();
+	const [loadError, setLoadError] = useState(null);
 
 	useEffect(() => {
-		let script;
 		let googleLayer;
+		let cancelled = false;
+
+		setLoadError(null);
 
 		// Clear existing layers
 		map.eachLayer(layer => {
@@ -36,38 +64,45 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 			}
 		});
 
-		if (!window.google || !window.google.maps) {
-			script = document.createElement('script');
-			script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-			script.async = true;
-			script.defer = true;
-			script.onload = () => {
-				googleLayer = L.gridLayer
-					.googleMutant({
-						type: mapType,
-						maxZoom: 22,
-					})
-					.addTo(map);
-			};
-			document.head.appendChild(script);
-		} else {
+		const addLayer = () => {
+			if (cancelled) return;
 			googleLayer = L.gridLayer
 				.googleMutant({
 					type: mapType,
 					maxZoom: 22,
 				})
 				.addTo(map);
-		}
+		};
+
+		loadGoogleMapsApi(apiKey)
+			.then(addLayer)
+			.catch(error => {
+				console.error(
+					`Google Maps API failed to load: ${JSON.stringify(error?.message)}`
+				);
+				if (!cancelled) {
+					setLoadError(error?.message || 'Unknown error');
+				}
+			});
 
 		return () => {
-			if (script) {
-				document.head.removeChild(script);
-			}
+			cancelled = true;
 			if (googleLayer) {
 				map.removeLayer(googleLayer);
 			}
 		};
 	}, [map, apiKey, mapType]);
+
+	if (loadError) {
+		return (
+			<div className='maxi-map-block__error'>
+				{__(
+					'Google Maps failed to load. Please check your API key and try again.',
+					'maxi-blocks'
+				)}
+			</div>
+		);
+	}
 
 	return null;
 };

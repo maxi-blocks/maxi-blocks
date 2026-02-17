@@ -189,10 +189,10 @@ describe('SC settings', () => {
 		);
 
 		await page.waitForSelector(
-			'.maxi-dialog-box-buttons button:nth-child(2)'
+			'.maxi-dialog-box__buttons button:nth-child(2)'
 		);
 		await page.$eval(
-			'.maxi-dialog-box-buttons button:nth-child(2)',
+			'.maxi-dialog-box__buttons button:nth-child(2)',
 			button => button.click()
 		);
 
@@ -242,10 +242,10 @@ describe('SC settings', () => {
 		);
 
 		await page.waitForSelector(
-			'.maxi-dialog-box-buttons button:nth-child(2)'
+			'.maxi-dialog-box__buttons button:nth-child(2)'
 		);
 		await page.$eval(
-			'.maxi-dialog-box-buttons button:nth-child(2)',
+			'.maxi-dialog-box__buttons button:nth-child(2)',
 			button => button.click()
 		);
 
@@ -302,10 +302,10 @@ describe('SC settings', () => {
 		);
 
 		await page.waitForSelector(
-			'.maxi-dialog-box-buttons button:nth-child(2)'
+			'.maxi-dialog-box__buttons button:nth-child(2)'
 		);
 		await page.$eval(
-			'.maxi-dialog-box-buttons button:nth-child(2)',
+			'.maxi-dialog-box__buttons button:nth-child(2)',
 			button => button.click()
 		);
 

@@ -69,6 +69,14 @@ describe('style-cards state transitions', () => {
 		expect(nextStyleCards.sc_maxi.status).toBe('');
 	});
 
+	it('sets all cards inactive when active key does not exist', () => {
+		const styleCards = getStyleCardsFixture();
+		const nextStyleCards = setActiveCard(styleCards, 'sc_missing');
+
+		expect(nextStyleCards.sc_maxi.status).toBe('');
+		expect(nextStyleCards.sc_custom.status).toBe('');
+	});
+
 	it('merges custom colors without dropping unrelated properties', () => {
 		const styleCards = getStyleCardsFixture();
 		const customColors = [
@@ -127,6 +135,14 @@ describe('style-cards state transitions', () => {
 		expect(nextStyleCards.sc_maxi).not.toHaveProperty('selected');
 	});
 
+	it('removes selected from all cards when selected key does not exist', () => {
+		const styleCards = getStyleCardsFixture();
+		const nextStyleCards = setSelectedCard(styleCards, 'sc_missing');
+
+		expect(nextStyleCards.sc_maxi).not.toHaveProperty('selected');
+		expect(nextStyleCards.sc_custom).not.toHaveProperty('selected');
+	});
+
 	it('upserts card payload while preserving existing card values', () => {
 		const styleCards = getStyleCardsFixture();
 		const nextStyleCards = upsertCard(styleCards, 'sc_custom', {
@@ -135,5 +151,16 @@ describe('style-cards state transitions', () => {
 
 		expect(nextStyleCards.sc_custom.name).toBe('Custom');
 		expect(nextStyleCards.sc_custom.gutenberg_blocks_status).toBe(false);
+	});
+
+	it('creates a new card entry when upserting with a new key', () => {
+		const styleCards = getStyleCardsFixture();
+		const nextStyleCards = upsertCard(styleCards, 'sc_new', {
+			gutenberg_blocks_status: true,
+		});
+
+		expect(nextStyleCards.sc_new).toEqual({
+			gutenberg_blocks_status: true,
+		});
 	});
 });

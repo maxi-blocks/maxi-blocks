@@ -29,6 +29,7 @@ import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '@extensions/style-cards';
 import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
 import {
+	mergeWithStandardStyleCard,
 	setActiveCard,
 	setCardStatus,
 	updateCardCustomColors,
@@ -195,7 +196,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
-			const isUserCreatedSC = selectedSCValue?.type === 'user';
+			const isUserCreatedSC = getIsUserCreatedStyleCard(selectedSCValue);
 			setIsTemplate(!isUserCreatedSC);
 			setShowCopyCardDialog(false);
 
@@ -370,7 +371,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		);
 
 		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
-		const nextStyleCards = setActiveCard(styleCards, selectedSCKey);
+		const nextStyleCards = setActiveCard(
+			mergeWithStandardStyleCard(styleCards),
+			selectedSCKey
+		);
 
 		saveMaxiStyleCards(nextStyleCards, true);
 		saveSCStyles(true);

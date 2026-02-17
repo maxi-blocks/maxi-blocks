@@ -3,44 +3,25 @@
  */
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import {
+	mergeWithStandardStyleCard,
 	setActiveCard,
 	setSelectedCard,
 } from '@extensions/style-cards/stateTransitions';
 import controls from './controls';
-import standardSC from '@maxi-core/defaults/defaultSC.json';
-
-/**
- * External dependencies
- */
-import { cloneDeep, merge } from 'lodash';
-
-const mergeWithStandardStyleCard = styleCards =>
-	Object.entries(cloneDeep(styleCards)).reduce(
-		(mergedStyleCards, [key, value]) => {
-			const standardMerge = cloneDeep(standardSC?.sc_maxi);
-			const mergeWith = cloneDeep(value);
-			mergedStyleCards[key] = merge(standardMerge, mergeWith);
-
-			return mergedStyleCards;
-		},
-		{}
-	);
 
 export const getNewActiveStyleCards = (styleCards, cardKey) => {
 	return setActiveCard(mergeWithStandardStyleCard(styleCards), cardKey);
 };
 
 export const getNewSelectedStyleCards = (styleCards, cardKey) => {
-	return setSelectedCard(cloneDeep(styleCards), cardKey);
+	return setSelectedCard(styleCards, cardKey);
 };
 
 export const removeStyleCard = (styleCards, cardKey) => {
 	const newStyleCards = getNewActiveStyleCards(styleCards, 'sc_maxi');
-	const nextStyleCards = { ...newStyleCards };
+	delete newStyleCards[cardKey];
 
-	delete nextStyleCards[cardKey];
-
-	return nextStyleCards;
+	return newStyleCards;
 };
 
 function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
@@ -59,17 +40,19 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 				styleCards: action.styleCards,
 				...(action.isUpdate && { savedStyleCards: action.styleCards }),
 			};
-		case 'SET_ACTIVE_STYLE_CARD':
-			controls.SAVE_STYLE_CARDS(
-				getNewActiveStyleCards(state.styleCards, action.cardKey)
+		case 'SET_ACTIVE_STYLE_CARD': {
+			const newActiveStyleCards = getNewActiveStyleCards(
+				state.styleCards,
+				action.cardKey
 			);
+
+			controls.SAVE_STYLE_CARDS(newActiveStyleCards);
+
 			return {
 				...state,
-				styleCards: getNewActiveStyleCards(
-					state.styleCards,
-					action.cardKey
-				),
+				styleCards: newActiveStyleCards,
 			};
+		}
 		case 'SET_SELECTED_STYLE_CARD':
 			return {
 				...state,

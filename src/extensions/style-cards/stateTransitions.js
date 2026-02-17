@@ -1,6 +1,26 @@
+/**
+ * External dependencies
+ */
+import { cloneDeep, merge } from 'lodash';
+
+/**
+ * Internal dependencies
+ */
+import standardSC from '@maxi-core/defaults/defaultSC.json';
+
 const ACTIVE_STATUS = 'active';
 
 const getCardStatus = isActive => (isActive ? ACTIVE_STATUS : '');
+const omitSelected = ({ selected, ...card }) => card;
+
+export const mergeWithStandardStyleCard = (styleCards = {}) =>
+	Object.entries(styleCards).reduce((mergedStyleCards, [key, value]) => {
+		const standardMerge = cloneDeep(standardSC?.sc_maxi);
+		const mergeWith = cloneDeep(value);
+		mergedStyleCards[key] = merge(standardMerge, mergeWith);
+
+		return mergedStyleCards;
+	}, {});
 
 export const setCardStatus = (styleCards = {}, cardKey, isActive) => {
 	if (!styleCards?.[cardKey]) return { ...styleCards };
@@ -36,8 +56,7 @@ export const setSelectedCard = (styleCards = {}, cardKey) => {
 			return nextStyleCards;
 		}
 
-		nextStyleCards[key] = { ...value };
-		delete nextStyleCards[key].selected;
+		nextStyleCards[key] = omitSelected(value);
 
 		return nextStyleCards;
 	}, {});
@@ -45,9 +64,6 @@ export const setSelectedCard = (styleCards = {}, cardKey) => {
 
 const getToneCardWithCustomColors = (toneCard = {}, customColors = []) => ({
 	...toneCard,
-	defaultStyleCard: {
-		...(toneCard.defaultStyleCard || {}),
-	},
 	styleCard: {
 		...(toneCard.styleCard || {}),
 		color: {
@@ -64,7 +80,6 @@ export const updateCardCustomColors = (
 ) => {
 	if (!styleCards?.[cardKey]) return { ...styleCards };
 
-	const customColors = [...colors];
 	const card = styleCards[cardKey];
 
 	return {
@@ -73,10 +88,10 @@ export const updateCardCustomColors = (
 			...card,
 			color: {
 				...(card.color || {}),
-				customColors: [...customColors],
+				customColors: [...colors],
 			},
-			light: getToneCardWithCustomColors(card.light, customColors),
-			dark: getToneCardWithCustomColors(card.dark, customColors),
+			light: getToneCardWithCustomColors(card.light, colors),
+			dark: getToneCardWithCustomColors(card.dark, colors),
 		},
 	};
 };

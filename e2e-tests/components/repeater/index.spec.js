@@ -212,7 +212,7 @@ describe('Repeater', () => {
 		await page.waitForTimeout(150);
 
 		// Click on cancel button
-		await page.$eval('.maxi-dialog-box-buttons button', button =>
+		await page.$eval('.maxi-dialog-box__buttons button', button =>
 			button.click()
 		);
 
@@ -228,7 +228,7 @@ describe('Repeater', () => {
 		await page.waitForTimeout(150);
 
 		// Click on confirm button
-		await page.$$eval('.maxi-dialog-box-buttons button', buttons =>
+		await page.$$eval('.maxi-dialog-box__buttons button', buttons =>
 			buttons[1].click()
 		);
 

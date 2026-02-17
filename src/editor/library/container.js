@@ -1231,8 +1231,8 @@ const LibraryContainer = props => {
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
 	useEffect(() => {
-		masonryGenerator('patterns');
-	}, [masonryGenerator]);
+		masonryGenerator(type);
+	}, [type]);
 
 	const maxiPreviewIframe = (url, title) => {
 		return (
@@ -1321,7 +1321,7 @@ const LibraryContainer = props => {
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__svg-icon__content-svg-icon'>
 								<Stats translations={resultsCount} />
-								<InfiniteHits hitComponent={svgResults} />
+								<InfiniteHits hitComponent={svgResults} type={type} />
 							</div>
 						</div>
 					</InstantSearch>
@@ -1388,7 +1388,7 @@ const LibraryContainer = props => {
 							)}
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
-								<InfiniteHits hitComponent={svgShapeResults} />
+								<InfiniteHits hitComponent={svgShapeResults} type={type} />
 							</div>
 						</div>
 					</div>
@@ -1479,7 +1479,7 @@ const LibraryContainer = props => {
 						<div className='maxi-cloud-container__content-svg-shape'>
 							<div className='maxi-cloud-container__sc__content-sc'>
 								<Stats translations={resultsCount} />
-								<InfiniteHits hitComponent={svgShapeResults} />
+								<InfiniteHits hitComponent={svgShapeResults} type={type} />
 							</div>
 						</div>
 					</div>
@@ -1661,7 +1661,7 @@ const LibraryContainer = props => {
 						</div>
 						<div className='maxi-cloud-container__patterns__content-patterns'>
 							<Stats translations={resultsCount} />
-							<InfiniteHits hitComponent={patternsResults} />
+							<InfiniteHits hitComponent={patternsResults} type={type} />
 						</div>
 					</InstantSearch>
 				</div>
@@ -1693,7 +1693,7 @@ const LibraryContainer = props => {
 						</div>
 						<div className='maxi-cloud-container__sc__content-sc'>
 							<Stats translations={resultsCount} />
-							<InfiniteHits hitComponent={scResults} />
+							<InfiniteHits hitComponent={scResults} type={type} />
 						</div>
 					</InstantSearch>
 				</div>

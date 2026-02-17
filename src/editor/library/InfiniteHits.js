@@ -34,7 +34,7 @@ class InfiniteHits extends Component {
 	}
 
 	scheduleLayout = () => {
-		window.requestAnimationFrame(() => masonryGenerator('patterns'));
+		window.requestAnimationFrame(() => masonryGenerator(this.props.type));
 	};
 
 	onSentinelIntersection = entries => {
@@ -43,7 +43,7 @@ class InfiniteHits extends Component {
 		entries.forEach(entry => {
 			if (entry.isIntersecting && hasMore) {
 				refineNext();
-				masonryGenerator('patterns');
+				masonryGenerator(this.props.type);
 			}
 		});
 	};
@@ -81,6 +81,7 @@ InfiniteHits.propTypes = {
 	hits: PropTypes.arrayOf(PropTypes.object).isRequired,
 	hasMore: PropTypes.bool.isRequired,
 	refineNext: PropTypes.func.isRequired,
+	type: PropTypes.string,
 };
 
 export default connectInfiniteHits(InfiniteHits);

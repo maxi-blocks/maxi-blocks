@@ -8,6 +8,7 @@
 	display: flex;
 	align-items: center;
 }
+
 .maxi-dialog-box__overlay {
 	position: fixed;
 	width: 100%;
@@ -31,52 +32,61 @@
 	margin: auto;
 	background: var(--maxi-white);
 	animation: scale 0.2s ease-in-out;
-	.maxi-dialog-close-button {
+
+	.maxi-dialog-box__close-button {
 		position: absolute;
 		top: -10px;
 		right: -10px;
+
 		.maxi-components-button {
 			min-width: 20px;
 			height: 20px;
 			padding: 0 0 1px;
 			background-color: rgba(var(--maxi-active-sc-color), 1);
 			border-radius: 50%;
+
 			&:hover {
 				background-color: var(--maxi-black);
 			}
+
 			path {
 				stroke: var(--maxi-white);
 			}
 		}
 	}
 }
+
 @keyframes scale {
+
 	0% {
 		opacity: 0;
 		transform: scale(0.9);
 	}
+
 	100% {
 		opacity: 1;
 		transform: scale(1);
 	}
 }
-.maxi-dialog-box-title h4 {
+
+.maxi-dialog-box__title h4 {
 	font-size: 20px;
 	margin: 0;
 }
-.maxi-dialog-box-message {
+
+.maxi-dialog-box__message {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	height: calc(100% - 50px);
 	padding: 10px 0;
 	color: var(--maxi-black);
-	font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+	font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
 	font-size: 12px;
 	text-align: center;
 }
 
-.maxi-dialog-box-buttons {
+.maxi-dialog-box__buttons {
 	display: flex;
 	column-gap: 25px;
 
@@ -85,7 +95,7 @@
 		border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 5px !important;
 		color: var(--maxi-black);
-		font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
+		font-family: Inter, Helvetica, Arial, Lucida, sans-serif !important;
 		font-size: 12px;
 		transition: all 0.1s;
 

@@ -2,6 +2,10 @@
  * Internal dependencies
  */
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
+import {
+	setActiveCard,
+	setSelectedCard,
+} from '@extensions/style-cards/stateTransitions';
 import controls from './controls';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
 
@@ -10,44 +14,33 @@ import standardSC from '@maxi-core/defaults/defaultSC.json';
  */
 import { cloneDeep, merge } from 'lodash';
 
+const mergeWithStandardStyleCard = styleCards =>
+	Object.entries(cloneDeep(styleCards)).reduce(
+		(mergedStyleCards, [key, value]) => {
+			const standardMerge = cloneDeep(standardSC?.sc_maxi);
+			const mergeWith = cloneDeep(value);
+			mergedStyleCards[key] = merge(standardMerge, mergeWith);
+
+			return mergedStyleCards;
+		},
+		{}
+	);
+
 export const getNewActiveStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = cloneDeep(styleCards);
-
-	Object.entries(newStyleCards).forEach(([key, value]) => {
-		const standardMerge = cloneDeep(standardSC?.sc_maxi);
-		const mergeWith = cloneDeep(value);
-		const newSCvalue = merge(standardMerge, mergeWith);
-		newStyleCards[key] = { ...newSCvalue, status: '' };
-		if (key === cardKey) {
-			newStyleCards[key] = {
-				...newSCvalue,
-				status: 'active',
-			};
-		}
-	});
-
-	return newStyleCards;
+	return setActiveCard(mergeWithStandardStyleCard(styleCards), cardKey);
 };
 
 export const getNewSelectedStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = cloneDeep(styleCards);
-
-	Object.entries(newStyleCards).forEach(([key, value]) => {
-		if (key === cardKey) newStyleCards[key] = { ...value, selected: true };
-		else delete newStyleCards[key].selected;
-	});
-
-	return newStyleCards;
+	return setSelectedCard(cloneDeep(styleCards), cardKey);
 };
 
 export const removeStyleCard = (styleCards, cardKey) => {
-	const newStyleCards = { ...getNewActiveStyleCards(styleCards, 'sc_maxi') };
+	const newStyleCards = getNewActiveStyleCards(styleCards, 'sc_maxi');
+	const nextStyleCards = { ...newStyleCards };
 
-	Object.keys(newStyleCards).forEach(key => {
-		if (key === cardKey) delete newStyleCards[key];
-	});
+	delete nextStyleCards[cardKey];
 
-	return newStyleCards;
+	return nextStyleCards;
 };
 
 function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {

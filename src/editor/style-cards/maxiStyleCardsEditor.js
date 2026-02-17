@@ -28,6 +28,12 @@ import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '@extensions/style-cards';
 import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
+import {
+	setActiveCard,
+	setCardStatus,
+	updateCardCustomColors,
+	upsertCard,
+} from '@extensions/style-cards/stateTransitions';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
 
@@ -171,11 +177,13 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	);
 	const [currentSCStyle, setCurrentSCStyle] = useState('light');
 
-	const getIsUserCreatedStyleCard = (card = selectedSCValue) => {
+	const getIsUserCreatedStyleCard = card => {
 		return card?.type === 'user';
 	};
 
-	const [isTemplate, setIsTemplate] = useState(!getIsUserCreatedStyleCard());
+	const [isTemplate, setIsTemplate] = useState(
+		!getIsUserCreatedStyleCard(selectedSCValue)
+	);
 	const [showCopyCardDialog, setShowCopyCardDialog] = useState(false);
 	const [activeSCColour, setActiveSCColour] = useState(
 		getActiveColourFromSC(activeStyleCard, 4)
@@ -187,7 +195,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
-			const isUserCreatedSC = getIsUserCreatedStyleCard();
+			const isUserCreatedSC = selectedSCValue?.type === 'user';
 			setIsTemplate(!isUserCreatedSC);
 			setShowCopyCardDialog(false);
 
@@ -198,7 +206,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				[];
 			setOriginalCustomColors(getShapedCustomColors(rawCustomColors));
 		}
-	}, [selectedSCKey, activeSCColour]);
+	}, [selectedSCKey, selectedSCValue, activeSCColour]);
 
 	const canBeSaved = keySC => {
 		// Check if style card exists in both current and saved states
@@ -263,39 +271,18 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		let newSC = { ...selectedSCValue };
 		// Special case for customColors
 		if (type === 'color' && 'customColors' in obj) {
-			// Create the color object if it doesn't exist
-			if (!newSC.color) {
-				newSC.color = {};
-			}
-			newSC.color.customColors = [...obj.customColors];
-
-			// Ensure light styleCard has the structure
-			if (!newSC.light)
-				newSC.light = { styleCard: {}, defaultStyleCard: {} };
-			if (!newSC.light.styleCard) newSC.light.styleCard = {};
-			if (!newSC.light.styleCard.color) newSC.light.styleCard.color = {};
-
-			// Ensure dark styleCard has the structure
-			if (!newSC.dark)
-				newSC.dark = { styleCard: {}, defaultStyleCard: {} };
-			if (!newSC.dark.styleCard) newSC.dark.styleCard = {};
-			if (!newSC.dark.styleCard.color) newSC.dark.styleCard.color = {};
-
-			// Set the customColors in both light and dark styleCards
-			newSC.light.styleCard.color.customColors = [...obj.customColors];
-			newSC.dark.styleCard.color.customColors = [...obj.customColors];
-
-			// Create a new styleCards object with the updated SC
-			const newStyleCards = {
-				...styleCards,
-				[selectedSCKey]: newSC,
-			};
+			const nextStyleCards = updateCardCustomColors(
+				styleCards,
+				selectedSCKey,
+				obj.customColors
+			);
+			const nextSelectedSC = nextStyleCards[selectedSCKey];
 
 			// This updates the UI styleCards state but doesn't save to database
-			saveMaxiStyleCards(newStyleCards);
+			saveMaxiStyleCards(nextStyleCards);
 
 			// Update the editor preview
-			updateSCOnEditor(newSC, activeSCColour, [document], true);
+			updateSCOnEditor(nextSelectedSC, activeSCColour, [document], true);
 
 			return;
 		}
@@ -383,15 +370,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		);
 
 		setActiveSCColour(getActiveColourFromSC(selectedSCValue, 4));
-		const newStyleCards = cloneDeep(styleCards);
+		const nextStyleCards = setActiveCard(styleCards, selectedSCKey);
 
-		Object.entries(newStyleCards).forEach(([key, value]) => {
-			if (key === selectedSCKey)
-				newStyleCards[key] = { ...value, status: 'active' };
-			else newStyleCards[key] = { ...value, status: '' };
-		});
-
-		saveMaxiStyleCards(newStyleCards, true);
+		saveMaxiStyleCards(nextStyleCards, true);
 		saveSCStyles(true);
 
 		// Clear CSS variable cache after applying style card
@@ -461,52 +442,21 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					});
 
 					finalCustomColors = getShapedCustomColors(uiCustomColors);
-					console.info(
-						'[MaxiBlocks] Custom colors fetched from DOM as fallback',
-						finalCustomColors.length
-					);
 				}
 			}
 		}
 
-		const updatedSCValue = { ...selectedSCValue };
-
-		if (!updatedSCValue.color) updatedSCValue.color = {};
-		updatedSCValue.color.customColors = [...finalCustomColors];
-
-		if (!updatedSCValue.light)
-			updatedSCValue.light = {
-				styleCard: { color: {} },
-				defaultStyleCard: {},
-			};
-		if (!updatedSCValue.light.styleCard)
-			updatedSCValue.light.styleCard = { color: {} };
-		if (!updatedSCValue.light.styleCard.color)
-			updatedSCValue.light.styleCard.color = {};
-		updatedSCValue.light.styleCard.color.customColors = [
-			...finalCustomColors,
-		];
-
-		if (!updatedSCValue.dark)
-			updatedSCValue.dark = {
-				styleCard: { color: {} },
-				defaultStyleCard: {},
-			};
-		if (!updatedSCValue.dark.styleCard)
-			updatedSCValue.dark.styleCard = { color: {} };
-		if (!updatedSCValue.dark.styleCard.color)
-			updatedSCValue.dark.styleCard.color = {};
-		updatedSCValue.dark.styleCard.color.customColors = [
-			...finalCustomColors,
-		];
-
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
-				...updatedSCValue,
-				...{ status: isChosenActive ? 'active' : '' },
-			},
-		};
+		const styleCardsWithCustomColors = updateCardCustomColors(
+			styleCards,
+			selectedSCKey,
+			finalCustomColors
+		);
+		const nextStyleCards = setCardStatus(
+			styleCardsWithCustomColors,
+			selectedSCKey,
+			isChosenActive
+		);
+		const updatedSCValue = nextStyleCards[selectedSCKey];
 
 		if (isChosenActive) {
 			setActiveSCColour(getActiveColourFromSC(updatedSCValue, 4));
@@ -517,7 +467,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		}
 
 		// Save the updated style cards including the new colors
-		saveMaxiStyleCards(newStyleCards, true);
+		saveMaxiStyleCards(nextStyleCards, true);
 		saveSCStyles(isChosenActive);
 
 		// Update originalCustomColors to match the newly saved colors
@@ -535,16 +485,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	};
 
 	const onChangeGutenbergBlocksStatus = value => {
-		const newStyleCards = {
-			...styleCards,
-			[selectedSCKey]: {
-				...selectedSCValue,
-				gutenberg_blocks_status: value,
-			},
-		};
+		const nextStyleCards = upsertCard(styleCards, selectedSCKey, {
+			gutenberg_blocks_status: value,
+		});
 
-		saveMaxiStyleCards(newStyleCards);
-		updateSCOnEditor(newStyleCards[selectedSCKey], activeSCColour);
+		saveMaxiStyleCards(nextStyleCards);
+		updateSCOnEditor(nextStyleCards[selectedSCKey], activeSCColour);
 	};
 
 	const [cardAlreadyExists, setCardAlreadyExists] = useState(false);
@@ -800,15 +746,14 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 									!canBeRemoved(selectedSCKey, activeSCKey)
 								}
 								buttonClassName='maxi-style-cards__sc__more-sc--delete has-tooltip'
-								buttonChildren={
-									<>
-										<span className='tooltip'>
-											{__('Delete', 'maxi-blocks')}
-										</span>
-										<Icon icon={SCDelete} />
-									</>
-								}
-							/>
+							>
+								<>
+									<span className='tooltip'>
+										{__('Delete', 'maxi-blocks')}
+									</span>
+									<Icon icon={SCDelete} />
+								</>
+							</DialogBox>
 						</div>
 					</div>
 					<div className='maxi-style-cards__sc__actions edit-activate'>
@@ -842,20 +787,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 								!canBeApplied(selectedSCKey, activeSCKey)
 							}
 							buttonClassName='maxi-style-cards__sc__actions--apply'
-							buttonChildren={
-								<>
-									{(isTemplate ||
-										!canBeSaved(selectedSCKey)) &&
-										__('Activate now', 'maxi-blocks')}
-									{!isTemplate &&
-										canBeSaved(selectedSCKey) &&
-										__(
-											'Save and activate now',
-											'maxi-blocks'
-										)}
-								</>
-							}
-						/>
+						>
+							<>
+								{(isTemplate || !canBeSaved(selectedSCKey)) &&
+									__('Activate now', 'maxi-blocks')}
+								{!isTemplate &&
+									canBeSaved(selectedSCKey) &&
+									__('Save and activate now', 'maxi-blocks')}
+							</>
+						</DialogBox>
 					</div>
 					{!isTemplate && (
 						<ToggleSwitch

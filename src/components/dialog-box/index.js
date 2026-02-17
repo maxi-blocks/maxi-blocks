@@ -25,7 +25,7 @@ const DialogBox = props => {
 		onConfirm,
 		buttonDisabled,
 		buttonClassName,
-		buttonChildren,
+		children,
 		isHidden: isHiddenProp,
 		setIsHidden: setIsHiddenProp,
 	} = props;
@@ -41,7 +41,7 @@ const DialogBox = props => {
 			: document.getElementById('site-editor');
 
 	return isHidden ? (
-		buttonChildren ? (
+		children ? (
 			<Button
 				disabled={buttonDisabled}
 				className={buttonClassName}
@@ -49,7 +49,7 @@ const DialogBox = props => {
 					setIsHidden(false);
 				}}
 			>
-				{buttonChildren}
+				{children}
 			</Button>
 		) : null
 	) : (
@@ -57,11 +57,11 @@ const DialogBox = props => {
 			<div className='maxi-dialog-box'>
 				<div className='maxi-dialog-box__overlay' />
 				<div className='maxi-dialog-box__content'>
-					<div className='maxi-dialog-box-title'>
+					<div className='maxi-dialog-box__title'>
 						<Icon icon={dialogIcon} />
 					</div>
-					<div className='maxi-dialog-box-message'>{message}</div>
-					<div className='maxi-dialog-box-buttons'>
+					<div className='maxi-dialog-box__message'>{message}</div>
+					<div className='maxi-dialog-box__buttons'>
 						<Button onClick={() => setIsHidden(true)}>
 							{cancelLabel}
 						</Button>
@@ -74,7 +74,7 @@ const DialogBox = props => {
 							{confirmLabel}
 						</Button>
 					</div>
-					<div className='maxi-dialog-close-button'>
+					<div className='maxi-dialog-box__close-button'>
 						<Button
 							label={__('Close', 'maxi-blocks')}
 							showTooltip

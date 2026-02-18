@@ -22,7 +22,6 @@ import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import getStyles from './styles';
 import onMerge from '@blocks/text-maxi/utils';
 import {
-	handleSplit,
 	onChangeRichText,
 	processContent,
 	TextContext,
@@ -83,14 +82,6 @@ class edit extends MaxiBlockComponent {
 					typingTimeoutContent => {
 						this.typingTimeoutContent = typingTimeoutContent;
 					}
-				),
-			onSplit: (value, isOriginal) =>
-				handleSplit(
-					value,
-					isOriginal,
-					attributes,
-					clientId,
-					'maxi-blocks/list-item-maxi'
 				),
 			onReplace,
 			onMerge: forward => onMerge(this.props, forward),

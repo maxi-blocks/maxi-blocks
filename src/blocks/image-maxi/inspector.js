@@ -55,7 +55,14 @@ const Inspector = props => {
 	const { selectors, categories } = customCss;
 
 	const imageData = useSelect(
-		select => select('core').getMedia(mediaID),
+		select =>
+			mediaID
+				? select('core').getEntityRecord(
+						'postType',
+						'attachment',
+						mediaID
+				  )
+				: null,
 		[mediaID]
 	);
 

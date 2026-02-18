@@ -3,7 +3,7 @@
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: block, blocks, gutenberg blocks, page builder, starter sites
 Donate link: https://ko-fi.com/maxiblocks
-Requires at least: 6.2.2
+Requires at least: 6.3
 Tested up to: 6.8
 Requires PHP: 8.0
 Stable tag: 2.1.8

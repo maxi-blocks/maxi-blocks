@@ -194,11 +194,11 @@ const MediaUploader = props => {
 };
 
 const MediaUploaderControl = withSelect((select, props) => {
-	const { getMedia } = select('core');
+	const { getEntityRecord } = select('core');
 	const { mediaID } = props;
 
 	return {
-		imageData: mediaID ? getMedia(mediaID) : null,
+		imageData: mediaID ? getEntityRecord('postType', 'attachment', mediaID) : null,
 	};
 })(MediaUploader);
 

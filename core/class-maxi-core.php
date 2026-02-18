@@ -46,8 +46,12 @@ if (!class_exists('MaxiBlocks_Core')):
                 99,
             );
 
-            // Add fonts for the editor
-            add_action('enqueue_block_editor_assets', function () {
+            // Add fonts for the editor.
+            add_action('enqueue_block_assets', function () {
+                if (!is_admin()) {
+                    return;
+                }
+
                 wp_enqueue_style('maxi-blocks-editor-font', esc_url(MAXI_PLUGIN_URL_PATH) . 'core/admin/fonts/inter/style.css');
 
                 // Add inline CSS to hide resizable handles in Site Editor if option is enabled

@@ -94,11 +94,12 @@ describe('getDCMedia', () => {
 			source_url: 'https://example.com/media.jpg',
 			caption: { rendered: 'Test Caption' },
 		};
+		const mockGetEntityRecord = jest.fn().mockResolvedValue(mockMedia);
 
 		getDCEntity.mockResolvedValue(mockPost);
 		getACFFieldContent.mockResolvedValue(mockACFField);
 		resolveSelect.mockImplementation(() => ({
-			getEntityRecord: () => Promise.resolve(mockMedia),
+			getEntityRecord: mockGetEntityRecord,
 		}));
 
 		const result = await getDCMedia(
@@ -111,6 +112,12 @@ describe('getDCMedia', () => {
 			url: 'https://example.com/media.jpg',
 			caption: 'Test Caption',
 		});
+		expect(resolveSelect).toHaveBeenCalledWith('core');
+		expect(mockGetEntityRecord).toHaveBeenCalledWith(
+			'postType',
+			'attachment',
+			456
+		);
 	});
 
 	it('should handle product media', async () => {
@@ -119,11 +126,12 @@ describe('getDCMedia', () => {
 			source_url: 'https://example.com/product.jpg',
 			caption: { rendered: 'Product Image' },
 		};
+		const mockGetEntityRecord = jest.fn().mockResolvedValue(mockMedia);
 
 		getDCEntity.mockResolvedValue(mockProduct);
 		getProductsContent.mockResolvedValue(456);
 		resolveSelect.mockImplementation(() => ({
-			getEntityRecord: () => Promise.resolve(mockMedia),
+			getEntityRecord: mockGetEntityRecord,
 		}));
 
 		const result = await getDCMedia(
@@ -136,6 +144,12 @@ describe('getDCMedia', () => {
 			url: 'https://example.com/product.jpg',
 			caption: 'Product Image',
 		});
+		expect(resolveSelect).toHaveBeenCalledWith('core');
+		expect(mockGetEntityRecord).toHaveBeenCalledWith(
+			'postType',
+			'attachment',
+			456
+		);
 	});
 
 	it('should handle regular media', async () => {
@@ -144,10 +158,11 @@ describe('getDCMedia', () => {
 			source_url: 'https://example.com/post.jpg',
 			caption: { rendered: 'Post Image' },
 		};
+		const mockGetEntityRecord = jest.fn().mockResolvedValue(mockMedia);
 
 		getDCEntity.mockResolvedValue(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getEntityRecord: () => Promise.resolve(mockMedia),
+			getEntityRecord: mockGetEntityRecord,
 		}));
 
 		const result = await getDCMedia(
@@ -160,15 +175,24 @@ describe('getDCMedia', () => {
 			url: 'https://example.com/post.jpg',
 			caption: 'Post Image',
 		});
+		expect(resolveSelect).toHaveBeenCalledWith('core');
+		expect(mockGetEntityRecord).toHaveBeenCalledWith(
+			'postType',
+			'attachment',
+			789
+		);
 	});
 
 	it('should return null when media fetch fails', async () => {
 		const mockPost = { featured_image: 789 };
 		const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+		const mockGetEntityRecord = jest
+			.fn()
+			.mockRejectedValue(new Error('Media not found'));
 
 		getDCEntity.mockResolvedValue(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getEntityRecord: () => Promise.reject(new Error('Media not found')),
+			getEntityRecord: mockGetEntityRecord,
 		}));
 
 		const result = await getDCMedia(
@@ -178,19 +202,26 @@ describe('getDCMedia', () => {
 
 		expect(result).toBeNull();
 		expect(consoleSpy).toHaveBeenCalled();
+		expect(resolveSelect).toHaveBeenCalledWith('core');
+		expect(mockGetEntityRecord).toHaveBeenCalledWith(
+			'postType',
+			'attachment',
+			789
+		);
 		consoleSpy.mockRestore();
 	});
 
-	it('should cache media data', async () => {
+	it('should cache entity data used by media resolution', async () => {
 		const mockPost = { featured_image: 789 };
 		const mockMedia = {
 			source_url: 'https://example.com/post.jpg',
 			caption: { rendered: 'Post Image' },
 		};
+		const mockGetEntityRecord = jest.fn().mockResolvedValue(mockMedia);
 
 		getDCEntity.mockResolvedValueOnce(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getEntityRecord: () => Promise.resolve(mockMedia),
+			getEntityRecord: mockGetEntityRecord,
 		}));
 
 		// First call
@@ -207,6 +238,13 @@ describe('getDCMedia', () => {
 
 		expect(result1).toEqual(result2);
 		expect(getDCEntity).toHaveBeenCalledTimes(1);
+		expect(resolveSelect).toHaveBeenCalledWith('core');
+		expect(mockGetEntityRecord).toHaveBeenCalledWith(
+			'postType',
+			'attachment',
+			789
+		);
+		expect(mockGetEntityRecord).toHaveBeenCalledTimes(2);
 	});
 
 	it('should return null when no data is available', async () => {

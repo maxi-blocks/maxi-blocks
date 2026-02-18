@@ -555,6 +555,7 @@ const AdvancedNumberControl = props => {
 						withInputField={false}
 						initialPosition={value || initial}
 						__nextHasNoMarginBottom
+						__next40pxDefaultSize
 					/>
 				)}
 			</BaseControl>

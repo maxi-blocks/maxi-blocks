@@ -25,10 +25,10 @@ const getAvatar = (user, size) => {
 };
 
 const getMediaById = async (id, type) => {
-	const { getMedia } = resolveSelect('core');
+	const { getEntityRecord } = resolveSelect('core');
 
 	try {
-		const media = await getMedia(id);
+		const media = await getEntityRecord('postType', 'attachment', id);
 		if (isNil(media)) return null;
 
 		return {

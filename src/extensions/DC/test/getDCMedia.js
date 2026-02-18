@@ -98,7 +98,7 @@ describe('getDCMedia', () => {
 		getDCEntity.mockResolvedValue(mockPost);
 		getACFFieldContent.mockResolvedValue(mockACFField);
 		resolveSelect.mockImplementation(() => ({
-			getMedia: () => Promise.resolve(mockMedia),
+			getEntityRecord: () => Promise.resolve(mockMedia),
 		}));
 
 		const result = await getDCMedia(
@@ -123,7 +123,7 @@ describe('getDCMedia', () => {
 		getDCEntity.mockResolvedValue(mockProduct);
 		getProductsContent.mockResolvedValue(456);
 		resolveSelect.mockImplementation(() => ({
-			getMedia: () => Promise.resolve(mockMedia),
+			getEntityRecord: () => Promise.resolve(mockMedia),
 		}));
 
 		const result = await getDCMedia(
@@ -147,7 +147,7 @@ describe('getDCMedia', () => {
 
 		getDCEntity.mockResolvedValue(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getMedia: () => Promise.resolve(mockMedia),
+			getEntityRecord: () => Promise.resolve(mockMedia),
 		}));
 
 		const result = await getDCMedia(
@@ -168,7 +168,7 @@ describe('getDCMedia', () => {
 
 		getDCEntity.mockResolvedValue(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getMedia: () => Promise.reject(new Error('Media not found')),
+			getEntityRecord: () => Promise.reject(new Error('Media not found')),
 		}));
 
 		const result = await getDCMedia(
@@ -190,7 +190,7 @@ describe('getDCMedia', () => {
 
 		getDCEntity.mockResolvedValueOnce(mockPost);
 		resolveSelect.mockImplementation(() => ({
-			getMedia: () => Promise.resolve(mockMedia),
+			getEntityRecord: () => Promise.resolve(mockMedia),
 		}));
 
 		// First call

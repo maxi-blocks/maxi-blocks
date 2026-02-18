@@ -29,7 +29,7 @@ const getIsActiveTab = (
 	ignoreIndicatorGroups = [],
 	indicatorContext = null
 ) => {
-	const maxiSettings = select('maxiBlocks').receiveMaxiSettings() || {};
+	const maxiSettings = select('maxiBlocks')?.receiveMaxiSettings?.() || {};
 	const { show_indicators: showIndicators } = maxiSettings;
 
 	if (!showIndicators) return false;

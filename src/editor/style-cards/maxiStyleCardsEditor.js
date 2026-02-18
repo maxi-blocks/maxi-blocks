@@ -101,7 +101,6 @@ const getShapedCustomColors = rawColorsArray => {
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const prevValues = useRef(null);
-	const prevSelectedSCMeta = useRef(null);
 
 	const selectData = useSelect(
 		select => {
@@ -199,16 +198,6 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				selectedSCValue?.light?.styleCard?.color?.customColors ||
 				selectedSCValue?.dark?.styleCard?.color?.customColors ||
 				[];
-			const nextSelectedSCMeta = {
-				key: selectedSCKey,
-				name: selectedSCValue?.name,
-				type: selectedSCValue?.type,
-				activeSCColour,
-				rawCustomColors,
-			};
-
-			if (isEqual(prevSelectedSCMeta.current, nextSelectedSCMeta)) return;
-			prevSelectedSCMeta.current = nextSelectedSCMeta;
 
 			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);

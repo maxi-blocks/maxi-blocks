@@ -27,8 +27,6 @@ export const mergeWithStandardStyleCard = (styleCards = {}) => {
 };
 
 export const setCardStatus = (styleCards = {}, cardKey, isActive) => {
-	if (!styleCards?.[cardKey]) return { ...styleCards };
-
 	return {
 		...styleCards,
 		[cardKey]: {
@@ -66,29 +64,23 @@ export const setSelectedCard = (styleCards = {}, cardKey) => {
 	}, {});
 };
 
-const getToneCardWithCustomColors = (rawToneCard, customColors = []) => {
-	const toneCard = rawToneCard ?? {};
-
-	return {
-		...toneCard,
-		styleCard: {
-			...(toneCard.styleCard || {}),
-			color: {
-				...(toneCard.styleCard?.color || {}),
-				customColors: [...customColors],
-			},
+const getToneCardWithCustomColors = (toneCard = {}, customColors = []) => ({
+	...toneCard,
+	styleCard: {
+		...(toneCard?.styleCard || {}),
+		color: {
+			...(toneCard?.styleCard?.color || {}),
+			customColors: [...customColors],
 		},
-	};
-};
+	},
+});
 
 export const updateCardCustomColors = (
 	styleCards = {},
 	cardKey,
 	colors = []
 ) => {
-	if (!styleCards?.[cardKey]) return { ...styleCards };
-
-	const card = styleCards[cardKey];
+	const card = styleCards[cardKey] || {};
 
 	return {
 		...styleCards,
@@ -105,8 +97,6 @@ export const updateCardCustomColors = (
 };
 
 export const upsertCard = (styleCards = {}, cardKey, payload = {}) => {
-	if (cardKey == null) return { ...styleCards };
-
 	return {
 		...styleCards,
 		[cardKey]: {

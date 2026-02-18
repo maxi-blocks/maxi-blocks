@@ -2,50 +2,24 @@
  * Internal dependencies
  */
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
+import {
+	mergeWithStandardStyleCard,
+	setActiveCard,
+	setSelectedCard,
+} from '@extensions/style-cards/stateTransitions';
 import controls from './controls';
-import standardSC from '@maxi-core/defaults/defaultSC.json';
-
-/**
- * External dependencies
- */
-import { cloneDeep, merge } from 'lodash';
 
 export const getNewActiveStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = cloneDeep(styleCards);
-
-	Object.entries(newStyleCards).forEach(([key, value]) => {
-		const standardMerge = cloneDeep(standardSC?.sc_maxi);
-		const mergeWith = cloneDeep(value);
-		const newSCvalue = merge(standardMerge, mergeWith);
-		newStyleCards[key] = { ...newSCvalue, status: '' };
-		if (key === cardKey) {
-			newStyleCards[key] = {
-				...newSCvalue,
-				status: 'active',
-			};
-		}
-	});
-
-	return newStyleCards;
+	return setActiveCard(mergeWithStandardStyleCard(styleCards), cardKey);
 };
 
 export const getNewSelectedStyleCards = (styleCards, cardKey) => {
-	const newStyleCards = cloneDeep(styleCards);
-
-	Object.entries(newStyleCards).forEach(([key, value]) => {
-		if (key === cardKey) newStyleCards[key] = { ...value, selected: true };
-		else delete newStyleCards[key].selected;
-	});
-
-	return newStyleCards;
+	return setSelectedCard(styleCards, cardKey);
 };
 
 export const removeStyleCard = (styleCards, cardKey) => {
-	const newStyleCards = { ...getNewActiveStyleCards(styleCards, 'sc_maxi') };
-
-	Object.keys(newStyleCards).forEach(key => {
-		if (key === cardKey) delete newStyleCards[key];
-	});
+	const newStyleCards = getNewActiveStyleCards(styleCards, 'sc_maxi');
+	delete newStyleCards[cardKey];
 
 	return newStyleCards;
 };
@@ -66,17 +40,19 @@ function reducer(state = { styleCards: {}, savedStyleCards: {} }, action) {
 				styleCards: action.styleCards,
 				...(action.isUpdate && { savedStyleCards: action.styleCards }),
 			};
-		case 'SET_ACTIVE_STYLE_CARD':
-			controls.SAVE_STYLE_CARDS(
-				getNewActiveStyleCards(state.styleCards, action.cardKey)
+		case 'SET_ACTIVE_STYLE_CARD': {
+			const newActiveStyleCards = getNewActiveStyleCards(
+				state.styleCards,
+				action.cardKey
 			);
+
+			controls.SAVE_STYLE_CARDS(newActiveStyleCards);
+
 			return {
 				...state,
-				styleCards: getNewActiveStyleCards(
-					state.styleCards,
-					action.cardKey
-				),
+				styleCards: newActiveStyleCards,
 			};
+		}
 		case 'SET_SELECTED_STYLE_CARD':
 			return {
 				...state,

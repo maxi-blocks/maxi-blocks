@@ -278,7 +278,7 @@ const ResultCard = ({
 						className='maxi-prompt-control__button'
 						onClick={handleCopy}
 					>
-						<Icon icon={copySuccess ? arrowIcon  : promptCopy} />
+						<Icon icon={copySuccess ? arrowIcon : promptCopy} />
 					</Button>
 					<Button
 						className='maxi-prompt-control__button'
@@ -312,15 +312,14 @@ const ResultCard = ({
 						confirmLabel={__('Delete', 'maxi-blocks')}
 						onConfirm={onDelete}
 						buttonClassName={`${className}__clean-history-button maxi-prompt-control__button has-tooltip`}
-						buttonChildren={
-							<>
-								<span className='tooltip'>
-									{__('Delete', 'maxi-blocks')}
-								</span>
-								<Icon icon={promptDelete} />
-							</>
-						}
-					/>
+					>
+						<>
+							<span className='tooltip'>
+								{__('Delete', 'maxi-blocks')}
+							</span>
+							<Icon icon={promptDelete} />
+						</>
+					</DialogBox>
 				</div>
 			)}
 			{isSelected && isModifyTab && (

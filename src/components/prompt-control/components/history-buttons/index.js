@@ -85,8 +85,9 @@ const HistoryButtons = ({
 					confirmLabel={__('Clean', 'maxi-blocks')}
 					onConfirm={handleHistoryClean}
 					buttonClassName={buttonClasses}
-					buttonChildren={__('Clean', 'maxi-blocks')}
-				/>
+				>
+					{__('Clean', 'maxi-blocks')}
+				</DialogBox>
 			)}
 		</div>
 	);

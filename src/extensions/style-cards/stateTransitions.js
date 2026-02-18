@@ -66,16 +66,20 @@ export const setSelectedCard = (styleCards = {}, cardKey) => {
 	}, {});
 };
 
-const getToneCardWithCustomColors = (toneCard = {}, customColors = []) => ({
-	...toneCard,
-	styleCard: {
-		...(toneCard.styleCard || {}),
-		color: {
-			...(toneCard.styleCard?.color || {}),
-			customColors: [...customColors],
+const getToneCardWithCustomColors = (rawToneCard, customColors = []) => {
+	const toneCard = rawToneCard ?? {};
+
+	return {
+		...toneCard,
+		styleCard: {
+			...(toneCard.styleCard || {}),
+			color: {
+				...(toneCard.styleCard?.color || {}),
+				customColors: [...customColors],
+			},
 		},
-	},
-});
+	};
+};
 
 export const updateCardCustomColors = (
 	styleCards = {},

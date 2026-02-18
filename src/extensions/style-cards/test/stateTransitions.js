@@ -234,6 +234,36 @@ describe('style-cards state transitions', () => {
 		).toEqual(customColors);
 	});
 
+	it('handles null tone cards when updating custom colors', () => {
+		const styleCards = {
+			sc_custom: {
+				name: 'Custom',
+				status: '',
+				color: {},
+				light: null,
+				dark: null,
+			},
+		};
+		const customColors = [
+			{ id: 20001, value: 'rgba(7, 8, 9, 1)', name: '' },
+		];
+		const nextStyleCards = updateCardCustomColors(
+			styleCards,
+			'sc_custom',
+			customColors
+		);
+
+		expect(nextStyleCards.sc_custom.color.customColors).toEqual(
+			customColors
+		);
+		expect(
+			nextStyleCards.sc_custom.light.styleCard.color.customColors
+		).toEqual(customColors);
+		expect(
+			nextStyleCards.sc_custom.dark.styleCard.color.customColors
+		).toEqual(customColors);
+	});
+
 	it('returns unchanged state when card key is missing', () => {
 		const styleCards = getStyleCardsFixture();
 		const nextStatusStyleCards = setCardStatus(

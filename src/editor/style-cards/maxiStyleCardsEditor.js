@@ -101,6 +101,7 @@ const getShapedCustomColors = rawColorsArray => {
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const prevValues = useRef(null);
+	const prevSelectedSCMeta = useRef(null);
 
 	const selectData = useSelect(
 		select => {
@@ -193,18 +194,28 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 	useEffect(() => {
 		if (selectedSCValue) {
+			const rawCustomColors =
+				selectedSCValue?.color?.customColors ||
+				selectedSCValue?.light?.styleCard?.color?.customColors ||
+				selectedSCValue?.dark?.styleCard?.color?.customColors ||
+				[];
+			const nextSelectedSCMeta = {
+				key: selectedSCKey,
+				name: selectedSCValue?.name,
+				type: selectedSCValue?.type,
+				activeSCColour,
+				rawCustomColors,
+			};
+
+			if (isEqual(prevSelectedSCMeta.current, nextSelectedSCMeta)) return;
+			prevSelectedSCMeta.current = nextSelectedSCMeta;
+
 			updateSCOnEditor(selectedSCValue, activeSCColour);
 			setStyleCardName(`${selectedSCValue?.name} - `);
 
 			const isUserCreatedSC = getIsUserCreatedStyleCard(selectedSCValue);
 			setIsTemplate(!isUserCreatedSC);
 			setShowCopyCardDialog(false);
-
-			const rawCustomColors =
-				selectedSCValue?.color?.customColors ||
-				selectedSCValue?.light?.styleCard?.color?.customColors ||
-				selectedSCValue?.dark?.styleCard?.color?.customColors ||
-				[];
 			setOriginalCustomColors(getShapedCustomColors(rawCustomColors));
 		}
 	}, [selectedSCKey, selectedSCValue, activeSCColour]);
@@ -302,29 +313,31 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			isStyleCard: true,
 		});
 
-		Object.entries(newObj).forEach(([prop, value]) => {
-			if (isTypography) {
-				if (isNil(value)) {
-					delete selectedSCValue[currentSCStyle].styleCard?.[type]?.[
-						prop
-					];
-				}
-			}
+		const currentTypeValues = newSC[currentSCStyle].styleCard?.[type] || {};
+		const nextTypeValues = Object.entries(currentTypeValues).reduce(
+			(accumulator, [prop, value]) => {
+				if (isTypography && isNil(newObj[prop])) return accumulator;
+				accumulator[prop] = value;
+				return accumulator;
+			},
+			{}
+		);
 
-			newSC = {
-				...newSC,
-				[currentSCStyle]: {
-					...newSC[currentSCStyle],
-					styleCard: {
-						...newSC[currentSCStyle].styleCard,
-						[type]: {
-							...newSC[currentSCStyle].styleCard[type],
-							[prop]: value,
-						},
-					},
-				},
-			};
+		Object.entries(newObj).forEach(([prop, value]) => {
+			if (isTypography && isNil(value)) return;
+			nextTypeValues[prop] = value;
 		});
+
+		newSC = {
+			...newSC,
+			[currentSCStyle]: {
+				...newSC[currentSCStyle],
+				styleCard: {
+					...newSC[currentSCStyle].styleCard,
+					[type]: nextTypeValues,
+				},
+			},
+		};
 
 		const newStyleCards = {
 			...styleCards,

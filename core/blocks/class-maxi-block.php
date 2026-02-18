@@ -257,6 +257,13 @@ if (!class_exists('MaxiBlocks_Block')):
             // Construct the file path
             $file_path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $this->block_name . '/block.json';
 
+            $basic_config = [
+                'api_version' => 3,
+                'editor_script' => 'maxi-blocks-block-editor',
+                'editor_style' => 'maxi-blocks-block-editor',
+                'render_callback' => [$this, 'render_block'],
+            ];
+
             // First try direct file reading
             if (file_exists($file_path) && is_readable($file_path)) {
                 $file_contents = file_get_contents($file_path);
@@ -266,12 +273,6 @@ if (!class_exists('MaxiBlocks_Block')):
                     if ($block_json === null) {
                         return false; // Handle JSON decoding error
                     }
-
-                    $basic_config = [
-                        'api_version' => 3,
-                        'editor_script' => 'maxi-blocks-block-editor',
-                        'render_callback' => [$this, 'render_block'],
-                    ];
 
                     // Add dynamic content attributes to dynamic blocks
                     $config = in_array($this->block_name, $this->dynamic_blocks)
@@ -309,12 +310,6 @@ if (!class_exists('MaxiBlocks_Block')):
                             return false;
                         }
 
-                        $basic_config = [
-                            'api_version' => 3,
-                            'editor_script' => 'maxi-blocks-block-editor',
-                            'render_callback' => [$this, 'render_block'],
-                        ];
-
                         $config = in_array($this->block_name, $this->dynamic_blocks)
                             ? array_merge($basic_config, [
                                 'attributes' => self::$dynamic_content_attributes,
@@ -345,12 +340,6 @@ if (!class_exists('MaxiBlocks_Block')):
             if ($block_json === null) {
                 return false;
             }
-
-            $basic_config = [
-                'api_version' => 3,
-                'editor_script' => 'maxi-blocks-block-editor',
-                'render_callback' => [$this, 'render_block'],
-            ];
 
             $config = in_array($this->block_name, $this->dynamic_blocks)
                 ? array_merge($basic_config, [

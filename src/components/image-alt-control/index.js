@@ -25,15 +25,11 @@ const ImageAltControl = ({
 		select => {
 			const { getEntityRecord } = select('core');
 
-			const mediaData = getEntityRecord('postType', 'attachment', mediaID) ?? {
-				alt_text: { wpAlt: '' },
-				title: { rendered: { titleAlt: '' } },
-			};
-
-			const {
-				alt_text: wpAlt,
-				title: { rendered: titleAlt },
-			} = mediaData;
+			const mediaData = mediaID
+				? getEntityRecord('postType', 'attachment', mediaID)
+				: null;
+			const wpAlt = mediaData?.alt_text ?? '';
+			const titleAlt = mediaData?.title?.rendered ?? '';
 
 			return { wpAlt, titleAlt };
 		},

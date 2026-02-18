@@ -59,7 +59,8 @@ const SliderWrapper = props => {
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
 	const iconRef = useRef(null);
-	const editor = document.querySelector('#editor');
+	const editorEl =
+		document.querySelector('.edit-site-visual-editor') || document.body;
 	let initPosition = 0;
 	let dragPosition = 0;
 
@@ -156,8 +157,8 @@ const SliderWrapper = props => {
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 
-		editor.removeEventListener('mousemove', onDragAction);
-		editor.removeEventListener('mouseup', onDragEnd);
+		editorEl.removeEventListener('mousemove', onDragAction);
+		editorEl.removeEventListener('mouseup', onDragEnd);
 	};
 
 	const onDragStart = e => {
@@ -166,8 +167,8 @@ const SliderWrapper = props => {
 			initPosition = e.touches[0].clientX;
 		} else {
 			initPosition = e.clientX;
-			editor.addEventListener('mousemove', onDragAction);
-			editor.addEventListener('mouseup', onDragEnd);
+			editorEl.addEventListener('mousemove', onDragAction);
+			editorEl.addEventListener('mouseup', onDragEnd);
 		}
 		dragPosition = initPosition;
 	};

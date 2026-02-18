@@ -257,6 +257,10 @@ JS;
 
         public function register_meta_boxes()
         {
+            if (!get_option('maxi_enable_post_custom_scripts')) {
+                return;
+            }
+
             add_meta_box(
                 'maxi-custom-scripts',
                 __('MaxiBlocks custom scripts and styles', 'maxi-blocks'),
@@ -296,7 +300,7 @@ JS;
                 echo "\n";
             }
 
-            if (is_singular(['post', 'page'])) {
+            if (get_option('maxi_enable_post_custom_scripts') && is_singular(['post', 'page'])) {
                 $post_id = get_queried_object_id();
                 if (!$post_id) {
                     return;
@@ -324,7 +328,7 @@ JS;
                 echo "\n";
             }
 
-            if (is_singular(['post', 'page'])) {
+            if (get_option('maxi_enable_post_custom_scripts') && is_singular(['post', 'page'])) {
                 $post_id = get_queried_object_id();
                 if (!$post_id) {
                     return;

@@ -1389,6 +1389,17 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'textarea',
             );
 
+            $description =
+                '<h4>' . __('Enable per-post/page custom scripts', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Show a meta box on individual post and page edit screens to add custom header/footer scripts and styles for that post or page only. When disabled, any previously saved per-post/page scripts are also suppressed on the frontend.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_enable_post_custom_scripts',
+            );
+
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
 
@@ -2443,6 +2454,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_custom_js_header_option' => $args_custom_js,
                 'maxi_custom_js_footer_option' => $args_custom_js,
                 'maxi_custom_js_admin_option' => $args_custom_js,
+                'maxi_enable_post_custom_scripts' => $args,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,

@@ -105,6 +105,7 @@ const SettingTabsControl = props => {
 		depth,
 		hasBorder = false,
 		showTooltip = false,
+		disableIndicators = false,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -226,22 +227,23 @@ const SettingTabsControl = props => {
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&
 										'maxi-tabs-control__button--nested',
-									(item.indicatorProps
-										? isActiveTab
-										: getIsActiveTab(
-												getMaxiAttrsFromChildren({
-													items: itemsIndicators,
-													blockName:
-														blockName ??
-														getBlockName(
-															getSelectedBlockClientId()
-														),
-												}),
-												item.breakpoint,
-												item.extraIndicators,
-												item.extraIndicatorsResponsive,
-												item.ignoreIndicator
-										  )) &&
+									!disableIndicators &&
+										(item.indicatorProps
+											? isActiveTab
+											: getIsActiveTab(
+													getMaxiAttrsFromChildren({
+														items: itemsIndicators,
+														blockName:
+															blockName ??
+															getBlockName(
+																getSelectedBlockClientId()
+															),
+													}),
+													item.breakpoint,
+													item.extraIndicators,
+													item.extraIndicatorsResponsive,
+													item.ignoreIndicator
+											  )) &&
 										'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {

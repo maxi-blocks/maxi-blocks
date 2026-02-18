@@ -18,6 +18,7 @@ const prompt = ({ props }) => {
 	return (
 		!isList && {
 			label: __('Maxi AI writer', 'maxi-blocks'),
+			indicatorProps: [],
 			content: (
 				<PromptControl
 					clientId={clientId}

@@ -263,6 +263,14 @@ if (class_exists('MaxiBlocks_Core')) {
 }
 
 //======================================================================
+// MaxiBlocks Custom Scripts
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-custom-scripts.php';
+if (class_exists('MaxiBlocks_Custom_Scripts')) {
+    MaxiBlocks_Custom_Scripts::register();
+}
+
+//======================================================================
 // MaxiBlocks DB
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-db.php';

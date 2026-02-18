@@ -1350,6 +1350,56 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_gutenberg_responsive_preview');
 
+            $description =
+                '<h4>' . __('Global header scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all front-end pages in the <head> tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Useful for analytics, tracking codes, and custom CSS.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_header_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Global footer scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all front-end pages before the closing &lt;/body&gt; tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_footer_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Admin (wp-admin) scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all wp-admin pages. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Only visible to logged-in users with admin access.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_admin_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Enable per-post/page custom scripts', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Show a meta box on individual post and page edit screens to add custom header/footer scripts and styles for that post or page only. When disabled, any previously saved per-post/page scripts are also suppressed on the frontend.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_enable_post_custom_scripts',
+            );
+
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
 
@@ -2172,7 +2222,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 str_replace('_', '-', $option) . '-visible-input';
 
             if ($type === 'textarea') {
-                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+                $escaped_value = esc_textarea($input_value);
+                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$escaped_value}</textarea>";
             } else {
                 // Always keep the name attribute for all inputs
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
@@ -2381,6 +2432,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ];
+            $args_custom_js = [
+                'type' => 'string',
+                'sanitize_callback' => [
+                    'MaxiBlocks_Custom_Scripts',
+                    'sanitize_scripts_code',
+                ],
+            ];
 
             // List of settings and corresponding arguments
             $settings = [
@@ -2393,6 +2451,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_tooltips' => $args,
                 'hide_fse_resizable_handles' => $args_true,
                 'hide_gutenberg_responsive_preview' => $args_true,
+                'maxi_custom_js_header_option' => $args_custom_js,
+                'maxi_custom_js_footer_option' => $args_custom_js,
+                'maxi_custom_js_admin_option' => $args_custom_js,
+                'maxi_enable_post_custom_scripts' => $args,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,

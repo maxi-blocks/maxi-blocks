@@ -46,13 +46,9 @@ if (!class_exists('MaxiBlocks_Core')):
                 99,
             );
 
-            // Add fonts and editor-only CSS for both iframe and non-iframe editors
+            // Add fonts for the editor.
             add_action('enqueue_block_assets', function () {
-                if (
-                    !is_admin() &&
-                    (!function_exists('wp_should_load_block_editor_scripts_and_styles') ||
-                        !wp_should_load_block_editor_scripts_and_styles())
-                ) {
+                if (!is_admin()) {
                     return;
                 }
 

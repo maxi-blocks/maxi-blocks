@@ -53,6 +53,17 @@ const Inspector = props => {
 		'dc-status': dcStatus,
 	} = attributes;
 	const { selectors, categories } = customCss;
+	const dimensionIndicatorProps = [
+		'imageSize',
+		'useInitSize',
+		`img-width-${deviceType}`,
+		'imageRatio',
+		'imageRatioCustom',
+		'fitParentSize',
+		`object-size-${deviceType}`,
+		`object-position-horizontal-${deviceType}`,
+		`object-position-vertical-${deviceType}`,
+	];
 
 	const imageData = useSelect(
 		select => select('core').getMedia(mediaID),
@@ -142,44 +153,46 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-									deviceType === 'general' &&
-										!attributes[
-											'image-full-width-general'
-										] && {
-											label: __(
-												'Dimension',
-												'maxi-blocks'
-											),
-											content: (
-												<DimensionTab
-													{...props}
-													imageData={imageData}
-												/>
-											),
-											extraIndicators: [
-												'imageRatio',
-												'img-width',
-											],
-										},
-									...inspectorTabs.alignment({
-										props,
-										isAlignment: true,
-										disableJustify: true,
-									}),
-									deviceType === 'general' &&
-										!SVGElement && {
-											label: __('Alt tag', 'maxi-blocks'),
-											content: (
-												<ImageAltControl
-													mediaID={mediaID}
-													altSelector={altSelector}
-													mediaAlt={mediaAlt}
-													onChange={obj => {
-														maxiSetAttributes(obj);
-													}}
-												/>
-											),
-										},
+										deviceType === 'general' &&
+											!attributes[
+												'image-full-width-general'
+											] && {
+												label: __(
+													'Dimension',
+													'maxi-blocks'
+												),
+												content: (
+													<DimensionTab
+														{...props}
+														imageData={imageData}
+													/>
+												),
+													extraIndicators: ['imageRatio'],
+													extraIndicatorsResponsive: [
+														'img-width',
+													],
+													indicatorProps: dimensionIndicatorProps,
+												},
+										...inspectorTabs.alignment({
+											props,
+											isAlignment: true,
+											disableJustify: true,
+										}),
+										deviceType === 'general' &&
+											!SVGElement && {
+												label: __('Alt tag', 'maxi-blocks'),
+												content: (
+													<ImageAltControl
+														mediaID={mediaID}
+														altSelector={altSelector}
+														mediaAlt={mediaAlt}
+														onChange={obj => {
+															maxiSetAttributes(obj);
+														}}
+													/>
+												),
+												indicatorProps: ['altSelector', 'mediaAlt'],
+											},
 									{
 										label: __('Caption', 'maxi-blocks'),
 										content: (
@@ -413,6 +426,7 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
+										indicatorProps: ['hover-type'],
 									},
 									{
 										label: __('Shape mask', 'maxi-blocks'),

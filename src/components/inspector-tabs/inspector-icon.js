@@ -75,15 +75,19 @@ const icon = ({
 
 	const groupAttributes = [
 		'icon',
-		'iconHover',
 		'iconBackgroundGradient',
 		'iconBackgroundColor',
 		'iconBorder',
-		'iconBackgroundHover',
 		'iconBorderWidth',
 		'iconBorderRadius',
 		'iconPadding',
 	];
+	const normalIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, false, prefix)
+	);
+	const hoverIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, true, prefix)
+	).filter(key => !normalIndicatorProps.includes(key));
 
 	return {
 		label,
@@ -93,6 +97,7 @@ const icon = ({
 				items={[
 					{
 						label: __('Normal state', 'maxi-blocks'),
+						indicatorProps: normalIndicatorProps,
 						content: (
 							<IconControl
 								{...getGroupAttributes(
@@ -123,6 +128,13 @@ const icon = ({
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
+						indicatorProps: hoverStatus ? hoverIndicatorProps : [],
+						extraIndicators: hoverStatus
+							? [
+									`${prefix}icon-status-hover`,
+									`${prefix}icon-status-hover-target`,
+							  ]
+							: [],
 						content: (
 							<>
 								<ManageHoverTransitions />

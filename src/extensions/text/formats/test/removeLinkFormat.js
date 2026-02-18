@@ -1,4 +1,4 @@
-import removeLinkFormat from '../removeLinkFormat';
+import removeLinkFormat from '@extensions/text/formats/removeLinkFormat';
 
 jest.mock('@wordpress/data', () => ({
 	dispatch: jest.fn(() => ({

@@ -1,11 +1,11 @@
-import getTypographyValue from '../getTypographyValue';
+import getTypographyValue from '@extensions/text/formats/getTypographyValue';
 import { getLastBreakpointAttribute } from '@extensions/styles';
-import getCustomFormatValue from '../getCustomFormatValue';
+import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue';
 
 jest.mock('@extensions/styles', () => ({
 	getLastBreakpointAttribute: jest.fn(),
 }));
-jest.mock('../getCustomFormatValue', () => jest.fn());
+jest.mock('@extensions/text/formats/getCustomFormatValue', () => jest.fn());
 
 describe('getTypographyValue', () => {
 	beforeEach(() => {

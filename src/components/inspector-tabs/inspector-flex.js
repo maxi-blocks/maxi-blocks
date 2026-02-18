@@ -38,10 +38,40 @@ const flex = ({ props }) => {
 	)
 		return null;
 
+	const flexAttrNames = [
+		'flex-grow',
+		'flex-shrink',
+		'flex-basis',
+		'flex-basis-unit',
+		'flex-wrap',
+		'justify-content',
+		'flex-direction',
+		'align-items',
+		'align-content',
+		'row-gap',
+		'row-gap-unit',
+		'column-gap',
+		'column-gap-unit',
+		'order',
+	];
+
+	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const allFlexIndicatorProps = flexAttrNames.flatMap(attr =>
+		breakpoints.map(bp => `${attr}-${bp}`)
+	);
+
 	return {
 		label: __('Flexbox', 'maxi-blocks'),
+		indicatorProps: allFlexIndicatorProps,
 		content: (
-			<ResponsiveTabsControl breakpoint={deviceType}>
+			<ResponsiveTabsControl
+				breakpoint={deviceType}
+				getIndicatorProps={(bp, isBase) =>
+					flexAttrNames.map(attr =>
+						isBase ? `${attr}-general` : `${attr}-${bp}`
+					)
+				}
+			>
 				<FlexSettingsControl
 					{...getGroupAttributes(attributes, 'flex')}
 					onChange={maxiSetAttributes}

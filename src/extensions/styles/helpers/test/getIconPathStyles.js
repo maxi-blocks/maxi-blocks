@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getIconPathStyles from '../getIconPathStyles';
+import getIconPathStyles from '@extensions/styles/helpers/getIconPathStyles';
 
 describe('getIconPathStyles', () => {
 	it('should return basic structure when no icon-stroke values are present', () => {

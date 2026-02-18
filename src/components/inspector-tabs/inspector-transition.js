@@ -248,6 +248,7 @@ const transition = ({
 
 	return {
 		label,
+		indicatorProps: ['transition', 'transition-change-all'],
 		content: Object.values(transition).every(obj => isEmpty(obj)) ? (
 			<InfoBox
 				message={__(

@@ -11,7 +11,7 @@ import { isNil } from 'lodash';
 /**
  * Internal dependencies
  */
-import isFormatActive from '../isFormatActive';
+import isFormatActive from '@extensions/text/formats/isFormatActive';
 
 jest.mock('@wordpress/rich-text', () => ({
 	getActiveFormat: jest.fn(),

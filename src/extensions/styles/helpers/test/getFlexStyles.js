@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getFlexStyles from '../getFlexStyles';
+import getFlexStyles from '@extensions/styles/helpers/getFlexStyles';
 
 jest.mock('src/extensions/styles/getLastBreakpointAttribute', () => {
 	return jest.fn(({ target, breakpoint, attributes }) => {

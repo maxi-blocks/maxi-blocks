@@ -1,4 +1,4 @@
-import getIconPositionClass from '../getIconPositionClass';
+import getIconPositionClass from '@extensions/styles/getIconPositionClass';
 
 describe('getIconPositionClass', () => {
 	it('Returns empty string when no position is provided', () => {

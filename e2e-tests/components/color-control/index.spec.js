@@ -92,7 +92,7 @@ describe('ColorControl', () => {
 			resetButton => resetButton.click()
 		);
 
-		await page.waitForTimeout(350);
+		await page.waitForTimeout(500);
 
 		expect(
 			await getAttributes('button-background-color-general')

@@ -391,6 +391,13 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		saveMaxiStyleCards(nextStyleCards, true);
 		saveSCStyles(true);
 
+		const savedCustomColors =
+			nextStyleCards[selectedSCKey]?.color?.customColors ||
+			nextStyleCards[selectedSCKey]?.light?.styleCard?.color?.customColors ||
+			nextStyleCards[selectedSCKey]?.dark?.styleCard?.color?.customColors ||
+			[];
+		setOriginalCustomColors(getShapedCustomColors(savedCustomColors));
+
 		// Clear CSS variable cache after applying style card
 		clearCSSVariableCache();
 	};
@@ -592,6 +599,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const selectedForDropdown =
 		listForDropdown[getSelectedInList(listForDropdown)];
 	const activeForDropdown = listForDropdown[getActiveInList(listForDropdown)];
+	const hasPendingChanges = canBeSaved(selectedSCKey);
 
 	const closeAllAccordions = () => {
 		const scEditor = document.getElementsByClassName(
@@ -785,7 +793,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						{!isTemplate && (
 							<Button
 								className='maxi-style-cards__sc__actions--save'
-								disabled={!canBeSaved(selectedSCKey)}
+								disabled={!hasPendingChanges}
 								onClick={saveCurrentSC}
 							>
 								{__('Save changes', 'maxi-blocks')}
@@ -805,10 +813,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							buttonClassName='maxi-style-cards__sc__actions--apply'
 						>
 							<>
-								{(isTemplate || !canBeSaved(selectedSCKey)) &&
+								{(isTemplate || !hasPendingChanges) &&
 									__('Activate now', 'maxi-blocks')}
 								{!isTemplate &&
-									canBeSaved(selectedSCKey) &&
+									hasPendingChanges &&
 									__('Save and activate now', 'maxi-blocks')}
 							</>
 						</DialogBox>

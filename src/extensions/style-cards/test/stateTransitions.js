@@ -177,20 +177,27 @@ describe('style-cards state transitions', () => {
 
 	it('toggles active status for the selected card', () => {
 		const styleCards = getStyleCardsFixture();
+		const originalStyleCards = cloneDeep(styleCards);
 
 		const activeCards = setCardStatus(styleCards, 'sc_custom', true);
 		expect(activeCards.sc_custom.status).toBe('active');
+		expect(styleCards).toEqual(originalStyleCards);
+
+		const originalActiveCards = cloneDeep(activeCards);
 
 		const inactiveCards = setCardStatus(activeCards, 'sc_custom', false);
 		expect(inactiveCards.sc_custom.status).toBe('');
+		expect(activeCards).toEqual(originalActiveCards);
 	});
 
 	it('keeps only one active card after setActiveCard', () => {
 		const styleCards = getStyleCardsFixture();
+		const originalStyleCards = cloneDeep(styleCards);
 		const nextStyleCards = setActiveCard(styleCards, 'sc_custom');
 
 		expect(nextStyleCards.sc_custom.status).toBe('active');
 		expect(nextStyleCards.sc_maxi.status).toBe('');
+		expect(styleCards).toEqual(originalStyleCards);
 	});
 
 	it('sets all cards inactive when active key does not exist', () => {
@@ -203,6 +210,7 @@ describe('style-cards state transitions', () => {
 
 	it('merges custom colors without dropping unrelated properties', () => {
 		const styleCards = getStyleCardsFixture();
+		const originalStyleCards = cloneDeep(styleCards);
 		const customColors = [
 			{ id: 10001, value: 'rgba(1, 2, 3, 1)', name: '' },
 		];
@@ -232,6 +240,7 @@ describe('style-cards state transitions', () => {
 		expect(
 			nextStyleCards.sc_custom.dark.styleCard.color.customColors
 		).toEqual(customColors);
+		expect(styleCards).toEqual(originalStyleCards);
 	});
 
 	it('handles null tone cards when updating custom colors', () => {
@@ -244,6 +253,7 @@ describe('style-cards state transitions', () => {
 				dark: null,
 			},
 		};
+		const originalStyleCards = cloneDeep(styleCards);
 		const customColors = [
 			{ id: 20001, value: 'rgba(7, 8, 9, 1)', name: '' },
 		];
@@ -262,6 +272,7 @@ describe('style-cards state transitions', () => {
 		expect(
 			nextStyleCards.sc_custom.dark.styleCard.color.customColors
 		).toEqual(customColors);
+		expect(styleCards).toEqual(originalStyleCards);
 	});
 
 	it('returns unchanged state when card key is missing', () => {
@@ -299,16 +310,19 @@ describe('style-cards state transitions', () => {
 
 	it('upserts card payload while preserving existing card values', () => {
 		const styleCards = getStyleCardsFixture();
+		const originalStyleCards = cloneDeep(styleCards);
 		const nextStyleCards = upsertCard(styleCards, 'sc_custom', {
 			gutenberg_blocks_status: false,
 		});
 
 		expect(nextStyleCards.sc_custom.name).toBe('Custom');
 		expect(nextStyleCards.sc_custom.gutenberg_blocks_status).toBe(false);
+		expect(styleCards).toEqual(originalStyleCards);
 	});
 
 	it('creates a new card entry when upserting with a new key', () => {
 		const styleCards = getStyleCardsFixture();
+		const originalStyleCards = cloneDeep(styleCards);
 		const nextStyleCards = upsertCard(styleCards, 'sc_new', {
 			gutenberg_blocks_status: true,
 		});
@@ -316,5 +330,6 @@ describe('style-cards state transitions', () => {
 		expect(nextStyleCards.sc_new).toEqual({
 			gutenberg_blocks_status: true,
 		});
+		expect(styleCards).toEqual(originalStyleCards);
 	});
 });

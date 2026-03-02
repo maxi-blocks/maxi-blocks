@@ -158,7 +158,6 @@
 		"langsmith": "^0.5.3",
 		"webpack": "^5.105.1",
 		"basic-ftp": "^5.2.0",
-		"serialize-javascript": "^7.0.3",
-		"ajv": "8.18.0"
+		"serialize-javascript": "^7.0.3"
 	}
 }

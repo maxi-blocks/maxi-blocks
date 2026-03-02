@@ -257,6 +257,15 @@ const SCAccordion = props => {
 		? processSCAttribute(SC, 'show-mobile-down-from', groupAttr)
 		: false;
 
+	const borderRadiusGlobal =
+		groupAttr === 'button'
+			? processSCAttribute(SC, 'border-radius-global', groupAttr)
+			: false;
+	const borderRadiusValue =
+		groupAttr === 'button'
+			? processSCAttribute(SC, 'border-radius-general', groupAttr)
+			: 0;
+
 	return (
 		<>
 			{!disableTypography && (
@@ -309,6 +318,37 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
+			{groupAttr === 'button' && breakpoint === 'general' && (
+				<>
+					<ToggleSwitch
+						label={__('Enable global border radius', 'maxi-blocks')}
+						className='maxi-style-cards-control__toggle-border-radius-global'
+						selected={borderRadiusGlobal || false}
+						onChange={val => {
+							onChangeValue(
+								{
+									'border-radius-global': val,
+								},
+								groupAttr
+							);
+						}}
+					/>
+					<AdvancedNumberControl
+						label={__('Border radius', 'maxi-blocks')}
+						value={borderRadiusValue}
+						onChangeValue={val => {
+							onChangeValue(
+								{
+									'border-radius-general': val,
+								},
+								groupAttr
+							);
+						}}
+						min={0}
+						max={200}
+					/>
+				</>
+			)}
 			{ifNavigationTab && (
 				<>
 					<PaddingControl

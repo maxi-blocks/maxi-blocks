@@ -1,8 +1,3 @@
-// Remove padding from accordion panel for clip-path control
-.maxi-accordion-control__item__panel:not(.maxi-accordion-control__item__panel--disable-padding):has(.maxi-clip-path-control__wrapper) {
-	padding: 0;
-}
-
 .maxi-clip-path-mode-control {
 	.maxi-tabs-control__button {
 		&:first-child {
@@ -81,6 +76,10 @@
 				fill: var(--maxi-grey-light);
 			}
 		}
+	}
+
+	&__wrapper {
+		padding-top: 6px;
 	}
 
 	.maxi-clip-path-controller {

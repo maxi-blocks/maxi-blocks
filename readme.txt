@@ -1,99 +1,193 @@
-=== MaxiBlocks: 2300+ Patterns, 280+ Pages, 14.3K Icons & 100 Styles ===
+=== MaxiBlocks Builder | 17,000+ Design Assets, Patterns, Icons & Starter Sites ===
 
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
-Tags: block, blocks, gutenberg blocks, page builder, template library
+Tags: block, blocks, gutenberg blocks, page builder, starter sites
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 2.1.7
+Stable tag: 2.1.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.
+Build professional WordPress sites faster. All features free forever. No locked blocks. Optional Cloud Library saves you time.
 
 == Description ==
 
-**Build professional WordPress sites faster, boost your design confidence, and deliver higher-quality results with MaxiBlocks.**
+**Build professional WordPress sites faster with MaxiBlocks.**
 
-Our intuitive block patterns and extensive template library help you create unique, polished websites without coding expertise.
+All features free forever. No locked blocks. Optional Cloud Library saves you time.
 
-## The Challenge 🤔
-**As a WordPress creator, you might be facing:**
+## The Challenge
+
+As a WordPress creator, you might be facing:
 
 - Frustration with complex, time-consuming design tools
-- Difficulty finding and customizing suitable templates
-- Lack of confidence in your design abilities
+- Page builders that lock essential features behind paywalls
+- Difficulty finding and customising suitable templates
 - Pressure to create unique, professional-looking websites efficiently
 
-No one wants to produce generic-looking websites or spend unnecessary time and resources on web design.
+No one wants to produce generic-looking websites or pay monthly fees just to access basic functionality.
 
-## Introducing MaxiBlocks 🎈
-**We understand the struggle of turning your design vision into reality.** That's why we've created MaxiBlocks:
+## The Complete MaxiBlocks Ecosystem 🎈
 
-- 18 Foundation blocks with advanced design controls
-- Extensive library of 2300+ block patterns and 280+ page templates
-- 230+ Site editor theme templates
-- 14.3k SVG icons for creative design possibilities
-- Regular updates to keep your toolkit fresh and relevant
+MaxiBlocks is a complete website building solution with three components that work together:
 
-## The Solution 💡
-**Get started with MaxiBlocks in 5 simple steps:**
+**MaxiBlocks Builder (Free)**
+The core plugin with everything unlocked from day one.
 
-1. Install the MaxiBlocks plugin
-2. Choose a Style Card for consistent, global styling
-3. Select from our extensive template library or start with a blank canvas
-4. Customize content using our intuitive drag-and-drop interface
-5. Launch your professional website
+- 19 powerful foundation blocks
+- Visual style controls
+- Advanced design tools
+- Dynamic content
+- Animations and scroll effects
+- Custom CSS
+- No feature restrictions
 
-Design websites that stand out, save time doing it.
+**MaxiBlocks Go Theme (Free)**
+Our Full Site Editing theme, available on WordPress.org.
 
-## Key Features 🔑
-**MaxiBlocks powers your web design process with:**
+- Complete site editing
+- Responsive templates
+- Performance optimised
+- Works with any starter site
 
-- Style Cards for easy, consistent global styling
-- Drag-and-drop functionality for effortless customization
-- Advanced design options for unique layouts
-- Full Gutenberg integration for a modern WordPress experience
-- Responsive designs for all devices
-- No feature limited blocks - all core functionality available for free
+**MaxiBlocks Cloud Library (Free + Paid)**
+A design library to speed up your workflow.
 
-## Who It's For 👥
-**MaxiBlocks is suitable for:**
+- 2,180+ block patterns
+- 231 page templates
+- 379 theme templates
+- 14,417 SVG icons and shapes
+- 100 style cards
+- 11 starter sites
+- 17,342 total assets
+
+The Builder and Go Theme are free and open source forever. The Cloud Library offers both free and premium designs to save you time.
+
+## 11 Starter Sites — Live in Minutes
+
+Complete websites ready to install with one click:
+
+- Interior Design
+- Acupuncture
+- Coffee Shop
+- Cafe
+- Business
+- SaaS
+- Invest
+- Conference
+- Architecture
+- Co-working
+- Hair Dresser
+
+Each starter site includes homepage, about, services, contact, blog templates, archive pages, search results, and 404 pages. Install one and start customising immediately.
+
+[Browse starter sites](https://maxiblocks.com/starter-sites/)
+
+## Get Started in Three Steps
+
+1. Install the MaxiBlocks Builder plugin and Go Theme
+2. Choose a starter site or browse patterns from the Cloud Library
+3. Customise with style cards and launch your site
+
+Design websites that stand out. Save time doing it.
+
+## Key Features
+
+**Powerful Blocks**
+Build anything with 19 flexible, customisable foundation blocks. No complexity, no limits.
+
+**Instant Designs**
+Choose from 2,180+ patterns to create pages in seconds. Drag, drop and personalise.
+
+**Massive Icon Library**
+Enhance your design with 14,417 built-in SVG icons and shapes. No extra plugins needed.
+
+**No-Code Editing**
+See changes instantly with a visual editor. Experiment freely, never touch code.
+
+**One-Click Styles**
+Transform your entire site with style cards. Instantly swap between 100 professional designs.
+
+**Design Tools**
+Use background layers, image masks and scroll effects. Achieve bold visuals without extra software.
+
+**Dynamic Content**
+Display custom fields and real-time updates. Create dynamic, interactive pages.
+
+**Full Site Editing**
+Go beyond pages with the MaxiBlocks Go Theme. Edit headers, footers and templates visually.
+
+**Lightning Fast**
+Clean, optimised code. No domain limits. Zero hidden fees. Freedom on every site.
+
+## Who It's For
+
+MaxiBlocks works for:
 
 - WordPress developers seeking efficient design tools
-- Designers transitioning to WordPress
+- Designers transitioning from other page builders
 - Beginners looking to create professional sites without coding
-- Agencies and freelancers aiming to increase productivity
-- Anyone moving from other page builders to a Gutenberg-compatible solution
+- Agencies and freelancers delivering client projects
+- Anyone moving from Elementor, Divi or other builders to Gutenberg
 
-## Success Stories 🌟
-**Here's what our creators are saying:**
+## What's Free vs What Requires a Cloud Account
 
-"MaxiBlocks reignited my design passion. 5+ stars!" - FutureImaging
+**Always Free (Open Source):**
 
-"Finally, a builder even beginners can rock!" - MyLTD
+- MaxiBlocks Builder plugin (19 foundation blocks)
+- MaxiBlocks Go Theme (Full Site Editing)
+- 542 free patterns and 17 pages
+- Free starter sites
+- 14,417 icons and shapes
+- 100 style cards
+- All features unlocked (animations, dynamic content, custom CSS)
+- Unlimited websites
+- No restrictions
 
-"Gutenberg fun and powerful customization? Yes, please!" - MeditatingSurgeon
+**Optional Cloud Library:**
+
+- 2,180+ patterns
+- 231 complete pages
+- Premium starter sites
+- Regular new designs
+- Priority support
+
+The Cloud Library saves you 10+ hours per project. You can build the same sites with free tools. Cloud just makes it faster.
+
+## Success Stories
+
+Here's what creators are saying:
+
+"MaxiBlocks is one of the best WordPress plugins I've found, and I'm in love with this tool." - Muhammad Ali Iqbal
+
+"I know this category of plugins very well — I have probably tested all Gutenberg add-ons available on the market and I must admit that MaxiBlocks is really top shelf and top league!" - Peter
+
+"It's great to see that a lot of the new designs come from special requests from MaxiBlocks users and the developers listen to their user base!" - MeditatingSurgeon
+
+"Easy, clean, and responsive designs with great support. They're always adding new designs on top of what they already offer." - Verdant
+
+"After some more time poking around I see a lot of potential in your product. It has the ability to be the Elementor in Gutenberg field." - Kazi Mahbub
 
 [Read more stories](https://maxiblocks.com/love/)
 
-## Ready to transform your WordPress design process? 🚀
+## Ready to build?
 
-**Install MaxiBlocks for free and start creating designer websites today.**
+**Install MaxiBlocks for free and start creating today.**
 
-Not sure yet? [Explore our demo library](https://maxiblocks.com/demo/?utm_source=wp_org&utm_content=Explore+our+demo+library) to see MaxiBlocks in action, or [visit our website](https://maxiblocks.com/?utm_source=wp_org&utm_content=visit+our+website) for more info.
+Not sure yet? [Explore the demo library](https://maxiblocks.com/demo/) to see MaxiBlocks in action, or [browse starter sites](https://maxiblocks.com/starter-sites/) for complete website examples.
 
-== Resources & Support 📚 ==
+== Resources & Support ==
 
-Learn and master MaxiBlocks with our comprehensive resources:
+Learn and master MaxiBlocks:
 
-* [Documentation](https://maxiblocks.com/go/help-desk) - Step-by-step guides and troubleshooting tips
+* [Documentation](https://maxiblocks.com/go/help-desk) - Step-by-step guides and troubleshooting
 * [Video Tutorials](https://youtube.com/playlist?list=PLyq6BtMKKWud7jkcKsulb_jcvgmH3jcda) - From basics to advanced techniques
-* [Support Forum](https://maxiblocks.com/go/help-desk) - Get help from our dedicated team
-* [Changelog](https://maxiblocks.com/go/wordpress-plugin-changelog) - Stay updated with the latest improvements
+* [Support Forum](https://maxiblocks.com/go/help-desk) - Get help from our team
+* [Changelog](https://maxiblocks.com/go/wordpress-plugin-changelog) - Latest improvements
 
-== Join Our Community 🌍 ==
+== Join Our Community ==
 
 MaxiBlocks is more than a plugin—it's a growing community of creators:
 
@@ -111,50 +205,110 @@ Share your creations with #maxiblocks or #madewithmaxi
 
 == Frequently Asked Questions ==
 
-= What features are free, and what's included in the Pro cloud library? =
-All core features (18 blocks, 14.2k icons, 100 style cards, 406 patterns, 7 pages, full functionality) are free with no restrictions. The Pro cloud library offers premium templates to speed up development.
+= What is MaxiBlocks? =
 
-While you can **create the same patterns and pages from scratch with the free version**, a Pro cloud account significantly reduces development time.
+MaxiBlocks is a complete website building solution that combines the MaxiBlocks Builder, MaxiBlocks Go Theme, and MaxiBlocks Cloud Library. The Builder and Go Theme are free and open source forever.
+
+The optional Cloud Library gives you access to 2,180+ patterns, 231 pages, and 11 starter sites to save time.
+
+= What features are free, and what's included in the Cloud Library? =
+
+All core features are free with no restrictions: 19 blocks, 14,417 icons, 100 style cards, 542 patterns, 17 pages, animations, dynamic content, custom CSS, and full functionality.
+
+The Cloud Library offers premium designs to speed up development. You can create the same patterns and pages from scratch with the free version — a Cloud account simply reduces development time.
+
 = Why does MaxiBlocks have fewer blocks than other libraries? =
-We take a different approach to block design. Instead of offering numerous specialized blocks, we've built extensive functionality into each of our foundation blocks. This allows you to create complex designs with fewer blocks overall, making the system easier to learn and more flexible to use.
 
-Our 18 core blocks are highly versatile, as [demonstrated in our pattern library](https://maxiblocks.com/demo/). By focusing on a smaller set of powerful blocks, we ensure they're well-maintained and continually improved.
+We take a different approach. Instead of offering numerous specialised blocks, we've built extensive functionality into each foundation block. This allows you to create complex designs with fewer blocks, making the system easier to learn and more flexible to use.
 
-Unlike some libraries that restrict key features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start. This gives you the freedom to build without limitations, regardless of whether you're using the free version or have a Pro cloud account. All our foundations block are free.
+Our 19 core blocks are highly versatile, as [demonstrated in our pattern library](https://maxiblocks.com/demo/). By focusing on a smaller set of powerful blocks, we ensure they're well-maintained and continually improved.
+
+Unlike builders that restrict features to encourage paid upgrades, MaxiBlocks provides full functionality in every block from the start.
+
+= What are starter sites and how do they work? =
+
+Starter sites are complete, ready-to-use websites you can install with one click. Each includes all pages (homepage, about, services, contact, blog, archives, 404) with coordinated design and styling.
+
+Install a starter site, then customise the content, images, and colours to match your brand. It's the fastest way to launch a professional WordPress site.
+
 = Is MaxiBlocks compatible with Gutenberg and my theme? =
-Yes, MaxiBlocks is fully integrated with the Gutenberg editor. For the best experience, we recommend using a block theme like Twenty Twenty-Four (TT4) or our own MaxiBlocks theme, which is currently in beta testing. [Join the MaxiBlocks theme beta](https://maxiblocks.com/free-maxiblocks-wordpress-theme/?utm_source=web&utm_medium=wp-org&utm_campaign=theme+beta&utm_content=Try+Beta). Our support team is here to help if you encounter any issues.
-= What is a Pro cloud account? =
-A Pro cloud account gives you access to our cloud library of premium templates and priority support. It's designed for those who want to streamline their workflow with professionally designed templates.
-= How does the licensing work for Pro cloud templates? =
-Once you have a Pro cloud account, you can use the templates on unlimited sites. The sites you create with Pro templates will continue to function and receive updates indefinitely, even if you don't maintain your Pro account.
+
+Yes, MaxiBlocks is fully integrated with the Gutenberg editor. For the best experience, we recommend using a block theme like Twenty Twenty-Four or our own [MaxiBlocks Go Theme](https://wordpress.org/themes/maxiblocks-go/), which is free and available on WordPress.org.
+
+= What is a Cloud account? =
+
+A Cloud account gives you access to the premium design library with 2,180+ patterns, 231 pages, and starter sites. Use these designs on any WordPress site with the MaxiBlocks Builder installed.
+
+The MaxiBlocks Builder and Go Theme are always free. The Cloud Library just speeds up your workflow.
+
+= How does the licensing work for Cloud Library designs? =
+
+Once you have a Cloud account, you can use the designs on your activated domains. Websites you create with Cloud designs continue to function indefinitely, even if you cancel your subscription.
+
+Cloud Library access is based on domain activations:
+
+- Cloud 1: 1 domain
+- Cloud 3: 3 domains
+- Cloud 2000: 2,000 domains
+
+= What happens if I cancel my Cloud subscription? =
+
+Your free MaxiBlocks Builder and Go Theme continue working perfectly forever. They're open source with no restrictions.
+
+When you cancel Cloud Library access:
+
+- All Builder features keep working (free forever)
+- All Go Theme features keep working (free forever)
+- Any Cloud designs you already downloaded stay on your sites
+- Your websites continue working perfectly
+- You still get Builder and Theme updates
+
+You just won't be able to download new premium Cloud Library items. Rejoin anytime to regain access.
+
+= Do I need an active license for plugin updates? =
+
+No. The MaxiBlocks Builder plugin receives updates forever — no active license required. Once you've used Cloud Library designs on a website, those designs remain functional forever.
+
+Plugin updates, security patches, and feature improvements continue regardless of Cloud status.
+
+= Can I use MaxiBlocks for client projects? =
+
+Yes. The free Builder and Go Theme have no restrictions. Use them on unlimited client sites.
+
+Cloud Library access for client sites depends on your plan. You can build excellent client sites with just the free tools — Cloud Library just speeds up the process.
+
+= Is support included? =
+
+Support is always included at no extra cost. Cloud Library subscribers receive priority support with faster response times, while free users have access to community support forums and documentation.
+
 = How can I learn more about MaxiBlocks' future plans? =
+
 Check out our [public roadmap](https://maxiblocks.com/go/roadmap).
 
 == Installation ==
 
-Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPress admin dashboard.
+Install MaxiBlocks from the WordPress plugin directory:
 
-1. Search for **"Maxi Blocks" or "MaxiBlocks"**
-2. Then click **"Install Now"**
-3. Click **"Activate"** plugin
+1. Go to Plugins > Add New
+2. Search for "MaxiBlocks"
+3. Click "Install Now" then "Activate"
 
-**To use free templates, first edit, or create a new page in WordPress**
+For the best experience, also install the MaxiBlocks Go Theme:
 
-- From the page editing view, click the MaxiBlocks icon to open the master toolbar, top left side.
+1. Go to Appearance > Themes > Add New
+2. Search for "MaxiBlocks Go"
+3. Click "Install" then "Activate"
 
-- Launch the template library and browse for patterns. Insert and start editing.
+**Getting started:**
 
-- Play around with some patterns to see how Maxi works and how we use blocks to create patterns.
+- Click the MaxiBlocks icon in the editor toolbar to open the template library
+- Browse patterns or choose a starter site
+- Select a style card to instantly update your site's look
+- Use the (?) icon for help docs and tutorials
 
-- Also choose a style card to instantly update your templates to your chosen style.
+**Quick links:**
 
-- Use the (?) icon to open the help docs for more info and tutorials.
-
-- Visit our [help desk](https://maxiblocks.com/go/help-desk) for more.
-
-**Helpful links:**
-
-[YouTube ](https://www.youtube.com/@maxiblocks) | [Pro library](https://maxiblocks.com/pro-library/) | [Demo library](https://maxiblocks.com/demo/) | [maxiblocks.com](https://maxiblocks.com/) | [X-Twitter](https://twitter.com/maxiblocks) | [Discord community](https://maxiblocks.com/go/maxi-discord) | [Roadmap](https://maxiblocks.com/go/roadmap)
+[YouTube](https://www.youtube.com/@maxiblocks) | [Cloud Library](https://maxiblocks.com/demo/) | [Starter Sites](https://maxiblocks.com/starter-sites/) | [Documentation](https://maxiblocks.com/go/help-desk) | [Discord](https://maxiblocks.com/go/maxi-discord) | [Roadmap](https://maxiblocks.com/go/roadmap)
 
 == Screenshots ==
 
@@ -172,6 +326,37 @@ Install the MaxiBlocks plugin from the WordPress plugin directory in your WordPr
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 5 Feb 2026_
+MaxiBlocks v2.1.8
+* Update: Introduced support for Custom fonts from WordPress Site Editor options.
+* Update: Enhanced relation control, hidden blocks, and background interactions with improved highlighting in List View and Editor Experience.
+* Update: Enabled loading patterns and layouts from Cloud modal with Style Cards styles exclusively.
+* Update: Refreshed wordpress.org readme.txt to better reflect MaxiBlocks branding and feature set.
+* Update: Delivered comprehensive UI/UX enhancements for the Style Cards editor, providing a more intuitive interface.
+* Update: Upgraded npm packages and dependencies to latest versions for strengthened security and improved stability across all plugin functionality.
+* Update: Built translation toolkit to generate mo translation files from po files, including German translation.
+* Update: Optimized backend processing speed with comprehensive performance improvements.
+* Update: Accelerated editing speed for settings within Advanced Number Control.
+* Update: Redesigned toolbar and sidebar architecture for enhanced editor compatibility and streamlined editing workflow.
+* Update: Integrated Settings link into plugin action links on the Plugins page.
+* Update: Configured master toolbar to open by default on first launch and memorize state per site user.
+* Update: Eliminated cache notice from admin pages.
+* Update: Aligned start and end time validation for Video block controls.
+* Update: Introduced customizable popup animation duration for Video block.
+* Update: Expanded Dynamic Content options for Button block with tags and categories support.
+* Update: Integrated Text Wrap control in Typography settings with options: Wrap, No Wrap, Balance, Pretty, and Stable.
+* Fix: Background Shape scale 0 values now function correctly.
+* Fix: Video block transition behaviour on hover.
+* Fix: Overflow handling for Image block.
+* Fix: Column exclusion when pasting into column blocks.
+* Fix: Move actions now properly prevented when mover buttons are disabled, with corrected block animation behaviour.
+* Fix: Transition properties for buttons and SVG icons in Editor Experience.
+* Fix: Flex wrapping behaviour in colour control within Editor Experience.
+* Fix: Column Picker tone now adapts based on parent block tone.
+* Fix: Hover border palette toggle and axis unit switching for image hover controls.
+* Fix: Responsive styles with vh/vw units in Editor.
+* Fix: SVG element processing with enhanced error recovery and fallback mechanisms for consistent behaviour across different environments and edge cases.
 
 _Updates 26 Nov 2025_
 MaxiBlocks v2.1.7
@@ -194,16 +379,6 @@ MaxiBlocks v2.1.6
 * Fix: Enhanced template parts rendering and editing experience in the Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
 * Fix: Addressed taxonomy styling issues on the frontend when using the All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
 * Fix: Resolved custom colours in Style Cards breaking frontend styles in specific scenarios, maintaining consistent visual presentation across all pages.
-
-_Updates 13 Oct 2025_
-MaxiBlocks v2.1.5
-* Update: Implemented comprehensive speed optimizations across both backend and frontend operations, resulting in faster load times and improved overall plugin performance.
-* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
-* Update: Reorganized Link settings into a dedicated tab within the Editor Sidebar for improved user experience and better settings organization.
-* Update: Enhanced Block Toolbar layout by re-arranging and optimizing setting controls for more intuitive access and streamlined editing workflow.
-* Fix: Resolved Dynamic Content rendering issues when displaying Advanced Custom Fields data, ensuring proper field values are shown on both backend and frontend.
-* Fix: Corrected border line properties resetting to default values when specific styling configurations were applied, maintaining consistent border appearance.
-* Fix: Addressed compatibility issues with certain clip-path CSS options that were causing block rendering failures.
 
 == Upgrade Notice ==
 

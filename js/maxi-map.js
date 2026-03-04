@@ -35,6 +35,10 @@ window.onload = () => {
 		}
 	}
 
+	if (mapItems.length === 0) {
+		return;
+	}
+
 	const isGoogleScriptsNeeded = mapItems.some(
 		item => item['map-provider'] === 'googlemaps' && apiKey
 	);

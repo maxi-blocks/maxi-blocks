@@ -38,18 +38,12 @@ import {
 	shouldSetPreserveAspectRatio,
 	togglePreserveAspectRatio,
 } from '@extensions/svg';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 /**
  * Styles and icons
  */
 import './editor.scss';
-import {
-	backgroundColor,
-	backgroundGradient,
-	styleNone,
-	iconStroke,
-	iconFill,
-} from '@maxi-icons';
 
 /**
  * IconControlResponsiveSettings Component
@@ -785,8 +779,39 @@ const IconControl = props => {
 		type = 'button-icon',
 		prefix = '',
 		[`${prefix}icon-content`]: iconContent,
+		[`${prefix}svgType`]: svgType,
 		disablePadding = false,
 	} = props;
+
+	// Process default icon on mount if it contains data markers
+	useEffect(() => {
+		if (
+			iconContent &&
+			breakpoint === 'general' &&
+			!isHover &&
+			(iconContent.includes('data-fill') ||
+				iconContent.includes('data-stroke'))
+		) {
+			const processedIcon = getIconWithColor({
+				rawIcon: iconContent,
+				type: [
+					svgType !== 'Shape' && 'stroke',
+					svgType !== 'Line' && 'fill',
+				].filter(Boolean),
+			});
+
+			if (processedIcon !== iconContent) {
+				onChange({
+					[`${prefix}icon-content`]: processedIcon,
+				});
+			}
+		}
+	}, []); // Run only on mount
+
+	// Process icon with current colors for preview (uses svgAttributesReplacer to get actual colors)
+	const processedIcon = iconContent
+		? svgAttributesReplacer(iconContent, 'icon', type)
+		: iconContent;
 
 	// Build CSS classes for the wrapper
 	const classes = classnames(
@@ -863,7 +888,7 @@ const IconControl = props => {
 						});
 					}}
 					onRemove={obj => onChange(obj)}
-					icon={iconContent}
+					icon={processedIcon}
 					prefix={prefix}
 				/>
 			)}

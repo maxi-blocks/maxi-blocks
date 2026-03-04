@@ -29,6 +29,7 @@ import {
 	onChangeLayer,
 	setBreakpointToLayer,
 } from './utils';
+import { isSVGColorLight } from '../../editor/library/util';
 import SelectControl from '@components/select-control';
 import ListControl from '@components/list-control';
 import ListItemControl from '@components/list-control/list-item-control';
@@ -186,13 +187,34 @@ const getLayerCardTitle = props => {
 	const layer = cloneDeep(props.layer);
 	const { type } = layer;
 
-	const regexLineToChange = /fill=".+?(?=")/;
+	// Match entire fill="..." attribute including empty fills, replace all
+	const regexLineToChange = /fill="[^"]*"/g;
+
+	// Get palette attributes with breakpoint suffix
+	const paletteStatus = getLastBreakpointAttribute({
+		target: 'background-svg-palette-status',
+		breakpoint,
+		attributes: layer,
+		isHover,
+	});
+	const paletteColor = getLastBreakpointAttribute({
+		target: 'background-svg-palette-color',
+		breakpoint,
+		attributes: layer,
+		isHover,
+	});
+	const paletteOpacity = getLastBreakpointAttribute({
+		target: 'background-svg-palette-opacity',
+		breakpoint,
+		attributes: layer,
+		isHover,
+	});
 
 	let colorStr;
-	if (layer['background-svg-palette-status']) {
+	if (paletteStatus) {
 		colorStr = getColorRGBAString({
-			firstVar: `color-${layer['background-svg-palette-color']}`,
-			opacity: layer['background-svg-palette-opacity'],
+			firstVar: `color-${paletteColor}`,
+			opacity: paletteOpacity,
 			blockStyle: getBlockStyle(clientId),
 		});
 	} else {
@@ -365,7 +387,14 @@ const getLayerCardTitle = props => {
 		<>
 			<span className='maxi-background-layer__title__text'>
 				<span
-					className='maxi-background-layer__preview'
+					className={classnames(
+						'maxi-background-layer__preview',
+						type === 'shape' && 'maxi-background-layer__preview--shape',
+						type === 'shape' &&
+							layer['background-svg-SVGElement'] &&
+							isSVGColorLight(newSvgElement) &&
+							'maxi-background-layer__preview--shape--light'
+					)}
 					ref={previewRef}
 					style={previewStyles(type)}
 				>

@@ -2,12 +2,6 @@
 
 exports[`getButtonIconStyles Should return the correct styles for empty object 1`] = `
 {
-  " .maxi-button-block__button .maxi-button-block__icon svg path": {
-    "iconPath": {
-      "general": {},
-      "label": "Icon path",
-    },
-  },
   " > .maxi-background-displayer": {
     "border": {
       "general": {},
@@ -19,10 +13,6 @@ exports[`getButtonIconStyles Should return the correct styles for empty object 1
       "xxl": {},
     },
   },
-  ":hover .maxi-button-block__button .maxi-button-block__icon": undefined,
-  ":hover .maxi-button-block__button .maxi-button-block__icon svg": undefined,
-  ":hover .maxi-button-block__button .maxi-button-block__icon svg > *": undefined,
-  ":hover .maxi-button-block__button .maxi-button-block__icon svg path": undefined,
   ":hover > .maxi-background-displayer": {
     "border": {
       "general": {},
@@ -162,10 +152,6 @@ exports[`getButtonIconStyles Should return the correct styles for random object 
       "label": "SVG Path stroke",
     },
   },
-  " .maxi-button-block__button:hover .maxi-button-block__icon": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg > *": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg path": false,
   " > .maxi-background-displayer": {
     "border": {
       "general": {},
@@ -539,10 +525,6 @@ exports[`getButtonIconStyles Should work on responsive 1`] = `
       "label": "SVG Path stroke",
     },
   },
-  " .maxi-button-block__button:hover .maxi-button-block__icon": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg > *": false,
-  " .maxi-button-block__button:hover .maxi-button-block__icon svg path": false,
   " > .maxi-background-displayer": {
     "border": {
       "general": {},

@@ -202,9 +202,7 @@ class MaxiBlocks_DynamicContent
                     ];
                     break;
                 default: $args = $archive_info;
-
             }
-
         } else {
             // Modify the query based on the relation
             switch ($relation) {
@@ -914,7 +912,7 @@ class MaxiBlocks_DynamicContent
         if (in_array($block_name, self::$link_only_blocks)) {
             return $content;
         } elseif ($block_name !== 'image-maxi') {
-            $content = self::render_dc_content($attributes, $content);
+            $content = self::render_dc_content($attributes, $content, $block_name);
         } else {
             $content = self::render_dc_image($attributes, $content);
         }
@@ -1009,7 +1007,6 @@ class MaxiBlocks_DynamicContent
                     $attributes['dc-link-target'],
                 );
             }
-
         } elseif (
             array_key_exists('dc-type', $attributes) &&
             $attributes['dc-type'] === 'settings'
@@ -1124,7 +1121,7 @@ class MaxiBlocks_DynamicContent
         return $content;
     }
 
-    public function render_dc_content($attributes, $content)
+    public function render_dc_content($attributes, $content, $block_name)
     {
         @[
             'dc-source' => $dc_source,
@@ -1173,7 +1170,7 @@ class MaxiBlocks_DynamicContent
             )
         ) {
             // Post or page
-            $response = self::get_post_or_page_content($attributes);
+            $response = self::get_post_or_page_content($attributes, $block_name);
         } elseif ($dc_type === 'settings') {
             // Site settings
             $response = self::get_site_content($dc_field);
@@ -1198,7 +1195,7 @@ class MaxiBlocks_DynamicContent
         } elseif ($dc_type === 'users') {
             $response = self::get_user_content($attributes);
         } elseif ($dc_type === 'products') {
-            $response = self::get_product_content($attributes);
+            $response = self::get_product_content($attributes, $block_name);
         } elseif ($dc_type === 'cart') {
             $response = self::get_cart_content($attributes);
         }
@@ -1492,7 +1489,6 @@ class MaxiBlocks_DynamicContent
                     'terms'    => $queried_object->term_id,
                 ],
             ];
-
         } elseif (is_post_type_archive()) {
             // It's a custom post type archive
             $queried_object = get_queried_object();
@@ -1649,7 +1645,6 @@ class MaxiBlocks_DynamicContent
                 }
                 return null;
             } elseif ($is_sort_relation) {
-
                 $args = array_merge(
                     $args,
                     $this->get_order_by_args(
@@ -2022,7 +2017,8 @@ class MaxiBlocks_DynamicContent
         $field,
         $dc_post_taxonomy_links_status,
         $linkSettings = null,
-        $dc_link_target = null
+        $dc_link_target = null,
+        $block_name = 'text-maxi'
     ) {
         // Need to support $dc_post_taxonomy_links_status for blocks that were not migrated (up until 1.7.2 version included)
         if ($link_status || $dc_post_taxonomy_links_status) {
@@ -2041,11 +2037,13 @@ class MaxiBlocks_DynamicContent
                 $target = ' target="' . $link_attributes['target'] . '"';
             }
 
+            $link_class = $block_name === 'text-maxi' ? 'maxi-text-block--link' : 'maxi-button-block--link';
+
             return '<a ' .
                 $href .
                 $rel .
                 $target .
-                ' class="maxi-text-block--link"><span>' .
+                ' class="' . $link_class . '"><span>' .
                 $content .
                 '</span></a>';
         }
@@ -2056,7 +2054,8 @@ class MaxiBlocks_DynamicContent
     public function get_post_taxonomy_content(
         $attributes,
         $post_id,
-        $taxonomy
+        $taxonomy,
+        $block_name
     ) {
         @[
             'dc-field' => $dc_field,
@@ -2085,13 +2084,14 @@ class MaxiBlocks_DynamicContent
                 $dc_post_taxonomy_links_status,
                 $linkSettings,
                 $dc_link_target,
+                $block_name
             );
         }
 
         return implode("$dc_delimiter ", $taxonomy_content);
     }
 
-    public function get_post_or_page_content($attributes)
+    public function get_post_or_page_content($attributes, $block_name)
     {
         @[
             'dc-field' => $dc_field,
@@ -2187,6 +2187,7 @@ class MaxiBlocks_DynamicContent
                 $attributes,
                 $post->ID,
                 $field_name_to_taxonomy[$dc_field],
+                $block_name
             );
         }
 
@@ -2195,6 +2196,7 @@ class MaxiBlocks_DynamicContent
                 $attributes,
                 $post->ID,
                 $dc_field,
+                $block_name
             );
         }
 
@@ -2428,7 +2430,7 @@ class MaxiBlocks_DynamicContent
         return null;
     }
 
-    public function get_product_content($attributes)
+    public function get_product_content($attributes, $block_name = null)
     {
         @[
             'dc-field' => $dc_field,
@@ -2527,6 +2529,7 @@ class MaxiBlocks_DynamicContent
                         $attributes,
                         method_exists($product, 'get_id') ? $product->get_id() : $product->ID,
                         $field_name_to_taxonomy[$dc_field],
+                        $block_name
                     );
                 case 'featured_media':
                     if (!method_exists($product, 'get_image_id')) {

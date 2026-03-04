@@ -1037,14 +1037,25 @@ const TypographyControl = props => {
 														targetWeight
 												  );
 
+										// If toggling bold back on and default
+										// weight is also bold, reset to default
+										const defaultWeight =
+											getDefault('font-weight');
+										const restoringDefault =
+											!isActive &&
+											defaultWeight > 400;
+										const finalWeight = restoringDefault
+											? undefined
+											: availableWeight;
+
 										onChangeFormat({
 											[`${prefix}font-weight`]:
-												availableWeight,
+												finalWeight,
 										});
 
 										// Load the font with the new weight
 										onChangeFontWeight(
-											availableWeight,
+											finalWeight ?? defaultWeight,
 											fontName,
 											getValue('font-style') ??
 												getDefault('font-style'),
@@ -1068,7 +1079,7 @@ const TypographyControl = props => {
 										const isActive =
 											currentStyle === 'italic';
 										const targetStyle = isActive
-											? 'normal'
+											? undefined
 											: 'italic';
 										const fontName =
 											getValue('font-family') ??
@@ -1084,7 +1095,8 @@ const TypographyControl = props => {
 											getValue('font-weight') ??
 												getDefault('font-weight'),
 											fontName,
-											targetStyle,
+											targetStyle ??
+												getDefault('font-style'),
 											setShowLoader
 										);
 									}}
@@ -1327,9 +1339,8 @@ const TypographyControl = props => {
 											? 'maxi-typography-control__toggle-arrow--expanded'
 											: ''
 									}`}
-								>
-									▼
-								</span>
+									aria-hidden='true'
+								/>
 							</Button>
 						</div>
 

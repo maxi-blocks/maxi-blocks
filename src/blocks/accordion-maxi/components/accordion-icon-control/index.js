@@ -13,9 +13,26 @@ import IconControl from '@components/icon-control';
 import MaxiModal from '@editor/library/modal';
 import { getIconWithColor } from '@extensions/styles';
 import IconColor from '@components/icon-color';
+import { svgAttributesReplacer } from '@editor/library/util';
 
 const AccordionIconSettings = props => {
 	const { onChange, blockStyle, svgTypeActive, breakpoint } = props;
+
+	// Process icons with current colors for preview
+	const processedIcon = props['icon-content']
+		? svgAttributesReplacer(
+				props['icon-content'],
+				'icon',
+				'accordion-icon'
+		  )
+		: props['icon-content'];
+	const processedActiveIcon = props['active-icon-content']
+		? svgAttributesReplacer(
+				props['active-icon-content'],
+				'icon',
+				'accordion-icon-active'
+		  )
+		: props['active-icon-content'];
 
 	return (
 		<>
@@ -35,7 +52,7 @@ const AccordionIconSettings = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={props['icon-content']}
+				icon={processedIcon}
 				label='Icon'
 			/>
 			<MaxiModal
@@ -43,7 +60,7 @@ const AccordionIconSettings = props => {
 				style={blockStyle}
 				onSelect={obj => onChange(obj)}
 				onRemove={obj => onChange(obj)}
-				icon={props['active-icon-content']}
+				icon={processedActiveIcon}
 				label='Active icon'
 			/>
 			<IconColor

@@ -122,21 +122,10 @@ wp.domReady(() => {
 		attributeFilter: ['class'],
 	});
 
-	// Cleanup on page unload to prevent memory leaks
-	window.addEventListener('beforeunload', () => {
-		if (mainObserver) {
-			mainObserver.disconnect();
-			mainObserver = null;
-		}
-		if (editorModeObserver) {
-			editorModeObserver.disconnect();
-			editorModeObserver = null;
-		}
-		if (iframeCheckInterval) {
-			clearInterval(iframeCheckInterval);
-			iframeCheckInterval = null;
-		}
-	});
+	// Note: We intentionally don't add a beforeunload handler here.
+	// The beforeunload event fires when WordPress shows "Reload site?" dialog,
+	// and if the user clicks Cancel, the observers would already be destroyed.
+	// For true page unloads, the browser will garbage collect everything anyway.
 });
 
 export default {};

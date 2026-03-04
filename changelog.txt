@@ -1,3 +1,34 @@
+_Updates 5 Feb 2026_
+MaxiBlocks v2.1.8
+* Update: Introduced support for Custom fonts from WordPress Site Editor options.
+* Update: Enhanced relation control, hidden blocks, and background interactions with improved highlighting in List View and Editor Experience.
+* Update: Enabled loading patterns and layouts from Cloud modal with Style Cards styles exclusively.
+* Update: Refreshed wordpress.org readme.txt to better reflect MaxiBlocks branding and feature set.
+* Update: Delivered comprehensive UI/UX enhancements for the Style Cards editor, providing a more intuitive interface.
+* Update: Upgraded npm packages and dependencies to latest versions for strengthened security and improved stability across all plugin functionality.
+* Update: Built translation toolkit to generate mo translation files from po files, including German translation.
+* Update: Optimized backend processing speed with comprehensive performance improvements.
+* Update: Accelerated editing speed for settings within Advanced Number Control.
+* Update: Redesigned toolbar and sidebar architecture for enhanced editor compatibility and streamlined editing workflow.
+* Update: Integrated Settings link into plugin action links on the Plugins page.
+* Update: Configured master toolbar to open by default on first launch and memorize state per site user.
+* Update: Eliminated cache notice from admin pages.
+* Update: Aligned start and end time validation for Video block controls.
+* Update: Introduced customizable popup animation duration for Video block.
+* Update: Expanded Dynamic Content options for Button block with tags and categories support.
+* Update: Integrated Text Wrap control in Typography settings with options: Wrap, No Wrap, Balance, Pretty, and Stable.
+* Fix: Background Shape scale 0 values now function correctly.
+* Fix: Video block transition behaviour on hover.
+* Fix: Overflow handling for Image block.
+* Fix: Column exclusion when pasting into column blocks.
+* Fix: Move actions now properly prevented when mover buttons are disabled, with corrected block animation behaviour.
+* Fix: Transition properties for buttons and SVG icons in Editor Experience.
+* Fix: Flex wrapping behaviour in colour control within Editor Experience.
+* Fix: Column Picker tone now adapts based on parent block tone.
+* Fix: Hover border palette toggle and axis unit switching for image hover controls.
+* Fix: Responsive styles with vh/vw units in Editor.
+* Fix: SVG element processing with enhanced error recovery and fallback mechanisms for consistent behaviour across different environments and edge cases.
+
 _Updates 26 Nov 2025_
 MaxiBlocks v2.1.7
 * Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.

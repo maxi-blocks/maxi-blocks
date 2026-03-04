@@ -678,6 +678,13 @@ const cleanAttributes = ({
 	);
 
 	let result = { ...newAttributes };
+	
+	// Preserve relations if not explicitly being changed
+	// Relations should never be accidentally cleared or modified by attribute cleaning
+	if (!('relations' in newAttributes) && 'relations' in attributes && attributes.relations) {
+		result.relations = attributes.relations;
+	}
+	
 	result = {
 		...result,
 		...removeHoverSameAsNormal(result, attributes),
@@ -743,6 +750,7 @@ const cleanAttributes = ({
 		// For IB we need to check default attributes of target block, while saving previous attributes of trigger block, thus we have two clientIds
 		targetClientId ?? clientId
 	);
+
 	return result;
 };
 

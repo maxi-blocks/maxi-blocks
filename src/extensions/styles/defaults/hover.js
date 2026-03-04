@@ -6,21 +6,28 @@ import margin from './margin';
 import padding from './padding';
 import { typography } from './typography';
 
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
+
+const hoverToggleAttributes = breakpointAttributesCreator({
+	obj: {
+		'hover-preview': {
+			type: 'boolean',
+			default: true,
+		},
+		'hover-extension': {
+			type: 'boolean',
+			default: false,
+		},
+	},
+});
 
 export const hover = {
 	'hover-type': {
 		type: 'string',
 		default: 'none',
 	},
-	'hover-preview': {
-		type: 'boolean',
-		default: true,
-	},
-	'hover-extension': {
-		type: 'boolean',
-		default: false,
-	},
+	...hoverToggleAttributes,
 	'hover-basic-effect-type': {
 		type: 'string',
 		default: 'zoom-in',
@@ -72,10 +79,14 @@ export const hoverBorder = prefixAttributesCreator({
 	obj: border,
 	prefix,
 	newAttr: {
-		'hover-border-status': {
-			type: 'boolean',
-			default: false,
-		},
+		...breakpointAttributesCreator({
+			obj: {
+				'hover-border-status': {
+					type: 'boolean',
+					default: false,
+				},
+			},
+		}),
 	},
 });
 
@@ -119,10 +130,14 @@ export const hoverMargin = prefixAttributesCreator({
 	obj: margin,
 	prefix,
 	newAttr: {
-		'hover-margin-status': {
-			type: 'boolean',
-			default: false,
-		},
+		...breakpointAttributesCreator({
+			obj: {
+				'hover-margin-status': {
+					type: 'boolean',
+					default: false,
+				},
+			},
+		}),
 	},
 });
 
@@ -130,10 +145,14 @@ export const hoverPadding = prefixAttributesCreator({
 	obj: padding,
 	prefix,
 	newAttr: {
-		'hover-padding-status': {
-			type: 'boolean',
-			default: false,
-		},
+		...breakpointAttributesCreator({
+			obj: {
+				'hover-padding-status': {
+					type: 'boolean',
+					default: false,
+				},
+			},
+		}),
 	},
 });
 
@@ -145,10 +164,14 @@ export const hoverTitleTypography = prefixAttributesCreator({
 		'hover-title-palette-color-general': 1,
 	},
 	newAttr: {
-		'hover-title-typography-status': {
-			type: 'boolean',
-			default: false,
-		},
+		...breakpointAttributesCreator({
+			obj: {
+				'hover-title-typography-status': {
+					type: 'boolean',
+					default: false,
+				},
+			},
+		}),
 		'hover-title-typography-content': {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),
@@ -164,10 +187,14 @@ export const hoverContentTypography = prefixAttributesCreator({
 		'hover-content-palette-color-general': 1,
 	},
 	newAttr: {
-		'hover-content-typography-status': {
-			type: 'boolean',
-			default: false,
-		},
+		...breakpointAttributesCreator({
+			obj: {
+				'hover-content-typography-status': {
+					type: 'boolean',
+					default: false,
+				},
+			},
+		}),
 		'hover-content-typography-content': {
 			type: 'string',
 			default: __('Add your Hover Title here', 'maxi-blocks'),

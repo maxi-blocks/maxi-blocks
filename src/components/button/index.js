@@ -23,6 +23,7 @@ export function SimpleButton(props, ref) {
 		href,
 		target,
 		linkElement,
+		isInlineLink,
 		isPrimary,
 		isSmall,
 		isTertiary,
@@ -73,6 +74,7 @@ export function SimpleButton(props, ref) {
 	const Tag =
 		href !== undefined &&
 		!trulyDisabled &&
+		!isInlineLink &&
 		(!linkElement || linkElement === 'button')
 			? 'a'
 			: 'button';

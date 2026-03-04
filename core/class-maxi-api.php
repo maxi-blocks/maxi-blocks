@@ -65,7 +65,7 @@ if (!class_exists('MaxiBlocks_API')):
             add_action('deleted_post', [$this, 'invalidate_unique_ids_cache']);
 
             // Enable gzip compression for MaxiBlocks API responses
-            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 10, 4);
+            add_filter('rest_pre_serve_request', [$this, 'enable_rest_compression'], 100, 4);
         }
 
         /**
@@ -80,6 +80,20 @@ if (!class_exists('MaxiBlocks_API')):
                     'id' => [
                         'validate_callback' => function ($param) {
                             return is_numeric($param);
+                        },
+                    ],
+                ],
+                'permission_callback' => function () {
+                    return current_user_can('edit_posts');
+                },
+            ]);
+            register_rest_route($this->namespace, '/user-settings', [
+                'methods' => 'POST',
+                'callback' => [$this, 'update_maxi_blocks_user_settings'],
+                'args' => [
+                    'master_toolbar_open' => [
+                        'validate_callback' => function ($param) {
+                            return is_bool($param);
                         },
                     ],
                 ],
@@ -666,9 +680,65 @@ if (!class_exists('MaxiBlocks_API')):
                 'placeholder_url' =>
                     MAXI_PLUGIN_URL_PATH . 'img/patterns-placeholder.jpeg',
                 'show_indicators' => get_option('maxi_show_indicators'),
+                'user_settings' => [
+                    'master_toolbar_open' => $this->get_master_toolbar_open_setting(),
+                ],
             ];
 
             return $response;
+        }
+
+        private function get_master_toolbar_open_setting()
+        {
+            $user_id = get_current_user_id();
+
+            if (!$user_id) {
+                return null;
+            }
+
+            $value = get_user_meta(
+                $user_id,
+                'maxi_blocks_master_toolbar_open',
+                true,
+            );
+
+            if ($value === '') {
+                return null;
+            }
+
+            return (bool) $value;
+        }
+
+        /**
+         * Update user-specific settings.
+         */
+        public function update_maxi_blocks_user_settings($request)
+        {
+            $user_id = get_current_user_id();
+
+            if (!$user_id) {
+                return new WP_Error(
+                    'maxi_blocks_user_missing',
+                    __('User not found.', 'maxi-blocks'),
+                    ['status' => 401],
+                );
+            }
+
+            $master_toolbar_open = $request->get_param(
+                'master_toolbar_open',
+            );
+
+            if (is_bool($master_toolbar_open)) {
+                update_user_meta(
+                    $user_id,
+                    'maxi_blocks_master_toolbar_open',
+                    $master_toolbar_open ? 1 : 0,
+                );
+            }
+
+            return rest_ensure_response([
+                'master_toolbar_open' => $master_toolbar_open,
+            ]);
         }
 
         /**

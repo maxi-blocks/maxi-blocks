@@ -1,5 +1,6 @@
 import './store';
 
+export { default as activeAttributesCreator } from './activeAttributesCreator';
 export { default as breakpointAttributesCreator } from './breakpointAttributesCreator';
 export { default as convertAspectRatioToDecimal } from './convertAspectRatioToDecimal';
 export { default as createIconTransitions } from './transitions/createIconTransitions';

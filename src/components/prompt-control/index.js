@@ -261,6 +261,7 @@ ${getExamplesSection(contentType)}`;
 					},
 				]}
 				disablePadding
+				disableIndicators
 				hasBorder
 				setTab={setTab}
 			/>

@@ -14,7 +14,6 @@ import { updateSCOnEditor } from '@extensions/style-cards';
 import { svgAttributesReplacer, isSVGColorLight, fitSvg } from './util';
 import { injectImgSVG } from '@extensions/svg';
 import MasonryItem from './MasonryItem';
-import masonryGenerator from './masonryGenerator';
 import InfiniteHits from './InfiniteHits';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
 import { ContentLoader } from '@components';
@@ -1230,9 +1229,6 @@ const LibraryContainer = props => {
 	const CustomHierarchicalMenu = connectHierarchicalMenu(HierarchicalMenu);
 	const CustomClearRefinements = connectCurrentRefinements(ClearRefinements);
 
-	useEffect(() => {
-		masonryGenerator(type);
-	}, [type]);
 
 	const maxiPreviewIframe = (url, title) => {
 		return (

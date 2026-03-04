@@ -1,7 +1,10 @@
 /**
  * Internal dependencies
  */
-import { fromListToText, fromTextToList } from '../listUtils';
+import {
+	fromListToText,
+	fromTextToList,
+} from '@extensions/text/formats/listUtils';
 
 describe('listUtils', () => {
 	describe('fromListToText', () => {

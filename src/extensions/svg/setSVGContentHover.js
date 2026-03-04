@@ -3,7 +3,7 @@ const setSVGContentHover = (content, color, type) => {
 	let newContent = content;
 
 	const typeRegexString = ` ${type}=[^-]([^none])([^\\"]+)`;
-	const svgRegExp = new RegExp(`data-hover-${type}${typeRegexString}`, 'g');
+	const svgExistsRegExp = new RegExp(`\\sdata-hover-${type}[\\s=>"']`);
 	const svgStr = ` data-hover-${type}$&`;
 
 	const cssRegExpOld = new RegExp(
@@ -17,7 +17,7 @@ const setSVGContentHover = (content, color, type) => {
 	const cssStr = `$1}.maxi-svg-icon-block__icon:hover $2{${type}:${color}`;
 
 	newContent = (
-		!newContent.match(svgRegExp)
+		!newContent.match(svgExistsRegExp)
 			? newContent.replace(new RegExp(typeRegexString, 'g'), svgStr)
 			: newContent
 	).replace(cssRegExpOld, cssStrOld);

@@ -1,4 +1,4 @@
-import removeLinkFormat from '../removeLinkFormat';
+import removeLinkFormat from '@extensions/text/formats/removeLinkFormat';
 
 jest.mock('@wordpress/data', () => ({
 	dispatch: jest.fn(() => ({
@@ -8,6 +8,7 @@ jest.mock('@wordpress/data', () => ({
 		receiveMaxiSelectedStyleCard: jest.fn(() => ({ value: {} })),
 	})),
 }));
+jest.mock('@extensions/styles/getBlockStyle', () => jest.fn(() => 'light'));
 jest.mock('@extensions/styles', () => ({
 	getBlockStyle: jest.fn(() => 'light'),
 	getLastBreakpointAttribute: jest.fn(

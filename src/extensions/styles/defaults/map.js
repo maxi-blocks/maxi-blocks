@@ -5,6 +5,7 @@ const map = {
 	},
 	'map-type': {
 		type: 'string',
+		default: 'standard',
 	},
 	'map-latitude': {
 		type: 'number',
@@ -24,7 +25,7 @@ const map = {
 	},
 	'map-max-zoom': {
 		type: 'number',
-		default: 22,
+		default: 18, // OpenStreetMap max; Google Maps adjusts to 22 when selected
 	},
 	'map-markers': {
 		type: 'array',

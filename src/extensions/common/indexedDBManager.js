@@ -25,94 +25,41 @@ export const STORE_NAMES = {
 	wordPressAPI: 'wordPressAPI',
 };
 
-const getLocalStorageFlag = key => {
-	if (typeof window === 'undefined') {
-		return null;
+export const IDB_DISABLED_ERROR_CODE = 'MAXI_IDB_DISABLED';
+const TEMP_DISABLE_MS = 10000;
+const PERMANENT_DISABLE_UNTIL = Number.MAX_SAFE_INTEGER;
+
+const getIndexedDBState = () => {
+	const root = typeof window !== 'undefined' ? window : globalThis;
+	if (!root.__maxiBlocksIndexedDBState__) {
+		root.__maxiBlocksIndexedDBState__ = {
+			disabledUntil: 0,
+			lastError: null,
+			warnedCallers: new Set(),
+			disabledError: null,
+		};
 	}
 
-	try {
-		return window.localStorage ? localStorage.getItem(key) : null;
-	} catch (error) {
-		return null;
-	}
+	return root.__maxiBlocksIndexedDBState__;
 };
 
-const isDebugEnabled = () => {
-	if (process.env.NODE_ENV === 'development') {
-		return true;
-	}
+const getErrorMessage = error => {
+	if (!error) return 'unknown error';
+	if (error.message) return error.message;
+	if (error.name) return error.name;
+	return String(error);
+};
 
-	if (typeof window === 'undefined') {
-		return false;
-	}
-
-	if (window.__MAXI_DEBUG_IDB || window.__MAXI_DEBUG) {
-		return true;
-	}
-
-	return (
-		getLocalStorageFlag('maxiBlocks-debug') === 'true' ||
-		getLocalStorageFlag('maxiBlocks-debug-idb') === 'true'
+const shouldDisablePermanently = errorName =>
+	['SecurityError', 'InvalidStateError', 'NotAllowedError'].includes(
+		errorName
 	);
-};
 
-const normalizeError = error => {
-	if (!error) {
-		return { name: 'UnknownError', message: 'Unknown error' };
-	}
-
-	if (typeof error === 'string') {
-		return { name: 'Error', message: error };
-	}
-
-	const name = error.name || error.constructor?.name || 'Error';
-	const message = error.message || `${error}`;
-	const code =
-		typeof error.code === 'number' || typeof error.code === 'string'
-			? error.code
-			: undefined;
-
-	return { name, message, code };
-};
-
-const isVersionError = error => normalizeError(error).name === 'VersionError';
-
-const logDebug = (callerName, message, details) => {
-	if (!isDebugEnabled()) {
-		return;
-	}
-
-	// eslint-disable-next-line no-console
-	console.info(`[${callerName}] ${message}`, details || '');
-};
-
-const logError = (callerName, message, error, extra) => {
-	const normalized = normalizeError(error);
-	const details = { ...normalized, ...extra };
-
-	// eslint-disable-next-line no-console
-	console.warn(`[${callerName}] ${message}`, details);
-};
-
-let hasLoggedEnv = false;
-const logEnvOnce = callerName => {
-	if (!isDebugEnabled() || hasLoggedEnv || typeof window === 'undefined') {
-		return;
-	}
-
-	hasLoggedEnv = true;
-
-	const env = {
-		origin: window.location ? window.location.origin : null,
-		pathname: window.location ? window.location.pathname : null,
-		isSecureContext: window.isSecureContext,
-		isTopWindow: window.top === window.self,
-		userAgent: window.navigator ? window.navigator.userAgent : null,
-		indexedDB: !!window.indexedDB,
-	};
-
-	// eslint-disable-next-line no-console
-	console.info(`[${callerName}] IndexedDB environment`, env);
+const createDisabledError = cause => {
+	const error = new Error('IndexedDB unavailable');
+	error.code = IDB_DISABLED_ERROR_CODE;
+	error.cause = cause;
+	return error;
 };
 
 /**
@@ -123,90 +70,92 @@ const logEnvOnce = callerName => {
  */
 export const openDB = callerName => {
 	return new Promise((resolve, reject) => {
+		const state = getIndexedDBState();
+		const now = Date.now();
+
+		if (state.disabledUntil && now < state.disabledUntil) {
+			if (!state.warnedCallers.has(callerName)) {
+				state.warnedCallers.add(callerName);
+				// eslint-disable-next-line no-console
+				console.warn(
+					`[${callerName}] IndexedDB disabled, using memory cache`
+				);
+			}
+
+			reject(state.disabledError || createDisabledError(state.lastError));
+			return;
+		}
+
 		// Check if IndexedDB is available
 		if (!window.indexedDB) {
 			// eslint-disable-next-line no-console
 			console.warn(
 				`[${callerName}] IndexedDB not available, falling back to memory cache`
 			);
-			reject(new Error('IndexedDB not available'));
+			const error = createDisabledError(
+				new Error('IndexedDB not available')
+			);
+			state.lastError = error.cause;
+			state.disabledError = error;
+			state.disabledUntil = PERMANENT_DISABLE_UNTIL;
+			state.warnedCallers.add(callerName);
+			reject(error);
 			return;
 		}
 
-		const attemptOpen = allowDeleteOnVersionMismatch => {
+		const attemptOpen = canDeleteOnVersionError => {
 			const request = indexedDB.open(DB_NAME, DB_VERSION);
 
 			request.onerror = () => {
-				const error = request.error;
-				const isVersionMismatch =
-					allowDeleteOnVersionMismatch && isVersionError(error);
+				const rawError =
+					request.error || new Error('IndexedDB open failed');
+				const errorName = rawError.name || '';
 
-				if (isVersionMismatch) {
-					logError(
-						callerName,
-						'Database version mismatch detected, clearing cache',
-						error,
-						{ requestedVersion: DB_VERSION }
-					);
-
+				if (errorName === 'VersionError' && canDeleteOnVersionError) {
 					const deleteRequest = indexedDB.deleteDatabase(DB_NAME);
-
 					deleteRequest.onsuccess = () => {
-						logDebug(callerName, 'Deleted database, retrying open');
 						attemptOpen(false);
 					};
-
 					deleteRequest.onerror = () => {
-						logEnvOnce(callerName);
-						logError(
-							callerName,
-							'Failed to delete database after version mismatch',
-							deleteRequest.error || error
+						const deleteError =
+							deleteRequest.error ||
+							new Error('IndexedDB delete failed');
+						state.lastError = deleteError;
+						state.disabledUntil = Date.now() + TEMP_DISABLE_MS;
+						state.disabledError = createDisabledError(deleteError);
+						// eslint-disable-next-line no-console
+						console.warn(
+							`[${callerName}] Failed to delete database after VersionError:`,
+							getErrorMessage(deleteError)
 						);
-						reject(deleteRequest.error || error);
+						state.warnedCallers.add(callerName);
+						reject(state.disabledError);
 					};
-
-					deleteRequest.onblocked = event => {
-						logDebug(callerName, 'Delete blocked by another connection', {
-							oldVersion: event?.oldVersion,
-							newVersion: event?.newVersion,
-						});
-						reject(deleteRequest.error || error);
-					};
-
 					return;
 				}
 
-				logEnvOnce(callerName);
-				logError(callerName, 'Failed to open database', error, {
-					requestedVersion: DB_VERSION,
-				});
-				reject(error);
+				const disableUntil = shouldDisablePermanently(errorName)
+					? PERMANENT_DISABLE_UNTIL
+					: Date.now() + TEMP_DISABLE_MS;
+				state.lastError = rawError;
+				state.disabledUntil = disableUntil;
+				state.disabledError = createDisabledError(rawError);
+
+				// eslint-disable-next-line no-console
+				console.warn(
+					`[${callerName}] Failed to open database:`,
+					getErrorMessage(rawError)
+				);
+				state.warnedCallers.add(callerName);
+				reject(state.disabledError);
 			};
 
 			request.onsuccess = () => {
-				logDebug(callerName, 'Opened database', {
-					name: request.result?.name,
-					version: request.result?.version,
-				});
 				resolve(request.result);
-			};
-
-			request.onblocked = event => {
-				logDebug(callerName, 'Open blocked by another connection', {
-					oldVersion: event?.oldVersion,
-					newVersion: event?.newVersion,
-				});
 			};
 
 			request.onupgradeneeded = event => {
 				const db = event.target.result;
-
-				logDebug(callerName, 'Upgrade needed', {
-					oldVersion: event.oldVersion,
-					newVersion: event.newVersion,
-					stores: Array.from(db.objectStoreNames || []),
-				});
 
 				// Create all required object stores (shared database across all cache modules)
 				Object.values(STORE_NAMES).forEach(storeName => {
@@ -239,7 +188,11 @@ export const executeTransaction = (transaction, db, callerName, operation) => {
 
 		transaction.onerror = () => {
 			db.close();
-			logError(callerName, `Failed to ${operation}`, transaction.error);
+			// eslint-disable-next-line no-console
+			console.warn(
+				`[${callerName}] Failed to ${operation}:`,
+				getErrorMessage(transaction.error)
+			);
 			reject(transaction.error);
 		};
 	});
@@ -263,7 +216,11 @@ export const executeRequest = (request, db, callerName, operation) => {
 
 		request.onerror = () => {
 			db.close();
-			logError(callerName, `Failed to ${operation}`, request.error);
+			// eslint-disable-next-line no-console
+			console.warn(
+				`[${callerName}] Failed to ${operation}:`,
+				getErrorMessage(request.error)
+			);
 			reject(request.error);
 		};
 	});

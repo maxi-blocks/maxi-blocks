@@ -13,7 +13,6 @@ body .maxi-background-control {
 			border-radius: 4px;
 			color: var(--maxi-grey-dark);
 			background-color: var(--maxi-white);
-			
 
 			&.maxi-tabs-control__button--selected {
 				border: 1px solid var(--maxi-primary-color);
@@ -88,6 +87,41 @@ body .maxi-background-control {
 				max-width: 21px;
 				max-height: 21px;
 				margin: auto;
+			}
+
+			// Shape-specific styling to match icon preview in library modal
+			&--shape {
+				// Handle the div wrapper from RawHTML
+				> div {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 100%;
+					height: 100%;
+				}
+
+				svg {
+					width: 100%;
+					height: 100%;
+					max-width: 20px;
+					max-height: 20px;
+
+					// Make children inherit fill from parent SVG
+					* {
+						fill: inherit;
+					}
+				}
+
+				// Dark background for light-colored SVG shapes
+				&--light {
+					background: var(--maxi-grey);
+					border-color: var(--maxi-grey);
+
+					&:hover {
+						background: var(--maxi-grey-dark, #4a4a4a);
+						border-color: var(--maxi-grey-dark, #4a4a4a);
+					}
+				}
 			}
 		}
 		&__row {

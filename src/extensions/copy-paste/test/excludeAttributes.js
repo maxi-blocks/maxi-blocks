@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import excludeAttributes from '../excludeAttributes';
+import excludeAttributes from '@extensions/copy-paste/excludeAttributes';
 import { getDefaultAttribute } from '@extensions/styles';
 import DC_LINK_BLOCKS from '@components/toolbar/components/link/dcLinkBlocks';
 

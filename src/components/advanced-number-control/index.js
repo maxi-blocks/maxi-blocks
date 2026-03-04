@@ -196,13 +196,13 @@ const AdvancedNumberControl = props => {
 	};
 
 	const handleChange = useDebounce(
-		useCallback((onChangeValue, latestValueRef, optionType) => {
+		useCallback((onChangeValue, latestValueRef, optionType, inlinePayload) => {
 			if (onChangeValue) {
 				const val =
 					latestValueRef.current === '' || optionType === 'string'
 						? latestValueRef.current.toString()
 						: +latestValueRef.current;
-				onChangeValue(val);
+				onChangeValue(val, inlinePayload);
 			}
 		}, []),
 		300
@@ -236,9 +236,10 @@ const AdvancedNumberControl = props => {
 			result === '' || optionType === 'string'
 				? result.toString()
 				: +result;
-		onChangeValue?.(val, { inline: enableUnit ? { unit } : {} });
+		const inlinePayload = { inline: enableUnit ? { unit } : {} };
+		onChangeValue?.(val, inlinePayload);
 
-		handleChange(onChangeValue, latestValueRef, optionType);
+		handleChange(onChangeValue, latestValueRef, optionType, inlinePayload);
 	};
 
 	const rawPreferredValues = [
@@ -367,15 +368,15 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue?.(newVal, {
-												inline: enableUnit
-													? { unit }
-													: {},
-											});
+											const inlinePayload = {
+												inline: enableUnit ? { unit } : {},
+											};
+											onChangeValue?.(newVal, inlinePayload);
 											handleChange(
 												onChangeValue,
 												latestValueRef,
-												optionType
+												optionType,
+												inlinePayload
 											);
 										}
 									}}
@@ -448,15 +449,15 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue?.(newVal, {
-												inline: enableUnit
-													? { unit }
-													: {},
-											});
+											const inlinePayload = {
+												inline: enableUnit ? { unit } : {},
+											};
+											onChangeValue?.(newVal, inlinePayload);
 											handleChange(
 												onChangeValue,
 												latestValueRef,
-												optionType
+												optionType,
+												inlinePayload
 											);
 										}
 									}}
@@ -489,6 +490,9 @@ const AdvancedNumberControl = props => {
 								options={getOptions()}
 								value={unit}
 								onChange={val => {
+									const unitInlinePayload = {
+										inline: { unit: val },
+									};
 									if (
 										Number(value) > minMaxSettings[val]?.max
 									) {
@@ -501,13 +505,24 @@ const AdvancedNumberControl = props => {
 										latestValueRef.current =
 											clampedValue.toString();
 										setCurrentValue(clampedValue);
-										onChangeValue?.(clampedValue, {
-											inline: { unit: val },
-										});
+										onChangeValue?.(clampedValue, unitInlinePayload);
 										handleChange(
 											onChangeValue,
 											latestValueRef,
-											optionType
+											optionType,
+											unitInlinePayload
+										);
+									} else {
+										const currentVal =
+											optionType === 'string'
+												? latestValueRef.current.toString()
+												: +latestValueRef.current;
+										onChangeValue?.(currentVal, unitInlinePayload);
+										handleChange(
+											onChangeValue,
+											latestValueRef,
+											optionType,
+											unitInlinePayload
 										);
 									}
 									onChangeUnit?.(val);

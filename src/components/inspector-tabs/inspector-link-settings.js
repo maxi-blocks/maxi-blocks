@@ -39,7 +39,7 @@ const linkSettings = ({
 
 	return {
 		label,
-		disablePadding: true,
+		ignoreIndicatorGroups: ['typography'],
 		content: (
 			<TypographyControl
 				{...getGroupAttributes(

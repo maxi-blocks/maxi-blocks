@@ -59,7 +59,7 @@ const size = ({
 			/>
 		),
 		extraIndicators: [
-			...(isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'),
+			isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth',
 		],
 	};
 };

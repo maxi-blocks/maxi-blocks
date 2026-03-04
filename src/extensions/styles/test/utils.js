@@ -9,7 +9,7 @@ import {
 	attrExistsOnResponsive,
 	getTransitionTimingFunction,
 	isValidNumber,
-} from '../utils';
+} from '@extensions/styles/utils';
 
 describe('utils', () => {
 	describe('getIsValid', () => {

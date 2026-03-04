@@ -1,4 +1,4 @@
-import entityRecordsWrapper from '../entityRecordsWrapper';
+import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
 import { select } from '@wordpress/data';
 import { getIsSiteEditor } from '@extensions/fse';
 

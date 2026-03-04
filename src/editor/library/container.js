@@ -769,7 +769,8 @@ const LibraryContainer = props => {
 			hit.svg_code,
 			shapeType,
 			type,
-			layerOrder
+			layerOrder,
+			prefix
 		);
 
 		// Analyze the processed SVG code to detect if it has light colors
@@ -1422,7 +1423,12 @@ const LibraryContainer = props => {
 								<CustomSvgMenuSelect
 									className='maxi-cloud-container__content-svg-shape__categories'
 									attribute='svg_category'
-									defaultRefinement='Line'
+									defaultRefinement={
+									type === 'navigation-icon' &&
+									prefix.includes('dot')
+										? 'Shape'
+										: 'Line'
+								}
 									translations={{
 										seeAllOption: __(
 											'All icons',

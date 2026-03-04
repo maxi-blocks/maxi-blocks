@@ -11,7 +11,10 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
-import { opacity as opacityAttr } from '@extensions/styles/defaults';
+import {
+	opacity as opacityAttr,
+	opacityHover as opacityHoverAttr,
+} from '@extensions/styles/defaults';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ManageHoverTransitions from '@components/manage-hover-transitions';
@@ -44,6 +47,7 @@ const opacity = ({ props, depth = 2 }) => {
 								breakpoint={deviceType}
 							/>
 						),
+						breakpoint: deviceType,
 					},
 					{
 						label: __('Hover state', 'maxi-blocks'),
@@ -82,6 +86,8 @@ const opacity = ({ props, depth = 2 }) => {
 								)}
 							</>
 						),
+						extraIndicators: Object.keys(opacityHoverAttr),
+						breakpoint: deviceType,
 					},
 				]}
 			/>

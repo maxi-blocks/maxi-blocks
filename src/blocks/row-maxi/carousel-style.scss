@@ -1,0 +1,313 @@
+// Row Carousel Frontend Styles
+
+body.maxi-blocks--active {
+	// Only apply carousel styles when carousel structure exists (added by JavaScript)
+	.maxi-row-block[data-carousel-initialized='true'] {
+		position: relative;
+		overflow: visible; // Allow content to extend outside row
+		// Stack tracker, nav, and pagination vertically so pagination
+		// doesn't steal horizontal space from tracker's margin:auto centering
+		flex-direction: column;
+
+		.maxi-row-carousel__tracker {
+			position: relative; // For wrapper positioning
+			display: block;
+			overflow: hidden; // Hide columns outside the visible area horizontally
+			// Width and height set by JavaScript based on slidesPerView and content
+		}
+
+		.maxi-row-carousel__wrapper {
+			display: flex;
+			width: 100%;
+			align-items: flex-end; // Align columns to bottom by default
+			// flex-wrap controlled by active class below
+		}
+
+		// Only apply nowrap when carousel is active
+		&.maxi-row-carousel--active .maxi-row-carousel__wrapper {
+			flex-wrap: nowrap !important;
+		}
+
+		// Column (slide) styles - only direct children of wrapper, not nested columns
+		> .maxi-row-carousel__tracker
+			> .maxi-row-carousel__wrapper
+			> .maxi-column-block {
+			flex-shrink: 0;
+		}
+
+		// Fade transition (disabled)
+		// &[data-transition='fade'] {
+		// 	.maxi-row-carousel__wrapper {
+		// 		position: relative;
+
+		// 		.maxi-column-block {
+		// 			transition: opacity 0.5s ease, visibility 0.5s ease;
+
+		// 			&:not([data-carousel-active='true']) {
+		// 				opacity: 0;
+		// 				visibility: hidden;
+		// 				pointer-events: none;
+		// 			position: absolute;
+		// 			top: 0;
+		// 			left: 0;
+		// 			z-index: 0;
+		// 		}
+
+		// 		&[data-carousel-active='true'] {
+		// 			opacity: 1;
+		// 			visibility: visible;
+		// 			pointer-events: auto;
+		// 			position: relative;
+		// 			z-index: 1;
+		// 		}
+		// 	}
+		// }
+		// }
+	}
+
+	// Navigation container - now a direct child of row block
+	// Positioned and sized by JavaScript to match tracker
+	.maxi-row-block[data-carousel-initialized='true']
+		> .maxi-row-carousel__nav {
+		// Hidden by default
+		display: none;
+		// Position absolutely relative to row block, allowing arrows to extend outside tracker
+		// Top, left, width, height set by JavaScript to match tracker
+		position: absolute;
+		pointer-events: none; // Allow clicks to pass through nav container
+
+		// Re-enable pointer events for interactive elements
+		.maxi-row-carousel__arrow,
+		.maxi-row-carousel__dots {
+			pointer-events: auto;
+		}
+
+		// Navigation arrows
+		.maxi-row-carousel__arrow {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			cursor: pointer;
+			z-index: 10;
+			transition: opacity 0.3s ease;
+
+			&:hover {
+				opacity: 0.8;
+			}
+
+			&--next {
+				right: 0;
+			}
+
+			&--prev {
+				left: 0;
+			}
+		}
+
+		// Navigation dots
+		.maxi-row-carousel__dots {
+			display: flex;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 10;
+
+			.maxi-row-carousel__dot {
+				cursor: pointer;
+				transition: opacity 0.3s ease;
+
+				&:hover {
+					opacity: 0.8;
+				}
+
+				&--active {
+					opacity: 1;
+					cursor: default;
+					pointer-events: none;
+
+					&:hover {
+						opacity: 1;
+					}
+				}
+			}
+		}
+	}
+
+	// Alignment options
+	// Alignment styles for general breakpoint
+	.maxi-row-block[data-carousel-alignment-general='left'] {
+		.maxi-row-carousel__tracker {
+			margin-left: 0;
+			margin-right: auto;
+		}
+	}
+
+	.maxi-row-block[data-carousel-alignment-general='center'] {
+		.maxi-row-carousel__tracker {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.maxi-row-block[data-carousel-alignment-general='right'] {
+		.maxi-row-carousel__tracker {
+			margin-left: auto;
+			margin-right: 0;
+		}
+	}
+
+	// Show navigation when carousel is initialized and active
+	.maxi-row-block[data-carousel-initialized='true'].maxi-row-carousel--active
+		> .maxi-row-carousel__nav {
+		display: block;
+	}
+
+	@media (max-width: 1919px) {
+		.maxi-row-block[data-carousel-alignment-xxl='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xxl='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xxl='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 1535px) {
+		.maxi-row-block[data-carousel-alignment-xl='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xl='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xl='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 1279px) {
+		.maxi-row-block[data-carousel-alignment-l='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-l='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-l='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 1023px) {
+		.maxi-row-block[data-carousel-alignment-m='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-m='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-m='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 767px) {
+		.maxi-row-block[data-carousel-alignment-s='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-s='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-s='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+
+	@media (max-width: 479px) {
+		.maxi-row-block[data-carousel-alignment-xs='left'] {
+			.maxi-row-carousel__tracker {
+				margin-left: 0;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xs='center'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: auto;
+			}
+		}
+
+		.maxi-row-block[data-carousel-alignment-xs='right'] {
+			.maxi-row-carousel__tracker {
+				margin-left: auto;
+				margin-right: 0;
+			}
+		}
+	}
+}
+
+// Fade animation
+@keyframes maxiRowCarouselFade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

@@ -811,12 +811,24 @@ const ACTION_PROPERTY_ALIASES = {
 	zIndex: 'z_index',
 };
 
+	const HISTORY_KEY = 'maxi-ai-chat-history';
+	const MAX_HISTORY = 30;
+
 	const AiChatPanelView = ({ isOpen, onClose }) => {
 		const [messages, setMessages] = useState([]);
 		const [input, setInput] = useState('');
 		const [isLoading, setIsLoading] = useState(false);
 		const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
 		const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
+		const [showHistory, setShowHistory] = useState(false);
+		const [chatHistory, setChatHistory] = useState(() => {
+			try {
+				return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+			} catch {
+				return [];
+			}
+		});
+		const [currentChatId, setCurrentChatId] = useState(() => Date.now().toString());
 		const messagesEndRef = useRef(null);
 		const isAIDebugEnabled = () =>
 			typeof window !== 'undefined' && window.maxiBlocksDebug;
@@ -6529,8 +6541,77 @@ const ACTION_PROPERTY_ALIASES = {
 		return summary;
 	};
 
+	// ── Chat history helpers ─────────────────────────────────────────────────
+
+	const persistHistory = updated => {
+		try { localStorage.setItem(HISTORY_KEY, JSON.stringify(updated)); } catch {}
+	};
+
+	const saveCurrentChat = msgs => {
+		if (!msgs || msgs.length === 0) return;
+		const title = msgs.find(m => m.role === 'user')?.content?.slice(0, 60) || __('New chat', 'maxi-blocks');
+		const entry = { id: currentChatId, title, messages: msgs, timestamp: Date.now() };
+		setChatHistory(prev => {
+			const updated = [entry, ...prev.filter(c => c.id !== currentChatId)].slice(0, MAX_HISTORY);
+			persistHistory(updated);
+			return updated;
+		});
+	};
+
+	// Auto-save whenever messages change
+	useEffect(() => {
+		if (messages.length > 0) saveCurrentChat(messages);
+	}, [messages]);
+
+	const startNewChat = () => {
+		setMessages([]);
+		setInput('');
+		setConversationContext(null);
+		setCurrentChatId(Date.now().toString());
+		setShowHistory(false);
+	};
+
+	const loadChat = entry => {
+		saveCurrentChat(messages);
+		setMessages(entry.messages);
+		setCurrentChatId(entry.id);
+		setShowHistory(false);
+	};
+
+	const deleteHistoryItem = (id, e) => {
+		e.stopPropagation();
+		setChatHistory(prev => {
+			const updated = prev.filter(c => c.id !== id);
+			persistHistory(updated);
+			return updated;
+		});
+	};
+
+	// ─────────────────────────────────────────────────────────────────────────
+
 	const sendMessage = async () => {
 		if (!input.trim()) return;
+
+		// Guard: ensure the configured API key is present before sending
+		const aiSettings = window.maxiSettings?.ai_settings ?? {};
+		const useShared = aiSettings.ai_panel_use_shared !== false;
+		const hasKey = useShared
+			? !!aiSettings.has_openai_api_key
+			: !!aiSettings.has_ai_panel_key;
+
+		if (!hasKey) {
+			setMessages(prev => [
+				...prev,
+				{ role: 'user', content: input },
+				{
+					role: 'assistant',
+					content: __('Please configure your AI API key in the Maxi AI dashboard settings before using the chat panel.', 'maxi-blocks'),
+					isError: true,
+				},
+			]);
+			setInput('');
+			return;
+		}
 
 		const rawMessage = input;
 		const userMessage = { role: 'user', content: rawMessage };
@@ -8592,7 +8673,7 @@ const ACTION_PROPERTY_ALIASES = {
 						})),
 						{ role: 'user', content: rawMessage },
 					],
-					model: 'gpt-4o-mini',
+					model: window.maxiSettings?.ai_settings?.ai_panel_model ?? 'gpt-4o-mini',
 					temperature: 0.2, // Low temperature for consistent JSON
 					streaming: false,
 				}),
@@ -9424,15 +9505,75 @@ const ACTION_PROPERTY_ALIASES = {
 						{__('Style Card', 'maxi-blocks')}
 					</button>
 				</div>
-				<button
-					className='maxi-ai-chat-panel__close'
-					onClick={onClose}
-					type='button'
-					aria-label={__('Close', 'maxi-blocks')}
-				>
-					X
-				</button>
+				<div className='maxi-ai-chat-panel__header-actions'>
+					<button
+						className='maxi-ai-chat-panel__icon-btn'
+						onClick={startNewChat}
+						type='button'
+						title={__('New chat', 'maxi-blocks')}
+						aria-label={__('New chat', 'maxi-blocks')}
+					>
+						<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2.5' width='16' height='16'>
+							<path d='M12 5v14M5 12h14' />
+						</svg>
+					</button>
+					<button
+						className={`maxi-ai-chat-panel__icon-btn${showHistory ? ' is-active' : ''}`}
+						onClick={() => setShowHistory(v => !v)}
+						type='button'
+						title={__('Chat history', 'maxi-blocks')}
+						aria-label={__('Chat history', 'maxi-blocks')}
+					>
+						<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth='2' width='16' height='16'>
+							<circle cx='12' cy='12' r='9' />
+							<path d='M12 7v5l3 3' />
+						</svg>
+					</button>
+					<button
+						className='maxi-ai-chat-panel__close'
+						onClick={onClose}
+						type='button'
+						aria-label={__('Close', 'maxi-blocks')}
+					>
+						&#x2715;
+					</button>
+				</div>
 			</div>
+
+			{showHistory && (
+				<div className='maxi-ai-chat-panel__history'>
+					<div className='maxi-ai-chat-panel__history-header'>
+						{__('Recent chats', 'maxi-blocks')}
+					</div>
+					{chatHistory.length === 0 ? (
+						<div className='maxi-ai-chat-panel__history-empty'>
+							{__('No previous chats', 'maxi-blocks')}
+						</div>
+					) : chatHistory.map(entry => (
+						<div
+							key={entry.id}
+							className={`maxi-ai-chat-panel__history-item${entry.id === currentChatId ? ' is-current' : ''}`}
+							onClick={() => loadChat(entry)}
+							role='button'
+							tabIndex={0}
+							onKeyDown={e => e.key === 'Enter' && loadChat(entry)}
+						>
+							<div className='maxi-ai-chat-panel__history-item-title'>{entry.title}</div>
+							<div className='maxi-ai-chat-panel__history-item-date'>
+								{new Date(entry.timestamp).toLocaleDateString()}
+							</div>
+							<button
+								className='maxi-ai-chat-panel__history-item-delete'
+								onClick={e => deleteHistoryItem(entry.id, e)}
+								title={__('Delete', 'maxi-blocks')}
+								type='button'
+							>
+								&#x2715;
+							</button>
+						</div>
+					))}
+				</div>
+			)}
 
 			<div className='maxi-ai-chat-panel__messages'>
 				{messages.map((msg, index) => (

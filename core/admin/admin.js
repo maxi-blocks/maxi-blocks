@@ -1,6 +1,132 @@
 // Keep track of active polling to prevent multiple instances
 let activePollingEmail = null;
 
+// ─── AI model fetching utilities (available before DOMContentLoaded) ─────────
+
+window.maxiFetchOpenAIModels = async apiKey => {
+	try {
+		const response = await fetch('https://api.openai.com/v1/models', {
+			headers: {
+				Authorization: `Bearer ${apiKey}`,
+				'Content-Type': 'application/json',
+			},
+		});
+		if (!response.ok) throw new Error('Failed to fetch OpenAI models');
+		const data = await response.json();
+		const excludedPatterns = [
+			'audio', 'gpt-3.5-turbo-instruct', 'gpt-4o-mini-realtime-preview',
+			'gpt-4o-realtime-preview', 'gpt-image', 'gpt-realtime',
+			'transcribe', 'tts', 'search-preview', 'o1-pro',
+		];
+		const includedPatterns = ['o1', 'o3', 'gpt'];
+		return data.data
+			.filter(m => {
+				const isExcluded = excludedPatterns.some(p => m.id.includes(p));
+				const isIncluded = includedPatterns.some(p => m.id.includes(p));
+				return !isExcluded && isIncluded;
+			})
+			.map(m => m.id)
+			.sort();
+	} catch (e) {
+		console.error('Error fetching OpenAI models:', e);
+		return [];
+	}
+};
+
+window.maxiFetchAnthropicModels = async apiKey => {
+	try {
+		const response = await fetch('https://api.anthropic.com/v1/models', {
+			headers: {
+				'x-api-key': apiKey,
+				'anthropic-version': '2023-06-01',
+			},
+		});
+		if (!response.ok) throw new Error('Failed to fetch Anthropic models');
+		const data = await response.json();
+		const imagePatterns = ['vision', 'image', 'embed'];
+		return (data.data ?? [])
+			.map(m => m.id)
+			.filter(id => !imagePatterns.some(p => id.includes(p)))
+			.sort();
+	} catch (e) {
+		console.error('Error fetching Anthropic models:', e);
+		return [];
+	}
+};
+
+window.maxiFetchGeminiModels = async apiKey => {
+	try {
+		const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`;
+		const response = await fetch(url);
+		if (!response.ok) throw new Error('Failed to fetch Gemini models');
+		const data = await response.json();
+		const imagePatterns = ['vision', 'image', 'imagen', 'embed', 'aqa', 'nano'];
+		return (data.models ?? [])
+			.filter(m => m.supportedGenerationMethods?.includes('generateContent'))
+			.map(m => m.name.replace('models/', ''))
+			.filter(id => !imagePatterns.some(p => id.includes(p)))
+			.sort();
+	} catch (e) {
+		console.error('Error fetching Gemini models:', e);
+		return [];
+	}
+};
+
+/**
+ * Fetch models for any provider and populate a <select> + hidden <input>.
+ * @param {string} provider  'openai' | 'anthropic' | 'gemini'
+ * @param {string} apiKey
+ * @param {string} selectId  id of the <select> element
+ * @param {string} savedModel  previously saved model to pre-select
+ */
+window.maxiUpdateProviderModels = async (provider, apiKey, selectId, savedModel) => {
+	const selectEl = document.getElementById(selectId);
+	const inputEl  = document.querySelector(`input#${selectId}`);
+	if (!selectEl) return;
+
+	const loc = window.localization || {};
+	if (!apiKey) {
+		selectEl.innerHTML = `<option value="">${loc.please_add_api_key || 'Add API key to load models'}</option>`;
+		if (inputEl) inputEl.value = '';
+		return;
+	}
+
+	selectEl.innerHTML = `<option value="">${loc.loading_available_models || 'Loading models…'}</option>`;
+
+	try {
+		let models = [];
+		if (provider === 'openai')         models = await window.maxiFetchOpenAIModels(apiKey);
+		else if (provider === 'anthropic') models = await window.maxiFetchAnthropicModels(apiKey);
+		else if (provider === 'gemini')    models = await window.maxiFetchGeminiModels(apiKey);
+
+		selectEl.innerHTML = '';
+		if (models.length === 0) {
+			selectEl.innerHTML = `<option value="">${loc.no_models_available || 'No models available'}</option>`;
+			if (inputEl) inputEl.value = '';
+			return;
+		}
+
+		models.forEach(id => {
+			const opt = document.createElement('option');
+			opt.value = id;
+			opt.textContent = id;
+			if (id === savedModel) opt.selected = true;
+			selectEl.appendChild(opt);
+		});
+
+		if (!savedModel || !models.includes(savedModel)) {
+			selectEl.value = models[0];
+		}
+		if (inputEl) inputEl.value = selectEl.value;
+	} catch (err) {
+		console.error('Error updating model dropdown:', err);
+		selectEl.innerHTML = `<option value="">${loc.error_loading_models || 'Error loading models'}</option>`;
+		if (inputEl) inputEl.value = '';
+	}
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	// &panel=documentation-support will open the tab in the accordion
 	const urlStr = window.location.href;
@@ -292,127 +418,9 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 		);
 	};
 
-	const fetchOpenAIModels = async apiKey => {
-		try {
-			const response = await fetch('https://api.openai.com/v1/models', {
-				method: 'GET',
-				headers: {
-					Authorization: `Bearer ${apiKey}`,
-					'Content-Type': 'application/json',
-				},
-			});
-
-			if (!response.ok) {
-				throw new Error('Failed to fetch models');
-			}
-
-			const data = await response.json();
-
-			const excludedPatterns = [
-				'audio',
-				'gpt-3.5-turbo-instruct',
-				'gpt-4o-mini-realtime-preview',
-				'gpt-4o-realtime-preview',
-				'gpt-image',
-				'gpt-realtime',
-				'transcribe',
-				'tts',
-				'search-preview',
-				'o1-pro',
-			];
-
-			const includedPatterns = ['o1', 'o3', 'gpt'];
-
-			return data.data
-				.filter(model => {
-					const modelId = model.id;
-					const isExcluded = excludedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-					const isIncluded = includedPatterns.some(pattern =>
-						modelId.includes(pattern)
-					);
-
-					return !isExcluded && isIncluded;
-				})
-				.map(model => model.id)
-				.sort();
-		} catch (error) {
-			console.error('Error fetching OpenAI models:', error);
-			return [];
-		}
-	};
-
-	let isUpdatingDropdown = false;
-
-	const updateModelDropdown = async apiKey => {
-		if (isUpdatingDropdown) return;
-		isUpdatingDropdown = true;
-
-		const modelSelect = document.getElementById('maxi_ai_model');
-		const modelInput = document.querySelector('input#maxi_ai_model');
-
-		if (!modelSelect || !modelInput) {
-			isUpdatingDropdown = false;
-			return;
-		}
-
-		// Only show loading message if we have a valid API key
-		if (apiKey) {
-			modelSelect.innerHTML = `<option value="">${window.localization.loading_available_models}</option>`;
-		} else {
-			modelSelect.innerHTML = `<option value="">${window.localization.please_add_api_key}</option>`;
-			modelInput.value = '';
-			isUpdatingDropdown = false;
-			return;
-		}
-
-		try {
-			const models = await fetchOpenAIModels(apiKey);
-
-			// Clear existing options
-			modelSelect.innerHTML = '';
-
-			if (models.length === 0) {
-				const option = document.createElement('option');
-				option.value = '';
-				option.textContent = window.localization.no_models_available;
-				modelSelect.appendChild(option);
-				modelInput.value = '';
-				isUpdatingDropdown = false;
-				return;
-			}
-
-			// Add available models
-			models.forEach(modelId => {
-				const option = document.createElement('option');
-				option.value = modelId;
-				option.textContent = modelId;
-				modelSelect.appendChild(option);
-			});
-
-			// Get the saved value from WordPress options via localized script
-			const currentValue =
-				window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
-			modelInput.value = currentValue;
-
-			// Try to restore previous selection if available
-			if (models.includes(currentValue)) {
-				modelSelect.value = currentValue;
-			} else {
-				// If previous selection not available, use first model
-				// eslint-disable-next-line prefer-destructuring
-				modelSelect.value = models[0];
-				// eslint-disable-next-line prefer-destructuring
-				modelInput.value = models[0];
-			}
-		} catch (error) {
-			console.error('Error updating model dropdown:', error);
-			modelSelect.innerHTML = `<option value="">${window.localization.error_loading_models}</option>`;
-			modelInput.value = '';
-		} finally {
-			isUpdatingDropdown = false;
-		}
+	const updateModelDropdown = apiKey => {
+		const savedModel = window.maxiAiSettings?.defaultModel || 'gpt-3.5-turbo';
+		return window.maxiUpdateProviderModels('openai', apiKey, 'maxi_ai_model', savedModel);
 	};
 
 	const testOpenAIApiKey = () => {
@@ -457,7 +465,11 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 	// Check if openAIApiKeyVisibleInput exists before executing related code
 	if (openAIApiKeyVisibleInput) {
 		const openAIApiKey = getOpenAIApiKey();
-		if (openAIApiKey) {
+		// Only fetch OpenAI models when the provider is set to openai (or not set)
+		const isOpenAIProvider =
+			!window._maxiAiIntegrationProvider ||
+			window._maxiAiIntegrationProvider === 'openai';
+		if (openAIApiKey && isOpenAIProvider) {
 			updateModelDropdown(openAIApiKey);
 		}
 
@@ -474,9 +486,12 @@ document.addEventListener('DOMContentLoaded', function maxiAdmin() {
 			});
 		}
 
-		// Handle API key changes
+		// Handle API key changes — only validate when using OpenAI provider
 		openAIApiKeyVisibleInput.addEventListener('input', () => {
-			testOpenAIApiKey();
+			const provider = window._maxiAiIntegrationProvider || 'openai';
+			if (provider === 'openai') {
+				testOpenAIApiKey();
+			}
 		});
 	}
 

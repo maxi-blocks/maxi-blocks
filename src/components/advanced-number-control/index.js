@@ -236,7 +236,8 @@ const AdvancedNumberControl = props => {
 			result === '' || optionType === 'string'
 				? result.toString()
 				: +result;
-		onChangeValue?.(val, { inline: enableUnit ? { unit } : {} });
+		const inlinePayload = { inline: enableUnit ? { unit } : {} };
+		onChangeValue?.(val, inlinePayload);
 
 		handleChange(onChangeValue, latestValueRef, optionType);
 	};
@@ -269,7 +270,9 @@ const AdvancedNumberControl = props => {
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
 					selected={value === 'auto'}
-					onChange={val => (val ? onChangeValue('auto') : onReset())}
+					onChange={val =>
+						val ? onChangeValue?.('auto') : onReset?.()
+					}
 				/>
 			)}
 			<BaseControl
@@ -365,7 +368,15 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											const inlinePayload = {
+												inline: enableUnit ? { unit } : {},
+											};
+											onChangeValue?.(newVal, inlinePayload);
+											handleChange(
+												onChangeValue,
+												latestValueRef,
+												optionType
+											);
 										}
 									}}
 									title={__('Increase value', 'maxi-blocks')}
@@ -437,7 +448,15 @@ const AdvancedNumberControl = props => {
 											latestValueRef.current =
 												newVal.toString();
 											setCurrentValue(newVal);
-											onChangeValue(newVal);
+											const inlinePayload = {
+												inline: enableUnit ? { unit } : {},
+											};
+											onChangeValue?.(newVal, inlinePayload);
+											handleChange(
+												onChangeValue,
+												latestValueRef,
+												optionType
+											);
 										}
 									}}
 									title='Decrease value'
@@ -469,19 +488,40 @@ const AdvancedNumberControl = props => {
 								options={getOptions()}
 								value={unit}
 								onChange={val => {
+									const unitInlinePayload = {
+										inline: { unit: val },
+									};
 									if (
 										Number(value) > minMaxSettings[val]?.max
 									) {
-										onChangeValue(
+										const clampedValue =
 											optionType === 'string'
 												? minMaxSettings[
 														val
 												  ]?.max.toString()
-												: minMaxSettings[val]?.max,
-											val
+												: minMaxSettings[val]?.max;
+										latestValueRef.current =
+											clampedValue.toString();
+										setCurrentValue(clampedValue);
+										onChangeValue?.(clampedValue, unitInlinePayload);
+										handleChange(
+											onChangeValue,
+											latestValueRef,
+											optionType
+										);
+									} else {
+										const currentVal =
+											optionType === 'string'
+												? latestValueRef.current.toString()
+												: +latestValueRef.current;
+										onChangeValue?.(currentVal, unitInlinePayload);
+										handleChange(
+											onChangeValue,
+											latestValueRef,
+											optionType
 										);
 									}
-									onChangeUnit(val);
+									onChangeUnit?.(val);
 								}}
 							/>
 						)}
@@ -495,8 +535,10 @@ const AdvancedNumberControl = props => {
 								onReset={() => {
 									setCurrentValue(defaultValue);
 									latestValueRef.current = defaultValue;
-									onChangeValue(defaultValue);
-									onReset();
+									onChangeValue?.(defaultValue, {
+										inline: enableUnit ? { unit } : {},
+									});
+									onReset?.();
 								}}
 								isSmall={resetButtonSize === 'small'}
 								isLarge={resetButtonSize === 'large'}

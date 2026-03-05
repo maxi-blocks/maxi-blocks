@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import useAiChat from '../../hooks/useAiChat';
 
 const ChatWindow = ({ isOpen, onClose }) => {
@@ -24,6 +24,10 @@ const ChatWindow = ({ isOpen, onClose }) => {
 		isDragging,
 		handleMouseDown,
 		selectedBlock,
+		postTypeLabel,
+		selectedBlockDisplayName,
+		scopeChosen,
+		setScopeChosen,
 		getPaletteColors,
 		customColors,
 		messagesEndRef,
@@ -52,16 +56,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
 				<h3>
 					<span aria-hidden='true'>✨</span>
 					{__('Maxi AI', 'maxi-blocks')}
-					{selectedBlock &&
-						`: ${selectedBlock.name
-							.replace('maxi-blocks/', '')
-							.replace('-maxi', '')
-							.split('-')
-							.map(
-								word =>
-									word.charAt(0).toUpperCase() + word.slice(1)
-							)
-							.join(' ')}`}
+					{selectedBlock && `: ${selectedBlockDisplayName}`}
 				</h3>
 				<div className='maxi-ai-chat-panel__scope-options'>
 					<button
@@ -76,22 +71,24 @@ const ChatWindow = ({ isOpen, onClose }) => {
 						type='button'
 						data-testid='maxi-ai-apply-page'
 					>
-						{__('Page', 'maxi-blocks')}
+						{sprintf(__('Current %s', 'maxi-blocks'), postTypeLabel)}
 					</button>
-					<button
-						className={`maxi-ai-chat-panel__scope-option ${
-							scope === 'selection' ? 'is-active' : ''
-						}`}
-						onClick={() => handleScopeChange('selection')}
-						title={__(
-							'Apply changes only to the selected block',
-							'maxi-blocks'
-						)}
-						type='button'
-						data-testid='maxi-ai-apply-section'
-					>
-						{__('Selection', 'maxi-blocks')}
-					</button>
+					{selectedBlock && (
+						<button
+							className={`maxi-ai-chat-panel__scope-option ${
+								scope === 'selection' ? 'is-active' : ''
+							}`}
+							onClick={() => handleScopeChange('selection')}
+							title={__(
+								'Apply changes only to the selected block',
+								'maxi-blocks'
+							)}
+							type='button'
+							data-testid='maxi-ai-apply-section'
+						>
+							{sprintf(__('Selected %s', 'maxi-blocks'), selectedBlockDisplayName)}
+						</button>
+					)}
 					<button
 						className={`maxi-ai-chat-panel__scope-option ${
 							scope === 'global' ? 'is-active' : ''
@@ -103,7 +100,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
 						)}
 						type='button'
 					>
-						{__('Style Card', 'maxi-blocks')}
+						{__('Style Cards', 'maxi-blocks')}
 					</button>
 				</div>
 				<div className='maxi-ai-chat-panel__header-actions'>
@@ -207,6 +204,38 @@ const ChatWindow = ({ isOpen, onClose }) => {
 			)}
 
 			<div className='maxi-ai-chat-panel__messages'>
+				{!scopeChosen && messages.length === 0 && (
+					<div className='maxi-ai-chat-panel__scope-welcome'>
+						<p className='maxi-ai-chat-panel__scope-welcome-prompt'>
+							{__('What would you like to work with?', 'maxi-blocks')}
+						</p>
+						<div className='maxi-ai-chat-panel__scope-welcome-choices'>
+							<button
+								className={`maxi-ai-chat-panel__scope-welcome-choice${scope === 'page' ? ' is-active' : ''}`}
+								onClick={() => handleScopeChange('page')}
+								type='button'
+							>
+								{sprintf(__('Current %s', 'maxi-blocks'), postTypeLabel)}
+							</button>
+							{selectedBlock && (
+								<button
+									className={`maxi-ai-chat-panel__scope-welcome-choice${scope === 'selection' ? ' is-active' : ''}`}
+									onClick={() => handleScopeChange('selection')}
+									type='button'
+								>
+									{sprintf(__('Selected %s', 'maxi-blocks'), selectedBlockDisplayName)}
+								</button>
+							)}
+							<button
+								className={`maxi-ai-chat-panel__scope-welcome-choice${scope === 'global' ? ' is-active' : ''}`}
+								onClick={() => handleScopeChange('global')}
+								type='button'
+							>
+								{__('Style Cards', 'maxi-blocks')}
+							</button>
+						</div>
+					</div>
+				)}
 				{messages.map((msg, index) => (
 					<div
 						key={index}

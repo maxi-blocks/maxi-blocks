@@ -4,6 +4,11 @@
 import { handleSetAttributes } from '@extensions/maxi-block';
 import getCustomFormatValue from '@extensions/text/formats/getCustomFormatValue';
 import { getLastBreakpointAttribute } from '@extensions/styles';
+import {
+	loadColumnsTemplate,
+	getNumCol,
+	getTemplates,
+} from '@extensions/column-templates';
 
 /**
  * Internal dependencies
@@ -988,10 +993,46 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 						changes = buildContainerMGroupAttributeChanges(property, value);
 						break;
 					// ======= ROW PATTERNS =======
-					case 'row_pattern':
-						// Row patterns are complex - just set a marker attribute
-						changes = { 'row-pattern-general': value };
+					case 'row_pattern': {
+						if (block.name === 'maxi-blocks/row-maxi') {
+							// AI-to-template name corrections:
+							// These responsive/stacked template names are commonly confused
+							// with equal-width layouts. Map them to the correct default templates.
+							const AI_TEMPLATE_ALIASES = {
+								'1-1-1':         '3 columns',
+								'1-1-1-1':       '4 columns',
+								'1-1-1-1-1':     '5 columns',
+								'1-1-1-1-1-1':   '6 columns',
+								'1-1-1-1-1-1-1': '7 columns',
+							};
+
+							const numCols = Number(value);
+							const isNumeric = Number.isInteger(numCols) && numCols > 0 && String(numCols) === String(value);
+							let templateName = AI_TEMPLATE_ALIASES[value] ?? value;
+							let numColArg = getNumCol(templateName);
+
+							if (isNumeric) {
+								// Pure number — resolve to the first equal-width template for that count
+								if (numCols > 8) {
+									templateName = 'more than 8 columns';
+									numColArg = numCols;
+								} else {
+									const equalTemplate = getTemplates(true, 'general', numCols)
+										.find(t => !t.isMoreThanEightColumns);
+									if (equalTemplate) {
+										templateName = equalTemplate.name;
+										numColArg = numCols;
+									}
+								}
+							}
+
+							loadColumnsTemplate(templateName, block.clientId, 'general', numColArg);
+							changes = { 'row-pattern-general': templateName };
+						} else {
+							changes = { 'row-pattern-general': value };
+						}
 						break;
+					}
 					// ======= CONTEXT LOOP =======
 					case 'context_loop':
 						changes =

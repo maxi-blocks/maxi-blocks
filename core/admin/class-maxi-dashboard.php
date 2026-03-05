@@ -101,6 +101,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'handle_get_frontend_assets',
             ]);
 
+            // Add AJAX handler for fetching AI provider models (proxy to avoid CORS)
+            add_action('wp_ajax_maxi_fetch_ai_models', [
+                $this,
+                'handle_fetch_ai_models',
+            ]);
+
             // Add AJAX handlers for license validation
             add_action('wp_ajax_maxi_validate_license', [
                 $this,
@@ -392,6 +398,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi_ai_model',
                         'gpt-3.5-turbo',
                     ),
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce'   => wp_create_nonce('maxi_fetch_ai_models'),
                 ]);
 
                 // Add localization for license page
@@ -3925,6 +3933,113 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     }
                 }
             }
+        }
+
+        /**
+         * Handle AJAX request to fetch AI provider models (server-side proxy to avoid CORS)
+         */
+        public function handle_fetch_ai_models()
+        {
+            if (
+                !isset($_POST['nonce']) ||
+                !wp_verify_nonce($_POST['nonce'], 'maxi_fetch_ai_models')
+            ) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $provider = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
+            $api_key  = isset($_POST['api_key'])  ? sanitize_text_field($_POST['api_key'])  : '';
+
+            if (empty($provider) || empty($api_key)) {
+                wp_send_json_error(['message' => __('Missing provider or API key', 'maxi-blocks')]);
+                return;
+            }
+
+            $models = [];
+
+            if ($provider === 'openai') {
+                $response = wp_remote_get('https://api.openai.com/v1/models', [
+                    'timeout' => 15,
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $api_key,
+                        'Content-Type'  => 'application/json',
+                    ],
+                ]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body = json_decode(wp_remote_retrieve_body($response), true);
+                $excluded = ['audio', 'gpt-3.5-turbo-instruct', 'gpt-4o-mini-realtime-preview', 'gpt-4o-realtime-preview', 'gpt-image', 'gpt-realtime', 'transcribe', 'tts', 'search-preview', 'o1-pro'];
+                $included = ['o1', 'o3', 'gpt'];
+                foreach ($body['data'] ?? [] as $m) {
+                    $id          = $m['id'];
+                    $is_excluded = false;
+                    foreach ($excluded as $p) {
+                        if (strpos($id, $p) !== false) { $is_excluded = true; break; }
+                    }
+                    if ($is_excluded) continue;
+                    $is_included = false;
+                    foreach ($included as $p) {
+                        if (strpos($id, $p) !== false) { $is_included = true; break; }
+                    }
+                    if ($is_included) $models[] = $id;
+                }
+                sort($models);
+            } elseif ($provider === 'anthropic') {
+                $response = wp_remote_get('https://api.anthropic.com/v1/models', [
+                    'timeout' => 15,
+                    'headers' => [
+                        'x-api-key'         => $api_key,
+                        'anthropic-version' => '2023-06-01',
+                    ],
+                ]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body           = json_decode(wp_remote_retrieve_body($response), true);
+                $image_patterns = ['vision', 'image', 'embed'];
+                foreach ($body['data'] ?? [] as $m) {
+                    $id       = $m['id'];
+                    $skip     = false;
+                    foreach ($image_patterns as $p) {
+                        if (strpos($id, $p) !== false) { $skip = true; break; }
+                    }
+                    if (!$skip) $models[] = $id;
+                }
+                sort($models);
+            } elseif ($provider === 'gemini') {
+                $url      = 'https://generativelanguage.googleapis.com/v1beta/models?key=' . rawurlencode($api_key);
+                $response = wp_remote_get($url, ['timeout' => 15]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body           = json_decode(wp_remote_retrieve_body($response), true);
+                $image_patterns = ['vision', 'image', 'imagen', 'embed', 'aqa', 'nano'];
+                foreach ($body['models'] ?? [] as $m) {
+                    if (!in_array('generateContent', $m['supportedGenerationMethods'] ?? [], true)) continue;
+                    $id   = str_replace('models/', '', $m['name']);
+                    $skip = false;
+                    foreach ($image_patterns as $p) {
+                        if (strpos($id, $p) !== false) { $skip = true; break; }
+                    }
+                    if (!$skip) $models[] = $id;
+                }
+                sort($models);
+            } else {
+                wp_send_json_error(['message' => __('Unknown provider', 'maxi-blocks')]);
+                return;
+            }
+
+            wp_send_json_success(['models' => $models]);
         }
 
         /**

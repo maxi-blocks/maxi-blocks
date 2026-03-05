@@ -268,6 +268,7 @@ export const useAiChat = ({ onClose } = {}) => {
 		const [input, setInput] = useState('');
 		const [isLoading, setIsLoading] = useState(false);
 		const [scope, setScope] = useState('page'); // 'selection', 'page', 'global'
+		const [scopeChosen, setScopeChosen] = useState(false);
 		const [conversationContext, setConversationContext] = useState(null); // { flow: string, pendingTarget: string, data: object, currentOptions: array }
 		const [showHistory, setShowHistory] = useState(false);
 		const {
@@ -282,11 +283,13 @@ export const useAiChat = ({ onClose } = {}) => {
 		const startNewChat = () => {
 			startNewChatHistory();
 			setShowHistory(false);
+			setScopeChosen(false);
 		};
 
 		const loadChat = entry => {
 			loadChatHistory(entry);
 			setShowHistory(false);
+			setScopeChosen(true);
 		};
 
 		const messagesEndRef = useRef(null);
@@ -307,6 +310,22 @@ export const useAiChat = ({ onClose } = {}) => {
 		select => select('core/block-editor').getSelectedBlock(),
 		[]
 	);
+
+	const postTypeLabel = useSelect(select => {
+		const type = select('core/editor').getCurrentPostType();
+		const obj = select('core').getPostType(type);
+		return obj?.labels?.singular_name ||
+			(type ? type.charAt(0).toUpperCase() + type.slice(1) : __('Page', 'maxi-blocks'));
+	}, []);
+
+	const selectedBlockDisplayName = selectedBlock
+		? selectedBlock.name
+			.replace('maxi-blocks/', '')
+			.replace('-maxi', '')
+			.split('-')
+			.map(w => w.charAt(0).toUpperCase() + w.slice(1))
+			.join(' ')
+		: null;
 
 	const allBlocks = useSelect(
 		select => select('core/block-editor').getBlocks(),
@@ -364,8 +383,15 @@ export const useAiChat = ({ onClose } = {}) => {
 	const handleScopeChange = nextScope => {
 		if (nextScope === scope) return;
 		setScope(nextScope);
+		setScopeChosen(true);
 		if (conversationContext) setConversationContext(null);
 	};
+
+	useEffect(() => {
+		if (scope === 'selection' && !selectedBlock) {
+			setScope('page');
+		}
+	}, [selectedBlock]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -3272,6 +3298,8 @@ export const useAiChat = ({ onClose } = {}) => {
 	const sendMessage = async () => {
 		if (!input.trim()) return;
 
+		setScopeChosen(true);
+
 		// Guard: ensure the configured API key is present before sending
 		const aiSettings = window.maxiSettings?.ai_settings ?? {};
 		const useShared = aiSettings.ai_panel_use_shared !== false;
@@ -5319,7 +5347,12 @@ export const useAiChat = ({ onClose } = {}) => {
 				context += styleCardContext;
 			}
 
-			const blockPrompt = selectedBlock ? getAiPromptForBlockName(selectedBlock.name) : '';
+			// Only use the block-specific role prompt for selection scope.
+			// For page scope the block prompt's restrictive role ("I only manage rows") prevents
+			// general page-level operations even though the user explicitly switched scope.
+			const blockPrompt = (scope === 'selection' && selectedBlock)
+				? getAiPromptForBlockName(selectedBlock.name)
+				: '';
 			const wantsInteractionBuilder = isInteractionBuilderMessage(lowerMessage);
 			const scopePrompt =
 				scope === 'global'
@@ -6157,6 +6190,10 @@ export const useAiChat = ({ onClose } = {}) => {
 		isDragging,
 		handleMouseDown,
 		selectedBlock,
+		postTypeLabel,
+		selectedBlockDisplayName,
+		scopeChosen,
+		setScopeChosen,
 		getPaletteColors,
 		customColors,
 		messagesEndRef,

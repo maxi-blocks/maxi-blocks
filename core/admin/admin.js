@@ -3,71 +3,54 @@ let activePollingEmail = null;
 
 // ─── AI model fetching utilities (available before DOMContentLoaded) ─────────
 
+/**
+ * Fetch AI provider models via WordPress AJAX proxy to avoid CORS restrictions.
+ * @param {string} provider  'openai' | 'anthropic' | 'gemini'
+ * @param {string} apiKey
+ * @returns {Promise<string[]>}
+ */
+window.maxiFetchAiModelsViaProxy = async (provider, apiKey) => {
+	const settings = window.maxiAiSettings || {};
+	const ajaxUrl  = settings.ajaxUrl || (window.ajaxurl ?? '/wp-admin/admin-ajax.php');
+	const nonce    = settings.nonce  || '';
+
+	const body = new URLSearchParams({
+		action:   'maxi_fetch_ai_models',
+		nonce,
+		provider,
+		api_key: apiKey,
+	});
+
+	const response = await fetch(ajaxUrl, { method: 'POST', body });
+	if (!response.ok) throw new Error(`HTTP ${response.status}`);
+	const data = await response.json();
+	if (!data.success) throw new Error(data.data?.message ?? 'Failed to fetch models');
+	return data.data.models ?? [];
+};
+
 window.maxiFetchOpenAIModels = async apiKey => {
 	try {
-		const response = await fetch('https://api.openai.com/v1/models', {
-			headers: {
-				Authorization: `Bearer ${apiKey}`,
-				'Content-Type': 'application/json',
-			},
-		});
-		if (!response.ok) throw new Error('Failed to fetch OpenAI models');
-		const data = await response.json();
-		const excludedPatterns = [
-			'audio', 'gpt-3.5-turbo-instruct', 'gpt-4o-mini-realtime-preview',
-			'gpt-4o-realtime-preview', 'gpt-image', 'gpt-realtime',
-			'transcribe', 'tts', 'search-preview', 'o1-pro',
-		];
-		const includedPatterns = ['o1', 'o3', 'gpt'];
-		return data.data
-			.filter(m => {
-				const isExcluded = excludedPatterns.some(p => m.id.includes(p));
-				const isIncluded = includedPatterns.some(p => m.id.includes(p));
-				return !isExcluded && isIncluded;
-			})
-			.map(m => m.id)
-			.sort();
+		return await window.maxiFetchAiModelsViaProxy('openai', apiKey);
 	} catch (e) {
-		console.error('Error fetching OpenAI models:', e);
+		console.error('Error fetching OpenAI models:', JSON.stringify(e.message));
 		return [];
 	}
 };
 
 window.maxiFetchAnthropicModels = async apiKey => {
 	try {
-		const response = await fetch('https://api.anthropic.com/v1/models', {
-			headers: {
-				'x-api-key': apiKey,
-				'anthropic-version': '2023-06-01',
-			},
-		});
-		if (!response.ok) throw new Error('Failed to fetch Anthropic models');
-		const data = await response.json();
-		const imagePatterns = ['vision', 'image', 'embed'];
-		return (data.data ?? [])
-			.map(m => m.id)
-			.filter(id => !imagePatterns.some(p => id.includes(p)))
-			.sort();
+		return await window.maxiFetchAiModelsViaProxy('anthropic', apiKey);
 	} catch (e) {
-		console.error('Error fetching Anthropic models:', e);
+		console.error('Error fetching Anthropic models:', JSON.stringify(e.message));
 		return [];
 	}
 };
 
 window.maxiFetchGeminiModels = async apiKey => {
 	try {
-		const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey)}`;
-		const response = await fetch(url);
-		if (!response.ok) throw new Error('Failed to fetch Gemini models');
-		const data = await response.json();
-		const imagePatterns = ['vision', 'image', 'imagen', 'embed', 'aqa', 'nano'];
-		return (data.models ?? [])
-			.filter(m => m.supportedGenerationMethods?.includes('generateContent'))
-			.map(m => m.name.replace('models/', ''))
-			.filter(id => !imagePatterns.some(p => id.includes(p)))
-			.sort();
+		return await window.maxiFetchAiModelsViaProxy('gemini', apiKey);
 	} catch (e) {
-		console.error('Error fetching Gemini models:', e);
+		console.error('Error fetching Gemini models:', JSON.stringify(e.message));
 		return [];
 	}
 };

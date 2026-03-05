@@ -3,6 +3,8 @@
 	"version": "1.0.0",
 	"main": "./build/index.min.js",
 	"scripts": {
+		"postinstall": "node scripts/fix-core-js-library.js",
+		"fix:core-js-library": "node scripts/fix-core-js-library.js",
 		"build": "wp-scripts build",
 		"format:js": "wp-scripts format-js",
 		"lint:css": "wp-scripts lint-style",
@@ -11,6 +13,8 @@
 		"packages-update": "wp-scripts packages-update",
 		"wp-env": "wp-env",
 		"test": "wp-scripts test-unit-jest -c ./jest/jest-unit.config.js",
+		"test:unit": "wp-scripts test-unit-jest -c ./src/components/ai-chat-panel/jest/jest-unit.config.js",
+		"test:unit:watch": "wp-scripts test-unit-jest -c ./src/components/ai-chat-panel/jest/jest-unit.config.js --watch",
 		"test:coverage": "wp-scripts test-unit-jest -c ./jest/jest-unit.config.js --coverage",
 		"test:debug": "wp-scripts --inspect-brk test-unit-jest -c ./jest/jest-unit.config.js --runInBand --no-cache --verbose",
 		"test:e2e": "wp-scripts test-e2e -c ./jest/jest-e2e.config.js",

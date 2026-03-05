@@ -5,7 +5,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useContext, useEffect, useMemo, useState } from '@wordpress/element';
+import { useContext, useEffect, useMemo, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -78,15 +78,18 @@ const Link = props => {
 		};
 	}, [blockName]);
 	const showLinkElementSelect = !!linkElements;
+	const popoverRef = useRef(null);
+	const logToolbarDebug = (...args) => {
+		if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
+			console.log('[Maxi Toolbar Debug] Link', ...args);
+		}
+	};
 
 	useEffect(() => {
 		if (dcLinkStatus) {
 			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
 		}
 	}, [selectedDCType, dcField, dcLinkStatus]);
-
-	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
-		return null;
 
 	const removeLinkHandle = () => {
 		onChange({
@@ -117,6 +120,74 @@ const Link = props => {
 		}
 	}
 
+	useEffect(() => {
+		if (typeof window === 'undefined') return undefined;
+		if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
+			return undefined;
+
+		const maybeOpenPopover = detail => {
+			if (!detail || detail.target !== 'link') return;
+			if (detail.clientId && detail.clientId !== clientId) {
+				logToolbarDebug('Ignoring toolbar request for different clientId', {
+					clientId,
+					detail,
+				});
+				return;
+			}
+			if (childHasLink && !detail.force) {
+				logToolbarDebug('Link popover blocked because child has link', {
+					clientId,
+					blockName,
+				});
+				return;
+			}
+			if (!popoverRef.current) {
+				logToolbarDebug('Link popover ref missing', {
+					clientId,
+					blockName,
+				});
+				return;
+			}
+			if (popoverRef.current.state?.isOpen) {
+				logToolbarDebug('Link popover already open', {
+					clientId,
+					blockName,
+				});
+				return;
+			}
+			logToolbarDebug('Opening link popover', {
+				clientId,
+				blockName,
+				detail,
+			});
+			popoverRef.current.onToggle();
+		};
+
+		const handleToolbarOpen = event => {
+			maybeOpenPopover(event?.detail);
+		};
+
+		const request = window.maxiToolbarOpenRequest;
+		if (request) {
+			maybeOpenPopover(request);
+			if (
+				request?.target === 'link' &&
+				(!request.clientId || request.clientId === clientId)
+			) {
+				logToolbarDebug('Consumed queued toolbar request', request);
+				window.maxiToolbarOpenRequest = null;
+			}
+		}
+
+		window.addEventListener('maxi-toolbar-open', handleToolbarOpen);
+		return () => {
+			window.removeEventListener('maxi-toolbar-open', handleToolbarOpen);
+		};
+	}, [blockName, clientId, childHasLink, disableCustomFormats]);
+
+	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
+		return null;
+
 	const customTaxonomies = select(
 		'maxiBlocks/dynamic-content'
 	).getCustomTaxonomies();
@@ -124,6 +195,7 @@ const Link = props => {
 	return (
 		<div className='toolbar-item toolbar-item__link'>
 			<ToolbarPopover
+				ref={popoverRef}
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={

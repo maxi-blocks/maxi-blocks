@@ -101,6 +101,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'handle_get_frontend_assets',
             ]);
 
+            // Add AJAX handler for fetching AI provider models (proxy to avoid CORS)
+            add_action('wp_ajax_maxi_fetch_ai_models', [
+                $this,
+                'handle_fetch_ai_models',
+            ]);
+
             // Add AJAX handlers for license validation
             add_action('wp_ajax_maxi_validate_license', [
                 $this,
@@ -392,6 +398,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         'maxi_ai_model',
                         'gpt-3.5-turbo',
                     ),
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce'   => wp_create_nonce('maxi_fetch_ai_models'),
                 ]);
 
                 // Add localization for license page
@@ -1821,19 +1829,43 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 true,
             );
 
-            $description =
-                '<h4>' .
-                __('Insert OpenAI API Key here', 'maxi-blocks') .
-                '</h4>';
+            $maxi_ai_provider = get_option('maxi_ai_provider', 'openai');
+            $maxi_ai_model    = get_option('maxi_ai_model', 'gpt-3.5-turbo');
+
+            $description = '<h4>' . __('AI Provider', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_provider',
+                '',
+                'dropdown',
+                ['list' => ['openai', 'anthropic', 'gemini']],
+            );
+
+            $openai_key_style = $maxi_ai_provider !== 'openai' ? ' style="display:none"' : '';
+            $other_key_style  = $maxi_ai_provider === 'openai' ? ' style="display:none"' : '';
+
+            $content .= '<div id="maxi-integrations-openai-key"' . $openai_key_style . '>';
+            $description = '<h4>' . __('OpenAI API Key', 'maxi-blocks') . '</h4>';
             $content .= $this->generate_setting(
                 $description,
                 'openai_api_key_option',
                 '',
                 'password',
             );
+            $content .= '</div>';
+
+            $content .= '<div id="maxi-integrations-other-key"' . $other_key_style . '>';
+            $description = '<h4 id="maxi-integrations-key-label">' . __('API Key', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_api_key',
+                '',
+                'password',
+            );
+            $content .= '</div>';
 
             $description =
-                '<h4>' . __('ChatGPT AI Model', 'maxi-blocks') . '</h4>';
+                '<h4>' . __('AI Model', 'maxi-blocks') . '</h4>';
             $content .= $this->generate_setting(
                 $description,
                 'maxi_ai_model',
@@ -1842,8 +1874,190 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 ['list' => []],
             );
 
+            $content .= '<script>
+(function() {
+    var integrationKeyLabels = {
+        openai:    "OpenAI API Key",
+        anthropic: "Anthropic API Key",
+        gemini:    "Gemini API Key"
+    };
+    var savedIntegrationModel = "' . esc_js($maxi_ai_model) . '";
+
+    function getIntegrationApiKey(provider) {
+        if (provider === "openai") {
+            return (document.querySelector(".openai-api-key-option-visible-input") || {}).value || "";
+        }
+        return (document.querySelector(".maxi-ai-api-key-visible-input") || {}).value || "";
+    }
+
+    function fetchIntegrationModels(provider) {
+        var apiKey = getIntegrationApiKey(provider);
+        if (window.maxiUpdateProviderModels) {
+            window.maxiUpdateProviderModels(provider, apiKey, "maxi_ai_model", savedIntegrationModel);
+        }
+    }
+
+    function onIntegrationProviderChange(provider) {
+        // Show/hide key fields
+        var openaiDiv = document.getElementById("maxi-integrations-openai-key");
+        var otherDiv  = document.getElementById("maxi-integrations-other-key");
+        var keyLabel  = document.getElementById("maxi-integrations-key-label");
+        if (openaiDiv) openaiDiv.style.display = provider === "openai" ? "" : "none";
+        if (otherDiv)  otherDiv.style.display  = provider === "openai" ? "none" : "";
+        if (keyLabel)  keyLabel.textContent = integrationKeyLabels[provider] || "API Key";
+        // Store provider choice so admin.js skips the automatic OpenAI fetch
+        window._maxiAiIntegrationProvider = provider;
+        // Fetch models for the new provider
+        fetchIntegrationModels(provider);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var providerSelect = document.getElementById("maxi_ai_provider");
+        if (!providerSelect) return;
+
+        // Always apply visibility + fetch models on load
+        var currentProvider = providerSelect.value || "' . esc_js($maxi_ai_provider) . '";
+        onIntegrationProviderChange(currentProvider);
+
+        providerSelect.addEventListener("change", function() {
+            onIntegrationProviderChange(this.value);
+        });
+
+        // Re-fetch when the non-OpenAI key input changes
+        var otherKeyInput = document.querySelector(".maxi-ai-api-key-visible-input");
+        if (otherKeyInput) {
+            otherKeyInput.addEventListener("input", function() {
+                var provider = window._maxiAiIntegrationProvider || "openai";
+                if (provider !== "openai") fetchIntegrationModels(provider);
+            });
+        }
+
+        // Sync model select → hidden input
+        var modelSelect = document.getElementById("maxi_ai_model");
+        if (modelSelect) {
+            modelSelect.addEventListener("change", function() {
+                var modelInput = document.querySelector("input#maxi_ai_model");
+                if (modelInput) modelInput.value = this.value;
+            });
+        }
+    });
+})();
+</script>';
+
             $content .= get_submit_button();
             $this->add_hidden_api_fields();
+
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            // AI Chat Panel accordion section
+            $content .= $this->generate_item_header(
+                __('AI Chat Panel', 'maxi-blocks'),
+                false,
+            );
+
+            $ai_panel_use_shared = get_option('maxi_ai_panel_use_shared', true);
+            $ai_panel_provider   = get_option('maxi_ai_panel_provider', 'openai');
+            $ai_panel_model      = get_option('maxi_ai_panel_model', 'gpt-4o-mini');
+
+            $description = '<h4>' . __('Use existing Maxi AI settings', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_panel_use_shared',
+            );
+
+            $panel_provider_style = $ai_panel_use_shared ? ' style="display:none"' : '';
+
+            $content .= '<div id="maxi-ai-panel-custom-fields"' . $panel_provider_style . '>';
+
+            $description = '<h4>' . __('AI Provider', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_panel_provider',
+                '',
+                'dropdown',
+                ['list' => ['openai', 'anthropic', 'gemini']],
+            );
+
+            $description = '<h4 id="maxi-ai-panel-key-label">' . __('API Key', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_panel_api_key',
+                '',
+                'password',
+            );
+
+            $description = '<h4>' . __('Model', 'maxi-blocks') . '</h4>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_ai_panel_model',
+                '',
+                'dropdown',
+                ['list' => []],
+            );
+
+            $content .= '</div>'; // maxi-ai-panel-custom-fields
+
+            $content .= get_submit_button();
+
+            $content .= '<script>
+(function() {
+    var panelKeyLabels = {
+        openai:    "OpenAI API Key",
+        anthropic: "Anthropic API Key",
+        gemini:    "Gemini API Key"
+    };
+    var savedPanelModel = "' . esc_js($ai_panel_model) . '";
+
+    function getPanelApiKey() {
+        return (document.querySelector(".maxi-ai-panel-api-key-visible-input") || {}).value || "";
+    }
+
+    function fetchPanelModels(provider) {
+        if (window.maxiUpdateProviderModels) {
+            window.maxiUpdateProviderModels(provider, getPanelApiKey(), "maxi_ai_panel_model", savedPanelModel);
+        }
+    }
+
+    function updatePanelProvider(provider) {
+        var label = document.getElementById("maxi-ai-panel-key-label");
+        if (label) label.textContent = panelKeyLabels[provider] || "API Key";
+        fetchPanelModels(provider);
+    }
+
+    function onSharedChange() {
+        var checkbox = document.querySelector("[name=maxi_ai_panel_use_shared]");
+        var panel    = document.getElementById("maxi-ai-panel-custom-fields");
+        if (!checkbox || !panel) return;
+        panel.style.display = checkbox.checked ? "none" : "";
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var sharedCheck = document.querySelector("[name=maxi_ai_panel_use_shared]");
+        if (sharedCheck) {
+            onSharedChange();
+            sharedCheck.addEventListener("change", onSharedChange);
+        }
+
+        var providerSelect = document.getElementById("maxi_ai_panel_provider");
+        if (providerSelect) {
+            updatePanelProvider(providerSelect.value || "' . esc_js($ai_panel_provider) . '");
+            providerSelect.addEventListener("change", function() {
+                updatePanelProvider(this.value);
+            });
+        }
+
+        // Re-fetch when the panel key input changes
+        var panelKeyInput = document.querySelector(".maxi-ai-panel-api-key-visible-input");
+        if (panelKeyInput) {
+            panelKeyInput.addEventListener("input", function() {
+                var provider = (document.getElementById("maxi_ai_panel_provider") || {}).value || "openai";
+                fetchPanelModels(provider);
+            });
+        }
+    });
+})();
+</script>';
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
@@ -2457,7 +2671,25 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_enable_post_custom_scripts' => $args,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
+                'maxi_ai_provider' => [
+                    'type' => 'string',
+                    'default' => 'openai',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'maxi_ai_api_key' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
+                'maxi_ai_panel_use_shared' => $args_true,
+                'maxi_ai_panel_provider' => [
+                    'type' => 'string',
+                    'default' => 'openai',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
+                'maxi_ai_panel_api_key' => $args_api_key,
+                'maxi_ai_panel_model' => [
+                    'type' => 'string',
+                    'default' => 'gpt-4o-mini',
+                    'sanitize_callback' => 'sanitize_text_field',
+                ],
                 'maxi_ai_site_description' => $args_ai_description,
                 'maxi_ai_audience' => $args_ai_description,
                 'maxi_ai_site_goal' => $args_ai_description,
@@ -3259,14 +3491,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
         public function add_hidden_api_fields()
         {
-            $google_api_key = get_option('google_api_key_option', '');
-            $openai_api_key = get_option('openai_api_key_option', '');
+            $google_api_key   = get_option('google_api_key_option', '');
+            $openai_api_key   = get_option('openai_api_key_option', '');
+            $maxi_ai_api_key  = get_option('maxi_ai_api_key', '');
+            $ai_panel_api_key = get_option('maxi_ai_panel_api_key', '');
 
             echo '<input type="hidden" name="google_api_key_option" value="' .
                 esc_attr($google_api_key) .
                 '">';
             echo '<input type="hidden" name="openai_api_key_option" value="' .
                 esc_attr($openai_api_key) .
+                '">';
+            echo '<input type="hidden" name="maxi_ai_api_key" value="' .
+                esc_attr($maxi_ai_api_key) .
+                '">';
+            echo '<input type="hidden" name="maxi_ai_panel_api_key" value="' .
+                esc_attr($ai_panel_api_key) .
                 '">';
         }
 
@@ -3693,6 +3933,113 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     }
                 }
             }
+        }
+
+        /**
+         * Handle AJAX request to fetch AI provider models (server-side proxy to avoid CORS)
+         */
+        public function handle_fetch_ai_models()
+        {
+            if (
+                !isset($_POST['nonce']) ||
+                !wp_verify_nonce($_POST['nonce'], 'maxi_fetch_ai_models')
+            ) {
+                wp_send_json_error(['message' => __('Security check failed', 'maxi-blocks')]);
+                return;
+            }
+
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error(['message' => __('Insufficient permissions', 'maxi-blocks')]);
+                return;
+            }
+
+            $provider = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
+            $api_key  = isset($_POST['api_key'])  ? sanitize_text_field($_POST['api_key'])  : '';
+
+            if (empty($provider) || empty($api_key)) {
+                wp_send_json_error(['message' => __('Missing provider or API key', 'maxi-blocks')]);
+                return;
+            }
+
+            $models = [];
+
+            if ($provider === 'openai') {
+                $response = wp_remote_get('https://api.openai.com/v1/models', [
+                    'timeout' => 15,
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $api_key,
+                        'Content-Type'  => 'application/json',
+                    ],
+                ]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body = json_decode(wp_remote_retrieve_body($response), true);
+                $excluded = ['audio', 'gpt-3.5-turbo-instruct', 'gpt-4o-mini-realtime-preview', 'gpt-4o-realtime-preview', 'gpt-image', 'gpt-realtime', 'transcribe', 'tts', 'search-preview', 'o1-pro'];
+                $included = ['o1', 'o3', 'gpt'];
+                foreach ($body['data'] ?? [] as $m) {
+                    $id          = $m['id'];
+                    $is_excluded = false;
+                    foreach ($excluded as $p) {
+                        if (strpos($id, $p) !== false) { $is_excluded = true; break; }
+                    }
+                    if ($is_excluded) continue;
+                    $is_included = false;
+                    foreach ($included as $p) {
+                        if (strpos($id, $p) !== false) { $is_included = true; break; }
+                    }
+                    if ($is_included) $models[] = $id;
+                }
+                sort($models);
+            } elseif ($provider === 'anthropic') {
+                $response = wp_remote_get('https://api.anthropic.com/v1/models', [
+                    'timeout' => 15,
+                    'headers' => [
+                        'x-api-key'         => $api_key,
+                        'anthropic-version' => '2023-06-01',
+                    ],
+                ]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body           = json_decode(wp_remote_retrieve_body($response), true);
+                $image_patterns = ['vision', 'image', 'embed'];
+                foreach ($body['data'] ?? [] as $m) {
+                    $id       = $m['id'];
+                    $skip     = false;
+                    foreach ($image_patterns as $p) {
+                        if (strpos($id, $p) !== false) { $skip = true; break; }
+                    }
+                    if (!$skip) $models[] = $id;
+                }
+                sort($models);
+            } elseif ($provider === 'gemini') {
+                $url      = 'https://generativelanguage.googleapis.com/v1beta/models?key=' . rawurlencode($api_key);
+                $response = wp_remote_get($url, ['timeout' => 15]);
+                if (is_wp_error($response)) {
+                    wp_send_json_error(['message' => $response->get_error_message()]);
+                    return;
+                }
+                $body           = json_decode(wp_remote_retrieve_body($response), true);
+                $image_patterns = ['vision', 'image', 'imagen', 'embed', 'aqa', 'nano'];
+                foreach ($body['models'] ?? [] as $m) {
+                    if (!in_array('generateContent', $m['supportedGenerationMethods'] ?? [], true)) continue;
+                    $id   = str_replace('models/', '', $m['name']);
+                    $skip = false;
+                    foreach ($image_patterns as $p) {
+                        if (strpos($id, $p) !== false) { $skip = true; break; }
+                    }
+                    if (!$skip) $models[] = $id;
+                }
+                sort($models);
+            } else {
+                wp_send_json_error(['message' => __('Unknown provider', 'maxi-blocks')]);
+                return;
+            }
+
+            wp_send_json_success(['models' => $models]);
         }
 
         /**

@@ -102,7 +102,7 @@
 		"@wordpress/e2e-test-utils-playwright": "^1.25.0",
 		"@wordpress/env": "latest",
 		"@wordpress/jest-preset-default": "latest",
-		"@wordpress/scripts": "27.9.0",
+		"@wordpress/scripts": "31.6.0",
 		"caniuse-lite": "^1.0.30001757",
 		"css-minimizer-webpack-plugin": "latest",
 		"dotenv": "^16.4.5",

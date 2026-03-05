@@ -51,7 +51,13 @@ export const unmountAiChatPanel = () => {
 
 if (typeof wp !== 'undefined' && typeof wp.domReady === 'function') {
 	wp.domReady(() => {
-		mountAiChatPanel();
+		// Only mount inside the block editor, not on every admin page.
+		const isBlockEditor =
+			document.body?.classList?.contains('block-editor-page') ||
+			document.querySelector('.block-editor') !== null;
+		if (isBlockEditor) {
+			mountAiChatPanel();
+		}
 	});
 }
 

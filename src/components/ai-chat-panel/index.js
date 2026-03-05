@@ -18,4 +18,4 @@ export { planActionEnvelope } from './ai/actions/actions.plan';
 
 export { default as AiChatPanel } from './AiChatPanel';
 export { mountAiChatPanel, unmountAiChatPanel } from './mount';
-
+export { useAiChat } from './hooks/useAiChat';

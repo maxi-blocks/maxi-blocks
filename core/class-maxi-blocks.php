@@ -198,7 +198,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                         'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
                         'ajaxUrl' => admin_url('admin-ajax.php'),
                         'nonce' => wp_create_nonce('maxi_license_validation'),
-                        'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                        'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
                         'pluginVersion' => MAXI_PLUGIN_VERSION,
                         'isMultisite' => is_multisite(),
                         'hasNetworkLicense' => is_multisite() ? $dashboard->has_network_license() : false,

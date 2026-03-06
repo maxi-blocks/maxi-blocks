@@ -16,7 +16,7 @@ $path_to_images = MAXIBLOCKS_GO_MAXI_PATTERNS_PLUGIN_URL . 'header/images/';?>
 <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:390px"><!-- wp:image {"id":631,"width":"233px","sizeSlug":"full","linkDestination":"none","align":"center","className":"is-style-default"} -->
 <figure class="wp-block-image aligncenter size-full is-resized is-style-default"><img src="<?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; echo $path_to_images; ?>maxiblocks-logo.svg" alt="" class="wp-image-631" style="width:233px"/></figure>
+echo esc_url( $path_to_images ); ?>maxiblocks-logo.svg" alt="" class="wp-image-631" style="width:233px"/></figure>
 <!-- /wp:image --></div>
 <!-- /wp:column -->
 

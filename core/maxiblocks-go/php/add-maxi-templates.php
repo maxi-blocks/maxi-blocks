@@ -108,7 +108,7 @@ function plugin_maxiblocks_go_close_templates_notice()
         return;
     }
 
-    if (isset($_POST['nonce']) && is_string($_POST['nonce']) && !wp_verify_nonce(sanitize_text_field($_POST['nonce']), MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS . '-nonce')) {
+    if (isset($_POST['nonce']) && is_string($_POST['nonce']) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS . '-nonce')) {
         return;
     }
     update_option(MAXIBLOCKS_GO_TEMPLATE_NOTICE_DISMISS, 'yes');
@@ -206,7 +206,7 @@ function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
 
     // Check if the source directory exists and is readable
     if (!is_dir($source_dir) || !is_readable($source_dir)) {
-        error_log(sprintf(
+        error_log(sprintf( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             /* translators: %s: Source directory path */
             __("Source directory does not exist or is not readable: %s", 'maxiblocks-go'),
             $source_dir
@@ -221,7 +221,7 @@ function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
 
     // Check if the destination directory is writable
     if (!wp_is_writable($destination_dir)) {
-        error_log(sprintf(
+        error_log(sprintf( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             /* translators: %s: Destination directory path */
             __("Destination directory is not writable: %s", 'maxiblocks-go'),
             $destination_dir
@@ -251,10 +251,10 @@ function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
                 if (is_file($source_path)) {
                     // Overwrite the file if it already exists in the destination
                     if (file_exists($destination_path)) {
-                        unlink($destination_path);
+                        wp_delete_file($destination_path);
                     }
                     if (!copy($source_path, $destination_path)) {
-                        error_log(sprintf(
+                        error_log(sprintf( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
                             /* translators: 1: Source file path, 2: Destination file path */
                             __("Failed to copy file: %1\$s to %2\$s", 'maxiblocks-go'),
                             $source_path,
@@ -266,7 +266,7 @@ function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
         }
         closedir($dir);
     } else {
-        error_log(sprintf(
+        error_log(sprintf( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
             /* translators: %s: Source directory path */
             __("Failed to open directory: %s", 'maxiblocks-go'),
             $source_dir
@@ -287,8 +287,8 @@ function plugin_maxiblocks_go_add_styles_meta_fonts_to_db()
     $styles_table = "{$wpdb->prefix}maxi_blocks_styles_blocks";
     $custom_data_table = "{$wpdb->prefix}maxi_blocks_custom_data_blocks";
 
-    if ($wpdb->get_var("SHOW TABLES LIKE '$styles_table'") != $styles_table ||
-        $wpdb->get_var("SHOW TABLES LIKE '$custom_data_table'") != $custom_data_table) {
+    if ($wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($styles_table))) != $styles_table ||
+        $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $wpdb->esc_like($custom_data_table))) != $custom_data_table) {
         return;
     }
 
@@ -328,7 +328,8 @@ function plugin_maxiblocks_go_add_styles_meta_fonts_to_db()
             // Check if a row with the same unique_id already exists
             $exists = $wpdb->get_row(
                 $wpdb->prepare(
-                    "SELECT * FROM $styles_table WHERE block_style_id = %s",
+                    "SELECT * FROM %i WHERE block_style_id = %s",
+                    $styles_table,
                     $unique_id
                 ),
                 OBJECT

@@ -1635,8 +1635,8 @@ if (!class_exists('MaxiBlocks_API')):
                             header('Expires: 0');
                         }
 
-                        // Output compressed data
-                        echo $compressed;
+                        // Output compressed data — raw gzip binary, escaping would corrupt it.
+                        echo $compressed; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         return true;
                     }
                 }

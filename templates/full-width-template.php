@@ -13,7 +13,7 @@ get_header(); ?>
 
 	<?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; if (have_posts()) {
+if (have_posts()) {
 		while (have_posts()) {
 			the_post();
 			the_content();
@@ -25,4 +25,4 @@ if ( ! defined( 'ABSPATH' ) ) exit; if (have_posts()) {
 
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) exit; get_footer(); ?>
+get_footer(); ?>

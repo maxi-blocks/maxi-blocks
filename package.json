@@ -153,6 +153,9 @@
 		"lodash": "4.17.23",
 		"lodash-es": "4.17.23",
 		"eslint": "^9.26.0",
-		"minimatch": "^10.1.2"
+		"minimatch": "^10.1.2",
+		"@tootallnate/once": "^3.0.1",
+		"serialize-javascript": "^7.0.4",
+		"langsmith": "^0.5.7"
 	}
 }

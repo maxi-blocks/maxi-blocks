@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 

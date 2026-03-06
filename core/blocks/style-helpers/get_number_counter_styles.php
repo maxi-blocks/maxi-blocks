@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_circle_bar_styles($obj, $block_style)
 {
     $response = [

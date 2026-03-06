@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_color_background_object(array $args)
 {
     $is_hover = $args['is_hover'] ?? false;

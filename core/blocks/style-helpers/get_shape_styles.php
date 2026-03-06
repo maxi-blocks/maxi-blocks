@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_shape_styles($obj, $target, $blockStyle)
 {
     $response = [

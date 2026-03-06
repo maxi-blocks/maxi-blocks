@@ -4,6 +4,8 @@ if (!defined('ABSPATH')) {
 	exit(); // Exit if accessed directly.
 }
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch -- maxiblocks-go is an intentional secondary text domain for theme integration strings.
+
 if (!defined('MAXIBLOCKS_GO_PREFIX')) {
 	define('MAXIBLOCKS_GO_PREFIX', 'maxiblocks-go-');
 }

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 {
     $background = isset($props[$prefix . 'icon-background-active-media-general']) && $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object(array_merge(

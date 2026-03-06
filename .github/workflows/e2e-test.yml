@@ -2,7 +2,7 @@ name: E2E Tests
 
 on:
     pull_request:
-        branches: [master]
+        branches: [master, 2.1.8]
 
 jobs:
     e2e-js:
@@ -26,10 +26,10 @@ jobs:
                       ${{ runner.os }}-
               env:
                   cache-name: cache-node-modules
-            - name: Use Node.js 18.x
+            - name: Use Node.js 20.x
               uses: actions/setup-node@v4
               with:
-                  node-version: 18.x
+                  node-version: 20.x
             - name: Install Aikido Safe Chain
               run: npm install -g @aikidosec/safe-chain
             - name: Setup Aikido Safe Chain and Install dependencies

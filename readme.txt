@@ -4,9 +4,9 @@ Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaa
 Tags: block, blocks, gutenberg blocks, page builder, starter sites
 Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.2.2
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 8.0
-Stable tag: 2.1.8
+Stable tag: 2.1.9
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -327,6 +327,12 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 6 Mar 2026_
+MaxiBlocks v2.1.9
+* Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.
+* Update: Implemented comprehensive fixes and improvements to meet WordPress.org plugin directory standards, ensuring full compliance and enhanced quality.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+
 _Updates 5 Feb 2026_
 MaxiBlocks v2.1.8
 * Update: Introduced support for Custom fonts from WordPress Site Editor options.
@@ -368,17 +374,6 @@ MaxiBlocks v2.1.7
 * Fix: Enhanced Interaction Builder reliability for Show/Hide actions with consistent behaviour and proper execution of visibility toggles across all interactive elements.
 * Fix: Resolved frontend pagination issues when displaying posts from child taxonomies with accurate post filtering and proper navigation through hierarchical taxonomy structures.
 * Fix: Corrected Scroll Effects functionality on smaller screens when using anchor links for proper navigation across all responsive breakpoints.
-
-_Updates 5 Nov 2025_
-MaxiBlocks v2.1.6
-* Update: Rebranded Pro features to Cloud, providing clearer terminology and improved user understanding of cloud-based functionality.
-* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
-* Update: Introduced option to hide native Gutenberg responsive preview controls, allowing for a cleaner and more streamlined editing interface.
-* Fix: Resolved Interaction Builder relations disappearing after duplicating blocks and removing the original, ensuring a consistent editing experience and maintaining interaction configurations.
-* Fix: Corrected copy-paste functionality for blocks and page duplication, ensuring all block settings and styles are properly transferred.
-* Fix: Enhanced template parts rendering and editing experience in the Site Editing Experience editor, ensuring proper functionality and consistent behaviour.
-* Fix: Addressed taxonomy styling issues on the frontend when using the All Archive template, ensuring custom taxonomy pages display correctly with proper style inheritance.
-* Fix: Resolved custom colours in Style Cards breaking frontend styles in specific scenarios, maintaining consistent visual presentation across all pages.
 
 == Upgrade Notice ==
 

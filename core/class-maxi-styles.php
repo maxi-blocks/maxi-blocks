@@ -777,50 +777,22 @@ class MaxiBlocks_Styles
             return $font_url_cache[$font_url];
         }
 
-        // OPTIMIZATION: Try cURL first (often faster than get_headers)
-        if (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $font_url);
-            curl_setopt($ch, CURLOPT_NOBODY, true); // HEAD request
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1); // 1 second timeout
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // 1 second connection timeout
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Skip SSL verification for speed
-
-            $result = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            $is_valid = ($http_code == 200);
-            $font_url_cache[$font_url] = $is_valid;
-
-            return $is_valid;
-        }
-
-        // Fallback to get_headers if cURL not available
-        $context = stream_context_create([
-            'http' => [
-                'method' => 'HEAD',
-                'timeout' => 1, // Reduced timeout
-                'ignore_errors' => true
-            ]
+        $response = wp_remote_head($font_url, [
+            'timeout'     => 1,
+            'redirection' => 3,
+            'sslverify'   => false,
         ]);
 
-        $headers = @get_headers($font_url, 0, $context);
-
-        if (!$headers) {
+        if (is_wp_error($response)) {
             $font_url_cache[$font_url] = false;
             return false;
         }
 
-        $string = $headers[0];
+        $http_code = wp_remote_retrieve_response_code($response);
+        $is_valid = ($http_code === 200);
+        $font_url_cache[$font_url] = $is_valid;
 
-        $result = strpos($string, '200') !== false;
-        $font_url_cache[$font_url] = $result;
-
-        return $result;
+        return $is_valid;
     }
 
     /**
@@ -2421,6 +2393,7 @@ class MaxiBlocks_Styles
             ...$ids_to_fetch
         );
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is built with $wpdb->prepare() above
         $results = $wpdb->get_results($query, ARRAY_A);
 
         // Populate cache
@@ -2751,11 +2724,13 @@ class MaxiBlocks_Styles
 
             do {
                 $query = $wpdb->prepare(
-                    "SELECT * FROM $db_css_table_name WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    "SELECT * FROM %i WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    $db_css_table_name,
                     '%' . $wpdb->esc_like($font_name) . '%',
                     $chunk_size,
                     $offset
                 );
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is built with $wpdb->prepare() above
                 $results = $wpdb->get_results($query);
 
                 foreach ($results as $row) {

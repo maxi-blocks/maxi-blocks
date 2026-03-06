@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_image_shape_styles($obj, $target = 'svg', $prefix = '', $ignore_general_omit = false, $is_hover = false)
 {
     if (!is_array($obj)) {

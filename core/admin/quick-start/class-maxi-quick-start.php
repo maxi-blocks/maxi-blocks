@@ -932,8 +932,8 @@ class MaxiBlocks_QuickStart
 					<div class="maxi-license-input-group">
 						<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="<?php esc_attr_e('Cloud user email / purchase code / license key', 'maxi-blocks'); ?>" />
 						<p class="maxi-license-help-text"><?php
-					/* translators: %s: Link to my.maxiblocks.com */
 					echo wp_kses(
+						/* translators: %s: Link to my.maxiblocks.com */
 						sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'),
 						['a' => ['href' => [], 'target' => [], 'rel' => []]]
 					);

@@ -44,6 +44,7 @@ add_action('init', 'maxi_load_textdomain');
 
 function maxi_load_textdomain()
 {
+    // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- required to load bundled .mo translation files not hosted on WordPress.org
     load_plugin_textdomain(
         'maxi-blocks',
         false,

@@ -177,6 +177,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'local_fonts' => get_option('local_fonts'),
                 'bunny_fonts' => get_option('bunny_fonts'),
                 'apiRoot' => esc_url_raw(rest_url()),
+                'image_crop_nonce' => wp_create_nonce('maxi_image_crop'),
             ]);
 
             // Inject MaxiBlocks settings directly to avoid API calls

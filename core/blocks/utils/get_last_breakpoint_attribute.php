@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_value_from_keys.php';
 
 function get_last_breakpoint_attribute(

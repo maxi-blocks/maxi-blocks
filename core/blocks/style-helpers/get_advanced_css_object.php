@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function trim_unmatched_brace($code)
 {
     $brace_index = strpos($code, '{');

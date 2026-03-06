@@ -10,6 +10,8 @@ if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
+// phpcs:disable WordPress.WP.I18n.TextDomainMismatch -- maxiblocks-go is an intentional secondary text domain for theme integration strings.
+
 if (!defined('MAXIBLOCKS_GO_PREFIX')) {
     define('MAXIBLOCKS_GO_PREFIX', 'maxiblocks-go-');
 }
@@ -254,7 +256,7 @@ function plugin_maxiblocks_go_copy_directory($source_dir, $destination_dir)
                     if (!copy($source_path, $destination_path)) {
                         error_log(sprintf(
                             /* translators: 1: Source file path, 2: Destination file path */
-                            __("Failed to copy file: %s to %s", 'maxiblocks-go'),
+                            __("Failed to copy file: %1\$s to %2\$s", 'maxiblocks-go'),
                             $source_path,
                             $destination_path
                         ));

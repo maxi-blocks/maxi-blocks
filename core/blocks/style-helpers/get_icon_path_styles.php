@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_icon_path_styles($obj, $is_hover = false, $prefix = '')
 {
     $response = [

@@ -11,13 +11,12 @@ import {
 	enablePageDialogAccept,
 	isOfflineMode,
 	setBrowserViewport,
-	activatePlugin,
 } from '@wordpress/e2e-test-utils';
 
 /**
  * Internal dependencies
  */
-import { activateTheme, deactivatePlugin } from './utils';
+import { activatePlugin, activateTheme, deactivatePlugin } from './utils';
 
 /**
  * Disable debounce for tests.

@@ -186,8 +186,11 @@ const LAYOUT_PATTERNS = [
 	// GROUP 26: CLOUD ICON SEARCH (Typesense)
 	CLOUD_ICON_PATTERN,
 
-	// GROUP 27: CREATE BLOCK PATTERNS (from Cloud Library)
-	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|section|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
+	// GROUP 27: INSERT BLANK BLOCK (direct Gutenberg block insert — no cloud library)
+	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(maxi\s+)?(container|row|column|section|block)\b/i, property: 'insert_block', value: 'use_prompt', pageMsg: 'Adding block...' },
+
+	// GROUP 28: CREATE BLOCK PATTERNS (from Cloud Library)
+	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];
 
 export default LAYOUT_PATTERNS;

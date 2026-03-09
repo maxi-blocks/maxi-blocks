@@ -802,6 +802,20 @@ const routeLayoutPatterns = ( rawMessage, ctx, selectFn ) => {
 			continue; // skip pattern — icon check rejected it
 		}
 
+		// ── Insert blank block directly (no cloud library) ──────────────────
+		if ( pattern.property === 'insert_block' ) {
+			const blockTypeMatch = rawMessage.match(
+				/\b(container|row|column|section|block)\b/i
+			);
+			const blockType = blockTypeMatch
+				? blockTypeMatch[ 1 ].toLowerCase()
+				: 'container';
+			return {
+				type: 'insert_block',
+				params: { blockType },
+			};
+		}
+
 		// ── Create block (pattern insert) ───────────────────────────────────
 		if ( pattern.property === 'create_block' ) {
 			return {

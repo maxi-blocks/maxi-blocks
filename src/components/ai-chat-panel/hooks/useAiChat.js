@@ -4,6 +4,8 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { dispatch, select, useDispatch, useSelect, useRegistry } from '@wordpress/data';
+import { createBlock } from '@wordpress/blocks';
+import { loadColumnsTemplate, getTemplates } from '@extensions/column-templates';
 
 /**
  * Internal dependencies
@@ -30,6 +32,8 @@ import { getDividerSidebarTarget } from '../ai/blocks/divider';
 import { getIconSidebarTarget } from '../ai/blocks/icon';
 import { getImageSidebarTarget } from '../ai/blocks/image';
 import { getNumberCounterSidebarTarget } from '../ai/blocks/number-counter';
+import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
+import { extractUrl } from '../ai/utils/messageExtractors';
 import { buildColorUpdate } from '../ai/color/colorClarify';
 import updateBackgroundColor from '../ai/color/backgroundUpdate';
 import {
@@ -2050,6 +2054,50 @@ export const useAiChat = ({ onClose } = {}) => {
 			}
 
 			if (action.action === 'MODIFY_BLOCK') {
+				// Handle add/insert ops before scope resolution — no existing block needed
+				if (action.payload?.op === 'add' || action.payload?.block) {
+					const buildBlockTree = ( descriptor ) => {
+						if ( ! descriptor?.name ) return null;
+						const children = ( descriptor.innerBlocks || [] ).map( buildBlockTree ).filter( Boolean );
+						return createBlock( descriptor.name, descriptor.attributes || {}, children );
+					};
+					const blockDescriptor = action.payload?.block;
+					let newBlock;
+					if ( blockDescriptor?.name ) {
+						newBlock = buildBlockTree( blockDescriptor );
+					} else {
+						const BLOCK_NAME_MAP = { container: 'maxi-blocks/container-maxi', section: 'maxi-blocks/container-maxi', row: 'maxi-blocks/row-maxi', column: 'maxi-blocks/column-maxi' };
+						const requestedType = blockDescriptor?.type?.toLowerCase() || 'container';
+						newBlock = createBlock( BLOCK_NAME_MAP[ requestedType ] || 'maxi-blocks/container-maxi' );
+					}
+					if ( ! newBlock ) return { executed: false, message: 'Could not build block structure from AI response.' };
+					dispatch( 'core/block-editor' ).insertBlocks( newBlock );
+					return { executed: true, message: action.message || 'Block added to the page.' };
+				}
+
+				// Handle bulk child-insert ops — supports both payload shapes the AI produces:
+				//   payload.update_inner_blocks: [{ parent_clientId, add_block }]
+				//   payload.ops:                 [{ op:'append_child', parent_clientId, block }]
+				const childOps = action.payload?.update_inner_blocks ?? action.payload?.ops ?? null;
+				if (childOps) {
+					const buildBlockTree = descriptor => {
+						if (!descriptor?.name) return null;
+						const children = (descriptor.innerBlocks || []).map(buildBlockTree).filter(Boolean);
+						return createBlock(descriptor.name, descriptor.attributes || {}, children);
+					};
+					let inserted = 0;
+					for (const op of childOps) {
+						const blockDescriptor = op.add_block ?? op.block ?? null;
+						if (!blockDescriptor) continue;
+						const newBlock = buildBlockTree(blockDescriptor);
+						if (newBlock) {
+							dispatch('core/block-editor').insertBlocks(newBlock, undefined, op.parent_clientId);
+							inserted++;
+						}
+					}
+					return { executed: inserted > 0, message: inserted > 0 ? action.message || `Added ${inserted} block(s).` : 'No blocks could be inserted.' };
+				}
+
 				// ORCHESTRATION LAYER: Determine target blocks based on scope
 				let targetBlocks = [];
 				let prefix = ''; // Prefix logic might need to be per-block if they differ, but usually consistent for buttons
@@ -3299,6 +3347,42 @@ export const useAiChat = ({ onClose } = {}) => {
 			}
 		}
 
+		// Handle insert_block layout-picker reply (typed input path)
+		if ( conversationContext?.type === 'insert_block' ) {
+			const lower = input.toLowerCase();
+			setConversationContext( null );
+			let rootBlock;
+			if ( lower.includes( 'cloud' ) || lower.includes( 'library' ) || lower.includes( 'browse' ) ) {
+				setMessages( prev => [ ...prev, { role: 'assistant', content: 'Searching Cloud Library...' } ] );
+				setTimeout( async () => { await handleCreateBlock( { rawMessage: input, targetClientId: null } ); }, 100 );
+				return;
+			} else if ( lower.includes( 'sidebar' ) ) {
+				const row = createBlock( 'maxi-blocks/row-maxi' );
+				rootBlock = createBlock( 'maxi-blocks/container-maxi', {}, [ row ] );
+				dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+				loadColumnsTemplate( '1-3', row.clientId, 'general', 2 );
+			} else if ( lower.includes( 'hero' ) || lower.includes( 'full-width' ) || lower.includes( 'full width' ) ) {
+				rootBlock = createBlock( 'maxi-blocks/container-maxi', { 'full-width-general': true } );
+				dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+			} else {
+				const colMatch = lower.match( /(\d+)/ );
+				const numCols = colMatch ? Math.min( parseInt( colMatch[ 1 ] ), 6 ) : 1;
+				if ( numCols > 1 ) {
+					const templateName = getTemplates( true, 'general', numCols ).find( t => ! t.isMoreThanEightColumns )?.name || `${ numCols } columns`;
+					const row = createBlock( 'maxi-blocks/row-maxi' );
+					rootBlock = createBlock( 'maxi-blocks/container-maxi', {}, [ row ] );
+					dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+					loadColumnsTemplate( templateName, row.clientId, 'general', numCols );
+				} else {
+					rootBlock = createBlock( 'maxi-blocks/container-maxi' );
+					dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+				}
+			}
+			setMessages( prev => [ ...prev, { role: 'assistant', content: `Added ${ input }.`, executed: true } ] );
+			setIsLoading( false );
+			return;
+		}
+
 		// Determine effective scope (use context mode if inside an active flow)
 		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope);
 
@@ -4104,6 +4188,27 @@ export const useAiChat = ({ onClose } = {}) => {
 				return;
 			}
 
+			case 'insert_block':
+				setConversationContext( { type: 'insert_block', blockType: routeResult.params.blockType } );
+				setMessages( prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: 'What layout would you like?',
+						options: [
+							'Single container',
+							'2 equal columns',
+							'3 equal columns',
+							'4 equal columns',
+							'Sidebar (1/3 + 2/3)',
+							'Full-width hero',
+							'Browse Cloud Library',
+						],
+					},
+				] );
+				setIsLoading( false );
+				return;
+
 			case 'create_block':
 				setMessages(prev => [
 					...prev,
@@ -4320,6 +4425,44 @@ export const useAiChat = ({ onClose } = {}) => {
 	};
 
 	const handleSuggestion = async (suggestion) => {
+		// Handle insert_block layout picker reply (button click path)
+		if (conversationContext?.type === 'insert_block') {
+			const lower = suggestion.toLowerCase();
+			setConversationContext(null);
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			setIsLoading(true);
+			let rootBlock;
+			if (lower.includes('cloud') || lower.includes('library') || lower.includes('browse')) {
+				setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
+				setTimeout(async () => { await handleCreateBlock({ rawMessage: suggestion, targetClientId: null }); }, 100);
+				return;
+			} else if (lower.includes('sidebar')) {
+				const row = createBlock('maxi-blocks/row-maxi');
+				rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+				dispatch('core/block-editor').insertBlocks(rootBlock);
+				loadColumnsTemplate('1-3', row.clientId, 'general', 2);
+			} else if (lower.includes('hero') || lower.includes('full-width') || lower.includes('full width')) {
+				rootBlock = createBlock('maxi-blocks/container-maxi', { 'full-width-general': true });
+				dispatch('core/block-editor').insertBlocks(rootBlock);
+			} else {
+				const colMatch = lower.match(/(\d+)/);
+				const numCols = colMatch ? Math.min(parseInt(colMatch[1]), 6) : 1;
+				if (numCols > 1) {
+					const templateName = getTemplates(true, 'general', numCols).find(t => !t.isMoreThanEightColumns)?.name || `${numCols} columns`;
+					const row = createBlock('maxi-blocks/row-maxi');
+					rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+					dispatch('core/block-editor').insertBlocks(rootBlock);
+					loadColumnsTemplate(templateName, row.clientId, 'general', numCols);
+				} else {
+					rootBlock = createBlock('maxi-blocks/container-maxi');
+					dispatch('core/block-editor').insertBlocks(rootBlock);
+				}
+			}
+			setMessages(prev => [...prev, { role: 'assistant', content: `Added ${suggestion}.`, executed: true }]);
+			setIsLoading(false);
+			return;
+		}
+
 		// 1. Handle Active Conversation Flow
 		if (conversationContext) {
 			console.log('[Maxi AI Conversation] Handling input:', suggestion);

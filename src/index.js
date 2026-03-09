@@ -39,3 +39,4 @@ import './blocks/search-maxi';
 // Editor
 import './editor/saver';
 import './editor/toolbar-buttons';
+import './components/ai-chat-panel/mount';

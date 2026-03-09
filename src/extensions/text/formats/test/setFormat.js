@@ -11,6 +11,7 @@ jest.mock('@wordpress/data', () => ({
 jest.mock('@extensions/styles', () => ({
 	getBlockStyle: jest.fn(() => 'light'),
 }));
+jest.mock('@extensions/styles/getBlockStyle', () => jest.fn(() => 'light'));
 jest.mock('@extensions/style-cards', () => ({
 	updateSCOnEditor: jest.fn(),
 	getTypographyFromSC: jest.fn(() => ({})),

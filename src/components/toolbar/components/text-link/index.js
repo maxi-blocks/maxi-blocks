@@ -262,7 +262,18 @@ const LinkContent = props => {
 };
 
 const TextLink = props => {
-	const { blockName, 'dc-status': dcStatus = false, linkSettings } = props;
+	const {
+		blockName,
+		'dc-status': dcStatus = false,
+		linkSettings,
+		clientId,
+	} = props;
+	const popoverRef = useRef(null);
+	const logToolbarDebug = (...args) => {
+		if (typeof window !== 'undefined' && window.maxiBlocksDebug) {
+			console.log('[Maxi Toolbar Debug] TextLink', ...args);
+		}
+	};
 
 	let formatValue;
 
@@ -286,9 +297,66 @@ const TextLink = props => {
 
 	if (!ALLOWED_BLOCKS.includes(blockName)) return null;
 
+	useEffect(() => {
+		if (typeof window === 'undefined') return undefined;
+
+		const maybeOpenPopover = detail => {
+			if (!detail || detail.target !== 'text-link') return;
+			if (detail.clientId && detail.clientId !== clientId) {
+				logToolbarDebug('Ignoring toolbar request for different clientId', {
+					clientId,
+					detail,
+				});
+				return;
+			}
+			if (!popoverRef.current) {
+				logToolbarDebug('Text link popover ref missing', {
+					clientId,
+					blockName,
+				});
+				return;
+			}
+			if (popoverRef.current.state?.isOpen) {
+				logToolbarDebug('Text link popover already open', {
+					clientId,
+					blockName,
+				});
+				return;
+			}
+			logToolbarDebug('Opening text link popover', {
+				clientId,
+				blockName,
+				detail,
+			});
+			popoverRef.current.onToggle();
+		};
+
+		const handleToolbarOpen = event => {
+			maybeOpenPopover(event?.detail);
+		};
+
+		const request = window.maxiToolbarOpenRequest;
+		if (request) {
+			maybeOpenPopover(request);
+			if (
+				request?.target === 'text-link' &&
+				(!request.clientId || request.clientId === clientId)
+			) {
+				logToolbarDebug('Consumed queued toolbar request', request);
+				window.maxiToolbarOpenRequest = null;
+			}
+		}
+
+		window.addEventListener('maxi-toolbar-open', handleToolbarOpen);
+		return () => {
+			window.removeEventListener('maxi-toolbar-open', handleToolbarOpen);
+		};
+	}, [blockName, clientId]);
+
 	if (!dcStatus)
 		return (
 			<ToolbarPopover
+				ref={popoverRef}
 				icon={toolbarLink}
 				tooltip={__('Link', 'maxi-blocks')}
 				className={

@@ -1248,6 +1248,12 @@ export const useAiChat = ({ onClose } = {}) => {
 		if (/^(none|null|remove|delete|clear)$/i.test(trimmed)) return null;
 		if (/<svg\b/i.test(trimmed)) return null;
 
+		// Reject meta-description values the AI sends when it can't express per-block intent
+		// e.g. "each-column", "per-block", "different-per-column", "list"
+		if (/\b(each|per-block|per-column|different|various|multiple|list|all-columns)\b/i.test(trimmed)) {
+			return { error: `Cannot set different icons per-block with update_page. Use MODIFY_BLOCK with ops to set individual icons.` };
+		}
+
 		const query = normalizeIconQueryValue(trimmed);
 		if (!query) return null;
 

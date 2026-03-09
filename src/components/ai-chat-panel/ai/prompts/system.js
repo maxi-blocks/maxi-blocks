@@ -257,6 +257,12 @@ Include "target_block" when user mentions specific types:
 - "all images" / "the images" -> target_block: "image"
 - "all sections" / "containers" -> target_block: "container"
 
+### update_page LIMITATION (CRITICAL)
+update_page applies the SAME value to ALL matching blocks on the page.
+If the user wants DIFFERENT values on different blocks (e.g. different icon per column, different text per button),
+you CANNOT use update_page. You MUST use MODIFY_BLOCK with ops, one per block, each with its own parent_clientId and attributes.
+NEVER use placeholder values like "each-column", "per-block", or "list" as a property value — they are not valid.
+
 ### INTENT MAPPING
 1. "Round/Rounded/Corners" -> property: border_radius
 2. "Shadow/Depth/Pop" -> property: box_shadow
@@ -385,8 +391,10 @@ A container always needs at least one row; a row always needs at least one colum
 
 ### MODIFY_BLOCK PAYLOAD SHAPES
 
-Shape 1 — Insert a new top-level block (no parent):
-{"action":"MODIFY_BLOCK","payload":{"block":{"name":"maxi-blocks/container-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/row-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/column-maxi","attributes":{},"innerBlocks":[]}]}]}},"message":"Added a container."}
+Shape 1 — Insert a new top-level block tree (no parent). Use this when the user asks to create a layout from scratch:
+{"action":"MODIFY_BLOCK","payload":{"block":{"name":"maxi-blocks/container-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/row-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/column-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/button-maxi","attributes":{"button_text":"Facebook","button_icon_add":"facebook","button_icon":"only"},"innerBlocks":[]}]},{"name":"maxi-blocks/column-maxi","attributes":{},"innerBlocks":[{"name":"maxi-blocks/button-maxi","attributes":{"button_text":"Instagram","button_icon_add":"instagram","button_icon":"only"},"innerBlocks":[]}]}]}]}},"message":"Added container with 2 social buttons."}
+
+If different blocks need different content (different icon per column, different text per button), build the FULL tree in one Shape 1 call with each block's attributes set individually. Do NOT use update_page for this — it only applies the same value to all.
 
 Shape 2 — Append one or more blocks to specific parents (use clientId from context):
 {"action":"MODIFY_BLOCK","payload":{"ops":[{"op":"append_child","parent_clientId":"<row-clientId>","block":{"name":"maxi-blocks/column-maxi","attributes":{},"innerBlocks":[]}},{"op":"append_child","parent_clientId":"<column-clientId>","block":{"name":"maxi-blocks/text-maxi","attributes":{},"innerBlocks":[]}}]},"message":"Added a column with text."}

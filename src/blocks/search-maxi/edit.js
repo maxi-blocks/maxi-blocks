@@ -50,7 +50,7 @@ const SearchBlock = props => {
 	}, [isSelected]);
 
 	const onInputToggle = () =>
-		skin === 'icon-reveal' && setIsInputOpen(!isInputOpen);
+		skin === 'icon-reveal' && setIsInputOpen(prev => !prev);
 
 	const onInputChange = val => {
 		setIsInputOpen(val);

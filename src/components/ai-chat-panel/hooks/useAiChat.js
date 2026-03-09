@@ -22,48 +22,29 @@ import { getSkillContextForBlock, getAllSkillsContext } from '../skillContext';
 import { findBestPattern, extractPatternQuery } from '../patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from '../iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from '../ai/registry';
+import { buildRoutingContext, routeClientSide } from '../ai/router';
 import { CLOUD_ICON_PATTERN } from '../ai/patterns/cloudIcon';
-import { getRequestedTargetFromMessage, isTargetedPatternTarget } from '../ai/patterns/targeting';
 import { getAccordionSidebarTarget } from '../ai/blocks/accordion';
 import { getColumnSidebarTarget } from '../ai/blocks/column';
 import { getDividerSidebarTarget } from '../ai/blocks/divider';
 import { getIconSidebarTarget } from '../ai/blocks/icon';
 import { getImageSidebarTarget } from '../ai/blocks/image';
 import { getNumberCounterSidebarTarget } from '../ai/blocks/number-counter';
-import {
-	buildColorUpdate,
-	getColorTargetFromMessage,
-	getColorTargetLabel,
-} from '../ai/color/colorClarify';
+import { buildColorUpdate } from '../ai/color/colorClarify';
 import updateBackgroundColor from '../ai/color/backgroundUpdate';
 import {
 	isInteractionBuilderMessage,
 	isTextContextForMessage,
 } from '../ai/utils/contextDetection';
 import { maybeOpenFlowSidebar } from '../ai/utils/openFlowSidebar';
-import {
-	buildAdvancedCssAGroupAction,
-	buildAdvancedCssAGroupAttributeChanges,
-	getAdvancedCssSidebarTarget,
-} from '../ai/utils/advancedCssAGroup';
-import {
-	buildMetaAGroupAction,
-	buildMetaAGroupAttributeChanges,
-	getMetaSidebarTarget,
-	resolveMetaTargetKey,
-} from '../ai/utils/metaAGroup';
+import { getAdvancedCssSidebarTarget } from '../ai/utils/advancedCssAGroup';
+import { buildMetaAGroupAttributeChanges, getMetaSidebarTarget, resolveMetaTargetKey } from '../ai/utils/metaAGroup';
 import { applyRelationsOps, ensureRelationDefaults } from '../ai/utils/relationsOps';
 import {
-	buildButtonAGroupAction,
-	buildButtonAGroupAttributeChanges,
 	getButtonAGroupSidebarTarget,
-	buildButtonBGroupAction,
-	buildButtonBGroupAttributeChanges,
 	getButtonBGroupSidebarTarget,
-	buildButtonCGroupAction,
 	buildButtonCGroupAttributeChanges,
 	getButtonCGroupSidebarTarget,
-	buildButtonIGroupAction,
 	buildButtonIGroupAttributeChanges,
 	getButtonIGroupSidebarTarget,
 } from '../ai/utils/buttonGroups';
@@ -72,75 +53,40 @@ import {
 	isBackgroundLayerCommand,
 } from '../ai/utils/shared/backgroundLayers';
 import {
-	buildContainerAGroupAction,
-	buildContainerAGroupAttributeChanges,
 	getContainerAGroupSidebarTarget,
-	buildContainerBGroupAction,
-	buildContainerBGroupAttributeChanges,
 	getContainerBGroupSidebarTarget,
-	buildContainerCGroupAction,
-	buildContainerCGroupAttributeChanges,
 	getContainerCGroupSidebarTarget,
-	buildContainerDGroupAction,
-	buildContainerDGroupAttributeChanges,
 	getContainerDGroupSidebarTarget,
-	buildContainerEGroupAction,
-	buildContainerEGroupAttributeChanges,
 	getContainerEGroupSidebarTarget,
-	buildContainerFGroupAction,
-	buildContainerFGroupAttributeChanges,
 	getContainerFGroupSidebarTarget,
-	buildContainerHGroupAction,
-	buildContainerHGroupAttributeChanges,
 	getContainerHGroupSidebarTarget,
-	buildContainerLGroupAction,
-	buildContainerLGroupAttributeChanges,
 	getContainerLGroupSidebarTarget,
-	buildContainerMGroupAction,
-	buildContainerMGroupAttributeChanges,
 	getContainerMGroupSidebarTarget,
-	buildContainerOGroupAction,
 	buildContainerOGroupAttributeChanges,
 	getContainerOGroupSidebarTarget,
-	buildContainerPGroupAction,
 	buildContainerPGroupAttributeChanges,
 	getContainerPGroupSidebarTarget,
-	buildContainerRGroupAction,
 	buildContainerRGroupAttributeChanges,
 	getContainerRGroupSidebarTarget,
-	buildContainerSGroupAction,
 	buildContainerSGroupAttributeChanges,
 	getContainerSGroupSidebarTarget,
-	buildContainerTGroupAction,
 	buildContainerTGroupAttributeChanges,
 	getContainerTGroupSidebarTarget,
-	buildContainerWGroupAction,
 	buildContainerWGroupAttributeChanges,
 	getContainerWGroupSidebarTarget,
-	buildContainerZGroupAction,
 	buildContainerZGroupAttributeChanges,
 	getContainerZGroupSidebarTarget,
 } from '../ai/utils/containerGroups';
 import {
-	buildTextCGroupAction,
 	buildTextCGroupAttributeChanges,
 	getTextCGroupSidebarTarget,
-	buildTextLGroupAction,
 	buildTextLGroupAttributeChanges,
 	getTextLGroupSidebarTarget,
-	buildTextPGroupAction,
-	buildTextPGroupAttributeChanges,
 	getTextPGroupSidebarTarget,
-	buildTextListGroupAction,
-	buildTextListGroupAttributeChanges,
 	getTextListGroupSidebarTarget,
 	getTextTypographySidebarTarget,
 } from '../ai/utils/textGroup';
-import {
-	buildDcGroupAction,
-	buildDcGroupAttributeChanges,
-	getDcGroupSidebarTarget,
-} from '../ai/utils/dcGroup';
+import { getDcGroupSidebarTarget } from '../ai/utils/dcGroup';
 import ADVANCED_CSS_PROMPT from '../ai/prompts/advanced-css';
 import STYLE_CARD_MAXI_PROMPT from '../ai/prompts/style-card';
 import META_MAXI_PROMPT from '../ai/prompts/meta';
@@ -148,8 +94,6 @@ import INTERACTION_BUILDER_PROMPT from '../ai/prompts/interaction-builder';
 import SYSTEM_PROMPT from '../ai/prompts/system';
 import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from '../ai/style-card';
 import onRequestInsertPattern from '../../../editor/library/utils/onRequestInsertPattern';
-import LAYOUT_PATTERNS from '../ai/patterns/layoutPatterns';
-import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
 import {
 	parseUnitValue,
 	RESPONSIVE_BREAKPOINTS,
@@ -189,15 +133,9 @@ import {
 } from '../ai/utils/blockHelpers';
 import {
 	HEX_COLOR_REGEX,
-	extractHexColor,
 	extractQuotedText,
-	extractUrl,
 	extractValueFromPatterns,
 	extractNumericValue,
-	getSpacingIntent,
-	parseRemoveSpacingRequest,
-	parseNumericSpacingRequest,
-	detectSpacingTarget,
 	extractButtonText,
 	extractCaptionText,
 	extractAltText,
@@ -214,7 +152,6 @@ import {
 	extractNumberCounterTitleFontSizeValue,
 	extractNumberCounterTextColorValue,
 	resolveImageRatioValue,
-	resolvePromptValue,
 } from '../ai/utils/messageExtractors';
 import {
 	updateTextColor,
@@ -3362,19 +3299,9 @@ export const useAiChat = ({ onClose } = {}) => {
 			}
 		}
 
-		// Process predefined flows (client-side interception)
-		const lowerMessage = rawMessage.toLowerCase();
-		const hexColor = extractHexColor(rawMessage);
-		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope); // Use context mode if in a flow, or tab state
-		const isGlobalScope = currentScope === 'global';
-		const lastClarificationMsg = messagesRef.current?.findLast(
-			m => m.role === 'assistant' && m.options
-		);
-		const lastClarifyContent =
-			typeof lastClarificationMsg?.content === 'string'
-				? lastClarificationMsg.content.toLowerCase()
-				: '';
-		
+		// Determine effective scope (use context mode if inside an active flow)
+		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope);
+
 		// 0. SELECTION CHECK: If in Selection mode, enforce that a block MUST be selected
 		if (currentScope === 'selection' && !selectedBlock) {
 			setMessages(prev => [
@@ -3408,1893 +3335,792 @@ export const useAiChat = ({ onClose } = {}) => {
 			}, 50);
 		};
 
-		const actionType = currentScope === 'page' ? 'update_page' : 'update_selection';
-		const actionTarget =
-			actionType === 'update_page' ? { target_block: 'container' } : {};
 
-		const isTextSelection =
-			selectedBlock?.name?.includes('text-maxi') ||
-			selectedBlock?.name?.includes('list-item-maxi');
-		const textLinkUrl = isTextSelection ? extractUrl(rawMessage) : null;
-		logAIDebug('Link detection', {
-			selectedBlock: selectedBlock?.name,
-			selectedClientId: selectedBlock?.clientId,
-			scope: currentScope,
-			isTextSelection,
-			textLinkUrl,
-			rawMessage,
-		});
-		if (isTextSelection && textLinkUrl) {
-			const lowerRaw = rawMessage.toLowerCase();
-			const opensInNewTab = /new\s*tab|_blank|external/.test(lowerRaw);
-			const noFollow = /nofollow/.test(lowerRaw);
-			const sponsored = /sponsored/.test(lowerRaw);
-			const ugc = /\bugc\b/.test(lowerRaw);
-			const relParts = [];
-			if (noFollow) relParts.push('nofollow');
-			if (sponsored) relParts.push('sponsored');
-			if (ugc) relParts.push('ugc');
-			const rel = relParts.join(' ');
+		// ── Cloud-icon async search handler (executed by the hook, called with router params) ──
+		const handleCloudIconSearch = async ({
+			rawMessage: iconMsg,
+			lowerMessage: lower,
+			currentScope: iconScope,
+			selectedBlock: iconBlock,
+			iconBlocksInScope,
+			buttonBlocksInScope,
+			wantsMultipleIcons,
+			matchTitlesToIconsIntent,
+			matchTitlesIntent,
+			shouldTreatAsIconTheme,
+			hasIconBlocksInScope,
+			cloudIconTarget,
+		}) => {
+			const selectedName = iconBlock?.name || '';
+			const formatList = items =>
+				items.length > 3
+					? `${items.slice(0, 3).join(', ')} and ${items.length - 3} more`
+					: items.join(', ');
 
-			queueDirectAction({
-				action: actionType,
-				property: 'text_link',
-				value: {
-					url: textLinkUrl,
-					target: opensInNewTab ? '_blank' : '_self',
-					...(rel ? { rel } : {}),
-					...(noFollow ? { noFollow: true } : {}),
-					...(sponsored ? { sponsored: true } : {}),
-					...(ugc ? { ugc: true } : {}),
-				},
-				message: 'Applied link settings to the selected text.',
-				...(actionType === 'update_page' ? { target_block: 'text' } : {}),
-			});
-			logAIDebug('Queued text link action', {
-				url: textLinkUrl,
-				opensInNewTab,
-				rel,
-			});
-			return;
-		}
+			const styleIntent = extractIconStyleIntent(iconMsg);
+			const styleLabel = styleIntent
+				? styleIntent === 'line'
+					? 'line'
+					: styleIntent === 'shape'
+					? 'shape'
+					: 'filled'
+				: '';
+			const messageForQuery = styleIntent ? stripIconStylePhrases(iconMsg) : iconMsg;
+			const explicitQueries = extractIconQueries(messageForQuery);
+			const hasExplicitList = explicitQueries.length > 1;
+			const searchQuery = extractIconQuery(messageForQuery);
 
-		// L-group: container links (explicit phrasing)
-		const lGroupAction = buildContainerLGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (lGroupAction) {
-			logAIDebug('L-group action matched', lGroupAction);
-			queueDirectAction(lGroupAction);
-			return;
-		}
-
-		const isButtonContext =
-			lowerMessage.includes('button') ||
-			selectedBlock?.name?.includes('button');
-		const isTextContext = isTextContextForMessage(lowerMessage, selectedBlock?.name);
-		const isImageContext =
-			lowerMessage.includes('image') ||
-			selectedBlock?.name?.includes('image-maxi');
-		const isDividerContext =
-			lowerMessage.includes('divider') ||
-			selectedBlock?.name?.includes('divider-maxi');
-		const isContainerContext =
-			lowerMessage.includes('container') ||
-			selectedBlock?.name?.includes('container');
-		const metaTargetBlock = isButtonContext
-			? 'button'
-			: isTextContext
-				? 'text'
-				: isContainerContext
-					? 'container'
-					: null;
-		const metaAction = buildMetaAGroupAction(rawMessage, {
-			scope: currentScope,
-			targetBlock: metaTargetBlock,
-		});
-		if (metaAction) {
-			logAIDebug('Meta A-group action matched', metaAction);
-			queueDirectAction(metaAction);
-			return;
-		}
-		const advancedCssTargetBlock = metaTargetBlock;
-		const advancedCssAction = buildAdvancedCssAGroupAction(rawMessage, {
-			scope: currentScope,
-			targetBlock: advancedCssTargetBlock,
-		});
-		if (advancedCssAction) {
-			logAIDebug('Advanced CSS A-group action matched', advancedCssAction);
-			queueDirectAction(advancedCssAction);
-			return;
-		}
-		const dcTargetBlock = isButtonContext
-			? 'button'
-			: isImageContext
-				? 'image'
-				: isDividerContext
-					? 'divider'
-					: isTextContext
-						? 'text'
-						: null;
-		const dcGroupAction = buildDcGroupAction(rawMessage, {
-			scope: currentScope,
-			targetBlock: dcTargetBlock,
-		});
-		if (dcGroupAction) {
-			logAIDebug('DC group action matched', dcGroupAction);
-			queueDirectAction(dcGroupAction);
-			return;
-		}
-		if (isButtonContext) {
-			const buttonAGroupAction = buildButtonAGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (buttonAGroupAction) {
-				logAIDebug('Button A-group action matched', buttonAGroupAction);
-				queueDirectAction(buttonAGroupAction);
-				return;
-			}
-			const buttonBGroupAction = buildButtonBGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (buttonBGroupAction) {
-				logAIDebug('Button B-group action matched', buttonBGroupAction);
-				queueDirectAction(buttonBGroupAction);
-				return;
-			}
-			const buttonCGroupAction = buildButtonCGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (buttonCGroupAction) {
-				logAIDebug('Button C-group action matched', buttonCGroupAction);
-				queueDirectAction(buttonCGroupAction);
-				return;
-			}
-			const buttonIGroupAction = buildButtonIGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (buttonIGroupAction) {
-				logAIDebug('Button I-group action matched', buttonIGroupAction);
-				queueDirectAction(buttonIGroupAction);
-				return;
-			}
-		}
-		if (isTextContext) {
-			const textListGroupAction = buildTextListGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (textListGroupAction) {
-				logAIDebug('Text list-group action matched', textListGroupAction);
-				queueDirectAction(textListGroupAction);
-				return;
-			}
-			const textLGroupAction = buildTextLGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (textLGroupAction) {
-				logAIDebug('Text L-group action matched', textLGroupAction);
-				queueDirectAction(textLGroupAction);
-				return;
-			}
-			const textPGroupAction = buildTextPGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (textPGroupAction) {
-				logAIDebug('Text P-group action matched', textPGroupAction);
-				queueDirectAction(textPGroupAction);
-				return;
-			}
-			const textCGroupAction = buildTextCGroupAction(rawMessage, {
-				scope: currentScope,
-			});
-			if (textCGroupAction) {
-				logAIDebug('Text C-group action matched', textCGroupAction);
-				queueDirectAction(textCGroupAction);
-				return;
-			}
-		}
-
-		// A-group: anchor, aria, arrows, align content/items (explicit phrasing)
-		const aGroupAction = buildContainerAGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (aGroupAction) {
-			logAIDebug('A-group action matched', aGroupAction);
-			queueDirectAction(aGroupAction);
-			return;
-		}
-
-		// B-group: backgrounds, borders, shadows, block style, breakpoints (explicit phrasing)
-		const bGroupAction = buildContainerBGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (bGroupAction) {
-			queueDirectAction(bGroupAction);
-			return;
-		}
-
-		// C-group: context loop, pagination, column gap, custom css/label (explicit phrasing)
-		const cGroupAction = buildContainerCGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (cGroupAction) {
-			queueDirectAction(cGroupAction);
-			return;
-		}
-
-		// D-group: display / visibility (explicit phrasing)
-		const dGroupAction = buildContainerDGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (dGroupAction) {
-			queueDirectAction(dGroupAction);
-			return;
-		}
-
-		// E-group: custom classes (explicit phrasing)
-		const eGroupAction = buildContainerEGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (eGroupAction) {
-			queueDirectAction(eGroupAction);
-			return;
-		}
-
-		// F-group: flex sizing / aspect ratio / full width (explicit phrasing)
-		const fGroupAction = buildContainerFGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (fGroupAction) {
-			queueDirectAction(fGroupAction);
-			return;
-		}
-
-		// M-group: margin + min/max sizing + versions (explicit phrasing)
-		const mGroupAction = buildContainerMGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (mGroupAction) {
-			queueDirectAction(mGroupAction);
-			return;
-		}
-
-		// W-group: width + fit-content (explicit phrasing)
-		const wGroupAction = buildContainerWGroupAction(rawMessage, {
-			scope: currentScope,
-			targetBlock: selectedBlock?.name?.includes('column') ? 'column' : null,
-			blockName: selectedBlock?.name,
-		});
-		if (wGroupAction) {
-			queueDirectAction(wGroupAction);
-			return;
-		}
-
-		// Z-group: z-index (explicit phrasing)
-		const zGroupAction = buildContainerZGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (zGroupAction) {
-			queueDirectAction(zGroupAction);
-			return;
-		}
-
-		// P-group: padding + position (explicit phrasing)
-		const pGroupAction = buildContainerPGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (pGroupAction) {
-			queueDirectAction(pGroupAction);
-			return;
-		}
-
-		// R-group: row gap (explicit phrasing)
-		const rGroupAction = buildContainerRGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (rGroupAction) {
-			queueDirectAction(rGroupAction);
-			return;
-		}
-
-		// S-group: scroll effects + shape dividers (explicit phrasing)
-		const sGroupAction = buildContainerSGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (sGroupAction) {
-			queueDirectAction(sGroupAction);
-			return;
-		}
-
-		// T-group: transforms + hover transitions (explicit phrasing)
-		const tGroupAction = buildContainerTGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (tGroupAction) {
-			queueDirectAction(tGroupAction);
-			return;
-		}
-
-		// O-group: opacity, order, overflow (explicit phrasing)
-		const oGroupAction = buildContainerOGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (oGroupAction) {
-			queueDirectAction(oGroupAction);
-			return;
-		}
-
-		// H-group: height (explicit phrasing)
-		const hGroupAction = buildContainerHGroupAction(rawMessage, {
-			scope: currentScope,
-		});
-		if (hGroupAction) {
-			queueDirectAction(hGroupAction);
-			return;
-		}
-
-		// CLIENT-SIDE INTERCEPTION: Detect vague requests and show clarification immediately
-		// const lowerMessage = userMessage.toLowerCase(); // Removed, already declared above
-		
-
-		
-
-		
-		// Spacing removals (explicit remove/clear/reset)
-		if (!isGlobalScope) {
-			const removeSpacing = parseRemoveSpacingRequest(rawMessage);
-			if (removeSpacing) {
-				const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
-				const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
-				const propertyParts = removeSpacing.property.split('_');
-				const spacingLabel = propertyParts.length === 2
-					? `${propertyParts[1]} ${propertyParts[0]}`
-					: removeSpacing.property;
-				const directAction = {
-					action: actionType,
-					property: removeSpacing.property,
-					value: removeSpacing.value,
-					...(targetBlock ? { target_block: targetBlock } : {}),
-					message: `Removed ${spacingLabel}.`,
-				};
-
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+			if (matchTitlesToIconsIntent) {
+				if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content:
+								iconScope === 'selection'
+									? 'No icon blocks found in the selection.'
+									: 'No icon blocks found on this page.',
+							executed: false,
+						},
+					]);
 					setIsLoading(false);
-				}, 50);
+					return;
+				}
+
+				const updates = [];
+				const missingIconLabels = [];
+				const missingTextTargets = [];
+				const processedTextBlocks = new Set();
+
+				iconBlocksInScope.forEach((iconBlock2, index) => {
+					const iconLabel = getIconLabelFromBlock(iconBlock2);
+					if (!iconLabel) {
+						missingIconLabels.push(`icon ${index + 1}`);
+						return;
+					}
+
+					const groupRoot = findGroupRootForIconBlock(iconBlock2);
+					const groupTextBlocks = groupRoot
+						? collectBlocks(groupRoot.innerBlocks || [], block =>
+								isLabelBlock(block?.name)
+							)
+						: [];
+
+					if (groupTextBlocks.length === 0) {
+						missingTextTargets.push(iconLabel);
+						return;
+					}
+
+					let bodyIndex = 0;
+					groupTextBlocks.forEach(textBlock => {
+						if (processedTextBlocks.has(textBlock.clientId)) return;
+						const nextText = buildIconRelatedText(iconLabel, textBlock, bodyIndex);
+						const changes = buildTextContentChange(textBlock, nextText);
+						if (changes) {
+							updates.push({ block: textBlock, changes });
+							processedTextBlocks.add(textBlock.clientId);
+						}
+						if (!isHeadingTextBlock(textBlock)) bodyIndex += 1;
+					});
+				});
+
+				if (updates.length === 0) {
+					let message = 'I could not match titles to the icons.';
+					if (missingIconLabels.length)
+						message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
+					if (missingTextTargets.length)
+						message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: message, executed: false },
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				registry.batch(() => {
+					updates.forEach(({ block, changes }) => {
+						updateBlockAttributes(block.clientId, changes);
+					});
+				});
+
+				let message =
+					iconScope === 'selection'
+						? `Updated ${updates.length} text blocks to match the icons.`
+						: `Updated ${updates.length} text blocks on the page to match the icons.`;
+				if (missingIconLabels.length)
+					message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
+				if (missingTextTargets.length)
+					message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: message, executed: true },
+				]);
+				setIsLoading(false);
 				return;
 			}
-		}
 
-		// Spacing requests - detect target from user message
-		const hasExplicitNumericValue = /\b\d+(?:\.\d+)?\s*(px|%|em|rem|vh|vw)?\b/.test(lowerMessage);
-		const spacingIntent = getSpacingIntent(rawMessage);
-		if ((lowerMessage.includes('spacing') || lowerMessage.includes('space') || lowerMessage.includes('padding') || lowerMessage.includes('margin') || lowerMessage.includes('taller')) 
-			&& !hasExplicitNumericValue
-			&& !lowerMessage.includes('compact') && !lowerMessage.includes('comfortable') && !lowerMessage.includes('spacious') && !lowerMessage.includes('square')) {
-			// Detect what the user wants to target
-			let target = null;
-			if (lowerMessage.includes('video')) target = 'video';
-			else if (lowerMessage.includes('image')) target = 'image';
-			else if (lowerMessage.includes('button')) target = 'button';
-			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) target = 'container';
+			if (matchTitlesIntent) {
+				if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content:
+								iconScope === 'selection'
+									? 'No icon blocks found in the selection.'
+									: 'No icon blocks found on this page.',
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
 
-			if (!target && currentScope === 'selection' && selectedBlock?.name?.includes('video')) {
-				target = 'video';
+				const labeledBlocks = [];
+				const missingLabels = [];
+				iconBlocksInScope.forEach((block, index) => {
+					const label = findLabelForIconBlock(block);
+					if (label) {
+						labeledBlocks.push({ block, label });
+					} else {
+						missingLabels.push(`icon ${index + 1}`);
+					}
+				});
+
+				if (labeledBlocks.length === 0) {
+					let message =
+						'I could not find any text labels below the icons. Make sure each icon has a text or heading block beneath it.';
+					if (missingLabels.length)
+						message += ` Missing labels for ${formatList(missingLabels)}.`;
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: message, executed: false },
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				const results = await Promise.all(
+					labeledBlocks.map(item =>
+						findBestIcon(item.label, {
+							target: 'svg',
+							requireStrongMatch: true,
+							style: styleIntent,
+							requireStyleMatch: Boolean(styleIntent),
+						})
+					)
+				);
+
+				const updates = [];
+				const missingMatches = [];
+				const proOnly = [];
+				const missingStyles = [];
+
+				results.forEach((result, index) => {
+					const { block, label } = labeledBlocks[index];
+					if (!result || !result.svgCode || result.noStrongMatch) {
+						missingMatches.push(label);
+						return;
+					}
+					if (result.noStyleMatch) {
+						missingStyles.push(label);
+						return;
+					}
+					if (result.isPro) {
+						proOnly.push(label);
+						return;
+					}
+					updates.push({ block, result, label });
+				});
+
+				if (updates.length === 0) {
+					let message =
+						'I could not find matching icons for the titles below in the Cloud Library.';
+					if (missingLabels.length)
+						message += ` Missing labels for ${formatList(missingLabels)}.`;
+					if (missingMatches.length)
+						message += ` No matches for: ${formatList(missingMatches)}.`;
+					if (missingStyles.length)
+						message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
+					if (proOnly.length) message += ` Pro only: ${formatList(proOnly)}.`;
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: message, executed: false },
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				let updatedCount = 0;
+				registry.batch(() => {
+					updates.forEach(({ block, result, label }) => {
+						const blockHandler = getAiHandlerForBlock(block);
+						if (!blockHandler) return;
+						const prefix = getBlockPrefix(block.name);
+						const handlerResult = blockHandler(
+							block,
+							'icon_svg',
+							{
+								svgCode: result.svgCode,
+								svgType: result.svgType,
+								title: result.title || label,
+							},
+							prefix,
+							{ mode: iconScope }
+						);
+						let changes = null;
+						if (handlerResult?.action === 'apply') {
+							changes = handlerResult.attributes;
+						} else if (handlerResult && !handlerResult.action) {
+							changes = handlerResult;
+						}
+						if (changes) {
+							updateBlockAttributes(block.clientId, changes);
+							updatedCount += 1;
+						}
+					});
+				});
+
+				let message =
+					iconScope === 'selection'
+						? `Updated ${updatedCount} icons to match the titles below.`
+						: `Updated ${updatedCount} icons on the page to match the titles below.`;
+				if (missingLabels.length)
+					message += ` Missing labels for ${formatList(missingLabels)}.`;
+				if (missingMatches.length)
+					message += ` No matches for: ${formatList(missingMatches)}.`;
+				if (missingStyles.length)
+					message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
+				if (proOnly.length) message += ` Pro only: ${formatList(proOnly)}.`;
+
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: message, executed: true },
+				]);
+				setIsLoading(false);
+				return;
 			}
 
-			const spacingBase = spacingIntent?.base || (lowerMessage.includes('margin') ? 'margin' : 'padding');
-			const spacingSide = spacingIntent?.side || null;
-			const spacingLabel = spacingSide ? `${spacingSide} ${spacingBase}` : spacingBase;
+			if (!searchQuery && !hasExplicitList) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: 'Which icon should I search for in the Cloud Library?',
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
 
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: target
-					? `How much ${spacingLabel} for the ${target}s?`
-					: `How much ${spacingLabel} would you like?`,
-				options: ['Compact', 'Comfortable', 'Spacious', 'Remove'],
-				targetContext: target || 'container', // Default to container for spacing
-				spacingBase,
-				spacingSide,
-				executed: false
-			}]);
-			return;
-		}
+			const wantsDifferent = /\b(different|another|alternative|new|other)\b/.test(lower);
+			let targetMeta = cloudIconTarget;
 
-		// Numeric padding/margin: apply directly when a number is provided
-		const numericSpacing = parseNumericSpacingRequest(rawMessage);
-		if (numericSpacing) {
-			const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
-			const targetBlock = currentScope === 'page' ? (detectSpacingTarget(rawMessage) || 'container') : null;
-			const propertyParts = numericSpacing.property.split('_');
-			const spacingLabel = propertyParts.length === 2
-				? `${propertyParts[1]} ${propertyParts[0]}`
-				: numericSpacing.property;
-			const directAction = {
-				action: actionType,
-				property: numericSpacing.property,
-				value: numericSpacing.value,
-				...(targetBlock ? { target_block: targetBlock } : {}),
-				message: `Applied ${numericSpacing.value} ${spacingLabel}.`,
+			if (shouldTreatAsIconTheme && hasIconBlocksInScope && !selectedName.includes('button')) {
+				targetMeta = { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+			}
+
+			const isButtonTarget = targetMeta.targetBlock === 'button';
+			const isIconTarget = targetMeta.targetBlock === 'icon';
+			const currentSvg = isButtonTarget
+				? iconBlock?.attributes?.['icon-content']
+				: iconBlock?.attributes?.content;
+			const excludeSvgCodes = wantsDifferent && currentSvg ? [currentSvg] : [];
+
+			const isMultiIconRequest = wantsMultipleIcons || hasExplicitList;
+			const targetBlocks = isMultiIconRequest
+				? isButtonTarget
+					? buttonBlocksInScope
+					: iconBlocksInScope
+				: [];
+
+			if (iconScope === 'selection' && !isMultiIconRequest) {
+				const mismatch =
+					(isButtonTarget && !selectedName.includes('button')) ||
+					(isIconTarget && !selectedName.includes('icon'));
+				if (mismatch) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: isButtonTarget
+								? 'Please select a button block to change its icon.'
+								: 'Please select an Icon block to change its icon.',
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+			}
+
+			if (isMultiIconRequest && targetBlocks.length === 0) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content:
+							iconScope === 'selection'
+								? 'No icon blocks found in the selection.'
+								: 'No icon blocks found on this page.',
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			console.log('[Maxi AI] Searching Cloud Library icons for:', searchQuery);
+
+			if (hasExplicitList && isMultiIconRequest && targetBlocks.length > 1) {
+				const maxQueries = Math.min(12, explicitQueries.length);
+				const queryList = explicitQueries.slice(0, maxQueries);
+				const results = await Promise.all(
+					queryList.map(query =>
+						findBestIcon(query, {
+							target: targetMeta.svgTarget,
+							requireStrongMatch: true,
+							style: styleIntent,
+							requireStyleMatch: Boolean(styleIntent),
+						})
+					)
+				);
+
+				const usable = [];
+				const missing = [];
+				const proOnly = [];
+				const missingStyles = [];
+
+				results.forEach((result, index) => {
+					const query = queryList[index];
+					if (!result || !result.svgCode || result.noStrongMatch) {
+						missing.push(query);
+						return;
+					}
+					if (result.noStyleMatch) {
+						missingStyles.push(query);
+						return;
+					}
+					if (result.isPro) {
+						proOnly.push(query);
+						return;
+					}
+					usable.push({ title: result.title, svgCode: result.svgCode, svgType: result.svgType });
+				});
+
+				const normalizeSvgCode = value => String(value || '').replace(/\s+/g, ' ').trim();
+				const uniqueUsable = [];
+				const seenSvg = new Set();
+				for (const item of usable) {
+					const key = normalizeSvgCode(item.svgCode);
+					if (!key || seenSvg.has(key)) continue;
+					seenSvg.add(key);
+					uniqueUsable.push(item);
+				}
+
+				if (uniqueUsable.length < 2) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `I could only find one matching icon for that list. Try different keywords.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				let updatedCount = 0;
+				registry.batch(() => {
+					targetBlocks.forEach((block, index) => {
+						const choice = uniqueUsable[index % uniqueUsable.length];
+						const blockHandler = getAiHandlerForBlock(block);
+						if (!blockHandler) return;
+						const prefix = getBlockPrefix(block.name);
+						const result = blockHandler(
+							block,
+							targetMeta.property,
+							{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
+							prefix,
+							{ mode: iconScope }
+						);
+						let changes = null;
+						if (result?.action === 'apply') {
+							changes = result.attributes;
+						} else if (result && !result.action) {
+							changes = result;
+						}
+						if (changes) {
+							updateBlockAttributes(block.clientId, changes);
+							updatedCount += 1;
+						}
+					});
+				});
+
+				let message =
+					iconScope === 'selection'
+						? `Updated ${updatedCount} icons using the requested list.`
+						: `Updated ${updatedCount} icons on the page using the requested list.`;
+				if (missing.length) message += ` Missing: ${formatList(missing)}.`;
+				if (missingStyles.length)
+					message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
+				if (proOnly.length) message += ` Pro only: ${formatList(proOnly)}.`;
+
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: message, executed: true },
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			if (isMultiIconRequest && targetBlocks.length > 1) {
+				const candidateLimit = Math.min(24, Math.max(12, targetBlocks.length * 3));
+				const candidateResult = await findIconCandidates(searchQuery, {
+					target: targetMeta.svgTarget,
+					limit: candidateLimit,
+					style: styleIntent,
+					requireStyleMatch: Boolean(styleIntent),
+				});
+
+				if (candidateResult?.noStyleMatch) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `I couldn't find ${styleLabel} icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				if (candidateResult?.hasOnlyPro) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `Found icons for "${searchQuery}" but they are Pro. Upgrade to MaxiBlocks Pro to use them.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				if (!candidateResult?.icons || candidateResult.icons.length === 0) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `I couldn't find icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				if (candidateResult.icons.length <= 1) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `I only found one icon for "${searchQuery}" in the Cloud Library.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				let updatedCount = 0;
+				registry.batch(() => {
+					targetBlocks.forEach((block, index) => {
+						const choice = candidateResult.icons[index % candidateResult.icons.length];
+						const blockHandler = getAiHandlerForBlock(block);
+						if (!blockHandler) return;
+						const prefix = getBlockPrefix(block.name);
+						const result = blockHandler(
+							block,
+							targetMeta.property,
+							{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
+							prefix,
+							{ mode: iconScope }
+						);
+						let changes = null;
+						if (result?.action === 'apply') {
+							changes = result.attributes;
+						} else if (result && !result.action) {
+							changes = result;
+						}
+						if (changes) {
+							updateBlockAttributes(block.clientId, changes);
+							updatedCount += 1;
+						}
+					});
+				});
+
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content:
+							iconScope === 'selection'
+								? `Updated ${updatedCount} icons with "${searchQuery}" variations.`
+								: `Updated ${updatedCount} icons on the page with "${searchQuery}" variations.`,
+						executed: true,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			const fallbackQuery =
+				hasExplicitList && explicitQueries.length > 0 ? explicitQueries[0] : searchQuery;
+			const iconResult = await findBestIcon(fallbackQuery, {
+				target: targetMeta.svgTarget,
+				excludeSvgCodes,
+				preferDifferent: wantsDifferent && excludeSvgCodes.length > 0,
+				style: styleIntent,
+				requireStyleMatch: Boolean(styleIntent),
+			});
+
+			if (iconResult?.noStyleMatch) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `I couldn't find ${styleLabel} icons for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			if (wantsDifferent && (iconResult?.noAlternative || iconResult?.total === 1)) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `I only found one icon for "${fallbackQuery}" in the Cloud Library.`,
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			if (!iconResult || !iconResult.svgCode) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `I couldn't find an icon for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			if (iconResult.isPro) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `Found "${iconResult.title}" but it's a Pro icon. Upgrade to MaxiBlocks Pro to use it.`,
+						executed: false,
+					},
+				]);
+				setIsLoading(false);
+				return;
+			}
+
+			const directIconAction = {
+				action: iconScope === 'selection' ? 'update_selection' : 'update_page',
+				property: targetMeta.property,
+				value: {
+					svgCode: iconResult.svgCode,
+					svgType: iconResult.svgType,
+					title: iconResult.title,
+				},
+				target_block: targetMeta.targetBlock,
+				message:
+					iconScope === 'selection'
+						? `Updated icon to "${iconResult.title}".`
+						: `Updated ${isIconTarget ? 'icon blocks' : 'button icons'} to "${iconResult.title}".`,
 			};
 
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
-		}
-
-		// Image numeric overrides (width/height/ratio)
-		const isImageClarifyContext =
-			lastClarifyContent.includes('image') ||
-			lastClarifyContent.includes('images') ||
-			lastClarifyContent.includes('photo') ||
-			lastClarifyContent.includes('picture');
-		const isImageRequest =
-			lowerMessage.includes('image') ||
-			lowerMessage.includes('photo') ||
-			lowerMessage.includes('picture') ||
-			selectedBlock?.name?.includes('image') ||
-			isImageClarifyContext;
-		if (isImageRequest) {
-			const ratioMatch = lowerMessage.match(/(\d+)\s*[:/]\s*(\d+)/);
-			if (ratioMatch) {
-				const ratioValue = resolveImageRatioValue(ratioMatch[1], ratioMatch[2]);
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` }
-					: { action: 'update_page', property: 'image_ratio', value: ratioValue, target_block: 'image', message: `Aspect ratio set to ${ratioMatch[1]}:${ratioMatch[2]}.` };
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-
-			const widthMatch = lowerMessage.match(/(?:image|img).*(?:width|wide)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i);
-			if (widthMatch) {
-				const value = Number(widthMatch[1]);
-				const unit = widthMatch[2];
-				const prop = unit === '%' ? 'img_width' : 'width';
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: prop, value, target_block: 'image', message: `Image width set to ${value}${unit}.` }
-					: { action: 'update_page', property: prop, value, target_block: 'image', message: `Image width set to ${value}${unit}.` };
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-
-			const heightMatch = lowerMessage.match(/(?:image|img).*(?:height|tall)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i);
-			if (heightMatch) {
-				const value = Number(heightMatch[1]);
-				const unit = heightMatch[2];
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: 'height', value, target_block: 'image', message: `Image height set to ${value}${unit}.` }
-					: { action: 'update_page', property: 'height', value, target_block: 'image', message: `Image height set to ${value}${unit}.` };
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-		}
-
-		// Container sizing overrides (min/max width/height)
-		const resolveSizeTarget = () => {
-			if (lowerMessage.includes('image') || lowerMessage.includes('photo') || lowerMessage.includes('picture')) return 'image';
-			if (lowerMessage.includes('button')) return 'button';
-			if (lowerMessage.includes('container') || lowerMessage.includes('section') || lowerMessage.includes('row') || lowerMessage.includes('column')) return 'container';
-
-			if (selectedBlock?.name) {
-				if (selectedBlock.name.includes('image')) return 'image';
-				if (selectedBlock.name.includes('button')) return 'button';
-				if (selectedBlock.name.includes('container')) return 'container';
-			}
-
-			return 'container';
-		};
-
-		const limitMatch = lowerMessage.match(/\b(max(?:imum)?|min(?:imum)?)\s*[- ]*(width|height)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i);
-		const limitMatchAlt = lowerMessage.match(/\b(width|height)\s*(max(?:imum)?|min(?:imum)?)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i);
-
-		if (limitMatch || limitMatchAlt) {
-			const match = limitMatch || limitMatchAlt;
-			const isAlt = Boolean(limitMatchAlt);
-			const limitTypeRaw = isAlt ? match[2] : match[1];
-			const dimension = isAlt ? match[1] : match[2];
-			const numberValue = Number(match[3]);
-			const unitValue = match[4];
-
-			if (!Number.isNaN(numberValue)) {
-				const limitType = limitTypeRaw.toLowerCase().startsWith('max') ? 'max' : 'min';
-				const prop = `${limitType}_${dimension.toLowerCase()}`;
-				const value = unitValue ? `${numberValue}${unitValue}` : numberValue;
-				const targetBlock = resolveSizeTarget();
-				const labelUnit = unitValue || 'px';
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` }
-					: { action: 'update_page', property: prop, value, target_block: targetBlock, message: `${limitType.toUpperCase()} ${dimension} set to ${numberValue}${labelUnit}.` };
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-		}
-
-		// Rounded corners requests - numeric values should apply directly (no clarify)
-		const radiusMatch = lowerMessage.match(
-			/\b(?:corner|corners|radius|rounded)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|em|rem)?/i
-		);
-		if (radiusMatch) {
-			const numericValue = Number(radiusMatch[1]);
-			if (!Number.isNaN(numericValue)) {
-				setIsLoading(true);
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: 'border_radius', value: numericValue, message: `Applied border radius (${numericValue}px).` }
-					: { action: 'update_page', property: 'border_radius', value: numericValue, message: `Applied border radius (${numericValue}px).` };
-
-				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
-				return;
-			}
-		}
-
-		// Rounded corners requests - detect target from user message (exclude removal commands)
-
-		
-		// ALIGNMENT - "Center align everything" (Text vs Items)
-		if (lowerMessage.includes('align') && lowerMessage.includes('center') && (lowerMessage.includes('everything') || lowerMessage.includes('all'))) {
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'Would you like to align the text or the items?',
-				options: ['Align Text', 'Align Items'],
-				alignmentType: 'center',
-				executed: false
-			}]);
-			return;
-		}
-
-		// ALIGNMENT - "Align everything" (Generic)
-		if (lowerMessage.includes('align') && (lowerMessage.includes('everything') || lowerMessage.includes('all')) && !lowerMessage.includes('left') && !lowerMessage.includes('right') && !lowerMessage.includes('center') && !lowerMessage.includes('bottom') && !lowerMessage.includes('top')) {
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'How would you like to align everything?',
-				options: ['Align Left', 'Align Center', 'Align Right'],
-				executed: false
-			}]);
-			return;
-		}
-
-		const hasRoundIntent = /\bround(?:ed|ing|er)?\b/.test(lowerMessage);
-		// DIRECT ACTION: "Make it square" / "remove rounded corners" / "remove border radius"
-		if (lowerMessage.includes('square') || (lowerMessage.includes('remove') && (hasRoundIntent || lowerMessage.includes('radius')))) {
-			setIsLoading(true);
-			const directAction = currentScope === 'selection' 
-				? { action: 'update_selection', property: 'border_radius', value: 0, message: 'Removed rounded corners from selected block.' }
-				: { action: 'update_page', property: 'border_radius', value: 0, message: 'Removed rounded corners.' };
-			
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
-		}
-		
-			// DIRECT ACTION: "Remove shadow" / "no shadow"
-		if (lowerMessage.includes('remove') && lowerMessage.includes('shadow') || lowerMessage.includes('no shadow')) {
-			setIsLoading(true);
-			const directAction = currentScope === 'selection'
-				? { action: 'update_selection', property: 'box_shadow', value: 'none', message: 'Removed shadow from selected block.' }
-				: { action: 'update_page', property: 'box_shadow', value: 'none', message: 'Removed shadows.' };
-			
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
-		}
-		
-		// DIRECT ACTION: "Remove border"
-		if (lowerMessage.includes('remove') && lowerMessage.includes('border') && !lowerMessage.includes('radius')) {
-			let explicitTarget = null;
-			if (lowerMessage.includes('image')) explicitTarget = 'image';
-			else if (lowerMessage.includes('button')) explicitTarget = 'button';
-			else if (lowerMessage.includes('container') || lowerMessage.includes('section')) explicitTarget = 'container';
-
-			setIsLoading(true);
-			const directAction = currentScope === 'selection'
-				? { action: 'update_selection', property: 'border', value: 'none', target_block: explicitTarget, message: 'Removed border from selected block.' }
-				: { action: 'update_page', property: 'border', value: 'none', target_block: explicitTarget, message: 'Removed borders.' };
-			
-			setTimeout(async () => {
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-				setIsLoading(false);
-			}, 50);
-			return;
-		}
-
-		// HEX COLOUR: apply directly when hex is present (skip palette)
-		if (hexColor) {
-			const isFlowIntent =
-				lowerMessage.includes('border') ||
-				lowerMessage.includes('outline') ||
-				lowerMessage.includes('shadow') ||
-				lowerMessage.includes('glow');
-
-			if (!isFlowIntent) {
-				const colorTarget = getColorTargetFromMessage(lowerMessage, { selectedBlock });
-				const colorUpdate = buildColorUpdate(colorTarget, hexColor, { selectedBlock });
-
-				if (colorUpdate.property) {
-					setIsLoading(true);
-					const directAction = currentScope === 'selection'
-						? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` }
-						: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` };
-
-					setTimeout(async () => {
-						const result = await parseAndExecuteAction(directAction);
-						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-						setIsLoading(false);
-					}, 50);
-					return;
-				}
-			}
-		}
-
-		const hasShapeDividerIntent = /\bshape\s*-?\s*divider\b/.test(lowerMessage);
-		const hasShapeDividerStyle = /\b(wave|waves|curve|slant|triangle)\b/.test(lowerMessage);
-		if (hasShapeDividerIntent && !hasShapeDividerStyle) {
-			const wantsTop = /\btop\b/.test(lowerMessage);
-			const wantsBottom = /\bbottom\b/.test(lowerMessage);
-
-			if (!wantsTop && !wantsBottom) {
-				setMessages(prev => [...prev, {
-					role: 'assistant',
-					content: 'Where do you want the shape divider?',
-					options: ['Top', 'Bottom', 'Both'],
-					shapeDividerLocation: true,
-					executed: false
-				}]);
-				setIsLoading(false);
-				return;
-			}
-
-			const location = wantsTop && wantsBottom ? 'both' : (wantsTop ? 'top' : 'bottom');
-			setMessages(prev => [...prev, {
-				role: 'assistant',
-				content: 'Which shape style should the divider use?',
-				options: ['Wave', 'Curve', 'Slant', 'Triangle'],
-				shapeDividerTarget: location,
-				executed: false
-			}]);
+			const iconActionResult = await parseAndExecuteAction(directIconAction);
+			setMessages(prev => [
+				...prev,
+				{ role: 'assistant', content: iconActionResult.message, executed: iconActionResult.executed },
+			]);
 			setIsLoading(false);
-			return;
-		}
-
-
-
-		const resolveCloudIconTarget = () => {
-			const selectedName = selectedBlock?.name || '';
-			if (selectedName.includes('button')) {
-				return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
-			}
-			if (selectedName.includes('icon-maxi') || selectedName.includes('svg-icon')) {
-				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
-			}
-
-			const wantsButton = /\bbutton\b/.test(lowerMessage);
-			const wantsIconBlock = /\b(icon block|svg icon|svg-icon|icon maxi)\b/.test(lowerMessage);
-			const mentionsIcons = /\bicons?\b/.test(lowerMessage);
-
-			if (wantsButton) {
-				return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
-			}
-			if (wantsIconBlock) {
-				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
-			}
-			if (mentionsIcons) {
-				return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
-			}
-
-			return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
 		};
 
-		const resolveSelectionLayoutTarget = () => {
-			if (!selectedBlock) return null;
+		// ── Pattern / create-block async handler ─────────────────────────────────
+		const handleCreateBlock = async ({ rawMessage: patternMsg, targetClientId }) => {
+			try {
+				const searchQuery = extractPatternQuery(patternMsg);
+				console.log('[Maxi AI] Searching Cloud Library for:', searchQuery);
 
-			const hasChild = (block, name) =>
-				block?.innerBlocks?.some(child => child.name.includes(name));
+				const patternResult = await findBestPattern(searchQuery);
 
-			if (selectedBlock.name.includes('row')) return 'row';
-			if (selectedBlock.name.includes('column')) return 'column';
-			if (selectedBlock.name.includes('group')) return 'group';
-			if (selectedBlock.name.includes('container')) {
-				if (hasChild(selectedBlock, 'row')) return 'row';
-				if (hasChild(selectedBlock, 'column')) return 'column';
-				if (hasChild(selectedBlock, 'group')) return 'group';
-				return 'container';
-			}
-
-			const { getBlockParents, getBlock } = select('core/block-editor');
-			const parentIds = getBlockParents(selectedBlock.clientId) || [];
-			const parentBlocks = parentIds.map(parentId => getBlock(parentId)).filter(Boolean);
-			const layoutParent = parentBlocks.find(parent =>
-				parent.name.includes('column') ||
-				parent.name.includes('row') ||
-				parent.name.includes('group') ||
-				parent.name.includes('container')
-			);
-
-			if (!layoutParent) return null;
-			if (layoutParent.name.includes('column')) return 'column';
-			if (layoutParent.name.includes('row')) return 'row';
-			if (layoutParent.name.includes('group')) return 'group';
-			if (layoutParent.name.includes('container')) return 'container';
-			return null;
-		};
-
-		// ============================================================
-		// LAYOUT INTENT INTERCEPTION (Lookup Table Pattern Matching)
-		// ============================================================
-		// Uses LAYOUT_PATTERNS constant for zero-latency, maintainable pattern matching
-		const requestedTarget = getRequestedTargetFromMessage(lowerMessage, {
-			selectedBlockName: selectedBlock?.name,
-			hasShapeDividerIntent,
-		});
-		const skipLayoutPatterns =
-			requestedTarget === 'border' || isInteractionBuilderMessage(lowerMessage);
-
-		if (!skipLayoutPatterns) for (const pattern of LAYOUT_PATTERNS) {
-			if (isGlobalScope) {
-				break;
-			}
-			if (requestedTarget === 'image' && !pattern.target) {
-				if (pattern.property === 'hover_effect' || pattern.property.startsWith('hover_')) {
-					continue;
-				}
-			}
-			if (lowerMessage.match(pattern.regex)) {
-				if (hasShapeDividerIntent && pattern.target === 'divider') {
-					continue;
-				}
-				if (
-					requestedTarget &&
-					isTargetedPatternTarget(pattern.target) &&
-					pattern.target !== requestedTarget
-				) {
-					continue;
-				}
-
-				setIsLoading(true);
-
-				// === FSM FLOW TRIGGER ===
-				if (pattern.property.startsWith('flow_')) {
-					
-					// 1. Resolve Blocks based on Scope
-					let targetBlocks = [];
-					let flowScope = currentScope;
-					if (/all|page|everywhere/i.test(lowerMessage)) flowScope = 'page';
-					
-					const matchName = pattern.target || requestedTarget || 'container';
-					const selectionRoot = selectedBlock
-						? findBlockByClientId(allBlocks, selectedBlock.clientId) || selectedBlock
-						: null;
-					const isTextTarget = matchName === 'text';
-					const wantsHeading = /\b(heading|headline|title|subheading|h[1-6])\b/.test(lowerMessage);
-					const wantsParagraph = /\b(paragraph|body\s*text|body)\b/.test(lowerMessage);
-					const getTextLevel = block =>
-						String(block?.attributes?.textLevel || '').toLowerCase();
-					const collectTextBlocks = blocks => {
-						const textBlocks = collectBlocks(blocks, block =>
-							block?.name &&
-							(block.name.includes('text') || block.name.includes('heading'))
-						);
-						if (!textBlocks.length) return textBlocks;
-
-						if (wantsHeading) {
-							const headingBlocks = textBlocks.filter(block => {
-								if (block?.name?.includes('heading')) return true;
-								const level = getTextLevel(block);
-								return /^h[1-6]$/.test(level);
-							});
-							if (headingBlocks.length) return headingBlocks;
-						}
-
-						if (wantsParagraph) {
-							const paragraphBlocks = textBlocks.filter(block => getTextLevel(block) === 'p');
-							if (paragraphBlocks.length) return paragraphBlocks;
-						}
-
-						return textBlocks;
-					};
-					
-					if (flowScope === 'selection') {
-						if (!selectedBlock) {
-							setMessages(prev => [...prev, { 
-								role: 'assistant', 
-								content: "Please select a block first.", 
-								executed: false 
-							}]);
-							setIsLoading(false);
-							return;
-						}
-						if (isTextTarget) {
-							const textBlocks = selectionRoot ? collectTextBlocks([selectionRoot]) : [];
-							if (!textBlocks.length) {
-								setMessages(prev => [...prev, {
-									role: 'assistant',
-									content: "Please select a text or heading block.",
-									executed: false
-								}]);
-								setIsLoading(false);
-								return;
-							}
-							targetBlocks = textBlocks;
-						} else {
-							if (matchName && selectedBlock?.name && !selectedBlock.name.includes(matchName)) {
-								setIsLoading(false);
-								continue;
-							}
-							targetBlocks = [selectionRoot || selectedBlock];
-						}
-					} else {
-						// Page Scope: Find ALL matching blocks
-						targetBlocks = isTextTarget
-							? collectTextBlocks(allBlocks)
-							: collectBlocks(allBlocks, b => b.name.includes(matchName));
-						
-						if (targetBlocks.length === 0) {
-							setMessages(prev => [...prev, { 
-								role: 'assistant', 
-								content: isTextTarget
-									? "No text blocks found on this page."
-									: `No ${matchName}s found on this page.`,
-								executed: false 
-							}]);
-							setIsLoading(false);
-							return;
-						}
-					}
-
-					// 2. Start Flow (using first block to generate initial question)
-					// We assume all blocks of same type respond to flow same way.
-					const primaryBlock = targetBlocks[0];
-					const prefix = getBlockPrefix(primaryBlock.name);
-					const flowHandler = getAiHandlerForBlock(primaryBlock) || getAiHandlerForTarget(matchName);
-					const flowData = {};
-					const inferTextAlignment = message => {
-						if (/\bjustif(y|ied)\b/.test(message)) return 'justify';
-						if (/\b(center|centre|centered|centred)\b/.test(message)) return 'center';
-						if (/\bright\b/.test(message)) return 'right';
-						if (/\bleft\b/.test(message)) return 'left';
-						return null;
-					};
-
-					if (hexColor) {
-						if (pattern.property === 'flow_outline' || pattern.property === 'flow_border') {
-							flowData.border_color = hexColor;
-						}
-						if (pattern.property === 'flow_shadow') {
-							flowData.shadow_color = hexColor;
-						}
-					}
-					if (pattern.property === 'flow_text_align') {
-						const inferredAlignment = inferTextAlignment(lowerMessage);
-						if (inferredAlignment) {
-							flowData.text_align = inferredAlignment;
-						}
-					}
-
-					if (pattern.property === 'flow_icon_line_width') {
-						const widthMatch = lowerMessage.match(
-							/\b(?:stroke|line)\s*(?:width|thickness|weight)\b[^0-9]*([0-9]+(?:\.[0-9]+)?)/
-						);
-						if (widthMatch) {
-							const widthValue = Number(widthMatch[1]);
-							if (Number.isFinite(widthValue)) {
-								flowData.icon_line_width = widthValue;
-							}
-						}
-					}
-
-					const startResponse = flowHandler
-						? flowHandler(primaryBlock, pattern.property, 'start', prefix, flowData)
-						: null;
-
-					if (!startResponse) {
-						setIsLoading(false);
-						continue;
-					}
-
-					if (startResponse.action === 'apply') {
-						let didApply = false;
-						registry.batch(() => {
-							targetBlocks.forEach(blk => {
-								const p = getBlockPrefix(blk.name);
-								const handler = getAiHandlerForBlock(blk) || getAiHandlerForTarget(matchName);
-								const res = handler
-									? handler(blk, pattern.property, null, p, flowData)
-									: null;
-								if (res && res.action === 'apply' && res.attributes) {
-									updateBlockAttributes(blk.clientId, res.attributes);
-									didApply = true;
-								}
-							});
-						});
-
-						if (flowScope === 'selection') {
-							openSidebarForProperty(pattern.property);
-						}
-
-						const fallbackMsg = flowScope === 'selection' ? pattern.selectionMsg : pattern.pageMsg;
-						const finalMsg = startResponse.message || fallbackMsg || 'Done.';
-						setMessages(prev => [...prev, {
+				if (!patternResult) {
+					setMessages(prev => [
+						...prev,
+						{
 							role: 'assistant',
-							content: finalMsg,
-							executed: didApply
-						}]);
-						setIsLoading(false);
-						return;
-					}
+							content: `I couldn't find a pattern for "${searchQuery}" in the Cloud Library. Try browsing the Cloud Library manually or use different keywords.`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
 
-					// Setup Context with ALL block IDs
-					setConversationContext({
-						flow: pattern.property,
-						pendingTarget: startResponse.target || null,
-						data: flowData,
-						mode: flowScope,
-						currentOptions: startResponse.options || [],
-						blockIds: targetBlocks.map(b => b.clientId) // Track all targets
-					});
-					if (flowScope === 'selection') {
-						openSidebarForProperty(pattern.property);
-					}
-					
-					// Show Trigger Message
-					setMessages(prev => [...prev, {
+				if (patternResult.isPro) {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `Found "${patternResult.title}" but it's a Pro pattern. Upgrade to MaxiBlocks Pro to use it!`,
+							executed: false,
+						},
+					]);
+					setIsLoading(false);
+					return;
+				}
+
+				if (targetClientId && patternResult.gutenbergCode) {
+					await onRequestInsertPattern(
+						patternResult.gutenbergCode,
+						false,
+						true,
+						targetClientId
+					);
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: ` Created "${patternResult.title}"! The pattern has been inserted.`,
+							executed: true,
+						},
+					]);
+				} else {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `Found "${patternResult.title}" but please select a block first to replace with this pattern.`,
+							executed: false,
+						},
+					]);
+				}
+			} catch (error) {
+				console.error('[Maxi AI] Pattern insert error:', error);
+				setMessages(prev => [
+					...prev,
+					{
 						role: 'assistant',
-						content: startResponse.msg,
-						options: startResponse.options ? startResponse.options.map(o => o.label || o) : (startResponse.action === 'ask_palette' ? ['palette'] : []),
-						optionsType: startResponse.action === 'ask_palette' ? 'palette' : 'text',
-						colorTarget: startResponse.target, 
-						executed: false
-					}]);
-					
-					setIsLoading(false);
-					return;
+						content: 'Sorry, there was an error creating the pattern. Please try again.',
+						executed: false,
+					},
+				]);
+			}
+			setIsLoading(false);
+		};
+
+		// ── Route the message via the client-side router ──────────────────────────
+		const routingCtx = buildRoutingContext(rawMessage, {
+			currentScope,
+			selectedBlock,
+			messagesRef,
+			allBlocks,
+		});
+
+		const routeResult = await routeClientSide(rawMessage, routingCtx, select);
+
+		switch (routeResult.type) {
+			case 'action':
+				queueDirectAction(routeResult.payload);
+				return;
+
+			case 'clarify':
+				setMessages(prev => [...prev, routeResult.message]);
+				setIsLoading(false);
+				return;
+
+			case 'flow':
+				if (routeResult.sidebarProperty) {
+					openSidebarForProperty(routeResult.sidebarProperty);
 				}
-				
-				// SPECIAL: Aesthetic patterns use apply_theme for global style changes
-				if (pattern.property === 'aesthetic') {
-					const directAction = {
-						action: 'apply_theme',
-						prompt: `Apply ${pattern.value} style: ${lowerMessage}`,
-						message: pattern.pageMsg
-					};
-					setTimeout(async () => {
-						const result = await parseAndExecuteAction(directAction);
-						setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-						setIsLoading(false);
-					}, 50);
-					return;
+				setConversationContext(routeResult.flowContext);
+				setMessages(prev => [...prev, routeResult.message]);
+				setIsLoading(false);
+				return;
+
+			case 'immediate_updates':
+				registry.batch(() => {
+					routeResult.updates.forEach(({ clientId, attributes }) => {
+						updateBlockAttributes(clientId, attributes);
+					});
+				});
+				if (routeResult.sidebarProperty) {
+					openSidebarForProperty(routeResult.sidebarProperty);
 				}
-
-				// SPECIAL: Cloud icon search - search Cloud Library and apply icon
-				if (pattern.property === 'cloud_icon') {
-					const isIconColorIntent =
-						/\b(colou?r|fill|stroke)\b/.test(lowerMessage) ||
-						/\bline\s*width\b/.test(lowerMessage);
-					const selectedName = selectedBlock?.name || '';
-					const hasIconKeyword = /\bicons?\b/.test(lowerMessage);
-					const hasCloudKeyword = /\b(cloud|library)\b/.test(lowerMessage);
-					const hasThemeIntent = /\b(?:theme|style|vibe|look)\b/.test(lowerMessage);
-					const hasPronounIntent = /\b(this|these|those|them)\b/.test(lowerMessage);
-					const hasChangeIntent = /\b(change|swap|replace|use|set|add|insert|make|give|update)\b/.test(lowerMessage);
-					const matchTitlesIntent =
-						/\b(match|use|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(below|under|beneath|underneath|following|next)\b/.test(lowerMessage);
-					const matchTitlesToIconsIntent =
-						/\b(match|sync|update|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\bicons?\b/.test(lowerMessage) ||
-						/\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(match|sync|update|set|make|change)\b[^.]*\bicons?\b/.test(lowerMessage);
-					const mentionsOtherTargets = /\b(text|heading|paragraph|container|section|background|layout|spacing|padding|margin|row|column|group|divider|image|video|button)\b/.test(lowerMessage);
-
-					if (isIconColorIntent) {
-						setIsLoading(false);
-						continue;
-					}
-
-					const selectionRoot = currentScope === 'selection' && selectedBlock
-						? findBlockByClientId(allBlocks, selectedBlock.clientId) || selectedBlock
-						: null;
-					const scopeBlocks = currentScope === 'selection' && selectionRoot
-						? [selectionRoot]
-						: allBlocks;
-					const iconBlocksInScope = collectBlocks(scopeBlocks, block =>
-						block.name.includes('icon-maxi') || block.name.includes('svg-icon'));
-					const buttonBlocksInScope = collectBlocks(scopeBlocks, block =>
-						block.name.includes('button'));
-					const hasIconBlocksInScope = iconBlocksInScope.length > 0;
-					const hasIconSelection =
-						selectedName.includes('button') ||
-						selectedName.includes('icon-maxi') ||
-						selectedName.includes('svg-icon');
-					const shouldTreatAsIconTheme =
-						hasIconBlocksInScope &&
-						hasThemeIntent &&
-						(hasPronounIntent || hasChangeIntent) &&
-						!mentionsOtherTargets;
-
-					if (!hasIconKeyword && !hasCloudKeyword && !hasIconSelection && !shouldTreatAsIconTheme && !matchTitlesIntent && !matchTitlesToIconsIntent) {
-						setIsLoading(false);
-						continue;
-					}
-
-					const wantsMultipleIcons =
-						/\ball\b.*\bicons?\b|\bicons\b/.test(lowerMessage) ||
-						(shouldTreatAsIconTheme && iconBlocksInScope.length > 1);
-
-					const cloudStatusMessage = matchTitlesToIconsIntent
-						? 'Matching text to icons...'
-						: 'Searching Cloud Library for icons...';
-					setMessages(prev => [...prev, { role: 'assistant', content: cloudStatusMessage }]);
-
-					setTimeout(async () => {
-						try {
-							const formatList = items =>
-								items.length > 3
-									? `${items.slice(0, 3).join(', ')} and ${items.length - 3} more`
-									: items.join(', ');
-
-							const styleIntent = extractIconStyleIntent(rawMessage);
-							const styleLabel = styleIntent
-								? styleIntent === 'line'
-									? 'line'
-									: styleIntent === 'shape'
-									? 'shape'
-									: 'filled'
-								: '';
-							const messageForQuery = styleIntent
-								? stripIconStylePhrases(rawMessage)
-								: rawMessage;
-
-							const explicitQueries = extractIconQueries(messageForQuery);
-							const hasExplicitList = explicitQueries.length > 1;
-							const searchQuery = extractIconQuery(messageForQuery);
-
-							if (matchTitlesToIconsIntent) {
-								if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: currentScope === 'selection'
-												? 'No icon blocks found in the selection.'
-												: 'No icon blocks found on this page.',
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								const updates = [];
-								const missingIconLabels = [];
-								const missingTextTargets = [];
-								const processedTextBlocks = new Set();
-
-								iconBlocksInScope.forEach((iconBlock, index) => {
-									const iconLabel = getIconLabelFromBlock(iconBlock);
-									if (!iconLabel) {
-										missingIconLabels.push(`icon ${index + 1}`);
-										return;
-									}
-
-									const groupRoot = findGroupRootForIconBlock(iconBlock);
-									const groupTextBlocks = groupRoot
-										? collectBlocks(groupRoot.innerBlocks || [], block =>
-												isLabelBlock(block?.name)
-											)
-										: [];
-
-									if (groupTextBlocks.length === 0) {
-										missingTextTargets.push(iconLabel);
-										return;
-									}
-
-									let bodyIndex = 0;
-									groupTextBlocks.forEach(textBlock => {
-										if (processedTextBlocks.has(textBlock.clientId)) {
-											return;
-										}
-										const nextText = buildIconRelatedText(
-											iconLabel,
-											textBlock,
-											bodyIndex
-										);
-										const changes = buildTextContentChange(textBlock, nextText);
-										if (changes) {
-											updates.push({ block: textBlock, changes });
-											processedTextBlocks.add(textBlock.clientId);
-										}
-										if (!isHeadingTextBlock(textBlock)) {
-											bodyIndex += 1;
-										}
-									});
-								});
-
-								if (updates.length === 0) {
-									let message = 'I could not match titles to the icons.';
-									if (missingIconLabels.length) {
-										message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
-									}
-									if (missingTextTargets.length) {
-										message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
-									}
-									setMessages(prev => [
-										...prev,
-										{ role: 'assistant', content: message, executed: false },
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								registry.batch(() => {
-									updates.forEach(({ block, changes }) => {
-										updateBlockAttributes(block.clientId, changes);
-									});
-								});
-
-								let message = currentScope === 'selection'
-									? `Updated ${updates.length} text blocks to match the icons.`
-									: `Updated ${updates.length} text blocks on the page to match the icons.`;
-								if (missingIconLabels.length) {
-									message += ` Missing icon labels for ${formatList(missingIconLabels)}.`;
-								}
-								if (missingTextTargets.length) {
-									message += ` Missing text blocks for: ${formatList(missingTextTargets)}.`;
-								}
-
-								setMessages(prev => [
-									...prev,
-									{ role: 'assistant', content: message, executed: true },
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							if (matchTitlesIntent) {
-								if (!hasIconBlocksInScope || iconBlocksInScope.length === 0) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: currentScope === 'selection'
-												? 'No icon blocks found in the selection.'
-												: 'No icon blocks found on this page.',
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								const labeledBlocks = [];
-								const missingLabels = [];
-								iconBlocksInScope.forEach((block, index) => {
-									const label = findLabelForIconBlock(block);
-									if (label) {
-										labeledBlocks.push({ block, label });
-									} else {
-										missingLabels.push(`icon ${index + 1}`);
-									}
-								});
-
-								if (labeledBlocks.length === 0) {
-									let message = 'I could not find any text labels below the icons. Make sure each icon has a text or heading block beneath it.';
-									if (missingLabels.length) {
-										message += ` Missing labels for ${formatList(missingLabels)}.`;
-									}
-									setMessages(prev => [
-										...prev,
-										{ role: 'assistant', content: message, executed: false },
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								const results = await Promise.all(
-									labeledBlocks.map(item =>
-										findBestIcon(item.label, {
-											target: 'svg',
-											requireStrongMatch: true,
-											style: styleIntent,
-											requireStyleMatch: Boolean(styleIntent),
-										})
-									)
-								);
-
-								const updates = [];
-								const missingMatches = [];
-								const proOnly = [];
-								const missingStyles = [];
-
-								results.forEach((result, index) => {
-									const { block, label } = labeledBlocks[index];
-									if (!result || !result.svgCode || result.noStrongMatch) {
-										missingMatches.push(label);
-										return;
-									}
-									if (result.noStyleMatch) {
-										missingStyles.push(label);
-										return;
-									}
-									if (result.isPro) {
-										proOnly.push(label);
-										return;
-									}
-									updates.push({ block, result, label });
-								});
-
-								if (updates.length === 0) {
-									let message = 'I could not find matching icons for the titles below in the Cloud Library.';
-									if (missingLabels.length) {
-										message += ` Missing labels for ${formatList(missingLabels)}.`;
-									}
-									if (missingMatches.length) {
-										message += ` No matches for: ${formatList(missingMatches)}.`;
-									}
-									if (missingStyles.length) {
-										message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
-									}
-									if (proOnly.length) {
-										message += ` Pro only: ${formatList(proOnly)}.`;
-									}
-									setMessages(prev => [
-										...prev,
-										{ role: 'assistant', content: message, executed: false },
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								let updatedCount = 0;
-								registry.batch(() => {
-									updates.forEach(({ block, result, label }) => {
-										const blockHandler = getAiHandlerForBlock(block);
-										if (!blockHandler) return;
-										const prefix = getBlockPrefix(block.name);
-										const handlerResult = blockHandler(
-											block,
-											'icon_svg',
-											{
-												svgCode: result.svgCode,
-												svgType: result.svgType,
-												title: result.title || label,
-											},
-											prefix,
-											{ mode: currentScope }
-										);
-										let changes = null;
-										if (handlerResult?.action === 'apply') {
-											changes = handlerResult.attributes;
-										} else if (handlerResult && !handlerResult.action) {
-											changes = handlerResult;
-										}
-										if (changes) {
-											updateBlockAttributes(block.clientId, changes);
-											updatedCount += 1;
-										}
-									});
-								});
-
-								let message = currentScope === 'selection'
-									? `Updated ${updatedCount} icons to match the titles below.`
-									: `Updated ${updatedCount} icons on the page to match the titles below.`;
-								if (missingLabels.length) {
-									message += ` Missing labels for ${formatList(missingLabels)}.`;
-								}
-								if (missingMatches.length) {
-									message += ` No matches for: ${formatList(missingMatches)}.`;
-								}
-								if (missingStyles.length) {
-									message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
-								}
-								if (proOnly.length) {
-									message += ` Pro only: ${formatList(proOnly)}.`;
-								}
-
-								setMessages(prev => [
-									...prev,
-									{ role: 'assistant', content: message, executed: true },
-								]);
-								setIsLoading(false);
-								return;
-							}
-							if (!searchQuery && !hasExplicitList) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: 'Which icon should I search for in the Cloud Library?',
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							const wantsDifferent = /\b(different|another|alternative|new|other)\b/.test(lowerMessage);
-							let targetMeta = resolveCloudIconTarget();
-
-							if (shouldTreatAsIconTheme && hasIconBlocksInScope && !selectedName.includes('button')) {
-								targetMeta = { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
-							}
-
-							const isButtonTarget = targetMeta.targetBlock === 'button';
-							const isIconTarget = targetMeta.targetBlock === 'icon';
-							const currentSvg = isButtonTarget
-								? selectedBlock?.attributes?.['icon-content']
-								: selectedBlock?.attributes?.content;
-							const excludeSvgCodes =
-								wantsDifferent && currentSvg ? [currentSvg] : [];
-
-							const isMultiIconRequest = wantsMultipleIcons || hasExplicitList;
-							const targetBlocks = isMultiIconRequest
-								? (isButtonTarget ? buttonBlocksInScope : iconBlocksInScope)
-								: [];
-
-							if (currentScope === 'selection' && !isMultiIconRequest) {
-								const mismatch = (isButtonTarget && !selectedName.includes('button')) ||
-									(isIconTarget && !selectedName.includes('icon'));
-								if (mismatch) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: isButtonTarget
-												? 'Please select a button block to change its icon.'
-												: 'Please select an Icon block to change its icon.',
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-							}
-
-							if (isMultiIconRequest && targetBlocks.length === 0) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: currentScope === 'selection'
-											? 'No icon blocks found in the selection.'
-											: 'No icon blocks found on this page.',
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							console.log('[Maxi AI] Searching Cloud Library icons for:', searchQuery);
-
-							if (hasExplicitList && isMultiIconRequest && targetBlocks.length > 1) {
-								const maxQueries = Math.min(12, explicitQueries.length);
-								const queryList = explicitQueries.slice(0, maxQueries);
-								const results = await Promise.all(
-									queryList.map(query =>
-										findBestIcon(query, {
-											target: targetMeta.svgTarget,
-											requireStrongMatch: true,
-											style: styleIntent,
-											requireStyleMatch: Boolean(styleIntent),
-										})
-									)
-								);
-
-								const usable = [];
-								const missing = [];
-								const proOnly = [];
-								const missingStyles = [];
-
-								results.forEach((result, index) => {
-									const query = queryList[index];
-									if (!result || !result.svgCode) {
-										missing.push(query);
-										return;
-									}
-									if (result.noStrongMatch) {
-										missing.push(query);
-										return;
-									}
-									if (result.noStyleMatch) {
-										missingStyles.push(query);
-										return;
-									}
-									if (result.isPro) {
-										proOnly.push(query);
-										return;
-									}
-									usable.push({
-										title: result.title,
-										svgCode: result.svgCode,
-										svgType: result.svgType,
-									});
-								});
-
-								const normalizeSvgCode = value =>
-									String(value || '').replace(/\s+/g, ' ').trim();
-								const uniqueUsable = [];
-								const seenSvg = new Set();
-								for (const item of usable) {
-									const key = normalizeSvgCode(item.svgCode);
-									if (!key || seenSvg.has(key)) {
-										continue;
-									}
-									seenSvg.add(key);
-									uniqueUsable.push(item);
-								}
-
-								if (uniqueUsable.length < 2) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: `I could only find one matching icon for that list. Try different keywords.`,
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								let updatedCount = 0;
-								registry.batch(() => {
-									targetBlocks.forEach((block, index) => {
-										const choice = uniqueUsable[index % uniqueUsable.length];
-										const blockHandler = getAiHandlerForBlock(block);
-										if (!blockHandler) return;
-										const prefix = getBlockPrefix(block.name);
-										const result = blockHandler(
-											block,
-											targetMeta.property,
-											{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
-											prefix,
-											{ mode: currentScope }
-										);
-										let changes = null;
-										if (result?.action === 'apply') {
-											changes = result.attributes;
-										} else if (result && !result.action) {
-											changes = result;
-										}
-										if (changes) {
-											updateBlockAttributes(block.clientId, changes);
-											updatedCount += 1;
-										}
-									});
-								});
-
-								let message = currentScope === 'selection'
-									? `Updated ${updatedCount} icons using the requested list.`
-									: `Updated ${updatedCount} icons on the page using the requested list.`;
-								if (missing.length) {
-									message += ` Missing: ${formatList(missing)}.`;
-								}
-								if (missingStyles.length) {
-									message += ` No ${styleLabel} icons for: ${formatList(missingStyles)}.`;
-								}
-								if (proOnly.length) {
-									message += ` Pro only: ${formatList(proOnly)}.`;
-								}
-
-								setMessages(prev => [
-									...prev,
-									{ role: 'assistant', content: message, executed: true },
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							if (isMultiIconRequest && targetBlocks.length > 1) {
-								const candidateLimit = Math.min(
-									24,
-									Math.max(12, targetBlocks.length * 3)
-								);
-								const candidateResult = await findIconCandidates(searchQuery, {
-									target: targetMeta.svgTarget,
-									limit: candidateLimit,
-									style: styleIntent,
-									requireStyleMatch: Boolean(styleIntent),
-								});
-
-								if (candidateResult?.noStyleMatch) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: `I couldn't find ${styleLabel} icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								if (candidateResult?.hasOnlyPro) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: `Found icons for "${searchQuery}" but they are Pro. Upgrade to MaxiBlocks Pro to use them.`,
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								if (!candidateResult?.icons || candidateResult.icons.length === 0) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: `I couldn't find icons for "${searchQuery}" in the Cloud Library. Try a different keyword.`,
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								if (candidateResult.icons.length <= 1) {
-									setMessages(prev => [
-										...prev,
-										{
-											role: 'assistant',
-											content: `I only found one icon for "${searchQuery}" in the Cloud Library.`,
-											executed: false,
-										},
-									]);
-									setIsLoading(false);
-									return;
-								}
-
-								let updatedCount = 0;
-								registry.batch(() => {
-									targetBlocks.forEach((block, index) => {
-										const choice = candidateResult.icons[index % candidateResult.icons.length];
-										const blockHandler = getAiHandlerForBlock(block);
-										if (!blockHandler) return;
-										const prefix = getBlockPrefix(block.name);
-										const result = blockHandler(
-											block,
-											targetMeta.property,
-											{ svgCode: choice.svgCode, svgType: choice.svgType, title: choice.title },
-											prefix,
-											{ mode: currentScope }
-										);
-										let changes = null;
-										if (result?.action === 'apply') {
-											changes = result.attributes;
-										} else if (result && !result.action) {
-											changes = result;
-										}
-										if (changes) {
-											updateBlockAttributes(block.clientId, changes);
-											updatedCount += 1;
-										}
-									});
-								});
-
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: currentScope === 'selection'
-											? `Updated ${updatedCount} icons with "${searchQuery}" variations.`
-											: `Updated ${updatedCount} icons on the page with "${searchQuery}" variations.`,
-										executed: true,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							const fallbackQuery =
-								hasExplicitList && explicitQueries.length > 0
-									? explicitQueries[0]
-									: searchQuery;
-							const iconResult = await findBestIcon(fallbackQuery, {
-								target: targetMeta.svgTarget,
-								excludeSvgCodes,
-								preferDifferent: wantsDifferent && excludeSvgCodes.length > 0,
-								style: styleIntent,
-								requireStyleMatch: Boolean(styleIntent),
-							});
-
-							if (iconResult?.noStyleMatch) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: `I couldn't find ${styleLabel} icons for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							if (wantsDifferent && (iconResult?.noAlternative || iconResult?.total === 1)) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: `I only found one icon for "${fallbackQuery}" in the Cloud Library.`,
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							if (!iconResult || !iconResult.svgCode) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: `I couldn't find an icon for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`,
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							if (iconResult.isPro) {
-								setMessages(prev => [
-									...prev,
-									{
-										role: 'assistant',
-										content: `Found "${iconResult.title}" but it's a Pro icon. Upgrade to MaxiBlocks Pro to use it.`,
-										executed: false,
-									},
-								]);
-								setIsLoading(false);
-								return;
-							}
-
-							const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
-							const targetLabel = isIconTarget ? 'icon blocks' : 'button icons';
-							const directAction = {
-								action: actionType,
-								property: targetMeta.property,
-								value: {
-									svgCode: iconResult.svgCode,
-									svgType: iconResult.svgType,
-									title: iconResult.title,
-								},
-								target_block: targetMeta.targetBlock,
-								message: actionType === 'selection'
-									? `Updated icon to "${iconResult.title}".`
-									: `Updated ${targetLabel} to "${iconResult.title}".`,
-							};
-
-							const result = await parseAndExecuteAction(directAction);
-							setMessages(prev => [
-								...prev,
-								{ role: 'assistant', content: result.message, executed: result.executed },
-							]);
-						} catch (error) {
-							console.error('[Maxi AI] Cloud icon error:', error);
-							setMessages(prev => [
-								...prev,
-								{
-									role: 'assistant',
-									content: 'Sorry, there was an error searching the Cloud Library for icons.',
-									executed: false,
-								},
-							]);
-						}
-						setIsLoading(false);
-					}, 100);
-					return;
-				}
-				
-				// SPECIAL: Create block patterns - search Cloud Library and insert
-				if (pattern.property === 'create_block') {
-					setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
-					
-					setTimeout(async () => {
-						try {
-							const searchQuery = extractPatternQuery(userMessage);
-							console.log('[Maxi AI] Searching Cloud Library for:', searchQuery);
-							
-							const patternResult = await findBestPattern(searchQuery);
-							
-							if (!patternResult) {
-								setMessages(prev => [...prev, { 
-									role: 'assistant', 
-									content: `I couldn't find a pattern for "${searchQuery}" in the Cloud Library. Try browsing the Cloud Library manually or use different keywords.`,
-									executed: false 
-								}]);
-								setIsLoading(false);
-								return;
-							}
-							
-							if (patternResult.isPro) {
-								setMessages(prev => [...prev, { 
-									role: 'assistant', 
-									content: `Found "${patternResult.title}" but it's a Pro pattern. Upgrade to MaxiBlocks Pro to use it!`,
-									executed: false 
-								}]);
-								setIsLoading(false);
-								return;
-							}
-							
-							// Insert the pattern - clientId of selected block or null for append
-							const targetClientId = selectedBlock?.clientId || null;
-							
-							if (targetClientId && patternResult.gutenbergCode) {
-								await onRequestInsertPattern(
-									patternResult.gutenbergCode,
-									false,  // usePlaceholderImage
-									true,   // useSCStyles
-									targetClientId
-								);
-								
-								setMessages(prev => [...prev, { 
-									role: 'assistant', 
-									content: ` Created "${patternResult.title}"! The pattern has been inserted.`,
-									executed: true 
-								}]);
-							} else {
-								setMessages(prev => [...prev, { 
-									role: 'assistant', 
-									content: `Found "${patternResult.title}" but please select a block first to replace with this pattern.`,
-									executed: false 
-								}]);
-							}
-						} catch (error) {
-							console.error('[Maxi AI] Pattern insert error:', error);
-							setMessages(prev => [...prev, { 
-								role: 'assistant', 
-								content: 'Sorry, there was an error creating the pattern. Please try again.',
-								executed: false 
-							}]);
-						}
-						setIsLoading(false);
-					}, 100);
-					return;
-				}
-				
-				// SPECIAL: Colour clarification - show 8-colour palette picker
-				if (pattern.property === 'color_clarify') {
-					// Prioity 1: Use specific target from pattern (e.g. 'button-background')
-					// Priority 2: Heuristic detection from message
-					const colorTarget = pattern.colorTarget || getColorTargetFromMessage(lowerMessage, { selectedBlock });
-
-					if (hexColor) {
-						const colorUpdate = buildColorUpdate(colorTarget, hexColor, { selectedBlock });
-						const directAction = currentScope === 'selection'
-							? { action: 'update_selection', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` }
-							: { action: 'update_page', property: colorUpdate.property, value: colorUpdate.value, target_block: colorUpdate.targetBlock, message: `Applied custom colour to ${colorUpdate.msgText}.` };
-
-						setTimeout(async () => {
-							const result = await parseAndExecuteAction(directAction);
-							setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-							setIsLoading(false);
-						}, 50);
-						return;
-					}
-					
-					setMessages(prev => [...prev, { 
-						role: 'assistant', 
-						content: `Choose a colour for the ${getColorTargetLabel(colorTarget)}:`,
-						options: true, // Signals that we have options
-						optionsType: 'palette', // Use palette swatches (rendered at lines 3348-3373)
-						colorTarget: colorTarget,
-						originalMessage: userMessage,
-					}]);
-					setIsLoading(false);
-					return;
-				}
-
-				// Handle use_prompt patterns (text/url/color parsing)
-				let resolvedValue = pattern.value;
-				if (pattern.value === 'use_prompt') {
-					const promptValue = resolvePromptValue(pattern.property, rawMessage);
-					if (!promptValue) {
-						const missingMsg = pattern.property === 'button_text'
-							? 'Please include the button text, e.g. "Set button text to Buy now".'
-							: pattern.property === 'button_url'
-								? 'Please include the URL, e.g. "Link the button to https://example.com".'
-								: pattern.property === 'captionContent'
-									? 'Please include the caption text, e.g. "Set caption to Summer Sale".'
-									: pattern.property === 'mediaAlt'
-										? 'Please include the alt text, e.g. "Set alt text to smiling customer".'
-										: pattern.property === 'mediaURL'
-											? 'Please include the image URL, e.g. "Replace image with https://example.com/photo.jpg".'
-											: 'Please include the value in your request.';
-
-						setMessages(prev => [...prev, { role: 'assistant', content: missingMsg, executed: false }]);
-						setIsLoading(false);
-						return;
-					}
-
-					resolvedValue = promptValue;
-					if (pattern.property === 'icon_color') {
-						resolvedValue = { target: resolveButtonIconTarget(lowerMessage), color: promptValue };
-					}
-				}
-				
-				// Standard pattern handling
-				const isLayoutAlign = pattern.property === 'align_items_flex' || pattern.property === 'justify_content';
-				let resolvedTarget = pattern.target || requestedTarget || 'container';
-				if (!pattern.target && currentScope === 'selection' && isLayoutAlign) {
-					const selectionLayoutTarget = resolveSelectionLayoutTarget();
-					if (selectionLayoutTarget) resolvedTarget = selectionLayoutTarget;
-				}
-				if (pattern.property.startsWith('shape_divider')) {
-					resolvedTarget = 'container';
-				}
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.selectionMsg }
-					: { action: 'update_page', property: pattern.property, value: resolvedValue, target_block: resolvedTarget, message: pattern.pageMsg };
-
+				setMessages(prev => [...prev, routeResult.message]);
+				setIsLoading(false);
+				return;
+
+			case 'cloud_icon': {
+				const statusMsg = routeResult.params.matchTitlesToIconsIntent
+					? 'Matching text to icons...'
+					: 'Searching Cloud Library for icons...';
+				setMessages(prev => [...prev, { role: 'assistant', content: statusMsg }]);
 				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
+					try {
+						await handleCloudIconSearch(routeResult.params);
+					} catch (err) {
+						console.error('[Maxi AI] Cloud icon error:', err);
+						setMessages(prev => [
+							...prev,
+							{
+								role: 'assistant',
+								content: 'Sorry, there was an error searching the Cloud Library for icons.',
+								executed: false,
+							},
+						]);
+						setIsLoading(false);
+					}
+				}, 100);
 				return;
 			}
-		}
-		
-		if (!isGlobalScope) {
-			// SPECIAL: Gap with number extraction (not in lookup table)
-			const gapMatch = lowerMessage.match(/(\d+)\s*(?:px)?\s*(?:gap|gutter|air\s*between|space\s*between\s*items)/i);
-			if (gapMatch) {
-				const gapValue = parseInt(gapMatch[1]);
-				setIsLoading(true);
-				const directAction = currentScope === 'selection'
-					? { action: 'update_selection', property: 'gap', value: gapValue, message: `Applied ${gapValue}px gap between items.` }
-					: { action: 'update_page', property: 'gap', value: gapValue, target_block: 'container', message: `Applied ${gapValue}px gap to containers.` };
+
+			case 'create_block':
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: 'Searching Cloud Library...' },
+				]);
 				setTimeout(async () => {
-					const result = await parseAndExecuteAction(directAction);
-					setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
-					setIsLoading(false);
-				}, 50);
+					await handleCreateBlock(routeResult.params);
+				}, 100);
 				return;
-			}
-			
-			// SPECIAL: Gap clarification (add gaps without number)
-			if (lowerMessage.match(/add\s*(gap|gutter)|gap\s*between|gutter\s*between/) && !gapMatch) {
-				setMessages(prev => [...prev, {
-					role: 'assistant',
-					content: 'How much gap would you like between items?',
-					options: ['Small (10px)', 'Medium (20px)', 'Large (40px)'],
-					gapTarget: currentScope === 'selection' ? 'selection' : 'container',
-					executed: false
-				}]);
-				return;
-			}
+
+			case 'passthrough':
+			default:
+				break;
 		}
+
+		// Passthrough to AI API — derive lowerMessage for prompt building below
+		const lowerMessage = rawMessage.toLowerCase();
 
 		setIsLoading(true);
 

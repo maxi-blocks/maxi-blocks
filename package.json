@@ -52,7 +52,7 @@
 		"classnames": "latest",
 		"css-to-react-native": "latest",
 		"deep-object-diff": "latest",
-		"dompurify": "latest",
+		"dompurify": "^3.3.2",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
 		"langchain": "^0.3.37",

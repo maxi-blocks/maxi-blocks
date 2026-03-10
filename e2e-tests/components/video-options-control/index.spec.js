@@ -12,6 +12,7 @@ import {
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Video options control', () => {
@@ -58,7 +59,8 @@ describe('Video options control', () => {
 		await page.waitForTimeout(1000);
 
 		// Check video content
-		const videoContent = await page.$eval(
+		const frame = await getEditorFrame(page);
+		const videoContent = await frame.$eval(
 			'.maxi-video-block__video-container',
 			block => block.innerHTML
 		);

@@ -1,9 +1,11 @@
 import getBlockAttributes from './getBlockAttributes';
+import getEditorFrame from './getEditorFrame';
 
 const getBlockStyle = async page => {
 	const { uniqueID } = await getBlockAttributes();
 
-	const stylesString = await page.$eval(
+	const frame = await getEditorFrame(page);
+	const stylesString = await frame.$eval(
 		'#maxi-blocks__consolidated-styles',
 		(style, blockUniqueID) => {
 			// Extract only the styles for this specific block

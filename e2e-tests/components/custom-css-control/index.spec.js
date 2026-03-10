@@ -14,6 +14,7 @@ import {
 	getAttributes,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Custom-Css-Control', () => {
@@ -100,7 +101,8 @@ describe('Custom-Css-Control', () => {
 
 		// await validation
 		await page.waitForTimeout(1000);
-		await page.$eval('.maxi-group-block', block => block.focus());
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-group-block', block => block.focus());
 
 		// return css block
 		expect(await getAttributes('custom-css-general')).toMatchSnapshot();

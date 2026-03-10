@@ -12,7 +12,7 @@ import {
  * Internal dependencies
  */
 import { catCodeEditor } from './content';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return categories DC content', async () => {
@@ -109,7 +109,8 @@ describe('Dynamic content', () => {
 		 * Wait for blocks to be inserted and rendered
 		 * Dynamic content blocks need time to fetch and render data
 		 */
-		await page.waitForSelector('.maxi-text-block__content', {
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 			timeout: 15000,
 		});

@@ -13,12 +13,14 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 // Helper to reliably select the row block in the editor
 const selectRowBlock = async () => {
-	await page.waitForSelector('.maxi-row-block', { timeout: 10000 });
-	await page.click('.maxi-row-block');
+	const frame = await getEditorFrame(page);
+	await frame.waitForSelector('.maxi-row-block', { timeout: 10000 });
+	await frame.click('.maxi-row-block');
 	// Wait for block toolbar / selection indicator to confirm selection
 	await page.waitForSelector(
 		'.maxi-row-block.is-selected, .maxi-row-block.has-child-selected, .block-editor-block-list__block.is-selected .maxi-row-block',

@@ -15,6 +15,7 @@ import {
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
 	openSidebarTab,
+	getEditorFrame,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
@@ -22,8 +23,9 @@ import roundMarkersCoords from './utils/roundMarkersCoords';
 const tryClickMarker = async (marker, map) => {
 	await marker.click();
 	try {
+		const frame = await getEditorFrame(page);
 		// Wait for popup with increased timeout
-		await page.waitForSelector('.maxi-map-block__popup__content', {
+		await frame.waitForSelector('.maxi-map-block__popup__content', {
 			timeout: 2000,
 			visible: true,
 		});
@@ -103,7 +105,8 @@ describe('Map Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Map Maxi');
-		await page.waitForSelector('.maxi-map-block');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-map-block');
 		await updateAllBlockUniqueIds(page);
 		await page.waitForTimeout(500);
 	});
@@ -318,7 +321,8 @@ describe('Map Maxi', () => {
 		};
 
 		// Wait for the map block to be fully loaded
-		await page.waitForSelector('.maxi-map-block');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-map-block');
 
 		// Open the sidebar and configure map tab
 		const accordionTab = await openSidebarTab(
@@ -391,7 +395,8 @@ describe('Map Maxi', () => {
 		expect(map).not.toBeNull();
 
 		// Select the block
-		await page.click('.maxi-map-block');
+		const frame = await getEditorFrame(page);
+		await frame.click('.maxi-map-block');
 
 		// Open more settings menu
 		await page.$eval(

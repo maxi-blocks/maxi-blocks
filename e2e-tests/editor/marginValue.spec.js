@@ -6,11 +6,12 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { activateTheme, insertMaxiBlock } from '../utils';
+import { activateTheme, insertMaxiBlock, getEditorFrame } from '../utils';
 
 const testContainerWidth = async () => {
-	const containerElement = await page.$('.maxi-container-block');
-	const editorWrapper = await page.$('.editor-styles-wrapper');
+	const frame = await getEditorFrame(page);
+	const containerElement = await frame.$('.maxi-container-block');
+	const editorWrapper = await frame.$('.editor-styles-wrapper');
 
 	const containerWidth = await containerElement.evaluate(
 		el => el.offsetWidth

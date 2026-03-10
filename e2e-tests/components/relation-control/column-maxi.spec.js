@@ -15,6 +15,7 @@ import {
 	openPreviewPage,
 	getAttributes,
 	insertMaxiBlock,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Column Maxi hover simple actions', () => {
@@ -33,7 +34,8 @@ describe('Column Maxi hover simple actions', () => {
 
 		await page.waitForTimeout(200);
 
-		await page.waitForSelector('.maxi-column-block');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-column-block');
 		await page.evaluate(() => {
 			// Get the client ID of the currently selected block
 			const selectedBlockClientId = wp.data
@@ -69,7 +71,7 @@ describe('Column Maxi hover simple actions', () => {
 
 		// Add native paragraph block
 		await selectBlockByClientId(
-			await page.$eval('.maxi-container-block', el =>
+			await frame.$eval('.maxi-container-block', el =>
 				el.getAttribute('data-block')
 			)
 		);

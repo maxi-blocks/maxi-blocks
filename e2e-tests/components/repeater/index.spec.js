@@ -11,6 +11,7 @@ import {
 	getEditedPostContent,
 	insertMaxiBlock,
 	openSidebarTab,
+	getEditorFrame,
 } from '../../utils';
 import {
 	codeEditorWithContentInFirstColumn,
@@ -52,11 +53,12 @@ describe('Repeater', () => {
 	it('Check basic adding/removing block and attributes changing', async () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
-		await page.waitForSelector('.maxi-row-block__template button');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(500);
 
 		// Click on non equal column template to check if columns will be resized on repeater toggle
-		await page.$$eval('.maxi-row-block__template button', button =>
+		await frame.$$eval('.maxi-row-block__template button', button =>
 			button[2].click()
 		);
 		await page.waitForTimeout(350);
@@ -102,7 +104,8 @@ describe('Repeater', () => {
 		).toMatchSnapshot();
 
 		// Remove button from second column
-		page.$$eval('.maxi-button-block', button =>
+		const frame2 = await getEditorFrame(page);
+		frame2.$$eval('.maxi-button-block', button =>
 			wp.data
 				.dispatch('core/block-editor')
 				.removeBlock(button[1].getAttribute('data-block'))
@@ -126,7 +129,8 @@ describe('Repeater', () => {
 		await page.waitForTimeout(500);
 
 		// Select row
-		await page.$eval('.maxi-row-block', block =>
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-row-block', block =>
 			wp.data
 				.dispatch('core/block-editor')
 				.selectBlock(block.getAttribute('data-block'))
@@ -200,7 +204,8 @@ describe('Repeater', () => {
 		await page.waitForTimeout(500);
 
 		// Select row
-		await page.$eval('.maxi-row-block', block =>
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-row-block', block =>
 			wp.data
 				.dispatch('core/block-editor')
 				.selectBlock(block.getAttribute('data-block'))

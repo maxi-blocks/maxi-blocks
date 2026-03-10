@@ -18,6 +18,7 @@ export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';
 export { default as editGlobalStyles } from './editGlobalStyles';
 export { default as getAttributes } from './getAttributes';
+export { default as getEditorFrame } from './getEditorFrame';
 export { default as getBlockAttributes } from './getBlockAttributes';
 export { default as getBlockStyle } from './getBlockStyle';
 export { default as getClientId } from './getClientId';

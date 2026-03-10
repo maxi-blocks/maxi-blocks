@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -164,6 +164,7 @@ const MapContent = props => {
 		'map-type': mapType = 'roadmap',
 	} = attributes;
 
+	const containerRef = useRef(null);
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
 
@@ -189,9 +190,7 @@ const MapContent = props => {
 			}
 		});
 
-		const container = document.getElementById(
-			`maxi-map-block__container-${uniqueID}`
-		);
+		const container = containerRef.current;
 
 		if (container) {
 			resizeObserver.observe(container);
@@ -208,6 +207,7 @@ const MapContent = props => {
 
 	return (
 		<div
+			ref={containerRef}
 			className='maxi-map-block__container'
 			id={`maxi-map-block__container-${uniqueID}`}
 		>

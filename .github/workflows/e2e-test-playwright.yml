@@ -2,7 +2,7 @@ name: Playwright Tests
 
 on:
     pull_request:
-        branches: [master, 2.1.8]
+        branches: [master]
 
 jobs:
     e2e-js-playwright:

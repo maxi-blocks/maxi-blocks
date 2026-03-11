@@ -19,6 +19,8 @@
 	}
 	.block-editor-block-inspector {
 		.block-editor-block-card {
+			display: flex;
+			align-items: flex-start;
 			position: relative;
 			padding: 8px;
 			color: var(--maxi-grey-dark);

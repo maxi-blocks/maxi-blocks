@@ -1,4 +1,4 @@
-import setCustomFormatsWhenPaste from '../setCustomFormatsWhenPaste';
+import setCustomFormatsWhenPaste from '@extensions/text/formats/setCustomFormatsWhenPaste';
 
 jest.mock('@wordpress/data', () => ({
 	dispatch: jest.fn(() => ({

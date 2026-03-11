@@ -252,66 +252,6 @@ const attributesToStyles = {
 		property: 'stroke-width',
 		isMultiplySelector: true,
 	},
-	'navigation-dot-icon-border-top-left-radius': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-top-left-radius',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-top-right-radius': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-top-right-radius',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-bottom-right-radius': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-bottom-right-radius',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-bottom-left-radius': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-bottom-left-radius',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-top-width': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-top-width',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-right-width': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-right-width',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-bottom-width': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-bottom-width',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-border-left-width': {
-		target: inlineStylesTargets.eachDot,
-		property: 'border-left-width',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-padding-top': {
-		target: inlineStylesTargets.eachDot,
-		property: 'padding-top',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-padding-right': {
-		target: inlineStylesTargets.eachDot,
-		property: 'padding-right',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-padding-bottom': {
-		target: inlineStylesTargets.eachDot,
-		property: 'padding-bottom',
-		isMultiplySelector: true,
-	},
-	'navigation-dot-icon-padding-left': {
-		target: inlineStylesTargets.eachDot,
-		property: 'padding-left',
-		isMultiplySelector: true,
-	},
 	'navigation-dot-icon-spacing-vertical': {
 		target: inlineStylesTargets.allDots,
 		property: 'top',
@@ -334,58 +274,10 @@ const attributesToStyles = {
 		target: inlineStylesTargets.activeDotIconPath,
 		property: 'stroke-width',
 	},
-	'active-navigation-dot-icon-border-top-left-radius': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-top-left-radius',
-	},
-	'active-navigation-dot-icon-border-top-right-radius': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-top-right-radius',
-	},
-	'active-navigation-dot-icon-border-bottom-right-radius': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-bottom-right-radius',
-	},
-	'active-navigation-dot-icon-border-bottom-left-radius': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-bottom-left-radius',
-	},
-	'active-navigation-dot-icon-border-top-width': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-top-width',
-	},
-	'active-navigation-dot-icon-border-right-width': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-right-width',
-	},
-	'active-navigation-dot-icon-border-bottom-width': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-bottom-width',
-	},
-	'active-navigation-dot-icon-border-left-width': {
-		target: inlineStylesTargets.activeDot,
-		property: 'border-left-width',
-	},
 	'active-navigation-dot-icon-width': {
 		target: inlineStylesTargets.activeDot,
 		property: 'width',
 		unit: '%',
-	},
-	'active-navigation-dot-icon-padding-top': {
-		target: inlineStylesTargets.activeDot,
-		property: 'padding-top',
-	},
-	'active-navigation-dot-icon-padding-right': {
-		target: inlineStylesTargets.activeDot,
-		property: 'padding-right',
-	},
-	'active-navigation-dot-icon-padding-bottom': {
-		target: inlineStylesTargets.activeDot,
-		property: 'padding-bottom',
-	},
-	'active-navigation-dot-icon-padding-left': {
-		target: inlineStylesTargets.activeDot,
-		property: 'padding-left',
 	},
 	'border-top-width': {
 		target: inlineStylesTargets.block,

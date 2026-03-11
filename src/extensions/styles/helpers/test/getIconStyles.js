@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getIconStyles from '../getIconStyles';
+import getIconStyles from '@extensions/styles/helpers/getIconStyles';
 
 // Mock dependencies
 jest.mock('src/extensions/styles/getColorRGBAString', () => {

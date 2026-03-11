@@ -10,9 +10,7 @@ describe('setSVGColor', () => {
 		const result = setSVGColor({ svg, color, type });
 
 		expect(result).toContain('fill="#000"');
-		expect(result).not.toContain(
-			'fill="rgba(var(--maxi-light-color-5),1)"'
-		);
+		expect(result).not.toContain('fill="rgba(var(--maxi-light-color-5),1)"');
 		expect(result).toContain('viewBox="0 0 36.1 36.1"');
 		expect(result).toContain('class="tick-12-maxi-svg"');
 		expect(result).toContain('data-item="text-maxi-12__svg"');

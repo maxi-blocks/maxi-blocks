@@ -17,10 +17,7 @@ import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 import SvgWidthControl from '@components/svg-width-control';
 import SvgAltControl from './components/svg-alt-control';
 import SvgColorControl from './components/svg-color-control';
-import {
-	getColorRGBAString,
-	getGroupAttributes,
-} from '@extensions/styles';
+import { getColorRGBAString, getGroupAttributes } from '@extensions/styles';
 import { setSVGContentWithBlockStyle } from '@extensions/svg';
 import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
@@ -207,9 +204,15 @@ const Inspector = props => {
 												content={attributes.content}
 											/>
 										),
-										ignoreIndicator: [
-											`svg-width-${deviceType}`,
-											`svg-stroke-${deviceType}`,
+										indicatorProps: [
+											'svg-fill-palette-status',
+											'svg-fill-palette-color',
+											'svg-fill-palette-opacity',
+											'svg-fill-color',
+											'svg-line-palette-status',
+											'svg-line-palette-color',
+											'svg-line-palette-opacity',
+											'svg-line-color',
 										],
 									},
 
@@ -233,14 +236,9 @@ const Inspector = props => {
 													breakpoint={deviceType}
 												/>
 											),
-											ignoreIndicator: [
-												'svg-fill-palette-color',
-												'svg-fill-palette-status',
-												'svg-fill-color',
-												'svg-line-palette-color',
-												'svg-line-palette-status',
-												'svg-line-color',
-												`svg-width-${deviceType}`,
+											indicatorProps: [
+												'svg-stroke-general',
+												`svg-stroke-${deviceType}`,
 											],
 										},
 									...inspectorTabs.background({
@@ -272,6 +270,11 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												getIndicatorProps={(bp, isBase) =>
+													isBase
+														? ['svg-width-general']
+														: [`svg-width-${bp}`]
+												}
 											>
 												<SvgWidthControl
 													{...getGroupAttributes(
@@ -287,14 +290,9 @@ const Inspector = props => {
 												/>
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											'svg-fill-palette-color',
-											'svg-fill-palette-status',
-											'svg-fill-color',
-											'svg-line-palette-color',
-											'svg-line-palette-status',
-											'svg-line-color',
-											`svg-stroke-${deviceType}`,
+										indicatorProps: [
+											'svg-width-general',
+											`svg-width-${deviceType}`,
 										],
 									},
 									...inspectorTabs.marginPadding({

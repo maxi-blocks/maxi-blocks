@@ -160,6 +160,7 @@ describe('Map Maxi', () => {
 	});
 
 	it('Map Maxi add marker by search box', async () => {
+		const frame = await getEditorFrame(page);
 		const map = await getMapContainer(page);
 
 		await map.waitForSelector('.maxi-map-block__search-box');
@@ -207,8 +208,8 @@ describe('Map Maxi', () => {
 					// Give React time to render the results
 					await page.waitForTimeout(1000);
 
-					// Wait for results with explicit visibility check
-					await page.waitForSelector(
+					// Wait for results with explicit visibility check (inside iframe)
+					await frame.waitForSelector(
 						'.maxi-map-block__search-box-results',
 						{
 							visible: true,
@@ -267,12 +268,15 @@ describe('Map Maxi', () => {
 	}, 60000);
 
 	it('Map Maxi OpenStreetMap types work correctly', async () => {
+		// Wait for the map block to be fully loaded
+		const frame = await getEditorFrame(page);
+
 		const waitForTilesWithRetry = async (mapType, maxRetries = 3) => {
 			let attempt = 1;
 
 			const attemptTileLoading = async () => {
 				try {
-					await page.waitForFunction(
+					await frame.waitForFunction(
 						() => {
 							const tiles =
 								document.querySelectorAll('.leaflet-tile');
@@ -293,7 +297,7 @@ describe('Map Maxi', () => {
 				} catch (error) {
 					if (attempt === maxRetries) {
 						// Final attempt failed - check if we have any tiles loaded
-						const hasAnyTiles = await page.evaluate(() => {
+						const hasAnyTiles = await frame.evaluate(() => {
 							const tiles =
 								document.querySelectorAll('.leaflet-tile');
 							return tiles.length > 0;
@@ -319,9 +323,6 @@ describe('Map Maxi', () => {
 
 			return attemptTileLoading();
 		};
-
-		// Wait for the map block to be fully loaded
-		const frame = await getEditorFrame(page);
 		await frame.waitForSelector('.maxi-map-block');
 
 		// Open the sidebar and configure map tab

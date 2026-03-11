@@ -16,7 +16,7 @@ const testContainerWidth = async () => {
 	const containerWidth = await containerElement.evaluate(
 		el => el.offsetWidth
 	);
-	const editorWidth = await editorWrapper.evaluate(el => el.offsetWidth);
+	const editorWidth = await editorWrapper.evaluate(el => el.clientWidth);
 
 	return { containerWidth, editorWidth };
 };

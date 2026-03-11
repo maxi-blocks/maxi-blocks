@@ -43,12 +43,13 @@ describe('Svg Icon Maxi default size', () => {
 		);
 		const boundingBox = await resizerBottomRight.boundingBox();
 
-		await page.mouse.move(
-			boundingBox.x + boundingBox.width / 2,
-			boundingBox.y + boundingBox.height / 2
-		);
+		const startX = boundingBox.x + boundingBox.width / 2;
+		const startY = boundingBox.y + boundingBox.height / 2;
+
+		await page.mouse.move(startX, startY);
 		await page.mouse.down();
-		await page.mouse.move(60, 4);
+		// Drag left by 54px (64 → 10) while staying within the iframe (same y)
+		await page.mouse.move(startX - 54, startY);
 		await page.mouse.up();
 
 		await page.waitForTimeout(300);

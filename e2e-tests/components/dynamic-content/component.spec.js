@@ -167,7 +167,8 @@ describe('Dynamic content component for text blocks', () => {
 		await page.waitForTimeout(2000);
 
 		// Check if content element exists
-		const contentExists = await page.$(
+		const frame = await getEditorFrame(page);
+		const contentExists = await frame.$(
 			'.maxi-text-block .maxi-text-block__content'
 		);
 		if (!contentExists) {

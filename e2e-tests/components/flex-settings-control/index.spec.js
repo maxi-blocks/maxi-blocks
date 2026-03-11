@@ -14,6 +14,7 @@ import {
 	changeResponsive,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('FlexSettings', () => {
@@ -119,8 +120,10 @@ describe('FlexSettings', () => {
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// flex-child
-		await page.$$eval('.block-editor-inserter button', addBlock =>
-			addBlock[0].click()
+		const editorFrame = await getEditorFrame(page);
+		await editorFrame.$eval(
+			'.maxi-group-block .block-editor-button-block-appender',
+			button => button.click()
 		);
 
 		await page.keyboard.type('Text Maxi', { delay: 350 });

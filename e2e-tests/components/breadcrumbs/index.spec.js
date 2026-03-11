@@ -56,7 +56,7 @@ describe('Breadcrumbs', () => {
 		// Add Row Maxi - clear any existing search and wait longer
 		await page.keyboard.press('Escape'); // Clear any existing search
 		await page.waitForTimeout(500);
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);

@@ -45,12 +45,13 @@ describe('BlockResizer', () => {
 		);
 		const boundingBox = await resizerBottomRight.boundingBox();
 
-		await page.mouse.move(
-			boundingBox.x + boundingBox.width / 2,
-			boundingBox.y + boundingBox.height / 2
-		);
+		const startX = boundingBox.x + boundingBox.width / 2;
+		const startY = boundingBox.y + boundingBox.height / 2;
+
+		await page.mouse.move(startX, startY);
 		await page.mouse.down();
-		await page.mouse.move(126, 19);
+		// Drag left by 170px (250 → 80) while staying within the iframe (same y)
+		await page.mouse.move(startX - 170, startY);
 		await page.mouse.up();
 
 		await page.waitForTimeout(300);

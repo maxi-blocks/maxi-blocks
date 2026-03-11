@@ -24,9 +24,9 @@ test.describe('Column Maxi', () => {
 		await admin.createNewPost();
 		await insertMaxiBlock(editor, page, 'Container Maxi');
 
-		await page.locator('.maxi-row-block__template button').first().click();
+		await editor.canvas.locator('.maxi-row-block__template button').first().click();
 
-		await page.locator('.maxi-column-block').first().waitFor();
+		await editor.canvas.locator('.maxi-column-block').first().waitFor();
 
 		await updateAllBlockUniqueIds(page);
 
@@ -39,19 +39,19 @@ test.describe('Column Maxi', () => {
 		await admin.createNewPost();
 		await insertMaxiBlock(editor, page, 'Container Maxi');
 
-		await page.locator('.maxi-row-block__template button').first().click();
+		await editor.canvas.locator('.maxi-row-block__template button').first().click();
 
-		await page.locator('.maxi-column-block').first().waitFor();
+		await editor.canvas.locator('.maxi-column-block').first().waitFor();
 
 		await updateAllBlockUniqueIds(page);
 
-		const columnClientId = await page
+		const columnClientId = await editor.canvas
 			.locator('.maxi-column-block')
 			.first()
 			.getAttribute('data-block');
 
 		// Select the column block (change position of click, because center of the block triggers inserter)
-		await page
+		await editor.canvas
 			.locator(`.maxi-column-block[data-block="${columnClientId}"]`)
 			.click({ position: { x: 10, y: 10 } });
 
@@ -135,17 +135,17 @@ test.describe('Column Maxi', () => {
 		await admin.createNewPost();
 		await insertMaxiBlock(editor, page, 'Container Maxi');
 
-		const templateButtons = page.locator(
+		const templateButtons = editor.canvas.locator(
 			'.maxi-row-block__template button'
 		);
 		await templateButtons.nth(6).click();
 
-		await page.locator('.maxi-column-block').first().waitFor();
+		await editor.canvas.locator('.maxi-column-block').first().waitFor();
 
 		await updateAllBlockUniqueIds(page);
 
 		// Ensure we select the third Column (index 2)
-		await page
+		await editor.canvas
 			.locator('.maxi-container-block .maxi-column-block')
 			.nth(2)
 			.click();
@@ -225,9 +225,9 @@ test.describe('Column Maxi', () => {
 			.toEqual(expectHoverBorder);
 
 		// check first column
-		await page.locator('.maxi-column-block').first().waitFor();
+		await editor.canvas.locator('.maxi-column-block').first().waitFor();
 
-		await page
+		await editor.canvas
 			.locator('.maxi-container-block .maxi-column-block')
 			.nth(0)
 			.click();
@@ -237,7 +237,7 @@ test.describe('Column Maxi', () => {
 		);
 
 		// check last column
-		await page
+		await editor.canvas
 			.locator('.maxi-container-block .maxi-column-block')
 			.nth(2)
 			.click();
@@ -251,9 +251,9 @@ test.describe('Column Maxi', () => {
 		await admin.createNewPost();
 		await insertMaxiBlock(editor, page, 'Container Maxi');
 
-		await page.locator('.maxi-row-block__template button').first().click();
+		await editor.canvas.locator('.maxi-row-block__template button').first().click();
 
-		await page.locator('.maxi-column-block').first().waitFor();
+		await editor.canvas.locator('.maxi-column-block').first().waitFor();
 
 		await updateAllBlockUniqueIds(page);
 

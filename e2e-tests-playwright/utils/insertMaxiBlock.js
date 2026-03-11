@@ -20,11 +20,11 @@ const insertMaxiBlock = async (editor, page, blockTitleOrName) => {
 		.replace('Icon', 'svg-icon')
 		.toLowerCase()}-block`;
 
-	await page.waitForSelector(blockClass, { state: 'visible' });
+	await editor.canvas.locator(blockClass).waitFor({ state: 'visible' });
 
 	// Special case: container block also needs to wait for row
 	if (blockClass === '.maxi-container-block') {
-		await page.waitForSelector('.maxi-row-block', { state: 'visible' });
+		await editor.canvas.locator('.maxi-row-block').waitFor({ state: 'visible' });
 	}
 };
 

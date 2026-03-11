@@ -3,7 +3,8 @@ import getBlockAttributes from './getBlockAttributes';
 const getBlockStyle = async page => {
 	const { uniqueID } = await getBlockAttributes(page);
 
-	const stylesString = await page.$eval(
+	const editorFrame = page.frame({ name: 'editor-canvas' });
+	const stylesString = await (editorFrame || page).$eval(
 		'#maxi-blocks__consolidated-styles',
 		(style, blockUniqueID) => {
 			let allStyles = style.innerHTML;

@@ -67,6 +67,13 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+const normalizeStyleContent = styleContent =>
+	typeof styleContent === 'string'
+		? styleContent.replace(
+				WHITE_SPACE_REGEX,
+				'white-space: nowrap !important'
+		  )
+		: styleContent;
 
 const getPerfStart = () => {
 	if (
@@ -1615,6 +1622,8 @@ class MaxiBlockComponent extends Component {
 		if (typeof cachedBreakpointCSS === 'string') {
 			const isSiteEditor = getIsSiteEditor();
 			const iframeDoc = this.editorIframe?.contentDocument || null;
+			const normalizedCachedBreakpointCSS =
+				normalizeStyleContent(cachedBreakpointCSS);
 			const cache =
 				MaxiBlockComponent.breakpointSwitchCache ||
 				(MaxiBlockComponent.breakpointSwitchCache = {
@@ -1640,7 +1649,7 @@ class MaxiBlockComponent extends Component {
 
 			addBlockStyles(
 				uniqueID,
-				cachedBreakpointCSS,
+				normalizedCachedBreakpointCSS,
 				this.getStyleTarget(isSiteEditor, this.editorIframe)
 			);
 			recordPerf('displayStyles', perfStart);
@@ -2183,8 +2192,6 @@ class MaxiBlockComponent extends Component {
 			!this.isXxlStyleCacheDirty
 		) {
 			styleContent = this.xxlStyleCache;
-		} else if (typeof cachedStyleContent === 'string') {
-			styleContent = cachedStyleContent;
 		} else if (isBlockStyleChange || forceGenerate) {
 			styles = this.generateStyles(
 				updatedStylesObj,
@@ -2199,6 +2206,8 @@ class MaxiBlockComponent extends Component {
 				currentBreakpoint
 			);
 			recordPerf('styleGenerator', styleGenStart);
+		} else if (typeof cachedStyleContent === 'string') {
+			styleContent = cachedStyleContent;
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
@@ -2226,10 +2235,7 @@ class MaxiBlockComponent extends Component {
 
 		// Add !important to white-space: nowrap
 		if (styleContent) {
-			styleContent = styleContent.replace(
-				WHITE_SPACE_REGEX,
-				'white-space: nowrap !important'
-			);
+			styleContent = normalizeStyleContent(styleContent);
 			if (currentBreakpoint === 'xxl') {
 				this.xxlStyleCache = styleContent;
 				this.isXxlStyleCacheDirty = false;

@@ -667,6 +667,12 @@ body.maxi-blocks--active
 	padding-left: 0;
 }
 
+/** Fix WP 7.0 iframe canvas: theme padding applied directly on .is-root-container */
+body.maxi-blocks--active
+	.block-editor-block-list__layout.is-root-container {
+	padding-inline: 0;
+}
+
 body.maxi-blocks--active
 	.editor-styles-wrapper
 	.block-editor-block-list__layout.is-root-container

@@ -12,6 +12,7 @@ import {
 	changeResponsive,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('FontFamilySelector', () => {
@@ -71,14 +72,25 @@ describe('FontFamilySelector', () => {
 			'Montserrat'
 		);
 
-		await page.waitForTimeout(500);
-
-		const hasBeenLoaded = await page.evaluate(
-			() =>
-				!!document.querySelector(
-					'link[href*="Montserrat"][id*="maxi-blocks-styles-font"]'
-				)
-		);
+		// Wait for the font link to appear (async network request, can take >500ms)
+		const fontSelector =
+			'link[id*="maxi-blocks-styles-font-montserrat"]';
+		let hasBeenLoaded = false;
+		try {
+			await page.waitForFunction(
+				sel => !!document.querySelector(sel),
+				{ timeout: 10000 },
+				fontSelector
+			);
+			hasBeenLoaded = true;
+		} catch {
+			// Check in iframe as fallback
+			const frame = await getEditorFrame(page);
+			hasBeenLoaded = await frame.evaluate(
+				sel => !!document.querySelector(sel),
+				fontSelector
+			);
+		}
 
 		expect(hasBeenLoaded).toBeTruthy();
 	});

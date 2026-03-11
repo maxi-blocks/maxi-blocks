@@ -11,6 +11,7 @@ import {
 	getAttributes,
 	openSidebarTab,
 	insertMaxiBlock,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Svg Icon Maxi default size', () => {
@@ -36,7 +37,8 @@ describe('Svg Icon Maxi default size', () => {
 		await page.waitForTimeout(200);
 
 		// click and drag
-		const resizerBottomRight = await page.$(
+		const frame = await getEditorFrame(page);
+		const resizerBottomRight = await frame.$(
 			'.maxi-svg-icon-block .maxi-block__resizer .maxi-resizable__handle-bottomright'
 		);
 		const boundingBox = await resizerBottomRight.boundingBox();

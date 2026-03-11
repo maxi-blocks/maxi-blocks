@@ -95,12 +95,16 @@ describe('Custom-Css-Control', () => {
 		);
 		expect(error).not.toBe('Valid');
 
+		const frame = await getEditorFrame(page);
+
 		// focus out
-		await page.$eval('.editor-post-title__input', input => input.focus());
+		await frame.$eval(
+			'.editor-post-title__input, .wp-block-post-title',
+			input => input.focus()
+		);
 
 		// await validation
 		await page.waitForTimeout(1000);
-		const frame = await getEditorFrame(page);
 		await frame.$eval('.maxi-group-block', block => block.focus());
 
 		// return css block

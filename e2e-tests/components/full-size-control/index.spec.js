@@ -144,7 +144,7 @@ describe('FullSizeControl', () => {
 		await page.waitForTimeout(500);
 
 		// select colum
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-row-block .maxi-column-block .block-editor-inserter',
 			button => button.click()
 		);

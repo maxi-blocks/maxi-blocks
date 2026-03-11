@@ -11,6 +11,7 @@ import {
 	getAttributes,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('BlockResizer', () => {
@@ -38,7 +39,8 @@ describe('BlockResizer', () => {
 		await page.waitForTimeout(300);
 
 		// click and drag
-		const resizerBottomRight = await page.$(
+		const frame = await getEditorFrame(page);
+		const resizerBottomRight = await frame.$(
 			'.maxi-number-counter-block .maxi-resizable__handle-wrapper .maxi-resizable__handle-bottomright'
 		);
 		const boundingBox = await resizerBottomRight.boundingBox();

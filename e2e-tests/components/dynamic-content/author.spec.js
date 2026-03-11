@@ -47,14 +47,14 @@ describe('Dynamic content', () => {
 		};
 
 		const getBackResults = async (block, expect) =>
-			page.$eval(
+			frame.$eval(
 				`.maxi-text-block.${block} .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
 
 		const getButtonResults = async (block, expect) =>
-			page.$eval(
+			frame.$eval(
 				`.maxi-button-block.${block} .maxi-button-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect

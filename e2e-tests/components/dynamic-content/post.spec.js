@@ -59,7 +59,7 @@ describe('Dynamic content', () => {
 		const tagBlocks = ['text-dc-tags-1', 'text-dc-tags-2'];
 
 		const getBackResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]

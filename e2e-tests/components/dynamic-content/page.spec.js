@@ -50,7 +50,7 @@ describe('Dynamic content', () => {
 		const authorBlocks = ['text-dc-author-1', 'text-dc-author-2'];
 
 		const getBackResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]

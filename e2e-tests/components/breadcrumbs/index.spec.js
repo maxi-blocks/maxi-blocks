@@ -27,7 +27,7 @@ describe('Breadcrumbs', () => {
 		await frame.$eval('.maxi-column-block', column => column.focus());
 
 		// Open appender on Column Maxi
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-column-block .block-editor-button-block-appender',
 			button => button.click()
 		);
@@ -47,7 +47,7 @@ describe('Breadcrumbs', () => {
 		await frame.waitForSelector('.maxi-group-block');
 
 		// Open appender on Group Maxi
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);

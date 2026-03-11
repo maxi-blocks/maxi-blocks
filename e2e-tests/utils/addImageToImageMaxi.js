@@ -9,9 +9,9 @@ const addImageToImageMaxi = async (page, instance) => {
 
 	const frame = await getEditorFrame(page);
 
-	// Click the "Add image" button
-	await frame.waitForSelector('.maxi-image-block__settings__upload-button');
-	await frame.click('.maxi-image-block__settings__upload-button');
+	// Click the "Add image" button (rendered in block-toolbar slot, in main page)
+	await page.waitForSelector('.maxi-image-block__settings__upload-button');
+	await page.click('.maxi-image-block__settings__upload-button');
 
 	// There's an error with one WP dependency that causes the media library to
 	// not load. This is a workaround.
@@ -23,10 +23,10 @@ const addImageToImageMaxi = async (page, instance) => {
 		await page.keyboard.press('Escape');
 		await page.waitForTimeout(500);
 
-		await frame.waitForSelector(
+		await page.waitForSelector(
 			'.maxi-image-block__settings__upload-button'
 		);
-		await frame.click('.maxi-image-block__settings__upload-button');
+		await page.click('.maxi-image-block__settings__upload-button');
 
 		// Set 'Media Library' tab
 		await page.waitForSelector('#menu-item-browse');

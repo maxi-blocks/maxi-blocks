@@ -105,14 +105,14 @@ describe('Dynamic content', () => {
 		const contentBlocks = ['image-dc-content-1'];
 
 		const getBackTextResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => (el.innerText === expect ? true : el.innerText),
 				expectedResults[type]
 			);
 
 		const getBackImageResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-image-block .maxi-image-block__image`,
 				(el, expect) => {
 					const url = new URL(el.src);

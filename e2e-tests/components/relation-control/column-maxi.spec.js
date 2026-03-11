@@ -26,15 +26,19 @@ describe('Column Maxi hover simple actions', () => {
 
 		await page.waitForTimeout(200);
 
+		const frame = await getEditorFrame(page);
+
 		// Select one column
-		await page.$$eval(
+		await frame.waitForSelector(
+			'.maxi-row-block__template .maxi-row-block__template__button'
+		);
+		await frame.$$eval(
 			'.maxi-row-block__template .maxi-row-block__template__button',
 			rowButtons => rowButtons[0].click()
 		);
 
 		await page.waitForTimeout(200);
 
-		const frame = await getEditorFrame(page);
 		await frame.waitForSelector('.maxi-column-block');
 		await page.evaluate(() => {
 			// Get the client ID of the currently selected block

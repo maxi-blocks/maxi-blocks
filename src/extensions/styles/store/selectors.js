@@ -35,12 +35,19 @@ export const getPrevSavedAttrs = state => {
 };
 
 export const getCSSCache = (state, uniqueID) => {
-	if (state.cssCache && state.cssCache[uniqueID])
-		return state.cssCache[uniqueID];
+	if (!state.cssCache) return false;
 
-	if (state.cssCache && !uniqueID) return state.cssCache;
+	if (uniqueID) {
+		if (typeof state.cssCache.get === 'function') {
+			return state.cssCache.get(uniqueID) || false;
+		}
 
-	return false;
+		if (state.cssCache[uniqueID]) return state.cssCache[uniqueID];
+
+		return false;
+	}
+
+	return state.cssCache;
 };
 
 export const getBlockMarginValue = state => {

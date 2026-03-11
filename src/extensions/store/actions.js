@@ -1,13 +1,11 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { dispatch, select } from '@wordpress/data';
+import { select } from '@wordpress/data';
 
 /**
  * Internal dependencies
  */
-import { getIsSiteEditor } from '@extensions/fse';
 import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
 
 const actions = {

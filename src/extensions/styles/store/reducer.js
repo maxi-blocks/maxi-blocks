@@ -218,14 +218,7 @@ function reducer(
 			};
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
-
-			// Check if already cached
-			const existingCache = state.cssCache.get(uniqueID);
-			if (existingCache) {
-				// Move to end (mark as recently used)
-				state.cssCache.set(uniqueID, existingCache);
-				return state;
-			}
+			const existingCache = state.cssCache.get(uniqueID) || {};
 
 			const breakpointStyles = BREAKPOINTS.reduce(
 				(acc, breakpoint) => ({
@@ -237,7 +230,9 @@ function reducer(
 						breakpoint
 					),
 				}),
-				{}
+				{
+					...existingCache,
+				}
 			);
 
 			// Use LRU cache set method (automatically handles size limits)

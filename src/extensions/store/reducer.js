@@ -60,12 +60,9 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 
 	const winHeight = window.outerWidth;
 
-	// For template parts in 'general' mode, we need to calculate the width based on the base breakpoint
-	// For other contexts, 'general' means full width ('none')
 	let responsiveWidth;
 	if (size === 'general') {
 		if (getIsTemplatePart()) {
-			// Check if breakpoints are loaded
 			const hasBreakpoints =
 				breakpoints &&
 				typeof breakpoints === 'object' &&
@@ -75,8 +72,6 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 				const baseBreakpoint = getWinBreakpoint(winSize, breakpoints);
 				responsiveWidth = breakpoints[baseBreakpoint];
 			} else {
-				// Breakpoints not loaded yet, skip setting width for now
-				// This will be called again when breakpoints are loaded
 				return;
 			}
 		} else {
@@ -99,8 +94,6 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	}
 
 	if (size === 'general') {
-		// For template parts, 'general' should display at the base breakpoint width
-		// For other contexts, 'general' means full width (no constraint)
 		if (getIsTemplatePart()) {
 			editorWrapper.style.minWidth = 'auto';
 			editorWrapper.style.margin =
@@ -126,7 +119,6 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 		}
 	}
 
-	// Clean prevSavedAttrs when changing the responsive stage
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
 };
 

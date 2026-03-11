@@ -6,9 +6,9 @@ jest.mock('@wordpress/data', () => ({
 	select: jest.fn(),
 }));
 jest.mock('@extensions/styles/styleGenerator', () =>
-	jest.fn(() => ({
-		result: '.test { color: red; }',
-	}))
+	jest.fn((stylesObj, isIframe, isSiteEditor, breakpoint) =>
+		`.${breakpoint}-${stylesObj.color || 'none'}`
+	)
 );
 
 // Mock the MemoCache class
@@ -202,7 +202,10 @@ describe('styles store reducer', () => {
 
 		it('Returns existing cache if already present', () => {
 			const state = getInitialState();
-			const existingCacheEntry = { general: { existingStyles: true } };
+			const existingCacheEntry = {
+				general: '.general-stale',
+				rawCSS: '.custom { display: block; }',
+			};
 
 			// Pre-populate the cache
 			state.cssCache.set('block1', existingCacheEntry);
@@ -217,8 +220,11 @@ describe('styles store reducer', () => {
 
 			const result = reducer(state, action);
 
-			// Should return the existing cache entry (not generate new styles)
-			expect(result.cssCache.get('block1')).toEqual(existingCacheEntry);
+			expect(result.cssCache.get('block1')).toMatchObject({
+				rawCSS: '.custom { display: block; }',
+				general: '.general-red',
+				xs: '.xs-red',
+			});
 		});
 
 		it('Uses LRU cache behavior with size limits', () => {

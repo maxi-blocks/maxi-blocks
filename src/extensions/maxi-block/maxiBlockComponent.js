@@ -1558,6 +1558,17 @@ class MaxiBlockComponent extends Component {
 	) {
 		const perfStart = getPerfStart();
 		const { uniqueID } = this.props.attributes;
+		const canUseCachedBreakpointStyles =
+			!!uniqueID &&
+			attributesUnchanged &&
+			isBreakpointChange &&
+			!isBlockStyleChange &&
+			!isBaseBreakpointChange;
+		const cachedBreakpointStyles = canUseCachedBreakpointStyles
+			? select('maxiBlocks/styles').getCSSCache(uniqueID)
+			: null;
+		const cachedBreakpointCSS =
+			cachedBreakpointStyles?.[this.props.deviceType];
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
@@ -1601,12 +1612,49 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 
+		if (typeof cachedBreakpointCSS === 'string') {
+			const isSiteEditor = getIsSiteEditor();
+			const iframeDoc = this.editorIframe?.contentDocument || null;
+			const cache =
+				MaxiBlockComponent.breakpointSwitchCache ||
+				(MaxiBlockComponent.breakpointSwitchCache = {
+					doc: null,
+					breakpoint: null,
+				});
+
+			if (
+				cache.doc !== iframeDoc ||
+				cache.breakpoint !== this.props.deviceType
+			) {
+				this.handleIframeStyles(
+					this.editorIframe,
+					this.props.deviceType
+				);
+				this.updateResponsiveClasses(
+					this.editorIframe,
+					this.props.deviceType
+				);
+				cache.doc = iframeDoc;
+				cache.breakpoint = this.props.deviceType;
+			}
+
+			addBlockStyles(
+				uniqueID,
+				cachedBreakpointCSS,
+				this.getStyleTarget(isSiteEditor, this.editorIframe)
+			);
+			recordPerf('displayStyles', perfStart);
+			return;
+		}
+
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
 		let shouldGenerateNewStyles =
 			!isBreakpointChange ||
 			this.props.deviceType === 'xxl' ||
 			isBaseBreakpointChange ||
-			!attributesUnchanged;
+			!attributesUnchanged ||
+			(canUseCachedBreakpointStyles &&
+				typeof cachedBreakpointCSS !== 'string');
 
 		let stylesForViewportCheck;
 
@@ -1698,6 +1746,7 @@ class MaxiBlockComponent extends Component {
 			isSiteEditor,
 			isBreakpointChange,
 			isBlockStyleChange,
+			isBaseBreakpointChange,
 			shouldGenerateNewStyles,
 			this.editorIframe
 		);
@@ -1863,6 +1912,7 @@ class MaxiBlockComponent extends Component {
 		isSiteEditor,
 		isBreakpointChange,
 		isBlockStyleChange,
+		isBaseBreakpointChange,
 		forceGenerate,
 		iframe
 	) {
@@ -1884,6 +1934,7 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				isBreakpointChange,
 				isBlockStyleChange,
+				isBaseBreakpointChange,
 				forceGenerate,
 				iframe,
 				isSiteEditor
@@ -2086,6 +2137,7 @@ class MaxiBlockComponent extends Component {
 		breakpoints,
 		isBreakpointChange,
 		isBlockStyleChange,
+		isBaseBreakpointChange,
 		forceGenerate,
 		iframe,
 		isSiteEditor
@@ -2114,6 +2166,13 @@ class MaxiBlockComponent extends Component {
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
+		const cachedStyles =
+			isBreakpointChange &&
+			!isBlockStyleChange &&
+			!isBaseBreakpointChange
+				? select('maxiBlocks/styles').getCSSCache(uniqueID)
+				: null;
+		const cachedStyleContent = cachedStyles?.[currentBreakpoint];
 
 		if (
 			isBreakpointChange &&
@@ -2124,6 +2183,8 @@ class MaxiBlockComponent extends Component {
 			!this.isXxlStyleCacheDirty
 		) {
 			styleContent = this.xxlStyleCache;
+		} else if (typeof cachedStyleContent === 'string') {
+			styleContent = cachedStyleContent;
 		} else if (isBlockStyleChange || forceGenerate) {
 			styles = this.generateStyles(
 				updatedStylesObj,

@@ -72,6 +72,20 @@ describe('Styles store selectors', () => {
 			});
 		});
 
+		it('Returns CSS cache from cache instances with a get method', () => {
+			const cssCache = {
+				get: jest.fn(key =>
+					key === 'block1' ? { css: '.block { color: red; }' } : undefined
+				),
+			};
+			const state = { cssCache };
+
+			expect(getCSSCache(state, 'block1')).toEqual({
+				css: '.block { color: red; }',
+			});
+			expect(cssCache.get).toHaveBeenCalledWith('block1');
+		});
+
 		it('Returns entire CSS cache when no uniqueID provided', () => {
 			const state = {
 				cssCache: {

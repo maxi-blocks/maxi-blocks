@@ -177,12 +177,16 @@ const ResponsiveSelector = props => {
 			)
 				wrapper.setAttribute('maxi-blocks-responsive', baseBreakpoint);
 		});
-	});
+	}, [baseBreakpoint]);
 
 	// Track when native buttons are clicked to avoid conflicts
 	const lastNativeClickRef = useRef(0);
 
 	const onChangeNativeResponsive = useCallback(button => {
+		if (button.dataset.maxiResponsiveBound === 'true') return;
+
+		button.dataset.maxiResponsiveBound = 'true';
+
 		button.addEventListener(
 			'click',
 			() => {

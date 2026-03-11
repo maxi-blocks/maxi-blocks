@@ -44,6 +44,15 @@ const attrFilter = attr =>
 	(isNumber(attr) || isBoolean(attr) || isString(attr) || !isEmpty(attr));
 
 const blockEditorStore = select('core/block-editor');
+const getResponsiveContext = () => {
+	const maxiBlocksStore = select('maxiBlocks');
+
+	return {
+		currentBreakpoint:
+			maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general',
+		baseBreakpoint: maxiBlocksStore?.receiveBaseBreakpoint(),
+	};
+};
 
 /**
  * Gets an object base on MaxiBlocks breakpoints schema and looks for the last set value
@@ -57,7 +66,8 @@ const getLastBreakpointAttributeSingle = (
 	isHover,
 	avoidXXL,
 	keys,
-	forceUseBreakpoint = false
+	forceUseBreakpoint = false,
+	responsiveContext = getResponsiveContext()
 ) => {
 	const { getBlockAttributes, getSelectedBlockClientId } =
 		blockEditorStore || {
@@ -75,11 +85,7 @@ const getLastBreakpointAttributeSingle = (
 			breakpoint,
 			keys
 		);
-	const maxiBlocksStore = select('maxiBlocks');
-
-	const currentBreakpoint =
-		maxiBlocksStore?.receiveMaxiDeviceType() ?? 'general';
-	const baseBreakpoint = maxiBlocksStore?.receiveBaseBreakpoint();
+	const { currentBreakpoint, baseBreakpoint } = responsiveContext;
 
 	// In case that breakpoint is general and baseBreakpoint attribute exists,
 	// give priority to baseBreakpoint attribute just when the currentBreakpoint it's 'general'
@@ -96,7 +102,9 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			isHover,
 			avoidXXL,
-			keys
+			keys,
+			false,
+			responsiveContext
 		);
 
 		if (attrFilter(baseBreakpointAttr)) return baseBreakpointAttr;
@@ -145,7 +153,9 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			false,
 			avoidXXL,
-			keys
+			keys,
+			false,
+			responsiveContext
 		);
 
 	// Fallback for active state: if target starts with 'active-' and no value found,
@@ -162,7 +172,8 @@ const getLastBreakpointAttributeSingle = (
 			isHover,
 			avoidXXL,
 			keys,
-			forceUseBreakpoint
+			forceUseBreakpoint,
+			responsiveContext
 		);
 
 	// Helps responsive API: when breakpoint is general and the attribute is undefined,
@@ -174,7 +185,9 @@ const getLastBreakpointAttributeSingle = (
 			attributes,
 			isHover,
 			baseBreakpoint === 'xxl' ? false : avoidXXL,
-			keys
+			keys,
+			false,
+			responsiveContext
 		);
 
 	return currentAttr;
@@ -185,7 +198,9 @@ const getLastBreakpointAttributeGroup = (
 	breakpoint,
 	isHover,
 	avoidXXL,
-	keys
+	keys,
+	forceUseBreakpoint,
+	responsiveContext
 ) => {
 	const clientIds = blockEditorStore.getSelectedBlockClientIds();
 
@@ -197,7 +212,9 @@ const getLastBreakpointAttributeGroup = (
 			attributes,
 			isHover,
 			avoidXXL,
-			keys
+			keys,
+			forceUseBreakpoint,
+			responsiveContext
 		);
 	});
 
@@ -220,6 +237,7 @@ const getLastBreakpointAttribute = ({
 	const { getSelectedBlockCount } = blockEditorStore || {
 		getSelectedBlockCount: () => 1, // Necessary for testing, mocking '@wordpress/data' is too dense
 	};
+	const responsiveContext = getResponsiveContext();
 
 	if (getSelectedBlockCount() > 1 && !forceSingle)
 		return getLastBreakpointAttributeGroup(
@@ -228,7 +246,8 @@ const getLastBreakpointAttribute = ({
 			isHover,
 			avoidXXL,
 			keys,
-			forceUseBreakpoint
+			forceUseBreakpoint,
+			responsiveContext
 		);
 
 	return getLastBreakpointAttributeSingle(
@@ -238,7 +257,8 @@ const getLastBreakpointAttribute = ({
 		isHover,
 		avoidXXL,
 		keys,
-		forceUseBreakpoint
+		forceUseBreakpoint,
+		responsiveContext
 	);
 };
 

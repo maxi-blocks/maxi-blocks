@@ -660,6 +660,12 @@ body.maxi-blocks--active.branch-6-8
 
 /** Fix templates padding in the editor */
 
+/** Remove classic theme's 8px editor-styles-wrapper padding (from classic.min.css)
+ * so full-width container blocks span the full editor width */
+html body.maxi-blocks--active.editor-styles-wrapper {
+	padding: 0;
+}
+
 body.maxi-blocks--active .editor-styles-wrapper .has-global-padding,
 body.maxi-blocks--active
 	.is-root-container.is-desktop-preview.has-global-padding {

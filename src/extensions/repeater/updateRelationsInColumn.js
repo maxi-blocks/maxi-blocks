@@ -7,6 +7,11 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getClientIdFromUniqueId } from '@extensions/attributes';
+import {
+	addRepeaterPerfCount,
+	measureRepeaterPerf,
+	startRepeaterPerfBucket,
+} from './perf';
 import { getBlockColumnClientId, getBlockPosition } from './utils';
 
 /**
@@ -26,64 +31,168 @@ const updateRelationsInColumn = (
 	innerBlocksPositions,
 	validationContext = null
 ) => {
+	const perfSession = validationContext?.perfSession;
+
 	if (!attributes.relations) {
+		addRepeaterPerfCount(
+			perfSession,
+			'updateRelationsInColumn.skippedNoRelations',
+			1
+		);
 		return;
 	}
 
-	const { getBlock } = select('core/block-editor');
-	const relationInfoCache = validationContext?.relationInfoCache;
+	addRepeaterPerfCount(perfSession, 'updateRelationsInColumn.calls', 1);
 
-	const getRelationInfo = uniqueID => {
-		if (!relationInfoCache) {
-			return null;
-		}
+	measureRepeaterPerf(perfSession, 'updateRelationsInColumn.total', () => {
+		const { getBlock } = select('core/block-editor');
+		const relationInfoCache = validationContext?.relationInfoCache;
 
-		if (!relationInfoCache.has(uniqueID)) {
-			const relationClientId = getClientIdFromUniqueId(uniqueID);
-			const relationColumnClientId = getBlockColumnClientId(
-				relationClientId,
-				innerBlocksPositions
+		const getRelationInfo = uniqueID => {
+			if (!relationInfoCache) {
+				return null;
+			}
+
+			if (!relationInfoCache.has(uniqueID)) {
+				addRepeaterPerfCount(
+					perfSession,
+					'updateRelationsInColumn.cacheMisses',
+					1
+				);
+				const stopCacheMissLookup = startRepeaterPerfBucket(
+					perfSession,
+					'updateRelationsInColumn.cacheMissLookup'
+				);
+				const relationClientId = getClientIdFromUniqueId(uniqueID);
+				const relationColumnClientId = getBlockColumnClientId(
+					relationClientId,
+					innerBlocksPositions
+				);
+				const blockPosition = getBlockPosition(
+					relationClientId,
+					innerBlocksPositions
+				);
+				stopCacheMissLookup();
+
+				relationInfoCache.set(uniqueID, {
+					relationColumnClientId,
+					clientIdsAtPosition:
+						blockPosition && innerBlocksPositions?.[blockPosition]
+							? innerBlocksPositions[blockPosition]
+							: null,
+					uniqueIdByColumn: new Map(),
+				});
+			} else {
+				addRepeaterPerfCount(
+					perfSession,
+					'updateRelationsInColumn.cacheHits',
+					1
+				);
+			}
+
+			return relationInfoCache.get(uniqueID);
+		};
+
+		attributes.relations = attributes.relations.map(relation => {
+			addRepeaterPerfCount(
+				perfSession,
+				'updateRelationsInColumn.relations',
+				1
 			);
-			const blockPosition = getBlockPosition(
-				relationClientId,
-				innerBlocksPositions
-			);
+			const { uniqueID } = relation;
 
-			relationInfoCache.set(uniqueID, {
-				relationColumnClientId,
-				clientIdsAtPosition:
-					blockPosition && innerBlocksPositions?.[blockPosition]
+			if (!uniqueID) {
+				return relation;
+			}
+
+			const cachedRelationInfo = getRelationInfo(uniqueID);
+			const stopLookupRelationColumn = startRepeaterPerfBucket(
+				perfSession,
+				'updateRelationsInColumn.lookupRelationColumn'
+			);
+			const relationColumnClientId =
+				cachedRelationInfo?.relationColumnClientId ??
+				getBlockColumnClientId(
+					getClientIdFromUniqueId(uniqueID),
+					innerBlocksPositions
+				);
+			stopLookupRelationColumn();
+
+			if (relationColumnClientId !== oldColumnClientId) {
+				return relation;
+			}
+
+			if (cachedRelationInfo?.uniqueIdByColumn?.has(newColumnClientId)) {
+				addRepeaterPerfCount(
+					perfSession,
+					'updateRelationsInColumn.columnMapCacheHits',
+					1
+				);
+				const mappedUniqueID =
+					cachedRelationInfo.uniqueIdByColumn.get(newColumnClientId);
+
+				if (mappedUniqueID) {
+					addRepeaterPerfCount(
+						perfSession,
+						'updateRelationsInColumn.mappedRelations',
+						1
+					);
+				}
+
+				return mappedUniqueID
+					? {
+							...relation,
+							uniqueID: mappedUniqueID,
+					  }
+					: relation;
+			}
+
+			const stopResolveMappedTarget = startRepeaterPerfBucket(
+				perfSession,
+				'updateRelationsInColumn.resolveMappedTarget'
+			);
+			const clientIdsAtPosition =
+				cachedRelationInfo?.clientIdsAtPosition ??
+				(() => {
+					const relationClientId = getClientIdFromUniqueId(uniqueID);
+					const blockPosition = getBlockPosition(
+						relationClientId,
+						innerBlocksPositions
+					);
+
+					return blockPosition &&
+						innerBlocksPositions?.[blockPosition]
 						? innerBlocksPositions[blockPosition]
-						: null,
-				uniqueIdByColumn: new Map(),
-			});
-		}
+						: null;
+				})();
 
-		return relationInfoCache.get(uniqueID);
-	};
+			if (!clientIdsAtPosition) {
+				stopResolveMappedTarget();
+				return relation;
+			}
 
-	attributes.relations = attributes.relations.map(relation => {
-		const { uniqueID } = relation;
-
-		if (!uniqueID) {
-			return relation;
-		}
-
-		const cachedRelationInfo = getRelationInfo(uniqueID);
-		const relationColumnClientId =
-			cachedRelationInfo?.relationColumnClientId ??
-			getBlockColumnClientId(
-				getClientIdFromUniqueId(uniqueID),
-				innerBlocksPositions
+			const newRelationClientId = clientIdsAtPosition.find(
+				clientId =>
+					getBlockColumnClientId(clientId, innerBlocksPositions) ===
+					newColumnClientId
 			);
 
-		if (relationColumnClientId !== oldColumnClientId) {
-			return relation;
-		}
+			const newBlock = getBlock(newRelationClientId);
+			const mappedUniqueID = newBlock?.attributes?.uniqueID;
+			stopResolveMappedTarget();
 
-		if (cachedRelationInfo?.uniqueIdByColumn?.has(newColumnClientId)) {
-			const mappedUniqueID =
-				cachedRelationInfo.uniqueIdByColumn.get(newColumnClientId);
+			cachedRelationInfo?.uniqueIdByColumn?.set(
+				newColumnClientId,
+				mappedUniqueID || null
+			);
+
+			if (mappedUniqueID) {
+				addRepeaterPerfCount(
+					perfSession,
+					'updateRelationsInColumn.mappedRelations',
+					1
+				);
+			}
 
 			return mappedUniqueID
 				? {
@@ -91,46 +200,7 @@ const updateRelationsInColumn = (
 						uniqueID: mappedUniqueID,
 				  }
 				: relation;
-		}
-
-		const clientIdsAtPosition =
-			cachedRelationInfo?.clientIdsAtPosition ??
-			(() => {
-				const relationClientId = getClientIdFromUniqueId(uniqueID);
-				const blockPosition = getBlockPosition(
-					relationClientId,
-					innerBlocksPositions
-				);
-
-				return blockPosition && innerBlocksPositions?.[blockPosition]
-					? innerBlocksPositions[blockPosition]
-					: null;
-			})();
-
-		if (!clientIdsAtPosition) {
-			return relation;
-		}
-
-		const newRelationClientId = clientIdsAtPosition.find(
-			clientId =>
-				getBlockColumnClientId(clientId, innerBlocksPositions) ===
-				newColumnClientId
-		);
-
-		const newBlock = getBlock(newRelationClientId);
-		const mappedUniqueID = newBlock?.attributes?.uniqueID;
-
-		cachedRelationInfo?.uniqueIdByColumn?.set(
-			newColumnClientId,
-			mappedUniqueID || null
-		);
-
-		return mappedUniqueID
-			? {
-					...relation,
-					uniqueID: mappedUniqueID,
-			  }
-			: relation;
+		});
 	});
 };
 

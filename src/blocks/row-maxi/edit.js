@@ -39,6 +39,10 @@ import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
 import { retrieveInnerBlocksPositions } from '@extensions/repeater';
+import {
+	incrementRepeaterAggregate,
+	measureRepeaterAggregate,
+} from '@extensions/repeater/perf';
 import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
@@ -220,16 +224,20 @@ class edit extends MaxiBlockComponent {
 	}
 
 	updateInnerBlocksPositions = () => {
-		const columnClientIds = select('core/block-editor').getBlockOrder(
-			this.props.clientId
-		);
-		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
-			columnClientIds
-		);
+		return measureRepeaterAggregate(
+			'row.updateInnerBlocksPositions',
+			() => {
+				const columnClientIds = select(
+					'core/block-editor'
+				).getBlockOrder(this.props.clientId);
+				const newInnerBlocksPositions =
+					retrieveInnerBlocksPositions(columnClientIds);
 
-		this.innerBlocksPositions = newInnerBlocksPositions;
+				this.innerBlocksPositions = newInnerBlocksPositions;
 
-		return newInnerBlocksPositions;
+				return newInnerBlocksPositions;
+			}
+		);
 	};
 
 	getInnerBlocksPositions = () => {
@@ -242,9 +250,11 @@ class edit extends MaxiBlockComponent {
 			return {};
 
 		if (isEmpty(this.innerBlocksPositions)) {
+			incrementRepeaterAggregate('row.getInnerBlocksPositions.cacheMiss');
 			return this.updateInnerBlocksPositions();
 		}
 
+		incrementRepeaterAggregate('row.getInnerBlocksPositions.cacheHit');
 		return this.innerBlocksPositions;
 	};
 

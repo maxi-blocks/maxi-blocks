@@ -13,6 +13,11 @@ import ToggleSwitch from '@components/toggle-switch';
 import DialogBox from '@components/dialog-box';
 import { getAttributeKey, getAttributeValue } from '@extensions/styles';
 import { validateRowColumnsStructure } from '@extensions/repeater';
+import {
+	createRepeaterPerfSession,
+	measureRepeaterPerf,
+	startRepeaterPerfBucket,
+} from '@extensions/repeater/perf';
 
 const Repeater = ({
 	clientId,
@@ -50,23 +55,49 @@ const Repeater = ({
 							return;
 						}
 
-						const isStructureValidated =
-							await validateRowColumnsStructure(
-								clientId,
-								updateInnerBlocksPositions,
-								async () =>
-									new Promise(resolve => {
-										setIsModalHidden(false);
-										setResolveConfirmation(() => resolve);
-									}),
-								undefined,
-								true
+						const perfSession = createRepeaterPerfSession(
+							'repeaterToggle.enable',
+							{
+								rowClientId: clientId,
+							}
+						);
+						let isStructureValidated = false;
+
+						try {
+							isStructureValidated = await measureRepeaterPerf(
+								perfSession,
+								'toggle.validateRowColumnsStructure',
+								() =>
+									validateRowColumnsStructure(
+										clientId,
+										updateInnerBlocksPositions,
+										async () =>
+											new Promise(resolve => {
+												setIsModalHidden(false);
+												setResolveConfirmation(
+													() => resolve
+												);
+											}),
+										undefined,
+										true
+									)
 							);
 
-						if (isStructureValidated) {
-							markNextChangeAsNotPersistent();
-							onChange({
-								[getAttributeKey('repeater-status')]: val,
+							if (isStructureValidated) {
+								markNextChangeAsNotPersistent();
+								const stopToggleCommit =
+									startRepeaterPerfBucket(
+										perfSession,
+										'toggle.commitRepeaterStatus'
+									);
+								onChange({
+									[getAttributeKey('repeater-status')]: val,
+								});
+								stopToggleCommit();
+							}
+						} finally {
+							perfSession?.flush({
+								result: isStructureValidated,
 							});
 						}
 					}}

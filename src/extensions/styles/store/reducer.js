@@ -8,6 +8,11 @@ import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const cssCacheInputState = new Map();
+const hasCompleteBreakpointCache = cacheEntry =>
+	BREAKPOINTS.every(
+		breakpoint => typeof cacheEntry?.[breakpoint] === 'string'
+	);
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
@@ -135,6 +140,7 @@ class CSSCache extends MemoCache {
 						window.localStorage &&
 						localStorage.getItem('maxiBlocks-debug') === 'true');
 				if (isDebugMode) {
+					// eslint-disable-next-line no-console
 					console.log(
 						`MaxiBlocks CSS Cache: Auto-cleanup triggered. Reduced from ${oldSize} to ${newSize} entries`
 					);
@@ -189,6 +195,19 @@ function reducer(
 ) {
 	switch (action.type) {
 		case 'UPDATE_STYLES': {
+			const nextStyleEntries = Object.entries(action.styles || {});
+			if (!nextStyleEntries.length) {
+				return state;
+			}
+
+			const hasChangedStyles = nextStyleEntries.some(
+				([target, targetStyles]) =>
+					state.styles[target] !== targetStyles
+			);
+			if (!hasChangedStyles) {
+				return state;
+			}
+
 			const chunkSize = 100;
 			const chunks = chunkStylesIntoChunks(action.styles, chunkSize);
 
@@ -219,6 +238,16 @@ function reducer(
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
 			const existingCache = state.cssCache.get(uniqueID) || {};
+			const previousCacheInput = cssCacheInputState.get(uniqueID);
+
+			if (
+				previousCacheInput?.stylesObj === stylesObj &&
+				previousCacheInput?.isIframe === isIframe &&
+				previousCacheInput?.isSiteEditor === isSiteEditor &&
+				hasCompleteBreakpointCache(existingCache)
+			) {
+				return state;
+			}
 
 			const breakpointStyles = BREAKPOINTS.reduce(
 				(acc, breakpoint) => ({
@@ -237,6 +266,11 @@ function reducer(
 
 			// Use LRU cache set method (automatically handles size limits)
 			state.cssCache.set(uniqueID, breakpointStyles);
+			cssCacheInputState.set(uniqueID, {
+				stylesObj,
+				isIframe,
+				isSiteEditor,
+			});
 
 			return { ...state };
 		}
@@ -260,6 +294,7 @@ function reducer(
 
 			// Use LRU cache delete method
 			state.cssCache.delete(uniqueID);
+			cssCacheInputState.delete(uniqueID);
 
 			return { ...state };
 		}
@@ -287,6 +322,7 @@ export const cssCacheUtils = {
 	 */
 	clearCache() {
 		cssCache.clear();
+		cssCacheInputState.clear();
 	},
 
 	/**

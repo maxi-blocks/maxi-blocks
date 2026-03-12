@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { dispatch } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -12,6 +12,10 @@ import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
  * Internal dependencies
  */
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
+import {
+	incrementRepeaterAggregate,
+	measureRepeaterAggregate,
+} from '@extensions/repeater/perf';
 
 /**
  * Styles resolver with LRU cache optimization
@@ -132,6 +136,81 @@ const getCleanContent = content => {
 	return newContent;
 };
 
+const checkStyleResolverMemoryUsage = (maxSize = 1000) => {
+	return measureRepeaterAggregate('styleResolver.trimCaches', () => {
+		let totalSize =
+			styleCache.size() +
+			cleanContentCache.size() +
+			getCleanContentCache.size();
+		if (totalSize <= maxSize) return;
+
+		const initialSize = totalSize;
+		const cachesEvicted = [];
+
+		// First, evict oldest entries from styleCache until within limit or empty
+		let styleCacheEvicted = 0;
+		while (totalSize > maxSize && styleCache.size() > 0) {
+			// Get first (oldest) key from styleCache's underlying Map
+			const oldestKey = styleCache.cache.keys().next().value;
+			styleCache.cache.delete(oldestKey);
+			styleCacheEvicted += 1;
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+		if (styleCacheEvicted > 0) {
+			cachesEvicted.push(`styleCache (${styleCacheEvicted} entries)`);
+			incrementRepeaterAggregate(
+				'styleResolver.trimmedStyleCacheEntries',
+				styleCacheEvicted
+			);
+		}
+
+		// If still over threshold, clear cleanContentCache
+		if (totalSize > maxSize) {
+			cleanContentCache.clear();
+			cachesEvicted.push('cleanContentCache (all)');
+			incrementRepeaterAggregate(
+				'styleResolver.trimmedCleanContentCache',
+				1
+			);
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
+		// If still over threshold, clear getCleanContentCache
+		if (totalSize > maxSize) {
+			getCleanContentCache.clear();
+			cachesEvicted.push('getCleanContentCache (all)');
+			incrementRepeaterAggregate(
+				'styleResolver.trimmedGetCleanContentCache',
+				1
+			);
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
+		console.warn(
+			`MaxiBlocks StyleResolver: Trimmed caches due to memory usage (${initialSize} > ${maxSize}). ` +
+				`Evicted: ${cachesEvicted.join(', ')}. Final size: ${totalSize}`
+		);
+	});
+};
+
+const isStoreAlreadySynced = styles => {
+	const styleSelectors = select('maxiBlocks/styles');
+
+	return Object.entries(styles).every(
+		([target, targetStyles]) =>
+			styleSelectors?.getBlockStyles?.(target) === targetStyles
+	);
+};
+
 const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!styles) return {};
 
@@ -140,57 +219,77 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	cacheStats.totalRequests += 1;
 
 	if (cacheStats.totalRequests % CACHE_CHECK_INTERVAL === 0) {
-		styleCacheUtils.checkMemoryUsage(150);
+		checkStyleResolverMemoryUsage(150);
 	}
 
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
-	if (
-		!remover &&
-		canCacheByKeyLength(cacheKey, MAX_STYLE_CACHE_KEY_LENGTH)
-	) {
+	if (!remover && canCacheByKeyLength(cacheKey, MAX_STYLE_CACHE_KEY_LENGTH)) {
 		const cached = styleCache.get(cacheKey);
 		if (cached !== undefined) {
 			cacheStats.hits += 1;
+			incrementRepeaterAggregate('styleResolver.cacheHit', 1);
 			// BUGFIX: Even on cache hit, update Redux store so it has current styles for DB save
-			Object.entries(cached).forEach(([target]) => {
-				dispatch('maxiBlocks/styles').updateStyles(target, cached);
-			});
+			if (
+				!measureRepeaterAggregate(
+					'styleResolver.cacheHitSyncCheck',
+					() => isStoreAlreadySynced(cached)
+				)
+			) {
+				measureRepeaterAggregate(
+					'styleResolver.dispatchUpdateStyles',
+					() =>
+						dispatch('maxiBlocks/styles').updateStyles(null, cached)
+				);
+			} else {
+				incrementRepeaterAggregate('styleResolver.cacheHitNoopSync', 1);
+			}
 			return cached;
 		}
 		cacheStats.misses += 1;
+		incrementRepeaterAggregate('styleResolver.cacheMiss', 1);
 	}
 
 	const response = (remover && []) || {};
 
-	Object.entries(styles).forEach(([target, props]) => {
-		if (!remover) {
-			if (!response[target])
-				response[target] = {
-					uniqueID,
-					breakpoints,
-					content: {},
-				};
-			response[target].content = props;
-		}
-		if (remover) response.push(target);
+	measureRepeaterAggregate('styleResolver.buildResponse', () => {
+		Object.entries(styles).forEach(([target, props]) => {
+			if (!remover) {
+				if (!response[target])
+					response[target] = {
+						uniqueID,
+						breakpoints,
+						content: {},
+					};
+				response[target].content = props;
+			}
+			if (remover) response.push(target);
 
-		if (response?.[target]?.content)
-			response[target].content = getCleanContent(
-				response[target].content
-			);
-
-		if (!remover)
-			dispatch('maxiBlocks/styles').updateStyles(target, response);
-		else dispatch('maxiBlocks/styles').removeStyles(response);
+			if (response?.[target]?.content)
+				response[target].content = getCleanContent(
+					response[target].content
+				);
+		});
 	});
+
+	if (!remover) {
+		measureRepeaterAggregate('styleResolver.dispatchUpdateStyles', () =>
+			dispatch('maxiBlocks/styles').updateStyles(null, response)
+		);
+	} else {
+		measureRepeaterAggregate('styleResolver.dispatchRemoveStyles', () =>
+			dispatch('maxiBlocks/styles').removeStyles(response)
+		);
+	}
 
 	// Cache the result for non-remover operations
 	if (!remover) {
-		trySetCache(
-			styleCache,
-			cacheKey,
-			response,
-			MAX_STYLE_CACHE_VALUE_LENGTH
+		measureRepeaterAggregate('styleResolver.cacheSet', () =>
+			trySetCache(
+				styleCache,
+				cacheKey,
+				response,
+				MAX_STYLE_CACHE_VALUE_LENGTH
+			)
 		);
 	}
 
@@ -267,55 +366,7 @@ export const styleCacheUtils = {
 	 * @param {number} maxSize - Maximum total cache size before clearing
 	 */
 	checkMemoryUsage(maxSize = 1000) {
-		let totalSize =
-			styleCache.size() +
-			cleanContentCache.size() +
-			getCleanContentCache.size();
-		if (totalSize <= maxSize) return;
-
-		const initialSize = totalSize;
-		const cachesEvicted = [];
-
-		// First, evict oldest entries from styleCache until within limit or empty
-		let styleCacheEvicted = 0;
-		while (totalSize > maxSize && styleCache.size() > 0) {
-			// Get first (oldest) key from styleCache's underlying Map
-			const oldestKey = styleCache.cache.keys().next().value;
-			styleCache.cache.delete(oldestKey);
-			styleCacheEvicted += 1;
-			totalSize =
-				styleCache.size() +
-				cleanContentCache.size() +
-				getCleanContentCache.size();
-		}
-		if (styleCacheEvicted > 0) {
-			cachesEvicted.push(`styleCache (${styleCacheEvicted} entries)`);
-		}
-
-		// If still over threshold, clear cleanContentCache
-		if (totalSize > maxSize) {
-			cleanContentCache.clear();
-			cachesEvicted.push('cleanContentCache (all)');
-			totalSize =
-				styleCache.size() +
-				cleanContentCache.size() +
-				getCleanContentCache.size();
-		}
-
-		// If still over threshold, clear getCleanContentCache
-		if (totalSize > maxSize) {
-			getCleanContentCache.clear();
-			cachesEvicted.push('getCleanContentCache (all)');
-			totalSize =
-				styleCache.size() +
-				cleanContentCache.size() +
-				getCleanContentCache.size();
-		}
-
-		console.warn(
-			`MaxiBlocks StyleResolver: Trimmed caches due to memory usage (${initialSize} > ${maxSize}). ` +
-				`Evicted: ${cachesEvicted.join(', ')}. Final size: ${totalSize}`
-		);
+		checkStyleResolverMemoryUsage(maxSize);
 	},
 };
 

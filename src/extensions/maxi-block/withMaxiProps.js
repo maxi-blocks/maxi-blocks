@@ -34,6 +34,7 @@ import {
 	getBlockColumnClientId,
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import { measureRepeaterAggregate } from '@extensions/repeater/perf';
 
 /**
  * External dependencies
@@ -56,6 +57,12 @@ const withMaxiProps = createHigherOrderComponent(
 			} = ownProps;
 
 			const repeaterContext = useContext(RepeaterContext);
+			const repeaterStatus = !!repeaterContext?.repeaterStatus;
+			const repeaterRowClientId = repeaterContext?.repeaterRowClientId;
+			const getRepeaterInnerBlocksPositions =
+				repeaterContext?.getInnerBlocksPositions;
+			const updateRepeaterInnerBlocksPositions =
+				repeaterContext?.updateInnerBlocksPositions;
 
 			// Track previous relations to detect unexpected clearing
 			const prevRelationsRef = useRef(attributes?.relations);
@@ -116,30 +123,46 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const parentColumnClientId = useMemo(() => {
-				if (repeaterContext?.repeaterStatus) {
-					const innerBlockPositions =
-						repeaterContext?.getInnerBlocksPositions();
-
-					return getBlockColumnClientId(
-						clientId,
-						innerBlockPositions
-					);
+			const repeaterInnerBlocksPositions = useMemo(() => {
+				if (!repeaterStatus || !getRepeaterInnerBlocksPositions) {
+					return null;
 				}
 
-				return null;
-			}, [clientId, repeaterContext]);
+				return measureRepeaterAggregate(
+					'withMaxiProps.getInnerBlocksPositions',
+					() => getRepeaterInnerBlocksPositions()
+				);
+			}, [getRepeaterInnerBlocksPositions, repeaterStatus]);
 
-			const blockPositionFromColumn = useMemo(() => {
-				if (parentColumnClientId) {
-					return getBlockPosition(
-						clientId,
-						repeaterContext?.getInnerBlocksPositions()
-					);
-				}
+			const parentColumnClientId = useMemo(
+				() =>
+					measureRepeaterAggregate(
+						'withMaxiProps.parentColumnClientId',
+						() =>
+							repeaterInnerBlocksPositions
+								? getBlockColumnClientId(
+										clientId,
+										repeaterInnerBlocksPositions
+								  )
+								: null
+					),
+				[clientId, repeaterInnerBlocksPositions]
+			);
 
-				return null;
-			}, [clientId, parentColumnClientId, repeaterContext]);
+			const blockPositionFromColumn = useMemo(
+				() =>
+					measureRepeaterAggregate(
+						'withMaxiProps.blockPositionFromColumn',
+						() =>
+							parentColumnClientId && repeaterInnerBlocksPositions
+								? getBlockPosition(
+										clientId,
+										repeaterInnerBlocksPositions
+								  )
+								: null
+					),
+				[clientId, parentColumnClientId, repeaterInnerBlocksPositions]
+			);
 
 			const ref = useRef(null);
 			const styleObjKeys = useRef([]);
@@ -246,18 +269,19 @@ const withMaxiProps = createHigherOrderComponent(
 								newAttributes.blockStyle = originalBlockStyle;
 							}
 
-							if (!repeaterContext?.repeaterStatus) {
+							if (!repeaterStatus) {
 								return setAttributes(newAttributes);
 							}
 
 							const innerBlocksPositions =
-								repeaterContext?.getInnerBlocksPositions();
+								getRepeaterInnerBlocksPositions?.();
 							const blockPosition = getBlockPosition(
 								clientId,
 								innerBlocksPositions
 							);
 
-							const clientIds = innerBlocksPositions?.[blockPosition];
+							const clientIds =
+								innerBlocksPositions?.[blockPosition];
 							const columnClientId = getBlockColumnClientId(
 								clientId,
 								innerBlocksPositions
@@ -339,12 +363,16 @@ const withMaxiProps = createHigherOrderComponent(
 					attributes,
 					clientId,
 					setAttributes,
-					repeaterContext,
+					repeaterStatus,
+					getRepeaterInnerBlocksPositions,
 					copyPasteMapping,
 					contextLoopContext,
 					name,
 					insertInlineStyles,
 					cleanInlineStyles,
+					getBlock,
+					markNextChangeAsNotPersistent,
+					updateBlockAttributes,
 				]
 			);
 
@@ -370,79 +398,80 @@ const withMaxiProps = createHigherOrderComponent(
 				// No cleanup needed for this effect
 			}, [isSelected]);
 
-		// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
-		useEffect(() => {
-			const currentRelations = attributes?.relations;
-			const prevRelations = prevRelationsRef.current;
+			// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
+			useEffect(() => {
+				const currentRelations = attributes?.relations;
+				const prevRelations = prevRelationsRef.current;
 
-			// If we're intentionally setting relations (through maxiSetAttributes), don't restore
-			if (isSettingAttributesRef.current) {
-				isSettingAttributesRef.current = false;
-				prevRelationsRef.current = currentRelations;
-				return;
-			}
+				// If we're intentionally setting relations (through maxiSetAttributes), don't restore
+				if (isSettingAttributesRef.current) {
+					isSettingAttributesRef.current = false;
+					prevRelationsRef.current = currentRelations;
+					return;
+				}
 
-			// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
-			if (
-				prevRelations &&
-				Array.isArray(prevRelations) &&
-				prevRelations.length > 0 &&
-				(!currentRelations ||
-					(Array.isArray(currentRelations) &&
-						currentRelations.length < prevRelations.length))
-			) {
-				// Restore the previous relations
-				setAttributes({ relations: prevRelations });
-			}
+				// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
+				if (
+					prevRelations &&
+					Array.isArray(prevRelations) &&
+					prevRelations.length > 0 &&
+					(!currentRelations ||
+						(Array.isArray(currentRelations) &&
+							currentRelations.length < prevRelations.length))
+				) {
+					// Restore the previous relations
+					setAttributes({ relations: prevRelations });
+				}
 
-			// Update the ref for next render
-			if (
-				currentRelations &&
-				Array.isArray(currentRelations) &&
-				currentRelations.length > 0
-			) {
-				prevRelationsRef.current = currentRelations;
-			}
-		}, [attributes?.relations, setAttributes, clientId]);
+				// Update the ref for next render
+				if (
+					currentRelations &&
+					Array.isArray(currentRelations) &&
+					currentRelations.length > 0
+				) {
+					prevRelationsRef.current = currentRelations;
+				}
+			}, [attributes?.relations, setAttributes, clientId]);
 
 			// Effect for handling repeater block moves with proper cleanup
 			useEffect(() => {
-				if (!repeaterContext?.repeaterStatus) {
+				if (!repeaterStatus || !repeaterInnerBlocksPositions) {
 					return;
 				}
 
-				const innerBlocksPositions =
-					repeaterContext?.getInnerBlocksPositions();
-				if (!innerBlocksPositions) {
-					return;
-				}
+				measureRepeaterAggregate(
+					'withMaxiProps.blockMoveEffect',
+					() => {
+						const blockPositionFromInnerBlocks = getBlockPosition(
+							clientId,
+							repeaterInnerBlocksPositions
+						);
 
-				const blockPositionFromInnerBlocks = getBlockPosition(
-					clientId,
-					innerBlocksPositions
+						if (
+							blockPositionFromInnerBlocks &&
+							blockPositionFromColumn &&
+							!isEqual(
+								blockPositionFromInnerBlocks,
+								blockPositionFromColumn
+							)
+						) {
+							handleBlockMove(
+								clientId,
+								blockPositionFromInnerBlocks,
+								blockPositionFromColumn,
+								repeaterInnerBlocksPositions
+							);
+
+							updateRepeaterInnerBlocksPositions?.();
+						}
+					}
 				);
-
-				if (
-					blockPositionFromInnerBlocks &&
-					blockPositionFromColumn &&
-					!isEqual(
-						blockPositionFromInnerBlocks,
-						blockPositionFromColumn
-					)
-				) {
-					handleBlockMove(
-						clientId,
-						blockPositionFromInnerBlocks,
-						blockPositionFromColumn,
-						innerBlocksPositions
-					);
-
-					repeaterContext?.updateInnerBlocksPositions();
-				}
 			}, [
 				blockPositionFromColumn,
-				repeaterContext?.repeaterStatus,
+				repeaterStatus,
 				clientId,
+				repeaterInnerBlocksPositions,
+				updateRepeaterInnerBlocksPositions,
 			]);
 
 			return (
@@ -468,15 +497,13 @@ const withMaxiProps = createHigherOrderComponent(
 							)
 						}
 						hasSelectedChild={hasSelectedChild}
-						repeaterStatus={repeaterContext?.repeaterStatus}
-						repeaterRowClientId={
-							repeaterContext?.repeaterRowClientId
-						}
+						repeaterStatus={repeaterStatus}
+						repeaterRowClientId={repeaterRowClientId}
 						getInnerBlocksPositions={
-							repeaterContext?.getInnerBlocksPositions
+							getRepeaterInnerBlocksPositions
 						}
 						updateInnerBlocksPositions={
-							repeaterContext?.updateInnerBlocksPositions
+							updateRepeaterInnerBlocksPositions
 						}
 					/>
 					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (

@@ -1,13 +1,15 @@
 import reducer from '@extensions/styles/store/reducer';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
+import styleGenerator from '@extensions/styles/styleGenerator';
 import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(),
 }));
 jest.mock('@extensions/styles/styleGenerator', () =>
-	jest.fn((stylesObj, isIframe, isSiteEditor, breakpoint) =>
-		`.${breakpoint}-${stylesObj.color || 'none'}`
+	jest.fn(
+		(stylesObj, isIframe, isSiteEditor, breakpoint) =>
+			`.${breakpoint}-${stylesObj.color || 'none'}`
 	)
 );
 
@@ -19,24 +21,24 @@ jest.mock('@extensions/maxi-block/memoizationHelper', () => ({
 		memoryStats: {
 			totalSize: 0,
 			averageSize: 0,
-			lastCleanup: Date.now()
+			lastCleanup: Date.now(),
 		},
-		get: jest.fn(function(key) {
+		get: jest.fn(function (key) {
 			return this.cache.get(key);
 		}),
-		set: jest.fn(function(key, value) {
+		set: jest.fn(function (key, value) {
 			this.cache.set(key, value);
 		}),
-		delete: jest.fn(function(key) {
+		delete: jest.fn(function (key) {
 			return this.cache.delete(key);
 		}),
-		clear: jest.fn(function() {
+		clear: jest.fn(function () {
 			this.cache.clear();
 		}),
-		size: jest.fn(function() {
+		size: jest.fn(function () {
 			return this.cache.size;
 		}),
-		has: jest.fn(function(key) {
+		has: jest.fn(function (key) {
 			return this.cache.has(key);
 		}),
 		checkMemoryUsage: jest.fn(),
@@ -46,47 +48,19 @@ jest.mock('@extensions/maxi-block/memoizationHelper', () => ({
 			totalSize: 0,
 			averageSize: 0,
 			lastCleanup: Date.now(),
-			hitRate: 0
-		}))
-	}))
+			hitRate: 0,
+		})),
+	})),
 }));
 
 describe('styles store reducer', () => {
-	// Helper to create a mock cache instance for testing
-	const createMockCache = () => {
-		const cache = new Map();
-		return {
-			cache,
-			maxSize: 200,
-			memoryStats: {
-				totalSize: 0,
-				averageSize: 0,
-				lastCleanup: Date.now()
-			},
-			get: (key) => cache.get(key),
-			set: (key, value) => cache.set(key, value),
-			delete: (key) => cache.delete(key),
-			clear: () => cache.clear(),
-			size: () => cache.size,
-			has: (key) => cache.has(key),
-			checkMemoryUsage: jest.fn(),
-			getStats: () => ({
-				size: cache.size,
-				maxSize: 200,
-				totalSize: 0,
-				averageSize: 0,
-				lastCleanup: Date.now(),
-				hitRate: 0
-			})
-		};
-	};
-
 	const getInitialState = () => {
 		const state = reducer(undefined, { type: 'INIT' });
 		return state;
 	};
 
 	beforeEach(() => {
+		styleGenerator.mockClear();
 		select.mockImplementation(store => {
 			if (store === 'maxiBlocks') {
 				return {
@@ -118,7 +92,7 @@ describe('styles store reducer', () => {
 			prevSavedAttrs: [],
 			prevSavedAttrsClientId: null,
 			blockMarginValue: '',
-			defaultGroupAttributes
+			defaultGroupAttributes,
 		});
 
 		// Check that cssCache is a CSSCache instance with required methods
@@ -181,6 +155,20 @@ describe('styles store reducer', () => {
 			expect(Object.keys(result.styles).length).toBe(150);
 			expect(result.styles.block0).toEqual({ color: 'color0' });
 			expect(result.styles.block149).toEqual({ color: 'color149' });
+		});
+
+		it('Returns the same state for no-op style updates', () => {
+			const state = getInitialState();
+			const sharedStyles = { color: 'red' };
+			state.styles = { block1: sharedStyles };
+
+			const action = {
+				type: 'UPDATE_STYLES',
+				styles: { block1: sharedStyles },
+			};
+			const result = reducer(state, action);
+
+			expect(result).toBe(state);
 		});
 	});
 
@@ -247,6 +235,26 @@ describe('styles store reducer', () => {
 			expect(state.cssCache.get('block0')).toBeDefined();
 			expect(state.cssCache.get('block4')).toBeDefined();
 		});
+
+		it('Returns existing state when the full cache already matches the same inputs', () => {
+			const state = getInitialState();
+			const stylesObj = { color: 'red' };
+			const action = {
+				type: 'SAVE_CSS_CACHE',
+				uniqueID: 'block1',
+				stylesObj,
+				isIframe: false,
+				isSiteEditor: false,
+			};
+
+			const firstResult = reducer(state, action);
+			styleGenerator.mockClear();
+
+			const secondResult = reducer(firstResult, action);
+
+			expect(secondResult).toBe(firstResult);
+			expect(styleGenerator).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('SAVE_RAW_CSS_CACHE action', () => {
@@ -267,7 +275,7 @@ describe('styles store reducer', () => {
 			const rawAction = {
 				type: 'SAVE_RAW_CSS_CACHE',
 				uniqueID: 'block1',
-				stylesContent: { rawCSS: '.custom { display: block; }' }
+				stylesContent: { rawCSS: '.custom { display: block; }' },
 			};
 			const result = reducer(state, rawAction);
 
@@ -281,7 +289,7 @@ describe('styles store reducer', () => {
 			const action = {
 				type: 'SAVE_RAW_CSS_CACHE',
 				uniqueID: 'block1',
-				stylesContent: { rawCSS: '.custom { display: block; }' }
+				stylesContent: { rawCSS: '.custom { display: block; }' },
 			};
 			const result = reducer(getInitialState(), action);
 
@@ -312,7 +320,7 @@ describe('styles store reducer', () => {
 			// Remove the cache entry
 			const removeAction = {
 				type: 'REMOVE_CSS_CACHE',
-				uniqueID: 'block1'
+				uniqueID: 'block1',
 			};
 			const result = reducer(state, removeAction);
 

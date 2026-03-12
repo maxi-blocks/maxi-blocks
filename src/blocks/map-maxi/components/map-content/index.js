@@ -46,6 +46,102 @@ const loadGoogleMapsApi = apiKey => {
 	return googleMapsPromise;
 };
 
+/**
+ * Patches Leaflet's drag handler for the Gutenberg API 3 iframe scenario.
+ *
+ * How the problem arises:
+ *   - Block scripts execute in the OUTER frame's JS context (window/document).
+ *   - Leaflet's Draggable._onDown registers its temporary mousemove/mouseup
+ *     listeners on the outer `document`.
+ *   - React portals the block DOM into the editor iframe, so mouse events fire
+ *     on the iframe's document, never reaching the outer document's listeners.
+ *   - Result: Leaflet never receives mouseup → drag state is stuck forever.
+ *
+ * The fix:
+ *   - Detect the mismatch via map.getContainer().ownerDocument !== document.
+ *   - While a drag is active (mouse down on map), forward mousemove and mouseup
+ *     from the iframe's document to the outer document where Leaflet listens.
+ *   - Coordinates stay in iframe-space, which is fine because Leaflet's drag
+ *     only uses deltas between consecutive positions (not absolute coords).
+ *
+ * @param {L.Map} map - Leaflet map instance.
+ */
+const applyIframeDragFix = map => {
+	const container = map.getContainer();
+	const containerDoc = container.ownerDocument;
+	const outerDoc = document; // Outer frame document = where Leaflet drag handler listens
+
+	if (containerDoc === outerDoc) {
+		console.log(
+			'[MapMaxi] Map container is in the same document – no iframe drag fix needed'
+		);
+		return;
+	}
+
+	console.log(
+		'[MapMaxi] Map container is inside an iframe document – applying Leaflet drag fix (forwarding iframe events → outer document)'
+	);
+
+	let isDragActive = false;
+
+	/**
+	 * Dispatch a synthetic mouse event on the outer document so Leaflet's
+	 * drag handler (Draggable._onMove / _onUp) receives it.
+	 * Coordinates are kept as-is (iframe-space) because Leaflet only uses deltas.
+	 *
+	 * @param {string}     type - 'mousemove' or 'mouseup'
+	 * @param {MouseEvent} e    - Original event from the iframe document.
+	 */
+	const forwardToOuter = (type, e) => {
+		const syntheticEvent = new MouseEvent(type, {
+			bubbles: true,
+			cancelable: true,
+			view: outerDoc.defaultView,
+			clientX: e.clientX,
+			clientY: e.clientY,
+			screenX: e.screenX,
+			screenY: e.screenY,
+			button: e.button,
+			buttons: e.buttons,
+			movementX: e.movementX,
+			movementY: e.movementY,
+		});
+		outerDoc.dispatchEvent(syntheticEvent);
+	};
+
+	const onIframeMouseMove = e => {
+		if (isDragActive) forwardToOuter('mousemove', e);
+	};
+
+	const onIframeMouseUp = e => {
+		if (!isDragActive) return;
+		isDragActive = false;
+		forwardToOuter('mouseup', e);
+		console.log(
+			'[MapMaxi] iframe mouseup forwarded to outer document – Leaflet drag ended'
+		);
+	};
+
+	// Activate forwarding when the user starts interacting with the map.
+	container.addEventListener('mousedown', () => {
+		isDragActive = true;
+		console.log(
+			'[MapMaxi] map mousedown – forwarding iframe events to outer document'
+		);
+	});
+
+	containerDoc.addEventListener('mousemove', onIframeMouseMove);
+	containerDoc.addEventListener('mouseup', onIframeMouseUp);
+
+	map.on('remove', () => {
+		containerDoc.removeEventListener('mousemove', onIframeMouseMove);
+		containerDoc.removeEventListener('mouseup', onIframeMouseUp);
+		console.log(
+			'[MapMaxi] Map removed – cleaned up iframe drag fix listeners'
+		);
+	});
+};
+
 const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 	const map = useMap();
 	const [loadError, setLoadError] = useState(null);
@@ -172,6 +268,14 @@ const MapContent = props => {
 
 	const resizeMap = map => {
 		if (!map) return;
+
+		console.log(
+			`[MapMaxi] Map ready – uniqueID: ${JSON.stringify(uniqueID)}, isIframe: ${JSON.stringify(window !== window.parent)}`
+		);
+
+		// Apply the drag fix before anything else so Leaflet's internal
+		// drag handler is already set up when we start listening on the parent.
+		applyIframeDragFix(map);
 
 		// To get rid of the grey bars, we need to update the map size
 		const resizeObserver = new ResizeObserver(() => {

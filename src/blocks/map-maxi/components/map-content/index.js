@@ -282,17 +282,29 @@ const MapContent = props => {
 			`[MapMaxi] Map ready – uniqueID: ${JSON.stringify(uniqueID)}, isIframe: ${JSON.stringify(window !== window.parent)}, mapSize: ${JSON.stringify(mapSize)}, containerOffsetHeight: ${JSON.stringify(containerEl?.offsetHeight)}, containerClientHeight: ${JSON.stringify(containerEl?.clientHeight)}`
 		);
 
-		// Call invalidateSize immediately so Leaflet knows the real
-		// dimensions of the container from the start (fixes the grey-area
-		// at the bottom when the block is first inserted into the editor).
-		try {
-			map.invalidateSize({ animate: false, pan: false, duration: 0 });
-			console.log(
-				`[MapMaxi] invalidateSize on ready – new size: ${JSON.stringify(map.getSize())}`
-			);
-		} catch (e) {
-			// Ignore
-		}
+		const safeInvalidateSize = label => {
+			if (map._isDestroyed || !map.getContainer()) return;
+			try {
+				map.invalidateSize({ animate: false, pan: false, duration: 0 });
+				console.log(
+					`[MapMaxi] invalidateSize (${label}) – size: ${JSON.stringify(map.getSize())}`
+				);
+			} catch (e) {
+				// Ignore errors during resize
+			}
+		};
+
+		// Immediate attempt – covers the common case where CSS is already applied.
+		safeInvalidateSize('immediate');
+
+		// When the block is newly inserted the container CSS (height: 300px)
+		// may not have been applied yet, leaving Leaflet with height 0.  With
+		// height 0 every pixel→lat/lng calculation breaks and dragging sends
+		// the map to extreme latitudes.  We schedule several deferred attempts
+		// so whichever fires after the layout has settled wins.
+		requestAnimationFrame(() => safeInvalidateSize('rAF'));
+		setTimeout(() => safeInvalidateSize('100ms'), 100);
+		setTimeout(() => safeInvalidateSize('500ms'), 500);
 
 		// Apply the drag fix before anything else so Leaflet's internal
 		// drag handler is already set up when we start listening on the parent.

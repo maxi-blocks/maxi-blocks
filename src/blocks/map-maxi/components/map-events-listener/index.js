@@ -30,9 +30,13 @@ const MapEventsListener = props => {
 	const delayRef = useRef(null);
 
 	useEffect(() => {
-		setIsFirstClick(prev =>
-			isSelected === prev ? !isSelected : prev
-		);
+		setIsFirstClick(prev => {
+			const next = isSelected === prev ? !isSelected : prev;
+			console.log(
+				`[MapEventsListener] isSelected changed to ${JSON.stringify(isSelected)} – isFirstClick: ${JSON.stringify(prev)} → ${JSON.stringify(next)}`
+			);
+			return next;
+		});
 	}, [isSelected]);
 
 	const timeout = 300;
@@ -41,20 +45,36 @@ const MapEventsListener = props => {
 		mousedown: event => {
 			const elementClicked =
 				event.originalEvent.target.nodeName.toLowerCase();
+
+			console.log(
+				`[MapEventsListener] mousedown – elementClicked: ${JSON.stringify(elementClicked)}, isDraggingMarker: ${JSON.stringify(isDraggingMarker)}, isFirstClick: ${JSON.stringify(isFirstClick)}, isSelected: ${JSON.stringify(isSelected)}`
+			);
+
 			if (elementClicked === 'div') {
 				setIsDraggingMarker(false);
 			}
 			if (!isDraggingMarker && !isFirstClick) {
+				console.log(
+					'[MapEventsListener] Scheduling pin-drop timer (hold to add marker)'
+				);
 				delayRef.current = setTimeout(() => {
+					console.log(
+						'[MapEventsListener] Hold threshold reached – setIsAddingMarker(true)'
+					);
 					setIsAddingMarker(true);
 					setTimeout(() => {
 						// If hangs for too long, stop it.
 						setIsAddingMarker(false);
 					}, timeout * 5);
 				}, timeout);
+			} else {
+				console.log(
+					`[MapEventsListener] Pin-drop skipped – isDraggingMarker: ${JSON.stringify(isDraggingMarker)}, isFirstClick: ${JSON.stringify(isFirstClick)}`
+				);
 			}
 		},
 		drag: () => {
+			console.log('[MapEventsListener] drag – cancelling pin-drop timer');
 			clearTimeout(delayRef.current);
 			setIsAddingMarker(false);
 			setIsDraggingMarker(false);
@@ -62,9 +82,17 @@ const MapEventsListener = props => {
 		mouseup: event => {
 			clearTimeout(delayRef.current);
 
+			console.log(
+				`[MapEventsListener] mouseup – isAddingMarker: ${JSON.stringify(isAddingMarker)}, latlng: ${JSON.stringify(event.latlng)}`
+			);
+
 			if (isAddingMarker) {
 				const { lat, lng } = event.latlng;
 				const newMarker = getNewMarker([lat, lng], mapMarkers);
+
+				console.log(
+					`[MapEventsListener] Dropping marker at lat: ${JSON.stringify(lat)}, lng: ${JSON.stringify(lng)}`
+				);
 
 				maxiSetAttributes({
 					'map-markers': getUpdatedMarkers(mapMarkers, newMarker),
@@ -78,6 +106,10 @@ const MapEventsListener = props => {
 		moveend: () => {
 			const { lat, lng } = mapEvents.getCenter();
 
+			console.log(
+				`[MapEventsListener] moveend – new center: ${JSON.stringify({ lat, lng })}`
+			);
+
 			maxiSetAttributes({
 				'map-latitude': lat,
 				'map-longitude': lng,
@@ -85,6 +117,10 @@ const MapEventsListener = props => {
 		},
 		zoomend: () => {
 			const newZoom = mapEvents.getZoom();
+
+			console.log(
+				`[MapEventsListener] zoomend – new zoom: ${JSON.stringify(newZoom)}`
+			);
 
 			maxiSetAttributes({
 				'map-zoom': newZoom,

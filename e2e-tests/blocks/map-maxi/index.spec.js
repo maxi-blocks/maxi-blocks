@@ -53,8 +53,8 @@ const popupTest = async map => {
 	const marker = await map.$('.leaflet-marker-icon');
 	if (!marker) throw new Error('Marker not found');
 
-	// Add a small delay to ensure map is stable
-	await page.waitForTimeout(800);
+	// Wait until the map is fully settled (no ongoing animations)
+	await page.waitForTimeout(1000);
 
 	const popupContent = await tryClickMarkerWithRetry(marker, map);
 
@@ -255,6 +255,12 @@ describe('Map Maxi', () => {
 		// Add delay before clicking result
 		await page.waitForTimeout(500);
 		await searchBoxResultsButton.click();
+
+		/**
+		 * `handleAddMarker` now calls `map.setView(..., { animate: false })`
+		 * so there is no fly animation to wait for.  A short stabilisation
+		 * wait is enough for React to commit the new marker to the DOM.
+		 */
 		await page.waitForTimeout(1000);
 
 		// Check marker coordinates with flexible latitude

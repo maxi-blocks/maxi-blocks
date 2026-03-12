@@ -15,17 +15,21 @@ jest.mock('@wordpress/data', () => ({
 import styleResolver, {
 	styleCacheUtils,
 } from '@extensions/styles/styleResolver';
+import { clearPendingStyles } from '@extensions/styles/store/pendingStyles';
+
+const flushMicrotasks = async () => Promise.resolve();
 
 describe('styleResolver cache limits', () => {
 	beforeEach(() => {
 		styleCacheUtils.clearCache();
+		clearPendingStyles();
 		mockUpdateStyles.mockClear();
 		mockRemoveStyles.mockClear();
 		mockGetBlockStyles.mockReset();
 		mockGetBlockStyles.mockReturnValue(undefined);
 	});
 
-	it('caches small style resolutions', () => {
+	it('caches small style resolutions', async () => {
 		const styles = {
 			block: {
 				color: {
@@ -44,6 +48,7 @@ describe('styleResolver cache limits', () => {
 			breakpoints: ['general'],
 			uniqueID: 'small-block',
 		});
+		await flushMicrotasks();
 
 		const stats = styleCacheUtils.getStats();
 
@@ -72,7 +77,7 @@ describe('styleResolver cache limits', () => {
 		expect(stats.skippedLargeEntries).toBeGreaterThan(0);
 	});
 
-	it('dispatches merged styles once per resolution even with multiple targets', () => {
+	it('dispatches merged styles once per resolution even with multiple targets', async () => {
 		const styles = {
 			blockA: {
 				color: {
@@ -91,6 +96,7 @@ describe('styleResolver cache limits', () => {
 			breakpoints: ['general'],
 			uniqueID: 'multi-target',
 		});
+		await flushMicrotasks();
 
 		expect(mockUpdateStyles).toHaveBeenCalledTimes(1);
 		expect(mockUpdateStyles).toHaveBeenCalledWith(
@@ -102,7 +108,7 @@ describe('styleResolver cache limits', () => {
 		);
 	});
 
-	it('dispatches cached styles once on cache hit', () => {
+	it('dispatches cached styles once on cache hit', async () => {
 		const styles = {
 			blockA: {
 				color: {
@@ -126,10 +132,11 @@ describe('styleResolver cache limits', () => {
 			breakpoints: ['general'],
 			uniqueID: 'cached-multi-target',
 		});
+		await flushMicrotasks();
 
-		expect(mockUpdateStyles).toHaveBeenCalledTimes(2);
+		expect(mockUpdateStyles).toHaveBeenCalledTimes(1);
 		expect(mockUpdateStyles).toHaveBeenNthCalledWith(
-			2,
+			1,
 			null,
 			expect.objectContaining({
 				blockA: expect.any(Object),
@@ -138,7 +145,7 @@ describe('styleResolver cache limits', () => {
 		);
 	});
 
-	it('skips cache-hit store sync when styles are already current', () => {
+	it('skips cache-hit store sync when styles are already current', async () => {
 		const styles = {
 			blockA: {
 				color: {
@@ -152,6 +159,7 @@ describe('styleResolver cache limits', () => {
 			breakpoints: ['general'],
 			uniqueID: 'already-synced',
 		});
+		await flushMicrotasks();
 
 		mockGetBlockStyles.mockImplementation(target => cachedResponse[target]);
 
@@ -160,7 +168,102 @@ describe('styleResolver cache limits', () => {
 			breakpoints: ['general'],
 			uniqueID: 'already-synced',
 		});
+		await flushMicrotasks();
 
 		expect(mockUpdateStyles).toHaveBeenCalledTimes(1);
+	});
+
+	it('skips queued flush dispatch when store becomes current before flush', async () => {
+		const styles = {
+			blockA: {
+				color: {
+					general: 'red',
+				},
+			},
+		};
+
+		const response = styleResolver({
+			styles,
+			breakpoints: ['general'],
+			uniqueID: 'flush-already-synced',
+		});
+
+		mockGetBlockStyles.mockImplementation(target => response[target]);
+		await flushMicrotasks();
+
+		expect(mockUpdateStyles).not.toHaveBeenCalled();
+	});
+
+	it('skips miss-path store sync when store already has the same styles', async () => {
+		const styles = {
+			blockA: {
+				color: {
+					general: 'red',
+				},
+			},
+		};
+
+		const initialResponse = styleResolver({
+			styles,
+			breakpoints: ['general'],
+			uniqueID: 'miss-already-synced',
+		});
+		await flushMicrotasks();
+
+		styleCacheUtils.clearCache();
+		mockGetBlockStyles.mockImplementation(
+			target => initialResponse[target]
+		);
+
+		styleResolver({
+			styles,
+			breakpoints: ['general'],
+			uniqueID: 'miss-already-synced',
+		});
+		await flushMicrotasks();
+
+		expect(mockUpdateStyles).toHaveBeenCalledTimes(1);
+	});
+
+	it('trims cleanup caches before evicting resolved style cache entries', async () => {
+		const warnSpy = jest
+			.spyOn(console, 'warn')
+			.mockImplementation(() => {});
+		const styles = {
+			blockA: {
+				color: {
+					general: 'red',
+				},
+				spacing: {
+					general: {
+						top: '10px',
+						bottom: '20px',
+					},
+				},
+			},
+		};
+
+		styleResolver({
+			styles,
+			breakpoints: ['general'],
+			uniqueID: 'trim-prefers-cleanup-caches',
+		});
+		await flushMicrotasks();
+
+		const beforeTrim = styleCacheUtils.getStats();
+		expect(beforeTrim.styleCacheSize).toBeGreaterThan(0);
+		expect(beforeTrim.totalCacheSize).toBeGreaterThan(
+			beforeTrim.styleCacheSize
+		);
+
+		styleCacheUtils.checkMemoryUsage(beforeTrim.styleCacheSize);
+
+		const afterTrim = styleCacheUtils.getStats();
+		expect(afterTrim.styleCacheSize).toBe(beforeTrim.styleCacheSize);
+		expect(afterTrim.totalCacheSize).toBeLessThanOrEqual(
+			beforeTrim.styleCacheSize
+		);
+
+		warnSpy.mockRestore();
 	});
 });

@@ -8,6 +8,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getIsSiteEditor } from '@extensions/fse';
+import { mergePendingCustomData } from './pendingCustomData';
 
 /**
  * External dependencies
@@ -24,7 +25,7 @@ const controls = {
 		return apiFetch({ path: `/maxi-blocks/v1.0/custom-data/${id}` });
 	},
 	async SAVE_CUSTOM_DATA({ isUpdate, customData }) {
-		const blockData = Object.entries(customData);
+		const blockData = Object.entries(mergePendingCustomData(customData));
 		const filteredCustomData = {};
 
 		// Using Promise.all to await the entire map function

@@ -17,6 +17,7 @@ import {
 	createRepeaterPerfSession,
 	measureRepeaterPerf,
 	startRepeaterPerfBucket,
+	trackRepeaterEditorSettle,
 } from '@extensions/repeater/perf';
 
 const Repeater = ({
@@ -61,6 +62,12 @@ const Repeater = ({
 								rowClientId: clientId,
 							}
 						);
+						const stopSettledProbe = trackRepeaterEditorSettle(
+							'repeaterToggle.enableSettled',
+							{
+								rowClientId: clientId,
+							}
+						);
 						let isStructureValidated = false;
 
 						try {
@@ -99,6 +106,9 @@ const Repeater = ({
 							perfSession?.flush({
 								result: isStructureValidated,
 							});
+							if (!isStructureValidated) {
+								stopSettledProbe();
+							}
 						}
 					}}
 				/>

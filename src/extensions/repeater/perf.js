@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { subscribe } from '@wordpress/data';
 
 const REPEATER_PERF_FLAG = '__MAXI_PROFILE_REPEATER__';
 const REPEATER_PERF_AGGREGATE_KEY = '__maxiRepeaterPerfAggregate__';
@@ -53,10 +54,16 @@ const scheduleRepeaterAggregateLog = store => {
 		store.totals = {};
 		store.counts = {};
 
+		const normalizedBuckets = normalizeDurations(totals);
 		console.info('[MaxiBlocks repeater perf aggregate]', {
-			buckets: normalizeDurations(totals),
+			buckets: normalizedBuckets,
 			counts,
 		});
+
+		if (console.table) {
+			console.table(normalizedBuckets);
+			console.table(counts);
+		}
 	}, 1000);
 };
 
@@ -181,4 +188,80 @@ export const measureRepeaterAggregate = (bucket, callback) => {
 		bucket,
 		callback
 	);
+};
+
+export const trackRepeaterEditorSettle = (
+	label,
+	meta = {},
+	{ quietMs = 100, timeoutMs = 5000 } = {}
+) => {
+	if (!isRepeaterPerfEnabled()) {
+		return () => {};
+	}
+
+	const startedAt = getNow();
+	let storeChanges = 0;
+	let quietTimer = null;
+	let timeoutTimer = null;
+	let unsubscribe = null;
+	let isFinished = false;
+
+	const finish = reason => {
+		if (isFinished) {
+			return;
+		}
+
+		isFinished = true;
+
+		if (quietTimer && typeof clearTimeout === 'function') {
+			clearTimeout(quietTimer);
+		}
+		if (timeoutTimer && typeof clearTimeout === 'function') {
+			clearTimeout(timeoutTimer);
+		}
+		if (unsubscribe) {
+			unsubscribe();
+		}
+
+		if (typeof console !== 'undefined' && console.info) {
+			console.info('[MaxiBlocks repeater perf]', {
+				label,
+				totalMs: roundDuration(getNow() - startedAt),
+				...meta,
+				storeChanges,
+				settleReason: reason,
+			});
+		}
+	};
+
+	const scheduleQuietCheck = () => {
+		if (typeof setTimeout !== 'function') {
+			finish('no-timeout');
+			return;
+		}
+
+		if (quietTimer) {
+			clearTimeout(quietTimer);
+		}
+
+		quietTimer = setTimeout(() => finish('quiet'), quietMs);
+	};
+
+	try {
+		unsubscribe = subscribe(() => {
+			storeChanges += 1;
+			scheduleQuietCheck();
+		});
+	} catch (error) {
+		finish('subscribe-failed');
+		return () => {};
+	}
+
+	if (typeof setTimeout === 'function') {
+		timeoutTimer = setTimeout(() => finish('timeout'), timeoutMs);
+	}
+
+	scheduleQuietCheck();
+
+	return () => finish('cancelled');
 };

@@ -55,7 +55,16 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
-import { measureRepeaterAggregate } from '@extensions/repeater/perf';
+import {
+	incrementRepeaterAggregate,
+	measureRepeaterAggregate,
+} from '@extensions/repeater/perf';
+import { cssCacheUtils } from '@extensions/styles/store/reducer';
+import {
+	queuePendingCustomData,
+	removePendingCustomData,
+	schedulePendingCustomDataFlush,
+} from '@extensions/custom-data/store/pendingCustomData';
 
 /**
  * External dependencies
@@ -131,6 +140,56 @@ const recordPerf = (label, start) => {
 			/* eslint-enable no-console */
 		}, 1000);
 	}
+};
+
+const getCustomDataStore = (includePending = true) =>
+	(includePending
+		? select('maxiBlocks/customData')?.getPostCustomData?.()
+		: select('maxiBlocks/customData')?.getStoreCustomData?.()) || {};
+
+const isCustomDataStoreSynced = (customData, includePending = true) =>
+	!customData ||
+	Object.entries(customData).every(([target, targetCustomData]) =>
+		isEqual(getCustomDataStore(includePending)[target], targetCustomData)
+	);
+
+const getUnsyncedCustomData = customData =>
+	Object.entries(customData).reduce((acc, [target, targetCustomData]) => {
+		if (isEqual(getCustomDataStore(false)[target], targetCustomData)) {
+			return acc;
+		}
+
+		acc[target] = targetCustomData;
+		return acc;
+	}, {});
+
+const queueCustomDataUpdate = customData => {
+	if (!queuePendingCustomData(customData)) {
+		return;
+	}
+
+	incrementRepeaterAggregate(
+		'customData.queuedUpdateTargets',
+		Object.keys(customData).length
+	);
+
+	schedulePendingCustomDataFlush(flushCustomData => {
+		const unsyncedFlushCustomData = measureRepeaterAggregate(
+			'customData.flushSyncCheck',
+			() => getUnsyncedCustomData(flushCustomData)
+		);
+
+		if (isEmpty(unsyncedFlushCustomData)) {
+			incrementRepeaterAggregate('customData.flushNoopSync', 1);
+			return;
+		}
+
+		measureRepeaterAggregate('customData.dispatchUpdate', () =>
+			dispatch('maxiBlocks/customData').updateCustomData(
+				unsyncedFlushCustomData
+			)
+		);
+	});
 };
 
 /**
@@ -884,13 +943,14 @@ class MaxiBlockComponent extends Component {
 							uniqueID,
 							clientId
 						);
+						removePendingCustomData(uniqueID);
 						dispatch('maxiBlocks/customData').removeCustomData(
 							uniqueID
 						);
 						dispatch('maxiBlocks/relations').removeBlockRelation(
 							uniqueID
 						);
-						dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+						cssCacheUtils.removeEntry(uniqueID);
 					};
 					batchedDispatch();
 
@@ -1574,7 +1634,7 @@ class MaxiBlockComponent extends Component {
 			!isBlockStyleChange &&
 			!isBaseBreakpointChange;
 		const cachedBreakpointStyles = canUseCachedBreakpointStyles
-			? select('maxiBlocks/styles').getCSSCache(uniqueID)
+			? cssCacheUtils.getEntry(uniqueID)
 			: null;
 		const cachedBreakpointCSS =
 			cachedBreakpointStyles?.[this.props.deviceType];
@@ -1742,9 +1802,17 @@ class MaxiBlockComponent extends Component {
 			const customData = this.getCustomData;
 			recordPerf('getCustomData', customDataStart);
 			if (customData) {
-				const updateCustomDataStart = getPerfStart();
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				recordPerf('updateCustomData', updateCustomDataStart);
+				if (
+					!measureRepeaterAggregate('customData.syncCheck', () =>
+						isCustomDataStoreSynced(customData)
+					)
+				) {
+					const updateCustomDataStart = getPerfStart();
+					queueCustomDataUpdate(customData);
+					recordPerf('updateCustomData', updateCustomDataStart);
+				} else {
+					incrementRepeaterAggregate('customData.syncNoop', 1);
+				}
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
@@ -2184,7 +2252,7 @@ class MaxiBlockComponent extends Component {
 					isBreakpointChange &&
 					!isBlockStyleChange &&
 					!isBaseBreakpointChange
-						? select('maxiBlocks/styles').getCSSCache(uniqueID)
+						? cssCacheUtils.getEntry(uniqueID)
 						: null;
 				const cachedStyleContent = cachedStyles?.[currentBreakpoint];
 
@@ -2248,7 +2316,7 @@ class MaxiBlockComponent extends Component {
 
 				if (styles) {
 					measureRepeaterAggregate('maxiBlock.saveCSSCache', () =>
-						dispatch('maxiBlocks/styles').saveCSSCache(
+						cssCacheUtils.saveEntry(
 							uniqueID,
 							styles,
 							!!iframe,

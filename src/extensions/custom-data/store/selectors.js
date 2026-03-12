@@ -1,3 +1,5 @@
+import { mergePendingCustomData } from './pendingCustomData';
+
 /**
  * Returns post customData.
  *
@@ -7,6 +9,11 @@
  */
 // eslint-disable-next-line import/prefer-default-export
 export const getPostCustomData = state => {
+	if (state.customData) return mergePendingCustomData(state.customData);
+	return mergePendingCustomData(state);
+};
+
+export const getStoreCustomData = state => {
 	if (state.customData) return state.customData;
 	return state;
 };

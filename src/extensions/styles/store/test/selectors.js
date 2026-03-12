@@ -7,6 +7,10 @@ import {
 	getAllStylesAreSaved,
 	getDefaultGroupAttributes,
 } from '@extensions/styles/store/selectors';
+import {
+	clearPendingStyles,
+	queuePendingStyles,
+} from '@extensions/styles/store/pendingStyles';
 
 jest.mock('@extensions/maxi-block', () => ({
 	goThroughMaxiBlocks: jest.fn(callback => {
@@ -18,6 +22,10 @@ jest.mock('@extensions/maxi-block', () => ({
 }));
 
 describe('Styles store selectors', () => {
+	beforeEach(() => {
+		clearPendingStyles();
+	});
+
 	describe('getPostStyles', () => {
 		it('Returns styles from state if present', () => {
 			const state = { styles: { block1: { color: 'red' } } };
@@ -27,6 +35,16 @@ describe('Styles store selectors', () => {
 		it('Returns state if no styles property', () => {
 			const state = { block1: { color: 'red' } };
 			expect(getPostStyles(state)).toEqual(state);
+		});
+
+		it('Merges pending styles over stored styles', () => {
+			queuePendingStyles({ block2: { color: 'blue' } });
+
+			const state = { styles: { block1: { color: 'red' } } };
+			expect(getPostStyles(state)).toEqual({
+				block1: { color: 'red' },
+				block2: { color: 'blue' },
+			});
 		});
 	});
 
@@ -39,6 +57,15 @@ describe('Styles store selectors', () => {
 		it('Returns false if styles not found', () => {
 			const state = { styles: null };
 			expect(getBlockStyles(state, 'block1')).toBe(false);
+		});
+
+		it('Returns pending block styles before stored styles', () => {
+			queuePendingStyles({ block1: { color: 'blue' } });
+
+			const state = { styles: { block1: { color: 'red' } } };
+			expect(getBlockStyles(state, 'block1')).toEqual({
+				color: 'blue',
+			});
 		});
 	});
 
@@ -75,7 +102,9 @@ describe('Styles store selectors', () => {
 		it('Returns CSS cache from cache instances with a get method', () => {
 			const cssCache = {
 				get: jest.fn(key =>
-					key === 'block1' ? { css: '.block { color: red; }' } : undefined
+					key === 'block1'
+						? { css: '.block { color: red; }' }
+						: undefined
 				),
 			};
 			const state = { cssCache };
@@ -134,6 +163,18 @@ describe('Styles store selectors', () => {
 			};
 
 			expect(getAllStylesAreSaved(state)).toBe(false);
+		});
+
+		it('Counts pending styles toward all-styles-saved checks', () => {
+			queuePendingStyles({ block2: { color: 'blue' } });
+
+			const state = {
+				styles: {
+					block1: { color: 'red' },
+				},
+			};
+
+			expect(getAllStylesAreSaved(state)).toBe(true);
 		});
 
 		it('Returns false when no styles in state', () => {

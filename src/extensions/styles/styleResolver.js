@@ -16,6 +16,11 @@ import {
 	incrementRepeaterAggregate,
 	measureRepeaterAggregate,
 } from '@extensions/repeater/perf';
+import {
+	queuePendingStyles,
+	removePendingStyles,
+	schedulePendingStylesFlush,
+} from '@extensions/styles/store/pendingStyles';
 
 /**
  * Styles resolver with LRU cache optimization
@@ -147,10 +152,37 @@ const checkStyleResolverMemoryUsage = (maxSize = 1000) => {
 		const initialSize = totalSize;
 		const cachesEvicted = [];
 
-		// First, evict oldest entries from styleCache until within limit or empty
+		// Preserve the expensive resolved style cache as long as possible.
+		// The content-cleanup caches are cheaper to rebuild and do not trigger
+		// downstream style-store sync churn when they miss.
+		if (totalSize > maxSize) {
+			cleanContentCache.clear();
+			cachesEvicted.push('cleanContentCache (all)');
+			incrementRepeaterAggregate(
+				'styleResolver.trimmedCleanContentCache',
+				1
+			);
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
+		if (totalSize > maxSize) {
+			getCleanContentCache.clear();
+			cachesEvicted.push('getCleanContentCache (all)');
+			incrementRepeaterAggregate(
+				'styleResolver.trimmedGetCleanContentCache',
+				1
+			);
+			totalSize =
+				styleCache.size() +
+				cleanContentCache.size() +
+				getCleanContentCache.size();
+		}
+
 		let styleCacheEvicted = 0;
 		while (totalSize > maxSize && styleCache.size() > 0) {
-			// Get first (oldest) key from styleCache's underlying Map
 			const oldestKey = styleCache.cache.keys().next().value;
 			styleCache.cache.delete(oldestKey);
 			styleCacheEvicted += 1;
@@ -167,34 +199,6 @@ const checkStyleResolverMemoryUsage = (maxSize = 1000) => {
 			);
 		}
 
-		// If still over threshold, clear cleanContentCache
-		if (totalSize > maxSize) {
-			cleanContentCache.clear();
-			cachesEvicted.push('cleanContentCache (all)');
-			incrementRepeaterAggregate(
-				'styleResolver.trimmedCleanContentCache',
-				1
-			);
-			totalSize =
-				styleCache.size() +
-				cleanContentCache.size() +
-				getCleanContentCache.size();
-		}
-
-		// If still over threshold, clear getCleanContentCache
-		if (totalSize > maxSize) {
-			getCleanContentCache.clear();
-			cachesEvicted.push('getCleanContentCache (all)');
-			incrementRepeaterAggregate(
-				'styleResolver.trimmedGetCleanContentCache',
-				1
-			);
-			totalSize =
-				styleCache.size() +
-				cleanContentCache.size() +
-				getCleanContentCache.size();
-		}
-
 		console.warn(
 			`MaxiBlocks StyleResolver: Trimmed caches due to memory usage (${initialSize} > ${maxSize}). ` +
 				`Evicted: ${cachesEvicted.join(', ')}. Final size: ${totalSize}`
@@ -209,6 +213,51 @@ const isStoreAlreadySynced = styles => {
 		([target, targetStyles]) =>
 			styleSelectors?.getBlockStyles?.(target) === targetStyles
 	);
+};
+
+const getUnsyncedStoreStyles = styles => {
+	const styleSelectors = select('maxiBlocks/styles');
+
+	return Object.entries(styles).reduce((acc, [target, targetStyles]) => {
+		const existingStyles = styleSelectors?.getBlockStyles?.(target);
+
+		if (isEqual(existingStyles, targetStyles)) {
+			return acc;
+		}
+
+		acc[target] = targetStyles;
+		return acc;
+	}, {});
+};
+
+const queueStoreUpdate = styles => {
+	if (!queuePendingStyles(styles)) {
+		return;
+	}
+
+	incrementRepeaterAggregate(
+		'styleResolver.queuedUpdateStylesTargets',
+		Object.keys(styles).length
+	);
+
+	schedulePendingStylesFlush(flushStyles => {
+		const unsyncedFlushStyles = measureRepeaterAggregate(
+			'styleResolver.flushSyncCheck',
+			() => getUnsyncedStoreStyles(flushStyles)
+		);
+
+		if (isEmpty(unsyncedFlushStyles)) {
+			incrementRepeaterAggregate('styleResolver.flushNoopSync', 1);
+			return;
+		}
+
+		measureRepeaterAggregate('styleResolver.dispatchUpdateStyles', () =>
+			dispatch('maxiBlocks/styles').updateStyles(
+				null,
+				unsyncedFlushStyles
+			)
+		);
+	});
 };
 
 const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
@@ -235,11 +284,7 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 					() => isStoreAlreadySynced(cached)
 				)
 			) {
-				measureRepeaterAggregate(
-					'styleResolver.dispatchUpdateStyles',
-					() =>
-						dispatch('maxiBlocks/styles').updateStyles(null, cached)
-				);
+				queueStoreUpdate(cached);
 			} else {
 				incrementRepeaterAggregate('styleResolver.cacheHitNoopSync', 1);
 			}
@@ -272,10 +317,17 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	});
 
 	if (!remover) {
-		measureRepeaterAggregate('styleResolver.dispatchUpdateStyles', () =>
-			dispatch('maxiBlocks/styles').updateStyles(null, response)
+		const unsyncedResponse = measureRepeaterAggregate(
+			'styleResolver.missSyncCheck',
+			() => getUnsyncedStoreStyles(response)
 		);
+		if (!isEmpty(unsyncedResponse)) {
+			queueStoreUpdate(unsyncedResponse);
+		} else {
+			incrementRepeaterAggregate('styleResolver.missNoopSync', 1);
+		}
 	} else {
+		removePendingStyles(response);
 		measureRepeaterAggregate('styleResolver.dispatchRemoveStyles', () =>
 			dispatch('maxiBlocks/styles').removeStyles(response)
 		);

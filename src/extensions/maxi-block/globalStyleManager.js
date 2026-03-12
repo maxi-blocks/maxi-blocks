@@ -8,6 +8,29 @@
  *
  * Backend-only optimization - keeps database per-block structure intact.
  */
+import {
+	incrementRepeaterAggregate,
+	measureRepeaterAggregate,
+} from '@extensions/repeater/perf';
+
+const STYLE_SHARD_COUNT = 4;
+const getStyleElementId = shardIndex =>
+	shardIndex === 0
+		? 'maxi-blocks__consolidated-styles'
+		: `maxi-blocks__consolidated-styles-${shardIndex}`;
+const shouldIncludeDebugComments = () =>
+	typeof window !== 'undefined' &&
+	!!window.localStorage &&
+	window.localStorage.getItem('maxiBlocks-debug') === 'true';
+const getStyleShardIndex = uniqueID => {
+	let hash = 0;
+
+	for (let index = 0; index < uniqueID.length; index += 1) {
+		hash = (hash * 31 + uniqueID.charCodeAt(index)) % 2147483647;
+	}
+
+	return hash % STYLE_SHARD_COUNT;
+};
 
 /**
  * Manages styles for a specific document
@@ -15,32 +38,66 @@
 class DocumentStyleManager {
 	constructor(targetDocument) {
 		this.document = targetDocument;
-		this.blockStyles = new Map(); // uniqueID -> styleContent
-		this.consolidatedStyleElement = null;
-		this.pendingUpdate = false;
+		this.blockStyleShards = Array.from(
+			{ length: STYLE_SHARD_COUNT },
+			() => new Map()
+		);
+		this.styleElements = new Map();
+		this.dirtyShards = new Set();
 		this.updateScheduled = false;
-
-		// Create the consolidated style element
-		this.initializeStyleElement();
 	}
 
 	/**
 	 * Initialize the consolidated style element
 	 */
-	initializeStyleElement() {
-		const styleId = 'maxi-blocks__consolidated-styles';
-		this.consolidatedStyleElement = this.document.getElementById(styleId);
+	initializeStyleElement(shardIndex) {
+		const styleId = getStyleElementId(shardIndex);
+		let styleElement = this.styleElements.get(shardIndex);
 
-		if (!this.consolidatedStyleElement) {
-			this.consolidatedStyleElement =
-				this.document.createElement('style');
-			this.consolidatedStyleElement.id = styleId;
-			this.consolidatedStyleElement.setAttribute(
-				'data-maxi-blocks',
-				'consolidated'
-			);
-			this.document.head.appendChild(this.consolidatedStyleElement);
+		if (!styleElement) {
+			styleElement = this.document.getElementById(styleId);
 		}
+
+		if (!styleElement) {
+			styleElement = this.document.createElement('style');
+			styleElement.id = styleId;
+			styleElement.setAttribute('data-maxi-blocks', 'consolidated');
+			styleElement.setAttribute('data-maxi-blocks-shard', shardIndex);
+			let inserted = false;
+
+			for (
+				let nextShardIndex = shardIndex + 1;
+				nextShardIndex < STYLE_SHARD_COUNT;
+				nextShardIndex += 1
+			) {
+				const nextStyleElement =
+					this.styleElements.get(nextShardIndex) ||
+					this.document.getElementById(
+						getStyleElementId(nextShardIndex)
+					);
+
+				if (nextStyleElement?.parentNode === this.document.head) {
+					this.document.head.insertBefore(
+						styleElement,
+						nextStyleElement
+					);
+					inserted = true;
+					break;
+				}
+			}
+
+			if (!inserted) {
+				this.document.head.appendChild(styleElement);
+			}
+			incrementRepeaterAggregate(
+				'globalStyleManager.createdStyleElement',
+				1
+			);
+		}
+
+		this.styleElements.set(shardIndex, styleElement);
+
+		return styleElement;
 	}
 
 	/**
@@ -49,10 +106,16 @@ class DocumentStyleManager {
 	 * @param {string} styleContent - CSS content for the block
 	 */
 	addBlockStyles(uniqueID, styleContent) {
-		// Store the styles
-		this.blockStyles.set(uniqueID, styleContent);
+		const shardIndex = getStyleShardIndex(uniqueID);
+		const shardStyles = this.blockStyleShards[shardIndex];
 
-		// Schedule update
+		if (shardStyles.get(uniqueID) === styleContent) {
+			incrementRepeaterAggregate('globalStyleManager.noopStyleUpdate', 1);
+			return;
+		}
+
+		shardStyles.set(uniqueID, styleContent);
+		this.dirtyShards.add(shardIndex);
 		this.scheduleUpdate();
 	}
 
@@ -61,8 +124,12 @@ class DocumentStyleManager {
 	 * @param {string} uniqueID - Block unique identifier
 	 */
 	removeBlockStyles(uniqueID) {
-		if (this.blockStyles.has(uniqueID)) {
-			this.blockStyles.delete(uniqueID);
+		const shardIndex = getStyleShardIndex(uniqueID);
+		const shardStyles = this.blockStyleShards[shardIndex];
+
+		if (shardStyles.has(uniqueID)) {
+			shardStyles.delete(uniqueID);
+			this.dirtyShards.add(shardIndex);
 			this.scheduleUpdate();
 		}
 	}
@@ -71,9 +138,16 @@ class DocumentStyleManager {
 	 * Schedule a batched update
 	 */
 	scheduleUpdate() {
-		if (this.updateScheduled) return;
+		if (this.updateScheduled) {
+			incrementRepeaterAggregate(
+				'globalStyleManager.scheduleUpdateAlreadyPending',
+				1
+			);
+			return;
+		}
 
 		this.updateScheduled = true;
+		incrementRepeaterAggregate('globalStyleManager.scheduleUpdate', 1);
 
 		// Use document-specific requestAnimationFrame for iframe compatibility
 		const requestFrame =
@@ -83,6 +157,10 @@ class DocumentStyleManager {
 		requestFrame(() => {
 			this.flush();
 			this.updateScheduled = false;
+
+			if (this.dirtyShards.size) {
+				this.scheduleUpdate();
+			}
 		});
 	}
 
@@ -90,45 +168,79 @@ class DocumentStyleManager {
 	 * Flush all pending updates to the DOM
 	 */
 	flush() {
-		if (!this.consolidatedStyleElement) {
-			this.initializeStyleElement();
+		if (!this.dirtyShards.size) {
+			return;
 		}
 
-		// Build consolidated CSS
-		const consolidatedCSS = this.buildConsolidatedCSS();
+		const dirtyShards = Array.from(this.dirtyShards).sort((a, b) => a - b);
+		this.dirtyShards.clear();
 
-		// Update the style element only if content changed
-		if (this.consolidatedStyleElement.textContent !== consolidatedCSS) {
-			this.consolidatedStyleElement.textContent = consolidatedCSS;
-		}
+		measureRepeaterAggregate('globalStyleManager.flush', () => {
+			incrementRepeaterAggregate(
+				'globalStyleManager.flushShardCount',
+				dirtyShards.length
+			);
+
+			dirtyShards.forEach(shardIndex => {
+				const styleElement = this.initializeStyleElement(shardIndex);
+				const shardStyles = this.blockStyleShards[shardIndex];
+
+				incrementRepeaterAggregate(
+					'globalStyleManager.flushBlockCount',
+					shardStyles.size
+				);
+
+				const consolidatedCSS = measureRepeaterAggregate(
+					'globalStyleManager.buildConsolidatedCSS',
+					() => this.buildConsolidatedCSS(shardStyles)
+				);
+
+				if (styleElement.textContent !== consolidatedCSS) {
+					measureRepeaterAggregate(
+						'globalStyleManager.writeStyleElement',
+						() => {
+							styleElement.textContent = consolidatedCSS;
+						}
+					);
+				} else {
+					incrementRepeaterAggregate(
+						'globalStyleManager.skipUnchangedWrite',
+						1
+					);
+				}
+			});
+		});
 	}
 
 	/**
 	 * Build the consolidated CSS from all block styles
 	 * @returns {string} - Consolidated CSS content
 	 */
-	buildConsolidatedCSS() {
-		if (this.blockStyles.size === 0) {
+	// eslint-disable-next-line class-methods-use-this
+	buildConsolidatedCSS(blockStyles) {
+		if (blockStyles.size === 0) {
 			return '';
 		}
 
 		const cssChunks = [];
 		const processedRules = new Set(); // For deduplication
+		const includeDebugComments = shouldIncludeDebugComments();
 
-		// Add header comment for debugging
-		cssChunks.push('/* MaxiBlocks Consolidated Styles - Generated */');
+		if (includeDebugComments) {
+			cssChunks.push('/* MaxiBlocks Consolidated Styles - Generated */');
+		}
 
 		// Process each block's styles
-		for (const [uniqueID, styleContent] of this.blockStyles.entries()) {
+		for (const [uniqueID, styleContent] of blockStyles.entries()) {
 			if (!styleContent || typeof styleContent !== 'string') {
 				// Skip invalid content - using empty block to avoid continue statement
 			} else {
-				// Add block identifier comment for debugging
-				cssChunks.push(`\n/* Block: ${uniqueID} */`);
-
 				// Basic deduplication - skip exact duplicate rules
 				const trimmedContent = styleContent.trim();
 				if (!processedRules.has(trimmedContent)) {
+					if (includeDebugComments) {
+						cssChunks.push(`\n/* Block: ${uniqueID} */`);
+					}
 					cssChunks.push(trimmedContent);
 					processedRules.add(trimmedContent);
 				}
@@ -143,11 +255,23 @@ class DocumentStyleManager {
 	 * @returns {Object} - Statistics object
 	 */
 	getStats() {
+		const blockCount = this.blockStyleShards.reduce(
+			(total, shardStyles) => total + shardStyles.size,
+			0
+		);
+		const consolidatedLength = Array.from(
+			this.styleElements.values()
+		).reduce(
+			(total, styleElement) =>
+				total + (styleElement?.textContent?.length || 0),
+			0
+		);
+
 		return {
-			blockCount: this.blockStyles.size,
-			consolidatedLength:
-				this.consolidatedStyleElement?.textContent?.length || 0,
-			elementExists: !!this.consolidatedStyleElement,
+			blockCount,
+			consolidatedLength,
+			elementExists: this.styleElements.size > 0,
+			elementCount: this.styleElements.size,
 		};
 	}
 
@@ -155,17 +279,15 @@ class DocumentStyleManager {
 	 * Destroy this document manager
 	 */
 	destroy() {
-		// Remove the consolidated style element
-		if (
-			this.consolidatedStyleElement &&
-			this.consolidatedStyleElement.parentNode
-		) {
-			this.consolidatedStyleElement.remove();
-		}
+		this.styleElements.forEach(styleElement => {
+			if (styleElement?.parentNode) {
+				styleElement.remove();
+			}
+		});
 
-		// Clear all data
-		this.blockStyles.clear();
-		this.consolidatedStyleElement = null;
+		this.blockStyleShards.forEach(shardStyles => shardStyles.clear());
+		this.styleElements.clear();
+		this.dirtyShards.clear();
 		this.document = null;
 	}
 }
@@ -292,6 +414,13 @@ export const getGlobalStyleManager = () => {
 	}
 
 	return globalStyleManagerInstance;
+};
+
+export const __unstableResetGlobalStyleManager = () => {
+	if (globalStyleManagerInstance) {
+		globalStyleManagerInstance.destroy();
+		globalStyleManagerInstance = null;
+	}
 };
 
 /**

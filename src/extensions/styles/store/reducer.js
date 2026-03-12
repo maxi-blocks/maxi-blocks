@@ -2,6 +2,10 @@
  * Internal dependencies
  */
 import styleGenerator from '@extensions/styles/styleGenerator';
+import {
+	incrementRepeaterAggregate,
+	measureRepeaterAggregate,
+} from '@extensions/repeater/perf';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
@@ -162,16 +166,76 @@ class CSSCache extends MemoCache {
 // Global CSS cache instance
 const cssCache = new CSSCache(200);
 
-// Helper function to chunk large style objects
-const chunkStylesIntoChunks = (styles, size) => {
-	const chunks = [];
-	const entries = Object.entries(styles);
+const saveCSSCacheEntry = (uniqueID, stylesObj, isIframe, isSiteEditor) => {
+	const existingCache = cssCache.get(uniqueID) || {};
+	const previousCacheInput = cssCacheInputState.get(uniqueID);
 
-	for (let i = 0; i < entries.length; i += size) {
-		chunks.push(Object.fromEntries(entries.slice(i, i + size)));
+	if (
+		previousCacheInput?.stylesObj === stylesObj &&
+		previousCacheInput?.isIframe === isIframe &&
+		previousCacheInput?.isSiteEditor === isSiteEditor &&
+		hasCompleteBreakpointCache(existingCache)
+	) {
+		incrementRepeaterAggregate('stylesStore.saveCSSCache.shortCircuit', 1);
+		return {
+			cache: existingCache,
+			didChange: false,
+		};
 	}
 
-	return chunks;
+	const breakpointStyles = measureRepeaterAggregate(
+		'stylesStore.saveCSSCache.generateAllBreakpoints',
+		() =>
+			BREAKPOINTS.reduce(
+				(acc, breakpoint) => ({
+					...acc,
+					[breakpoint]: measureRepeaterAggregate(
+						'stylesStore.saveCSSCache.styleGenerator',
+						() =>
+							styleGenerator(
+								stylesObj,
+								isIframe,
+								isSiteEditor,
+								breakpoint
+							)
+					),
+				}),
+				{
+					...existingCache,
+				}
+			)
+	);
+
+	measureRepeaterAggregate('stylesStore.saveCSSCache.writeCache', () =>
+		cssCache.set(uniqueID, breakpointStyles)
+	);
+	cssCacheInputState.set(uniqueID, {
+		stylesObj,
+		isIframe,
+		isSiteEditor,
+	});
+
+	return {
+		cache: breakpointStyles,
+		didChange: true,
+	};
+};
+
+const saveRawCSSCacheEntry = (uniqueID, stylesContent) => {
+	const existingCache = cssCache.get(uniqueID) || {};
+	const updatedCache = {
+		...existingCache,
+		...stylesContent,
+	};
+
+	cssCache.set(uniqueID, updatedCache);
+
+	return updatedCache;
+};
+
+const removeCSSCacheEntry = uniqueID => {
+	cssCache.delete(uniqueID);
+	cssCacheInputState.delete(uniqueID);
 };
 
 /**
@@ -200,23 +264,34 @@ function reducer(
 				return state;
 			}
 
-			const hasChangedStyles = nextStyleEntries.some(
-				([target, targetStyles]) =>
-					state.styles[target] !== targetStyles
+			const hasChangedStyles = measureRepeaterAggregate(
+				'stylesStore.updateStyles.hasChangedScan',
+				() =>
+					nextStyleEntries.some(
+						([target, targetStyles]) =>
+							state.styles[target] !== targetStyles
+					)
 			);
 			if (!hasChangedStyles) {
 				return state;
 			}
 
-			const chunkSize = 100;
-			const chunks = chunkStylesIntoChunks(action.styles, chunkSize);
+			const updatedStyles = measureRepeaterAggregate(
+				'stylesStore.updateStyles.cloneAndMerge',
+				() => {
+					const nextStyles = { ...state.styles };
 
-			const updatedStyles = chunks.reduce(
-				(acc, chunk) => ({
-					...acc,
-					...chunk,
-				}),
-				state.styles
+					nextStyleEntries.forEach(([target, targetStyles]) => {
+						nextStyles[target] = targetStyles;
+					});
+
+					return nextStyles;
+				}
+			);
+
+			incrementRepeaterAggregate(
+				'stylesStore.updateStyles.appliedTargets',
+				nextStyleEntries.length
 			);
 
 			return { ...state, styles: updatedStyles };
@@ -237,64 +312,24 @@ function reducer(
 			};
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
-			const existingCache = state.cssCache.get(uniqueID) || {};
-			const previousCacheInput = cssCacheInputState.get(uniqueID);
-
-			if (
-				previousCacheInput?.stylesObj === stylesObj &&
-				previousCacheInput?.isIframe === isIframe &&
-				previousCacheInput?.isSiteEditor === isSiteEditor &&
-				hasCompleteBreakpointCache(existingCache)
-			) {
-				return state;
-			}
-
-			const breakpointStyles = BREAKPOINTS.reduce(
-				(acc, breakpoint) => ({
-					...acc,
-					[breakpoint]: styleGenerator(
-						stylesObj,
-						isIframe,
-						isSiteEditor,
-						breakpoint
-					),
-				}),
-				{
-					...existingCache,
-				}
-			);
-
-			// Use LRU cache set method (automatically handles size limits)
-			state.cssCache.set(uniqueID, breakpointStyles);
-			cssCacheInputState.set(uniqueID, {
+			const { didChange } = saveCSSCacheEntry(
+				uniqueID,
 				stylesObj,
 				isIframe,
-				isSiteEditor,
-			});
+				isSiteEditor
+			);
 
-			return { ...state };
+			return didChange ? { ...state } : state;
 		}
 		case 'SAVE_RAW_CSS_CACHE': {
 			const { uniqueID, stylesContent } = action;
-
-			// Get existing cache entry or create new one
-			const existingCache = state.cssCache.get(uniqueID) || {};
-			const updatedCache = {
-				...existingCache,
-				...stylesContent,
-			};
-
-			// Update the cache entry
-			state.cssCache.set(uniqueID, updatedCache);
+			saveRawCSSCacheEntry(uniqueID, stylesContent);
 
 			return { ...state };
 		}
 		case 'REMOVE_CSS_CACHE': {
 			const { uniqueID } = action;
-
-			// Use LRU cache delete method
-			state.cssCache.delete(uniqueID);
-			cssCacheInputState.delete(uniqueID);
+			removeCSSCacheEntry(uniqueID);
 
 			return { ...state };
 		}
@@ -315,6 +350,22 @@ export const cssCacheUtils = {
 	 */
 	getStats() {
 		return cssCache.getStats();
+	},
+
+	getEntry(uniqueID) {
+		return cssCache.get(uniqueID);
+	},
+
+	saveEntry(uniqueID, stylesObj, isIframe, isSiteEditor) {
+		return saveCSSCacheEntry(uniqueID, stylesObj, isIframe, isSiteEditor);
+	},
+
+	saveRawEntry(uniqueID, stylesContent) {
+		return saveRawCSSCacheEntry(uniqueID, stylesContent);
+	},
+
+	removeEntry(uniqueID) {
+		removeCSSCacheEntry(uniqueID);
 	},
 
 	/**

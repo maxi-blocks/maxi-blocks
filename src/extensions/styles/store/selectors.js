@@ -1,5 +1,9 @@
 import { isNumber } from 'lodash';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
+import {
+	getPendingStyle,
+	mergePendingStyles,
+} from '@extensions/styles/store/pendingStyles';
 
 /**
  * Returns post styles.
@@ -8,7 +12,7 @@ import { goThroughMaxiBlocks } from '@extensions/maxi-block';
  * @return {Array} Format types.
  */
 export const getPostStyles = state => {
-	if (state.styles) return state.styles;
+	if (state.styles) return mergePendingStyles(state.styles);
 	return state;
 };
 
@@ -19,6 +23,9 @@ export const getPostStyles = state => {
  * @return {Array} Format types.
  */
 export const getBlockStyles = (state, target) => {
+	const pendingStyles = getPendingStyle(target);
+	if (pendingStyles !== undefined) return pendingStyles;
+
 	if (state.styles) return state.styles[target];
 
 	return false;
@@ -59,13 +66,14 @@ export const getBlockMarginValue = state => {
 export const getAllStylesAreSaved = state => {
 	if (state.styles) {
 		let allStylesAreSaved = true;
+		const styles = mergePendingStyles(state.styles);
 
 		goThroughMaxiBlocks(block => {
 			const {
 				attributes: { uniqueID },
 			} = block;
 
-			if (!state.styles[uniqueID]) allStylesAreSaved = false;
+			if (!styles?.[uniqueID]) allStylesAreSaved = false;
 		});
 
 		return allStylesAreSaved;

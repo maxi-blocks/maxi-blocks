@@ -17,6 +17,7 @@ import postcss from 'postcss';
 import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
 import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
+import { mergePendingStyles } from './pendingStyles';
 
 /**
  * Cache for processCss results
@@ -72,7 +73,7 @@ const controls = {
 	SAVE_STYLES({ isUpdate, styles }) {
 		entityRecordsWrapper(async ({ key: id, name }) => {
 			const parsedStyles = {};
-			const blockStyles = Object.entries(styles);
+			const blockStyles = Object.entries(mergePendingStyles(styles));
 
 			await Promise.all(
 				blockStyles.map(async blockStyle => {

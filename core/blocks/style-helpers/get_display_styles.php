@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_display_styles($obj, $is_hover = false)
 {
     $response = [];

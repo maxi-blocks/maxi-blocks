@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_prev_breakpoint($breakpoint)
 {
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

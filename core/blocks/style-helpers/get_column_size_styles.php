@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_column_num($columns_size, $unique_id, $breakpoint)
 {
     if (!$columns_size) {

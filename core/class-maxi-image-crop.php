@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Server side part of ImageCropControl Gutenberg component
  *
@@ -41,8 +43,10 @@ class MaxiBlocks_ImageCrop
 
     public function maxi_add_custom_image_size()
     {
+        check_ajax_referer('maxi_image_crop', 'nonce');
+
         if (!current_user_can('edit_posts')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
 
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
@@ -50,6 +54,14 @@ class MaxiBlocks_ImageCrop
         }
 
         if (isset($_POST['src'], $_POST['src_x'], $_POST['src_y'], $_POST['src_w'], $_POST['src_h'], $_POST['dst_w'], $_POST['dst_h'])) {//phpcs:ignore
+            $src_id = absint($_POST['src']);//phpcs:ignore
+            $attachment = get_post($src_id);
+            if (!$attachment || (int) $attachment->post_author !== get_current_user_id()) {
+                if (!current_user_can('edit_others_posts')) {
+                    wp_die(esc_html__('You do not have permission to crop this file.', 'maxi-blocks'));
+                }
+            }
+
             $new_media = [
             'src' => sanitize_text_field($_POST['src']),//phpcs:ignore
             'src_x' => sanitize_text_field($_POST['src_x']),//phpcs:ignore
@@ -69,13 +81,13 @@ class MaxiBlocks_ImageCrop
     private function delete_old_file($old_media_path)
     {
         if (!current_user_can('edit_posts')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
 
         $uploads_dir = wp_upload_dir()['basedir'];
 
         if (strpos($old_media_path, $uploads_dir) !== 0) {
-            wp_die(__('Delete old file: invalid file path', 'maxi-blocks'));
+            wp_die(esc_html__('Delete old file: invalid file path', 'maxi-blocks'));
         }
         wp_delete_file($old_media_path);
     }
@@ -111,8 +123,10 @@ class MaxiBlocks_ImageCrop
 
     public function maxi_remove_custom_image_size()
     {
+        check_ajax_referer('maxi_image_crop', 'nonce');
+
         if (!current_user_can('edit_posts')) {
-            wp_die(__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
+            wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
         if (isset($_POST['old_media_src'])) {//phpcs:ignore
             $this->validate_and_delete_old_file($_POST['old_media_src']);//phpcs:ignore
@@ -153,6 +167,19 @@ class MaxiBlocks_ImageCrop
             // Check if the file extension is in the whitelist
             if (!in_array($extension, $allowed_extensions)) {
                 return;
+            }
+
+            // Verify the current user owns the attachment if it is a registered media file.
+            // Plugin-generated crop files are not registered in the media library, so
+            // attachment_url_to_postid() returns 0 for those and the check is skipped.
+            $attachment_id = attachment_url_to_postid($old_media);
+            if ($attachment_id) {
+                $attachment = get_post($attachment_id);
+                if (!$attachment || (int) $attachment->post_author !== get_current_user_id()) {
+                    if (!current_user_can('delete_others_posts')) {
+                        wp_die(esc_html__('You do not have permission to delete this file.', 'maxi-blocks'));
+                    }
+                }
             }
 
             // Pass the normalized file path to delete_old_file

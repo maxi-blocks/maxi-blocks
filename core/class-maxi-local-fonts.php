@@ -390,9 +390,10 @@ class MaxiBlocks_Local_Fonts
                 if (is_dir($file)) {
                     $this->remove_directory_recursive($file);
                 } else {
-                    unlink($file);
+                    wp_delete_file($file);
                 }
             }
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- WP_Filesystem::rmdir requires prior initialization and cannot be used in recursive static context
             rmdir($directory);
         }
     }
@@ -529,7 +530,7 @@ class MaxiBlocks_Local_Fonts
         $css_file = $dir . '/style.css';
 
         if ($force && file_exists($css_file)) {
-            @unlink($css_file);
+            wp_delete_file($css_file);
         }
 
         if (!file_exists($css_file)) {
@@ -581,13 +582,14 @@ class MaxiBlocks_Local_Fonts
         $css_file = $dir . '/style.css';
 
         if (file_exists($css_file)) {
-            @unlink($css_file);
+            wp_delete_file($css_file);
         }
 
         // Remove directory if empty.
         if (is_dir($dir)) {
             $files = @scandir($dir);
             if (is_array($files) && count($files) <= 2) {
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- WP_Filesystem::rmdir requires prior initialization and cannot be used here
                 @rmdir($dir);
             }
         }
@@ -795,6 +797,7 @@ class MaxiBlocks_Local_Fonts
         $axes = [];
 
         try {
+            // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- WP_Filesystem does not support fseek() required for random-access binary font parsing
             $handle = fopen($file_path, 'rb');
             if (!$handle) {
                 return $axes;
@@ -899,6 +902,7 @@ class MaxiBlocks_Local_Fonts
 
         return $int_part + ($frac_part / 65536);
     }
+    // phpcs:enable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
     /**
      * Generate variants based on variable font axes.
@@ -1013,7 +1017,7 @@ class MaxiBlocks_Local_Fonts
 
     private function guess_font_format_from_url($url)
     {
-        $path = strtolower(parse_url($url, PHP_URL_PATH));
+        $path = strtolower(wp_parse_url($url, PHP_URL_PATH));
         if (str_ends_with($path, '.woff2')) {
             return 'woff2';
         }

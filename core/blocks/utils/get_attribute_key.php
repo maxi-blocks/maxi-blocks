@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_attribute_key(
     $key, 
     $isHover = false, 

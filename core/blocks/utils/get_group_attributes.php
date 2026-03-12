@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_is_valid.php';
 
 function json_file_to_array($item, $is_hover)

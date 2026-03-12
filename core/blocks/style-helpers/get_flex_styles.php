@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 function get_flex_styles(array $obj)
 {
     $response = [];

@@ -42,6 +42,15 @@ import { isNil } from 'lodash';
 // Cache for deprecated blocks
 const deprecatedBlockCache = new Map();
 
+export const clearDeprecatedBlockCache = uniqueID => {
+	if (typeof uniqueID === 'string') {
+		deprecatedBlockCache.delete(uniqueID);
+		return;
+	}
+
+	deprecatedBlockCache.clear();
+};
+
 const handleBlockMigrator = ({
 	attributes,
 	save,

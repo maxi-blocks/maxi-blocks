@@ -50,6 +50,21 @@ describe('styles store controls', () => {
 			const result = await processCss('.test { color: red; }');
 			expect(result).toBe('.test{color:red}');
 		});
+
+		it('Reuses cached processed CSS for repeated inputs', async () => {
+			postcss.mockReturnValue({
+				process: () => ({ css: '.cached{color:blue}' }),
+			});
+			minifyCssString.mockReturnValue('.cached{color:blue}');
+
+			const cssCode = '.cached { color: blue; }';
+			const firstResult = await processCss(cssCode);
+			const secondResult = await processCss(cssCode);
+
+			expect(firstResult).toBe('.cached{color:blue}');
+			expect(secondResult).toBe('.cached{color:blue}');
+			expect(postcss).toHaveBeenCalledTimes(1);
+		});
 	});
 
 	describe('SAVE_STYLES control', () => {

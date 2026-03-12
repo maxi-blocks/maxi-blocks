@@ -13,7 +13,7 @@ jest.mock('@extensions/styles/styleGenerator', () =>
 
 // Mock the MemoCache class
 jest.mock('@extensions/maxi-block/memoizationHelper', () => ({
-	MemoCache: jest.fn().mockImplementation((maxSize = 200) => ({
+	MemoCache: jest.fn().mockImplementation((maxSize = 500) => ({
 		cache: new Map(),
 		maxSize,
 		memoryStats: {
@@ -42,7 +42,7 @@ jest.mock('@extensions/maxi-block/memoizationHelper', () => ({
 		checkMemoryUsage: jest.fn(),
 		getStats: jest.fn(() => ({
 			size: 0,
-			maxSize: 200,
+			maxSize: 500,
 			totalSize: 0,
 			averageSize: 0,
 			lastCleanup: Date.now(),
@@ -57,7 +57,7 @@ describe('styles store reducer', () => {
 		const cache = new Map();
 		return {
 			cache,
-			maxSize: 200,
+			maxSize: 500,
 			memoryStats: {
 				totalSize: 0,
 				averageSize: 0,
@@ -72,7 +72,7 @@ describe('styles store reducer', () => {
 			checkMemoryUsage: jest.fn(),
 			getStats: () => ({
 				size: cache.size,
-				maxSize: 200,
+				maxSize: 500,
 				totalSize: 0,
 				averageSize: 0,
 				lastCleanup: Date.now(),

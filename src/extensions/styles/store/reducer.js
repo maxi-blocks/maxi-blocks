@@ -8,6 +8,7 @@ import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const CSS_CACHE_MAX_SIZE = 500;
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
@@ -154,7 +155,9 @@ class CSSCache extends MemoCache {
 }
 
 // Global CSS cache instance
-const cssCache = new CSSCache(200);
+// Large pages can exceed 200 styled blocks, so keep enough entries to avoid
+// evicting live block CSS and forcing repeated regeneration while editing.
+const cssCache = new CSSCache(CSS_CACHE_MAX_SIZE);
 
 // Helper function to chunk large style objects
 const chunkStylesIntoChunks = (styles, size) => {

@@ -9,6 +9,7 @@ import extractRGBValues from './extractRGBValues';
  * Cache for CSS variable values to avoid expensive getComputedStyle calls
  */
 const cssVariableCache = new Map();
+const CSS_VARIABLE_CACHE_MAX_SIZE = 100;
 
 /**
  * Get CSS variable value with caching
@@ -22,7 +23,14 @@ const getCachedCSSVariable = variableName => {
 		.getPropertyValue(variableName)
 		.trim();
 
+	if (cssVariableCache.has(variableName)) {
+		cssVariableCache.delete(variableName);
+	}
 	cssVariableCache.set(variableName, value);
+	if (cssVariableCache.size > CSS_VARIABLE_CACHE_MAX_SIZE) {
+		const oldestKey = cssVariableCache.keys().next().value;
+		cssVariableCache.delete(oldestKey);
+	}
 	return value;
 };
 

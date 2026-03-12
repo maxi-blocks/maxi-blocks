@@ -6,22 +6,29 @@ import { dispatch } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
-
-/**
- * Internal dependencies
- */
+import {
+	isEmpty,
+	isNumber,
+	isBoolean,
+	isObject,
+	merge,
+	isEqual,
+	isNil,
+} from 'lodash';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 
 /**
  * Styles resolver with LRU cache optimization
  */
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const STYLE_CACHE_MAX_SIZE = 50;
+const CONTENT_CACHE_MAX_SIZE = 100;
+const MAX_CACHE_KEY_LENGTH = 4000;
 
 // LRU cache for style resolution results
-const styleCache = new MemoCache(500); // Cache up to 500 style resolutions
-const cleanContentCache = new MemoCache(200); // Cache for cleanContent operations
-const getCleanContentCache = new MemoCache(200); // Cache for getCleanContent operations
+const styleCache = new MemoCache(STYLE_CACHE_MAX_SIZE);
+const cleanContentCache = new MemoCache(CONTENT_CACHE_MAX_SIZE);
+const getCleanContentCache = new MemoCache(CONTENT_CACHE_MAX_SIZE);
 
 // Cache statistics for monitoring
 let cacheStats = {
@@ -31,15 +38,25 @@ let cacheStats = {
 	lastCleared: Date.now(),
 };
 
+const getCacheKey = value => {
+	try {
+		const key = JSON.stringify(value);
+		return key.length <= MAX_CACHE_KEY_LENGTH ? key : null;
+	} catch (error) {
+		return null;
+	}
+};
+
 const cleanContent = content => {
-	// Generate cache key based on content structure
-	const cacheKey = JSON.stringify(content);
+	const cacheKey = getCacheKey(content);
 
 	// Check cache first
-	const cached = cleanContentCache.get(cacheKey);
-	if (cached !== undefined) {
-		cacheStats.hits += 1;
-		return cached;
+	if (cacheKey) {
+		const cached = cleanContentCache.get(cacheKey);
+		if (cached !== undefined) {
+			cacheStats.hits += 1;
+			return cached;
+		}
 	}
 
 	cacheStats.misses += 1;
@@ -64,19 +81,23 @@ const cleanContent = content => {
 	}
 
 	// Cache the result
-	cleanContentCache.set(cacheKey, newContent);
+	if (cacheKey) {
+		cleanContentCache.set(cacheKey, newContent);
+	}
+
 	return newContent;
 };
 
 const getCleanContent = content => {
-	// Generate cache key based on content structure
-	const cacheKey = JSON.stringify(content);
+	const cacheKey = getCacheKey(content);
 
 	// Check cache first
-	const cached = getCleanContentCache.get(cacheKey);
-	if (cached !== undefined) {
-		cacheStats.hits += 1;
-		return cached;
+	if (cacheKey) {
+		const cached = getCleanContentCache.get(cacheKey);
+		if (cached !== undefined) {
+			cacheStats.hits += 1;
+			return cached;
+		}
 	}
 
 	cacheStats.misses += 1;
@@ -93,57 +114,61 @@ const getCleanContent = content => {
 	}
 
 	// Cache the result
-	getCleanContentCache.set(cacheKey, newContent);
+	if (cacheKey) {
+		getCleanContentCache.set(cacheKey, newContent);
+	}
+
 	return newContent;
 };
 
 const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!styles) return {};
 
-	// Generate cache key for the entire styleResolver operation
-	const cacheKey = JSON.stringify({ styles, remover, breakpoints, uniqueID });
+	const canUseStyleCache = !remover && !uniqueID;
+	const cacheKey = canUseStyleCache
+		? getCacheKey({ styles, remover, breakpoints })
+		: null;
 	cacheStats.totalRequests += 1;
 
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
-	if (!remover) {
+	if (cacheKey) {
 		const cached = styleCache.get(cacheKey);
-		if (cached !== undefined) {
+		if (!isNil(cached)) {
 			cacheStats.hits += 1;
-			// BUGFIX: Even on cache hit, update Redux store so it has current styles for DB save
-			Object.entries(cached).forEach(([target]) => {
-				dispatch('maxiBlocks/styles').updateStyles(target, cached);
-			});
+			dispatch('maxiBlocks/styles').updateStyles(null, cached);
 			return cached;
 		}
+
 		cacheStats.misses += 1;
 	}
 
-	const response = (remover && []) || {};
+	const response = {};
 
 	Object.entries(styles).forEach(([target, props]) => {
-		if (!remover) {
-			if (!response[target])
-				response[target] = {
-					uniqueID,
-					breakpoints,
-					content: {},
-				};
-			response[target].content = props;
+		if (!response[target]) {
+			response[target] = {
+				uniqueID,
+				breakpoints,
+				content: {},
+			};
 		}
-		if (remover) response.push(target);
 
-		if (response?.[target]?.content)
-			response[target].content = getCleanContent(
-				response[target].content
-			);
+		response[target].content = props;
 
-		if (!remover)
-			dispatch('maxiBlocks/styles').updateStyles(target, response);
-		else dispatch('maxiBlocks/styles').removeStyles(response);
+		if (response[target].content)
+			response[target].content = getCleanContent(response[target].content);
 	});
 
 	// Cache the result for non-remover operations
-	if (!remover) {
+	if (!remover && !isEmpty(response)) {
+		dispatch('maxiBlocks/styles').updateStyles(null, response);
+	}
+
+	if (remover && !isEmpty(response)) {
+		dispatch('maxiBlocks/styles').removeStyles(Object.keys(response));
+	}
+
+	if (cacheKey) {
 		styleCache.set(cacheKey, response);
 	}
 

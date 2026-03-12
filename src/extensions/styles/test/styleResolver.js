@@ -1,17 +1,24 @@
+const mockUpdateStyles = jest.fn();
+const mockRemoveStyles = jest.fn();
+
 import styleResolver from '@extensions/styles/styleResolver';
 
 jest.mock('@wordpress/data', () => {
 	return {
-		dispatch: jest.fn(() => {
-			return {
-				updateStyles: jest.fn(),
-			};
-		}),
+		dispatch: jest.fn(() => ({
+			updateStyles: mockUpdateStyles,
+			removeStyles: mockRemoveStyles,
+		})),
 		select: jest.fn(() => false),
 	};
 });
 
 describe('styleResolver', () => {
+	beforeEach(() => {
+		mockUpdateStyles.mockClear();
+		mockRemoveStyles.mockClear();
+	});
+
 	it('Returns a clean style object', () => {
 		const styles = {
 			'test-target': {
@@ -146,6 +153,16 @@ describe('styleResolver', () => {
 			uniqueID,
 		});
 
+		expect(mockUpdateStyles).toHaveBeenCalledTimes(1);
+		expect(mockUpdateStyles).toHaveBeenCalledWith(
+			null,
+			expect.objectContaining({
+				['test-target']: expect.objectContaining({
+					uniqueID,
+					content: expect.any(Object),
+				}),
+			})
+		);
 		expect(result).toMatchSnapshot();
 	});
 });

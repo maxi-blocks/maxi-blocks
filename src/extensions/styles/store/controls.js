@@ -21,13 +21,44 @@ import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
  * Cache for processCss results
  */
 const processCssCache = new Map();
+const PROCESS_CSS_CACHE_MAX_SIZE = 150;
+const PROCESS_CSS_CACHE_MAX_CODE_LENGTH = 50000;
+
+const getCachedProcessCss = code => {
+	if (!processCssCache.has(code)) {
+		return null;
+	}
+
+	const cachedValue = processCssCache.get(code);
+	processCssCache.delete(code);
+	processCssCache.set(code, cachedValue);
+	return cachedValue;
+};
+
+const setCachedProcessCss = (code, minifiedCss) => {
+	if (code.length > PROCESS_CSS_CACHE_MAX_CODE_LENGTH) {
+		return;
+	}
+
+	if (processCssCache.has(code)) {
+		processCssCache.delete(code);
+	}
+
+	processCssCache.set(code, minifiedCss);
+
+	if (processCssCache.size > PROCESS_CSS_CACHE_MAX_SIZE) {
+		const oldestKey = processCssCache.keys().next().value;
+		processCssCache.delete(oldestKey);
+	}
+};
 
 export const processCss = async code => {
 	if (!code) return null;
 
 	// Check cache first
-	if (processCssCache.has(code)) {
-		return processCssCache.get(code);
+	const cachedCss = getCachedProcessCss(code);
+	if (cachedCss !== null) {
+		return cachedCss;
 	}
 
 	try {
@@ -43,8 +74,8 @@ export const processCss = async code => {
 
 		const minifiedCss = minifyCssString(css);
 
-		// Store in cache
-		processCssCache.set(code, minifiedCss);
+		// Store in a bounded cache to avoid retaining large CSS strings forever.
+		setCachedProcessCss(code, minifiedCss);
 
 		return minifiedCss;
 	} catch (error) {

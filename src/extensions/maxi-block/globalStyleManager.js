@@ -113,29 +113,17 @@ class DocumentStyleManager {
 		}
 
 		const cssChunks = [];
-		const processedRules = new Set(); // For deduplication
-
-		// Add header comment for debugging
-		cssChunks.push('/* MaxiBlocks Consolidated Styles - Generated */');
 
 		// Process each block's styles
-		for (const [uniqueID, styleContent] of this.blockStyles.entries()) {
+		for (const styleContent of this.blockStyles.values()) {
 			if (!styleContent || typeof styleContent !== 'string') {
 				// Skip invalid content - using empty block to avoid continue statement
 			} else {
-				// Add block identifier comment for debugging
-				cssChunks.push(`\n/* Block: ${uniqueID} */`);
-
-				// Basic deduplication - skip exact duplicate rules
-				const trimmedContent = styleContent.trim();
-				if (!processedRules.has(trimmedContent)) {
-					cssChunks.push(trimmedContent);
-					processedRules.add(trimmedContent);
-				}
+				cssChunks.push(styleContent);
 			}
 		}
 
-		return cssChunks.join('\n');
+		return cssChunks.join('');
 	}
 
 	/**

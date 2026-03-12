@@ -1,5 +1,5 @@
+import { select } from '@wordpress/data';
 import { isNumber } from 'lodash';
-import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 
 /**
  * Returns post styles.
@@ -58,17 +58,12 @@ export const getBlockMarginValue = state => {
 
 export const getAllStylesAreSaved = state => {
 	if (state.styles) {
-		let allStylesAreSaved = true;
+		const trackedBlocks = select('maxiBlocks/blocks')?.getBlocks?.() || {};
+		const uniqueIDs = Object.keys(trackedBlocks);
 
-		goThroughMaxiBlocks(block => {
-			const {
-				attributes: { uniqueID },
-			} = block;
+		if (!uniqueIDs.length) return false;
 
-			if (!state.styles[uniqueID]) allStylesAreSaved = false;
-		});
-
-		return allStylesAreSaved;
+		return uniqueIDs.every(uniqueID => !!state.styles[uniqueID]);
 	}
 
 	return false;

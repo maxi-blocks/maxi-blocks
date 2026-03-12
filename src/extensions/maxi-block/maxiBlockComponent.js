@@ -55,6 +55,7 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import { clearDeprecatedBlockCache } from '@extensions/styles/migrators/blockMigrator';
 
 /**
  * External dependencies
@@ -247,6 +248,7 @@ class MaxiBlockComponent extends Component {
 			return;
 		}
 		dispatch('maxiBlocks').removeDeprecatedBlock(uniqueID);
+		clearDeprecatedBlockCache(uniqueID);
 
 		// Init
 		this.updateLastInsertedBlocks();
@@ -1739,10 +1741,21 @@ class MaxiBlockComponent extends Component {
 			const customData = this.getCustomData;
 			recordPerf('getCustomData', customDataStart);
 			if (customData) {
-				const updateCustomDataStart = getPerfStart();
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				recordPerf('updateCustomData', updateCustomDataStart);
-				customDataRelations = customData[uniqueID]?.relations;
+				const nextCustomData = customData[uniqueID];
+				const currentCustomData =
+					select('maxiBlocks/customData').getPostCustomData()?.[
+						uniqueID
+					];
+
+				if (!isEqual(currentCustomData, nextCustomData)) {
+					const updateCustomDataStart = getPerfStart();
+					dispatch('maxiBlocks/customData').updateCustomData(
+						customData
+					);
+					recordPerf('updateCustomData', updateCustomDataStart);
+				}
+
+				customDataRelations = nextCustomData?.relations;
 			}
 		}
 
@@ -2182,6 +2195,9 @@ class MaxiBlockComponent extends Component {
 				? select('maxiBlocks/styles').getCSSCache(uniqueID)
 				: null;
 		const cachedStyleContent = cachedStyles?.[currentBreakpoint];
+		const shouldResetCachedBreakpoints =
+			isBaseBreakpointChange ||
+			(forceGenerate && !isBreakpointChange);
 
 		if (
 			isBreakpointChange &&
@@ -2224,18 +2240,20 @@ class MaxiBlockComponent extends Component {
 			recordPerf('styleGenerator', styleGenStart);
 		}
 
-		if (styles) {
-			dispatch('maxiBlocks/styles').saveCSSCache(
-				uniqueID,
-				styles,
-				!!iframe,
-				isSiteEditor
-			);
-		}
-
 		// Add !important to white-space: nowrap
 		if (styleContent) {
 			styleContent = normalizeStyleContent(styleContent);
+
+			if (styles) {
+				if (shouldResetCachedBreakpoints) {
+					dispatch('maxiBlocks/styles').removeCSSCache(uniqueID);
+				}
+
+				dispatch('maxiBlocks/styles').saveRawCSSCache(uniqueID, {
+					[currentBreakpoint]: styleContent,
+				});
+			}
+
 			if (currentBreakpoint === 'xxl') {
 				this.xxlStyleCache = styleContent;
 				this.isXxlStyleCacheDirty = false;

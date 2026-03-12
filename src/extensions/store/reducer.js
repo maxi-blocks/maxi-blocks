@@ -241,6 +241,10 @@ const reducer = (
 			return {
 				...state,
 				deprecatedBlocks: omit(state.deprecatedBlocks, action.uniqueID),
+				deprecatedBlocksSave: omit(
+					state.deprecatedBlocksSave,
+					action.uniqueID
+				),
 			};
 		case 'SET_IS_PAGE_LOADED':
 			return {

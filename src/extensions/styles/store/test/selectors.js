@@ -8,12 +8,18 @@ import {
 	getDefaultGroupAttributes,
 } from '@extensions/styles/store/selectors';
 
-jest.mock('@extensions/maxi-block', () => ({
-	goThroughMaxiBlocks: jest.fn(callback => {
-		[
-			{ attributes: { uniqueID: 'block1' } },
-			{ attributes: { uniqueID: 'block2' } },
-		].forEach(callback);
+jest.mock('@wordpress/data', () => ({
+	select: jest.fn(storeName => {
+		if (storeName === 'maxiBlocks/blocks') {
+			return {
+				getBlocks: () => ({
+					block1: { clientId: 'client-1' },
+					block2: { clientId: 'client-2' },
+				}),
+			};
+		}
+
+		return {};
 	}),
 }));
 

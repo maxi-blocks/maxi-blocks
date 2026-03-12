@@ -58,9 +58,35 @@ const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 
 	const handleAddMarker = index => {
 		const { lat, lon } = searchResults[index];
+
+		console.log(
+			`[SearchBox] handleAddMarker – raw lat: ${JSON.stringify(lat)} (${typeof lat}), raw lon: ${JSON.stringify(lon)} (${typeof lon})`
+		);
+
+		const centerBefore = map.getCenter();
+		const zoomBefore = map.getZoom();
+
+		console.log(
+			`[SearchBox] Map state BEFORE setView – center: ${JSON.stringify(centerBefore)}, zoom: ${JSON.stringify(zoomBefore)}`
+		);
+
 		const newMarker = getNewMarker([lat, lon], mapMarkers);
 
-		map.flyTo([lat, lon]);
+		console.log(
+			`[SearchBox] newMarker: ${JSON.stringify(newMarker)}`
+		);
+
+		// Use setView (no animation) instead of flyTo so the editor does not
+		// trigger a multi-second fly animation.  This also makes e2e tests
+		// deterministic – flyTo caused timing issues when tests tried to click
+		// the newly placed marker before the animation had finished.
+		map.setView([lat, lon], map.getZoom(), { animate: false });
+
+		const centerAfter = map.getCenter();
+
+		console.log(
+			`[SearchBox] Map state AFTER setView – center: ${JSON.stringify(centerAfter)}, zoom: ${JSON.stringify(map.getZoom())}`
+		);
 
 		maxiSetAttributes({
 			'map-markers': getUpdatedMarkers(mapMarkers, newMarker),

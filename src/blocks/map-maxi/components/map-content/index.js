@@ -116,9 +116,15 @@ const applyIframeDragFix = map => {
 	const onIframeMouseUp = e => {
 		if (!isDragActive) return;
 		isDragActive = false;
+		// Always forward mouseup so Leaflet's Draggable._onUp fires on the
+		// outer document and resets its drag state.  Without this, any
+		// mousedown on the map (drag, hold-to-pin, button click inside the
+		// map) leaves Leaflet stuck in drag mode because its mouseup listener
+		// is registered on the outer document but the event fires in the
+		// iframe and never reaches it.
 		forwardToOuter('mouseup', e);
 		console.log(
-			'[MapMaxi] iframe mouseup forwarded to outer document – Leaflet drag ended'
+			'[MapMaxi] iframe mouseup forwarded to outer document – Leaflet drag state reset'
 		);
 	};
 
@@ -269,9 +275,24 @@ const MapContent = props => {
 	const resizeMap = map => {
 		if (!map) return;
 
+		const mapSize = map.getSize();
+		const containerEl = map.getContainer();
+
 		console.log(
-			`[MapMaxi] Map ready – uniqueID: ${JSON.stringify(uniqueID)}, isIframe: ${JSON.stringify(window !== window.parent)}`
+			`[MapMaxi] Map ready – uniqueID: ${JSON.stringify(uniqueID)}, isIframe: ${JSON.stringify(window !== window.parent)}, mapSize: ${JSON.stringify(mapSize)}, containerOffsetHeight: ${JSON.stringify(containerEl?.offsetHeight)}, containerClientHeight: ${JSON.stringify(containerEl?.clientHeight)}`
 		);
+
+		// Call invalidateSize immediately so Leaflet knows the real
+		// dimensions of the container from the start (fixes the grey-area
+		// at the bottom when the block is first inserted into the editor).
+		try {
+			map.invalidateSize({ animate: false, pan: false, duration: 0 });
+			console.log(
+				`[MapMaxi] invalidateSize on ready – new size: ${JSON.stringify(map.getSize())}`
+			);
+		} catch (e) {
+			// Ignore
+		}
 
 		// Apply the drag fix before anything else so Leaflet's internal
 		// drag handler is already set up when we start listening on the parent.

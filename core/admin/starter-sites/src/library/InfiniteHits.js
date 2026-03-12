@@ -20,6 +20,26 @@ class InfiniteHits extends Component {
 
 	sentinel = null;
 
+	componentDidMount() {
+		this.observer = new IntersectionObserver(this.onSentinelIntersection);
+		this.observer.observe(this.sentinel);
+		this.scheduleLayout();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.hits !== this.props.hits) {
+			this.scheduleLayout();
+		}
+	}
+
+	componentWillUnmount() {
+		this.observer.disconnect();
+	}
+
+	scheduleLayout = () => {
+		window.requestAnimationFrame(() => masonryGenerator('starter-sites'));
+	};
+
 	onSentinelIntersection = entries => {
 		const { hasMore, refineNext } = this.props;
 
@@ -30,15 +50,6 @@ class InfiniteHits extends Component {
 			}
 		});
 	};
-
-	componentDidMount() {
-		this.observer = new IntersectionObserver(this.onSentinelIntersection);
-		this.observer.observe(this.sentinel);
-	}
-
-	componentWillUnmount() {
-		this.observer.disconnect();
-	}
 
 	render() {
 		const { hits, type, isQuickStart } = this.props;

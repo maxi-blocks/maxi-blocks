@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_position_styles(array $obj)
 {
     $key_words = ['top', 'right', 'bottom', 'left'];

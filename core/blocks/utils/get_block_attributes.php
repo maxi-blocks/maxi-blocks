@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_block_attributes($block_name)
 {
     $path = MAXI_PLUGIN_DIR_PATH . 'build/blocks/' . $block_name . '/block.json';

@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_block_attributes.php';
 
 function get_default_attribute(string $prop, ?string $block_name = null)

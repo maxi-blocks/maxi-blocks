@@ -13,6 +13,7 @@ export { default as adjustANC } from './adjustANC';
 export { default as changeResponsive } from './changeResponsive';
 export { default as copySCToEdit } from './copySCToEdit';
 export { default as deactivatePlugin } from './deactivatePlugin';
+export { default as dragInFrame } from './dragInFrame';
 export { default as editAdvancedNumberControl } from './editAdvancedNumberControl';
 export { default as editAxisControl } from './editAxisControl';
 export { default as editColorControl } from './editColorControl';

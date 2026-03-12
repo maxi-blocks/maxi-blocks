@@ -30,8 +30,8 @@ import {
 	updateSVG,
 } from '@extensions/repeater';
 import {
-	findBlockPosition,
 	getBlockPosition,
+	getBlockColumnClientId,
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 
@@ -69,17 +69,11 @@ const withMaxiProps = createHigherOrderComponent(
 					getBlock: selectStore.getBlock,
 					getBlockOrder: selectStore.getBlockOrder,
 					getBlockParents: selectStore.getBlockParents,
-					getBlockParentsByBlockName:
-						selectStore.getBlockParentsByBlockName,
 				};
 			}, []);
 
-			const {
-				getBlock,
-				getBlockOrder,
-				getBlockParents,
-				getBlockParentsByBlockName,
-			} = blockEditorSelectors;
+			const { getBlock, getBlockOrder, getBlockParents } =
+				blockEditorSelectors;
 
 			const {
 				updateBlockAttributes,
@@ -96,8 +90,6 @@ const withMaxiProps = createHigherOrderComponent(
 				baseBreakpoint,
 				hasSelectedChild,
 				isTyping,
-				blockIndex,
-				blockRootClientId,
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 				// isLastBlock,
 			} = useSelect(select => {
@@ -106,13 +98,9 @@ const withMaxiProps = createHigherOrderComponent(
 				const {
 					hasSelectedInnerBlock,
 					isTyping,
-					getBlockIndex,
-					getBlockRootClientId,
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 					// getBlocks,
 				} = select('core/block-editor');
-
-				const currentBlockIndex = getBlockIndex(clientId);
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 				// const allBlocks = getBlocks();
 
@@ -121,12 +109,10 @@ const withMaxiProps = createHigherOrderComponent(
 					baseBreakpoint: receiveBaseBreakpoint(),
 					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
 					isTyping: isTyping(),
-					blockIndex: currentBlockIndex,
-					blockRootClientId: getBlockRootClientId(clientId),
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 					// isLastBlock:
 					// 	attributes?.isFirstOnHierarchy &&
-					// 	currentBlockIndex === allBlocks.length - 1,
+					// 	getBlockIndex(clientId) === allBlocks.length - 1,
 				};
 			});
 
@@ -135,36 +121,25 @@ const withMaxiProps = createHigherOrderComponent(
 					const innerBlockPositions =
 						repeaterContext?.getInnerBlocksPositions();
 
-					if (innerBlockPositions?.[[-1]]?.includes(clientId)) {
-						return clientId;
-					}
-
-					return getBlockParentsByBlockName(
+					return getBlockColumnClientId(
 						clientId,
-						'maxi-blocks/column-maxi'
-					).find(parentClientId =>
-						innerBlockPositions?.[[-1]]?.includes(parentClientId)
+						innerBlockPositions
 					);
 				}
 
 				return null;
-			}, [
-				clientId,
-				blockRootClientId,
-				repeaterContext?.repeaterStatus,
-				repeaterContext?.getInnerBlocksPositions,
-			]);
+			}, [clientId, repeaterContext]);
 
 			const blockPositionFromColumn = useMemo(() => {
 				if (parentColumnClientId) {
-					return findBlockPosition(
+					return getBlockPosition(
 						clientId,
-						getBlock(parentColumnClientId)
+						repeaterContext?.getInnerBlocksPositions()
 					);
 				}
 
 				return null;
-			}, [blockIndex, blockRootClientId, parentColumnClientId]);
+			}, [clientId, parentColumnClientId, repeaterContext]);
 
 			const ref = useRef(null);
 			const styleObjKeys = useRef([]);
@@ -277,16 +252,21 @@ const withMaxiProps = createHigherOrderComponent(
 
 							const innerBlocksPositions =
 								repeaterContext?.getInnerBlocksPositions();
+							const blockPosition = getBlockPosition(
+								clientId,
+								innerBlocksPositions
+							);
 
-							const clientIds =
-								innerBlocksPositions?.[
-									getBlockPosition(
-										clientId,
-										innerBlocksPositions
-									)
-								];
+							const clientIds = innerBlocksPositions?.[blockPosition];
+							const columnClientId = getBlockColumnClientId(
+								clientId,
+								innerBlocksPositions
+							);
 
 							if (clientIds) {
+								const pendingRepeaterUpdates = {};
+								const pendingRepeaterClientIds = [];
+
 								clientIds.forEach(currentClientId => {
 									if (currentClientId === clientId) return;
 
@@ -318,23 +298,11 @@ const withMaxiProps = createHigherOrderComponent(
 										currentAttributes
 									);
 
-									const columnClientId =
-										innerBlocksPositions?.[[-1]]?.[
-											innerBlocksPositions?.[
-												blockPositionFromColumn
-											]?.indexOf(clientId)
-										];
-
-									const currentPosition = getBlockPosition(
-										currentClientId,
-										innerBlocksPositions
-									);
 									const currentColumnClientId =
-										innerBlocksPositions?.[[-1]]?.[
-											innerBlocksPositions?.[
-												currentPosition
-											]?.indexOf(currentClientId)
-										];
+										getBlockColumnClientId(
+											currentClientId,
+											innerBlocksPositions
+										);
 
 									updateRelationsInColumn(
 										nonExcludedAttributes,
@@ -344,13 +312,23 @@ const withMaxiProps = createHigherOrderComponent(
 									);
 
 									if (!isEmpty(nonExcludedAttributes)) {
-										updateBlockAttributes(
-											currentClientId,
-											nonExcludedAttributes
+										pendingRepeaterClientIds.push(
+											currentClientId
 										);
-										markNextChangeAsNotPersistent();
+										pendingRepeaterUpdates[
+											currentClientId
+										] = nonExcludedAttributes;
 									}
 								});
+
+								if (pendingRepeaterClientIds.length) {
+									markNextChangeAsNotPersistent();
+									updateBlockAttributes(
+										pendingRepeaterClientIds,
+										pendingRepeaterUpdates,
+										true
+									);
+								}
 							}
 
 							return setAttributes(newAttributes);
@@ -364,9 +342,7 @@ const withMaxiProps = createHigherOrderComponent(
 					repeaterContext,
 					copyPasteMapping,
 					contextLoopContext,
-					blockPositionFromColumn,
 					name,
-					deviceType,
 					insertInlineStyles,
 					cleanInlineStyles,
 				]

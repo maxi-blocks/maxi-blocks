@@ -3,6 +3,15 @@
  */
 import { select } from '@wordpress/data';
 
+const CLIENT_ID_TO_POSITION_KEY = '__clientIdToPosition';
+const CLIENT_ID_TO_COLUMN_KEY = '__clientIdToColumnId';
+
+const getFastLookupMap = (innerBlocksPositions, key) =>
+	innerBlocksPositions &&
+	Object.prototype.hasOwnProperty.call(innerBlocksPositions, key)
+		? innerBlocksPositions[key]
+		: null;
+
 export const findBlockIndex = (clientId, block) =>
 	block?.innerBlocks.findIndex(
 		innerBlock => innerBlock.clientId === clientId
@@ -65,6 +74,14 @@ export const findTarget = (blockPosition, column) => {
 };
 
 export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
+	const clientIdToPosition = getFastLookupMap(
+		innerBlocksPositions,
+		CLIENT_ID_TO_POSITION_KEY
+	);
+	if (clientIdToPosition?.has(blockClientId)) {
+		return clientIdToPosition.get(blockClientId);
+	}
+
 	if (innerBlocksPositions) {
 		for (const [position, clientIds] of Object.entries(
 			innerBlocksPositions
@@ -76,6 +93,38 @@ export const getBlockPosition = (blockClientId, innerBlocksPositions) => {
 	}
 
 	return null;
+};
+
+export const getBlockColumnClientId = (blockClientId, innerBlocksPositions) => {
+	const clientIdToColumnId = getFastLookupMap(
+		innerBlocksPositions,
+		CLIENT_ID_TO_COLUMN_KEY
+	);
+	if (clientIdToColumnId?.has(blockClientId)) {
+		return clientIdToColumnId.get(blockClientId);
+	}
+
+	if (!innerBlocksPositions) {
+		return null;
+	}
+
+	if (innerBlocksPositions?.[[-1]]?.includes(blockClientId)) {
+		return blockClientId;
+	}
+
+	const blockPosition = getBlockPosition(blockClientId, innerBlocksPositions);
+	if (!blockPosition || !innerBlocksPositions?.[blockPosition]) {
+		return null;
+	}
+
+	const columnIndex = innerBlocksPositions[blockPosition].indexOf(
+		blockClientId
+	);
+	if (columnIndex === -1) {
+		return null;
+	}
+
+	return innerBlocksPositions?.[[-1]]?.[columnIndex] || null;
 };
 
 /**

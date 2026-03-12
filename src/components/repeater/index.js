@@ -50,13 +50,10 @@ const Repeater = ({
 							return;
 						}
 
-						const newInnerBlocksPositions =
-							updateInnerBlocksPositions();
-
 						const isStructureValidated =
 							await validateRowColumnsStructure(
 								clientId,
-								newInnerBlocksPositions,
+								updateInnerBlocksPositions,
 								async () =>
 									new Promise(resolve => {
 										setIsModalHidden(false);

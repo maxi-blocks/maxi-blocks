@@ -17,11 +17,17 @@ import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
  * Styles resolver with LRU cache optimization
  */
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const STYLE_CACHE_MAX_SIZE = 75;
+const CLEAN_CONTENT_CACHE_MAX_SIZE = 75;
+const MAX_STYLE_CACHE_KEY_LENGTH = 20000;
+const MAX_STYLE_CACHE_VALUE_LENGTH = 100000;
+const MAX_CONTENT_CACHE_KEY_LENGTH = 8000;
+const CACHE_CHECK_INTERVAL = 25;
 
 // LRU cache for style resolution results
-const styleCache = new MemoCache(500); // Cache up to 500 style resolutions
-const cleanContentCache = new MemoCache(200); // Cache for cleanContent operations
-const getCleanContentCache = new MemoCache(200); // Cache for getCleanContent operations
+const styleCache = new MemoCache(STYLE_CACHE_MAX_SIZE);
+const cleanContentCache = new MemoCache(CLEAN_CONTENT_CACHE_MAX_SIZE);
+const getCleanContentCache = new MemoCache(CLEAN_CONTENT_CACHE_MAX_SIZE);
 
 // Cache statistics for monitoring
 let cacheStats = {
@@ -29,6 +35,27 @@ let cacheStats = {
 	misses: 0,
 	totalRequests: 0,
 	lastCleared: Date.now(),
+	skippedLargeEntries: 0,
+};
+
+const canCacheByKeyLength = (cacheKey, maxLength) =>
+	typeof cacheKey === 'string' && cacheKey.length <= maxLength;
+
+const trySetCache = (cache, cacheKey, value, maxValueLength = null) => {
+	if (!canCacheByKeyLength(cacheKey, MAX_STYLE_CACHE_KEY_LENGTH)) {
+		cacheStats.skippedLargeEntries += 1;
+		return;
+	}
+
+	if (maxValueLength !== null) {
+		const estimatedValueSize = JSON.stringify(value).length;
+		if (estimatedValueSize > maxValueLength) {
+			cacheStats.skippedLargeEntries += 1;
+			return;
+		}
+	}
+
+	cache.set(cacheKey, value);
 };
 
 const cleanContent = content => {
@@ -36,10 +63,12 @@ const cleanContent = content => {
 	const cacheKey = JSON.stringify(content);
 
 	// Check cache first
-	const cached = cleanContentCache.get(cacheKey);
-	if (cached !== undefined) {
-		cacheStats.hits += 1;
-		return cached;
+	if (canCacheByKeyLength(cacheKey, MAX_CONTENT_CACHE_KEY_LENGTH)) {
+		const cached = cleanContentCache.get(cacheKey);
+		if (cached !== undefined) {
+			cacheStats.hits += 1;
+			return cached;
+		}
 	}
 
 	cacheStats.misses += 1;
@@ -64,7 +93,9 @@ const cleanContent = content => {
 	}
 
 	// Cache the result
-	cleanContentCache.set(cacheKey, newContent);
+	if (canCacheByKeyLength(cacheKey, MAX_CONTENT_CACHE_KEY_LENGTH)) {
+		cleanContentCache.set(cacheKey, newContent);
+	}
 	return newContent;
 };
 
@@ -73,10 +104,12 @@ const getCleanContent = content => {
 	const cacheKey = JSON.stringify(content);
 
 	// Check cache first
-	const cached = getCleanContentCache.get(cacheKey);
-	if (cached !== undefined) {
-		cacheStats.hits += 1;
-		return cached;
+	if (canCacheByKeyLength(cacheKey, MAX_CONTENT_CACHE_KEY_LENGTH)) {
+		const cached = getCleanContentCache.get(cacheKey);
+		if (cached !== undefined) {
+			cacheStats.hits += 1;
+			return cached;
+		}
 	}
 
 	cacheStats.misses += 1;
@@ -93,7 +126,9 @@ const getCleanContent = content => {
 	}
 
 	// Cache the result
-	getCleanContentCache.set(cacheKey, newContent);
+	if (canCacheByKeyLength(cacheKey, MAX_CONTENT_CACHE_KEY_LENGTH)) {
+		getCleanContentCache.set(cacheKey, newContent);
+	}
 	return newContent;
 };
 
@@ -104,8 +139,15 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	const cacheKey = JSON.stringify({ styles, remover, breakpoints, uniqueID });
 	cacheStats.totalRequests += 1;
 
+	if (cacheStats.totalRequests % CACHE_CHECK_INTERVAL === 0) {
+		styleCacheUtils.checkMemoryUsage(150);
+	}
+
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
-	if (!remover) {
+	if (
+		!remover &&
+		canCacheByKeyLength(cacheKey, MAX_STYLE_CACHE_KEY_LENGTH)
+	) {
 		const cached = styleCache.get(cacheKey);
 		if (cached !== undefined) {
 			cacheStats.hits += 1;
@@ -144,7 +186,12 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 
 	// Cache the result for non-remover operations
 	if (!remover) {
-		styleCache.set(cacheKey, response);
+		trySetCache(
+			styleCache,
+			cacheKey,
+			response,
+			MAX_STYLE_CACHE_VALUE_LENGTH
+		);
 	}
 
 	return response;
@@ -191,6 +238,7 @@ export const styleCacheUtils = {
 			misses: 0,
 			totalRequests: 0,
 			lastCleared: Date.now(),
+			skippedLargeEntries: 0,
 		};
 	},
 

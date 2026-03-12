@@ -8,7 +8,7 @@ import { select } from '@wordpress/data';
 /**
  * External dependencies
  */
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty } from 'lodash';
 
 // Add requestIdleCallback polyfill
 const requestIdleCallbackPolyfill = callback => {
@@ -62,7 +62,6 @@ class edit extends MaxiBlockComponent {
 
 	state = {
 		displayHandlers: false,
-		innerBlocksPositions: {},
 		carouselCurrentSlide: 0,
 		carouselSlidesWidth: {},
 	};
@@ -70,6 +69,8 @@ class edit extends MaxiBlockComponent {
 	columnsSize = {};
 
 	columnsClientIds = [];
+
+	innerBlocksPositions = {};
 
 	isRepeaterInherited = !!this.context?.repeaterStatus;
 
@@ -219,19 +220,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	updateInnerBlocksPositions = () => {
+		const columnClientIds = select('core/block-editor').getBlockOrder(
+			this.props.clientId
+		);
 		const newInnerBlocksPositions = retrieveInnerBlocksPositions(
-			!isEmpty(this.columnsClientIds)
-				? this.columnsClientIds
-				: select('core/block-editor').getBlockOrder(this.props.clientId)
+			columnClientIds
 		);
 
-		if (
-			!isEqual(newInnerBlocksPositions, this.state.innerBlocksPositions)
-		) {
-			this.setState({
-				innerBlocksPositions: newInnerBlocksPositions,
-			});
-		}
+		this.innerBlocksPositions = newInnerBlocksPositions;
 
 		return newInnerBlocksPositions;
 	};
@@ -245,11 +241,11 @@ class edit extends MaxiBlockComponent {
 		)
 			return {};
 
-		if (isEmpty(this.state.innerBlocksPositions)) {
+		if (isEmpty(this.innerBlocksPositions)) {
 			return this.updateInnerBlocksPositions();
 		}
 
-		return this.state.innerBlocksPositions;
+		return this.innerBlocksPositions;
 	};
 
 	isCarouselEnabled = () => {
@@ -336,6 +332,10 @@ class edit extends MaxiBlockComponent {
 					columnsSize: this.columnsSize,
 					columnsClientIds: this.columnsClientIds,
 					setColumnClientId: clientId => {
+						if (this.columnsClientIds.includes(clientId)) {
+							return;
+						}
+
 						this.columnsClientIds = [
 							...this.columnsClientIds,
 							clientId,

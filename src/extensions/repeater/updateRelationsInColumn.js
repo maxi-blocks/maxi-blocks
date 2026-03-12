@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import { getClientIdFromUniqueId } from '@extensions/attributes';
-import { getBlockPosition } from './utils';
+import { getBlockColumnClientId, getBlockPosition } from './utils';
 
 /**
  * Updates attributes.relations. In each item it
@@ -23,14 +23,44 @@ const updateRelationsInColumn = (
 	attributes,
 	oldColumnClientId,
 	newColumnClientId,
-	innerBlocksPositions
+	innerBlocksPositions,
+	validationContext = null
 ) => {
 	if (!attributes.relations) {
 		return;
 	}
 
-	const { getBlock, getBlockParentsByBlockName } =
-		select('core/block-editor');
+	const { getBlock } = select('core/block-editor');
+	const relationInfoCache = validationContext?.relationInfoCache;
+
+	const getRelationInfo = uniqueID => {
+		if (!relationInfoCache) {
+			return null;
+		}
+
+		if (!relationInfoCache.has(uniqueID)) {
+			const relationClientId = getClientIdFromUniqueId(uniqueID);
+			const relationColumnClientId = getBlockColumnClientId(
+				relationClientId,
+				innerBlocksPositions
+			);
+			const blockPosition = getBlockPosition(
+				relationClientId,
+				innerBlocksPositions
+			);
+
+			relationInfoCache.set(uniqueID, {
+				relationColumnClientId,
+				clientIdsAtPosition:
+					blockPosition && innerBlocksPositions?.[blockPosition]
+						? innerBlocksPositions[blockPosition]
+						: null,
+				uniqueIdByColumn: new Map(),
+			});
+		}
+
+		return relationInfoCache.get(uniqueID);
+	};
 
 	attributes.relations = attributes.relations.map(relation => {
 		const { uniqueID } = relation;
@@ -39,41 +69,68 @@ const updateRelationsInColumn = (
 			return relation;
 		}
 
-		const relationClientId = getClientIdFromUniqueId(uniqueID);
+		const cachedRelationInfo = getRelationInfo(uniqueID);
+		const relationColumnClientId =
+			cachedRelationInfo?.relationColumnClientId ??
+			getBlockColumnClientId(
+				getClientIdFromUniqueId(uniqueID),
+				innerBlocksPositions
+			);
 
-		if (
-			relationClientId !== oldColumnClientId &&
-			!getBlockParentsByBlockName(
-				relationClientId,
-				'maxi-blocks/column-maxi'
-			).includes(oldColumnClientId)
-		) {
+		if (relationColumnClientId !== oldColumnClientId) {
 			return relation;
 		}
 
-		const blockPosition = getBlockPosition(
-			relationClientId,
-			innerBlocksPositions
-		);
+		if (cachedRelationInfo?.uniqueIdByColumn?.has(newColumnClientId)) {
+			const mappedUniqueID =
+				cachedRelationInfo.uniqueIdByColumn.get(newColumnClientId);
 
-		if (!blockPosition || !innerBlocksPositions?.[blockPosition]) {
+			return mappedUniqueID
+				? {
+						...relation,
+						uniqueID: mappedUniqueID,
+				  }
+				: relation;
+		}
+
+		const clientIdsAtPosition =
+			cachedRelationInfo?.clientIdsAtPosition ??
+			(() => {
+				const relationClientId = getClientIdFromUniqueId(uniqueID);
+				const blockPosition = getBlockPosition(
+					relationClientId,
+					innerBlocksPositions
+				);
+
+				return blockPosition && innerBlocksPositions?.[blockPosition]
+					? innerBlocksPositions[blockPosition]
+					: null;
+			})();
+
+		if (!clientIdsAtPosition) {
 			return relation;
 		}
 
-		const newRelationClientId = innerBlocksPositions[blockPosition].find(
+		const newRelationClientId = clientIdsAtPosition.find(
 			clientId =>
-				getBlockParentsByBlockName(
-					clientId,
-					'maxi-blocks/column-maxi'
-				).includes(newColumnClientId)
+				getBlockColumnClientId(clientId, innerBlocksPositions) ===
+				newColumnClientId
 		);
 
 		const newBlock = getBlock(newRelationClientId);
+		const mappedUniqueID = newBlock?.attributes?.uniqueID;
 
-		return {
-			...relation,
-			uniqueID: newBlock?.attributes?.uniqueID,
-		};
+		cachedRelationInfo?.uniqueIdByColumn?.set(
+			newColumnClientId,
+			mappedUniqueID || null
+		);
+
+		return mappedUniqueID
+			? {
+					...relation,
+					uniqueID: mappedUniqueID,
+			  }
+			: relation;
 	});
 };
 

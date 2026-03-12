@@ -8,11 +8,10 @@ import { dispatch, select } from '@wordpress/data';
  */
 import { cleanInnerBlocks, excludeAttributes } from '@extensions/copy-paste';
 import {
-	findBlockPosition,
-	findTarget,
+	getBlockPosition,
 	getChildColumns,
-	goThroughColumns,
 } from './utils';
+import retrieveInnerBlocksPositions from './retrieveInnerBlocksPositions';
 import updateNCLimits from './updateNCLimits';
 import updateSVG from './updateSVG';
 import updateRelationsInColumn from './updateRelationsInColumn';
@@ -28,6 +27,110 @@ import DISALLOWED_BLOCKS from './disallowedBlocks';
  */
 import { isEmpty, isEqual, round } from 'lodash';
 
+const createValidationContext = modifiedMarkNextChangeAsNotPersistent => {
+	const copyPasteMappingCache = new Map();
+	const blockAttributesCache = new Map();
+	const pendingAttributeUpdates = new Map();
+	const relationInfoCache = new Map();
+	const blockEditorSelect = select('core/block-editor');
+	const blockEditorDispatch = dispatch('core/block-editor');
+
+	return {
+		getCopyPasteMapping(blockName) {
+			if (!copyPasteMappingCache.has(blockName)) {
+				copyPasteMappingCache.set(
+					blockName,
+					getBlockData(blockName)?.copyPasteMapping
+				);
+			}
+
+			return copyPasteMappingCache.get(blockName);
+		},
+		getBlockAttributes(clientId) {
+			if (!blockAttributesCache.has(clientId)) {
+				blockAttributesCache.set(
+					clientId,
+					blockEditorSelect.getBlockAttributes(clientId)
+				);
+			}
+
+			return blockAttributesCache.get(clientId);
+		},
+		queueAttributeUpdate(clientId, attributes) {
+			pendingAttributeUpdates.set(clientId, attributes);
+		},
+		flushQueuedAttributeUpdates() {
+			if (!pendingAttributeUpdates.size) {
+				return;
+			}
+
+			const clientIds = [];
+			const attributesByClientId = {};
+
+			for (const [clientId, attributes] of pendingAttributeUpdates) {
+				clientIds.push(clientId);
+				attributesByClientId[clientId] = attributes;
+			}
+
+			modifiedMarkNextChangeAsNotPersistent();
+			blockEditorDispatch.updateBlockAttributes(
+				clientIds,
+				attributesByClientId,
+				true
+			);
+			pendingAttributeUpdates.clear();
+		},
+		relationInfoCache,
+	};
+};
+
+const getChangedAttributes = (nextAttributes, currentAttributes) => {
+	if (!nextAttributes) {
+		return null;
+	}
+
+	const changedAttributes = {};
+
+	Object.entries(nextAttributes).forEach(([key, value]) => {
+		if (!isEqual(currentAttributes?.[key], value)) {
+			changedAttributes[key] = value;
+		}
+	});
+
+	return isEmpty(changedAttributes) ? null : changedAttributes;
+};
+
+const collectColumnAnalysis = (
+	column,
+	removeBlock,
+	modifiedMarkNextChangeAsNotPersistent
+) => {
+	const structure = [];
+	const maxiBlocks = [];
+
+	goThroughMaxiBlocks(
+		block => {
+			if (DISALLOWED_BLOCKS.includes(block.name)) {
+				modifiedMarkNextChangeAsNotPersistent();
+				removeBlock(block.clientId, false);
+				return null;
+			}
+
+			structure.push(block.name);
+			maxiBlocks.push(block);
+
+			return null;
+		},
+		false,
+		column.innerBlocks
+	);
+
+	return {
+		structure,
+		maxiBlocks,
+	};
+};
+
 const validateAttributes = (
 	block,
 	column,
@@ -35,11 +138,14 @@ const validateAttributes = (
 	indexToValidateBy = 0,
 	disableRelationsUpdate = false,
 	modifiedMarkNextChangeAsNotPersistent = dispatch('core/block-editor')
-		.__unstableMarkNextChangeAsNotPersistent
+		.__unstableMarkNextChangeAsNotPersistent,
+	validationContext = null
 ) => {
-	const copyPasteMapping = getBlockData(block.name)?.copyPasteMapping;
+	const copyPasteMapping =
+		validationContext?.getCopyPasteMapping(block.name) ||
+		getBlockData(block.name)?.copyPasteMapping;
 
-	const blockPosition = findBlockPosition(block.clientId, column);
+	const blockPosition = getBlockPosition(block.clientId, innerBlocksPositions);
 	const refClientId =
 		innerBlocksPositions?.[blockPosition]?.at(indexToValidateBy);
 	const refColumnClientId =
@@ -49,10 +155,9 @@ const validateAttributes = (
 		return false;
 	}
 
-	const { getBlockAttributes } = select('core/block-editor');
-
 	const nonExcludedRefAttributes = excludeAttributes(
-		getBlockAttributes(refClientId),
+		validationContext?.getBlockAttributes(refClientId) ||
+			select('core/block-editor').getBlockAttributes(refClientId),
 		block.attributes,
 		copyPasteMapping,
 		true,
@@ -64,7 +169,8 @@ const validateAttributes = (
 			nonExcludedRefAttributes,
 			refColumnClientId,
 			column.clientId,
-			innerBlocksPositions
+			innerBlocksPositions,
+			validationContext
 		);
 	}
 
@@ -76,29 +182,49 @@ const validateAttributes = (
 		nonExcludedRefAttributes['repeater-status'] = false;
 	}
 
-	const nonExcludedBlockAttributes = excludeAttributes(
-		block.attributes,
-		block.attributes,
-		copyPasteMapping,
-		true,
-		block.name
+	const changedAttributes = getChangedAttributes(
+		nonExcludedRefAttributes,
+		block.attributes
 	);
 
-	if (!isEqual(nonExcludedRefAttributes, nonExcludedBlockAttributes)) {
-		const { updateBlockAttributes } = dispatch('core/block-editor');
+	if (changedAttributes) {
+		if (validationContext?.queueAttributeUpdate) {
+			validationContext.queueAttributeUpdate(
+				block.clientId,
+				changedAttributes
+			);
+		} else {
+			const { updateBlockAttributes } = dispatch('core/block-editor');
 
-		modifiedMarkNextChangeAsNotPersistent();
-		updateBlockAttributes(block.clientId, nonExcludedRefAttributes);
+			modifiedMarkNextChangeAsNotPersistent();
+			updateBlockAttributes(block.clientId, changedAttributes);
+		}
 	}
 
 	return null;
 };
 
+const syncClientIdsByStructure = (newBlocks, oldBlocks) => {
+	newBlocks.forEach((block, index) => {
+		const oldBlock = oldBlocks?.[index];
+
+		if (!oldBlock) {
+			return;
+		}
+
+		if (oldBlock.name === block.name) {
+			block.clientId = oldBlock.clientId;
+		}
+
+		if (block.innerBlocks?.length) {
+			syncClientIdsByStructure(block.innerBlocks, oldBlock.innerBlocks);
+		}
+	});
+};
+
 const replaceColumnInnerBlocks = (
 	columnClientId,
 	columnToValidateByClientId,
-	columnToValidateByIndex,
-	innerBlocksPositions,
 	modifiedMarkNextChangeAsNotPersistent
 ) => {
 	const { replaceInnerBlocks } = dispatch('core/block-editor');
@@ -109,30 +235,19 @@ const replaceColumnInnerBlocks = (
 	);
 	const column = getBlock(columnClientId);
 
-	const newColumn = {
-		...column,
-		innerBlocks: newInnerBlocks,
-	};
-
-	goThroughMaxiBlocks(
-		block => {
-			const blockPosition = findBlockPosition(block.clientId, newColumn);
-			const oldBlock = findTarget(blockPosition, column);
-
-			if (!oldBlock) {
-				return;
-			}
-
-			if (oldBlock.name === block.name) {
-				block.clientId = oldBlock.clientId;
-			}
-		},
-		false,
-		newInnerBlocks
-	);
+	syncClientIdsByStructure(newInnerBlocks, column.innerBlocks);
 
 	modifiedMarkNextChangeAsNotPersistent();
 	replaceInnerBlocks(columnClientId, newInnerBlocks, false);
+};
+
+const getLiveColumnAnalysis = (columnClientId, removeBlock, markNotPersistent) => {
+	const column = select('core/block-editor').getBlock(columnClientId);
+
+	return {
+		column,
+		...collectColumnAnalysis(column, removeBlock, markNotPersistent),
+	};
 };
 
 /**
@@ -166,6 +281,25 @@ const validateRowColumnsStructure = async (
 			isFirstCall = false;
 		}
 	};
+	const validationContext = createValidationContext(
+		modifiedMarkNextChangeAsNotPersistent
+	);
+	let resolvedInnerBlocksPositions =
+		typeof innerBlocksPositions === 'function'
+			? null
+			: innerBlocksPositions;
+	const resolveInnerBlocksPositions = (forceRefresh = false) => {
+		if (forceRefresh || !resolvedInnerBlocksPositions) {
+			resolvedInnerBlocksPositions =
+				typeof innerBlocksPositions === 'function'
+					? innerBlocksPositions()
+					: retrieveInnerBlocksPositions(
+							select('core/block-editor').getBlockOrder(rowClientId)
+					  );
+		}
+
+		return resolvedInnerBlocksPositions;
+	};
 
 	let childColumns = getChildColumns(rowClientId, true);
 
@@ -195,106 +329,108 @@ const validateRowColumnsStructure = async (
 		childColumns.unshift(columnToValidateBy);
 	}
 
-	const columnsStructure = {};
-
-	const pushToStructure = (block, structureArray) => {
-		if (DISALLOWED_BLOCKS.includes(block.name)) {
-			modifiedMarkNextChangeAsNotPersistent();
-			removeBlock(block.clientId, false);
-		} else {
-			structureArray.push(block.name);
-		}
-	};
-
 	let proceedTransformingColumns = null;
+	const columnAnalysis = new Map();
 
-	await goThroughColumns(childColumns, null, async column => {
-		if (proceedTransformingColumns === false) {
-			return;
-		}
-
-		// we can't just compare inner blocks, because if they different attributes - it's ok
-		// so we need to compare only block names
-		const columnInnerBlocks = column.innerBlocks;
-
-		const isColumnToValidateBy =
-			column.clientId === columnToValidateBy.clientId;
-
-		columnsStructure[column.clientId] = [];
-		const columnStructure = columnsStructure[column.clientId];
-
-		goThroughMaxiBlocks(
-			block => pushToStructure(block, columnStructure),
-			false,
-			columnInnerBlocks
+	for (const column of childColumns) {
+		const analysis = collectColumnAnalysis(
+			column,
+			removeBlock,
+			modifiedMarkNextChangeAsNotPersistent
 		);
+		columnAnalysis.set(column.clientId, analysis);
 
-		if (isColumnToValidateBy) {
-			return;
+		if (column.clientId === columnToValidateByClientId) {
+			continue;
 		}
 
 		if (
 			proceedTransformingColumns === null &&
-			columnStructure.length > 0 &&
+			analysis.structure.length > 0 &&
 			!isEqual(
-				columnsStructure[columnToValidateByClientId],
-				columnStructure
+				columnAnalysis.get(columnToValidateByClientId)?.structure,
+				analysis.structure
 			)
 		) {
 			proceedTransformingColumns =
 				!differentColumnsStructureCallback ||
 				(await differentColumnsStructureCallback());
-		}
-	});
 
-	if (proceedTransformingColumns === false) {
-		return false;
+			if (proceedTransformingColumns === false) {
+				return false;
+			}
+		}
 	}
 
-	await goThroughColumns(childColumns, null, async column => {
+	let hasColumnReplacements = false;
+	const validatedColumns = new Map();
+
+	for (const column of childColumns) {
 		if (column.clientId === columnToValidateByClientId) {
-			return;
+			continue;
 		}
 
+		let currentColumn = column;
+		let currentAnalysis = columnAnalysis.get(column.clientId);
+
 		if (
-			columnsStructure[column.clientId] &&
+			currentAnalysis?.structure &&
 			!isEqual(
-				columnsStructure[columnToValidateByClientId],
-				columnsStructure[column.clientId]
+				columnAnalysis.get(columnToValidateByClientId)?.structure,
+				currentAnalysis.structure
 			)
 		) {
 			replaceColumnInnerBlocks(
 				column.clientId,
 				columnToValidateByClientId,
-				columnToValidateByIndex,
-				innerBlocksPositions,
 				modifiedMarkNextChangeAsNotPersistent
 			);
+			hasColumnReplacements = true;
+
+			const liveAnalysis = getLiveColumnAnalysis(
+				column.clientId,
+				removeBlock,
+				modifiedMarkNextChangeAsNotPersistent
+			);
+			currentColumn = liveAnalysis.column;
+			currentAnalysis = liveAnalysis;
 		}
 
+		validatedColumns.set(column.clientId, {
+			column: currentColumn,
+			analysis: currentAnalysis,
+		});
+	}
+
+	const currentInnerBlocksPositions = resolveInnerBlocksPositions(
+		hasColumnReplacements
+	);
+
+	for (const { column, analysis } of validatedColumns.values()) {
 		validateAttributes(
 			column,
 			column,
-			innerBlocksPositions,
+			currentInnerBlocksPositions,
 			columnToValidateByIndex,
 			false,
-			modifiedMarkNextChangeAsNotPersistent
+			modifiedMarkNextChangeAsNotPersistent,
+			validationContext
 		);
 
-		goThroughMaxiBlocks(
-			block =>
-				validateAttributes(
-					block,
-					column,
-					innerBlocksPositions,
-					columnToValidateByIndex,
-					false,
-					modifiedMarkNextChangeAsNotPersistent
-				),
-			false,
-			column.innerBlocks
+		analysis?.maxiBlocks.forEach(block =>
+			validateAttributes(
+				block,
+				column,
+				currentInnerBlocksPositions,
+				columnToValidateByIndex,
+				false,
+				modifiedMarkNextChangeAsNotPersistent,
+				validationContext
+			)
 		);
-	});
+	}
+
+	validationContext.flushQueuedAttributeUpdates();
 
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 

@@ -16,18 +16,27 @@ import postcss from 'postcss';
  */
 import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
 import entityRecordsWrapper from '@extensions/styles/entityRecordsWrapper';
+import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 
 /**
  * Cache for processCss results
  */
-const processCssCache = new Map();
+const PROCESS_CSS_CACHE_MAX_SIZE = 25;
+const MAX_PROCESS_CSS_CACHE_KEY_LENGTH = 20000;
+const processCssCache = new MemoCache(PROCESS_CSS_CACHE_MAX_SIZE);
 
 export const processCss = async code => {
 	if (!code) return null;
+	const canCache =
+		typeof code === 'string' &&
+		code.length <= MAX_PROCESS_CSS_CACHE_KEY_LENGTH;
 
 	// Check cache first
-	if (processCssCache.has(code)) {
-		return processCssCache.get(code);
+	if (canCache) {
+		const cachedCss = processCssCache.get(code);
+		if (cachedCss !== undefined) {
+			return cachedCss;
+		}
 	}
 
 	try {
@@ -44,7 +53,9 @@ export const processCss = async code => {
 		const minifiedCss = minifyCssString(css);
 
 		// Store in cache
-		processCssCache.set(code, minifiedCss);
+		if (canCache) {
+			processCssCache.set(code, minifiedCss);
+		}
 
 		return minifiedCss;
 	} catch (error) {

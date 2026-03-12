@@ -45,13 +45,64 @@ const ALL_TIME_EXCLUDE = [
 	'cl-grandchild-accumulator',
 ];
 
+const DEFAULT_ATTRIBUTE_CACHE = new Map();
+const ALL_TIME_EXCLUDE_SET = new Set(ALL_TIME_EXCLUDE);
+const ALL_TIME_EXCLUDE_SET_CACHE = new Map();
+const KEYS_TO_EXCLUDE_CACHE = {
+	repeater: new WeakMap(),
+	default: new WeakMap(),
+};
+const EMPTY_COPY_PASTE_MAPPING = {};
+
+const getDefaultAttributeValue = prop => {
+	if (!DEFAULT_ATTRIBUTE_CACHE.has(prop)) {
+		DEFAULT_ATTRIBUTE_CACHE.set(prop, getDefaultAttribute(prop));
+	}
+
+	return DEFAULT_ATTRIBUTE_CACHE.get(prop);
+};
+
+const getAllTimeExcludeSet = customAllTimeExclude => {
+	if (!customAllTimeExclude?.length) {
+		return ALL_TIME_EXCLUDE_SET;
+	}
+
+	const cacheKey = customAllTimeExclude.join('\0');
+
+	if (!ALL_TIME_EXCLUDE_SET_CACHE.has(cacheKey)) {
+		ALL_TIME_EXCLUDE_SET_CACHE.set(
+			cacheKey,
+			new Set([...ALL_TIME_EXCLUDE, ...customAllTimeExclude])
+		);
+	}
+
+	return ALL_TIME_EXCLUDE_SET_CACHE.get(cacheKey);
+};
+
+const getKeysToExclude = (copyPasteMapping, isRepeater) => {
+	const cache = isRepeater
+		? KEYS_TO_EXCLUDE_CACHE.repeater
+		: KEYS_TO_EXCLUDE_CACHE.default;
+	const cacheKey = copyPasteMapping || EMPTY_COPY_PASTE_MAPPING;
+
+	if (!cache.has(cacheKey)) {
+		cache.set(cacheKey, [
+			...(isRepeater ? REPEATER_GLOBAL_EXCLUDE : GLOBAL_EXCLUDE),
+			...((copyPasteMapping?._exclude || [])),
+		]);
+	}
+
+	return cache.get(cacheKey);
+};
+
 const shouldDeleteKey = (
 	prop,
 	attributesToExclude,
 	attributes,
 	isRepeater,
 	blockName,
-	customAllTimeExclude
+	allTimeExcludeSet,
+	isDCLinkBlock
 ) => {
 	if (isNil(attributesToExclude[prop])) {
 		return false;
@@ -60,17 +111,12 @@ const shouldDeleteKey = (
 	if (isRepeater) {
 		const isSvgIconMaxiException =
 			blockName === 'maxi-blocks/svg-icon-maxi' && prop === 'content';
-		const isInAllTimeExclude = [
-			...ALL_TIME_EXCLUDE,
-			...customAllTimeExclude,
-		].includes(prop);
+		const isInAllTimeExclude = allTimeExcludeSet.has(prop);
 		const isEqualToDefault = isEqual(
 			attributes?.[prop],
-			getDefaultAttribute(prop)
+			getDefaultAttributeValue(prop)
 		);
-
-		const isDCLinkBlocksException =
-			prop === 'dc-status' && DC_LINK_BLOCKS.includes(blockName);
+		const isDCLinkBlocksException = prop === 'dc-status' && isDCLinkBlock;
 
 		return (
 			(!isSvgIconMaxiException &&
@@ -116,11 +162,9 @@ const excludeAttributes = (
 	customAllTimeExclude = []
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
-
-	const keysToExclude = [
-		...(isRepeater ? REPEATER_GLOBAL_EXCLUDE : GLOBAL_EXCLUDE),
-		...(copyPasteMapping._exclude || []),
-	];
+	const keysToExclude = getKeysToExclude(copyPasteMapping, isRepeater);
+	const allTimeExcludeSet = getAllTimeExcludeSet(customAllTimeExclude);
+	const isDCLinkBlock = DC_LINK_BLOCKS.includes(blockName);
 
 	keysToExclude.forEach(prop => {
 		if (
@@ -130,7 +174,8 @@ const excludeAttributes = (
 				attributes,
 				isRepeater,
 				blockName,
-				customAllTimeExclude
+				allTimeExcludeSet,
+				isDCLinkBlock
 			)
 		) {
 			delete attributesToExclude[prop];
@@ -139,10 +184,8 @@ const excludeAttributes = (
 
 	if (
 		attributes &&
-		(Object.keys(attributesToExclude).includes('background-layers') ||
-			Object.keys(attributesToExclude).includes(
-				'background-layers-hover'
-			))
+		('background-layers' in attributesToExclude ||
+			'background-layers-hover' in attributesToExclude)
 	) {
 		processBackgroundLayers(attributesToExclude, attributes);
 	}

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_link_styles(array $obj, string $target, array $blockStyle)
 {
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

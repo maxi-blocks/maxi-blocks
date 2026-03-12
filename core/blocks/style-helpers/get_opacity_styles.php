@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_opacity_styles($obj, $isHover = false, $prefix = '')
 {
     if (!is_array($obj)) {

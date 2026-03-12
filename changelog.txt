@@ -1,3 +1,9 @@
+_Updates 6 Mar 2026_
+MaxiBlocks v2.1.9
+* Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.
+* Update: Implemented comprehensive fixes and improvements to meet WordPress.org plugin directory standards, ensuring full compliance and enhanced quality.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+
 _Updates 5 Feb 2026_
 MaxiBlocks v2.1.8
 * Update: Introduced support for Custom fonts from WordPress Site Editor options.

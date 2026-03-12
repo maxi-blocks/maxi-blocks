@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 function validate_origin_value($val)
 {
     $is_numeric = function ($val) {

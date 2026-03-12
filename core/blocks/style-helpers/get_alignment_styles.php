@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_alignment_flex_styles($obj) {
     $response = [];
 

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_clip_path_styles($params)
 {
     if (!is_array($params) || !isset($params['obj'])) {

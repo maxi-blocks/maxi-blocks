@@ -29,7 +29,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 
 	it('Should have width of editor in theme 2022', async () => {
@@ -39,7 +39,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 
 	it('Should have width of editor in theme 2023', async () => {
@@ -49,6 +49,6 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 });

@@ -11,7 +11,7 @@ import {
  * Internal dependencies
  */
 import { siteCodeEditor } from './content';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return site DC content', async () => {
@@ -28,7 +28,8 @@ describe('Dynamic content', () => {
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
 
-		await page.waitForSelector('.maxi-text-block__content', {
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
 		await page.waitForTimeout(1000);
@@ -49,14 +50,14 @@ describe('Dynamic content', () => {
 		};
 
 		const getBackResults = async (block, expect) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect
 			);
 
 		const getButtonResults = async (block, expect) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-button-block .maxi-button-block__content`,
 				(el, _expect) => el.innerText === _expect,
 				expect

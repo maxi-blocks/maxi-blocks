@@ -16,6 +16,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('ArrowControl', () => {
@@ -24,7 +25,8 @@ describe('ArrowControl', () => {
 		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.$eval('.maxi-container-block', container =>
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
 

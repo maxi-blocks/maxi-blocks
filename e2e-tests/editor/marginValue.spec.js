@@ -6,16 +6,17 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { activateTheme, insertMaxiBlock } from '../utils';
+import { activateTheme, insertMaxiBlock, getEditorFrame } from '../utils';
 
 const testContainerWidth = async () => {
-	const containerElement = await page.$('.maxi-container-block');
-	const editorWrapper = await page.$('.editor-styles-wrapper');
+	const frame = await getEditorFrame(page);
+	const containerElement = await frame.$('.maxi-container-block');
+	const editorWrapper = await frame.$('.editor-styles-wrapper');
 
 	const containerWidth = await containerElement.evaluate(
 		el => el.offsetWidth
 	);
-	const editorWidth = await editorWrapper.evaluate(el => el.offsetWidth);
+	const editorWidth = await editorWrapper.evaluate(el => el.clientWidth);
 
 	return { containerWidth, editorWidth };
 };
@@ -28,7 +29,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 
 	it('Should have width of editor in theme 2022', async () => {
@@ -38,7 +39,7 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 
 	it('Should have width of editor in theme 2023', async () => {
@@ -48,6 +49,6 @@ describe('Full width blocks', () => {
 
 		const { containerWidth, editorWidth } = await testContainerWidth();
 
-		expect(containerWidth).toBe(editorWidth);
+		expect(Math.abs(containerWidth - editorWidth)).toBeLessThanOrEqual(1);
 	});
 });

@@ -81,6 +81,68 @@ const getPerfStart = () => {
 	return performance.now();
 };
 
+const getBlockPerfStart = () =>
+	typeof performance !== 'undefined' && performance.now
+		? performance.now()
+		: null;
+
+/**
+ * Per-block performance recorder. Tracks timing per uniqueID and logs a
+ * sorted summary (slowest first) once per second.
+ * Enabled by: window.__MAXI_PROFILE_MAXI_BLOCKS__ = true
+ *
+ * Tracked labels: mount, fonts, styles, iframe, getStylesObj, generate, addStyles
+ */
+const recordBlockPerf = (uniqueID, label, start) => {
+	if (
+		start === null ||
+		typeof performance === 'undefined' ||
+		typeof window === 'undefined'
+	) {
+		return;
+	}
+
+	const duration = performance.now() - start;
+	const root = window;
+	const store =
+		root.__maxiBlocksPerBlockPerf__ ||
+		(root.__maxiBlocksPerBlockPerf__ = {
+			blocks: {},
+			logScheduled: false,
+		});
+
+	const entry =
+		store.blocks[uniqueID] ||
+		(store.blocks[uniqueID] = { total: 0 });
+	entry[label] = (entry[label] || 0) + duration;
+	entry.total += duration;
+
+	if (!store.logScheduled) {
+		store.logScheduled = true;
+		setTimeout(() => {
+			store.logScheduled = false;
+			const snapshot = store.blocks;
+			store.blocks = {};
+
+			const rows = Object.entries(snapshot).sort(
+				([, a], [, b]) => b.total - a.total
+			);
+			if (!rows.length) return;
+
+			const lines = rows.map(([id, t]) => {
+				const parts = Object.entries(t)
+					.filter(([k]) => k !== 'total')
+					.map(([k, v]) => `${k}=${v.toFixed(1)}ms`)
+					.join(' ');
+				return `  ${id}: total=${t.total.toFixed(1)}ms  ${parts}`;
+			});
+			console.info(
+				`MaxiBlocks per-block perf (${rows.length} blocks):\n${lines.join('\n')}`
+			);
+		}, 1000);
+	}
+};
+
 const recordPerf = (label, start) => {
 	if (start === null || typeof performance === 'undefined') {
 		return;
@@ -123,6 +185,74 @@ const recordPerf = (label, start) => {
 		}, 1000);
 	}
 };
+
+/**
+ * Fix 1: Singleton style sheet for block-move animation killer.
+ * One <style> element shared across all blocks instead of one per block.
+ */
+let blockMoveStyleSheet = null;
+
+/**
+ * Fix 2: Singleton MutationObserver for the FSE iframe.
+ * One observer shared across all blocks instead of one per block.
+ */
+let fseSingletonObserver = null;
+let fseSingletonObserverTimeout = null;
+
+function ensureBlockMoveStyleSheet() {
+	if (blockMoveStyleSheet) return;
+	const el = document.createElement('style');
+	el.id = 'maxi-block-move-blocker';
+	// Single generic rule covers every Maxi block — no per-block tracking needed.
+	el.textContent =
+		'[data-type^="maxi-blocks/"][style*="translate3d"] { transform: none !important; }';
+	document.head.appendChild(el);
+	blockMoveStyleSheet = el;
+}
+
+/**
+ * Fix 3: Batch displayStyles() calls that happen during bulk mount.
+ * All componentDidMount calls within the same React render batch are
+ * collected and processed together in the next animation frame, so the
+ * browser gets a chance to paint before the style-generation work begins.
+ */
+let pendingStyleDisplays = [];
+let styleDisplayScheduled = false;
+
+function flushStyleDisplays() {
+	if (pendingStyleDisplays.length === 0) return;
+	styleDisplayScheduled = false;
+	const batch = pendingStyleDisplays.splice(0);
+	batch.forEach(({ block: b, isBreakpointChange: isBP }) => {
+		const stylesPerfStart = getBlockPerfStart();
+		try {
+			b.displayStyles(isBP);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
+		recordBlockPerf(
+			b.props?.attributes?.uniqueID,
+			'styles',
+			stylesPerfStart
+		);
+	});
+}
+
+/**
+ * Flush any pending deferred style displays synchronously.
+ * Call this before saving to ensure all block styles are in the store.
+ */
+export const flushPendingStyleDisplays = flushStyleDisplays;
+
+function scheduleDisplayStyles(block, isBreakpointChange) {
+	pendingStyleDisplays.push({ block, isBreakpointChange });
+	if (!styleDisplayScheduled) {
+		styleDisplayScheduled = true;
+		requestAnimationFrame(() => {
+			flushStyleDisplays();
+		});
+	}
+}
 
 /**
  * Class
@@ -311,6 +441,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const mountPerfStart = getBlockPerfStart();
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -470,15 +602,22 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Step 6: Font loading
+		const fontsPerfStart = getBlockPerfStart();
 		this.loadFonts();
+		recordBlockPerf(
+			this.props.attributes.uniqueID,
+			'fonts',
+			fontsPerfStart
+		);
 
-		// Step 7: Display styles
-		try {
-			// Call directly without debouncing to avoid memory accumulation
-			this?.displayStyles(!!this?.rootSlot);
-		} catch (error) {
-			console.warn('MaxiBlocks: Display styles error:', error);
-		}
+		// Step 7: Display styles — deferred via rAF to batch bulk-mount scenarios
+		// (editor open, template insert, code-editor switch) into one frame.
+		recordBlockPerf(
+			this.props.attributes.uniqueID,
+			'mount',
+			mountPerfStart
+		);
+		scheduleDisplayStyles(this, !!this?.rootSlot);
 
 		// Step 8: Force update if needed
 		if (!this.getBreakpoints.xxl) {
@@ -812,17 +951,9 @@ class MaxiBlockComponent extends Component {
 			this.previewObservers = null;
 		}
 
-		// Disconnect FSE observer if present
-		if (this.fseIframeObserver) {
-			this.fseIframeObserver.disconnect();
-			this.fseIframeObserver = null;
-		}
+		// FSE observer is now a module-level singleton — not disconnected per block.
 
-		// Remove block move animation killer style
-		if (this.blockMoveStyleBlocker) {
-			this.blockMoveStyleBlocker.remove();
-			this.blockMoveStyleBlocker = null;
-		}
+		// Block move animation killer is now a module-level singleton — not removed per block.
 
 		// Remove temporary popover-hiding styles if still injected
 		if (this.popoverStyles) {
@@ -1664,8 +1795,10 @@ class MaxiBlockComponent extends Component {
 				obj = stylesForViewportCheck;
 			} else {
 				const stylesObjStart = getPerfStart();
+				const stylesObjBlockStart = getBlockPerfStart();
 				obj = this.getStylesObject || {};
 				recordPerf('getStylesObject', stylesObjStart);
+				recordBlockPerf(uniqueID, 'getStylesObj', stylesObjBlockStart);
 			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1867,7 +2000,9 @@ class MaxiBlockComponent extends Component {
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
+			const iframePerfStart = getBlockPerfStart();
 			this.handleIframeStyles(iframe, currentBreakpoint);
+			recordBlockPerf(uniqueID, 'iframe', iframePerfStart);
 		}
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
@@ -1877,6 +2012,7 @@ class MaxiBlockComponent extends Component {
 			currentBreakpoint === 'xxl'
 		) {
 			const target = this.getStyleTarget(isSiteEditor, iframe);
+			const generatePerfStart = getBlockPerfStart();
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1888,9 +2024,12 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
+			recordBlockPerf(uniqueID, 'generate', generatePerfStart);
 
 			// Use batched style injection instead of individual style elements
+			const addStylesBlockStart = getBlockPerfStart();
 			addBlockStyles(uniqueID, styleContent, target);
+			recordBlockPerf(uniqueID, 'addStyles', addStylesBlockStart);
 		}
 	}
 
@@ -2573,59 +2712,48 @@ class MaxiBlockComponent extends Component {
 
 	// Call this method in componentDidMount
 	setupFSEIframeObserver() {
-		// Only create observer if it doesn't exist yet
-		if (!this.fseIframeObserver) {
-			this.fseIframeObserver = new MutationObserver(mutations => {
-				for (const mutation of mutations) {
-					if (mutation.type === 'childList') {
-						const fseIframes = document.querySelectorAll(
-							'iframe.edit-site-visual-editor__editor-canvas'
-						);
-						if (fseIframes.length > 0) {
-							// Clear any existing FSE iframe timeout
-							if (this.fseIframeTimeout) {
-								clearTimeout(this.fseIframeTimeout);
-							}
+		// Singleton: only one observer for all Maxi blocks in FSE.
+		if (fseSingletonObserver) return;
 
-							// Wait for iframe to fully load
-							this.fseIframeTimeout = setTimeout(() => {
-								this.fseIframeTimeout = null;
-								this.addMaxiFSEIframeStyles();
-							}, 500);
+		fseSingletonObserver = new MutationObserver(mutations => {
+			for (const mutation of mutations) {
+				if (mutation.type === 'childList') {
+					const fseIframes = document.querySelectorAll(
+						'iframe.edit-site-visual-editor__editor-canvas'
+					);
+					if (fseIframes.length > 0) {
+						// Clear any existing FSE iframe timeout
+						if (fseSingletonObserverTimeout) {
+							clearTimeout(fseSingletonObserverTimeout);
 						}
+
+						// Wait for iframe to fully load
+						fseSingletonObserverTimeout = setTimeout(() => {
+							fseSingletonObserverTimeout = null;
+							MaxiBlockComponent.addMaxiFSEIframeStylesNow();
+						}, 500);
 					}
 				}
-			});
+			}
+		});
 
-			// Observe the document body for when iframes get added/removed
-			this.fseIframeObserver.observe(document.body, {
-				childList: true,
-				subtree: true,
-			});
-		}
+		// Observe the document body for when iframes get added/removed
+		fseSingletonObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
 	}
 
 	/**
 	 * Disables Gutenberg's block movement animation.
 	 * When clicking up/down mover arrows, Gutenberg applies translate3d() via JS
 	 * which causes visual jiggle when MaxiBlocks transforms are present.
-	 * This injects a CSS rule that blocks translate3d from rendering.
+	 * Uses a singleton <style> element (one for all blocks) with a single generic
+	 * rule, avoiding N head.appendChild calls that each trigger style recalculation.
 	 */
 	setupBlockMoveAnimationKiller() {
-		const { clientId } = this.props;
-		const blockId = `block-${clientId}`;
-
-		// Create a style element that blocks translate3d for this specific block
-		// Using CSS is more reliable than MutationObserver because it prevents
-		// the translate3d from ever being rendered (no flash/jump)
-		this.blockMoveStyleBlocker = document.createElement('style');
-		this.blockMoveStyleBlocker.id = `maxi-block-move-blocker-${clientId}`;
-		this.blockMoveStyleBlocker.textContent = `
-			#${blockId}[style*="translate3d"] {
-				transform: none !important;
-			}
-		`;
-		document.head.appendChild(this.blockMoveStyleBlocker);
+		ensureBlockMoveStyleSheet();
+		// No per-block tracking needed — the singleton handles all Maxi blocks.
 	}
 }
 

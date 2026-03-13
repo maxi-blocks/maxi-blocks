@@ -6,6 +6,7 @@
 		flex: 0;
 		height: 16px;
 		width: 16px;
+		min-width: auto;
 		margin: 0;
 
 		svg {
@@ -19,6 +20,8 @@
 	}
 	.block-editor-block-inspector {
 		.block-editor-block-card {
+			display: flex;
+			align-items: flex-start;
 			position: relative;
 			padding: 8px;
 			color: var(--maxi-grey-dark);
@@ -26,10 +29,10 @@
 
 			&__content,
 			> div.components-flex {
-				margin: 0 0 0 6px;
+				margin: 0;
 			}
 			&__title {
-				margin: 1.5px 0 0 0;
+				margin: 1.5px 0 0 6px;
 				font-size: 13px;
 				font-weight: 600;
 				line-height: 1;

@@ -19,18 +19,14 @@ async function setupRowBlock(admin, editor, page) {
 	await editor.insertBlock({ name: 'maxi-blocks/container-maxi' });
 
 	// Wait for the container to be inserted
-	await page.waitForSelector('.maxi-container-block', {
-		state: 'visible',
-	});
+	await editor.canvas.locator('.maxi-container-block').waitFor({ state: 'visible' });
 
 	// Wait for the row block inside the container to be visible
-	await page.waitForSelector('.maxi-row-block', {
-		state: 'visible',
-	});
+	await editor.canvas.locator('.maxi-row-block').waitFor({ state: 'visible' });
 
-	// Click on the row block to select it
-	const rowBlock = page.locator('.maxi-row-block').first();
-	await rowBlock.click();
+	// Select a layout to dismiss the template picker, then Escape up to the row block
+	await editor.canvas.locator('.maxi-row-block__template button').first().click();
+	await page.keyboard.press('Escape');
 }
 
 test.describe('Row Carousel', () => {

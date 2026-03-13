@@ -15,6 +15,7 @@ import {
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
 	openSidebarTab,
+	getEditorFrame,
 } from '../../utils';
 import getMapContainer from './utils/getMapContainer';
 import roundMarkersCoords from './utils/roundMarkersCoords';
@@ -22,8 +23,9 @@ import roundMarkersCoords from './utils/roundMarkersCoords';
 const tryClickMarker = async (marker, map) => {
 	await marker.click();
 	try {
+		const frame = await getEditorFrame(page);
 		// Wait for popup with increased timeout
-		await page.waitForSelector('.maxi-map-block__popup__content', {
+		await frame.waitForSelector('.maxi-map-block__popup__content', {
 			timeout: 2000,
 			visible: true,
 		});
@@ -51,8 +53,8 @@ const popupTest = async map => {
 	const marker = await map.$('.leaflet-marker-icon');
 	if (!marker) throw new Error('Marker not found');
 
-	// Add a small delay to ensure map is stable
-	await page.waitForTimeout(800);
+	// Wait until the map is fully settled (no ongoing animations)
+	await page.waitForTimeout(1000);
 
 	const popupContent = await tryClickMarkerWithRetry(marker, map);
 
@@ -103,7 +105,8 @@ describe('Map Maxi', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Map Maxi');
-		await page.waitForSelector('.maxi-map-block');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-map-block');
 		await updateAllBlockUniqueIds(page);
 		await page.waitForTimeout(500);
 	});
@@ -157,6 +160,7 @@ describe('Map Maxi', () => {
 	});
 
 	it('Map Maxi add marker by search box', async () => {
+		const frame = await getEditorFrame(page);
 		const map = await getMapContainer(page);
 
 		await map.waitForSelector('.maxi-map-block__search-box');
@@ -204,8 +208,8 @@ describe('Map Maxi', () => {
 					// Give React time to render the results
 					await page.waitForTimeout(1000);
 
-					// Wait for results with explicit visibility check
-					await page.waitForSelector(
+					// Wait for results with explicit visibility check (inside iframe)
+					await frame.waitForSelector(
 						'.maxi-map-block__search-box-results',
 						{
 							visible: true,
@@ -251,6 +255,12 @@ describe('Map Maxi', () => {
 		// Add delay before clicking result
 		await page.waitForTimeout(500);
 		await searchBoxResultsButton.click();
+
+		/**
+		 * `handleAddMarker` now calls `map.setView(..., { animate: false })`
+		 * so there is no fly animation to wait for.  A short stabilisation
+		 * wait is enough for React to commit the new marker to the DOM.
+		 */
 		await page.waitForTimeout(1000);
 
 		// Check marker coordinates with flexible latitude
@@ -264,12 +274,15 @@ describe('Map Maxi', () => {
 	}, 60000);
 
 	it('Map Maxi OpenStreetMap types work correctly', async () => {
+		// Wait for the map block to be fully loaded
+		const frame = await getEditorFrame(page);
+
 		const waitForTilesWithRetry = async (mapType, maxRetries = 3) => {
 			let attempt = 1;
 
 			const attemptTileLoading = async () => {
 				try {
-					await page.waitForFunction(
+					await frame.waitForFunction(
 						() => {
 							const tiles =
 								document.querySelectorAll('.leaflet-tile');
@@ -290,7 +303,7 @@ describe('Map Maxi', () => {
 				} catch (error) {
 					if (attempt === maxRetries) {
 						// Final attempt failed - check if we have any tiles loaded
-						const hasAnyTiles = await page.evaluate(() => {
+						const hasAnyTiles = await frame.evaluate(() => {
 							const tiles =
 								document.querySelectorAll('.leaflet-tile');
 							return tiles.length > 0;
@@ -316,9 +329,7 @@ describe('Map Maxi', () => {
 
 			return attemptTileLoading();
 		};
-
-		// Wait for the map block to be fully loaded
-		await page.waitForSelector('.maxi-map-block');
+		await frame.waitForSelector('.maxi-map-block');
 
 		// Open the sidebar and configure map tab
 		const accordionTab = await openSidebarTab(
@@ -391,7 +402,8 @@ describe('Map Maxi', () => {
 		expect(map).not.toBeNull();
 
 		// Select the block
-		await page.click('.maxi-map-block');
+		const frame = await getEditorFrame(page);
+		await frame.click('.maxi-map-block');
 
 		// Open more settings menu
 		await page.$eval(

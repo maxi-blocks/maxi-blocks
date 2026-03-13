@@ -13,6 +13,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('ShapeDividerControl', () => {
@@ -20,7 +21,8 @@ describe('ShapeDividerControl', () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.$eval('.maxi-container-block', select => select.focus());
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-container-block', select => select.focus());
 		const accordionPanel = await openSidebarTab(
 			page,
 			'style',

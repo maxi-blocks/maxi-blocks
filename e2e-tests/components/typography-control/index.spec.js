@@ -22,6 +22,7 @@ import {
 	getBlockStyle,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('TypographyControl', () => {
@@ -492,7 +493,8 @@ describe('TypographyControl', () => {
 
 		expect(result).toStrictEqual('50');
 
-		await page.$eval('.maxi-text-block__content', block => block.focus());
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-text-block__content', block => block.focus());
 
 		await pressKeyTimes('ArrowLeft', '4');
 

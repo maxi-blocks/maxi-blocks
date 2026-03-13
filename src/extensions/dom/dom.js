@@ -226,7 +226,7 @@ wp.domReady(() => {
 		}
 
 		if (isSiteEditor) {
-			const currentId = select('core/edit-site').getEditedPostId();
+			const currentId = select('core/editor').getCurrentPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
 

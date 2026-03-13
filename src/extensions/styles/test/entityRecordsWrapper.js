@@ -19,16 +19,11 @@ describe('entityRecordsWrapper', () => {
 		getCurrentPostId: jest.fn(),
 	};
 
-	const mockEditSiteStore = {
-		getEditedPostType: jest.fn(),
-	};
-
 	beforeEach(() => {
 		jest.clearAllMocks();
 		select.mockImplementation(store => {
 			if (store === 'core') return mockCoreStore;
 			if (store === 'core/editor') return mockEditorStore;
-			if (store === 'core/edit-site') return mockEditSiteStore;
 			return {};
 		});
 	});
@@ -77,7 +72,7 @@ describe('entityRecordsWrapper', () => {
 		);
 		mockEditorStore.getCurrentPostId.mockReturnValue('123');
 		getIsSiteEditor.mockReturnValue(true);
-		mockEditSiteStore.getEditedPostType.mockReturnValue('wp_template');
+		mockEditorStore.getCurrentPostType.mockReturnValue('wp_template');
 
 		entityRecordsWrapper(mockCallback, true);
 

@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { BarLoader, PuffLoader } from 'react-spinners';
+import { BarLoader } from 'react-spinners';
 
 /**
  * Styles and icons
@@ -43,17 +43,7 @@ const ContentLoader = props => {
 					/>
 				</>
 			)}
-			{!cloud && (
-				<PuffLoader
-					color='var(--maxi-primary-color)'
-					size={30}
-					speedMultiplier={0.8}
-					cssOverride={{
-						margin: '0 auto',
-					}}
-					className='maxi-puff-loader'
-				/>
-			)}
+			{!cloud && <div className='maxi-puff-loader' />}
 		</div>
 	);
 };

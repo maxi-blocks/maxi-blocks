@@ -1,21 +1,3 @@
-/*
- * Paste this entire file into the Chrome DevTools console on a heavy editor page.
- *
- * It exposes:
- * - __maxiEditorBench.start({ durationMs: 30000 })
- * - __maxiEditorBench.stop()
- * - __maxiEditorBench.lastReport
- * - __maxiEditorBench.save('before')
- * - __maxiEditorBench.load('before')
- * - __maxiEditorBench.compare(beforeReport, afterReport)
- *
- * Recommended flow:
- * 1. Hard refresh the editor page.
- * 2. Paste this file.
- * 3. Run the same interaction flow for each test window.
- * 4. Compare reports with __maxiEditorBench.compare(a, b)
- */
-
 (() => {
 	const DEFAULTS = {
 		durationMs: 30000,
@@ -160,9 +142,7 @@
 			if (typeof beforeCall === 'function') {
 				try {
 					beforeCall(args, this);
-				} catch (error) {
-					// Ignore instrumentation failures.
-				}
+				} catch (error) {}
 			}
 
 			const start = performance.now();
@@ -173,9 +153,7 @@
 				if (typeof afterCall === 'function') {
 					try {
 						afterCall(args, this, performance.now() - start);
-					} catch (error) {
-						// Ignore instrumentation failures.
-					}
+					} catch (error) {}
 				}
 			}
 		};
@@ -764,9 +742,7 @@
 			restoreFns.reverse().forEach(restore => {
 				try {
 					restore();
-				} catch (error) {
-					// Ignore restore failures.
-				}
+				} catch (error) {}
 			});
 
 			if (state.restorePerfFlag === null) {

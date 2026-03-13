@@ -13,7 +13,6 @@ import {
 	isObject,
 	merge,
 	isEqual,
-	isNil,
 } from 'lodash';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
 
@@ -39,12 +38,8 @@ let cacheStats = {
 };
 
 const getCacheKey = value => {
-	try {
-		const key = JSON.stringify(value);
-		return key.length <= MAX_CACHE_KEY_LENGTH ? key : null;
-	} catch (error) {
-		return null;
-	}
+	const key = JSON.stringify(value);
+	return key.length <= MAX_CACHE_KEY_LENGTH ? key : null;
 };
 
 const cleanContent = content => {
@@ -133,7 +128,7 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
 	if (cacheKey) {
 		const cached = styleCache.get(cacheKey);
-		if (!isNil(cached)) {
+		if (cached !== undefined) {
 			cacheStats.hits += 1;
 			dispatch('maxiBlocks/styles').updateStyles(null, cached);
 			return cached;

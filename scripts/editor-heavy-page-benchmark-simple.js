@@ -1,15 +1,3 @@
-/*
- * Newbie version:
- * 1. Open the heavy editor page
- * 2. Open DevTools Console
- * 3. Paste this whole file
- * 4. Use the page for 30 seconds
- * 5. Wait for the report to print automatically
- *
- * The final report is also saved to:
- * window.__maxiSimpleReport
- */
-
 (() => {
 	const DURATION_MS = 30000;
 	const TOP_ITEMS = 8;

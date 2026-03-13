@@ -637,9 +637,6 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// For render styles when there's no styles for the block in the store
-		// Normally happens when duplicate the block.
-		// With GlobalStyleManager and raw CSS caching, styles may live in either
-		// the legacy styles map or the CSS cache.
 		if (
 			isNil(
 				select('maxiBlocks/styles').getBlockStyles(
@@ -979,11 +976,7 @@ class MaxiBlockComponent extends Component {
 			return null;
 		}
 
-		try {
-			return JSON.stringify(relations);
-		} catch (error) {
-			return `relations:${relations.length}`;
-		}
+		return JSON.stringify(relations);
 	}
 
 	resetRelationPreviewState() {
@@ -1940,7 +1933,6 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		// Keep relation preview instances stable between style passes.
 		if (shouldGenerateNewStyles) {
 			const relationsStart = getPerfStart();
 			const processRelationsStart = getPerfStart();

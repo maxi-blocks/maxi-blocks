@@ -155,8 +155,6 @@ class CSSCache extends MemoCache {
 }
 
 // Global CSS cache instance
-// Large pages can exceed 200 styled blocks, so keep enough entries to avoid
-// evicting live block CSS and forcing repeated regeneration while editing.
 const cssCache = new CSSCache(CSS_CACHE_MAX_SIZE);
 
 // Helper function to chunk large style objects

@@ -58,31 +58,11 @@ const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 
 	const handleAddMarker = index => {
 		const { lat, lon } = searchResults[index];
-
-		// Nominatim returns lat/lon as strings – parse to numbers so Leaflet
-		// receives the exact same value that gets stored in the marker attribute.
 		const latitude = parseFloat(lat);
 		const longitude = parseFloat(lon);
-
-		console.log(
-			`[SearchBox] handleAddMarker – lat: ${JSON.stringify(latitude)}, lon: ${JSON.stringify(longitude)}`
-		);
-
 		const newMarker = getNewMarker([latitude, longitude], mapMarkers);
 
-		console.log(
-			`[SearchBox] newMarker: ${JSON.stringify(newMarker)}`
-		);
-
-		// Use setView (no animation) instead of flyTo so the editor does not
-		// trigger a multi-second fly animation.  This also makes e2e tests
-		// deterministic – flyTo caused timing issues when tests tried to click
-		// the newly placed marker before the animation had finished.
 		map.setView([latitude, longitude], map.getZoom(), { animate: false });
-
-		console.log(
-			`[SearchBox] Map center after setView: ${JSON.stringify(map.getCenter())}`
-		);
 
 		maxiSetAttributes({
 			'map-markers': getUpdatedMarkers(mapMarkers, newMarker),

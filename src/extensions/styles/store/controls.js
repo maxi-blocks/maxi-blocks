@@ -74,7 +74,6 @@ export const processCss = async code => {
 
 		const minifiedCss = minifyCssString(css);
 
-		// Store in a bounded cache to avoid retaining large CSS strings forever.
 		setCachedProcessCss(code, minifiedCss);
 
 		return minifiedCss;

@@ -70,31 +70,15 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 
-		// Diagnostic: check window context (API 3 iframe vs parent window)
 		const isIframe = window !== window.parent;
-		const hasMaxiSettings = typeof window.maxiSettings !== 'undefined';
-		const hasParentMaxiSettings =
-			typeof window.parent?.maxiSettings !== 'undefined';
-
-		console.log(
-			`[MapMaxi edit] Window context - isIframe: ${JSON.stringify(isIframe)}, hasMaxiSettings: ${JSON.stringify(hasMaxiSettings)}, hasParentMaxiSettings: ${JSON.stringify(hasParentMaxiSettings)}`
-		);
-
-		// With API 3 the block runs in an iframe; maxiSettings is injected on the
-		// outer (parent) window, so fall back to it when the iframe context lacks it.
 		const maxiSettings =
 			window.maxiSettings ||
 			(isIframe ? window.parent?.maxiSettings : undefined);
 
 		const googleApiKey = maxiSettings?.google_api_key || '';
 
-		console.log(
-			`[MapMaxi edit] Resolved googleApiKey present: ${JSON.stringify(!!googleApiKey)}, provider: ${JSON.stringify(attributes?.['map-provider'])}`
-		);
-
 		this.setState({
 			googleApiKey,
-			// Initialize as false to let MapContent handle error state
 			isApiKeyLoading: false,
 		});
 	}

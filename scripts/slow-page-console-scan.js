@@ -1,12 +1,3 @@
-/*
- * Paste this entire file into the Chrome DevTools console on the slow page.
- *
- * It starts a 20 second scan immediately and exposes:
- * - __slowPageScan.start({ durationMs: 30000, trackAttributes: true })
- * - __slowPageScan.stop()
- * - __slowPageScan.lastReport
- */
-
 (() => {
 	const DEFAULTS = {
 		durationMs: 20000,
@@ -924,9 +915,7 @@
 				]).forEach(observer => {
 					try {
 						observer.disconnect();
-					} catch (error) {
-						// Ignore observer cleanup failures.
-					}
+					} catch (error) {}
 				});
 			}
 

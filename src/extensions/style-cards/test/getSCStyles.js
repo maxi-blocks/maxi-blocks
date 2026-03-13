@@ -403,8 +403,8 @@ describe('getSCStyles', () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
 		const cleanSCStyles = await getSCStyles(cleanVarSC, true, true);
 
-		expect(cleanSCStyles).not.toContain(':hover');
-		expect(cleanSCStyles).not.toContain(':focus');
+		expect(cleanSCStyles).toContain(':hover');
+		expect(cleanSCStyles).toContain(':focus');
 		expect(cleanSCStyles).not.toContain(':has(');
 		expect(cleanSCStyles).toContain(
 			'body.maxi-blocks--active .maxi-light .maxi-block--use-sc a { color: var(--maxi-light-link); }'
@@ -438,8 +438,8 @@ describe('getSCStyles', () => {
 		);
 		const cleanSCStyles = await getSCStyles(cleanVarSC, false, true);
 
-		expect(cleanSCStyles).not.toContain(':hover');
-		expect(cleanSCStyles).not.toContain(':focus');
+		expect(cleanSCStyles).toContain(':hover');
+		expect(cleanSCStyles).toContain(':focus');
 		expect(cleanSCStyles).not.toContain(':has(');
 		expect(cleanSCStyles).toContain(
 			'body.maxi-blocks--active .maxi-light.maxi-block.maxi-text-block p'

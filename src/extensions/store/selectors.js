@@ -59,8 +59,8 @@ const selectors = {
 	receiveDeprecatedBlock(state, uniqueID, isSave = false) {
 		if (state)
 			return isSave
-				? state.deprecatedBlocksSave?.[uniqueID] || {}
-				: state.deprecatedBlocks?.[uniqueID] || {};
+				? state.deprecatedBlocksSave?.[uniqueID]
+				: state.deprecatedBlocks?.[uniqueID];
 
 		return false;
 	},

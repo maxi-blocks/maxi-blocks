@@ -2216,12 +2216,15 @@ class MaxiBlocks_StyleCards
         }
 
         $patterns = [
-            '/[^{}]*:visited:hover[^{}]*\{[^{}]*\}/',
-            '/[^{}]*:(?:hover|focus)[^{}]*\{[^{}]*\}/',
             '/[^{}]*:has\([^{}]*\)[^{}]*\{[^{}]*\}/',
         ];
 
         $css = preg_replace($patterns, '', $css);
+        $css = preg_replace(
+            '/(^|[;{])\s*(?:transition(?:-[a-z-]+)?|animation(?:-[a-z-]+)?)\s*:[^;{}]+;?/',
+            '$1',
+            $css
+        );
 
         return self::process_css($css);
     }

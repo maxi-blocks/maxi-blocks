@@ -33,6 +33,7 @@ import {
 import getBreakpoints from '@extensions/styles/helpers/getBreakpoints';
 import getIsIDTrulyUnique from './getIsIDTrulyUnique';
 import getCustomLabel from './getCustomLabel';
+import getIsHoverPreview from './getIsHoverPreview';
 import { loadFonts, getAllFonts, getPageFonts } from '@extensions/text/fonts';
 import {
 	getIsSiteEditor,
@@ -75,7 +76,6 @@ const normalizeStyleContent = styleContent =>
 				'white-space: nowrap !important'
 		  )
 		: styleContent;
-
 const getPerfStart = () => {
 	if (
 		typeof window === 'undefined' ||
@@ -637,11 +637,17 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// For render styles when there's no styles for the block in the store
-		// Normally happens when duplicate the block
-		// With GlobalStyleManager, we only need to check the store, not DOM elements
+		// Normally happens when duplicate the block.
+		// With GlobalStyleManager and raw CSS caching, styles may live in either
+		// the legacy styles map or the CSS cache.
 		if (
 			isNil(
 				select('maxiBlocks/styles').getBlockStyles(
+					this.props.attributes.uniqueID
+				)
+			) &&
+			isNil(
+				select('maxiBlocks/styles').getCSSCache(
 					this.props.attributes.uniqueID
 				)
 			)
@@ -690,28 +696,50 @@ class MaxiBlockComponent extends Component {
 		const hasNonRelationChanges = Object.keys(diffAttributes).some(
 			key => key !== 'relations'
 		);
+		const breakpointChanged =
+			this.props.deviceType !== prevProps.deviceType ||
+			(this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
+				!!prevProps.baseBreakpoint);
+		const blockStyleChanged =
+			this.props.attributes.blockStyle !==
+			prevProps.attributes.blockStyle;
+		const stateChanged = !isEqual(prevState, this.state);
 
 		if (
 			hasNonRelationChanges ||
 			this.props.baseBreakpoint !== prevProps.baseBreakpoint ||
-			this.props.attributes.blockStyle !==
-				prevProps.attributes.blockStyle
+			blockStyleChanged
 		) {
 			this.isXxlStyleCacheDirty = true;
 		}
 
 		const attributesUnchanged = isEmpty(diffAttributes) && !contextLoopChanged;
+		const selectionChanged = this.props.isSelected !== prevProps.isSelected;
+		const shouldRefreshStyles =
+			!onlyRelationsChanged &&
+			(
+				!shouldDisplayStyles ||
+				selectionChanged ||
+				hasNonRelationChanges ||
+				contextLoopChanged ||
+				breakpointChanged ||
+				blockStyleChanged
+			) &&
+			!(
+				stateChanged &&
+				attributesUnchanged &&
+				!selectionChanged &&
+				!contextLoopChanged &&
+				!breakpointChanged &&
+				!blockStyleChanged
+			);
 
-		if (!shouldDisplayStyles && !onlyRelationsChanged) {
+		if (shouldRefreshStyles) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
-					this.props.deviceType !== prevProps.deviceType ||
-						(this.props.baseBreakpoint !==
-							prevProps.baseBreakpoint &&
-							!!prevProps.baseBreakpoint),
-					this.props.attributes.blockStyle !==
-						prevProps.attributes.blockStyle,
+					breakpointChanged,
+					blockStyleChanged,
 					this.props.baseBreakpoint !== prevProps.baseBreakpoint &&
 						!!prevProps.baseBreakpoint,
 					attributesUnchanged
@@ -2183,6 +2211,14 @@ class MaxiBlockComponent extends Component {
 		return iframe?.contentDocument || document;
 	}
 
+	shouldIncludeEditorInteractionStyles() {
+		return (
+			this.props.isSelected ||
+			this.props.name === 'maxi-blocks/button-maxi' ||
+			getIsHoverPreview()
+		);
+	}
+
 	resetAppliedStyleCache() {
 		this.lastAppliedStyleUniqueID = null;
 		this.lastAppliedStyleContent = null;
@@ -2280,7 +2316,11 @@ class MaxiBlockComponent extends Component {
 				styles,
 				!!iframe,
 				isSiteEditor,
-				currentBreakpoint
+				currentBreakpoint,
+				{
+					includeInteractionSelectors:
+						this.shouldIncludeEditorInteractionStyles(),
+				}
 			);
 			recordPerf('styleGenerator', styleGenStart);
 		} else if (typeof cachedStyleContent === 'string') {
@@ -2296,7 +2336,11 @@ class MaxiBlockComponent extends Component {
 				styles,
 				!!iframe,
 				isSiteEditor,
-				currentBreakpoint
+				currentBreakpoint,
+				{
+					includeInteractionSelectors:
+						this.shouldIncludeEditorInteractionStyles(),
+				}
 			);
 			recordPerf('styleGenerator', styleGenStart);
 		}

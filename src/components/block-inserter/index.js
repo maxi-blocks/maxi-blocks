@@ -295,7 +295,7 @@ const InterBlockToggle = props => {
 };
 
 const InterBlockInserter = forwardRef((props, ref) => {
-	const { clientId } = props;
+	const { clientId, isSelected, hasSelectedChild } = props;
 	const blockRef = ref?.current?.blockRef?.current;
 
 	const popoverRef = useRef(null);
@@ -320,7 +320,13 @@ const InterBlockInserter = forwardRef((props, ref) => {
 		};
 	}, []);
 
-	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+	if (
+		!blockRef ||
+		!nextClientId ||
+		!isNextMaxiBlock ||
+		(!isSelected && !hasSelectedChild)
+	)
+		return null;
 
 	return (
 		<Popover

@@ -430,39 +430,18 @@ svg path#styleCardBoat_b,
 *******************************/
 
 .maxi-block {
-	&::after {
-		transition: all 0.5s ease;
-		content: '';
-		position: absolute;
-		pointer-events: none;
-		top: -1px !important;
-		right: -3px !important;
-		bottom: -1px !important;
-		left: -3px !important;
-		border: 2px solid var(--maxi-light-blue-alt);
-		border-radius: 0;
-		box-shadow: none !important;
-		opacity: 0;
-	}
-
-	&.maxi-block--repeater::after {
-		border-color: var(--maxi-tertiary-color);
-	}
-
-	&.maxi-block--interaction::after {
-		border-color: var(--maxi-interaction-pink);
-	}
-
-	&.maxi-block--background::after {
-		border-color: var(--maxi-background-yellow);
-	}
-
-	&.maxi-block--full-width::after {
-		width: calc(100% - 4px);
-	}
-
 	&.is-selected {
 		&::after {
+			content: '';
+			position: absolute;
+			pointer-events: none;
+			top: -1px !important;
+			right: -3px !important;
+			bottom: -1px !important;
+			left: -3px !important;
+			border: 2px solid var(--maxi-light-blue-alt);
+			border-radius: 0;
+			box-shadow: none !important;
 			opacity: 1;
 
 			&:not(.maxi-block--is-repeater) {
@@ -474,8 +453,24 @@ svg path#styleCardBoat_b,
 		}
 	}
 
+	&.maxi-block--repeater.is-selected::after {
+		border-color: var(--maxi-tertiary-color);
+	}
+
+	&.maxi-block--interaction.is-selected::after {
+		border-color: var(--maxi-interaction-pink);
+	}
+
+	&.maxi-block--background.is-selected::after {
+		border-color: var(--maxi-background-yellow);
+	}
+
+	&.maxi-block--full-width.is-selected::after {
+		width: calc(100% - 4px);
+	}
+
 	&.maxi-container-block {
-		&::after {
+		&.is-selected::after {
 			top: 0px !important;
 			right: 0px !important;
 			bottom: 0px !important;

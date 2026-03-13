@@ -41,14 +41,27 @@ import { isNil } from 'lodash';
 
 // Cache for deprecated blocks
 const deprecatedBlockCache = new Map();
+const appliedMigratorCache = new Map();
+
+const getAppliedMigratorCache = uniqueID => {
+	let cache = appliedMigratorCache.get(uniqueID);
+	if (!cache) {
+		cache = new Map();
+		appliedMigratorCache.set(uniqueID, cache);
+	}
+
+	return cache;
+};
 
 export const clearDeprecatedBlockCache = uniqueID => {
 	if (typeof uniqueID === 'string') {
 		deprecatedBlockCache.delete(uniqueID);
+		appliedMigratorCache.delete(uniqueID);
 		return;
 	}
 
 	deprecatedBlockCache.clear();
+	appliedMigratorCache.clear();
 };
 
 const handleBlockMigrator = ({
@@ -88,18 +101,23 @@ const handleBlockMigrator = ({
 				};
 
 				const result = originalMigrate(newAttributes);
+				const appliedMigrators = getAppliedMigratorCache(uniqueID);
+				const resultSignature = JSON.stringify(result);
 
-				dispatch('maxiBlocks').saveDeprecatedBlock({
-					uniqueID,
-					attributes: result,
-					ignoreAttributesForSave:
-						newMigrator.ignoreAttributesForSave,
-				});
+				if (appliedMigrators.get(newMigrator.name) !== resultSignature) {
+					appliedMigrators.set(newMigrator.name, resultSignature);
+					dispatch('maxiBlocks').saveDeprecatedBlock({
+						uniqueID,
+						attributes: result,
+						ignoreAttributesForSave:
+							newMigrator.ignoreAttributesForSave,
+					});
 
-				// eslint-disable-next-line no-console
-				console.log(
-					`${newMigrator.name} migrator has been successfully used to update ${newAttributes.customLabel}(${uniqueID})`
-				);
+					// eslint-disable-next-line no-console
+					console.log(
+						`${newMigrator.name} migrator has been successfully used to update ${newAttributes.customLabel}(${uniqueID})`
+					);
+				}
 
 				return result;
 			};

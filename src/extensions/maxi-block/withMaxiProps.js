@@ -503,7 +503,9 @@ const withMaxiProps = createHigherOrderComponent(
 							repeaterContext?.updateInnerBlocksPositions
 						}
 					/>
-					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (
+					{!isTyping &&
+						!DISABLED_BLOCKS.includes(ownProps.name) &&
+						(isSelected || hasSelectedChild) && (
 						<BlockInserter.InterBlockInserter
 							ref={ref}
 							{...ownProps}

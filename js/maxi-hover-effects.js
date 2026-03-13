@@ -1,8 +1,17 @@
 /* eslint-disable no-undef */
 /* eslint-disable @wordpress/no-global-event-listener */
 
+const isEditorCanvasContext = () =>
+	Boolean(
+		document.body?.classList?.contains('editor-styles-wrapper') ||
+			document.body?.classList?.contains('block-editor-iframe__body') ||
+			document.querySelector('.editor-styles-wrapper')
+	);
+
 // Hover Effects
 const hovers = () => {
+	if (isEditorCanvasContext()) return;
+
 	const hoverElements = document.querySelectorAll('.maxi-hover-effect');
 	hoverElements.forEach(elem => {
 		// eslint-disable-next-line no-undef

@@ -37,6 +37,21 @@ export const getResponsiveStyles = styles => {
 	return responsiveStyles;
 };
 
+const filterEditorInteractionProps = (
+	styles,
+	{ stripTransitionProperties = false } = {}
+) => {
+	if (!stripTransitionProperties) {
+		return styles;
+	}
+
+	return Object.fromEntries(
+		Object.entries(styles).filter(
+			([key]) => !/^transition(?:-.+)?$/.test(key)
+		)
+	);
+};
+
 const getTargetString = (target, isIframe, isSiteEditor) => {
 	if (isSiteEditor)
 		return `body.maxi-blocks--active.editor-styles-wrapper .is-root-container .maxi-block.maxi-block--backend.${target},body.maxi-blocks--active.editor-styles-wrapper[maxi-blocks-responsive] .is-root-container .maxi-block.maxi-block--backend.${target}{`;
@@ -100,9 +115,15 @@ const styleGenerator = (
 	rawStyles,
 	isIframe = false,
 	isSiteEditor = false,
-	breakpoint
+	breakpoint,
+	options = {}
 ) => {
 	let response = '';
+	const {
+		includeHoverSelectors = true,
+		includeInteractionSelectors = includeHoverSelectors,
+		stripTransitionProperties = !includeInteractionSelectors,
+	} = options;
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
@@ -119,6 +140,13 @@ const styleGenerator = (
 			const target = getTarget(key);
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
+				if (
+					!includeInteractionSelectors &&
+					/:(hover|focus|focus-visible|focus-within|active|visited)/.test(
+						suffix
+					)
+				)
+					return;
 				if (!props[breakpoint]) return;
 
 				const isBaseLowerThanCurrent =
@@ -132,7 +160,13 @@ const styleGenerator = (
 				)
 					return;
 
-				const style = getResponsiveStyles(props[breakpoint]);
+				const style = getResponsiveStyles(
+					filterEditorInteractionProps(props[breakpoint], {
+						stripTransitionProperties,
+					})
+				);
+
+				if (!style.trim()) return;
 
 				response += styleStringGenerator(
 					`${target}${suffix}`,
@@ -143,21 +177,40 @@ const styleGenerator = (
 				);
 
 				if (breakpoint === 'general') {
-					response += styleStringGenerator(
-						`${target}${suffix}`,
-						getResponsiveStyles(props.general),
-						baseBreakpoint,
-						isIframe,
-						isSiteEditor
+					const generalStyle = getResponsiveStyles(
+						filterEditorInteractionProps(props.general, {
+							stripTransitionProperties,
+						})
 					);
-					if (props?.[baseBreakpoint])
+
+					if (generalStyle.trim())
 						response += styleStringGenerator(
 							`${target}${suffix}`,
-							getResponsiveStyles(props[baseBreakpoint]),
+							generalStyle,
 							baseBreakpoint,
 							isIframe,
 							isSiteEditor
 						);
+
+					if (props?.[baseBreakpoint]) {
+						const baseBreakpointStyle = getResponsiveStyles(
+							filterEditorInteractionProps(
+								props[baseBreakpoint],
+								{
+									stripTransitionProperties,
+								}
+							)
+						);
+
+						if (baseBreakpointStyle.trim())
+						response += styleStringGenerator(
+							`${target}${suffix}`,
+							baseBreakpointStyle,
+							baseBreakpoint,
+							isIframe,
+							isSiteEditor
+						);
+					}
 				}
 			});
 		});

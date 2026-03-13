@@ -140,11 +140,14 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 const stripEditorInteractionRules = css => {
 	if (!css) return css;
 
-	return [
-		/[^{}]*:visited:hover[^{}]*\{[^{}]*\}/g,
-		/[^{}]*:(?:hover|focus)[^{}]*\{[^{}]*\}/g,
+	const strippedCss = [
 		/[^{}]*:has\([^{}]*\)[^{}]*\{[^{}]*\}/g,
 	].reduce((result, pattern) => result.replace(pattern, ''), css);
+
+	return strippedCss.replace(
+		/(^|[;{])\s*(?:transition(?:-[a-z-]+)?|animation(?:-[a-z-]+)?)\s*:[^;{}]+;?/g,
+		(_, delimiter) => delimiter
+	);
 };
 
 const addStylesByBreakpoints = (addStylesByBreakpoint, isBackend) => {

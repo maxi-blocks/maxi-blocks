@@ -26,3 +26,31 @@
 	-webkit-user-drag: auto !important;
 	user-drag: auto !important;
 }
+
+// Let the editor hit-test block wrappers instead of every frontend child.
+// Parent wrappers with a selected child do not need their frontend subtree interactive.
+.maxi-block.maxi-block--backend:not(.is-selected) {
+	&,
+	* {
+		animation: none !important;
+		transition: none !important;
+	}
+
+	* {
+		pointer-events: none !important;
+	}
+
+	[data-block],
+	.block-editor-block-list__block,
+	.block-editor-block-list__layout,
+	.block-editor-inner-blocks,
+	a,
+	button,
+	input,
+	select,
+	textarea,
+	.wp-element-button,
+	.maxi-button-block__button {
+		pointer-events: auto !important;
+	}
+}

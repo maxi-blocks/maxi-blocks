@@ -1,5 +1,13 @@
 /* eslint-disable no-undef */
 /* eslint-disable class-methods-use-this */
+
+const isEditorCanvasContext = () =>
+	Boolean(
+		document.body?.classList?.contains('editor-styles-wrapper') ||
+			document.body?.classList?.contains('block-editor-iframe__body') ||
+			document.querySelector('.editor-styles-wrapper')
+	);
+
 // Relations (IB)
 class Relation {
 	constructor(item) {
@@ -1169,6 +1177,8 @@ class Relation {
 }
 
 function initializeRelations() {
+	if (isEditorCanvasContext()) return;
+
 	let relations;
 
 	if (typeof maxiRelations !== 'undefined' && maxiRelations !== null) {

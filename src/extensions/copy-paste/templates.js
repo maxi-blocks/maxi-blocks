@@ -81,7 +81,16 @@ const templates = {
 		props: 'extraClassName',
 	},
 	anchor: {
-		props: ['anchor', 'linkSettings'],
+		props: [
+			'anchor',
+			'linkSettings',
+			'dc-status',
+			'dc-link-status',
+			'dc-link-target',
+			'dc-type',
+			'dc-field',
+			'dc-sub-field',
+		],
 	},
 	interaction: {
 		props: 'relations',

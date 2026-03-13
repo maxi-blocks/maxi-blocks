@@ -156,10 +156,16 @@ const addCarouselDataAttributes = (rowBlock, attributes) => {
  * Row Carousel Preview Component
  * Initializes the MaxiRowCarousel script in the editor when preview is enabled
  */
-const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
+const RowCarouselPreview = ({
+	clientId,
+	attributes,
+	isPreviewEnabled,
+	isSelected,
+}) => {
 	const carouselInstanceRef = useRef(null);
 	const containerRef = useRef(null);
 	const attributesRef = useRef(attributes);
+	const shouldRunPreview = isPreviewEnabled && isSelected;
 
 	// Update attributes ref when they change
 	attributesRef.current = attributes;
@@ -172,7 +178,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 
 	// Main effect for mounting/unmounting carousel
 	useEffect(() => {
-		if (!isPreviewEnabled) {
+		if (!shouldRunPreview) {
 			// Clean up carousel if preview is disabled
 			if (carouselInstanceRef.current) {
 				// Call destroy method if it exists
@@ -328,13 +334,13 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				carouselInstanceRef.current = null;
 			}
 		};
-	}, [isPreviewEnabled, clientId]);
+	}, [shouldRunPreview, clientId]);
 
 	// Separate effect to handle attribute updates with fade transition
 	useEffect(() => {
 		// Only update if carousel is already initialized and preview is enabled
 		if (
-			!isPreviewEnabled ||
+			!shouldRunPreview ||
 			!carouselInstanceRef.current ||
 			!containerRef.current
 		) {
@@ -396,13 +402,13 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 				}, 300);
 			}, 50);
 		}, 300);
-	}, [attributes, isPreviewEnabled]);
+	}, [attributes, shouldRunPreview]);
 
 	// Effect to handle device type (breakpoint) changes
 	useEffect(() => {
 		// Only update if carousel is initialized and preview is enabled
 		if (
-			!isPreviewEnabled ||
+			!shouldRunPreview ||
 			!carouselInstanceRef.current ||
 			!containerRef.current
 		) {
@@ -413,7 +419,7 @@ const RowCarouselPreview = ({ clientId, attributes, isPreviewEnabled }) => {
 		if (typeof carouselInstanceRef.current.checkBreakpoint === 'function') {
 			carouselInstanceRef.current.checkBreakpoint();
 		}
-	}, [deviceType, isPreviewEnabled]);
+	}, [deviceType, shouldRunPreview]);
 
 	// This component doesn't render anything visible
 	return null;

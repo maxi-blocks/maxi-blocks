@@ -124,25 +124,9 @@ body {
 	}
 }
 .maxi-block {
-	// Exclude transform from transitions to prevent jiggle during block movement
-	transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
-
 	.block-editor-block-list__layout {
-		transition: opacity 0.5s ease, visibility 0.5s ease;
 		&:focus:after {
 			box-shadow: none !important;
-		}
-	}
-	&:hover {
-		transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
-		& > .block-editor-block-list__layout {
-			& > .block-list-appender {
-				.block-editor-button-block-appender {
-					opacity: 1 !important;
-					visibility: visible !important;
-					transition: opacity 0.5s ease, visibility 0.5s ease;
-				}
-			}
 		}
 	}
 	.block-list-appender.wp-block {
@@ -475,18 +459,6 @@ svg path#styleCardBoat_b,
 
 	&.maxi-block--full-width::after {
 		width: calc(100% - 4px);
-	}
-
-	&:not(.is-selected) {
-		&:hover {
-			transition: all 0.5s ease;
-			&::after {
-				content: '';
-				position: absolute;
-				pointer-events: none;
-				opacity: 1;
-			}
-		}
 	}
 
 	&.is-selected {

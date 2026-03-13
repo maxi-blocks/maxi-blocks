@@ -194,13 +194,14 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(
-			this.props.attributes,
-			getSVGWidthHeightRatio(
-				this.blockRef?.current?.querySelector(
-					'.maxi-svg-icon-block__icon svg'
-				)
-			)
+		const iconRatio = getSVGWidthHeightRatio(
+			this.blockRef?.current?.querySelector('.maxi-svg-icon-block__icon svg')
+		);
+
+		return this.getCachedStylesObject(
+			'svg-icon:getStylesObject',
+			[this.props.attributes, iconRatio],
+			() => getStyles(this.props.attributes, iconRatio)
 		);
 	}
 

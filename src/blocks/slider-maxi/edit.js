@@ -262,6 +262,10 @@ const SliderWrapper = props => {
 	}, []);
 
 	useEffect(() => {
+		if (isEditView) {
+			return undefined;
+		}
+
 		const slider = wrapperRef.current;
 		const touchOptions = { passive: true };
 		slider.addEventListener('mousedown', onDragStart);
@@ -423,10 +427,19 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(
-			this.props.attributes,
-			this.props.deviceType,
-			this.props.clientId
+		return this.getCachedStylesObject(
+			'slider:getStylesObject',
+			[
+				this.props.attributes,
+				this.props.deviceType,
+				this.props.clientId,
+			],
+			() =>
+				getStyles(
+					this.props.attributes,
+					this.props.deviceType,
+					this.props.clientId
+				)
 		);
 	}
 

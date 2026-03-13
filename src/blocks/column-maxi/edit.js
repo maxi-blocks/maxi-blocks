@@ -169,18 +169,35 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(
-			{
-				...this.props.attributes,
-				rowBorderRadius:
-					this.rowBorderRadius ?? this.context?.rowBorderRadius,
-			},
-			{
-				...(this.rowGapProps ?? this.context?.rowGapProps),
-				columnNum: this.context?.columnsClientIds.length,
-				columnsSize: this.context?.columnsSize,
-			},
-			this.props.clientId
+		const rowBorderRadius =
+			this.rowBorderRadius ?? this.context?.rowBorderRadius;
+		const rowGapProps = this.rowGapProps ?? this.context?.rowGapProps;
+		const columnNum = this.context?.columnsClientIds.length;
+		const columnsSize = this.context?.columnsSize;
+
+		return this.getCachedStylesObject(
+			'column:getStylesObject',
+			[
+				this.props.attributes,
+				rowBorderRadius,
+				rowGapProps,
+				columnNum,
+				columnsSize,
+				this.props.clientId,
+			],
+			() =>
+				getStyles(
+					{
+						...this.props.attributes,
+						rowBorderRadius,
+					},
+					{
+						...(rowGapProps || {}),
+						columnNum,
+						columnsSize,
+					},
+					this.props.clientId
+				)
 		);
 	}
 

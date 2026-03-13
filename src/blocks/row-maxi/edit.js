@@ -57,7 +57,11 @@ class edit extends MaxiBlockComponent {
 	_widthMigrationCallback = null;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'row:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	state = {
@@ -429,6 +433,7 @@ class edit extends MaxiBlockComponent {
 				clientId={clientId}
 				attributes={attributes}
 				isPreviewEnabled={carouselPreviewEnabled}
+				isSelected={this.props.isSelected}
 			/>,
 		];
 	}

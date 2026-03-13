@@ -132,7 +132,11 @@ const SearchBlock = props => {
  */
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'search:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	get getMaxiCustomData() {

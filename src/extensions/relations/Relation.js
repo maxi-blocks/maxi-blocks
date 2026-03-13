@@ -199,6 +199,10 @@ class Relation {
 	}
 
 	setIsPreview(isPreview) {
+		if (this.isPreview === isPreview) {
+			return;
+		}
+
 		this.isPreview = isPreview;
 
 		if (this.isPreview) {
@@ -951,6 +955,8 @@ class Relation {
 	// This situation prevents the attribute set to false when the target element is triggered by 2
 	// or more elements that are nested one inside the other
 	addRelationSubscriber() {
+		this.removeRelationSubscriber();
+
 		const observer = new MutationObserver(mutations => {
 			mutations.forEach(mutation => {
 				if (

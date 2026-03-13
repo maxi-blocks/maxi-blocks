@@ -159,11 +159,19 @@ class MaxiBlockComponent extends Component {
 		this.paginationTypographyStatus = attributes['cl-pagination'];
 		this.isTemplatePartPreview = !!getTemplatePartChooseList();
 		this.relationInstances = null;
-		this.previousRelationInstances = null;
+		this.relationPreviewCacheKey = null;
+		this.isRelationPreviewActive = false;
 		this.popoverStyles = null;
 		this.isPatternsPreview = false;
 		this.xxlStyleCache = null;
 		this.isXxlStyleCacheDirty = false;
+		this.cachedStylesObjectKey = null;
+		this.cachedStylesObjectDeps = null;
+		this.cachedStylesObjectValue = null;
+		this.lastAppliedStyleUniqueID = null;
+		this.lastAppliedStyleContent = null;
+		this.lastAppliedStyleTarget = null;
+		this.lastAppliedDeviceType = null;
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
@@ -779,6 +787,8 @@ class MaxiBlockComponent extends Component {
 		const { uniqueID } = this.props.attributes;
 
 		// Block cleanup initiated
+		this.cleanupRelationPreview();
+		this.resetRelationPreviewState();
 
 		// Return early checks
 		if (
@@ -934,6 +944,97 @@ class MaxiBlockComponent extends Component {
 				this.props.updateInnerBlocksPositions
 			);
 		}
+	}
+
+	getRelationsPreviewCacheKey(relations) {
+		if (!Array.isArray(relations) || relations.length === 0) {
+			return null;
+		}
+
+		try {
+			return JSON.stringify(relations);
+		} catch (error) {
+			return `relations:${relations.length}`;
+		}
+	}
+
+	resetRelationPreviewState() {
+		this.relationInstances = null;
+		this.relationPreviewCacheKey = null;
+		this.isRelationPreviewActive = false;
+	}
+
+	cleanupRelationPreview(instances = this.relationInstances) {
+		if (!Array.isArray(instances) || instances.length === 0) {
+			return;
+		}
+
+		instances.forEach(instance => {
+			if (!instance) {
+				return;
+			}
+
+			if (typeof instance.setIsPreview === 'function') {
+				instance.setIsPreview(false);
+			}
+
+			if (instance.transitionTimeout) {
+				clearTimeout(instance.transitionTimeout);
+				instance.transitionTimeout = null;
+			}
+
+			if (instance.contentTimeout) {
+				clearTimeout(instance.contentTimeout);
+				instance.contentTimeout = null;
+			}
+
+			if (typeof instance.removeRelationSubscriber === 'function') {
+				instance.removeRelationSubscriber();
+			}
+
+			if (
+				typeof instance.removePreviousStylesAndTransitions === 'function'
+			) {
+				instance.removePreviousStylesAndTransitions();
+			}
+		});
+	}
+
+	syncRelationPreview(customDataRelations) {
+		const isRelationsPreview =
+			this.props.attributes['relations-preview'];
+
+		if (!customDataRelations || !isRelationsPreview) {
+			if (this.relationInstances !== null) {
+				this.cleanupRelationPreview();
+			}
+
+			this.resetRelationPreviewState();
+			return;
+		}
+
+		const nextCacheKey =
+			this.getRelationsPreviewCacheKey(customDataRelations);
+		const shouldRebuildRelations =
+			!Array.isArray(this.relationInstances) ||
+			this.relationPreviewCacheKey !== nextCacheKey;
+
+		if (shouldRebuildRelations) {
+			if (this.relationInstances !== null) {
+				this.cleanupRelationPreview();
+			}
+
+			this.relationInstances = processRelations(customDataRelations);
+			this.relationPreviewCacheKey = nextCacheKey;
+		}
+
+		if (!this.isRelationPreviewActive || shouldRebuildRelations) {
+			this.relationInstances?.forEach(relationInstance => {
+				relationInstance.setIsPreview(true);
+			});
+		}
+
+		this.isRelationPreviewActive = true;
 	}
 
 	handleResponsivePreview(editorWrapper, currentBreakpoint) {
@@ -1126,7 +1227,32 @@ class MaxiBlockComponent extends Component {
 		this.cachedDiffAttributes = undefined;
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
+		this.cachedStylesObjectKey = null;
+		this.cachedStylesObjectDeps = null;
+		this.cachedStylesObjectValue = null;
 		this.attributesMutated = true;
+	}
+
+	getCachedStylesObject(cacheKey, dependencies, compute) {
+		const deps = Array.isArray(dependencies) ? dependencies : [];
+		const isCacheHit =
+			this.cachedStylesObjectKey === cacheKey &&
+			Array.isArray(this.cachedStylesObjectDeps) &&
+			this.cachedStylesObjectDeps.length === deps.length &&
+			deps.every((dependency, index) =>
+				Object.is(dependency, this.cachedStylesObjectDeps[index])
+			);
+
+		if (isCacheHit) {
+			return this.cachedStylesObjectValue;
+		}
+
+		const nextValue = compute();
+		this.cachedStylesObjectKey = cacheKey;
+		this.cachedStylesObjectDeps = [...deps];
+		this.cachedStylesObjectValue = nextValue;
+
+		return nextValue;
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1612,7 +1738,12 @@ class MaxiBlockComponent extends Component {
 				isSiteEditor,
 				this.editorIframe
 			);
-			addBlockStyles(uniqueID, this.xxlStyleCache, target);
+			this.applyBlockStyles(
+				uniqueID,
+				this.xxlStyleCache,
+				target,
+				this.props.deviceType
+			);
 			this.updateResponsiveClasses(
 				this.editorIframe,
 				this.props.deviceType
@@ -1624,8 +1755,6 @@ class MaxiBlockComponent extends Component {
 		if (typeof cachedBreakpointCSS === 'string') {
 			const isSiteEditor = getIsSiteEditor();
 			const iframeDoc = this.editorIframe?.contentDocument || null;
-			const normalizedCachedBreakpointCSS =
-				normalizeStyleContent(cachedBreakpointCSS);
 			const cache =
 				MaxiBlockComponent.breakpointSwitchCache ||
 				(MaxiBlockComponent.breakpointSwitchCache = {
@@ -1649,10 +1778,11 @@ class MaxiBlockComponent extends Component {
 				cache.breakpoint = this.props.deviceType;
 			}
 
-			addBlockStyles(
+			this.applyBlockStyles(
 				uniqueID,
-				normalizedCachedBreakpointCSS,
-				this.getStyleTarget(isSiteEditor, this.editorIframe)
+				cachedBreakpointCSS,
+				this.getStyleTarget(isSiteEditor, this.editorIframe),
+				this.props.deviceType
 			);
 			recordPerf('displayStyles', perfStart);
 			return;
@@ -1782,116 +1912,12 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
-		// Handle relations if they exist
-		if (customDataRelations) {
+		// Keep relation preview instances stable between style passes.
+		if (shouldGenerateNewStyles) {
 			const relationsStart = getPerfStart();
-			const isRelationsPreview =
-				this.props.attributes['relations-preview'];
-
-			if (isRelationsPreview) {
-				const processRelationsStart = getPerfStart();
-				this.relationInstances = processRelations(customDataRelations);
-				recordPerf('processRelations', processRelationsStart);
-			}
-
-			this.relationInstances?.forEach(relationInstance => {
-				relationInstance.setIsPreview(isRelationsPreview);
-			});
-
-			if (
-				isRelationsPreview &&
-				this.relationInstances !== null &&
-				this.previousRelationInstances !== null
-			) {
-				const keysToCompare = [
-					'action',
-					'uniqueID',
-					'trigger',
-					'target',
-					'blockTarget',
-					'stylesString',
-				];
-
-				const isEquivalent = (a, b) => {
-					for (const key of keysToCompare) {
-						if (a[key] !== b[key]) {
-							return false;
-						}
-					}
-					return true;
-				};
-
-				const compareRelations = (
-					previousRelations,
-					currentRelations
-				) => {
-					const previousIds = new Set(
-						previousRelations.map(relation => relation.id)
-					);
-					const currentIds = new Set(
-						currentRelations.map(relation => relation.id)
-					);
-
-					let removed = null;
-					let updated = null;
-
-					// Identify removed relation
-					for (const relation of previousRelations) {
-						if (!currentIds.has(relation.id)) {
-							removed = relation.id;
-							break; // Stop after finding the first removed item
-						}
-					}
-
-					// Identify updated relation
-					for (const relation of currentRelations) {
-						if (previousIds.has(relation.id)) {
-							const previousRelation = previousRelations.find(
-								prev => prev.id === relation.id
-							);
-							if (!isEquivalent(relation, previousRelation)) {
-								updated = relation.id;
-								break;
-							}
-						}
-					}
-
-					return { removed, updated };
-				};
-
-				// Usage
-				const { removed, updated } = compareRelations(
-					this.previousRelationInstances,
-					this.relationInstances
-				);
-
-				if (removed !== null) {
-					const processRemoveStart = getPerfStart();
-					processRelations(
-						this.previousRelationInstances,
-						'remove',
-						removed
-					);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
-					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
-				}
-			if (updated !== null) {
-				const processRemoveStart = getPerfStart();
-				processRelations(this.relationInstances, 'remove', updated);
-				recordPerf('processRelationsRemove', processRemoveStart);
-				const processRelationsStart = getPerfStart();
-				processRelations(this.relationInstances);
-				recordPerf('processRelations', processRelationsStart);
-			}
-			}
-
-			if (!isRelationsPreview) {
-				this.relationInstances = null;
-			}
-
-			this.previousRelationInstances = this.relationInstances;
+			const processRelationsStart = getPerfStart();
+			this.syncRelationPreview(customDataRelations);
+			recordPerf('processRelations', processRelationsStart);
 			recordPerf('relationsBlock', relationsStart);
 		}
 
@@ -1963,7 +1989,12 @@ class MaxiBlockComponent extends Component {
 			);
 
 			// Use batched style injection instead of individual style elements
-			addBlockStyles(uniqueID, styleContent, target);
+			this.applyBlockStyles(
+				uniqueID,
+				styleContent,
+				target,
+				currentBreakpoint
+			);
 		}
 	}
 
@@ -2152,6 +2183,36 @@ class MaxiBlockComponent extends Component {
 		return iframe?.contentDocument || document;
 	}
 
+	resetAppliedStyleCache() {
+		this.lastAppliedStyleUniqueID = null;
+		this.lastAppliedStyleContent = null;
+		this.lastAppliedStyleTarget = null;
+		this.lastAppliedDeviceType = null;
+	}
+
+	applyBlockStyles(uniqueID, styleContent, targetDocument, deviceType) {
+		if (!uniqueID || !targetDocument || typeof styleContent !== 'string') {
+			return false;
+		}
+
+		if (
+			this.lastAppliedStyleUniqueID === uniqueID &&
+			this.lastAppliedStyleContent === styleContent &&
+			this.lastAppliedStyleTarget === targetDocument &&
+			this.lastAppliedDeviceType === deviceType
+		) {
+			return false;
+		}
+
+		addBlockStyles(uniqueID, styleContent, targetDocument);
+		this.lastAppliedStyleUniqueID = uniqueID;
+		this.lastAppliedStyleContent = styleContent;
+		this.lastAppliedStyleTarget = targetDocument;
+		this.lastAppliedDeviceType = deviceType;
+
+		return true;
+	}
+
 	generateStyleContent(
 		uniqueID,
 		stylesObj,
@@ -2335,6 +2396,7 @@ class MaxiBlockComponent extends Component {
 				removeBlockStyles(uniqueID, doc);
 			}
 		});
+		this.resetAppliedStyleCache();
 
 		// Legacy cleanup: Also remove any old individual style elements with this ID
 		const legacyStyleId = `maxi-blocks__styles--${uniqueID}`;

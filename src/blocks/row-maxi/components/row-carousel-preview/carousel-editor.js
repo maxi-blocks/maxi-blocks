@@ -128,10 +128,16 @@ class MaxiRowCarouselEditor {
 		// Store bound references for navigation handlers
 		this._boundColumnNext = this.columnNext.bind(this);
 		this._boundColumnPrev = this.columnPrev.bind(this);
+		this.shouldTrackHover = false;
 
-		// Set up hover event listeners using distinct bound references
-		this._container.addEventListener('mouseenter', this.onHoverStart);
-		this._container.addEventListener('mouseleave', this.onHoverEnd);
+		if (this.isAutoplay && this.hoverPause) {
+			this.shouldTrackHover = true;
+		}
+
+		if (this.shouldTrackHover) {
+			this._container.addEventListener('mouseenter', this.onHoverStart);
+			this._container.addEventListener('mouseleave', this.onHoverEnd);
+		}
 
 		// Set up MutationObserver to ensure active class persists
 		// This is needed because editor may remove it when child blocks are hovered
@@ -1109,7 +1115,7 @@ class MaxiRowCarouselEditor {
 			this._wrapper.removeEventListener('touchend', this.onDragEnd);
 		}
 
-		if (this._container) {
+		if (this._container && this.shouldTrackHover) {
 			this._container.removeEventListener(
 				'mouseenter',
 				this.onHoverStart

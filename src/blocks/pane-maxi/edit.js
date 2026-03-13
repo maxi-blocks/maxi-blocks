@@ -104,7 +104,11 @@ class edit extends MaxiBlockComponent {
 	}
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'pane:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	updateAttributesFromContext() {

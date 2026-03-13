@@ -26,7 +26,11 @@ class edit extends MaxiBlockComponent {
 	state = { openPanes: [] };
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'accordion:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	get getMaxiCustomData() {

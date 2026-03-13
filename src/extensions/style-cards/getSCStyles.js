@@ -137,6 +137,16 @@ const getLinkColorsString = ({ organizedValues, prefix, style }) => {
 	return response;
 };
 
+const stripEditorInteractionRules = css => {
+	if (!css) return css;
+
+	return [
+		/[^{}]*:visited:hover[^{}]*\{[^{}]*\}/g,
+		/[^{}]*:(?:hover|focus)[^{}]*\{[^{}]*\}/g,
+		/[^{}]*:has\([^{}]*\)[^{}]*\{[^{}]*\}/g,
+	].reduce((result, pattern) => result.replace(pattern, ''), css);
+};
+
 const addStylesByBreakpoints = (addStylesByBreakpoint, isBackend) => {
 	let addedResponse = '';
 
@@ -832,7 +842,7 @@ const getWPNativeStyles = ({
 /**
  * Giving a style card object, returns the CSS styles for SC for each block.
  */
-const getSCStyles = (
+const getSCStyles = async (
 	rawStyleCard,
 	gutenbergBlocksStatus,
 	isBackend = false
@@ -869,7 +879,9 @@ const getSCStyles = (
 		}
 	});
 
-	return processCss(response);
+	return processCss(
+		isBackend ? stripEditorInteractionRules(response) : response
+	);
 };
 
 export default getSCStyles;

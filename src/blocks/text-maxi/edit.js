@@ -80,13 +80,16 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		const getListItemsLength = () => {
-			return select('core/block-editor').getBlockOrder(
-				this.props.clientId
-			).length;
-		};
+		const listItemsLength = select('core/block-editor').getBlockOrder(
+			this.props.clientId
+		).length;
 
-		return getStyles(this.props.attributes, getListItemsLength);
+		return this.getCachedStylesObject(
+			'text:getStylesObject',
+			[this.props.attributes, this.props.clientId, listItemsLength],
+			() =>
+				getStyles(this.props.attributes, () => listItemsLength)
+		);
 	}
 
 	removeGutenbergWhiteSpace() {

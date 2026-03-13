@@ -35,7 +35,11 @@ const ROW_TEMPLATE = [['maxi-blocks/row-maxi']];
  */
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'container:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	// eslint-disable-next-line class-methods-use-this

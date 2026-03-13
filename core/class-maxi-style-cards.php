@@ -542,14 +542,15 @@ class MaxiBlocks_StyleCards
             return false;
         }
 
+        $is_admin_request = is_admin();
         $sc_variables =
-            self::is_preview_safe() || is_admin()
+            self::is_preview_safe() || $is_admin_request
                 ? $style_card['_maxi_blocks_style_card_styles_preview']
                 : $style_card['_maxi_blocks_style_card_styles'];
 
         if (!$sc_variables || empty($sc_variables)) {
             $sc_variables =
-                self::is_preview_safe() || is_admin() // If one fail, let's test the other one!
+                self::is_preview_safe() || $is_admin_request // If one fail, let's test the other one!
                     ? $style_card['_maxi_blocks_style_card_styles']
                     : $style_card['_maxi_blocks_style_card_styles_preview'];
         }
@@ -565,6 +566,10 @@ class MaxiBlocks_StyleCards
             self::$cache['style_styles'] = false;
             self::$cache['cache_keys']['style_styles'] = $cache_key;
             return false;
+        }
+
+        if ($is_admin_request) {
+            $sc_variables = self::simplify_editor_style_card_css($sc_variables);
         }
 
         // Cache the final result
@@ -2202,5 +2207,22 @@ class MaxiBlocks_StyleCards
         $css = preg_replace('/\s+/', ' ', $css);
 
         return trim($css);
+    }
+
+    private static function simplify_editor_style_card_css($css)
+    {
+        if (!$css) {
+            return $css;
+        }
+
+        $patterns = [
+            '/[^{}]*:visited:hover[^{}]*\{[^{}]*\}/',
+            '/[^{}]*:(?:hover|focus)[^{}]*\{[^{}]*\}/',
+            '/[^{}]*:has\([^{}]*\)[^{}]*\{[^{}]*\}/',
+        ];
+
+        $css = preg_replace($patterns, '', $css);
+
+        return self::process_css($css);
     }
 }

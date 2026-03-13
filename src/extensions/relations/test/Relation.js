@@ -2013,14 +2013,19 @@ describe('Relation class', () => {
 	describe('addRelationSubscriber', () => {
 		let relation;
 		let mockObserver;
+		let previousObserver;
 		let mockBlockTargetEl;
 		let observerCallback;
 		let OriginalObserver;
 
 		beforeEach(() => {
 			// Mock MutationObserver
+			previousObserver = {
+				disconnect: jest.fn(),
+			};
 			mockObserver = {
 				observe: jest.fn(),
+				disconnect: jest.fn(),
 			};
 
 			OriginalObserver = global.MutationObserver;
@@ -2050,6 +2055,15 @@ describe('Relation class', () => {
 			relation.addRelationSubscriber();
 
 			expect(global.MutationObserver).toHaveBeenCalled();
+			expect(relation.observer).toBe(mockObserver);
+		});
+
+		test('should disconnect the previous observer before replacing it', () => {
+			relation.observer = previousObserver;
+
+			relation.addRelationSubscriber();
+
+			expect(previousObserver.disconnect).toHaveBeenCalled();
 			expect(relation.observer).toBe(mockObserver);
 		});
 
@@ -2112,6 +2126,32 @@ describe('Relation class', () => {
 
 			// Check that dataset value was not changed
 			expect(mockMutation.target.dataset.maxiRelations).toBe('false');
+		});
+	});
+
+	describe('setIsPreview', () => {
+		test('should not re-run transitions when preview state is unchanged', () => {
+			const relation = new Relation({});
+			relation.isPreview = true;
+			relation.enableTransitions = jest.fn();
+			relation.disableTransitions = jest.fn();
+
+			relation.setIsPreview(true);
+
+			expect(relation.enableTransitions).not.toHaveBeenCalled();
+			expect(relation.disableTransitions).not.toHaveBeenCalled();
+		});
+
+		test('should run transitions when preview state changes', () => {
+			const relation = new Relation({});
+			relation.enableTransitions = jest.fn();
+			relation.disableTransitions = jest.fn();
+
+			relation.setIsPreview(true);
+			relation.setIsPreview(false);
+
+			expect(relation.enableTransitions).toHaveBeenCalledTimes(1);
+			expect(relation.disableTransitions).toHaveBeenCalledTimes(1);
 		});
 	});
 });

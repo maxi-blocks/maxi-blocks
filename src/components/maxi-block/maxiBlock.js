@@ -7,7 +7,6 @@ import {
 	memo,
 	useCallback,
 	useEffect,
-	useReducer,
 	useState,
 } from '@wordpress/element';
 import { dispatch, select } from '@wordpress/data';
@@ -118,7 +117,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		isRepeater,
 		isSelected,
 		hasSelectedChild,
-		isHovered,
 		isChild,
 		dcStatus,
 		dcHide,
@@ -143,6 +141,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 	const isDisabled =
 		DISALLOWED_BREAKPOINTS.includes(baseBreakpoint) &&
 		mobile({ tablet: true });
+	const shouldRenderHoverEffects =
+		isSave || isSelected || getIsHoverPreview();
 
 	// Unselect the block if it's disabled
 	if (isDisabled && isSelected)
@@ -184,7 +184,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		'maxi-block',
 		!isSave && 'maxi-block--backend',
 		blockName && getBlockClassName(blockName),
-		motion['hover-type'] &&
+		shouldRenderHoverEffects &&
+			motion['hover-type'] &&
 			motion['hover-type'] !== 'none' &&
 			`maxi-hover-effect maxi-hover-effect-${uniqueID}`,
 		getHasParallax(background['background-layers']) &&
@@ -211,7 +212,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			(!inlineLinkFields.includes(dcLinkTarget) || !dcLinkStatus) &&
 			'maxi-block--has-link',
 		isDragging && isDragOverBlock && 'maxi-block--is-drag-over',
-		isHovered && 'maxi-block--is-hovered',
 		isRepeater && 'maxi-block--repeater',
 		(isDisabled || showLoader) && 'maxi-block--disabled',
 		!isSave && isFullWidth && 'maxi-block--full-width',
@@ -322,8 +322,6 @@ const MaxiBlock = memo(
 		} = props;
 		const pagination = attributes?.['cl-pagination'];
 
-		const [isHovered, setHovered] = useReducer(e => !e, false);
-
 		const isHoverPreview = getIsHoverPreview();
 
 		const marginValue = !isHoverPreview
@@ -355,9 +353,6 @@ const MaxiBlock = memo(
 			<MaxiBlockContent
 				key={`maxi-block-content__${clientId}`}
 				ref={ref}
-				onMouseEnter={setHovered}
-				onMouseLeave={setHovered}
-				isHovered={isHovered}
 				pagination={pagination}
 				{...props}
 				attributes={attributes}

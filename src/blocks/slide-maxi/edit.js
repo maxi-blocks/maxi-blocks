@@ -33,7 +33,11 @@ class edit extends MaxiBlockComponent {
 	static contextType = SliderContext;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'slide:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	maxiBlockDidMount() {

@@ -23,7 +23,11 @@ import withMaxiDC from '@extensions/DC/withMaxiDC';
  */
 class edit extends MaxiBlockComponent {
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'group:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	render() {

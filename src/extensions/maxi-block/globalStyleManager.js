@@ -49,8 +49,24 @@ class DocumentStyleManager {
 	 * @param {string} styleContent - CSS content for the block
 	 */
 	addBlockStyles(uniqueID, styleContent) {
+		const nextStyleContent =
+			typeof styleContent === 'string' ? styleContent : '';
+		const previousStyleContent = this.blockStyles.get(uniqueID);
+
+		if (!nextStyleContent) {
+			if (this.blockStyles.has(uniqueID)) {
+				this.blockStyles.delete(uniqueID);
+				this.scheduleUpdate();
+			}
+			return;
+		}
+
+		if (previousStyleContent === nextStyleContent) {
+			return;
+		}
+
 		// Store the styles
-		this.blockStyles.set(uniqueID, styleContent);
+		this.blockStyles.set(uniqueID, nextStyleContent);
 
 		// Schedule update
 		this.scheduleUpdate();

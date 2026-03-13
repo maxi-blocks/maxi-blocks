@@ -69,15 +69,14 @@ class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		const { attributes } = this.props;
 		const { scValues } = this.state;
+		const iconRatio = getSVGWidthHeightRatio(
+			this.blockRef?.current?.querySelector('.maxi-button-block__icon svg')
+		);
 
-		return getStyles(
-			attributes,
-			scValues,
-			getSVGWidthHeightRatio(
-				this.blockRef?.current?.querySelector(
-					'.maxi-button-block__icon svg'
-				)
-			)
+		return this.getCachedStylesObject(
+			'button:getStylesObject',
+			[attributes, scValues, iconRatio],
+			() => getStyles(attributes, scValues, iconRatio)
 		);
 	}
 

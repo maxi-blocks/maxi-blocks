@@ -69,7 +69,11 @@ class edit extends MaxiBlockComponent {
 	typingTimeoutContent = 0;
 
 	get getStylesObject() {
-		return getStyles(this.props.attributes);
+		return this.getCachedStylesObject(
+			'image:getStylesObject',
+			[this.props.attributes],
+			() => getStyles(this.props.attributes)
+		);
 	}
 
 	maxiBlockDidMount() {
@@ -174,15 +178,17 @@ class edit extends MaxiBlockComponent {
 			'maxi-image-block-wrapper',
 			fitParentSize && 'maxi-image-block-wrapper--fit-parent-size'
 		);
+		const shouldShowHoverPreview = hoverPreview && isSelected;
 
 		const hoverClasses = classnames(
 			hoverType === 'basic' &&
-				hoverPreview &&
+				shouldShowHoverPreview &&
 				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-basic-effect-type']}`,
 			hoverType === 'text' &&
-				hoverPreview &&
+				shouldShowHoverPreview &&
 				`maxi-hover-effect-active maxi-hover-effect__${hoverType}__${attributes['hover-text-effect-type']}`,
-			hoverType !== 'none' &&
+			isSelected &&
+				hoverType !== 'none' &&
 				`maxi-hover-effect__${hoverType === 'basic' ? 'basic' : 'text'}`
 		);
 		const hoverPreviewAttributes = {
@@ -191,7 +197,7 @@ class edit extends MaxiBlockComponent {
 				'hoverTitleTypography',
 				'hoverContentTypography',
 			]),
-			'hover-preview': hoverPreview,
+			'hover-preview': shouldShowHoverPreview,
 		};
 
 		/**

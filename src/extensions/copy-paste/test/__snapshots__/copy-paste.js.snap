@@ -5,6 +5,7 @@ exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly wit
   "advanced": {
     "Anchor": {
       "anchor": undefined,
+      "anchorLink": undefined,
       "linkSettings": undefined,
     },
     "Breakpoints": {
@@ -3577,6 +3578,7 @@ exports[`getOrganizedAttributes Ensure getOrganizedAttributes work correctly wit
   "alignment-xxl": undefined,
   "altSelector": "title",
   "anchor": undefined,
+  "anchorLink": undefined,
   "background-layers": undefined,
   "background-layers-hover": undefined,
   "block-background-status-hover": false,

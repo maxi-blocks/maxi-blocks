@@ -81,7 +81,7 @@ const templates = {
 		props: 'extraClassName',
 	},
 	anchor: {
-		props: ['anchor', 'linkSettings'],
+		props: ['anchor', 'anchorLink', 'linkSettings'],
 	},
 	interaction: {
 		props: 'relations',

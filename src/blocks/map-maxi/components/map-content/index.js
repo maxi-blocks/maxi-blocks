@@ -72,15 +72,8 @@ const applyIframeDragFix = map => {
 	const outerDoc = document; // Outer frame document = where Leaflet drag handler listens
 
 	if (containerDoc === outerDoc) {
-		console.log(
-			'[MapMaxi] Map container is in the same document – no iframe drag fix needed'
-		);
 		return;
 	}
-
-	console.log(
-		'[MapMaxi] Map container is inside an iframe document – applying Leaflet drag fix (forwarding iframe events → outer document)'
-	);
 
 	let isDragActive = false;
 
@@ -123,17 +116,11 @@ const applyIframeDragFix = map => {
 		// is registered on the outer document but the event fires in the
 		// iframe and never reaches it.
 		forwardToOuter('mouseup', e);
-		console.log(
-			'[MapMaxi] iframe mouseup forwarded to outer document – Leaflet drag state reset'
-		);
 	};
 
 	// Activate forwarding when the user starts interacting with the map.
 	container.addEventListener('mousedown', () => {
 		isDragActive = true;
-		console.log(
-			'[MapMaxi] map mousedown – forwarding iframe events to outer document'
-		);
 	});
 
 	containerDoc.addEventListener('mousemove', onIframeMouseMove);
@@ -142,9 +129,6 @@ const applyIframeDragFix = map => {
 	map.on('remove', () => {
 		containerDoc.removeEventListener('mousemove', onIframeMouseMove);
 		containerDoc.removeEventListener('mouseup', onIframeMouseUp);
-		console.log(
-			'[MapMaxi] Map removed – cleaned up iframe drag fix listeners'
-		);
 	});
 };
 
@@ -275,36 +259,26 @@ const MapContent = props => {
 	const resizeMap = map => {
 		if (!map) return;
 
-		const mapSize = map.getSize();
-		const containerEl = map.getContainer();
-
-		console.log(
-			`[MapMaxi] Map ready – uniqueID: ${JSON.stringify(uniqueID)}, isIframe: ${JSON.stringify(window !== window.parent)}, mapSize: ${JSON.stringify(mapSize)}, containerOffsetHeight: ${JSON.stringify(containerEl?.offsetHeight)}, containerClientHeight: ${JSON.stringify(containerEl?.clientHeight)}`
-		);
-
-		const safeInvalidateSize = label => {
+		const safeInvalidateSize = () => {
 			if (map._isDestroyed || !map.getContainer()) return;
 			try {
 				map.invalidateSize({ animate: false, pan: false, duration: 0 });
-				console.log(
-					`[MapMaxi] invalidateSize (${label}) – size: ${JSON.stringify(map.getSize())}`
-				);
 			} catch (e) {
 				// Ignore errors during resize
 			}
 		};
 
 		// Immediate attempt – covers the common case where CSS is already applied.
-		safeInvalidateSize('immediate');
+		safeInvalidateSize();
 
 		// When the block is newly inserted the container CSS (height: 300px)
 		// may not have been applied yet, leaving Leaflet with height 0.  With
 		// height 0 every pixel→lat/lng calculation breaks and dragging sends
 		// the map to extreme latitudes.  We schedule several deferred attempts
 		// so whichever fires after the layout has settled wins.
-		requestAnimationFrame(() => safeInvalidateSize('rAF'));
-		setTimeout(() => safeInvalidateSize('100ms'), 100);
-		setTimeout(() => safeInvalidateSize('500ms'), 500);
+		requestAnimationFrame(() => safeInvalidateSize());
+		setTimeout(() => safeInvalidateSize(), 100);
+		setTimeout(() => safeInvalidateSize(), 500);
 
 		// Apply the drag fix before anything else so Leaflet's internal
 		// drag handler is already set up when we start listening on the parent.

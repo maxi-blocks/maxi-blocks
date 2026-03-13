@@ -493,16 +493,18 @@ describe('getTaxonomyContent', () => {
 });
 
 describe('getCurrentTemplateSlug', () => {
-	const mockEditSite = {
-		getEditedPostContext: jest.fn(),
-		getEditedPostId: jest.fn(),
+	const mockEditor = {
+		getCurrentPostId: jest.fn(),
 	};
 
 	beforeEach(() => {
 		jest.clearAllMocks();
 		select.mockImplementation(store => {
 			if (store === 'core/edit-site') {
-				return mockEditSite;
+				return {};
+			}
+			if (store === 'core/editor') {
+				return mockEditor;
 			}
 			return null;
 		});
@@ -516,51 +518,35 @@ describe('getCurrentTemplateSlug', () => {
 		expect(result).toBeNull();
 	});
 
-	it('should return null when templateSlug and postId are both not available', () => {
-		mockEditSite.getEditedPostContext.mockReturnValue({});
-		mockEditSite.getEditedPostId.mockReturnValue(null);
+	it('should return null when getCurrentPostId returns null', () => {
+		mockEditor.getCurrentPostId.mockReturnValue(null);
 
 		const result = getCurrentTemplateSlug();
 
 		expect(result).toBeNull();
 	});
 
-	it('should use templateSlug from getEditedPostContext when available', () => {
-		mockEditSite.getEditedPostContext.mockReturnValue({
-			templateSlug: 'home',
-		});
+	it('should return the slug from getCurrentPostId', () => {
+		mockEditor.getCurrentPostId.mockReturnValue('home');
 
 		const result = getCurrentTemplateSlug();
 
 		expect(result).toBe('home');
-		expect(mockEditSite.getEditedPostContext).toHaveBeenCalled();
+		expect(mockEditor.getCurrentPostId).toHaveBeenCalled();
 	});
 
-	it('should use getEditedPostId as fallback (WordPress 6.5 compatibility)', () => {
-		mockEditSite.getEditedPostContext.mockReturnValue({});
-		mockEditSite.getEditedPostId.mockReturnValue('page');
-
-		const result = getCurrentTemplateSlug();
-
-		expect(result).toBe('page');
-		expect(mockEditSite.getEditedPostContext).toHaveBeenCalled();
-		expect(mockEditSite.getEditedPostId).toHaveBeenCalled();
-	});
-
-	it('should extract the part after // when template slug contains it', () => {
-		mockEditSite.getEditedPostContext.mockReturnValue({
-			templateSlug: 'wp-custom-template//archive-products',
-		});
+	it('should extract the part after // when post ID contains it', () => {
+		mockEditor.getCurrentPostId.mockReturnValue(
+			'wp-custom-template//archive-products'
+		);
 
 		const result = getCurrentTemplateSlug();
 
 		expect(result).toBe('archive-products');
 	});
 
-	it('should return the original slug when no // is present', () => {
-		mockEditSite.getEditedPostContext.mockReturnValue({
-			templateSlug: 'single-post',
-		});
+	it('should return the original value when no // is present', () => {
+		mockEditor.getCurrentPostId.mockReturnValue('single-post');
 
 		const result = getCurrentTemplateSlug();
 
@@ -573,7 +559,7 @@ describe('getFields', () => {
 	const mockGetTaxonomy = jest.fn();
 	const mockGetCustomPostTypes = jest.fn();
 	const mockGetCustomTaxonomies = jest.fn();
-	const mockEditSite = {};
+	const mockGetCurrentPostId = jest.fn();
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -593,7 +579,10 @@ describe('getFields', () => {
 				};
 			}
 			if (store === 'core/edit-site') {
-				return mockEditSite;
+				return {};
+			}
+			if (store === 'core/editor') {
+				return { getCurrentPostId: mockGetCurrentPostId };
 			}
 			return null;
 		});
@@ -634,9 +623,7 @@ describe('getFields', () => {
 			hierarchical: true,
 		});
 		// Mock for getCurrentTemplateSlug
-		mockEditSite.getEditedPostContext = jest
-			.fn()
-			.mockReturnValue({ templateSlug: 'default' });
+		mockGetCurrentPostId.mockReturnValue('default');
 
 		const result = getFields('text', 'custom_tax');
 
@@ -655,9 +642,7 @@ describe('getFields', () => {
 		mockGetCustomPostTypes.mockReturnValue([]);
 		mockGetCustomTaxonomies.mockReturnValue([]);
 		// Setup FSE mode
-		mockEditSite.getEditedPostContext = jest
-			.fn()
-			.mockReturnValue({ templateSlug: 'category' });
+		mockGetCurrentPostId.mockReturnValue('category');
 
 		const result = getFields('text', 'categories');
 
@@ -671,9 +656,7 @@ describe('getFields', () => {
 		mockGetCustomPostTypes.mockReturnValue([]);
 		mockGetCustomTaxonomies.mockReturnValue([]);
 		// Setup FSE mode
-		mockEditSite.getEditedPostContext = jest
-			.fn()
-			.mockReturnValue({ templateSlug: 'category' });
+		mockGetCurrentPostId.mockReturnValue('category');
 
 		const result = getFields('image', 'categories');
 
@@ -714,7 +697,7 @@ describe('getRelationOptions', () => {
 	const mockGetCustomPostTypes = jest.fn();
 	const mockGetCustomTaxonomies = jest.fn();
 	const mockGetCurrentPostType = jest.fn();
-	const mockEditSite = {};
+	const mockGetCurrentPostId = jest.fn();
 
 	beforeEach(() => {
 		jest.clearAllMocks();
@@ -735,10 +718,11 @@ describe('getRelationOptions', () => {
 			if (store === 'core/editor') {
 				return {
 					getCurrentPostType: mockGetCurrentPostType,
+					getCurrentPostId: mockGetCurrentPostId,
 				};
 			}
 			if (store === 'core/edit-site') {
-				return mockEditSite;
+				return {};
 			}
 			return null;
 		});
@@ -803,9 +787,7 @@ describe('getRelationOptions', () => {
 
 	it('should handle archive templates', () => {
 		// Setup archive template
-		mockEditSite.getEditedPostContext = jest.fn().mockReturnValue({
-			templateSlug: 'archive',
-		});
+		mockGetCurrentPostId.mockReturnValue('archive');
 
 		const result = getRelationOptions('posts', 'text', 'archive');
 
@@ -877,12 +859,11 @@ describe('validationsValues', () => {
 			if (store === 'core/editor') {
 				return {
 					getCurrentPostType: mockGetCurrentPostType,
+					getCurrentPostId: () => 'single',
 				};
 			}
 			if (store === 'core/edit-site') {
-				return {
-					getEditedPostContext: () => ({ templateSlug: 'single' }),
-				};
+				return {};
 			}
 			return {};
 		});

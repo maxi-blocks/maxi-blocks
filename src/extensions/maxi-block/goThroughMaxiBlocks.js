@@ -46,8 +46,8 @@ const goThroughMaxiBlocks = (
 				}
 
 				if (select('core/edit-site') !== undefined) {
-					const { postType, postId } =
-						select('core/edit-site').getEditedPostContext();
+					const postType = select('core/editor').getCurrentPostType();
+					const postId = select('core/editor').getCurrentPostId();
 
 					const { blocks } = select('core').getEditedEntityRecord(
 						'postType',

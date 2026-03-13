@@ -304,9 +304,7 @@ export const getCurrentTemplateSlug = () => {
 	const editSite = select('core/edit-site');
 	if (!editSite) return null;
 
-	const currentTemplateTypeRaw =
-		editSite?.getEditedPostContext()?.templateSlug ||
-		editSite?.getEditedPostId(); // fix for WordPress 6.5
+	const currentTemplateTypeRaw = select('core/editor')?.getCurrentPostId();
 
 	if (!currentTemplateTypeRaw) return null;
 

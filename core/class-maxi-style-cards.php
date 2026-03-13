@@ -57,7 +57,9 @@ class MaxiBlocks_StyleCards
      */
     public function __construct()
     {
-        add_action('enqueue_block_assets', [$this, 'enqueue_styles']);
+        if (is_admin()) {
+            add_action('enqueue_block_assets', [$this, 'enqueue_styles']);
+        }
 
         // Wrap wp_enqueue_scripts in wp action to check for blocks
         add_action('wp', function () {

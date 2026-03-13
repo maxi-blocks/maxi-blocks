@@ -81,6 +81,68 @@ const getPerfStart = () => {
 	return performance.now();
 };
 
+const getBlockPerfStart = () =>
+	typeof performance !== 'undefined' && performance.now
+		? performance.now()
+		: null;
+
+/**
+ * Per-block performance recorder. Tracks timing per uniqueID and logs a
+ * sorted summary (slowest first) once per second.
+ * Enabled by: window.__MAXI_PROFILE_MAXI_BLOCKS__ = true
+ *
+ * Tracked labels: mount, fonts, styles, iframe, getStylesObj, generate, addStyles
+ */
+const recordBlockPerf = (uniqueID, label, start) => {
+	if (
+		start === null ||
+		typeof performance === 'undefined' ||
+		typeof window === 'undefined'
+	) {
+		return;
+	}
+
+	const duration = performance.now() - start;
+	const root = window;
+	const store =
+		root.__maxiBlocksPerBlockPerf__ ||
+		(root.__maxiBlocksPerBlockPerf__ = {
+			blocks: {},
+			logScheduled: false,
+		});
+
+	const entry =
+		store.blocks[uniqueID] ||
+		(store.blocks[uniqueID] = { total: 0 });
+	entry[label] = (entry[label] || 0) + duration;
+	entry.total += duration;
+
+	if (!store.logScheduled) {
+		store.logScheduled = true;
+		setTimeout(() => {
+			store.logScheduled = false;
+			const snapshot = store.blocks;
+			store.blocks = {};
+
+			const rows = Object.entries(snapshot).sort(
+				([, a], [, b]) => b.total - a.total
+			);
+			if (!rows.length) return;
+
+			const lines = rows.map(([id, t]) => {
+				const parts = Object.entries(t)
+					.filter(([k]) => k !== 'total')
+					.map(([k, v]) => `${k}=${v.toFixed(1)}ms`)
+					.join(' ');
+				return `  ${id}: total=${t.total.toFixed(1)}ms  ${parts}`;
+			});
+			console.info(
+				`MaxiBlocks per-block perf (${rows.length} blocks):\n${lines.join('\n')}`
+			);
+		}, 1000);
+	}
+};
+
 const recordPerf = (label, start) => {
 	if (start === null || typeof performance === 'undefined') {
 		return;
@@ -157,20 +219,37 @@ function ensureBlockMoveStyleSheet() {
 let pendingStyleDisplays = [];
 let styleDisplayScheduled = false;
 
+function flushStyleDisplays() {
+	if (pendingStyleDisplays.length === 0) return;
+	styleDisplayScheduled = false;
+	const batch = pendingStyleDisplays.splice(0);
+	batch.forEach(({ block: b, isBreakpointChange: isBP }) => {
+		const stylesPerfStart = getBlockPerfStart();
+		try {
+			b.displayStyles(isBP);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
+		recordBlockPerf(
+			b.props?.attributes?.uniqueID,
+			'styles',
+			stylesPerfStart
+		);
+	});
+}
+
+/**
+ * Flush any pending deferred style displays synchronously.
+ * Call this before saving to ensure all block styles are in the store.
+ */
+export const flushPendingStyleDisplays = flushStyleDisplays;
+
 function scheduleDisplayStyles(block, isBreakpointChange) {
 	pendingStyleDisplays.push({ block, isBreakpointChange });
 	if (!styleDisplayScheduled) {
 		styleDisplayScheduled = true;
 		requestAnimationFrame(() => {
-			styleDisplayScheduled = false;
-			const batch = pendingStyleDisplays.splice(0);
-			batch.forEach(({ block: b, isBreakpointChange: isBP }) => {
-				try {
-					b.displayStyles(isBP);
-				} catch (error) {
-					console.warn('MaxiBlocks: Display styles error:', error);
-				}
-			});
+			flushStyleDisplays();
 		});
 	}
 }
@@ -362,6 +441,8 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidMount() {
+		const mountPerfStart = getBlockPerfStart();
+
 		// Step 1: DOM references
 		this.updateDOMReferences();
 
@@ -521,10 +602,21 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Step 6: Font loading
+		const fontsPerfStart = getBlockPerfStart();
 		this.loadFonts();
+		recordBlockPerf(
+			this.props.attributes.uniqueID,
+			'fonts',
+			fontsPerfStart
+		);
 
 		// Step 7: Display styles — deferred via rAF to batch bulk-mount scenarios
 		// (editor open, template insert, code-editor switch) into one frame.
+		recordBlockPerf(
+			this.props.attributes.uniqueID,
+			'mount',
+			mountPerfStart
+		);
 		scheduleDisplayStyles(this, !!this?.rootSlot);
 
 		// Step 8: Force update if needed
@@ -1703,8 +1795,10 @@ class MaxiBlockComponent extends Component {
 				obj = stylesForViewportCheck;
 			} else {
 				const stylesObjStart = getPerfStart();
+				const stylesObjBlockStart = getBlockPerfStart();
 				obj = this.getStylesObject || {};
 				recordPerf('getStylesObject', stylesObjStart);
+				recordBlockPerf(uniqueID, 'getStylesObj', stylesObjBlockStart);
 			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1906,7 +2000,9 @@ class MaxiBlockComponent extends Component {
 		iframe
 	) {
 		if (iframe?.contentDocument?.body) {
+			const iframePerfStart = getBlockPerfStart();
 			this.handleIframeStyles(iframe, currentBreakpoint);
+			recordBlockPerf(uniqueID, 'iframe', iframePerfStart);
 		}
 
 		// Only generate new styles if it's not a breakpoint change or if it's a breakpoint change to XXL
@@ -1916,6 +2012,7 @@ class MaxiBlockComponent extends Component {
 			currentBreakpoint === 'xxl'
 		) {
 			const target = this.getStyleTarget(isSiteEditor, iframe);
+			const generatePerfStart = getBlockPerfStart();
 			const styleContent = this.generateStyleContent(
 				uniqueID,
 				stylesObj,
@@ -1927,9 +2024,12 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
+			recordBlockPerf(uniqueID, 'generate', generatePerfStart);
 
 			// Use batched style injection instead of individual style elements
+			const addStylesBlockStart = getBlockPerfStart();
 			addBlockStyles(uniqueID, styleContent, target);
+			recordBlockPerf(uniqueID, 'addStyles', addStylesBlockStart);
 		}
 	}
 

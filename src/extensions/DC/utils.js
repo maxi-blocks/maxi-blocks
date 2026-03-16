@@ -308,6 +308,10 @@ export const getCurrentTemplateSlug = () => {
 
 	if (!currentTemplateTypeRaw) return null;
 
+	// In WP 6.9+ getCurrentPostId() may return a numeric ID for certain FSE
+	// contexts instead of the expected "wp_template//slug" string format.
+	if (typeof currentTemplateTypeRaw !== 'string') return null;
+
 	// Extract the part after '//' if it exists
 	const [, currentTemplateType] = currentTemplateTypeRaw.split('//');
 

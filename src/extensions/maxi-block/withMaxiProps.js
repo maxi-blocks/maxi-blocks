@@ -62,6 +62,9 @@ const withMaxiProps = createHigherOrderComponent(
 			// Track if we're in the middle of a setAttributes call
 			const isSettingAttributesRef = useRef(false);
 
+			// Debug: count HOC re-renders triggered by deviceType / baseBreakpoint changes
+			const prevDeviceTypeRef = useRef(null);
+
 			// Memoize selectors to prevent recreation on every render
 			const blockEditorSelectors = useMemo(() => {
 				const selectStore = select('core/block-editor');
@@ -129,6 +132,35 @@ const withMaxiProps = createHigherOrderComponent(
 					// 	currentBlockIndex === allBlocks.length - 1,
 				};
 			});
+
+				// Debug: track re-renders caused by deviceType changes.
+			// Accumulate across all blocks and log once per ~300 ms.
+			if (
+				prevDeviceTypeRef.current !== null &&
+				prevDeviceTypeRef.current !== deviceType
+			) {
+				const sw = window.__maxiBPSwitch__;
+				if (sw) {
+					sw._renderCount = (sw._renderCount || 0) + 1;
+					// Piggy-back on the existing summary timer; add render count at the end.
+					const origTimer = sw._timer;
+					if (origTimer) clearTimeout(origTimer);
+					sw._timer = setTimeout(() => {
+						const elapsed = (performance.now() - sw.startTime).toFixed(1);
+						console.info(
+							`[MaxiBP] ✔ switch ${sw.from} → ${sw.to} completed in ${elapsed}ms` +
+								` | ${sw.totalBlocks || 0} blocks:` +
+								` domUpdate=${sw.domUpdateBlocks || 0}` +
+								` fastPath=${sw.fastPathBlocks || 0}` +
+								` fullRegen=${sw.regenBlocks || 0}` +
+								` xxlCache=${sw.xxlCacheBlocks || 0}` +
+								` viewportUnits=${sw.viewportUnitBlocks || 0}` +
+								` | HOC re-renders=${sw._renderCount || 0}`
+						);
+					}, 300);
+				}
+			}
+			prevDeviceTypeRef.current = deviceType;
 
 			const parentColumnClientId = useMemo(() => {
 				if (repeaterContext?.repeaterStatus) {

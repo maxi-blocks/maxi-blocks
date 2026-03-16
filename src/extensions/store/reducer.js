@@ -56,15 +56,6 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints);
 	const iframeBody = getSiteEditorIframeBody();
 
-	const wrapperTag = editorWrapper.tagName?.toLowerCase() ?? '?';
-	const wrapperClass = editorWrapper.className?.split(' ')?.[0] ?? '';
-	const iframeAttr = iframeBody?.getAttribute('maxi-blocks-responsive');
-	console.info(
-		`[MaxiBP] breakpointResizer: size="${size}" responsiveAttr="${responsiveAttrValue}"`,
-		`\n  editorWrapper: <${wrapperTag} class="${wrapperClass}"> prev="${editorWrapper.getAttribute('maxi-blocks-responsive')}"`,
-		`\n  iframeBody: ${iframeBody ? `prev="${iframeAttr}"` : 'null (not FSE)'}`
-	);
-
 	[editorWrapper, iframeBody].forEach(element => {
 		element?.setAttribute('maxi-blocks-responsive', responsiveAttrValue);
 	});
@@ -98,10 +89,6 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	} else {
 		responsiveWidth = breakpoints[size];
 	}
-
-	console.info(
-		`[MaxiBP] breakpointResizer: responsiveWidth=${JSON.stringify(responsiveWidth)} winSize=${winSize}`
-	);
 
 	editorWrapper.setAttribute('maxi-blocks-responsive-width', responsiveWidth);
 	editorWrapper.setAttribute('is-maxi-preview', true);

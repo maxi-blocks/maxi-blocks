@@ -4,44 +4,9 @@ import { select, dispatch } from '@wordpress/data';
 let lastCallTime = 0;
 let pendingCall = null;
 
-/**
- * Exported for consumers that want to check the same condition.
- * Always returns true – logging is unconditional.
- *
- * @returns {boolean}
- */
-export const isBreakpointDebug = () => true;
-
-/**
- * Initialise (or reset) the per-switch debug accumulator stored on window so
- * that every module that participates in a breakpoint switch can write into the
- * same object without needing an import.
- *
- * @param {string} from - Departing breakpoint.
- * @param {string} to   - Target breakpoint.
- */
-const initBPSwitchDebug = (from, to) => {
-	window.__maxiBPSwitch__ = {
-		from,
-		to,
-		startTime: performance.now(),
-		totalBlocks: 0,
-		fastPathBlocks: 0,
-		regenBlocks: 0,
-		xxlCacheBlocks: 0,
-		viewportUnitBlocks: 0,
-	};
-};
-
 const setScreenSizeImmediate = size => {
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 	const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
-
-	const from = select('maxiBlocks').receiveMaxiDeviceType?.() ?? 'unknown';
-	console.info(
-		`[MaxiBP] ▶ setScreenSize: ${from} → ${size} @${performance.now().toFixed(1)}ms`
-	);
-	initBPSwitchDebug(from, size);
 
 	if (size === 'general')
 		dispatch('maxiBlocks').setMaxiDeviceType({ deviceType: 'general' });

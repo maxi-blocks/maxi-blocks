@@ -49,13 +49,20 @@ const goThroughMaxiBlocks = (
 					const postType = select('core/editor').getCurrentPostType();
 					const postId = select('core/editor').getCurrentPostId();
 
-					const { blocks } = select('core').getEditedEntityRecord(
-						'postType',
-						postType,
-						postId
-					);
-					if (blocks?.length) {
-						innerBlocks = blocks;
+					// In FSE template editing, getCurrentPostType() returns
+					// 'wp_template' or 'wp_template_part'. Fetching that entity
+					// record would return the template's own blocks (which contain
+					// core/post-content again), causing infinite recursion.
+					const templateTypes = ['wp_template', 'wp_template_part'];
+					if (!templateTypes.includes(postType)) {
+						const { blocks } = select('core').getEditedEntityRecord(
+							'postType',
+							postType,
+							postId
+						);
+						if (blocks?.length) {
+							innerBlocks = blocks;
+						}
 					}
 				} else {
 					const blocks = select('core/block-editor').getBlocks(

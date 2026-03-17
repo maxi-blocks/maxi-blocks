@@ -1916,7 +1916,6 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
-		iframeDocument.documentElement.style.scrollbarWidth = 'none';
 		const { isPreview } = this.getPreviewElements(
 			editorWrapper,
 			currentBreakpoint

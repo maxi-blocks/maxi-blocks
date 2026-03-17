@@ -125,7 +125,8 @@ body {
 }
 .maxi-block {
 	// Exclude transform from transitions to prevent jiggle during block movement
-	transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+	transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease,
+		border 0.5s ease, box-shadow 0.5s ease;
 
 	.block-editor-block-list__layout {
 		transition: opacity 0.5s ease, visibility 0.5s ease;
@@ -134,7 +135,8 @@ body {
 		}
 	}
 	&:hover {
-		transition: opacity 0.5s ease, visibility 0.5s ease, background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+		transition: opacity 0.5s ease, visibility 0.5s ease,
+			background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
 		& > .block-editor-block-list__layout {
 			& > .block-list-appender {
 				.block-editor-button-block-appender {
@@ -644,8 +646,10 @@ html[dir='rtl'] {
 
 /**
 * Hide scrollbar in iframe editor #3574
+* Scoped to branch-6-x < 6.6 only: in WP 7+, the post/page editor also uses an iframe canvas
+* and getSiteEditorIframeBody() returns its body, so a broad rule hides the scrollbar everywhere.
 */
-body[maxi-blocks-responsive]:not(.branch-6-6):not(.branch-6-7):not(.branch-6-8) {
+body[maxi-blocks-responsive][class*='branch-6-']:not(.branch-6-6):not(.branch-6-7):not(.branch-6-8) {
 	&::-webkit-scrollbar {
 		width: 0;
 	}
@@ -674,8 +678,7 @@ body.maxi-blocks--active
 }
 
 /** Fix WP 7.0 iframe canvas: theme padding applied directly on .is-root-container */
-body.maxi-blocks--active
-	.block-editor-block-list__layout.is-root-container {
+body.maxi-blocks--active .block-editor-block-list__layout.is-root-container {
 	padding-inline: 0;
 }
 
@@ -714,10 +717,6 @@ body.maxi-blocks--active .interface-interface-skeleton__content {
 	}
 }
 
-body.maxi-blocks--active .edit-post-visual-editor {
-	width: 100%;
-	min-width: calc(100vw - var(--maxi-blocks-scrollbar-width, 15px));
-}
 body.maxi-blocks--active
 	.editor-styles-wrapper
 	.block-editor-block-list__layout.is-root-container.is-desktop-preview {
@@ -1021,28 +1020,6 @@ body.maxi-blocks--active
 	}
 }
 
-// Unit selector
-// .maxi-base-control.maxi-dimensions-control__units {
-// 	select {
-// 		transition: all 0.3s ease;
-// 		border: 1.5px solid var(--maxi-grey-light) !important;
-// 		border-radius: 0 5px 5px 0px !important;
-// 		height: 31px !important;
-// 		padding: 0 8px !important;
-// 		min-width: 45px !important;
-// 		cursor: pointer !important;
-
-// 		&:hover {
-// 			border-color: var(--maxi-primary-color) !important;
-// 		}
-
-// 		&:focus {
-// 			border-color: var(--maxi-secondary-color) !important;
-// 			outline: none !important;
-// 		}
-// 	}
-// }
-
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
@@ -1093,8 +1070,10 @@ body {
 }
 
 // fix Tablet / Mobile Gutenberg preview
+// In WP7+, .block-editor-iframe__scale-container is always present (used for zoom-out feature),
+// so we scope to .is-zoomed-out to avoid hiding the scrollbar in normal editing mode.
 body.maxi-blocks--active {
-	.block-editor-iframe__scale-container {
+	.block-editor-iframe__scale-container.is-zoomed-out {
 		iframe[name='editor-canvas'] {
 			height: 100% !important;
 			margin: 0 !important;

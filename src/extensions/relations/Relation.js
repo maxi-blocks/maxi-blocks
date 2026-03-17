@@ -18,17 +18,32 @@ class Relation {
 		this.mainWindow = window;
 
 		this.isSiteEditor = getIsSiteEditor();
-		if (this.isSiteEditor) {
-			const siteEditorIframe = getSiteEditorIframe();
-			if (siteEditorIframe) this.mainDocument = siteEditorIframe;
-			const iframe =
+
+		// In WP7+, both the site editor and the post/page editor use an iframe
+		// canvas (iframe[name="editor-canvas"]). getSiteEditorIframe() already
+		// handles both FSE and non-FSE iframe selectors, so always try it first.
+		const editorIframeDoc = getSiteEditorIframe();
+		// Track whether we're rendering inside an iframe canvas (FSE or WP7+ post editor).
+		// This affects the CSS selector format: when blocks are in an iframe, the body
+		// element IS the editor-styles-wrapper, so selectors use body.maxi-blocks--active.editor-styles-wrapper
+		// (no space). In legacy non-iframe post editor, it's body.maxi-blocks--active .edit-post-visual-editor.
+		this.isEditorIframe = !!editorIframeDoc;
+		if (editorIframeDoc) {
+			this.mainDocument = editorIframeDoc;
+			const iframe = document.querySelector(
+				'iframe[name="editor-canvas"]'
+			);
+			if (iframe) this.mainWindow = iframe.contentWindow;
+		} else if (this.isSiteEditor) {
+			// Fallback: explicit FSE iframe selectors (older WP versions)
+			const fseIframe =
 				document.querySelector(
 					'.edit-site-visual-editor .components-resizable-box__container iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
 				) ??
 				document.querySelector(
 					'.editor-visual-editor .components-resizable-box__container iframe[name="editor-canvas"].edit-site-visual-editor__editor-canvas'
 				);
-			if (iframe) this.mainWindow = iframe.contentWindow;
+			if (fseIframe) this.mainWindow = fseIframe.contentWindow;
 		}
 
 		this.trigger = item.trigger;
@@ -38,9 +53,13 @@ class Relation {
 		this.blockTargetEl = this.mainDocument.querySelector(this.blockTarget);
 		this.target = item.target ?? '';
 
-		this.targetPrefix = this.isSiteEditor
-			? '.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend'
-			: '.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
+		// When blocks are rendered inside an iframe (FSE or WP7+ post editor),
+		// the canvas uses .editor-styles-wrapper. Legacy non-iframe post editors
+		// use .edit-post-visual-editor on the outer document.
+		this.targetPrefix =
+			editorIframeDoc || this.isSiteEditor
+				? '.editor-styles-wrapper[maxi-blocks-responsive] .maxi-block.maxi-block--backend'
+				: '.edit-post-visual-editor[maxi-blocks-responsive] .maxi-block.maxi-block--backend';
 
 		this.fullTarget = `${this.targetPrefix}${this.blockTarget} ${this.target}`;
 		this.targetEl = this.mainDocument.querySelector(this.fullTarget);
@@ -533,7 +552,7 @@ class Relation {
 								`[maxi-blocks-responsive="${breakpoint}"]`
 							);
 
-						const selector = this.isSiteEditor
+						const selector = (this.isSiteEditor || this.isEditorIframe)
 							? `body.maxi-blocks--active${finalTarget} {`.replace(
 									/\s{2,}/g,
 									' '
@@ -749,7 +768,7 @@ class Relation {
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
-								let selector = this.isSiteEditor
+								let selector = (this.isSiteEditor || this.isEditorIframe)
 									? `body.maxi-blocks--active${transitionTarget} {`.replace(
 											/\s{2,}/g,
 											' '

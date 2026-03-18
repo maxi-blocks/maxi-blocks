@@ -29,9 +29,6 @@ const insertCode = async (content, clientId) => {
 	const uniqueIDPattern = /"uniqueID":"((?!-u")[^"]+)"/g;
 	const uniqueIDMatches = content.match(uniqueIDPattern) || [];
 
-	// Generate new unique IDs and replace them in the content string
-	console.log('[Issue-6221 Import] Starting uniqueID replacement, found matches:', uniqueIDMatches.length);
-
 	// Track which uniqueIDs we've already processed
 	const processedUniqueIDs = new Set();
 	let updatedContent = content;
@@ -50,13 +47,8 @@ const insertCode = async (content, clientId) => {
 		const blockName = getBlockNameFromUniqueID(uniqueID);
 		const newUniqueID = uniqueIDGenerator({ blockName, clientId });
 
-		// Count occurrences for logging
-		const regex = new RegExp(uniqueID, 'g');
-		const occurrences = (content.match(regex) || []).length;
-
-		console.log(`[Issue-6221 Import] Replacing ${uniqueID} -> ${newUniqueID} (${occurrences} occurrences)`);
-
 		// Replace ALL occurrences of the old uniqueID with the new one (2.1.7 behavior)
+		const regex = new RegExp(uniqueID, 'g');
 		updatedContent = updatedContent.replace(regex, newUniqueID);
 	});
 

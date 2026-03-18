@@ -1701,8 +1701,13 @@ class MaxiBlockComponent extends Component {
 			this.editorIframe
 		);
 
-		// Update responsive classes for non-XXL breakpoint changes
-		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
+		// Update responsive classes for non-XXL breakpoint changes, or when in general mode
+		// with a valid base breakpoint (handles first load with iframe canvas where the
+		// maxi-blocks-responsive attribute is not set by breakpointResizer)
+		if (
+			(isBreakpointChange && this.props.deviceType !== 'xxl') ||
+			(this.props.deviceType === 'general' && this.props.baseBreakpoint)
+		) {
 			this.updateResponsiveClasses(
 				this.editorIframe,
 				this.props.deviceType

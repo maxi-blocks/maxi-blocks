@@ -20,17 +20,45 @@ import { isEmpty, uniq } from 'lodash';
 const insertCode = async (content, clientId) => {
 	const { replaceBlock } = dispatch('core/block-editor');
 
+	// Set flag to prevent duplicate uniqueID "fixes" during pattern import
+	// Cloud patterns may intentionally use the same uniqueID across multiple blocks
+	// (e.g., accordion patterns with shared image references across panes)
+	window.maxiBlocksCloudImporting = true;
+
 	// Extract uniqueID values that don't end with '-u' from block content
 	const uniqueIDPattern = /"uniqueID":"((?!-u")[^"]+)"/g;
 	const uniqueIDMatches = content.match(uniqueIDPattern) || [];
 
 	// Generate new unique IDs and replace them in the content string
-	const updatedContent = uniqueIDMatches.reduce((acc, match) => {
+	console.log('[Issue-6221 Import] Starting uniqueID replacement, found matches:', uniqueIDMatches.length);
+
+	// Track which uniqueIDs we've already processed
+	const processedUniqueIDs = new Set();
+	let updatedContent = content;
+
+	// Process each unique ID found in the content
+	uniqueIDMatches.forEach(match => {
 		const [, uniqueID] = match.match(/"uniqueID":"((?!-u")[^"]+)"/);
+		
+		// Skip if we've already processed this uniqueID
+		if (processedUniqueIDs.has(uniqueID)) {
+			return;
+		}
+		processedUniqueIDs.add(uniqueID);
+
+		// Generate ONE new uniqueID for this old uniqueID
 		const blockName = getBlockNameFromUniqueID(uniqueID);
 		const newUniqueID = uniqueIDGenerator({ blockName, clientId });
-		return acc.replace(new RegExp(uniqueID, 'g'), newUniqueID);
-	}, content);
+
+		// Count occurrences for logging
+		const regex = new RegExp(uniqueID, 'g');
+		const occurrences = (content.match(regex) || []).length;
+
+		console.log(`[Issue-6221 Import] Replacing ${uniqueID} -> ${newUniqueID} (${occurrences} occurrences)`);
+
+		// Replace ALL occurrences of the old uniqueID with the new one (2.1.7 behavior)
+		updatedContent = updatedContent.replace(regex, newUniqueID);
+	});
 
 	const parsedContent = rawHandler({
 		HTML: updatedContent,
@@ -38,6 +66,12 @@ const insertCode = async (content, clientId) => {
 	});
 
 	replaceBlock(clientId, parsedContent);
+
+	// Clear the flag after a delay to ensure all blocks have mounted
+	// This prevents the uniqueID duplication check from "fixing" intentional duplicates
+	setTimeout(() => {
+		window.maxiBlocksCloudImporting = false;
+	}, 1000);
 };
 
 /**

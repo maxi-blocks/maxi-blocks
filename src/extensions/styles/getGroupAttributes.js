@@ -4,6 +4,13 @@
 import { getIsValid } from './utils';
 import * as defaults from './defaults/index';
 
+// WeakMap-based cache: keyed by the attributes object reference.
+// When React creates a new attributes object (on any prop change) the entry is
+// automatically out-of-scope and eligible for GC, so there is no stale-data risk.
+// Within a single getStylesObject() call all repeated getGroupAttributes() calls
+// with the same args (e.g. 'clipPath' ×6 in image-maxi) are served from cache.
+const _cache = new WeakMap();
+
 const getGroupAttributes = (
 	attributes,
 	target,
@@ -12,6 +19,18 @@ const getGroupAttributes = (
 	cleaned = false
 ) => {
 	if (!target) return null;
+
+	// Build a cheap string key from the non-object arguments.
+	const cacheKey = `${Array.isArray(target) ? target.join(',') : target}|${isHover ? 1 : 0}|${prefix}|${cleaned ? 1 : 0}`;
+
+	let attrCache = _cache.get(attributes);
+	if (attrCache) {
+		const hit = attrCache.get(cacheKey);
+		if (hit !== undefined) return hit;
+	} else {
+		attrCache = new Map();
+		_cache.set(attributes, attrCache);
+	}
 
 	const response = {};
 
@@ -40,6 +59,7 @@ const getGroupAttributes = (
 		target.forEach(el => processTarget(el));
 	}
 
+	attrCache.set(cacheKey, response);
 	return response;
 };
 

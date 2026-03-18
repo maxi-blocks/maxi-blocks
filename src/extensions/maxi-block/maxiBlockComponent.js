@@ -106,24 +106,14 @@ function flushStyleDisplays() {
 	styleDisplayScheduled = false;
 
 	const batch = pendingStyleDisplays.splice(0);
-	const flushStart = performance.now();
-	console.log(JSON.stringify({ maxi_perf: 'flushStyleDisplays_start', blockCount: batch.length, t: flushStart.toFixed(2) }));
 
 	batch.forEach(({ block: b, isBreakpointChange: isBP }) => {
-		const uid = b?.props?.attributes?.uniqueID || 'unknown';
-		const t0 = performance.now();
 		try {
 			b.displayStyles(isBP);
 		} catch (error) {
 			console.warn('MaxiBlocks: Display styles error:', error);
 		}
-		const elapsed = (performance.now() - t0).toFixed(2);
-		if (elapsed > 10) {
-			console.log(JSON.stringify({ maxi_perf: 'displayStyles_slow', uniqueID: uid, ms: elapsed }));
-		}
 	});
-
-	console.log(JSON.stringify({ maxi_perf: 'flushStyleDisplays_end', blockCount: batch.length, totalMs: (performance.now() - flushStart).toFixed(2) }));
 }
 
 /**
@@ -655,7 +645,6 @@ class MaxiBlockComponent extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, shouldDisplayStyles) {
-		const _updateStart = performance.now();
 		this.updateDOMReferences();
 
 		// Update FSE iframe styles even for template parts
@@ -780,11 +769,6 @@ class MaxiBlockComponent extends Component {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
 
-		const updateMs = (performance.now() - _updateStart).toFixed(2);
-		const { uniqueID: _uid } = this.props.attributes;
-		if (updateMs > 16) {
-			console.log(JSON.stringify({ maxi_perf: 'componentDidUpdate_slow', uniqueID: _uid, ms: updateMs }));
-		}
 	}
 
 	componentWillUnmount() {
@@ -1586,7 +1570,6 @@ class MaxiBlockComponent extends Component {
 		isBaseBreakpointChange = false,
 		attributesUnchanged = false
 	) {
-		const _dsStart = performance.now();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
@@ -1689,12 +1672,7 @@ class MaxiBlockComponent extends Component {
 			if (stylesForViewportCheck) {
 				obj = stylesForViewportCheck;
 			} else {
-				const _t0 = performance.now();
 				obj = this.getCachedStylesObject || {};
-				const _stylesObjMs = (performance.now() - _t0).toFixed(2);
-				if (_stylesObjMs > 5) {
-					console.log(JSON.stringify({ maxi_perf: 'getCachedStylesObject_slow', uniqueID, ms: _stylesObjMs }));
-				}
 			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1709,17 +1687,11 @@ class MaxiBlockComponent extends Component {
 
 			const customData = this.getCustomData;
 			if (customData) {
-				const _t1 = performance.now();
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				const _dispatchMs = (performance.now() - _t1).toFixed(2);
-				if (_dispatchMs > 5) {
-					console.log(JSON.stringify({ maxi_perf: 'dispatch_updateCustomData_slow', uniqueID, ms: _dispatchMs }));
-				}
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
 
-		const _t2 = performance.now();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1731,10 +1703,6 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles,
 			this.editorIframe
 		);
-		const _injectMs = (performance.now() - _t2).toFixed(2);
-		if (_injectMs > 5) {
-			console.log(JSON.stringify({ maxi_perf: 'injectStyles_slow', uniqueID, ms: _injectMs }));
-		}
 
 		// Update responsive classes for non-XXL breakpoint changes, or when in general mode
 		// with a valid base breakpoint (handles first load with iframe canvas where the
@@ -1850,10 +1818,6 @@ class MaxiBlockComponent extends Component {
 			this.previousRelationInstances = this.relationInstances;
 		}
 
-		const _dsMs = (performance.now() - _dsStart).toFixed(2);
-		if (_dsMs > 10) {
-			console.log(JSON.stringify({ maxi_perf: 'displayStyles_slow', uniqueID, ms: _dsMs, isBreakpointChange, shouldGenerateNewStyles }));
-		}
 	}
 
 	hasViewportUnits(stylesObj) {
@@ -2116,7 +2080,6 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
-		const _gscStart = performance.now();
 		let styleContent;
 		let styles;
 
@@ -2151,32 +2114,15 @@ class MaxiBlockComponent extends Component {
 		) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
-			const _rStart = performance.now();
 			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
-			const _rMs = (performance.now() - _rStart).toFixed(2);
-			if (_rMs > 5) console.log(JSON.stringify({ maxi_perf: 'styleResolver_slow', uniqueID, ms: _rMs }));
-
-			const _sgStart = performance.now();
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor, currentBreakpoint);
-			const _sgMs = (performance.now() - _sgStart).toFixed(2);
-			if (_sgMs > 5) console.log(JSON.stringify({ maxi_perf: 'styleGenerator_slow', uniqueID, ms: _sgMs }));
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			const _rStart = performance.now();
 			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
-			const _rMs = (performance.now() - _rStart).toFixed(2);
-			if (_rMs > 5) console.log(JSON.stringify({ maxi_perf: 'styleResolver_slow', uniqueID, ms: _rMs }));
-
-			const _sgStart = performance.now();
 			styleContent = styleGenerator(styles, !!iframe, isSiteEditor, currentBreakpoint);
-			const _sgMs = (performance.now() - _sgStart).toFixed(2);
-			if (_sgMs > 5) console.log(JSON.stringify({ maxi_perf: 'styleGenerator_slow', uniqueID, ms: _sgMs }));
 		}
 
 		if (styles) {
-			const _scStart = performance.now();
 			dispatch('maxiBlocks/styles').saveCSSCache(uniqueID, styles, !!iframe, isSiteEditor);
-			const _scMs = (performance.now() - _scStart).toFixed(2);
-			if (_scMs > 5) console.log(JSON.stringify({ maxi_perf: 'saveCSSCache_slow', uniqueID, ms: _scMs }));
 		}
 
 		// Add !important to white-space: nowrap
@@ -2191,10 +2137,6 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		const _gscMs = (performance.now() - _gscStart).toFixed(2);
-		if (_gscMs > 5) {
-			console.log(JSON.stringify({ maxi_perf: 'generateStyleContent_slow', uniqueID, ms: _gscMs, currentBreakpoint, forceGenerate }));
-		}
 		return styleContent;
 	}
 

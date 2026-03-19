@@ -1424,10 +1424,13 @@ class MaxiBlockComponent extends Component {
 		// 1. Block was just copied/pasted (isBlockCopied = true)
 		// 2. Block is in lastInsertedBlocks (new insertion, pattern, or template)
 		// 3. Block is marked as new (first-time creation)
+		// EXCEPTION: Skip uniqueID duplication check during cloud import
+		// Cloud patterns may intentionally use the same uniqueID across multiple blocks
 		const needsUniqueIDCheck =
-			isBlockCopied ||
-			(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
-			isNewBlock;
+			!window.maxiBlocksCloudImporting &&
+			(isBlockCopied ||
+				(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
+				isNewBlock);
 
 		// Fast path: Block is being loaded from saved content, trust the ID
 		if (!needsUniqueIDCheck) {

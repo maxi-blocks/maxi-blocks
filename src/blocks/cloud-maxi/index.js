@@ -32,6 +32,9 @@ registerBlockType('maxi-blocks/maxi-cloud', {
 			openFirstTime: false,
 		},
 	},
+	supports: {
+		__experimentalToolbar: false,
+	},
 	keywords: [__('layout', 'maxi-blocks'), __('block', 'maxi-blocks')],
 	attributes: {
 		className: {

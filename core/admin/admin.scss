@@ -32,6 +32,11 @@ body.toplevel_page_maxi-blocks-dashboard {
 			& * {
 				font-family: 'Inter', Helvetica, Arial, Lucida, sans-serif !important;
 			}
+			.button,
+			.button-primary,
+			.button-secondary {
+				line-height: 2.15;
+			}
 		}
 	}
 	.maxi-dashboard_header {

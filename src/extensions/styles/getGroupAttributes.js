@@ -5,29 +5,36 @@ import { getIsValid } from './utils';
 import * as defaults from './defaults/index';
 
 // WeakMap-based cache: keyed by the attributes object reference.
-// Caching is only enabled when cleaned=true to avoid stale cache issues with in-place
-// attribute mutations that can occur in the codebase.
+// Cache validation uses two-layer approach:
+// 1. Generation counter (__cacheGeneration) - incremented by updateAttributes() in maxiBlockComponent
+// 2. Value sampling - checks first 30 attribute values for changes
 //
-// Note: When cleaned=false (the default), attributes may be mutated in place during
-// the rendering cycle, causing the WeakMap to return stale cached results even though
-// attribute values have changed. By only caching when cleaned=true, we maintain correctness
-// while still providing performance benefits for the cleaned attribute extraction path.
+// This approach handles in-place mutations safely because the generation counter
+// is incremented on every updateAttributes() call, which all attribute mutations now use.
 const _cache = new WeakMap();
 
 /**
- * Creates a validation key by hashing relevant attribute values
- * Includes both presence and actual values of attributes for accurate cache invalidation
+ * Creates a validation key by checking attribute values with generation counter
+ * The generation counter is incremented by updateAttributes() to invalidate caches
+ * Also samples first 30 attribute keys for value-based validation
  */
 const createValidationKey = (attributes, defaultKeys, prefix) => {
-	// Create a string that includes both presence and values
-	// Only check first 30 keys for performance (balance between accuracy and speed)
+	// Include generation counter from attributes object
+	// This counter is incremented by updateAttributes() in maxiBlockComponent
+	const generation = attributes.__cacheGeneration || 0;
+
+	// Sample first 30 keys for performance (balance between accuracy and speed)
 	const sample = defaultKeys.slice(0, 30);
-	return sample.map(k => {
-		const val = attributes[`${prefix}${k}`];
-		if (val === undefined) return '0';
-		// For defined values, include a simple hash
-		return `1:${typeof val}:${String(val).slice(0, 10)}`;
-	}).join('|');
+	const valueHash = sample
+		.map(k => {
+			const val = attributes[`${prefix}${k}`];
+			if (val === undefined) return '0';
+			// For defined values, include type and truncated value
+			return `1:${typeof val}:${String(val).slice(0, 10)}`;
+		})
+		.join('|');
+
+	return `${generation}:${valueHash}`;
 };
 
 const getGroupAttributes = (
@@ -39,8 +46,10 @@ const getGroupAttributes = (
 ) => {
 	if (!target) return null;
 
-	// Only enable WeakMap caching when cleaned=true
-	// When cleaned=false (default), attributes may be mutated in place, causing stale caches
+	// Conditional caching strategy:
+	// Only cache when cleaned=true (safe, used for cleaned attribute extractions)
+	// Don't cache for default cleaned=false case due to complex attribute update patterns
+	// from WordPress APIs (updateBlockAttributes, replaceBlock) that may cause stale caches
 	const enableCache = cleaned;
 
 	// Build cache key from the non-object arguments

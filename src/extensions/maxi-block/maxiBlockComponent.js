@@ -1114,6 +1114,30 @@ class MaxiBlockComponent extends Component {
 	}
 
 	/**
+	 * Safely update block attributes with automatic cache invalidation
+	 * Use this instead of direct mutation: this.props.attributes.X = Y
+	 *
+	 * @param {Object} updates - Object with attribute updates { key: value }
+	 * @param {boolean} invalidateCache - Whether to invalidate caches (default: true)
+	 */
+	updateAttributes(updates, invalidateCache = true) {
+		// Increment cache generation to invalidate WeakMap caches
+		this.props.attributes.__cacheGeneration =
+			(this.props.attributes.__cacheGeneration || 0) + 1;
+
+		// Apply updates to current attributes object
+		Object.assign(this.props.attributes, updates);
+
+		// Mark XXL cache as dirty
+		this.isXxlStyleCacheDirty = true;
+
+		// Invalidate all attribute-based caches
+		if (invalidateCache) {
+			this.invalidateAttributeCaches();
+		}
+	}
+
+	/**
 	 * Memoised wrapper around the per-block getStylesObject getter.
 	 * The styles object only depends on block attributes, so we cache it
 	 * by attributes reference equality. This avoids re-running the (expensive)
@@ -1210,9 +1234,7 @@ class MaxiBlockComponent extends Component {
 		const newBlockStyle = getBlockStyle(clientId);
 
 		if (blockStyle !== newBlockStyle) {
-			this.props.attributes.blockStyle = newBlockStyle;
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({ blockStyle: newBlockStyle });
 			return true;
 		}
 
@@ -1411,12 +1433,12 @@ class MaxiBlockComponent extends Component {
 		if (!needsUniqueIDCheck) {
 			// Still check custom label even if we skip uniqueID check
 			if (getIsUniqueCustomLabelRepeated(customLabel)) {
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-				this.isXxlStyleCacheDirty = true;
-				this.invalidateAttributeCaches();
+				this.updateAttributes({
+					customLabel: getCustomLabel(
+						this.props.attributes.customLabel,
+						this.props.attributes.uniqueID
+					),
+				});
 			}
 			return idToCheck;
 		}
@@ -1442,9 +1464,7 @@ class MaxiBlockComponent extends Component {
 				this.props.attributes['background-layers']
 			);
 
-			this.props.attributes.uniqueID = newUniqueID;
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({ uniqueID: newUniqueID });
 
 			/**
 			 * Use `updateBlockAttributes` for `uniqueID` update in case if
@@ -1462,12 +1482,12 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (!this.props.repeaterStatus) {
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-				this.isXxlStyleCacheDirty = true;
-				this.invalidateAttributeCaches();
+				this.updateAttributes({
+					customLabel: getCustomLabel(
+						this.props.attributes.customLabel,
+						this.props.attributes.uniqueID
+					),
+				});
 			}
 
 			if (this.maxiBlockDidChangeUniqueID)
@@ -1477,12 +1497,12 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (getIsUniqueCustomLabelRepeated(customLabel)) {
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({
+				customLabel: getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				),
+			});
 		}
 
 		return idToCheck;

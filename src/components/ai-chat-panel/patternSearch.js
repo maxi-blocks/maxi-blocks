@@ -109,19 +109,30 @@ export const extractCloudSearchQuery = message => {
 	}
 	q = q
 		.replace(
-			/^(open|show|launch|browse|search|explore|import|get|add)\s+(the\s+|a\s+|an\s+|me\s+|us\s+)?/gi,
+			/^(open|show|launch|browse|search|explore|import|get|add)\s+(the\s+|a\s+|an\s+)?/gi,
 			''
 		)
+		// "from cloud" / "from the cloud" before stripping the word "cloud" alone
+		.replace( /\bfrom\s+the\s+cloud\b/gi, ' ' )
+		.replace( /\bfrom\s+cloud\b/gi, ' ' )
 		.replace(
 			/\b(the\s+|a\s+|an\s+)?(maxi\s*blocks?\s+)?cloud\s*(library)?\b/gi,
 			' '
 		)
 		.replace( /\b(pattern|patterns|page|pages|template|templates)\b/gi, ' ' )
-		.replace( /\bfrom\s+the\s+cloud\b/gi, ' ' )
+		// Light/Dark are Cloud Library sidebar refinements (InstantSearch menu), not search keywords.
+		.replace( /\b(dark|light)\b/gi, ' ' )
 		.replace( /\bfor\s+me\b/gi, ' ' )
 		.replace( /\s+/g, ' ' )
 		.trim();
 	q = q.replace( /^(and|or|to|from)\s+/i, '' ).trim();
+	// Leftover trailing glue words after removals, e.g. "pure image from"
+	q = q
+		.replace(
+			/\s+\b(from|to|in|for|the|a|an|and|or)\b\s*$/gi,
+			''
+		)
+		.trim();
 	return q;
 };
 

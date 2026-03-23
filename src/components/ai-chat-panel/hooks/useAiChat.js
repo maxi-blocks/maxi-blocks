@@ -103,6 +103,7 @@ import SYSTEM_PROMPT from '../ai/prompts/system';
 import { useStyleCardData, createStyleCardHandlers } from '../ai/style-card';
 import onRequestInsertPattern from '../../../editor/library/utils/onRequestInsertPattern';
 import { insertMaxiCloudLibraryBlock } from '../utils/insertMaxiCloudLibraryBlock';
+import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';
 import {
 	parseUnitValue,
 	RESPONSIVE_BREAKPOINTS,
@@ -2066,6 +2067,22 @@ export const useAiChat = ({ onClose } = {}) => {
 				};
 			}
 
+			if (action.action === 'CLOUD_MODAL_UI') {
+				const modalResult = await executeCloudModalUiOps(action.ops, {
+					insertCloudBlock: insertMaxiCloudLibraryBlock,
+					logDebug: msg => logAIDebug(String(msg)),
+				});
+				return {
+					executed: modalResult.ok,
+					message:
+						action.message ||
+						modalResult.message ||
+						(modalResult.ok
+							? 'Cloud Library UI updated.'
+							: 'Cloud Library UI could not be driven.'),
+				};
+			}
+
 			if (action.action === 'MODIFY_BLOCK') {
 				// Handle add/insert ops before scope resolution — no existing block needed
 				if (action.payload?.op === 'add' || action.payload?.block) {
@@ -3390,34 +3407,71 @@ export const useAiChat = ({ onClose } = {}) => {
 	// ─────────────────────────────────────────────────────────────────────────
 
 	/**
-	 * Inserts maxi-cloud so the normal Cloud Library modal opens; optional keyword hint in chat only.
+	 * Opens Cloud modal and drives the real UI (DOM): insert block, type in InstantSearch, optional filters.
 	 *
 	 * @param {string} rawMsg User message.
-	 * @returns {void}
+	 * @returns {Promise<void>}
 	 */
-	const runCloudLibraryIntent = rawMsg => {
+	const runCloudLibraryIntent = async rawMsg => {
 		const query = extractCloudSearchQuery( rawMsg );
 		const minLen = 2;
 		const hint = query.length >= minLen ? query : '';
-		insertMaxiCloudLibraryBlock();
+		const ops = [ { op: 'ensure_open' } ];
+		if ( hint ) {
+			// Pages live under InstantSearch "Pages"; default tab is Patterns. Prefer Pages when the user
+			// asked for a page but not explicitly for a pattern.
+			const rawLower = String( rawMsg || '' ).toLowerCase();
+			const usePagesTab =
+				/\b(pages?)\b/.test( rawLower ) &&
+				! /\b(patterns?)\b/.test( rawLower );
+			// Sidebar refinement: Light / Dark (word-boundary avoids "highlight" etc.).
+			const lightDarkValue = /\b(dark)\b/i.test( rawLower )
+				? 'dark'
+				: /\b(light)\b/i.test( rawLower )
+					? 'light'
+					: null;
+			ops.push( { op: 'wait_ms', ms: 400 } );
+			if ( usePagesTab ) {
+				ops.push( { op: 'gutenberg_type', value: 'Pages' } );
+				ops.push( { op: 'wait_ms', ms: 500 } );
+			}
+			if ( lightDarkValue ) {
+				ops.push( { op: 'light_dark', value: lightDarkValue } );
+				ops.push( { op: 'wait_ms', ms: 350 } );
+			}
+			ops.push( { op: 'set_search', text: hint } );
+			// InstantSearch + Masonry need time; too short a wait clicks stale or empty hits.
+			ops.push( { op: 'wait_ms', ms: 1200 } );
+			ops.push( { op: 'click_first_insert' } );
+		}
+		const result = await executeCloudModalUiOps( ops, {
+			insertCloudBlock: insertMaxiCloudLibraryBlock,
+			logDebug: msg => logAIDebug( String( msg ) ),
+		} );
 		setMessages( prev => [
 			...prev,
 			{
 				role: 'assistant',
-				content: hint
-					? sprintf(
-							/* translators: %s: suggested search keywords */
-							__(
-								'Opened the Cloud Library. In the modal search box, try: %s',
+				content: result.ok
+					? hint
+						? sprintf(
+								/* translators: %s: search keywords used in Cloud Library */
+								__(
+									'Opened the Cloud Library, searched for "%s", and inserted the first visible result.',
+									'maxi-blocks'
+								),
+								hint
+						  )
+						: __(
+								'Opened the Cloud Library — use the modal search and filters, then insert a design.',
 								'maxi-blocks'
-							),
-							`"${ hint }"`
-					  )
-					: __(
-							'Opened the Cloud Library — use the modal search to find patterns or pages.',
+						  )
+					: result.message ||
+					  __(
+							'Could not open or control the Cloud Library. Use the Cloud toolbar button.',
 							'maxi-blocks'
 					  ),
-				executed: true,
+				executed: result.ok,
 			},
 		] );
 	};
@@ -3502,7 +3556,7 @@ export const useAiChat = ({ onClose } = {}) => {
 			setConversationContext( null );
 			let rootBlock;
 			if ( lower.includes( 'cloud' ) || lower.includes( 'library' ) || lower.includes( 'browse' ) ) {
-				runCloudLibraryIntent( rawMessage );
+				await runCloudLibraryIntent( rawMessage );
 				setIsLoading( false );
 				return;
 			} else if ( lower.includes( 'sidebar' ) ) {
@@ -4372,7 +4426,7 @@ export const useAiChat = ({ onClose } = {}) => {
 				const cloudMsg =
 					routeResult.params?.rawMessage ?? rawMessage;
 				try {
-					runCloudLibraryIntent( cloudMsg );
+					await runCloudLibraryIntent( cloudMsg );
 				} catch ( openCloudErr ) {
 					console.error(
 						'[Maxi AI] Open Cloud Library error:',
@@ -4532,7 +4586,7 @@ export const useAiChat = ({ onClose } = {}) => {
 			let rootBlock;
 			if (lower.includes('cloud') || lower.includes('library') || lower.includes('browse')) {
 				try {
-					runCloudLibraryIntent(suggestion);
+					await runCloudLibraryIntent(suggestion);
 				} catch (browseCloudErr) {
 					console.error(
 						'[Maxi AI] Browse Cloud from layout picker:',

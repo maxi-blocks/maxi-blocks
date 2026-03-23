@@ -1300,6 +1300,10 @@ const routeOpenCloudLibrary = rawMessage => {
 		/\bimport\b[\s\S]{0,120}\bfrom\s+the\s+cloud\b/,
 		/\b(import|get)\b[\s\S]{0,80}\b(patterns?|pages?|templates?)\b[\s\S]{0,60}\b(from\s+)?(the\s+)?cloud\b/,
 		/\bfrom\s+the\s+cloud\b[\s\S]{0,40}\b(manually|myself|in\s+the\s+library|picker|ui)\b/,
+		// Import / insert without saying "cloud" (e.g. "import an Accountant page") — article avoids "insert into page".
+		/\b(import|insert|get)\s+(a\s+|an\s+|the\s+)[\s\S]{0,120}\b(page|pages|pattern|patterns)\b/i,
+		// "Add a hero pattern" — patterns only (avoid "add a page" → site editor ambiguity).
+		/\badd\s+(a\s+|an\s+|the\s+)?[\s\S]{0,100}\b(pattern|patterns)\b/i,
 	];
 
 	if ( intents.some( re => re.test( lower ) ) ) {

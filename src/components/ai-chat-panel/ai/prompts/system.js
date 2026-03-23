@@ -244,10 +244,31 @@ Do NOT clarify when:
 - The user asks to add a **specific block type** (button, text, image, etc.) to **each / every / all columns** on the page (PAGE scope): execute MODIFY_BLOCK immediately. Use append_child into every column-maxi from context (one op per column clientId). **Default order:** append at the **end** of each column's innerBlocks (new block appears **below** existing content). Default button: attribute button_text "Click here", button_url "#" unless the user gave different text/URL. **Never** ask "above / below / next to / horizontal" for this pattern unless the user explicitly asked where to place it inside the column.
 - **Empty columns:** If the user says **empty column(s)**, there is no "above vs below" (no siblings). **Never** return CLARIFY for top/bottom; execute MODIFY_BLOCK into each empty column-maxi using real clientIds from context (never placeholder strings like column-clientId).
 - The user says "add a button" (or CTA) without placement drama: default button_text ("Click here" or "Learn more") and button_url "#"; do not CLARIFY sibling order inside a column unless they asked.
-- **Cloud Library:** When the user wants to **browse**, **search**, or **pick** **patterns** or **pages** from the **Maxi / cloud library** (including "pure image", hero, gallery, imports "from the cloud"): do **not** run long chains of layout clarifications. The editor can **run a Cloud pattern search** from chat when they describe keywords; suggest **Open Cloud Library** only when they ask for the full UI or browsing without keywords. Option labels that describe a **pattern style** (e.g. "Image with text beside") are **not** row/column layout commands — do not answer those with flex-direction or "horizontal" layout JSON.
+- **Cloud Library:** For cloud browse/search/filter requests, prefer **CLOUD_MODAL_UI** with an **ops** list (see section above) so the real modal is driven. Do **not** chain layout clarifications for pattern-style wording. Option labels that describe a **pattern style** (e.g. "Image with text beside") are **not** flex row/column commands.
 
 CLARIFY format:
 {"action":"CLARIFY","message":"Short question?","options":[{"label":"Option A"},{"label":"Option B"},{"label":"Option C"}]}
+
+### CLOUD LIBRARY MODAL (real UI automation)
+When the user wants to browse the Maxi Cloud Library (search, switch Patterns/Pages, filters, categories), return action **CLOUD_MODAL_UI** with an **ops** array. Each op runs in order against the open Cloud modal (#maxi-modal). Do not invent op names.
+
+If they ask to **import** or **insert** a design (not browse-only), you MUST end the ops with **click_first_insert** after **set_search**, with a **wait_ms** of at least 800 so hits can load. For **pages** (not patterns), include **gutenberg_type** with value **Pages** before **set_search**.
+
+Allowed ops (JSON objects):
+- {"op":"ensure_open"} — insert Cloud block if needed so the modal can appear; then ensure overlay exists.
+- {"op":"open_placeholder"} — click the editor "Cloud library" placeholder button only.
+- {"op":"wait_ms","ms":300} — short delay for React/InstantSearch (max 10000).
+- {"op":"set_search","text":"pure image"} — type into the modal InstantSearch box (patterns tab).
+- {"op":"clear_search"} — empty the search field.
+- {"op":"gutenberg_type","value":"Pages"} — top menu: Patterns | Blocks | Pages | Playground | Theme (English values).
+- {"op":"cost_filter","value":"all"} — all | free | pro
+- {"op":"light_dark","value":"light"} — light | dark
+- {"op":"clear_filters"} — same as the modal "Clear filters" control.
+- {"op":"category_contains","text":"Hero"} — click a hierarchical category link whose label contains this substring.
+- {"op":"click_first_insert"} — click the first visible **Insert** on a pattern hit (after set_search plus wait_ms so results load). Optional timeout_ms (default 12000, max 20000).
+
+Example (open library, Pages tab, search, insert first hit):
+{"action":"CLOUD_MODAL_UI","message":"Opened Cloud Library, searched Pages, and inserted the first result.","ops":[{"op":"ensure_open"},{"op":"wait_ms","ms":400},{"op":"gutenberg_type","value":"Pages"},{"op":"wait_ms","ms":500},{"op":"set_search","text":"Accountant"},{"op":"wait_ms","ms":1200},{"op":"click_first_insert"}]}
 
 ### SCOPE RULES
 - USER INTENT SCOPE "SELECTION": Use update_selection for selected block and its contents.

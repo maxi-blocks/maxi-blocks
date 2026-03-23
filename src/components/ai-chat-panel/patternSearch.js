@@ -93,6 +93,38 @@ export const findBestPattern = async query => {
  * @param {string} message - User's message (e.g., "Create a pricing table with 3 tiers")
  * @returns {string} Extracted search query
  */
+/**
+ * Strip Cloud / library phrasing to get a Typesense query (e.g. "pure image").
+ *
+ * @param {string} message User message or chip label.
+ * @returns {string} Search string; may be empty for generic "browse library".
+ */
+export const extractCloudSearchQuery = message => {
+	if ( typeof message !== 'string' ) {
+		return '';
+	}
+	let q = message.trim();
+	if ( ! q ) {
+		return '';
+	}
+	q = q
+		.replace(
+			/^(open|show|launch|browse|search|explore|import|get|add)\s+(the\s+|a\s+|an\s+|me\s+|us\s+)?/gi,
+			''
+		)
+		.replace(
+			/\b(the\s+|a\s+|an\s+)?(maxi\s*blocks?\s+)?cloud\s*(library)?\b/gi,
+			' '
+		)
+		.replace( /\b(pattern|patterns|page|pages|template|templates)\b/gi, ' ' )
+		.replace( /\bfrom\s+the\s+cloud\b/gi, ' ' )
+		.replace( /\bfor\s+me\b/gi, ' ' )
+		.replace( /\s+/g, ' ' )
+		.trim();
+	q = q.replace( /^(and|or|to|from)\s+/i, '' ).trim();
+	return q;
+};
+
 export const extractPatternQuery = message => {
 	// Remove common prefixes
 	let query = message.toLowerCase()

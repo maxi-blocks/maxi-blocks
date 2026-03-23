@@ -3175,16 +3175,29 @@ if (!class_exists('MaxiBlocks_API')):
             // Determine effective provider / key / model
             $use_shared = (bool) get_option('maxi_ai_panel_use_shared', true);
 
+            $default_model_shared     = 'gpt-3.5-turbo';
+            $default_model_dedicated  = 'gpt-4o-mini';
+
             if ($use_shared) {
                 $provider = get_option('maxi_ai_provider', 'openai');
                 $api_key  = $provider === 'openai'
                     ? get_option('openai_api_key_option')
                     : get_option('maxi_ai_api_key');
-                $model    = get_option('maxi_ai_model', 'gpt-3.5-turbo');
+                $model    = get_option('maxi_ai_model', $default_model_shared);
             } else {
                 $provider = get_option('maxi_ai_panel_provider', 'openai');
                 $api_key  = get_option('maxi_ai_panel_api_key');
-                $model    = get_option('maxi_ai_panel_model', 'gpt-4o-mini');
+                $model    = get_option('maxi_ai_panel_model', $default_model_dedicated);
+            }
+
+            // get_option() returns '' if the option was saved empty — defaults above are not applied then.
+            if (!is_string($model) || $model === '') {
+                $model = $use_shared ? $default_model_shared : $default_model_dedicated;
+            }
+
+            $request_model = $request->get_param('model');
+            if (is_string($request_model) && $request_model !== '') {
+                $model = sanitize_text_field(trim($request_model));
             }
 
             if (!$api_key) {

@@ -371,7 +371,7 @@ const ChatWindow = ({ isOpen, onClose }) => {
 					}
 					value={input}
 					onChange={e => setInput(e.target.value)}
-					onKeyDown={handleKeyDown}
+					onKeyDownCapture={handleKeyDown}
 					disabled={isLoading}
 					data-testid='maxi-ai-prompt'
 				/>

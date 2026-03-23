@@ -12,6 +12,7 @@
  *   4.  Direct-removal patterns (corners, shadow, border)
  *   5.  Hex-colour direct action
  *   6.  Shape-divider clarification
+ *   6b. Open Cloud Library (insert maxi-cloud block)
  *   7.  LAYOUT_PATTERNS loop (flow triggers, aesthetic, cloud icon, create block,
  *       colour clarify, use_prompt, standard patterns)
  *   8.  Gap patterns
@@ -1276,6 +1277,41 @@ const routeGap = ( rawMessage, ctx ) => {
 	return null;
 };
 
+/**
+ * User wants the Maxi Cloud Library UI to search or insert patterns/pages manually.
+ * Runs before LAYOUT_PATTERNS so option chips like "Browse Cloud Library" are not
+ * misread as flex layout (e.g. "beside").
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {{ type: 'open_cloud_library', params: { rawMessage: string } }|null}
+ */
+const routeOpenCloudLibrary = rawMessage => {
+	const lower = rawMessage.toLowerCase();
+
+	const intents = [
+		/\bopen\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\b(show|launch|display|bring\s+up)\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\b(browse|search|explore)\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\bcloud\s+library\b.*\b(open|browse|search|show)\b/,
+		/\b(open|browse|search|show)\b.*\bcloud\s+library\b/,
+		/\bbrowse\s+cloud\s+library\b/,
+		/\bmaxi\s*blocks\s+cloud\b.*\b(open|browse|search)\b/,
+		/\b(search|browse|add)\b[\s\S]{0,80}\b(patterns?|pages?)\b[\s\S]{0,50}\b(from\s+)?(the\s+)?cloud\b/,
+		/\bimport\b[\s\S]{0,120}\bfrom\s+the\s+cloud\b/,
+		/\b(import|get)\b[\s\S]{0,80}\b(patterns?|pages?|templates?)\b[\s\S]{0,60}\b(from\s+)?(the\s+)?cloud\b/,
+		/\bfrom\s+the\s+cloud\b[\s\S]{0,40}\b(manually|myself|in\s+the\s+library|picker|ui)\b/,
+	];
+
+	if ( intents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'open_cloud_library',
+			params: { rawMessage },
+		};
+	}
+
+	return null;
+};
+
 // ─── Public API ────────────────────────────────────────────────────────────────
 
 /**
@@ -1310,6 +1346,10 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	// 6. Shape divider
 	const shapeDividerResult = routeShapeDivider( ctx );
 	if ( shapeDividerResult ) return shapeDividerResult;
+
+	// 6b. Cloud Library (browse/search/insert UI)
+	const openCloudResult = routeOpenCloudLibrary( rawMessage );
+	if ( openCloudResult ) return openCloudResult;
 
 	// 7. Layout patterns
 	const layoutResult = routeLayoutPatterns( rawMessage, ctx, selectFn );

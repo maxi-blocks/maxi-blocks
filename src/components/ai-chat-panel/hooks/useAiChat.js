@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useCallback, useEffect, useRef, useState } from '@wordpress/element';
 import { dispatch, select, useDispatch, useSelect, useRegistry } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
@@ -21,7 +21,11 @@ import getIBStyles from '@extensions/relations/getIBStyles';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import { getSelectedIBSettings } from '@extensions/relations/utils';
 import { getSkillContextForBlock, getAllSkillsContext } from '../skillContext';
-import { findBestPattern, extractPatternQuery } from '../patternSearch';
+import {
+	findBestPattern,
+	extractPatternQuery,
+	extractCloudSearchQuery,
+} from '../patternSearch';
 import { findBestIcon, findIconCandidates, extractIconQuery, extractIconQueries, extractIconStyleIntent, stripIconStylePhrases } from '../iconSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiHandlerForTarget, getAiPromptForBlockName } from '../ai/registry';
 import { buildRoutingContext, routeClientSide } from '../ai/router';
@@ -96,8 +100,9 @@ import STYLE_CARD_MAXI_PROMPT from '../ai/prompts/style-card';
 import META_MAXI_PROMPT from '../ai/prompts/meta';
 import INTERACTION_BUILDER_PROMPT from '../ai/prompts/interaction-builder';
 import SYSTEM_PROMPT from '../ai/prompts/system';
-import { STYLE_CARD_PATTERNS, useStyleCardData, createStyleCardHandlers, buildStyleCardContext } from '../ai/style-card';
+import { useStyleCardData, createStyleCardHandlers } from '../ai/style-card';
 import onRequestInsertPattern from '../../../editor/library/utils/onRequestInsertPattern';
+import { insertMaxiCloudLibraryBlock } from '../utils/insertMaxiCloudLibraryBlock';
 import {
 	parseUnitValue,
 	RESPONSIVE_BREAKPOINTS,
@@ -202,6 +207,8 @@ import {
 	buildShapeDividerColorChanges,
 } from '../ai/utils/cssBuilders';
 import { applyUpdatesToBlocks as _applyUpdatesToBlocks } from '../ai/utils/applyUpdatesToBlocks';
+import { buildPassthroughLlmContext } from './llm/buildPassthroughLlmContext';
+import { executePassthroughLlmTurn } from './llm/executePassthroughLlmTurn';
 import useAiChatHistory from './useAiChatHistory';
 
 export const useAiChat = ({ onClose } = {}) => {
@@ -2091,17 +2098,143 @@ export const useAiChat = ({ onClose } = {}) => {
 						const children = (descriptor.innerBlocks || []).map(buildBlockTree).filter(Boolean);
 						return createBlock(descriptor.name, descriptor.attributes || {}, children);
 					};
-					let inserted = 0;
-					for (const op of childOps) {
-						const blockDescriptor = op.add_block ?? op.block ?? null;
-						if (!blockDescriptor) continue;
-						const newBlock = buildBlockTree(blockDescriptor);
-						if (newBlock) {
-							dispatch('core/block-editor').insertBlocks(newBlock, undefined, op.parent_clientId);
-							inserted++;
+					const editorSelect = select('core/block-editor');
+					const normalizeParentClientId = op => {
+						const raw = op.parent_clientId ?? op.parentClientId;
+						if (raw == null || typeof raw !== 'string') return null;
+						const t = raw.trim();
+						if (!t) return null;
+						if (t.startsWith('<') && t.endsWith('>')) return null;
+						if (/placeholder|example|your-/i.test(t)) return null;
+						return t;
+					};
+					const isPlaceholderParentId = id => {
+						if (!id || typeof id !== 'string') return true;
+						const t = id.trim();
+						if (t.startsWith('<') && t.endsWith('>')) return true;
+						return /placeholder|example|your-/i.test(t);
+					};
+					let opsQueue = Array.isArray(childOps) ? [...childOps] : [];
+					const firstDesc = opsQueue[0]
+						? opsQueue[0].add_block ?? opsQueue[0].block
+						: null;
+					const firstIsButton =
+						typeof firstDesc?.name === 'string' &&
+						firstDesc.name.includes('button-maxi');
+					const allParentsPlaceholder =
+						opsQueue.length > 0 &&
+						opsQueue.every(op => isPlaceholderParentId(normalizeParentClientId(op)));
+					if (allParentsPlaceholder && firstIsButton && scope === 'page') {
+						const emptyColumns = collectBlocks(allBlocks, b =>
+							typeof b.name === 'string' &&
+							b.name.includes('column-maxi') &&
+							(!b.innerBlocks || b.innerBlocks.length === 0)
+						);
+						if (emptyColumns.length > 0) {
+							const templateOp = opsQueue[0];
+							opsQueue = emptyColumns.map(col => ({
+								...templateOp,
+								op: templateOp.op || 'append_child',
+								parent_clientId: col.clientId,
+							}));
+							logAIDebug(
+								'MODIFY_BLOCK: resolved placeholder parents to empty columns',
+								String(emptyColumns.length)
+							);
 						}
 					}
-					return { executed: inserted > 0, message: inserted > 0 ? action.message || `Added ${inserted} block(s).` : 'No blocks could be inserted.' };
+					let inserted = 0;
+					let sawExistingParent = false;
+					for (const op of opsQueue) {
+						const blockDescriptor = op.add_block ?? op.block ?? null;
+						if (!blockDescriptor?.name) continue;
+						const newBlock = buildBlockTree(blockDescriptor);
+						if (!newBlock) continue;
+						const parentId = normalizeParentClientId(op);
+						if (!parentId) {
+							logAIDebug(
+								'MODIFY_BLOCK child op: skip, invalid parent_clientId',
+								JSON.stringify(op.parent_clientId ?? op.parentClientId)
+							);
+							continue;
+						}
+						const parentBlock = editorSelect.getBlock(parentId);
+						if (parentBlock) {
+							sawExistingParent = true;
+						}
+						if (!parentBlock) {
+							logAIDebug(
+								'MODIFY_BLOCK child op: parent block not found',
+								JSON.stringify(parentId)
+							);
+							continue;
+						}
+						if (!editorSelect.canInsertBlockType(newBlock.name, parentId)) {
+							logAIDebug(
+								'MODIFY_BLOCK child op: cannot insert block type into parent',
+								JSON.stringify(newBlock.name),
+								JSON.stringify(parentId)
+							);
+							continue;
+						}
+						const wantsTop =
+							op.insert_at === 'start' ||
+							op.position === 'top' ||
+							String(op.insert_at || '').toLowerCase() === 'top';
+						const insertIndex = wantsTop
+							? 0
+							: parentBlock.innerBlocks?.length ?? 0;
+						dispatch('core/block-editor').insertBlocks(
+							newBlock,
+							insertIndex,
+							parentId,
+							false
+						);
+						inserted += 1;
+					}
+					if (
+						inserted === 0 &&
+						firstIsButton &&
+						scope === 'page' &&
+						!sawExistingParent &&
+						firstDesc
+					) {
+						const emptyColumns = collectBlocks(allBlocks, b =>
+							typeof b.name === 'string' &&
+							b.name.includes('column-maxi') &&
+							(!b.innerBlocks || b.innerBlocks.length === 0)
+						);
+						for (const col of emptyColumns) {
+							const nb = buildBlockTree(firstDesc);
+							if (!nb) break;
+							if (!editorSelect.canInsertBlockType(nb.name, col.clientId)) {
+								continue;
+							}
+							dispatch('core/block-editor').insertBlocks(
+								nb,
+								col.innerBlocks?.length ?? 0,
+								col.clientId,
+								false
+							);
+							inserted += 1;
+						}
+						if (inserted > 0) {
+							logAIDebug(
+								'MODIFY_BLOCK: empty-column fallback applied',
+								String(inserted)
+							);
+						}
+					}
+					return {
+						executed: inserted > 0,
+						message:
+							inserted > 0
+								? action.message || `Added ${inserted} block(s).`
+								: __(
+										'No blocks were inserted. Parent columns may be missing, or this block type cannot be added there.',
+										'maxi-blocks'
+								  ),
+					};
 				}
 
 				// ORCHESTRATION LAYER: Determine target blocks based on scope
@@ -3254,40 +3387,51 @@ export const useAiChat = ({ onClose } = {}) => {
 		}
 	};
 
-	// Helper to summarize block structure recursively (to save tokens)
-	const summarizeBlockStructure = (block, depth = 0) => {
-		if (!block || depth > 4) return null; // Limit depth
-
-		const summary = {
-			name: block.name,
-			clientId: block.clientId,
-			// Include key attributes that affect layout/style
-			attributes: {
-				...(block.attributes.layout ? { layout: block.attributes.layout } : {}),
-				...(block.attributes.style ? { style: block.attributes.style } : {}),
-				...(block.attributes.tagName ? { tagName: block.attributes.tagName } : {}),
-				...(block.attributes.className ? { className: block.attributes.className } : {}),
-				// Add Maxi specific attrs if needed
-				...(block.attributes.containerWidth ? { containerWidth: block.attributes.containerWidth } : {}),
-				...(block.attributes.contentWidth ? { contentWidth: block.attributes.contentWidth } : {}),
-			}
-		};
-
-		// Recursively summarize inner blocks
-		if (block.innerBlocks && block.innerBlocks.length > 0) {
-			summary.innerBlocks = block.innerBlocks
-				.map(child => summarizeBlockStructure(child, depth + 1))
-				.filter(Boolean);
-		}
-
-		return summary;
-	};
-
-
 	// ─────────────────────────────────────────────────────────────────────────
 
-	const sendMessage = async () => {
-		if (!input.trim()) return;
+	/**
+	 * Inserts maxi-cloud so the normal Cloud Library modal opens; optional keyword hint in chat only.
+	 *
+	 * @param {string} rawMsg User message.
+	 * @returns {void}
+	 */
+	const runCloudLibraryIntent = rawMsg => {
+		const query = extractCloudSearchQuery( rawMsg );
+		const minLen = 2;
+		const hint = query.length >= minLen ? query : '';
+		insertMaxiCloudLibraryBlock();
+		setMessages( prev => [
+			...prev,
+			{
+				role: 'assistant',
+				content: hint
+					? sprintf(
+							/* translators: %s: suggested search keywords */
+							__(
+								'Opened the Cloud Library. In the modal search box, try: %s',
+								'maxi-blocks'
+							),
+							`"${ hint }"`
+					  )
+					: __(
+							'Opened the Cloud Library — use the modal search to find patterns or pages.',
+							'maxi-blocks'
+					  ),
+				executed: true,
+			},
+		] );
+	};
+
+	/**
+	 * @param {string} [overriddenRawMessage] When set (e.g. option chip), send this text instead of input state.
+	 */
+	const sendMessage = async overriddenRawMessage => {
+		const sourceText =
+			typeof overriddenRawMessage === 'string'
+				? overriddenRawMessage
+				: input;
+		const rawMessage = String(sourceText || '').trim();
+		if (!rawMessage) return;
 
 		setScopeChosen(true);
 
@@ -3301,7 +3445,7 @@ export const useAiChat = ({ onClose } = {}) => {
 		if (!hasKey) {
 			setMessages(prev => [
 				...prev,
-				{ role: 'user', content: input },
+				{ role: 'user', content: rawMessage },
 				{
 					role: 'assistant',
 					content: __('Please configure your AI API key in the Maxi AI dashboard settings before using the chat panel.', 'maxi-blocks'),
@@ -3312,7 +3456,6 @@ export const useAiChat = ({ onClose } = {}) => {
 			return;
 		}
 
-		const rawMessage = input;
 		const userMessage = { role: 'user', content: rawMessage };
 		setMessages(prev => [...prev, userMessage]);
 		setInput('');
@@ -3334,12 +3477,12 @@ export const useAiChat = ({ onClose } = {}) => {
 				const options = conversationContext.currentOptions;
 				const hasOptions = Array.isArray(options) && options.length > 0;
 				const isOptionMatch = hasOptions && options.some(o =>
-					(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === input.toLowerCase()
+					(typeof o === 'string' ? o.toLowerCase() : o.label.toLowerCase()) === rawMessage.toLowerCase()
 				);
 
 				if (isOptionMatch || !hasOptions) {
 					// Let handleSuggestion handle it via the standard flow re-entry
-					handleSuggestion(input);
+					handleSuggestion(rawMessage);
 					return;
 				}
 
@@ -3355,12 +3498,12 @@ export const useAiChat = ({ onClose } = {}) => {
 
 		// Handle insert_block layout-picker reply (typed input path)
 		if ( conversationContext?.type === 'insert_block' ) {
-			const lower = input.toLowerCase();
+			const lower = rawMessage.toLowerCase();
 			setConversationContext( null );
 			let rootBlock;
 			if ( lower.includes( 'cloud' ) || lower.includes( 'library' ) || lower.includes( 'browse' ) ) {
-				setMessages( prev => [ ...prev, { role: 'assistant', content: 'Searching Cloud Library...' } ] );
-				setTimeout( async () => { await handleCreateBlock( { rawMessage: input, targetClientId: null } ); }, 100 );
+				runCloudLibraryIntent( rawMessage );
+				setIsLoading( false );
 				return;
 			} else if ( lower.includes( 'sidebar' ) ) {
 				const row = createBlock( 'maxi-blocks/row-maxi' );
@@ -3384,7 +3527,7 @@ export const useAiChat = ({ onClose } = {}) => {
 					dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
 				}
 			}
-			setMessages( prev => [ ...prev, { role: 'assistant', content: `Added ${ input }.`, executed: true } ] );
+			setMessages( prev => [ ...prev, { role: 'assistant', content: `Added ${ rawMessage }.`, executed: true } ] );
 			setIsLoading( false );
 			return;
 		}
@@ -4225,6 +4368,32 @@ export const useAiChat = ({ onClose } = {}) => {
 				}, 100);
 				return;
 
+			case 'open_cloud_library': {
+				const cloudMsg =
+					routeResult.params?.rawMessage ?? rawMessage;
+				try {
+					runCloudLibraryIntent( cloudMsg );
+				} catch ( openCloudErr ) {
+					console.error(
+						'[Maxi AI] Open Cloud Library error:',
+						String( openCloudErr?.message || openCloudErr )
+					);
+					setMessages( prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: __(
+								'Could not open the Cloud Library. Use the Cloud Library button in the Maxi toolbar.',
+								'maxi-blocks'
+							),
+							executed: false,
+						},
+					] );
+				}
+				setIsLoading( false );
+				return;
+			}
+
 			case 'passthrough':
 			default:
 				break;
@@ -4236,53 +4405,12 @@ export const useAiChat = ({ onClose } = {}) => {
 		setIsLoading(true);
 
 		try {
-			// Build context with scope info
-			let context = '';
-			context += `\n\nUSER INTENT SCOPE: ${scope.toUpperCase()}`;
-			context += `\n- SELECTION: Apply change only to the selected block.`;
-			context += `\n- PAGE: Apply change to all relevant blocks on the entire page (use update_page).`;
-			context += `\n- GLOBAL: Apply change to the site-wide Style Card (use update_style_card for specific tokens; apply_theme for vibes/palettes).`;
-			context += `\n\nIMPORTANT: The user has explicitly selected to apply changes to "${scope.toUpperCase()}".`;
-			
-			if (scope === 'global') {
-				context += `\nUse "update_style_card" for specific token changes (fonts, sizes, heading/body/button colors, palette slots).`;
-				context += `\nUse "apply_theme" only for overall theme/aesthetic or palette generation requests.`;
-				context += `\nExample: { "action": "update_style_card", "updates": { "headings": { "font-family-general": "Cormorant Garamond" } }, "message": "Updated heading font." }`;
-			} else if (scope === 'selection') {
-				context += `\n\nCRITICAL: You are in SELECTION mode. You MUST use the "update_selection" action.`;
-				context += `\nThis targets the selected block AND its inner blocks (recursively).`;
-				context += `\nDo not use update_page (would affect unselected) or apply_responsive_spacing (use update_selection instead).`;
-				if (selectedBlock) {
-					const blockSummary = summarizeBlockStructure(selectedBlock);
-					console.log('[Maxi AI Debug] Context Loop - Block Summary:', blockSummary);
-					context += `\n\nUser has selected: ${selectedBlock.name}\nAttributes: ${JSON.stringify(selectedBlock.attributes, null, 2)}`;
-					if (blockSummary && blockSummary.innerBlocks && blockSummary.innerBlocks.length > 0) {
-						context += `\n\nInner Structure (Recursive): ${JSON.stringify(blockSummary.innerBlocks, null, 2)}`;
-					}
-				} else {
-					context += '\n\nNo block is currently selected.';
-				}
-			} else if (scope === 'page') {
-				context += `\n\nCRITICAL: You are in PAGE mode. You SHOULD use "update_page" or "apply_responsive_spacing" to affect multiple blocks if requested.`;
-			}
-
-
-
-			if (selectedBlock) {
-				const blockSummary = summarizeBlockStructure(selectedBlock);
-				console.log('[Maxi AI Debug] Context Loop - Block Summary:', blockSummary);
-				context += `\n\nUser has selected: ${selectedBlock.name}\nAttributes: ${JSON.stringify(selectedBlock.attributes, null, 2)}`;
-				if (blockSummary && blockSummary.innerBlocks && blockSummary.innerBlocks.length > 0) {
-					context += `\n\nInner Structure (Recursive): ${JSON.stringify(blockSummary.innerBlocks, null, 2)}`;
-				}
-			} else {
-				context += '\n\nNo block is currently selected.';
-			}
-			// Add Style Card Context
-			const styleCardContext = buildStyleCardContext(activeStyleCard);
-			if (styleCardContext) {
-				context += styleCardContext;
-			}
+			const context = buildPassthroughLlmContext({
+				scope,
+				selectedBlock,
+				activeStyleCard,
+				logDebug: logAIDebug,
+			});
 
 			// Only use the block-specific role prompt for selection scope.
 			// For page scope the block prompt's restrictive role ("I only manage rows") prevents
@@ -4307,60 +4435,18 @@ export const useAiChat = ({ onClose } = {}) => {
 				.filter(Boolean)
 				.join('\n\n');
 
-			const response = await fetch(`${window.wpApiSettings?.root || '/wp-json/'}maxi-blocks/v1.0/ai/chat`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					...(window.wpApiSettings?.nonce ? { 'X-WP-Nonce': window.wpApiSettings.nonce } : {}),
-				},
-				body: JSON.stringify({
-					messages: [
-						{ role: 'system', content: systemPrompt },
-						{ role: 'system', content: 'Context: ' + context + (selectedBlock ? '\n\nBlock Skills: ' + getSkillContextForBlock(selectedBlock.name) : '') },
-						...messages.filter(m => m.role !== 'assistant' || !m.executed).slice(-6).map(m => ({ 
-							role: m.role === 'assistant' ? 'assistant' : 'user', 
-							content: typeof m.content === 'string' ? m.content : String(m.content || '')
-						})),
-						{ role: 'user', content: rawMessage },
-					],
-					model: window.maxiSettings?.ai_settings?.ai_panel_model ?? 'gpt-4o-mini',
-					temperature: 0.2, // Low temperature for consistent JSON
-					streaming: false,
-				}),
+			const { executed, message, options, optionsType } = await executePassthroughLlmTurn({
+				messages,
+				rawMessage,
+				userMessage,
+				scope,
+				systemPrompt,
+				context,
+				selectedBlock,
+				getSkillContextForBlock,
+				parseAndExecuteAction,
+				logDebug: logAIDebug,
 			});
-
-			if (!response.ok) {
-				throw new Error(await response.text());
-			}
-
-			const data = await response.json();
-			let assistantContent = data?.choices?.[0]?.message?.content || __('Sorry, I couldn\'t process that.', 'maxi-blocks');
-			
-			// Debug: Log what the AI returned
-			console.log('[Maxi AI] Raw AI response:', assistantContent);
-
-			// 4. Force apply_theme for global scope if AI didn't use it
-			if (scope === 'global') {
-				try {
-					const parsed = JSON.parse(assistantContent.trim());
-					const allowedGlobalActions = new Set(['apply_theme', 'update_style_card', 'message']);
-					if (parsed.action && !allowedGlobalActions.has(parsed.action)) {
-						console.log('[Maxi AI] Forcing apply_theme for global scope');
-						assistantContent = JSON.stringify({ action: 'apply_theme', prompt: userMessage });
-					}
-				} catch (e) {
-					// If not JSON, create apply_theme action
-					console.log('[Maxi AI] Non-JSON response, creating apply_theme for global scope');
-					assistantContent = JSON.stringify({ action: 'apply_theme', prompt: userMessage });
-				}
-			}
-
-			// 5. SELECTION SCOPE VALIDATION (Optional: You could validate `update_selection` usage here but better to trust the prompt + fallback)
-			// (Removed old coercion to MODIFY_BLOCK - we now support `update_selection` natively)
-
-
-			const { executed, message, options, optionsType } = await parseAndExecuteAction(assistantContent);
-			console.log('[Maxi AI] Parsed action result:', { executed, message, options });
 
 			setMessages(prev => [
 				...prev,
@@ -4424,10 +4510,16 @@ export const useAiChat = ({ onClose } = {}) => {
 	};
 
 	const handleKeyDown = e => {
-		if (e.key === 'Enter' && !e.shiftKey) {
-			e.preventDefault();
-			sendMessage();
+		if (e.key !== 'Enter' || e.shiftKey) return;
+		// Block editor and other Gutenberg shortcuts often listen on capture; stop the event here.
+		e.preventDefault();
+		e.stopPropagation();
+		if (typeof e.stopImmediatePropagation === 'function') {
+			e.stopImmediatePropagation();
 		}
+		if (isLoading) return;
+		if (!String(input || '').trim()) return;
+		void sendMessage();
 	};
 
 	const handleSuggestion = async (suggestion) => {
@@ -4439,8 +4531,26 @@ export const useAiChat = ({ onClose } = {}) => {
 			setIsLoading(true);
 			let rootBlock;
 			if (lower.includes('cloud') || lower.includes('library') || lower.includes('browse')) {
-				setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
-				setTimeout(async () => { await handleCreateBlock({ rawMessage: suggestion, targetClientId: null }); }, 100);
+				try {
+					runCloudLibraryIntent(suggestion);
+				} catch (browseCloudErr) {
+					console.error(
+						'[Maxi AI] Browse Cloud from layout picker:',
+						String(browseCloudErr?.message || browseCloudErr)
+					);
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: __(
+								'Could not open the Cloud Library. Use the toolbar Cloud button.',
+								'maxi-blocks'
+							),
+							executed: false,
+						},
+					]);
+				}
+				setIsLoading(false);
 				return;
 			} else if (lower.includes('sidebar')) {
 				const row = createBlock('maxi-blocks/row-maxi');
@@ -4665,6 +4775,44 @@ export const useAiChat = ({ onClose } = {}) => {
 		const lastOptions = Array.isArray(lastClarificationMsg?.options)
 			? lastClarificationMsg.options
 			: [];
+		const isColumnTopBottomClarify =
+			(suggestion === 'Top' || suggestion === 'Bottom') &&
+			lastClarifyContent &&
+			!lastShapeDividerMsg?.shapeDividerLocation &&
+			(lastClarifyContent.includes('empty column') ||
+				lastClarifyContent.includes('each empty column') ||
+				(lastClarifyContent.includes('button') &&
+					lastClarifyContent.includes('column')));
+		if (isColumnTopBottomClarify) {
+			const freshBlocks = select('core/block-editor').getBlocks();
+			const emptyColumns = collectBlocks(
+				freshBlocks,
+				b =>
+					typeof b.name === 'string' &&
+					b.name.includes('column-maxi') &&
+					(!b.innerBlocks || b.innerBlocks.length === 0)
+			);
+			if (emptyColumns.length > 0) {
+				directAction = {
+					action: 'MODIFY_BLOCK',
+					payload: {
+						ops: emptyColumns.map(col => ({
+							op: 'append_child',
+							parent_clientId: col.clientId,
+							block: {
+								name: 'maxi-blocks/button-maxi',
+								attributes: {},
+								innerBlocks: [],
+							},
+						})),
+					},
+					message: __(
+						'Added a button to each empty column.',
+						'maxi-blocks'
+					),
+				};
+			}
+		}
 		const isLinkOptionContext =
 			linkOptionLabels.includes(suggestion) &&
 			(lastClarifyContent.includes('link') ||
@@ -5138,8 +5286,10 @@ export const useAiChat = ({ onClose } = {}) => {
 			return;
 		}
 
-		// Fallback: Just set input for manual sending (or generic prompts)
-		setInput(suggestion);
+		// Fallback: submit chip text through the same pipeline as typing + Enter
+		if (typeof suggestion === 'string' && suggestion.trim()) {
+			void sendMessage(suggestion.trim());
+		}
 	};
 
 

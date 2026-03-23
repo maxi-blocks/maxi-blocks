@@ -144,6 +144,17 @@
  */
 
 /**
+ * Router opens the Maxi Cloud Library block in the editor (and may run Typesense search).
+ *
+ * @typedef {Object} OpenCloudLibraryParams
+ * @property {string} rawMessage Original user message for query extraction.
+ *
+ * @typedef {Object} OpenCloudLibraryResult
+ * @property {'open_cloud_library'} type
+ * @property {OpenCloudLibraryParams} params
+ */
+
+/**
  * No client-side pattern matched — send to the AI API.
  *
  * @typedef {Object} PassthroughResult
@@ -153,5 +164,5 @@
 /**
  * Discriminated union of all possible router outcomes.
  *
- * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|PassthroughResult} RouteResult
+ * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|OpenCloudLibraryResult|PassthroughResult} RouteResult
  */

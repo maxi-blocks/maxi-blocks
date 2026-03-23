@@ -37,6 +37,8 @@ const SIDEBAR = '.maxi-cloud-container__patterns__sidebar';
 const COST_WRAP = '.maxi-cloud-container__content-patterns__cost';
 const FIRST_INSERT_SELECTOR =
 	'.maxi-cloud-container__patterns__content-patterns .ais-InfiniteHits-list button.maxi-cloud-masonry-card__button-load';
+/** InstantSearch Stats in the patterns hits column (same scope as InfiniteHits). */
+const PATTERNS_HITS_STATS = '.maxi-cloud-container__patterns__content-patterns .ais-Stats';
 
 /**
  * Patterns InstantSearch lives under Cloud Library. `@wordpress/components` Modal often
@@ -70,6 +72,112 @@ export const getCloudPatternsPanelRoot = modalHint => {
 		return underWpModal;
 	}
 	return document.querySelector( PATTERNS_ROOT );
+};
+
+/**
+ * Reads nbHits from the patterns content Stats widget (`strong` holds a locale-formatted integer).
+ *
+ * @param {HTMLElement|null} modalHint
+ * @returns {number|null} Null if the Stats node or parseable count is missing.
+ */
+export const parsePatternsStatsHitCount = modalHint => {
+	const panel = getCloudPatternsPanelRoot( modalHint );
+	const statsRoot = panel?.querySelector( PATTERNS_HITS_STATS );
+	const strong = statsRoot?.querySelector( 'strong' );
+	const raw = strong?.textContent?.trim() || '';
+	if ( ! raw ) {
+		return null;
+	}
+	const digitsOnly = raw.replace( /[^\d]/g, '' );
+	if ( digitsOnly === '' ) {
+		return null;
+	}
+	const n = parseInt( digitsOnly, 10 );
+	return Number.isFinite( n ) ? n : null;
+};
+
+/**
+ * Clicks the WordPress modal close control for the Cloud Library (same as the user).
+ *
+ * @returns {boolean} True if a close control was clicked.
+ */
+export const closeCloudLibraryModal = () => {
+	if ( typeof document === 'undefined' ) {
+		return false;
+	}
+	const frames = [
+		document.querySelector(
+			'.components-modal__frame.maxi-library-modal'
+		),
+		document.querySelector( '.maxi-library-modal.components-modal__frame' ),
+		document.querySelector( '.maxi-library-modal' ),
+	].filter( Boolean );
+	for ( const frame of frames ) {
+		const direct =
+			frame.querySelector( 'button.components-modal__header-close' ) ||
+			frame.querySelector(
+				'.components-modal__header button[aria-label="Close"]'
+			);
+		if ( direct && ! direct.disabled ) {
+			direct.click();
+			return true;
+		}
+		const headerButtons = frame.querySelectorAll(
+			'.components-modal__header button'
+		);
+		for ( const btn of headerButtons ) {
+			const al = btn.getAttribute( 'aria-label' ) || '';
+			if ( /close/i.test( al ) && ! btn.disabled ) {
+				btn.click();
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
+/**
+ * After InstantSearch updates, confirm zero hits: two reads of 0 spaced apart, only after a
+ * minimum delay from the last set_search so we do not read stale Stats.
+ *
+ * @param {HTMLElement|null} modalHint
+ * @param {number}           searchSetAtMs `Date.now()` when `set_search` ran in this op batch.
+ * @param {number}           [maxWaitMs=9000]
+ * @returns {Promise<boolean>} True when zero hits are confirmed.
+ */
+const waitForConfirmedZeroHitsAfterSearch = async (
+	modalHint,
+	searchSetAtMs,
+	maxWaitMs = 9000
+) => {
+	const deadline = Date.now() + maxWaitMs;
+	const minDelayMs = 2000;
+	while ( Date.now() < deadline ) {
+		const sinceSearch = Date.now() - searchSetAtMs;
+		if ( sinceSearch < minDelayMs ) {
+			await sleep( minDelayMs - sinceSearch );
+		}
+		const n = parsePatternsStatsHitCount( modalHint );
+		if ( n === null ) {
+			await sleep( 120 );
+			continue;
+		}
+		if ( n > 0 ) {
+			return false;
+		}
+		if ( n === 0 ) {
+			await sleep( 320 );
+			const n2 = parsePatternsStatsHitCount( modalHint );
+			if ( n2 === 0 ) {
+				return true;
+			}
+			if ( n2 !== null && n2 > 0 ) {
+				return false;
+			}
+		}
+		await sleep( 120 );
+	}
+	return false;
 };
 
 /**
@@ -563,13 +671,13 @@ export const clickFirstPatternInsert = async (
  * - `{ op: "light_dark", value: "light"|"dark" }`
  * - `{ op: "clear_filters" }`
  * - `{ op: "category_contains", text: string }` — hierarchical category link
- * - `{ op: "click_first_insert" }` — first visible **Insert** in pattern hits (after search has run)
+ * - `{ op: "click_first_insert" }` — after `set_search`, reads InstantSearch **Stats** in the hits column; if hit count is **0**, closes the Cloud modal and returns `{ outcome: "zero_hits" }` instead of inserting.
  *
  * @param {Array<CloudModalOp & Record<string, *>>} ops
  * @param {Object}                                 deps
- * @param {() => void}                             [deps.insertCloudBlock] Inserts maxi-cloud (e.g. insertMaxiCloudLibraryBlock).
+ * @param {() => void | Promise<void>}             [deps.insertCloudBlock] Inserts or reopens maxi-cloud (e.g. insertMaxiCloudLibraryBlock).
  * @param {(msg: string) => void}                  [deps.logDebug]
- * @returns {Promise<{ ok: boolean, message: string, lastError?: string }>}
+ * @returns {Promise<{ ok: boolean, message: string, lastError?: string, outcome?: string }>}
  */
 export async function executeCloudModalUiOps( ops, deps = {} ) {
 	const { insertCloudBlock = null, logDebug = () => {} } = deps;
@@ -577,6 +685,8 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 
 	let modal = getMaxiCloudModalRoot();
 	let lastError = '';
+	/** Timestamp of the last successful `set_search` in this batch (for Stats-based zero-hit detection). */
+	let lastPatternsSearchAt = 0;
 
 	const log = msg => {
 		logDebug( String( msg ) );
@@ -593,18 +703,26 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 					break;
 
 				case 'ensure_open': {
+					const patternsUiLive = hint => {
+						const p = getCloudPatternsPanelRoot( hint );
+						return Boolean( p && p.isConnected );
+					};
 					modal = getMaxiCloudModalRoot();
-					if ( ! modal && typeof insertCloudBlock === 'function' ) {
-						insertCloudBlock();
+					if (
+						! modal &&
+						! patternsUiLive( modal ) &&
+						typeof insertCloudBlock === 'function'
+					) {
+						await Promise.resolve( insertCloudBlock() );
 						await sleep( 200 );
 					}
 					modal = getMaxiCloudModalRoot();
-					if ( ! modal ) {
+					if ( ! modal && ! patternsUiLive( modal ) ) {
 						clickOpenCloudPlaceholder();
 						await sleep( 200 );
 					}
 					modal = getMaxiCloudModalRoot();
-					if ( ! modal ) {
+					if ( ! modal && ! patternsUiLive( modal ) ) {
 						lastError = 'Cloud modal not found after insert/open.';
 						log( `[Maxi AI CloudModal] ${ lastError }` );
 						return {
@@ -638,6 +756,7 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 					);
 					searchInput.focus();
 					await sleep( 80 );
+					lastPatternsSearchAt = Date.now();
 					break;
 				}
 
@@ -706,6 +825,28 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 						20000,
 						Math.max( 3000, Number( op.timeout_ms ) || 12000 )
 					);
+					if ( lastPatternsSearchAt > 0 ) {
+						const zeroHits = await waitForConfirmedZeroHitsAfterSearch(
+							modal,
+							lastPatternsSearchAt,
+							10000
+						);
+						if ( zeroHits ) {
+							const didClose = closeCloudLibraryModal();
+							if ( ! didClose ) {
+								log(
+									'[Maxi AI CloudModal] Zero hits: could not find modal close control.'
+								);
+							}
+							await sleep( 200 );
+							return {
+								ok: false,
+								message: '',
+								lastError: 'cloud_zero_hits',
+								outcome: 'zero_hits',
+							};
+						}
+					}
 					const clicked = await clickFirstPatternInsert(
 						modal,
 						waitMs
@@ -782,6 +923,8 @@ export const maxiAiCloudModalInterface = {
 	clickCategoryContaining,
 	waitForFirstPatternInsertButton,
 	clickFirstPatternInsert,
+	closeCloudLibraryModal,
+	parsePatternsStatsHitCount,
 };
 
 /** @deprecated Use `maxiAiCloudModalInterface`; kept for older references. */

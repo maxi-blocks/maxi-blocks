@@ -2072,6 +2072,25 @@ export const useAiChat = ({ onClose } = {}) => {
 					insertCloudBlock: insertMaxiCloudLibraryBlock,
 					logDebug: msg => logAIDebug(String(msg)),
 				});
+				if ( modalResult.outcome === 'zero_hits' ) {
+					return {
+						executed: false,
+						message: __(
+							'The Cloud Library showed zero results for that search, so the modal was closed. Try different filters or keywords, or browse the library manually.',
+							'maxi-blocks'
+						),
+						options: [
+							__(
+								'Open Cloud Library to browse manually',
+								'maxi-blocks'
+							),
+							__(
+								'Try a shorter or broader search',
+								'maxi-blocks'
+							),
+						],
+					};
+				}
 				return {
 					executed: modalResult.ok,
 					message:
@@ -3416,20 +3435,21 @@ export const useAiChat = ({ onClose } = {}) => {
 		const query = extractCloudSearchQuery( rawMsg );
 		const minLen = 2;
 		const hint = query.length >= minLen ? query : '';
+		const rawLower = String( rawMsg || '' ).toLowerCase();
+		// Pages live under InstantSearch "Pages"; default tab is Patterns. Prefer Pages when the user
+		// asked for a page but not explicitly for a pattern.
+		const usePagesTab =
+			/\b(pages?)\b/.test( rawLower ) &&
+			! /\b(patterns?)\b/.test( rawLower );
+		// Sidebar refinement: Light / Dark (word-boundary avoids "highlight" etc.).
+		const lightDarkValue = /\b(dark)\b/i.test( rawLower )
+			? 'dark'
+			: /\b(light)\b/i.test( rawLower )
+				? 'light'
+				: null;
+
 		const ops = [ { op: 'ensure_open' } ];
 		if ( hint ) {
-			// Pages live under InstantSearch "Pages"; default tab is Patterns. Prefer Pages when the user
-			// asked for a page but not explicitly for a pattern.
-			const rawLower = String( rawMsg || '' ).toLowerCase();
-			const usePagesTab =
-				/\b(pages?)\b/.test( rawLower ) &&
-				! /\b(patterns?)\b/.test( rawLower );
-			// Sidebar refinement: Light / Dark (word-boundary avoids "highlight" etc.).
-			const lightDarkValue = /\b(dark)\b/i.test( rawLower )
-				? 'dark'
-				: /\b(light)\b/i.test( rawLower )
-					? 'light'
-					: null;
 			ops.push( { op: 'wait_ms', ms: 400 } );
 			if ( usePagesTab ) {
 				ops.push( { op: 'gutenberg_type', value: 'Pages' } );
@@ -3448,6 +3468,47 @@ export const useAiChat = ({ onClose } = {}) => {
 			insertCloudBlock: insertMaxiCloudLibraryBlock,
 			logDebug: msg => logAIDebug( String( msg ) ),
 		} );
+
+		if ( result.outcome === 'zero_hits' && hint ) {
+			const followUp = [];
+			if ( lightDarkValue ) {
+				followUp.push(
+					__(
+						'Try again without the light or dark filter',
+						'maxi-blocks'
+					)
+				);
+			}
+			if ( usePagesTab ) {
+				followUp.push(
+					__(
+						'Try again under Patterns instead of Pages',
+						'maxi-blocks'
+					)
+				);
+			}
+			followUp.push(
+				__( 'Open Cloud Library to browse manually', 'maxi-blocks' )
+			);
+			setMessages( prev => [
+				...prev,
+				{
+					role: 'assistant',
+					content: sprintf(
+						/* translators: %s: search keywords used in Cloud Library */
+						__(
+							'The Cloud Library returned no results for "%s" with the current filters. I closed the library. What would you like to do next?',
+							'maxi-blocks'
+						),
+						hint
+					),
+					executed: false,
+					options: followUp,
+				},
+			] );
+			return;
+		}
+
 		setMessages( prev => [
 			...prev,
 			{

@@ -495,8 +495,12 @@ class MaxiBlockComponent extends Component {
 
 	/**
 	 * Prevents rendering
+	 *
+	 * @param {Object} nextProps       Next props from the editor.
+	 * @param {Object} nextState       Next React state.
+	 * @param {*}      nextContext     Next context when `static contextType` is set (e.g. RowContext).
 	 */
-	shouldComponentUpdate(nextProps, nextState) {
+	shouldComponentUpdate(nextProps, nextState, nextContext) {
 		if (this.isPatternsPreview || this.templateModal) {
 			return false;
 		}
@@ -558,6 +562,17 @@ class MaxiBlockComponent extends Component {
 					nextState
 				) || !result
 			);
+		}
+
+		// When cleaned props are equal, still re-render if legacy context changed.
+		// React passes `nextContext` for classes with static contextType; omitting
+		// it can incorrectly return false and skip context-driven updates.
+		if (
+			!result &&
+			nextContext !== undefined &&
+			this.context !== nextContext
+		) {
+			return true;
 		}
 
 		return result;

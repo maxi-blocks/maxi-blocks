@@ -24,6 +24,25 @@ const requestIdleCallbackPolyfill = callback => {
 const requestIdle = window.requestIdleCallback || requestIdleCallbackPolyfill;
 const cancelIdle = window.cancelIdleCallback || clearTimeout;
 
+/** Stable reference for row innerBlocksSettings.allowedBlocks */
+const ALLOWED_COLUMN_BLOCKS = ['maxi-blocks/column-maxi'];
+
+/**
+ * Keep the previous object reference when deep-equal to the freshly computed value,
+ * so React context consumers do not re-render on referential churn alone.
+ *
+ * @param {*}            cached    Previous cached value (may be undefined).
+ * @param {*}            fresh     Newly computed value.
+ * @param {Function} isEqualFn Lodash `isEqual`.
+ * @return {*} Stable reference for `fresh`'s logical value.
+ */
+function reuseRefIfDeepEqual(cached, fresh, isEqualFn) {
+	if (cached !== undefined && isEqualFn(cached, fresh)) {
+		return cached;
+	}
+	return fresh;
+}
+
 /**
  * Internal dependencies
  */
@@ -257,32 +276,285 @@ class edit extends MaxiBlockComponent {
 		return attributes['row-carousel-status'] === true;
 	};
 
-	render() {
-		const {
-			attributes,
-			clientId,
-			deviceType,
-			hasInnerBlocks,
-			maxiSetAttributes,
-		} = this.props;
-		const { uniqueID } = attributes;
+	/**
+	 * Stable callback identity for InnerBlocks renderAppender (avoids new inline
+	 * functions each render, which breaks innerBlocksSettings memoization).
+	 *
+	 * @return {JSX.Element} Row template appender.
+	 */
+	renderRowBlockAppender = () => {
+		const { clientId, maxiSetAttributes, deviceType } = this.props;
+		const repeaterContext = this.getMemoizedRepeaterContext();
 
-		const ALLOWED_BLOCKS = ['maxi-blocks/column-maxi'];
+		return (
+			<RowBlockTemplate
+				clientId={clientId}
+				maxiSetAttributes={maxiSetAttributes}
+				deviceType={deviceType}
+				repeaterStatus={repeaterContext.repeaterStatus}
+				repeaterRowClientId={repeaterContext.repeaterRowClientId}
+				getInnerBlocksPositions={
+					repeaterContext.getInnerBlocksPositions
+				}
+			/>
+		);
+	};
+
+	/**
+	 * Memoize innerBlocksSettings so MaxiBlock / InnerBlocks see a stable object when
+	 * logical settings did not change.
+	 *
+	 * @return {Object} Settings object for useInnerBlocksProps.
+	 */
+	getMemoizedInnerBlocksSettings() {
+		const { hasInnerBlocks } = this.props;
+
+		const next = {
+			...(hasInnerBlocks && { templateLock: 'insert' }),
+			allowedBlocks: ALLOWED_COLUMN_BLOCKS,
+			orientation: 'horizontal',
+			renderAppender: hasInnerBlocks
+				? false
+				: this.renderRowBlockAppender,
+		};
+
+		if (
+			this._memoizedInnerBlocksSettings &&
+			isEqual(this._memoizedInnerBlocksSettings, next)
+		) {
+			return this._memoizedInnerBlocksSettings;
+		}
+
+		this._memoizedInnerBlocksSettings = next;
+		return next;
+	}
+
+	/**
+	 * Stable handlers for RowContext so Provider value can be referentially memoized.
+	 */
+	setColumnClientIdForContext = columnClientId => {
+		// Avoid a new columnsClientIds array (and RowContext memo MISS) when the
+		// id is already registered (e.g. duplicate mount paths).
+		if (this.columnsClientIds.includes(columnClientId)) {
+			return;
+		}
+		this.columnsClientIds = [...this.columnsClientIds, columnClientId];
+	};
+
+	setColumnSizeForContext = (columnClientId, columnSize) => {
+		this.columnsSize = {
+			...this.columnsSize,
+			[columnClientId]: columnSize,
+		};
+
+		this.forceUpdate();
+	};
+
+	removeColumnClientIdForContext = columnClientId => {
+		this.columnsClientIds = this.columnsClientIds.filter(
+			val => val !== columnClientId
+		);
+		this.columnsSize = Object.keys(this.columnsSize).reduce((acc, key) => {
+			if (key !== columnClientId) {
+				acc[key] = this.columnsSize[key];
+			}
+			return acc;
+		}, {});
+	};
+
+	setCarouselCurrentSlideForContext = slide =>
+		this.setState({ carouselCurrentSlide: slide });
+
+	setCarouselSlideWidthForContext = (columnClientId, width) => {
+		this.setState(prevState => ({
+			carouselSlidesWidth: {
+				...prevState.carouselSlidesWidth,
+				[columnClientId]: width,
+			},
+		}));
+	};
+
+	/**
+	 * Returns the same RepeaterContext object reference when contents are unchanged,
+	 * so nested blocks do not re-render when the row re-renders for unrelated reasons.
+	 *
+	 * @return {Object} Repeater context value for RepeaterContext.Provider.
+	 */
+	getMemoizedRepeaterContext() {
+		const repeaterStatus = getAttributeValue({
+			target: 'repeater-status',
+			props: this.props.attributes,
+		});
+		const repeaterRowClientId = this.props.clientId;
+		const prev = this._memoizedRepeaterContext;
+
+		/** Fast path: no inherited repeater — avoid full-object isEqual on fresh literals. */
+		if (!this.context?.repeaterStatus) {
+			if (
+				prev &&
+				!this._repeaterContextHadParentSpread &&
+				prev.repeaterStatus === repeaterStatus &&
+				prev.repeaterRowClientId === repeaterRowClientId &&
+				prev.getInnerBlocksPositions ===
+					this.getInnerBlocksPositions &&
+				prev.updateInnerBlocksPositions ===
+					this.updateInnerBlocksPositions
+			) {
+				return prev;
+			}
+
+			this._repeaterContextHadParentSpread = false;
+			this._memoizedRepeaterContext = {
+				repeaterStatus,
+				repeaterRowClientId,
+				getInnerBlocksPositions: this.getInnerBlocksPositions,
+				updateInnerBlocksPositions: this.updateInnerBlocksPositions,
+			};
+			return this._memoizedRepeaterContext;
+		}
+
+		const next = {
+			repeaterStatus,
+			repeaterRowClientId,
+			getInnerBlocksPositions: this.getInnerBlocksPositions,
+			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
+			...this.context,
+		};
+
+		if (prev && isEqual(prev, next)) {
+			return prev;
+		}
+
+		this._repeaterContextHadParentSpread = true;
+		this._memoizedRepeaterContext = next;
+		return next;
+	}
+
+	/**
+	 * Returns the same RowContext object reference when contents are unchanged.
+	 *
+	 * @return {Object} Row context value for RowContext.Provider.
+	 */
+	getMemoizedRowContextValue() {
+		const { attributes, clientId } = this.props;
+
+		const rowPatternFresh = getGroupAttributes(attributes, 'rowPattern');
+		this._stableRowPatternForCtx = reuseRefIfDeepEqual(
+			this._stableRowPatternForCtx,
+			rowPatternFresh,
+			isEqual
+		);
+
+		const rowGapPropsFresh = getRowGapProps(attributes);
+		this._stableRowGapPropsForCtx = reuseRefIfDeepEqual(
+			this._stableRowGapPropsForCtx,
+			rowGapPropsFresh,
+			isEqual
+		);
+
+		const rowBorderRadiusFresh = getGroupAttributes(
+			attributes,
+			'borderRadius'
+		);
+		this._stableRowBorderRadiusForCtx = reuseRefIfDeepEqual(
+			this._stableRowBorderRadiusForCtx,
+			rowBorderRadiusFresh,
+			isEqual
+		);
+
+		const carouselSlidesWidthFresh = this.state.carouselSlidesWidth;
+		this._stableCarouselSlidesWidthForCtx = reuseRefIfDeepEqual(
+			this._stableCarouselSlidesWidthForCtx,
+			carouselSlidesWidthFresh,
+			isEqual
+		);
+
+		const next = {
+			displayHandlers: this.state.displayHandlers,
+			rowPattern: this._stableRowPatternForCtx,
+			rowBlockId: clientId,
+			columnsSize: this.columnsSize,
+			columnsClientIds: this.columnsClientIds,
+			setColumnClientId: this.setColumnClientIdForContext,
+			setColumnSize: this.setColumnSizeForContext,
+			removeColumnClientId: this.removeColumnClientIdForContext,
+			rowGapProps: this._stableRowGapPropsForCtx,
+			rowBorderRadius: this._stableRowBorderRadiusForCtx,
+			carouselEnabled: this.isCarouselEnabled(),
+			carouselCurrentSlide: this.state.carouselCurrentSlide,
+			setCarouselCurrentSlide: this.setCarouselCurrentSlideForContext,
+			carouselSlidesWidth: this._stableCarouselSlidesWidthForCtx,
+			setCarouselSlideWidth: this.setCarouselSlideWidthForContext,
+		};
+
+		const prevCtx = this._memoizedRowContextValue;
+		if (prevCtx) {
+			const columnsIdsSame =
+				prevCtx.columnsClientIds === this.columnsClientIds ||
+				isEqual(prevCtx.columnsClientIds, this.columnsClientIds);
+			const columnsSizeSame =
+				prevCtx.columnsSize === this.columnsSize ||
+				isEqual(prevCtx.columnsSize, this.columnsSize);
+
+			// Compare derived blobs to *fresh* values, not only stabilized refs:
+			// reuseRefIfDeepEqual may replace the stable ref while prevCtx still
+			// holds the previous ref; both can be deep-equal and still !==.
+			const rowPatternSame =
+				prevCtx.rowPattern === this._stableRowPatternForCtx ||
+				isEqual(prevCtx.rowPattern, rowPatternFresh);
+			const rowGapSame =
+				prevCtx.rowGapProps === this._stableRowGapPropsForCtx ||
+				isEqual(prevCtx.rowGapProps, rowGapPropsFresh);
+			const rowBorderSame =
+				prevCtx.rowBorderRadius === this._stableRowBorderRadiusForCtx ||
+				isEqual(prevCtx.rowBorderRadius, rowBorderRadiusFresh);
+			const carouselWidthsSame =
+				prevCtx.carouselSlidesWidth ===
+					this._stableCarouselSlidesWidthForCtx ||
+				isEqual(
+					prevCtx.carouselSlidesWidth,
+					carouselSlidesWidthFresh
+				);
+
+			if (
+				prevCtx.rowBlockId === clientId &&
+				prevCtx.displayHandlers === this.state.displayHandlers &&
+				prevCtx.carouselEnabled === next.carouselEnabled &&
+				prevCtx.carouselCurrentSlide ===
+					this.state.carouselCurrentSlide &&
+				rowPatternSame &&
+				rowGapSame &&
+				rowBorderSame &&
+				carouselWidthsSame &&
+				columnsIdsSame &&
+				columnsSizeSame &&
+				prevCtx.setColumnClientId ===
+					this.setColumnClientIdForContext &&
+				prevCtx.setColumnSize === this.setColumnSizeForContext &&
+				prevCtx.removeColumnClientId ===
+					this.removeColumnClientIdForContext &&
+				prevCtx.setCarouselCurrentSlide ===
+					this.setCarouselCurrentSlideForContext &&
+				prevCtx.setCarouselSlideWidth ===
+					this.setCarouselSlideWidthForContext
+			) {
+				return prevCtx;
+			}
+		}
+
+		this._memoizedRowContextValue = next;
+		return next;
+	}
+
+	render() {
+		const { attributes, clientId, hasInnerBlocks } = this.props;
+		const { uniqueID } = attributes;
 
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
 			: 'maxi-row-block__has-inner-block';
 
-		const repeaterContext = {
-			repeaterStatus: getAttributeValue({
-				target: 'repeater-status',
-				props: attributes,
-			}),
-			repeaterRowClientId: clientId,
-			getInnerBlocksPositions: this.getInnerBlocksPositions,
-			updateInnerBlocksPositions: this.updateInnerBlocksPositions,
-			...(this.context?.repeaterStatus && this.context),
-		};
+		const repeaterContext = this.getMemoizedRepeaterContext();
 
 		// Get carousel preview status
 		const carouselPreviewEnabled =
@@ -329,61 +601,7 @@ class edit extends MaxiBlockComponent {
 			/>,
 			<RowContext.Provider
 				key={`row-content-${uniqueID}`}
-				value={{
-					displayHandlers: this.state.displayHandlers,
-					rowPattern: getGroupAttributes(attributes, 'rowPattern'),
-					rowBlockId: clientId,
-					columnsSize: this.columnsSize,
-					columnsClientIds: this.columnsClientIds,
-					setColumnClientId: clientId => {
-						this.columnsClientIds = [
-							...this.columnsClientIds,
-							clientId,
-						];
-					},
-					setColumnSize: (clientId, columnSize) => {
-						this.columnsSize = {
-							...this.columnsSize,
-							[clientId]: columnSize,
-						};
-
-						this.forceUpdate();
-					},
-					removeColumnClientId: clientId => {
-						this.columnsClientIds = this.columnsClientIds.filter(
-							val => val !== clientId
-						);
-						this.columnsSize = Object.keys(this.columnsSize).reduce(
-							(acc, key) => {
-								if (key !== clientId) {
-									acc[key] = this.columnsSize[key];
-								}
-								return acc;
-							},
-							{}
-						);
-					},
-
-					rowGapProps: getRowGapProps(attributes),
-					rowBorderRadius: getGroupAttributes(
-						attributes,
-						'borderRadius'
-					),
-					// Carousel context
-					carouselEnabled: this.isCarouselEnabled(),
-					carouselCurrentSlide: this.state.carouselCurrentSlide,
-					setCarouselCurrentSlide: slide =>
-						this.setState({ carouselCurrentSlide: slide }),
-					carouselSlidesWidth: this.state.carouselSlidesWidth,
-					setCarouselSlideWidth: (clientId, width) => {
-						this.setState(prevState => ({
-							carouselSlidesWidth: {
-								...prevState.carouselSlidesWidth,
-								[clientId]: width,
-							},
-						}));
-					},
-				}}
+				value={this.getMemoizedRowContextValue()}
 			>
 				<RepeaterContext.Provider value={repeaterContext}>
 					<MaxiBlock
@@ -395,31 +613,7 @@ class edit extends MaxiBlockComponent {
 							...repeaterContext,
 						})}
 						useInnerBlocks
-						innerBlocksSettings={{
-							...(hasInnerBlocks && { templateLock: 'insert' }),
-							allowedBlocks: ALLOWED_BLOCKS,
-							orientation: 'horizontal',
-							renderAppender: !hasInnerBlocks
-								? () => (
-										<RowBlockTemplate
-											clientId={clientId}
-											maxiSetAttributes={
-												maxiSetAttributes
-											}
-											deviceType={deviceType}
-											repeaterStatus={
-												repeaterContext.repeaterStatus
-											}
-											repeaterRowClientId={
-												repeaterContext.repeaterRowClientId
-											}
-											getInnerBlocksPositions={
-												repeaterContext.getInnerBlocksPositions
-											}
-										/>
-								  )
-								: false,
-						}}
+						innerBlocksSettings={this.getMemoizedInnerBlocksSettings()}
 						renderWrapperInserter={false}
 					/>
 				</RepeaterContext.Provider>

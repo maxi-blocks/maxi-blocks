@@ -417,7 +417,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         : '',
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('maxi_license_validation'),
-                    'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                    'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
                     'pluginVersion' => MAXI_PLUGIN_VERSION,
                     'isMultisite' => is_multisite(),
                     'hasNetworkLicense' => $this->has_network_license(),
@@ -699,7 +699,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         esc_attr($tab_page) .
                         esc_attr($active_tab) .
                         '" href="' .
-                        $tab_info['url'] .
+                        esc_url($tab_info['url']) .
                         '">' .
                         wp_kses(
                             $tab_info['label'],
@@ -817,7 +817,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '">';
             echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             echo '<span class="maxi-dashboard_nav-tab nav-tab maxi-dashboard_nav-tab__active nav-tab-active">' .
-                __('License', 'maxi-blocks') .
+                esc_html__('License', 'maxi-blocks') .
                 '</span>';
             echo '</h4>';
 
@@ -1019,12 +1019,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         private function get_main_site_domain()
         {
             if (!is_multisite()) {
-                return parse_url(home_url(), PHP_URL_HOST);
+                return wp_parse_url(home_url(), PHP_URL_HOST);
             }
 
             // Get the main site URL
             $main_site_url = get_site_url(get_main_site_id());
-            return parse_url($main_site_url, PHP_URL_HOST);
+            return wp_parse_url($main_site_url, PHP_URL_HOST);
         }
 
         public function maxi_blocks_welcome()
@@ -2318,7 +2318,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     : '',
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('maxi_license_validation'),
-                'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'pluginVersion' => MAXI_PLUGIN_VERSION,
                 'isMultisite' => is_multisite(),
                 'hasNetworkLicense' => $this->has_network_license(),
@@ -2443,14 +2443,14 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
 
-            $input = <<<HTML
-			    <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
-			        <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
-			        <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
-			            {$visible_input}
-			        </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
-			    </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
-			HTML;
+            $input = sprintf(
+                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">' .
+                '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">%s</span>' .
+                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">%s</div>' .
+                '</div>',
+                $placeholder,
+                $visible_input
+            );
 
             return $input;
         }
@@ -2751,11 +2751,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         if (is_dir($file_path)) {
                             $this->delete_all_files($file_path);
                         } elseif (is_file($file_path)) {
-                            @unlink($file_path);
+                            wp_delete_file($file_path);
                         }
                     }
 
-                    @rmdir($folder);
+                    @rmdir($folder); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- WP_Filesystem::rmdir() requires prior initialization; recursive delete handled by this method
                     return;
                 }
             }
@@ -3858,7 +3858,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function check_site_domain_migration()
         {
-            $current_domain = parse_url(home_url(), PHP_URL_HOST);
+            $current_domain = wp_parse_url(home_url(), PHP_URL_HOST);
             $license_data = get_option('maxi_pro', '');
 
             if (empty($license_data)) {
@@ -4192,7 +4192,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             // Use WordPress's proper admin_url() function and extract path
             $admin_url = admin_url();
-            $parsed = parse_url($admin_url);
+            $parsed = wp_parse_url($admin_url);
             return rtrim($parsed['path'], '/'); // Remove trailing slash to match JS function
         }
 
@@ -4213,7 +4213,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            $domain = parse_url(home_url(), PHP_URL_HOST);
+            $domain = wp_parse_url(home_url(), PHP_URL_HOST);
 
             // Verify purchase code with middleware
             $result = $this->verify_purchase_code($purchase_code, $domain);
@@ -4783,7 +4783,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $actual_payload = [
                 'email' => $email,
                 'cookie' => $auth_key,
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'plugin_version' => MAXI_PLUGIN_VERSION,
                 'multisite' => is_multisite(),
                 'check_appwrite_login' => false,
@@ -4832,7 +4832,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $actual_appwrite_payload = [
                 'email' => $email,
                 'cookie' => $auth_key,
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'plugin_version' => MAXI_PLUGIN_VERSION,
                 'multisite' => is_multisite(),
                 'check_appwrite_login' => true,
@@ -4849,11 +4849,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if (is_wp_error($appwrite_response)) {
                 error_log(
-                    __(
-                        'MaxiBlocks Email Auth: ERROR - ' .
-                            $appwrite_response->get_error_message(),
-                        'maxi-blocks',
-                    ),
+                    'MaxiBlocks Email Auth: ERROR - ' . $appwrite_response->get_error_message(),
                 );
                 return false;
             }
@@ -5046,7 +5042,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $current_license_data = get_option('maxi_pro', '');
                 $is_purchase_code_active = false;
                 $purchase_code = '';
-                $domain = parse_url(home_url(), PHP_URL_HOST);
+                $domain = wp_parse_url(home_url(), PHP_URL_HOST);
 
                 if (!empty($current_license_data)) {
                     $license_array = json_decode($current_license_data, true);
@@ -5143,7 +5139,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'body' => wp_json_encode([
                     'email' => $email,
                     'cookie' => $auth_key,
-                    'domain' => parse_url(home_url(), PHP_URL_HOST),
+                    'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                     'plugin_version' => MAXI_PLUGIN_VERSION,
                     'multisite' => is_multisite(),
                 ]),
@@ -5151,11 +5147,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if (is_wp_error($response)) {
                 error_log(
-                    __(
-                        'MaxiBlocks Email Session Logout: API call failed - ' .
-                            $response->get_error_message(),
-                        'maxi-blocks',
-                    ),
+                    'MaxiBlocks Email Session Logout: API call failed - ' . $response->get_error_message(),
                 );
                 return [
                     'success' => false,

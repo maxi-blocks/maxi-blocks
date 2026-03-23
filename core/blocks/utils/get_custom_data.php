@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_parallax_layers($unique_id, $bg_layers)
 {
     if (!isset($bg_layers) || empty($bg_layers)) {

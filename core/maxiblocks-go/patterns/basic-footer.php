@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
   * Title: Basic Footer
   * Slug: maxiblocks-go/basic-footer

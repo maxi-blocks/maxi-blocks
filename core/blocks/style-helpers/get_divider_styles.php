@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_divider_styles($obj, $target, $block_style, $is_hover = false, $prefix = '', $use_bottom_border = false)
 {
     $response = [

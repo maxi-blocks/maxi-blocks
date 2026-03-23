@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.1.8\n"
+"Project-Id-Version: MaxiBlocks 2.1.9\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-04T14:25:58+00:00\n"
+"POT-Creation-Date: 2026-03-06T15:40:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:422
+#: core/class-maxi-blocks.php:423
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:515
 #: core/admin/class-maxi-dashboard.php:660
 #: core/admin/class-maxi-dashboard.php:1310
-#: plugin.php:90
+#: plugin.php:91
 #: src/blocks/accordion-maxi/inspector.js:84
 #: src/blocks/button-maxi/inspector.js:212
 #: src/blocks/column-maxi/inspector.js:40
@@ -949,8 +949,9 @@ msgid "Cloud user email / purchase code / license key"
 msgstr ""
 
 #. translators: %s: Link to MaxiBlocks account page
+#. translators: %s: Link to my.maxiblocks.com
 #: core/admin/class-maxi-dashboard.php:2965
-#: core/admin/quick-start/class-maxi-quick-start.php:934
+#: core/admin/quick-start/class-maxi-quick-start.php:937
 #, php-format
 msgid "Find your code or key in your account, inbox or %s"
 msgstr ""
@@ -962,7 +963,7 @@ msgid "Multisite detected. If using MaxiBlocks email or license key and you requ
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:2981
-#: core/admin/quick-start/class-maxi-quick-start.php:939
+#: core/admin/quick-start/class-maxi-quick-start.php:945
 #: core/admin/starter-sites/build/js/main.js:48
 #: core/admin/starter-sites/src/library/toolbar.js:418
 #: core/admin/starter-sites/src/library/toolbar.js:425
@@ -995,15 +996,15 @@ msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:3647
 #: core/admin/class-maxi-dashboard.php:3945
-#: core/admin/class-maxi-dashboard.php:4842
-#: core/admin/class-maxi-dashboard.php:4917
-#: core/admin/class-maxi-dashboard.php:5135
+#: core/admin/class-maxi-dashboard.php:4834
+#: core/admin/class-maxi-dashboard.php:4909
+#: core/admin/class-maxi-dashboard.php:5127
 msgid "Security check failed"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:3655
-#: core/admin/class-maxi-dashboard.php:4850
-#: core/admin/class-maxi-dashboard.php:4925
+#: core/admin/class-maxi-dashboard.php:4842
+#: core/admin/class-maxi-dashboard.php:4917
 msgid "Insufficient permissions"
 msgstr ""
 
@@ -1053,74 +1054,66 @@ msgstr ""
 msgid "MaxiBlocks: Missing middleware configuration for email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4443
-msgid "MaxiBlocks Email Auth: ERROR - "
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:4521
+#: core/admin/class-maxi-dashboard.php:4517
 msgid "MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4630
-#: core/admin/class-maxi-dashboard.php:4686
+#: core/admin/class-maxi-dashboard.php:4626
+#: core/admin/class-maxi-dashboard.php:4682
 msgid "Signed out successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4671
+#: core/admin/class-maxi-dashboard.php:4667
 msgid "MaxiBlocks: Purchase code deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4713
+#: core/admin/class-maxi-dashboard.php:4709
 msgid "MaxiBlocks: Missing middleware configuration for email session logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4745
-msgid "MaxiBlocks Email Session Logout: API call failed - "
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:4769
+#: core/admin/class-maxi-dashboard.php:4761
 msgid "MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4875
+#: core/admin/class-maxi-dashboard.php:4867
 msgid "Missing required parameters"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4887
+#: core/admin/class-maxi-dashboard.php:4879
 msgid "License data saved successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4945
+#: core/admin/class-maxi-dashboard.php:4937
 msgid "Network purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4958
+#: core/admin/class-maxi-dashboard.php:4950
 msgid "Multisite detected. Please activate your MaxiBlocks email on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4966
+#: core/admin/class-maxi-dashboard.php:4958
 msgid "Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4998
+#: core/admin/class-maxi-dashboard.php:4990
 msgid "Invalid purchase code. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5051
+#: core/admin/class-maxi-dashboard.php:5043
 msgid "Network license activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5099
+#: core/admin/class-maxi-dashboard.php:5091
 msgid "MaxiBlocks: Network license deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5111
+#: core/admin/class-maxi-dashboard.php:5103
 msgid "Network license deactivated successfully"
 msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:84
-#: core/admin/quick-start/class-maxi-quick-start.php:987
-#: core/admin/quick-start/class-maxi-quick-start.php:1418
+#: core/admin/quick-start/class-maxi-quick-start.php:993
+#: core/admin/quick-start/class-maxi-quick-start.php:1424
 #: core/admin/status-report/maxi-system-status-report.php:327
 #: core/admin/status-report/maxi-system-status-report.php:495
 #: core/admin/status-report/maxi-system-status-report.php:886
@@ -1227,16 +1220,16 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:265
 #: core/admin/quick-start/class-maxi-quick-start.php:597
 #: core/admin/quick-start/class-maxi-quick-start.php:816
-#: core/admin/quick-start/class-maxi-quick-start.php:1159
+#: core/admin/quick-start/class-maxi-quick-start.php:1165
 msgid "Skip next"
 msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:266
 #: core/admin/quick-start/class-maxi-quick-start.php:703
 #: core/admin/quick-start/class-maxi-quick-start.php:810
-#: core/admin/quick-start/class-maxi-quick-start.php:948
-#: core/admin/quick-start/class-maxi-quick-start.php:1015
-#: core/admin/quick-start/class-maxi-quick-start.php:1156
+#: core/admin/quick-start/class-maxi-quick-start.php:954
+#: core/admin/quick-start/class-maxi-quick-start.php:1021
+#: core/admin/quick-start/class-maxi-quick-start.php:1162
 #: core/admin/starter-sites/build/js/main.js:48
 #: core/admin/starter-sites/src/library/toolbar.js:309
 #: src/editor/library/toolbar.js:613
@@ -1245,7 +1238,7 @@ msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:267
 #: core/admin/quick-start/class-maxi-quick-start.php:706
-#: core/admin/quick-start/class-maxi-quick-start.php:951
+#: core/admin/quick-start/class-maxi-quick-start.php:957
 #: src/components/repeater/index.js:84
 msgid "Continue"
 msgstr ""
@@ -1472,24 +1465,24 @@ msgstr ""
 msgid "Network License page"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:966
+#: core/admin/quick-start/class-maxi-quick-start.php:972
 msgid "Setup complete!"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:968
+#: core/admin/quick-start/class-maxi-quick-start.php:974
 msgid "Congratulations! Your MaxiBlocks site is now configured and ready to use."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:975
+#: core/admin/quick-start/class-maxi-quick-start.php:981
 msgid "System warnings"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:977
+#: core/admin/quick-start/class-maxi-quick-start.php:983
 msgid "Some settings below may need attention for optimal performance. Review the recommended values and update your server or WordPress configuration if necessary. If you have questions, check our documentation or contact support. Enjoy building with MaxiBlocks!"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:984
-#: core/admin/quick-start/class-maxi-quick-start.php:1415
+#: core/admin/quick-start/class-maxi-quick-start.php:990
+#: core/admin/quick-start/class-maxi-quick-start.php:1421
 #: core/admin/status-report/maxi-system-status-report.php:324
 #: core/admin/status-report/maxi-system-status-report.php:492
 #: core/admin/status-report/maxi-system-status-report.php:883
@@ -1497,112 +1490,112 @@ msgstr ""
 msgid "Setting"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:985
-#: core/admin/quick-start/class-maxi-quick-start.php:1416
+#: core/admin/quick-start/class-maxi-quick-start.php:991
+#: core/admin/quick-start/class-maxi-quick-start.php:1422
 #: core/admin/status-report/maxi-system-status-report.php:325
 #: core/admin/status-report/maxi-system-status-report.php:493
 #: core/admin/status-report/maxi-system-status-report.php:884
 msgid "Recommended"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:986
-#: core/admin/quick-start/class-maxi-quick-start.php:1417
+#: core/admin/quick-start/class-maxi-quick-start.php:992
+#: core/admin/quick-start/class-maxi-quick-start.php:1423
 msgid "Current"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1002
-#: core/admin/quick-start/class-maxi-quick-start.php:1425
+#: core/admin/quick-start/class-maxi-quick-start.php:1008
+#: core/admin/quick-start/class-maxi-quick-start.php:1431
 #: core/admin/status-report/maxi-system-status-report.php:283
 msgid "Warning"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1018
+#: core/admin/quick-start/class-maxi-quick-start.php:1024
 msgid "Start using MaxiBlocks"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1033
-#: core/admin/quick-start/class-maxi-quick-start.php:1283
+#: core/admin/quick-start/class-maxi-quick-start.php:1039
+#: core/admin/quick-start/class-maxi-quick-start.php:1289
 msgid "You do not have permission to perform this action."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1042
+#: core/admin/quick-start/class-maxi-quick-start.php:1048
 msgid "Site title is required."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1094
-#: core/admin/quick-start/class-maxi-quick-start.php:1304
+#: core/admin/quick-start/class-maxi-quick-start.php:1100
+#: core/admin/quick-start/class-maxi-quick-start.php:1310
 msgid "An error occurred while saving settings."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1105
+#: core/admin/quick-start/class-maxi-quick-start.php:1111
 msgid "Choose a starter site"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1107
+#: core/admin/quick-start/class-maxi-quick-start.php:1113
 msgid "Select a pre-built website design to get started quickly. You can customize everything later."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1113
+#: core/admin/quick-start/class-maxi-quick-start.php:1119
 msgid "Why choose a starter site?"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1118
+#: core/admin/quick-start/class-maxi-quick-start.php:1124
 msgid "✅ Saves time – No need to build your site from the ground up."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1122
+#: core/admin/quick-start/class-maxi-quick-start.php:1128
 msgid "✅ Customisable – Easily adjust text, images, and colours to match your brand."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1126
+#: core/admin/quick-start/class-maxi-quick-start.php:1132
 msgid "✅ Optimised for speed, responsiveness, and user experience."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1132
+#: core/admin/quick-start/class-maxi-quick-start.php:1138
 msgid "Not sure which one to pick? No worries! You can change or customise it later. If you'd rather start with a blank canvas, you can skip this step."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1138
+#: core/admin/quick-start/class-maxi-quick-start.php:1144
 msgid "Choose starter site"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1144
+#: core/admin/quick-start/class-maxi-quick-start.php:1150
 msgid "Selected starter site preview"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1147
+#: core/admin/quick-start/class-maxi-quick-start.php:1153
 msgid "Change site"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1256
+#: core/admin/quick-start/class-maxi-quick-start.php:1262
 msgid "You do not have permission to switch themes."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1267
+#: core/admin/quick-start/class-maxi-quick-start.php:1273
 msgid "No theme specified."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1398
+#: core/admin/quick-start/class-maxi-quick-start.php:1404
 msgid "System status check"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1403
+#: core/admin/quick-start/class-maxi-quick-start.php:1409
 msgid "Critical issues found"
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1406
+#: core/admin/quick-start/class-maxi-quick-start.php:1412
 msgid "The following system requirements are not met. MaxiBlocks may not function correctly unless these issues are resolved."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1434
+#: core/admin/quick-start/class-maxi-quick-start.php:1440
 msgid "It is strongly recommended to fix these issues before proceeding. However, you can continue with the setup if you wish to address these later."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1442
+#: core/admin/quick-start/class-maxi-quick-start.php:1448
 msgid "All critical system requirements are met. You can proceed with the setup."
 msgstr ""
 
-#: core/admin/quick-start/class-maxi-quick-start.php:1452
+#: core/admin/quick-start/class-maxi-quick-start.php:1458
 msgid "Continue to Setup"
 msgstr ""
 
@@ -2158,44 +2151,44 @@ msgstr ""
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:369
+#: core/class-maxi-blocks.php:370
 msgid "Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:370
+#: core/class-maxi-blocks.php:371
 msgid "maxi-image-type"
 msgstr ""
 
-#: core/class-maxi-blocks.php:371
+#: core/class-maxi-blocks.php:372
 msgid "Search Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:372
+#: core/class-maxi-blocks.php:373
 msgid "All Maxi Images"
 msgstr ""
 
-#: core/class-maxi-blocks.php:373
+#: core/class-maxi-blocks.php:374
 msgid "Edit Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:374
+#: core/class-maxi-blocks.php:375
 msgid "Update Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:375
+#: core/class-maxi-blocks.php:376
 msgid "Add New Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:376
+#: core/class-maxi-blocks.php:377
 msgid "New Maxi Image Name"
 msgstr ""
 
-#: core/class-maxi-blocks.php:400
-#: core/class-maxi-blocks.php:403
+#: core/class-maxi-blocks.php:401
+#: core/class-maxi-blocks.php:404
 msgid "Maxi Image"
 msgstr ""
 
-#: core/class-maxi-blocks.php:406
+#: core/class-maxi-blocks.php:407
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
@@ -2260,53 +2253,61 @@ msgstr ""
 msgid "Failed to create DateTime object: "
 msgstr ""
 
-#: core/class-maxi-image-crop.php:45
-#: core/class-maxi-image-crop.php:72
-#: core/class-maxi-image-crop.php:115
+#: core/class-maxi-image-crop.php:49
+#: core/class-maxi-image-crop.php:84
+#: core/class-maxi-image-crop.php:129
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: core/class-maxi-image-crop.php:78
+#: core/class-maxi-image-crop.php:61
+msgid "You do not have permission to crop this file."
+msgstr ""
+
+#: core/class-maxi-image-crop.php:90
 msgid "Delete old file: invalid file path"
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:645
+#: core/class-maxi-image-crop.php:180
+msgid "You do not have permission to delete this file."
+msgstr ""
+
+#: core/class-maxi-local-fonts.php:647
 msgid "Unable to locate the uploaded font file."
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:658
+#: core/class-maxi-local-fonts.php:660
 msgid "Unable to read required font metadata (weight/style)."
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:678
+#: core/class-maxi-local-fonts.php:680
 msgid "Font parsing library is not available."
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:689
+#: core/class-maxi-local-fonts.php:691
 msgid "Unable to load the font file."
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:730
+#: core/class-maxi-local-fonts.php:732
 msgid "Required font metadata is missing."
 msgstr ""
 
-#: core/class-maxi-local-fonts.php:744
+#: core/class-maxi-local-fonts.php:746
 msgid "Unable to parse the uploaded font file."
 msgstr ""
 
 #. translators: %s: Name of the imported style card
-#: core/class-maxi-style-cards.php:1514
+#: core/class-maxi-style-cards.php:1516
 #, php-format
 msgid "Style Card imported successfully as \"%s\""
 msgstr ""
 
 #. translators: %1$s: database type, %2$s: required version, %3$s: link URL
-#: plugin.php:175
+#: plugin.php:176
 #, php-format
 msgid "Highly recommend to update to %1$s %2$s+ for enhanced security, better performance, and full feature compatibility."
 msgstr ""
 
-#: plugin.php:185
+#: plugin.php:186
 msgid "Learn more"
 msgstr ""
 

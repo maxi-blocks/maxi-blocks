@@ -56,7 +56,7 @@
 		"classnames": "latest",
 		"css-to-react-native": "latest",
 		"deep-object-diff": "latest",
-		"dompurify": "latest",
+		"dompurify": "^3.3.2",
 		"html-react-parser": "latest",
 		"is-mobile": "latest",
 		"langchain": "^0.3.37",
@@ -158,11 +158,11 @@
 		"lodash-es": "4.17.23",
 		"eslint": "^9.26.0",
 		"minimatch": "^10.2.3",
+		"@tootallnate/once": "^3.0.1",
+		"serialize-javascript": "^7.0.4",
+		"langsmith": "^0.5.7",
 		"axios": "^1.13.5",
-		"langsmith": "^0.5.3",
 		"webpack": "^5.105.1",
-		"basic-ftp": "^5.2.0",
-		"serialize-javascript": "^7.0.3",
-		"@tootallnate/once": "3.0.1"
+		"basic-ftp": "^5.2.0"
 	}
 }

@@ -1643,8 +1643,8 @@ if (!class_exists('MaxiBlocks_API')):
                             header('Expires: 0');
                         }
 
-                        // Output compressed data
-                        echo $compressed;
+                        // Output compressed data — raw gzip binary, escaping would corrupt it.
+                        echo $compressed; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
                         return true;
                     }
                 }
@@ -2528,14 +2528,14 @@ if (!class_exists('MaxiBlocks_API')):
                 ob_end_clean();
 
                 // Clean up
-                unlink($temp_file);
+                wp_delete_file($temp_file);
 
                 return [
                     'success' => true,
                     'message' => 'XML content imported successfully',
                 ];
             } catch (Exception $e) {
-                unlink($temp_file);
+                wp_delete_file($temp_file);
                 return new WP_Error('import_error', $e->getMessage());
             }
         }
@@ -2869,7 +2869,7 @@ if (!class_exists('MaxiBlocks_API')):
 
                 // Get file info
                 $file_array = [];
-                $file_array['name'] = basename(parse_url($url, PHP_URL_PATH));
+                $file_array['name'] = basename(wp_parse_url($url, PHP_URL_PATH));
 
                 // Check file type
                 $wp_filetype = wp_check_filetype($file_array['name']);
@@ -2942,7 +2942,7 @@ if (!class_exists('MaxiBlocks_API')):
                 remove_filter('upload_dir', $upload_override);
 
                 // Clean up temp file
-                @unlink($temp_file);
+                wp_delete_file($temp_file);
 
                 if (isset($file['error'])) {
                     return false;

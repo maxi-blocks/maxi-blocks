@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_svg_width_styles($args)
 {
     $obj = $args['obj'];

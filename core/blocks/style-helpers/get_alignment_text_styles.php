@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_alignment_text_styles($obj, $type = 'text')
 {
     if (!is_array($obj)) {

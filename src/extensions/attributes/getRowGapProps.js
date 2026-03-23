@@ -10,15 +10,9 @@ import { getGroupAttributes } from '@extensions/styles';
  */
 const getRowGapProps = attributes => {
 	const flexAttrs = getGroupAttributes(attributes, 'flex');
-	const response = {};
-
-	Object.keys(flexAttrs).forEach(key => {
-		if (key.includes('gap')) {
-			response[key] = flexAttrs[key];
-		}
-	});
-
-	return response;
+	return Object.fromEntries(
+		Object.entries(flexAttrs).filter(([key]) => key.includes('gap'))
+	);
 };
 
 export default getRowGapProps;

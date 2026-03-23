@@ -202,6 +202,13 @@ function observeConsoleLogging() {
 		}
 		if (
 			text.includes(
+				'Failed to load resource: net::ERR_QUIC_PROTOCOL_ERROR'
+			)
+		) {
+			return;
+		}
+		if (
+			text.includes(
 				'Error validating css: Error: The request took longer than'
 			)
 		) {

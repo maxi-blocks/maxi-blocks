@@ -342,6 +342,9 @@ class edit extends MaxiBlockComponent {
 	};
 
 	setColumnSizeForContext = (columnClientId, columnSize) => {
+		if (isEqual(this.columnsSize[columnClientId], columnSize)) {
+			return;
+		}
 		this.columnsSize = {
 			...this.columnsSize,
 			[columnClientId]: columnSize,
@@ -360,12 +363,34 @@ class edit extends MaxiBlockComponent {
 			}
 			return acc;
 		}, {});
+
+		// Unregister measured slide width so carousel state cannot reference a removed column.
+		const { carouselSlidesWidth = {} } = this.state;
+		if (
+			Object.prototype.hasOwnProperty.call(
+				carouselSlidesWidth,
+				columnClientId
+			)
+		) {
+			this.setState(prevState => {
+				const sw = prevState.carouselSlidesWidth || {};
+				const { [columnClientId]: _removed, ...rest } = sw;
+				return { carouselSlidesWidth: rest };
+			});
+		}
 	};
 
-	setCarouselCurrentSlideForContext = slide =>
+	setCarouselCurrentSlideForContext = slide => {
+		if (this.state.carouselCurrentSlide === slide) {
+			return;
+		}
 		this.setState({ carouselCurrentSlide: slide });
+	};
 
 	setCarouselSlideWidthForContext = (columnClientId, width) => {
+		if (this.state.carouselSlidesWidth[columnClientId] === width) {
+			return;
+		}
 		this.setState(prevState => ({
 			carouselSlidesWidth: {
 				...prevState.carouselSlidesWidth,

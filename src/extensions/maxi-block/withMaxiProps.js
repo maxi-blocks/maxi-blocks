@@ -67,7 +67,6 @@ const withMaxiProps = createHigherOrderComponent(
 				const selectStore = select('core/block-editor');
 				return {
 					getBlock: selectStore.getBlock,
-					getBlockOrder: selectStore.getBlockOrder,
 					getBlockParents: selectStore.getBlockParents,
 					getBlockParentsByBlockName:
 						selectStore.getBlockParentsByBlockName,
@@ -76,7 +75,6 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const {
 				getBlock,
-				getBlockOrder,
 				getBlockParents,
 				getBlockParentsByBlockName,
 			} = blockEditorSelectors;
@@ -89,12 +87,11 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const copyPasteMapping = getBlockData(name)?.copyPasteMapping;
 
-			const hasInnerBlocks = !isEmpty(getBlockOrder(clientId));
-
 			const {
 				deviceType,
 				baseBreakpoint,
 				hasSelectedChild,
+				hasInnerBlocks,
 				isTyping,
 				blockIndex,
 				blockRootClientId,
@@ -108,6 +105,7 @@ const withMaxiProps = createHigherOrderComponent(
 					isTyping,
 					getBlockIndex,
 					getBlockRootClientId,
+					getBlockOrder: getBlockOrderFromStore,
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 					// getBlocks,
 				} = select('core/block-editor');
@@ -120,6 +118,9 @@ const withMaxiProps = createHigherOrderComponent(
 					deviceType: receiveMaxiDeviceType(),
 					baseBreakpoint: receiveBaseBreakpoint(),
 					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
+					hasInnerBlocks: !isEmpty(
+						getBlockOrderFromStore(clientId)
+					),
 					isTyping: isTyping(),
 					blockIndex: currentBlockIndex,
 					blockRootClientId: getBlockRootClientId(clientId),

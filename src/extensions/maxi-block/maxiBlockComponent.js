@@ -573,56 +573,27 @@ class MaxiBlockComponent extends Component {
 		const cleanedThis = propsObjectCleaner(this.props);
 		const cleanedNext = propsObjectCleaner(nextProps);
 		// Gutenberg sometimes alternates attributes as null/undefined vs {} with no keys;
-		// lodash isEqual(null, {}) is false but there is nothing to list in attributeKeysDiff.
+		// lodash isEqual(null, {}) is false but there is nothing meaningful to diff.
 		const normalizeAttributesForCompare = attr =>
 			attr == null ? {} : attr;
-		const compareThis = {
-			...cleanedThis,
-			attributes: normalizeAttributesForCompare(cleanedThis.attributes),
-			hasInnerBlocks: getHasInnerBlocksStableForScu(
-				this.props.clientId,
-				cleanedThis.hasInnerBlocks
-			),
-		};
-		const compareNext = {
-			...cleanedNext,
-			attributes: normalizeAttributesForCompare(cleanedNext.attributes),
-			hasInnerBlocks: getHasInnerBlocksStableForScu(
-				nextProps.clientId,
-				cleanedNext.hasInnerBlocks
-			),
-		};
-		let result = !isEqual(compareThis, compareNext);
-		let compareThisEff = compareThis;
-
-		// lodash isEqual(attributes) can be false while every enumerable top-level key matches
-		// (e.g. {} vs [], different object "tags", or reference-only churn). Empty key diff ⇒
-		// treat attributes as next props' object for equality only — still re-render if
-		// hasInnerBlocks / other props differ.
-		if (result) {
-			const changedPre = Object.keys({
-				...compareThis,
-				...compareNext,
-			}).filter(k => !isEqual(compareThis[k], compareNext[k]));
-			if (changedPre.includes('attributes')) {
-				const a = compareThis.attributes;
-				const b = compareNext.attributes;
-				const topKeys = new Set([
-					...Object.keys(a || {}),
-					...Object.keys(b || {}),
-				]);
-				const attributeKeysDiffPre = [...topKeys].filter(
-					k => !isEqual(a?.[k], b?.[k])
-				);
-				if (attributeKeysDiffPre.length === 0) {
-					compareThisEff = {
-						...compareThis,
-						attributes: compareNext.attributes,
-					};
-					result = !isEqual(compareThisEff, compareNext);
-				}
+		const result = !isEqual(
+			{
+				...cleanedThis,
+				attributes: normalizeAttributesForCompare(cleanedThis.attributes),
+				hasInnerBlocks: getHasInnerBlocksStableForScu(
+					this.props.clientId,
+					cleanedThis.hasInnerBlocks
+				),
+			},
+			{
+				...cleanedNext,
+				attributes: normalizeAttributesForCompare(cleanedNext.attributes),
+				hasInnerBlocks: getHasInnerBlocksStableForScu(
+					nextProps.clientId,
+					cleanedNext.hasInnerBlocks
+				),
 			}
-		}
+		);
 
 		if (this.shouldMaxiBlockUpdate) {
 			return (

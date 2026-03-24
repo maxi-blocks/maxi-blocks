@@ -2,9 +2,8 @@
  * WordPress dependencies
  */
 import { dispatch, select, useDispatch, useSelect } from '@wordpress/data';
-import { createHigherOrderComponent } from '@wordpress/compose';
+import { createHigherOrderComponent, pure } from '@wordpress/compose';
 import {
-	memo,
 	useCallback,
 	useContext,
 	useEffect,
@@ -69,42 +68,16 @@ function MaxiInterBlockInserterIfNotTyping({ ownProps, inserterRef }) {
 }
 
 /**
- * @wordpress/compose `pure()` uses shallow compare on BlockEdit props. After a sibling is
- * inserted (often via the main inserter), core can pass a new `attributes` object reference
- * for unchanged blocks; shallow compare fails and every Maxi block wrapped here re-renders.
- * Deep-equality for `attributes` / `context` matches MaxiBlockComponent SCU behaviour.
- *
- * @param {Object} prev - Previous BlockEdit props.
- * @param {Object} next - Next BlockEdit props.
- * @return {boolean} True when props are considered equal (skip re-render).
+ * Use `pure()` (shallow compare) for the HOC body, not `React.memo` with a custom deep
+ * comparator on `attributes`/`context`. The custom comparator could skip renders while
+ * core/editor state still required an update, which surfaced as invalid BlockEdit / broken
+ * inspector in E2E. `MaxiInterBlockInserterIfNotTyping` + stable `useSelect` identity below
+ * keep the intended perf wins without that risk.
  */
-function areMaxiWithMaxiPropsOwnPropsEqual(prev, next) {
-	if (prev === next) {
-		return true;
-	}
-	const keys = new Set([
-		...Object.keys(prev || {}),
-		...Object.keys(next || {}),
-	]);
-	for (const key of keys) {
-		const a = prev[key];
-		const b = next[key];
-		if (key === 'attributes' || key === 'context') {
-			if (!isEqual(a, b)) {
-				return false;
-			}
-			continue;
-		}
-		if (!Object.is(a, b)) {
-			return false;
-		}
-	}
-	return true;
-}
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
-		memo(ownProps => {
+		pure(ownProps => {
 			if (!ownProps) return null;
 			const {
 				setAttributes,
@@ -587,7 +560,7 @@ const withMaxiProps = createHigherOrderComponent(
 					)} */}
 				</>
 			);
-		}, areMaxiWithMaxiPropsOwnPropsEqual),
+		}),
 	'withMaxiProps'
 );
 

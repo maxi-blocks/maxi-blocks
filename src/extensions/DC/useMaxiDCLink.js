@@ -12,6 +12,11 @@ import getDCNewLinkSettings from './getDCNewLinkSettings';
 import getDCValues from './getDCValues';
 import DC_LINK_BLOCKS from '@components/toolbar/components/link/dcLinkBlocks';
 
+/**
+ * External dependencies
+ */
+import { isEqual } from 'lodash';
+
 const useMaxiDCLink = (
 	blockName,
 	attributes,
@@ -36,7 +41,10 @@ const useMaxiDCLink = (
 					dynamicContentProps,
 					clientId
 				);
-				if (newLinkSettings) {
+				if (
+					newLinkSettings &&
+					!isEqual(newLinkSettings, attributes.linkSettings)
+				) {
 					dispatch(
 						'core/block-editor'
 					).__unstableMarkNextChangeAsNotPersistent();

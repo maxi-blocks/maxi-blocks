@@ -14,6 +14,7 @@ import classnames from 'classnames';
 /**
  * Internal dependencies
  */
+import getHasSelectedDescendant from '@extensions/maxi-block/getHasSelectedDescendant';
 import Button from '@components/button';
 import Dropdown from '@components/dropdown';
 import Popover from '@components/popover';
@@ -62,6 +63,12 @@ const BlockInserter = props => {
 	);
 };
 
+/**
+ * Toggle for WrapperBlockInserter / single-target branch. Opens `Inserter` with
+ * `rootClientId` + `isAppender` + `__experimentalIsQuick` (append into one list).
+ * Core’s left sidebar uses the global insertion point instead — store updates and
+ * transient `getBlockOrder` can differ; container/column/row edit stabilize `hasInnerBlocks`.
+ */
 const ButtonInserter = props => {
 	const { onToggle, style = {} } = props;
 
@@ -102,7 +109,13 @@ const ButtonInserter = props => {
 };
 
 const WrapperBlockInserter = forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild } = props;
+	const { clientId, isSelected } = props;
+
+	/** Subscribed here so parent blocks (withMaxiProps) do not re-render on descendant selection. */
+	const hasSelectedChild = useSelect(
+		sel => getHasSelectedDescendant(sel, clientId),
+		[clientId]
+	);
 
 	const { getBlockName, getBlockParents } = select('core/block-editor');
 

@@ -1,13 +1,14 @@
 /**
  * WordPress dependencies
  */
+import { select } from '@wordpress/data';
 import { createRef } from '@wordpress/element';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { round, isEqual } from 'lodash';
+import { round, isEmpty, isEqual } from 'lodash';
 
 /**
  * Internal dependencies
@@ -168,6 +169,82 @@ class edit extends MaxiBlockComponent {
 		this.context.removeColumnClientId(this.props.clientId);
 	}
 
+	/**
+	 * Same stabilization as row/container: avoid flipping `renderAppender` when `withMaxiProps`
+	 * briefly reports no inner blocks during a store update (e.g. main inserter).
+	 *
+	 * @return {boolean}
+	 */
+	getHasInnerBlocksStable() {
+		const { clientId, hasInnerBlocks } = this.props;
+		return (
+			hasInnerBlocks ||
+			!isEmpty(select('core/block-editor').getBlockOrder(clientId))
+		);
+	}
+
+	/**
+	 * Memoize innerBlocksSettings to avoid a new object reference on every render.
+	 */
+	getMemoizedInnerBlocksSettings() {
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
+
+		// ALLOWED_BLOCKS is expensive: computed once per repeaterStatus change.
+		const repeaterStatus = this.props.repeaterStatus;
+		if (
+			!this._memoizedAllowedBlocks ||
+			this._prevRepeaterStatus !== repeaterStatus
+		) {
+			this._prevRepeaterStatus = repeaterStatus;
+			this._memoizedAllowedBlocks = wp.blocks
+				.getBlockTypes()
+				.map(block => block.name)
+				.filter(
+					blockName =>
+						[
+							'maxi-blocks/container-maxi',
+							'maxi-blocks/column-maxi',
+							'maxi-blocks/pane-maxi',
+							'maxi-blocks/maxi-cloud',
+							'maxi-blocks/slide-maxi',
+							'maxi-blocks/list-item-maxi',
+							'core/list-item',
+							...DISALLOWED_BLOCKS,
+						].indexOf(blockName) === -1
+				)
+				.concat(
+					repeaterStatus
+						? Array(DISALLOWED_BLOCKS.length).fill(null)
+						: DISALLOWED_BLOCKS
+				);
+		}
+
+		const next = {
+			allowedBlocks: this._memoizedAllowedBlocks,
+			orientation: 'vertical',
+			templateLock: false,
+			renderAppender: !hasInnerBlocks
+				? this.renderColumnAppender
+				: false,
+		};
+
+		if (
+			this._memoizedInnerBlocksSettings &&
+			isEqual(this._memoizedInnerBlocksSettings, next)
+		) {
+			return this._memoizedInnerBlocksSettings;
+		}
+
+		this._memoizedInnerBlocksSettings = next;
+		return next;
+	}
+
+	/** Stable renderAppender for column — avoids inline function on every render. */
+	renderColumnAppender = () => {
+		const { clientId } = this.props;
+		return <BlockInserter clientId={clientId} />;
+	};
+
 	get getStylesObject() {
 		return getStyles(
 			{
@@ -185,36 +262,10 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const {
-			attributes,
-			deviceType,
-			maxiSetAttributes,
-			hasInnerBlocks,
-			clientId,
-		} = this.props;
+		const { attributes, deviceType, maxiSetAttributes, clientId } =
+			this.props;
 		const { uniqueID } = attributes;
-
-		const ALLOWED_BLOCKS = wp.blocks
-			.getBlockTypes()
-			.map(block => block.name)
-			.filter(
-				blockName =>
-					[
-						'maxi-blocks/container-maxi',
-						'maxi-blocks/column-maxi',
-						'maxi-blocks/pane-maxi',
-						'maxi-blocks/maxi-cloud',
-						'maxi-blocks/slide-maxi',
-						'maxi-blocks/list-item-maxi',
-						'core/list-item',
-						...DISALLOWED_BLOCKS,
-					].indexOf(blockName) === -1
-			)
-			.concat(
-				this.props.repeaterStatus
-					? Array(DISALLOWED_BLOCKS.length).fill(null)
-					: DISALLOWED_BLOCKS
-			);
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
 
 		const emptyColumnClass = !hasInnerBlocks
 			? 'maxi-column-block__empty'
@@ -244,7 +295,10 @@ class edit extends MaxiBlockComponent {
 					<MaxiBlock
 						key={`maxi-column--${uniqueID}`}
 						ref={this.blockRef}
-						{...getMaxiBlockAttributes(this.props)}
+						{...getMaxiBlockAttributes({
+							...this.props,
+							hasInnerBlocks,
+						})}
 						isOverflowHidden={getIsOverflowHidden(
 							attributes,
 							deviceType
@@ -284,14 +338,7 @@ class edit extends MaxiBlockComponent {
 							});
 						}}
 						useInnerBlocks
-						innerBlocksSettings={{
-							allowedBlocks: ALLOWED_BLOCKS,
-							orientation: 'vertical',
-							templateLock: false,
-							renderAppender: !hasInnerBlocks
-								? () => <BlockInserter clientId={clientId} />
-								: false,
-						}}
+						innerBlocksSettings={this.getMemoizedInnerBlocksSettings()}
 						cleanStyles
 					/>,
 				]}

@@ -22,7 +22,6 @@ const getMaxiBlockAttributes = props => {
 		hasInnerBlocks,
 		isChild,
 		isSelected,
-		hasSelectedChild,
 		repeaterStatus,
 	} = props;
 	const {
@@ -80,7 +79,6 @@ const getMaxiBlockAttributes = props => {
 		isRepeater,
 		isChild,
 		isSelected,
-		hasSelectedChild,
 		dcStatus,
 		dcHide,
 		dcLinkStatus,

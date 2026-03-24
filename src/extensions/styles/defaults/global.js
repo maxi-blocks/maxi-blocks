@@ -19,6 +19,9 @@ const global = {
 	},
 	isFirstOnHierarchy: {
 		type: 'boolean',
+		// Default false so nested blocks are not undefined vs false after list updates / parse.
+		// Top-level blocks still get true from withAttributes when !getBlockRootClientId(clientId).
+		default: false,
 	},
 	linkSettings: {
 		type: 'object',

@@ -25,6 +25,11 @@ import {
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
+ * External dependencies
+ */
+import { isEmpty, isEqual } from 'lodash';
+
+/**
  * General
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/row-maxi'];
@@ -95,17 +100,69 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (!this.props.hasInnerBlocks) {
+		const { clientId, hasInnerBlocks } = this.props;
+		if (
+			!hasInnerBlocks &&
+			isEmpty(select('core/block-editor').getBlockOrder(clientId))
+		) {
 			const { removeBlock } = dispatch('core/block-editor');
-			removeBlock(this.props.clientId);
+			removeBlock(clientId);
 		}
+	}
+
+	/**
+	 * OR subscribed `hasInnerBlocks` with a sync `getBlockOrder` read so a brief false
+	 * during sibling insert (main inserter) does not swap InnerBlocks template/appender
+	 * and re-render every row/column under this container.
+	 *
+	 * @return {boolean}
+	 */
+	getHasInnerBlocksStable() {
+		const { clientId, hasInnerBlocks } = this.props;
+		return (
+			hasInnerBlocks ||
+			!isEmpty(select('core/block-editor').getBlockOrder(clientId))
+		);
+	}
+
+	/** Stable renderAppender callback — avoids inline function on every render. */
+	renderContainerAppender = () => {
+		const { clientId } = this.props;
+		return <BlockInserter clientId={clientId} />;
+	};
+
+	/**
+	 * Memoize innerBlocksSettings so MaxiBlock / InnerBlocks see a stable object
+	 * reference when the logical settings have not changed.
+	 */
+	getMemoizedInnerBlocksSettings() {
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
+
+		const next = {
+			allowedBlocks: ALLOWED_BLOCKS,
+			template: !hasInnerBlocks ? ROW_TEMPLATE : false,
+			templateLock: false,
+			orientation: 'horizontal',
+			renderAppender: !hasInnerBlocks
+				? this.renderContainerAppender
+				: false,
+		};
+
+		if (
+			this._memoizedInnerBlocksSettings &&
+			isEqual(this._memoizedInnerBlocksSettings, next)
+		) {
+			return this._memoizedInnerBlocksSettings;
+		}
+
+		this._memoizedInnerBlocksSettings = next;
+		return next;
 	}
 
 	render() {
 		const {
 			attributes,
 			deviceType,
-			hasInnerBlocks,
 			maxiSetAttributes,
 			clientId,
 			insertInlineStyles,
@@ -113,6 +170,7 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -126,16 +184,11 @@ class edit extends MaxiBlockComponent {
 				key={`maxi-container--${uniqueID}`}
 				ref={this.blockRef}
 				useInnerBlocks
-				innerBlocksSettings={{
-					allowedBlocks: ALLOWED_BLOCKS,
-					template: !hasInnerBlocks ? ROW_TEMPLATE : false,
-					templateLock: false,
-					orientation: 'horizontal',
-					renderAppender: !hasInnerBlocks
-						? () => <BlockInserter clientId={clientId} />
-						: false,
-				}}
-				{...getMaxiBlockAttributes(this.props)}
+				innerBlocksSettings={this.getMemoizedInnerBlocksSettings()}
+				{...getMaxiBlockAttributes({
+					...this.props,
+					hasInnerBlocks,
+				})}
 			>
 				{attributes['shape-divider-top-status'] && (
 					<ShapeDivider

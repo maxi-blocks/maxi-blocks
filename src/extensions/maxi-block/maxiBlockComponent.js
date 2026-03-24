@@ -125,6 +125,24 @@ const recordPerf = (label, start) => {
 };
 
 /**
+ * Align `hasInnerBlocks` with the block store for SCU only, so a transient false during
+ * main-inserter / sibling updates does not force a render when `getBlockOrder` still has items.
+ *
+ * @param {string|undefined} clientId   Block client id.
+ * @param {boolean|undefined} fromProps Value from cleaned props.
+ * @return {boolean} Effective value for comparison.
+ */
+const getHasInnerBlocksStableForScu = (clientId, fromProps) => {
+	if (!clientId) {
+		return !!fromProps;
+	}
+	return (
+		!!fromProps ||
+		!isEmpty(select('core/block-editor').getBlockOrder(clientId))
+	);
+};
+
+/**
  * Class
  */
 class MaxiBlockComponent extends Component {
@@ -515,7 +533,9 @@ class MaxiBlockComponent extends Component {
 			this.props.deviceType !== nextProps.deviceType ||
 			this.props.baseBreakpoint !== nextProps.baseBreakpoint;
 
-		if (wasBreakpointChanged) return true;
+		if (wasBreakpointChanged) {
+			return true;
+		}
 
 		if (
 			this.props?.attributes?.blockStyle &&
@@ -524,7 +544,9 @@ class MaxiBlockComponent extends Component {
 			return true;
 
 		// Check changes on states
-		if (!isEqual(this.state, nextState)) return true;
+		if (!isEqual(this.state, nextState)) {
+			return true;
+		}
 
 		// Force rendering the block when SC related values change
 		if (this.scProps && this.state.oldSC && !isEmpty(this.state.oldSC)) {
@@ -548,10 +570,59 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		const result = !isEqual(
-			propsObjectCleaner(this.props),
-			propsObjectCleaner(nextProps)
-		);
+		const cleanedThis = propsObjectCleaner(this.props);
+		const cleanedNext = propsObjectCleaner(nextProps);
+		// Gutenberg sometimes alternates attributes as null/undefined vs {} with no keys;
+		// lodash isEqual(null, {}) is false but there is nothing to list in attributeKeysDiff.
+		const normalizeAttributesForCompare = attr =>
+			attr == null ? {} : attr;
+		const compareThis = {
+			...cleanedThis,
+			attributes: normalizeAttributesForCompare(cleanedThis.attributes),
+			hasInnerBlocks: getHasInnerBlocksStableForScu(
+				this.props.clientId,
+				cleanedThis.hasInnerBlocks
+			),
+		};
+		const compareNext = {
+			...cleanedNext,
+			attributes: normalizeAttributesForCompare(cleanedNext.attributes),
+			hasInnerBlocks: getHasInnerBlocksStableForScu(
+				nextProps.clientId,
+				cleanedNext.hasInnerBlocks
+			),
+		};
+		let result = !isEqual(compareThis, compareNext);
+		let compareThisEff = compareThis;
+
+		// lodash isEqual(attributes) can be false while every enumerable top-level key matches
+		// (e.g. {} vs [], different object "tags", or reference-only churn). Empty key diff ⇒
+		// treat attributes as next props' object for equality only — still re-render if
+		// hasInnerBlocks / other props differ.
+		if (result) {
+			const changedPre = Object.keys({
+				...compareThis,
+				...compareNext,
+			}).filter(k => !isEqual(compareThis[k], compareNext[k]));
+			if (changedPre.includes('attributes')) {
+				const a = compareThis.attributes;
+				const b = compareNext.attributes;
+				const topKeys = new Set([
+					...Object.keys(a || {}),
+					...Object.keys(b || {}),
+				]);
+				const attributeKeysDiffPre = [...topKeys].filter(
+					k => !isEqual(a?.[k], b?.[k])
+				);
+				if (attributeKeysDiffPre.length === 0) {
+					compareThisEff = {
+						...compareThis,
+						attributes: compareNext.attributes,
+					};
+					result = !isEqual(compareThisEff, compareNext);
+				}
+			}
+		}
 
 		if (this.shouldMaxiBlockUpdate) {
 			return (

@@ -117,7 +117,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		hasInnerBlocks = false,
 		isRepeater,
 		isSelected,
-		hasSelectedChild,
 		isHovered,
 		isChild,
 		dcStatus,
@@ -301,7 +300,6 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 			blockName={blockName}
 			hasInnerBlocks={hasInnerBlocks}
 			isSelected={isSelected}
-			hasSelectedChild={hasSelectedChild}
 			pagination={pagination}
 		>
 			{children}

@@ -33,7 +33,6 @@ const getInnerBlocksChild = ({
 	clientId,
 	hasInnerBlocks,
 	isSelected,
-	hasSelectedChild,
 	renderWrapperInserter = true,
 	isChild,
 	isDisabled,
@@ -75,7 +74,6 @@ const getInnerBlocksChild = ({
 					ref={ref}
 					clientId={clientId}
 					isSelected={isSelected}
-					hasSelectedChild={hasSelectedChild}
 				/>
 			)),
 		];
@@ -117,7 +115,6 @@ const getInnerBlocksChild = ({
 				ref={ref}
 				clientId={clientId}
 				isSelected={isSelected}
-				hasSelectedChild={hasSelectedChild}
 			/>
 		)),
 	];
@@ -138,7 +135,6 @@ const MainInnerBlocksBlock = forwardRef(
 			clientId,
 			hasInnerBlocks,
 			isSelected,
-			hasSelectedChild,
 			renderWrapperInserter,
 			isChild,
 			isDisabled,
@@ -179,7 +175,6 @@ const MainInnerBlocksBlock = forwardRef(
 				clientId,
 				hasInnerBlocks,
 				isSelected,
-				hasSelectedChild,
 				renderWrapperInserter,
 				isChild,
 				isDisabled,

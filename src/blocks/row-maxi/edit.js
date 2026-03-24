@@ -301,13 +301,29 @@ class edit extends MaxiBlockComponent {
 	};
 
 	/**
+	 * Whether this row already has column inner blocks. ORs the subscribed prop with a
+	 * synchronous `getBlockOrder` read so a brief false from `withMaxiProps` during a
+	 * sibling insert (main inserter) does not swap InnerBlocks settings and force column
+	 * children to reconcile.
+	 *
+	 * @return {boolean}
+	 */
+	getHasInnerBlocksStable() {
+		const { clientId, hasInnerBlocks } = this.props;
+		return (
+			hasInnerBlocks ||
+			!isEmpty(select('core/block-editor').getBlockOrder(clientId))
+		);
+	}
+
+	/**
 	 * Memoize innerBlocksSettings so MaxiBlock / InnerBlocks see a stable object when
 	 * logical settings did not change.
 	 *
 	 * @return {Object} Settings object for useInnerBlocksProps.
 	 */
 	getMemoizedInnerBlocksSettings() {
-		const { hasInnerBlocks } = this.props;
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
 
 		const next = {
 			...(hasInnerBlocks && { templateLock: 'insert' }),
@@ -572,8 +588,9 @@ class edit extends MaxiBlockComponent {
 	}
 
 	render() {
-		const { attributes, clientId, hasInnerBlocks } = this.props;
+		const { attributes, clientId } = this.props;
 		const { uniqueID } = attributes;
+		const hasInnerBlocks = this.getHasInnerBlocksStable();
 
 		const emptyRowClass = !hasInnerBlocks
 			? 'maxi-row-block__empty'
@@ -636,6 +653,7 @@ class edit extends MaxiBlockComponent {
 						{...getMaxiBlockAttributes({
 							...this.props,
 							...repeaterContext,
+							hasInnerBlocks,
 						})}
 						useInnerBlocks
 						innerBlocksSettings={this.getMemoizedInnerBlocksSettings()}

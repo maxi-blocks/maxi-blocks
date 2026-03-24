@@ -15,6 +15,7 @@ import {
  * Internal dependencies
  */
 import { getGroupAttributes } from '@extensions/styles';
+import contextLoopSchema from '@extensions/styles/defaults/contextLoop';
 import { orderByRelations, orderRelations } from './constants';
 import LoopContext from './loopContext';
 import getDCOptions from './getDCOptions';
@@ -28,7 +29,161 @@ import {
 /**
  * External dependencies
  */
-import { isNumber, merge, isEmpty } from 'lodash';
+import { isNumber, isEqual, merge, isEmpty, isPlainObject } from 'lodash';
+
+// Map of CL attribute keys that have explicit schema defaults.
+// Used to treat undefined and default-value as equivalent during stabilization,
+// preventing spurious context cascade when Gutenberg fills in attribute defaults
+// after block migration (e.g. cl-pagination: undefined → false).
+const CL_SCHEMA_DEFAULTS = Object.fromEntries(
+	Object.entries(contextLoopSchema)
+		.filter(([, def]) => 'default' in def)
+		.map(([k, def]) => [k, def.default])
+);
+
+/** Only these keys participate in context-loop snapshot equality (ignores merge cruft). */
+const CONTEXT_LOOP_SNAPSHOT_KEYS = new Set([
+	...Object.keys(contextLoopSchema),
+	'cl-accumulator',
+	'prevContextLoopStatus',
+]);
+
+const pickForContextLoopSnapshot = obj => {
+	if (!obj || typeof obj !== 'object') return {};
+	const out = {};
+	for (const k of Object.keys(obj)) {
+		if (CONTEXT_LOOP_SNAPSHOT_KEYS.has(k)) out[k] = obj[k];
+	}
+	return out;
+};
+
+/** Optional relation ids: editor alternates missing, 0, '', and numeric strings. */
+const UNSETTABLE_CL_RELATION_ID_KEYS = new Set([
+	'cl-id',
+	'cl-author',
+	'cl-acf-group',
+]);
+
+/**
+ * Drop “unset” shapes that migrate/merge alternate with missing keys.
+ */
+const pruneUnsetLikeFromContextLoopSnap = snap => {
+	if (!snap || typeof snap !== 'object') return snap;
+	const out = { ...snap };
+	for (const k of Object.keys(out)) {
+		const v = out[k];
+		if (v === '') {
+			delete out[k];
+			continue;
+		}
+		if (UNSETTABLE_CL_RELATION_ID_KEYS.has(k)) {
+			if (v === null || v === undefined) {
+				delete out[k];
+				continue;
+			}
+			const n = Number(v);
+			if (!Number.isFinite(n) || n === 0) {
+				delete out[k];
+				continue;
+			}
+			out[k] = n;
+			continue;
+		}
+		if (Array.isArray(v) && v.length === 0) {
+			delete out[k];
+			continue;
+		}
+		if (isPlainObject(v) && isEmpty(v)) {
+			delete out[k];
+			continue;
+		}
+	}
+	return out;
+};
+
+/**
+ * Normalize CL attributes for stable comparison: keys whose value equals
+ * the schema default are treated as if absent (undefined). This prevents
+ * a re-render cascade when Gutenberg transitions attributes from undefined
+ * to their explicit default after block migration.
+ */
+const normalizeCLAttrs = obj => {
+	if (!obj) return obj;
+	const result = {};
+	for (const [k, v] of Object.entries(obj)) {
+		// Treat null the same as undefined (both mean "not set")
+		if (v === undefined || v === null) continue;
+		// Omit values that equal the schema default
+		if (k in CL_SCHEMA_DEFAULTS && isEqual(v, CL_SCHEMA_DEFAULTS[k]))
+			continue;
+		result[k] = v;
+	}
+	return result;
+};
+
+const EMPTY_NORM = {};
+
+/**
+ * After schema-default normalization, fold shapes that differ only by migration/merge
+ * (e.g. cl-status missing vs false, prevContextLoopStatus absent vs false, unset
+ * accumulator) so parent/merged context snapshots stay stable.
+ */
+const stabilizeContextLoopSnapshotForCompare = snap => {
+	if (!snap || typeof snap !== 'object') return EMPTY_NORM;
+	const out = { ...snap };
+	if (!out['cl-status']) {
+		delete out['cl-status'];
+	}
+	if (!out['prevContextLoopStatus']) {
+		delete out['prevContextLoopStatus'];
+	}
+	const acc = out['cl-accumulator'];
+	if (
+		acc === null ||
+		acc === undefined ||
+		(typeof acc === 'number' && Number.isNaN(acc))
+	) {
+		delete out['cl-accumulator'];
+	}
+	return Object.keys(out).length ? out : EMPTY_NORM;
+};
+
+/**
+ * Normalized + whitelisted + stabilized snapshot for Maps / prev cache.
+ */
+const normSnapFromContextLoopObject = raw =>
+	stabilizeContextLoopSnapshotForCompare(
+		pruneUnsetLikeFromContextLoopSnap(
+			pickForContextLoopSnapshot(normalizeCLAttrs(raw) || {})
+		)
+	);
+
+/**
+ * Coerce parent accumulator for arithmetic; undefined + n is NaN and breaks
+ * normalized context snapshots across renders.
+ */
+const safeAccumulatorBase = n =>
+	isNumber(n) && !Number.isNaN(n) ? n : 0;
+
+/**
+ * Per-clientId caches so referential stability survives HOC remounts during
+ * block migration (refs reset to null while clientId stays the same).
+ * Intentionally no useEffect cleanup: React Strict Mode and migrator remounts
+ * would clear entries and force new contextLoop / Provider value references
+ * (duplicate [LoopContext.Provider updating] for the same block).
+ * Stale rows are tiny; clientIds are not reused for different blocks.
+ */
+const stableCLGroupAttrsByClientId = new Map();
+const stableContextLoopByClientId = new Map();
+/**
+ * Stable { contextLoop } reference per clientId so React Context does not see a new
+ * value object on Strict Mode remount / instance remount when contextLoop ref is unchanged.
+ */
+const stableLoopProviderValueByClientId = new Map();
+/** Parent contextLoop ref when norm snap matches (avoids rawContextLoop useMemo churn). */
+const stablePrevLoopRefByClientId = new Map();
+/** Merged raw contextLoop object when norm snap matches (same as emitted ref layer). */
+const stableRawContextLoopByClientId = new Map();
 
 export const ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP = {
 	'maxi-blocks/row-maxi': 'maxi-blocks/column-maxi',
@@ -65,18 +220,57 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			}
 			const { attributes, clientId, name, setAttributes } = ownProps;
 
-			let prevContextLoopAttributes = null;
+			// Always call useContext unconditionally (rules of hooks).
+			// For isFirstOnHierarchy blocks there is no ancestor provider, so
+			// this returns null/undefined and causes no extra re-renders.
+			const loopContext = useContext(LoopContext);
+			const rawPrevContextLoopAttributes =
+				!attributes.isFirstOnHierarchy && loopContext
+					? loopContext.contextLoop
+					: null;
 
-			if (!attributes.isFirstOnHierarchy) {
-				const context = useContext(LoopContext);
-
-				if (context) prevContextLoopAttributes = context.contextLoop;
+			// Reuse parent contextLoop ref when norm snap matches (same pipeline as
+			// emitted). New parent object refs alone were invalidating rawContextLoop useMemo.
+			let prevContextLoopAttributes;
+			if (rawPrevContextLoopAttributes == null) {
+				stablePrevLoopRefByClientId.delete(clientId);
+				prevContextLoopAttributes = null;
+			} else {
+				const prevLoopSnap = normSnapFromContextLoopObject(
+					rawPrevContextLoopAttributes
+				);
+				const cachedPrevLoop = stablePrevLoopRefByClientId.get(clientId);
+				if (cachedPrevLoop && isEqual(cachedPrevLoop.snap, prevLoopSnap)) {
+					prevContextLoopAttributes = cachedPrevLoop.ref;
+				} else {
+					stablePrevLoopRefByClientId.set(clientId, {
+						snap: prevLoopSnap,
+						ref: rawPrevContextLoopAttributes,
+					});
+					prevContextLoopAttributes = rawPrevContextLoopAttributes;
+				}
 			}
 
-			const contextLoopAttributes = useMemo(
-				() => getGroupAttributes(attributes, 'contextLoop'),
-				[attributes]
+			// Referential stability for own CL group attrs: normalized snapshot +
+			// clientId map (refs alone reset on remount during migrators).
+			const freshContextLoopAttributes = getGroupAttributes(
+				attributes,
+				'contextLoop'
 			);
+			const normSnapOwn = normSnapFromContextLoopObject(
+				freshContextLoopAttributes
+			);
+			const cachedGroup = stableCLGroupAttrsByClientId.get(clientId);
+			let contextLoopAttributes;
+			if (cachedGroup && isEqual(cachedGroup.snap, normSnapOwn)) {
+				contextLoopAttributes = cachedGroup.groupAttrs;
+			} else {
+				stableCLGroupAttrsByClientId.set(clientId, {
+					snap: normSnapOwn,
+					groupAttrs: freshContextLoopAttributes,
+				});
+				contextLoopAttributes = freshContextLoopAttributes;
+			}
 
 			// Skip Provider for container blocks without Context Loop enabled (FSE only)
 			// Check cheap conditions first, then only check FSE if needed
@@ -158,7 +352,10 @@ const withMaxiContextLoop = createHigherOrderComponent(
 							ALLOWED_ACCUMULATOR_PARENT_CHILD_MAP[parent.name] &&
 						currentBlockIndex !== 0
 					) {
-						return prevAccumulator + currentBlockIndex;
+						return (
+							safeAccumulatorBase(prevAccumulator) +
+							currentBlockIndex
+						);
 					}
 
 					const grandchildAllowed =
@@ -193,7 +390,8 @@ const withMaxiContextLoop = createHigherOrderComponent(
 						}
 					}
 
-					return prevAccumulator;
+					const fin = prevAccumulator;
+					return isNumber(fin) && !Number.isNaN(fin) ? fin : null;
 				};
 			}, [
 				attributes.isFirstOnHierarchy,
@@ -206,7 +404,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				prevContextLoopAttributes?.['cl-relation'],
 			]);
 
-			const contextLoop = useMemo(() => {
+			const rawContextLoop = useMemo(() => {
 				return {
 					...merge(
 						{},
@@ -223,11 +421,52 @@ const withMaxiContextLoop = createHigherOrderComponent(
 				prevContextLoopAttributes,
 			]);
 
-			const memoizedValue = useMemo(() => {
-				return {
-					contextLoop,
-				};
-			}, [contextLoop]);
+			const normMergeSnap =
+				normSnapFromContextLoopObject(rawContextLoop);
+			const cachedRawMerge = stableRawContextLoopByClientId.get(clientId);
+			let rawForEmit = rawContextLoop;
+			if (
+				cachedRawMerge &&
+				isEqual(cachedRawMerge.snap, normMergeSnap)
+			) {
+				rawForEmit = cachedRawMerge.raw;
+			} else {
+				stableRawContextLoopByClientId.set(clientId, {
+					snap: normMergeSnap,
+					raw: rawContextLoop,
+				});
+			}
+
+			// Same normalized snapshot for merged contextLoop (merge + accumulator +
+			// prevContextLoopStatus) so default-hydration does not swap the emitted
+			// reference every migrator pass.
+			const normSnapLoop = normMergeSnap;
+			const cachedLoop = stableContextLoopByClientId.get(clientId);
+			const didHitEmittedCache =
+				!!(cachedLoop && isEqual(cachedLoop.snap, normSnapLoop));
+			let contextLoop;
+			if (didHitEmittedCache) {
+				contextLoop = cachedLoop.contextLoop;
+			} else {
+				stableContextLoopByClientId.set(clientId, {
+					snap: normSnapLoop,
+					contextLoop: rawForEmit,
+				});
+				contextLoop = rawForEmit;
+			}
+
+			let loopProviderValue =
+				stableLoopProviderValueByClientId.get(clientId);
+			if (
+				!loopProviderValue ||
+				loopProviderValue.contextLoop !== contextLoop
+			) {
+				loopProviderValue = { contextLoop };
+				stableLoopProviderValueByClientId.set(
+					clientId,
+					loopProviderValue
+				);
+			}
 
 			const wasRelationValidated = useRef(false);
 			const prevRelation = useRef(null);
@@ -291,7 +530,7 @@ const withMaxiContextLoop = createHigherOrderComponent(
 			]);
 
 			return (
-				<LoopContext.Provider value={memoizedValue}>
+				<LoopContext.Provider value={loopProviderValue}>
 					<WrappedComponent {...ownProps} />
 				</LoopContext.Provider>
 			);

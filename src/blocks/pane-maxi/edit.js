@@ -45,8 +45,7 @@ const simplePreset = {
 };
 
 const Content = forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild, hasInnerBlocks, isOpen } =
-		props;
+	const { clientId, isSelected, hasInnerBlocks, isOpen } = props;
 
 	const ALLOWED_BLOCKS = wp.blocks
 		.getBlockTypes()
@@ -83,7 +82,6 @@ const Content = forwardRef((props, ref) => {
 					ref={ref}
 					clientId={clientId}
 					isSelected={isSelected}
-					hasSelectedChild={hasSelectedChild}
 				/>
 			)}
 		</>
@@ -185,7 +183,6 @@ class edit extends MaxiBlockComponent {
 			maxiSetAttributes,
 			clientId,
 			isSelected,
-			hasSelectedChild,
 			hasInnerBlocks,
 		} = this.props;
 		const { uniqueID, title } = attributes;
@@ -271,7 +268,6 @@ class edit extends MaxiBlockComponent {
 						ref={this.blockRef}
 						clientId={clientId}
 						isSelected={isSelected}
-						hasSelectedChild={hasSelectedChild}
 						hasInnerBlocks={hasInnerBlocks}
 						isOpen={this.state.isOpen}
 					/>

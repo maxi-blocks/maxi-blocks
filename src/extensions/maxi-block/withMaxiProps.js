@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { dispatch, select, useDispatch, useSelect } from '@wordpress/data';
-import { createHigherOrderComponent, pure } from '@wordpress/compose';
+import { createHigherOrderComponent } from '@wordpress/compose';
 import {
+	memo,
 	useCallback,
 	useContext,
 	useEffect,
@@ -43,46 +44,67 @@ import { isEmpty, isEqual } from 'lodash';
 const DISABLED_BLOCKS = ['maxi-blocks/list-item-maxi'];
 
 /**
- * True when any selected block (single or multi) is a descendant of `ancestorClientId`.
- * Equivalent to deep `hasSelectedInnerBlock( ancestorClientId, true )` but uses the
- * selection + parent map only, avoiding recursive `getBlockOrder` reads that subscribe
- * to every inner list (and can re-run when sibling lists change even if the boolean
- * result is unchanged).
+ * Subscribes to `isTyping` separately from withMaxiProps' main block-editor useSelect.
+ * Opening the left block inserter moves focus and toggles global `isTyping`, which would
+ * otherwise force every wrapped block to re-render even when its blockIndex / inner order
+ * did not change (wrapper appender path often avoids that focus flip).
  *
- * @param {Function} registrySelect - `select` from the useSelect callback (registry.select).
- * @param {string}                                            ancestorClientId  - Block client id.
- * @return {boolean}
+ * @param {Object}   props
+ * @param {Object}   props.ownProps - Block edit props spread into InterBlockInserter.
+ * @param {import('react').RefObject} props.inserterRef - Shared ref with WrappedComponent.
  */
-function getHasSelectedDescendant(registrySelect, ancestorClientId) {
-	const {
-		getBlockSelectionStart,
-		getMultiSelectedBlockClientIds,
-		getBlockParents,
-	} = registrySelect('core/block-editor');
+function MaxiInterBlockInserterIfNotTyping({ ownProps, inserterRef }) {
+	const isTyping = useSelect(
+		select => select('core/block-editor').isTyping(),
+		[]
+	);
 
-	const multiSelected = getMultiSelectedBlockClientIds();
-	const selectedClientIds =
-		multiSelected.length > 0
-			? multiSelected
-			: (() => {
-					const start = getBlockSelectionStart();
-					return start ? [start] : [];
-			  })();
-
-	for (let i = 0; i < selectedClientIds.length; i += 1) {
-		const selectedId = selectedClientIds[i];
-		const parentsAscending = getBlockParents(selectedId, true);
-		if (parentsAscending.includes(ancestorClientId)) {
-			return true;
-		}
+	if (isTyping || DISABLED_BLOCKS.includes(ownProps.name)) {
+		return null;
 	}
 
-	return false;
+	return (
+		<BlockInserter.InterBlockInserter ref={inserterRef} {...ownProps} />
+	);
+}
+
+/**
+ * @wordpress/compose `pure()` uses shallow compare on BlockEdit props. After a sibling is
+ * inserted (often via the main inserter), core can pass a new `attributes` object reference
+ * for unchanged blocks; shallow compare fails and every Maxi block wrapped here re-renders.
+ * Deep-equality for `attributes` / `context` matches MaxiBlockComponent SCU behaviour.
+ *
+ * @param {Object} prev - Previous BlockEdit props.
+ * @param {Object} next - Next BlockEdit props.
+ * @return {boolean} True when props are considered equal (skip re-render).
+ */
+function areMaxiWithMaxiPropsOwnPropsEqual(prev, next) {
+	if (prev === next) {
+		return true;
+	}
+	const keys = new Set([
+		...Object.keys(prev || {}),
+		...Object.keys(next || {}),
+	]);
+	for (const key of keys) {
+		const a = prev[key];
+		const b = next[key];
+		if (key === 'attributes' || key === 'context') {
+			if (!isEqual(a, b)) {
+				return false;
+			}
+			continue;
+		}
+		if (!Object.is(a, b)) {
+			return false;
+		}
+	}
+	return true;
 }
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
-		pure(ownProps => {
+		memo(ownProps => {
 			if (!ownProps) return null;
 			const {
 				setAttributes,
@@ -125,12 +147,18 @@ const withMaxiProps = createHigherOrderComponent(
 
 			const copyPasteMapping = getBlockData(name)?.copyPasteMapping;
 
+			/** Stable object identity for useSelect when primitive fields are unchanged (@wordpress/data uses result identity). */
+			const stableBlockEditorSelectRef = useRef(null);
+			const stableSelectClientIdRef = useRef(clientId);
+			if (stableSelectClientIdRef.current !== clientId) {
+				stableSelectClientIdRef.current = clientId;
+				stableBlockEditorSelectRef.current = null;
+			}
+
 			const {
 				deviceType,
 				baseBreakpoint,
-				hasSelectedChild,
 				hasInnerBlocks,
-				isTyping,
 				blockIndex,
 				blockRootClientId,
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
@@ -139,7 +167,6 @@ const withMaxiProps = createHigherOrderComponent(
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
 				const {
-					isTyping,
 					getBlockIndex,
 					getBlockRootClientId,
 					getBlockOrder: getBlockOrderFromStore,
@@ -151,17 +178,12 @@ const withMaxiProps = createHigherOrderComponent(
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 				// const allBlocks = getBlocks();
 
-				return {
+				const next = {
 					deviceType: receiveMaxiDeviceType(),
 					baseBreakpoint: receiveBaseBreakpoint(),
-					hasSelectedChild: getHasSelectedDescendant(
-						select,
-						clientId
-					),
 					hasInnerBlocks: !isEmpty(
 						getBlockOrderFromStore(clientId)
 					),
-					isTyping: isTyping(),
 					blockIndex: currentBlockIndex,
 					blockRootClientId: getBlockRootClientId(clientId),
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
@@ -169,6 +191,18 @@ const withMaxiProps = createHigherOrderComponent(
 					// 	attributes?.isFirstOnHierarchy &&
 					// 	currentBlockIndex === allBlocks.length - 1,
 				};
+
+				const prev = stableBlockEditorSelectRef.current;
+				const sameAsPrev =
+					prev &&
+					Object.keys(next).every(k =>
+						Object.is(prev[k], next[k])
+					);
+				if (sameAsPrev) {
+					return prev;
+				}
+				stableBlockEditorSelectRef.current = next;
+				return next;
 			}, [clientId]);
 
 			const parentColumnClientId = useMemo(() => {
@@ -532,7 +566,6 @@ const withMaxiProps = createHigherOrderComponent(
 								)
 							)
 						}
-						hasSelectedChild={hasSelectedChild}
 						repeaterStatus={repeaterContext?.repeaterStatus}
 						repeaterRowClientId={
 							repeaterContext?.repeaterRowClientId
@@ -544,19 +577,17 @@ const withMaxiProps = createHigherOrderComponent(
 							repeaterContext?.updateInnerBlocksPositions
 						}
 					/>
-					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (
-						<BlockInserter.InterBlockInserter
-							ref={ref}
-							{...ownProps}
-						/>
-					)}
+					<MaxiInterBlockInserterIfNotTyping
+						inserterRef={ref}
+						ownProps={ownProps}
+					/>
 					{/* TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806 */}
 					{/* {isLastBlock && (
 						<BlockInserter className='maxi-block-inserter maxi-block-inserter__last' />
 					)} */}
 				</>
 			);
-		}),
+		}, areMaxiWithMaxiPropsOwnPropsEqual),
 	'withMaxiProps'
 );
 

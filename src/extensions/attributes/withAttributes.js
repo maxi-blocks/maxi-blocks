@@ -4,7 +4,12 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { dispatch, select, useDispatch, useSelect } from '@wordpress/data';
-import { useContext, useEffect, useRef } from '@wordpress/element';
+import {
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+} from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -55,7 +60,6 @@ const withAttributes = createHigherOrderComponent(
 			return null;
 		}
 		const { attributes, name: blockName, clientId, setAttributes } = props;
-		const { uniqueID } = attributes;
 
 		const wasUniqueIDAdded = useRef(false);
 
@@ -77,32 +81,60 @@ const withAttributes = createHigherOrderComponent(
 				markNextChangeAsNotPersistent,
 		} = useDispatch('core/block-editor', []);
 
-		if (allowedBlocks.includes(blockName)) {
-			// uniqueID
-			if (isNil(uniqueID)) {
-				const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+		// Never mutate `attributes` during render — it desyncs core/block-editor state from
+		// what child components saw; the next list reconciliation passes a fresh object and
+		// MaxiBlockComponent SCU reports real `attributes` diffs (same log for any inserter).
 
-				attributes.uniqueID = newUniqueID;
-				attributes.customLabel = getCustomLabel(
+		useLayoutEffect(() => {
+			if (!allowedBlocks.includes(blockName)) {
+				return;
+			}
+			const fromStore = select('core/block-editor').getBlock(clientId)
+				?.attributes?.uniqueID;
+			if (!isNil(fromStore) || !isNil(attributes.uniqueID)) {
+				return;
+			}
+			const newUniqueID = uniqueIDGenerator({ blockName, clientId });
+			markNextChangeAsNotPersistent();
+			setAttributes({
+				uniqueID: newUniqueID,
+				customLabel: getCustomLabel(
 					attributes.customLabel,
 					newUniqueID
-				);
+				),
+			});
+			dispatch('maxiBlocks/blocks').addNewBlock(newUniqueID);
+			wasUniqueIDAdded.current = true;
+		}, [
+			blockName,
+			clientId,
+			attributes.uniqueID,
+			attributes.customLabel,
+			setAttributes,
+			markNextChangeAsNotPersistent,
+		]);
 
-				dispatch('maxiBlocks/blocks').addNewBlock(newUniqueID);
-
-				wasUniqueIDAdded.current = true;
+		useLayoutEffect(() => {
+			if (!allowedBlocks.includes(blockName)) {
+				return;
 			}
-
-			// RTL
 			if (
-				'text-alignment-general' in attributes &&
-				!attributes['text-alignment-general']
+				!('text-alignment-general' in attributes) ||
+				attributes['text-alignment-general']
 			) {
-				const { isRTL } = select('core/editor').getEditorSettings();
-
-				attributes['text-alignment-general'] = isRTL ? 'right' : 'left';
+				return;
 			}
-		}
+			const { isRTL } = select('core/editor').getEditorSettings();
+			markNextChangeAsNotPersistent();
+			setAttributes({
+				'text-alignment-general': isRTL ? 'right' : 'left',
+			});
+		}, [
+			blockName,
+			attributes['text-alignment-general'],
+			setAttributes,
+			markNextChangeAsNotPersistent,
+		]);
 
 		useEffect(() => {
 			if (repeaterStatus) {
@@ -111,13 +143,24 @@ const withAttributes = createHigherOrderComponent(
 		}, []);
 
 		useEffect(() => {
-			if (repeaterContext?.repeaterStatus && wasUniqueIDAdded.current) {
-				insertBlockIntoColumns(
-					clientId,
-					repeaterContext?.getInnerBlocksPositions?.()?.[[-1]]
-				);
+			if (
+				!repeaterContext?.repeaterStatus ||
+				!wasUniqueIDAdded.current ||
+				isNil(attributes.uniqueID)
+			) {
+				return;
 			}
-		}, [wasUniqueIDAdded.current]);
+			insertBlockIntoColumns(
+				clientId,
+				repeaterContext?.getInnerBlocksPositions?.()?.[[-1]]
+			);
+			wasUniqueIDAdded.current = false;
+		}, [
+			attributes.uniqueID,
+			clientId,
+			repeaterContext?.repeaterStatus,
+			repeaterContext?.getInnerBlocksPositions,
+		]);
 
 		const checkParentBlocks = clientId => {
 			const block = select('core/block-editor').getBlock(clientId);
@@ -136,34 +179,50 @@ const withAttributes = createHigherOrderComponent(
 		};
 
 		useEffect(() => {
-			if (allowedBlocks.includes(blockName)) {
-				const isFirstOnHierarchy = !blockRootClientId;
-				let isFirstOnHierarchyUpdated = false;
-				const currentClientId = blockRootClientId;
+			if (!allowedBlocks.includes(blockName)) {
+				return;
+			}
 
-				if (!isFirstOnHierarchy) {
-					const isReusableFirstOnHierarchy =
-						checkParentBlocks(currentClientId);
+			const isFirstOnHierarchy = !blockRootClientId;
+			let isFirstOnHierarchyUpdated = false;
+			const currentClientId = blockRootClientId;
 
-					if (isReusableFirstOnHierarchy) {
-						isFirstOnHierarchyUpdated = true;
-						markNextChangeAsNotPersistent();
-						setAttributes({
-							isFirstOnHierarchy: isReusableFirstOnHierarchy,
-						});
-					}
-				}
+			if (!isFirstOnHierarchy) {
+				const isReusableFirstOnHierarchy =
+					checkParentBlocks(currentClientId);
 
-				if (
-					!isFirstOnHierarchyUpdated &&
-					isFirstOnHierarchy !== attributes.isFirstOnHierarchy
-				) {
+				if (isReusableFirstOnHierarchy) {
+					isFirstOnHierarchyUpdated = true;
 					markNextChangeAsNotPersistent();
 					setAttributes({
-						isFirstOnHierarchy,
+						isFirstOnHierarchy: isReusableFirstOnHierarchy,
 					});
-					attributes.isFirstOnHierarchy = isFirstOnHierarchy;
 				}
+			}
+
+			if (isFirstOnHierarchyUpdated) {
+				return;
+			}
+
+			const stored = attributes.isFirstOnHierarchy;
+			// Avoid setAttributes when nested row already behaves as false but attr was never
+			// persisted (undefined). Main inserter reconciliation can re-parse and drop optional
+			// keys, toggling undefined vs false and re-running this effect — real attributes
+			// churn + MaxiBlockComponent SCU noise on sibling rows.
+			const missingMeansFalse =
+				!isFirstOnHierarchy &&
+				(stored === undefined || stored === null);
+
+			if (missingMeansFalse) {
+				return;
+			}
+
+			if (isFirstOnHierarchy !== stored) {
+				markNextChangeAsNotPersistent();
+				setAttributes({
+					isFirstOnHierarchy,
+				});
+				attributes.isFirstOnHierarchy = isFirstOnHierarchy;
 			}
 		}, [blockRootClientId, attributes.isFirstOnHierarchy]);
 

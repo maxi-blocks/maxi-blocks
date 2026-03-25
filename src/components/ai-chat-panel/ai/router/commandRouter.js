@@ -1472,6 +1472,16 @@ const routeCloudSC = rawMessage => {
  * @returns {Promise<import('./types').RouteResult>}
  */
 export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
+	// 0. Style Card routes — must run before attribute groups, which false-positive
+	//    on words like "show", "list", "display" when a block is selected.
+	if ( /\b(?:style[\s-]*cards?|SCs?)\b/i.test( rawMessage ) ) {
+		const earlyScAction = routeSCAction( rawMessage );
+		if ( earlyScAction ) return earlyScAction;
+
+		const earlyCloudSC = routeCloudSC( rawMessage );
+		if ( earlyCloudSC ) return earlyCloudSC;
+	}
+
 	// 1. Text link
 	const textLinkResult = routeTextLink( rawMessage, ctx );
 	if ( textLinkResult ) return textLinkResult;

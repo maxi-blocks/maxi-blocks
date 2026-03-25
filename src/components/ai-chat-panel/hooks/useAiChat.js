@@ -101,6 +101,8 @@ import META_MAXI_PROMPT from '../ai/prompts/meta';
 import INTERACTION_BUILDER_PROMPT from '../ai/prompts/interaction-builder';
 import SYSTEM_PROMPT from '../ai/prompts/system';
 import { useStyleCardData, createStyleCardHandlers } from '../ai/style-card';
+import { updateSCOnEditor } from '@extensions/style-cards';
+import { getNewActiveStyleCards } from '@extensions/style-cards/store/reducer';
 import onRequestInsertPattern from '../../../editor/library/utils/onRequestInsertPattern';
 import { insertMaxiCloudLibraryBlock } from '../utils/insertMaxiCloudLibraryBlock';
 import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';
@@ -4536,11 +4538,24 @@ export const useAiChat = ({ onClose } = {}) => {
 					setMessages( prev => [ ...prev, { role: 'assistant', content } ] );
 
 				if ( action === 'current' ) {
-					const cardName =
-						activeCard?.value?.name ||
-						activeStyleCard?.value?.name ||
-						activeCard?.key ||
-						activeStyleCard?.key;
+					// Scan live allStyleCards for status === 'active' — most reliable source.
+					let cardName = null;
+					if ( allStyleCards ) {
+						for ( const [ key, card ] of Object.entries( allStyleCards ) ) {
+							if ( card.status === 'active' ) {
+								cardName = card.name || key;
+								break;
+							}
+						}
+					}
+					// Fallbacks from selectors
+					if ( ! cardName ) {
+						cardName =
+							activeCard?.value?.name ||
+							activeStyleCard?.value?.name ||
+							activeCard?.key ||
+							activeStyleCard?.key;
+					}
 					addMsg(
 						cardName
 							? `Active Style Card: **${ cardName }**`
@@ -4574,7 +4589,17 @@ export const useAiChat = ({ onClose } = {}) => {
 					const cardName = allStyleCards[ key ]?.name || name;
 					addMsg( `Activating **${ cardName }**…` );
 					setTimeout( () => {
-						setActiveStyleCard?.( key );
+						// Use fresh store data at call time — the hook snapshot may be stale.
+						const freshCards =
+							select( 'maxiBlocks/style-cards' )?.receiveMaxiStyleCards() ||
+							allStyleCards;
+						// Build the new collection with defaults merged (same as the store reducer).
+						const newCollection = getNewActiveStyleCards( freshCards, key );
+						// Save with isUpdate:true → POSTs to DB + updates styleCards + savedStyleCards.
+						saveMaxiStyleCards?.( newCollection, true );
+						// Update CSS custom properties live in the editor DOM.
+						updateSCOnEditor( newCollection[ key ] );
+						// Regenerate server-side SC styles.
 						saveSCStyles?.( true );
 						setIsLoading( false );
 					}, 100 );

@@ -1316,6 +1316,37 @@ const routeOpenCloudLibrary = rawMessage => {
 	return null;
 };
 
+/**
+ * User wants to browse the Style Cards cloud library.
+ * Requires an explicit cloud/library/import signal so it doesn't fire for
+ * local SC browsing ("browse my style cards", "show style cards").
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {import('./types').BrowseCloudSCResult|null}
+ */
+const routeCloudSC = rawMessage => {
+	const INTENTS = [
+		// "style cards" + cloud/library/import signal
+		/\bstyle[\s-]*cards?\b[^.!?]{0,50}\b(?:cloud|library|online|download)\b/i,
+		/\b(?:cloud|library)\b[^.!?]{0,50}\bstyle[\s-]*cards?\b/i,
+		/\bimport\b[^.!?]{0,50}\bstyle[\s-]*card\b[^.!?]{0,30}\b(?:cloud|library|online)?\b/i,
+		/\bstyle[\s-]*cards?\s+from\s+(?:the\s+)?(?:cloud|library|online)\b/i,
+		/\bget\b[^.!?]{0,30}\bstyle[\s-]*card\b[^.!?]{0,30}\b(?:cloud|library)\b/i,
+	];
+
+	if ( ! INTENTS.some( re => re.test( rawMessage ) ) ) return null;
+
+	const lower = rawMessage.toLowerCase();
+	const queryMatch = lower.match(
+		/\b(dark|light|minimal(?:ist)?|bold|elegant|modern|classic|professional|creative|colorful|warm|cool|earthy|bright|pastel|luxury|vintage|corporate|playful|artistic)\b/
+	);
+
+	return {
+		type: 'browse_cloud_sc',
+		params: { query: queryMatch?.[ 1 ] || '', rawMessage },
+	};
+};
+
 // ─── Public API ────────────────────────────────────────────────────────────────
 
 /**
@@ -1351,7 +1382,11 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	const shapeDividerResult = routeShapeDivider( ctx );
 	if ( shapeDividerResult ) return shapeDividerResult;
 
-	// 6b. Cloud Library (browse/search/insert UI)
+	// 6b. Style Cards cloud library browser
+	const cloudSCResult = routeCloudSC( rawMessage );
+	if ( cloudSCResult ) return cloudSCResult;
+
+	// 6c. Cloud Library (browse/search/insert UI — patterns/pages)
 	const openCloudResult = routeOpenCloudLibrary( rawMessage );
 	if ( openCloudResult ) return openCloudResult;
 

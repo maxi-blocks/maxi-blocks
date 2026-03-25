@@ -104,6 +104,7 @@ import { useStyleCardData, createStyleCardHandlers } from '../ai/style-card';
 import onRequestInsertPattern from '../../../editor/library/utils/onRequestInsertPattern';
 import { insertMaxiCloudLibraryBlock } from '../utils/insertMaxiCloudLibraryBlock';
 import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';
+import openCloudSCLibrary from '../utils/openCloudSCLibrary';
 import {
 	parseUnitValue,
 	RESPONSIVE_BREAKPOINTS,
@@ -4506,6 +4507,42 @@ export const useAiChat = ({ onClose } = {}) => {
 					] );
 				}
 				setIsLoading( false );
+				return;
+			}
+
+			case 'browse_cloud_sc': {
+				const { query } = routeResult.params;
+				const hint = query
+					? `Searching for ${ query } style cards…`
+					: __( 'Opening Style Cards cloud library…', 'maxi-blocks' );
+				setMessages( prev => [
+					...prev,
+					{ role: 'assistant', content: hint },
+				] );
+				setTimeout( async () => {
+					try {
+						const opened = await openCloudSCLibrary();
+						if ( ! opened ) {
+							setMessages( prev => [
+								...prev,
+								{
+									role: 'assistant',
+									content: __(
+										'Could not open the Style Cards library automatically. Click "Browse style cards" inside the Style Cards panel.',
+										'maxi-blocks'
+									),
+									executed: false,
+								},
+							] );
+						}
+					} catch ( scBrowseErr ) {
+						console.error(
+							'[Maxi AI] Browse Cloud SC error:',
+							String( scBrowseErr?.message || scBrowseErr )
+						);
+					}
+					setIsLoading( false );
+				}, 100 );
 				return;
 			}
 

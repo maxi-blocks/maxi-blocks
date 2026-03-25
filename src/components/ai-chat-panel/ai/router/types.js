@@ -155,6 +155,18 @@
  */
 
 /**
+ * Router opens the Style Cards cloud library browser.
+ *
+ * @typedef {Object} BrowseCloudSCParams
+ * @property {string} query   Optional keyword extracted from the message (e.g. "dark", "minimal").
+ * @property {string} rawMessage Original user message.
+ *
+ * @typedef {Object} BrowseCloudSCResult
+ * @property {'browse_cloud_sc'} type
+ * @property {BrowseCloudSCParams} params
+ */
+
+/**
  * No client-side pattern matched — send to the AI API.
  *
  * @typedef {Object} PassthroughResult
@@ -164,5 +176,5 @@
 /**
  * Discriminated union of all possible router outcomes.
  *
- * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|OpenCloudLibraryResult|PassthroughResult} RouteResult
+ * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|OpenCloudLibraryResult|BrowseCloudSCResult|PassthroughResult} RouteResult
  */

@@ -1317,6 +1317,85 @@ const routeOpenCloudLibrary = rawMessage => {
 };
 
 /**
+ * Extracts a card name from an SC management phrase, stripping leading articles.
+ *
+ * @param {string} raw Captured group text.
+ * @returns {string}
+ */
+const extractSCName = raw => {
+	return String( raw || '' )
+		.trim()
+		.replace( /^(a|an|the)\s+/i, '' )
+		.trim();
+};
+
+/**
+ * Local Style Card management: activate, reset, delete, edit, current.
+ * Checked before routeCloudSC so "activate X" never falls into the cloud-browser route.
+ *
+ * @param {string} rawMessage
+ * @returns {{ type: 'sc_action', params: Object }|null}
+ */
+const routeSCAction = rawMessage => {
+	// Reset
+	if (
+		/\breset\b[^.!?]{0,80}\b(?:style[\s-]*cards?|SCs?)\b/i.test( rawMessage ) ||
+		/\b(?:style[\s-]*cards?|SCs?)\b[^.!?]{0,80}\breset\b/i.test( rawMessage )
+	) {
+		return { type: 'sc_action', params: { action: 'reset', rawMessage } };
+	}
+
+	// What / which SC is active / current
+	if (
+		/\b(?:what|which)\b[^.!?]{0,60}\b(?:style[\s-]*card|SC)\b/i.test( rawMessage ) ||
+		/\b(?:current|active|applied)\b[^.!?]{0,50}\b(?:style[\s-]*card|SC)\b/i.test( rawMessage ) ||
+		/\b(?:style[\s-]*card|SC)\b[^.!?]{0,50}\b(?:is\s+)?(?:active|current|applied|in\s+use)\b/i.test( rawMessage )
+	) {
+		return { type: 'sc_action', params: { action: 'current', rawMessage } };
+	}
+
+	// Delete / remove by name
+	const deleteMatch = rawMessage.match(
+		/\b(?:delete|remove)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( deleteMatch?.[ 1 ] ) {
+		const name = extractSCName( deleteMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'delete', name, rawMessage } };
+		}
+	}
+
+	// Activate / switch to by name — requires SC noun to avoid false positives
+	const activateMatch = rawMessage.match(
+		/\b(?:activate|switch\s+to)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( activateMatch?.[ 1 ] ) {
+		const name = extractSCName( activateMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'activate', name, rawMessage } };
+		}
+	}
+
+	// Edit / customize named SC
+	const editMatch = rawMessage.match(
+		/\b(?:edit|customize|modify)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( editMatch?.[ 1 ] ) {
+		const name = extractSCName( editMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'edit', name, rawMessage } };
+		}
+	}
+
+	// Open SC editor (no specific card)
+	if ( /\b(?:open|edit)\b[^.!?]{0,40}\b(?:style[\s-]*cards?\s+editor|SC\s+editor)\b/i.test( rawMessage ) ) {
+		return { type: 'sc_action', params: { action: 'edit', name: '', rawMessage } };
+	}
+
+	return null;
+};
+
+/**
  * User wants to browse the Style Cards cloud library.
  * Requires an explicit cloud/library/import signal so it doesn't fire for
  * local SC browsing ("browse my style cards", "show style cards").
@@ -1326,12 +1405,16 @@ const routeOpenCloudLibrary = rawMessage => {
  */
 const routeCloudSC = rawMessage => {
 	const INTENTS = [
-		// "style cards" + cloud/library/import signal
-		/\bstyle[\s-]*cards?\b[^.!?]{0,50}\b(?:cloud|library|online|download)\b/i,
-		/\b(?:cloud|library)\b[^.!?]{0,50}\bstyle[\s-]*cards?\b/i,
-		/\bimport\b[^.!?]{0,50}\bstyle[\s-]*card\b[^.!?]{0,30}\b(?:cloud|library|online)?\b/i,
-		/\bstyle[\s-]*cards?\s+from\s+(?:the\s+)?(?:cloud|library|online)\b/i,
-		/\bget\b[^.!?]{0,30}\bstyle[\s-]*card\b[^.!?]{0,30}\b(?:cloud|library)\b/i,
+		// "style cards" / "SC/SCs" + cloud/library/import signal
+		/\b(?:style[\s-]*cards?|SCs?)\b[^.!?]{0,50}\b(?:cloud|library|online|download)\b/i,
+		/\b(?:cloud|library)\b[^.!?]{0,50}\b(?:style[\s-]*cards?|SCs?)\b/i,
+		/\b(?:style[\s-]*cards?|SCs?)\s+from\s+(?:the\s+)?(?:cloud|library|online)\b/i,
+		/\bget\b[^.!?]{0,30}\b(?:style[\s-]*card|SC)\b[^.!?]{0,30}\b(?:cloud|library)\b/i,
+		// show/list/browse verbs — "show me the list of style cards", "list all SCs"
+		/\b(?:show|list|see|browse|open|display)\b[^.!?]{0,80}\b(?:style[\s-]*cards?|SCs?)\b/i,
+		// import/action verb + [words] + "style card/SC" — covers title-based requests
+		// like "import the Optimus style card" as well as plain "import a style card".
+		/\b(?:import|input|get|use|apply|load|preview)\b[^.!?]{0,80}\b(?:style[\s-]*card|SC)\b/i,
 	];
 
 	if ( ! INTENTS.some( re => re.test( rawMessage ) ) ) return null;
@@ -1340,10 +1423,41 @@ const routeCloudSC = rawMessage => {
 	const queryMatch = lower.match(
 		/\b(dark|light|minimal(?:ist)?|bold|elegant|modern|classic|professional|creative|colorful|warm|cool|earthy|bright|pastel|luxury|vintage|corporate|playful|artistic)\b/
 	);
+	// Extract a color category (matches sc_color facet values in the Typesense index).
+	const categoryMatch = rawMessage.match(
+		/\b(red|blue|green|yellow|purple|orange|pink|black|white|grey|gray|brown|gold|silver|teal|navy|violet|indigo|magenta|cyan|aqua|peach|turquoise)\b/i
+	);
+
+	// Extract a card title: the word(s) between the action verb+article and "style card/SC".
+	// Only used as query when no color category was found (colors are handled by the facet filter).
+	let titleQuery = '';
+	if ( ! categoryMatch ) {
+		const titleMatch = rawMessage.match(
+			/\b(?:import|input|get|use|apply|load|preview)\s+(?:a\s+|an\s+|the\s+)?([\w]+(?:\s+[\w]+){0,3}?)\s+(?:style[\s-]*card|SC)\b/i
+		);
+		if ( titleMatch?.[ 1 ] ) {
+			titleQuery = titleMatch[ 1 ].trim();
+		}
+	}
+
+	const importFirst = /\b(import|input|get|use|apply|load|preview)\b/i.test( rawMessage );
+	// showLocalOnly: user wants to see saved/local style cards, not the cloud library.
+	const showLocalOnly =
+		! importFirst &&
+		/\b(?:show|list|see|display)\b/i.test( rawMessage );
 
 	return {
 		type: 'browse_cloud_sc',
-		params: { query: queryMatch?.[ 1 ] || '', rawMessage },
+		params: {
+			query: titleQuery || queryMatch?.[ 1 ] || '',
+			category: categoryMatch?.[ 1 ]
+				? categoryMatch[ 1 ].charAt( 0 ).toUpperCase() +
+				  categoryMatch[ 1 ].slice( 1 ).toLowerCase()
+				: '',
+			importFirst,
+			showLocalOnly,
+			rawMessage,
+		},
 	};
 };
 
@@ -1382,7 +1496,11 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	const shapeDividerResult = routeShapeDivider( ctx );
 	if ( shapeDividerResult ) return shapeDividerResult;
 
-	// 6b. Style Cards cloud library browser
+	// 6b. Local Style Card management (activate, reset, delete, edit, current)
+	const scActionResult = routeSCAction( rawMessage );
+	if ( scActionResult ) return scActionResult;
+
+	// 6c. Style Cards cloud library browser
 	const cloudSCResult = routeCloudSC( rawMessage );
 	if ( cloudSCResult ) return cloudSCResult;
 

@@ -287,11 +287,15 @@ export const useAiChat = ({ onClose } = {}) => {
 	// Style Card Data
 	const {
 		activeStyleCard,
+		activeCard,
 		allStyleCards,
 		customColors,
 		saveMaxiStyleCards,
 		resetSC,
 		setActiveStyleCard,
+		setSelectedStyleCard,
+		removeStyleCard,
+		saveSCStyles,
 	} = useStyleCardData();
 
 	const { handleUpdateStyleCard, handleApplyTheme } = createStyleCardHandlers({
@@ -4510,18 +4514,140 @@ export const useAiChat = ({ onClose } = {}) => {
 				return;
 			}
 
-			case 'browse_cloud_sc': {
-				const { query } = routeResult.params;
-				const hint = query
-					? `Searching for ${ query } style cards…`
-					: __( 'Opening Style Cards cloud library…', 'maxi-blocks' );
+			case 'sc_action': {
+				const { action, name } = routeResult.params;
+
+				/** Case-insensitive name lookup in the local style cards store. */
+				const findSCKey = searchName => {
+					if ( ! allStyleCards || ! searchName ) return null;
+					const want = searchName.toLowerCase().trim();
+					// Exact match first
+					for ( const [ key, card ] of Object.entries( allStyleCards ) ) {
+						if ( ( card.name || '' ).toLowerCase() === want ) return key;
+					}
+					// Partial match
+					for ( const [ key, card ] of Object.entries( allStyleCards ) ) {
+						if ( ( card.name || '' ).toLowerCase().includes( want ) ) return key;
+					}
+					return null;
+				};
+
+				const addMsg = content =>
+					setMessages( prev => [ ...prev, { role: 'assistant', content } ] );
+
+				if ( action === 'current' ) {
+					const cardName =
+						activeCard?.value?.name ||
+						activeStyleCard?.value?.name ||
+						activeCard?.key ||
+						activeStyleCard?.key;
+					addMsg(
+						cardName
+							? `Active Style Card: **${ cardName }**`
+							: __(
+									'No active Style Card found.',
+									'maxi-blocks'
+							  )
+					);
+					setIsLoading( false );
+					return;
+				}
+
+				if ( action === 'reset' ) {
+					addMsg( __( 'Resetting Style Cards to defaults…', 'maxi-blocks' ) );
+					setTimeout( () => {
+						resetSC?.();
+						setIsLoading( false );
+					}, 100 );
+					return;
+				}
+
+				if ( action === 'activate' ) {
+					const key = findSCKey( name );
+					if ( ! key ) {
+						addMsg(
+							`Style Card "${ name }" not found. Use "show me style cards" to see what's available.`
+						);
+						setIsLoading( false );
+						return;
+					}
+					const cardName = allStyleCards[ key ]?.name || name;
+					addMsg( `Activating **${ cardName }**…` );
+					setTimeout( () => {
+						setActiveStyleCard?.( key );
+						saveSCStyles?.( true );
+						setIsLoading( false );
+					}, 100 );
+					return;
+				}
+
+				if ( action === 'delete' ) {
+					const key = findSCKey( name );
+					if ( ! key ) {
+						addMsg(
+							`Style Card "${ name }" not found.`
+						);
+						setIsLoading( false );
+						return;
+					}
+					if ( key === 'sc_maxi' ) {
+						addMsg( 'The default Maxi Style Card cannot be deleted.' );
+						setIsLoading( false );
+						return;
+					}
+					const cardName = allStyleCards[ key ]?.name || name;
+					addMsg( `Deleting **${ cardName }**…` );
+					setTimeout( () => {
+						removeStyleCard?.( key );
+						setIsLoading( false );
+					}, 100 );
+					return;
+				}
+
+				if ( action === 'edit' ) {
+					if ( name ) {
+						const key = findSCKey( name );
+						if ( key ) {
+							setSelectedStyleCard?.( key );
+						} else {
+							addMsg(
+								`Style Card "${ name }" not found — opening editor with current card.`
+							);
+						}
+					}
+					addMsg( __( 'Opening Style Cards editor…', 'maxi-blocks' ) );
+					setTimeout( async () => {
+						await openCloudSCLibrary( { showLocalOnly: true } );
+						setIsLoading( false );
+					}, 100 );
+					return;
+				}
+
+				setIsLoading( false );
+				return;
+			}
+
+		case 'browse_cloud_sc': {
+				const { query, category, importFirst, showLocalOnly } = routeResult.params;
+				let hint;
+				if ( showLocalOnly ) {
+					hint = __( 'Opening Style Cards…', 'maxi-blocks' );
+				} else if ( category && query ) {
+					hint = `Searching for ${ query } style cards in the "${ category }" category…`;
+				} else if ( category ) {
+					hint = `Opening Style Cards cloud library — filtering by "${ category }"…`;
+				} else if ( query ) {
+					hint = `Searching for "${ query }" in the Style Cards cloud library…`;
+				} else {
+					hint = __( 'Opening Style Cards cloud library…', 'maxi-blocks' );
+				}
 				setMessages( prev => [
 					...prev,
 					{ role: 'assistant', content: hint },
 				] );
 				setTimeout( async () => {
 					try {
-						const opened = await openCloudSCLibrary();
+						const opened = await openCloudSCLibrary( { query, category, importFirst, showLocalOnly } );
 						if ( ! opened ) {
 							setMessages( prev => [
 								...prev,

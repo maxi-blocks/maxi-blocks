@@ -157,9 +157,24 @@
 /**
  * Router opens the Style Cards cloud library browser.
  *
+ * @typedef {Object} ScActionParams
+ * @property {'activate'|'reset'|'delete'|'edit'|'current'} action
+ * @property {string} [name]       Card name (for activate / delete / edit).
+ * @property {string} rawMessage
+ *
+ * @typedef {Object} ScActionResult
+ * @property {'sc_action'} type
+ * @property {ScActionParams} params
+ */
+
+/**
  * @typedef {Object} BrowseCloudSCParams
- * @property {string} query   Optional keyword extracted from the message (e.g. "dark", "minimal").
- * @property {string} rawMessage Original user message.
+ * @property {string}  query       Optional keyword extracted from the message (e.g. "dark", "minimal").
+ * @property {string}  category    Optional color category extracted from the message (e.g. "Red", "Blue").
+ * @property {boolean} importFirst  True when the user's intent is to import (auto-click first preview).
+ * @property {boolean} showLocalOnly True when the user just wants to see local/saved style cards
+ *                                   (opens SC editor only, skips the cloud library browser).
+ * @property {string}  rawMessage   Original user message.
  *
  * @typedef {Object} BrowseCloudSCResult
  * @property {'browse_cloud_sc'} type

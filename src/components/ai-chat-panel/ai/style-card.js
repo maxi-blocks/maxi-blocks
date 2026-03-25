@@ -57,7 +57,19 @@ export const useStyleCardData = () => {
 		select => select('maxiBlocks/style-cards')?.receiveMaxiStyleCards(),
 		[]
 	);
-	const { saveMaxiStyleCards, resetSC, setActiveStyleCard } = useDispatch('maxiBlocks/style-cards') || {};
+	const {
+		saveMaxiStyleCards,
+		resetSC,
+		setActiveStyleCard,
+		setSelectedStyleCard,
+		removeStyleCard,
+		saveSCStyles,
+	} = useDispatch('maxiBlocks/style-cards') || {};
+
+	const activeCard = useSelect(
+		select => select('maxiBlocks/style-cards')?.receiveMaxiActiveStyleCard(),
+		[]
+	);
 
 	const customColors = useSelect(select => {
 		const {
@@ -94,11 +106,15 @@ export const useStyleCardData = () => {
 
 	return {
 		activeStyleCard,
+		activeCard,
 		allStyleCards,
 		customColors,
 		saveMaxiStyleCards,
 		resetSC,
 		setActiveStyleCard,
+		setSelectedStyleCard,
+		removeStyleCard,
+		saveSCStyles,
 	};
 };
 

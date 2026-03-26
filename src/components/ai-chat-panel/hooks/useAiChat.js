@@ -2187,8 +2187,20 @@ export const useAiChat = ({ onClose } = {}) => {
 						}
 					}
 					let inserted = 0;
+					let removed = 0;
 					let sawExistingParent = false;
 					for (const op of opsQueue) {
+						// Handle remove ops
+						if (op.op === 'remove' && op.clientId) {
+							const blockToRemove = editorSelect.getBlock(op.clientId);
+							if (blockToRemove) {
+								dispatch('core/block-editor').removeBlock(op.clientId);
+								removed += 1;
+							} else {
+								logAIDebug('MODIFY_BLOCK remove op: block not found', op.clientId);
+							}
+							continue;
+						}
 						const blockDescriptor = op.add_block ?? op.block ?? null;
 						if (!blockDescriptor?.name) continue;
 						const newBlock = buildBlockTree(blockDescriptor);
@@ -2268,15 +2280,18 @@ export const useAiChat = ({ onClose } = {}) => {
 							);
 						}
 					}
+					const anyChanges = inserted > 0 || removed > 0;
 					return {
-						executed: inserted > 0,
-						message:
-							inserted > 0
-								? action.message || `Added ${inserted} block(s).`
-								: __(
-										'No blocks were inserted. Parent columns may be missing, or this block type cannot be added there.',
-										'maxi-blocks'
-								  ),
+						executed: anyChanges,
+						message: anyChanges
+							? action.message || [
+								inserted > 0 ? `Added ${inserted} block(s).` : '',
+								removed > 0 ? `Removed ${removed} block(s).` : '',
+							  ].filter(Boolean).join(' ')
+							: __(
+								'No blocks were inserted. Parent columns may be missing, or this block type cannot be added there.',
+								'maxi-blocks'
+							  ),
 					};
 				}
 

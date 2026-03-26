@@ -202,6 +202,10 @@ describe('Dynamic content', () => {
 
 		const getFrontImageResults = async (block, type) => {
 			try {
+				await previewPage.waitForSelector(
+					`.${block}.maxi-image-block .maxi-image-block__image`,
+					{ visible: true, timeout: 30000 }
+				);
 				return await previewPage.$eval(
 					`.${block}.maxi-image-block .maxi-image-block__image`,
 					(el, expect) => {

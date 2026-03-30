@@ -79,7 +79,8 @@ window.onload = () => {
 
 	const getOSMTileLayer = mapType => {
 		const tileUrls = {
-			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			// Canonical OSMF endpoint (see https://operations.osmfoundation.org/policies/tiles/)
+			standard: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			humanitarian:
 				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
@@ -144,9 +145,14 @@ window.onload = () => {
 					})
 					.addTo(map);
 			} else {
+				// OSMF tiles: Referer required (403r if missing). Use the policy OSM documents for sites.
+				// updateWhenZooming:false avoids requesting many tile sets mid-gesture (rate / referer edge cases).
+				// @see https://wiki.openstreetmap.org/wiki/Blocked_tiles
 				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
 					attribution:
 						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+					referrerPolicy: 'no-referrer-when-downgrade',
+					updateWhenZooming: false,
 				}).addTo(map);
 			}
 

@@ -40,6 +40,7 @@ import {
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
+	ensureOsmReferrerMetaInAllEditorCanvasIframes,
 } from '@extensions/fse';
 import {
 	getClientIdFromUniqueId,
@@ -2461,6 +2462,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	static addMaxiFSEIframeStylesNow() {
+		// OSM tiles: every editor-canvas iframe (full template vs part vs reusable path).
+		ensureOsmReferrerMetaInAllEditorCanvasIframes();
+
 		// Get the FSE iframe
 		const now =
 			typeof performance !== 'undefined' && performance.now

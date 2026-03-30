@@ -46,7 +46,12 @@ const getDCContent = async (dataRequest, clientId, contentType) => {
 	const { field } = dataRequest;
 
 	if (field === 'archive-type') {
-		return getCurrentTemplateSlug().replace(/-/g, ' ');
+		// FSE / site editor: template id can be unset or non-string briefly — no .replace on null.
+		const templateSlug = getCurrentTemplateSlug();
+		if (!templateSlug || typeof templateSlug !== 'string') {
+			return null;
+		}
+		return templateSlug.replace(/-/g, ' ');
 	}
 
 	const filteredDataRequest = { ...dataRequest };

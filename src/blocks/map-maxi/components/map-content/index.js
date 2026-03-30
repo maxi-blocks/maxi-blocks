@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useLayoutEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,6 +12,10 @@ import MapEventsListener from '@blocks/map-maxi/components/map-events-listener';
 import Markers from '@blocks/map-maxi/components/markers';
 import SearchBox from '@blocks/map-maxi/components/search-box';
 import { getGroupAttributes } from '@extensions/styles';
+import {
+	ensureOsmCanvasReferrerMeta,
+	ensureOsmReferrerMetaInAllEditorCanvasIframes,
+} from '@extensions/fse';
 import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 
 /**
@@ -196,7 +200,11 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 const OSMLayer = ({ mapType = 'standard' }) => {
 	const map = useMap();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		// Full-template FSE can use a different editor-canvas iframe than template-part focus.
+		ensureOsmReferrerMetaInAllEditorCanvasIframes();
+		ensureOsmCanvasReferrerMeta(map.getContainer()?.ownerDocument);
+
 		// Clear existing tile layers
 		map.eachLayer(layer => {
 			if (layer._url !== undefined) {
@@ -206,7 +214,7 @@ const OSMLayer = ({ mapType = 'standard' }) => {
 		});
 
 		const tileUrls = {
-			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			standard: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			humanitarian:
 				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
@@ -220,6 +228,10 @@ const OSMLayer = ({ mapType = 'standard' }) => {
 			attribution:
 				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			maxZoom: 18,
+			// OSMF documents this policy for 403r / missing Referer (Blocked tiles wiki).
+			referrerPolicy: 'no-referrer-when-downgrade',
+			// Load tiles after zoom settles — fewer concurrent requests during editor scroll-zoom.
+			updateWhenZooming: false,
 		}).addTo(map);
 
 		return () => {

@@ -125,9 +125,6 @@ window.onload = () => {
 				`maxi-map-block__container-${uniqueID}`
 			);
 			if (!containerEl) {
-				console.warn(
-					`MaxiBlocks: map container not found for ID: ${uniqueID}`
-				);
 				return;
 			}
 

@@ -31,7 +31,7 @@ const entityRecordsWrapper = (callback, addClearEntity = false) => {
 		callback({
 			key: getCurrentPostId(),
 			name: getIsSiteEditor()
-				? select('core/edit-site').getEditedPostType()
+				? select('core/editor').getCurrentPostType()
 				: select('core/editor').getCurrentPostType(),
 		});
 	}

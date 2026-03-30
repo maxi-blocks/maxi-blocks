@@ -11,7 +11,7 @@ import {
  * Internal dependencies
  */
 import { pageCodeEditor } from './content';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return page DC content', async () => {
@@ -28,7 +28,8 @@ describe('Dynamic content', () => {
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
 
-		await page.waitForSelector('.maxi-text-block__content', {
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
 		await page.waitForTimeout(1000);
@@ -49,7 +50,7 @@ describe('Dynamic content', () => {
 		const authorBlocks = ['text-dc-author-1', 'text-dc-author-2'];
 
 		const getBackResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]

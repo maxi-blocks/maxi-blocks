@@ -21,6 +21,7 @@ import {
 import { getPageFonts, loadFonts } from '@extensions/text/fonts';
 import { getIsSiteEditor, getIsTemplatePart } from '@extensions/fse';
 import MaxiBlocksSaveBlocker from '@editor/save-blocker';
+import { flushPendingStyleDisplays } from '@extensions/maxi-block/maxiBlockComponent';
 
 /**
  * Component
@@ -86,6 +87,10 @@ const BlockStylesSaver = () => {
 
 	useEffect(() => {
 		if (isSaving && !isCodeEditor) {
+			// Flush any pending deferred style displays before saving to ensure
+			// all block styles are in the store (Fix 3 RAF batching side-effect)
+			flushPendingStyleDisplays();
+
 			loadFonts(getPageFonts(), false);
 
 			if (!isPreviewing && (!isDraft || isPublishing)) {

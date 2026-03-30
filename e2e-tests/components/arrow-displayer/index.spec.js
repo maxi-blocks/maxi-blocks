@@ -10,6 +10,7 @@ import {
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('ArrowDisplay', () => {
@@ -18,7 +19,8 @@ describe('ArrowDisplay', () => {
 		await page.waitForTimeout(1500);
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
-		await page.$eval('.maxi-container-block', container =>
+		const frame = await getEditorFrame(page);
+		await frame.$eval('.maxi-container-block', container =>
 			container.focus()
 		);
 		const accordionPanel = await openSidebarTab(
@@ -32,7 +34,7 @@ describe('ArrowDisplay', () => {
 			use => use.click()
 		);
 
-		const hasClass = page.$$eval('.maxi-container-block div', test =>
+		const hasClass = frame.$$eval('.maxi-container-block div', test =>
 			test[2].classList.contains('maxi-container-arrow__bottom')
 		);
 

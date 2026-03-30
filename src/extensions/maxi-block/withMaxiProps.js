@@ -130,7 +130,7 @@ const withMaxiProps = createHigherOrderComponent(
 				};
 			});
 
-			const parentColumnClientId = useMemo(() => {
+				const parentColumnClientId = useMemo(() => {
 				if (repeaterContext?.repeaterStatus) {
 					const innerBlockPositions =
 						repeaterContext?.getInnerBlocksPositions();

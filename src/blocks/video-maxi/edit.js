@@ -49,6 +49,7 @@ const VideoPlayer = props => {
 
 	const playerID = `${uniqueID}-player`;
 	const playerRef = useRef(null);
+	const videoElementRef = useRef(null);
 	const startTimeRef = useRef(startTime);
 	const endTimeRef = useRef(endTime);
 	const isLoopRef = useRef(isLoop);
@@ -74,7 +75,9 @@ const VideoPlayer = props => {
 	};
 
 	const handleVimeoVideo = () => {
-		const playerElement = document.getElementById(playerID);
+		const playerElement =
+			videoElementRef.current ??
+			(videoElementRef.current?.ownerDocument ?? document).getElementById(playerID);
 		playerRef.current = new window.Vimeo.Player(playerElement);
 		playerRef.current.on('timeupdate', data => {
 			if (data.seconds > +endTimeRef.current) {
@@ -120,6 +123,7 @@ const VideoPlayer = props => {
 		<div className='maxi-video-block__video-container'>
 			{videoType === 'direct' ? (
 				<video
+					ref={videoElementRef}
 					src={embedUrl}
 					className='maxi-video-block__video-player'
 					id={playerID}
@@ -132,6 +136,7 @@ const VideoPlayer = props => {
 				</video>
 			) : (
 				<iframe
+					ref={videoElementRef}
 					className='maxi-video-block__video-player'
 					id={playerID}
 					title='video player'

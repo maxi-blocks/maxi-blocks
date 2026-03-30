@@ -53,13 +53,25 @@ export const getAllStylesAreSaved = state => {
 	if (state.styles) {
 		let allStylesAreSaved = true;
 
-		goThroughMaxiBlocks(block => {
-			const {
-				attributes: { uniqueID },
-			} = block;
+		// skipTemplateParts=true: template part blocks are managed as separate
+		// entities and their styles are not registered in the current editor's
+		// store until they're rendered inline. Checking them causes false
+		// negatives that permanently block saving.
+		goThroughMaxiBlocks(
+			block => {
+				const {
+					attributes: { uniqueID },
+				} = block;
 
-			if (!state.styles[uniqueID]) allStylesAreSaved = false;
-		});
+				// Skip blocks without uniqueID (e.g. maxi-cloud)
+				if (!uniqueID) return;
+
+				if (!state.styles[uniqueID]) allStylesAreSaved = false;
+			},
+			false,
+			undefined,
+			true
+		);
 
 		return allStylesAreSaved;
 	}

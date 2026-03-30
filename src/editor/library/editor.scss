@@ -1279,6 +1279,7 @@ $border-light: 1px solid var(--maxi-grey-light);
 							display: block;
 							width: 100%;
 							min-height: 36px;
+							line-height: 100%;
 							padding: 5px 10px;
 							border: 1px solid var(--maxi-grey-light);
 							border-radius: 20px;
@@ -1921,7 +1922,8 @@ $border-light: 1px solid var(--maxi-grey-light);
 				width: 300px;
 				margin-right: -15px;
 				input {
-					margin-top: 10px;
+					margin-top: 8px;
+					line-height: 26px;
 					margin-right: -15px;
 					padding: 1px 20px 2px 8px !important;
 					border: 1px solid var(--maxi-grey-light) !important;

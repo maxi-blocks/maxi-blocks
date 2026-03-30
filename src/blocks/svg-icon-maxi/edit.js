@@ -290,36 +290,34 @@ class edit extends MaxiBlockComponent {
 		};
 
 		return [
-			...[
-				!isEmptyContent && [
-					<Inspector
-						key={`block-settings-${uniqueID}`}
-						{...this.props}
-						resizableObject={this.resizableObject}
-						inlineStylesTargets={inlineStylesTargets}
-					/>,
-					<Toolbar
-						key={`toolbar-${uniqueID}`}
-						ref={this.blockRef}
-						propsToAvoid={['resizableObject']}
-						resizableObject={this.resizableObject}
-						copyPasteMapping={copyPasteMapping}
-						prefix='svg-'
-						inlineStylesTargets={inlineStylesTargets}
-						onModalOpen={() => this.setState({ isOpen: true })}
-						{...this.props}
-					/>,
-					<MaxiPopoverButton
-						key={`popover-${uniqueID}`}
-						ref={this.blockRef}
-						isOpen={isOpen}
-						prefix='svg-'
-						{...this.props}
-					>
-						<MaxiModal {...maxiModalProps} />
-					</MaxiPopoverButton>,
-				],
-			],
+			<Inspector
+				key={`block-settings-${uniqueID}`}
+				{...this.props}
+				resizableObject={this.resizableObject}
+				inlineStylesTargets={inlineStylesTargets}
+			/>,
+			<Toolbar
+				key={`toolbar-${uniqueID}`}
+				ref={this.blockRef}
+				propsToAvoid={['resizableObject']}
+				resizableObject={this.resizableObject}
+				copyPasteMapping={copyPasteMapping}
+				prefix='svg-'
+				inlineStylesTargets={inlineStylesTargets}
+				onModalOpen={() => this.setState({ isOpen: true })}
+				{...this.props}
+			/>,
+			!isEmptyContent && (
+				<MaxiPopoverButton
+					key={`popover-${uniqueID}`}
+					ref={this.blockRef}
+					isOpen={isOpen}
+					prefix='svg-'
+					{...this.props}
+				>
+					<MaxiModal {...maxiModalProps} />
+				</MaxiPopoverButton>
+			),
 			<MaxiBlock
 				key={`maxi-svg-icon--${uniqueID}`}
 				ref={this.blockRef}

@@ -168,6 +168,28 @@ class MaxiBlocks_Styles
 
             $template_parts = $this->get_template_parts($template_content);
 
+            // Build combined raw block content (post + template + template parts) once,
+            // used below to filter stale block IDs from legacy meta tables.
+            // Scripts that use boolean flags instead of uniqueID keys are excluded.
+            $boolean_flag_scripts = ['bg_video', 'scroll_effects', 'slider', 'row_carousel'];
+            $all_raw_content = '';
+            global $post;
+            if ($post && !empty($post->post_content)) {
+                $all_raw_content .= $post->post_content;
+            }
+            $raw_template = get_block_template($template_id);
+            if ($raw_template && !empty($raw_template->content)) {
+                $all_raw_content .= $raw_template->content;
+            }
+            if ($template_parts) {
+                foreach ($template_parts as $part_id) {
+                    $raw_part = get_block_template($part_id, 'wp_template_part');
+                    if ($raw_part && !empty($raw_part->content)) {
+                        $all_raw_content .= $raw_part->content;
+                    }
+                }
+            }
+
             foreach ($scripts as &$script) {
                 $js_var = str_replace('-', '_', $script);
                 $js_var_to_pass = $script === 'relations' ? 'maxi' .
@@ -221,6 +243,15 @@ class MaxiBlocks_Styles
                 }
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+
+                // Filter stale block IDs: the legacy custom_data tables can retain IDs for
+                // blocks that have since been deleted. For uniqueID-keyed scripts, keep only
+                // IDs that still appear somewhere in the active block content.
+                if (!in_array($js_var, $boolean_flag_scripts) && !empty($all_raw_content)) {
+                    $meta = array_filter($meta, function ($key) use ($all_raw_content) {
+                        return str_contains($all_raw_content, $key);
+                    }, ARRAY_FILTER_USE_KEY);
+                }
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {

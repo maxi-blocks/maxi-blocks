@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useLayoutEffect, useRef } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -12,6 +12,10 @@ import MapEventsListener from '@blocks/map-maxi/components/map-events-listener';
 import Markers from '@blocks/map-maxi/components/markers';
 import SearchBox from '@blocks/map-maxi/components/search-box';
 import { getGroupAttributes } from '@extensions/styles';
+import {
+	ensureOsmCanvasReferrerMeta,
+	ensureOsmReferrerMetaInAllEditorCanvasIframes,
+} from '@extensions/fse';
 import { getMaxiAdminSettingsUrl } from '@blocks/map-maxi/utils';
 
 /**
@@ -44,6 +48,92 @@ const loadGoogleMapsApi = apiKey => {
 	}
 
 	return googleMapsPromise;
+};
+
+/**
+ * Patches Leaflet's drag handler for the Gutenberg API 3 iframe scenario.
+ *
+ * How the problem arises:
+ *   - Block scripts execute in the OUTER frame's JS context (window/document).
+ *   - Leaflet's Draggable._onDown registers its temporary mousemove/mouseup
+ *     listeners on the outer `document`.
+ *   - React portals the block DOM into the editor iframe, so mouse events fire
+ *     on the iframe's document, never reaching the outer document's listeners.
+ *   - Result: Leaflet never receives mouseup → drag state is stuck forever.
+ *
+ * The fix:
+ *   - Detect the mismatch via map.getContainer().ownerDocument !== document.
+ *   - While a drag is active (mouse down on map), forward mousemove and mouseup
+ *     from the iframe's document to the outer document where Leaflet listens.
+ *   - Coordinates stay in iframe-space, which is fine because Leaflet's drag
+ *     only uses deltas between consecutive positions (not absolute coords).
+ *
+ * @param {L.Map} map - Leaflet map instance.
+ */
+const applyIframeDragFix = map => {
+	const container = map.getContainer();
+	const containerDoc = container.ownerDocument;
+	const outerDoc = document; // Outer frame document = where Leaflet drag handler listens
+
+	if (containerDoc === outerDoc) {
+		return;
+	}
+
+	let isDragActive = false;
+
+	/**
+	 * Dispatch a synthetic mouse event on the outer document so Leaflet's
+	 * drag handler (Draggable._onMove / _onUp) receives it.
+	 * Coordinates are kept as-is (iframe-space) because Leaflet only uses deltas.
+	 *
+	 * @param {string}     type - 'mousemove' or 'mouseup'
+	 * @param {MouseEvent} e    - Original event from the iframe document.
+	 */
+	const forwardToOuter = (type, e) => {
+		const syntheticEvent = new MouseEvent(type, {
+			bubbles: true,
+			cancelable: true,
+			view: outerDoc.defaultView,
+			clientX: e.clientX,
+			clientY: e.clientY,
+			screenX: e.screenX,
+			screenY: e.screenY,
+			button: e.button,
+			buttons: e.buttons,
+			movementX: e.movementX,
+			movementY: e.movementY,
+		});
+		outerDoc.dispatchEvent(syntheticEvent);
+	};
+
+	const onIframeMouseMove = e => {
+		if (isDragActive) forwardToOuter('mousemove', e);
+	};
+
+	const onIframeMouseUp = e => {
+		if (!isDragActive) return;
+		isDragActive = false;
+		// Always forward mouseup so Leaflet's Draggable._onUp fires on the
+		// outer document and resets its drag state.  Without this, any
+		// mousedown on the map (drag, hold-to-pin, button click inside the
+		// map) leaves Leaflet stuck in drag mode because its mouseup listener
+		// is registered on the outer document but the event fires in the
+		// iframe and never reaches it.
+		forwardToOuter('mouseup', e);
+	};
+
+	// Activate forwarding when the user starts interacting with the map.
+	container.addEventListener('mousedown', () => {
+		isDragActive = true;
+	});
+
+	containerDoc.addEventListener('mousemove', onIframeMouseMove);
+	containerDoc.addEventListener('mouseup', onIframeMouseUp);
+
+	map.on('remove', () => {
+		containerDoc.removeEventListener('mousemove', onIframeMouseMove);
+		containerDoc.removeEventListener('mouseup', onIframeMouseUp);
+	});
 };
 
 const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
@@ -110,7 +200,11 @@ const GoogleLayer = ({ apiKey, mapType = 'roadmap' }) => {
 const OSMLayer = ({ mapType = 'standard' }) => {
 	const map = useMap();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
+		// Full-template FSE can use a different editor-canvas iframe than template-part focus.
+		ensureOsmReferrerMetaInAllEditorCanvasIframes();
+		ensureOsmCanvasReferrerMeta(map.getContainer()?.ownerDocument);
+
 		// Clear existing tile layers
 		map.eachLayer(layer => {
 			if (layer._url !== undefined) {
@@ -120,7 +214,7 @@ const OSMLayer = ({ mapType = 'standard' }) => {
 		});
 
 		const tileUrls = {
-			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			standard: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			humanitarian:
 				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
@@ -134,6 +228,10 @@ const OSMLayer = ({ mapType = 'standard' }) => {
 			attribution:
 				'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			maxZoom: 18,
+			// OSMF documents this policy for 403r / missing Referer (Blocked tiles wiki).
+			referrerPolicy: 'no-referrer-when-downgrade',
+			// Load tiles after zoom settles — fewer concurrent requests during editor scroll-zoom.
+			updateWhenZooming: false,
 		}).addTo(map);
 
 		return () => {
@@ -164,6 +262,7 @@ const MapContent = props => {
 		'map-type': mapType = 'roadmap',
 	} = attributes;
 
+	const containerRef = useRef(null);
 	const [isDraggingMarker, setIsDraggingMarker] = useState(false);
 	const [isAddingMarker, setIsAddingMarker] = useState(false);
 
@@ -171,6 +270,31 @@ const MapContent = props => {
 
 	const resizeMap = map => {
 		if (!map) return;
+
+		const safeInvalidateSize = () => {
+			if (map._isDestroyed || !map.getContainer()) return;
+			try {
+				map.invalidateSize({ animate: false, pan: false, duration: 0 });
+			} catch (e) {
+				// Ignore errors during resize
+			}
+		};
+
+		// Immediate attempt – covers the common case where CSS is already applied.
+		safeInvalidateSize();
+
+		// When the block is newly inserted the container CSS (height: 300px)
+		// may not have been applied yet, leaving Leaflet with height 0.  With
+		// height 0 every pixel→lat/lng calculation breaks and dragging sends
+		// the map to extreme latitudes.  We schedule several deferred attempts
+		// so whichever fires after the layout has settled wins.
+		requestAnimationFrame(() => safeInvalidateSize());
+		setTimeout(() => safeInvalidateSize(), 100);
+		setTimeout(() => safeInvalidateSize(), 500);
+
+		// Apply the drag fix before anything else so Leaflet's internal
+		// drag handler is already set up when we start listening on the parent.
+		applyIframeDragFix(map);
 
 		// To get rid of the grey bars, we need to update the map size
 		const resizeObserver = new ResizeObserver(() => {
@@ -189,9 +313,7 @@ const MapContent = props => {
 			}
 		});
 
-		const container = document.getElementById(
-			`maxi-map-block__container-${uniqueID}`
-		);
+		const container = containerRef.current;
 
 		if (container) {
 			resizeObserver.observe(container);
@@ -208,6 +330,7 @@ const MapContent = props => {
 
 	return (
 		<div
+			ref={containerRef}
 			className='maxi-map-block__container'
 			id={`maxi-map-block__container-${uniqueID}`}
 		>

@@ -1,4 +1,5 @@
 import { addImageToLibrary } from './addImageToLibrary';
+import getEditorFrame from './getEditorFrame';
 
 const addImageToImageMaxi = async (page, instance) => {
 	await addImageToLibrary(page);
@@ -6,7 +7,9 @@ const addImageToImageMaxi = async (page, instance) => {
 	// Select the block
 	await instance.click();
 
-	// Click the "Add image" button
+	const frame = await getEditorFrame(page);
+
+	// Click the "Add image" button (rendered in block-toolbar slot, in main page)
 	await page.waitForSelector('.maxi-image-block__settings__upload-button');
 	await page.click('.maxi-image-block__settings__upload-button');
 

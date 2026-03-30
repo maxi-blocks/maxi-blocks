@@ -11,13 +11,15 @@ import {
 	getAttributes,
 	openPreviewPage,
 	insertMaxiBlock,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Image Maxi hover simple actions', () => {
 	beforeEach(async () => {
 		await createNewPost();
 		await insertMaxiBlock(page, 'Image Maxi');
-		const imageBlock = await page.$('.maxi-image-block');
+		const frame = await getEditorFrame(page);
+		const imageBlock = await frame.$('.maxi-image-block');
 		await addImageToImageMaxi(page, imageBlock);
 		await page.evaluate(() => {
 			// Get the client ID of the currently selected block

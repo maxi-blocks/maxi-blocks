@@ -1,3 +1,7 @@
+export {
+	ensureOsmCanvasReferrerMeta,
+	ensureOsmReferrerMetaInAllEditorCanvasIframes,
+} from './ensureOsmCanvasReferrerMeta';
 export { default as createTemplatePartId } from './createTemplatePartId';
 export { default as getIsSiteEditor } from './getIsSiteEditor';
 export { default as getIsTemplatePart } from './getIsTemplatePart';

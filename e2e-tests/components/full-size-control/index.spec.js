@@ -13,6 +13,7 @@ import {
 	addResponsiveTest,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 describe('FullSizeControl', () => {
@@ -130,19 +131,20 @@ describe('FullSizeControl', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
 		// select 3 columns
-		await page.waitForSelector('.maxi-row-block__template button');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
-		await page.$$eval('.maxi-row-block__template button', button =>
+		await frame.$$eval('.maxi-row-block__template button', button =>
 			button[6].click()
 		);
-		await page.waitForSelector('.maxi-column-block');
+		await frame.waitForSelector('.maxi-column-block');
 
 		await updateAllBlockUniqueIds(page);
 
 		await page.waitForTimeout(500);
 
 		// select colum
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-row-block .maxi-column-block .block-editor-inserter',
 			button => button.click()
 		);

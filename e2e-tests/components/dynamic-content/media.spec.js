@@ -28,8 +28,14 @@ describe('Dynamic content', () => {
 		// Go to the edit page
 		const pages = await browser.pages();
 		const currentIndex = pages.indexOf(page);
-		await pages[currentIndex - 1].bringToFront();
-		await removeUploadedImage(page);
+		if (currentIndex > 0) {
+			await pages[currentIndex - 1].bringToFront();
+		}
+		try {
+			await removeUploadedImage(page);
+		} catch (e) {
+			// Image may not have been uploaded if the test was skipped
+		}
 	});
 
 	it('Should return media DC content', async () => {
@@ -64,10 +70,12 @@ describe('Dynamic content', () => {
 		}
 
 		// Set code editor as clipboard data
-		const codeEditor = mediaCodeEditor.replaceAll(
-			'"dc-id":1377',
-			`"dc-id":${mediaElement.id}`
-		);
+		const codeEditor = mediaCodeEditor
+			.replaceAll('"dc-id":1377', `"dc-id":${mediaElement.id}`)
+			.replaceAll(
+				'"dc-media-id":1377',
+				`"dc-media-id":${mediaElement.id}`
+			);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title

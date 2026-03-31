@@ -122,6 +122,8 @@ export const extractCloudSearchQuery = message => {
 		.replace( /\b(pattern|patterns|page|pages|template|templates)\b/gi, ' ' )
 		// Light/Dark are Cloud Library sidebar refinements (InstantSearch menu), not search keywords.
 		.replace( /\b(dark|light)\b/gi, ' ' )
+		// Free/Pro drive the cost filter button, not the search box.
+		.replace( /\b(free|pro)\b/gi, ' ' )
 		.replace( /\bfor\s+me\b/gi, ' ' )
 		.replace( /\s+/g, ' ' )
 		.trim();

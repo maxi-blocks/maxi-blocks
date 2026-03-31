@@ -96,7 +96,10 @@ const loadColumnsTemplate = (
 	avoidRowAttributesChange
 ) => {
 	const block = wp.data.select('core/block-editor').getBlock(clientId);
-	if (!block) return;
+	if (!block) {
+		console.error('[Maxi AI] loadColumnsTemplate: block not found for clientId', clientId);
+		return;
+	}
 	const columnsBlockObjects = block.innerBlocks;
 	const isRowEmpty = !columnsBlockObjects.length;
 	// When inserting column, template should be loaded for general

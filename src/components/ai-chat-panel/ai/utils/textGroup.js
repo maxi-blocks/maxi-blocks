@@ -479,6 +479,8 @@ const extractFontFamilyValue = message => {
 	// Avoid treating JSON (e.g. custom formats) as a quoted font family.
 	if (/\bcustom\s*formats?\b/.test(lower)) return null;
 	if (/[{}]/.test(message)) return null;
+	// "change font colour/color" is a colour intent, not a font-family change.
+	if (/\bfont\s+colou?r\b|\bcolou?r\b.*\bfont\b/.test(lower)) return null;
 
 	const quoted = message.match(/["']([^"']+)["']/);
 	if (quoted && quoted[1]) return quoted[1].trim();
@@ -509,6 +511,8 @@ const extractFontFamilyValue = message => {
 			'copy',
 			'label',
 			'block',
+			'color',
+			'colour',
 		]);
 		const tokens = familyMatch[1].trim().split(/\s+/);
 		const cleanedTokens = [];

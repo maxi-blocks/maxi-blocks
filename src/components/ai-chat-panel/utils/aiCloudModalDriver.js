@@ -27,6 +27,7 @@ export const MAXI_AI_CLOUD_MODAL_OP_NAMES = Object.freeze( [
 	'light_dark',
 	'clear_filters',
 	'category_contains',
+	'category_or_search',
 	'placeholder_images',
 	'use_sc_styles',
 	'click_first_insert',
@@ -863,6 +864,28 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 						lastError = `category_contains failed: ${ String( op.text ) }`;
 					}
 					await sleep( 120 );
+					break;
+				}
+
+				case 'category_or_search': {
+					// Try to click a matching sidebar category; if none found, fall back to search.
+					modal = modal || getMaxiCloudModalRoot();
+					const categoryClicked = clickCategoryContaining( modal, op.text );
+					if ( categoryClicked ) {
+						log( `[Maxi AI CloudModal] category_or_search: clicked category "${ String( op.text ) }"` );
+						await sleep( 500 );
+					} else {
+						log( `[Maxi AI CloudModal] category_or_search: no category match for "${ String( op.text ) }", falling back to search` );
+						const fallbackInput = await waitForPatternsSearchInput( modal, 6000 );
+						if ( ! fallbackInput ) {
+							lastError = 'Patterns search input not found (category_or_search fallback).';
+							break;
+						}
+						setReactInputValue( fallbackInput, String( op.text ?? '' ) );
+						fallbackInput.focus();
+						await sleep( 80 );
+						lastPatternsSearchAt = Date.now();
+					}
 					break;
 				}
 

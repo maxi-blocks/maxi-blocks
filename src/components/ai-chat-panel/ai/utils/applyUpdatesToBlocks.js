@@ -120,14 +120,13 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 				
 				switch (property) {
 
-					case 'background_color':
-						// Apply to containers, rows, columns, buttons OR if it's a direct clientId match (Selection)
-						if (specificClientId || block.name.includes('container') || block.name.includes('row') || block.name.includes('column') || block.name.includes('button') || block.name.includes('group') || block.name.includes('accordion') || block.name.includes('pane') || block.name.includes('slide') || block.name.includes('slider') || block.name.includes('video') || block.name.includes('map') || block.name.includes('search') || block.name.includes('number-counter') || block.name.includes('icon-maxi') || block.name.includes('svg-icon')) {
-							// Number Counter backgrounds live on the Canvas (un-prefixed) group.
-							const backgroundPrefix = block.name.includes('number-counter') ? '' : prefix;
-							changes = updateBackgroundColor(block.clientId, value, block.attributes, backgroundPrefix);
-						}
-						break;
+				case 'background_color': {
+					// Every Maxi block supports background-layers — allow any matched block.
+					// Number Counter backgrounds live on the Canvas (un-prefixed) group.
+					const backgroundPrefix = block.name.includes('number-counter') ? '' : prefix;
+					changes = updateBackgroundColor(block.clientId, value, block.attributes, backgroundPrefix);
+					break;
+				}
 					case 'background_layers': {
 						if (
 							specificClientId ||

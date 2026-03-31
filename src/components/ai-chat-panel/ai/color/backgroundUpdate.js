@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash';
+import { getDefaultLayerWithBreakpoint, getLayerLabel } from '@components/background-control/utils';
 
 const isBackgroundDebugEnabled = () => {
 	if (typeof window === 'undefined') return false;
@@ -45,21 +46,43 @@ export const updateBackgroundColor = (clientId, color, currentAttributes, prefix
 		newAttributes[`${prefix}background-color-general`] = color;
 	}
 
-	if (currentAttributes['background-layers'] && Array.isArray(currentAttributes['background-layers'])) {
-		const layers = cloneDeep(currentAttributes['background-layers']);
+	// Always update background-layers — even when the attribute is undefined (unset on a
+	// fresh block), we create the first colour layer so the editor renders the background.
+	{
+		const layers = cloneDeep(currentAttributes['background-layers'] || []);
+
 		if (layers.length > 0) {
+			// Update the first (topmost) colour layer in-place.
 			layers[0].type = 'color';
 			layers[0]['display-general'] = 'block';
-
 			if (isPalette) {
 				layers[0]['background-palette-status-general'] = true;
 				layers[0]['background-palette-color-general'] = color;
+				layers[0]['background-color-general'] = '';
 			} else {
 				layers[0]['background-palette-status-general'] = false;
 				layers[0]['background-color-general'] = color;
 			}
-			newAttributes['background-layers'] = layers;
+		} else {
+			// No layers yet — create a colour layer using the same factory the editor uses.
+			const label = getLayerLabel('color');
+			const baseLayer = label
+				? getDefaultLayerWithBreakpoint(label, 'general', false)
+				: null;
+			const newLayer = {
+				...(baseLayer || {}),
+				id: 1,
+				order: 0,
+				type: 'color',
+				'display-general': 'block',
+				'background-palette-status-general': isPalette,
+				'background-palette-color-general': isPalette ? color : 1,
+				'background-color-general': isPalette ? '' : color,
+			};
+			layers.push(newLayer);
 		}
+
+		newAttributes['background-layers'] = layers;
 	}
 
 	logBackgroundDebug('updateBackgroundColor', {

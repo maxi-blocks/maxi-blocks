@@ -445,9 +445,12 @@ export const useAiChat = ({ onClose } = {}) => {
 	const handleUpdatePage = (property, value, targetBlock = null, clientId = null) => {
 		let count = 0;
 		const normalizedTarget = normalizeTargetBlock(property, targetBlock);
+		// Read fresh blocks from the live store — allBlocks from useSelect(…,[]) can be stale
+		// if blocks were inserted after the hook mounted.
+		const liveBlocks = select('core/block-editor').getBlocks();
 		// Wrap in batch to prevent multiple re-renders
 		registry.batch(() => {
-			count = applyUpdatesToBlocks(allBlocks, property, value, normalizedTarget, clientId);
+			count = applyUpdatesToBlocks(liveBlocks, property, value, normalizedTarget, clientId);
 		});
 		return `Updated ${count} blocks on the page.`;
 	};
@@ -467,25 +470,13 @@ export const useAiChat = ({ onClose } = {}) => {
 			'dead_center',
 			'align_everything',
 		]);
-		// IMPORTANT: getSelectedBlock() often returns a "light" object or the recursion fails if innerBlocks aren't fully hydrated in that specific reference.
-		// Instead, we should find the selected block within the full 'allBlocks' tree to ensure we have the complete structure with innerBlocks.
-		
-		const findBlockByClientId = (blocks, id) => {
-			for (const block of blocks) {
-				if (block.clientId === id) return block;
-				if (block.innerBlocks && block.innerBlocks.length > 0) {
-					const found = findBlockByClientId(block.innerBlocks, id);
-					if (found) return found;
-				}
-			}
-			return null;
-		};
+		// Read the block directly from the live store — allBlocks from useSelect(…,[]) is intentionally
+		// stale (perf optimisation) and won't contain blocks inserted after mount.
+		const fullSelectedBlock =
+			select('core/block-editor').getBlock(selectedBlock.clientId) || selectedBlock;
 
-
-		const fullSelectedBlock = findBlockByClientId(allBlocks, selectedBlock.clientId);
-
-		if (!fullSelectedBlock) {
-			console.warn('[Maxi AI] Could not find full selected block in allBlocks tree. Using selectedBlock state as fallback.');
+		if (!select('core/block-editor').getBlock(selectedBlock.clientId)) {
+			console.warn('[Maxi AI] Could not find full selected block in store. Using selectedBlock state as fallback.');
 		}
 
 		const normalizedProperty = String(property || '').replace(/-/g, '_');
@@ -971,7 +962,23 @@ export const useAiChat = ({ onClose } = {}) => {
 			count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
 		});
 
-		if (count === 0 && (parentFallbackProps.has(property) || normalizedTarget)) {
+		// Properties that are always owned by a layout parent (flex/gap etc) may need the fallback.
+		// But colour/style properties on a selected Maxi block must NEVER walk to a parent —
+		// the user selected the block and expects it to be the target.
+		const selectedBlockIsMaxi = String(fullSelectedBlock?.name || selectedBlock?.name || '').startsWith('maxi-blocks/');
+		const isDirectBlockProperty =
+			normalizedProperty === 'background_color' ||
+			normalizedProperty === 'text_color' ||
+			normalizedProperty === 'border' ||
+			normalizedProperty === 'border_radius' ||
+			normalizedProperty === 'box_shadow' ||
+			normalizedProperty === 'padding' ||
+			normalizedProperty === 'margin';
+		// Skip parent fallback when the selected block is a Maxi block and the property is
+		// one that every Maxi block owns — otherwise background_color etc. silently land on the parent.
+		const skipParentFallback = selectedBlockIsMaxi && isDirectBlockProperty;
+
+		if (!skipParentFallback && count === 0 && (parentFallbackProps.has(property) || normalizedTarget)) {
 			const { getBlockParents, getBlock } = select('core/block-editor');
 			const parentIds = getBlockParents(selectedBlock.clientId) || [];
 			const parentBlocks = parentIds
@@ -2126,9 +2133,9 @@ export const useAiChat = ({ onClose } = {}) => {
 						const requestedType = blockDescriptor?.type?.toLowerCase() || 'container';
 						newBlock = createBlock( BLOCK_NAME_MAP[ requestedType ] || 'maxi-blocks/container-maxi' );
 					}
-					if ( ! newBlock ) return { executed: false, message: 'Could not build block structure from AI response.' };
-					dispatch( 'core/block-editor' ).insertBlocks( newBlock );
-					return { executed: true, message: action.message || 'Block added to the page.' };
+				if ( ! newBlock ) return { executed: false, message: 'Could not build block structure from AI response.' };
+				dispatch( 'core/block-editor' ).insertBlocks( newBlock, undefined, getContentAreaClientId() );
+				return { executed: true, message: action.message || 'Block added to the page.' };
 				}
 
 				// Handle bulk child-insert ops — supports both payload shapes the AI produces:
@@ -2141,22 +2148,62 @@ export const useAiChat = ({ onClose } = {}) => {
 						const children = (descriptor.innerBlocks || []).map(buildBlockTree).filter(Boolean);
 						return createBlock(descriptor.name, descriptor.attributes || {}, children);
 					};
-					const editorSelect = select('core/block-editor');
-					const normalizeParentClientId = op => {
-						const raw = op.parent_clientId ?? op.parentClientId;
-						if (raw == null || typeof raw !== 'string') return null;
-						const t = raw.trim();
-						if (!t) return null;
-						if (t.startsWith('<') && t.endsWith('>')) return null;
-						if (/placeholder|example|your-/i.test(t)) return null;
-						return t;
-					};
-					const isPlaceholderParentId = id => {
-						if (!id || typeof id !== 'string') return true;
-						const t = id.trim();
-						if (t.startsWith('<') && t.endsWith('>')) return true;
-						return /placeholder|example|your-/i.test(t);
-					};
+				const editorSelect = select('core/block-editor');
+				const normalizeParentClientId = op => {
+					const raw = op.parent_clientId ?? op.parentClientId;
+					if (raw == null || typeof raw !== 'string') return null;
+					const t = raw.trim();
+					if (!t) return null;
+					// Resolve "use selected block" sentinel placeholders the AI may emit.
+					if (
+						t.startsWith('<') &&
+						t.endsWith('>') &&
+						/selected|current|active/i.test(t)
+					) {
+						const selectedId = editorSelect.getSelectedBlockClientId();
+						if (selectedId) {
+							logAIDebug(
+								'MODIFY_BLOCK: resolved selected-block placeholder to',
+								JSON.stringify(selectedId)
+							);
+							return selectedId;
+						}
+						return null;
+					}
+					if (t.startsWith('<') && t.endsWith('>')) return null;
+					if (/placeholder|example|your-/i.test(t)) return null;
+					// Maxi uniqueIDs look like "block-name-xxxxxxxx-u" (end with "-u").
+					// The AI sometimes emits the uniqueID instead of the WP clientId UUID.
+					// Resolve via the store so getBlock() can find the parent.
+					if (!editorSelect.getBlock(t)) {
+						const resolvedClientId = getClientIdFromUniqueId(t);
+						if (resolvedClientId) {
+							logAIDebug(
+								'MODIFY_BLOCK: resolved uniqueID to clientId',
+								JSON.stringify(t),
+								'→',
+								JSON.stringify(resolvedClientId)
+							);
+							return resolvedClientId;
+						}
+					}
+					return t;
+				};
+				const isPlaceholderParentId = id => {
+					if (!id || typeof id !== 'string') return true;
+					const t = id.trim();
+					// Sentinels that resolve to the selected block are not truly placeholder — they
+					// will be resolved by normalizeParentClientId.
+					if (
+						t.startsWith('<') &&
+						t.endsWith('>') &&
+						/selected|current|active/i.test(t)
+					) {
+						return false;
+					}
+					if (t.startsWith('<') && t.endsWith('>')) return true;
+					return /placeholder|example|your-/i.test(t);
+				};
 					let opsQueue = Array.isArray(childOps) ? [...childOps] : [];
 					const firstDesc = opsQueue[0]
 						? opsQueue[0].add_block ?? opsQueue[0].block
@@ -2167,12 +2214,12 @@ export const useAiChat = ({ onClose } = {}) => {
 					const allParentsPlaceholder =
 						opsQueue.length > 0 &&
 						opsQueue.every(op => isPlaceholderParentId(normalizeParentClientId(op)));
-					if (allParentsPlaceholder && firstIsButton && scope === 'page') {
-						const emptyColumns = collectBlocks(allBlocks, b =>
-							typeof b.name === 'string' &&
-							b.name.includes('column-maxi') &&
-							(!b.innerBlocks || b.innerBlocks.length === 0)
-						);
+				if (allParentsPlaceholder && firstIsButton && scope === 'page') {
+					const emptyColumns = collectBlocks(select('core/block-editor').getBlocks(), b =>
+						typeof b.name === 'string' &&
+						b.name.includes('column-maxi') &&
+						(!b.innerBlocks || b.innerBlocks.length === 0)
+					);
 						if (emptyColumns.length > 0) {
 							const templateOp = opsQueue[0];
 							opsQueue = emptyColumns.map(col => ({
@@ -2224,41 +2271,73 @@ export const useAiChat = ({ onClose } = {}) => {
 							);
 							continue;
 						}
-						if (!editorSelect.canInsertBlockType(newBlock.name, parentId)) {
+					if (!editorSelect.canInsertBlockType(newBlock.name, parentId)) {
+						// The selected block may be a container/row; try the first inner column that accepts this block type.
+						const descendantAcceptor = (() => {
+							const search = blocks => {
+								for (const b of blocks) {
+									if (editorSelect.canInsertBlockType(newBlock.name, b.clientId)) {
+										return b;
+									}
+									if (b.innerBlocks?.length) {
+										const found = search(b.innerBlocks);
+										if (found) return found;
+									}
+								}
+								return null;
+							};
+							return search(parentBlock.innerBlocks || []);
+						})();
+						if (descendantAcceptor) {
 							logAIDebug(
-								'MODIFY_BLOCK child op: cannot insert block type into parent',
+								'MODIFY_BLOCK child op: parent cannot accept block type, descending to',
+								JSON.stringify(descendantAcceptor.name),
+								JSON.stringify(descendantAcceptor.clientId)
+							);
+							const insertIndex = descendantAcceptor.innerBlocks?.length ?? 0;
+							dispatch('core/block-editor').insertBlocks(
+								newBlock,
+								insertIndex,
+								descendantAcceptor.clientId,
+								false
+							);
+							inserted += 1;
+						} else {
+							logAIDebug(
+								'MODIFY_BLOCK child op: cannot insert block type into parent or any descendant',
 								JSON.stringify(newBlock.name),
 								JSON.stringify(parentId)
 							);
-							continue;
 						}
-						const wantsTop =
-							op.insert_at === 'start' ||
-							op.position === 'top' ||
-							String(op.insert_at || '').toLowerCase() === 'top';
-						const insertIndex = wantsTop
-							? 0
-							: parentBlock.innerBlocks?.length ?? 0;
-						dispatch('core/block-editor').insertBlocks(
-							newBlock,
-							insertIndex,
-							parentId,
-							false
-						);
-						inserted += 1;
+						continue;
 					}
-					if (
-						inserted === 0 &&
-						firstIsButton &&
-						scope === 'page' &&
-						!sawExistingParent &&
-						firstDesc
-					) {
-						const emptyColumns = collectBlocks(allBlocks, b =>
-							typeof b.name === 'string' &&
-							b.name.includes('column-maxi') &&
-							(!b.innerBlocks || b.innerBlocks.length === 0)
-						);
+					const wantsTop =
+						op.insert_at === 'start' ||
+						op.position === 'top' ||
+						String(op.insert_at || '').toLowerCase() === 'top';
+					const insertIndex = wantsTop
+						? 0
+						: parentBlock.innerBlocks?.length ?? 0;
+					dispatch('core/block-editor').insertBlocks(
+						newBlock,
+						insertIndex,
+						parentId,
+						false
+					);
+					inserted += 1;
+					}
+				if (
+					inserted === 0 &&
+					firstIsButton &&
+					scope === 'page' &&
+					!sawExistingParent &&
+					firstDesc
+				) {
+					const emptyColumns = collectBlocks(select('core/block-editor').getBlocks(), b =>
+						typeof b.name === 'string' &&
+						b.name.includes('column-maxi') &&
+						(!b.innerBlocks || b.innerBlocks.length === 0)
+					);
 						for (const col of emptyColumns) {
 							const nb = buildBlockTree(firstDesc);
 							if (!nb) break;
@@ -2309,9 +2388,9 @@ export const useAiChat = ({ onClose } = {}) => {
 							message: __('Please select a block first.', 'maxi-blocks'),
 						};
 					}
-				} else if (scope === 'page') {
-					// Recursive search for ALL buttons on the page
-					targetBlocks = collectBlocks(allBlocks, (b) => b.name.includes('button'));
+			} else if (scope === 'page') {
+				// Recursive search for ALL buttons on the page — use live store to avoid stale closure.
+				targetBlocks = collectBlocks(select('core/block-editor').getBlocks(), (b) => b.name.includes('button'));
 					
 					if (targetBlocks.length === 0) {
 						return {
@@ -3448,6 +3527,33 @@ export const useAiChat = ({ onClose } = {}) => {
 	// ─────────────────────────────────────────────────────────────────────────
 
 	/**
+	 * Returns the clientId of the `core/post-content` block when the editor is in FSE / block-template
+	 * mode (theme with header + content + footer). In that case, inserting without a rootClientId
+	 * would land at the template root rather than inside the content area, so getBlock(row.clientId)
+	 * returns null in loadColumnsTemplate.
+	 *
+	 * Searches recursively because some themes wrap post-content inside a group or template block.
+	 * Returns undefined in regular page-editing mode (no template shown in canvas).
+	 */
+	const getContentAreaClientId = () => {
+		const findPostContent = blocks => {
+			for ( const block of blocks ) {
+				if ( block.name === 'core/post-content' ) {
+					return block.clientId;
+				}
+				if ( block.innerBlocks?.length ) {
+					const found = findPostContent( block.innerBlocks );
+					if ( found ) {
+						return found;
+					}
+				}
+			}
+			return undefined;
+		};
+		return findPostContent( select( 'core/block-editor' ).getBlocks() );
+	};
+
+	/**
 	 * Opens Cloud modal and drives the real UI (DOM): insert block, type in InstantSearch, optional filters.
 	 *
 	 * @param {string} rawMsg User message.
@@ -3522,10 +3628,8 @@ export const useAiChat = ({ onClose } = {}) => {
 			}
 
 			if ( hint ) {
-				// Category click is optional: categories differ per tab and may not match every keyword.
-				ops.push( { op: 'category_contains', text: hint, optional: true } );
-				ops.push( { op: 'wait_ms', ms: 300 } );
-				ops.push( { op: 'set_search', text: hint } );
+				// Try matching sidebar category first; fall back to search text if no category found.
+				ops.push( { op: 'category_or_search', text: hint } );
 				// InstantSearch + Masonry need time; too short a wait clicks stale or empty hits.
 				ops.push( { op: 'wait_ms', ms: 1200 } );
 				ops.push( { op: 'click_first_insert' } );
@@ -3691,6 +3795,10 @@ export const useAiChat = ({ onClose } = {}) => {
 			const lower = rawMessage.toLowerCase();
 			setConversationContext( null );
 			let rootBlock;
+			// In FSE mode (theme with header/content/footer), insertBlocks without a
+			// rootClientId lands at the template root, so the row block ends up outside
+			// the block store and getBlock(row.clientId) returns null in loadColumnsTemplate.
+			const contentAreaId = getContentAreaClientId();
 			if ( lower.includes( 'cloud' ) || lower.includes( 'library' ) || lower.includes( 'browse' ) ) {
 				await runCloudLibraryIntent( rawMessage );
 				setIsLoading( false );
@@ -3698,11 +3806,11 @@ export const useAiChat = ({ onClose } = {}) => {
 			} else if ( lower.includes( 'sidebar' ) ) {
 				const row = createBlock( 'maxi-blocks/row-maxi' );
 				rootBlock = createBlock( 'maxi-blocks/container-maxi', {}, [ row ] );
-				dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+				dispatch( 'core/block-editor' ).insertBlocks( rootBlock, undefined, contentAreaId );
 				loadColumnsTemplate( '1-3', row.clientId, 'general', 2 );
 			} else if ( lower.includes( 'hero' ) || lower.includes( 'full-width' ) || lower.includes( 'full width' ) ) {
 				rootBlock = createBlock( 'maxi-blocks/container-maxi', { 'full-width-general': true } );
-				dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+				dispatch( 'core/block-editor' ).insertBlocks( rootBlock, undefined, contentAreaId );
 			} else {
 				const colMatch = lower.match( /(\d+)/ );
 				const numCols = colMatch ? Math.min( parseInt( colMatch[ 1 ] ), 6 ) : 1;
@@ -3710,11 +3818,11 @@ export const useAiChat = ({ onClose } = {}) => {
 					const templateName = getTemplates( true, 'general', numCols ).find( t => ! t.isMoreThanEightColumns )?.name || `${ numCols } columns`;
 					const row = createBlock( 'maxi-blocks/row-maxi' );
 					rootBlock = createBlock( 'maxi-blocks/container-maxi', {}, [ row ] );
-					dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+					dispatch( 'core/block-editor' ).insertBlocks( rootBlock, undefined, contentAreaId );
 					loadColumnsTemplate( templateName, row.clientId, 'general', numCols );
 				} else {
 					rootBlock = createBlock( 'maxi-blocks/container-maxi' );
-					dispatch( 'core/block-editor' ).insertBlocks( rootBlock );
+					dispatch( 'core/block-editor' ).insertBlocks( rootBlock, undefined, contentAreaId );
 				}
 			}
 			setMessages( prev => [ ...prev, { role: 'assistant', content: `Added ${ rawMessage }.`, executed: true } ] );
@@ -4579,26 +4687,34 @@ export const useAiChat = ({ onClose } = {}) => {
 				const insertNumCols = insertColMatch ? Math.min(parseInt(insertColMatch[1]), 6) : 0;
 
 				if (insertHasCloud || insertHasSidebar || insertHasHero || insertNumCols > 1) {
-					let rootBlock;
 					if (insertHasCloud) {
 						await runCloudLibraryIntent(rawMessage);
-					} else if (insertHasSidebar) {
-						const row = createBlock('maxi-blocks/row-maxi');
-						rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
-						dispatch('core/block-editor').insertBlocks(rootBlock);
-						loadColumnsTemplate('1-3', row.clientId, 'general', 2);
-					} else if (insertHasHero) {
-						rootBlock = createBlock('maxi-blocks/container-maxi', { 'full-width-general': true });
-						dispatch('core/block-editor').insertBlocks(rootBlock);
+						setMessages(prev => [...prev, { role: 'assistant', content: `Added ${rawMessage}.`, executed: true }]);
+						setIsLoading(false);
 					} else {
-						const templateName = getTemplates(true, 'general', insertNumCols).find(t => !t.isMoreThanEightColumns)?.name || `${insertNumCols} columns`;
-						const row = createBlock('maxi-blocks/row-maxi');
-						rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
-						dispatch('core/block-editor').insertBlocks(rootBlock);
-						loadColumnsTemplate(templateName, row.clientId, 'general', insertNumCols);
+						// Capture FSE content area before the setTimeout so it reads the store synchronously.
+						const contentAreaId = getContentAreaClientId();
+						setTimeout(() => {
+							let rootBlock;
+							if (insertHasSidebar) {
+								const row = createBlock('maxi-blocks/row-maxi');
+								rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+								dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
+								setTimeout(() => loadColumnsTemplate('1-3', row.clientId, 'general', 2), 100);
+							} else if (insertHasHero) {
+								rootBlock = createBlock('maxi-blocks/container-maxi', { 'full-width-general': true });
+								dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
+							} else {
+								const templateName = getTemplates(true, 'general', insertNumCols).find(t => !t.isMoreThanEightColumns)?.name || `${insertNumCols} columns`;
+								const row = createBlock('maxi-blocks/row-maxi');
+								rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+								dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
+								setTimeout(() => loadColumnsTemplate(templateName, row.clientId, 'general', insertNumCols), 100);
+							}
+							setMessages(prev => [...prev, { role: 'assistant', content: `Added ${rawMessage}.`, executed: true }]);
+							setIsLoading(false);
+						}, 50);
 					}
-					setMessages(prev => [...prev, { role: 'assistant', content: `Added ${rawMessage}.`, executed: true }]);
-					setIsLoading(false);
 					return;
 				}
 
@@ -4976,6 +5092,9 @@ export const useAiChat = ({ onClose } = {}) => {
 			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
 			setIsLoading(true);
 			let rootBlock;
+			// In FSE mode (theme with header/content/footer), insertBlocks without a
+			// rootClientId lands at the template root, not inside the content area.
+			const contentAreaId = getContentAreaClientId();
 			if (lower.includes('cloud') || lower.includes('library') || lower.includes('browse')) {
 				try {
 					await runCloudLibraryIntent(suggestion);
@@ -5001,11 +5120,11 @@ export const useAiChat = ({ onClose } = {}) => {
 			} else if (lower.includes('sidebar')) {
 				const row = createBlock('maxi-blocks/row-maxi');
 				rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
-				dispatch('core/block-editor').insertBlocks(rootBlock);
+				dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
 				loadColumnsTemplate('1-3', row.clientId, 'general', 2);
 			} else if (lower.includes('hero') || lower.includes('full-width') || lower.includes('full width')) {
 				rootBlock = createBlock('maxi-blocks/container-maxi', { 'full-width-general': true });
-				dispatch('core/block-editor').insertBlocks(rootBlock);
+				dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
 			} else {
 				const colMatch = lower.match(/(\d+)/);
 				const numCols = colMatch ? Math.min(parseInt(colMatch[1]), 6) : 1;
@@ -5013,11 +5132,11 @@ export const useAiChat = ({ onClose } = {}) => {
 					const templateName = getTemplates(true, 'general', numCols).find(t => !t.isMoreThanEightColumns)?.name || `${numCols} columns`;
 					const row = createBlock('maxi-blocks/row-maxi');
 					rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
-					dispatch('core/block-editor').insertBlocks(rootBlock);
+					dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
 					loadColumnsTemplate(templateName, row.clientId, 'general', numCols);
 				} else {
 					rootBlock = createBlock('maxi-blocks/container-maxi');
-					dispatch('core/block-editor').insertBlocks(rootBlock);
+					dispatch('core/block-editor').insertBlocks(rootBlock, undefined, contentAreaId);
 				}
 			}
 			setMessages(prev => [...prev, { role: 'assistant', content: `Added ${suggestion}.`, executed: true }]);
@@ -5025,7 +5144,49 @@ export const useAiChat = ({ onClose } = {}) => {
 			return;
 		}
 
-		// 1. Handle Active Conversation Flow
+		// 1a. Handle color_what clarification context (button click path — mirrors sendMessage handler).
+		if (conversationContext?.type === 'color_what') {
+			const lower = suggestion.toLowerCase();
+			let target;
+			if (lower.includes('text') || lower.includes('font') || lower.includes('label')) {
+				target = 'text';
+			} else if (lower.includes('background') || lower.includes('bg')) {
+				target = 'background';
+			} else if (lower.includes('border')) {
+				target = 'border';
+			}
+			setConversationContext(null);
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			if (target) {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `Choose a colour for the ${ getColorTargetLabel(target) }:`,
+						options: true,
+						optionsType: 'palette',
+						colorTarget: target,
+						executed: false,
+					},
+				]);
+			} else {
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: 'Please select one of the options: Text colour, Background colour, or Border colour.',
+						options: ['Text colour', 'Background colour', 'Border colour'],
+						optionsType: 'text',
+						executed: false,
+					},
+				]);
+				setConversationContext({ type: 'color_what' });
+			}
+			setIsLoading(false);
+			return;
+		}
+
+		// 1b. Handle Active Conversation Flow
 		if (conversationContext) {
 			console.log('[Maxi AI Conversation] Handling input:', suggestion);
 			console.log('[Maxi AI Conversation] Current Context:', JSON.stringify(conversationContext, null, 2));

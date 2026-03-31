@@ -72,128 +72,158 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	if (isText) return 'text';
 	if (message.includes('border')) return 'border';
 
-	// No explicit target — infer from selected block type before falling back to ambiguous 'element'.
-	if (selectedName.includes('text-maxi') || selectedName.includes('list-item-maxi')) {
-		return 'text';
-	}
-
+	// Ambiguous message (e.g. bare "change colour") — always ask the user which target
+	// they mean, regardless of the selected block type.
 	return 'element';
 };
 
-export const getColorTargetLabel = colorTarget => {
-	if (colorTarget === 'shape-divider') return 'shape divider';
-	if (colorTarget === 'shape-divider-top') return 'shape divider (top)';
-	if (colorTarget === 'shape-divider-bottom') return 'shape divider (bottom)';
-	if (colorTarget === 'icon-background') return 'icon background';
-	if (colorTarget === 'number-counter-circle-background') return 'counter circle background';
-	if (colorTarget === 'number-counter-text') return 'counter text';
-	return String(colorTarget || '').replace('button-', '');
+const COLOR_TARGET_LABELS = {
+	'shape-divider': 'shape divider',
+	'shape-divider-top': 'shape divider (top)',
+	'shape-divider-bottom': 'shape divider (bottom)',
+	'icon-background': 'icon background',
+	'number-counter-circle-background': 'counter circle background',
+	'number-counter-text': 'counter text',
 };
 
+export const getColorTargetLabel = colorTarget =>
+	COLOR_TARGET_LABELS[ colorTarget ] ??
+	String(colorTarget || '').replace('button-', '');
+
+/**
+ * Derives the targetBlock string from the selected block's name for the 'background' color target.
+ * Targets the selected block directly so handleUpdateSelection never walks to a parent.
+ *
+ * @param {Object|null} selectedBlock
+ * @returns {string}
+ */
+const getBackgroundTargetBlock = selectedBlock => {
+	const name = String(selectedBlock?.name || '').toLowerCase();
+	if (name.includes('text-maxi') || name.includes('list-item-maxi')) return 'text';
+	if (name.includes('button-maxi')) return 'button';
+	if (name.includes('image-maxi')) return 'image';
+	if (name.includes('icon-maxi') || name.includes('svg-icon')) return 'icon';
+	if (name.includes('column-maxi')) return 'column';
+	if (name.includes('row-maxi')) return 'row';
+	if (name.includes('group-maxi')) return 'group';
+	return 'container';
+};
+
+/** Block types that use background_color and share their colorTarget as targetBlock. */
+const LAYOUT_BACKGROUND_TARGETS = new Set([
+	'group', 'row', 'column', 'accordion', 'pane',
+	'slide', 'slider', 'video', 'map', 'search', 'number-counter',
+]);
+
 export const buildColorUpdate = (colorTarget, colorValue, { selectedBlock } = {}) => {
-	let property = '';
+	let property = 'background_color';
 	let targetBlock = 'container';
 	let value = colorValue;
-	let msgText = '';
+	let msgText = 'background';
 
-	if (colorTarget === 'button' || colorTarget === 'button-background') {
-		property = 'background_color';
-		targetBlock = 'button';
-		msgText = 'button background';
-	} else if (colorTarget === 'button-text') {
-		property = 'text_color';
-		targetBlock = 'button';
-		msgText = 'button text';
-	} else if (colorTarget === 'button-border') {
-		property = 'border';
-		targetBlock = 'button';
-		msgText = 'button border';
-	} else if (colorTarget === 'button-hover-background') {
-		property = 'button_hover_bg';
-		targetBlock = 'button';
-		msgText = 'button hover background';
-	} else if (colorTarget === 'button-hover-text') {
-		property = 'button_hover_text';
-		targetBlock = 'button';
-		msgText = 'button hover text';
-	} else if (colorTarget === 'button-active-background') {
-		property = 'button_active_bg';
-		targetBlock = 'button';
-		msgText = 'button active background';
-	} else if (colorTarget === 'button-icon-fill') {
-		property = 'icon_color';
-		targetBlock = 'button';
-		value = { target: 'fill', color: colorValue };
-		msgText = 'button icon fill';
-	} else if (colorTarget === 'button-icon-stroke') {
-		property = 'icon_color';
-		targetBlock = 'button';
-		value = { target: 'stroke', color: colorValue };
-		msgText = 'button icon stroke';
-	} else if (colorTarget === 'icon-background') {
-		property = 'background_color';
-		targetBlock = 'icon';
-		msgText = 'icon background';
-	} else if (colorTarget === 'number-counter-circle-background') {
-		property = 'number_counter_circle_background_color';
-		targetBlock = 'number-counter';
-		msgText = 'counter circle background';
-	} else if (colorTarget === 'number-counter-text') {
-		property = 'number_counter_text_color';
-		targetBlock = 'number-counter';
-		msgText = 'counter text';
-	} else if (colorTarget === 'background') {
-		property = 'background_color';
-		targetBlock = 'container';
-		msgText = 'background';
-	} else if (
-		[
-			'group',
-			'row',
-			'column',
-			'accordion',
-			'pane',
-			'slide',
-			'slider',
-			'video',
-			'map',
-			'search',
-			'number-counter',
-		].includes(colorTarget)
-	) {
-		property = 'background_color';
-		targetBlock = colorTarget;
-		msgText = `${String(colorTarget).replace('-', ' ')} background`;
-	} else if (colorTarget === 'text') {
-		property = 'text_color';
-		targetBlock = 'text';
-		msgText = 'text';
-	} else if (colorTarget === 'shape-divider-top') {
-		property = 'shape_divider_color_top';
-		targetBlock = 'container';
-		msgText = 'shape divider (top)';
-	} else if (colorTarget === 'shape-divider-bottom') {
-		property = 'shape_divider_color_bottom';
-		targetBlock = 'container';
-		msgText = 'shape divider (bottom)';
-	} else if (colorTarget === 'shape-divider') {
-		property = 'shape_divider_color';
-		targetBlock = 'container';
-		msgText = 'shape divider';
-	} else if (colorTarget === 'divider') {
-		property = 'divider_color';
-		targetBlock = 'divider';
-		msgText = 'divider';
-	} else if (colorTarget === 'element') {
-		property = 'background_color';
-		targetBlock = String(selectedBlock?.name || '').includes('button') ? 'button' : 'container';
-		msgText = 'element';
-	}
-
-	if (!property) {
-		property = 'background_color';
-		targetBlock = 'container';
-		msgText = 'background';
+	switch (colorTarget) {
+		case 'button':
+		case 'button-background':
+			property = 'background_color';
+			targetBlock = 'button';
+			msgText = 'button background';
+			break;
+		case 'button-text':
+			property = 'text_color';
+			targetBlock = 'button';
+			msgText = 'button text';
+			break;
+		case 'button-border':
+			property = 'border';
+			targetBlock = 'button';
+			msgText = 'button border';
+			break;
+		case 'button-hover-background':
+			property = 'button_hover_bg';
+			targetBlock = 'button';
+			msgText = 'button hover background';
+			break;
+		case 'button-hover-text':
+			property = 'button_hover_text';
+			targetBlock = 'button';
+			msgText = 'button hover text';
+			break;
+		case 'button-active-background':
+			property = 'button_active_bg';
+			targetBlock = 'button';
+			msgText = 'button active background';
+			break;
+		case 'button-icon-fill':
+			property = 'icon_color';
+			targetBlock = 'button';
+			value = { target: 'fill', color: colorValue };
+			msgText = 'button icon fill';
+			break;
+		case 'button-icon-stroke':
+			property = 'icon_color';
+			targetBlock = 'button';
+			value = { target: 'stroke', color: colorValue };
+			msgText = 'button icon stroke';
+			break;
+		case 'icon-background':
+			property = 'background_color';
+			targetBlock = 'icon';
+			msgText = 'icon background';
+			break;
+		case 'number-counter-circle-background':
+			property = 'number_counter_circle_background_color';
+			targetBlock = 'number-counter';
+			msgText = 'counter circle background';
+			break;
+		case 'number-counter-text':
+			property = 'number_counter_text_color';
+			targetBlock = 'number-counter';
+			msgText = 'counter text';
+			break;
+		case 'background':
+			// Target the selected block directly — never default to container,
+			// otherwise handleUpdateSelection walks up to the parent block.
+			property = 'background_color';
+			targetBlock = getBackgroundTargetBlock(selectedBlock);
+			msgText = 'background';
+			break;
+		case 'text':
+			property = 'text_color';
+			targetBlock = 'text';
+			msgText = 'text';
+			break;
+		case 'shape-divider-top':
+			property = 'shape_divider_color_top';
+			targetBlock = 'container';
+			msgText = 'shape divider (top)';
+			break;
+		case 'shape-divider-bottom':
+			property = 'shape_divider_color_bottom';
+			targetBlock = 'container';
+			msgText = 'shape divider (bottom)';
+			break;
+		case 'shape-divider':
+			property = 'shape_divider_color';
+			targetBlock = 'container';
+			msgText = 'shape divider';
+			break;
+		case 'divider':
+			property = 'divider_color';
+			targetBlock = 'divider';
+			msgText = 'divider';
+			break;
+		case 'element':
+			property = 'background_color';
+			targetBlock = String(selectedBlock?.name || '').includes('button') ? 'button' : 'container';
+			msgText = 'element';
+			break;
+		default:
+			if (LAYOUT_BACKGROUND_TARGETS.has(colorTarget)) {
+				property = 'background_color';
+				targetBlock = colorTarget;
+				msgText = `${String(colorTarget).replace('-', ' ')} background`;
+			}
+			// Unknown target — fallthrough to defaults set above.
 	}
 
 	return { property, targetBlock, value, msgText };

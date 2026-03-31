@@ -819,12 +819,152 @@ const useAiChatMessages = ({
 				}, 100);
 				return;
 			}
-			case 'passthrough':
-			default:
-				break;
-		}
+		case 'post_management': {
+			const { operation, title, slug, date } = routeResult.params;
+			const editorDispatch = dispatch('core/editor');
 
-		// Passthrough to LLM API
+			/**
+			 * Helper: push a status message then run an async operation,
+			 * resolving with a confirmation or rejection message.
+			 *
+			 * @param {string}   statusMsg  Message shown while working.
+			 * @param {Function} fn         Async work to perform.
+			 * @param {string}   successMsg Confirmation on success.
+			 */
+			const runPostOp = async (statusMsg, fn, successMsg) => {
+				setMessages(prev => [...prev, { role: 'assistant', content: statusMsg }]);
+				try {
+					await fn();
+					setMessages(prev => {
+						const next = [...prev];
+						next[next.length - 1] = { role: 'assistant', content: successMsg, executed: true };
+						return next;
+					});
+				} catch (postOpErr) {
+					console.error('[Maxi AI] Post management error:', String(postOpErr?.message || postOpErr));
+					setMessages(prev => {
+						const next = [...prev];
+						next[next.length - 1] = {
+							role: 'assistant',
+							content: sprintf(
+								// translators: %s is the error message
+								__('Something went wrong: %s', 'maxi-blocks'),
+								postOpErr?.message || String(postOpErr)
+							),
+							executed: false,
+						};
+						return next;
+					});
+				} finally {
+					setIsLoading(false);
+				}
+			};
+
+			switch (operation) {
+				case 'publish': {
+					const withTitle = title ? sprintf(__('Setting title to "%s" and publishing…', 'maxi-blocks'), title) : __('Publishing…', 'maxi-blocks');
+					await runPostOp(
+						withTitle,
+						async () => {
+							if (title) await editorDispatch.editPost({ title });
+							await editorDispatch.editPost({ status: 'publish' });
+							await editorDispatch.savePost();
+						},
+						title
+							? sprintf(__('Published with title "%s". ✓', 'maxi-blocks'), title)
+							: __('Published. ✓', 'maxi-blocks')
+					);
+					return;
+				}
+				case 'save': {
+					await runPostOp(
+						__('Saving…', 'maxi-blocks'),
+						() => editorDispatch.savePost(),
+						__('Saved. ✓', 'maxi-blocks')
+					);
+					return;
+				}
+				case 'draft': {
+					await runPostOp(
+						__('Switching to draft…', 'maxi-blocks'),
+						async () => {
+							await editorDispatch.editPost({ status: 'draft' });
+							await editorDispatch.savePost();
+						},
+						__('Moved to draft. ✓', 'maxi-blocks')
+					);
+					return;
+				}
+				case 'set_title': {
+					await runPostOp(
+						sprintf(__('Setting title to "%s"…', 'maxi-blocks'), title),
+						() => editorDispatch.editPost({ title }),
+						sprintf(__('Title updated to "%s". ✓', 'maxi-blocks'), title)
+					);
+					return;
+				}
+				case 'set_slug': {
+					await runPostOp(
+						sprintf(__('Setting slug to "%s"…', 'maxi-blocks'), slug),
+						() => editorDispatch.editPost({ slug }),
+						sprintf(__('Slug updated to "%s". ✓', 'maxi-blocks'), slug)
+					);
+					return;
+				}
+				case 'preview': {
+					const previewUrl = select('core/editor').getEditedPostPreviewLink?.();
+					if (previewUrl) {
+						window.open(previewUrl, '_blank', 'noopener');
+						setMessages(prev => [...prev, { role: 'assistant', content: __('Preview opened in a new tab. ✓', 'maxi-blocks'), executed: true }]);
+					} else {
+						setMessages(prev => [...prev, { role: 'assistant', content: __('Could not get the preview URL. Try the Preview button in the Gutenberg toolbar.', 'maxi-blocks'), executed: false }]);
+					}
+					setIsLoading(false);
+					return;
+				}
+				case 'open_page': {
+					// Use the published permalink, falling back to the preview link.
+					const permalink = select('core/editor').getPermalink?.()
+						|| select('core/editor').getCurrentPostAttribute?.('link');
+					if (permalink) {
+						window.open(permalink, '_blank', 'noopener');
+						setMessages(prev => [...prev, { role: 'assistant', content: __('Opened the published page in a new tab. ✓', 'maxi-blocks'), executed: true }]);
+					} else {
+						setMessages(prev => [...prev, { role: 'assistant', content: __('Could not get the page URL — the page may not be published yet.', 'maxi-blocks'), executed: false }]);
+					}
+					setIsLoading(false);
+					return;
+				}
+				case 'schedule': {
+					if (!date) {
+						setMessages(prev => [...prev, {
+							role: 'assistant',
+							content: __('Please provide a date, e.g. "schedule for 2026-05-01 at 9am".', 'maxi-blocks'),
+						}]);
+						setIsLoading(false);
+						return;
+					}
+					await runPostOp(
+						sprintf(__('Scheduling for %s…', 'maxi-blocks'), date),
+						async () => {
+							await editorDispatch.editPost({ status: 'future', date });
+							await editorDispatch.savePost();
+						},
+						sprintf(__('Scheduled for %s. ✓', 'maxi-blocks'), date)
+					);
+					return;
+				}
+				default:
+					setIsLoading(false);
+					return;
+			}
+		}
+		case 'passthrough':
+		default:
+			break;
+	}
+
+	// Passthrough to LLM API
 		setIsLoading(true);
 		try {
 			const context = buildPassthroughLlmContext({ scope, selectedBlock, activeStyleCard, logDebug: logAIDebug });

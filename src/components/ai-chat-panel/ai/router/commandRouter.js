@@ -1294,6 +1294,216 @@ const routeGap = ( rawMessage, ctx ) => {
 };
 
 /**
+ * Extracts a title string from a user message, e.g.
+ * "set the title to My Awesome Page" → "My Awesome Page"
+ * "title: My Page"                   → "My Page"
+ * "rename to My Page"                → "My Page"
+ * "call it My Page"                  → "My Page"
+ *
+ * Returns null when no extractable title is found.
+ *
+ * @param {string} rawMessage
+ * @returns {string|null}
+ */
+const extractTitleFromMessage = rawMessage => {
+	const patterns = [
+		/\b(?:set|change|update|give\s+(?:it|this))\s+(?:the\s+)?(?:page\s+|post\s+)?title\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		/\btitle\s*[:=]\s*["']?(.+?)["']?\s*$/i,
+		/\brename\s+(?:it|this|the\s+(?:page|post))\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+["']?(.+?)["']?\s*$/i,
+		/\btitled?\s+["'](.+?)["']\s*$/i,
+		/\bnamed?\s+["'](.+?)["']\s*$/i,
+		/\bwith\s+(?:the\s+)?title\s+["']?(.+?)["']?\s*$/i,
+		/\bpublish\s+(?:it|this|the\s+(?:page|post))\s+(?:with\s+(?:a?\s*)?(?:the\s+)?title\s+(?:of\s+)?|titled?\s+|as\s+|called?\s+)["']?(.+?)["']?\s*$/i,
+	];
+	for ( const re of patterns ) {
+		const m = rawMessage.match( re );
+		if ( m?.[1] ) return m[1].trim();
+	}
+	return null;
+};
+
+/**
+ * Extracts a slug string from a user message.
+ * "set the slug to my-awesome-page" → "my-awesome-page"
+ * Slugifies free-text if no slug-like string is found.
+ *
+ * @param {string} rawMessage
+ * @returns {string|null}
+ */
+const extractSlugFromMessage = rawMessage => {
+	const m = rawMessage.match(
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\s+(?:to|as)\s+["']?([a-z0-9-_/]+)["']?\s*$/i
+	);
+	if ( m?.[1] ) return m[1].trim().toLowerCase();
+
+	// Accept quoted or bare text and auto-slugify
+	const mText = rawMessage.match(
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i
+	);
+	if ( mText?.[1] ) {
+		return mText[1].trim().toLowerCase().replace( /\s+/g, '-' ).replace( /[^a-z0-9-]/g, '' );
+	}
+	return null;
+};
+
+/**
+ * Extracts a scheduled date from a user message.
+ * Accepts ISO dates and common human forms:
+ *   "schedule for 2026-04-15"          → "2026-04-15T00:00:00"
+ *   "schedule for tomorrow at 9am"     → best-effort
+ *   "schedule for next Monday"         → null (needs AI / passthrough)
+ *
+ * @param {string} rawMessage
+ * @returns {string|null} ISO 8601 string or null
+ */
+const extractScheduleDateFromMessage = rawMessage => {
+	// Full ISO date e.g. 2026-04-15
+	const isoMatch = rawMessage.match( /(\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2})?)?)/ );
+	if ( isoMatch ) {
+		const d = new Date( isoMatch[1] );
+		if ( !isNaN( d.getTime() ) ) return d.toISOString();
+	}
+	return null;
+};
+
+/**
+ * Routes post/page management commands (publish, save, draft, set title,
+ * set slug, preview, schedule).  Must run before attribute group routing
+ * so that "publish the page" is never mis-routed as a text/font action.
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {import('./types').PostManagementResult|null}
+ */
+const routePostManagement = rawMessage => {
+	const lower = rawMessage.toLowerCase();
+
+	// ── Publish ──────────────────────────────────────────────────────────────
+	const publishIntents = [
+		/\bpublish\s+(?:the\s+)?(?:current\s+)?(?:page|post|article|this)\b/i,
+		/\bpublish\s+(?:it|now)\b/i,
+		/\bmake\s+(?:it|this|the\s+(?:page|post))\s+(?:live|public|published)\b/i,
+		/\bgo\s+live\b/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:status\s+)?(?:to\s+)?publish(?:ed)?\b/i,
+	];
+	if ( publishIntents.some( re => re.test( lower ) ) ) {
+		// May optionally include a title: "publish the page with title 'Foo'"
+		const title = extractTitleFromMessage( rawMessage );
+		return {
+			type: 'post_management',
+			params: { operation: 'publish', title, rawMessage },
+		};
+	}
+
+	// ── Save / Update ─────────────────────────────────────────────────────────
+	const saveIntents = [
+		/\bsave\s+(?:the\s+)?(?:current\s+)?(?:page|post|article|changes|draft|it|this)\b/i,
+		/\bsave\s+(?:and\s+(?:keep\s+as\s+)?draft|as\s+draft)\b/i,
+		/\bupdate\s+(?:the\s+)?(?:page|post)\s+(?:now|please)?\b/i,
+		/\bsave\s+now\b/i,
+	];
+	if ( saveIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'save', rawMessage },
+		};
+	}
+
+	// ── Draft ──────────────────────────────────────────────────────────────────
+	const draftIntents = [
+		/\bswitch\s+(?:(?:it|this|the\s+(?:page|post))\s+)?(?:back\s+)?to\s+draft\b/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:status\s+)?(?:to\s+)?(?:a\s+)?draft\b/i,
+		/\bconvert\s+(?:(?:it|this|the\s+(?:page|post))\s+)?(?:back\s+)?to\s+draft\b/i,
+		/\bunpublish\s+(?:the\s+)?(?:page|post|it|this)\b/i,
+		/\bmove\s+(?:(?:it|this|the\s+(?:page|post))\s+)?to\s+draft\b/i,
+	];
+	if ( draftIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'draft', rawMessage },
+		};
+	}
+
+	// ── Set title ─────────────────────────────────────────────────────────────
+	const setTitleIntents = [
+		/\b(?:set|change|update|rename|give\s+(?:it|this))\s+(?:the\s+)?(?:page\s+|post\s+)?title\b/i,
+		/\btitle\s*[:=]/i,
+		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+/i,
+		/\bwith\s+(?:a\s+)?title\b/i,
+	];
+	if ( setTitleIntents.some( re => re.test( lower ) ) ) {
+		const title = extractTitleFromMessage( rawMessage );
+		if ( title ) {
+			return {
+				type: 'post_management',
+				params: { operation: 'set_title', title, rawMessage },
+			};
+		}
+	}
+
+	// ── Set slug / permalink ───────────────────────────────────────────────────
+	const setSlugIntents = [
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\b/i,
+	];
+	if ( setSlugIntents.some( re => re.test( lower ) ) ) {
+		const slug = extractSlugFromMessage( rawMessage );
+		if ( slug ) {
+			return {
+				type: 'post_management',
+				params: { operation: 'set_slug', slug, rawMessage },
+			};
+		}
+	}
+
+	// ── Preview ───────────────────────────────────────────────────────────────
+	const previewIntents = [
+		/\b(?:open\s+)?(?:a\s+)?preview\s+(?:of\s+)?(?:the\s+)?(?:page|post|this|it)?\b/i,
+		/\bpreview\s+(?:the\s+)?(?:page|post|this|it)\b/i,
+		/\bshow\s+(?:me\s+)?(?:a\s+)?(?:live\s+)?preview\b/i,
+		/\bopen\s+(?:in\s+)?(?:a\s+)?new\s+tab\b/i,
+	];
+	if ( previewIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'preview', rawMessage },
+		};
+	}
+
+	// ── Open published page ───────────────────────────────────────────────────
+	// "open the page", "view the live page", "open it in a new tab", etc.
+	// Must come before preview so "open" alone doesn't match preview intents.
+	const openPageIntents = [
+		/\bopen\s+(?:the\s+)?(?:live\s+|published\s+|current\s+)?(?:page|post|site)\b/i,
+		/\bview\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post|site)\b/i,
+		/\bvisit\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post|site)\b/i,
+		/\bopen\s+(?:it|this)\s+(?:in\s+a?\s*new\s+tab|live|on\s+the\s+(?:front\s*end|site))\b/i,
+		/\bshow\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post)\b/i,
+		/\bsee\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post)\b/i,
+	];
+	if ( openPageIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'open_page', rawMessage },
+		};
+	}
+
+	// ── Schedule ─────────────────────────────────────────────────────────────
+	const scheduleIntents = [
+		/\bschedule\s+(?:(?:the\s+)?(?:page|post|it|this)\s+)?(?:for\s+|to\s+(?:publish\s+)?(?:on\s+|at\s+)?)/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:to\s+publish|to\s+go\s+live)\s+(?:at|on)\b/i,
+	];
+	if ( scheduleIntents.some( re => re.test( lower ) ) ) {
+		const date = extractScheduleDateFromMessage( rawMessage );
+		return {
+			type: 'post_management',
+			params: { operation: 'schedule', date, rawMessage },
+		};
+	}
+
+	return null;
+};
+
+/**
  * User wants the Maxi Cloud Library UI to search or insert patterns/pages manually.
  * Runs before LAYOUT_PATTERNS so option chips like "Browse Cloud Library" are not
  * misread as flex layout (e.g. "beside").
@@ -1498,7 +1708,13 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 		if ( earlyCloudSC ) return earlyCloudSC;
 	}
 
-	// 1. Text link
+	// 1. Post / page management (publish, save, draft, title, slug, preview, schedule).
+	//    Must run before attribute groups so "publish the page" is never misread as
+	//    a text/font action.
+	const postMgmtResult = routePostManagement( rawMessage );
+	if ( postMgmtResult ) return postMgmtResult;
+
+	// 1b. Text link
 	const textLinkResult = routeTextLink( rawMessage, ctx );
 	if ( textLinkResult ) return textLinkResult;
 

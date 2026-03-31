@@ -169,6 +169,7 @@ Key fields computed:
 
 | # | Section | Handles |
 |---|---|---|
+| 0 | `routePostManagement` | publish, save, draft, set title, set slug, preview, schedule — **runs first** to prevent mis-routing to text/font handlers |
 | 1 | `routeTextLink` | URL in text selection → set anchor link |
 | 2 | `routeAttributeGroups` | 20+ attribute-group builders (L, Meta, CSS, DC, Button A/B/C/I, Text List/L/P/C, Container A-Z) |
 | 3 | `routeNumericPatterns` | Spacing with number, image sizing, size limits, border radius |
@@ -235,6 +236,8 @@ The PHP proxy forwards to whichever provider is configured (OpenAI GPT-4, Anthro
 | `apply_theme` | Apply an aesthetic theme preset |
 | `update_selection` | Update selected block attributes directly |
 | `update_page` | Batch-update all matching blocks on page |
+
+> **Note:** Post/page management commands (`publish`, `save`, `draft`, `set_title`, `set_slug`, `preview`, `schedule`) are handled entirely client-side by `routePostManagement` and never reach the AI API.
 
 ---
 

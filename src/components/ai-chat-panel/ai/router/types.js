@@ -182,6 +182,31 @@
  */
 
 /**
+ * Router identified a post/page management command (publish, save, set title, etc.).
+ * Executed locally via `core/editor` dispatch — no AI API call needed.
+ *
+ * Supported operations:
+ * - `publish`  — editPost({ status: 'publish' }) + savePost()
+ * - `save`     — savePost()
+ * - `draft`    — editPost({ status: 'draft' }) + savePost()
+ * - `set_title`— editPost({ title }) — title extracted from message
+ * - `set_slug` — editPost({ slug })  — slug extracted from message
+ * - `preview`  — open preview in new tab via core/editor getEditedPostPreviewLink
+ * - `schedule` — editPost({ status: 'future', date }) + savePost()
+ *
+ * @typedef {Object} PostManagementParams
+ * @property {'publish'|'save'|'draft'|'set_title'|'set_slug'|'preview'|'open_page'|'schedule'} operation
+ * @property {string} [title]    Extracted title (set_title only)
+ * @property {string} [slug]     Extracted slug (set_slug only)
+ * @property {string} [date]     ISO 8601 date string (schedule only)
+ * @property {string} rawMessage Original user message
+ *
+ * @typedef {Object} PostManagementResult
+ * @property {'post_management'} type
+ * @property {PostManagementParams} params
+ */
+
+/**
  * No client-side pattern matched — send to the AI API.
  *
  * @typedef {Object} PassthroughResult
@@ -191,5 +216,5 @@
 /**
  * Discriminated union of all possible router outcomes.
  *
- * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|OpenCloudLibraryResult|BrowseCloudSCResult|PassthroughResult} RouteResult
+ * @typedef {ActionResult|ClarifyResult|FlowResult|ImmediateUpdatesResult|CloudIconResult|CreateBlockResult|OpenCloudLibraryResult|BrowseCloudSCResult|PostManagementResult|PassthroughResult} RouteResult
  */

@@ -481,6 +481,7 @@ export const clickInstantSearchMenuLabel = (
 
 /**
  * Cost row: All | Free | Pro (third label may be "Cloud" for Pro in UI).
+ * Buttons live inside `SIDEBAR .top-Menu`; fall back to COST_WRAP if markup changes.
  *
  * @param {HTMLElement|null} modal
  * @param {'all'|'free'|'pro'} which
@@ -488,8 +489,10 @@ export const clickInstantSearchMenuLabel = (
  */
 export const clickCostFilterButton = ( modalHint, which ) => {
 	const panel = getCloudPatternsPanelRoot( modalHint );
-	const wrap = panel?.querySelector( COST_WRAP );
-	const buttons = wrap?.querySelectorAll( '.top-Menu button' );
+	const wrap =
+		panel?.querySelector( `${ SIDEBAR } .top-Menu` ) ||
+		panel?.querySelector( COST_WRAP );
+	const buttons = wrap?.querySelectorAll( 'button' );
 	if ( ! buttons?.length ) {
 		return false;
 	}
@@ -785,7 +788,7 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 
 				case 'cost_filter': {
 					modal = modal || getMaxiCloudModalRoot();
-					if ( ! clickCostFilterButton( modal, op.value ) ) {
+					if ( ! clickCostFilterButton( modal, op.value ) && ! op.optional ) {
 						lastError = `cost_filter failed: ${ String( op.value ) }`;
 					}
 					await sleep( 100 );
@@ -812,7 +815,7 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 
 				case 'category_contains': {
 					modal = modal || getMaxiCloudModalRoot();
-					if ( ! clickCategoryContaining( modal, op.text ) ) {
+					if ( ! clickCategoryContaining( modal, op.text ) && ! op.optional ) {
 						lastError = `category_contains failed: ${ String( op.text ) }`;
 					}
 					await sleep( 120 );

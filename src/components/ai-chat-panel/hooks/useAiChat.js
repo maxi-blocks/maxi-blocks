@@ -3458,11 +3458,22 @@ export const useAiChat = ({ onClose } = {}) => {
 		const minLen = 2;
 		const hint = query.length >= minLen ? query : '';
 		const rawLower = String( rawMsg || '' ).toLowerCase();
-		// Pages live under InstantSearch "Pages"; default tab is Patterns. Prefer Pages when the user
-		// asked for a page but not explicitly for a pattern.
+		// Tab detection (Playground/Theme take priority; Pages preferred over Patterns when explicit).
+		const usePlaygroundTab = /\bplayground\b/.test( rawLower );
+		const useThemeTab = ! usePlaygroundTab && /\btheme\b/.test( rawLower );
 		const usePagesTab =
+			! usePlaygroundTab &&
+			! useThemeTab &&
 			/\b(pages?)\b/.test( rawLower ) &&
 			! /\b(patterns?)\b/.test( rawLower );
+
+		// Sidebar cost filter: Free or Pro (UI labels it "Cloud" but value is "Pro").
+		const costFilterValue = /\bfree\b/.test( rawLower )
+			? 'free'
+			: /\bpro\b/.test( rawLower )
+				? 'pro'
+				: null;
+
 		// Sidebar refinement: Light / Dark (word-boundary avoids "highlight" etc.).
 		const lightDarkValue = /\b(dark)\b/i.test( rawLower )
 			? 'dark'
@@ -3471,20 +3482,42 @@ export const useAiChat = ({ onClose } = {}) => {
 				: null;
 
 		const ops = [ { op: 'ensure_open' } ];
-		if ( hint ) {
+		const hasAnyFilter = hint || costFilterValue || usePagesTab || usePlaygroundTab || useThemeTab;
+		if ( hasAnyFilter ) {
 			ops.push( { op: 'wait_ms', ms: 400 } );
-			if ( usePagesTab ) {
+
+			// Tab selection
+			if ( usePlaygroundTab ) {
+				ops.push( { op: 'gutenberg_type', value: 'Playground' } );
+				ops.push( { op: 'wait_ms', ms: 500 } );
+			} else if ( useThemeTab ) {
+				ops.push( { op: 'gutenberg_type', value: 'Theme' } );
+				ops.push( { op: 'wait_ms', ms: 500 } );
+			} else if ( usePagesTab ) {
 				ops.push( { op: 'gutenberg_type', value: 'Pages' } );
 				ops.push( { op: 'wait_ms', ms: 500 } );
 			}
+
+			// Cost filter (optional — button may not be visible on all tabs)
+			if ( costFilterValue ) {
+				ops.push( { op: 'cost_filter', value: costFilterValue, optional: true } );
+				ops.push( { op: 'wait_ms', ms: 300 } );
+			}
+
 			if ( lightDarkValue ) {
 				ops.push( { op: 'light_dark', value: lightDarkValue } );
 				ops.push( { op: 'wait_ms', ms: 350 } );
 			}
-			ops.push( { op: 'set_search', text: hint } );
-			// InstantSearch + Masonry need time; too short a wait clicks stale or empty hits.
-			ops.push( { op: 'wait_ms', ms: 1200 } );
-			ops.push( { op: 'click_first_insert' } );
+
+			if ( hint ) {
+				// Category click is optional: categories differ per tab and may not match every keyword.
+				ops.push( { op: 'category_contains', text: hint, optional: true } );
+				ops.push( { op: 'wait_ms', ms: 300 } );
+				ops.push( { op: 'set_search', text: hint } );
+				// InstantSearch + Masonry need time; too short a wait clicks stale or empty hits.
+				ops.push( { op: 'wait_ms', ms: 1200 } );
+				ops.push( { op: 'click_first_insert' } );
+			}
 		}
 		const result = await executeCloudModalUiOps( ops, {
 			insertCloudBlock: insertMaxiCloudLibraryBlock,
@@ -3497,6 +3530,14 @@ export const useAiChat = ({ onClose } = {}) => {
 				followUp.push(
 					__(
 						'Try again without the light or dark filter',
+						'maxi-blocks'
+					)
+				);
+			}
+			if ( costFilterValue ) {
+				followUp.push(
+					__(
+						'Try again without the free/pro filter',
 						'maxi-blocks'
 					)
 				);
@@ -3576,7 +3617,7 @@ export const useAiChat = ({ onClose } = {}) => {
 		const aiSettings = window.maxiSettings?.ai_settings ?? {};
 		const useShared = aiSettings.ai_panel_use_shared !== false;
 		const hasKey = useShared
-			? !!aiSettings.has_openai_api_key
+			? !!aiSettings.has_ai_key
 			: !!aiSettings.has_ai_panel_key;
 
 		if (!hasKey) {
@@ -4474,7 +4515,39 @@ export const useAiChat = ({ onClose } = {}) => {
 				return;
 			}
 
-			case 'insert_block':
+			case 'insert_block': {
+				// If the original message already specifies a layout, skip the picker
+				const lowerInsert = rawMessage.toLowerCase();
+				const insertHasCloud = lowerInsert.includes('cloud') || lowerInsert.includes('library') || lowerInsert.includes('browse');
+				const insertHasSidebar = lowerInsert.includes('sidebar');
+				const insertHasHero = lowerInsert.includes('hero') || lowerInsert.includes('full-width') || lowerInsert.includes('full width');
+				const insertColMatch = lowerInsert.match(/(\d+)\s*(?:equal\s+)?col/);
+				const insertNumCols = insertColMatch ? Math.min(parseInt(insertColMatch[1]), 6) : 0;
+
+				if (insertHasCloud || insertHasSidebar || insertHasHero || insertNumCols > 1) {
+					let rootBlock;
+					if (insertHasCloud) {
+						await runCloudLibraryIntent(rawMessage);
+					} else if (insertHasSidebar) {
+						const row = createBlock('maxi-blocks/row-maxi');
+						rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+						dispatch('core/block-editor').insertBlocks(rootBlock);
+						loadColumnsTemplate('1-3', row.clientId, 'general', 2);
+					} else if (insertHasHero) {
+						rootBlock = createBlock('maxi-blocks/container-maxi', { 'full-width-general': true });
+						dispatch('core/block-editor').insertBlocks(rootBlock);
+					} else {
+						const templateName = getTemplates(true, 'general', insertNumCols).find(t => !t.isMoreThanEightColumns)?.name || `${insertNumCols} columns`;
+						const row = createBlock('maxi-blocks/row-maxi');
+						rootBlock = createBlock('maxi-blocks/container-maxi', {}, [row]);
+						dispatch('core/block-editor').insertBlocks(rootBlock);
+						loadColumnsTemplate(templateName, row.clientId, 'general', insertNumCols);
+					}
+					setMessages(prev => [...prev, { role: 'assistant', content: `Added ${rawMessage}.`, executed: true }]);
+					setIsLoading(false);
+					return;
+				}
+
 				setConversationContext( { type: 'insert_block', blockType: routeResult.params.blockType } );
 				setMessages( prev => [
 					...prev,
@@ -4494,6 +4567,7 @@ export const useAiChat = ({ onClose } = {}) => {
 				] );
 				setIsLoading( false );
 				return;
+			}
 
 			case 'create_block':
 				setMessages(prev => [
@@ -4798,7 +4872,7 @@ export const useAiChat = ({ onClose } = {}) => {
 			);
 
 			if (errorCode === 'no_api_key' || /OpenAI API key/i.test(errorText)) {
-				errorMessage = __('Error: Please check your OpenAI API key in Maxi AI settings.', 'maxi-blocks');
+				errorMessage = __('Error: AI API key not found. Please check your AI settings or reload the editor and try again.', 'maxi-blocks');
 			} else if (errorCode === 'unsupported_provider') {
 				errorMessage = __('Error: Unsupported AI provider configured.', 'maxi-blocks');
 			} else if (errorCode === 'openai_api_error') {

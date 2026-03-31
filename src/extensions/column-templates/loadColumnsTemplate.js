@@ -95,9 +95,9 @@ const loadColumnsTemplate = (
 	isMarkNextChangeAsNotPersistent,
 	avoidRowAttributesChange
 ) => {
-	const columnsBlockObjects = wp.data
-		.select('core/block-editor')
-		.getBlock(clientId).innerBlocks;
+	const block = wp.data.select('core/block-editor').getBlock(clientId);
+	if (!block) return;
+	const columnsBlockObjects = block.innerBlocks;
 	const isRowEmpty = !columnsBlockObjects.length;
 	// When inserting column, template should be loaded for general
 	const template = cloneDeep(

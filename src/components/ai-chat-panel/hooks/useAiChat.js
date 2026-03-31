@@ -428,6 +428,180 @@ export const useAiChat = ({ onClose } = {}) => {
 	const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBlock = null, specificClientId = null) =>
 		_applyUpdatesToBlocks(blocksToUpdate, property, value, targetBlock, specificClientId, updateBlockAttributes, scope);
 
+	// ─── Recovery helpers ────────────────────────────────────────────────────
+	/**
+	 * Builds a recovery message with chips instead of a dead-end error.
+	 *
+	 * @param {'no_match'|'no_selection'|'no_blocks_inserted'|'flow_error'|'lost_blocks'} type
+	 * @param {Object} ctx  Contextual data to replay after the user picks an option.
+	 * @returns {{ content: string, options: string[], recoveryCtx: Object }}
+	 */
+	const buildRecoveryResponse = (type, ctx = {}) => {
+		switch (type) {
+			case 'no_match':
+				return {
+					content: `I couldn't apply that to the selected block (${
+						ctx.blockName || 'unknown'
+					}). What should I do?`,
+					options: [
+						'Apply to the whole page instead',
+						'Select a different block and retry',
+						'Skip this change',
+					],
+					recoveryCtx: { type: 'recovery', action: 'no_match', ...ctx },
+				};
+			case 'no_selection':
+				return {
+					content: 'No block is selected. Should I apply this to the whole page or wait until you select a block?',
+					options: [
+						'Apply to the whole page',
+						'I\'ll select a block — try again',
+					],
+					recoveryCtx: { type: 'recovery', action: 'no_selection', ...ctx },
+				};
+			case 'no_blocks_inserted':
+				return {
+					content: 'I couldn\'t insert the block — there may be no container to put it in yet. What would you like to do?',
+					options: [
+						'Add a container first, then retry',
+						'Browse the Cloud Library instead',
+						'Skip',
+					],
+					recoveryCtx: { type: 'recovery', action: 'no_blocks_inserted', ...ctx },
+				};
+			case 'flow_error':
+				return {
+					content: 'Something went wrong in the flow. Want to start over or skip this step?',
+					options: [
+						'Start over',
+						'Skip',
+					],
+					recoveryCtx: { type: 'recovery', action: 'flow_error', ...ctx },
+				};
+			case 'lost_blocks':
+				return {
+					content: 'I lost track of the target blocks (they may have been removed). What would you like to do?',
+					options: [
+						'Retry with the currently selected block',
+						'Skip',
+					],
+					recoveryCtx: { type: 'recovery', action: 'lost_blocks', ...ctx },
+				};
+			default:
+				return {
+					content: 'Something didn\'t work as expected. What would you like to do?',
+					options: [ 'Try again', 'Skip' ],
+					recoveryCtx: { type: 'recovery', action: 'generic', ...ctx },
+				};
+		}
+	};
+
+	/**
+	 * Handles a user's choice inside a `recovery` conversation context (chip click or typed reply).
+	 * Returns true if it consumed the input, false to fall through to normal handling.
+	 *
+	 * @param {string} choice  The chosen option label.
+	 * @returns {boolean}
+	 */
+	const handleRecoveryChoice = async choice => {
+		if (conversationContext?.type !== 'recovery') return false;
+		const { action: recoveryAction, property, value, targetBlock, originalMessage } = conversationContext;
+		const lower = choice.toLowerCase();
+		setConversationContext(null);
+		setMessages(prev => [...prev, { role: 'user', content: choice }]);
+		setIsLoading(true);
+
+		// ── Apply to whole page ──────────────────────────────────────────────
+		if (lower.includes('whole page') || lower.includes('apply to the page')) {
+			if (property && value !== undefined) {
+				const resultMsg = handleUpdatePage(property, value, targetBlock);
+				setMessages(prev => [...prev, { role: 'assistant', content: resultMsg, executed: true }]);
+			} else {
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: 'No pending change to apply.', executed: false },
+				]);
+			}
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── Add container first then retry ───────────────────────────────────
+		if (lower.includes('add a container')) {
+			const contentAreaId = getContentAreaClientId();
+			const row = createBlock('maxi-blocks/row-maxi');
+			const container = createBlock('maxi-blocks/container-maxi', {}, [row]);
+			dispatch('core/block-editor').insertBlocks(container, undefined, contentAreaId);
+			loadColumnsTemplate('1-1', row.clientId, 'general', 1);
+			setMessages(prev => [
+				...prev,
+				{
+					role: 'assistant',
+					content: 'Added a container. Select a block inside it and try your request again.',
+					executed: true,
+				},
+			]);
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── Browse Cloud Library ─────────────────────────────────────────────
+		if (lower.includes('cloud library') || lower.includes('browse')) {
+			await runCloudLibraryIntent(originalMessage || 'browse cloud library');
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── I'll select a block — do nothing, let user act ───────────────────
+		if (lower.includes("i'll select") || lower.includes('select a block')) {
+			setMessages(prev => [
+				...prev,
+				{ role: 'assistant', content: 'Go ahead — select a block and send the same message again.', executed: false },
+			]);
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── Retry with currently selected block ──────────────────────────────
+		if (lower.includes('retry') || lower.includes('currently selected')) {
+			if (property && value !== undefined && selectedBlock) {
+				const resultMsg = handleUpdateSelection(property, value, targetBlock);
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: resultMsg, executed: !resultMsg.includes('No matching') },
+				]);
+			} else if (originalMessage) {
+				// Re-run the original message through the normal flow.
+				await sendMessage(originalMessage);
+			} else {
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: 'Please send your request again.', executed: false },
+				]);
+			}
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── Start over ───────────────────────────────────────────────────────
+		if (lower.includes('start over')) {
+			setMessages(prev => [
+				...prev,
+				{ role: 'assistant', content: 'OK — what would you like to do?', executed: false },
+			]);
+			setIsLoading(false);
+			return true;
+		}
+
+		// ── Skip / any other choice ──────────────────────────────────────────
+		setMessages(prev => [
+			...prev,
+			{ role: 'assistant', content: 'Skipped. Let me know what you\'d like to do next.', executed: false },
+		]);
+		setIsLoading(false);
+		return true;
+	};
+	// ─────────────────────────────────────────────────────────────────────────
 
 	const SHAPE_DIVIDER_PROPERTIES = new Set([
 		'shape_divider',
@@ -2359,35 +2533,51 @@ export const useAiChat = ({ onClose } = {}) => {
 							);
 						}
 					}
-					const anyChanges = inserted > 0 || removed > 0;
+				const anyChanges = inserted > 0 || removed > 0;
+				if (!anyChanges) {
+					const recovery = buildRecoveryResponse('no_blocks_inserted', {
+						property: null,
+						value: null,
+						targetBlock: action.block_type ?? null,
+						originalMessage: action.message ?? null,
+					});
+					setConversationContext(recovery.recoveryCtx);
 					return {
-						executed: anyChanges,
-						message: anyChanges
-							? action.message || [
-								inserted > 0 ? `Added ${inserted} block(s).` : '',
-								removed > 0 ? `Removed ${removed} block(s).` : '',
-							  ].filter(Boolean).join(' ')
-							: __(
-								'No blocks were inserted. Parent columns may be missing, or this block type cannot be added there.',
-								'maxi-blocks'
-							  ),
+						executed: false,
+						message: recovery.content,
+						options: recovery.options,
 					};
+				}
+				return {
+					executed: true,
+					message: action.message || [
+						inserted > 0 ? `Added ${inserted} block(s).` : '',
+						removed > 0 ? `Removed ${removed} block(s).` : '',
+					].filter(Boolean).join(' '),
+				};
 				}
 
 				// ORCHESTRATION LAYER: Determine target blocks based on scope
 				let targetBlocks = [];
 				let prefix = ''; // Prefix logic might need to be per-block if they differ, but usually consistent for buttons
 
-				if (scope === 'selection') {
-					if (selectedBlock) {
-						targetBlocks = [selectedBlock];
-						prefix = getBlockPrefix(selectedBlock.name);
-					} else {
-						return {
-							executed: false,
-							message: __('Please select a block first.', 'maxi-blocks'),
-						};
-					}
+			if (scope === 'selection') {
+				if (selectedBlock) {
+					targetBlocks = [selectedBlock];
+					prefix = getBlockPrefix(selectedBlock.name);
+				} else {
+					const recovery = buildRecoveryResponse('no_selection', {
+						property: action.property ?? null,
+						value: action.value ?? null,
+						targetBlock: action.target_block ?? null,
+					});
+					setConversationContext(recovery.recoveryCtx);
+					return {
+						executed: false,
+						message: recovery.content,
+						options: recovery.options,
+					};
+				}
 			} else if (scope === 'page') {
 				// Recursive search for ALL buttons on the page — use live store to avoid stale closure.
 				targetBlocks = collectBlocks(select('core/block-editor').getBlocks(), (b) => b.name.includes('button'));
@@ -3107,14 +3297,38 @@ export const useAiChat = ({ onClose } = {}) => {
 				// EXPAND SIDEBAR
 				openSidebarForProperty(property);
 
-				// Combine AI message with technical result if mismatch
-				// If resultMsg says "No matching components", we should probably show that.
-				let finalMessage = actionMessage || resultMsg;
-				if (typeof resultMsg === 'string' && resultMsg.includes('No matching')) {
-					finalMessage = `${actionMessage || 'No changes applied'} (${resultMsg})`;
-				}
+			// No block selected — offer recovery instead of dead-end.
+			if (typeof resultMsg === 'string' && resultMsg.includes('Please select')) {
+				const recovery = buildRecoveryResponse('no_selection', {
+					property,
+					value,
+					targetBlock,
+				});
+				setConversationContext(recovery.recoveryCtx);
+				return {
+					executed: false,
+					message: recovery.content,
+					options: recovery.options,
+				};
+			}
 
-				return { executed: true, message: finalMessage };
+			// No block matched the change — offer recovery instead of dead-end.
+			if (typeof resultMsg === 'string' && resultMsg.includes('No matching')) {
+				const recovery = buildRecoveryResponse('no_match', {
+					property,
+					value,
+					targetBlock,
+					blockName: selectedBlock?.name ?? 'unknown',
+				});
+				setConversationContext(recovery.recoveryCtx);
+				return {
+					executed: false,
+					message: recovery.content,
+					options: recovery.options,
+				};
+			}
+
+			return { executed: true, message: actionMessage || resultMsg };
 			}
 
 			if (action.action === 'message') {
@@ -3750,6 +3964,13 @@ export const useAiChat = ({ onClose } = {}) => {
 			return;
 		}
 
+		// Handle recovery context — user typed a response to a recovery question.
+		if (conversationContext?.type === 'recovery') {
+			setInput('');
+			await handleRecoveryChoice(rawMessage);
+			return;
+		}
+
 		const userMessage = { role: 'user', content: rawMessage };
 		setMessages(prev => [...prev, userMessage]);
 		setInput('');
@@ -3877,17 +4098,20 @@ export const useAiChat = ({ onClose } = {}) => {
 
 		// 0. SELECTION CHECK: If in Selection mode, enforce that a block MUST be selected
 		if (currentScope === 'selection' && !selectedBlock) {
-			setMessages(prev => [
-				...prev,
-				{
-					role: 'assistant',
-					content: 'Please select a block on the page first so I know what to modify.',
-					executed: false,
-					testId: 'maxi-ai-selection-required',
-				},
-			]);
-			return;
-		}
+		const selectionRecovery = buildRecoveryResponse('no_selection', { originalMessage: rawMessage });
+		setConversationContext(selectionRecovery.recoveryCtx);
+		setMessages(prev => [
+			...prev,
+			{
+				role: 'assistant',
+				content: selectionRecovery.content,
+				options: selectionRecovery.options,
+				executed: false,
+				testId: 'maxi-ai-selection-required',
+			},
+		]);
+		return;
+	}
 
 		setIsLoading(true);
 
@@ -5085,6 +5309,13 @@ export const useAiChat = ({ onClose } = {}) => {
 	};
 
 	const handleSuggestion = async (suggestion) => {
+		// Handle recovery context chip click.
+		if (conversationContext?.type === 'recovery') {
+			setIsLoading(true);
+			await handleRecoveryChoice(suggestion);
+			return;
+		}
+
 		// Handle insert_block layout picker reply (button click path)
 		if (conversationContext?.type === 'insert_block') {
 			const lower = suggestion.toLowerCase();
@@ -5244,9 +5475,21 @@ export const useAiChat = ({ onClose } = {}) => {
             if (fullBlocks.length === 0 && selectedBlock && targetIds.includes(selectedBlock.clientId)) fullBlocks.push(selectedBlock);
 
             if (fullBlocks.length === 0) {
-                 setMessages(prev => [...prev, { role: 'assistant', content: "Lost track of blocks.", executed: false }]);
-                 setIsLoading(false);
-                 return;
+				const recovery = buildRecoveryResponse('lost_blocks', {
+					originalMessage: suggestion,
+				});
+				setConversationContext(recovery.recoveryCtx);
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: recovery.content,
+						options: recovery.options,
+						executed: false,
+					},
+				]);
+                setIsLoading(false);
+                return;
             }
 
             let nextStepResponse = null;
@@ -5333,8 +5576,20 @@ export const useAiChat = ({ onClose } = {}) => {
                         }]);
                     }
                 } else {
-                     // No result?
-                     setMessages(prev => [...prev, { role: 'assistant', content: "Flow state error.", executed: false }]);
+					// No result — offer recovery instead of a dead-end.
+					const recovery = buildRecoveryResponse('flow_error', {
+						originalMessage: suggestion,
+					});
+					setConversationContext(recovery.recoveryCtx);
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: recovery.content,
+							options: recovery.options,
+							executed: false,
+						},
+					]);
                 }
                 setIsLoading(false);
             }, 500);

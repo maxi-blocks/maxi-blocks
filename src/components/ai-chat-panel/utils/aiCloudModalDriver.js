@@ -27,6 +27,8 @@ export const MAXI_AI_CLOUD_MODAL_OP_NAMES = Object.freeze( [
 	'light_dark',
 	'clear_filters',
 	'category_contains',
+	'placeholder_images',
+	'use_sc_styles',
 	'click_first_insert',
 ] );
 
@@ -555,6 +557,48 @@ export const clickClearPatternFilters = modalHint => {
 };
 
 /**
+ * Sets the "Swap stock images for placeholders" checkbox to the desired state.
+ *
+ * @param {HTMLElement|null} modalHint
+ * @param {boolean}          enable
+ * @returns {boolean}
+ */
+export const setPlaceholderImagesCheckbox = ( modalHint, enable ) => {
+	const panel = getCloudPatternsPanelRoot( modalHint );
+	const input = panel?.querySelector(
+		'.use-placeholder-all-images .components-checkbox-control__input'
+	);
+	if ( ! input ) {
+		return false;
+	}
+	if ( Boolean( input.checked ) !== Boolean( enable ) ) {
+		input.click();
+	}
+	return true;
+};
+
+/**
+ * Sets the "Use Style Card defaults instead of custom block styles" checkbox to the desired state.
+ *
+ * @param {HTMLElement|null} modalHint
+ * @param {boolean}          enable
+ * @returns {boolean}
+ */
+export const setUseScStylesCheckbox = ( modalHint, enable ) => {
+	const panel = getCloudPatternsPanelRoot( modalHint );
+	const input = panel?.querySelector(
+		'.use-sc-styles .components-checkbox-control__input'
+	);
+	if ( ! input ) {
+		return false;
+	}
+	if ( Boolean( input.checked ) !== Boolean( enable ) ) {
+		input.click();
+	}
+	return true;
+};
+
+/**
  * Hierarchical category: first link whose text contains `fragment`.
  *
  * @param {HTMLElement|null} modal
@@ -822,6 +866,24 @@ export async function executeCloudModalUiOps( ops, deps = {} ) {
 					break;
 				}
 
+				case 'placeholder_images': {
+					modal = modal || getMaxiCloudModalRoot();
+					if ( ! setPlaceholderImagesCheckbox( modal, op.value !== false ) && ! op.optional ) {
+						lastError = 'placeholder_images checkbox not found.';
+					}
+					await sleep( 80 );
+					break;
+				}
+
+				case 'use_sc_styles': {
+					modal = modal || getMaxiCloudModalRoot();
+					if ( ! setUseScStylesCheckbox( modal, op.value !== false ) && ! op.optional ) {
+						lastError = 'use_sc_styles checkbox not found.';
+					}
+					await sleep( 80 );
+					break;
+				}
+
 				case 'click_first_insert': {
 					modal = modal || getMaxiCloudModalRoot();
 					const waitMs = Math.min(
@@ -924,6 +986,8 @@ export const maxiAiCloudModalInterface = {
 	clickLightOrDarkMenu,
 	clickClearPatternFilters,
 	clickCategoryContaining,
+	setPlaceholderImagesCheckbox,
+	setUseScStylesCheckbox,
 	waitForFirstPatternInsertButton,
 	clickFirstPatternInsert,
 	closeCloudLibraryModal,

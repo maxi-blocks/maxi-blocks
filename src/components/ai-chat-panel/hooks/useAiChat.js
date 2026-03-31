@@ -3474,6 +3474,10 @@ export const useAiChat = ({ onClose } = {}) => {
 				? 'pro'
 				: null;
 
+		// Sidebar checkboxes.
+		const usePlaceholderImages = /\bplaceholder\b/.test( rawLower ) || /\bno.stock\b/.test( rawLower ) || /\bsave.disk\b/.test( rawLower );
+		const useScStyles = /\bstyle.?card\b/.test( rawLower ) || /\bsc.styles?\b/.test( rawLower ) || /\bscs?\b/.test( rawLower );
+
 		// Sidebar refinement: Light / Dark (word-boundary avoids "highlight" etc.).
 		const lightDarkValue = /\b(dark)\b/i.test( rawLower )
 			? 'dark'
@@ -3482,7 +3486,7 @@ export const useAiChat = ({ onClose } = {}) => {
 				: null;
 
 		const ops = [ { op: 'ensure_open' } ];
-		const hasAnyFilter = hint || costFilterValue || usePagesTab || usePlaygroundTab || useThemeTab;
+		const hasAnyFilter = hint || costFilterValue || usePlaceholderImages || useScStyles || usePagesTab || usePlaygroundTab || useThemeTab;
 		if ( hasAnyFilter ) {
 			ops.push( { op: 'wait_ms', ms: 400 } );
 
@@ -3502,6 +3506,14 @@ export const useAiChat = ({ onClose } = {}) => {
 			if ( costFilterValue ) {
 				ops.push( { op: 'cost_filter', value: costFilterValue, optional: true } );
 				ops.push( { op: 'wait_ms', ms: 300 } );
+			}
+
+			// Sidebar checkboxes (optional — only present in Patterns/Pages tabs)
+			if ( usePlaceholderImages ) {
+				ops.push( { op: 'placeholder_images', value: true, optional: true } );
+			}
+			if ( useScStyles ) {
+				ops.push( { op: 'use_sc_styles', value: true, optional: true } );
 			}
 
 			if ( lightDarkValue ) {

@@ -17,15 +17,16 @@ A comprehensive guide to the AI chat panel: how messages flow, where decisions a
 9. [Style Card System](#style-card-system)
 10. [Color System](#color-system)
 11. [Conversation Flows (FSM)](#conversation-flows-fsm)
-12. [Icon & Pattern Search](#icon--pattern-search)
-13. [Prompt System](#prompt-system)
-14. [Attribute System](#attribute-system)
-15. [Lower-level Command Router](#lower-level-command-router)
-16. [Suggestions & Typesense](#suggestions--typesense)
-17. [Hooks](#hooks)
-18. [Tests](#tests)
-19. [How to Add a New Block](#how-to-add-a-new-block)
-20. [Debugging](#debugging)
+12. [Recovery System](#recovery-system)
+13. [Icon & Pattern Search](#icon--pattern-search)
+14. [Prompt System](#prompt-system)
+15. [Attribute System](#attribute-system)
+16. [Lower-level Command Router](#lower-level-command-router)
+17. [Suggestions & Typesense](#suggestions--typesense)
+18. [Hooks](#hooks)
+19. [Tests](#tests)
+20. [How to Add a New Block](#how-to-add-a-new-block)
+21. [Debugging](#debugging)
 
 ---
 
@@ -36,9 +37,11 @@ The Maxi AI system is a natural-language interface embedded in the Gutenberg blo
 **Key design principles:**
 
 - **Router-first**: A client-side pattern-matching pipeline handles the majority of common requests instantly, without an API call.
-- **Separation of concerns**: The router returns a typed `RouteResult` (data only). The hook (`useAiChat.js`) owns all side effects (state, block dispatch, API calls).
+- **Separation of concerns**: The router returns a typed `RouteResult` (data only). The hook layer owns all side effects (state, block dispatch, API calls).
 - **Pure routing functions**: `buildRoutingContext` and `routeClientSide` have no React dependencies; they can be tested independently.
 - **Three scopes**: Every action is applied to either the *selection* (one block), the *page* (all matching blocks), or *global* (Style Card tokens).
+- **Modular hooks**: `useAiChat.js` is a thin orchestrator that composes eight focused sub-hooks. Each sub-hook is responsible for one cohesive area (drag, blocks, sidebar, cloud, recovery, actions, messages).
+- **Recovery over failure**: When an operation cannot proceed, the system builds a conversational recovery response with action chips instead of showing a generic error.
 
 ---
 
@@ -78,11 +81,18 @@ src/components/ai-chat-panel/
 │   └── ChatWindow/        Chat UI component
 │
 ├── hooks/
-│   ├── useAiChat.js       Core hook — orchestrates everything
-│   ├── useAiChatHistory.js Persistent message history
-│   ├── useDebounce.js
-│   ├── useDraggable.js
-│   └── usePersistentState.js
+│   ├── useAiChat.js            Thin orchestrator — composes all sub-hooks, exposes public API
+│   ├── useAiChatActions.js     parseAndExecuteAction, normalizeActionProperty, resolveButtonIconFromTypesense
+│   ├── useAiChatBlocks.js      handleUpdatePage, handleUpdateSelection, applyHoverAnimation
+│   ├── useAiChatCloud.js       getContentAreaClientId, runCloudLibraryIntent (FSE + Cloud Library)
+│   ├── useAiChatDrag.js        Panel drag-and-drop state and mouse event handlers
+│   ├── useAiChatHistory.js     Persistent message history (load/save/delete)
+│   ├── useAiChatMessages.js    sendMessage, handleKeyDown, handleSuggestion
+│   ├── useAiChatRecovery.js    buildRecoveryResponse, handleRecoveryChoice
+│   ├── useAiChatSidebar.js     openSidebarForProperty — maps properties to sidebar panels
+│   ├── useDebounce.js          Standard debounce hook
+│   ├── useDraggable.js         Lower-level draggable primitive
+│   └── usePersistentState.js   Persists state to localStorage
 │
 ├── jest/                  Jest config, setup, and mocks
 └── __tests__/             34 unit tests
@@ -96,7 +106,10 @@ src/components/ai-chat-panel/
 User types a message
         │
         ▼
-useAiChat.js  sendMessage()
+useAiChatMessages.js  sendMessage()
+        │
+        ├─ Check conversationContext (recovery / insert_block / color_what flows)
+        │       → if active context, route to handleRecoveryChoice() or flow handler
         │
         ├─ buildRoutingContext(rawMessage, { scope, selectedBlock, messagesRef, allBlocks })
         │       → RoutingContext (pure, no side effects)
@@ -109,9 +122,9 @@ useAiChat.js  sendMessage()
         │   ├─ 'clarify'          → push message to chat state, stop
         │   ├─ 'flow'             → set conversationContext, open sidebar accordion
         │   ├─ 'immediate_updates'→ registry.batch() block attribute updates
-        │   ├─ 'insert_block'     → createBlock() + insertBlocks() (blank WP block)
+        │   ├─ 'insert_block'     → createBlock() + insertBlocks() with FSE-aware rootClientId
         │   ├─ 'cloud_icon'       → handleCloudIconSearch() async
-        │   ├─ 'create_block'     → handleCreateBlock() async (Cloud Library)
+        │   ├─ 'create_block'     → runCloudLibraryIntent() async (Cloud Library)
         │   └─ 'passthrough'      → send to AI API  ──────────────┐
         │                                                          │
         │                                           PHP proxy endpoint
@@ -120,6 +133,7 @@ useAiChat.js  sendMessage()
         │                                                          │
         └─ parseAndExecuteAction(aiResponse.action)  ◄────────────┘
                 → attribute patch → updateBlockAttributes()
+                → on failure     → buildRecoveryResponse() with option chips
 ```
 
 ---
@@ -193,7 +207,7 @@ JSDoc typedefs for the full routing type system. Key types:
 
 ## Layer 2 — AI API (cloud, async)
 
-When `routeClientSide` returns `{ type: 'passthrough' }`, `useAiChat.js` builds a prompt and POSTs to the WordPress REST endpoint:
+When `routeClientSide` returns `{ type: 'passthrough' }`, `useAiChatMessages.js` builds a prompt and POSTs to the WordPress REST endpoint:
 
 ```
 POST /wp-json/maxi-blocks/v1.0/ai/chat
@@ -209,13 +223,14 @@ The PHP proxy forwards to whichever provider is configured (OpenAI GPT-4, Anthro
 }
 ```
 
-`parseAndExecuteAction()` in `useAiChat.js` handles each action type:
+`parseAndExecuteAction()` in `useAiChatActions.js` handles each action type:
 
 | Action | What it does |
 |---|---|
 | `MODIFY_BLOCK` | Update one or more blocks' attributes |
 | `MODIFY_BLOCK op:add` | Insert a new blank Maxi block |
 | `CLARIFY` | Push a clarification message with option buttons |
+| `CLOUD_MODAL_UI` | Drive the Cloud Library UI to insert a pattern |
 | `update_style_card` | Update Style Card tokens (global scope) |
 | `apply_theme` | Apply an aesthetic theme preset |
 | `update_selection` | Update selected block attributes directly |
@@ -225,9 +240,9 @@ The PHP proxy forwards to whichever provider is configured (OpenAI GPT-4, Anthro
 
 ## Layer 3 — Action Execution
 
-### `parseAndExecuteAction(action, context)`
+### `useAiChatActions.js` — `parseAndExecuteAction(action, context)`
 
-The main action dispatcher inside `useAiChat.js`. Handles property normalisation, scope resolution, and block attribute writes.
+The main action dispatcher. Handles property normalisation, scope resolution, and block attribute writes.
 
 **Property normalisation** — `normalizeActionProperty(property, value)` resolves aliases (via `ai/actions/actionPropertyAliases.js`), strips dashes, detects breakpoint suffixes (`_general`, `_xl`, etc.), and routes to the right handler.
 
@@ -237,7 +252,9 @@ The main action dispatcher inside `useAiChat.js`. Handles property normalisation
 
 **Attribute writes** — `updateBlockAttributes(clientId, attributes)` from `core/block-editor`.
 
-### `queueDirectAction(payload)`
+**Failure path** — when an attribute patch cannot be applied (no selection, wrong block type, etc.), the action calls `buildRecoveryResponse()` and adds option chips to the chat instead of showing a bare error string.
+
+### `queueDirectAction(payload)` (in `useAiChatMessages.js`)
 
 Lightweight wrapper used by the router's `'action'` result. Immediately calls `parseAndExecuteAction` without going through the AI API.
 
@@ -308,12 +325,16 @@ AI prompt for global scope uses `STYLE_CARD_MAXI_PROMPT` and `META_MAXI_PROMPT`.
 
 | File | Purpose |
 |---|---|
-| `colorClarify.js` | `buildColorUpdate(target, color, block)` — resolves color token or hex |
-| `backgroundUpdate.js` | `updateBackgroundColor(clientId, color, attrs, prefix)` |
+| `colorClarify.js` | `getColorTargetFromMessage(msg, block)` resolves ambiguous colour targets; `buildColorUpdate(target, color, block)` builds the attribute patch |
+| `backgroundUpdate.js` | `updateBackgroundColor(clientId, color, attrs, prefix)` — always ensures a colour background layer exists, creating a default one if needed |
 | `color.tokens.js` / `tokens.js` | Maxi color token mapping |
 | `palette.js` | Palette slot resolution |
 | `colorSuggest.js` | Color suggestion helpers |
 | `normalizeColor.js` | Normalises hex, rgb, named colors |
+
+**Background layer behaviour:** `updateBackgroundColor` always processes `background-layers`. If the attribute is `undefined` or an empty array, a new default `"color"` layer is created. This means the AI can add a colour background layer even when none previously existed.
+
+**Colour target disambiguation:** `getColorTargetFromMessage` returns `'element'` for ambiguous inputs (e.g. bare "change colour"), triggering the clarification flow ("Colour of what would you like to change?") rather than inferring a target aggressively.
 
 > **Important:** Background palette updates only write `background-active-media-general`, palette status/color, and the first background layer. Do not add breakpoint fan-out or layer re-ordering without verifying in the UI.
 
@@ -335,7 +356,40 @@ Some requests require multi-step clarification before applying a change. The flo
 **Examples of flows:**
 - Spacing ("add padding") — asks for value if none given
 - Shape divider location — asks top/bottom if not specified
-- Colour — asks which element if ambiguous
+- Colour — asks which element if ambiguous (`color_what` context)
+
+**`conversationContext` shapes used:**
+
+| `mode` | Triggered by | Purpose |
+|---|---|---|
+| `recovery` | Failure paths | Offer contextual recovery options |
+| `insert_block` | Block insertion failure | Ask where/how to insert |
+| `color_what` | Ambiguous colour request | Ask which element to colour |
+| flow key (e.g. `spacing`) | `flow_*` route | Multi-step flow disambiguation |
+
+---
+
+## Recovery System
+
+`useAiChatRecovery.js` — replaces bare error strings with a conversational recovery path.
+
+**`buildRecoveryResponse(failureType, context)`**
+
+Called from failure paths inside `parseAndExecuteAction`, `sendMessage`, and `handleSuggestion`. Returns a message object with:
+- A human-readable explanation of what went wrong
+- An `options` array of labeled chips the user can click
+
+Failure types handled: `no_selection`, `no_blocks_inserted`, `wrong_block_type`, `flow_state_error`, `lost_track`, and more.
+
+**`handleRecoveryChoice(choice, context)`**
+
+Called when the user clicks a recovery chip. Dispatches the chosen recovery action:
+- Retry the original operation
+- Select a block and try again
+- Open the Cloud Library
+- Start over
+
+**Forward reference pattern:** `useAiChatRecovery` depends on `sendMessage` (defined later in `useAiChatMessages`). The orchestrator (`useAiChat.js`) creates a `sendMessageRef` and passes a stable proxy `(...args) => sendMessageRef.current?.(...args)` to the recovery hook, then sets `sendMessageRef.current = sendMessage` after messages hook is initialised.
 
 ---
 
@@ -343,7 +397,7 @@ Some requests require multi-step clarification before applying a change. The flo
 
 ### Cloud Icon Search
 
-Triggered by `cloud_icon` route result. `handleCloudIconSearch()` in `useAiChat.js`:
+Triggered by `cloud_icon` route result. `handleCloudIconSearch()` in `useAiChatMessages.js`:
 
 1. Extracts icon query from message (`extractIconQuery`, `extractIconQueries`)
 2. Searches Typesense via `findBestIcon()` / `findIconCandidates()`
@@ -356,7 +410,7 @@ Triggered by `cloud_icon` route result. `handleCloudIconSearch()` in `useAiChat.
 
 ### Cloud Library Pattern Search
 
-Triggered by `create_block` route result. `handleCreateBlock()` in `useAiChat.js`:
+Triggered by `create_block` route result. `runCloudLibraryIntent()` in `useAiChatCloud.js`:
 
 1. `extractPatternQuery(rawMessage)` — extracts the search term
 2. `findBestPattern(query)` — searches the Cloud Library REST API
@@ -368,10 +422,10 @@ Triggered by `insert_block` route result (for primitive types: container, row, c
 
 ```js
 createBlock('maxi-blocks/container-maxi')
-dispatch('core/block-editor').insertBlocks(newBlock)
+dispatch('core/block-editor').insertBlocks(newBlock, undefined, rootClientId)
 ```
 
-No Cloud Library search needed for blank primitive blocks.
+`rootClientId` is resolved via `getContentAreaClientId()` (in `useAiChatCloud.js`), which recursively walks the block tree to find the `core/post-content` block in FSE (Full Site Editing) themes. This prevents blocks being inserted at the template root level (header/footer area) instead of the page content area.
 
 ---
 
@@ -467,21 +521,72 @@ Input can be a slash command (`/set font-size 24`) or natural language. Returns 
 
 ## Hooks
 
-### `useAiChat.js`
+The hook layer is split into one thin orchestrator and eight focused sub-hooks. All sub-hooks receive their dependencies as explicit arguments (no circular imports).
 
-The core hook (~5000 lines). Orchestrates the entire message lifecycle:
+### `useAiChat.js` — Orchestrator (~320 lines)
 
-- Reads editor state (`selectedBlock`, `allBlocks`, `scope`)
-- Calls `buildRoutingContext` + `routeClientSide`
-- Dispatches on `RouteResult.type`
-- Contains `handleCloudIconSearch` and `handleCreateBlock` async handlers
-- Calls the PHP AI proxy for passthroughs
-- Runs `parseAndExecuteAction` on AI responses
-- Manages `messages`, `isLoading`, `conversationContext` state
+Owns all top-level React state and WordPress data selectors:
+- `messages`, `input`, `isLoading`, `scope`, `scopeChosen`, `conversationContext`, `showHistory`
+- `useSelect` for `selectedBlock`, `allBlocks`, `postTypeLabel`
+- `useDispatch` for `updateBlockAttributes`, `undoPost`, `undoSite`
+- `useRegistry` for transactional batch writes
 
-### `useAiChatHistory.js`
+Composes sub-hooks in dependency order, exposes the public API returned to `AiChatPanel.js`.
 
-Persists message history across panel open/close using `usePersistentState`.
+Handles undo, scope change, auto-scope-reset, scroll-to-bottom, and palette colour helpers directly (they are trivial and don't warrant extraction).
+
+### `useAiChatDrag.js` (~62 lines)
+
+Panel drag-and-drop. Manages `position`, `isDragging`, `dragOffset` state and `handleMouseDown`, `handleMouseMove`, `handleMouseUp` event handlers. Cleans up global listeners via `useEffect`.
+
+### `useAiChatBlocks.js` (~637 lines)
+
+Core block manipulation:
+- `handleUpdatePage(action)` — applies attribute changes to all matching blocks on the page
+- `handleUpdateSelection(action)` — applies attribute changes to the currently selected block, with Interaction Builder / relations support and a parent-fallback for block types that can't accept the target attribute directly. Uses `skipParentFallback` guard for direct `selected` scope operations.
+- `applyHoverAnimation(clientId, animationType)` — writes hover animation attributes
+
+Always reads fresh block data via `select('core/block-editor').getBlock(clientId)` for imperative writes — never relies on the stale `allBlocks` snapshot from `useSelect`.
+
+### `useAiChatSidebar.js` (~313 lines)
+
+`openSidebarForProperty(property, block)` — maps a block property name to the correct sidebar accordion panel and tab, then dispatches the appropriate panel-open action. Imports all `get*SidebarTarget` helpers from the `ai/utils/` group files.
+
+### `useAiChatCloud.js` (~197 lines)
+
+FSE context detection and Cloud Library integration:
+- `getContentAreaClientId()` — recursively walks the block tree to find `core/post-content`; returns `undefined` on non-FSE setups
+- `runCloudLibraryIntent(query, targetClientId)` — searches the Cloud Library, drives the Cloud Modal UI, and inserts the best pattern
+
+### `useAiChatRecovery.js` (~219 lines)
+
+Conversational recovery system:
+- `buildRecoveryResponse(failureType, context)` — returns a message object with option chips
+- `handleRecoveryChoice(choice, context)` — dispatches recovery actions (retry, select block, open Cloud Library, reset)
+
+Receives `sendMessage` as a forwarded reference from the orchestrator to avoid a circular dependency with `useAiChatMessages`.
+
+### `useAiChatActions.js` (~1285 lines)
+
+Action parsing and execution:
+- `parseAndExecuteAction(action, context)` — the main AI response dispatcher; handles all action types (`MODIFY_BLOCK`, `CLARIFY`, `CLOUD_MODAL_UI`, `update_selection`, `update_page`, `update_style_card`, `apply_theme`)
+- `normalizeActionProperty(property, value)` — resolves aliases, strips dashes, detects breakpoint suffixes
+- `resolveButtonIconFromTypesense(query)` — async Typesense lookup for button icon SVG
+
+Contains an inner `openSidebarForProperty` that extends the hook-level version with link/text-link toolbar handling specific to `parseAndExecuteAction` context.
+
+### `useAiChatMessages.js` (~1344 lines)
+
+User message handling:
+- `sendMessage(text?, opts?)` — full message pipeline: context checks → routing → API call → action execution → recovery fallback
+- `handleKeyDown(e)` — keyboard handler (Enter to send, Shift+Enter for newline)
+- `handleSuggestion(suggestion)` — handles clicks on suggestion chips and option buttons
+
+Contains `handleCloudIconSearch` and `queueDirectAction` as inner functions.
+
+### `useAiChatHistory.js` (~97 lines)
+
+Persists message history across panel open/close using `usePersistentState`. Exposes `chatHistory`, `currentChatId`, `saveCurrentChat`, `startNewChat`, `loadChat`, `deleteHistoryItem`.
 
 ### `usePersistentState.js`
 
@@ -489,7 +594,7 @@ Persists React state to `localStorage` with a key prefix.
 
 ### `useDraggable.js`
 
-Makes the chat panel draggable within the viewport.
+Lower-level draggable primitive (used by `useAiChatDrag`).
 
 ### `useDebounce.js`
 
@@ -570,8 +675,10 @@ import MY_BLOCK_PROMPT from './prompts/my-block';
 |---|---|
 | `window.__MAXI_AI_DEBUG_BG = true` | Log background color changes |
 | `localStorage.maxiAiDebugBackground = '1'` | Persistent background debug |
-| Browser console | `[Maxi AI]` prefixed logs from `useAiChat.js` |
-| `[Maxi AI Debug]` logs | Action parsing and MODIFY_BLOCK scope logs |
+| `window.maxiBlocksDebug = true` | Enable all `[Maxi AI Debug]` logs |
+| Browser console `[Maxi AI]` prefix | General operational logs from hook layer |
+| Browser console `[Maxi AI Debug]` prefix | Verbose action parsing / MODIFY_BLOCK scope logs |
+| Browser console `[Maxi AI Intercept]` prefix | Direct (router-bypassing) action execution logs |
 
 The PHP proxy endpoint is at:
 ```

@@ -71,6 +71,12 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	if (isBackground) return 'background';
 	if (isText) return 'text';
 	if (message.includes('border')) return 'border';
+
+	// No explicit target — infer from selected block type before falling back to ambiguous 'element'.
+	if (selectedName.includes('text-maxi') || selectedName.includes('list-item-maxi')) {
+		return 'text';
+	}
+
 	return 'element';
 };
 

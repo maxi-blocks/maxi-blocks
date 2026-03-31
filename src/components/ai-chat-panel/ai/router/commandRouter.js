@@ -1221,6 +1221,22 @@ const routeColorClarify = ( rawMessage, pattern, ctx ) => {
 		} );
 	}
 
+	// If we still don't know what to change, ask before showing the palette.
+	if ( colorTarget === 'element' ) {
+		return {
+			type: 'flow',
+			flowContext: { type: 'color_what' },
+			message: {
+				role: 'assistant',
+				content: 'Colour of what would you like to change?',
+				options: [ 'Text colour', 'Background colour', 'Border colour' ],
+				optionsType: 'text',
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
+
 	return clarifyResult( {
 		role: 'assistant',
 		content: `Choose a colour for the ${ getColorTargetLabel( colorTarget ) }:`,

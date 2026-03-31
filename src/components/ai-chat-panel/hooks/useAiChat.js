@@ -38,7 +38,7 @@ import { getImageSidebarTarget } from '../ai/blocks/image';
 import { getNumberCounterSidebarTarget } from '../ai/blocks/number-counter';
 import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
 import { extractUrl } from '../ai/utils/messageExtractors';
-import { buildColorUpdate } from '../ai/color/colorClarify';
+import { buildColorUpdate, getColorTargetLabel } from '../ai/color/colorClarify';
 import updateBackgroundColor from '../ai/color/backgroundUpdate';
 import {
 	isInteractionBuilderMessage,
@@ -3718,6 +3718,48 @@ export const useAiChat = ({ onClose } = {}) => {
 				}
 			}
 			setMessages( prev => [ ...prev, { role: 'assistant', content: `Added ${ rawMessage }.`, executed: true } ] );
+			setIsLoading( false );
+			return;
+		}
+
+		// Handle "colour of what?" clarification context
+		if ( conversationContext?.type === 'color_what' ) {
+			const lower = rawMessage.toLowerCase();
+			let target;
+			if ( lower.includes( 'text' ) || lower.includes( 'font' ) || lower.includes( 'label' ) ) {
+				target = 'text';
+			} else if ( lower.includes( 'background' ) || lower.includes( 'bg' ) ) {
+				target = 'background';
+			} else if ( lower.includes( 'border' ) ) {
+				target = 'border';
+			}
+			setConversationContext( null );
+			setMessages( prev => [ ...prev, { role: 'user', content: rawMessage } ] );
+			if ( target ) {
+				setMessages( prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: `Choose a colour for the ${ getColorTargetLabel( target ) }:`,
+						options: true,
+						optionsType: 'palette',
+						colorTarget: target,
+						executed: false,
+					},
+				] );
+			} else {
+				setMessages( prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: 'Please select one of the options: Text colour, Background colour, or Border colour.',
+						options: [ 'Text colour', 'Background colour', 'Border colour' ],
+						optionsType: 'text',
+						executed: false,
+					},
+				] );
+				setConversationContext( { type: 'color_what' } );
+			}
 			setIsLoading( false );
 			return;
 		}

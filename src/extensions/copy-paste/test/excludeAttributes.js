@@ -34,6 +34,28 @@ describe('excludeAttributes', () => {
 		});
 	});
 
+
+	it('Keeps dc-status for DC link blocks outside repeater mode', () => {
+		const blockName = DC_LINK_BLOCKS[0];
+		const rawAttributesToExclude = {
+			'dc-status': true,
+			otherAttr: 'value',
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			{},
+			{ _exclude: [] },
+			false,
+			blockName
+		);
+
+		expect(result).toEqual({
+			'dc-status': true,
+			otherAttr: 'value',
+		});
+	});
+
 	it('Handles repeater mode with different exclusions', () => {
 		const rawAttributesToExclude = {
 			customLabel: 'label',

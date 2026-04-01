@@ -185,7 +185,9 @@ const CopyPaste = props => {
 		const styles = excludeAttributes(
 			copiedStyles,
 			attributes,
-			copyPasteMapping
+			copyPasteMapping,
+			false,
+			blockName
 		);
 
 		closeMoreSettings();

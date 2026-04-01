@@ -435,6 +435,13 @@ const extractFontWeightValue = message => {
 		/(weight|bold|light|medium|regular|heavy|black|thin|semi|extra)/.test(lower);
 	if (!hasWeightKeyword) return null;
 
+	// "black" (weight 900) is also a color name. When the message has a clear
+	// border/colour/background intent, treat "black" as a color, not a weight.
+	const hasBorderOrColorIntent = /\b(border|outline|frame|stroke|colou?r|background|bg)\b/.test(lower);
+	if (hasBorderOrColorIntent && /\bblack\b/.test(lower) && !/\b(weight|bold|light|medium|regular|heavy|thin|semi|extra)\b/.test(lower)) {
+		return null;
+	}
+
 	const numericMatch = lower.match(/\b(?:font\s*weight|weight)\b[^0-9]*([1-9]00)\b/);
 	if (numericMatch) {
 		const value = Number.parseInt(numericMatch[1], 10);

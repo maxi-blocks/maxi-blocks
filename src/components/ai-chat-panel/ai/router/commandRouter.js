@@ -81,6 +81,7 @@ import {
 	collectBlocks,
 	findBlockByClientId,
 } from '../utils/blockHelpers';
+import { getActiveBreakpoint } from '../utils/responsiveHelpers';
 
 // ─── Internal helpers ──────────────────────────────────────────────────────────
 
@@ -609,6 +610,118 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 };
 
 /**
+ * 4b. Named-colour direct action.
+ *
+ * Handles "change X colour to red/green/black/…" or "set border colour to palette 3" etc.
+ * Resolves target via getColorTargetFromMessage, resolves colour from the message,
+ * and emits a direct action scoped to the active breakpoint — no flow required.
+ *
+ * For the 'border' target this writes only the colour attributes (palette-status / palette-color /
+ * color) to avoid touching style or width. For all other targets it delegates to buildColorUpdate.
+ *
+ * Falls through (returns null) when:
+ *  - no colour change intent is detectable
+ *  - no colour value is resolvable from the message
+ *  - target is 'element' (ambiguous — let the existing color_what clarification handle it)
+ *  - message already contains a #hex (handled by routeHexColor)
+ */
+const routeNamedColorChange = ( rawMessage, ctx ) => {
+	const { lowerMessage, hexColor, currentScope, selectedBlock, isGlobalScope } = ctx;
+
+	// Hex colours are handled by routeHexColor.
+	if ( hexColor ) return null;
+	if ( isGlobalScope ) return null;
+
+	// Require an explicit colour-change intent verb so we don't intercept unrelated messages
+	// that happen to contain a colour word (e.g. "add a red background image").
+	const hasChangeIntent = /\b(change|update|set|make|switch|turn)\b/.test( lowerMessage ) ||
+		/\bcolou?r\b.*\bto\b/.test( lowerMessage );
+	if ( ! hasChangeIntent ) return null;
+
+	// Require a colour keyword — named colour or palette reference.
+	const NAMED_COLOR_MAP = {
+		black: '#000000',
+		white: '#ffffff',
+		red: '#ff0000',
+		blue: '#0000ff',
+		green: '#008000',
+		yellow: '#ffff00',
+		orange: '#ffa500',
+		purple: '#800080',
+		pink: '#ffc0cb',
+		gray: '#808080',
+		grey: '#808080',
+		cyan: '#00ffff',
+		magenta: '#ff00ff',
+		brown: '#a52a2a',
+		navy: '#000080',
+		teal: '#008080',
+	};
+
+	let resolvedColor = null;
+
+	// Palette number — only when accompanied by a palette/color keyword to avoid
+	// false-positives on any standalone digit in the message.
+	const explicitPalette = lowerMessage.match(
+		/\b(?:palette|colou?r)\s*(?:number\s*)?([1-8])\b|\bcolor\s*([1-8])\b/i
+	);
+	if ( explicitPalette ) {
+		resolvedColor = parseInt( explicitPalette[ 1 ] || explicitPalette[ 2 ], 10 );
+	}
+
+	if ( resolvedColor === null ) {
+		for ( const [ word, hex ] of Object.entries( NAMED_COLOR_MAP ) ) {
+			if ( new RegExp( `\\b${ word }\\b` ).test( lowerMessage ) ) {
+				resolvedColor = hex;
+				break;
+			}
+		}
+	}
+
+	if ( resolvedColor === null ) return null;
+
+	const colorTarget = getColorTargetFromMessage( lowerMessage, { selectedBlock } );
+
+	// Ambiguous — let the existing clarification path handle it.
+	if ( colorTarget === 'element' ) return null;
+
+	const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+	const prefix = selectedBlock ? getBlockPrefix( selectedBlock.name ) : '';
+
+	// Border target: write only colour attributes to the active breakpoint.
+	// This avoids triggering a full border flow and respects responsive scoping.
+	if ( colorTarget === 'border' || colorTarget === 'button-border' ) {
+		const activeBp = getActiveBreakpoint();
+		const isPalette = typeof resolvedColor === 'number';
+
+		return actionResult( {
+			action: actionType,
+			property: 'border_color_only',
+			value: {
+				color: resolvedColor,
+				isPalette,
+				breakpoint: activeBp,
+				// prefix is resolved per-block inside the handler using target_block
+			},
+			...( colorTarget === 'button-border' ? { target_block: 'button' } : {} ),
+			message: 'Updated border colour.',
+		} );
+	}
+
+	// All other targets — use the shared buildColorUpdate path.
+	const colorUpdate = buildColorUpdate( colorTarget, resolvedColor, { selectedBlock } );
+	if ( ! colorUpdate.property ) return null;
+
+	return actionResult( {
+		action: actionType,
+		property: colorUpdate.property,
+		value: colorUpdate.value,
+		target_block: colorUpdate.targetBlock,
+		message: `Updated ${ colorUpdate.msgText } colour.`,
+	} );
+};
+
+/**
  * 5. Hex-colour direct action — applies when the message contains a #hex code
  *    and is not primarily about borders/outlines/shadows.
  */
@@ -1022,9 +1135,12 @@ const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
 			flowData.shadow_color = hexColor;
 	}
 
-	// Seed border_radius when user includes a shape modifier alongside the border request,
-	// so the value survives through every clarification step and gets applied at the end.
+	// Pre-fill border flow data from the original message so clarification steps
+	// can be skipped when the user already specified color and/or shape modifier.
+	// Note: named-colour-only changes (no add/style intent) are handled earlier by
+	// routeNamedColorChange and never reach here.
 	if ( pattern.property === 'flow_border' || pattern.property === 'flow_outline' ) {
+		// Shape modifiers: seed border_radius so it survives every clarification step.
 		if ( /\b(round(ed)?|pill|circle|full)\b/i.test( lowerMessage ) ) {
 			flowData.border_radius = 50;
 		} else if ( /\bsoft\b/i.test( lowerMessage ) ) {
@@ -1743,6 +1859,10 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	// 4. Direct removals + alignment clarifications
 	const removalResult = routeDirectRemovals( rawMessage, ctx );
 	if ( removalResult ) return removalResult;
+
+	// 4b. Named-colour direct action (red/green/black/…/palette N + colour target)
+	const namedColorResult = routeNamedColorChange( rawMessage, ctx );
+	if ( namedColorResult ) return namedColorResult;
 
 	// 5. Hex colour
 	const hexResult = routeHexColor( rawMessage, ctx );

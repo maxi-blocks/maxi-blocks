@@ -878,15 +878,37 @@ const useAiChatActions = ({
 							c = updateBackgroundColor(targetBlock.clientId, val, targetBlock.attributes, backgroundPrefix);
 							break;
 						}
-						case 'border':
-							if (isRemoval) c = updateBorder(0, 'none', null, blkPrefix);
-							else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, blkPrefix);
-							else {
-								const parts = String(val).split(' ');
-								if (parts.length >= 3) c = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), blkPrefix);
-								else if (val.startsWith('#') || val.startsWith('rgb') || val.startsWith('var')) c = updateBorder(1, 'solid', val, blkPrefix);
+					case 'border_color_only': {
+						// Colour-only border update — touches no style/width attributes.
+						// val = { color, isPalette, breakpoint, prefix }
+						if (typeof val === 'object' && val !== null) {
+							const bp = val.breakpoint || 'general';
+							const p = val.prefix !== undefined ? val.prefix : blkPrefix;
+							if (val.isPalette) {
+								c = {
+									[`${p}border-palette-status-${bp}`]: true,
+									[`${p}border-palette-color-${bp}`]: val.color,
+									[`${p}border-color-${bp}`]: '',
+								};
+							} else {
+								c = {
+									[`${p}border-palette-status-${bp}`]: false,
+									[`${p}border-palette-color-${bp}`]: '',
+									[`${p}border-color-${bp}`]: val.color,
+								};
 							}
-							break;
+						}
+						break;
+					}
+					case 'border':
+						if (isRemoval) c = updateBorder(0, 'none', null, blkPrefix);
+						else if (typeof val === 'object') c = updateBorder(val.width, val.style, val.color, blkPrefix);
+						else {
+							const parts = String(val).split(' ');
+							if (parts.length >= 3) c = updateBorder(parseInt(parts[0]), parts[1], parts.slice(2).join(' '), blkPrefix);
+							else if (val.startsWith('#') || val.startsWith('rgb') || val.startsWith('var')) c = updateBorder(1, 'solid', val, blkPrefix);
+						}
+						break;
 						case 'border_radius': {
 							let rVal = isRemoval ? 0 : val;
 							if (!isRemoval && (val === '0px' || parseInt(val) === 0)) rVal = 0;

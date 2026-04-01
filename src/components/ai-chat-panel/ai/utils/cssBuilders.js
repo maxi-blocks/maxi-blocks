@@ -224,6 +224,9 @@ export const updateBorder = (width, style, color, prefix = '') => {
 			[`${prefix}border-left-width-general`]: '0',
 			[`${prefix}border-right-width-general`]: '0',
 			[`${prefix}border-sync-width-general`]: 'all',
+			[`${prefix}border-palette-status-general`]: false,
+			[`${prefix}border-palette-color-general`]: '',
+			[`${prefix}border-color-general`]: '',
 		};
 	}
 

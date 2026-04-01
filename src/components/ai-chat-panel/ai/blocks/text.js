@@ -14,6 +14,7 @@
  */
 
 import { create } from '@wordpress/rich-text';
+import { select } from '@wordpress/data';
 import { parseBorderStyle } from './utils';
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
@@ -25,6 +26,14 @@ import { createLinkAttributes } from '@components/toolbar/components/text-link/u
  * @type {string[]}
  */
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+/**
+ * Returns the currently active responsive breakpoint from the MaxiBlocks store.
+ *
+ * @returns {string}
+ */
+const getActiveBreakpoint = () =>
+	select('maxiBlocks')?.receiveMaxiDeviceType?.() || 'general';
 
 /**
  * Scaling factors per breakpoint for the 100/60/40 rule.
@@ -703,8 +712,11 @@ const buildResponsiveNumericChanges = ({
  * @returns {Object}
  */
 const buildTextBorderResetChanges = prefix => {
+	const activeBp = getActiveBreakpoint();
+	// Only reset the active breakpoint — same scoping as apply.
+	const bpsToReset = [activeBp];
 	const changes = {};
-	BREAKPOINTS.forEach(bp => {
+	bpsToReset.forEach(bp => {
 		changes[`${prefix}border-style-${bp}`] = 'none';
 		changes[`${prefix}border-top-width-${bp}`] = 0;
 		changes[`${prefix}border-bottom-width-${bp}`] = 0;
@@ -1201,9 +1213,12 @@ if (baseProperty === 'flow_text_font_family') {
 		const { style, width } = borderConfig;
 		const color = context.border_color;
 		const isPalette = typeof color === 'number';
+		const activeBp = getActiveBreakpoint();
+		// Write only to the active breakpoint — never bleed onto other breakpoints.
+		const bpsToApply = [activeBp];
 
 		changes = {};
-		BREAKPOINTS.forEach(bp => {
+		bpsToApply.forEach(bp => {
 			changes[`${prefix}border-style-${bp}`] = style;
 			changes[`${prefix}border-top-width-${bp}`] = width;
 			changes[`${prefix}border-bottom-width-${bp}`] = width;
@@ -1227,7 +1242,7 @@ if (baseProperty === 'flow_text_font_family') {
 		// flow context at the start (e.g. "add a round border").
 		if (context.border_radius !== undefined) {
 			const r = context.border_radius;
-			BREAKPOINTS.forEach(bp => {
+			bpsToApply.forEach(bp => {
 				changes[`${prefix}border-top-left-radius-${bp}`] = r;
 				changes[`${prefix}border-top-right-radius-${bp}`] = r;
 				changes[`${prefix}border-bottom-right-radius-${bp}`] = r;

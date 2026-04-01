@@ -1223,6 +1223,20 @@ if (baseProperty === 'flow_text_font_family') {
 			}
 		});
 
+		// Apply border_radius if a shape modifier (round/soft/subtle/square) was seeded into the
+		// flow context at the start (e.g. "add a round border").
+		if (context.border_radius !== undefined) {
+			const r = context.border_radius;
+			BREAKPOINTS.forEach(bp => {
+				changes[`${prefix}border-top-left-radius-${bp}`] = r;
+				changes[`${prefix}border-top-right-radius-${bp}`] = r;
+				changes[`${prefix}border-bottom-right-radius-${bp}`] = r;
+				changes[`${prefix}border-bottom-left-radius-${bp}`] = r;
+				changes[`${prefix}border-sync-radius-${bp}`] = 'all';
+				changes[`${prefix}border-unit-radius-${bp}`] = 'px';
+			});
+		}
+
 		return { action: 'apply', attributes: changes, done: true, message: 'Applied border to text.' };
 	}
 

@@ -72,6 +72,29 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - List text position: property "list_text_position" with "baseline" | "sub" | "super" | "top" | "text-top" | "middle" | "bottom" | "text-bottom".
 - Dynamic content: property "text_dynamic" with "title" | "date" | "author" or "off".
 - Link: property "text_link" with { url, target, rel } (rel supports "nofollow", "sponsored", "ugc").
+- Border: property "border" with { width (number px), style ("solid"|"dashed"|"dotted"), color (hex string or CSS var) }. For "round/rounded", also include a second action with property "border_radius". For "black" colour use "#000000".
+- Border radius: property "border_radius" with a number (px). For "round" use 50, "subtle" use 8, "soft" use 24, "square" use 0.
+- Remove border: property "border" with { width: 0, style: "none" }.
+
+### BORDER CLARIFICATION WITH MODIFIERS (CRITICAL)
+If the user requests a border AND includes a shape modifier like "round", "rounded", "subtle", "soft", or "square":
+- Extract and store the shape modifier as a pending border_radius value (round=50, subtle=8, soft=24, square=0).
+- When generating CLARIFY options (for style or colour), embed the border_radius action inside EACH option's payload as a compound array alongside the border action.
+- NEVER drop the shape modifier during multi-step clarification. The final applied payload MUST always include both "border" and "border_radius" actions.
+
+Example: "add a round border" (style unknown) ->
+{
+  "action": "CLARIFY",
+  "message": "Which border style?",
+  "flow_context": { "border_radius": 50 },
+  "options": [
+    { "label": "Solid Thin", "desc": "1px solid", "payload": [{ "action": "update_selection", "property": "border", "value": { "width": 1, "style": "solid", "color": "var(--color-6)" } }, { "action": "update_selection", "property": "border_radius", "value": 50 }] },
+    { "label": "Solid Medium", "desc": "2px solid", "payload": [{ "action": "update_selection", "property": "border", "value": { "width": 2, "style": "solid", "color": "var(--color-6)" } }, { "action": "update_selection", "property": "border_radius", "value": 50 }] },
+    { "label": "Dashed", "desc": "2px dashed", "payload": [{ "action": "update_selection", "property": "border", "value": { "width": 2, "style": "dashed", "color": "var(--color-6)" } }, { "action": "update_selection", "property": "border_radius", "value": 50 }] }
+  ]
+}
+
+Same rule applies if colour is also unknown - carry border_radius through every clarification step until fully resolved.
 - Padding: property "padding" or "padding_top|padding_right|padding_bottom|padding_left" with { value, unit }.
 - Position: property "position" with "relative|absolute|fixed|sticky|static|inherit".
   Offsets: "position_top|position_right|position_bottom|position_left" with { value, unit }.
@@ -80,6 +103,13 @@ Exception: For spacing/margin/padding clarifications, include a 4th option "Remo
 - Palette status: property "palette_status" (or "palette_status_hover") boolean.
 - Palette style card: property "palette_sc_status" (or "palette_sc_status_hover") boolean.
 - Preview: property "preview" with boolean.
+
+### COMPOUND ACTIONS
+When a request requires multiple property changes (e.g. "add a round border with black colour" needs both "border" and "border_radius"), return a JSON array of action objects:
+[
+  { "action": "update_selection", "property": "border", "value": { "width": 2, "style": "solid", "color": "#000000" }, "message": "..." },
+  { "action": "update_selection", "property": "border_radius", "value": 50, "message": "..." }
+]
 
 Clarify when request is generic:
 - Text size: Subtitle (1.25rem), Title (2.5rem), Display (4rem).

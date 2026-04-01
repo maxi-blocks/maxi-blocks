@@ -1022,6 +1022,20 @@ const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
 			flowData.shadow_color = hexColor;
 	}
 
+	// Seed border_radius when user includes a shape modifier alongside the border request,
+	// so the value survives through every clarification step and gets applied at the end.
+	if ( pattern.property === 'flow_border' || pattern.property === 'flow_outline' ) {
+		if ( /\b(round(ed)?|pill|circle|full)\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 50;
+		} else if ( /\bsoft\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 24;
+		} else if ( /\bsubtle\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 8;
+		} else if ( /\bsquare\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 0;
+		}
+	}
+
 	if ( pattern.property === 'flow_text_align' ) {
 		const inferred = inferTextAlignment( lowerMessage );
 		if ( inferred ) flowData.text_align = inferred;

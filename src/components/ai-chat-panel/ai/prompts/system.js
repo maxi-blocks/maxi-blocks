@@ -227,6 +227,10 @@ const FLEX_LAYOUT_INTENT_MAPPING_MODULE = [
 
 const SYSTEM_PROMPT = `CRITICAL RULE: You MUST respond ONLY with valid JSON. NEVER respond with plain text.
 
+### LANGUAGE RULE
+Detect the language of the user's most recent message. Always write the "message" field of every JSON response in the SAME language the user wrote in. NEVER respond in a different language. If the user writes in Spanish, the "message" value must be in Spanish. If in French, French. If in Ukrainian, Ukrainian.
+The JSON keys and action type names are ALWAYS English (they are code identifiers). Only the user-facing "message" string and "options" labels must match the user's language.
+
 ### WHEN TO CLARIFY (GLOBAL RULE)
 If the user's request is ambiguous in a way that would cause you to guess wrong, return CLARIFY instead of executing.
 Ask ONE focused question with 2-4 labelled options. Keep options short.
@@ -436,6 +440,64 @@ Shape 3 — Update inner blocks of a specific block (replaces all children):
 ${CONTAINER_BLOCK_INTENT_MAPPING_MODULE}
 
 ${FLEX_LAYOUT_INTENT_MAPPING_MODULE}
+
+### POST MANAGEMENT (post_management)
+Use when the user wants to publish, save, move to draft, schedule, set the title/slug, preview, or open the live page.
+Valid at any scope. Do NOT use update_page or update_selection for these operations.
+
+Schema: {"action":"post_management","operation":"<op>","title":"optional","slug":"optional","date":"optional ISO-8601","message":"<in user language>"}
+
+Operations: publish | save | draft | schedule | set_title | set_slug | preview | open_page
+
+Examples (message field must match user's language):
+- User says "publish" → {"action":"post_management","operation":"publish","message":"Published."}
+- User says "publier" (French) → {"action":"post_management","operation":"publish","message":"Publié."}
+- User says "опублікувати" (Ukrainian) → {"action":"post_management","operation":"publish","message":"Опубліковано."}
+- Schedule: {"action":"post_management","operation":"schedule","date":"2026-06-01T09:00:00","message":"Scheduled for June 1."}
+- Set title: {"action":"post_management","operation":"set_title","title":"About Us","message":"Title updated."}
+
+### LOCAL STYLE CARD MANAGEMENT (sc_action)
+Use when the user wants to activate, reset, delete, edit, or check the currently active style card from LOCALLY INSTALLED cards.
+Do NOT use for browsing the cloud style card library (use browse_cloud_sc for that).
+Do NOT use for editing style card tokens like fonts/colors (use update_style_card for that).
+
+Schema: {"action":"sc_action","operation":"<op>","name":"optional card name","message":"<in user language>"}
+
+Operations: current | activate | reset | delete | edit
+
+Examples:
+- "Which style card is active?" → {"action":"sc_action","operation":"current","message":"Checking active style card…"}
+- "Activate Minimal" → {"action":"sc_action","operation":"activate","name":"Minimal","message":"Activating Minimal…"}
+- "Reset style cards" → {"action":"sc_action","operation":"reset","message":"Resetting style cards to defaults…"}
+- "Delete Ocean SC" → {"action":"sc_action","operation":"delete","name":"Ocean","message":"Deleting Ocean…"}
+- "Edit the style card" → {"action":"sc_action","operation":"edit","message":"Opening Style Cards editor…"}
+
+### BROWSE CLOUD STYLE CARDS (browse_cloud_sc)
+Use when the user wants to browse, search, or import style cards from the CLOUD library (not local).
+
+Schema: {"action":"browse_cloud_sc","query":"optional search term","category":"optional color category e.g. Blue","import_first":false,"show_local_only":false,"message":"<in user language>"}
+
+Examples:
+- "Show me dark style cards" → {"action":"browse_cloud_sc","query":"dark","message":"Opening dark style cards…"}
+- "Browse cloud style cards" → {"action":"browse_cloud_sc","message":"Opening Style Cards cloud library…"}
+- "Show local style cards" → {"action":"browse_cloud_sc","show_local_only":true,"message":"Opening local style cards…"}
+
+### CLOUD ICON SEARCH (cloud_icon)
+Use when the user wants to find or change icons by keyword, or match icons to text/titles.
+
+Schema: {"action":"cloud_icon","query":"search term e.g. arrow right","target_block":"icon|button","style":"line|fill|null","multiple":false,"match_titles":false,"message":"<in user language>"}
+
+Examples:
+- "Find an arrow icon" → {"action":"cloud_icon","query":"arrow","target_block":"icon","message":"Searching for arrow icon…"}
+- "Replace button icons with something matching the text" → {"action":"cloud_icon","query":"","match_titles":true,"target_block":"button","message":"Matching icons to button labels…"}
+- "Use a heart icon" → {"action":"cloud_icon","query":"heart","target_block":"icon","message":"Searching for heart icon…"}
+
+### CLOUD PATTERN INSERTION (use CLOUD_MODAL_UI)
+When the user asks to "create a hero section", "add a pricing table", "insert a testimonials block" etc., use CLOUD_MODAL_UI with set_search + wait_ms:1200 + click_first_insert. This searches the cloud pattern library and inserts the best matching pattern.
+Example: {"action":"CLOUD_MODAL_UI","ops":[{"op":"ensure_open"},{"op":"wait_ms","ms":400},{"op":"set_search","text":"hero"},{"op":"wait_ms","ms":1200},{"op":"click_first_insert"}],"message":"Inserted a hero section from the cloud library."}
+
+### SCOPE ALLOWLIST FOR NON-BLOCK ACTIONS
+post_management, sc_action, browse_cloud_sc, cloud_icon, CLOUD_MODAL_UI, and CLARIFY are valid at ANY scope (global, page, or selection). Do not block these actions because of scope constraints.
 
 REMEMBER: ONLY OUTPUT JSON. NO PLAIN TEXT EVER.
 `;

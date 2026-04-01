@@ -85,7 +85,11 @@ export async function executePassthroughLlmTurn({
 	if (scope === 'global') {
 		try {
 			const parsed = JSON.parse(assistantContent.trim());
-			const allowedGlobalActions = new Set(['apply_theme', 'update_style_card', 'message']);
+			const allowedGlobalActions = new Set([
+			'apply_theme', 'update_style_card', 'message',
+			'post_management', 'sc_action', 'browse_cloud_sc', 'cloud_icon',
+			'CLOUD_MODAL_UI', 'CLARIFY',
+		]);
 			if (parsed.action && !allowedGlobalActions.has(parsed.action)) {
 				logDebug('Forcing apply_theme for global scope');
 				assistantContent = JSON.stringify({ action: 'apply_theme', prompt: userMessage });

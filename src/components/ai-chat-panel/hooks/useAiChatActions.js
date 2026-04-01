@@ -1273,6 +1273,98 @@ const useAiChatActions = ({
 				return { executed: false, message: action.content, options: action.options };
 			}
 
+			// ── post_management ──────────────────────────────────────────────────
+			if (action.action === 'post_management') {
+				const editorDispatch = dispatch('core/editor');
+				const editorSelect = select('core/editor');
+				const { operation, title, slug, date } = action;
+				try {
+					switch (operation) {
+						case 'publish':
+							if (title) await editorDispatch.editPost({ title });
+							await editorDispatch.editPost({ status: 'publish' });
+							await editorDispatch.savePost();
+							return { executed: true, message: action.message || 'Published.' };
+						case 'save':
+							await editorDispatch.savePost();
+							return { executed: true, message: action.message || 'Saved.' };
+						case 'draft':
+							await editorDispatch.editPost({ status: 'draft' });
+							await editorDispatch.savePost();
+							return { executed: true, message: action.message || 'Moved to draft.' };
+						case 'set_title':
+							if (!title) return { executed: false, message: 'Please provide a title.' };
+							await editorDispatch.editPost({ title });
+							return { executed: true, message: action.message || `Title set to "${title}".` };
+						case 'set_slug':
+							if (!slug) return { executed: false, message: 'Please provide a slug.' };
+							await editorDispatch.editPost({ slug });
+							return { executed: true, message: action.message || `Slug set to "${slug}".` };
+						case 'schedule':
+							if (!date) return { executed: false, message: 'Please provide a date for scheduling.' };
+							await editorDispatch.editPost({ status: 'future', date });
+							await editorDispatch.savePost();
+							return { executed: true, message: action.message || `Scheduled for ${date}.` };
+						case 'preview': {
+							const previewUrl = editorSelect.getEditedPostPreviewLink?.();
+							if (previewUrl) {
+								window.open(previewUrl, '_blank', 'noopener');
+								return { executed: true, message: action.message || 'Preview opened.' };
+							}
+							return { executed: false, message: 'Could not get preview URL.' };
+						}
+						case 'open_page': {
+							const permalink = editorSelect.getPermalink?.() || editorSelect.getCurrentPostAttribute?.('link');
+							if (permalink) {
+								window.open(permalink, '_blank', 'noopener');
+								return { executed: true, message: action.message || 'Opened live page.' };
+							}
+							return { executed: false, message: 'Page is not published yet.' };
+						}
+						default:
+							return { executed: false, message: `Unknown post operation: ${operation}` };
+					}
+				} catch (postErr) {
+					return { executed: false, message: `Post operation failed: ${String(postErr?.message || postErr)}` };
+				}
+			}
+
+			// ── sc_action (sentinel — handled by useAiChatMessages) ─────────────
+			if (action.action === 'sc_action') {
+				return {
+					executed: false,
+					_needsScAction: true,
+					scOperation: action.operation,
+					scName: action.name,
+					message: action.message,
+				};
+			}
+
+			// ── browse_cloud_sc (sentinel — handled by useAiChatMessages) ────────
+			if (action.action === 'browse_cloud_sc') {
+				return {
+					executed: false,
+					_needsBrowseCloudSc: true,
+					browseCloudScParams: {
+						query: action.query,
+						category: action.category,
+						importFirst: action.import_first ?? false,
+						showLocalOnly: action.show_local_only ?? false,
+					},
+					message: action.message,
+				};
+			}
+
+			// ── cloud_icon (sentinel — handled by useAiChatMessages) ─────────────
+			if (action.action === 'cloud_icon') {
+				return {
+					executed: false,
+					_needsCloudIconSearch: true,
+					cloudIconAction: action,
+					message: action.message,
+				};
+			}
+
 			return { executed: true, message: action.message || 'Done.' };
 
 		} catch (e) {

@@ -32,6 +32,7 @@ import { getNewActiveStyleCards } from '@extensions/style-cards/store/reducer';
 import openCloudSCLibrary from '../utils/openCloudSCLibrary';
 import { buildPassthroughLlmContext } from './llm/buildPassthroughLlmContext';
 import { executePassthroughLlmTurn } from './llm/executePassthroughLlmTurn';
+import { detectNonEnglish } from '../ai/utils/languageDetection';
 
 /**
  * Provides sendMessage, handleKeyDown, and handleSuggestion for the AI chat panel.
@@ -147,7 +148,9 @@ const useAiChatMessages = ({
 
 		// === FLOW STATE MACHINE BYPASS ===
 		if (conversationContext && conversationContext.flow) {
-			if (scope === 'global') {
+			if (scope === 'global' || detectNonEnglish(rawMessage)) {
+				// Non-English typed replies can't match English option labels —
+				// clear the flow context and let the LLM handle the full request.
 				setConversationContext(null);
 			} else {
 				console.log('[Maxi AI Conversation] Active flow detected:', conversationContext.flow);
@@ -174,6 +177,11 @@ const useAiChatMessages = ({
 
 		// Handle insert_block layout-picker reply (typed path)
 		if (conversationContext?.type === 'insert_block') {
+			if (detectNonEnglish(rawMessage)) {
+				// Non-English reply — clear FSM and let LLM interpret the full request.
+				setConversationContext(null);
+				// Fall through to LLM passthrough below.
+			} else {
 			const lower = rawMessage.toLowerCase();
 			setConversationContext(null);
 			const contentAreaId = getContentAreaClientId();
@@ -208,10 +216,16 @@ const useAiChatMessages = ({
 			setMessages(prev => [...prev, { role: 'assistant', content: `Added ${rawMessage}.`, executed: true }]);
 			setIsLoading(false);
 			return;
-		}
+			} // end else (English insert_block path)
+		} // end insert_block handler
 
 		// Handle colour-of-what clarification (typed path)
 		if (conversationContext?.type === 'color_what') {
+			if (detectNonEnglish(rawMessage)) {
+				// Non-English reply — clear FSM and let LLM interpret the colour target.
+				setConversationContext(null);
+				// Fall through to LLM passthrough below.
+			} else {
 			const lower = rawMessage.toLowerCase();
 			let target;
 			if (lower.includes('text') || lower.includes('font') || lower.includes('label')) target = 'text';
@@ -247,7 +261,8 @@ const useAiChatMessages = ({
 			}
 			setIsLoading(false);
 			return;
-		}
+			} // end else (English color_what path)
+		} // end color_what handler
 
 		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope);
 
@@ -269,6 +284,78 @@ const useAiChatMessages = ({
 		}
 
 		setIsLoading(true);
+
+		// ── Shared handler: local style card operations ───────────────────────
+		// Called from both the client-side route result and LLM sentinel path.
+		const handleScAction = async (scAction, name) => {
+			const findSCKey = searchName => {
+				if (!allStyleCards || !searchName) return null;
+				const want = searchName.toLowerCase().trim();
+				for (const [key, card] of Object.entries(allStyleCards)) {
+					if ((card.name || '').toLowerCase() === want) return key;
+				}
+				for (const [key, card] of Object.entries(allStyleCards)) {
+					if ((card.name || '').toLowerCase().includes(want)) return key;
+				}
+				return null;
+			};
+			const addMsg = content => setMessages(prev => [...prev, { role: 'assistant', content }]);
+
+			if (scAction === 'current') {
+				let cardName = null;
+				if (allStyleCards) {
+					for (const [key, card] of Object.entries(allStyleCards)) {
+						if (card.status === 'active') { cardName = card.name || key; break; }
+					}
+				}
+				if (!cardName) {
+					cardName = activeStyleCard?.value?.name || allStyleCards?.[activeStyleCard?.key]?.value?.name || activeStyleCard?.key;
+				}
+				addMsg(cardName ? `Active Style Card: **${cardName}**` : __('No active Style Card found.', 'maxi-blocks'));
+				setIsLoading(false);
+				return;
+			}
+			if (scAction === 'reset') {
+				addMsg(__('Resetting Style Cards to defaults…', 'maxi-blocks'));
+				setTimeout(() => { resetSC?.(); setIsLoading(false); }, 100);
+				return;
+			}
+			if (scAction === 'activate') {
+				const key = findSCKey(name);
+				if (!key) { addMsg(`Style Card "${name}" not found. Use "show me style cards" to see what's available.`); setIsLoading(false); return; }
+				const cardName = allStyleCards[key]?.name || name;
+				addMsg(`Activating **${cardName}**…`);
+				setTimeout(() => {
+					const freshCards = select('maxiBlocks/style-cards')?.receiveMaxiStyleCards() || allStyleCards;
+					const newCollection = getNewActiveStyleCards(freshCards, key);
+					saveMaxiStyleCards?.(newCollection, true);
+					updateSCOnEditor(newCollection[key]);
+					saveSCStyles?.(true);
+					setIsLoading(false);
+				}, 100);
+				return;
+			}
+			if (scAction === 'delete') {
+				const key = findSCKey(name);
+				if (!key) { addMsg(`Style Card "${name}" not found.`); setIsLoading(false); return; }
+				if (key === 'sc_maxi') { addMsg('The default Maxi Style Card cannot be deleted.'); setIsLoading(false); return; }
+				const cardName = allStyleCards[key]?.name || name;
+				addMsg(`Deleting **${cardName}**…`);
+				setTimeout(() => { removeStyleCard?.(key); setIsLoading(false); }, 100);
+				return;
+			}
+			if (scAction === 'edit') {
+				if (name) {
+					const key = findSCKey(name);
+					if (key) setSelectedStyleCard?.(key);
+					else addMsg(`Style Card "${name}" not found — opening editor with current card.`);
+				}
+				addMsg(__('Opening Style Cards editor…', 'maxi-blocks'));
+				setTimeout(async () => { await openCloudSCLibrary({ showLocalOnly: true }); setIsLoading(false); }, 100);
+				return;
+			}
+			setIsLoading(false);
+		};
 
 		const queueDirectAction = directAction => {
 			setIsLoading(true);
@@ -619,7 +706,11 @@ const useAiChatMessages = ({
 			setIsLoading(false);
 		};
 
-		// ── Route via client-side router ─────────────────────────────────────
+		// ── Route via client-side router (English only) ──────────────────────
+		// Non-English input bypasses keyword/regex routing and goes straight to
+		// the LLM passthrough, which handles any language natively.
+		const isNonEnglish = detectNonEnglish(rawMessage);
+		if (!isNonEnglish) {
 		const routingCtx = buildRoutingContext(rawMessage, { currentScope, selectedBlock, messagesRef, allBlocks });
 		const routeResult = await routeClientSide(rawMessage, routingCtx, select);
 
@@ -727,74 +818,7 @@ const useAiChatMessages = ({
 			}
 			case 'sc_action': {
 				const { action: scAction, name } = routeResult.params;
-
-				const findSCKey = searchName => {
-					if (!allStyleCards || !searchName) return null;
-					const want = searchName.toLowerCase().trim();
-					for (const [key, card] of Object.entries(allStyleCards)) {
-						if ((card.name || '').toLowerCase() === want) return key;
-					}
-					for (const [key, card] of Object.entries(allStyleCards)) {
-						if ((card.name || '').toLowerCase().includes(want)) return key;
-					}
-					return null;
-				};
-				const addMsg = content => setMessages(prev => [...prev, { role: 'assistant', content }]);
-
-				if (scAction === 'current') {
-					let cardName = null;
-					if (allStyleCards) {
-						for (const [key, card] of Object.entries(allStyleCards)) {
-							if (card.status === 'active') { cardName = card.name || key; break; }
-						}
-					}
-					if (!cardName) {
-						cardName = activeStyleCard?.value?.name || allStyleCards?.[activeStyleCard?.key]?.value?.name || activeStyleCard?.key;
-					}
-					addMsg(cardName ? `Active Style Card: **${cardName}**` : __('No active Style Card found.', 'maxi-blocks'));
-					setIsLoading(false);
-					return;
-				}
-				if (scAction === 'reset') {
-					addMsg(__('Resetting Style Cards to defaults…', 'maxi-blocks'));
-					setTimeout(() => { resetSC?.(); setIsLoading(false); }, 100);
-					return;
-				}
-				if (scAction === 'activate') {
-					const key = findSCKey(name);
-					if (!key) { addMsg(`Style Card "${name}" not found. Use "show me style cards" to see what's available.`); setIsLoading(false); return; }
-					const cardName = allStyleCards[key]?.name || name;
-					addMsg(`Activating **${cardName}**…`);
-					setTimeout(() => {
-						const freshCards = select('maxiBlocks/style-cards')?.receiveMaxiStyleCards() || allStyleCards;
-						const newCollection = getNewActiveStyleCards(freshCards, key);
-						saveMaxiStyleCards?.(newCollection, true);
-						updateSCOnEditor(newCollection[key]);
-						saveSCStyles?.(true);
-						setIsLoading(false);
-					}, 100);
-					return;
-				}
-				if (scAction === 'delete') {
-					const key = findSCKey(name);
-					if (!key) { addMsg(`Style Card "${name}" not found.`); setIsLoading(false); return; }
-					if (key === 'sc_maxi') { addMsg('The default Maxi Style Card cannot be deleted.'); setIsLoading(false); return; }
-					const cardName = allStyleCards[key]?.name || name;
-					addMsg(`Deleting **${cardName}**…`);
-					setTimeout(() => { removeStyleCard?.(key); setIsLoading(false); }, 100);
-					return;
-				}
-				if (scAction === 'edit') {
-					if (name) {
-						const key = findSCKey(name);
-						if (key) setSelectedStyleCard?.(key);
-						else addMsg(`Style Card "${name}" not found — opening editor with current card.`);
-					}
-					addMsg(__('Opening Style Cards editor…', 'maxi-blocks'));
-					setTimeout(async () => { await openCloudSCLibrary({ showLocalOnly: true }); setIsLoading(false); }, 100);
-					return;
-				}
-				setIsLoading(false);
+				await handleScAction(scAction, name);
 				return;
 			}
 			case 'browse_cloud_sc': {
@@ -963,6 +987,7 @@ const useAiChatMessages = ({
 		default:
 			break;
 	}
+		} // end if (!isNonEnglish) — English client-side routing block
 
 	// Passthrough to LLM API
 		setIsLoading(true);
@@ -974,7 +999,7 @@ const useAiChatMessages = ({
 			const sharedPrompts = scope === 'global' ? [] : wantsInteractionBuilder ? [] : [ADVANCED_CSS_PROMPT, META_MAXI_PROMPT, INTERACTION_BUILDER_PROMPT].filter(Boolean);
 			const systemPrompt = [SYSTEM_PROMPT, scopePrompt, ...sharedPrompts].filter(Boolean).join('\n\n');
 
-			const { executed, message, options, optionsType } = await executePassthroughLlmTurn({
+			const llmResult = await executePassthroughLlmTurn({
 				messages,
 				rawMessage,
 				userMessage,
@@ -987,6 +1012,47 @@ const useAiChatMessages = ({
 				logDebug: logAIDebug,
 			});
 
+			// ── Sentinel dispatch: handle actions that need hook-level state ──────
+			if (llmResult._needsScAction) {
+				await handleScAction(llmResult.scOperation, llmResult.scName);
+				return;
+			}
+			if (llmResult._needsBrowseCloudSc) {
+				const { query, category, importFirst, showLocalOnly } = llmResult.browseCloudScParams;
+				setMessages(prev => [...prev, { role: 'assistant', content: llmResult.message || __('Opening Style Cards cloud library…', 'maxi-blocks') }]);
+				setTimeout(async () => {
+					try {
+						await openCloudSCLibrary({ query, category, importFirst, showLocalOnly });
+					} catch (err) {
+						console.error('[Maxi AI] Browse Cloud SC error:', String(err?.message || err));
+					}
+					setIsLoading(false);
+				}, 100);
+				return;
+			}
+			if (llmResult._needsCloudIconSearch) {
+				const { cloudIconAction } = llmResult;
+				const allCurrentBlocks = select('core/block-editor').getBlocks();
+				const iconBlocksInScope = collectBlocks(allCurrentBlocks, b => b.name.includes('svg-icon'));
+				const buttonBlocksInScope = collectBlocks(allCurrentBlocks, b => b.name.includes('button'));
+				await handleCloudIconSearch({
+					rawMessage: cloudIconAction.query || rawMessage,
+					lowerMessage: (cloudIconAction.query || rawMessage).toLowerCase(),
+					currentScope: scope,
+					selectedBlock,
+					iconBlocksInScope,
+					buttonBlocksInScope,
+					wantsMultipleIcons: cloudIconAction.multiple ?? false,
+					matchTitlesToIconsIntent: cloudIconAction.match_titles ?? false,
+					matchTitlesIntent: cloudIconAction.match_titles ?? false,
+					shouldTreatAsIconTheme: false,
+					hasIconBlocksInScope: iconBlocksInScope.length > 0,
+					cloudIconTarget: cloudIconAction.target_block || (buttonBlocksInScope.length > 0 && iconBlocksInScope.length === 0 ? 'button' : 'icon'),
+				});
+				return;
+			}
+
+			const { executed, message, options, optionsType } = llmResult;
 			setMessages(prev => [...prev, { role: 'assistant', content: message, options, optionsType, executed }]);
 		} catch (error) {
 			console.error('AI Chat error:', error);

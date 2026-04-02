@@ -331,6 +331,10 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 					case 'link_color_hover':
 					case 'link_color_active':
 					case 'link_color_visited':
+					case 'link_color_reset':
+					case 'link_color_reset_hover':
+					case 'link_color_reset_active':
+					case 'link_color_reset_visited':
 					case 'link_palette_color':
 					case 'link_palette_color_hover':
 					case 'link_palette_color_active':

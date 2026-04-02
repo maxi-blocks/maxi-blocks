@@ -637,7 +637,17 @@ const useAiChatActions = ({
 			// ── CLARIFY ──────────────────────────────────────────────────────────
 			if (action.action === 'CLARIFY') {
 				const optionsLabels = action.options?.map(opt => opt.label) || [];
-				return { executed: false, message: action.message, options: optionsLabels };
+				// If the AI suggested palette-style options (e.g. "Palette 1"), switch to the
+				// swatch UI so the user sees real colours instead of plain text buttons.
+				const looksLikePalette = optionsLabels.length > 0 && optionsLabels.every(
+					l => /^(palette|color|colour)\s*\d+$/i.test(String(l).trim())
+				);
+				return {
+					executed: false,
+					message: action.message,
+					options: looksLikePalette ? ['palette'] : optionsLabels,
+					optionsType: looksLikePalette ? 'palette' : 'text',
+				};
 			}
 
 			// ── CLOUD_MODAL_UI ───────────────────────────────────────────────────

@@ -18,6 +18,7 @@ import { buildMetaAGroupAttributeChanges, resolveMetaTargetKey } from '../ai/uti
 import {
 	buildContainerOGroupAttributeChanges,
 	buildContainerTGroupAttributeChanges,
+	buildContainerBGroupAttributeChanges,
 } from '../ai/utils/containerGroups';
 import { getBlockPrefix, matchesTargetBlockName } from '../ai/utils/blockHelpers';
 import { applyUpdatesToBlocks as _applyUpdatesToBlocks } from '../ai/utils/applyUpdatesToBlocks';
@@ -527,6 +528,8 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 		// When canvasScope is true the user targeted the block wrapper (canvas) directly.
 		// Force prefix '' so we write canvas-level attributes (e.g. box-shadow-* instead of
 		// button-box-shadow-*). Handle each removable property explicitly at the canvas level.
+		// Hover variants go through buildContainerBGroupAttributeChanges which already handles
+		// the -hover suffix for border/shadow/radius on the canvas.
 		if (canvasScope) {
 			const block = blocksToProcess[0];
 			let canvasChanges = null;
@@ -537,6 +540,13 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 				canvasChanges = updateBorder(0, 'none', null, '');
 			} else if (normalizedProperty === 'border_radius') {
 				canvasChanges = updateBorderRadius(value, null, '');
+			} else if (normalizedProperty === 'box_shadow_hover') {
+				// Hover shadow on canvas — B-group builder writes border-status-hover + hover dimension keys
+				canvasChanges = buildContainerBGroupAttributeChanges('box_shadow_hover', value);
+			} else if (normalizedProperty === 'border_hover') {
+				canvasChanges = buildContainerBGroupAttributeChanges('border_hover', value);
+			} else if (normalizedProperty === 'border_radius_hover') {
+				canvasChanges = buildContainerBGroupAttributeChanges('border_radius_hover', value);
 			}
 
 			if (canvasChanges && block) {

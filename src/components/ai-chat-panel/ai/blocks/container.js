@@ -63,7 +63,10 @@ export const handleContainerUpdate = (block, property, value, prefix, context = 
 	if (
 		property === 'flow_radius' ||
 		property === 'flow_border' ||
-		property === 'flow_shadow'
+		property === 'flow_shadow' ||
+		property === 'flow_radius_hover' ||
+		property === 'flow_border_hover' ||
+		property === 'flow_shadow_hover'
 	) {
 		const flowName = property.replace('flow_', '');
 		return runFlow(flowName, context, CONTAINER_FLOW_CONFIG, prefix, null, 'container');

@@ -603,6 +603,12 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 			return runFlow('shadow', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
 		case 'flow_video_border':
 			return runFlow('border', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
+		case 'flow_shadow_hover':
+			return runFlow('shadow_hover', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
+		case 'flow_border_hover':
+			return runFlow('border_hover', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
+		case 'flow_radius_hover':
+			return runFlow('radius_hover', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
 		case 'video_url': {
 			const urlValue =
 				typeof value === 'object' && value

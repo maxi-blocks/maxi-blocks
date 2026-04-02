@@ -1178,17 +1178,25 @@ const buildButtonBGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	const backgroundLayerCommand = parseBackgroundLayerCommand(message);
-	if (backgroundLayerCommand) {
-		return {
-			action: actionType,
-			property: backgroundLayerCommand.isHover
-				? 'background_layers_hover'
-				: 'background_layers',
-			value: backgroundLayerCommand,
-			message: 'Background layer updated.',
-			...actionTarget,
-		};
+	// Only route to background-layer path when the user explicitly mentions "layer",
+	// "overlay", or "canvas" — otherwise a message like "add hover gradient background"
+	// should fall through to the gradient conversational flow (flow_gradient / flow_gradient_hover)
+	// which writes to button-element attributes, not the canvas background-layers array.
+	const lower = String(message || '').toLowerCase();
+	const hasExplicitLayerIntent = /\blayer\b|\boverlay\b|\bcanvas\b/.test(lower);
+	if (hasExplicitLayerIntent) {
+		const backgroundLayerCommand = parseBackgroundLayerCommand(message);
+		if (backgroundLayerCommand) {
+			return {
+				action: actionType,
+				property: backgroundLayerCommand.isHover
+					? 'background_layers_hover'
+					: 'background_layers',
+				value: backgroundLayerCommand,
+				message: 'Background layer updated.',
+				...actionTarget,
+			};
+		}
 	}
 
 	return null;

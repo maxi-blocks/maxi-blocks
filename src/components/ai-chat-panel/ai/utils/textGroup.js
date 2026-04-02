@@ -1851,6 +1851,26 @@ const normalizeColorValue = rawValue => {
 	return { isPalette, value: rawValue };
 };
 
+/**
+ * Reset / remove a link colour for the given state — clears palette, color, and opacity
+ * across all breakpoints, restoring the link colour to its inherited / default state.
+ *
+ * @param {string} state - 'base' | 'hover' | 'active' | 'visited'
+ * @returns {Object}
+ */
+const buildLinkColorReset = (state = 'base') => {
+	const prefix = getLinkPrefix(state);
+	const changes = {};
+	RESPONSIVE_BREAKPOINTS.forEach(bp => {
+		changes[`${prefix}palette-status-${bp}`] = false;
+		changes[`${prefix}palette-color-${bp}`] = '';
+		changes[`${prefix}color-${bp}`] = '';
+		changes[`${prefix}palette-opacity-${bp}`] = 1;
+		changes[`${prefix}palette-sc-status-${bp}`] = false;
+	});
+	return changes;
+};
+
 const buildLinkColorChanges = (value, { state = 'base' } = {}) => {
 	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
 	if (rawValue === null || rawValue === undefined) return null;
@@ -1967,6 +1987,26 @@ const extractLinkColorValue = message => {
 const buildTextLGroupAction = (message, { scope = 'selection' } = {}) => {
 	const lower = String(message || '').toLowerCase();
 	if (!/\blink(s)?\b/.test(lower)) return null;
+
+	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
+	const actionTarget = actionType === 'update_page' ? { target_block: 'text' } : {};
+	const state = getLinkState(message);
+	const suffix = getStateSuffix(state);
+
+	// Removal / reset path — detect before requiring colour keywords so
+	// "remove link hover colour" or "reset link colour" works without a colour value.
+	const isRemoval = /(remove|clear|reset|inherit|default)\b.*\blink|(link)\b.*(remove|clear|reset|inherit|default)/.test(lower);
+	if (isRemoval && /(colou?r|color)/.test(lower)) {
+		const stateLabel = state !== 'base' ? ` ${state}` : '';
+		return {
+			action: actionType,
+			property: `link_color_reset${suffix}`,
+			value: 'reset',
+			message: `Reset link${stateLabel} colour.`,
+			...actionTarget,
+		};
+	}
+
 	if (
 		!/(colou?r|palette|opacity|alpha|transparen|style\s*card|stylecard|style-card)/.test(
 			lower
@@ -1975,11 +2015,7 @@ const buildTextLGroupAction = (message, { scope = 'selection' } = {}) => {
 		return null;
 	}
 
-	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
-	const actionTarget = actionType === 'update_page' ? { target_block: 'text' } : {};
 	const breakpoint = extractBreakpointToken(message);
-	const state = getLinkState(message);
-	const suffix = getStateSuffix(state);
 
 	const paletteOpacity = extractPaletteOpacity(message);
 	if (Number.isFinite(paletteOpacity)) {
@@ -2057,6 +2093,9 @@ const buildTextLGroupAttributeChanges = (property, value) => {
 	switch (key) {
 		case 'link_color':
 			return buildLinkColorChanges(value, { state });
+		case 'link_color_reset':
+			// Reset / remove link colour for this state — value is always 'reset'
+			return buildLinkColorReset(state);
 		case 'link_palette_color':
 			return buildLinkPaletteColorChanges(value, { state });
 		case 'link_palette_opacity':

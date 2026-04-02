@@ -215,7 +215,7 @@ const routeAttributeGroups = ( rawMessage, ctx ) => {
 	if ( aGroup ) return actionResult( aGroup );
 
 	// Container B-group
-	const bGroup = buildContainerBGroupAction( rawMessage, { scope: currentScope } );
+	const bGroup = buildContainerBGroupAction( rawMessage, { scope: currentScope, isButtonContext } );
 	if ( bGroup ) return actionResult( bGroup );
 
 	// Container C-group

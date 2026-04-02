@@ -65,6 +65,23 @@ export const askShadowIntensity = (includeOff = false) => ({
 });
 
 /**
+ * Ask for a gradient direction / angle.
+ *
+ * @returns {Object} ask_options conversation step
+ */
+export const askGradientDirection = () => ({
+	action: 'ask_options',
+	target: 'gradient_direction',
+	msg: 'Which direction for the gradient?',
+	options: [
+		{ label: 'Left → Right', value: 90 },
+		{ label: 'Top → Bottom', value: 180 },
+		{ label: 'Top-Left → Bottom-Right', value: 135 },
+		{ label: 'Bottom-Left → Top-Right', value: 45 },
+	],
+});
+
+/**
  * Ask for a text-polish mode.
  *
  * @returns {Object} ask_options conversation step

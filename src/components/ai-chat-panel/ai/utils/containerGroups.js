@@ -434,6 +434,22 @@ const buildBoxShadowChanges = (value, { isHover = false } = {}) => {
 	}
 
 	if (isRemoval) {
+		// Zero all hover dimension keys so the shadow is fully cleared, not just gated by status.
+		if (isHover) {
+			breakpoints.forEach(bp => {
+				const suffix = `-${bp}-hover`;
+				changes[`box-shadow-horizontal${suffix}`] = 0;
+				changes[`box-shadow-vertical${suffix}`] = 0;
+				changes[`box-shadow-blur${suffix}`] = 0;
+				changes[`box-shadow-spread${suffix}`] = 0;
+				changes[`box-shadow-inset${suffix}`] = false;
+				changes[`box-shadow-palette-opacity${suffix}`] = 1;
+				changes[`box-shadow-horizontal-unit${suffix}`] = 'px';
+				changes[`box-shadow-vertical-unit${suffix}`] = 'px';
+				changes[`box-shadow-blur-unit${suffix}`] = 'px';
+				changes[`box-shadow-spread-unit${suffix}`] = 'px';
+			});
+		}
 		return changes;
 	}
 
@@ -483,7 +499,7 @@ const buildBreakpointChanges = value => {
 	return { 'breakpoints-general': numeric };
 };
 
-const buildContainerBGroupAction = (message, { scope = 'selection' } = {}) => {
+const buildContainerBGroupAction = (message, { scope = 'selection', isButtonContext = false } = {}) => {
 	const actionType = scope === 'page' ? 'update_page' : 'update_selection';
 	const actionTarget =
 		actionType === 'update_page' ? { target_block: 'container' } : {};
@@ -524,17 +540,25 @@ const buildContainerBGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	const backgroundLayerCommand = parseBackgroundLayerCommand(message);
-	if (backgroundLayerCommand) {
-		return {
-			action: actionType,
-			property: backgroundLayerCommand.isHover
-				? 'background_layers_hover'
-				: 'background_layers',
-			value: backgroundLayerCommand,
-			message: 'Background layer updated.',
-			...actionTarget,
-		};
+	// When a button block is selected, gradient/background commands target the button
+	// element attributes (button-background-*), not the canvas background-layers array.
+	// Skip this path for button context unless the user explicitly asks for a "layer"
+	// or "overlay" so the flow_gradient / flow_gradient_hover pattern can handle it.
+	const lowerForLayerCheck = String(message || '').toLowerCase();
+	const hasExplicitLayerIntent = /\blayer\b|\boverlay\b/.test(lowerForLayerCheck);
+	if (!isButtonContext || hasExplicitLayerIntent) {
+		const backgroundLayerCommand = parseBackgroundLayerCommand(message);
+		if (backgroundLayerCommand) {
+			return {
+				action: actionType,
+				property: backgroundLayerCommand.isHover
+					? 'background_layers_hover'
+					: 'background_layers',
+				value: backgroundLayerCommand,
+				message: 'Background layer updated.',
+				...actionTarget,
+			};
+		}
 	}
 
 	const borderRadiusHover = extractBorderRadiusHover(message);

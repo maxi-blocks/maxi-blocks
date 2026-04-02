@@ -19,6 +19,8 @@ export const BUTTON_FLOW_CONFIG = {
 	hover_text: { ...SHARED_FLOWS.hover_text },
 	active_bg: { ...SHARED_FLOWS.active_bg },
 	icon_color: { ...SHARED_FLOWS.icon_color },
+	gradient: { ...SHARED_FLOWS.gradient },
+	gradient_hover: { ...SHARED_FLOWS.gradient_hover },
 };
 
 export const BUTTON_PATTERNS = [
@@ -173,7 +175,10 @@ export const BUTTON_PATTERNS = [
 	// ============================================================
 
 	{ regex: /transparent.*background|clear.*background/i, property: 'button_bg_color', value: 'transparent', selectionMsg: 'Made background transparent.', pageMsg: 'Backgrounds made transparent.', target: 'button' },
-	{ regex: /gradient/i, property: 'button_gradient', value: true, selectionMsg: 'Applied gradient.', pageMsg: 'Applied gradient.', target: 'button' },
+	// Hover gradient flow must come before the normal gradient to avoid mis-routing.
+	{ regex: /(?:gradient|grad)\s+(?:on\s+)?hover|hover\s+(?:gradient|grad)|gradient.*background.*hover|hover.*gradient.*background/i, property: 'flow_gradient_hover', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	// Normal gradient: multi-step flow (start colour → end colour → direction).
+	{ regex: /\bgradient\b/i, property: 'flow_gradient', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 	{ regex: /grey.*border|gray.*border/i, property: 'button_border', value: '1px solid grey', selectionMsg: 'Added grey border.', pageMsg: 'Added grey border.', target: 'button' },
 	{ regex: /shadow.*grey|shadow.*gray/i, property: 'button_shadow_color', value: 'grey', selectionMsg: 'Set shadow to grey.', pageMsg: 'Set shadow to grey.', target: 'button' },
 
@@ -183,7 +188,13 @@ export const BUTTON_PATTERNS = [
 
 	{ regex: /hover.*(colou?r|background|bg).*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 	{ regex: /hover.*(red|blue|green|yellow|black|white|purple|pink|orange)/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	// Trigger hover-bg flow even without a specific colour name so the palette picker is shown.
+	{ regex: /(add|set|change|update|apply)\s+(a\s+|the\s+)?(?:button\s+)?(?:hover\s+(?:background|bg|colou?r|fill)|(?:background|bg|colou?r|fill)\s+(?:on\s+)?hover)\b/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	{ regex: /\b(?:button\s+)?(?:bg|background)\s+hover\b|\bhover\s+(?:bg|background)\b/i, property: 'flow_button_hover_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 	{ regex: /hover.*text.*(red|blue|green|yellow|white|black)/i, property: 'flow_button_hover_text', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	// Trigger hover-text flow without a specific colour name.
+	{ regex: /(add|set|change|update|apply)\s+(a\s+|the\s+)?(?:button\s+)?(?:hover\s+(?:text|font|label|copy|colou?r)\s*(?:colou?r)?|(?:text|font|label)\s+(?:colou?r\s+)?(?:on\s+)?hover)\b/i, property: 'flow_button_hover_text', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
+	{ regex: /\bhover\s+text\s+colou?r\b|\btext\s+colou?r\s+(?:on\s+)?hover\b/i, property: 'flow_button_hover_text', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 	{ regex: /active.*state|on\s*click.*colou?r|active.*colou?r|active.*background/i, property: 'flow_button_active_bg', value: 'start', selectionMsg: '', pageMsg: null, target: 'button' },
 
 	// ============================================================
@@ -331,20 +342,30 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		property === 'flow_outline' ||
 		property === 'flow_radius' ||
 		property === 'flow_shadow' ||
+		property === 'flow_radius_hover' ||
+		property === 'flow_border_hover' ||
+		property === 'flow_shadow_hover' ||
 		property === 'flow_button_icon_color' ||
 		property === 'flow_button_hover_bg' ||
 		property === 'flow_button_hover_text' ||
-		property === 'flow_button_active_bg'
+		property === 'flow_button_active_bg' ||
+		property === 'flow_gradient' ||
+		property === 'flow_gradient_hover'
 	) {
 		// Map the button-specific flow names to the canonical engine flow names.
 		const FLOW_NAME_MAP = {
-			flow_outline:          'border',
-			flow_radius:           'radius',
-			flow_shadow:           'shadow',
-			flow_button_icon_color:'icon_color',
-			flow_button_hover_bg:  'hover_bg',
-			flow_button_hover_text:'hover_text',
-			flow_button_active_bg: 'active_bg',
+			flow_outline:           'border',
+			flow_radius:            'radius',
+			flow_shadow:            'shadow',
+			flow_radius_hover:      'radius_hover',
+			flow_border_hover:      'border_hover',
+			flow_shadow_hover:      'shadow_hover',
+			flow_button_icon_color: 'icon_color',
+			flow_button_hover_bg:   'hover_bg',
+			flow_button_hover_text: 'hover_text',
+			flow_button_active_bg:  'active_bg',
+			flow_gradient:          'gradient',
+			flow_gradient_hover:    'gradient_hover',
 		};
 		const flowName = FLOW_NAME_MAP[property] || property.replace('flow_', '');
 		return runFlow(flowName, context, BUTTON_FLOW_CONFIG, prefix, null, 'button');
@@ -575,11 +596,6 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			}
 			break;
 
-		case 'button_gradient':
-			changes = {
-				[`${prefix}background-active-media-general`]: 'gradient',
-			};
-			break;
 
 		case 'button_border':
 			changes = {

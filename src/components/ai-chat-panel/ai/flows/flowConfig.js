@@ -155,4 +155,22 @@ export const SHARED_FLOWS = {
 		steps: ['icon_color'],
 		breakpointStrategy: 'general',
 	},
+
+	/**
+	 * Gradient background flow: start colour → end colour → direction.
+	 * Writes to 'general' breakpoint only — inherits down.
+	 */
+	gradient: {
+		steps: ['gradient_color1', 'gradient_color2', 'gradient_direction'],
+		breakpointStrategy: 'general',
+	},
+
+	/**
+	 * Gradient hover background flow: same three steps but applies to
+	 * the hover state (`-general-hover` attribute suffix).
+	 */
+	gradient_hover: {
+		steps: ['gradient_color1', 'gradient_color2', 'gradient_direction'],
+		breakpointStrategy: 'general',
+	},
 };

@@ -165,6 +165,14 @@ const LAYOUT_PATTERNS = [
 	{ regex: /show.*mobile.*only|mobile.*version/, property: 'show_mobile_only', value: true, selectionMsg: 'Showing on mobile only.', pageMsg: 'Visible only on mobile.' },
 
 	// GROUP 22: HOVER STATE PATTERNS
+	// 22a: Hover shadow/border/radius/gradient — interactive flows (must come before transform-hover patterns)
+	// Gradient hover must come before radius hover because "background" contains "round" as a substring.
+	{ regex: /(?:gradient|grad)\s+(?:on\s+)?hover|hover\s+(?:gradient|grad)|gradient.*background.*hover|hover.*gradient.*background/i, property: 'flow_gradient_hover', value: 'start', selectionMsg: '', pageMsg: null },
+	{ regex: /hover.*shadow|shadow.*hover|shadow.*on\s*hover|on\s*hover.*shadow/, property: 'flow_shadow_hover', value: 'start', selectionMsg: '', pageMsg: null },
+	{ regex: /hover.*border|border.*hover|border.*on\s*hover|on\s*hover.*border|hover.*outline|outline.*hover/, property: 'flow_border_hover', value: 'start', selectionMsg: '', pageMsg: null },
+	// Word boundary on \bround\b prevents matching the substring "round" inside "background".
+	{ regex: /hover.*\bround\b|\bround\b.*hover|hover.*corner|corner.*hover|hover.*radius|radius.*hover|\bround\b.*on\s*hover|on\s*hover.*\bround\b/, property: 'flow_radius_hover', value: 'start', selectionMsg: '', pageMsg: null },
+	// 22b: Transform / preset hover effects
 	{ regex: /change.*hover|hover.*change|when.*hover/, property: 'hover_effect', value: 'transform', selectionMsg: 'Added hover effect.', pageMsg: 'Applied hover transformation.' },
 	{ regex: /lift.*hover|raise.*hover|elevate.*hover/, property: 'hover_lift', value: true, selectionMsg: 'Added lift on hover.', pageMsg: 'Elements lift on hover.' },
 	{ regex: /glow.*hover|shine.*hover/, property: 'hover_glow', value: true, selectionMsg: 'Added glow on hover.', pageMsg: 'Elements glow on hover.' },

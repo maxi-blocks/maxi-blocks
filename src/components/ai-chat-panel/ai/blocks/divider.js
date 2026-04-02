@@ -317,6 +317,11 @@ export const handleDividerUpdate = (block, property, value, prefix, context = {}
 		return runFlow('shadow', context, DIVIDER_FLOW_CONFIG, dividerPrefix, null, 'divider');
 	}
 
+	if (property === 'flow_shadow_hover') {
+		const dividerPrefix = prefix || 'divider-';
+		return runFlow('shadow_hover', context, DIVIDER_FLOW_CONFIG, dividerPrefix, null, 'divider');
+	}
+
 	if (property === 'flow_divider_style') {
 		if (context.divider_style === undefined) {
 			return {

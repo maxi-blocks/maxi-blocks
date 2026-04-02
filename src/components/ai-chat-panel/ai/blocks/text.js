@@ -1188,6 +1188,18 @@ if (baseProperty === 'flow_text_font_family') {
 		return runFlow('shadow', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
 	}
 
+	if (normalizedProperty === 'flow_border_hover') {
+		return runFlow('border_hover', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
+	}
+
+	if (normalizedProperty === 'flow_shadow_hover') {
+		return runFlow('shadow_hover', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
+	}
+
+	if (normalizedProperty === 'flow_radius_hover') {
+		return runFlow('radius_hover', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
+	}
+
 if (baseProperty === 'flow_text_line_height') {
 		if (context.text_line_height === undefined) {
 			return {

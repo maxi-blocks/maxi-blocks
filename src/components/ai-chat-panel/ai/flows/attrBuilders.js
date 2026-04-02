@@ -220,6 +220,297 @@ export const buildShadowReset = (prefix, breakpoints) => {
 	return changes;
 };
 
+// ─── Hover border ─────────────────────────────────────────────────────────────
+
+/**
+ * Build hover border attribute changes for a single breakpoint.
+ * Writes keys like `${prefix}border-style-${bp}-hover`.
+ *
+ * @param {string} style
+ * @param {number} width
+ * @param {number|string} color
+ * @param {string} prefix
+ * @param {string} bp
+ * @returns {Object}
+ */
+export const buildBorderHoverAttrsForBp = (style, width, color, prefix, bp) => {
+	const isPalette = typeof color === 'number';
+	const suffix = `-${bp}-hover`;
+	const changes = {
+		[`${prefix}border-style${suffix}`]: style,
+		[`${prefix}border-top-width${suffix}`]: width,
+		[`${prefix}border-bottom-width${suffix}`]: width,
+		[`${prefix}border-left-width${suffix}`]: width,
+		[`${prefix}border-right-width${suffix}`]: width,
+		[`${prefix}border-sync-width${suffix}`]: 'all',
+		[`${prefix}border-unit-width${suffix}`]: 'px',
+	};
+
+	if (isPalette) {
+		changes[`${prefix}border-palette-status${suffix}`] = true;
+		changes[`${prefix}border-palette-color${suffix}`] = color;
+		changes[`${prefix}border-color${suffix}`] = '';
+	} else {
+		changes[`${prefix}border-color${suffix}`] = color;
+		changes[`${prefix}border-palette-status${suffix}`] = false;
+		changes[`${prefix}border-palette-color${suffix}`] = '';
+	}
+
+	return changes;
+};
+
+/**
+ * Build hover border attribute changes across a set of breakpoints.
+ * Also sets `border-status-hover: true` to enable the hover state.
+ *
+ * @param {string} style
+ * @param {number} width
+ * @param {number|string} color
+ * @param {string} prefix
+ * @param {string[]} breakpoints
+ * @returns {Object}
+ */
+export const buildBorderHoverAttrs = (style, width, color, prefix, breakpoints) => {
+	const changes = { 'border-status-hover': true };
+	breakpoints.forEach(bp => {
+		Object.assign(changes, buildBorderHoverAttrsForBp(style, width, color, prefix, bp));
+	});
+	return changes;
+};
+
+/**
+ * Build hover border reset changes across a set of breakpoints.
+ * Sets `border-status-hover: false` and zeroes all hover border keys.
+ *
+ * @param {string} prefix
+ * @param {string[]} breakpoints
+ * @returns {Object}
+ */
+export const buildBorderHoverReset = (prefix, breakpoints) => {
+	const changes = { 'border-status-hover': false };
+	breakpoints.forEach(bp => {
+		const suffix = `-${bp}-hover`;
+		changes[`${prefix}border-style${suffix}`] = 'none';
+		changes[`${prefix}border-top-width${suffix}`] = 0;
+		changes[`${prefix}border-bottom-width${suffix}`] = 0;
+		changes[`${prefix}border-left-width${suffix}`] = 0;
+		changes[`${prefix}border-right-width${suffix}`] = 0;
+		changes[`${prefix}border-sync-width${suffix}`] = 'all';
+		changes[`${prefix}border-unit-width${suffix}`] = 'px';
+		changes[`${prefix}border-palette-status${suffix}`] = false;
+		changes[`${prefix}border-palette-color${suffix}`] = '';
+		changes[`${prefix}border-color${suffix}`] = '';
+	});
+	return changes;
+};
+
+// ─── Hover border radius ──────────────────────────────────────────────────────
+
+/**
+ * Build hover border-radius attribute changes for a single breakpoint.
+ * Writes keys like `${prefix}border-top-left-radius-${bp}-hover`.
+ *
+ * @param {number|string} value
+ * @param {string} unit
+ * @param {string} prefix
+ * @param {string} bp
+ * @returns {Object}
+ */
+export const buildBorderRadiusHoverForBp = (value, unit, prefix, bp) => {
+	const suffix = `-${bp}-hover`;
+	return {
+		[`${prefix}border-top-left-radius${suffix}`]: value,
+		[`${prefix}border-top-right-radius${suffix}`]: value,
+		[`${prefix}border-bottom-right-radius${suffix}`]: value,
+		[`${prefix}border-bottom-left-radius${suffix}`]: value,
+		[`${prefix}border-sync-radius${suffix}`]: 'all',
+		[`${prefix}border-unit-radius${suffix}`]: unit,
+	};
+};
+
+// ─── Hover box shadow ─────────────────────────────────────────────────────────
+
+/**
+ * Build hover box-shadow attribute changes for a single breakpoint.
+ * Writes keys like `${prefix}box-shadow-blur-${bp}-hover`.
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} blur
+ * @param {number} spread
+ * @param {number|string} color
+ * @param {string} prefix
+ * @param {string} bp
+ * @returns {Object}
+ */
+export const buildShadowHoverAttrsForBp = (x, y, blur, spread, color, prefix, bp) => {
+	const isPalette = typeof color === 'number';
+	const suffix = `-${bp}-hover`;
+	const changes = {
+		[`${prefix}box-shadow-horizontal${suffix}`]: x,
+		[`${prefix}box-shadow-vertical${suffix}`]: y,
+		[`${prefix}box-shadow-blur${suffix}`]: blur,
+		[`${prefix}box-shadow-spread${suffix}`]: spread,
+		[`${prefix}box-shadow-inset${suffix}`]: false,
+		[`${prefix}box-shadow-horizontal-unit${suffix}`]: 'px',
+		[`${prefix}box-shadow-vertical-unit${suffix}`]: 'px',
+		[`${prefix}box-shadow-blur-unit${suffix}`]: 'px',
+		[`${prefix}box-shadow-spread-unit${suffix}`]: 'px',
+	};
+
+	if (isPalette) {
+		changes[`${prefix}box-shadow-palette-status${suffix}`] = true;
+		changes[`${prefix}box-shadow-palette-color${suffix}`] = color;
+		changes[`${prefix}box-shadow-color${suffix}`] = '';
+	} else {
+		changes[`${prefix}box-shadow-color${suffix}`] = color;
+		changes[`${prefix}box-shadow-palette-status${suffix}`] = false;
+		changes[`${prefix}box-shadow-palette-color${suffix}`] = '';
+	}
+
+	return changes;
+};
+
+/**
+ * Build hover box-shadow attribute changes across breakpoints.
+ * Also sets `box-shadow-status-hover: true`.
+ *
+ * @param {number} x
+ * @param {number} y
+ * @param {number} blur
+ * @param {number} spread
+ * @param {number|string} color
+ * @param {string} prefix
+ * @param {string[]} breakpoints
+ * @returns {Object}
+ */
+export const buildShadowHoverAttrs = (x, y, blur, spread, color, prefix, breakpoints) => {
+	const changes = { 'box-shadow-status-hover': true };
+	breakpoints.forEach(bp => {
+		Object.assign(changes, buildShadowHoverAttrsForBp(x, y, blur, spread, color, prefix, bp));
+	});
+	return changes;
+};
+
+/**
+ * Build hover box-shadow reset changes across breakpoints.
+ * Sets `box-shadow-status-hover: false` and zeroes all hover dimension keys.
+ *
+ * @param {string} prefix
+ * @param {string[]} breakpoints
+ * @returns {Object}
+ */
+export const buildShadowHoverReset = (prefix, breakpoints) => {
+	const changes = { 'box-shadow-status-hover': false };
+	breakpoints.forEach(bp => {
+		const suffix = `-${bp}-hover`;
+		changes[`${prefix}box-shadow-horizontal${suffix}`] = 0;
+		changes[`${prefix}box-shadow-vertical${suffix}`] = 0;
+		changes[`${prefix}box-shadow-blur${suffix}`] = 0;
+		changes[`${prefix}box-shadow-spread${suffix}`] = 0;
+		changes[`${prefix}box-shadow-inset${suffix}`] = false;
+		changes[`${prefix}box-shadow-palette-opacity${suffix}`] = 1;
+		changes[`${prefix}box-shadow-horizontal-unit${suffix}`] = 'px';
+		changes[`${prefix}box-shadow-vertical-unit${suffix}`] = 'px';
+		changes[`${prefix}box-shadow-blur-unit${suffix}`] = 'px';
+		changes[`${prefix}box-shadow-spread-unit${suffix}`] = 'px';
+		changes[`${prefix}box-shadow-palette-status${suffix}`] = false;
+		changes[`${prefix}box-shadow-palette-color${suffix}`] = '';
+		changes[`${prefix}box-shadow-color${suffix}`] = '';
+	});
+	return changes;
+};
+
+// ─── Gradient background ──────────────────────────────────────────────────────
+
+/**
+ * Build a CSS linear-gradient string from two palette colour indices and an angle.
+ *
+ * Palette colours are referenced via CSS custom properties that Maxi injects on
+ * the page — `--maxi-light-color-{n}` holds the RGB triplet so we can wrap it
+ * in rgba() to support opacity later.
+ *
+ * @param {number} color1  - start palette index (1-8)
+ * @param {number} color2  - end palette index (1-8)
+ * @param {number} angle   - gradient angle in degrees
+ * @returns {string}
+ */
+export const buildGradientString = (color1, color2, angle = 90) => {
+	const c1 = `rgba(var(--maxi-light-color-${color1}), 1)`;
+	const c2 = `rgba(var(--maxi-light-color-${color2}), 1)`;
+	return `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+};
+
+/** Default wrapper dimensions shared between normal and hover gradient attrs. */
+const GRADIENT_WRAPPER_DEFAULTS = {
+	width: 100,
+	height: 100,
+	unit: '%',
+	top: 0,
+	right: 0,
+	bottom: 0,
+	left: 0,
+	posUnit: '%',
+	sync: 'all',
+};
+
+/**
+ * Build gradient background attribute changes for a single breakpoint.
+ *
+ * @param {string} gradientString  - CSS linear-gradient(…) value
+ * @param {string} prefix          - block attribute prefix (e.g. 'button-')
+ * @param {string} bp              - breakpoint key
+ * @param {boolean} isHover        - write hover-suffix attributes
+ * @returns {Object}
+ */
+export const buildGradientAttrsForBp = (gradientString, prefix, bp, isHover = false) => {
+	const suffix = `-${bp}${isHover ? '-hover' : ''}`;
+	const d = GRADIENT_WRAPPER_DEFAULTS;
+	return {
+		[`${prefix}background-active-media${suffix}`]: 'gradient',
+		[`${prefix}background-gradient${suffix}`]: gradientString,
+		[`${prefix}background-gradient-opacity${suffix}`]: 1,
+		[`${prefix}background-palette-status${suffix}`]: false,
+		// Gradient wrapper sizing so the layer covers the whole element
+		[`${prefix}background-gradient-wrapper-width${suffix}`]: d.width,
+		[`${prefix}background-gradient-wrapper-width-unit${suffix}`]: d.unit,
+		[`${prefix}background-gradient-wrapper-height${suffix}`]: d.height,
+		[`${prefix}background-gradient-wrapper-height-unit${suffix}`]: d.unit,
+		[`${prefix}background-gradient-wrapper-position-top${suffix}`]: d.top,
+		[`${prefix}background-gradient-wrapper-position-top-unit${suffix}`]: d.posUnit,
+		[`${prefix}background-gradient-wrapper-position-right${suffix}`]: d.right,
+		[`${prefix}background-gradient-wrapper-position-right-unit${suffix}`]: d.posUnit,
+		[`${prefix}background-gradient-wrapper-position-bottom${suffix}`]: d.bottom,
+		[`${prefix}background-gradient-wrapper-position-bottom-unit${suffix}`]: d.posUnit,
+		[`${prefix}background-gradient-wrapper-position-left${suffix}`]: d.left,
+		[`${prefix}background-gradient-wrapper-position-left-unit${suffix}`]: d.posUnit,
+		[`${prefix}background-gradient-wrapper-position-sync${suffix}`]: d.sync,
+		// Clip-path so gradient respects the button shape
+		[`${prefix}background-gradient-clip-path${suffix}`]: 'inset(0% 0% 0% 0%)',
+		[`${prefix}background-gradient-clip-path-status${suffix}`]: true,
+	};
+};
+
+/**
+ * Build gradient background attribute changes across a set of breakpoints.
+ *
+ * @param {string} gradientString
+ * @param {string} prefix
+ * @param {string[]} breakpoints
+ * @param {boolean} isHover
+ * @returns {Object}
+ */
+export const buildGradientAttrs = (gradientString, prefix, breakpoints, isHover = false) => {
+	const changes = {};
+	if (isHover) {
+		changes[`${prefix}background-status-hover`] = true;
+	}
+	breakpoints.forEach(bp => {
+		Object.assign(changes, buildGradientAttrsForBp(gradientString, prefix, bp, isHover));
+	});
+	return changes;
+};
+
 // ─── Hover background ─────────────────────────────────────────────────────────
 
 /**

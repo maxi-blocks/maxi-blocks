@@ -106,6 +106,25 @@ const useAiChatMessages = ({
 	logAIDebug,
 }) => {
 	/**
+	 * Queues a direct action for immediate execution outside the normal LLM pipeline.
+	 * Extracted at hook scope so both sendMessage and handleSuggestion can call it.
+	 *
+	 * @param {Object} directAction
+	 */
+	const queueDirectAction = directAction => {
+		setIsLoading(true);
+		setTimeout(async () => {
+			logAIDebug('Queue direct action', directAction);
+			const result = await parseAndExecuteAction(directAction);
+			setMessages(prev => [
+				...prev,
+				{ role: 'assistant', content: result.message, executed: result.executed },
+			]);
+			setIsLoading(false);
+		}, 50);
+	};
+
+	/**
 	 * Sends a message through the AI pipeline (or handles active FSM context).
 	 *
 	 * @param {string} [overriddenRawMessage] When set, use this text instead of the input field value.
@@ -432,19 +451,6 @@ const useAiChatMessages = ({
 				return;
 			}
 			setIsLoading(false);
-		};
-
-		const queueDirectAction = directAction => {
-			setIsLoading(true);
-			setTimeout(async () => {
-				logAIDebug('Queue direct action', directAction);
-				const result = await parseAndExecuteAction(directAction);
-				setMessages(prev => [
-					...prev,
-					{ role: 'assistant', content: result.message, executed: result.executed },
-				]);
-				setIsLoading(false);
-			}, 50);
 		};
 
 		// ── Cloud-icon async handler ──────────────────────────────────────────

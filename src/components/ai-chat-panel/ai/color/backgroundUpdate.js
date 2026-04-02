@@ -48,8 +48,11 @@ export const updateBackgroundColor = (clientId, color, currentAttributes, prefix
 
 	// Always update background-layers — even when the attribute is undefined (unset on a
 	// fresh block), we create the first colour layer so the editor renders the background.
+	// When a prefix is given (e.g. 'button-'), use the prefixed layers key so we update
+	// the element's own background layers instead of the canvas/block-level layers.
 	{
-		const layers = cloneDeep(currentAttributes['background-layers'] || []);
+		const layersKey = `${prefix}background-layers`;
+		const layers = cloneDeep(currentAttributes[layersKey] || []);
 
 		if (layers.length > 0) {
 			// Update the first (topmost) colour layer in-place.
@@ -82,7 +85,7 @@ export const updateBackgroundColor = (clientId, color, currentAttributes, prefix
 			layers.push(newLayer);
 		}
 
-		newAttributes['background-layers'] = layers;
+		newAttributes[layersKey] = layers;
 	}
 
 	logBackgroundDebug('updateBackgroundColor', {
@@ -94,7 +97,7 @@ export const updateBackgroundColor = (clientId, color, currentAttributes, prefix
 		paletteStatus: newAttributes[`${prefix}background-palette-status-general`],
 		paletteColor: newAttributes[`${prefix}background-palette-color-general`],
 		customColor: newAttributes[`${prefix}background-color-general`],
-		layers: summarizeBackgroundLayers(newAttributes['background-layers']),
+		layers: summarizeBackgroundLayers(newAttributes[`${prefix}background-layers`]),
 	});
 
 	return newAttributes;

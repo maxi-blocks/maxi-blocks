@@ -808,6 +808,49 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 };
 
 /**
+ * 4c. Link colour clarification — handles "change link [hover/active/visited] colour"
+ *     when no colour value is provided. Returns a palette picker flow so the user can
+ *     choose a colour without the message being swallowed by the generic hover_effect
+ *     layout pattern.
+ */
+const routeLinkColorClarify = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, isTextContext } = ctx;
+	if ( ! isTextContext ) return null;
+
+	// Must mention "link" and a colour-change intent, but no explicit colour value.
+	if ( ! /\blinks?\b/.test( lowerMessage ) ) return null;
+	if ( ! /(colou?r)/.test( lowerMessage ) ) return null;
+
+	// Skip if a colour value is already present (palette N, hex, named colour word)
+	// — those are handled by routeNamedColorChange / routeHexColor / buildTextLGroupAction.
+	const hasPalette = /\b(?:palette|colou?r)\s*(?:number\s*)?[1-8]\b/i.test( lowerMessage );
+	const hasHex = /#[0-9a-f]{3,6}\b/i.test( lowerMessage );
+	const NAMED_COLOURS = /\b(black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal|transparent)\b/;
+	const hasNamedColor = NAMED_COLOURS.test( lowerMessage );
+	if ( hasPalette || hasHex || hasNamedColor ) return null;
+
+	// Determine the link state from the message.
+	const stateMatch = lowerMessage.match( /\b(hover|active|visited)\b/ );
+	const state = stateMatch ? stateMatch[ 1 ] : 'base';
+	const colorTarget = state === 'base' ? 'link' : `link-${ state }`;
+	const stateLabel = state !== 'base' ? ` ${ state }` : '';
+
+	return {
+		type: 'flow',
+		flowContext: { type: 'color_palette', colorTarget, fallbackHex: null, namedColorWord: null },
+		message: {
+			role: 'assistant',
+			content: `Choose a colour for the link${ stateLabel }:`,
+			options: true,
+			optionsType: 'palette',
+			colorTarget,
+			executed: false,
+		},
+		sidebarProperty: null,
+	};
+};
+
+/**
  * 5. Hex-colour direct action — applies when the message contains a #hex code
  *    and is not primarily about borders/outlines/shadows.
  */
@@ -1994,6 +2037,11 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	// 4b. Named-colour direct action (red/green/black/…/palette N + colour target)
 	const namedColorResult = routeNamedColorChange( rawMessage, ctx );
 	if ( namedColorResult ) return namedColorResult;
+
+	// 4c. Link colour clarification — "change link hover/active/visited colour" with no colour value.
+	// Must run before layout patterns so "change link hover colour" is not swallowed by hover_effect.
+	const linkColorClarifyResult = routeLinkColorClarify( rawMessage, ctx );
+	if ( linkColorClarifyResult ) return linkColorClarifyResult;
 
 	// 5. Hex colour
 	const hexResult = routeHexColor( rawMessage, ctx );

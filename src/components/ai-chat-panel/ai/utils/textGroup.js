@@ -1974,14 +1974,41 @@ const extractLinkPaletteColor = message => {
 	return Number.isFinite(palette) ? palette : null;
 };
 
+/** CSS named colours that can be specified in link colour commands. */
+const LINK_NAMED_COLOR_MAP = {
+	black: '#000000',
+	white: '#ffffff',
+	red: '#ff0000',
+	blue: '#0000ff',
+	green: '#008000',
+	yellow: '#ffff00',
+	orange: '#ffa500',
+	purple: '#800080',
+	pink: '#ffc0cb',
+	gray: '#808080',
+	grey: '#808080',
+	cyan: '#00ffff',
+	magenta: '#ff00ff',
+	brown: '#a52a2a',
+	navy: '#000080',
+	teal: '#008080',
+	transparent: 'transparent',
+};
+
 const extractLinkColorValue = message => {
 	const lower = String(message || '').toLowerCase();
 	if (!/colou?r/.test(lower)) return null;
 	const palette = parsePaletteColor(message);
 	const cssVar = extractCssVar(message);
 	const hex = extractHexColor(message);
-	const value = palette ?? cssVar ?? hex;
-	return value === null || value === undefined ? null : value;
+	if (palette !== null && palette !== undefined) return palette;
+	if (cssVar !== null && cssVar !== undefined) return cssVar;
+	if (hex !== null && hex !== undefined) return hex;
+	// Fall back to named CSS colours (e.g. "change link colour to black").
+	for (const [name, hexValue] of Object.entries(LINK_NAMED_COLOR_MAP)) {
+		if (new RegExp(`\\b${name}\\b`).test(lower)) return hexValue;
+	}
+	return null;
 };
 
 const buildTextLGroupAction = (message, { scope = 'selection' } = {}) => {

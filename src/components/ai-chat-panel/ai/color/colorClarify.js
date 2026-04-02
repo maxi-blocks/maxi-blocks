@@ -36,6 +36,16 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	const wantsBottom = message.includes('bottom');
 	const isDivider = message.includes('divider') || selectedName.includes('divider');
 
+	// Link colour — must be checked before generic text/background checks so
+	// "change link colour to black" is not misrouted to the text colour path.
+	const isLink = /\blinks?\b/.test(message);
+	if (isLink) {
+		if (isHover) return 'link-hover';
+		if (isActive) return 'link-active';
+		if (message.includes('visited')) return 'link-visited';
+		return 'link';
+	}
+
 	if (isShapeKeyword || (isDivider && isContainer)) {
 		if (wantsTop && !wantsBottom) return 'shape-divider-top';
 		if (wantsBottom && !wantsTop) return 'shape-divider-bottom';
@@ -189,6 +199,26 @@ export const buildColorUpdate = (colorTarget, colorValue, { selectedBlock } = {}
 			property = 'background_color';
 			targetBlock = getBackgroundTargetBlock(selectedBlock);
 			msgText = 'background';
+			break;
+		case 'link':
+			property = 'link_color';
+			targetBlock = 'text';
+			msgText = 'link';
+			break;
+		case 'link-hover':
+			property = 'link_color_hover';
+			targetBlock = 'text';
+			msgText = 'link hover';
+			break;
+		case 'link-active':
+			property = 'link_color_active';
+			targetBlock = 'text';
+			msgText = 'link active';
+			break;
+		case 'link-visited':
+			property = 'link_color_visited';
+			targetBlock = 'text';
+			msgText = 'link visited';
 			break;
 		case 'text':
 			property = 'text_color';

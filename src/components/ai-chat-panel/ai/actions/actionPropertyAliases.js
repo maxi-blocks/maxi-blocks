@@ -146,6 +146,10 @@ const ACTION_PROPERTY_ALIASES = {
 	transitionCanvasSelected: 'transition_canvas_selected',
 	transitionTransformSelected: 'transition_transform_selected',
 	zIndex: 'z_index',
+	// Font-size aliases — the AI may return these property names
+	fontSize: 'font_size',
+	textFontSize: 'font_size',
+	text_font_size: 'font_size',
 };
 
 export default ACTION_PROPERTY_ALIASES;

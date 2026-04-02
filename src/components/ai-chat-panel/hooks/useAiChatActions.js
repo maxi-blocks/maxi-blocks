@@ -191,43 +191,34 @@ const useAiChatActions = ({
 			};
 		}
 
-		if (baseProperty === 'border_radius' && breakpoint) {
-			return { property: 'border_radius', value: { value, breakpoint } };
-		}
-		if (baseProperty === 'column_size' && breakpoint) {
-			return { property: 'column_size', value: { value, breakpoint } };
-		}
-		if (baseProperty === 'column_fit_content' && breakpoint) {
-			return { property: 'column_fit_content', value: { value, breakpoint } };
-		}
+		/**
+		 * Generic responsive pass-through.
+		 *
+		 * Properties that carry complex objects for non-breakpoint reasons (relations,
+		 * link_settings, background_layers, DC config, etc.) are excluded.  Every
+		 * other property that arrives with a `breakpoint` field in its value — or
+		 * with a breakpoint suffix in the property name — is normalised here so that
+		 * downstream builders only need to handle `{ value, unit?, breakpoint }`.
+		 */
+		const COMPLEX_OBJECT_PROPERTIES = new Set([
+			'relations', 'relations_ops', 'link_settings', 'link_target', 'link_rel', 'link_url',
+			'background_layers', 'background_layers_hover', 'background_color',
+			'background_palette_color', 'context_loop', 'advanced_css', 'custom_css',
+			'cl_attributes', 'dc_link', 'anchor_link',
+			'transform_rotate', 'transform_scale', 'transform_translate', 'transform_origin',
+			'box_shadow', 'box_shadow_hover', 'border', 'border_hover',
+			'apply_responsive_spacing', 'responsive_padding',
+		]);
 
-		if (
-			[
-				'arrow_status', 'arrow_side', 'arrow_position', 'arrow_width',
-				'advanced_css', 'custom_css', 'column_gap',
-				'icon_background', 'icon_border', 'icon_border_radius',
-				'icon_fill_color', 'icon_force_aspect_ratio', 'icon_height',
-				'icon_padding', 'icon_spacing', 'icon_stroke_color',
-				'icon_stroke_width', 'icon_width',
-				'flex_basis', 'flex_grow', 'flex_shrink', 'flex_direction',
-				'flex_wrap', 'force_aspect_ratio', 'full_width', 'height',
-			].includes(baseProperty) && breakpoint
-		) {
-			return { property: baseProperty, value: { value, breakpoint } };
-		}
-
-		if (
-			breakpoint &&
-			(baseProperty.startsWith('link_color') || baseProperty.startsWith('link_palette_'))
-		) {
-			return { property: baseProperty, value: { value, breakpoint } };
-		}
-
-		if (baseProperty === 'display' && breakpoint) {
-			return { property: 'display', value: { value, breakpoint } };
-		}
-		if (baseProperty === 'breakpoints' && breakpoint) {
-			return { property: 'breakpoints', value: { value, breakpoint } };
+		if ( ! COMPLEX_OBJECT_PROPERTIES.has( baseProperty ) ) {
+			// Value already contains breakpoint info: { value, unit, breakpoint }
+			if ( value && typeof value === 'object' && ! Array.isArray( value ) && value.breakpoint ) {
+				return { property: baseProperty, value };
+			}
+			// Breakpoint encoded as property suffix: font_size_m → font_size + bp m
+			if ( breakpoint ) {
+				return { property: baseProperty, value: { value, breakpoint } };
+			}
 		}
 		if (baseProperty === 'link_target') {
 			let targetValue = value;

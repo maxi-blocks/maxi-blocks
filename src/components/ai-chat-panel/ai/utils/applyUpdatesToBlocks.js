@@ -55,8 +55,6 @@ import { buildMetaAGroupAttributeChanges, resolveMetaTargetKey } from './metaAGr
 import { getBlockPrefix, matchesTargetBlockName } from './blockHelpers';
 import {
 	parseUnitValue,
-	RESPONSIVE_BREAKPOINTS,
-	buildResponsiveScaledValues,
 	buildResponsiveSizeChanges,
 	buildBreakpointChanges,
 	buildWidthChanges,
@@ -67,6 +65,8 @@ import {
 	updateTextColor,
 	updateMargin,
 	updateFontSize,
+	updateLineHeight,
+	updateLetterSpacing,
 	updateBorderRadius,
 	updateBoxShadow,
 	removeBoxShadow,
@@ -868,34 +868,12 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 						changes = null; // Handled in the loop with special logic
 						break;
 					// ======= TYPOGRAPHY =======
-					case 'line_height': {
-						const parsed = parseUnitValue(value, '-');
-						const values = buildResponsiveScaledValues({
-							value: parsed.value,
-							unit: parsed.unit,
-							forceScale: true,
-							min: 1,
-						});
-						changes = {};
-						RESPONSIVE_BREAKPOINTS.forEach(bp => {
-							changes[`line-height-${bp}`] = values[bp];
-							changes[`line-height-unit-${bp}`] = parsed.unit;
-						});
-						break;
-					}
-					case 'letter_spacing': {
-						const parsed = parseUnitValue(value, 'px');
-						const values = buildResponsiveScaledValues({
-							value: parsed.value,
-							unit: parsed.unit,
-						});
-						changes = {};
-						RESPONSIVE_BREAKPOINTS.forEach(bp => {
-							changes[`letter-spacing-${bp}`] = values[bp];
-							changes[`letter-spacing-unit-${bp}`] = parsed.unit;
-						});
-						break;
-					}
+				case 'line_height':
+					changes = updateLineHeight( value );
+					break;
+				case 'letter_spacing':
+					changes = updateLetterSpacing( value );
+					break;
 					case 'font_weight':
 						changes = { 'font-weight-general': Number(value) };
 						break;

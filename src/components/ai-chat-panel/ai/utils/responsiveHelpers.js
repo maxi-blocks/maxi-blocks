@@ -189,24 +189,53 @@ export const buildSizeChanges = (prefix, key, value, unit, includeAdvancedOption
 	return changes;
 };
 
-export const buildWidthChanges = (rawValue, prefix = '') => {
-	if (typeof rawValue === 'string') {
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} rawValue
+ * @param {string} prefix
+ */
+export const buildWidthChanges = ( rawValue, prefix = '' ) => {
+	if ( typeof rawValue === 'string' ) {
 		const normalized = rawValue.trim().toLowerCase();
-		if (normalized === 'auto' || normalized === 'fit-content' || normalized === 'fit content') {
-			return buildResponsiveBooleanChanges(prefix, 'width-fit-content', true);
+		if ( normalized === 'auto' || normalized === 'fit-content' || normalized === 'fit content' ) {
+			return buildResponsiveBooleanChanges( prefix, 'width-fit-content', true );
 		}
 	}
 
-	const parsed = parseUnitValue(rawValue);
+	const { value: inner, breakpoint: bpOverride } = normalizeValueWithBreakpoint( rawValue );
+	const parsed = parseUnitValue( inner );
+	const unit   = ( rawValue && typeof rawValue === 'object' && rawValue.unit ) ? rawValue.unit : parsed.unit;
+
+	if ( bpOverride ) {
+		return {
+			[ `${ prefix }width-${ bpOverride }` ]:           parsed.value,
+			[ `${ prefix }width-unit-${ bpOverride }` ]:       unit,
+			[ `${ prefix }width-fit-content-${ bpOverride }` ]: false,
+		};
+	}
+
 	return {
-		...buildResponsiveSizeChanges(prefix, 'width', parsed.value, parsed.unit, false),
-		...buildResponsiveBooleanChanges(prefix, 'width-fit-content', false),
+		...buildResponsiveSizeChanges( prefix, 'width', parsed.value, unit, false ),
+		...buildResponsiveBooleanChanges( prefix, 'width-fit-content', false ),
 	};
 };
 
-export const buildHeightChanges = (rawValue, prefix = '') => {
-	const parsed = parseUnitValue(rawValue);
-	return buildResponsiveSizeChanges(prefix, 'height', parsed.value, parsed.unit, false);
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} rawValue
+ * @param {string} prefix
+ */
+export const buildHeightChanges = ( rawValue, prefix = '' ) => {
+	const { value: inner, breakpoint: bpOverride } = normalizeValueWithBreakpoint( rawValue );
+	const parsed = parseUnitValue( inner );
+	const unit   = ( rawValue && typeof rawValue === 'object' && rawValue.unit ) ? rawValue.unit : parsed.unit;
+
+	if ( bpOverride ) {
+		return {
+			[ `${ prefix }height-${ bpOverride }` ]:      parsed.value,
+			[ `${ prefix }height-unit-${ bpOverride }` ]: unit,
+		};
+	}
+
+	return buildResponsiveSizeChanges( prefix, 'height', parsed.value, unit, false );
 };
 
 export const buildContextLoopChanges = (value = {}) => {

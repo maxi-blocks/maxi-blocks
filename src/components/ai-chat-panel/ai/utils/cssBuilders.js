@@ -45,52 +45,84 @@ export const updateTextColor = (color, prefix = '') => {
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────
 
-export const updatePadding = (value, side = null, prefix = '') => {
-	const parsed = parseUnitValue(value);
-	const sideLower = side ? side.toLowerCase() : null;
-	const values = buildResponsiveScaledValues({
-		value: parsed.value,
-		unit: parsed.unit,
-	});
-	const changes = {};
-	const sides = sideLower && ['top', 'bottom', 'left', 'right'].includes(sideLower)
-		? [sideLower]
-		: ['top', 'bottom', 'left', 'right'];
-	const syncValue = sides.length === 1 ? 'none' : 'all';
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} value
+ * @param {string|null} side   - 'top'|'bottom'|'left'|'right'|null (all sides)
+ * @param {string}      prefix - Block attribute prefix
+ */
+export const updatePadding = ( value, side = null, prefix = '' ) => {
+	const { value: rawValue, breakpoint: bpOverride } = normalizeValueWithBreakpoint( value );
+	const parsed = parseUnitValue( rawValue );
+	const unit = ( value && typeof value === 'object' && value.unit ) ? value.unit : parsed.unit;
 
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		const suffix = `-${bp}`;
-		sides.forEach(sideKey => {
-			changes[`${prefix}padding-${sideKey}${suffix}`] = values[bp];
-			changes[`${prefix}padding-${sideKey}-unit${suffix}`] = parsed.unit;
-		});
-		changes[`${prefix}padding-sync${suffix}`] = syncValue;
-	});
+	const sideLower = side ? side.toLowerCase() : null;
+	const sides = sideLower && [ 'top', 'bottom', 'left', 'right' ].includes( sideLower )
+		? [ sideLower ]
+		: [ 'top', 'bottom', 'left', 'right' ];
+	const syncValue = sides.length === 1 ? 'none' : 'all';
+	const changes = {};
+
+	if ( bpOverride ) {
+		// Single-breakpoint override — write only the requested breakpoint
+		const suffix = `-${ bpOverride }`;
+		sides.forEach( sideKey => {
+			changes[ `${ prefix }padding-${ sideKey }${ suffix }` ] = parsed.value;
+			changes[ `${ prefix }padding-${ sideKey }-unit${ suffix }` ] = unit;
+		} );
+		changes[ `${ prefix }padding-sync${ suffix }` ] = syncValue;
+		return changes;
+	}
+
+	const values = buildResponsiveScaledValues( { value: parsed.value, unit } );
+	RESPONSIVE_BREAKPOINTS.forEach( bp => {
+		const suffix = `-${ bp }`;
+		sides.forEach( sideKey => {
+			changes[ `${ prefix }padding-${ sideKey }${ suffix }` ] = values[ bp ];
+			changes[ `${ prefix }padding-${ sideKey }-unit${ suffix }` ] = unit;
+		} );
+		changes[ `${ prefix }padding-sync${ suffix }` ] = syncValue;
+	} );
 
 	return changes;
 };
 
-export const updateMargin = (value, side = null, prefix = '') => {
-	const parsed = parseUnitValue(value);
-	const sideLower = side ? side.toLowerCase() : null;
-	const values = buildResponsiveScaledValues({
-		value: parsed.value,
-		unit: parsed.unit,
-	});
-	const changes = {};
-	const sides = sideLower && ['top', 'bottom', 'left', 'right'].includes(sideLower)
-		? [sideLower]
-		: ['top', 'bottom', 'left', 'right'];
-	const syncValue = sides.length === 1 ? 'none' : 'all';
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} value
+ * @param {string|null} side   - 'top'|'bottom'|'left'|'right'|null (all sides)
+ * @param {string}      prefix - Block attribute prefix
+ */
+export const updateMargin = ( value, side = null, prefix = '' ) => {
+	const { value: rawValue, breakpoint: bpOverride } = normalizeValueWithBreakpoint( value );
+	const parsed = parseUnitValue( rawValue );
+	const unit = ( value && typeof value === 'object' && value.unit ) ? value.unit : parsed.unit;
 
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		const suffix = `-${bp}`;
-		sides.forEach(sideKey => {
-			changes[`${prefix}margin-${sideKey}${suffix}`] = values[bp];
-			changes[`${prefix}margin-${sideKey}-unit${suffix}`] = parsed.unit;
-		});
-		changes[`${prefix}margin-sync${suffix}`] = syncValue;
-	});
+	const sideLower = side ? side.toLowerCase() : null;
+	const sides = sideLower && [ 'top', 'bottom', 'left', 'right' ].includes( sideLower )
+		? [ sideLower ]
+		: [ 'top', 'bottom', 'left', 'right' ];
+	const syncValue = sides.length === 1 ? 'none' : 'all';
+	const changes = {};
+
+	if ( bpOverride ) {
+		// Single-breakpoint override
+		const suffix = `-${ bpOverride }`;
+		sides.forEach( sideKey => {
+			changes[ `${ prefix }margin-${ sideKey }${ suffix }` ] = parsed.value;
+			changes[ `${ prefix }margin-${ sideKey }-unit${ suffix }` ] = unit;
+		} );
+		changes[ `${ prefix }margin-sync${ suffix }` ] = syncValue;
+		return changes;
+	}
+
+	const values = buildResponsiveScaledValues( { value: parsed.value, unit } );
+	RESPONSIVE_BREAKPOINTS.forEach( bp => {
+		const suffix = `-${ bp }`;
+		sides.forEach( sideKey => {
+			changes[ `${ prefix }margin-${ sideKey }${ suffix }` ] = values[ bp ];
+			changes[ `${ prefix }margin-${ sideKey }-unit${ suffix }` ] = unit;
+		} );
+		changes[ `${ prefix }margin-sync${ suffix }` ] = syncValue;
+	} );
 
 	return changes;
 };
@@ -388,10 +420,32 @@ export const updateOpacity = value => ({
 
 // ─── Typography ───────────────────────────────────────────────────────────────
 
-export const updateFontSize = value => ({
-	'font-size-general': Number(value),
-	'typography-unit-general': 'px',
-});
+/**
+ * Builds font-size attribute changes.
+ *
+ * Accepts either:
+ *   - a scalar (number/string) → applies to `general` breakpoint
+ *   - an object { value, unit, breakpoint } → applies to the specified breakpoint only
+ *
+ * @param {number|string|Object} value  Scalar or breakpoint-aware descriptor.
+ * @returns {Object} Attribute patch.
+ */
+export const updateFontSize = value => {
+	if ( value && typeof value === 'object' && value.breakpoint ) {
+		const bp   = value.breakpoint;
+		const num  = Number( value.value );
+		const unit = value.unit || 'px';
+		return {
+			[ `font-size-${ bp }` ]:      num,
+			[ `font-size-unit-${ bp }` ]: unit,
+		};
+	}
+	// Scalar → general breakpoint
+	return {
+		'font-size-general':      Number( value ),
+		'font-size-unit-general': 'px',
+	};
+};
 
 export const updateFontFamily = value => ({
 	'font-family-general': value,
@@ -419,33 +473,56 @@ export const updateFontWeight = value => {
 	return { 'font-weight-general': weight };
 };
 
-export const updateLineHeight = (value, unit = '-') => {
-	const parsed = parseUnitValue(value, unit);
-	const values = buildResponsiveScaledValues({
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} value
+ * @param {string} unit - Fallback unit ('-' = unitless)
+ */
+export const updateLineHeight = ( value, unit = '-' ) => {
+	const { value: rawValue, breakpoint: bpOverride } = normalizeValueWithBreakpoint( value );
+	const parsed = parseUnitValue( rawValue, unit );
+	const resolvedUnit = ( value && typeof value === 'object' && value.unit ) ? value.unit : parsed.unit;
+	const changes = {};
+
+	if ( bpOverride ) {
+		changes[ `line-height-${ bpOverride }` ]      = parsed.value;
+		changes[ `line-height-unit-${ bpOverride }` ] = resolvedUnit;
+		return changes;
+	}
+
+	const values = buildResponsiveScaledValues( {
 		value: parsed.value,
-		unit: parsed.unit,
+		unit: resolvedUnit,
 		forceScale: true,
 		min: 1,
-	});
-	const changes = {};
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`line-height-${bp}`] = values[bp];
-		changes[`line-height-unit-${bp}`] = parsed.unit;
-	});
+	} );
+	RESPONSIVE_BREAKPOINTS.forEach( bp => {
+		changes[ `line-height-${ bp }` ]      = values[ bp ];
+		changes[ `line-height-unit-${ bp }` ] = resolvedUnit;
+	} );
 	return changes;
 };
 
-export const updateLetterSpacing = (value, unit = 'px') => {
-	const parsed = parseUnitValue(value, unit);
-	const values = buildResponsiveScaledValues({
-		value: parsed.value,
-		unit: parsed.unit,
-	});
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} value
+ * @param {string} unit - Fallback unit
+ */
+export const updateLetterSpacing = ( value, unit = 'px' ) => {
+	const { value: rawValue, breakpoint: bpOverride } = normalizeValueWithBreakpoint( value );
+	const parsed = parseUnitValue( rawValue, unit );
+	const resolvedUnit = ( value && typeof value === 'object' && value.unit ) ? value.unit : parsed.unit;
 	const changes = {};
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		changes[`letter-spacing-${bp}`] = values[bp];
-		changes[`letter-spacing-unit-${bp}`] = parsed.unit;
-	});
+
+	if ( bpOverride ) {
+		changes[ `letter-spacing-${ bpOverride }` ]      = parsed.value;
+		changes[ `letter-spacing-unit-${ bpOverride }` ] = resolvedUnit;
+		return changes;
+	}
+
+	const values = buildResponsiveScaledValues( { value: parsed.value, unit: resolvedUnit } );
+	RESPONSIVE_BREAKPOINTS.forEach( bp => {
+		changes[ `letter-spacing-${ bp }` ]      = values[ bp ];
+		changes[ `letter-spacing-unit-${ bp }` ] = resolvedUnit;
+	} );
 	return changes;
 };
 
@@ -478,20 +555,33 @@ export const updateAlignContent = value => ({
 	'align-content-general': value,
 });
 
-export const updateGap = (value, unit = 'px') => {
-	const parsed = parseUnitValue(value, unit);
-	const values = buildResponsiveScaledValues({
-		value: parsed.value,
-		unit: parsed.unit,
-	});
+/**
+ * @param {number|string|{value,unit?,breakpoint?}} value
+ * @param {string} unit - Fallback unit
+ */
+export const updateGap = ( value, unit = 'px' ) => {
+	const { value: rawValue, breakpoint: bpOverride } = normalizeValueWithBreakpoint( value );
+	const parsed = parseUnitValue( rawValue, unit );
+	const resolvedUnit = ( value && typeof value === 'object' && value.unit ) ? value.unit : parsed.unit;
 	const changes = {};
-	RESPONSIVE_BREAKPOINTS.forEach(bp => {
-		const suffix = `-${bp}`;
-		changes[`row-gap${suffix}`] = values[bp];
-		changes[`row-gap-unit${suffix}`] = parsed.unit;
-		changes[`column-gap${suffix}`] = values[bp];
-		changes[`column-gap-unit${suffix}`] = parsed.unit;
-	});
+
+	if ( bpOverride ) {
+		const suffix = `-${ bpOverride }`;
+		changes[ `row-gap${ suffix }` ]         = parsed.value;
+		changes[ `row-gap-unit${ suffix }` ]     = resolvedUnit;
+		changes[ `column-gap${ suffix }` ]       = parsed.value;
+		changes[ `column-gap-unit${ suffix }` ]  = resolvedUnit;
+		return changes;
+	}
+
+	const values = buildResponsiveScaledValues( { value: parsed.value, unit: resolvedUnit } );
+	RESPONSIVE_BREAKPOINTS.forEach( bp => {
+		const suffix = `-${ bp }`;
+		changes[ `row-gap${ suffix }` ]        = values[ bp ];
+		changes[ `row-gap-unit${ suffix }` ]    = resolvedUnit;
+		changes[ `column-gap${ suffix }` ]      = values[ bp ];
+		changes[ `column-gap-unit${ suffix }` ] = resolvedUnit;
+	} );
 	return changes;
 };
 

@@ -632,10 +632,14 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 	if ( hexColor ) return null;
 	if ( isGlobalScope ) return null;
 
-	// Require an explicit colour-change intent verb so we don't intercept unrelated messages
-	// that happen to contain a colour word (e.g. "add a red background image").
-	const hasChangeIntent = /\b(change|update|set|make|switch|turn)\b/.test( lowerMessage ) ||
-		/\bcolou?r\b.*\bto\b/.test( lowerMessage );
+	// Require an explicit colour-change intent verb OR a bare "colour <name>" / "<name> colour"
+	// pattern so we don't intercept unrelated messages (e.g. "add a red background image").
+	const hasChangeIntent =
+		/\b(change|update|set|make|switch|turn)\b/.test( lowerMessage ) ||
+		/\bcolou?r\b.*\bto\b/.test( lowerMessage ) ||
+		// Bare "black colour" / "colour black" style — just two words, no verb needed.
+		/^(?:\w+\s+)?(?:black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal)\s+colou?r\s*$/i.test( lowerMessage ) ||
+		/^(?:\w+\s+)?colou?r\s+(?:black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal)\s*$/i.test( lowerMessage );
 	if ( ! hasChangeIntent ) return null;
 
 	// Require a colour keyword — named colour or palette reference.
@@ -659,6 +663,10 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 	};
 
 	let resolvedColor = null;
+	// True when the colour came from an explicit "palette N" / "color N" reference —
+	// those are unambiguous and can be applied directly. Named words like "blue" are
+	// ambiguous because the palette may have a different shade, so we show the picker.
+	let isExplicitPalette = false;
 
 	// Palette number — only when accompanied by a palette/color keyword to avoid
 	// false-positives on any standalone digit in the message.
@@ -667,12 +675,17 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 	);
 	if ( explicitPalette ) {
 		resolvedColor = parseInt( explicitPalette[ 1 ] || explicitPalette[ 2 ], 10 );
+		isExplicitPalette = true;
 	}
 
+	// Named colour word — resolved to a fallback hex but shown as palette picker
+	// because the user's style card may have a different shade for that name.
+	let namedColorWord = null;
 	if ( resolvedColor === null ) {
 		for ( const [ word, hex ] of Object.entries( NAMED_COLOR_MAP ) ) {
 			if ( new RegExp( `\\b${ word }\\b` ).test( lowerMessage ) ) {
 				resolvedColor = hex;
+				namedColorWord = word;
 				break;
 			}
 		}
@@ -682,8 +695,22 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 
 	const colorTarget = getColorTargetFromMessage( lowerMessage, { selectedBlock } );
 
-	// Ambiguous — let the existing clarification path handle it.
-	if ( colorTarget === 'element' ) return null;
+	// Ambiguous target — trigger color_what clarification carrying the resolved colour.
+	// For named words, also carry the fallback hex so it can be offered as an option.
+	if ( colorTarget === 'element' ) {
+		return {
+			type: 'flow',
+			flowContext: { type: 'color_what', resolvedColor: isExplicitPalette ? resolvedColor : null, fallbackHex: namedColorWord ? resolvedColor : null, namedColorWord },
+			message: {
+				role: 'assistant',
+				content: 'Colour of what would you like to change?',
+				options: [ 'Text colour', 'Background colour', 'Border colour' ],
+				optionsType: 'text',
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
 
 	const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
 	const prefix = selectedBlock ? getBlockPrefix( selectedBlock.name ) : '';
@@ -692,8 +719,33 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 	// This avoids triggering a full border flow and respects responsive scoping.
 	if ( colorTarget === 'border' || colorTarget === 'button-border' ) {
 		const activeBp = getActiveBreakpoint();
-		const isPalette = typeof resolvedColor === 'number';
 
+		// Named colour word (e.g. "blue") — palette shade is unknown, show picker
+		// with a hint so the user can pick the right palette colour or confirm the hex.
+		if ( namedColorWord && ! isExplicitPalette ) {
+			return {
+				type: 'flow',
+				flowContext: {
+					type: 'color_palette',
+					colorTarget,
+					fallbackHex: resolvedColor,
+					namedColorWord,
+					breakpoint: activeBp,
+					...( colorTarget === 'button-border' ? { target_block: 'button' } : {} ),
+				},
+				message: {
+					role: 'assistant',
+					content: `Which ${ namedColorWord }? Pick from your palette or I'll use ${ resolvedColor }:`,
+					options: true,
+					optionsType: 'palette',
+					colorTarget: colorTarget === 'button-border' ? 'button-border' : 'border',
+					executed: false,
+				},
+				sidebarProperty: null,
+			};
+		}
+
+		const isPalette = typeof resolvedColor === 'number';
 		return actionResult( {
 			action: actionType,
 			property: 'border_color_only',
@@ -701,7 +753,6 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 				color: resolvedColor,
 				isPalette,
 				breakpoint: activeBp,
-				// prefix is resolved per-block inside the handler using target_block
 			},
 			...( colorTarget === 'button-border' ? { target_block: 'button' } : {} ),
 			message: 'Updated border colour.',
@@ -709,6 +760,29 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 	}
 
 	// All other targets — use the shared buildColorUpdate path.
+	// For named colour words (e.g. "blue"), show the palette picker so the user can
+	// choose the exact shade from their style card rather than applying a generic hex.
+	if ( namedColorWord && ! isExplicitPalette ) {
+		return {
+			type: 'flow',
+			flowContext: {
+				type: 'color_palette',
+				colorTarget,
+				fallbackHex: resolvedColor,
+				namedColorWord,
+			},
+			message: {
+				role: 'assistant',
+				content: `Which ${ namedColorWord }? Pick from your palette or I'll use ${ resolvedColor }:`,
+				options: true,
+				optionsType: 'palette',
+				colorTarget,
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
+
 	const colorUpdate = buildColorUpdate( colorTarget, resolvedColor, { selectedBlock } );
 	if ( ! colorUpdate.property ) return null;
 
@@ -930,6 +1004,21 @@ const routeLayoutPatterns = ( rawMessage, ctx, selectFn ) => {
 			};
 		}
 
+		// ── Insert leaf Maxi block into the current selection ────────────────
+		if ( pattern.property === 'insert_maxi_block' ) {
+			const leafMatch = lowerMessage.match(
+				/\b(image|photo|picture|text|paragraph|heading|button|cta|call.to.action|video|divider|separator|icon|svg)\b/i
+			);
+			const leafType = leafMatch ? leafMatch[ 1 ].toLowerCase() : 'image';
+			return {
+				type: 'insert_maxi_block',
+				params: {
+					leafType,
+					parentClientId: selectedBlock?.clientId || null,
+				},
+			};
+		}
+
 		// ── Create block (pattern insert) ───────────────────────────────────
 		if ( pattern.property === 'create_block' ) {
 			return {
@@ -1133,6 +1222,26 @@ const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
 			flowData.border_color = hexColor;
 		if ( pattern.property === 'flow_shadow' )
 			flowData.shadow_color = hexColor;
+	}
+
+	// Pre-fill named colour into border flow so the colour step is skipped.
+	// Hex colours are already handled above; here we resolve named colour words.
+	if (
+		! flowData.border_color &&
+		( pattern.property === 'flow_outline' || pattern.property === 'flow_border' )
+	) {
+		const NAMED_COLOR_MAP_FLOW = {
+			black: '#000000', white: '#ffffff', red: '#ff0000', blue: '#0000ff',
+			green: '#008000', yellow: '#ffff00', orange: '#ffa500', purple: '#800080',
+			pink: '#ffc0cb', gray: '#808080', grey: '#808080', cyan: '#00ffff',
+			magenta: '#ff00ff', brown: '#a52a2a', navy: '#000080', teal: '#008080',
+		};
+		for ( const [ word, hex ] of Object.entries( NAMED_COLOR_MAP_FLOW ) ) {
+			if ( new RegExp( `\\b${ word }\\b` ).test( lowerMessage ) ) {
+				flowData.border_color = hex;
+				break;
+			}
+		}
 	}
 
 	// Pre-fill border flow data from the original message so clarification steps

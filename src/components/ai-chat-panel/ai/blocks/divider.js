@@ -3,6 +3,18 @@
  * Focused on divider line colour changes.
  */
 
+import { SHARED_FLOWS } from '../flows/flowConfig';
+import { runFlow } from '../flows/flowEngine';
+
+/**
+ * Flow configuration for the Divider block.
+ * Shadow uses shared general-breakpoint strategy.
+ * Divider-specific flows (style, weight, size) remain inline.
+ */
+export const DIVIDER_FLOW_CONFIG = {
+	shadow: { ...SHARED_FLOWS.shadow },
+};
+
 const parseDividerValue = (rawValue, fallbackUnit = 'px') => {
 	if (rawValue === null || rawValue === undefined) {
 		return { value: 0, unit: fallbackUnit };
@@ -301,59 +313,8 @@ export const handleDividerUpdate = (block, property, value, prefix, context = {}
 	const isDivider = block?.name?.includes('divider');
 	if (!isDivider) return null;
 	if (property === 'flow_shadow') {
-		if (!context.shadow_color) {
-			return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
-		}
-		if (!context.shadow_intensity) {
-			return {
-				action: 'ask_options',
-				target: 'shadow_intensity',
-				msg: 'Choose intensity:',
-				options: [
-					{ label: 'Soft', value: 'soft' },
-					{ label: 'Crisp', value: 'crisp' },
-					{ label: 'Bold', value: 'bold' },
-					{ label: 'Glow', value: 'glow' }
-				]
-			};
-		}
-
-		const color = context.shadow_color;
-		const intensity = context.shadow_intensity;
 		const dividerPrefix = prefix || 'divider-';
-
-		let x = 0, y = 4, blur = 10, spread = 0;
-		if (intensity === 'soft') { x = 0; y = 4; blur = 12; spread = 0; }
-		if (intensity === 'crisp') { x = 0; y = 2; blur = 4; spread = 0; }
-		if (intensity === 'bold') { x = 4; y = 4; blur = 0; spread = 0; }
-		if (intensity === 'glow') { x = 0; y = 0; blur = 15; spread = 2; }
-
-		const baseShadow = {
-			[`${dividerPrefix}box-shadow-status-general`]: true,
-			[`${dividerPrefix}box-shadow-horizontal-general`]: x,
-			[`${dividerPrefix}box-shadow-vertical-general`]: y,
-			[`${dividerPrefix}box-shadow-blur-general`]: blur,
-			[`${dividerPrefix}box-shadow-spread-general`]: spread,
-			[`${dividerPrefix}box-shadow-inset-general`]: false,
-		};
-
-		const colorAttr = typeof color === 'number'
-			? { [`${dividerPrefix}box-shadow-palette-status-general`]: true, [`${dividerPrefix}box-shadow-palette-color-general`]: color }
-			: { [`${dividerPrefix}box-shadow-color-general`]: color, [`${dividerPrefix}box-shadow-palette-status-general`]: false };
-
-		const intensityLabel = {
-			soft: 'Soft',
-			crisp: 'Crisp',
-			bold: 'Bold',
-			glow: 'Glow',
-		}[intensity] || 'Custom';
-
-		return {
-			action: 'apply',
-			attributes: { ...baseShadow, ...colorAttr },
-			done: true,
-			message: `Applied ${intensityLabel} shadow to divider.`,
-		};
+		return runFlow('shadow', context, DIVIDER_FLOW_CONFIG, dividerPrefix, null, 'divider');
 	}
 
 	if (property === 'flow_divider_style') {

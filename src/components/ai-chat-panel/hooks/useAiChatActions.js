@@ -12,7 +12,7 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
 import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
 import { findBestIcon, extractIconQuery } from '../iconSearch';
-import { getAiHandlerForBlock } from '../ai/registry';
+import { getAiHandlerForBlock, getAiFlowConfig } from '../ai/registry';
 import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';
 import { insertMaxiCloudLibraryBlock } from '../utils/insertMaxiCloudLibraryBlock';
 import { getDcGroupSidebarTarget } from '../ai/utils/dcGroup';

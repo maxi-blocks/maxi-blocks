@@ -15,6 +15,7 @@ import { findBestPattern, extractPatternQuery } from '../patternSearch';
 import { AI_BLOCK_PATTERNS, getAiHandlerForBlock, getAiPromptForBlockName } from '../ai/registry';
 import { buildRoutingContext, routeClientSide } from '../ai/router';
 import { buildColorUpdate, getColorTargetLabel } from '../ai/color/colorClarify';
+import { getActiveBreakpoint } from '../ai/utils/responsiveHelpers';
 import { isInteractionBuilderMessage } from '../ai/utils/contextDetection';
 import { maybeOpenFlowSidebar } from '../ai/utils/openFlowSidebar';
 import { collectBlocks, getBlockPrefix, isLabelBlock, isHeadingTextBlock, findGroupRootForIconBlock, buildTextContentChange, buildIconRelatedText, getIconLabelFromBlock, findLabelForIconBlock } from '../ai/utils/blockHelpers';
@@ -219,6 +220,55 @@ const useAiChatMessages = ({
 			} // end else (English insert_block path)
 		} // end insert_block handler
 
+		// Handle colour-palette picker reply (typed path) — user typed a hex or colour name
+		// after we asked "Which blue? Pick from your palette or I'll use #0000ff".
+		if (conversationContext?.type === 'color_palette') {
+			if (detectNonEnglish(rawMessage)) {
+				setConversationContext(null);
+			} else {
+				const { colorTarget, fallbackHex, namedColorWord, breakpoint, target_block: ctxTargetBlock } = conversationContext;
+				setConversationContext(null);
+				setMessages(prev => [...prev, { role: 'user', content: rawMessage }]);
+
+				let pickedColor;
+				const paletteMatch = rawMessage.trim().match(/^colou?r\s*(\d+)$/i) || rawMessage.trim().match(/^(\d+)$/);
+				if (paletteMatch) {
+					pickedColor = parseInt(paletteMatch[1], 10);
+				} else if (/^#[0-9a-f]{3,6}$/i.test(rawMessage.trim())) {
+					pickedColor = rawMessage.trim();
+				} else {
+					pickedColor = fallbackHex;
+				}
+
+				const isBorderTarget = colorTarget === 'border' || colorTarget === 'button-border';
+				const applyAction = isBorderTarget
+					? {
+						action: 'update_selection',
+						property: 'border_color_only',
+						value: {
+							color: pickedColor,
+							isPalette: typeof pickedColor === 'number',
+							breakpoint: breakpoint || getActiveBreakpoint(),
+						},
+						...(ctxTargetBlock ? { target_block: ctxTargetBlock } : {}),
+						message: `Updated ${namedColorWord || 'border'} colour.`,
+					}
+					: (() => {
+						const cu = buildColorUpdate(colorTarget, pickedColor, { selectedBlock });
+						return {
+							action: 'update_selection',
+							property: cu.property,
+							value: cu.value,
+							target_block: cu.targetBlock,
+							message: `Updated ${cu.msgText} colour.`,
+						};
+					})();
+				queueDirectAction(applyAction);
+				setIsLoading(false);
+				return;
+			}
+		}
+
 		// Handle colour-of-what clarification (typed path)
 		if (conversationContext?.type === 'color_what') {
 			if (detectNonEnglish(rawMessage)) {
@@ -232,20 +282,47 @@ const useAiChatMessages = ({
 			else if (lower.includes('background') || lower.includes('bg')) target = 'background';
 			else if (lower.includes('border')) target = 'border';
 
+			const resolvedColor = conversationContext.resolvedColor ?? null;
 			setConversationContext(null);
 			setMessages(prev => [...prev, { role: 'user', content: rawMessage }]);
 			if (target) {
-				setMessages(prev => [
-					...prev,
-					{
-						role: 'assistant',
-						content: `Choose a colour for the ${getColorTargetLabel(target)}:`,
-						options: true,
-						optionsType: 'palette',
-						colorTarget: target,
-						executed: false,
-					},
-				]);
+				// If we already have a resolved colour (e.g. from "black colour"), apply it directly.
+				if (resolvedColor !== null) {
+					const applyAction = target === 'border'
+						? {
+							action: 'update_selection',
+							property: 'border_color_only',
+							value: {
+								color: resolvedColor,
+								isPalette: typeof resolvedColor === 'number',
+								breakpoint: getActiveBreakpoint(),
+							},
+							message: 'Updated border colour.',
+						}
+						: (() => {
+							const cu = buildColorUpdate(target, resolvedColor, { selectedBlock });
+							return {
+								action: 'update_selection',
+								property: cu.property,
+								value: cu.value,
+								target_block: cu.targetBlock,
+								message: `Updated ${cu.msgText} colour.`,
+							};
+						})();
+					queueDirectAction(applyAction);
+				} else {
+					setMessages(prev => [
+						...prev,
+						{
+							role: 'assistant',
+							content: `Choose a colour for the ${getColorTargetLabel(target)}:`,
+							options: true,
+							optionsType: 'palette',
+							colorTarget: target,
+							executed: false,
+						},
+					]);
+				}
 			} else {
 				setMessages(prev => [
 					...prev,
@@ -257,7 +334,7 @@ const useAiChatMessages = ({
 						executed: false,
 					},
 				]);
-				setConversationContext({ type: 'color_what' });
+				setConversationContext({ type: 'color_what', resolvedColor });
 			}
 			setIsLoading(false);
 			return;
@@ -801,10 +878,68 @@ const useAiChatMessages = ({
 				setIsLoading(false);
 				return;
 			}
-			case 'create_block':
-				setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
-				setTimeout(async () => { await handleCreateBlock(routeResult.params); }, 100);
-				return;
+		case 'insert_maxi_block': {
+			// Maps human-friendly leaf type to Maxi block name.
+			const LEAF_BLOCK_MAP = {
+				image: 'maxi-blocks/image-maxi',
+				photo: 'maxi-blocks/image-maxi',
+				picture: 'maxi-blocks/image-maxi',
+				text: 'maxi-blocks/text-maxi',
+				paragraph: 'maxi-blocks/text-maxi',
+				heading: 'maxi-blocks/text-maxi',
+				button: 'maxi-blocks/button-maxi',
+				cta: 'maxi-blocks/button-maxi',
+				video: 'maxi-blocks/video-maxi',
+				divider: 'maxi-blocks/divider-maxi',
+				separator: 'maxi-blocks/divider-maxi',
+				icon: 'maxi-blocks/svg-icon-maxi',
+				svg: 'maxi-blocks/svg-icon-maxi',
+			};
+			const rawLeafType = String(routeResult.params?.leafType || 'image').toLowerCase();
+			// Normalise multi-word types like "call to action" → "cta".
+			const leafKey = rawLeafType.includes('call') ? 'cta' : rawLeafType.replace(/[^a-z]/g, '');
+			const blockName = LEAF_BLOCK_MAP[leafKey] || 'maxi-blocks/image-maxi';
+			const label = leafKey.charAt(0).toUpperCase() + leafKey.slice(1);
+
+			// Find the best parent clientId: prefer selected block if it's a container
+			// or column, otherwise fall back to the content area root.
+			const freshBlocks = select('core/block-editor').getBlocks();
+			const selId = routeResult.params?.parentClientId;
+			const selBlock = selId ? collectBlocks(freshBlocks, b => b.clientId === selId)[0] : null;
+			const isContainer = selBlock && (
+				selBlock.name?.includes('column') ||
+				selBlock.name?.includes('container') ||
+				selBlock.name?.includes('row') ||
+				selBlock.name?.includes('group')
+			);
+			const targetParentId = isContainer ? selBlock.clientId : getContentAreaClientId();
+
+			setTimeout(() => {
+				try {
+					const newBlock = createBlock(blockName);
+					const insertResult = dispatch('core/block-editor').insertBlocks(newBlock, undefined, targetParentId);
+					console.log('[Maxi AI] insert_maxi_block result:', JSON.stringify({ blockName, targetParentId, insertResult }));
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: `Added ${label} block.`, executed: true },
+					]);
+				} catch (insertErr) {
+					console.error('[Maxi AI] insert_maxi_block error:', String(insertErr?.message || insertErr));
+					const recovery = buildRecoveryResponse('no_blocks_inserted', { originalMessage: rawMessage });
+					setConversationContext(recovery.recoveryCtx);
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: recovery.content, options: recovery.options, executed: false },
+					]);
+				}
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
+		case 'create_block':
+			setMessages(prev => [...prev, { role: 'assistant', content: 'Searching Cloud Library...' }]);
+			setTimeout(async () => { await handleCreateBlock(routeResult.params); }, 100);
+			return;
 			case 'open_cloud_library': {
 				const cloudMsg = routeResult.params?.rawMessage ?? rawMessage;
 				try {
@@ -1157,6 +1292,53 @@ const useAiChatMessages = ({
 			return;
 		}
 
+		// color_palette picker — resolves a named colour word (e.g. "blue") to an
+		// exact palette slot or falls back to the hex when the user confirms it.
+		if (conversationContext?.type === 'color_palette') {
+			const { colorTarget, fallbackHex, namedColorWord, breakpoint, target_block: ctxTargetBlock } = conversationContext;
+			setConversationContext(null);
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+
+			// Resolve what the user picked: "Color N" chip → palette number, hex string → direct hex.
+			let pickedColor;
+			const paletteMatch = suggestion.match(/^colou?r\s*(\d+)$/i) || suggestion.match(/^(\d+)$/);
+			if (paletteMatch) {
+				pickedColor = parseInt(paletteMatch[1], 10);
+			} else if (/^#[0-9a-f]{3,6}$/i.test(suggestion.trim())) {
+				pickedColor = suggestion.trim();
+			} else {
+				// User confirmed the word or typed something else — use fallback hex.
+				pickedColor = fallbackHex;
+			}
+
+			const isBorderTarget = colorTarget === 'border' || colorTarget === 'button-border';
+			const applyAction = isBorderTarget
+				? {
+					action: 'update_selection',
+					property: 'border_color_only',
+					value: {
+						color: pickedColor,
+						isPalette: typeof pickedColor === 'number',
+						breakpoint: breakpoint || getActiveBreakpoint(),
+					},
+					...(ctxTargetBlock ? { target_block: ctxTargetBlock } : {}),
+					message: `Updated ${namedColorWord || 'border'} colour.`,
+				}
+				: (() => {
+					const cu = buildColorUpdate(colorTarget, pickedColor, { selectedBlock });
+					return {
+						action: 'update_selection',
+						property: cu.property,
+						value: cu.value,
+						target_block: cu.targetBlock,
+						message: `Updated ${cu.msgText} colour.`,
+					};
+				})();
+			queueDirectAction(applyAction);
+			setIsLoading(false);
+			return;
+		}
+
 		// color_what clarification chip
 		if (conversationContext?.type === 'color_what') {
 			const lower = suggestion.toLowerCase();
@@ -1165,19 +1347,46 @@ const useAiChatMessages = ({
 			else if (lower.includes('background') || lower.includes('bg')) target = 'background';
 			else if (lower.includes('border')) target = 'border';
 
+			const resolvedColor = conversationContext.resolvedColor ?? null;
 			setConversationContext(null);
 			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
 			if (target) {
-				setMessages(prev => [
-					...prev,
-					{ role: 'assistant', content: `Choose a colour for the ${getColorTargetLabel(target)}:`, options: true, optionsType: 'palette', colorTarget: target, executed: false },
-				]);
+				// If we already have a resolved colour, apply it directly without a palette step.
+				if (resolvedColor !== null) {
+					const applyAction = target === 'border'
+						? {
+							action: 'update_selection',
+							property: 'border_color_only',
+							value: {
+								color: resolvedColor,
+								isPalette: typeof resolvedColor === 'number',
+								breakpoint: getActiveBreakpoint(),
+							},
+							message: 'Updated border colour.',
+						}
+						: (() => {
+							const cu = buildColorUpdate(target, resolvedColor, { selectedBlock });
+							return {
+								action: 'update_selection',
+								property: cu.property,
+								value: cu.value,
+								target_block: cu.targetBlock,
+								message: `Updated ${cu.msgText} colour.`,
+							};
+						})();
+					queueDirectAction(applyAction);
+				} else {
+					setMessages(prev => [
+						...prev,
+						{ role: 'assistant', content: `Choose a colour for the ${getColorTargetLabel(target)}:`, options: true, optionsType: 'palette', colorTarget: target, executed: false },
+					]);
+				}
 			} else {
 				setMessages(prev => [
 					...prev,
 					{ role: 'assistant', content: 'Please select one of the options: Text colour, Background colour, or Border colour.', options: ['Text colour', 'Background colour', 'Border colour'], optionsType: 'text', executed: false },
 				]);
-				setConversationContext({ type: 'color_what' });
+				setConversationContext({ type: 'color_what', resolvedColor });
 			}
 			setIsLoading(false);
 			return;

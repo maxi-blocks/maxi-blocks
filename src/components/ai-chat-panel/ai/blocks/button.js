@@ -3,7 +3,23 @@
  * Extracts button-specific natural language patterns and update logic.
  */
 
-import { parseBorderStyle } from './utils';
+import { SHARED_FLOWS, BUTTON_RADIUS_PRESETS, SHADOW_PRESETS_BUTTON } from '../flows/flowConfig';
+import { runFlow } from '../flows/flowEngine';
+
+/**
+ * Flow configuration for the Button block.
+ * Button uses 'all' breakpoints for border, button-specific radius presets,
+ * button-specific shadow presets, plus hover/active/icon colour flows.
+ */
+export const BUTTON_FLOW_CONFIG = {
+	border: { ...SHARED_FLOWS.border, breakpointStrategy: 'active' },
+	radius: { ...SHARED_FLOWS.radius, radiusPresets: BUTTON_RADIUS_PRESETS },
+	shadow: { ...SHARED_FLOWS.shadow, shadowPresets: SHADOW_PRESETS_BUTTON },
+	hover_bg: { ...SHARED_FLOWS.hover_bg },
+	hover_text: { ...SHARED_FLOWS.hover_text },
+	active_bg: { ...SHARED_FLOWS.active_bg },
+	icon_color: { ...SHARED_FLOWS.icon_color },
+};
 
 export const BUTTON_PATTERNS = [
 	// ============================================================
@@ -11,9 +27,11 @@ export const BUTTON_PATTERNS = [
 	// ============================================================
 
 	// 1. RADIUS / SHAPE FLOW (The "Round" Trap)
-	// Catches shape-related requests before the outline flow can grab "border"
+	// Catches shape-related requests before the outline flow can grab "border".
+	// Excludes messages that also mention border/outline/stroke/frame — those belong
+	// to the border flow which pre-seeds border_radius from the shape modifier.
 	{ 
-		regex: /(?!.*\bicon\b)(?:\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner|pill|capsule|oval|circle)/i, 
+		regex: /(?!.*\bicon\b)(?!.*\b(?:border|outline|stroke|frame)\b)(?:\bround(?:ed|ing|er)?\b|\bcurv(?:e|ed|ing)?\b|\bradius\b|soft.*corner|pill|capsule|oval|circle)/i, 
 		property: 'flow_radius', 
 		value: 'start', 
 		selectionMsg: '', 
@@ -228,6 +246,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 
 	const linkSettings = block?.attributes?.linkSettings || {};
 
+	// Local helpers still needed by switch cases below.
 	const buildIconColorChanges = (iconValue) => {
 		if (iconValue === undefined || iconValue === 'use_prompt') return null;
 		const colorValue = typeof iconValue === 'object' ? iconValue.color : iconValue;
@@ -306,240 +325,29 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		};
 	};
 
-	// === INTERACTION FLOWS ===
+	// === INTERACTION FLOWS — delegated to shared flow engine ===
 
-	// 1. OUTLINE FLOW
-	if (property === 'flow_outline') {
-		const borderStyleOptions = [
-			{ label: 'Solid Thin', value: 'solid-1px' },
-			{ label: 'Solid Medium', value: 'solid-2px' },
-			{ label: 'Solid Fat', value: 'solid-4px' },
-			{ label: 'Dashed', value: 'dashed-2px' },
-			{ label: 'Dotted', value: 'dotted-2px' },
-		];
-
-		// Step 1: Ask for Color
-		if (!context.border_color) {
-			return { 
-				action: 'ask_palette', 
-				target: 'border_color', 
-				msg: 'Which colour for the border?' 
-			};
-		}
-		// Step 2: Ask for Style
-		if (!context.border_style) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: borderStyleOptions
-			};
-		}
-
-		// Final Action: Apply Changes
-		const borderConfig = parseBorderStyle(context.border_style);
-		if (!borderConfig) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: borderStyleOptions
-			};
-		}
-
-		const { style, width } = borderConfig;
-		const color = context.border_color;
-		
-		// Correct Palette Index Detection
-		const isPalette = typeof color === 'number';
-		
-		// Build color attributes for general AND all breakpoints
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-		
-		// Start with base changes
-		changes = {
-			[`${prefix}background-active-media-general`]: 'none', // Removed background
-			[`${prefix}background-color-general`]: 'transparent',
-			[`${prefix}background-palette-status-general`]: false,
-
-			// Keep hover background transparent for outlined buttons
-			[`${prefix}background-status-hover`]: true,
-			[`${prefix}background-active-media-general-hover`]: 'color',
-			[`${prefix}background-palette-status-general-hover`]: false,
-			[`${prefix}background-color-general-hover`]: 'transparent',
+	if (
+		property === 'flow_outline' ||
+		property === 'flow_radius' ||
+		property === 'flow_shadow' ||
+		property === 'flow_button_icon_color' ||
+		property === 'flow_button_hover_bg' ||
+		property === 'flow_button_hover_text' ||
+		property === 'flow_button_active_bg'
+	) {
+		// Map the button-specific flow names to the canonical engine flow names.
+		const FLOW_NAME_MAP = {
+			flow_outline:          'border',
+			flow_radius:           'radius',
+			flow_shadow:           'shadow',
+			flow_button_icon_color:'icon_color',
+			flow_button_hover_bg:  'hover_bg',
+			flow_button_hover_text:'hover_text',
+			flow_button_active_bg: 'active_bg',
 		};
-		
-		// Apply border style and width to ALL breakpoints to override any existing values
-		breakpoints.forEach(bp => {
-			changes[`${prefix}border-style-${bp}`] = style;
-			changes[`${prefix}border-top-width-${bp}`] = width;
-			changes[`${prefix}border-bottom-width-${bp}`] = width;
-			changes[`${prefix}border-left-width-${bp}`] = width;
-			changes[`${prefix}border-right-width-${bp}`] = width;
-			changes[`${prefix}border-sync-width-${bp}`] = 'all';
-			changes[`${prefix}border-unit-width-${bp}`] = 'px';
-			
-			// Apply color to ALL breakpoints
-			if (isPalette) {
-				changes[`${prefix}border-palette-status-${bp}`] = true;
-				changes[`${prefix}border-palette-color-${bp}`] = color;
-			} else {
-				changes[`${prefix}border-color-${bp}`] = color;
-				changes[`${prefix}border-palette-status-${bp}`] = false;
-			}
-		});
-		return { action: 'apply', attributes: changes, done: true };
-	}
-
-	// 2. SHADOW FLOW
-	if (property === 'flow_shadow') {
-		// Step 1: Ask for Color
-		if (!context.shadow_color) {
-			return { 
-				action: 'ask_palette', 
-				target: 'shadow_color', 
-				msg: 'Which colour for the shadow?' 
-			};
-		}
-		// Step 2: Ask for Intensity
-		if (!context.shadow_intensity) {
-			return {
-				action: 'ask_options',
-				target: 'shadow_intensity',
-				msg: 'Choose intensity:',
-				options: [
-					{ label: 'Soft', value: 'soft' },
-					{ label: 'Crisp', value: 'crisp' },
-					{ label: 'Bold', value: 'bold' },
-					{ label: 'Glow', value: 'glow' }
-				]
-			};
-		}
-
-		// Final Action: Apply Changes
-		const color = context.shadow_color;
-		const intensity = context.shadow_intensity;
-		
-		let x = 0, y = 4, blur = 10, spread = 0;
-		if (intensity === 'soft') { x=0; y=4; blur=12; spread=0; }
-		if (intensity === 'crisp') { x=0; y=2; blur=4; spread=0; }
-		if (intensity === 'bold') { x=4; y=4; blur=0; spread=0; }
-		if (intensity === 'glow') { x=0; y=0; blur=15; spread=2; }
-
-		// Construct Shadow Object
-		const baseShadow = {
-			[`${prefix}box-shadow-status-general`]: true,
-			[`${prefix}box-shadow-horizontal-general`]: x,
-			[`${prefix}box-shadow-vertical-general`]: y,
-			[`${prefix}box-shadow-blur-general`]: blur,
-			[`${prefix}box-shadow-spread-general`]: spread,
-			[`${prefix}box-shadow-inset-general`]: false,
-		};
-		
-		const colorAttr = typeof color === 'number'
-			? { [`${prefix}box-shadow-palette-status-general`]: true, [`${prefix}box-shadow-palette-color-general`]: color }
-			: { [`${prefix}box-shadow-color-general`]: color, [`${prefix}box-shadow-palette-status-general`]: false };
-
-		const intensityLabel = {
-			soft: 'Soft',
-			crisp: 'Crisp',
-			bold: 'Bold',
-			glow: 'Glow',
-		}[intensity] || 'Custom';
-
-		changes = { ...baseShadow, ...colorAttr };
-		return { action: 'apply', attributes: changes, done: true, message: `Applied ${intensityLabel} shadow to buttons.` };
-	}
-
-	// 3. RADIUS FLOW
-	if (property === 'flow_radius') {
-		// Step 1: Ask for Shape
-		if (context.radius_value === undefined) {
-			return {
-				action: 'ask_options',
-				target: 'radius_value',
-				msg: 'Choose corner style:',
-				options: [
-					{ label: 'Sharp', value: 0 },
-					{ label: 'Soft (5px)', value: 5 },
-					{ label: 'Rounded (15px)', value: 15 },
-					{ label: 'Pill (50px)', value: 50 },
-					{ label: 'Circle', value: 999 } // Special case handling? Use pill logic mainly
-				]
-			};
-		}
-		
-		// Final Action
-		const r = context.radius_value;
-		changes = {
-			[`${prefix}border-top-left-radius-general`]: r,
-			[`${prefix}border-top-right-radius-general`]: r,
-			[`${prefix}border-bottom-right-radius-general`]: r,
-			[`${prefix}border-bottom-left-radius-general`]: r,
-			[`${prefix}border-sync-radius-general`]: 'all',
-			[`${prefix}border-unit-radius-general`]: (r === 999) ? '%' : 'px', // Use % for true circle 
-		};
-		if (r === 999) {
-			// For circle/pill consistency
-			changes[`${prefix}border-top-left-radius-general`] = 50;
-			changes[`${prefix}border-top-right-radius-general`] = 50;
-			changes[`${prefix}border-bottom-right-radius-general`] = 50;
-			changes[`${prefix}border-bottom-left-radius-general`] = 50;
-		}
-
-		const radiusLabel = {
-			0: 'Sharp',
-			5: 'Soft (5px)',
-			15: 'Rounded (15px)',
-			50: 'Pill (50px)',
-			999: 'Circle',
-		}[r] || `${r}px`;
-
-		return { action: 'apply', attributes: changes, done: true, message: `Applied ${radiusLabel} corners to buttons.` };
-	}
-
-	if (property === 'flow_button_icon_color') {
-		if (context.icon_color === undefined) {
-			return { action: 'ask_palette', target: 'icon_color', msg: 'Which colour for the button icon?' };
-		}
-
-		changes = buildIconColorChanges(context.icon_color);
-		return changes
-			? { action: 'apply', attributes: changes, done: true, message: 'Updated button icon colour.' }
-			: null;
-	}
-
-	if (property === 'flow_button_hover_bg') {
-		if (context.button_hover_bg === undefined) {
-			return { action: 'ask_palette', target: 'button_hover_bg', msg: 'Which colour for the hover background?' };
-		}
-
-		changes = buildHoverBgChanges(context.button_hover_bg);
-		return changes
-			? { action: 'apply', attributes: changes, done: true, message: 'Updated button hover background.' }
-			: null;
-	}
-
-	if (property === 'flow_button_hover_text') {
-		if (context.button_hover_text === undefined) {
-			return { action: 'ask_palette', target: 'button_hover_text', msg: 'Which colour for the hover text?' };
-		}
-
-		changes = buildHoverTextChanges(context.button_hover_text);
-		return changes
-			? { action: 'apply', attributes: changes, done: true, message: 'Updated button hover text.' }
-			: null;
-	}
-
-	if (property === 'flow_button_active_bg') {
-		if (context.button_active_bg === undefined) {
-			return { action: 'ask_palette', target: 'button_active_bg', msg: 'Which colour for the active background?' };
-		}
-
-		changes = buildActiveBgChanges(context.button_active_bg);
-		return changes
-			? { action: 'apply', attributes: changes, done: true, message: 'Updated button active background.' }
-			: null;
+		const flowName = FLOW_NAME_MAP[property] || property.replace('flow_', '');
+		return runFlow(flowName, context, BUTTON_FLOW_CONFIG, prefix, null, 'button');
 	}
 
 

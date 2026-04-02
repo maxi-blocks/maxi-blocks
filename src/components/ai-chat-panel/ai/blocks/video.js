@@ -4,6 +4,18 @@
  */
 
 import { getParsedVideoUrl, parseVideo } from '@extensions/video';
+import { SHARED_FLOWS } from '../flows/flowConfig';
+import { runFlow } from '../flows/flowEngine';
+
+/**
+ * Flow configuration for the Video block.
+ * Video writes only to the 'general' breakpoint for border and shadow.
+ * The actual attribute prefix ('video-') is passed explicitly when calling runFlow.
+ */
+export const VIDEO_FLOW_CONFIG = {
+	border: { ...SHARED_FLOWS.border, breakpointStrategy: 'general' },
+	shadow: { ...SHARED_FLOWS.shadow },
+};
 
 const VIDEO_PROPERTY_ALIASES = {
 	videoUrl: 'video_url',
@@ -587,72 +599,10 @@ export const handleVideoUpdate = (block, property, value, prefix, context = {}) 
 	const videoPrefix = 'video-';
 
 	switch (normalizedProperty) {
-		case 'flow_video_shadow': {
-			if (!context.shadow_color) {
-				return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
-			}
-			if (!context.shadow_style) {
-				return {
-					action: 'ask_options',
-					target: 'shadow_style',
-					msg: 'What style of shadow would you like?',
-					options: [
-						{ label: 'Soft', value: 'soft' },
-						{ label: 'Crisp', value: 'crisp' },
-						{ label: 'Bold', value: 'bold' },
-						{ label: 'Glow', value: 'glow' },
-					],
-				};
-			}
-
-			const styleMap = {
-				soft: { x: 0, y: 10, blur: 30, spread: 0 },
-				crisp: { x: 0, y: 2, blur: 4, spread: 0 },
-				bold: { x: 0, y: 20, blur: 25, spread: -5 },
-				glow: { x: 0, y: 0, blur: 15, spread: 2 },
-			};
-			const style = styleMap[String(context.shadow_style).toLowerCase()];
-			if (!style) return null;
-
-			const changes = buildVideoBoxShadowChanges(videoPrefix, {
-				...style,
-				color: context.shadow_color,
-			});
-			if (!changes) return null;
-
-			const label = String(context.shadow_style).toLowerCase();
-			const displayLabel = label.charAt(0).toUpperCase() + label.slice(1);
-			return { action: 'apply', attributes: changes, done: true, message: `Applied ${displayLabel} shadow to the video.` };
-		}
-		case 'flow_video_border': {
-			if (!context.border_color) {
-				return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the video border?' };
-			}
-			if (!context.border_style) {
-				return {
-					action: 'ask_options',
-					target: 'border_style',
-					msg: 'Which border style?',
-					options: [
-						{ label: 'Solid Thin', value: 'solid-1px' },
-						{ label: 'Solid Medium', value: 'solid-2px' },
-						{ label: 'Solid Thick', value: 'solid-4px' },
-						{ label: 'Dashed', value: 'dashed-2px' },
-						{ label: 'Dotted', value: 'dotted-2px' },
-					],
-				};
-			}
-
-			const [styleRaw, widthRaw] = String(context.border_style || '').split('-');
-			const style = styleRaw || 'solid';
-			const width = Number.parseFloat(String(widthRaw || '1px').replace('px', ''));
-			const color = context.border_color;
-
-			const changes = buildVideoBorderChanges(videoPrefix, { width, style, color });
-			if (!changes) return null;
-
-			return { action: 'apply', attributes: changes, done: true, message: 'Applied border to the video.' };
-		}
+		case 'flow_video_shadow':
+			return runFlow('shadow', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
+		case 'flow_video_border':
+			return runFlow('border', context, VIDEO_FLOW_CONFIG, videoPrefix, null, 'video');
 		case 'video_url': {
 			const urlValue =
 				typeof value === 'object' && value

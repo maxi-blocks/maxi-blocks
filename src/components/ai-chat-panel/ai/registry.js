@@ -3,13 +3,13 @@
  * Add new block entries to AI_BLOCKS to keep the system modular.
  */
 
-import { BUTTON_PATTERNS, handleButtonUpdate } from './blocks/button';
+import { BUTTON_PATTERNS, handleButtonUpdate, BUTTON_FLOW_CONFIG } from './blocks/button';
 import { COLUMN_PATTERNS, handleColumnUpdate } from './blocks/column';
-import { CONTAINER_PATTERNS, handleContainerUpdate } from './blocks/container';
-import { DIVIDER_PATTERNS, handleDividerUpdate } from './blocks/divider';
+import { CONTAINER_PATTERNS, handleContainerUpdate, CONTAINER_FLOW_CONFIG } from './blocks/container';
+import { DIVIDER_PATTERNS, handleDividerUpdate, DIVIDER_FLOW_CONFIG } from './blocks/divider';
 import { GROUP_PATTERNS, handleGroupUpdate } from './blocks/group';
 import { ICON_PATTERNS, handleIconUpdate } from './blocks/icon';
-import { IMAGE_PATTERNS, handleImageUpdate } from './blocks/image';
+import { IMAGE_PATTERNS, handleImageUpdate, IMAGE_FLOW_CONFIG } from './blocks/image';
 import { MAP_PATTERNS, handleMapUpdate } from './blocks/map';
 import { NUMBER_COUNTER_PATTERNS, handleNumberCounterUpdate } from './blocks/number-counter';
 import { PANE_PATTERNS, handlePaneUpdate } from './blocks/pane';
@@ -17,8 +17,8 @@ import { ROW_PATTERNS, handleRowUpdate } from './blocks/row';
 import { SEARCH_PATTERNS, handleSearchUpdate } from './blocks/search';
 import { SLIDE_PATTERNS, handleSlideUpdate } from './blocks/slide';
 import { SLIDER_PATTERNS, handleSliderUpdate } from './blocks/slider';
-import { TEXT_PATTERNS, handleTextUpdate } from './blocks/text';
-import { VIDEO_PATTERNS, handleVideoUpdate } from './blocks/video';
+import { TEXT_PATTERNS, handleTextUpdate, TEXT_FLOW_CONFIG } from './blocks/text';
+import { VIDEO_PATTERNS, handleVideoUpdate, VIDEO_FLOW_CONFIG } from './blocks/video';
 import { ACCORDION_PATTERNS, handleAccordionUpdate } from './blocks/accordion';
 import ACCORDION_MAXI_PROMPT from './prompts/accordion';
 import BUTTON_MAXI_PROMPT from './prompts/button';
@@ -46,6 +46,7 @@ const AI_BLOCKS = [
 		patterns: BUTTON_PATTERNS,
 		handler: handleButtonUpdate,
 		prompt: BUTTON_MAXI_PROMPT,
+		flowConfig: BUTTON_FLOW_CONFIG,
 	},
 	{
 		key: 'divider',
@@ -54,6 +55,7 @@ const AI_BLOCKS = [
 		patterns: DIVIDER_PATTERNS,
 		handler: handleDividerUpdate,
 		prompt: DIVIDER_MAXI_PROMPT,
+		flowConfig: DIVIDER_FLOW_CONFIG,
 	},
 	{
 		key: 'icon',
@@ -72,6 +74,7 @@ const AI_BLOCKS = [
 		patterns: TEXT_PATTERNS,
 		handler: handleTextUpdate,
 		prompt: TEXT_MAXI_PROMPT,
+		flowConfig: TEXT_FLOW_CONFIG,
 	},
 	{
 		key: 'container',
@@ -83,6 +86,7 @@ const AI_BLOCKS = [
 		patterns: CONTAINER_PATTERNS,
 		handler: handleContainerUpdate,
 		prompt: CONTAINER_MAXI_PROMPT,
+		flowConfig: CONTAINER_FLOW_CONFIG,
 	},
 	{
 		key: 'group',
@@ -150,6 +154,7 @@ const AI_BLOCKS = [
 		patterns: VIDEO_PATTERNS,
 		handler: handleVideoUpdate,
 		prompt: VIDEO_MAXI_PROMPT,
+		flowConfig: VIDEO_FLOW_CONFIG,
 	},
 	{
 		key: 'map',
@@ -182,6 +187,7 @@ const AI_BLOCKS = [
 		patterns: IMAGE_PATTERNS,
 		handler: handleImageUpdate,
 		prompt: IMAGE_MAXI_PROMPT,
+		flowConfig: IMAGE_FLOW_CONFIG,
 	},
 ];
 
@@ -206,4 +212,16 @@ export const getAiPromptForBlockName = blockOrName => {
 	const name = getBlockName(blockOrName);
 	const entry = AI_BLOCKS.find(block => block.match(name));
 	return entry && entry.prompt ? entry.prompt : '';
+};
+
+/**
+ * Resolve the flow configuration object for a given block or block name.
+ *
+ * @param {Object|string} blockOrName
+ * @returns {Object|null}
+ */
+export const getAiFlowConfig = blockOrName => {
+	const name = getBlockName(blockOrName);
+	const entry = AI_BLOCKS.find(block => block.match(name));
+	return entry?.flowConfig ?? null;
 };

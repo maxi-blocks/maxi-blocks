@@ -190,6 +190,10 @@ const LAYOUT_PATTERNS = [
 	// GROUP 27: INSERT BLANK BLOCK (direct Gutenberg block insert — no cloud library)
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(maxi\s+)?(container|row|column|section|block)\b/i, property: 'insert_block', value: 'use_prompt', pageMsg: 'Adding block...' },
 
+	// GROUP 27b: INSERT LEAF BLOCK into currently selected context (image, text, button, etc.)
+	// Must come BEFORE create_block to prevent "add an image" going to the LLM.
+	{ regex: /(add|insert|put|place)\s+(a\s+|an\s+)?(maxi\s+)?(image|photo|picture|text|paragraph|heading|button|cta|call.to.action|video|divider|separator|icon|svg)\b/i, property: 'insert_maxi_block', value: 'use_prompt', pageMsg: 'Inserting block...' },
+
 	// GROUP 28: CREATE BLOCK PATTERNS (from Cloud Library)
 	{ regex: /(create|make|add|insert|build|generate)\s+(a\s+|an\s+|me\s+a\s+)?(pricing|hero|testimonial|contact|feature|team|gallery|footer|header|nav|cta|about|services|portfolio|faq|blog|card|grid|template|pattern|layout)/i, property: 'create_block', value: 'cloud_library', pageMsg: 'Creating pattern from Cloud Library...' },
 ];

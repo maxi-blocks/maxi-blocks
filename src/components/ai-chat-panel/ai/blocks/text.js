@@ -15,10 +15,24 @@
 
 import { create } from '@wordpress/rich-text';
 import { select } from '@wordpress/data';
-import { parseBorderStyle } from './utils';
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
 import { createLinkAttributes } from '@components/toolbar/components/text-link/utils';
+import { SHARED_FLOWS } from '../flows/flowConfig';
+import { runFlow } from '../flows/flowEngine';
+
+/**
+ * Flow configuration for the Text / Heading block.
+ * Text uses style-first border (includes Off option) and active-breakpoint-only strategy.
+ * Shadow asks intensity first (includes Off), writes across all breakpoints.
+ */
+export const TEXT_FLOW_CONFIG = {
+	border:      { ...SHARED_FLOWS.border_text },
+	border_text: { ...SHARED_FLOWS.border_text },
+	radius:      { ...SHARED_FLOWS.radius },
+	shadow:      { ...SHARED_FLOWS.shadow_text },
+	shadow_text: { ...SHARED_FLOWS.shadow_text },
+};
 
 /**
  * Breakpoints used by MaxiBlocks.
@@ -1167,161 +1181,11 @@ if (baseProperty === 'flow_text_font_family') {
 	}
 
 	if (normalizedProperty === 'flow_border') {
-		// Ask style first (allows Off without color selection)
-		if (!context.border_style) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: [
-					{ label: 'None (remove border)', value: 'off' },
-					{ label: 'Solid Thin', value: 'solid-1px' },
-					{ label: 'Solid Medium', value: 'solid-2px' },
-					{ label: 'Solid Thick', value: 'solid-4px' },
-					{ label: 'Dashed', value: 'dashed-2px' },
-					{ label: 'Dotted', value: 'dotted-2px' },
-				],
-			};
-		}
-
-		if (context.border_style === 'off' || context.border_style === 'none') {
-			changes = buildTextBorderResetChanges(prefix);
-			return { action: 'apply', attributes: changes, done: true, message: 'Removed text border.' };
-		}
-
-		if (!context.border_color) {
-			return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the border?' };
-		}
-
-		const borderConfig = parseBorderStyle(context.border_style);
-		if (!borderConfig) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: [
-					{ label: 'None (remove border)', value: 'off' },
-					{ label: 'Solid Thin', value: 'solid-1px' },
-					{ label: 'Solid Medium', value: 'solid-2px' },
-					{ label: 'Solid Thick', value: 'solid-4px' },
-					{ label: 'Dashed', value: 'dashed-2px' },
-					{ label: 'Dotted', value: 'dotted-2px' },
-				],
-			};
-		}
-
-		const { style, width } = borderConfig;
-		const color = context.border_color;
-		const isPalette = typeof color === 'number';
-		const activeBp = getActiveBreakpoint();
-		// Write only to the active breakpoint — never bleed onto other breakpoints.
-		const bpsToApply = [activeBp];
-
-		changes = {};
-		bpsToApply.forEach(bp => {
-			changes[`${prefix}border-style-${bp}`] = style;
-			changes[`${prefix}border-top-width-${bp}`] = width;
-			changes[`${prefix}border-bottom-width-${bp}`] = width;
-			changes[`${prefix}border-left-width-${bp}`] = width;
-			changes[`${prefix}border-right-width-${bp}`] = width;
-			changes[`${prefix}border-sync-width-${bp}`] = 'all';
-			changes[`${prefix}border-unit-width-${bp}`] = 'px';
-
-			if (isPalette) {
-				changes[`${prefix}border-palette-status-${bp}`] = true;
-				changes[`${prefix}border-palette-color-${bp}`] = color;
-				changes[`${prefix}border-color-${bp}`] = '';
-			} else {
-				changes[`${prefix}border-color-${bp}`] = color;
-				changes[`${prefix}border-palette-status-${bp}`] = false;
-				changes[`${prefix}border-palette-color-${bp}`] = '';
-			}
-		});
-
-		// Apply border_radius if a shape modifier (round/soft/subtle/square) was seeded into the
-		// flow context at the start (e.g. "add a round border").
-		if (context.border_radius !== undefined) {
-			const r = context.border_radius;
-			bpsToApply.forEach(bp => {
-				changes[`${prefix}border-top-left-radius-${bp}`] = r;
-				changes[`${prefix}border-top-right-radius-${bp}`] = r;
-				changes[`${prefix}border-bottom-right-radius-${bp}`] = r;
-				changes[`${prefix}border-bottom-left-radius-${bp}`] = r;
-				changes[`${prefix}border-sync-radius-${bp}`] = 'all';
-				changes[`${prefix}border-unit-radius-${bp}`] = 'px';
-			});
-		}
-
-		return { action: 'apply', attributes: changes, done: true, message: 'Applied border to text.' };
+		return runFlow('border', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
 	}
 
 	if (normalizedProperty === 'flow_shadow') {
-		// Ask intensity first (allows Off without color selection)
-		if (!context.shadow_intensity) {
-			return {
-				action: 'ask_options',
-				target: 'shadow_intensity',
-				msg: 'Choose intensity:',
-				options: [
-					{ label: 'None (remove shadow)', value: 'off' },
-					{ label: 'Soft', value: 'soft' },
-					{ label: 'Crisp', value: 'crisp' },
-					{ label: 'Bold', value: 'bold' },
-					{ label: 'Glow', value: 'glow' },
-				],
-			};
-		}
-
-		if (context.shadow_intensity === 'off') {
-			changes = buildTextShadowResetChanges(prefix);
-			return { action: 'apply', attributes: changes, done: true, message: 'Removed text shadow.' };
-		}
-
-		if (!context.shadow_color) {
-			return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
-		}
-
-		const color = context.shadow_color;
-		const intensity = context.shadow_intensity;
-
-		let x = 0;
-		let y = 4;
-		let blur = 10;
-		let spread = 0;
-		if (intensity === 'soft') { x = 0; y = 10; blur = 30; spread = 0; }
-		if (intensity === 'crisp') { x = 0; y = 2; blur = 4; spread = 0; }
-		if (intensity === 'bold') { x = 0; y = 20; blur = 25; spread = -5; }
-		if (intensity === 'glow') { x = 0; y = 0; blur = 15; spread = 2; }
-
-		// Apply across breakpoints for consistency
-		changes = {};
-		BREAKPOINTS.forEach(bp => {
-			changes[`${prefix}box-shadow-status-${bp}`] = true;
-			changes[`${prefix}box-shadow-horizontal-${bp}`] = x;
-			changes[`${prefix}box-shadow-vertical-${bp}`] = y;
-			changes[`${prefix}box-shadow-blur-${bp}`] = blur;
-			changes[`${prefix}box-shadow-spread-${bp}`] = spread;
-			changes[`${prefix}box-shadow-inset-${bp}`] = false;
-
-			if (typeof color === 'number') {
-				changes[`${prefix}box-shadow-palette-status-${bp}`] = true;
-				changes[`${prefix}box-shadow-palette-color-${bp}`] = color;
-				changes[`${prefix}box-shadow-color-${bp}`] = '';
-			} else {
-				changes[`${prefix}box-shadow-color-${bp}`] = color;
-				changes[`${prefix}box-shadow-palette-status-${bp}`] = false;
-				changes[`${prefix}box-shadow-palette-color-${bp}`] = '';
-			}
-		});
-
-		const intensityLabel = {
-			soft: 'Soft',
-			crisp: 'Crisp',
-			bold: 'Bold',
-			glow: 'Glow',
-		}[intensity] || 'Custom';
-
-		return { action: 'apply', attributes: changes, done: true, message: `Applied ${intensityLabel} shadow to text.` };
+		return runFlow('shadow', context, TEXT_FLOW_CONFIG, prefix, null, 'text');
 	}
 
 if (baseProperty === 'flow_text_line_height') {

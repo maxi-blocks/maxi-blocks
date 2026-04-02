@@ -58,7 +58,10 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	if (isActive && isButtonContext) return 'button-active-background';
 	if (isButtonContext && isText) return 'button-text';
 	if (isButtonContext && isBackground) return 'button-background';
-	if (isButtonContext) return 'button-background';
+	// Ambiguous button colour with no explicit target keyword — ask the user rather
+	// than defaulting to background (which would mishandle follow-ups like "black colour"
+	// after a border operation).
+	if (isButtonContext) return 'element';
 
 	if (isNumberCounterContext) {
 		if (isBackground) return 'number-counter-circle-background';

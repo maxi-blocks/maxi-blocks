@@ -3,7 +3,18 @@
  * Maps natural language to Image Maxi attributes.
  */
 
-import { parseBorderStyle } from './utils';
+import { SHARED_FLOWS, IMAGE_RADIUS_PRESETS } from '../flows/flowConfig';
+import { runFlow } from '../flows/flowEngine';
+
+/**
+ * Flow configuration for the Image block.
+ * Image uses percent-capable radius presets (supports 'Circle' via '50%').
+ */
+export const IMAGE_FLOW_CONFIG = {
+	border: { ...SHARED_FLOWS.border, breakpointStrategy: 'active' },
+	radius: { ...SHARED_FLOWS.radius, radiusPresets: IMAGE_RADIUS_PRESETS },
+	shadow: { ...SHARED_FLOWS.shadow },
+};
 
 const CLIP_PATH_PRESETS = {
 	circle: 'circle(50% at 50% 50%)',
@@ -296,148 +307,15 @@ export const handleImageUpdate = (block, property, value, prefix, context = {}) 
 
 	if (!isImage) return null;
 
-	// === INTERACTION FLOWS ===
-	if (property === 'flow_radius') {
-		if (context.radius_value === undefined) {
-			return {
-				action: 'ask_options',
-				target: 'radius_value',
-				msg: 'Choose corner style:',
-				options: [
-					{ label: 'Sharp', value: 0 },
-					{ label: 'Subtle (8px)', value: 8 },
-					{ label: 'Soft (24px)', value: 24 },
-					{ label: 'Full (50px)', value: 50 },
-					{ label: 'Circle', value: '50%' },
-				],
-			};
-		}
+	// === INTERACTION FLOWS — delegated to shared flow engine ===
 
-		const rawRadius = context.radius_value;
-		const isPercent =
-			typeof rawRadius === 'string' && rawRadius.trim().endsWith('%');
-		const r = isPercent ? parseFloat(rawRadius) : rawRadius;
-		const unit = isPercent ? '%' : 'px';
-
-		changes = {
-			[`${prefix}border-top-left-radius-general`]: r,
-			[`${prefix}border-top-right-radius-general`]: r,
-			[`${prefix}border-bottom-right-radius-general`]: r,
-			[`${prefix}border-bottom-left-radius-general`]: r,
-			[`${prefix}border-sync-radius-general`]: 'all',
-			[`${prefix}border-unit-radius-general`]: unit,
-		};
-
-		if (isPercent) {
-			changes.imageRatio = 'ar11';
-		}
-
-		return { action: 'apply', attributes: changes, done: true, message: 'Updated image corners.' };
-	}
-
-	if (property === 'flow_border') {
-		const borderStyleOptions = [
-			{ label: 'Solid Thin', value: 'solid-1px' },
-			{ label: 'Solid Medium', value: 'solid-2px' },
-			{ label: 'Solid Thick', value: 'solid-4px' },
-			{ label: 'Dashed', value: 'dashed-2px' },
-			{ label: 'Dotted', value: 'dotted-2px' },
-		];
-
-		if (!context.border_color) {
-			return { action: 'ask_palette', target: 'border_color', msg: 'Which colour for the border?' };
-		}
-		if (!context.border_style) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: borderStyleOptions,
-			};
-		}
-
-		const borderConfig = parseBorderStyle(context.border_style);
-		if (!borderConfig) {
-			return {
-				action: 'ask_options',
-				target: 'border_style',
-				msg: 'Which border style?',
-				options: borderStyleOptions,
-			};
-		}
-
-		const { style, width } = borderConfig;
-		const color = context.border_color;
-		const isPalette = typeof color === 'number';
-		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-
-		changes = {};
-		breakpoints.forEach(bp => {
-			changes[`${prefix}border-style-${bp}`] = style;
-			changes[`${prefix}border-top-width-${bp}`] = width;
-			changes[`${prefix}border-bottom-width-${bp}`] = width;
-			changes[`${prefix}border-left-width-${bp}`] = width;
-			changes[`${prefix}border-right-width-${bp}`] = width;
-			changes[`${prefix}border-sync-width-${bp}`] = 'all';
-			changes[`${prefix}border-unit-width-${bp}`] = 'px';
-
-			if (isPalette) {
-				changes[`${prefix}border-palette-status-${bp}`] = true;
-				changes[`${prefix}border-palette-color-${bp}`] = color;
-			} else {
-				changes[`${prefix}border-color-${bp}`] = color;
-				changes[`${prefix}border-palette-status-${bp}`] = false;
-			}
-		});
-
-		return { action: 'apply', attributes: changes, done: true, message: 'Applied border to images.' };
-	}
-
-	if (property === 'flow_shadow') {
-		if (!context.shadow_color) {
-			return { action: 'ask_palette', target: 'shadow_color', msg: 'Which colour for the shadow?' };
-		}
-		if (!context.shadow_intensity) {
-			return {
-				action: 'ask_options',
-				target: 'shadow_intensity',
-				msg: 'Choose intensity:',
-				options: [
-					{ label: 'Soft', value: 'soft' },
-					{ label: 'Crisp', value: 'crisp' },
-					{ label: 'Bold', value: 'bold' },
-					{ label: 'Glow', value: 'glow' },
-				],
-			};
-		}
-
-		const color = context.shadow_color;
-		const intensity = context.shadow_intensity;
-
-		let x = 0;
-		let y = 4;
-		let blur = 10;
-		let spread = 0;
-		if (intensity === 'soft') { x = 0; y = 10; blur = 30; spread = 0; }
-		if (intensity === 'crisp') { x = 0; y = 2; blur = 4; spread = 0; }
-		if (intensity === 'bold') { x = 0; y = 20; blur = 25; spread = -5; }
-		if (intensity === 'glow') { x = 0; y = 0; blur = 15; spread = 2; }
-
-		const baseShadow = {
-			[`${prefix}box-shadow-status-general`]: true,
-			[`${prefix}box-shadow-horizontal-general`]: x,
-			[`${prefix}box-shadow-vertical-general`]: y,
-			[`${prefix}box-shadow-blur-general`]: blur,
-			[`${prefix}box-shadow-spread-general`]: spread,
-			[`${prefix}box-shadow-inset-general`]: false,
-		};
-
-		const colorAttr = typeof color === 'number'
-			? { [`${prefix}box-shadow-palette-status-general`]: true, [`${prefix}box-shadow-palette-color-general`]: color }
-			: { [`${prefix}box-shadow-color-general`]: color, [`${prefix}box-shadow-palette-status-general`]: false };
-
-		changes = { ...baseShadow, ...colorAttr };
-		return { action: 'apply', attributes: changes, done: true, message: 'Applied shadow to images.' };
+	if (
+		property === 'flow_radius' ||
+		property === 'flow_border' ||
+		property === 'flow_shadow'
+	) {
+		const flowName = property.replace('flow_', '');
+		return runFlow(flowName, context, IMAGE_FLOW_CONFIG, prefix, null, 'image');
 	}
 
 	// === STANDARD ACTIONS ===

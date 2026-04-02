@@ -1236,6 +1236,7 @@ const useAiChatActions = ({
 				let value = action.value;
 				let targetBlock = action.target_block;
 				let actionMessage = action.message;
+				const canvasScope = !!action.canvas_scope;
 
 				if (action.payload) {
 					if (action.payload.shadow) { property = 'box_shadow'; value = action.payload.shadow; }
@@ -1272,7 +1273,7 @@ const useAiChatActions = ({
 				}
 
 				const isLinkProperty = property === 'link_settings' || String(property || '').startsWith('dc_link');
-				const resultMsg = handleUpdateSelection(property, value, isLinkProperty ? null : targetBlock);
+				const resultMsg = handleUpdateSelection(property, value, isLinkProperty ? null : targetBlock, { canvasScope });
 				console.log('[Maxi AI Debug] handleUpdateSelection result:', resultMsg);
 
 				openSidebarForProperty(property);

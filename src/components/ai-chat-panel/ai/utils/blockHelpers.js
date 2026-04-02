@@ -21,6 +21,32 @@ export const getBlockPrefix = blockName => {
 	return '';
 };
 
+/**
+ * Resolve the effective attribute prefix and whether the user is targeting the
+ * canvas (block wrapper) vs the sub-element of a block.
+ *
+ * Blocks like button-maxi, image-maxi, svg-icon-maxi, and number-counter-maxi
+ * have TWO attribute layers:
+ *   - Element layer  → prefixed (e.g. 'button-', 'image-', 'svg-', 'number-counter-')
+ *   - Canvas layer   → unprefixed ('')
+ *
+ * All other blocks only have a canvas layer (prefix is always ''), so this
+ * function is a no-op for them — it returns { prefix: '', isCanvasScope: false }.
+ *
+ * @param {Object}  block        - Gutenberg block object (needs .name)
+ * @param {string}  lowerMessage - Lowercased user message
+ * @returns {{ prefix: string, isCanvasScope: boolean }}
+ */
+export const resolveBlockScope = (block, lowerMessage = '') => {
+	const elementPrefix = getBlockPrefix(block?.name || '');
+	const hasCanvasLevel = elementPrefix !== '';
+	const wantsCanvas = hasCanvasLevel && /\bcanvas\b/i.test(lowerMessage);
+	return {
+		prefix: wantsCanvas ? '' : elementPrefix,
+		isCanvasScope: wantsCanvas,
+	};
+};
+
 export const matchesTargetBlockName = (blockName, targetBlockArg) => {
 	if (!targetBlockArg) return true;
 	if (!blockName) return false;

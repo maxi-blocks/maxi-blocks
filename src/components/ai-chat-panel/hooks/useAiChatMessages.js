@@ -18,7 +18,7 @@ import { buildColorUpdate, getColorTargetLabel } from '../ai/color/colorClarify'
 import { getActiveBreakpoint } from '../ai/utils/responsiveHelpers';
 import { isInteractionBuilderMessage } from '../ai/utils/contextDetection';
 import { maybeOpenFlowSidebar } from '../ai/utils/openFlowSidebar';
-import { collectBlocks, getBlockPrefix, isLabelBlock, isHeadingTextBlock, findGroupRootForIconBlock, buildTextContentChange, buildIconRelatedText, getIconLabelFromBlock, findLabelForIconBlock } from '../ai/utils/blockHelpers';
+import { collectBlocks, getBlockPrefix, resolveBlockScope, isLabelBlock, isHeadingTextBlock, findGroupRootForIconBlock, buildTextContentChange, buildIconRelatedText, getIconLabelFromBlock, findLabelForIconBlock } from '../ai/utils/blockHelpers';
 import { extractUrl } from '../ai/utils/messageExtractors';
 import { resolveImageRatioValue } from '../ai/utils/messageExtractors';
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
@@ -1429,27 +1429,35 @@ const useAiChatMessages = ({
 				return;
 			}
 
-			let nextStepResponse = null;
-			let finalMsg = 'Done.';
-			let isUnchanged = true;
-			const primaryBlock = fullBlocks[0];
-			const prefix = getBlockPrefix(primaryBlock.name);
-			const flowHandler = getAiHandlerForBlock(primaryBlock);
-			const logicResult = flowHandler ? flowHandler(primaryBlock, conversationContext.flow, null, prefix, updatedData) : null;
+		let nextStepResponse = null;
+		let finalMsg = 'Done.';
+		let isUnchanged = true;
+		const primaryBlock = fullBlocks[0];
+		// Re-derive the canvas/element prefix using the shared utility.
+		// canvasOverride was set in flowData when the flow was first started (see
+		// commandRouter.js routeFlowPattern) — pass a synthetic 'canvas' message
+		// fragment so resolveBlockScope returns isCanvasScope: true when the flag is set.
+		const canvasOverride = !!updatedData.canvasOverride;
+		const { prefix, isCanvasScope } = resolveBlockScope(
+			primaryBlock,
+			canvasOverride ? 'canvas' : '',
+		);
+		const flowHandler = getAiHandlerForBlock(primaryBlock);
+		const logicResult = flowHandler ? flowHandler(primaryBlock, conversationContext.flow, null, prefix, updatedData) : null;
 
-			if (logicResult) {
-				if (logicResult.action === 'ask_options' || logicResult.action === 'ask_palette') {
-					nextStepResponse = logicResult;
-				} else if (logicResult.action === 'apply') {
-					fullBlocks.forEach(blk => {
-						const p = getBlockPrefix(blk.name);
-						const blockHandler = getAiHandlerForBlock(blk);
-						const res = blockHandler ? blockHandler(blk, conversationContext.flow, null, p, updatedData) : null;
-						if (res && res.action === 'apply' && res.attributes) {
-							dispatch('core/block-editor').updateBlockAttributes(blk.clientId, res.attributes);
-							isUnchanged = false;
-						}
-					});
+		if (logicResult) {
+			if (logicResult.action === 'ask_options' || logicResult.action === 'ask_palette') {
+				nextStepResponse = logicResult;
+			} else if (logicResult.action === 'apply') {
+				fullBlocks.forEach(blk => {
+					const p = isCanvasScope ? '' : getBlockPrefix(blk.name);
+					const blockHandler = getAiHandlerForBlock(blk);
+					const res = blockHandler ? blockHandler(blk, conversationContext.flow, null, p, updatedData) : null;
+					if (res && res.action === 'apply' && res.attributes) {
+						dispatch('core/block-editor').updateBlockAttributes(blk.clientId, res.attributes);
+						isUnchanged = false;
+					}
+				});
 					if (logicResult.done) {
 						nextStepResponse = { done: true };
 						if (logicResult.message) finalMsg = logicResult.message;

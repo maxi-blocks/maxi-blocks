@@ -21,6 +21,7 @@ import {
 } from '../ai/utils/containerGroups';
 import { getBlockPrefix, matchesTargetBlockName } from '../ai/utils/blockHelpers';
 import { applyUpdatesToBlocks as _applyUpdatesToBlocks } from '../ai/utils/applyUpdatesToBlocks';
+import { removeBoxShadow, updateBorder, updateBorderRadius } from '../ai/utils/cssBuilders';
 
 /** @type {Set<string>} Properties that map to the shape-divider container target. */
 const SHAPE_DIVIDER_PROPERTIES = new Set([
@@ -85,7 +86,7 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 	 * @param {string|null} [targetBlock]
 	 * @returns {string}
 	 */
-	const handleUpdateSelection = (property, value, targetBlock = null) => {
+	const handleUpdateSelection = (property, value, targetBlock = null, { canvasScope = false } = {}) => {
 		if (!selectedBlock) return __('Please select a block first.', 'maxi-blocks');
 
 		let count = 0;
@@ -523,9 +524,37 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 		const blocksToProcess = [fullSelectedBlock || selectedBlock];
 		const normalizedTarget = normalizeTargetBlock(property, targetBlock);
 
-		registry.batch(() => {
-			count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
-		});
+		// When canvasScope is true the user targeted the block wrapper (canvas) directly.
+		// Force prefix '' so we write canvas-level attributes (e.g. box-shadow-* instead of
+		// button-box-shadow-*). Handle each removable property explicitly at the canvas level.
+		if (canvasScope) {
+			const block = blocksToProcess[0];
+			let canvasChanges = null;
+
+			if (normalizedProperty === 'box_shadow' && value === 'none') {
+				canvasChanges = removeBoxShadow('');
+			} else if (normalizedProperty === 'border' && value === 'none') {
+				canvasChanges = updateBorder(0, 'none', null, '');
+			} else if (normalizedProperty === 'border_radius') {
+				canvasChanges = updateBorderRadius(value, null, '');
+			}
+
+			if (canvasChanges && block) {
+				registry.batch(() => {
+					updateBlockAttributes(block.clientId, canvasChanges);
+				});
+				count = 1;
+			} else {
+				// Canvas scope but unrecognised property — fall through to normal update
+				registry.batch(() => {
+					count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
+				});
+			}
+		} else {
+			registry.batch(() => {
+				count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
+			});
+		}
 
 		const selectedBlockIsMaxi = String(
 			fullSelectedBlock?.name || selectedBlock?.name || ''

@@ -78,6 +78,7 @@ import {
 } from '../utils/messageExtractors';
 import {
 	getBlockPrefix,
+	resolveBlockScope,
 	collectBlocks,
 	findBlockByClientId,
 } from '../utils/blockHelpers';
@@ -495,7 +496,7 @@ const routeNumericPatterns = ( rawMessage, ctx ) => {
  * 4. Direct-removal patterns (square corners, shadow, border).
  */
 const routeDirectRemovals = ( rawMessage, ctx ) => {
-	const { lowerMessage, currentScope } = ctx;
+	const { lowerMessage, currentScope, selectedBlock } = ctx;
 
 	const hasRoundIntent = /\bround(?:ed|ing|er)?\b/.test( lowerMessage );
 
@@ -505,18 +506,21 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 		( lowerMessage.includes( 'remove' ) &&
 			( hasRoundIntent || lowerMessage.includes( 'radius' ) ) )
 	) {
+		const { isCanvasScope: isCornerCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
 		return actionResult(
 			currentScope === 'selection'
 				? {
 						action: 'update_selection',
 						property: 'border_radius',
 						value: 0,
+						...( isCornerCanvasScope ? { canvas_scope: true } : {} ),
 						message: 'Removed rounded corners from selected block.',
 				  }
 				: {
 						action: 'update_page',
 						property: 'border_radius',
 						value: 0,
+						...( isCornerCanvasScope ? { canvas_scope: true } : {} ),
 						message: 'Removed rounded corners.',
 				  }
 		);
@@ -527,18 +531,23 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 		( lowerMessage.includes( 'remove' ) && lowerMessage.includes( 'shadow' ) ) ||
 		lowerMessage.includes( 'no shadow' )
 	) {
+		const { isCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
 		return actionResult(
 			currentScope === 'selection'
 				? {
 						action: 'update_selection',
 						property: 'box_shadow',
 						value: 'none',
-						message: 'Removed shadow from selected block.',
+						...( isCanvasScope ? { canvas_scope: true } : {} ),
+						message: isCanvasScope
+							? 'Removed canvas shadow from selected block.'
+							: 'Removed shadow from selected block.',
 				  }
 				: {
 						action: 'update_page',
 						property: 'box_shadow',
 						value: 'none',
+						...( isCanvasScope ? { canvas_scope: true } : {} ),
 						message: 'Removed shadows.',
 				  }
 		);
@@ -556,6 +565,8 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 		else if ( lowerMessage.includes( 'container' ) || lowerMessage.includes( 'section' ) )
 			explicitTarget = 'container';
 
+		const { isCanvasScope: isBorderCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
+
 		return actionResult( {
 			...( currentScope === 'selection'
 				? {
@@ -571,6 +582,7 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 						message: 'Removed borders.',
 				  } ),
 			...( explicitTarget ? { target_block: explicitTarget } : {} ),
+			...( isBorderCanvasScope ? { canvas_scope: true } : {} ),
 		} );
 	}
 
@@ -1203,12 +1215,22 @@ const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
 
 	// Run the block handler to get the flow's first step / response
 	const primaryBlock = targetBlocks[ 0 ];
-	const prefix = getBlockPrefix( primaryBlock.name );
+
+	// Resolve prefix via the shared utility — handles "canvas" keyword for blocks
+	// that have both an element layer (prefixed) and a canvas layer (unprefixed).
+	const { prefix, isCanvasScope } = resolveBlockScope( primaryBlock, lowerMessage );
+
 	const flowHandler =
 		getAiHandlerForBlock( primaryBlock ) || getAiHandlerForTarget( matchName );
 
 	// Gather any pre-filled flow data from the message
 	const flowData = {};
+
+	// Persist the canvas scope flag so subsequent flow steps in useAiChatMessages
+	// can re-derive the same prefix without re-reading the original message.
+	if ( isCanvasScope ) {
+		flowData.canvasOverride = true;
+	}
 	const inferTextAlignment = msg => {
 		if ( /\bjustif(y|ied)\b/.test( msg ) ) return 'justify';
 		if ( /\b(center|centre|centered|centred)\b/.test( msg ) ) return 'center';
@@ -1286,7 +1308,7 @@ const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
 	if ( startResponse.action === 'apply' ) {
 		const updates = [];
 		targetBlocks.forEach( blk => {
-			const p = getBlockPrefix( blk.name );
+			const p = isCanvasScope ? '' : getBlockPrefix( blk.name );
 			const handler =
 				getAiHandlerForBlock( blk ) || getAiHandlerForTarget( matchName );
 			const res = handler ? handler( blk, pattern.property, null, p, flowData ) : null;

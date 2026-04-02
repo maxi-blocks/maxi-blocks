@@ -187,7 +187,10 @@ const runShadowFlow = (flowCfg, context, prefix, activeBp, blockKey) => {
 	const intensityFirst = steps[0] === 'shadow_intensity';
 
 	// Pick the right preset map.
-	const presets = blockKey === 'button'
+	// Use element-specific presets only when targeting the element itself, not the
+	// canvas wrapper. Button canvas shadows should use standard (wider) presets.
+	const useElementPresets = blockKey === 'button' && !context.canvasOverride;
+	const presets = useElementPresets
 		? SHADOW_PRESETS_BUTTON
 		: (flowCfg.shadowPresets || SHADOW_PRESETS);
 

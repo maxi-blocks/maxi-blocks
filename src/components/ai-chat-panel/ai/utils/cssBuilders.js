@@ -361,8 +361,23 @@ export const updateBoxShadow = (x = 0, y = 4, blur = 10, spread = 0, color = nul
 	};
 };
 
+/**
+ * Remove a box shadow by zeroing all values on the general breakpoint.
+ *
+ * Maxi blocks do not use a status flag to toggle shadows on/off — the shadow is
+ * present when the dimensional values are non-zero. Resetting them to 0 and
+ * restoring opacity to 1 is the correct way to clear a shadow.
+ */
 export const removeBoxShadow = (prefix = '') => ({
-	[`${prefix}box-shadow-status-general`]: false,
+	[`${prefix}box-shadow-horizontal-general`]: 0,
+	[`${prefix}box-shadow-vertical-general`]: 0,
+	[`${prefix}box-shadow-blur-general`]: 0,
+	[`${prefix}box-shadow-spread-general`]: 0,
+	[`${prefix}box-shadow-palette-opacity-general`]: 1,
+	[`${prefix}box-shadow-horizontal-unit-general`]: 'px',
+	[`${prefix}box-shadow-vertical-unit-general`]: 'px',
+	[`${prefix}box-shadow-blur-unit-general`]: 'px',
+	[`${prefix}box-shadow-spread-unit-general`]: 'px',
 });
 
 // ─── Opacity ──────────────────────────────────────────────────────────────────

@@ -2,7 +2,8 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useMemo } from '@wordpress/element';
+import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -18,6 +19,7 @@ import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
+import ResetButton from '@components/reset-control';
 import ToggleSwitch from '@components/toggle-switch';
 import {
 	getAttributeKey,
@@ -28,11 +30,25 @@ import {
 } from '@extensions/styles';
 import { getDefaultLayerAttr } from './utils';
 import DynamicContent from '@components/dynamic-content';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
+/**
+ * Helper to normalize position value to 0-1 range for FocalPointPicker
+ */
+const normalizePositionForPicker = value => {
+	if (value === null || value === undefined || value === '') return 0.5;
+
+	const numericValue = typeof value === 'number' ? value : parseFloat(value);
+
+	if (Number.isFinite(numericValue)) {
+		return Math.max(0, Math.min(100, numericValue)) / 100;
+	}
+
+	return 0.5;
+};
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -55,13 +71,18 @@ const ImageLayerSettings = props => {
 		getBlockClipPath, // for IB
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'background-image-parallax-status',
-		props: imageOptions,
-		prefix,
-	});
+	const parallaxStatus = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-parallax-status',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	return (
 		<>
@@ -250,206 +271,6 @@ const ImageLayerSettings = props => {
 						})
 					}
 				/>
-			)}
-			<SelectControl
-				__nextHasNoMarginBottom
-				label={__('Background position', 'maxi-blocks')}
-				className='maxi-background-control__image-layer__position-selector'
-				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-position`,
-					breakpoint,
-					attributes: imageOptions,
-					isHover,
-				})}
-				defaultValue={getDefaultAttr('background-image-position')}
-				newStyle
-				options={[
-					{
-						label: __('Left top', 'maxi-blocks'),
-						value: 'left top',
-					},
-					{
-						label: __('Left center', 'maxi-blocks'),
-						value: 'left center',
-					},
-					{
-						label: __('Left bottom', 'maxi-blocks'),
-						value: 'left bottom',
-					},
-					{
-						label: __('Right top', 'maxi-blocks'),
-						value: 'right top',
-					},
-					{
-						label: __('Right center', 'maxi-blocks'),
-						value: 'right center',
-					},
-					{
-						label: __('Right bottom', 'maxi-blocks'),
-						value: 'right bottom',
-					},
-					{
-						label: __('Center top', 'maxi-blocks'),
-						value: 'center top',
-					},
-					{
-						label: __('Center center', 'maxi-blocks'),
-						value: 'center center',
-					},
-					{
-						label: __('Center bottom', 'maxi-blocks'),
-						value: 'center bottom',
-					},
-					{
-						label: __('Custom', 'maxi-blocks'),
-						value: 'custom',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('background-image-position'),
-					})
-				}
-			/>
-			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-position`,
-				breakpoint,
-				attributes: imageOptions,
-				isHover,
-			}) === 'custom' && (
-				<>
-					<AdvancedNumberControl
-						label={__('Y-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width-unit`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('X-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: 'background-image-position-height-unit',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: 'background-image-position-height',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-				</>
 			)}
 			{!parallaxStatus && (
 				<>
@@ -662,9 +483,11 @@ const ImageLayer = props => {
 		hideSettings = false,
 		isLayer = false,
 		disableUpload = false,
+		fallbackImageUrl,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
 	const [moreSettings, setMoreSettings] = useState(false);
 
@@ -679,11 +502,15 @@ const ImageLayer = props => {
 		);
 	};
 
-	const mediaID = getAttributeValue({
-		target: 'background-image-mediaID',
-		props: imageOptions,
-		prefix,
-	});
+	const mediaID = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaID',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	const handleSelectImage = imageData => {
 		onChange({
@@ -702,8 +529,146 @@ const ImageLayer = props => {
 		});
 	};
 
+	// Layers track hover via layer.isHover, not via key suffixes.
+	// Only use isHover in key construction for non-layer usage.
+	const keyIsHover = isLayer ? false : isHover;
+
+	const handleFocalPointChange = focalPoint => {
+		const obj = {
+			[getAttributeKey(
+				'background-image-position',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: 'custom',
+			[getAttributeKey(
+				'background-image-position-width',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.x * 100),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: '%',
+			[getAttributeKey(
+				'background-image-position-height',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: Math.round(focalPoint.y * 100),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: '%',
+		};
+		onChange(obj);
+	};
+
+	const handleFocalPointResetLeft = () => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position-width',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-width'),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-width-unit'),
+			isReset: true,
+		});
+	};
+
+	const handleFocalPointResetTop = () => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position-height',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-height'),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getDefaultAttr('background-image-position-height-unit'),
+			isReset: true,
+		});
+	};
+
+	// Compute URL once for validation and prop usage
+	const imageUrl = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaURL',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
+
+	// Get DC values for dynamic content images
+	const { status: dcStatus, mediaUrl: dcMediaUrl } = useMemo(
+		() => getDCValues(getGroupAttributes(imageOptions, 'dynamicContent'), {}),
+		[imageOptions]
+	);
+
+	// Use DC URL when DC is active, otherwise use regular image URL,
+	// falling back to the normal-state layer URL for hover/IB layers.
+	const effectiveImageUrl = dcStatus
+		? dcMediaUrl
+		: imageUrl || fallbackImageUrl;
+
 	return (
 		<div className='maxi-background-control__image-layer'>
+			{effectiveImageUrl && (
+				<div
+					className='maxi-focal-point-picker'
+					style={{ position: 'relative' }}
+				>
+					<FocalPointPicker
+						className='maxi-background-position-picker'
+						label={__('Image focus', 'maxi-blocks')}
+						url={effectiveImageUrl}
+						value={{
+							x: normalizePositionForPicker(
+								getLastBreakpointAttribute({
+									target: `${prefix}background-image-position-width`,
+									breakpoint,
+									attributes: imageOptions,
+									isHover: keyIsHover,
+								})
+							),
+							y: normalizePositionForPicker(
+								getLastBreakpointAttribute({
+									target: `${prefix}background-image-position-height`,
+									breakpoint,
+									attributes: imageOptions,
+									isHover: keyIsHover,
+								})
+							),
+						}}
+						onChange={handleFocalPointChange}
+					/>
+					<div className='maxi-focal-point-picker__resets'>
+						<ResetButton
+							onReset={handleFocalPointResetLeft}
+						/>
+						<ResetButton
+							onReset={handleFocalPointResetTop}
+						/>
+					</div>
+				</div>
+			)}
 			{!disableUpload && (
 				<>
 					{!imageOptions['dc-status'] && (
@@ -716,6 +681,7 @@ const ImageLayer = props => {
 									prefix,
 								})}
 								onSelectImage={handleSelectImage}
+								showPreview={false}
 								onRemoveImage={() =>
 									onChange({
 										[getAttributeKey(
@@ -730,12 +696,12 @@ const ImageLayer = props => {
 										)]: '',
 										[getAttributeKey(
 											'background-image-width',
-											isHover,
+											false,
 											prefix
 										)]: '',
 										[getAttributeKey(
 											'background-image-height',
-											isHover,
+											false,
 											prefix
 										)]: '',
 									})
@@ -748,6 +714,7 @@ const ImageLayer = props => {
 							/>
 						</>
 					)}
+
 					<DynamicContent
 						{...getGroupAttributes(imageOptions, 'dynamicContent')}
 						onChange={obj => {

@@ -248,8 +248,17 @@ class MaxiBlockComponent extends Component {
 		this.setMaxiAttributes();
 		this.setRelations();
 
+		// Capture customLabel at mount so unmount always removes from the
+		// correct bucket, even if the attribute changes before unmount.
+		this.registeredCustomLabel = this.props.attributes.customLabel ?? null;
+
 		// Add block to store (batched for performance)
-		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
+		batchBlockDispatcher.addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot,
+			this.registeredCustomLabel
+		);
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -873,7 +882,8 @@ class MaxiBlockComponent extends Component {
 					const batchedDispatch = () => {
 						dispatch('maxiBlocks/blocks').removeBlock(
 							uniqueID,
-							clientId
+							clientId,
+							this.registeredCustomLabel ?? null
 						);
 						dispatch('maxiBlocks/customData').removeCustomData(
 							uniqueID

@@ -53,7 +53,6 @@ export const CONTAINER_PATTERNS = [
 ];
 
 export const handleContainerUpdate = (block, property, value, prefix, context = {}) => {
-	let changes = null;
 	const isContainer = block?.name?.includes('container') && !block?.name?.includes('group');
 
 	if (!isContainer) return null;

@@ -20,6 +20,7 @@
  */
 
 import LAYOUT_PATTERNS from '../patterns/layoutPatterns';
+import { routeFSEOperations } from '../utils/fseOperations';
 import {
 	getRequestedTargetFromMessage,
 	isTargetedPatternTarget,
@@ -2017,6 +2018,10 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	//    a text/font action.
 	const postMgmtResult = routePostManagement( rawMessage );
 	if ( postMgmtResult ) return postMgmtResult;
+
+	// 1a. FSE operations (template parts, reusable blocks, WP patterns).
+	const fseResult = routeFSEOperations( rawMessage );
+	if ( fseResult ) return fseResult;
 
 	// 1b. Text link
 	const textLinkResult = routeTextLink( rawMessage, ctx );

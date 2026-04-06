@@ -2,8 +2,9 @@
  * WordPress dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { dispatch, select } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { dispatch, select, resolveSelect } from '@wordpress/data';
+import { createBlock, parse } from '@wordpress/blocks';
+import { store as reusableBlocksStore } from '@wordpress/reusable-blocks';
 
 /**
  * Internal dependencies
@@ -34,6 +35,8 @@ import openCloudSCLibrary from '../utils/openCloudSCLibrary';
 import { buildPassthroughLlmContext } from './llm/buildPassthroughLlmContext';
 import { executePassthroughLlmTurn } from './llm/executePassthroughLlmTurn';
 import { detectNonEnglish } from '../ai/utils/languageDetection';
+import getIsSiteEditor from '@extensions/fse/getIsSiteEditor';
+import { getTemplatePartSlug } from '@extensions/fse';
 
 /**
  * Provides sendMessage, handleKeyDown, and handleSuggestion for the AI chat panel.
@@ -359,6 +362,29 @@ const useAiChatMessages = ({
 			return;
 			} // end else (English color_what path)
 		} // end color_what handler
+
+		// Handle fse_save_as_reusable title reply — user provided the name for the new synced pattern.
+		if (conversationContext?.type === 'fse_save_as_reusable') {
+			const reusableTitle = rawMessage.trim();
+			const { clientId: reusableClientId } = conversationContext;
+			setConversationContext(null);
+			setIsLoading(true);
+			try {
+				const { __experimentalConvertBlocksToReusable: convertToReusable } = dispatch(reusableBlocksStore);
+				await convertToReusable([reusableClientId], reusableTitle);
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), reusableTitle), executed: true },
+				]);
+			} catch (err) {
+				setMessages(prev => [
+					...prev,
+					{ role: 'assistant', content: sprintf(__('Could not save as reusable: %s', 'maxi-blocks'), err?.message || String(err)), executed: false },
+				]);
+			}
+			setIsLoading(false);
+			return;
+		}
 
 		const currentScope = scope === 'global' ? 'global' : (conversationContext?.mode || scope);
 
@@ -984,6 +1010,241 @@ const useAiChatMessages = ({
 				}, 100);
 				return;
 			}
+		case 'fse_operation': {
+			const { operation, hint, title, query } = routeResult.params;
+
+			/**
+			 * Push a status message, run an async FSE operation, then replace the
+			 * status message with the result (mirrors the post_management runPostOp helper).
+			 */
+			const runFseOp = async (statusMsg, fn, successMsg) => {
+				setMessages(prev => [...prev, { role: 'assistant', content: statusMsg }]);
+				try {
+					const customSuccess = await fn();
+					setMessages(prev => {
+						const next = [...prev];
+						next[next.length - 1] = { role: 'assistant', content: customSuccess || successMsg, executed: true };
+						return next;
+					});
+				} catch (fseErr) {
+					console.error('[Maxi AI] FSE operation error:', String(fseErr?.message || fseErr));
+					setMessages(prev => {
+						const next = [...prev];
+						next[next.length - 1] = {
+							role: 'assistant',
+							content: sprintf(__('Something went wrong: %s', 'maxi-blocks'), fseErr?.message || String(fseErr)),
+							executed: false,
+						};
+						return next;
+					});
+				} finally {
+					setIsLoading(false);
+				}
+			};
+
+			// ── add_template_part ─────────────────────────────────────────────
+			if (operation === 'add_template_part') {
+				if (!getIsSiteEditor()) {
+					setMessages(prev => [...prev, { role: 'assistant', content: __('Template parts can only be added in the Site Editor.', 'maxi-blocks'), executed: false }]);
+					setIsLoading(false);
+					return;
+				}
+				await runFseOp(
+					hint
+						? sprintf(__('Looking for the "%s" template part…', 'maxi-blocks'), hint)
+						: __('Looking for template parts…', 'maxi-blocks'),
+					async () => {
+						const templateParts = await resolveSelect('core').getEntityRecords(
+							'postType', 'wp_template_part', { per_page: -1, context: 'edit' }
+						);
+						if (!templateParts?.length) {
+							return __('No template parts found on this site.', 'maxi-blocks');
+						}
+						if (!hint) {
+							const names = templateParts.map(tp => tp.title?.rendered || tp.slug).join(', ');
+							setMessages(prev => [
+								...prev,
+								{
+									role: 'assistant',
+									content: sprintf(__('Which template part would you like to add? Available: %s', 'maxi-blocks'), names),
+									options: templateParts.map(tp => tp.title?.rendered || tp.slug),
+									executed: false,
+								},
+							]);
+							return null;
+						}
+						const lower = hint.toLowerCase();
+						const matches = templateParts.filter(tp => {
+							const area = (tp.area || '').toLowerCase();
+							const slug = (tp.slug || '').toLowerCase();
+							const titleText = (tp.title?.rendered || '').toLowerCase();
+							return area === lower || slug.includes(lower) || titleText.includes(lower);
+						});
+						if (!matches.length) {
+							const names = templateParts.map(tp => tp.title?.rendered || tp.slug).join(', ');
+							return sprintf(
+								__('No template part matching "%s" found. Available: %s', 'maxi-blocks'),
+								hint, names
+							);
+						}
+						if (matches.length > 1) {
+							setMessages(prev => [
+								...prev,
+								{
+									role: 'assistant',
+									content: sprintf(__('Multiple matches for "%s" — which one?', 'maxi-blocks'), hint),
+									options: matches.map(tp => tp.title?.rendered || tp.slug),
+									executed: false,
+								},
+							]);
+							return null;
+						}
+						const { slug: tpSlug, theme: tpTheme } = matches[0];
+						const tpBlock = createBlock('core/template-part', { slug: tpSlug, theme: tpTheme });
+						dispatch('core/block-editor').insertBlocks(tpBlock, undefined, getContentAreaClientId());
+						return sprintf(__('Added the "%s" template part. ✓', 'maxi-blocks'), matches[0].title?.rendered || tpSlug);
+					},
+					__('Template part added. ✓', 'maxi-blocks')
+				);
+				return;
+			}
+
+			// ── remove_template_part ──────────────────────────────────────────
+			if (operation === 'remove_template_part') {
+				if (!getIsSiteEditor()) {
+					setMessages(prev => [...prev, { role: 'assistant', content: __('Template parts can only be removed in the Site Editor.', 'maxi-blocks'), executed: false }]);
+					setIsLoading(false);
+					return;
+				}
+				await runFseOp(
+					hint
+						? sprintf(__('Removing the "%s" template part…', 'maxi-blocks'), hint)
+						: __('Removing template part…', 'maxi-blocks'),
+					async () => {
+						// Walk top-level blocks for core/template-part matches
+						const allBlocks = select('core/block-editor').getBlocks();
+						const tpBlocks = allBlocks.filter(b => b.name === 'core/template-part');
+						if (!tpBlocks.length) {
+							return __('No template parts found in this template.', 'maxi-blocks');
+						}
+						if (!hint) {
+							const names = tpBlocks.map(b => getTemplatePartSlug(b.clientId) || b.attributes?.slug || b.clientId).join(', ');
+							return sprintf(__('Please specify which template part to remove. Found: %s', 'maxi-blocks'), names);
+						}
+						const lower = hint.toLowerCase();
+						const matches = tpBlocks.filter(b => {
+							const slug = (b.attributes?.slug || '').toLowerCase();
+							const area = (b.attributes?.area || '').toLowerCase();
+							return slug.includes(lower) || area === lower;
+						});
+						if (!matches.length) {
+							const names = tpBlocks.map(b => b.attributes?.slug || b.clientId).join(', ');
+							return sprintf(
+								__('No template part matching "%s" found. Present: %s', 'maxi-blocks'),
+								hint, names
+							);
+						}
+						// Remove all matching (usually just one)
+						matches.forEach(b => dispatch('core/block-editor').removeBlock(b.clientId));
+						const removed = matches.map(b => b.attributes?.slug || hint).join(', ');
+						return sprintf(__('Removed template part "%s". ✓', 'maxi-blocks'), removed);
+					},
+					__('Template part removed. ✓', 'maxi-blocks')
+				);
+				return;
+			}
+
+			// ── save_as_reusable ──────────────────────────────────────────────
+			if (operation === 'save_as_reusable') {
+				const clientId = selectedBlock?.clientId;
+				if (!clientId) {
+					setMessages(prev => [...prev, { role: 'assistant', content: __('Please select a block first, then ask me to save it as reusable.', 'maxi-blocks'), executed: false }]);
+					setIsLoading(false);
+					return;
+				}
+				if (title) {
+					// Inline title provided — execute immediately
+					await runFseOp(
+						sprintf(__('Saving as reusable block "%s"…', 'maxi-blocks'), title),
+						async () => {
+							const { __experimentalConvertBlocksToReusable: convertToReusable } = dispatch(reusableBlocksStore);
+							await convertToReusable([clientId], title);
+							return sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), title);
+						},
+						sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), title)
+					);
+				} else {
+					// Ask for a title
+					setConversationContext({ type: 'fse_save_as_reusable', clientId });
+					setMessages(prev => [...prev, { role: 'assistant', content: __('What would you like to name this reusable block?', 'maxi-blocks'), executed: false }]);
+					setIsLoading(false);
+				}
+				return;
+			}
+
+			// ── detach_reusable ───────────────────────────────────────────────
+			if (operation === 'detach_reusable') {
+				const clientId = selectedBlock?.clientId;
+				if (!clientId) {
+					setMessages(prev => [...prev, { role: 'assistant', content: __('Please select a reusable block first.', 'maxi-blocks'), executed: false }]);
+					setIsLoading(false);
+					return;
+				}
+				await runFseOp(
+					__('Detaching reusable block…', 'maxi-blocks'),
+					async () => {
+						const { __experimentalConvertBlocksToStatic: convertToStatic } = dispatch(reusableBlocksStore);
+						if (!convertToStatic) {
+							return __('Detach is not available in this version of WordPress.', 'maxi-blocks');
+						}
+						await convertToStatic(clientId);
+						return __('Converted to regular blocks. ✓', 'maxi-blocks');
+					},
+					__('Converted to regular blocks. ✓', 'maxi-blocks')
+				);
+				return;
+			}
+
+			// ── add_wp_pattern ────────────────────────────────────────────────
+			if (operation === 'add_wp_pattern') {
+				await runFseOp(
+					query
+						? sprintf(__('Looking for a "%s" pattern…', 'maxi-blocks'), query)
+						: __('Looking for WordPress patterns…', 'maxi-blocks'),
+					async () => {
+						const patterns = select('core/blocks').getBlockPatterns?.() ?? [];
+						if (!patterns.length) {
+							return __('No registered block patterns found on this site.', 'maxi-blocks');
+						}
+						if (!query) {
+							const names = patterns.slice(0, 5).map(p => p.title).join(', ');
+							return sprintf(__('Please specify a pattern keyword. Some available patterns: %s', 'maxi-blocks'), names);
+						}
+						const lowerQuery = query.toLowerCase();
+						const matched = patterns.filter(p =>
+							(p.title || '').toLowerCase().includes(lowerQuery) ||
+							(p.keywords || []).some(k => String(k).toLowerCase().includes(lowerQuery)) ||
+							(p.categories || []).some(c => String(c).toLowerCase().includes(lowerQuery))
+						);
+						if (!matched.length) {
+							return sprintf(__('No pattern matching "%s" found.', 'maxi-blocks'), query);
+						}
+						const blocks = parse(matched[0].content);
+						if (!blocks.length) {
+							return sprintf(__('Could not parse the "%s" pattern.', 'maxi-blocks'), matched[0].title);
+						}
+						dispatch('core/block-editor').insertBlocks(blocks, undefined, getContentAreaClientId());
+						return sprintf(__('Inserted "%s" pattern. ✓', 'maxi-blocks'), matched[0].title);
+					},
+					__('Pattern inserted. ✓', 'maxi-blocks')
+				);
+				return;
+			}
+
+			setIsLoading(false);
+			return;
+		}
+
 		case 'post_management': {
 			const { operation, title, slug, date } = routeResult.params;
 			const editorDispatch = dispatch('core/editor');

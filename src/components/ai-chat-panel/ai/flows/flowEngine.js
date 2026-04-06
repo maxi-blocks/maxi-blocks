@@ -71,7 +71,7 @@ const getActiveBp = () =>
  * @returns {Object}        - conversation step or apply result
  */
 const runBorderFlow = (flowCfg, context, prefix, activeBp) => {
-	const { steps, styleOptions, breakpointStrategy, includeOff } = flowCfg;
+	const { steps, styleOptions, breakpointStrategy } = flowCfg;
 	const styleFirst = steps[0] === 'border_style';
 
 	if (styleFirst) {

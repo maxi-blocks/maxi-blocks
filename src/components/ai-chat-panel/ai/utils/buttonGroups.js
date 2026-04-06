@@ -1178,13 +1178,19 @@ const buildButtonBGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	// Only route to background-layer path when the user explicitly mentions "layer",
-	// "overlay", or "canvas" — otherwise a message like "add hover gradient background"
-	// should fall through to the gradient conversational flow (flow_gradient / flow_gradient_hover)
-	// which writes to button-element attributes, not the canvas background-layers array.
+	// For button context, simple gradient requests (e.g. "add hover gradient background")
+	// should fall through to flow_gradient / flow_gradient_hover which write to button-element
+	// attributes. However, canvas-layer operations like repeat, clip, parallax, attachment,
+	// wrapper height, etc. are unambiguous canvas operations and must always reach
+	// parseBackgroundLayerCommand even without an explicit "layer/overlay/canvas" keyword.
 	const lower = String(message || '').toLowerCase();
 	const hasExplicitLayerIntent = /\blayer\b|\boverlay\b|\bcanvas\b/.test(lower);
-	if (hasExplicitLayerIntent) {
+	const hasCanvasLayerAttr = /\b(?:repeat|attachment|clip|parallax|wrapper|cover|fixed|position|height|width)\b/.test(lower);
+	const isSimpleGradientRequest = /\bgrad(?:ient)?\b/.test(lower) &&
+		!hasCanvasLayerAttr &&
+		!hasExplicitLayerIntent;
+
+	if (!isSimpleGradientRequest) {
 		const backgroundLayerCommand = parseBackgroundLayerCommand(message);
 		if (backgroundLayerCommand) {
 			return {

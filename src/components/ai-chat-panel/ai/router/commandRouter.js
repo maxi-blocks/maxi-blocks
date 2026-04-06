@@ -374,6 +374,104 @@ const routeNumericPatterns = ( rawMessage, ctx ) => {
 		} );
 	}
 
+	// SVG Icon sizing — intercept before CLOUD_ICON_PATTERN in LAYOUT_PATTERNS
+	const isIconSelected =
+		selectedBlock?.name?.includes( 'svg-icon' ) ||
+		selectedBlock?.name?.includes( 'icon-maxi' );
+	const mentionsIconInMsg = /\bicon\b|\bsvg\b/.test( lowerMessage );
+	const isIconSizingContext = isIconSelected || mentionsIconInMsg;
+
+	if ( isIconSizingContext ) {
+		const hasStrokeOrBorderContext = /\b(stroke|border|outline|line)\b/.test( lowerMessage );
+		const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+
+		// Absolute pixel / percent width — "make the icon 100px width", "icon 50% wide"
+		if ( ! hasStrokeOrBorderContext ) {
+			const iconAbsMatch =
+				lowerMessage.match( /\b(?:icon|svg)\b[^.]*?(\d+(?:\.\d+)?)\s*(px|%)[^.]*?\b(?:width|wide|size)\b/i ) ||
+				lowerMessage.match( /(\d+(?:\.\d+)?)\s*(px|%)[^.]*?\b(?:icon|svg)\b[^.]*?\b(?:width|wide|size)\b/i );
+			if ( iconAbsMatch ) {
+				const val = Number( iconAbsMatch[ 1 ] );
+				const unit = ( iconAbsMatch[ 2 ] || 'px' ).toLowerCase();
+				return actionResult( {
+					action: actionType,
+					property: 'width',
+					value: `${ val }${ unit }`,
+					target_block: 'icon',
+					message: `Icon width set to ${ val }${ unit }.`,
+				} );
+			}
+		}
+
+		// Relative multiplier — "twice", "double", "Nx bigger", "N% bigger/of original"
+		const wordMultiplierMatch = lowerMessage.match( /\b(twice|double)\b/i );
+		const numberXMatch = lowerMessage.match( /\b(\d+(?:\.\d+)?)\s*x\b(?!.*\bpx\b)/i );
+		const percentMultiplierMatch = lowerMessage.match(
+			/\b(\d+)\s*%(?:\s*(?:bigger|larger|of\s+(?:the\s+)?original|of\s+(?:the\s+)?(?:current|its)?\s*size))?/i
+		);
+
+		if ( wordMultiplierMatch ) {
+			const multiplier = 2;
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: multiplier,
+				target_block: 'icon',
+				message: `Icon size scaled to ${ multiplier }x.`,
+			} );
+		}
+
+		if ( numberXMatch ) {
+			const multiplier = Number( numberXMatch[ 1 ] );
+			if ( multiplier > 0 && multiplier <= 20 ) {
+				return actionResult( {
+					action: actionType,
+					property: 'svg_width_relative',
+					value: multiplier,
+					target_block: 'icon',
+					message: `Icon size scaled to ${ multiplier }x.`,
+				} );
+			}
+		}
+
+		if ( percentMultiplierMatch ) {
+			const pct = Number( percentMultiplierMatch[ 1 ] );
+			const hasSizingIntent =
+				/\b(bigger|larger|scale|size|of\s+(?:the\s+)?original)\b/.test( lowerMessage ) ||
+				isIconSelected;
+			if ( hasSizingIntent && pct > 0 && pct <= 2000 ) {
+				const multiplier = pct / 100;
+				return actionResult( {
+					action: actionType,
+					property: 'svg_width_relative',
+					value: multiplier,
+					target_block: 'icon',
+					message: `Icon size set to ${ pct }% of original.`,
+				} );
+			}
+		}
+
+		// Generic bigger / smaller / wider / taller for icon
+		if ( /\b(bigger|larger|enlarge|scale\s*up|size\s*up|wider|increase\s*size|grow)\b/.test( lowerMessage ) ) {
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: 1.2,
+				target_block: 'icon',
+				message: 'Icon size increased by 20%.',
+			} );
+		}
+		if ( /\b(smaller|shrink|scale\s*down|size\s*down|narrower|reduce\s*size|decrease\s*size)\b/.test( lowerMessage ) ) {
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: 0.8,
+				target_block: 'icon',
+				message: 'Icon size decreased by 20%.',
+			} );
+		}
+	}
+
 	// Image: aspect ratio, width, height
 	if ( isImageRequest ) {
 		const ratioMatch = lowerMessage.match( /(\d+)\s*[:/]\s*(\d+)/ );
@@ -1429,6 +1527,13 @@ const routeCloudIcon = ( rawMessage, ctx ) => {
 		/\bline\s*width\b/.test( lowerMessage );
 
 	if ( isIconColorIntent ) return null; // skip this pattern
+
+	// Skip cloud icon search when user is asking about icon sizing
+	const isIconSizingIntent =
+		/\b(\d+\s*(?:px|%)|\d+\s*x\b|twice|double)\b/.test( lowerMessage ) ||
+		( /\b(bigger|larger|smaller|wider|shrink|enlarge|scale\s*(?:up|down))\b/.test( lowerMessage ) &&
+			( selectedName.includes( 'svg-icon' ) || selectedName.includes( 'icon-maxi' ) ) );
+	if ( isIconSizingIntent ) return null;
 
 	const hasIconKeyword = /\bicons?\b/.test( lowerMessage );
 	const hasCloudKeyword = /\b(cloud|library)\b/.test( lowerMessage );

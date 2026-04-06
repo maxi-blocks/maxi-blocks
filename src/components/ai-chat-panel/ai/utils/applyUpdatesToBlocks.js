@@ -805,11 +805,20 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 					case 'transition':
 					case 'transition_change_all':
 					case 'transition_canvas_selected':
-					case 'transition_transform_selected':
+					case 'transition_transform_selected': {
+						// svg-icon-maxi uses 'canvas' as its primary transform target,
+						// not 'container' (which is the default for layout blocks).
+						const isIconBlock =
+							block.name.includes('svg-icon') || block.name.includes('icon-maxi');
+						const transformAttrs =
+							isIconBlock && !block.attributes['transform-target']
+								? { ...block.attributes, 'transform-target': 'canvas' }
+								: block.attributes;
 						changes = buildContainerTGroupAttributeChanges(property, value, {
-							attributes: block.attributes,
+							attributes: transformAttrs,
 						});
 						break;
+					}
 
 					// ======= BLOCK ACTIONS (Delegated) =======
 					default:
@@ -1057,6 +1066,14 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 						}
 						break;
 					// ======= RELATIVE SIZING =======
+					case 'svg_width_relative':
+						// Multiply current SVG icon width by value (2 = 2x, 0.5 = half)
+						if (specificClientId || block.name.includes('svg-icon') || block.name.includes('icon-maxi')) {
+							const currentSvgWidth = Number(block.attributes?.['svg-width-general']) || 100;
+							const newSvgWidth = Math.round(currentSvgWidth * Number(value));
+							changes = { 'svg-width-general': Math.max(1, newSvgWidth) };
+						}
+						break;
 					case 'relative_size':
 						// Multiply current size by value (1.2 = +20%, 0.8 = -20%)
 						const currentWidth = block.attributes['width-general'] || 100;

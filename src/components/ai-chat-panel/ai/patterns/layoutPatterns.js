@@ -79,8 +79,8 @@ const LAYOUT_PATTERNS = [
 	// GROUP 10: TRANSFORM EFFECTS
 	{ regex: /tilt|askew|skew|slant/, property: 'transform_rotate', value: 5, selectionMsg: 'Tilted element (rotate: 5deg).', pageMsg: 'Tilted containers.' },
 	{ regex: /rotate|spin|turn.*degrees/, property: 'transform_rotate', value: 45, selectionMsg: 'Rotated element (45deg).', pageMsg: 'Rotated containers.' },
-	{ regex: /flip.*horizontal|mirror\s*(?:horizontally|vertically|image|this|that|the\s+(?:layout|section|block|container|element))\b/i, property: 'transform_scale', value: { x: -1, y: 1 }, selectionMsg: 'Flipped horizontally.', pageMsg: 'Flipped containers horizontally.' },
-	{ regex: /flip.*vertical|upside.*down/, property: 'transform_scale', value: { x: 1, y: -1 }, selectionMsg: 'Flipped vertically.', pageMsg: 'Flipped containers vertically.' },
+	{ regex: /flip.*horizontal|mirror\s*(?:horizontally|image|this|that|the\s+(?:layout|section|block|container|element))\b/i, property: 'transform_rotate', value: { z: 180, x: 0, y: 0 }, selectionMsg: 'Flipped horizontally (180° rotation).', pageMsg: 'Flipped containers horizontally.' },
+	{ regex: /flip.*vertical|upside.*down/, property: 'transform_rotate', value: { z: 180, x: 0, y: 0 }, selectionMsg: 'Flipped upside down (180° rotation).', pageMsg: 'Flipped containers vertically.' },
 	{ regex: /zoom.*hover|bigger.*hover|enlarge.*hover|scale.*hover|grow.*hover/, property: 'transform_scale_hover', value: 1.1, selectionMsg: 'Added zoom on hover (scale: 1.1).', pageMsg: 'Added hover zoom effect.' },
 
 	// GROUP 11: SCROLL EFFECTS
@@ -129,7 +129,7 @@ const LAYOUT_PATTERNS = [
 
 	// GROUP 16: CONSTRAINTS & SIZING
 	{ regex: /don'?t.*too.*wide|max.*width|limit.*width|constrain.*width/, property: 'max_width', value: 1200, selectionMsg: 'Constrained max width.', pageMsg: 'Limited maximum width.' },
-	{ regex: /full.*width|stretch.*wide|100.*width/, property: 'full_width', value: true, selectionMsg: 'Set to full width.', pageMsg: 'Made containers full width.' },
+	{ regex: /full.*width|stretch.*wide|100%\s*width|width\s*100%/, property: 'full_width', value: true, selectionMsg: 'Set to full width.', pageMsg: 'Made containers full width.' },
 	{ regex: /minimum.*height|at.*least.*tall|min.*height/, property: 'min_height', value: 400, selectionMsg: 'Set minimum height.', pageMsg: 'Applied minimum height.' },
 
 	// GROUP 17: ROW PATTERNS

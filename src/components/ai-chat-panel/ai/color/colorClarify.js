@@ -85,6 +85,15 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	if (isText) return 'text';
 	if (message.includes('border')) return 'border';
 
+	// Icon colour — detect fill vs line intent when icon is in context.
+	if ((mentionsIcon || isIconContext) && !isButtonContext) {
+		const wantsLine = /\b(line|stroke)\b/.test(message);
+		const wantsFill = /\bfill\b/.test(message);
+		if (wantsLine && !wantsFill) return 'icon-line';
+		if (wantsFill && !wantsLine) return 'icon-fill-only';
+		return 'icon-fill'; // ambiguous → resolved at apply time
+	}
+
 	// Ambiguous message (e.g. bare "change colour") — always ask the user which target
 	// they mean, regardless of the selected block type.
 	return 'element';
@@ -94,6 +103,9 @@ const COLOR_TARGET_LABELS = {
 	'shape-divider': 'shape divider',
 	'shape-divider-top': 'shape divider (top)',
 	'shape-divider-bottom': 'shape divider (bottom)',
+	'icon-fill': 'icon',
+	'icon-fill-only': 'icon fill',
+	'icon-line': 'icon line',
 	'icon-background': 'icon background',
 	'number-counter-circle-background': 'counter circle background',
 	'number-counter-text': 'counter text',
@@ -177,6 +189,21 @@ export const buildColorUpdate = (colorTarget, colorValue, { selectedBlock } = {}
 			targetBlock = 'button';
 			value = { target: 'stroke', color: colorValue };
 			msgText = 'button icon stroke';
+			break;
+		case 'icon-fill':
+			property = 'svg_icon_color';
+			targetBlock = 'icon';
+			msgText = 'icon';
+			break;
+		case 'icon-fill-only':
+			property = 'svg_fill_color';
+			targetBlock = 'icon';
+			msgText = 'icon fill';
+			break;
+		case 'icon-line':
+			property = 'svg_line_color';
+			targetBlock = 'icon';
+			msgText = 'icon line';
 			break;
 		case 'icon-background':
 			property = 'background_color';

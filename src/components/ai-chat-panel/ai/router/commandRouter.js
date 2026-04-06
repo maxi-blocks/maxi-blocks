@@ -622,6 +622,14 @@ const routeDirectRemovals = ( rawMessage, ctx ) => {
 	return null;
 };
 
+/** Build context-aware colour-target options for the color_what clarification. */
+const buildColorWhatOptions = selectedBlock => {
+	const name = String( selectedBlock?.name || '' ).toLowerCase();
+	const isIcon = name.includes( 'icon-maxi' ) || name.includes( 'svg-icon' );
+	if ( isIcon ) return [ 'Icon colour', 'Background colour', 'Border colour' ];
+	return [ 'Text colour', 'Background colour', 'Border colour', 'Icon colour' ];
+};
+
 /**
  * 4b. Named-colour direct action.
  *
@@ -717,7 +725,7 @@ const routeNamedColorChange = ( rawMessage, ctx ) => {
 			message: {
 				role: 'assistant',
 				content: 'Colour of what would you like to change?',
-				options: [ 'Text colour', 'Background colour', 'Border colour' ],
+				options: buildColorWhatOptions( selectedBlock ),
 				optionsType: 'text',
 				executed: false,
 			},
@@ -1534,7 +1542,7 @@ const routeColorClarify = ( rawMessage, pattern, ctx ) => {
 			message: {
 				role: 'assistant',
 				content: 'Colour of what would you like to change?',
-				options: [ 'Text colour', 'Background colour', 'Border colour' ],
+				options: buildColorWhatOptions( selectedBlock ),
 				optionsType: 'text',
 				executed: false,
 			},

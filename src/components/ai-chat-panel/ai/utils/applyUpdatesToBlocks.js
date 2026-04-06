@@ -572,6 +572,13 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 					case 'overflow_y':
 						changes = buildContainerOGroupAttributeChanges(property, value);
 						break;
+					case 'svg_icon_color':
+						// Update both fill and line (user already confirmed "Both" upstream,
+						// or the icon only has one colour type — queueDirectAction handles detection).
+						if (specificClientId || block.name.includes('svg-icon')) {
+							changes = { ...updateSvgFillColor(value), ...updateSvgLineColor(value) };
+						}
+						break;
 					case 'svg_fill_color':
 						// Only apply to SVG icon blocks
 						if (specificClientId || block.name.includes('svg-icon')) {

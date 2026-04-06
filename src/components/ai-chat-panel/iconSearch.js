@@ -82,7 +82,7 @@ const cleanIconQuery = value =>
 		.replace(/\b(theme|themes)\b/gi, '')
 		.replace(/\b(more|less)\b/gi, '')
 		.replace(/\ball\b/gi, '')
-		.replace(/\b(change|swap|replace|use|add|set|insert|make|give|apply)\b/gi, '')
+		.replace(/\b(change|swap|replace|use|add|set|insert|make|give|apply|load|fetch|get|show|find|search|bring|pull|grab)\b/gi, '')
 		.replace(/\b(icon|icons|from|in|the|cloud|library|cloud library|for|of|called|named|to|a|an)\b/gi, '')
 		.replace(/\s+/g, ' ')
 		.trim();
@@ -457,7 +457,7 @@ export const extractIconQueries = message => {
 	}
 
 	const listPatterns = [
-		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^.;]+)$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply|load|fetch|get|show|find|search|bring|pull|grab)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^.;]+)$/i,
 		/\bicons?\b\s*(?:to|with|as|of|for|called|named)\s*([^.;]+)$/i,
 	];
 
@@ -521,11 +521,11 @@ export const extractIconQuery = message => {
 	}
 
 	const patterns = [
-		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply|load|fetch|get|show|find|search|bring|pull|grab)\s+(?:all\s+)?(?:the\s+)?icons?\s*(?:to|with|as|of|for|called|named)?\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
 		/\bicons?\b\s*(?:to|with|as|of|for|called|named)\s*([^,.;]+?)(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
 		/\bicons?\b\s*(?:are|look|feel|more|very)?\s*([^,.;]+)$/i,
-		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+([^,.;]+)$/i,
-		/(?:change|swap|replace|use|set|add|insert|make|give|apply)\s+(?:the\s+|a\s+|an\s+)?([^,.;]+?)\s+icons?\b(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply|load|fetch|get|show|find|search|bring|pull|grab)\s+(?:to\s+)?(?:a\s+|an\s+|the\s+)?(?:different|another|alternative|new|other)\s+([^,.;]+)$/i,
+		/(?:change|swap|replace|use|set|add|insert|make|give|apply|load|fetch|get|show|find|search|bring|pull|grab)\s+(?:the\s+|a\s+|an\s+)?([^,.;]+?)\s+icons?\b(?:\s+(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library))?$/i,
 		/(?:from|in)\s+(?:the\s+)?(?:cloud|cloud library|library)\s+icon\s*(?:called|named)?\s*([^,.;]+)$/i,
 	];
 

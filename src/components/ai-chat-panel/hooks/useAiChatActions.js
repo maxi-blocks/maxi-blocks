@@ -10,6 +10,7 @@ import { createBlock } from '@wordpress/blocks';
  */
 import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
+import { loadColumnsTemplate, getTemplates } from '@extensions/column-templates';
 import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
 import { findBestIcon, extractIconQuery } from '../iconSearch';
 import { getAiHandlerForBlock, getAiFlowConfig } from '../ai/registry';
@@ -688,6 +689,22 @@ const useAiChatActions = ({
 					}
 					if (!newBlock) return { executed: false, message: 'Could not build block structure from AI response.' };
 					dispatch('core/block-editor').insertBlocks(newBlock, undefined, getContentAreaClientId());
+
+					// If it's a container → row → columns structure, apply the column template
+					// so columns are laid out side-by-side instead of stacked.
+					const rowBlock = newBlock.innerBlocks?.[0];
+					const colCount = rowBlock?.innerBlocks?.length ?? 0;
+					if (
+						newBlock.name === 'maxi-blocks/container-maxi' &&
+						rowBlock?.name === 'maxi-blocks/row-maxi' &&
+						colCount >= 2
+					) {
+						const templateName =
+							getTemplates(true, 'general', colCount).find(t => !t.isMoreThanEightColumns)?.name ||
+							`${colCount} columns`;
+						setTimeout(() => loadColumnsTemplate(templateName, rowBlock.clientId, 'general', colCount), 100);
+					}
+
 					return { executed: true, message: action.message || 'Block added to the page.' };
 				}
 

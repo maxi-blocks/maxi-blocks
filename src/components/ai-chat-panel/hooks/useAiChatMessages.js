@@ -115,6 +115,27 @@ const useAiChatMessages = ({
 	 * @param {Object} directAction
 	 */
 	const queueDirectAction = directAction => {
+		// For svg_icon_color: if the icon has both fill and stroke, ask which to update.
+		if (directAction.property === 'svg_icon_color' && selectedBlock) {
+			const svgContent = selectedBlock.attributes?.content || '';
+			const hasFill = /data-fill/.test(svgContent);
+			const hasStroke = /data-stroke/.test(svgContent);
+			if (hasFill && hasStroke) {
+				setConversationContext({ type: 'icon_color_which', pendingAction: directAction });
+				setMessages(prev => [
+					...prev,
+					{
+						role: 'assistant',
+						content: 'This icon has both fill and line colours. Which would you like to change?',
+						options: ['Fill colour', 'Line colour', 'Both'],
+						optionsType: 'text',
+						executed: false,
+					},
+				]);
+				return;
+			}
+		}
+
 		setIsLoading(true);
 		setTimeout(async () => {
 			logAIDebug('Queue direct action', directAction);
@@ -303,8 +324,11 @@ const useAiChatMessages = ({
 			if (lower.includes('text') || lower.includes('font') || lower.includes('label')) target = 'text';
 			else if (lower.includes('background') || lower.includes('bg')) target = 'background';
 			else if (lower.includes('border')) target = 'border';
+			else if (lower.includes('icon') || lower.includes('svg')) target = 'icon-fill';
 
 			const resolvedColor = conversationContext.resolvedColor ?? null;
+			const fallbackHex = conversationContext.fallbackHex ?? null;
+			const namedColorWord = conversationContext.namedColorWord ?? null;
 			setConversationContext(null);
 			setMessages(prev => [...prev, { role: 'user', content: rawMessage }]);
 			if (target) {
@@ -324,7 +348,7 @@ const useAiChatMessages = ({
 						: (() => {
 							const cu = buildColorUpdate(target, resolvedColor, { selectedBlock });
 							return {
-								action: 'update_selection',
+								action: scope === 'selection' ? 'update_selection' : 'update_page',
 								property: cu.property,
 								value: cu.value,
 								target_block: cu.targetBlock,
@@ -333,6 +357,8 @@ const useAiChatMessages = ({
 						})();
 					queueDirectAction(applyAction);
 				} else {
+					// Keep context so typed replies (e.g. "yellow") hit color_palette handler.
+					setConversationContext({ type: 'color_palette', colorTarget: target, fallbackHex, namedColorWord });
 					setMessages(prev => [
 						...prev,
 						{
@@ -350,18 +376,36 @@ const useAiChatMessages = ({
 					...prev,
 					{
 						role: 'assistant',
-						content: 'Please select one of the options: Text colour, Background colour, or Border colour.',
-						options: ['Text colour', 'Background colour', 'Border colour'],
+						content: 'Please select one of the options: Text colour, Background colour, Border colour, or Icon colour.',
+						options: ['Text colour', 'Background colour', 'Border colour', 'Icon colour'],
 						optionsType: 'text',
 						executed: false,
 					},
 				]);
-				setConversationContext({ type: 'color_what', resolvedColor });
+				setConversationContext({ type: 'color_what', resolvedColor, fallbackHex, namedColorWord });
 			}
 			setIsLoading(false);
 			return;
 			} // end else (English color_what path)
 		} // end color_what handler
+
+		// Handle icon fill-vs-line clarification reply (typed path)
+		if (conversationContext?.type === 'icon_color_which') {
+			const lower = rawMessage.toLowerCase();
+			const { pendingAction } = conversationContext;
+			setConversationContext(null);
+			setMessages(prev => [...prev, { role: 'user', content: rawMessage }]);
+			const wantsFill = lower.includes('fill') || lower.includes('both');
+			const wantsLine = lower.includes('line') || lower.includes('stroke') || lower.includes('both');
+			const resolvedProperty = (wantsFill && wantsLine) ? 'svg_icon_color' : wantsFill ? 'svg_fill_color' : 'svg_line_color';
+			setIsLoading(true);
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction({ ...pendingAction, property: resolvedProperty });
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
+			return;
+		}
 
 		// Handle fse_save_as_reusable title reply — user provided the name for the new synced pattern.
 		if (conversationContext?.type === 'fse_save_as_reusable') {
@@ -662,13 +706,31 @@ const useAiChatMessages = ({
 				const mismatch =
 					(isButtonTarget && !selectedName.includes('button')) ||
 					(isIconTarget && !selectedName.includes('icon'));
-				if (mismatch) {
+				if (mismatch && isButtonTarget) {
 					setMessages(prev => [
 						...prev,
-						{ role: 'assistant', content: isButtonTarget ? 'Please select a button block to change its icon.' : 'Please select an Icon block to change its icon.', executed: false },
+						{ role: 'assistant', content: 'Please select a button block to change its icon.', executed: false },
 					]);
 					setIsLoading(false);
 					return;
+				}
+				// For icon target: if the selected block is a container/column/row/group,
+				// fall through — the insert-new-block path below will handle it.
+				if (mismatch && isIconTarget) {
+					const isContainerLike =
+						selectedName.includes('column') ||
+						selectedName.includes('container') ||
+						selectedName.includes('row') ||
+						selectedName.includes('group');
+					if (!isContainerLike) {
+						setMessages(prev => [
+							...prev,
+							{ role: 'assistant', content: 'Please select an Icon block to change its icon.', executed: false },
+						]);
+						setIsLoading(false);
+						return;
+					}
+					// isContainerLike — fall through to insert a new icon block inside it
 				}
 			}
 
@@ -773,6 +835,29 @@ const useAiChatMessages = ({
 			if (wantsDifferent && (iconResult?.noAlternative || iconResult?.total === 1)) { setMessages(prev => [...prev, { role: 'assistant', content: `I only found one icon for "${fallbackQuery}" in the Cloud Library.`, executed: false }]); setIsLoading(false); return; }
 			if (!iconResult || !iconResult.svgCode) { setMessages(prev => [...prev, { role: 'assistant', content: `I couldn't find an icon for "${fallbackQuery}" in the Cloud Library. Try a different keyword.`, executed: false }]); setIsLoading(false); return; }
 			if (iconResult.isPro) { setMessages(prev => [...prev, { role: 'assistant', content: `Found "${iconResult.title}" but it's a Pro icon. Upgrade to MaxiBlocks Pro to use it.`, executed: false }]); setIsLoading(false); return; }
+
+			// ── No existing icon blocks in scope — insert a new one instead ──────
+			if (isIconTarget && !hasIconBlocksInScope) {
+				const freshBlocks = select('core/block-editor').getBlocks();
+				const selId = iconBlock?.clientId;
+				const selBlock = selId ? collectBlocks(freshBlocks, b => b.clientId === selId)[0] : null;
+				const isContainer = selBlock && (
+					selBlock.name?.includes('column') ||
+					selBlock.name?.includes('container') ||
+					selBlock.name?.includes('row') ||
+					selBlock.name?.includes('group')
+				);
+				const targetParentId = isContainer ? selBlock.clientId : getContentAreaClientId();
+				const newBlock = createBlock('maxi-blocks/svg-icon-maxi', {
+					content: iconResult.svgCode,
+					...(iconResult.svgType ? { svgType: iconResult.svgType } : {}),
+					...(iconResult.title ? { altTitle: iconResult.title } : {}),
+				});
+				dispatch('core/block-editor').insertBlocks(newBlock, undefined, targetParentId);
+				setMessages(prev => [...prev, { role: 'assistant', content: `Added "${iconResult.title}" icon block.`, executed: true }]);
+				setIsLoading(false);
+				return;
+			}
 
 			const directIconAction = {
 				action: iconScope === 'selection' ? 'update_selection' : 'update_page',
@@ -1613,8 +1698,11 @@ const useAiChatMessages = ({
 			if (lower.includes('text') || lower.includes('font') || lower.includes('label')) target = 'text';
 			else if (lower.includes('background') || lower.includes('bg')) target = 'background';
 			else if (lower.includes('border')) target = 'border';
+			else if (lower.includes('icon') || lower.includes('svg')) target = 'icon-fill';
 
 			const resolvedColor = conversationContext.resolvedColor ?? null;
+			const fallbackHex = conversationContext.fallbackHex ?? null;
+			const namedColorWord = conversationContext.namedColorWord ?? null;
 			setConversationContext(null);
 			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
 			if (target) {
@@ -1634,7 +1722,7 @@ const useAiChatMessages = ({
 						: (() => {
 							const cu = buildColorUpdate(target, resolvedColor, { selectedBlock });
 							return {
-								action: 'update_selection',
+								action: scope === 'selection' ? 'update_selection' : 'update_page',
 								property: cu.property,
 								value: cu.value,
 								target_block: cu.targetBlock,
@@ -1643,6 +1731,9 @@ const useAiChatMessages = ({
 						})();
 					queueDirectAction(applyAction);
 				} else {
+					// No resolved colour yet — show palette picker and keep context so
+					// the user's typed reply (e.g. "yellow") is handled by color_palette.
+					setConversationContext({ type: 'color_palette', colorTarget: target, fallbackHex, namedColorWord });
 					setMessages(prev => [
 						...prev,
 						{ role: 'assistant', content: `Choose a colour for the ${getColorTargetLabel(target)}:`, options: true, optionsType: 'palette', colorTarget: target, executed: false },
@@ -1651,11 +1742,29 @@ const useAiChatMessages = ({
 			} else {
 				setMessages(prev => [
 					...prev,
-					{ role: 'assistant', content: 'Please select one of the options: Text colour, Background colour, or Border colour.', options: ['Text colour', 'Background colour', 'Border colour'], optionsType: 'text', executed: false },
+					{ role: 'assistant', content: 'Please select one of the options: Text colour, Background colour, Border colour, or Icon colour.', options: ['Text colour', 'Background colour', 'Border colour', 'Icon colour'], optionsType: 'text', executed: false },
 				]);
-				setConversationContext({ type: 'color_what', resolvedColor });
+				setConversationContext({ type: 'color_what', resolvedColor, fallbackHex, namedColorWord });
 			}
 			setIsLoading(false);
+			return;
+		}
+
+		// icon_color_which chip — "Fill colour" / "Line colour" / "Both"
+		if (conversationContext?.type === 'icon_color_which') {
+			const lower = suggestion.toLowerCase();
+			const { pendingAction } = conversationContext;
+			setConversationContext(null);
+			setMessages(prev => [...prev, { role: 'user', content: suggestion }]);
+			const wantsFill = lower.includes('fill') || lower.includes('both');
+			const wantsLine = lower.includes('line') || lower.includes('stroke') || lower.includes('both');
+			const resolvedProperty = (wantsFill && wantsLine) ? 'svg_icon_color' : wantsFill ? 'svg_fill_color' : 'svg_line_color';
+			setIsLoading(true);
+			setTimeout(async () => {
+				const result = await parseAndExecuteAction({ ...pendingAction, property: resolvedProperty });
+				setMessages(prev => [...prev, { role: 'assistant', content: result.message, executed: result.executed }]);
+				setIsLoading(false);
+			}, 50);
 			return;
 		}
 

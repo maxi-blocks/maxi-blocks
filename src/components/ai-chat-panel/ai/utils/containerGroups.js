@@ -4828,35 +4828,79 @@ const buildContainerTGroupAction = (message, { scope = 'selection' } = {}) => {
 	return null;
 };
 
-const buildContainerTGroupAttributeChanges = (property, value, { attributes } = {}) => {
+/** Returns the primary transform selector category for a block type. */
+const getTransformTargetForBlock = blockName => {
+	const lower = String(blockName || '').toLowerCase();
+	if (lower.includes('image-maxi')) return 'image';
+	if (lower.includes('button-maxi')) return 'button';
+	if (lower.includes('text-maxi') || lower.includes('list-item-maxi')) return 'text';
+	if (lower.includes('svg-icon') || lower.includes('icon-maxi')) return 'canvas';
+	return 'container';
+};
+
+/**
+ * Unwraps a pre-structured transform value (e.g. { image: { normal: { x: 110 } } })
+ * back to the flat format { x, y, z, state, target } that buildTransformChanges expects.
+ * The LLM sometimes sends the full attribute shape instead of the flat intent shape.
+ */
+const flattenPreStructuredTransformValue = (value, target) => {
+	if (!value || typeof value !== 'object' || Array.isArray(value)) return value;
+	// Flat format has known scalar/state keys — detect pre-structured by checking
+	// whether the first value under the top-level key is itself a state object.
+	const keys = Object.keys(value);
+	if (keys.length === 0) return value;
+	const firstKey = keys[0];
+	const firstVal = value[firstKey];
+	if (
+		firstVal &&
+		typeof firstVal === 'object' &&
+		!Array.isArray(firstVal) &&
+		('normal' in firstVal || 'hover' in firstVal || 'hover-status' in firstVal)
+	) {
+		// Pre-structured: { <targetKey>: { normal: { x, y, z, ... }, ... } }
+		const stateKey = 'hover' in firstVal ? 'hover' : 'normal';
+		const inner = firstVal[stateKey] || {};
+		return { ...inner, target, state: stateKey };
+	}
+	return value;
+};
+
+const buildContainerTGroupAttributeChanges = (property, value, { attributes, blockName } = {}) => {
 	if (!property) return null;
 	const normalized = String(property).replace(/-/g, '_');
-	const defaultTarget = attributes?.['transform-target'] || 'container';
+	// Always use the block's primary transform target — the AI always acts on the block itself.
+	const target = getTransformTargetForBlock(blockName);
+	// Unwrap pre-structured values (LLM hallucination), then force the correct target.
+	const flatValue = flattenPreStructuredTransformValue(value, target);
+	const normalizedValue =
+		flatValue && typeof flatValue === 'object' && !Array.isArray(flatValue)
+			? { ...flatValue, target }
+			: flatValue;
 
 	switch (normalized) {
 		case 'transform_scale':
-			return buildTransformChanges('scale', value, { defaultTarget });
+			return buildTransformChanges('scale', normalizedValue, { defaultTarget: target });
 		case 'transform_scale_hover': {
-			if (value && typeof value === 'object') {
+			if (normalizedValue && typeof normalizedValue === 'object') {
 				return buildTransformChanges('scale', {
-					...value,
-					state: value.state || 'hover',
-				}, { defaultTarget });
+					...normalizedValue,
+					state: normalizedValue.state || 'hover',
+				}, { defaultTarget: target });
 			}
 			return buildTransformChanges('scale', {
-				x: value,
-				y: value,
+				x: normalizedValue,
+				y: normalizedValue,
 				state: 'hover',
-			}, { defaultTarget });
+			}, { defaultTarget: target });
 		}
 		case 'transform_rotate':
-			return buildTransformChanges('rotate', value, { defaultTarget });
+			return buildTransformChanges('rotate', normalizedValue, { defaultTarget: target });
 		case 'transform_translate':
-			return buildTransformChanges('translate', value, { defaultTarget });
+			return buildTransformChanges('translate', normalizedValue, { defaultTarget: target });
 		case 'transform_origin':
-			return buildTransformChanges('origin', value, { defaultTarget });
+			return buildTransformChanges('origin', normalizedValue, { defaultTarget: target });
 		case 'transform_target':
-			return { 'transform-target': value || 'container' };
+			return { 'transform-target': target };
 		case 'transition':
 			return buildTransitionChanges(value, attributes);
 		case 'transition_change_all':

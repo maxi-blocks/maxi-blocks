@@ -980,7 +980,7 @@ const useAiChatActions = ({
 						case 'transform_translate': case 'transform_origin': case 'transform_target':
 						case 'transition': case 'transition_change_all': case 'transition_canvas_selected':
 						case 'transition_transform_selected':
-							c = buildContainerTGroupAttributeChanges(prop, val, { attributes: targetBlock.attributes }); break;
+							c = buildContainerTGroupAttributeChanges(prop, val, { attributes: targetBlock.attributes, blockName: targetBlock.name }); break;
 						case 'text_color': case 'text_color_hover': case 'button_hover_text': case 'color':
 							if (targetBlock?.name?.includes('button')) {
 								c = buildButtonCGroupAttributeChanges(prop, val, { attributes: targetBlock.attributes });

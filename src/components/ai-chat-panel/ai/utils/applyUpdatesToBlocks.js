@@ -816,6 +816,7 @@ export const applyUpdatesToBlocks = (blocksToUpdate, property, value, targetBloc
 								: block.attributes;
 						changes = buildContainerTGroupAttributeChanges(property, value, {
 							attributes: transformAttrs,
+							blockName: block.name,
 						});
 						break;
 					}

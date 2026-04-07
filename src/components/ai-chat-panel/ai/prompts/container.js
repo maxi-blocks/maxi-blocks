@@ -287,11 +287,16 @@ const CONTAINER_MODULE = `---
 #### 6.18 TRANSFORMS ("Transform", "Scale", "Rotate", "Move", "Origin")
 - Target properties: transform_target, transform_scale, transform_rotate, transform_translate, transform_origin.
 - Scale values are percentages (100 = 1x).
+- ALWAYS use the flat format: { "x": <val>, "y": <val>, "target": "<target>", "state": "normal|hover" }
+- NEVER send a pre-nested format like { "image": { "normal": { "x": 110 } } } — that is wrong.
+- The target is always the block's primary element: "container" for layout blocks, "image" for image blocks, "button" for button blocks, "text" for text blocks, "canvas" for icon blocks.
 - Examples:
-  - "Scale container to 110%." -> { "transform_scale": { "x": 110, "y": 110, "target": "container" } }
+  - "Scale container to 110%." -> { "transform_scale": { "x": 110, "y": 110, "target": "container", "state": "normal" } }
+  - "Scale image to 200%." -> { "transform_scale": { "x": 200, "y": 200, "target": "image", "state": "normal" } }
   - "On hover, scale background to 105%." -> { "transform_scale": { "x": 105, "y": 105, "target": "background", "state": "hover" } }
-  - "Rotate container 15 degrees." -> { "transform_rotate": { "z": 15, "target": "container" } }
-  - "Move container right 20px and up 10px." -> { "transform_translate": { "x": 20, "y": -10, "unit": "px", "target": "container" } }
+  - "Rotate container 15 degrees." -> { "transform_rotate": { "z": 15, "target": "container", "state": "normal" } }
+  - "Rotate image 30 degrees to the right." -> { "transform_rotate": { "z": 30, "target": "image", "state": "normal" } }
+  - "Move container right 20px and up 10px." -> { "transform_translate": { "x": 20, "y": -10, "unit": "px", "target": "container", "state": "normal" } }
   - "Set transform origin to top left." -> { "transform_origin": { "x": "left", "y": "top", "target": "container" } }
   - "Set transform target to background." -> { "transform_target": "background" }
 - Breakpoint override (optional):

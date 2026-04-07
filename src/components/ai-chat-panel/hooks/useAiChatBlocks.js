@@ -357,6 +357,7 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 										...(fallbackAttributes || {}),
 										'transform-target': guessedTransformTarget,
 									},
+									blockName: targetBlockName,
 								}) || {}
 							);
 						}

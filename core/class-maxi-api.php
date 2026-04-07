@@ -3274,8 +3274,8 @@ if (!class_exists('MaxiBlocks_API')):
                 case 'anthropic':
                     return $this->proxy_ai_chat_anthropic($api_key, $model, $messages);
 
-                case 'gemini':
-                    return $this->proxy_ai_chat_gemini($api_key, $model, $messages);
+                // case 'gemini':
+                //     return $this->proxy_ai_chat_gemini($api_key, $model, $messages);
 
                 case 'openai':
                 default:

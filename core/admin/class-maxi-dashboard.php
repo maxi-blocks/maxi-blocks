@@ -1838,7 +1838,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_ai_provider',
                 '',
                 'dropdown',
-                ['list' => ['openai', 'anthropic', 'gemini']],
+                ['list' => ['openai', 'anthropic'/*, 'gemini'*/]],
             );
 
             $openai_key_style = $maxi_ai_provider !== 'openai' ? ' style="display:none"' : '';
@@ -1879,7 +1879,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
     var integrationKeyLabels = {
         openai:    "OpenAI API Key",
         anthropic: "Anthropic API Key",
-        gemini:    "Gemini API Key"
+        // gemini:    "Gemini API Key"
     };
     var savedIntegrationModel = "' . esc_js($maxi_ai_model) . '";
 
@@ -1976,7 +1976,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'maxi_ai_panel_provider',
                 '',
                 'dropdown',
-                ['list' => ['openai', 'anthropic', 'gemini']],
+                ['list' => ['openai', 'anthropic'/*, 'gemini'*/]],
             );
 
             $description = '<h4 id="maxi-ai-panel-key-label">' . __('API Key', 'maxi-blocks') . '</h4>';
@@ -2005,7 +2005,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
     var panelKeyLabels = {
         openai:    "OpenAI API Key",
         anthropic: "Anthropic API Key",
-        gemini:    "Gemini API Key"
+        // gemini:    "Gemini API Key"
     };
     var savedPanelModel = "' . esc_js($ai_panel_model) . '";
 

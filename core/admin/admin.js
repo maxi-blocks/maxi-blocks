@@ -5,7 +5,7 @@ let activePollingEmail = null;
 
 /**
  * Fetch AI provider models via WordPress AJAX proxy to avoid CORS restrictions.
- * @param {string} provider  'openai' | 'anthropic' | 'gemini'
+ * @param {string} provider  'openai' | 'anthropic' // | 'gemini'
  * @param {string} apiKey
  * @returns {Promise<string[]>}
  */
@@ -46,18 +46,18 @@ window.maxiFetchAnthropicModels = async apiKey => {
 	}
 };
 
-window.maxiFetchGeminiModels = async apiKey => {
-	try {
-		return await window.maxiFetchAiModelsViaProxy('gemini', apiKey);
-	} catch (e) {
-		console.error('Error fetching Gemini models:', JSON.stringify(e.message));
-		return [];
-	}
-};
+// window.maxiFetchGeminiModels = async apiKey => {
+// 	try {
+// 		return await window.maxiFetchAiModelsViaProxy('gemini', apiKey);
+// 	} catch (e) {
+// 		console.error('Error fetching Gemini models:', JSON.stringify(e.message));
+// 		return [];
+// 	}
+// };
 
 /**
  * Fetch models for any provider and populate a <select> + hidden <input>.
- * @param {string} provider  'openai' | 'anthropic' | 'gemini'
+ * @param {string} provider  'openai' | 'anthropic' // | 'gemini'
  * @param {string} apiKey
  * @param {string} selectId  id of the <select> element
  * @param {string} savedModel  previously saved model to pre-select
@@ -80,7 +80,7 @@ window.maxiUpdateProviderModels = async (provider, apiKey, selectId, savedModel)
 		let models = [];
 		if (provider === 'openai')         models = await window.maxiFetchOpenAIModels(apiKey);
 		else if (provider === 'anthropic') models = await window.maxiFetchAnthropicModels(apiKey);
-		else if (provider === 'gemini')    models = await window.maxiFetchGeminiModels(apiKey);
+		// else if (provider === 'gemini')    models = await window.maxiFetchGeminiModels(apiKey);
 
 		selectEl.innerHTML = '';
 		if (models.length === 0) {

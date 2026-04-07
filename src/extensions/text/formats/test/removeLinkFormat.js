@@ -1,12 +1,25 @@
 import removeLinkFormat from '@extensions/text/formats/removeLinkFormat';
 
 jest.mock('@wordpress/data', () => ({
+	combineReducers: require('redux').combineReducers,
+	createSelector: (selector) => selector,
+	createReduxStore: jest.fn((name) => ({ name })),
+	register: jest.fn(),
 	dispatch: jest.fn(() => ({
 		__unstableMarkLastChangeAsPersistent: jest.fn(),
 	})),
-	select: jest.fn(() => ({
-		receiveMaxiSelectedStyleCard: jest.fn(() => ({ value: {} })),
-	})),
+	select: jest.fn((storeDescriptor) => {
+		const storeName = typeof storeDescriptor === 'string' ? storeDescriptor : storeDescriptor?.name;
+		if (storeName === 'core/rich-text') {
+			return {
+				getFormatType: jest.fn(),
+				getFormatTypes: jest.fn(() => []),
+			};
+		}
+		return {
+			receiveMaxiSelectedStyleCard: jest.fn(() => ({ value: {} })),
+		};
+	}),
 }));
 jest.mock('@extensions/styles/getBlockStyle', () => jest.fn(() => 'light'));
 jest.mock('@extensions/styles', () => ({

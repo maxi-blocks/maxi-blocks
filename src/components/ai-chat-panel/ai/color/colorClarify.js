@@ -81,6 +81,14 @@ export const getColorTargetFromMessage = (lowerMessage, { selectedBlock } = {}) 
 	if (isBackground && (isIconContext || mentionsIcon) && !wantsContainerBackground) {
 		return 'icon-background';
 	}
+	// "background of/for text blocks" — user explicitly mentions both background and text,
+	// but the selected block is not itself a text block (e.g. a column is selected).
+	// Return a combined target so we apply background_color to text children, not the column.
+	if (isBackground && isText) {
+		const isSelectedTextBlock =
+			selectedName.includes('text-maxi') || selectedName.includes('list-item-maxi');
+		if (!isSelectedTextBlock) return 'text-background';
+	}
 	if (isBackground) return 'background';
 	if (isText) return 'text';
 	if (message.includes('border')) return 'border';
@@ -246,6 +254,11 @@ export const buildColorUpdate = (colorTarget, colorValue, { selectedBlock } = {}
 			property = 'link_color_visited';
 			targetBlock = 'text';
 			msgText = 'link visited';
+			break;
+		case 'text-background':
+			property = 'background_color';
+			targetBlock = 'text';
+			msgText = 'text background';
 			break;
 		case 'text':
 			property = 'text_color';

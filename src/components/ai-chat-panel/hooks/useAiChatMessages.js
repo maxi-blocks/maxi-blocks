@@ -1885,6 +1885,25 @@ const useAiChatMessages = ({
 
 		const lastClarificationMsg = [...messages].reverse().find(m => m.role === 'assistant' && m.options);
 		const targetContext = lastClarificationMsg?.targetContext;
+
+		// When no explicit target was stored in the CLARIFY message, derive it from the
+		// currently selected block so that bare commands like "add border" apply to the
+		// selected block (e.g. a column) rather than falling through to a second LLM call
+		// that may inherit context from a previous, unrelated command.
+		const deriveSelectedBlockTarget = name => {
+			const n = String(name || '').toLowerCase();
+			if (n.includes('column')) return 'column';
+			if (n.includes('container')) return 'container';
+			if (n.includes('row')) return 'row';
+			if (n.includes('group')) return 'group';
+			if (n.includes('text') || n.includes('list-item')) return 'text';
+			if (n.includes('image')) return 'image';
+			if (n.includes('button')) return 'button';
+			if (n.includes('icon') || n.includes('svg-icon')) return 'icon';
+			if (n.includes('video')) return 'video';
+			return null;
+		};
+		const selectedBlockTarget = deriveSelectedBlockTarget(selectedBlock?.name);
 		const lastClarifyContent =
 			typeof lastClarificationMsg?.content === 'string' ? lastClarificationMsg.content.toLowerCase() : '';
 		const ratioOptionMatch = typeof suggestion === 'string' ? suggestion.trim().match(/^(\d+)\s*[:/]\s*(\d+)$/) : null;
@@ -2023,12 +2042,18 @@ const useAiChatMessages = ({
 			}
 		} else if (suggestion === 'Brand Glow') {
 			directAction = { action: 'update_page', property: 'box_shadow', value: { x: 0, y: 10, blur: 25, spread: -5, color: 'var(--highlight)' }, target_block: targetContext, message: 'Applied Brand Glow (using theme variable).' };
-		} else if (suggestion === 'Subtle Border') {
-			directAction = { action: 'update_page', property: 'border', value: { width: 1, style: 'solid', color: 'var(--p)' }, target_block: targetContext, message: targetContext ? `Applied Subtle Border to all ${targetContext}s.` : 'Applied Subtle Border.' };
-		} else if (suggestion === 'Strong Border') {
-			directAction = { action: 'update_page', property: 'border', value: { width: 3, style: 'solid', color: 'var(--h1)' }, target_block: targetContext, message: targetContext ? `Applied Strong Border to all ${targetContext}s.` : 'Applied Strong Border.' };
-		} else if (suggestion === 'Brand Border') {
-			directAction = { action: 'update_page', property: 'border', value: { width: 2, style: 'solid', color: 'var(--highlight)' }, target_block: targetContext, message: targetContext ? `Applied Brand Border to all ${targetContext}s.` : 'Applied Brand Border.' };
+		} else if (suggestion === 'Subtle Border' || (suggestion.toLowerCase().includes('subtle') && suggestion.toLowerCase().includes('border'))) {
+			const borderTarget = targetContext || selectedBlockTarget;
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			directAction = { action: actionType, property: 'border', value: { width: 1, style: 'solid', color: 'var(--p)' }, target_block: borderTarget, message: borderTarget ? `Applied subtle border to ${borderTarget}.` : 'Applied subtle border.' };
+		} else if (suggestion === 'Strong Border' || (suggestion.toLowerCase().includes('strong') && suggestion.toLowerCase().includes('border'))) {
+			const borderTarget = targetContext || selectedBlockTarget;
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			directAction = { action: actionType, property: 'border', value: { width: 3, style: 'solid', color: 'var(--h1)' }, target_block: borderTarget, message: borderTarget ? `Applied strong border to ${borderTarget}.` : 'Applied strong border.' };
+		} else if (suggestion === 'Brand Border' || (suggestion.toLowerCase().includes('brand') && suggestion.toLowerCase().includes('border'))) {
+			const borderTarget = targetContext || selectedBlockTarget;
+			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
+			directAction = { action: actionType, property: 'border', value: { width: 2, style: 'solid', color: 'var(--highlight)' }, target_block: borderTarget, message: borderTarget ? `Applied brand border to ${borderTarget}.` : 'Applied brand border.' };
 		} else if (suggestion === 'Ghost Button') {
 			directAction = { action: 'update_page', property: 'border', value: { width: 2, style: 'solid', color: 'var(--highlight)' }, message: 'Applied Ghost Button style.' };
 		} else if (suggestion === 'Yes, show me' || suggestion === 'Display Mobile') {

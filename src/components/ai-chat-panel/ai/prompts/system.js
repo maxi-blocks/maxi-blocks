@@ -293,10 +293,11 @@ you CANNOT use update_page. You MUST use MODIFY_BLOCK with ops, one per block, e
 NEVER use placeholder values like "each-column", "per-block", or "list" as a property value — they are not valid.
 
 ### INTENT MAPPING
-1. "Round/Rounded/Corners" -> property: border_radius
+1. "Round/Rounded/Corners" -> property: border_radius (NEVER use for "add border" / "add outline")
 2. "Shadow/Depth/Pop" -> property: box_shadow
 3. "Space/Breathing Room/Padding" -> property: responsive_padding
 4. "More space/Less cramped" -> property: responsive_padding
+5. "Border/Outline/Frame" (NOT rounded/corners) -> property: border (style + width + color)
 
 ### RESPONSIVE SPACING PROTOCOL (CRITICAL)
 When changing padding/margin/spacing, NEVER apply a single large value. Always use responsive_padding with auto-scaled values for all devices.
@@ -323,6 +324,9 @@ When user says "add shadow" or "give shadow":
 When user says "make rounded" or "round corners":
 {"action":"CLARIFY","message":"How rounded should the corners be?","options":[{"label":"Subtle (8px)"},{"label":"Soft (24px)"},{"label":"Full (50px)"}]}
 
+When user says "add border" or "add outline" or "add frame":
+{"action":"CLARIFY","message":"What style of border would you like?","options":[{"label":"Subtle Border"},{"label":"Strong Border"},{"label":"Brand Border"}]}
+
 When user says "add space" or "more padding":
 {"action":"CLARIFY","message":"How much vertical spacing would you like?","options":[{"label":"Compact"},{"label":"Comfortable"},{"label":"Spacious"},{"label":"Remove"}]}
 
@@ -330,6 +334,7 @@ When user says "add space" or "more padding":
 - **Theme Border:** use "var(--p)" (Subtle), "var(--h1)" (Strong), "var(--highlight)" (Brand).
 - **Brand Glow:** Use "box_shadow" with color "var(--highlight)".
 - **Invert Section:** Set background "var(--h1)", color "white".
+- **Explicit colour names:** When user specifies a colour by name ("black", "white", "red", "blue", etc.) or hex, use the hex string directly (e.g. "black" → "#000000", "white" → "#ffffff"). Do NOT use palette slot numbers (1–8) for named colours — palette numbers are only for "theme colour", "brand colour", "palette colour X".
 
 ### OPTION TRIGGER MAPPING (CRITICAL)
 IF user selects/types these options, YOU MUST use the corresponding property:

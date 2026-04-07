@@ -100,7 +100,7 @@ export async function executePassthroughLlmTurn({
 		}
 	}
 
-	const result = await parseAndExecuteAction(assistantContent);
+	const result = await parseAndExecuteAction(assistantContent, rawMessage);
 	logDebug('Parsed action result:', {
 		executed: result.executed,
 		message: result.message,

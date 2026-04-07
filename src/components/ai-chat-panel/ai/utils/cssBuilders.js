@@ -245,7 +245,22 @@ export const updateBorderRadius = (value, corner = null, prefix = '') => {
 	return changes;
 };
 
+/** Converts common CSS colour names to hex so they are stored as explicit colours. */
+const normalizeColorName = color => {
+	if (typeof color !== 'string') return color;
+	const map = {
+		black: '#000000', white: '#ffffff', red: '#ff0000', green: '#008000',
+		blue: '#0000ff', yellow: '#ffff00', orange: '#ffa500', purple: '#800080',
+		pink: '#ffc0cb', gray: '#808080', grey: '#808080', cyan: '#00ffff',
+		magenta: '#ff00ff', brown: '#a52a2a', navy: '#000080', teal: '#008080',
+		gold: '#ffd700', silver: '#c0c0c0', lime: '#00ff00', indigo: '#4b0082',
+		violet: '#ee82ee', beige: '#f5f5dc', coral: '#ff7f50', salmon: '#fa8072',
+	};
+	return map[color.toLowerCase().trim()] ?? color;
+};
+
 export const updateBorder = (width, style, color, prefix = '') => {
+	const normalizedColor = normalizeColorName(color);
 	const widthStr = String(parseInt(width) || 0);
 
 	if (parseInt(width) === 0 || style === 'none') {
@@ -272,14 +287,14 @@ export const updateBorder = (width, style, color, prefix = '') => {
 		[`${prefix}border-unit-width-general`]: 'px',
 	};
 
-	if (color && typeof color === 'string') {
-		if (color.includes('var(--p)')) {
+	if (normalizedColor && typeof normalizedColor === 'string') {
+		if (normalizedColor.includes('var(--p)')) {
 			return { ...base, [`${prefix}border-palette-status-general`]: true, [`${prefix}border-palette-color-general`]: 1 };
 		}
-		if (color.includes('var(--h1)')) {
+		if (normalizedColor.includes('var(--h1)')) {
 			return { ...base, [`${prefix}border-palette-status-general`]: true, [`${prefix}border-palette-color-general`]: 2 };
 		}
-		if (color.includes('var(--highlight)')) {
+		if (normalizedColor.includes('var(--highlight)')) {
 			return { ...base, [`${prefix}border-palette-status-general`]: true, [`${prefix}border-palette-color-general`]: 3 };
 		}
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -289,7 +304,7 @@ export const updateBorder = (width, style, color, prefix = '') => {
 		breakpoints.forEach(bp => {
 			const suffix = bp === 'general' ? '-general' : `-${bp}`;
 			allAttrs[`${prefix}border-palette-status${suffix}`] = false;
-			allAttrs[`${prefix}border-color${suffix}`] = color;
+			allAttrs[`${prefix}border-color${suffix}`] = normalizedColor;
 			allAttrs[`${prefix}border-palette-color${suffix}`] = '';
 			allAttrs[`${prefix}border-style${suffix}`] = style || 'solid';
 			allAttrs[`${prefix}border-top-width${suffix}`] = widthNum;
@@ -303,7 +318,7 @@ export const updateBorder = (width, style, color, prefix = '') => {
 		return allAttrs;
 	}
 
-	if (typeof color === 'number') {
+	if (typeof normalizedColor === 'number') {
 		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 		const widthNum = parseFloat(width) || 2;
 		const allAttrs = { ...base };
@@ -311,8 +326,8 @@ export const updateBorder = (width, style, color, prefix = '') => {
 		breakpoints.forEach(bp => {
 			const suffix = bp === 'general' ? '-general' : `-${bp}`;
 			allAttrs[`${prefix}border-palette-status${suffix}`] = true;
-			allAttrs[`${prefix}border-palette-color${suffix}`] = color;
-			allAttrs[`${prefix}border-color${suffix}`] = `var(--maxi-color-${color})`;
+			allAttrs[`${prefix}border-palette-color${suffix}`] = normalizedColor;
+			allAttrs[`${prefix}border-color${suffix}`] = `var(--maxi-color-${normalizedColor})`;
 			allAttrs[`${prefix}border-style${suffix}`] = style || 'solid';
 			allAttrs[`${prefix}border-top-width${suffix}`] = widthNum;
 			allAttrs[`${prefix}border-bottom-width${suffix}`] = widthNum;

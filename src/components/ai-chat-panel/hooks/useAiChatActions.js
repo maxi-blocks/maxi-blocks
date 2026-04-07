@@ -554,7 +554,7 @@ const useAiChatActions = ({
 	 * @param {string|Object} responseText
 	 * @returns {Promise<{ executed: boolean, message: string, options?: string[] }>}
 	 */
-	const parseAndExecuteAction = async responseText => {
+	const parseAndExecuteAction = async (responseText, userMessageText = '') => {
 		try {
 			// Handle multi-chunk responses by executing each chunk sequentially.
 			if (typeof responseText === 'string') {
@@ -1225,6 +1225,24 @@ const useAiChatActions = ({
 					value = 8;
 				}
 
+				if (property === 'border' && value && typeof value === 'object' && typeof value.color === 'number') {
+					const lowerUser = String(userMessageText || '').toLowerCase();
+					const namedColorMap = {
+						black: '#000000', white: '#ffffff', red: '#ff0000', green: '#008000',
+						blue: '#0000ff', yellow: '#ffff00', orange: '#ffa500', purple: '#800080',
+						pink: '#ffc0cb', gray: '#808080', grey: '#808080', cyan: '#00ffff',
+						magenta: '#ff00ff', brown: '#a52a2a', navy: '#000080', teal: '#008080',
+						gold: '#ffd700', silver: '#c0c0c0', lime: '#00ff00', indigo: '#4b0082',
+						violet: '#ee82ee', beige: '#f5f5dc', coral: '#ff7f50', salmon: '#fa8072',
+					};
+					for (const [name, hex] of Object.entries(namedColorMap)) {
+						if (lowerUser.includes(name)) {
+							value = { ...value, color: hex };
+							break;
+						}
+					}
+				}
+
 				const resultMsg = handleUpdatePage(property, value, targetBlock);
 				openSidebarForProperty(property);
 				return { executed: true, message: actionMessage || resultMsg };
@@ -1289,6 +1307,26 @@ const useAiChatActions = ({
 					else if (value.includes('full') || value === '50px') value = 50;
 					else if (value.includes('square') || value === '0px') value = 0;
 					else value = parseInt(value) || 8;
+				}
+
+				// When the LLM returns a palette slot number for border color but the user
+				// specified an explicit colour name, override with the correct hex value.
+				if (property === 'border' && value && typeof value === 'object' && typeof value.color === 'number') {
+					const lowerUser = String(userMessageText || '').toLowerCase();
+					const namedColorMap = {
+						black: '#000000', white: '#ffffff', red: '#ff0000', green: '#008000',
+						blue: '#0000ff', yellow: '#ffff00', orange: '#ffa500', purple: '#800080',
+						pink: '#ffc0cb', gray: '#808080', grey: '#808080', cyan: '#00ffff',
+						magenta: '#ff00ff', brown: '#a52a2a', navy: '#000080', teal: '#008080',
+						gold: '#ffd700', silver: '#c0c0c0', lime: '#00ff00', indigo: '#4b0082',
+						violet: '#ee82ee', beige: '#f5f5dc', coral: '#ff7f50', salmon: '#fa8072',
+					};
+					for (const [name, hex] of Object.entries(namedColorMap)) {
+						if (lowerUser.includes(name)) {
+							value = { ...value, color: hex };
+							break;
+						}
+					}
 				}
 
 				const isLinkProperty = property === 'link_settings' || String(property || '').startsWith('dc_link');

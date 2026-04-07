@@ -525,6 +525,30 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 		const blocksToProcess = [fullSelectedBlock || selectedBlock];
 		const normalizedTarget = normalizeTargetBlock(property, targetBlock);
 
+		const selectedBlockIsMaxi = String(
+			fullSelectedBlock?.name || selectedBlock?.name || ''
+		).startsWith('maxi-blocks/');
+		const isDirectBlockProperty =
+			normalizedProperty === 'background_color' ||
+			normalizedProperty === 'text_color' ||
+			normalizedProperty === 'border' ||
+			normalizedProperty === 'border_radius' ||
+			normalizedProperty === 'box_shadow' ||
+			normalizedProperty === 'padding' ||
+			normalizedProperty === 'margin';
+
+		// When no explicit target_block was requested and the selected block is a container
+		// (has inner blocks), restrict the update to the selected block itself.  Without this,
+		// applyUpdatesToBlocks recurses into all inner blocks (null target matches everything),
+		// causing e.g. "add border" on a column to also add border to every child block.
+		// When an explicit target IS given (e.g. 'image'), we still recurse so children are found.
+		const selectionSpecificId =
+			!normalizedTarget && selectedBlockIsMaxi && (fullSelectedBlock?.innerBlocks?.length ?? 0) > 0
+				? selectedBlock.clientId
+				: null;
+
+		const skipParentFallback = selectedBlockIsMaxi && isDirectBlockProperty;
+
 		// When canvasScope is true the user targeted the block wrapper (canvas) directly.
 		// Force prefix '' so we write canvas-level attributes (e.g. box-shadow-* instead of
 		// button-box-shadow-*). Handle each removable property explicitly at the canvas level.
@@ -557,27 +581,14 @@ const useAiChatBlocks = ({ selectedBlock, scope, registry, updateBlockAttributes
 			} else {
 				// Canvas scope but unrecognised property — fall through to normal update
 				registry.batch(() => {
-					count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
+					count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget, selectionSpecificId);
 				});
 			}
 		} else {
 			registry.batch(() => {
-				count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget);
+				count = applyUpdatesToBlocks(blocksToProcess, property, value, normalizedTarget, selectionSpecificId);
 			});
 		}
-
-		const selectedBlockIsMaxi = String(
-			fullSelectedBlock?.name || selectedBlock?.name || ''
-		).startsWith('maxi-blocks/');
-		const isDirectBlockProperty =
-			normalizedProperty === 'background_color' ||
-			normalizedProperty === 'text_color' ||
-			normalizedProperty === 'border' ||
-			normalizedProperty === 'border_radius' ||
-			normalizedProperty === 'box_shadow' ||
-			normalizedProperty === 'padding' ||
-			normalizedProperty === 'margin';
-		const skipParentFallback = selectedBlockIsMaxi && isDirectBlockProperty;
 
 		if (!skipParentFallback && count === 0 && (parentFallbackProps.has(property) || normalizedTarget)) {
 			const { getBlockParents, getBlock } = select('core/block-editor');

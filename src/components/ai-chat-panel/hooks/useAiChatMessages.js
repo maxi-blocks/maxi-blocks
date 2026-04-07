@@ -1984,12 +1984,22 @@ const useAiChatMessages = ({
 			let property = base;
 			if (base === 'padding' && targetContext === 'video') property = 'video_padding';
 			directAction = { action: actionType, property, value: 0, ...(targetContext ? { target_block: targetContext } : {}), message: `Removed ${base}.` };
-		} else if (suggestion.includes('Subtle (8px)')) {
-			directAction = { action: 'update_page', property: 'border_radius', value: 8, target_block: targetContext, message: 'Applied Subtle rounded corners (8px).' };
-		} else if (suggestion.includes('Soft (24px)')) {
-			directAction = { action: 'update_page', property: 'border_radius', value: 24, target_block: targetContext, message: 'Applied Soft rounded corners (24px).' };
-		} else if (suggestion.includes('Full (50px)')) {
-			directAction = { action: 'update_page', property: 'border_radius', value: 50, target_block: targetContext, message: 'Applied Full rounded corners (50px).' };
+		} else if (suggestion.includes('Subtle (8px)') || suggestion.includes('Soft (24px)') || suggestion.includes('Full (50px)')) {
+			// Infer target from last user message if not stored in the clarification message.
+			// This covers the case where the user said "rounded corners to the image" but the
+			// CLARIFY response didn't carry targetContext, causing all blocks to be updated.
+			const radiusTarget = targetContext || (() => {
+				const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
+				const lastUserText = typeof lastUserMsg?.content === 'string' ? lastUserMsg.content.toLowerCase() : '';
+				if (lastUserText.includes('image')) return 'image';
+				if (lastUserText.includes('button')) return 'button';
+				if (lastUserText.includes('container') || lastUserText.includes('section')) return 'container';
+				if (lastUserText.includes('text')) return 'text';
+				return null;
+			})();
+			const radiusValue = suggestion.includes('Subtle') ? 8 : suggestion.includes('Soft') ? 24 : 50;
+			const radiusLabel = suggestion.includes('Subtle') ? 'Subtle' : suggestion.includes('Soft') ? 'Soft' : 'Full';
+			directAction = { action: 'update_page', property: 'border_radius', value: radiusValue, ...(radiusTarget ? { target_block: radiusTarget } : {}), message: `Applied ${radiusLabel} rounded corners (${radiusValue}px).` };
 		} else if (spacingSide && spacingBase && ['Compact', 'Comfortable', 'Spacious', 'Remove'].includes(suggestion)) {
 			const actionType = scope === 'selection' ? 'update_selection' : 'update_page';
 			let property = `${spacingBase}_${spacingSide}`;

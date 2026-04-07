@@ -639,6 +639,7 @@ const useAiChatActions = ({
 					message: action.message,
 					options: looksLikePalette ? ['palette'] : optionsLabels,
 					optionsType: looksLikePalette ? 'palette' : 'text',
+					...(action.target_block ? { targetContext: action.target_block } : {}),
 				};
 			}
 

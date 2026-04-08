@@ -1,0 +1,2196 @@
+/**
+ * Client-side command router.
+ *
+ * Converts a (rawMessage, RoutingContext) pair into a typed RouteResult
+ * without touching any React state. The hook is responsible for acting on
+ * the returned result (state updates, block attribute writes, API calls).
+ *
+ * Processing order mirrors the original sendMessage() cascade:
+ *   1.  Text-link detection
+ *   2.  Attribute-group builders (L, Meta, CSS, DC, Button A/B/C/I, Text, Container A-Z)
+ *   3.  Numeric-value patterns (spacing, image sizing, size limits, border radius)
+ *   4.  Direct-removal patterns (corners, shadow, border)
+ *   5.  Hex-colour direct action
+ *   6.  Shape-divider clarification
+ *   6b. Open Cloud Library (insert maxi-cloud block)
+ *   7.  LAYOUT_PATTERNS loop (flow triggers, aesthetic, cloud icon, create block,
+ *       colour clarify, use_prompt, standard patterns)
+ *   8.  Gap patterns
+ *   9.  Passthrough (send to AI API)
+ */
+
+import LAYOUT_PATTERNS from '../patterns/layoutPatterns';
+import { routeFSEOperations } from '../utils/fseOperations';
+import {
+	getRequestedTargetFromMessage,
+	isTargetedPatternTarget,
+} from '../patterns/targeting';
+import { getAiHandlerForBlock, getAiHandlerForTarget } from '../registry';
+import {
+	buildColorUpdate,
+	getColorTargetFromMessage,
+	getColorTargetLabel,
+} from '../color/colorClarify';
+import {
+	buildContainerAGroupAction,
+	buildContainerBGroupAction,
+	buildContainerCGroupAction,
+	buildContainerDGroupAction,
+	buildContainerEGroupAction,
+	buildContainerFGroupAction,
+	buildContainerHGroupAction,
+	buildContainerLGroupAction,
+	buildContainerMGroupAction,
+	buildContainerOGroupAction,
+	buildContainerPGroupAction,
+	buildContainerRGroupAction,
+	buildContainerSGroupAction,
+	buildContainerTGroupAction,
+	buildContainerWGroupAction,
+	buildContainerZGroupAction,
+} from '../utils/containerGroups';
+import {
+	buildTextCGroupAction,
+	buildTextLGroupAction,
+	buildTextPGroupAction,
+	buildTextListGroupAction,
+} from '../utils/textGroup';
+import { buildDcGroupAction } from '../utils/dcGroup';
+import {
+	buildAdvancedCssAGroupAction,
+} from '../utils/advancedCssAGroup';
+import {
+	buildMetaAGroupAction,
+} from '../utils/metaAGroup';
+import {
+	buildButtonAGroupAction,
+	buildButtonBGroupAction,
+	buildButtonCGroupAction,
+	buildButtonIGroupAction,
+} from '../utils/buttonGroups';
+import {
+	extractUrl,
+	getSpacingIntent,
+	parseRemoveSpacingRequest,
+	parseNumericSpacingRequest,
+	detectSpacingTarget,
+	resolveImageRatioValue,
+	resolvePromptValue,
+} from '../utils/messageExtractors';
+import {
+	getBlockPrefix,
+	resolveBlockScope,
+	collectBlocks,
+	findBlockByClientId,
+} from '../utils/blockHelpers';
+import { getActiveBreakpoint } from '../utils/responsiveHelpers';
+
+// ─── Internal helpers ──────────────────────────────────────────────────────────
+
+/**
+ * Detect whether a message is requesting button-icon line vs fill style.
+ *
+ * @param {string} lowerMsg
+ * @returns {'line'|'fill'}
+ */
+const resolveButtonIconTarget = lowerMsg => {
+	if ( /\bline\b|\boutline\b|\bstroke\b/.test( lowerMsg ) ) return 'line';
+	return 'fill';
+};
+
+/**
+ * Build a shallow DirectAction for the given scope.
+ *
+ * @param {'selection'|'page'|'global'} currentScope
+ * @param {Object}                      fields         Extra action fields.
+ * @returns {import('./types').DirectAction}
+ */
+const makeAction = ( currentScope, fields ) => ( {
+	action: currentScope === 'page' ? 'update_page' : 'update_selection',
+	...fields,
+} );
+
+/** @returns {import('./types').ActionResult} */
+const actionResult = payload => ( { type: 'action', payload } );
+
+/** @returns {import('./types').ClarifyResult} */
+const clarifyResult = message => ( { type: 'clarify', message } );
+
+// ─── Section handlers ──────────────────────────────────────────────────────────
+
+/**
+ * 1. Text-link detection.
+ * Matches when the selected block is a text/list-item block and the message
+ * contains a URL.
+ */
+const routeTextLink = ( rawMessage, ctx ) => {
+	if ( ! ( ctx.isTextSelection && ctx.textLinkUrl ) ) return null;
+
+	const lowerRaw = rawMessage.toLowerCase();
+	const opensInNewTab = /new\s*tab|_blank|external/.test( lowerRaw );
+	const noFollow = /nofollow/.test( lowerRaw );
+	const sponsored = /sponsored/.test( lowerRaw );
+	const ugc = /\bugc\b/.test( lowerRaw );
+	const relParts = [];
+	if ( noFollow ) relParts.push( 'nofollow' );
+	if ( sponsored ) relParts.push( 'sponsored' );
+	if ( ugc ) relParts.push( 'ugc' );
+	const rel = relParts.join( ' ' );
+
+	return actionResult( {
+		action: ctx.currentScope === 'page' ? 'update_page' : 'update_selection',
+		property: 'text_link',
+		value: {
+			url: ctx.textLinkUrl,
+			target: opensInNewTab ? '_blank' : '_self',
+			...( rel ? { rel } : {} ),
+			...( noFollow ? { noFollow: true } : {} ),
+			...( sponsored ? { sponsored: true } : {} ),
+			...( ugc ? { ugc: true } : {} ),
+		},
+		message: 'Applied link settings to the selected text.',
+		...( ctx.currentScope === 'page' ? { target_block: 'text' } : {} ),
+	} );
+};
+
+/**
+ * 2. Attribute-group builders.
+ * Tries every attribute-group builder in priority order. Returns the first
+ * non-null action, or null if nothing matches.
+ */
+const routeAttributeGroups = ( rawMessage, ctx ) => {
+	const { currentScope, isButtonContext, isTextContext, isContainerContext,
+		metaTargetBlock, dcTargetBlock, selectedBlock } = ctx;
+
+	// Container L-group (links)
+	const lGroup = buildContainerLGroupAction( rawMessage, { scope: currentScope } );
+	if ( lGroup ) return actionResult( lGroup );
+
+	// Meta A-group
+	const metaAction = buildMetaAGroupAction( rawMessage, {
+		scope: currentScope,
+		targetBlock: metaTargetBlock,
+	} );
+	if ( metaAction ) return actionResult( metaAction );
+
+	// Advanced CSS A-group
+	const advCssAction = buildAdvancedCssAGroupAction( rawMessage, {
+		scope: currentScope,
+		targetBlock: metaTargetBlock,
+	} );
+	if ( advCssAction ) return actionResult( advCssAction );
+
+	// Dynamic Content group
+	const dcAction = buildDcGroupAction( rawMessage, {
+		scope: currentScope,
+		targetBlock: dcTargetBlock,
+	} );
+	if ( dcAction ) return actionResult( dcAction );
+
+	// Button groups (only when button context is active)
+	if ( isButtonContext ) {
+		const buttonA = buildButtonAGroupAction( rawMessage, { scope: currentScope } );
+		if ( buttonA ) return actionResult( buttonA );
+		const buttonB = buildButtonBGroupAction( rawMessage, { scope: currentScope } );
+		if ( buttonB ) return actionResult( buttonB );
+		const buttonC = buildButtonCGroupAction( rawMessage, { scope: currentScope } );
+		if ( buttonC ) return actionResult( buttonC );
+		const buttonI = buildButtonIGroupAction( rawMessage, { scope: currentScope } );
+		if ( buttonI ) return actionResult( buttonI );
+	}
+
+	// Text groups (only when text context is active)
+	if ( isTextContext ) {
+		const textList = buildTextListGroupAction( rawMessage, { scope: currentScope } );
+		if ( textList ) return actionResult( textList );
+		const textL = buildTextLGroupAction( rawMessage, { scope: currentScope } );
+		if ( textL ) return actionResult( textL );
+		const textP = buildTextPGroupAction( rawMessage, { scope: currentScope } );
+		if ( textP ) return actionResult( textP );
+		const textC = buildTextCGroupAction( rawMessage, { scope: currentScope } );
+		if ( textC ) return actionResult( textC );
+	}
+
+	// Container A-group
+	const aGroup = buildContainerAGroupAction( rawMessage, { scope: currentScope } );
+	if ( aGroup ) return actionResult( aGroup );
+
+	// Container B-group
+	const bGroup = buildContainerBGroupAction( rawMessage, { scope: currentScope, isButtonContext } );
+	if ( bGroup ) return actionResult( bGroup );
+
+	// Container C-group
+	const cGroup = buildContainerCGroupAction( rawMessage, { scope: currentScope } );
+	if ( cGroup ) return actionResult( cGroup );
+
+	// Container D-group
+	const dGroup = buildContainerDGroupAction( rawMessage, { scope: currentScope } );
+	if ( dGroup ) return actionResult( dGroup );
+
+	// Container E-group
+	const eGroup = buildContainerEGroupAction( rawMessage, { scope: currentScope } );
+	if ( eGroup ) return actionResult( eGroup );
+
+	// Container F-group
+	const fGroup = buildContainerFGroupAction( rawMessage, { scope: currentScope } );
+	if ( fGroup ) return actionResult( fGroup );
+
+	// Container M-group
+	const mGroup = buildContainerMGroupAction( rawMessage, { scope: currentScope } );
+	if ( mGroup ) return actionResult( mGroup );
+
+	// Container W-group
+	const wGroup = buildContainerWGroupAction( rawMessage, {
+		scope: currentScope,
+		targetBlock: selectedBlock?.name?.includes( 'column' ) ? 'column' : null,
+		blockName: selectedBlock?.name,
+	} );
+	if ( wGroup ) return actionResult( wGroup );
+
+	// Container Z-group
+	const zGroup = buildContainerZGroupAction( rawMessage, { scope: currentScope } );
+	if ( zGroup ) return actionResult( zGroup );
+
+	// Container P-group
+	const pGroup = buildContainerPGroupAction( rawMessage, { scope: currentScope } );
+	if ( pGroup ) return actionResult( pGroup );
+
+	// Container R-group
+	const rGroup = buildContainerRGroupAction( rawMessage, { scope: currentScope } );
+	if ( rGroup ) return actionResult( rGroup );
+
+	// Container S-group
+	const sGroup = buildContainerSGroupAction( rawMessage, { scope: currentScope } );
+	if ( sGroup ) return actionResult( sGroup );
+
+	// Container T-group
+	const tGroup = buildContainerTGroupAction( rawMessage, { scope: currentScope } );
+	if ( tGroup ) return actionResult( tGroup );
+
+	// Container O-group
+	const oGroup = buildContainerOGroupAction( rawMessage, { scope: currentScope } );
+	if ( oGroup ) return actionResult( oGroup );
+
+	// Container H-group
+	const hGroup = buildContainerHGroupAction( rawMessage, { scope: currentScope } );
+	if ( hGroup ) return actionResult( hGroup );
+
+	return null;
+};
+
+/**
+ * 3. Numeric-value patterns (spacing, image sizing, size limits, border radius).
+ */
+const routeNumericPatterns = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, isGlobalScope, isImageRequest, selectedBlock } = ctx;
+
+	// Spacing removal
+	if ( ! isGlobalScope ) {
+		const removeSpacing = parseRemoveSpacingRequest( rawMessage );
+		if ( removeSpacing ) {
+			const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+			const targetBlock =
+				currentScope === 'page'
+					? detectSpacingTarget( rawMessage ) || 'container'
+					: null;
+			const parts = removeSpacing.property.split( '_' );
+			const label =
+				parts.length === 2
+					? `${ parts[ 1 ] } ${ parts[ 0 ] }`
+					: removeSpacing.property;
+			return actionResult( {
+				action: actionType,
+				property: removeSpacing.property,
+				value: removeSpacing.value,
+				...( targetBlock ? { target_block: targetBlock } : {} ),
+				message: `Removed ${ label }.`,
+			} );
+		}
+	}
+
+	// Spacing clarification (vague — no numeric value given)
+	const spacingIntent = getSpacingIntent( rawMessage );
+	if (
+		( lowerMessage.includes( 'spacing' ) ||
+			lowerMessage.includes( 'space' ) ||
+			lowerMessage.includes( 'padding' ) ||
+			lowerMessage.includes( 'margin' ) ||
+			lowerMessage.includes( 'taller' ) ) &&
+		! ctx.hasExplicitNumericValue &&
+		! lowerMessage.includes( 'compact' ) &&
+		! lowerMessage.includes( 'comfortable' ) &&
+		! lowerMessage.includes( 'spacious' ) &&
+		! lowerMessage.includes( 'square' )
+	) {
+		let target = null;
+		if ( lowerMessage.includes( 'video' ) ) target = 'video';
+		else if ( lowerMessage.includes( 'image' ) ) target = 'image';
+		else if ( lowerMessage.includes( 'button' ) ) target = 'button';
+		else if ( lowerMessage.includes( 'container' ) || lowerMessage.includes( 'section' ) )
+			target = 'container';
+
+		if ( ! target && currentScope === 'selection' && selectedBlock?.name?.includes( 'video' ) ) {
+			target = 'video';
+		}
+
+		const spacingBase =
+			spacingIntent?.base ||
+			( lowerMessage.includes( 'margin' ) ? 'margin' : 'padding' );
+		const spacingSide = spacingIntent?.side || null;
+		const spacingLabel = spacingSide ? `${ spacingSide } ${ spacingBase }` : spacingBase;
+
+		return clarifyResult( {
+			role: 'assistant',
+			content: target
+				? `How much ${ spacingLabel } for the ${ target }s?`
+				: `How much ${ spacingLabel } would you like?`,
+			options: [ 'Compact', 'Comfortable', 'Spacious', 'Remove' ],
+			targetContext: target || 'container',
+			spacingBase,
+			spacingSide,
+			executed: false,
+		} );
+	}
+
+	// Numeric padding/margin
+	const numericSpacing = parseNumericSpacingRequest( rawMessage );
+	if ( numericSpacing ) {
+		const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+		const targetBlock =
+			currentScope === 'page'
+				? detectSpacingTarget( rawMessage ) || 'container'
+				: null;
+		const parts = numericSpacing.property.split( '_' );
+		const label =
+			parts.length === 2
+				? `${ parts[ 1 ] } ${ parts[ 0 ] }`
+				: numericSpacing.property;
+		return actionResult( {
+			action: actionType,
+			property: numericSpacing.property,
+			value: numericSpacing.value,
+			...( targetBlock ? { target_block: targetBlock } : {} ),
+			message: `Applied ${ numericSpacing.value } ${ label }.`,
+		} );
+	}
+
+	// SVG Icon sizing — intercept before CLOUD_ICON_PATTERN in LAYOUT_PATTERNS
+	const isIconSelected =
+		selectedBlock?.name?.includes( 'svg-icon' ) ||
+		selectedBlock?.name?.includes( 'icon-maxi' );
+	const mentionsIconInMsg = /\bicon\b|\bsvg\b/.test( lowerMessage );
+	const isIconSizingContext = isIconSelected || mentionsIconInMsg;
+
+	if ( isIconSizingContext ) {
+		const hasStrokeOrBorderContext = /\b(stroke|border|outline|line)\b/.test( lowerMessage );
+		const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+
+		// Absolute pixel / percent width — "make the icon 100px width", "icon 50% wide"
+		if ( ! hasStrokeOrBorderContext ) {
+			const iconAbsMatch =
+				lowerMessage.match( /\b(?:icon|svg)\b[^.]*?(\d+(?:\.\d+)?)\s*(px|%)[^.]*?\b(?:width|wide|size)\b/i ) ||
+				lowerMessage.match( /(\d+(?:\.\d+)?)\s*(px|%)[^.]*?\b(?:icon|svg)\b[^.]*?\b(?:width|wide|size)\b/i );
+			if ( iconAbsMatch ) {
+				const val = Number( iconAbsMatch[ 1 ] );
+				const unit = ( iconAbsMatch[ 2 ] || 'px' ).toLowerCase();
+				return actionResult( {
+					action: actionType,
+					property: 'width',
+					value: `${ val }${ unit }`,
+					target_block: 'icon',
+					message: `Icon width set to ${ val }${ unit }.`,
+				} );
+			}
+		}
+
+		// Relative multiplier — "twice", "double", "Nx bigger", "N% bigger/of original"
+		const wordMultiplierMatch = lowerMessage.match( /\b(twice|double)\b/i );
+		const numberXMatch = lowerMessage.match( /\b(\d+(?:\.\d+)?)\s*x\b(?!.*\bpx\b)/i );
+		const percentMultiplierMatch = lowerMessage.match(
+			/\b(\d+)\s*%(?:\s*(?:bigger|larger|of\s+(?:the\s+)?original|of\s+(?:the\s+)?(?:current|its)?\s*size))?/i
+		);
+
+		if ( wordMultiplierMatch ) {
+			const multiplier = 2;
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: multiplier,
+				target_block: 'icon',
+				message: `Icon size scaled to ${ multiplier }x.`,
+			} );
+		}
+
+		if ( numberXMatch ) {
+			const multiplier = Number( numberXMatch[ 1 ] );
+			if ( multiplier > 0 && multiplier <= 20 ) {
+				return actionResult( {
+					action: actionType,
+					property: 'svg_width_relative',
+					value: multiplier,
+					target_block: 'icon',
+					message: `Icon size scaled to ${ multiplier }x.`,
+				} );
+			}
+		}
+
+		if ( percentMultiplierMatch ) {
+			const pct = Number( percentMultiplierMatch[ 1 ] );
+			const hasSizingIntent =
+				/\b(bigger|larger|scale|size|of\s+(?:the\s+)?original)\b/.test( lowerMessage ) ||
+				isIconSelected;
+			if ( hasSizingIntent && pct > 0 && pct <= 2000 ) {
+				const multiplier = pct / 100;
+				return actionResult( {
+					action: actionType,
+					property: 'svg_width_relative',
+					value: multiplier,
+					target_block: 'icon',
+					message: `Icon size set to ${ pct }% of original.`,
+				} );
+			}
+		}
+
+		// Generic bigger / smaller / wider / taller for icon
+		if ( /\b(bigger|larger|enlarge|scale\s*up|size\s*up|wider|increase\s*size|grow)\b/.test( lowerMessage ) ) {
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: 1.2,
+				target_block: 'icon',
+				message: 'Icon size increased by 20%.',
+			} );
+		}
+		if ( /\b(smaller|shrink|scale\s*down|size\s*down|narrower|reduce\s*size|decrease\s*size)\b/.test( lowerMessage ) ) {
+			return actionResult( {
+				action: actionType,
+				property: 'svg_width_relative',
+				value: 0.8,
+				target_block: 'icon',
+				message: 'Icon size decreased by 20%.',
+			} );
+		}
+	}
+
+	// Image: aspect ratio, width, height
+	if ( isImageRequest ) {
+		const ratioMatch = lowerMessage.match( /(\d+)\s*[:/]\s*(\d+)/ );
+		if ( ratioMatch ) {
+			const ratioValue = resolveImageRatioValue( ratioMatch[ 1 ], ratioMatch[ 2 ] );
+			return actionResult( {
+				action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+				property: 'image_ratio',
+				value: ratioValue,
+				target_block: 'image',
+				message: `Aspect ratio set to ${ ratioMatch[ 1 ] }:${ ratioMatch[ 2 ] }.`,
+			} );
+		}
+
+		const widthMatch = lowerMessage.match(
+			/(?:image|img).*(?:width|wide)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i
+		);
+		if ( widthMatch ) {
+			const value = Number( widthMatch[ 1 ] );
+			const unit = widthMatch[ 2 ];
+			const prop = unit === '%' ? 'img_width' : 'width';
+			return actionResult( {
+				action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+				property: prop,
+				value,
+				target_block: 'image',
+				message: `Image width set to ${ value }${ unit }.`,
+			} );
+		}
+
+		const heightMatch = lowerMessage.match(
+			/(?:image|img).*(?:height|tall)\s*(?:to|=|is)?\s*(\d+)\s*(px|%)/i
+		);
+		if ( heightMatch ) {
+			const value = Number( heightMatch[ 1 ] );
+			const unit = heightMatch[ 2 ];
+			return actionResult( {
+				action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+				property: 'height',
+				value,
+				target_block: 'image',
+				message: `Image height set to ${ value }${ unit }.`,
+			} );
+		}
+	}
+
+	// Min/max width & height
+	const resolveSizeTarget = () => {
+		if (
+			lowerMessage.includes( 'image' ) ||
+			lowerMessage.includes( 'photo' ) ||
+			lowerMessage.includes( 'picture' )
+		)
+			return 'image';
+		if ( lowerMessage.includes( 'button' ) ) return 'button';
+		if (
+			lowerMessage.includes( 'container' ) ||
+			lowerMessage.includes( 'section' ) ||
+			lowerMessage.includes( 'row' ) ||
+			lowerMessage.includes( 'column' )
+		)
+			return 'container';
+		if ( selectedBlock?.name ) {
+			if ( selectedBlock.name.includes( 'image' ) ) return 'image';
+			if ( selectedBlock.name.includes( 'button' ) ) return 'button';
+			if ( selectedBlock.name.includes( 'container' ) ) return 'container';
+		}
+		return 'container';
+	};
+
+	const limitMatch = lowerMessage.match(
+		/\b(max(?:imum)?|min(?:imum)?)\s*[- ]*(width|height)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i
+	);
+	const limitMatchAlt = lowerMessage.match(
+		/\b(width|height)\s*(max(?:imum)?|min(?:imum)?)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|vh|vw|em|rem)?/i
+	);
+
+	if ( limitMatch || limitMatchAlt ) {
+		const match = limitMatch || limitMatchAlt;
+		const isAlt = Boolean( limitMatchAlt );
+		const limitTypeRaw = isAlt ? match[ 2 ] : match[ 1 ];
+		const dimension = isAlt ? match[ 1 ] : match[ 2 ];
+		const numberValue = Number( match[ 3 ] );
+		const unitValue = match[ 4 ];
+
+		if ( ! Number.isNaN( numberValue ) ) {
+			const limitType = limitTypeRaw.toLowerCase().startsWith( 'max' ) ? 'max' : 'min';
+			const prop = `${ limitType }_${ dimension.toLowerCase() }`;
+			const value = unitValue ? `${ numberValue }${ unitValue }` : numberValue;
+			const labelUnit = unitValue || 'px';
+			return actionResult( {
+				action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+				property: prop,
+				value,
+				target_block: resolveSizeTarget(),
+				message: `${ limitType.toUpperCase() } ${ dimension } set to ${ numberValue }${ labelUnit }.`,
+			} );
+		}
+	}
+
+	// Border radius — numeric
+	const radiusMatch = lowerMessage.match(
+		/\b(?:corner|corners|radius|rounded)\b[^0-9-]*(-?\d+(?:\.\d+)?)\s*(px|%|em|rem)?/i
+	);
+	if ( radiusMatch ) {
+		const numericValue = Number( radiusMatch[ 1 ] );
+		if ( ! Number.isNaN( numericValue ) ) {
+			return actionResult( {
+				action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+				property: 'border_radius',
+				value: numericValue,
+				message: `Applied border radius (${ numericValue }px).`,
+			} );
+		}
+	}
+
+	return null;
+};
+
+/**
+ * 4. Direct-removal patterns (square corners, shadow, border).
+ */
+const routeDirectRemovals = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, selectedBlock } = ctx;
+
+	const hasRoundIntent = /\bround(?:ed|ing|er)?\b/.test( lowerMessage );
+
+	// Square / remove corners
+	if (
+		lowerMessage.includes( 'square' ) ||
+		( lowerMessage.includes( 'remove' ) &&
+			( hasRoundIntent || lowerMessage.includes( 'radius' ) ) )
+	) {
+		const { isCanvasScope: isCornerCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
+		return actionResult(
+			currentScope === 'selection'
+				? {
+						action: 'update_selection',
+						property: 'border_radius',
+						value: 0,
+						...( isCornerCanvasScope ? { canvas_scope: true } : {} ),
+						message: 'Removed rounded corners from selected block.',
+				  }
+				: {
+						action: 'update_page',
+						property: 'border_radius',
+						value: 0,
+						...( isCornerCanvasScope ? { canvas_scope: true } : {} ),
+						message: 'Removed rounded corners.',
+				  }
+		);
+	}
+
+	// Remove shadow
+	if (
+		( lowerMessage.includes( 'remove' ) && lowerMessage.includes( 'shadow' ) ) ||
+		lowerMessage.includes( 'no shadow' )
+	) {
+		const { isCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
+		return actionResult(
+			currentScope === 'selection'
+				? {
+						action: 'update_selection',
+						property: 'box_shadow',
+						value: 'none',
+						...( isCanvasScope ? { canvas_scope: true } : {} ),
+						message: isCanvasScope
+							? 'Removed canvas shadow from selected block.'
+							: 'Removed shadow from selected block.',
+				  }
+				: {
+						action: 'update_page',
+						property: 'box_shadow',
+						value: 'none',
+						...( isCanvasScope ? { canvas_scope: true } : {} ),
+						message: 'Removed shadows.',
+				  }
+		);
+	}
+
+	// Remove border
+	if (
+		lowerMessage.includes( 'remove' ) &&
+		lowerMessage.includes( 'border' ) &&
+		! lowerMessage.includes( 'radius' )
+	) {
+		let explicitTarget = null;
+		if ( lowerMessage.includes( 'image' ) ) explicitTarget = 'image';
+		else if ( lowerMessage.includes( 'button' ) ) explicitTarget = 'button';
+		else if ( lowerMessage.includes( 'container' ) || lowerMessage.includes( 'section' ) )
+			explicitTarget = 'container';
+
+		const { isCanvasScope: isBorderCanvasScope } = resolveBlockScope( selectedBlock, lowerMessage );
+
+		return actionResult( {
+			...( currentScope === 'selection'
+				? {
+						action: 'update_selection',
+						property: 'border',
+						value: 'none',
+						message: 'Removed border from selected block.',
+				  }
+				: {
+						action: 'update_page',
+						property: 'border',
+						value: 'none',
+						message: 'Removed borders.',
+				  } ),
+			...( explicitTarget ? { target_block: explicitTarget } : {} ),
+			...( isBorderCanvasScope ? { canvas_scope: true } : {} ),
+		} );
+	}
+
+	// Alignment clarifications
+	if (
+		lowerMessage.includes( 'align' ) &&
+		lowerMessage.includes( 'center' ) &&
+		( lowerMessage.includes( 'everything' ) || lowerMessage.includes( 'all' ) )
+	) {
+		return clarifyResult( {
+			role: 'assistant',
+			content: 'Would you like to align the text or the items?',
+			options: [ 'Align Text', 'Align Items' ],
+			alignmentType: 'center',
+			executed: false,
+		} );
+	}
+
+	if (
+		lowerMessage.includes( 'align' ) &&
+		( lowerMessage.includes( 'everything' ) || lowerMessage.includes( 'all' ) ) &&
+		! lowerMessage.includes( 'left' ) &&
+		! lowerMessage.includes( 'right' ) &&
+		! lowerMessage.includes( 'center' ) &&
+		! lowerMessage.includes( 'bottom' ) &&
+		! lowerMessage.includes( 'top' )
+	) {
+		return clarifyResult( {
+			role: 'assistant',
+			content: 'How would you like to align everything?',
+			options: [ 'Align Left', 'Align Center', 'Align Right' ],
+			executed: false,
+		} );
+	}
+
+	return null;
+};
+
+/** Build context-aware colour-target options for the color_what clarification. */
+const buildColorWhatOptions = selectedBlock => {
+	const name = String( selectedBlock?.name || '' ).toLowerCase();
+	const isIcon = name.includes( 'icon-maxi' ) || name.includes( 'svg-icon' );
+	if ( isIcon ) return [ 'Icon colour', 'Background colour', 'Border colour' ];
+	return [ 'Text colour', 'Background colour', 'Border colour', 'Icon colour' ];
+};
+
+/**
+ * 4b. Named-colour direct action.
+ *
+ * Handles "change X colour to red/green/black/…" or "set border colour to palette 3" etc.
+ * Resolves target via getColorTargetFromMessage, resolves colour from the message,
+ * and emits a direct action scoped to the active breakpoint — no flow required.
+ *
+ * For the 'border' target this writes only the colour attributes (palette-status / palette-color /
+ * color) to avoid touching style or width. For all other targets it delegates to buildColorUpdate.
+ *
+ * Falls through (returns null) when:
+ *  - no colour change intent is detectable
+ *  - no colour value is resolvable from the message
+ *  - target is 'element' (ambiguous — let the existing color_what clarification handle it)
+ *  - message already contains a #hex (handled by routeHexColor)
+ */
+const routeNamedColorChange = ( rawMessage, ctx ) => {
+	const { lowerMessage, hexColor, currentScope, selectedBlock, isGlobalScope } = ctx;
+
+	// Hex colours are handled by routeHexColor.
+	if ( hexColor ) return null;
+	if ( isGlobalScope ) return null;
+
+	// Require an explicit colour-change intent verb OR a bare "colour <name>" / "<name> colour"
+	// pattern so we don't intercept unrelated messages (e.g. "add a red background image").
+	const hasChangeIntent =
+		/\b(change|update|set|make|switch|turn)\b/.test( lowerMessage ) ||
+		/\bcolou?r\b.*\bto\b/.test( lowerMessage ) ||
+		// Bare "black colour" / "colour black" style — just two words, no verb needed.
+		/^(?:\w+\s+)?(?:black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal)\s+colou?r\s*$/i.test( lowerMessage ) ||
+		/^(?:\w+\s+)?colou?r\s+(?:black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal)\s*$/i.test( lowerMessage );
+	if ( ! hasChangeIntent ) return null;
+
+	// Require a colour keyword — named colour or palette reference.
+	const NAMED_COLOR_MAP = {
+		black: '#000000',
+		white: '#ffffff',
+		red: '#ff0000',
+		blue: '#0000ff',
+		green: '#008000',
+		yellow: '#ffff00',
+		orange: '#ffa500',
+		purple: '#800080',
+		pink: '#ffc0cb',
+		gray: '#808080',
+		grey: '#808080',
+		cyan: '#00ffff',
+		magenta: '#ff00ff',
+		brown: '#a52a2a',
+		navy: '#000080',
+		teal: '#008080',
+	};
+
+	let resolvedColor = null;
+	// True when the colour came from an explicit "palette N" / "color N" reference —
+	// those are unambiguous and can be applied directly. Named words like "blue" are
+	// ambiguous because the palette may have a different shade, so we show the picker.
+	let isExplicitPalette = false;
+
+	// Palette number — only when accompanied by a palette/color keyword to avoid
+	// false-positives on any standalone digit in the message.
+	const explicitPalette = lowerMessage.match(
+		/\b(?:palette|colou?r)\s*(?:number\s*)?([1-8])\b|\bcolor\s*([1-8])\b/i
+	);
+	if ( explicitPalette ) {
+		resolvedColor = parseInt( explicitPalette[ 1 ] || explicitPalette[ 2 ], 10 );
+		isExplicitPalette = true;
+	}
+
+	// Named colour word — resolved to a fallback hex but shown as palette picker
+	// because the user's style card may have a different shade for that name.
+	let namedColorWord = null;
+	if ( resolvedColor === null ) {
+		for ( const [ word, hex ] of Object.entries( NAMED_COLOR_MAP ) ) {
+			if ( new RegExp( `\\b${ word }\\b` ).test( lowerMessage ) ) {
+				resolvedColor = hex;
+				namedColorWord = word;
+				break;
+			}
+		}
+	}
+
+	if ( resolvedColor === null ) return null;
+
+	const colorTarget = getColorTargetFromMessage( lowerMessage, { selectedBlock } );
+
+	// Ambiguous target — trigger color_what clarification carrying the resolved colour.
+	// For named words, also carry the fallback hex so it can be offered as an option.
+	if ( colorTarget === 'element' ) {
+		return {
+			type: 'flow',
+			flowContext: { type: 'color_what', resolvedColor: isExplicitPalette ? resolvedColor : null, fallbackHex: namedColorWord ? resolvedColor : null, namedColorWord },
+			message: {
+				role: 'assistant',
+				content: 'Colour of what would you like to change?',
+				options: buildColorWhatOptions( selectedBlock ),
+				optionsType: 'text',
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
+
+	const actionType = currentScope === 'selection' ? 'update_selection' : 'update_page';
+	const prefix = selectedBlock ? getBlockPrefix( selectedBlock.name ) : '';
+
+	// Border target: write only colour attributes to the active breakpoint.
+	// This avoids triggering a full border flow and respects responsive scoping.
+	if ( colorTarget === 'border' || colorTarget === 'button-border' ) {
+		const activeBp = getActiveBreakpoint();
+
+		// Named colour word (e.g. "blue") — palette shade is unknown, show picker
+		// with a hint so the user can pick the right palette colour or confirm the hex.
+		if ( namedColorWord && ! isExplicitPalette ) {
+			return {
+				type: 'flow',
+				flowContext: {
+					type: 'color_palette',
+					colorTarget,
+					fallbackHex: resolvedColor,
+					namedColorWord,
+					breakpoint: activeBp,
+					...( colorTarget === 'button-border' ? { target_block: 'button' } : {} ),
+				},
+				message: {
+					role: 'assistant',
+					content: `Which ${ namedColorWord }? Pick from your palette or I'll use ${ resolvedColor }:`,
+					options: true,
+					optionsType: 'palette',
+					colorTarget: colorTarget === 'button-border' ? 'button-border' : 'border',
+					executed: false,
+				},
+				sidebarProperty: null,
+			};
+		}
+
+		const isPalette = typeof resolvedColor === 'number';
+		return actionResult( {
+			action: actionType,
+			property: 'border_color_only',
+			value: {
+				color: resolvedColor,
+				isPalette,
+				breakpoint: activeBp,
+			},
+			...( colorTarget === 'button-border' ? { target_block: 'button' } : {} ),
+			message: 'Updated border colour.',
+		} );
+	}
+
+	// All other targets — use the shared buildColorUpdate path.
+	// For named colour words (e.g. "blue"), show the palette picker so the user can
+	// choose the exact shade from their style card rather than applying a generic hex.
+	if ( namedColorWord && ! isExplicitPalette ) {
+		return {
+			type: 'flow',
+			flowContext: {
+				type: 'color_palette',
+				colorTarget,
+				fallbackHex: resolvedColor,
+				namedColorWord,
+			},
+			message: {
+				role: 'assistant',
+				content: `Which ${ namedColorWord }? Pick from your palette or I'll use ${ resolvedColor }:`,
+				options: true,
+				optionsType: 'palette',
+				colorTarget,
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
+
+	const colorUpdate = buildColorUpdate( colorTarget, resolvedColor, { selectedBlock } );
+	if ( ! colorUpdate.property ) return null;
+
+	return actionResult( {
+		action: actionType,
+		property: colorUpdate.property,
+		value: colorUpdate.value,
+		target_block: colorUpdate.targetBlock,
+		message: `Updated ${ colorUpdate.msgText } colour.`,
+	} );
+};
+
+/**
+ * 4c. Link colour clarification — handles "change link [hover/active/visited] colour"
+ *     when no colour value is provided. Returns a palette picker flow so the user can
+ *     choose a colour without the message being swallowed by the generic hover_effect
+ *     layout pattern.
+ */
+const routeLinkColorClarify = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, isTextContext } = ctx;
+	if ( ! isTextContext ) return null;
+
+	// Must mention "link" and a colour-change intent, but no explicit colour value.
+	if ( ! /\blinks?\b/.test( lowerMessage ) ) return null;
+	if ( ! /(colou?r)/.test( lowerMessage ) ) return null;
+
+	// Skip if a colour value is already present (palette N, hex, named colour word)
+	// — those are handled by routeNamedColorChange / routeHexColor / buildTextLGroupAction.
+	const hasPalette = /\b(?:palette|colou?r)\s*(?:number\s*)?[1-8]\b/i.test( lowerMessage );
+	const hasHex = /#[0-9a-f]{3,6}\b/i.test( lowerMessage );
+	const NAMED_COLOURS = /\b(black|white|red|blue|green|yellow|orange|purple|pink|gray|grey|cyan|magenta|brown|navy|teal|transparent)\b/;
+	const hasNamedColor = NAMED_COLOURS.test( lowerMessage );
+	if ( hasPalette || hasHex || hasNamedColor ) return null;
+
+	// Determine the link state from the message.
+	const stateMatch = lowerMessage.match( /\b(hover|active|visited)\b/ );
+	const state = stateMatch ? stateMatch[ 1 ] : 'base';
+	const colorTarget = state === 'base' ? 'link' : `link-${ state }`;
+	const stateLabel = state !== 'base' ? ` ${ state }` : '';
+
+	return {
+		type: 'flow',
+		flowContext: { type: 'color_palette', colorTarget, fallbackHex: null, namedColorWord: null },
+		message: {
+			role: 'assistant',
+			content: `Choose a colour for the link${ stateLabel }:`,
+			options: true,
+			optionsType: 'palette',
+			colorTarget,
+			executed: false,
+		},
+		sidebarProperty: null,
+	};
+};
+
+/**
+ * 5. Hex-colour direct action — applies when the message contains a #hex code
+ *    and is not primarily about borders/outlines/shadows.
+ */
+const routeHexColor = ( rawMessage, ctx ) => {
+	const { hexColor, lowerMessage, currentScope, selectedBlock } = ctx;
+	if ( ! hexColor ) return null;
+
+	const isFlowIntent =
+		lowerMessage.includes( 'border' ) ||
+		lowerMessage.includes( 'outline' ) ||
+		lowerMessage.includes( 'shadow' ) ||
+		lowerMessage.includes( 'glow' );
+
+	if ( isFlowIntent ) return null;
+
+	const colorTarget = getColorTargetFromMessage( lowerMessage, { selectedBlock } );
+	const colorUpdate = buildColorUpdate( colorTarget, hexColor, { selectedBlock } );
+
+	if ( ! colorUpdate.property ) return null;
+
+	return actionResult( {
+		action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+		property: colorUpdate.property,
+		value: colorUpdate.value,
+		target_block: colorUpdate.targetBlock,
+		message: `Applied custom colour to ${ colorUpdate.msgText }.`,
+	} );
+};
+
+/**
+ * 6. Shape-divider clarification.
+ */
+const routeShapeDivider = ctx => {
+	const { lowerMessage, hasShapeDividerIntent, hasShapeDividerStyle } = ctx;
+	if ( ! hasShapeDividerIntent || hasShapeDividerStyle ) return null;
+
+	const wantsTop = /\btop\b/.test( lowerMessage );
+	const wantsBottom = /\bbottom\b/.test( lowerMessage );
+
+	if ( ! wantsTop && ! wantsBottom ) {
+		return clarifyResult( {
+			role: 'assistant',
+			content: 'Where do you want the shape divider?',
+			options: [ 'Top', 'Bottom', 'Both' ],
+			shapeDividerLocation: true,
+			executed: false,
+		} );
+	}
+
+	const location =
+		wantsTop && wantsBottom ? 'both' : wantsTop ? 'top' : 'bottom';
+	return clarifyResult( {
+		role: 'assistant',
+		content: 'Which shape style should the divider use?',
+		options: [ 'Wave', 'Curve', 'Slant', 'Triangle' ],
+		shapeDividerTarget: location,
+		executed: false,
+	} );
+};
+
+/**
+ * Resolve the cloud-icon target from selected block / message intent.
+ *
+ * @param {string} lowerMessage
+ * @param {Object|null} selectedBlock
+ * @returns {{ targetBlock: string, property: string, svgTarget: string }}
+ */
+const resolveCloudIconTarget = ( lowerMessage, selectedBlock ) => {
+	const selectedName = selectedBlock?.name || '';
+	if ( selectedName.includes( 'button' ) )
+		return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+	if ( selectedName.includes( 'icon-maxi' ) || selectedName.includes( 'svg-icon' ) )
+		return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+
+	if ( /\bbutton\b/.test( lowerMessage ) )
+		return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+	if ( /\b(icon block|svg icon|svg-icon|icon maxi)\b/.test( lowerMessage ) )
+		return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+	if ( /\bicons?\b/.test( lowerMessage ) )
+		return { targetBlock: 'icon', property: 'icon_svg', svgTarget: 'svg' };
+
+	return { targetBlock: 'button', property: 'button_icon_svg', svgTarget: 'icon' };
+};
+
+/**
+ * Resolve the layout target for a selection-scope layout intent.
+ *
+ * @param {Object|null} selectedBlock
+ * @param {Function}    selectFn       WordPress `select` function
+ * @returns {string|null}
+ */
+const resolveSelectionLayoutTarget = ( selectedBlock, selectFn ) => {
+	if ( ! selectedBlock ) return null;
+
+	const hasChild = ( block, name ) =>
+		block?.innerBlocks?.some( child => child.name.includes( name ) );
+
+	if ( selectedBlock.name.includes( 'row' ) ) return 'row';
+	if ( selectedBlock.name.includes( 'column' ) ) return 'column';
+	if ( selectedBlock.name.includes( 'group' ) ) return 'group';
+	if ( selectedBlock.name.includes( 'container' ) ) {
+		if ( hasChild( selectedBlock, 'row' ) ) return 'row';
+		if ( hasChild( selectedBlock, 'column' ) ) return 'column';
+		if ( hasChild( selectedBlock, 'group' ) ) return 'group';
+		return 'container';
+	}
+
+	if ( ! selectFn ) return null;
+	const { getBlockParents, getBlock } = selectFn( 'core/block-editor' );
+	const parentIds = getBlockParents( selectedBlock.clientId ) || [];
+	const parentBlocks = parentIds.map( id => getBlock( id ) ).filter( Boolean );
+	const layoutParent = parentBlocks.find( p =>
+		p.name.includes( 'column' ) ||
+		p.name.includes( 'row' ) ||
+		p.name.includes( 'group' ) ||
+		p.name.includes( 'container' )
+	);
+
+	if ( ! layoutParent ) return null;
+	if ( layoutParent.name.includes( 'column' ) ) return 'column';
+	if ( layoutParent.name.includes( 'row' ) ) return 'row';
+	if ( layoutParent.name.includes( 'group' ) ) return 'group';
+	if ( layoutParent.name.includes( 'container' ) ) return 'container';
+	return null;
+};
+
+/**
+ * 7. LAYOUT_PATTERNS loop.
+ * Iterates over LAYOUT_PATTERNS and dispatches to sub-handlers based on
+ * the matched pattern's `property` field.
+ *
+ * @param {string}                      rawMessage
+ * @param {import('./types').RoutingContext} ctx
+ * @param {Function|null}               selectFn  WordPress `select` (optional, for parent lookup)
+ * @returns {import('./types').RouteResult|null}
+ */
+const routeLayoutPatterns = ( rawMessage, ctx, selectFn ) => {
+	if ( ctx.skipLayoutPatterns ) return null;
+
+	const {
+		lowerMessage, hexColor, currentScope, isGlobalScope,
+		requestedTarget, hasShapeDividerIntent, selectedBlock, allBlocks,
+	} = ctx;
+
+	for ( const pattern of LAYOUT_PATTERNS ) {
+		if ( isGlobalScope ) break;
+
+		// Skip hover patterns when targeting image
+		if ( requestedTarget === 'image' && ! pattern.target ) {
+			if (
+				pattern.property === 'hover_effect' ||
+				pattern.property.startsWith( 'hover_' )
+			) {
+				continue;
+			}
+		}
+
+		if ( ! lowerMessage.match( pattern.regex ) ) continue;
+
+		// Skip divider shape if shape-divider not in message
+		if ( hasShapeDividerIntent && pattern.target === 'divider' ) continue;
+
+		// Skip patterns whose target doesn't match what the user asked for
+		if (
+			requestedTarget &&
+			isTargetedPatternTarget( pattern.target ) &&
+			pattern.target !== requestedTarget
+		) {
+			continue;
+		}
+
+		// ── FSM Flow Trigger ─────────────────────────────────────────────────
+		if ( pattern.property.startsWith( 'flow_' ) ) {
+			const result = routeFlowPattern( rawMessage, pattern, ctx, selectFn );
+			if ( result ) return result;
+			continue; // startResponse was null or block mismatch — try next pattern
+		}
+
+		// ── Aesthetic (apply_theme) ──────────────────────────────────────────
+		if ( pattern.property === 'aesthetic' ) {
+			return actionResult( {
+				action: 'apply_theme',
+				prompt: `Apply ${ pattern.value } style: ${ lowerMessage }`,
+				message: pattern.pageMsg,
+			} );
+		}
+
+		// ── Cloud icon search ────────────────────────────────────────────────
+		if ( pattern.property === 'cloud_icon' ) {
+			const iconResult = routeCloudIcon( rawMessage, ctx );
+			if ( iconResult ) return iconResult;
+			continue; // skip pattern — icon check rejected it
+		}
+
+		// ── Insert blank block directly (no cloud library) ──────────────────
+		if ( pattern.property === 'insert_block' ) {
+			const blockTypeMatch = rawMessage.match(
+				/\b(container|row|column|section|block)\b/i
+			);
+			const blockType = blockTypeMatch
+				? blockTypeMatch[ 1 ].toLowerCase()
+				: 'container';
+			return {
+				type: 'insert_block',
+				params: { blockType },
+			};
+		}
+
+		// ── Insert leaf Maxi block into the current selection ────────────────
+		if ( pattern.property === 'insert_maxi_block' ) {
+			const leafMatch = lowerMessage.match(
+				/\b(image|photo|picture|text|paragraph|heading|button|cta|call.to.action|video|divider|separator|icon|svg)\b/i
+			);
+			const leafType = leafMatch ? leafMatch[ 1 ].toLowerCase() : 'image';
+			return {
+				type: 'insert_maxi_block',
+				params: {
+					leafType,
+					parentClientId: selectedBlock?.clientId || null,
+				},
+			};
+		}
+
+		// ── Create block (pattern insert) ───────────────────────────────────
+		if ( pattern.property === 'create_block' ) {
+			return {
+				type: 'create_block',
+				params: {
+					rawMessage,
+					targetClientId: selectedBlock?.clientId || null,
+				},
+			};
+		}
+
+		// ── Colour clarification ─────────────────────────────────────────────
+		if ( pattern.property === 'color_clarify' ) {
+			return routeColorClarify( rawMessage, pattern, ctx );
+		}
+
+		// ── use_prompt patterns ──────────────────────────────────────────────
+		let resolvedValue = pattern.value;
+		if ( pattern.value === 'use_prompt' ) {
+			const promptValue = resolvePromptValue( pattern.property, rawMessage );
+			if ( ! promptValue ) {
+				const missingMsg =
+					pattern.property === 'button_text'
+						? 'Please include the button text, e.g. "Set button text to Buy now".'
+						: pattern.property === 'button_url'
+						? 'Please include the URL, e.g. "Link the button to https://example.com".'
+						: pattern.property === 'captionContent'
+						? 'Please include the caption text, e.g. "Set caption to Summer Sale".'
+						: pattern.property === 'mediaAlt'
+						? 'Please include the alt text, e.g. "Set alt text to smiling customer".'
+						: pattern.property === 'mediaURL'
+						? 'Please include the image URL, e.g. "Replace image with https://example.com/photo.jpg".'
+						: 'Please include the value in your request.';
+
+				return clarifyResult( {
+					role: 'assistant',
+					content: missingMsg,
+					executed: false,
+				} );
+			}
+
+			resolvedValue = promptValue;
+			if ( pattern.property === 'icon_color' ) {
+				resolvedValue = {
+					target: resolveButtonIconTarget( lowerMessage ),
+					color: promptValue,
+				};
+			}
+		}
+
+		// ── Standard pattern ─────────────────────────────────────────────────
+		const isLayoutAlign =
+			pattern.property === 'align_items_flex' ||
+			pattern.property === 'justify_content';
+		let resolvedTarget = pattern.target || requestedTarget || 'container';
+
+		if ( ! pattern.target && currentScope === 'selection' && isLayoutAlign ) {
+			const selTarget = resolveSelectionLayoutTarget( selectedBlock, selectFn );
+			if ( selTarget ) resolvedTarget = selTarget;
+		}
+		if ( pattern.property.startsWith( 'shape_divider' ) ) {
+			resolvedTarget = 'container';
+		}
+
+		return actionResult(
+			currentScope === 'selection'
+				? {
+						action: 'update_selection',
+						property: pattern.property,
+						value: resolvedValue,
+						target_block: resolvedTarget,
+						message: pattern.selectionMsg,
+				  }
+				: {
+						action: 'update_page',
+						property: pattern.property,
+						value: resolvedValue,
+						target_block: resolvedTarget,
+						message: pattern.pageMsg,
+				  }
+		);
+	}
+
+	return null; // no pattern matched
+};
+
+/**
+ * Handles the `flow_*` branch inside the LAYOUT_PATTERNS loop.
+ * Returns a FlowResult or ImmediateUpdatesResult, or null if the flow can't
+ * be started (wrong block type, no blocks found, etc.).
+ */
+const routeFlowPattern = ( rawMessage, pattern, ctx, selectFn ) => {
+	const {
+		lowerMessage, hexColor, currentScope, selectedBlock, allBlocks,
+	} = ctx;
+
+	// Determine effective scope (user can override with "all/page/everywhere")
+	let flowScope = currentScope;
+	if ( /all|page|everywhere/i.test( lowerMessage ) ) flowScope = 'page';
+
+	const matchName = pattern.target || ctx.requestedTarget || 'container';
+	const selectionRoot = selectedBlock
+		? findBlockByClientId( allBlocks, selectedBlock.clientId ) || selectedBlock
+		: null;
+	const isTextTarget = matchName === 'text';
+	const wantsHeading = /\b(heading|headline|title|subheading|h[1-6])\b/.test( lowerMessage );
+	const wantsParagraph = /\b(paragraph|body\s*text|body)\b/.test( lowerMessage );
+
+	const getTextLevel = block =>
+		String( block?.attributes?.textLevel || '' ).toLowerCase();
+
+	const collectTextBlocks = blocks => {
+		const textBlocks = collectBlocks(
+			blocks,
+			block =>
+				block?.name &&
+				( block.name.includes( 'text' ) || block.name.includes( 'heading' ) )
+		);
+		if ( ! textBlocks.length ) return textBlocks;
+		if ( wantsHeading ) {
+			const heading = textBlocks.filter( b => {
+				if ( b?.name?.includes( 'heading' ) ) return true;
+				return /^h[1-6]$/.test( getTextLevel( b ) );
+			} );
+			if ( heading.length ) return heading;
+		}
+		if ( wantsParagraph ) {
+			const para = textBlocks.filter( b => getTextLevel( b ) === 'p' );
+			if ( para.length ) return para;
+		}
+		return textBlocks;
+	};
+
+	// Resolve target blocks based on scope
+	let targetBlocks = [];
+
+	if ( flowScope === 'selection' ) {
+		if ( ! selectedBlock ) {
+			return clarifyResult( {
+				role: 'assistant',
+				content: 'Please select a block first.',
+				executed: false,
+			} );
+		}
+
+		if ( isTextTarget ) {
+			const textBlocks = selectionRoot ? collectTextBlocks( [ selectionRoot ] ) : [];
+			if ( ! textBlocks.length ) {
+				return clarifyResult( {
+					role: 'assistant',
+					content: 'Please select a text or heading block.',
+					executed: false,
+				} );
+			}
+			targetBlocks = textBlocks;
+		} else {
+			// If the selected block doesn't match this pattern's target, skip
+			if (
+				matchName &&
+				selectedBlock?.name &&
+				! selectedBlock.name.includes( matchName )
+			) {
+				return null; // skip → try next pattern
+			}
+			targetBlocks = [ selectionRoot || selectedBlock ];
+		}
+	} else {
+		targetBlocks = isTextTarget
+			? collectTextBlocks( allBlocks )
+			: collectBlocks( allBlocks, b => b.name.includes( matchName ) );
+
+		if ( targetBlocks.length === 0 ) {
+			return clarifyResult( {
+				role: 'assistant',
+				content: isTextTarget
+					? 'No text blocks found on this page.'
+					: `No ${ matchName }s found on this page.`,
+				executed: false,
+			} );
+		}
+	}
+
+	// Run the block handler to get the flow's first step / response
+	const primaryBlock = targetBlocks[ 0 ];
+
+	// Resolve prefix via the shared utility — handles "canvas" keyword for blocks
+	// that have both an element layer (prefixed) and a canvas layer (unprefixed).
+	const { prefix, isCanvasScope } = resolveBlockScope( primaryBlock, lowerMessage );
+
+	const flowHandler =
+		getAiHandlerForBlock( primaryBlock ) || getAiHandlerForTarget( matchName );
+
+	// Gather any pre-filled flow data from the message
+	const flowData = {};
+
+	// Persist the canvas scope flag so subsequent flow steps in useAiChatMessages
+	// can re-derive the same prefix without re-reading the original message.
+	if ( isCanvasScope ) {
+		flowData.canvasOverride = true;
+	}
+	const inferTextAlignment = msg => {
+		if ( /\bjustif(y|ied)\b/.test( msg ) ) return 'justify';
+		if ( /\b(center|centre|centered|centred)\b/.test( msg ) ) return 'center';
+		if ( /\bright\b/.test( msg ) ) return 'right';
+		if ( /\bleft\b/.test( msg ) ) return 'left';
+		return null;
+	};
+
+	if ( hexColor ) {
+		if ( pattern.property === 'flow_outline' || pattern.property === 'flow_border' )
+			flowData.border_color = hexColor;
+		if ( pattern.property === 'flow_shadow' )
+			flowData.shadow_color = hexColor;
+	}
+
+	// Pre-fill named colour into border flow so the colour step is skipped.
+	// Hex colours are already handled above; here we resolve named colour words.
+	if (
+		! flowData.border_color &&
+		( pattern.property === 'flow_outline' || pattern.property === 'flow_border' )
+	) {
+		const NAMED_COLOR_MAP_FLOW = {
+			black: '#000000', white: '#ffffff', red: '#ff0000', blue: '#0000ff',
+			green: '#008000', yellow: '#ffff00', orange: '#ffa500', purple: '#800080',
+			pink: '#ffc0cb', gray: '#808080', grey: '#808080', cyan: '#00ffff',
+			magenta: '#ff00ff', brown: '#a52a2a', navy: '#000080', teal: '#008080',
+		};
+		for ( const [ word, hex ] of Object.entries( NAMED_COLOR_MAP_FLOW ) ) {
+			if ( new RegExp( `\\b${ word }\\b` ).test( lowerMessage ) ) {
+				flowData.border_color = hex;
+				break;
+			}
+		}
+	}
+
+	// Pre-fill border flow data from the original message so clarification steps
+	// can be skipped when the user already specified color and/or shape modifier.
+	// Note: named-colour-only changes (no add/style intent) are handled earlier by
+	// routeNamedColorChange and never reach here.
+	if ( pattern.property === 'flow_border' || pattern.property === 'flow_outline' ) {
+		// Shape modifiers: seed border_radius so it survives every clarification step.
+		if ( /\b(round(ed)?|pill|circle|full)\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 50;
+		} else if ( /\bsoft\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 24;
+		} else if ( /\bsubtle\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 8;
+		} else if ( /\bsquare\b/i.test( lowerMessage ) ) {
+			flowData.border_radius = 0;
+		}
+	}
+
+	if ( pattern.property === 'flow_text_align' ) {
+		const inferred = inferTextAlignment( lowerMessage );
+		if ( inferred ) flowData.text_align = inferred;
+	}
+
+	if ( pattern.property === 'flow_icon_line_width' ) {
+		const widthMatch = lowerMessage.match(
+			/\b(?:stroke|line)\s*(?:width|thickness|weight)\b[^0-9]*([0-9]+(?:\.[0-9]+)?)/
+		);
+		if ( widthMatch ) {
+			const widthValue = Number( widthMatch[ 1 ] );
+			if ( Number.isFinite( widthValue ) ) flowData.icon_line_width = widthValue;
+		}
+	}
+
+	const startResponse = flowHandler
+		? flowHandler( primaryBlock, pattern.property, 'start', prefix, flowData )
+		: null;
+
+	if ( ! startResponse ) return null; // skip → try next pattern
+
+	// Immediate-apply case (no conversation step needed)
+	if ( startResponse.action === 'apply' ) {
+		const updates = [];
+		targetBlocks.forEach( blk => {
+			const p = isCanvasScope ? '' : getBlockPrefix( blk.name );
+			const handler =
+				getAiHandlerForBlock( blk ) || getAiHandlerForTarget( matchName );
+			const res = handler ? handler( blk, pattern.property, null, p, flowData ) : null;
+			if ( res?.action === 'apply' && res?.attributes ) {
+				updates.push( { clientId: blk.clientId, attributes: res.attributes } );
+			}
+		} );
+
+		const fallbackMsg =
+			flowScope === 'selection' ? pattern.selectionMsg : pattern.pageMsg;
+		const finalMsg = startResponse.message || fallbackMsg || 'Done.';
+
+		return {
+			type: 'immediate_updates',
+			updates,
+			message: {
+				role: 'assistant',
+				content: finalMsg,
+				executed: updates.length > 0,
+			},
+			sidebarProperty:
+				flowScope === 'selection' ? pattern.property : null,
+		};
+	}
+
+	// Flow context case (conversation continues)
+	return {
+		type: 'flow',
+		flowContext: {
+			flow: pattern.property,
+			pendingTarget: startResponse.target || null,
+			data: flowData,
+			mode: flowScope,
+			currentOptions: startResponse.options || [],
+			blockIds: targetBlocks.map( b => b.clientId ),
+		},
+		message: {
+			role: 'assistant',
+			content: startResponse.msg,
+			options: startResponse.options
+				? startResponse.options.map( o => o.label || o )
+				: startResponse.action === 'ask_palette'
+				? [ 'palette' ]
+				: [],
+			optionsType:
+				startResponse.action === 'ask_palette' ? 'palette' : 'text',
+			colorTarget: startResponse.target,
+			executed: false,
+		},
+		sidebarProperty:
+			flowScope === 'selection' ? pattern.property : null,
+	};
+};
+
+/**
+ * Handles the `cloud_icon` branch — runs the guard checks and returns
+ * a CloudIconResult with pre-computed params for the hook's async handler,
+ * or null if the pattern should be skipped.
+ */
+const routeCloudIcon = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, selectedBlock, allBlocks } = ctx;
+	const selectedName = selectedBlock?.name || '';
+
+	const isIconColorIntent =
+		/\b(colou?r|fill|stroke)\b/.test( lowerMessage ) ||
+		/\bline\s*width\b/.test( lowerMessage );
+
+	if ( isIconColorIntent ) return null; // skip this pattern
+
+	// Skip cloud icon search when user is asking about icon sizing
+	const isIconSizingIntent =
+		/\b(\d+\s*(?:px|%)|\d+\s*x\b|twice|double)\b/.test( lowerMessage ) ||
+		( /\b(bigger|larger|smaller|wider|shrink|enlarge|scale\s*(?:up|down))\b/.test( lowerMessage ) &&
+			( selectedName.includes( 'svg-icon' ) || selectedName.includes( 'icon-maxi' ) ) );
+	if ( isIconSizingIntent ) return null;
+
+	const hasIconKeyword = /\bicons?\b/.test( lowerMessage );
+	const hasCloudKeyword = /\b(cloud|library)\b/.test( lowerMessage );
+	const hasThemeIntent = /\b(?:theme|style|vibe|look)\b/.test( lowerMessage );
+	const hasPronounIntent = /\b(this|these|those|them)\b/.test( lowerMessage );
+	const hasChangeIntent =
+		/\b(change|swap|replace|use|set|add|insert|make|give|update)\b/.test(
+			lowerMessage
+		);
+	const matchTitlesIntent =
+		/\b(match|use|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(below|under|beneath|underneath|following|next)\b/.test(
+			lowerMessage
+		);
+	const matchTitlesToIconsIntent =
+		/\b(match|sync|update|set|make|change|swap|replace)\b[^.]*\b(title|titles|label|labels|text|heading|headings)\b[^.]*\bicons?\b/.test(
+			lowerMessage
+		) ||
+		/\b(title|titles|label|labels|text|heading|headings)\b[^.]*\b(match|sync|update|set|make|change)\b[^.]*\bicons?\b/.test(
+			lowerMessage
+		);
+	const mentionsOtherTargets =
+		/\b(text|heading|paragraph|container|section|background|layout|spacing|padding|margin|row|column|group|divider|image|video|button)\b/.test(
+			lowerMessage
+		);
+
+	const selectionRoot =
+		currentScope === 'selection' && selectedBlock
+			? findBlockByClientId( allBlocks, selectedBlock.clientId ) || selectedBlock
+			: null;
+	const scopeBlocks =
+		currentScope === 'selection' && selectionRoot ? [ selectionRoot ] : allBlocks;
+	const iconBlocksInScope = collectBlocks(
+		scopeBlocks,
+		block =>
+			block.name.includes( 'icon-maxi' ) || block.name.includes( 'svg-icon' )
+	);
+	const buttonBlocksInScope = collectBlocks( scopeBlocks, block =>
+		block.name.includes( 'button' )
+	);
+	const hasIconBlocksInScope = iconBlocksInScope.length > 0;
+	const hasIconSelection =
+		selectedName.includes( 'button' ) ||
+		selectedName.includes( 'icon-maxi' ) ||
+		selectedName.includes( 'svg-icon' );
+	const shouldTreatAsIconTheme =
+		hasIconBlocksInScope &&
+		hasThemeIntent &&
+		( hasPronounIntent || hasChangeIntent ) &&
+		! mentionsOtherTargets;
+
+	if (
+		! hasIconKeyword &&
+		! hasCloudKeyword &&
+		! hasIconSelection &&
+		! shouldTreatAsIconTheme &&
+		! matchTitlesIntent &&
+		! matchTitlesToIconsIntent
+	) {
+		return null; // skip pattern
+	}
+
+	const wantsMultipleIcons =
+		/\ball\b.*\bicons?\b|\bicons\b/.test( lowerMessage ) ||
+		( shouldTreatAsIconTheme && iconBlocksInScope.length > 1 );
+
+	return {
+		type: 'cloud_icon',
+		params: {
+			rawMessage,
+			lowerMessage,
+			currentScope,
+			selectedBlock,
+			iconBlocksInScope,
+			buttonBlocksInScope,
+			wantsMultipleIcons,
+			matchTitlesToIconsIntent,
+			matchTitlesIntent,
+			shouldTreatAsIconTheme,
+			hasIconBlocksInScope,
+			cloudIconTarget: resolveCloudIconTarget( lowerMessage, selectedBlock ),
+		},
+	};
+};
+
+/**
+ * Handles the `color_clarify` branch.
+ * If the message contains a direct hex colour, converts it to an action.
+ * Otherwise returns a palette-picker clarification.
+ */
+const routeColorClarify = ( rawMessage, pattern, ctx ) => {
+	const { hexColor, lowerMessage, currentScope, selectedBlock } = ctx;
+	const colorTarget =
+		pattern.colorTarget || getColorTargetFromMessage( lowerMessage, { selectedBlock } );
+
+	if ( hexColor ) {
+		const colorUpdate = buildColorUpdate( colorTarget, hexColor, { selectedBlock } );
+		return actionResult( {
+			action: currentScope === 'selection' ? 'update_selection' : 'update_page',
+			property: colorUpdate.property,
+			value: colorUpdate.value,
+			target_block: colorUpdate.targetBlock,
+			message: `Applied custom colour to ${ colorUpdate.msgText }.`,
+		} );
+	}
+
+	// If we still don't know what to change, ask before showing the palette.
+	if ( colorTarget === 'element' ) {
+		return {
+			type: 'flow',
+			flowContext: { type: 'color_what' },
+			message: {
+				role: 'assistant',
+				content: 'Colour of what would you like to change?',
+				options: buildColorWhatOptions( selectedBlock ),
+				optionsType: 'text',
+				executed: false,
+			},
+			sidebarProperty: null,
+		};
+	}
+
+	return clarifyResult( {
+		role: 'assistant',
+		content: `Choose a colour for the ${ getColorTargetLabel( colorTarget ) }:`,
+		options: true,
+		optionsType: 'palette',
+		colorTarget,
+		originalMessage: rawMessage,
+	} );
+};
+
+/**
+ * 8. Gap patterns.
+ */
+const routeGap = ( rawMessage, ctx ) => {
+	const { lowerMessage, currentScope, isGlobalScope } = ctx;
+	if ( isGlobalScope ) return null;
+
+	const gapMatch = lowerMessage.match(
+		/(\d+)\s*(?:px)?\s*(?:gap|gutter|air\s*between|space\s*between\s*items)/i
+	);
+	if ( gapMatch ) {
+		const gapValue = parseInt( gapMatch[ 1 ] );
+		return actionResult(
+			currentScope === 'selection'
+				? {
+						action: 'update_selection',
+						property: 'gap',
+						value: gapValue,
+						message: `Applied ${ gapValue }px gap between items.`,
+				  }
+				: {
+						action: 'update_page',
+						property: 'gap',
+						value: gapValue,
+						target_block: 'container',
+						message: `Applied ${ gapValue }px gap to containers.`,
+				  }
+		);
+	}
+
+	if (
+		lowerMessage.match( /add\s*(gap|gutter)|gap\s*between|gutter\s*between/ ) &&
+		! gapMatch
+	) {
+		return clarifyResult( {
+			role: 'assistant',
+			content: 'How much gap would you like between items?',
+			options: [ 'Small (10px)', 'Medium (20px)', 'Large (40px)' ],
+			gapTarget: currentScope === 'selection' ? 'selection' : 'container',
+			executed: false,
+		} );
+	}
+
+	return null;
+};
+
+/**
+ * Extracts a title string from a user message, e.g.
+ * "set the title to My Awesome Page" → "My Awesome Page"
+ * "title: My Page"                   → "My Page"
+ * "rename to My Page"                → "My Page"
+ * "call it My Page"                  → "My Page"
+ *
+ * Returns null when no extractable title is found.
+ *
+ * @param {string} rawMessage
+ * @returns {string|null}
+ */
+const extractTitleFromMessage = rawMessage => {
+	const patterns = [
+		/\b(?:set|change|update|give\s+(?:it|this))\s+(?:the\s+)?(?:page\s+|post\s+)?title\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		/\btitle\s*[:=]\s*["']?(.+?)["']?\s*$/i,
+		/\brename\s+(?:it|this|the\s+(?:page|post))\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+["']?(.+?)["']?\s*$/i,
+		/\btitled?\s+["'](.+?)["']\s*$/i,
+		/\bnamed?\s+["'](.+?)["']\s*$/i,
+		/\bwith\s+(?:the\s+)?title\s+["']?(.+?)["']?\s*$/i,
+		/\bpublish\s+(?:it|this|the\s+(?:page|post))\s+(?:with\s+(?:a?\s*)?(?:the\s+)?title\s+(?:of\s+)?|titled?\s+|as\s+|called?\s+)["']?(.+?)["']?\s*$/i,
+	];
+	for ( const re of patterns ) {
+		const m = rawMessage.match( re );
+		if ( m?.[1] ) return m[1].trim();
+	}
+	return null;
+};
+
+/**
+ * Extracts a slug string from a user message.
+ * "set the slug to my-awesome-page" → "my-awesome-page"
+ * Slugifies free-text if no slug-like string is found.
+ *
+ * @param {string} rawMessage
+ * @returns {string|null}
+ */
+const extractSlugFromMessage = rawMessage => {
+	const m = rawMessage.match(
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\s+(?:to|as)\s+["']?([a-z0-9-_/]+)["']?\s*$/i
+	);
+	if ( m?.[1] ) return m[1].trim().toLowerCase();
+
+	// Accept quoted or bare text and auto-slugify
+	const mText = rawMessage.match(
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i
+	);
+	if ( mText?.[1] ) {
+		return mText[1].trim().toLowerCase().replace( /\s+/g, '-' ).replace( /[^a-z0-9-]/g, '' );
+	}
+	return null;
+};
+
+/**
+ * Extracts a scheduled date from a user message.
+ * Accepts ISO dates and common human forms:
+ *   "schedule for 2026-04-15"          → "2026-04-15T00:00:00"
+ *   "schedule for tomorrow at 9am"     → best-effort
+ *   "schedule for next Monday"         → null (needs AI / passthrough)
+ *
+ * @param {string} rawMessage
+ * @returns {string|null} ISO 8601 string or null
+ */
+const extractScheduleDateFromMessage = rawMessage => {
+	// Full ISO date e.g. 2026-04-15
+	const isoMatch = rawMessage.match( /(\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2})?)?)/ );
+	if ( isoMatch ) {
+		const d = new Date( isoMatch[1] );
+		if ( !isNaN( d.getTime() ) ) return d.toISOString();
+	}
+	return null;
+};
+
+/**
+ * Routes post/page management commands (publish, save, draft, set title,
+ * set slug, preview, schedule).  Must run before attribute group routing
+ * so that "publish the page" is never mis-routed as a text/font action.
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {import('./types').PostManagementResult|null}
+ */
+const routePostManagement = rawMessage => {
+	const lower = rawMessage.toLowerCase();
+
+	// ── Publish ──────────────────────────────────────────────────────────────
+	const publishIntents = [
+		/\bpublish\s+(?:the\s+)?(?:current\s+)?(?:page|post|article|this)\b/i,
+		/\bpublish\s+(?:it|now)\b/i,
+		/\bmake\s+(?:it|this|the\s+(?:page|post))\s+(?:live|public|published)\b/i,
+		/\bgo\s+live\b/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:status\s+)?(?:to\s+)?publish(?:ed)?\b/i,
+	];
+	if ( publishIntents.some( re => re.test( lower ) ) ) {
+		// May optionally include a title: "publish the page with title 'Foo'"
+		const title = extractTitleFromMessage( rawMessage );
+		return {
+			type: 'post_management',
+			params: { operation: 'publish', title, rawMessage },
+		};
+	}
+
+	// ── Save / Update ─────────────────────────────────────────────────────────
+	const saveIntents = [
+		/\bsave\s+(?:the\s+)?(?:current\s+)?(?:page|post|article|changes|draft|it|this)\b/i,
+		/\bsave\s+(?:and\s+(?:keep\s+as\s+)?draft|as\s+draft)\b/i,
+		/\bupdate\s+(?:the\s+)?(?:page|post)\s+(?:now|please)?\b/i,
+		/\bsave\s+now\b/i,
+	];
+	if ( saveIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'save', rawMessage },
+		};
+	}
+
+	// ── Draft ──────────────────────────────────────────────────────────────────
+	const draftIntents = [
+		/\bswitch\s+(?:(?:it|this|the\s+(?:page|post))\s+)?(?:back\s+)?to\s+draft\b/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:status\s+)?(?:to\s+)?(?:a\s+)?draft\b/i,
+		/\bconvert\s+(?:(?:it|this|the\s+(?:page|post))\s+)?(?:back\s+)?to\s+draft\b/i,
+		/\bunpublish\s+(?:the\s+)?(?:page|post|it|this)\b/i,
+		/\bmove\s+(?:(?:it|this|the\s+(?:page|post))\s+)?to\s+draft\b/i,
+	];
+	if ( draftIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'draft', rawMessage },
+		};
+	}
+
+	// ── Set title ─────────────────────────────────────────────────────────────
+	const setTitleIntents = [
+		/\b(?:set|change|update|rename|give\s+(?:it|this))\s+(?:the\s+)?(?:page\s+|post\s+)?title\b/i,
+		/\btitle\s*[:=]/i,
+		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+/i,
+		/\bwith\s+(?:a\s+)?title\b/i,
+	];
+	if ( setTitleIntents.some( re => re.test( lower ) ) ) {
+		const title = extractTitleFromMessage( rawMessage );
+		if ( title ) {
+			return {
+				type: 'post_management',
+				params: { operation: 'set_title', title, rawMessage },
+			};
+		}
+	}
+
+	// ── Set slug / permalink ───────────────────────────────────────────────────
+	const setSlugIntents = [
+		/\b(?:set|change|update)\s+(?:the\s+)?(?:url\s+slug|slug|permalink|url)\b/i,
+	];
+	if ( setSlugIntents.some( re => re.test( lower ) ) ) {
+		const slug = extractSlugFromMessage( rawMessage );
+		if ( slug ) {
+			return {
+				type: 'post_management',
+				params: { operation: 'set_slug', slug, rawMessage },
+			};
+		}
+	}
+
+	// ── Preview ───────────────────────────────────────────────────────────────
+	const previewIntents = [
+		/\b(?:open\s+)?(?:a\s+)?preview\s+(?:of\s+)?(?:the\s+)?(?:page|post|this|it)?\b/i,
+		/\bpreview\s+(?:the\s+)?(?:page|post|this|it)\b/i,
+		/\bshow\s+(?:me\s+)?(?:a\s+)?(?:live\s+)?preview\b/i,
+		/\bopen\s+(?:in\s+)?(?:a\s+)?new\s+tab\b/i,
+	];
+	if ( previewIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'preview', rawMessage },
+		};
+	}
+
+	// ── Open published page ───────────────────────────────────────────────────
+	// "open the page", "view the live page", "open it in a new tab", etc.
+	// Must come before preview so "open" alone doesn't match preview intents.
+	const openPageIntents = [
+		/\bopen\s+(?:the\s+)?(?:live\s+|published\s+|current\s+)?(?:page|post|site)\b/i,
+		/\bview\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post|site)\b/i,
+		/\bvisit\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post|site)\b/i,
+		/\bopen\s+(?:it|this)\s+(?:in\s+a?\s*new\s+tab|live|on\s+the\s+(?:front\s*end|site))\b/i,
+		/\bshow\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post)\b/i,
+		/\bsee\s+(?:the\s+)?(?:live\s+|published\s+)?(?:page|post)\b/i,
+	];
+	if ( openPageIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'open_page', rawMessage },
+		};
+	}
+
+	// ── Schedule ─────────────────────────────────────────────────────────────
+	const scheduleIntents = [
+		/\bschedule\s+(?:(?:the\s+)?(?:page|post|it|this)\s+)?(?:for\s+|to\s+(?:publish\s+)?(?:on\s+|at\s+)?)/i,
+		/\bset\s+(?:(?:the|this)\s+)?(?:page|post)\s+(?:to\s+publish|to\s+go\s+live)\s+(?:at|on)\b/i,
+	];
+	if ( scheduleIntents.some( re => re.test( lower ) ) ) {
+		const date = extractScheduleDateFromMessage( rawMessage );
+		return {
+			type: 'post_management',
+			params: { operation: 'schedule', date, rawMessage },
+		};
+	}
+
+	return null;
+};
+
+/**
+ * User wants the Maxi Cloud Library UI to search or insert patterns/pages manually.
+ * Runs before LAYOUT_PATTERNS so option chips like "Browse Cloud Library" are not
+ * misread as flex layout (e.g. "beside").
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {{ type: 'open_cloud_library', params: { rawMessage: string } }|null}
+ */
+const routeOpenCloudLibrary = rawMessage => {
+	const lower = rawMessage.toLowerCase();
+
+	const intents = [
+		/\bopen\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\b(show|launch|display|bring\s+up)\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\b(browse|search|explore)\s+(the\s+)?(maxi\s+)?cloud\s*(library)?\b/,
+		/\bcloud\s+library\b.*\b(open|browse|search|show)\b/,
+		/\b(open|browse|search|show)\b.*\bcloud\s+library\b/,
+		/\bbrowse\s+cloud\s+library\b/,
+		/\bmaxi\s*blocks\s+cloud\b.*\b(open|browse|search)\b/,
+		/\b(search|browse|add)\b[\s\S]{0,80}\b(patterns?|pages?)\b[\s\S]{0,50}\b(from\s+)?(the\s+)?cloud\b/,
+		/\bimport\b[\s\S]{0,120}\bfrom\s+the\s+cloud\b/,
+		/\b(import|get)\b[\s\S]{0,80}\b(patterns?|pages?|templates?)\b[\s\S]{0,60}\b(from\s+)?(the\s+)?cloud\b/,
+		/\bfrom\s+the\s+cloud\b[\s\S]{0,40}\b(manually|myself|in\s+the\s+library|picker|ui)\b/,
+		// Import / insert without saying "cloud" (e.g. "import an Accountant page") — article avoids "insert into page".
+		/\b(import|insert|get)\s+(a\s+|an\s+|the\s+)[\s\S]{0,120}\b(page|pages|pattern|patterns)\b/i,
+		// "Add a hero pattern" — patterns only (avoid "add a page" → site editor ambiguity).
+		/\badd\s+(a\s+|an\s+|the\s+)?[\s\S]{0,100}\b(pattern|patterns)\b/i,
+	];
+
+	if ( intents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'open_cloud_library',
+			params: { rawMessage },
+		};
+	}
+
+	return null;
+};
+
+/**
+ * Extracts a card name from an SC management phrase, stripping leading articles.
+ *
+ * @param {string} raw Captured group text.
+ * @returns {string}
+ */
+const extractSCName = raw => {
+	return String( raw || '' )
+		.trim()
+		.replace( /^(a|an|the)\s+/i, '' )
+		.trim();
+};
+
+/**
+ * Local Style Card management: activate, reset, delete, edit, current.
+ * Checked before routeCloudSC so "activate X" never falls into the cloud-browser route.
+ *
+ * @param {string} rawMessage
+ * @returns {{ type: 'sc_action', params: Object }|null}
+ */
+const routeSCAction = rawMessage => {
+	// Reset
+	if (
+		/\breset\b[^.!?]{0,80}\b(?:style[\s-]*cards?|SCs?)\b/i.test( rawMessage ) ||
+		/\b(?:style[\s-]*cards?|SCs?)\b[^.!?]{0,80}\breset\b/i.test( rawMessage )
+	) {
+		return { type: 'sc_action', params: { action: 'reset', rawMessage } };
+	}
+
+	// What / which SC is active / current
+	if (
+		/\b(?:what|which)\b[^.!?]{0,60}\b(?:style[\s-]*card|SC)\b/i.test( rawMessage ) ||
+		/\b(?:current|active|applied)\b[^.!?]{0,50}\b(?:style[\s-]*card|SC)\b/i.test( rawMessage ) ||
+		/\b(?:style[\s-]*card|SC)\b[^.!?]{0,50}\b(?:is\s+)?(?:active|current|applied|in\s+use)\b/i.test( rawMessage )
+	) {
+		return { type: 'sc_action', params: { action: 'current', rawMessage } };
+	}
+
+	// Delete / remove by name
+	const deleteMatch = rawMessage.match(
+		/\b(?:delete|remove)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( deleteMatch?.[ 1 ] ) {
+		const name = extractSCName( deleteMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'delete', name, rawMessage } };
+		}
+	}
+
+	// Activate / switch to by name — requires SC noun to avoid false positives
+	const activateMatch = rawMessage.match(
+		/\b(?:activate|switch\s+to)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( activateMatch?.[ 1 ] ) {
+		const name = extractSCName( activateMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'activate', name, rawMessage } };
+		}
+	}
+
+	// Edit / customize named SC
+	const editMatch = rawMessage.match(
+		/\b(?:edit|customize|modify)\s+(?:the\s+)?(.+?)\s+(?:style[\s-]*card|SC)\b/i
+	);
+	if ( editMatch?.[ 1 ] ) {
+		const name = extractSCName( editMatch[ 1 ] );
+		if ( name ) {
+			return { type: 'sc_action', params: { action: 'edit', name, rawMessage } };
+		}
+	}
+
+	// Open SC editor (no specific card)
+	if ( /\b(?:open|edit)\b[^.!?]{0,40}\b(?:style[\s-]*cards?\s+editor|SC\s+editor)\b/i.test( rawMessage ) ) {
+		return { type: 'sc_action', params: { action: 'edit', name: '', rawMessage } };
+	}
+
+	return null;
+};
+
+/**
+ * User wants to browse the Style Cards cloud library.
+ * Requires an explicit cloud/library/import signal so it doesn't fire for
+ * local SC browsing ("browse my style cards", "show style cards").
+ *
+ * @param {string} rawMessage Raw user message.
+ * @returns {import('./types').BrowseCloudSCResult|null}
+ */
+const routeCloudSC = rawMessage => {
+	const INTENTS = [
+		// "style cards" / "SC/SCs" + cloud/library/import signal
+		/\b(?:style[\s-]*cards?|SCs?)\b[^.!?]{0,50}\b(?:cloud|library|online|download)\b/i,
+		/\b(?:cloud|library)\b[^.!?]{0,50}\b(?:style[\s-]*cards?|SCs?)\b/i,
+		/\b(?:style[\s-]*cards?|SCs?)\s+from\s+(?:the\s+)?(?:cloud|library|online)\b/i,
+		/\bget\b[^.!?]{0,30}\b(?:style[\s-]*card|SC)\b[^.!?]{0,30}\b(?:cloud|library)\b/i,
+		// show/list/browse verbs — "show me the list of style cards", "list all SCs"
+		/\b(?:show|list|see|browse|open|display)\b[^.!?]{0,80}\b(?:style[\s-]*cards?|SCs?)\b/i,
+		// import/action verb + [words] + "style card/SC" — covers title-based requests
+		// like "import the Optimus style card" as well as plain "import a style card".
+		/\b(?:import|input|get|use|apply|load|preview)\b[^.!?]{0,80}\b(?:style[\s-]*card|SC)\b/i,
+	];
+
+	if ( ! INTENTS.some( re => re.test( rawMessage ) ) ) return null;
+
+	const lower = rawMessage.toLowerCase();
+	const queryMatch = lower.match(
+		/\b(dark|light|minimal(?:ist)?|bold|elegant|modern|classic|professional|creative|colorful|warm|cool|earthy|bright|pastel|luxury|vintage|corporate|playful|artistic)\b/
+	);
+	// Extract a color category (matches sc_color facet values in the Typesense index).
+	const categoryMatch = rawMessage.match(
+		/\b(red|blue|green|yellow|purple|orange|pink|black|white|grey|gray|brown|gold|silver|teal|navy|violet|indigo|magenta|cyan|aqua|peach|turquoise)\b/i
+	);
+
+	// Extract a card title: the word(s) between the action verb+article and "style card/SC".
+	// Only used as query when no color category was found (colors are handled by the facet filter).
+	let titleQuery = '';
+	if ( ! categoryMatch ) {
+		const titleMatch = rawMessage.match(
+			/\b(?:import|input|get|use|apply|load|preview)\s+(?:a\s+|an\s+|the\s+)?([\w]+(?:\s+[\w]+){0,3}?)\s+(?:style[\s-]*card|SC)\b/i
+		);
+		if ( titleMatch?.[ 1 ] ) {
+			titleQuery = titleMatch[ 1 ].trim();
+		}
+	}
+
+	const importFirst = /\b(import|input|get|use|apply|load|preview)\b/i.test( rawMessage );
+	// showLocalOnly: user wants to see saved/local style cards, not the cloud library.
+	const showLocalOnly =
+		! importFirst &&
+		/\b(?:show|list|see|display)\b/i.test( rawMessage );
+
+	return {
+		type: 'browse_cloud_sc',
+		params: {
+			query: titleQuery || queryMatch?.[ 1 ] || '',
+			category: categoryMatch?.[ 1 ]
+				? categoryMatch[ 1 ].charAt( 0 ).toUpperCase() +
+				  categoryMatch[ 1 ].slice( 1 ).toLowerCase()
+				: '',
+			importFirst,
+			showLocalOnly,
+			rawMessage,
+		},
+	};
+};
+
+// ─── Public API ────────────────────────────────────────────────────────────────
+
+/**
+ * Run the full client-side routing cascade for a user message.
+ *
+ * @param {string}                          rawMessage  Raw user input.
+ * @param {import('./types').RoutingContext} ctx         Context built by buildRoutingContext().
+ * @param {Function|null}                   [selectFn]  WordPress `select` function (optional).
+ * @returns {Promise<import('./types').RouteResult>}
+ */
+export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
+	// 0. Style Card routes — must run before attribute groups, which false-positive
+	//    on words like "show", "list", "display" when a block is selected.
+	if ( /\b(?:style[\s-]*cards?|SCs?)\b/i.test( rawMessage ) ) {
+		const earlyScAction = routeSCAction( rawMessage );
+		if ( earlyScAction ) return earlyScAction;
+
+		const earlyCloudSC = routeCloudSC( rawMessage );
+		if ( earlyCloudSC ) return earlyCloudSC;
+	}
+
+	// 1. Post / page management (publish, save, draft, title, slug, preview, schedule).
+	//    Must run before attribute groups so "publish the page" is never misread as
+	//    a text/font action.
+	const postMgmtResult = routePostManagement( rawMessage );
+	if ( postMgmtResult ) return postMgmtResult;
+
+	// 1a. FSE operations (template parts, reusable blocks, WP patterns).
+	const fseResult = routeFSEOperations( rawMessage );
+	if ( fseResult ) return fseResult;
+
+	// 1b. Text link
+	const textLinkResult = routeTextLink( rawMessage, ctx );
+	if ( textLinkResult ) return textLinkResult;
+
+	// 2. Attribute groups
+	const groupResult = routeAttributeGroups( rawMessage, ctx );
+	if ( groupResult ) return groupResult;
+
+	// 3. Numeric patterns
+	const numericResult = routeNumericPatterns( rawMessage, ctx );
+	if ( numericResult ) return numericResult;
+
+	// 4. Direct removals + alignment clarifications
+	const removalResult = routeDirectRemovals( rawMessage, ctx );
+	if ( removalResult ) return removalResult;
+
+	// 4b. Named-colour direct action (red/green/black/…/palette N + colour target)
+	const namedColorResult = routeNamedColorChange( rawMessage, ctx );
+	if ( namedColorResult ) return namedColorResult;
+
+	// 4c. Link colour clarification — "change link hover/active/visited colour" with no colour value.
+	// Must run before layout patterns so "change link hover colour" is not swallowed by hover_effect.
+	const linkColorClarifyResult = routeLinkColorClarify( rawMessage, ctx );
+	if ( linkColorClarifyResult ) return linkColorClarifyResult;
+
+	// 5. Hex colour
+	const hexResult = routeHexColor( rawMessage, ctx );
+	if ( hexResult ) return hexResult;
+
+	// 6. Shape divider
+	const shapeDividerResult = routeShapeDivider( ctx );
+	if ( shapeDividerResult ) return shapeDividerResult;
+
+	// 6b. Local Style Card management (activate, reset, delete, edit, current)
+	const scActionResult = routeSCAction( rawMessage );
+	if ( scActionResult ) return scActionResult;
+
+	// 6c. Style Cards cloud library browser
+	const cloudSCResult = routeCloudSC( rawMessage );
+	if ( cloudSCResult ) return cloudSCResult;
+
+	// 6c. Cloud Library (browse/search/insert UI — patterns/pages)
+	const openCloudResult = routeOpenCloudLibrary( rawMessage );
+	if ( openCloudResult ) return openCloudResult;
+
+	// 7. Layout patterns
+	const layoutResult = routeLayoutPatterns( rawMessage, ctx, selectFn );
+	if ( layoutResult ) return layoutResult;
+
+	// 8. Gap
+	const gapResult = routeGap( rawMessage, ctx );
+	if ( gapResult ) return gapResult;
+
+	// 9. Passthrough — let the AI API handle it
+	return { type: 'passthrough' };
+};
+
+export default routeClientSide;

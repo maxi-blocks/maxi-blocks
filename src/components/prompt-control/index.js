@@ -112,17 +112,17 @@ const PromptControl = ({ clientId, content, onContentChange }) => {
 		return <ContentLoader />;
 	}
 
-	if (!AISettings.hasOpenaiApiKey) {
+	if (!AISettings.hasAiKey && !AISettings.hasOpenaiApiKey) {
 		return (
 			<InfoBox
 				message={__(
-					'You have not set your OpenAI API key, please navigate to the Maxi AI Options and set it',
+					'You have not configured an AI API key. Please navigate to the Maxi AI settings and add your API key under Integrations.',
 					'maxi-blocks'
 				)}
 				links={[
 					{
 						title: __(
-							'Integrations > OpenAI API key',
+							'Integrations > API key',
 							'maxi-blocks'
 						),
 						href: getMaxiAdminSettingsUrl('maxi_blocks_maxi_ai'),

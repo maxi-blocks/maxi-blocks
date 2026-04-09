@@ -311,6 +311,7 @@ const Inspector = props => {
 								items={[
 									...inspectorTabs.blockBackground({
 										props,
+										isIB: props.isIB,
 										disableImage: true,
 										disableVideo: true,
 										disableGradient: true,

@@ -159,6 +159,6 @@
 		"langsmith": "^0.5.7",
 		"axios": "^1.13.5",
 		"webpack": "^5.105.1",
-		"basic-ftp": "^5.2.0"
+		"basic-ftp": "^5.2.2"
 	}
 }

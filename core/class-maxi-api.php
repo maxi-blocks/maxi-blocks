@@ -976,15 +976,15 @@ if (!class_exists('MaxiBlocks_API')):
                 $new_style_card = [
                     '_maxi_blocks_style_card' => $data['sc_variables'],
                     '_maxi_blocks_style_card_preview' => $data['sc_variables'],
-                    '_maxi_blocks_style_card_styles' => $data['sc_styles'],
+                    '_maxi_blocks_style_card_styles' => wp_strip_all_tags($data['sc_styles']),
                     '_maxi_blocks_style_card_styles_preview' =>
-                        $data['sc_styles'],
+                        wp_strip_all_tags($data['sc_styles']),
                 ];
             } else {
                 $new_style_card['_maxi_blocks_style_card_preview'] =
                     $data['sc_variables'];
                 $new_style_card['_maxi_blocks_style_card_styles_preview'] =
-                    $data['sc_styles'];
+                    wp_strip_all_tags($data['sc_styles']);
 
                 if (
                     $style_card !== '' &&
@@ -1007,7 +1007,7 @@ if (!class_exists('MaxiBlocks_API')):
                             $data['sc_variables'];
                         if (array_key_exists('sc_styles', $data)) {
                             $new_style_card['_maxi_blocks_style_card_styles'] =
-                                $data['sc_styles'];
+                                wp_strip_all_tags($data['sc_styles']);
                         }
                     } elseif ($data instanceof WP_REST_Request) {
                         if ($data->has_param('sc_variables')) {
@@ -1018,7 +1018,7 @@ if (!class_exists('MaxiBlocks_API')):
                         if ($data->has_param('sc_styles')) {
                             $new_style_card[
                                 '_maxi_blocks_style_card_styles'
-                            ] = $data->get_param('sc_styles');
+                            ] = wp_strip_all_tags($data->get_param('sc_styles'));
                         }
                     }
                 }

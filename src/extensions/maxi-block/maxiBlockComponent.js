@@ -1404,7 +1404,7 @@ class MaxiBlockComponent extends Component {
 
 		// Slow path: Actually check if uniqueID is unique (only for copy/paste/new blocks)
 
-		if (!getIsIDTrulyUnique(idToCheck)) {
+		if (!getIsIDTrulyUnique(idToCheck, 1, clientId)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});

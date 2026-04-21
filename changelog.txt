@@ -1,3 +1,9 @@
+_Updates 22 Apr 2026_
+MaxiBlocks v2.1.10
+* Security: Fixed authenticated (Author+) stored cross-site scripting via the Style Card REST API (CVE-2026-6378). Thanks to Athiwat Tiprasaharn (Jitlada) for the responsible disclosure.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Fix: Resolved Interaction Builder relations disappearing when several relations target the same block, ensuring a consistent editing experience and maintaining interaction configurations.
+
 _Updates 6 Mar 2026_
 MaxiBlocks v2.1.9
 * Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.

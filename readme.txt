@@ -327,6 +327,12 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 22 Apr 2026_
+MaxiBlocks v2.1.10
+* Security: Fixed authenticated (Author+) stored cross-site scripting via the Style Card REST API (CVE-2026-6378). Thanks to Athiwat Tiprasaharn (Jitlada) for the responsible disclosure.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Fix: Resolved Interaction Builder relations disappearing when several relations target the same block, ensuring a consistent editing experience and maintaining interaction configurations.
+
 _Updates 6 Mar 2026_
 MaxiBlocks v2.1.9
 * Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.
@@ -363,17 +369,6 @@ MaxiBlocks v2.1.8
 * Fix: Hover border palette toggle and axis unit switching for image hover controls.
 * Fix: Responsive styles with vh/vw units in Editor.
 * Fix: SVG element processing with enhanced error recovery and fallback mechanisms for consistent behaviour across different environments and edge cases.
-
-_Updates 26 Nov 2025_
-MaxiBlocks v2.1.7
-* Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.
-* Update: Rebuilt translation system architecture to ensure proper localization support on WordPress.org, enabling seamless multilingual functionality and improved plugin accessibility for international users.
-* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
-* Fix: Resolved styling inconsistencies with synced blocks and template parts in the Editor Experience for proper visual presentation and consistent design rendering across all editing contexts.
-* Fix: Corrected Starter Sites functionality to properly overwrite existing templates and template parts on block themes instead of creating duplicates, maintaining a cleaner template structure and preventing conflicts.
-* Fix: Enhanced Interaction Builder reliability for Show/Hide actions with consistent behaviour and proper execution of visibility toggles across all interactive elements.
-* Fix: Resolved frontend pagination issues when displaying posts from child taxonomies with accurate post filtering and proper navigation through hierarchical taxonomy structures.
-* Fix: Corrected Scroll Effects functionality on smaller screens when using anchor links for proper navigation across all responsive breakpoints.
 
 == Upgrade Notice ==
 

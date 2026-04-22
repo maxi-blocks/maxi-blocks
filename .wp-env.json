@@ -1,7 +1,13 @@
 {
 	"core": "WordPress/WordPress#6.4.3",
 	"plugins": ["."],
+	"lifecycleScripts": {
+		"afterStart": "node scripts/wp-env-install-composer-deps.js"
+	},
 	"env": {
+		"development": {
+			"core": "https://wordpress.org/wordpress-6.9.4.zip"
+		},
 		"tests": {
 			"config": {
 				"ALLOW_UNFILTERED_UPLOADS": true,

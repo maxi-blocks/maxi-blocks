@@ -1811,3 +1811,664 @@ function showMessage(message, type) {
 		}, 5000);
 	}
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+	const settings = window.maxiAiConnectSettings;
+	const root = document.querySelector('.maxi-ai-connect');
+
+	if (!settings || !root) {
+		return;
+	}
+
+	const strings = settings.strings || {};
+	const docsLinks = settings.links || {};
+	const endpointAvailable = Boolean(settings.endpointAvailable);
+	const nameInput = document.getElementById('maxi-ai-connect-password-name');
+	const createButton = document.getElementById(
+		'maxi-ai-connect-create-password'
+	);
+	const messageEl = document.getElementById('maxi-ai-connect-password-message');
+	const revealEl = document.getElementById('maxi-ai-connect-password-reveal');
+	const passwordsEl = document.getElementById('maxi-ai-connect-passwords');
+	const apiChoiceButton = document.getElementById('maxi-ai-connect-open-api');
+	const companionActionButton = document.getElementById(
+		'maxi-ai-connect-companion-action'
+	);
+	const companionStatusEl = document.getElementById(
+		'maxi-ai-connect-companion-status'
+	);
+	const advancedChoiceButton = document.getElementById(
+		'maxi-ai-connect-open-advanced'
+	);
+	const advancedDetails = document.getElementById('maxi-ai-connect-advanced');
+	const configEl = document.getElementById('maxi-ai-connect-config');
+	const configNoteEl = document.getElementById('maxi-ai-connect-config-note');
+	const copyConfigButton = document.getElementById('maxi-ai-connect-copy-config');
+	const nextTitleEl = document.getElementById('maxi-ai-connect-next-title');
+	const firstPromptEl = document.getElementById('maxi-ai-connect-first-prompt');
+	const copyPromptButton = document.getElementById('maxi-ai-connect-copy-prompt');
+	const nextStepsEl = document.getElementById('maxi-ai-connect-next-steps');
+	const nextNoteEl = document.getElementById('maxi-ai-connect-next-note');
+	const advancedChoiceKicker = advancedChoiceButton
+		?.closest('.maxi-ai-connect__choice')
+		?.querySelector('.maxi-ai-connect__choice-kicker');
+	const tabButtons = Array.from(
+		document.querySelectorAll('.maxi-ai-connect__tab')
+	);
+
+	let activeClient = 'claude';
+	let currentPassword = settings.currentPassword || 'YOUR-APP-PASSWORD';
+	let passwords = Array.isArray(settings.passwords) ? settings.passwords : [];
+	let companion = settings.companion || {
+		status: 'missing',
+		openUrl: '',
+	};
+
+	const escapeHtml = value =>
+		String(value ?? '').replace(
+			/[&<>"']/g,
+			character =>
+				({
+					'&': '&amp;',
+					'<': '&lt;',
+					'>': '&gt;',
+					'"': '&quot;',
+					"'": '&#39;',
+				})[character] || character
+		);
+
+	const setMessage = (message = '', type = '') => {
+		if (!messageEl) return;
+
+		messageEl.textContent = message;
+		messageEl.className = 'maxi-ai-connect__message';
+
+		if (message && type) {
+			messageEl.classList.add(`is-${type}`);
+		}
+	};
+
+	const copyText = async (value, button) => {
+		if (!value || !navigator.clipboard) return;
+
+		try {
+			await navigator.clipboard.writeText(value);
+			if (button) {
+				const original = button.textContent;
+				button.textContent = strings.copied || 'Copied!';
+				window.setTimeout(() => {
+					button.textContent = original;
+				}, 1500);
+			}
+		} catch (error) {
+			console.error('Copy failed:', error);
+		}
+	};
+
+	const setCompanionStatus = (message = '', type = '') => {
+		if (!companionStatusEl) return;
+
+		companionStatusEl.textContent = message;
+		companionStatusEl.className = 'maxi-ai-connect__choice-status';
+
+		if (message && type) {
+			companionStatusEl.classList.add(`is-${type}`);
+		}
+	};
+
+	const getCompanionActionLabel = () => {
+		if (companion.status === 'broken') {
+			return strings.companionRepair || 'Repair Maxi MCP';
+		}
+
+		if (companion.status === 'active') {
+			if (!companion.enabled) {
+				return (
+					strings.companionOpenSettings || 'Open Maxi MCP settings'
+				);
+			}
+
+			return strings.companionOpen || 'Open Maxi MCP';
+		}
+
+		if (companion.status === 'installed') {
+			return strings.companionActivate || 'Activate Maxi MCP';
+		}
+
+		return strings.companionInstall || 'Install Maxi MCP';
+	};
+
+	const getCompanionStatusMessage = () => {
+		if (companion.status === 'broken') {
+			return (
+				strings.companionBroken ||
+				'This Maxi MCP install is incomplete.'
+			);
+		}
+
+		if (companion.status === 'active') {
+			if (!companion.enabled) {
+				return (
+					strings.companionNeedsEnable ||
+					'Maxi MCP is active, but the server is still disabled.'
+				);
+			}
+
+			return strings.companionActive || 'Maxi MCP is active.';
+		}
+
+		if (companion.status === 'installed') {
+			return strings.companionInstalled || 'Maxi MCP is installed.';
+		}
+
+		return strings.companionMissing || 'Install Maxi MCP to continue.';
+	};
+
+	const renderCompanionAction = () => {
+		if (companionActionButton) {
+			companionActionButton.textContent = getCompanionActionLabel();
+			companionActionButton.value = companion.status || 'missing';
+		}
+
+		setCompanionStatus(
+			getCompanionStatusMessage(),
+			companion.status === 'active' ? 'success' : companion.status === 'broken' ? 'error' : ''
+		);
+	};
+
+	const renderPasswordReveal = password => {
+		if (!revealEl) return;
+
+		if (!password) {
+			revealEl.innerHTML = '';
+			return;
+		}
+
+		revealEl.innerHTML = `
+			<div class="maxi-ai-connect__password-box">
+				<p class="maxi-ai-connect__password-text"><strong>Password:</strong> <code>${escapeHtml(password)}</code></p>
+				<button type="button" class="button maxi-ai-connect__copy-password">${strings.copy || 'Copy'}</button>
+			</div>
+			<p class="maxi-ai-connect__password-warning">${strings.passwordSavedWarning || ''}</p>
+		`;
+	};
+
+	const renderPasswords = () => {
+		if (!passwordsEl) return;
+
+		if (!passwords.length) {
+			passwordsEl.innerHTML = `<p>${strings.noPasswords || 'No Maxi AI application passwords yet.'}</p>`;
+			return;
+		}
+
+		const rows = passwords
+			.map(
+				password => `
+					<tr>
+						<td><strong>${escapeHtml(password.name)}</strong></td>
+						<td>${escapeHtml(password.created || '')}</td>
+						<td>${escapeHtml(password.lastUsed || strings.never || 'Never')}</td>
+						<td>
+							<button
+								type="button"
+								class="button maxi-ai-connect__password-action"
+								value="${escapeHtml(password.uuid)}"
+							>
+								${strings.revoke || 'Revoke'}
+							</button>
+						</td>
+					</tr>
+				`
+			)
+			.join('');
+
+		passwordsEl.innerHTML = `
+			<table class="maxi-ai-connect__password-table">
+				<thead>
+					<tr>
+						<th>${strings.name || 'Name'}</th>
+						<th>${strings.created || 'Created'}</th>
+						<th>${strings.lastUsed || 'Last used'}</th>
+						<th>${strings.actions || 'Actions'}</th>
+					</tr>
+				</thead>
+				<tbody>${rows}</tbody>
+			</table>
+		`;
+	};
+
+	const buildConfig = client => {
+		const endpointUrl = settings.endpointUrl || '';
+		const username = settings.username || '';
+		const serverName = settings.serverName || 'maxi-wordpress';
+		const isWindows =
+			typeof window !== 'undefined' &&
+			/Win/i.test(window.navigator?.platform || '');
+
+		if (!endpointAvailable) {
+			return strings.endpointMissingCommand || 'MCP endpoint unavailable on this site.';
+		}
+
+		if (client === 'codex') {
+			return `codex mcp add ${serverName} --url '${endpointUrl}'`;
+		}
+
+		if (client === 'endpoint') {
+			return endpointUrl;
+		}
+
+		const claudeCommand = isWindows
+			? 'cmd /c npx -y @automattic/mcp-wordpress-remote@latest'
+			: 'npx -y @automattic/mcp-wordpress-remote@latest';
+
+		return `claude mcp add ${serverName} --env WP_API_URL='${endpointUrl}' --env WP_API_USERNAME='${username}' --env WP_API_PASSWORD='${currentPassword}' -- ${claudeCommand}`;
+	};
+
+	const buildNote = client => {
+		if (!endpointAvailable) {
+			return `${strings.endpointMissing || ''} ${docsLinks.mcpAdapter ? `Adapter: ${docsLinks.mcpAdapter}` : ''}`.trim();
+		}
+
+		if (client === 'codex') {
+			return `${strings.codexNote || ''} ${docsLinks.codex ? `MCP docs: ${docsLinks.codex}` : ''} ${docsLinks.codexAuth ? `Auth docs: ${docsLinks.codexAuth}` : ''}`.trim();
+		}
+
+		if (client === 'endpoint') {
+			return `${strings.endpointNote || ''} ${docsLinks.mcpAdapter ? `Adapter: ${docsLinks.mcpAdapter}` : ''}`.trim();
+		}
+
+		if (currentPassword === (settings.currentPassword || 'YOUR-APP-PASSWORD')) {
+			return `${strings.claudeNeedsPassword || ''} ${docsLinks.claudeCode ? `Docs: ${docsLinks.claudeCode}` : ''}`.trim();
+		}
+
+		return `${strings.claudeNote || ''} ${docsLinks.claudeCode ? `Docs: ${docsLinks.claudeCode}` : ''}`.trim();
+	};
+
+	const buildStarterPrompt = client => {
+		const serverName = settings.serverName || 'maxi-wordpress';
+
+		if (!endpointAvailable) {
+			return (
+				settings.mcpStatusMessage ||
+				strings.endpointMissing ||
+				'Maxi MCP is not ready on this site yet.'
+			);
+		}
+
+		if (client === 'codex') {
+			return `Use the "${serverName}" MCP server. First call maxi-mcp/get-guide, then list every tool whose name starts with "maxi-mcp/" and tell me in one short paragraph what you can change on this WordPress site.`;
+		}
+
+		if (client === 'endpoint') {
+			return 'Use the connected Maxi MCP server. First call maxi-mcp/get-guide, then confirm the server is reachable and summarize the safe editing workflow.';
+		}
+
+		return `Use the "${serverName}" MCP server. First call maxi-mcp/get-guide, then confirm you can reach this WordPress site and summarize the safe editing workflow.`;
+	};
+
+	const buildNextTitle = client => {
+		if (client === 'codex') {
+			return 'After you connect Codex';
+		}
+
+		if (client === 'endpoint') {
+			return 'After you connect another MCP client';
+		}
+
+		return 'After you connect Claude Code';
+	};
+
+	const buildNextSteps = client => {
+		if (!endpointAvailable) {
+			return [
+				'Finish the Maxi MCP setup on this site first.',
+				'Reload this dashboard after the server is ready.',
+				'Then copy the command again and continue.',
+			];
+		}
+
+		if (client === 'codex') {
+			return [
+				'Restart Codex if you just added the server.',
+				'Open a new chat.',
+				'Paste the starter prompt below.',
+				'Look for a reply that names the server or lists the available tools.',
+			];
+		}
+
+		if (client === 'endpoint') {
+			return [
+				'Reconnect or restart the MCP client if you just added the server.',
+				'Open a new chat or tool panel in that client.',
+				'Paste the starter prompt below.',
+				'Confirm the client lists the available tools from Maxi.',
+			];
+		}
+
+		return [
+			'Restart Claude Code if you just added the server.',
+			'Open a new chat.',
+			'Paste the starter prompt below.',
+			'Look for a reply that lists the available WordPress tools.',
+		];
+	};
+
+	const buildNextNote = client => {
+		if (!endpointAvailable) {
+			return settings.mcpStatusMessage || strings.endpointMissing || '';
+		}
+
+		if (client === 'codex') {
+			return 'If Codex says it cannot find "maxi-wordpress", fully close and reopen Codex so it reloads your config.';
+		}
+
+		if (client === 'endpoint') {
+			return 'If the client still cannot see the server, reconnect it and check that it supports remote MCP URLs.';
+		}
+
+		return 'If Claude Code does not list tools after the first prompt, rerun the command and make sure the application password is still valid.';
+	};
+
+	const renderNextStep = () => {
+		const starterPrompt = buildStarterPrompt(activeClient);
+
+		if (nextTitleEl) {
+			nextTitleEl.textContent = buildNextTitle(activeClient);
+		}
+
+		if (firstPromptEl) {
+			firstPromptEl.textContent = starterPrompt;
+		}
+
+		if (nextStepsEl) {
+			nextStepsEl.innerHTML = buildNextSteps(activeClient)
+				.map(step => `<li>${escapeHtml(step)}</li>`)
+				.join('');
+		}
+
+		if (nextNoteEl) {
+			nextNoteEl.textContent = buildNextNote(activeClient);
+		}
+
+		if (copyPromptButton) {
+			copyPromptButton.disabled = !endpointAvailable;
+		}
+	};
+
+	const renderConfig = () => {
+		if (configEl) {
+			configEl.textContent = buildConfig(activeClient);
+		}
+
+		if (configNoteEl) {
+			configNoteEl.textContent = buildNote(activeClient);
+		}
+
+		if (copyConfigButton) {
+			copyConfigButton.disabled = !endpointAvailable;
+		}
+
+		tabButtons.forEach(button => {
+			button.classList.toggle('is-active', button.value === activeClient);
+		});
+
+		renderNextStep();
+	};
+
+	const focusAdvanced = () => {
+		advancedDetails?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
+	};
+
+	const postAction = async (action, payload = {}) => {
+		const body = new URLSearchParams();
+		body.append('action', action);
+		body.append('nonce', settings.nonce || '');
+
+		Object.entries(payload).forEach(([key, value]) => {
+			body.append(key, value);
+		});
+
+		const response = await fetch(settings.ajaxUrl, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+			},
+			body: body.toString(),
+		});
+
+		return response.json();
+	};
+
+	createButton?.addEventListener('click', async () => {
+		if (!settings.appPasswordsAvailable) {
+			setMessage(
+				strings.createError ||
+					'Application passwords require HTTPS or a local WordPress environment.',
+				'error'
+			);
+			return;
+		}
+
+		const originalLabel = createButton.textContent;
+		createButton.disabled = true;
+		createButton.textContent = strings.creating || 'Creating...';
+		setMessage('');
+
+		try {
+			const response = await postAction('maxi_ai_connect_create_password', {
+				name: nameInput?.value?.trim() || '',
+			});
+
+			if (!response.success) {
+				throw new Error(response?.data?.message || strings.createError);
+			}
+
+			currentPassword = response.data.password || currentPassword;
+			passwords = Array.isArray(response.data.passwords)
+				? response.data.passwords
+				: passwords;
+
+			if (nameInput) {
+				nameInput.value = '';
+			}
+
+			setMessage(response.data.message, 'success');
+			renderPasswordReveal(currentPassword);
+			renderPasswords();
+			renderConfig();
+		} catch (error) {
+			setMessage(
+				error.message || strings.createError || 'Unable to create an application password.',
+				'error'
+			);
+		} finally {
+			createButton.disabled = false;
+			createButton.textContent = originalLabel;
+		}
+	});
+
+	nameInput?.addEventListener('keydown', event => {
+		if (event.key !== 'Enter') {
+			return;
+		}
+
+		event.preventDefault();
+		createButton?.click();
+	});
+
+	passwordsEl?.addEventListener('click', async event => {
+		const button = event.target.closest('.maxi-ai-connect__password-action');
+		if (!button) return;
+
+		if (!window.confirm(strings.revokeConfirm || 'Revoke this application password?')) {
+			return;
+		}
+
+		const originalLabel = button.textContent;
+		button.disabled = true;
+		button.textContent = strings.revoking || 'Revoking...';
+		setMessage('');
+
+		try {
+			const response = await postAction('maxi_ai_connect_revoke_password', {
+				uuid: button.value,
+			});
+
+			if (!response.success) {
+				throw new Error(response?.data?.message || strings.revokeError);
+			}
+
+			passwords = Array.isArray(response.data.passwords)
+				? response.data.passwords
+				: [];
+			currentPassword = settings.currentPassword || 'YOUR-APP-PASSWORD';
+			setMessage(response.data.message, 'success');
+			renderPasswordReveal('');
+			renderPasswords();
+			renderConfig();
+		} catch (error) {
+			setMessage(
+				error.message || strings.revokeError || 'Unable to revoke the application password.',
+				'error'
+			);
+		} finally {
+			button.disabled = false;
+			button.textContent = originalLabel;
+		}
+	});
+
+	apiChoiceButton?.addEventListener('click', () => {
+		const integrationsToggle = document.getElementById('integrations');
+		const integrationsLabel = document.querySelector('label[for="integrations"]');
+
+		if (integrationsToggle) {
+			integrationsToggle.checked = true;
+		}
+
+		integrationsLabel?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'center',
+		});
+	});
+
+	advancedChoiceButton?.addEventListener('click', () => {
+		if (advancedDetails) {
+			advancedDetails.open = true;
+		}
+
+		focusAdvanced();
+	});
+
+	companionActionButton?.addEventListener('click', async () => {
+		const originalLabel = companionActionButton.textContent;
+		companionActionButton.disabled = true;
+
+		try {
+			if (companion.status === 'active') {
+				window.location.href = companion.openUrl;
+				return;
+			}
+
+			if (
+				companion.status === 'missing' ||
+				companion.status === 'broken'
+			) {
+				companionActionButton.textContent =
+					companion.status === 'broken'
+						? strings.repairingCompanion || 'Repairing...'
+						: strings.installing || 'Installing...';
+
+				const installResponse = await postAction(
+					'maxi_ai_connect_install_companion'
+				);
+
+				if (!installResponse.success) {
+					throw new Error(
+						installResponse?.data?.message || strings.companionError
+					);
+				}
+
+				companion = installResponse.data.companion || companion;
+			}
+
+			if (companion.status === 'installed') {
+				companionActionButton.textContent =
+					strings.activatingCompanion || 'Activating...';
+
+				const activateResponse = await postAction(
+					'maxi_ai_connect_activate_companion'
+				);
+
+				if (!activateResponse.success) {
+					throw new Error(
+						activateResponse?.data?.message || strings.companionError
+					);
+				}
+
+				companion = activateResponse.data.companion || companion;
+			}
+
+			renderCompanionAction();
+
+			if (companion.status === 'active' && companion.openUrl) {
+				window.location.href = companion.openUrl;
+			}
+		} catch (error) {
+			setCompanionStatus(
+				error.message || strings.companionError || 'Maxi MCP could not be installed right now.',
+				'error'
+			);
+		} finally {
+			companionActionButton.disabled = false;
+			if (companion.status !== 'active') {
+				companionActionButton.textContent =
+					getCompanionActionLabel() || originalLabel;
+			}
+		}
+	});
+
+	revealEl?.addEventListener('click', event => {
+		const button = event.target.closest('.maxi-ai-connect__copy-password');
+		if (!button) return;
+
+		copyText(currentPassword, button);
+	});
+
+	copyConfigButton?.addEventListener('click', () => {
+		copyText(configEl?.textContent || '', copyConfigButton);
+	});
+
+	copyPromptButton?.addEventListener('click', () => {
+		copyText(firstPromptEl?.textContent || '', copyPromptButton);
+	});
+
+	tabButtons.forEach(button => {
+		button.addEventListener('click', () => {
+			activeClient = button.value;
+			renderConfig();
+		});
+	});
+
+	if (!settings.appPasswordsAvailable && createButton) {
+		createButton.disabled = true;
+		setMessage(
+			strings.createError ||
+				'Application passwords require HTTPS or a local WordPress environment.',
+			'error'
+		);
+	}
+
+	if (advancedChoiceKicker) {
+		const sanitizedLabel = advancedChoiceKicker.textContent.match(/^.*?\d+/);
+		advancedChoiceKicker.textContent =
+			sanitizedLabel?.[0] || advancedChoiceKicker.textContent;
+	}
+
+	renderCompanionAction();
+	renderPasswordReveal('');
+	renderPasswords();
+	renderConfig();
+});

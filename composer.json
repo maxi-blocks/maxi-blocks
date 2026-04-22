@@ -1,0 +1,13 @@
+{
+	"name": "maxi-blocks/maxi-blocks",
+	"description": "MaxiBlocks WordPress plugin",
+	"type": "wordpress-plugin",
+	"license": "GPL-3.0-or-later",
+	"require": {
+		"php": ">=8.0",
+		"wordpress/mcp-adapter": "^0.5.0"
+	},
+	"config": {
+		"sort-packages": true
+	}
+}

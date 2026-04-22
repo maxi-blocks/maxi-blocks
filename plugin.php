@@ -334,6 +334,14 @@ if (class_exists('MaxiBlocks_PageTemplate')) {
 }
 
 //======================================================================
+// MaxiBlocks MCP
+//======================================================================
+require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-mcp.php';
+if (class_exists('MaxiBlocks_MCP')) {
+    MaxiBlocks_MCP::register();
+}
+
+//======================================================================
 // MaxiBlocks Dashboard
 //======================================================================
 require_once MAXI_PLUGIN_DIR_PATH . 'core/admin/class-maxi-dashboard.php';

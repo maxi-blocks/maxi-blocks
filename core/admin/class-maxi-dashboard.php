@@ -106,6 +106,22 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $this,
                 'handle_fetch_ai_models',
             ]);
+            add_action('wp_ajax_maxi_ai_connect_create_password', [
+                $this,
+                'handle_ai_connect_create_password',
+            ]);
+            add_action('wp_ajax_maxi_ai_connect_revoke_password', [
+                $this,
+                'handle_ai_connect_revoke_password',
+            ]);
+            add_action('wp_ajax_maxi_ai_connect_install_companion', [
+                $this,
+                'handle_ai_connect_install_companion',
+            ]);
+            add_action('wp_ajax_maxi_ai_connect_activate_companion', [
+                $this,
+                'handle_ai_connect_activate_companion',
+            ]);
 
             // Add AJAX handlers for license validation
             add_action('wp_ajax_maxi_validate_license', [
@@ -400,6 +416,154 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     ),
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce'   => wp_create_nonce('maxi_fetch_ai_models'),
+                ]);
+
+                $current_user = wp_get_current_user();
+                $mcp_status = $this->get_ai_connect_status();
+                $companion_status = $this->get_ai_connect_companion_status();
+                $endpoint_available = !empty($mcp_status['ready']);
+                wp_localize_script('maxi-admin', 'maxiAiConnectSettings', [
+                    'ajaxUrl' => admin_url('admin-ajax.php'),
+                    'nonce' => wp_create_nonce('maxi_ai_connect'),
+                    'endpointUrl' => $this->get_ai_connect_endpoint_url(),
+                    'endpointAvailable' => $endpoint_available,
+                    'mcpStatus' => $mcp_status['code'],
+                    'mcpStatusMessage' => $mcp_status['message'],
+                    'companion' => $companion_status,
+                    'serverName' => $this->get_ai_connect_server_name(),
+                    'username' => $current_user->user_login ?? '',
+                    'appPasswordsAvailable' => function_exists(
+                        'wp_is_application_passwords_available'
+                    )
+                        ? wp_is_application_passwords_available()
+                        : false,
+                    'currentPassword' => 'YOUR-APP-PASSWORD',
+                    'passwords' => $this->get_ai_connect_passwords_for_js(),
+                    'links' => [
+                        'mcpAdapter' =>
+                            'https://github.com/WordPress/mcp-adapter',
+                        'claudeCode' =>
+                            'https://docs.anthropic.com/en/docs/claude-code/mcp',
+                        'codex' =>
+                            'https://platform.openai.com/docs/docs-mcp',
+                        'codexAuth' =>
+                            'https://developers.openai.com/codex/auth',
+                    ],
+                    'strings' => [
+                        'createError' => __(
+                            'Unable to create an application password.',
+                            'maxi-blocks',
+                        ),
+                        'revokeError' => __(
+                            'Unable to revoke the application password.',
+                            'maxi-blocks',
+                        ),
+                        'copy' => __('Copy', 'maxi-blocks'),
+                        'copied' => __('Copied!', 'maxi-blocks'),
+                        'creating' => __('Creating...', 'maxi-blocks'),
+                        'revoking' => __('Revoking...', 'maxi-blocks'),
+                        'installing' => __('Installing...', 'maxi-blocks'),
+                        'activatingCompanion' => __(
+                            'Activating...',
+                            'maxi-blocks',
+                        ),
+                        'repairingCompanion' => __(
+                            'Repairing...',
+                            'maxi-blocks',
+                        ),
+                        'name' => __('Name', 'maxi-blocks'),
+                        'never' => __('Never', 'maxi-blocks'),
+                        'noPasswords' => __(
+                            'No Maxi AI application passwords yet.',
+                            'maxi-blocks',
+                        ),
+                        'created' => __(
+                            'Created',
+                            'maxi-blocks',
+                        ),
+                        'lastUsed' => __(
+                            'Last used',
+                            'maxi-blocks',
+                        ),
+                        'actions' => __(
+                            'Actions',
+                            'maxi-blocks',
+                        ),
+                        'revoke' => __('Revoke', 'maxi-blocks'),
+                        'revokeConfirm' => __(
+                            'Revoke this application password? Any client using it will lose access.',
+                            'maxi-blocks',
+                        ),
+                        'passwordSavedWarning' => __(
+                            'Save this password somewhere safe. WordPress will not show it again after you leave this page.',
+                            'maxi-blocks',
+                        ),
+                        'claudeNeedsPassword' => __(
+                            'Create a WordPress application password below, then run the Claude Code command.',
+                            'maxi-blocks',
+                        ),
+                        'endpointMissing' => $mcp_status['message'],
+                        'endpointMissingCommand' => __(
+                            'Maxi MCP server is not ready on this site.',
+                            'maxi-blocks',
+                        ),
+                        'claudeNote' => __(
+                            'Uses Maxi built-in MCP through the WordPress remote proxy. Requires Node.js on the client machine.',
+                            'maxi-blocks',
+                        ),
+                        'codexNote' => __(
+                            'Uses Maxi built-in MCP directly. Browser sign-in works when the endpoint is configured for OAuth.',
+                            'maxi-blocks',
+                        ),
+                        'endpointNote' => __(
+                            'Use this built-in Maxi endpoint in any MCP client that accepts a direct remote server URL.',
+                            'maxi-blocks',
+                        ),
+                        'companionInstall' => __(
+                            'Install Maxi MCP',
+                            'maxi-blocks',
+                        ),
+                        'companionRepair' => __(
+                            'Repair Maxi MCP',
+                            'maxi-blocks',
+                        ),
+                        'companionActivate' => __(
+                            'Activate Maxi MCP',
+                            'maxi-blocks',
+                        ),
+                        'companionOpen' => __(
+                            'Open Maxi MCP',
+                            'maxi-blocks',
+                        ),
+                        'companionOpenSettings' => __(
+                            'Open Maxi MCP settings',
+                            'maxi-blocks',
+                        ),
+                        'companionMissing' => __(
+                            'Install the bundled Maxi MCP companion plugin to get the easiest Codex and Claude Code setup.',
+                            'maxi-blocks',
+                        ),
+                        'companionInstalled' => __(
+                            'Maxi MCP is installed. Activate it to continue.',
+                            'maxi-blocks',
+                        ),
+                        'companionBroken' => __(
+                            'This Maxi MCP install is incomplete. Repair it before continuing.',
+                            'maxi-blocks',
+                        ),
+                        'companionActive' => __(
+                            'Maxi MCP is active. Open it to finish the Codex or Claude Code connection.',
+                            'maxi-blocks',
+                        ),
+                        'companionNeedsEnable' => __(
+                            'Maxi MCP is active, but the server is still disabled. Open settings and enable it before connecting a client.',
+                            'maxi-blocks',
+                        ),
+                        'companionError' => __(
+                            'Maxi MCP could not be installed right now.',
+                            'maxi-blocks',
+                        ),
+                    ],
                 ]);
 
                 // Add localization for license page
@@ -1808,6 +1972,718 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             return $fonts;
         }
 
+        private function get_ai_connect_server_name()
+        {
+            return 'maxi-wordpress';
+        }
+
+        private function get_ai_connect_status()
+        {
+            if (class_exists('MaxiBlocks_MCP')) {
+                return MaxiBlocks_MCP::get_status();
+            }
+
+            return [
+                'code' => 'bootstrap_missing',
+                'ready' => false,
+                'message' => __(
+                    'Maxi MCP bootstrap is not available in this build.',
+                    'maxi-blocks',
+                ),
+            ];
+        }
+
+        private function get_ai_connect_companion_candidates()
+        {
+            return [
+                'maxi-mcp/maxi-mcp.php',
+            ];
+        }
+
+        private function get_ai_connect_companion_source_dir()
+        {
+            return trailingslashit(MAXI_PLUGIN_DIR_PATH) . 'maxi-mcp';
+        }
+
+        private function get_ai_connect_companion_open_url()
+        {
+            return admin_url('admin.php?page=maxi-mcp-settings');
+        }
+
+        private function get_ai_connect_companion_plugin_file()
+        {
+            foreach ($this->get_ai_connect_companion_candidates() as $plugin) {
+                if (file_exists(WP_PLUGIN_DIR . '/' . $plugin)) {
+                    return $plugin;
+                }
+            }
+
+            return '';
+        }
+
+        private function get_ai_connect_companion_status()
+        {
+            if (!function_exists('is_plugin_active')) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+
+            $plugin_file = $this->get_ai_connect_companion_plugin_file();
+
+            if ($plugin_file === '') {
+                return [
+                    'status' => 'missing',
+                    'enabled' => false,
+                    'pluginFile' => '',
+                    'openUrl' => $this->get_ai_connect_companion_open_url(),
+                ];
+            }
+
+            $plugin_dir = WP_PLUGIN_DIR . '/' . dirname($plugin_file);
+            $has_plugin_files = file_exists(
+                $plugin_dir . '/includes/class-maxi-mcp-plugin.php',
+            );
+            $enabled = (bool) get_option('maxi_mcp_enabled');
+            $open_url = $enabled
+                ? admin_url('admin.php?page=maxi-mcp-connect')
+                : admin_url('admin.php?page=maxi-mcp-settings');
+
+            return [
+                'status' => !$has_plugin_files
+                    ? 'broken'
+                    : (is_plugin_active($plugin_file)
+                        ? 'active'
+                        : 'installed'),
+                'enabled' => $enabled,
+                'healthy' => $has_plugin_files,
+                'pluginFile' => $plugin_file,
+                'openUrl' => $open_url,
+            ];
+        }
+
+        private function get_ai_connect_endpoint_url()
+        {
+            if (class_exists('MaxiBlocks_MCP')) {
+                return MaxiBlocks_MCP::get_endpoint_url();
+            }
+
+            return rest_url('mcp/mcp-adapter-default-server');
+        }
+
+        private function is_ai_connect_endpoint_available()
+        {
+            $status = $this->get_ai_connect_status();
+
+            return !empty($status['ready']);
+        }
+
+        private function get_ai_connect_password_prefix()
+        {
+            return 'Maxi AI';
+        }
+
+        private function get_ai_connect_password_name($raw_name = '')
+        {
+            $label = is_string($raw_name)
+                ? sanitize_text_field(trim($raw_name))
+                : '';
+            $base_name = $this->get_ai_connect_password_prefix();
+
+            if ($label !== '') {
+                $base_name .= ' - ' . $label;
+            }
+
+            if (!class_exists('WP_Application_Passwords')) {
+                return $base_name;
+            }
+
+            $existing = WP_Application_Passwords::get_user_application_passwords(
+                get_current_user_id(),
+            );
+            $existing_names = array_map(
+                static function ($item) {
+                    return (string) ($item['name'] ?? '');
+                },
+                $existing,
+            );
+
+            if (!in_array($base_name, $existing_names, true)) {
+                return $base_name;
+            }
+
+            $counter = 2;
+            $candidate = $base_name . ' ' . $counter;
+
+            while (in_array($candidate, $existing_names, true)) {
+                $counter++;
+                $candidate = $base_name . ' ' . $counter;
+            }
+
+            return $candidate;
+        }
+
+        private function format_ai_connect_timestamp(
+            $timestamp,
+            $fallback = ''
+        ) {
+            if (empty($timestamp)) {
+                return $fallback;
+            }
+
+            $date_format = trim(
+                get_option('date_format') . ' ' . get_option('time_format'),
+            );
+
+            return wp_date(
+                $date_format !== '' ? $date_format : 'Y-m-d H:i',
+                (int) $timestamp,
+            );
+        }
+
+        private function get_ai_connect_passwords_for_js()
+        {
+            if (!class_exists('WP_Application_Passwords')) {
+                return [];
+            }
+
+            $prefix = $this->get_ai_connect_password_prefix();
+            $passwords = WP_Application_Passwords::get_user_application_passwords(
+                get_current_user_id(),
+            );
+
+            $passwords = array_values(
+                array_filter($passwords, static function ($item) use ($prefix) {
+                    return isset($item['name']) &&
+                        str_starts_with((string) $item['name'], $prefix);
+                }),
+            );
+
+            usort($passwords, static function ($first, $second) {
+                return (int) ($second['created'] ?? 0) <=>
+                    (int) ($first['created'] ?? 0);
+            });
+
+            return array_map(function ($item) {
+                return [
+                    'uuid' => (string) ($item['uuid'] ?? ''),
+                    'name' => (string) ($item['name'] ?? ''),
+                    'created' => $this->format_ai_connect_timestamp(
+                        $item['created'] ?? 0,
+                    ),
+                    'lastUsed' => $this->format_ai_connect_timestamp(
+                        $item['last_used'] ?? 0,
+                        __('Never', 'maxi-blocks'),
+                    ),
+                ];
+            }, $passwords);
+        }
+
+        public function handle_ai_connect_create_password()
+        {
+            check_ajax_referer('maxi_ai_connect', 'nonce');
+
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error([
+                    'message' => __(
+                        'You do not have permission to create application passwords.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            if (
+                !class_exists('WP_Application_Passwords') ||
+                !function_exists('wp_is_application_passwords_available') ||
+                !wp_is_application_passwords_available()
+            ) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Application passwords require HTTPS or a local WordPress environment.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $raw_name = isset($_POST['name'])
+                ? wp_unslash($_POST['name'])
+                : '';
+            $app_name = $this->get_ai_connect_password_name($raw_name);
+            $result = WP_Application_Passwords::create_new_application_password(
+                get_current_user_id(),
+                ['name' => $app_name],
+            );
+
+            if (is_wp_error($result)) {
+                wp_send_json_error([
+                    'message' => $result->get_error_message(),
+                ]);
+            }
+
+            wp_send_json_success([
+                'message' => __(
+                    'Application password created.',
+                    'maxi-blocks',
+                ),
+                'password' => $result[0],
+                'passwords' => $this->get_ai_connect_passwords_for_js(),
+            ]);
+        }
+
+        public function handle_ai_connect_revoke_password()
+        {
+            check_ajax_referer('maxi_ai_connect', 'nonce');
+
+            if (!current_user_can('manage_options')) {
+                wp_send_json_error([
+                    'message' => __(
+                        'You do not have permission to revoke application passwords.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            if (!class_exists('WP_Application_Passwords')) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Application passwords are not available on this site.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $uuid = isset($_POST['uuid'])
+                ? sanitize_text_field(wp_unslash($_POST['uuid']))
+                : '';
+
+            if ($uuid === '') {
+                wp_send_json_error([
+                    'message' => __(
+                        'Missing application password identifier.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $deleted = WP_Application_Passwords::delete_application_password(
+                get_current_user_id(),
+                $uuid,
+            );
+
+            if (!$deleted) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Application password could not be revoked.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            wp_send_json_success([
+                'message' => __(
+                    'Application password revoked.',
+                    'maxi-blocks',
+                ),
+                'passwords' => $this->get_ai_connect_passwords_for_js(),
+            ]);
+        }
+
+        public function handle_ai_connect_install_companion()
+        {
+            check_ajax_referer('maxi_ai_connect', 'nonce');
+
+            if (!current_user_can('install_plugins')) {
+                wp_send_json_error([
+                    'message' => __(
+                        'You do not have permission to install plugins.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $source_dir = $this->get_ai_connect_companion_source_dir();
+            if (!is_dir($source_dir)) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Maxi MCP is not bundled in this build yet.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            if (!function_exists('copy_dir')) {
+                require_once ABSPATH . 'wp-admin/includes/file.php';
+            }
+
+            WP_Filesystem();
+            global $wp_filesystem;
+
+            if (!$wp_filesystem) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Maxi could not access the filesystem to install Maxi MCP. Please install it manually.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $target_dir = trailingslashit(WP_PLUGIN_DIR) . 'maxi-mcp';
+            $plugins_root = wp_normalize_path(trailingslashit(WP_PLUGIN_DIR));
+            $normalized_target = wp_normalize_path($target_dir);
+
+            if (!str_starts_with($normalized_target, $plugins_root)) {
+                wp_send_json_error([
+                    'message' => __(
+                        'Maxi MCP install target is invalid.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            if ($wp_filesystem->exists($target_dir)) {
+                $wp_filesystem->delete($target_dir, true);
+            }
+
+            $result = copy_dir($source_dir, $target_dir);
+
+            if (is_wp_error($result)) {
+                wp_send_json_error([
+                    'message' => $result->get_error_message(),
+                ]);
+            }
+
+            $companion = $this->get_ai_connect_companion_status();
+
+            if ($companion['status'] === 'missing') {
+                wp_send_json_error([
+                    'message' => __(
+                        'Maxi copied the bundled companion plugin files, but WordPress still could not detect the plugin.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            wp_send_json_success([
+                'message' => __(
+                    'Maxi MCP installed.',
+                    'maxi-blocks',
+                ),
+                'companion' => $companion,
+            ]);
+        }
+
+        public function handle_ai_connect_activate_companion()
+        {
+            check_ajax_referer('maxi_ai_connect', 'nonce');
+
+            if (!current_user_can('activate_plugins')) {
+                wp_send_json_error([
+                    'message' => __(
+                        'You do not have permission to activate plugins.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            $plugin_file = $this->get_ai_connect_companion_plugin_file();
+
+            if ($plugin_file === '') {
+                wp_send_json_error([
+                    'message' => __(
+                        'Maxi MCP is not installed yet.',
+                        'maxi-blocks',
+                    ),
+                ]);
+            }
+
+            if (!function_exists('activate_plugin')) {
+                require_once ABSPATH . 'wp-admin/includes/plugin.php';
+            }
+
+            $result = activate_plugin($plugin_file);
+
+            if (is_wp_error($result)) {
+                wp_send_json_error([
+                    'message' => $result->get_error_message(),
+                ]);
+            }
+
+            wp_send_json_success([
+                'message' => __(
+                    'Maxi MCP activated.',
+                    'maxi-blocks',
+                ),
+                'companion' => $this->get_ai_connect_companion_status(),
+            ]);
+        }
+
+        private function maxi_ai_agent_connect_section()
+        {
+            $mcp_status = $this->get_ai_connect_status();
+            $companion_status = $this->get_ai_connect_companion_status();
+            $content = $this->generate_item_header(
+                __('External agents (beta)', 'maxi-blocks'),
+                false,
+            );
+
+            $content .= '<div class="maxi-ai-connect">';
+            $content .= '<p>' .
+                __(
+                    'Choose the connection style that fits the user: keep everything inside Maxi with API keys, or install the Maxi MCP companion plugin for Codex and Claude Code.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<p class="maxi-ai-connect__intro">' .
+                __(
+                    'The recommended path is the Maxi MCP companion plugin. The manual fallback below uses Maxi built-in MCP endpoint at /wp-json/mcp/mcp-adapter-default-server.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<p class="maxi-ai-connect__links">' .
+                '<a href="https://github.com/WordPress/mcp-adapter" target="_blank" rel="noopener noreferrer">' .
+                __('Underlying MCP adapter', 'maxi-blocks') .
+                '</a> | <a href="https://docs.anthropic.com/en/docs/claude-code/mcp" target="_blank" rel="noopener noreferrer">' .
+                __('Claude Code MCP docs', 'maxi-blocks') .
+                '</a> | <a href="https://platform.openai.com/docs/docs-mcp" target="_blank" rel="noopener noreferrer">' .
+                __('Codex MCP docs', 'maxi-blocks') .
+                '</a> | <a href="https://developers.openai.com/codex/auth" target="_blank" rel="noopener noreferrer">' .
+                __('Codex auth docs', 'maxi-blocks') .
+                '</a></p>';
+
+            if (
+                empty($mcp_status['ready']) &&
+                ($mcp_status['code'] ?? '') !== 'disabled_by_companion'
+            ) {
+                $content .= '<div class="maxi-ai-connect__status maxi-ai-connect__status--error">';
+                $content .= '<strong>' .
+                    __('Manual fallback is not ready on this site.', 'maxi-blocks') .
+                    '</strong> ';
+                $content .= esc_html($mcp_status['message']);
+                $content .= '</div>';
+            }
+
+            $content .= '<div class="maxi-ai-connect__choices">';
+            $content .= '<div class="maxi-ai-connect__choice">';
+            $content .= '<span class="maxi-ai-connect__choice-kicker">' .
+                __('Option 1', 'maxi-blocks') .
+                '</span>';
+            $content .= '<h4>' . __('Use Maxi API keys', 'maxi-blocks') . '</h4>';
+            $content .= '<p>' .
+                __(
+                    'Keep everything inside Maxi. This is the current OpenAI or Anthropic API key workflow.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<button type="button" id="maxi-ai-connect-open-api" class="button maxi-ai-connect__choice-button" value="api">' .
+                __('Go to API key settings', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-ai-connect__choice">';
+            $content .= '<span class="maxi-ai-connect__choice-kicker">' .
+                __('Option 2', 'maxi-blocks') .
+                ' · ' .
+                __('Recommended', 'maxi-blocks') .
+                '</span>';
+            $content .= '<h4>' .
+                __('Connect Codex or Claude Code', 'maxi-blocks') .
+                '</h4>';
+            $content .= '<p>' .
+                __(
+                    'Install the bundled Maxi MCP companion plugin. It gives users a cleaner setup flow outside the main Maxi settings.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<div class="maxi-ai-connect__choice-actions">';
+            $content .= '<button type="button" id="maxi-ai-connect-companion-action" class="button button-primary maxi-ai-connect__choice-button" value="' .
+                esc_attr($companion_status['status']) .
+                '">' .
+                __('Install Maxi MCP', 'maxi-blocks') .
+                '</button>';
+            $content .= '<button type="button" id="maxi-ai-connect-open-advanced" class="button maxi-ai-connect__choice-button" value="advanced">' .
+                __('Manual setup', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+            $content .= '<p id="maxi-ai-connect-companion-status" class="maxi-ai-connect__choice-status"></p>';
+            $content .= '</div>';
+
+            $content .= '</div>';
+
+            $content .= '<details class="maxi-ai-connect__advanced" id="maxi-ai-connect-advanced">';
+            $content .= '<summary>' .
+                __('Manual setup (fallback)', 'maxi-blocks') .
+                '</summary>';
+
+            $content .= '<div class="maxi-ai-connect__panel maxi-ai-connect__panel--guide">';
+            $content .= '<h4>' .
+                __('How to use the advanced setup', 'maxi-blocks') .
+                '</h4>';
+            $content .= '<p>' .
+                __(
+                    'These tools do not connect inside Maxi automatically. Maxi exposes the server here, then you paste the generated command into Claude Code, Codex, or another MCP client on your own machine.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<div class="maxi-ai-connect__guides">';
+            $content .= '<div class="maxi-ai-connect__guide">';
+            $content .= '<h5>' . __('Claude Code', 'maxi-blocks') . '</h5>';
+            $content .= '<div class="maxi-ai-connect__flow" aria-hidden="true">';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Maxi', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Create password', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Copy Claude command', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Run on your machine', 'maxi-blocks') .
+                '</span>';
+            $content .= '</div>';
+            $content .= '<ol class="maxi-ai-connect__guide-steps">';
+            $content .= '<li>' .
+                __('Create a WordPress application password below.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('Keep the Claude Code tab selected and copy the generated command.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('Run that command in a terminal on the machine where Claude Code is installed.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('Open Claude Code and start using Maxi through the new MCP server.', 'maxi-blocks') .
+                '</li>';
+            $content .= '</ol>';
+            $content .= '</div>';
+            $content .= '<div class="maxi-ai-connect__guide">';
+            $content .= '<h5>' . __('Codex', 'maxi-blocks') . '</h5>';
+            $content .= '<div class="maxi-ai-connect__flow" aria-hidden="true">';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Maxi', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Copy Codex command', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Run on your machine', 'maxi-blocks') .
+                '</span>';
+            $content .= '<span class="maxi-ai-connect__flow-arrow">-></span>';
+            $content .= '<span class="maxi-ai-connect__flow-step">' .
+                __('Approve if prompted', 'maxi-blocks') .
+                '</span>';
+            $content .= '</div>';
+            $content .= '<ol class="maxi-ai-connect__guide-steps">';
+            $content .= '<li>' .
+                __('Open the Codex tab below and copy the generated command.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('Run that command in a terminal on the machine where Codex is installed.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('If Codex opens a browser or asks you to approve access, finish that step there.', 'maxi-blocks') .
+                '</li>';
+            $content .= '<li>' .
+                __('Return to Codex and start using Maxi through the configured MCP server.', 'maxi-blocks') .
+                '</li>';
+            $content .= '</ol>';
+            $content .= '</div>';
+            $content .= '</div>';
+            $content .= '<p class="maxi-ai-connect__note">' .
+                __(
+                    'If another client asks for a raw server URL instead of a command, use the Maxi MCP endpoint tab below.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-ai-connect__panel">';
+            $content .= '<h4>' .
+                __('Manage WordPress access', 'maxi-blocks') .
+                '</h4>';
+            $content .= '<p>' .
+                __(
+                    'Manual controls for WordPress application passwords. You can use this if you want to prepare or revoke access yourself.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<div class="maxi-ai-connect__password-controls">';
+            $content .= '<input type="text" id="maxi-ai-connect-password-name" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' .
+                esc_attr__(
+                    'Optional label, for example Staging laptop',
+                    'maxi-blocks',
+                ) .
+                '">';
+            $content .= '<button type="button" id="maxi-ai-connect-create-password" class="button button-primary">' .
+                __('Create application password', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+            $content .= '<div id="maxi-ai-connect-password-message" class="maxi-ai-connect__message"></div>';
+            $content .= '<div id="maxi-ai-connect-password-reveal" class="maxi-ai-connect__password-reveal"></div>';
+            $content .= '<div id="maxi-ai-connect-passwords" class="maxi-ai-connect__passwords"></div>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-ai-connect__panel">';
+            $content .= '<h4>' .
+                __('Run this on your machine', 'maxi-blocks') .
+                '</h4>';
+            $content .= '<p>' .
+                __(
+                    'Copy the command for the currently selected client, then run it on the machine where that client is installed.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<div class="maxi-ai-connect__tabs">';
+            $content .= '<button type="button" class="button maxi-ai-connect__tab is-active" value="claude" id="maxi-ai-connect-tab-claude">' .
+                __('Claude Code', 'maxi-blocks') .
+                '</button>';
+            $content .= '<button type="button" class="button maxi-ai-connect__tab" value="codex" id="maxi-ai-connect-tab-codex">' .
+                __('Codex', 'maxi-blocks') .
+                '</button>';
+            $content .= '<button type="button" class="button maxi-ai-connect__tab" value="endpoint" id="maxi-ai-connect-tab-endpoint">' .
+                __('MCP endpoint', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+            $content .= '<div class="maxi-ai-connect__config">';
+            $content .= '<div id="maxi-ai-connect-config" class="maxi-ai-connect__config-code"></div>';
+            $content .= '<button type="button" id="maxi-ai-connect-copy-config" class="button">' .
+                __('Copy', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+            $content .= '<p id="maxi-ai-connect-config-note" class="maxi-ai-connect__note"></p>';
+            $content .= '</div>';
+
+            $content .= '<div class="maxi-ai-connect__panel maxi-ai-connect__panel--next">';
+            $content .= '<h4 id="maxi-ai-connect-next-title">' .
+                __('After you run it', 'maxi-blocks') .
+                '</h4>';
+            $content .= '<p>' .
+                __(
+                    'Open a fresh chat in the selected client and paste the starter prompt below. This removes the guesswork after the connection step.',
+                    'maxi-blocks',
+                ) .
+                '</p>';
+            $content .= '<div class="maxi-ai-connect__prompt">';
+            $content .= '<div id="maxi-ai-connect-first-prompt" class="maxi-ai-connect__prompt-code"></div>';
+            $content .= '<button type="button" id="maxi-ai-connect-copy-prompt" class="button">' .
+                __('Copy first prompt', 'maxi-blocks') .
+                '</button>';
+            $content .= '</div>';
+            $content .= '<ol id="maxi-ai-connect-next-steps" class="maxi-ai-connect__guide-steps"></ol>';
+            $content .= '<p id="maxi-ai-connect-next-note" class="maxi-ai-connect__note"></p>';
+            $content .= '</div>';
+            $content .= '</details>';
+
+            $content .= '</div>';
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
+            $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            return $content;
+        }
+
         public function maxi_blocks_maxi_ai()
         {
             $content = '<div class="maxi-dashboard_main-content">';
@@ -2061,6 +2937,8 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item-content
             $content .= '</div>'; // maxi-dashboard_main-content_accordion-item
+
+            $content .= $this->maxi_ai_agent_connect_section();
 
             $content .= $this->generate_item_header(
                 __('Website identity', 'maxi-blocks'),

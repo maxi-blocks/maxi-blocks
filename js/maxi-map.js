@@ -121,7 +121,14 @@ window.onload = () => {
 			const defaultZoom = Math.floor((mapMinZoom + adjustedMaxZoom) / 2);
 			const zoomLevel = mapZoom !== undefined ? mapZoom : defaultZoom;
 
-			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
+			const containerEl = document.getElementById(
+				`maxi-map-block__container-${uniqueID}`
+			);
+			if (!containerEl) {
+				return;
+			}
+
+			const map = L.map(containerEl, {
 				dragging: mapDragging,
 				touchZoom: mapTouchZoom,
 				doubleClickZoom: mapDoubleClickZoom,

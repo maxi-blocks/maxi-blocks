@@ -1,4 +1,4 @@
-_Updates 22 Apr 2026_
+_Updates 23 Apr 2026_
 MaxiBlocks v2.1.10
 * Security: Fixed authenticated (Author+) stored cross-site scripting via the Style Card REST API (CVE-2026-6378). Thanks to Athiwat Tiprasaharn (Jitlada) for the responsible disclosure.
 * Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.

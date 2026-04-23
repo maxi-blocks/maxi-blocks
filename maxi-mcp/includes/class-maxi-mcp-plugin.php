@@ -386,6 +386,247 @@ if (!class_exists('Maxi_MCP_Plugin')):
                 ],
             ]);
 
+            wp_register_ability('maxi-mcp/get-maxi-structure', [
+                'label' => __('Get Maxi Structure', 'maxi-mcp'),
+                'description' => __(
+                    'Inspect a WordPress post or page and return a MaxiBlocks-only structural index for safe editing.',
+                    'maxi-mcp',
+                ),
+                'category' => 'maxi-content',
+                'input_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'id' => [
+                            'type' => 'integer',
+                        ],
+                        'include_attributes' => [
+                            'type' => 'boolean',
+                            'default' => false,
+                        ],
+                    ],
+                    'required' => ['id'],
+                ],
+                'output_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'id' => ['type' => 'integer'],
+                        'post_type' => ['type' => 'string'],
+                        'status' => ['type' => 'string'],
+                        'slug' => ['type' => 'string'],
+                        'title' => ['type' => 'string'],
+                        'link' => ['type' => 'string'],
+                        'modified' => ['type' => 'string'],
+                        'has_maxi_blocks' => ['type' => 'boolean'],
+                        'maxi_block_count' => ['type' => 'integer'],
+                        'non_maxi_block_count' => ['type' => 'integer'],
+                        'reusable_block_ref_count' => ['type' => 'integer'],
+                        'items' => [
+                            'type' => 'array',
+                            'items' => [
+                                'type' => 'object',
+                                'properties' => [
+                                    'path' => ['type' => 'string'],
+                                    'parent_path' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'depth' => ['type' => 'integer'],
+                                    'name' => ['type' => 'string'],
+                                    'type' => ['type' => 'string'],
+                                    'unique_id' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'custom_label' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'block_style' => [
+                                        'type' => ['string', 'null'],
+                                    ],
+                                    'inner_block_count' => ['type' => 'integer'],
+                                    'attribute_keys' => [
+                                        'type' => 'array',
+                                        'items' => ['type' => 'string'],
+                                    ],
+                                    'source' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'kind' => ['type' => 'string'],
+                                            'post_id' => ['type' => 'integer'],
+                                        ],
+                                        'required' => ['kind', 'post_id'],
+                                    ],
+                                    'highlights' => [
+                                        'type' => 'object',
+                                        'properties' => [
+                                            'text_preview' => [
+                                                'type' => ['string', 'null'],
+                                            ],
+                                            'text_level' => [
+                                                'type' => ['string', 'null'],
+                                            ],
+                                            'media_id' => [
+                                                'type' => ['integer', 'null'],
+                                            ],
+                                            'media_url' => [
+                                                'type' => ['string', 'null'],
+                                            ],
+                                            'background_layer_count' => [
+                                                'type' => 'integer',
+                                            ],
+                                            'has_link' => ['type' => 'boolean'],
+                                            'has_relations' => ['type' => 'boolean'],
+                                            'has_dynamic_content' => [
+                                                'type' => 'boolean',
+                                            ],
+                                        ],
+                                        'required' => [
+                                            'text_preview',
+                                            'text_level',
+                                            'media_id',
+                                            'media_url',
+                                            'background_layer_count',
+                                            'has_link',
+                                            'has_relations',
+                                            'has_dynamic_content',
+                                        ],
+                                    ],
+                                    'attributes' => [
+                                        'type' => 'object',
+                                    ],
+                                ],
+                                'required' => [
+                                    'path',
+                                    'parent_path',
+                                    'depth',
+                                    'name',
+                                    'type',
+                                    'unique_id',
+                                    'custom_label',
+                                    'block_style',
+                                    'inner_block_count',
+                                    'attribute_keys',
+                                    'source',
+                                    'highlights',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'required' => [
+                        'id',
+                        'post_type',
+                        'status',
+                        'slug',
+                        'title',
+                        'link',
+                        'modified',
+                        'has_maxi_blocks',
+                        'maxi_block_count',
+                        'non_maxi_block_count',
+                        'reusable_block_ref_count',
+                        'items',
+                    ],
+                ],
+                'permission_callback' => [$this, 'can_edit_content'],
+                'execute_callback' => [$this, 'get_maxi_structure'],
+                'meta' => [
+                    'annotations' => [
+                        'readonly' => true,
+                        'destructive' => false,
+                        'idempotent' => true,
+                    ],
+                    'mcp' => [
+                        'public' => true,
+                        'type' => 'tool',
+                    ],
+                ],
+            ]);
+
+            wp_register_ability('maxi-mcp/set-content', [
+                'label' => __('Set Content', 'maxi-mcp'),
+                'description' => __(
+                    'Replace the full raw Gutenberg or MaxiBlocks content of an existing post or page, with optional dry-run validation.',
+                    'maxi-mcp',
+                ),
+                'category' => 'maxi-content',
+                'input_schema' => [
+                    'type' => 'object',
+                    'additionalProperties' => false,
+                    'properties' => [
+                        'id' => ['type' => 'integer'],
+                        'content' => ['type' => 'string'],
+                        'title' => ['type' => 'string'],
+                        'slug' => ['type' => 'string'],
+                        'status' => [
+                            'type' => 'string',
+                            'enum' => ['draft', 'publish', 'private', 'pending'],
+                        ],
+                        'excerpt' => ['type' => 'string'],
+                        'validate_only' => [
+                            'type' => 'boolean',
+                            'default' => false,
+                        ],
+                    ],
+                    'required' => ['id', 'content'],
+                ],
+                'output_schema' => [
+                    'type' => 'object',
+                    'properties' => [
+                        'id' => ['type' => 'integer'],
+                        'post_type' => ['type' => 'string'],
+                        'status' => ['type' => 'string'],
+                        'slug' => ['type' => 'string'],
+                        'title' => ['type' => 'string'],
+                        'link' => ['type' => 'string'],
+                        'modified' => ['type' => 'string'],
+                        'saved' => ['type' => 'boolean'],
+                        'content_length' => ['type' => 'integer'],
+                        'has_blocks' => ['type' => 'boolean'],
+                        'has_maxi_blocks' => ['type' => 'boolean'],
+                        'maxi_block_count' => ['type' => 'integer'],
+                        'non_maxi_block_count' => ['type' => 'integer'],
+                        'validation' => [
+                            'type' => 'object',
+                            'properties' => [
+                                'ok' => ['type' => 'boolean'],
+                                'messages' => [
+                                    'type' => 'array',
+                                    'items' => ['type' => 'string'],
+                                ],
+                            ],
+                            'required' => ['ok', 'messages'],
+                        ],
+                    ],
+                    'required' => [
+                        'id',
+                        'post_type',
+                        'status',
+                        'slug',
+                        'title',
+                        'link',
+                        'modified',
+                        'saved',
+                        'content_length',
+                        'has_blocks',
+                        'has_maxi_blocks',
+                        'maxi_block_count',
+                        'non_maxi_block_count',
+                        'validation',
+                    ],
+                ],
+                'permission_callback' => [$this, 'can_edit_content'],
+                'execute_callback' => [$this, 'set_content'],
+                'meta' => [
+                    'annotations' => [
+                        'readonly' => false,
+                        'destructive' => true,
+                        'idempotent' => true,
+                    ],
+                    'mcp' => [
+                        'public' => true,
+                        'type' => 'tool',
+                    ],
+                ],
+            ]);
+
             wp_register_ability('maxi-mcp/upsert-content', [
                 'label' => __('Create or Update Content', 'maxi-mcp'),
                 'description' => __(
@@ -1206,6 +1447,159 @@ if (!class_exists('Maxi_MCP_Plugin')):
             return $this->format_post_detail($post);
         }
 
+        public function get_maxi_structure($input = [])
+        {
+            $post = $this->get_editable_post_or_error($input);
+            if (is_wp_error($post)) {
+                return $post;
+            }
+
+            $include_attributes = $this->normalize_boolean(
+                $input['include_attributes'] ?? false,
+            );
+            $items = [];
+            $summary = [
+                'maxi_block_count' => 0,
+                'non_maxi_block_count' => 0,
+                'reusable_block_ref_count' => 0,
+            ];
+
+            $this->collect_maxi_structure_from_blocks(
+                $this->parse_post_content_blocks((string) $post->post_content),
+                '',
+                null,
+                0,
+                [
+                    'kind' => 'post',
+                    'post_id' => (int) $post->ID,
+                ],
+                $include_attributes,
+                $items,
+                $summary,
+            );
+
+            return array_merge($this->format_post_summary($post), [
+                'has_maxi_blocks' => !empty($items),
+                'maxi_block_count' => (int) $summary['maxi_block_count'],
+                'non_maxi_block_count' => (int) $summary['non_maxi_block_count'],
+                'reusable_block_ref_count' => (int) $summary['reusable_block_ref_count'],
+                'items' => $items,
+            ]);
+        }
+
+        public function set_content($input = [])
+        {
+            $post = $this->get_editable_post_or_error($input);
+            if (is_wp_error($post)) {
+                return $post;
+            }
+
+            if (!array_key_exists('content', $input) || !is_string($input['content'])) {
+                return new \WP_Error(
+                    'maxi_mcp_invalid_content',
+                    __(
+                        'The content payload must be a string.',
+                        'maxi-mcp',
+                    ),
+                );
+            }
+
+            $content = (string) $input['content'];
+            $validate_only = $this->normalize_boolean(
+                $input['validate_only'] ?? false,
+            );
+            $summary = $this->summarize_block_content($content);
+            $validation = $this->validate_raw_block_content($content, $summary);
+
+            if ($validate_only) {
+                $validation['messages'][] = __(
+                    'Validation only: no changes were saved.',
+                    'maxi-mcp',
+                );
+
+                return $this->format_set_content_output(
+                    $post,
+                    $summary,
+                    $validation,
+                    false,
+                );
+            }
+
+            if (!$validation['ok']) {
+                return $this->format_set_content_output(
+                    $post,
+                    $summary,
+                    $validation,
+                    false,
+                );
+            }
+
+            $post_data = [
+                'ID' => (int) $post->ID,
+                'post_content' => $content,
+            ];
+
+            if (array_key_exists('title', $input)) {
+                $post_data['post_title'] = sanitize_text_field(
+                    (string) $input['title'],
+                );
+            }
+
+            if (array_key_exists('excerpt', $input)) {
+                $post_data['post_excerpt'] = sanitize_textarea_field(
+                    (string) $input['excerpt'],
+                );
+            }
+
+            if (
+                array_key_exists('slug', $input) &&
+                trim((string) $input['slug']) !== ''
+            ) {
+                $post_data['post_name'] = sanitize_title(
+                    (string) $input['slug'],
+                );
+            }
+
+            if (!empty($input['status'])) {
+                $post_data['post_status'] = $this->sanitize_edit_status(
+                    (string) $input['status'],
+                );
+            }
+
+            $result = wp_update_post(wp_slash($post_data), true);
+
+            if (is_wp_error($result)) {
+                return $result;
+            }
+
+            $saved_post = get_post((int) $result);
+
+            if (!$saved_post instanceof \WP_Post) {
+                return new \WP_Error(
+                    'maxi_mcp_post_missing',
+                    __(
+                        'The post was saved, but WordPress could not reload it.',
+                        'maxi-mcp',
+                    ),
+                );
+            }
+
+            $saved_summary = $this->summarize_block_content(
+                (string) $saved_post->post_content,
+            );
+            $saved_validation = $this->validate_raw_block_content(
+                (string) $saved_post->post_content,
+                $saved_summary,
+            );
+
+            return $this->format_set_content_output(
+                $saved_post,
+                $saved_summary,
+                $saved_validation,
+                true,
+            );
+        }
+
         public function upsert_content($input = [])
         {
             $post_type = $this->sanitize_post_type($input['post_type'] ?? 'page');
@@ -1309,6 +1703,14 @@ if (!class_exists('Maxi_MCP_Plugin')):
                         'maxi-mcp',
                     ),
                     __(
+                        'Use maxi-mcp/get-maxi-structure before editing MaxiBlocks-heavy pages so you can inspect the block tree, labels, and reusable block boundaries.',
+                        'maxi-mcp',
+                    ),
+                    __(
+                        'Use maxi-mcp/set-content when you need to replace the full Gutenberg or MaxiBlocks content of an existing draft or page.',
+                        'maxi-mcp',
+                    ),
+                    __(
                         'Prefer updating drafts first. Use maxi-mcp/upsert-content with status=draft unless the user clearly wants a published change.',
                         'maxi-mcp',
                     ),
@@ -1337,9 +1739,23 @@ if (!class_exists('Maxi_MCP_Plugin')):
                         ),
                     ],
                     [
+                        'name' => 'maxi-mcp/get-maxi-structure',
+                        'purpose' => __(
+                            'Inspect the MaxiBlocks structure of a page before making raw-content edits.',
+                            'maxi-mcp',
+                        ),
+                    ],
+                    [
+                        'name' => 'maxi-mcp/set-content',
+                        'purpose' => __(
+                            'Replace full raw Gutenberg or MaxiBlocks content, with optional dry-run validation.',
+                            'maxi-mcp',
+                        ),
+                    ],
+                    [
                         'name' => 'maxi-mcp/upsert-content',
                         'purpose' => __(
-                            'Create new drafts or update existing posts and pages.',
+                            'Create new draft shells or update existing post metadata and content.',
                             'maxi-mcp',
                         ),
                     ],
@@ -1367,7 +1783,8 @@ if (!class_exists('Maxi_MCP_Plugin')):
                         'steps' => [
                             'maxi-mcp/list-content',
                             'maxi-mcp/get-content',
-                            'maxi-mcp/upsert-content',
+                            'maxi-mcp/get-maxi-structure',
+                            'maxi-mcp/set-content',
                         ],
                     ],
                     [
@@ -1377,6 +1794,8 @@ if (!class_exists('Maxi_MCP_Plugin')):
                         ),
                         'steps' => [
                             'maxi-mcp/upsert-content',
+                            'maxi-mcp/set-content',
+                            'maxi-mcp/get-maxi-structure',
                         ],
                     ],
                     [
@@ -1387,6 +1806,7 @@ if (!class_exists('Maxi_MCP_Plugin')):
                         'steps' => [
                             'core/get-site-info',
                             'maxi-mcp/list-content',
+                            'maxi-mcp/get-maxi-structure',
                             'maxi-mcp/get-guide',
                         ],
                     ],
@@ -1432,6 +1852,14 @@ if (!class_exists('Maxi_MCP_Plugin')):
                     ),
                     __(
                         'Use maxi-mcp/get-guide, then find the About page, read it, and suggest a clearer headline and intro paragraph.',
+                        'maxi-mcp',
+                    ),
+                    __(
+                        'Use maxi-mcp/get-guide, then find the homepage, inspect it with maxi-mcp/get-maxi-structure, and tell me which Maxi blocks look safest to edit first.',
+                        'maxi-mcp',
+                    ),
+                    __(
+                        'Create a new draft page with maxi-mcp/upsert-content, save a simple MaxiBlocks layout with maxi-mcp/set-content, and verify the result with maxi-mcp/get-maxi-structure.',
                         'maxi-mcp',
                     ),
                 ],
@@ -1653,6 +2081,532 @@ if (!class_exists('Maxi_MCP_Plugin')):
                     $post,
                 ),
             ];
+        }
+
+        private function format_set_content_output(
+            $post,
+            $summary,
+            $validation,
+            $saved
+        ) {
+            $messages = [];
+            if (is_array($validation['messages'] ?? null)) {
+                $messages = array_values(array_map('strval', $validation['messages']));
+            }
+
+            return array_merge($this->format_post_summary($post), [
+                'saved' => (bool) $saved,
+                'content_length' => (int) ($summary['content_length'] ?? 0),
+                'has_blocks' => !empty($summary['has_blocks']),
+                'has_maxi_blocks' => !empty($summary['has_maxi_blocks']),
+                'maxi_block_count' => (int) ($summary['maxi_block_count'] ?? 0),
+                'non_maxi_block_count' => (int) ($summary['non_maxi_block_count'] ?? 0),
+                'validation' => [
+                    'ok' => !empty($validation['ok']),
+                    'messages' => $messages,
+                ],
+            ]);
+        }
+
+        private function parse_post_content_blocks($content)
+        {
+            if (!is_string($content) || $content === '') {
+                return [];
+            }
+
+            $blocks = parse_blocks($content);
+
+            return is_array($blocks) ? $blocks : [];
+        }
+
+        private function summarize_block_content($content)
+        {
+            $content = (string) $content;
+            $blocks = $this->parse_post_content_blocks($content);
+            $summary = [
+                'content_length' => strlen($content),
+                'has_blocks' => has_blocks($content),
+                'has_maxi_blocks' => false,
+                'maxi_block_count' => 0,
+                'non_maxi_block_count' => 0,
+                'reusable_block_ref_count' => 0,
+            ];
+
+            $this->accumulate_block_tree_summary($blocks, $summary);
+            $summary['has_maxi_blocks'] = $summary['maxi_block_count'] > 0;
+
+            return $summary;
+        }
+
+        private function validate_raw_block_content($content, $summary = null)
+        {
+            if (!is_string($content)) {
+                return [
+                    'ok' => false,
+                    'messages' => [
+                        __(
+                            'Content must be a string.',
+                            'maxi-mcp',
+                        ),
+                    ],
+                ];
+            }
+
+            $summary = is_array($summary)
+                ? $summary
+                : $this->summarize_block_content($content);
+            $messages = [];
+            $trimmed_content = trim($content);
+            $contains_block_marker = str_contains($content, '<!-- wp:');
+            $ok = true;
+
+            if ($trimmed_content === '') {
+                $messages[] = __(
+                    'Content is empty; saving will clear the current post content.',
+                    'maxi-mcp',
+                );
+            } elseif ($contains_block_marker && empty($summary['has_blocks'])) {
+                $ok = false;
+                $messages[] = __(
+                    'Content appears to contain Gutenberg block markers, but WordPress did not recognize any valid blocks.',
+                    'maxi-mcp',
+                );
+            } elseif (empty($summary['has_blocks'])) {
+                $messages[] = __(
+                    'Content does not contain Gutenberg blocks; it will be saved as plain content.',
+                    'maxi-mcp',
+                );
+            }
+
+            if (empty($summary['has_maxi_blocks'])) {
+                $messages[] = __(
+                    'Content does not contain MaxiBlocks blocks.',
+                    'maxi-mcp',
+                );
+            }
+
+            return [
+                'ok' => $ok,
+                'messages' => $messages,
+            ];
+        }
+
+        private function count_maxi_blocks_in_tree(
+            array $blocks,
+            array $reusable_stack = []
+        ) {
+            $summary = [
+                'maxi_block_count' => 0,
+                'non_maxi_block_count' => 0,
+                'reusable_block_ref_count' => 0,
+            ];
+
+            $this->accumulate_block_tree_summary(
+                $blocks,
+                $summary,
+                $reusable_stack,
+            );
+
+            return (int) $summary['maxi_block_count'];
+        }
+
+        private function has_maxi_blocks(array $blocks)
+        {
+            return $this->count_maxi_blocks_in_tree($blocks) > 0;
+        }
+
+        private function accumulate_block_tree_summary(
+            array $blocks,
+            array &$summary,
+            array $reusable_stack = []
+        ) {
+            foreach ($blocks as $block) {
+                if (!is_array($block)) {
+                    continue;
+                }
+
+                $block_name = isset($block['blockName']) && is_string($block['blockName'])
+                    ? $block['blockName']
+                    : '';
+
+                if ($this->is_maxi_block_name($block_name)) {
+                    $summary['maxi_block_count']++;
+                } else {
+                    $summary['non_maxi_block_count']++;
+                }
+
+                if (!empty($block['innerBlocks']) && is_array($block['innerBlocks'])) {
+                    $this->accumulate_block_tree_summary(
+                        $block['innerBlocks'],
+                        $summary,
+                        $reusable_stack,
+                    );
+                }
+
+                if ($block_name !== 'core/block') {
+                    continue;
+                }
+
+                $attrs = $this->normalize_block_attributes($block['attrs'] ?? []);
+                $ref_id = absint($attrs['ref'] ?? 0);
+
+                if ($ref_id < 1) {
+                    continue;
+                }
+
+                $summary['reusable_block_ref_count']++;
+
+                if (in_array($ref_id, $reusable_stack, true)) {
+                    continue;
+                }
+
+                $reusable_post = get_post($ref_id);
+
+                if (
+                    !$reusable_post instanceof \WP_Post ||
+                    $reusable_post->post_type !== 'wp_block'
+                ) {
+                    continue;
+                }
+
+                $this->accumulate_block_tree_summary(
+                    $this->parse_post_content_blocks(
+                        (string) $reusable_post->post_content,
+                    ),
+                    $summary,
+                    array_merge($reusable_stack, [$ref_id]),
+                );
+            }
+        }
+
+        private function collect_maxi_structure_from_blocks(
+            $blocks,
+            $path_prefix,
+            $parent_path,
+            $depth,
+            $source,
+            $include_attributes,
+            &$items,
+            &$summary,
+            $reusable_stack = []
+        ) {
+            if (!is_array($blocks)) {
+                return;
+            }
+
+            foreach ($blocks as $index => $block) {
+                $current_path =
+                    $path_prefix === ''
+                        ? (string) $index
+                        : $path_prefix . '.' . $index;
+
+                $this->collect_maxi_structure_from_block(
+                    $block,
+                    $current_path,
+                    $parent_path,
+                    $depth,
+                    $source,
+                    $include_attributes,
+                    $items,
+                    $summary,
+                    $reusable_stack,
+                );
+            }
+        }
+
+        private function collect_maxi_structure_from_block(
+            $block,
+            $current_path,
+            $parent_path,
+            $depth,
+            $source,
+            $include_attributes,
+            &$items,
+            &$summary,
+            $reusable_stack = []
+        ) {
+            if (!is_array($block)) {
+                return;
+            }
+
+            $block_name = isset($block['blockName']) && is_string($block['blockName'])
+                ? $block['blockName']
+                : '';
+            $attrs = $this->normalize_block_attributes($block['attrs'] ?? []);
+
+            if ($this->is_maxi_block_name($block_name)) {
+                $summary['maxi_block_count']++;
+                $items[] = $this->format_maxi_structure_item(
+                    $current_path,
+                    $parent_path,
+                    $depth,
+                    $block_name,
+                    $attrs,
+                    $block['innerBlocks'] ?? [],
+                    $source,
+                    $include_attributes,
+                );
+            } else {
+                $summary['non_maxi_block_count']++;
+            }
+
+            if (!empty($block['innerBlocks']) && is_array($block['innerBlocks'])) {
+                $this->collect_maxi_structure_from_blocks(
+                    $block['innerBlocks'],
+                    $current_path,
+                    $current_path,
+                    $depth + 1,
+                    $source,
+                    $include_attributes,
+                    $items,
+                    $summary,
+                    $reusable_stack,
+                );
+            }
+
+            if ($block_name !== 'core/block') {
+                return;
+            }
+
+            $ref_id = absint($attrs['ref'] ?? 0);
+            if ($ref_id < 1) {
+                return;
+            }
+
+            $summary['reusable_block_ref_count']++;
+
+            if (in_array($ref_id, $reusable_stack, true)) {
+                return;
+            }
+
+            $reusable_post = get_post($ref_id);
+            if (
+                !$reusable_post instanceof \WP_Post ||
+                $reusable_post->post_type !== 'wp_block'
+            ) {
+                return;
+            }
+
+            $ref_anchor = $current_path . '.ref-' . $ref_id;
+
+            $this->collect_maxi_structure_from_blocks(
+                $this->parse_post_content_blocks(
+                    (string) $reusable_post->post_content,
+                ),
+                $ref_anchor,
+                $ref_anchor,
+                $depth + 1,
+                [
+                    'kind' => 'reusable-block',
+                    'post_id' => $ref_id,
+                ],
+                $include_attributes,
+                $items,
+                $summary,
+                array_merge($reusable_stack, [$ref_id]),
+            );
+        }
+
+        private function format_maxi_structure_item(
+            $path,
+            $parent_path,
+            $depth,
+            $block_name,
+            $attrs,
+            $inner_blocks,
+            $source,
+            $include_attributes
+        ) {
+            $attribute_keys = array_keys($attrs);
+            sort($attribute_keys);
+
+            $item = [
+                'path' => (string) $path,
+                'parent_path' => $parent_path === null
+                    ? null
+                    : (string) $parent_path,
+                'depth' => (int) $depth,
+                'name' => (string) $block_name,
+                'type' => $this->get_maxi_block_type($block_name),
+                'unique_id' => isset($attrs['uniqueID']) &&
+                    is_string($attrs['uniqueID']) &&
+                    $attrs['uniqueID'] !== ''
+                    ? $attrs['uniqueID']
+                    : null,
+                'custom_label' => isset($attrs['customLabel']) &&
+                    is_string($attrs['customLabel']) &&
+                    $attrs['customLabel'] !== ''
+                    ? $attrs['customLabel']
+                    : null,
+                'block_style' => isset($attrs['blockStyle']) &&
+                    is_string($attrs['blockStyle']) &&
+                    $attrs['blockStyle'] !== ''
+                    ? $attrs['blockStyle']
+                    : null,
+                'inner_block_count' => is_array($inner_blocks)
+                    ? count($inner_blocks)
+                    : 0,
+                'attribute_keys' => $attribute_keys,
+                'source' => [
+                    'kind' => (string) ($source['kind'] ?? 'post'),
+                    'post_id' => (int) ($source['post_id'] ?? 0),
+                ],
+                'highlights' => $this->extract_maxi_structure_highlights($attrs),
+            ];
+
+            if ($include_attributes) {
+                $item['attributes'] = $attrs;
+            }
+
+            return $item;
+        }
+
+        private function extract_maxi_structure_highlights($attrs)
+        {
+            $text_preview = null;
+            foreach (['buttonContent', 'content'] as $text_key) {
+                if (
+                    isset($attrs[$text_key]) &&
+                    is_string($attrs[$text_key]) &&
+                    trim($attrs[$text_key]) !== ''
+                ) {
+                    $text_preview = $this->trim_preview_text($attrs[$text_key]);
+                    break;
+                }
+            }
+
+            return [
+                'text_preview' => $text_preview,
+                'text_level' => isset($attrs['textLevel']) &&
+                    is_string($attrs['textLevel']) &&
+                    $attrs['textLevel'] !== ''
+                    ? $attrs['textLevel']
+                    : null,
+                'media_id' => isset($attrs['mediaID']) &&
+                    is_numeric($attrs['mediaID'])
+                    ? (int) $attrs['mediaID']
+                    : null,
+                'media_url' => isset($attrs['mediaURL']) &&
+                    is_string($attrs['mediaURL']) &&
+                    $attrs['mediaURL'] !== ''
+                    ? $attrs['mediaURL']
+                    : null,
+                'background_layer_count' => isset($attrs['background-layers']) &&
+                    is_array($attrs['background-layers'])
+                    ? count($attrs['background-layers'])
+                    : 0,
+                'has_link' => !empty($attrs['linkSettings']),
+                'has_relations' => !empty($attrs['relations']),
+                'has_dynamic_content' => $this->has_dynamic_content_attributes(
+                    $attrs,
+                ),
+            ];
+        }
+
+        private function has_dynamic_content_attributes($attrs)
+        {
+            if (!is_array($attrs)) {
+                return false;
+            }
+
+            foreach ($attrs as $key => $value) {
+                if (!is_string($key) || !str_starts_with($key, 'dc-')) {
+                    continue;
+                }
+
+                if ($this->has_meaningful_structure_value($value)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private function has_meaningful_structure_value($value)
+        {
+            if ($value === null || $value === false || $value === '') {
+                return false;
+            }
+
+            if (is_array($value)) {
+                return !empty($value);
+            }
+
+            return true;
+        }
+
+        private function trim_preview_text($text, $limit = 120)
+        {
+            $text = preg_replace(
+                '/\s+/',
+                ' ',
+                trim(wp_strip_all_tags((string) $text)),
+            );
+
+            if (!is_string($text) || $text === '') {
+                return null;
+            }
+
+            if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+                if (mb_strlen($text) <= $limit) {
+                    return $text;
+                }
+
+                return rtrim(mb_substr($text, 0, $limit - 1)) . '...';
+            }
+
+            if (strlen($text) <= $limit) {
+                return $text;
+            }
+
+            return rtrim(substr($text, 0, $limit - 1)) . '...';
+        }
+
+        private function normalize_block_attributes($attrs)
+        {
+            return is_array($attrs) ? $attrs : [];
+        }
+
+        private function is_maxi_block_name($block_name)
+        {
+            return is_string($block_name) &&
+                str_starts_with($block_name, 'maxi-blocks/');
+        }
+
+        private function get_maxi_block_type($block_name)
+        {
+            if (!$this->is_maxi_block_name($block_name)) {
+                return '';
+            }
+
+            return substr($block_name, strlen('maxi-blocks/'));
+        }
+
+        private function normalize_boolean($value)
+        {
+            if (is_bool($value)) {
+                return $value;
+            }
+
+            if (is_numeric($value)) {
+                return (int) $value === 1;
+            }
+
+            if (!is_string($value)) {
+                return (bool) $value;
+            }
+
+            $normalized = strtolower(trim($value));
+
+            if (in_array($normalized, ['1', 'true', 'yes', 'on'], true)) {
+                return true;
+            }
+
+            if (in_array($normalized, ['0', 'false', 'no', 'off', ''], true)) {
+                return false;
+            }
+
+            return (bool) $normalized;
         }
 
         private function is_enabled()

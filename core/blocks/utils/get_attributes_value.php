@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_attribute_key.php';
 
 function get_attribute_value(string $target, array $props, bool $isHover, ?string $breakpoint = null, string $prefix = '', bool $allow_nil = false) {

@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
   * Title: Basic Blog Home
   * Slug: maxiblocks-go/basic-blog-home

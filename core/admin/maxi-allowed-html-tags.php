@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function maxi_blocks_allowed_html()
 {
     $allowed_tags = array(

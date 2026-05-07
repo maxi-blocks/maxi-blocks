@@ -1,10 +1,17 @@
 import { select, dispatch } from '@wordpress/data';
+import {
+	enableProfileFor,
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 // Throttle rapid successive calls
 let lastCallTime = 0;
 let pendingCall = null;
 
 const setScreenSizeImmediate = size => {
+	enableProfileFor();
+	const start = getProfileStart();
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 	const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
@@ -15,9 +22,13 @@ const setScreenSizeImmediate = size => {
 			deviceType: size,
 			width: size !== 'xxl' ? breakpoints[size] : xxlSize,
 		});
+
+	recordProfile(`setScreenSize immediate ${size}`, start);
 };
 
 const setScreenSize = size => {
+	enableProfileFor();
+	const start = getProfileStart();
 	const now = Date.now();
 
 	// Cancel any pending call
@@ -34,11 +45,13 @@ const setScreenSize = size => {
 			setScreenSizeImmediate(size);
 			pendingCall = null;
 		}, 50);
+		recordProfile(`setScreenSize ${size} throttled`, start);
 		return;
 	}
 
 	lastCallTime = now;
 	setScreenSizeImmediate(size);
+	recordProfile(`setScreenSize ${size}`, start);
 };
 
 // Export for testing

@@ -5,9 +5,86 @@ import styleGenerator from '@extensions/styles/styleGenerator';
 import controls from './controls';
 import * as defaultGroupAttributes from '@extensions/styles/defaults/index';
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+const estimateCacheValueSize = value => {
+	if (!value) return 0;
+
+	if (typeof value === 'string') return value.length;
+
+	if (typeof value !== 'object') return 8;
+
+	let size = 0;
+
+	Object.keys(value).forEach(key => {
+		const descriptor = Object.getOwnPropertyDescriptor(value, key);
+		size += key.length;
+
+		if (descriptor?.get) return;
+
+		const entry = descriptor?.value;
+
+		if (typeof entry === 'string') {
+			size += entry.length;
+		} else if (entry && typeof entry === 'object') {
+			Object.keys(entry).forEach(entryKey => {
+				const entryDescriptor = Object.getOwnPropertyDescriptor(
+					entry,
+					entryKey
+				);
+				if (entryDescriptor?.get) return;
+
+				const entryValue = entryDescriptor?.value;
+				size += entryKey.length;
+				size +=
+					typeof entryValue === 'string'
+						? entryValue.length
+						: String(entryValue).length;
+			});
+		} else {
+			size += String(entry).length;
+		}
+	});
+
+	return size;
+};
+
+const createLazyBreakpointStyles = (stylesObj, isIframe, isSiteEditor) => {
+	const breakpointStyles = {};
+
+	BREAKPOINTS.forEach(breakpoint => {
+		Object.defineProperty(breakpointStyles, breakpoint, {
+			configurable: true,
+			enumerable: true,
+			get() {
+				const breakpointStart = getProfileStart();
+				const styles = styleGenerator(
+					stylesObj,
+					isIframe,
+					isSiteEditor,
+					breakpoint
+				);
+				recordProfile(`styleGenerator ${breakpoint}`, breakpointStart);
+
+				Object.defineProperty(breakpointStyles, breakpoint, {
+					configurable: true,
+					enumerable: true,
+					value: styles,
+				});
+
+				return styles;
+			},
+		});
+	});
+
+	return breakpointStyles;
+};
 
 // Enhanced LRU cache for CSS with memory management
 class CSSCache extends MemoCache {
@@ -22,12 +99,16 @@ class CSSCache extends MemoCache {
 
 	set(key, value) {
 		// Estimate memory usage of the CSS content
-		const newSize = JSON.stringify(value).length;
+		const sizeStart = getProfileStart();
+		const newSize = estimateCacheValueSize(value);
+		recordProfile('cssCache estimate new value', sizeStart);
 
 		// Check for existing value and subtract its size from totalSize
 		const oldValue = this.get(key);
 		if (oldValue !== undefined) {
-			const oldSize = JSON.stringify(oldValue).length;
+			const oldSizeStart = getProfileStart();
+			const oldSize = estimateCacheValueSize(oldValue);
+			recordProfile('cssCache estimate old value', oldSizeStart);
 			this.memoryStats.totalSize -= oldSize;
 		}
 
@@ -218,30 +299,23 @@ function reducer(
 			};
 		case 'SAVE_CSS_CACHE': {
 			const { uniqueID, stylesObj, isIframe, isSiteEditor } = action;
+			const saveCacheStart = getProfileStart();
+			const hasExistingCache = !!state.cssCache.get(uniqueID);
 
-			// Check if already cached
-			const existingCache = state.cssCache.get(uniqueID);
-			if (existingCache) {
-				// Move to end (mark as recently used)
-				state.cssCache.set(uniqueID, existingCache);
-				return state;
-			}
-
-			const breakpointStyles = BREAKPOINTS.reduce(
-				(acc, breakpoint) => ({
-					...acc,
-					[breakpoint]: styleGenerator(
-						stylesObj,
-						isIframe,
-						isSiteEditor,
-						breakpoint
-					),
-				}),
-				{}
+			const breakpointStyles = createLazyBreakpointStyles(
+				stylesObj,
+				isIframe,
+				isSiteEditor
 			);
 
 			// Use LRU cache set method (automatically handles size limits)
 			state.cssCache.set(uniqueID, breakpointStyles);
+			recordProfile(
+				hasExistingCache
+					? 'styles SAVE_CSS_CACHE update'
+					: 'styles SAVE_CSS_CACHE new',
+				saveCacheStart
+			);
 
 			return { ...state };
 		}
@@ -250,10 +324,12 @@ function reducer(
 
 			// Get existing cache entry or create new one
 			const existingCache = state.cssCache.get(uniqueID) || {};
-			const updatedCache = {
-				...existingCache,
-				...stylesContent,
-			};
+			const updatedCache = {};
+			Object.defineProperties(
+				updatedCache,
+				Object.getOwnPropertyDescriptors(existingCache)
+			);
+			Object.assign(updatedCache, stylesContent);
 
 			// Update the cache entry
 			state.cssCache.set(uniqueID, updatedCache);

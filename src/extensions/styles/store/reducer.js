@@ -12,6 +12,7 @@ import {
 import { omit } from 'lodash';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+const MAX_CSS_CACHE_BLOCKS = 1000;
 
 const estimateCacheValueSize = value => {
 	if (!value) return 0;
@@ -235,7 +236,7 @@ class CSSCache extends MemoCache {
 }
 
 // Global CSS cache instance
-const cssCache = new CSSCache(200);
+const cssCache = new CSSCache(MAX_CSS_CACHE_BLOCKS);
 
 // Helper function to chunk large style objects
 const chunkStylesIntoChunks = (styles, size) => {

@@ -56,6 +56,7 @@ import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
 import {
+	countProfile,
 	getProfileStart,
 	recordProfile,
 } from '@extensions/performance/profiler';
@@ -1067,48 +1068,7 @@ class MaxiBlockComponent extends Component {
 		this.cachedDiffAttributes = undefined;
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
-		this.cachedViewportUnitAttributes = null;
-		this.cachedHasViewportUnits = null;
 		this.attributesMutated = true;
-	}
-
-	hasViewportUnitsInAttributes() {
-		if (
-			this.cachedViewportUnitAttributes === this.props.attributes &&
-			this.cachedHasViewportUnits !== null
-		) {
-			return this.cachedHasViewportUnits;
-		}
-
-		const stack = [this.props.attributes];
-		const seen = new WeakSet();
-		let hasViewportUnits = false;
-
-		while (stack.length && !hasViewportUnits) {
-			const current = stack.pop();
-
-			if (!current || typeof current !== 'object') continue;
-			if (seen.has(current)) continue;
-			seen.add(current);
-
-			Object.values(current).some(value => {
-				if (typeof value === 'string') {
-					hasViewportUnits = VIEWPORT_UNIT_VALUE_REGEX.test(value);
-					return hasViewportUnits;
-				}
-
-				if (value && typeof value === 'object') {
-					stack.push(value);
-				}
-
-				return false;
-			});
-		}
-
-		this.cachedViewportUnitAttributes = this.props.attributes;
-		this.cachedHasViewportUnits = hasViewportUnits;
-
-		return hasViewportUnits;
 	}
 
 	getCachedStyleContent(uniqueID, breakpoint) {
@@ -1571,32 +1531,59 @@ class MaxiBlockComponent extends Component {
 			this.updateDOMReferences();
 		}
 
+		if (isBreakpointChange) {
+			if (!attributesUnchanged) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible attrs'
+				);
+			}
+			if (isBlockStyleChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible style'
+				);
+			}
+			if (isBaseBreakpointChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible base'
+				);
+			}
+		}
+
 		// Fast path: breakpoint switches with no attribute changes can reuse
-		// CSS generated from the existing style cache.
+		// CSS generated from the existing style cache for that breakpoint.
 		if (
 			attributesUnchanged &&
 			isBreakpointChange &&
-			this.props.deviceType === 'xxl' &&
 			!isBlockStyleChange &&
-			!isBaseBreakpointChange &&
-			!this.isXxlStyleCacheDirty
+			!isBaseBreakpointChange
 		) {
+			const currentBreakpoint = this.props.deviceType;
+			if (currentBreakpoint === 'xxl' && this.isXxlStyleCacheDirty) {
+				countProfile('maxiBlockComponent breakpoint cache dirty xxl');
+			}
 			const cachedStyleContent =
-				this.xxlStyleCache ||
-				this.getCachedStyleContent(uniqueID, this.props.deviceType);
+				currentBreakpoint === 'xxl' &&
+				this.xxlStyleCache &&
+				!this.isXxlStyleCacheDirty
+					? this.xxlStyleCache
+					: this.getCachedStyleContent(uniqueID, currentBreakpoint);
 
-			if (!cachedStyleContent) {
-				// Fall through to full generation when no valid cache exists.
-			} else {
-				this.xxlStyleCache = cachedStyleContent;
+			if (cachedStyleContent) {
+				countProfile('maxiBlockComponent breakpoint cache hit');
+				if (currentBreakpoint === 'xxl') {
+					this.xxlStyleCache = cachedStyleContent;
+					this.isXxlStyleCacheDirty = false;
+				}
 				this.applyStyleContent(
 					uniqueID,
 					cachedStyleContent,
-					this.props.deviceType
+					currentBreakpoint
 				);
 				recordProfile('maxiBlockComponent displayStyles', perfStart);
 				return;
 			}
+
+			countProfile('maxiBlockComponent breakpoint cache miss');
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -1607,71 +1594,8 @@ class MaxiBlockComponent extends Component {
 			!attributesUnchanged;
 
 		if (!shouldGenerateNewStyles && isBreakpointChange) {
-			const viewportUnitStart = getProfileStart();
-			const hasViewportUnits = this.hasViewportUnitsInAttributes();
-			if (hasViewportUnits) {
-				shouldGenerateNewStyles = true;
-			}
-			recordProfile(
-				'maxiBlockComponent hasViewportUnitsInAttributes',
-				viewportUnitStart
-			);
-
-			if (!hasViewportUnits) {
-				const cachedStyleContent = this.getCachedStyleContent(
-					uniqueID,
-					this.props.deviceType
-				);
-
-				if (cachedStyleContent) {
-					this.applyStyleContent(
-						uniqueID,
-						cachedStyleContent,
-						this.props.deviceType
-					);
-					recordProfile(
-						'maxiBlockComponent displayStyles',
-						perfStart
-					);
-					return;
-				}
-
-				shouldGenerateNewStyles = true;
-			}
-		}
-
-		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
-		if (
-			isBreakpointChange &&
-			this.props.deviceType !== 'xxl' &&
-			!shouldGenerateNewStyles
-		) {
-			const iframeDoc = this.editorIframe?.contentDocument || null;
-			const cache =
-				MaxiBlockComponent.breakpointSwitchCache ||
-				(MaxiBlockComponent.breakpointSwitchCache = {
-					doc: null,
-					breakpoint: null,
-				});
-
-			if (
-				cache.doc !== iframeDoc ||
-				cache.breakpoint !== this.props.deviceType
-			) {
-				this.handleIframeStyles(
-					this.editorIframe,
-					this.props.deviceType
-				);
-				this.updateResponsiveClasses(
-					this.editorIframe,
-					this.props.deviceType
-				);
-				cache.doc = iframeDoc;
-				cache.breakpoint = this.props.deviceType;
-			}
-
-			recordProfile('maxiBlockComponent displayStyles', perfStart);
-			return;
+			countProfile('maxiBlockComponent breakpoint regenerate fallback');
+			shouldGenerateNewStyles = true;
 		}
 
 		const breakpoints = shouldGenerateNewStyles

@@ -13,10 +13,13 @@ import { ContentLoader } from '@components';
 const SuspendedBlock = ({ onMountBlock, clientId }) => {
 	useEffect(() => onMountBlock(), [onMountBlock]);
 
-	const shouldShowLoader = useSelect(select => {
-		const block = select('core/block-editor').getBlock(clientId);
-		return block?.name?.includes('maxi-blocks');
-	}, [clientId]);
+	const shouldShowLoader = useSelect(
+		select => {
+			const block = select('core/block-editor').getBlock(clientId);
+			return block?.name?.startsWith('maxi-blocks/') ?? false;
+		},
+		[clientId]
+	);
 
 	if (shouldShowLoader) {
 		return <ContentLoader cloud={false} />;

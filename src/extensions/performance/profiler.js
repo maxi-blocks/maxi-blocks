@@ -7,10 +7,15 @@ const PROFILE_FLAGS = [
 const STORAGE_KEYS = ['maxiBlocks-profile', 'maxiBlocks-debug'];
 const AUTO_PROFILE_DURATION = 30000;
 const BOOST_PROFILE_DURATION = 10000;
+const IS_DEBUG_BUILD =
+	typeof process !== 'undefined' &&
+	process.env &&
+	process.env.NODE_ENV === 'development';
 let cachedIsProfileEnabled = false;
 let lastProfileCheck = 0;
 let autoProfileUntil = 0;
 let autoProfileInitialized = false;
+let hasCheckedProfileStorage = false;
 
 const getRoot = () => {
 	if (typeof window !== 'undefined') return window;
@@ -27,41 +32,88 @@ const getNow = () => {
 	return Date.now();
 };
 
-export const getIsProfileEnabled = () => {
-	const now = Date.now();
-	if (now - lastProfileCheck < 500) return cachedIsProfileEnabled;
+const getLocalStorage = root => {
+	try {
+		return root?.localStorage || null;
+	} catch {
+		return null;
+	}
+};
 
-	lastProfileCheck = now;
+const getProfileStorageValue = (storage, key) => {
+	if (!storage) return null;
+
+	try {
+		return storage.getItem(key);
+	} catch {
+		return null;
+	}
+};
+
+const hasProfileFlag = root => PROFILE_FLAGS.some(flag => root?.[flag]);
+
+export const getIsProfileEnabled = () => {
 	const root = getRoot();
 	if (!root) {
 		cachedIsProfileEnabled = false;
 		return cachedIsProfileEnabled;
 	}
 
-	if (!autoProfileInitialized) {
-		autoProfileInitialized = true;
-		if (typeof window !== 'undefined' && root === window) {
-			autoProfileUntil = now + AUTO_PROFILE_DURATION;
-		}
-	}
+	const hasRuntimeProfileFlag = hasProfileFlag(root);
+	if (
+		!IS_DEBUG_BUILD &&
+		!hasRuntimeProfileFlag &&
+		!cachedIsProfileEnabled &&
+		!autoProfileUntil &&
+		hasCheckedProfileStorage
+	)
+		return false;
 
-	let storageProfileValue = null;
-	if (root.localStorage) {
-		try {
-			storageProfileValue = root.localStorage.getItem(
-				'maxiBlocks-profile'
-			);
-		} catch {
-			storageProfileValue = null;
-		}
-	}
+	const storage = getLocalStorage(root);
+	hasCheckedProfileStorage = true;
+	const storageProfileValue = getProfileStorageValue(
+		storage,
+		'maxiBlocks-profile'
+	);
 
 	if (storageProfileValue === 'false') {
+		autoProfileUntil = 0;
 		cachedIsProfileEnabled = false;
 		return cachedIsProfileEnabled;
 	}
 
-	if (PROFILE_FLAGS.some(flag => root[flag])) {
+	const hasExplicitOptIn =
+		hasRuntimeProfileFlag ||
+		storageProfileValue === 'true' ||
+		STORAGE_KEYS.some(
+			key => getProfileStorageValue(storage, key) === 'true'
+		);
+
+	if (
+		!IS_DEBUG_BUILD &&
+		!hasExplicitOptIn &&
+		!cachedIsProfileEnabled &&
+		!autoProfileUntil
+	)
+		return false;
+
+	const now = Date.now();
+	if (now - lastProfileCheck < 500) return cachedIsProfileEnabled;
+
+	lastProfileCheck = now;
+
+	if (!autoProfileInitialized) {
+		autoProfileInitialized = true;
+		if (
+			typeof window !== 'undefined' &&
+			root === window &&
+			(IS_DEBUG_BUILD || hasExplicitOptIn)
+		) {
+			autoProfileUntil = now + AUTO_PROFILE_DURATION;
+		}
+	}
+
+	if (hasExplicitOptIn) {
 		cachedIsProfileEnabled = true;
 		return cachedIsProfileEnabled;
 	}
@@ -71,18 +123,7 @@ export const getIsProfileEnabled = () => {
 		return cachedIsProfileEnabled;
 	}
 
-	if (!root.localStorage) {
-		cachedIsProfileEnabled = false;
-		return cachedIsProfileEnabled;
-	}
-
-	try {
-		cachedIsProfileEnabled =
-			storageProfileValue === 'true' ||
-			STORAGE_KEYS.some(key => root.localStorage.getItem(key) === 'true');
-	} catch {
-		cachedIsProfileEnabled = false;
-	}
+	cachedIsProfileEnabled = false;
 
 	return cachedIsProfileEnabled;
 };
@@ -90,6 +131,7 @@ export const getIsProfileEnabled = () => {
 export const enableProfileFor = (duration = BOOST_PROFILE_DURATION) => {
 	const root = getRoot();
 	if (!root || typeof window === 'undefined' || root !== window) return;
+	if (!getIsProfileEnabled()) return;
 
 	const now = Date.now();
 	autoProfileInitialized = true;
@@ -136,7 +178,7 @@ const scheduleProfileFlush = perf => {
 		perf.max = {};
 		perf.counters = {};
 
-		if (typeof console === 'undefined' || !console.info) return;
+		if (typeof console === 'undefined' || !console.debug) return;
 
 		const timings = Object.keys(totals).map(key => {
 			const total = totals[key];
@@ -156,7 +198,7 @@ const scheduleProfileFlush = perf => {
 		const parts = [...timings, ...counterParts];
 
 		if (parts.length) {
-			console.info('MaxiBlocks perf (1s):', parts.join(', '));
+			console.debug('MaxiBlocks perf (1s):', parts.join(', '));
 		}
 	}, 1000);
 };

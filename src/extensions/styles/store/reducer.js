@@ -130,7 +130,7 @@ class CSSCache extends MemoCache {
 		const value = this.get(key);
 		if (value) {
 			try {
-				const estimatedSize = JSON.stringify(value).length;
+				const estimatedSize = estimateCacheValueSize(value);
 				this.memoryStats.totalSize = Math.max(
 					0,
 					this.memoryStats.totalSize - estimatedSize
@@ -198,7 +198,7 @@ class CSSCache extends MemoCache {
 			// Re-add the most recent entries and recalculate memory stats
 			entries.forEach(([key, value]) => {
 				super.set(key, value);
-				const estimatedSize = JSON.stringify(value).length;
+				const estimatedSize = estimateCacheValueSize(value);
 				this.memoryStats.totalSize += estimatedSize;
 			});
 
@@ -329,7 +329,10 @@ function reducer(
 				updatedCache,
 				Object.getOwnPropertyDescriptors(existingCache)
 			);
-			Object.assign(updatedCache, stylesContent);
+			Object.defineProperties(
+				updatedCache,
+				Object.getOwnPropertyDescriptors(stylesContent || {})
+			);
 
 			// Update the cache entry
 			state.cssCache.set(uniqueID, updatedCache);

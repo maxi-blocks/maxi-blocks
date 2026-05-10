@@ -1,6 +1,5 @@
 import { select, dispatch } from '@wordpress/data';
 import {
-	enableProfileFor,
 	getProfileStart,
 	recordProfile,
 } from '@extensions/performance/profiler';
@@ -10,7 +9,6 @@ let lastCallTime = 0;
 let pendingCall = null;
 
 const setScreenSizeImmediate = size => {
-	enableProfileFor();
 	const start = getProfileStart();
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 	const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
@@ -27,7 +25,6 @@ const setScreenSizeImmediate = size => {
 };
 
 const setScreenSize = size => {
-	enableProfileFor();
 	const start = getProfileStart();
 	const now = Date.now();
 

@@ -200,7 +200,7 @@ describe('styles store reducer', () => {
 			expect(result.cssCache.get('block1')).toHaveProperty('general');
 		});
 
-		it('Returns existing cache if already present', () => {
+		it('Replaces existing cache when styles are regenerated', () => {
 			const state = getInitialState();
 			const existingCacheEntry = { general: { existingStyles: true } };
 
@@ -217,8 +217,9 @@ describe('styles store reducer', () => {
 
 			const result = reducer(state, action);
 
-			// Should return the existing cache entry (not generate new styles)
-			expect(result.cssCache.get('block1')).toEqual(existingCacheEntry);
+			// Regenerated block styles must invalidate old breakpoint CSS.
+			expect(result.cssCache.get('block1')).not.toBe(existingCacheEntry);
+			expect(result.cssCache.get('block1')).toHaveProperty('general');
 		});
 
 		it('Uses LRU cache behavior with size limits', () => {

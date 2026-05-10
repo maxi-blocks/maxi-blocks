@@ -55,6 +55,10 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -67,62 +71,12 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+const VIEWPORT_UNIT_VALUE_REGEX =
+	/(?:^|[^a-z])(?:vw|vh|vmin|vmax)(?:$|[^a-z])/i;
 
-const getPerfStart = () => {
-	if (
-		typeof window === 'undefined' ||
-		!window.__MAXI_PROFILE_MAXI_BLOCKS__ ||
-		typeof performance === 'undefined' ||
-		!performance.now
-	) {
-		return null;
-	}
-
-	return performance.now();
-};
-
-const recordPerf = (label, start) => {
-	if (start === null || typeof performance === 'undefined') {
-		return;
-	}
-
-	const duration = performance.now() - start;
-	const perfRoot = typeof window !== 'undefined' ? window : globalThis;
-	const perf =
-		perfRoot.__maxiBlocksPerfCounters__ ||
-		(perfRoot.__maxiBlocksPerfCounters__ = {
-			totals: {},
-			counts: {},
-			logScheduled: false,
-		});
-
-	perf.totals[label] = (perf.totals[label] || 0) + duration;
-	perf.counts[label] = (perf.counts[label] || 0) + 1;
-
-	if (!perf.logScheduled && typeof setTimeout === 'function') {
-		perf.logScheduled = true;
-		setTimeout(() => {
-			perf.logScheduled = false;
-			if (typeof console === 'undefined' || !console.info) {
-				perf.totals = {};
-				perf.counts = {};
-				return;
-			}
-
-			const totals = perf.totals;
-			const counts = perf.counts;
-			perf.totals = {};
-			perf.counts = {};
-
-			const parts = Object.keys(totals).map(
-				key => `${key} ${totals[key].toFixed(1)}ms/${counts[key]}`
-			);
-			if (parts.length) {
-				console.info('MaxiBlocks perf (1s):', parts.join(', '));
-			}
-		}, 1000);
-	}
-};
+const getPerfStart = getProfileStart;
+const recordPerf = (label, start) =>
+	recordProfile(`maxiBlockComponent ${label}`, start);
 
 /**
  * Class
@@ -1117,7 +1071,69 @@ class MaxiBlockComponent extends Component {
 		this.cachedDiffAttributes = undefined;
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
+		this.cachedViewportUnitAttributes = null;
+		this.cachedHasViewportUnits = null;
 		this.attributesMutated = true;
+	}
+
+	hasViewportUnitsInAttributes() {
+		if (
+			this.cachedViewportUnitAttributes === this.props.attributes &&
+			this.cachedHasViewportUnits !== null
+		) {
+			return this.cachedHasViewportUnits;
+		}
+
+		const stack = [this.props.attributes];
+		const seen = new WeakSet();
+		let hasViewportUnits = false;
+
+		while (stack.length && !hasViewportUnits) {
+			const current = stack.pop();
+
+			if (!current || typeof current !== 'object') continue;
+			if (seen.has(current)) continue;
+			seen.add(current);
+
+			Object.values(current).some(value => {
+				if (typeof value === 'string') {
+					hasViewportUnits = VIEWPORT_UNIT_VALUE_REGEX.test(value);
+					return hasViewportUnits;
+				}
+
+				if (value && typeof value === 'object') {
+					stack.push(value);
+				}
+
+				return false;
+			});
+		}
+
+		this.cachedViewportUnitAttributes = this.props.attributes;
+		this.cachedHasViewportUnits = hasViewportUnits;
+
+		return hasViewportUnits;
+	}
+
+	getCachedStyleContent(uniqueID, breakpoint) {
+		const cacheStart = getPerfStart();
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		const styleContent = cssCache?.[breakpoint];
+		recordPerf(`getCSSCache ${breakpoint}`, cacheStart);
+
+		return typeof styleContent === 'string' ? styleContent : null;
+	}
+
+	applyStyleContent(uniqueID, styleContent, breakpoint) {
+		const isSiteEditor = getIsSiteEditor();
+
+		if (this.editorIframe?.contentDocument?.body) {
+			this.handleIframeStyles(this.editorIframe, breakpoint);
+		}
+
+		const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
+		addBlockStyles(uniqueID, styleContent, target);
+		this.updateResponsiveClasses(this.editorIframe, breakpoint);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1556,32 +1572,32 @@ class MaxiBlockComponent extends Component {
 			this.updateDOMReferences();
 		}
 
-		// Fast path: breakpoints switch to XXL with no attribute changes
+		// Fast path: breakpoint switches with no attribute changes can reuse
+		// CSS generated from the existing style cache.
 		if (
 			attributesUnchanged &&
 			isBreakpointChange &&
 			this.props.deviceType === 'xxl' &&
 			!isBlockStyleChange &&
 			!isBaseBreakpointChange &&
-			this.xxlStyleCache &&
 			!this.isXxlStyleCacheDirty
 		) {
-			const isSiteEditor = getIsSiteEditor();
-			if (this.editorIframe?.contentDocument?.body) {
-				this.handleIframeStyles(
-					this.editorIframe,
+			const cachedStyleContent =
+				this.xxlStyleCache ||
+				this.getCachedStyleContent(uniqueID, this.props.deviceType);
+
+			if (!cachedStyleContent) {
+				// Fall through to full generation when no valid cache exists.
+			} else {
+				this.xxlStyleCache = cachedStyleContent;
+				this.applyStyleContent(
+					uniqueID,
+					cachedStyleContent,
 					this.props.deviceType
 				);
+				recordPerf('displayStyles', perfStart);
+				return;
 			}
-
-			const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
-			addBlockStyles(uniqueID, this.xxlStyleCache, target);
-			this.updateResponsiveClasses(
-				this.editorIframe,
-				this.props.deviceType
-			);
-			recordPerf('displayStyles', perfStart);
-			return;
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -1591,14 +1607,30 @@ class MaxiBlockComponent extends Component {
 			isBaseBreakpointChange ||
 			!attributesUnchanged;
 
-		let stylesForViewportCheck;
-
 		if (!shouldGenerateNewStyles && isBreakpointChange) {
-			const stylesObjStart = getPerfStart();
-			stylesForViewportCheck = this.getStylesObject || {};
-			recordPerf('getStylesObject', stylesObjStart);
+			const viewportUnitStart = getPerfStart();
+			const hasViewportUnits = this.hasViewportUnitsInAttributes();
+			if (hasViewportUnits) {
+				shouldGenerateNewStyles = true;
+			}
+			recordPerf('hasViewportUnitsInAttributes', viewportUnitStart);
 
-			if (this.hasViewportUnits(stylesForViewportCheck)) {
+			if (!hasViewportUnits) {
+				const cachedStyleContent = this.getCachedStyleContent(
+					uniqueID,
+					this.props.deviceType
+				);
+
+				if (cachedStyleContent) {
+					this.applyStyleContent(
+						uniqueID,
+						cachedStyleContent,
+						this.props.deviceType
+					);
+					recordPerf('displayStyles', perfStart);
+					return;
+				}
+
 				shouldGenerateNewStyles = true;
 			}
 		}
@@ -1647,13 +1679,13 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		if (shouldGenerateNewStyles) {
-			if (stylesForViewportCheck) {
-				obj = stylesForViewportCheck;
-			} else {
-				const stylesObjStart = getPerfStart();
-				obj = this.getStylesObject || {};
-				recordPerf('getStylesObject', stylesObjStart);
-			}
+			const stylesObjStart = getPerfStart();
+			obj = this.getStylesObject || {};
+			recordPerf('getStylesObject', stylesObjStart);
+			recordPerf(
+				`getStylesObject ${this.props.name || 'unknown'}`,
+				stylesObjStart
+			);
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (

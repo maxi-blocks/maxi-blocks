@@ -3,13 +3,13 @@
  */
 import { __ } from '@wordpress/i18n';
 import { useState, useMemo } from '@wordpress/element';
-import { FocalPointPicker } from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import ClipPathControl from '@components/clip-path-control';
+import FocalPointControl from '@components/focal-point-control';
 import ImageAltControl from '@components/image-alt-control';
 import ImageCropControl from '@components/image-crop-control';
 import ImageUrlUpload from '@components/image-url-upload';
@@ -19,7 +19,6 @@ import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SizeAndPositionLayerControl from './sizeAndPositionLayerControl';
-import ResetButton from '@components/reset-control';
 import ToggleSwitch from '@components/toggle-switch';
 import {
 	getAttributeKey,
@@ -38,16 +37,67 @@ import { getDCValues } from '@extensions/DC';
 /**
  * Helper to normalize position value to 0-1 range for FocalPointPicker
  */
-const normalizePositionForPicker = value => {
+const normalizePositionForPicker = (value, unit = '%') => {
 	if (value === null || value === undefined || value === '') return 0.5;
+
+	if (unit && unit !== '%') return 0.5;
 
 	const numericValue = typeof value === 'number' ? value : parseFloat(value);
 
 	if (Number.isFinite(numericValue)) {
+		if (numericValue > 0 && numericValue < 1) return numericValue;
+
 		return Math.max(0, Math.min(100, numericValue)) / 100;
 	}
 
 	return 0.5;
+};
+
+const keywordPositionX = {
+	left: 0,
+	right: 1,
+};
+
+const keywordPositionY = {
+	top: 0,
+	bottom: 1,
+};
+
+const getFocalPointFromPosition = position => {
+	if (!position || position === 'custom') return { x: 0.5, y: 0.5 };
+
+	const tokens = position.toLowerCase().trim().split(/\s+/);
+	let x;
+	let y;
+
+	tokens.forEach(token => {
+		if (token === 'center') {
+			if (x === undefined) x = 0.5;
+			else if (y === undefined) y = 0.5;
+
+			return;
+		}
+
+		if (token in keywordPositionX) {
+			x = keywordPositionX[token];
+			return;
+		}
+
+		if (token in keywordPositionY) {
+			y = keywordPositionY[token];
+			return;
+		}
+
+		if (token.endsWith('%')) {
+			if (x === undefined) x = normalizePositionForPicker(token);
+			else if (y === undefined) y = normalizePositionForPicker(token);
+		}
+	});
+
+	return {
+		x: x ?? 0.5,
+		y: y ?? 0.5,
+	};
 };
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -533,44 +583,98 @@ const ImageLayer = props => {
 	// Only use isHover in key construction for non-layer usage.
 	const keyIsHover = isLayer ? false : isHover;
 
+	const getFocalPointChangeObject = focalPoint => ({
+		[getAttributeKey(
+			'background-image-position',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: 'custom',
+		[getAttributeKey(
+			'background-image-position-width',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: Math.round(focalPoint.x * 100),
+		[getAttributeKey(
+			'background-image-position-width-unit',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: '%',
+		[getAttributeKey(
+			'background-image-position-height',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: Math.round(focalPoint.y * 100),
+		[getAttributeKey(
+			'background-image-position-height-unit',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: '%',
+	});
+
 	const handleFocalPointChange = focalPoint => {
-		const obj = {
+		onChange(getFocalPointChangeObject(focalPoint));
+	};
+
+	const backgroundImagePosition = getLastBreakpointAttribute({
+		target: `${prefix}background-image-position`,
+		breakpoint,
+		attributes: imageOptions,
+		isHover: keyIsHover,
+	});
+
+	const currentFocalPoint = useMemo(() => {
+		if (backgroundImagePosition !== 'custom')
+			return getFocalPointFromPosition(backgroundImagePosition);
+
+		return {
+			x: normalizePositionForPicker(
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-width`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				}),
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-width-unit`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				})
+			),
+			y: normalizePositionForPicker(
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-height`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				}),
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-height-unit`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				})
+			),
+		};
+	}, [backgroundImagePosition, breakpoint, imageOptions, keyIsHover, prefix]);
+
+	const defaultFocalPoint = getFocalPointFromPosition(
+		getDefaultAttr('background-image-position')
+	);
+
+	const handleFocalPointReset = () => {
+		onChange({
 			[getAttributeKey(
 				'background-image-position',
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: 'custom',
-			[getAttributeKey(
-				'background-image-position-width',
-				keyIsHover,
-				prefix,
-				breakpoint
-			)]: Math.round(focalPoint.x * 100),
-			[getAttributeKey(
-				'background-image-position-width-unit',
-				keyIsHover,
-				prefix,
-				breakpoint
-			)]: '%',
-			[getAttributeKey(
-				'background-image-position-height',
-				keyIsHover,
-				prefix,
-				breakpoint
-			)]: Math.round(focalPoint.y * 100),
-			[getAttributeKey(
-				'background-image-position-height-unit',
-				keyIsHover,
-				prefix,
-				breakpoint
-			)]: '%',
-		};
-		onChange(obj);
-	};
-
-	const handleFocalPointResetLeft = () => {
-		onChange({
+			)]: getDefaultAttr('background-image-position'),
 			[getAttributeKey(
 				'background-image-position-width',
 				keyIsHover,
@@ -583,12 +687,6 @@ const ImageLayer = props => {
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-width-unit'),
-			isReset: true,
-		});
-	};
-
-	const handleFocalPointResetTop = () => {
-		onChange({
 			[getAttributeKey(
 				'background-image-position-height',
 				keyIsHover,
@@ -601,6 +699,26 @@ const ImageLayer = props => {
 				prefix,
 				breakpoint
 			)]: getDefaultAttr('background-image-position-height-unit'),
+			isReset: true,
+		});
+	};
+
+	const handleFocalPointResetLeft = () => {
+		onChange({
+			...getFocalPointChangeObject({
+				...currentFocalPoint,
+				x: defaultFocalPoint.x,
+			}),
+			isReset: true,
+		});
+	};
+
+	const handleFocalPointResetTop = () => {
+		onChange({
+			...getFocalPointChangeObject({
+				...currentFocalPoint,
+				y: defaultFocalPoint.y,
+			}),
 			isReset: true,
 		});
 	};
@@ -618,7 +736,8 @@ const ImageLayer = props => {
 
 	// Get DC values for dynamic content images
 	const { status: dcStatus, mediaUrl: dcMediaUrl } = useMemo(
-		() => getDCValues(getGroupAttributes(imageOptions, 'dynamicContent'), {}),
+		() =>
+			getDCValues(getGroupAttributes(imageOptions, 'dynamicContent'), {}),
 		[imageOptions]
 	);
 
@@ -631,42 +750,17 @@ const ImageLayer = props => {
 	return (
 		<div className='maxi-background-control__image-layer'>
 			{effectiveImageUrl && (
-				<div
-					className='maxi-focal-point-picker'
-					style={{ position: 'relative' }}
-				>
-					<FocalPointPicker
+				<div className='maxi-focal-point-picker'>
+					<FocalPointControl
 						className='maxi-background-position-picker'
 						label={__('Image focus', 'maxi-blocks')}
 						url={effectiveImageUrl}
-						value={{
-							x: normalizePositionForPicker(
-								getLastBreakpointAttribute({
-									target: `${prefix}background-image-position-width`,
-									breakpoint,
-									attributes: imageOptions,
-									isHover: keyIsHover,
-								})
-							),
-							y: normalizePositionForPicker(
-								getLastBreakpointAttribute({
-									target: `${prefix}background-image-position-height`,
-									breakpoint,
-									attributes: imageOptions,
-									isHover: keyIsHover,
-								})
-							),
-						}}
+						value={currentFocalPoint}
 						onChange={handleFocalPointChange}
+						onReset={handleFocalPointReset}
+						onResetX={handleFocalPointResetLeft}
+						onResetY={handleFocalPointResetTop}
 					/>
-					<div className='maxi-focal-point-picker__resets'>
-						<ResetButton
-							onReset={handleFocalPointResetLeft}
-						/>
-						<ResetButton
-							onReset={handleFocalPointResetTop}
-						/>
-					</div>
 				</div>
 			)}
 			{!disableUpload && (

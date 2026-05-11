@@ -1,3 +1,15 @@
+_Updates 27 Apr 2026_
+MaxiBlocks v2.1.10
+* Security: Fixed authenticated (Author+) stored cross-site scripting via the Style Card REST API (CVE-2026-6378). Thanks to Athiwat Tiprasaharn (Jitlada) for the responsible disclosure.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Introduced Carousel functionality for Row Block, enabling content carousels within row layouts.
+* Update: Implemented Custom Scripts and Styles feature with site-wide and per-page/post injection options, providing advanced customization capabilities.
+* Update: Enhanced SVG icons in Cloud modals to dynamically inherit colours from their configured settings, ensuring consistent visual presentation.
+* Update: Optimized breakpoint switching performance by implementing CSS caching for XXL breakpoint, resulting in faster responsive switching.
+* Update: Implemented lazy-loading for Map Block editor and conditional Leaflet library loading, reducing initial page load times when no maps are present.
+* Update: Enhanced editor interaction performance with optimized event handling and reduced re-renders for a smoother editing experience.
+* Fix: Resolved Interaction Builder relations disappearing when several relations target the same block, ensuring a consistent editing experience and maintaining interaction configurations.
+
 _Updates 6 Mar 2026_
 MaxiBlocks v2.1.9
 * Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.

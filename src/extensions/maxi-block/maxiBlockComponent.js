@@ -682,13 +682,13 @@ class MaxiBlockComponent extends Component {
 		if (
 			hasNonRelationChanges ||
 			this.props.baseBreakpoint !== prevProps.baseBreakpoint ||
-			this.props.attributes.blockStyle !==
-				prevProps.attributes.blockStyle
+			this.props.attributes.blockStyle !== prevProps.attributes.blockStyle
 		) {
 			this.isXxlStyleCacheDirty = true;
 		}
 
-		const attributesUnchanged = isEmpty(diffAttributes) && !contextLoopChanged;
+		const attributesUnchanged =
+			isEmpty(diffAttributes) && !contextLoopChanged;
 
 		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
@@ -1420,18 +1420,10 @@ class MaxiBlockComponent extends Component {
 		const isBlockCopied =
 			!isNewBlock && lastInsertedBlocks.includes(this.props.clientId);
 
-		// OPTIMIZATION: Skip expensive uniqueID check if block is being loaded from DB
-		// Only check uniqueID in these scenarios:
-		// 1. Block was just copied/pasted (isBlockCopied = true)
-		// 2. Block is in lastInsertedBlocks (new insertion, pattern, or template)
-		// 3. Block is marked as new (first-time creation)
-		// EXCEPTION: Skip uniqueID duplication check during cloud import
-		// Cloud patterns may intentionally use the same uniqueID across multiple blocks
 		const needsUniqueIDCheck =
-			!window.maxiBlocksCloudImporting &&
-			(isBlockCopied ||
-				(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
-				isNewBlock);
+			isBlockCopied ||
+			(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
+			isNewBlock;
 
 		// Fast path: Block is being loaded from saved content, trust the ID
 		if (!needsUniqueIDCheck) {
@@ -1448,23 +1440,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Slow path: Actually check if uniqueID is unique (only for copy/paste/new blocks)
-		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
 
-		if (isBlockCopied || !isUnique) {
+		if (!getIsIDTrulyUnique(idToCheck, 1, clientId)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
 
-			// Immediately add to cache for batch paste optimization
-			// This ensures subsequent blocks in the same paste operation see this ID
-			dispatch('maxiBlocks/blocks').addToUniqueIDCache(newUniqueID);
-
 			propagateNewUniqueID(
 				idToCheck,
 				newUniqueID,
-				clientId,
 				this.props.repeaterStatus,
-				this.props.repeaterRowClientId,
 				this.props.attributes['background-layers']
 			);
 
@@ -1491,8 +1476,7 @@ class MaxiBlockComponent extends Component {
 						this.props.attributes.customLabel,
 						this.props.attributes.uniqueID
 					),
-				});
-			}
+				});			}
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
@@ -1624,10 +1608,7 @@ class MaxiBlockComponent extends Component {
 				);
 			}
 
-			const target = this.getStyleTarget(
-				isSiteEditor,
-				this.editorIframe
-			);
+			const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
 			addBlockStyles(uniqueID, this.xxlStyleCache, target);
 			this.updateResponsiveClasses(
 				this.editorIframe,
@@ -1691,7 +1672,6 @@ class MaxiBlockComponent extends Component {
 	const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
 	let obj;
 	let customDataRelations;
-
 	if (shouldGenerateNewStyles) {
 			if (stylesForViewportCheck) {
 				obj = stylesForViewportCheck;
@@ -1829,11 +1809,14 @@ class MaxiBlockComponent extends Component {
 					);
 					processRelations(this.relationInstances);
 				}
-			if (updated !== null) {
-				processRelations(this.relationInstances, 'remove', updated);
-				processRelations(this.relationInstances);
-			}
-			}
+				if (updated !== null) {
+					const processRemoveStart = getPerfStart();
+					processRelations(this.relationInstances, 'remove', updated);
+					recordPerf('processRelationsRemove', processRemoveStart);
+					const processRelationsStart = getPerfStart();
+					processRelations(this.relationInstances);
+					recordPerf('processRelations', processRelationsStart);
+				}			}
 
 			if (!isRelationsPreview) {
 				this.relationInstances = null;
@@ -2328,8 +2311,7 @@ class MaxiBlockComponent extends Component {
 		if (
 			cache.target === target &&
 			cache.breakpoint === resolvedBreakpoint
-		) {
-			return;
+		) {			return;
 		}
 
 		const editorWrapper = target.classList.contains('editor-styles-wrapper')

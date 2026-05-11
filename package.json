@@ -1,6 +1,6 @@
 {
 	"name": "maxi-blocks",
-	"version": "1.0.0",
+	"version": "2.1.10",
 	"main": "./build/index.min.js",
 	"scripts": {
 		"build": "wp-scripts build",
@@ -53,7 +53,7 @@
 		"css-to-react-native": "latest",
 		"deep-object-diff": "latest",
 		"dompurify": "^3.3.2",
-		"html-react-parser": "latest",
+		"html-react-parser": "^5.2.17",
 		"is-mobile": "latest",
 		"langchain": "^0.3.37",
 		"leaflet": "latest",
@@ -83,7 +83,7 @@
 		"tinycolor2": "latest",
 		"typesense": "^1.8.0-2",
 		"typesense-instantsearch-adapter": "^2.8.0",
-		"uuid": "latest",
+		"uuid": "^14.0.0",
 		"w3c-css-validator": "latest"
 	},
 	"devDependencies": {
@@ -120,6 +120,8 @@
 		"jest-canvas-mock": "latest",
 		"minify-css-string": "latest",
 		"prettier": "^2.7.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
 		"webpack-bundle-analyzer": "latest"
 	},
 	"browserslist": {
@@ -150,8 +152,8 @@
 		"body-parser": "^1.20.4",
 		"@langchain/textsplitters": "^0.1.0",
 		"diff": "^4.0.4",
-		"lodash": "4.17.23",
-		"lodash-es": "4.17.23",
+		"lodash": "^4.18.1",
+		"lodash-es": "^4.18.1",
 		"eslint": "^9.26.0",
 		"minimatch": "^10.2.3",
 		"@tootallnate/once": "^3.0.1",
@@ -159,8 +161,7 @@
 		"langsmith": "^0.5.7",
 		"axios": "^1.13.5",
 		"webpack": "^5.105.1",
-		"basic-ftp": "^5.2.0",
-		"flatted": "^3.4.0",
-		"yauzl": "^3.2.1"
+		"basic-ftp": "^5.3.0",
+		"uuid": "^14.0.0"
 	}
 }

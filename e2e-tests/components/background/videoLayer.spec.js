@@ -240,6 +240,16 @@ describe('BackgroundControl', () => {
 		await previewPage.waitForSelector('.entry-content');
 
 		await previewPage.waitForSelector('.maxi-background-displayer');
+
+		// Wait for maxi-bg-video.js to finish replacing the iframe
+		// (it runs on window load and sets data-maxi-fixed="true")
+		await previewPage
+			.waitForSelector(
+				'.maxi-background-displayer__iframe-wrapper iframe[data-maxi-fixed]',
+				{ timeout: 10000 }
+			)
+			.catch(() => {});
+
 		const backgroundPreviewPage = await previewPage.$eval(
 			'.maxi-background-displayer',
 			el => el.innerHTML

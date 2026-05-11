@@ -92,7 +92,7 @@ const migrate = newAttributes => {
 
 	for (const [category, properties] of Object.entries(blockDataTransition)) {
 		for (const name of Object.keys(properties)) {
-			if (name === 'opacity') {
+			if (name === 'opacity' && transition[category]) {
 				transition[category][name] = opacityAttributes;
 			}
 		}

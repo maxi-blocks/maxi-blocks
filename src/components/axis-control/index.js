@@ -114,7 +114,6 @@ const AxisInput = props => {
 		onReset,
 		disableRange,
 		extraClassName,
-		type,
 		isSpacingControl = false,
 		isCompactControl = false,
 		unitTarget,
@@ -1364,7 +1363,7 @@ const AxisControl = props => {
 			);
 		};
 
-		switch (showAllSides ? 'none' : disableSync ? 'all' : sync) {
+		switch (disableSync ? 'all' : sync) {
 			case 'all': {
 				inputsArray.forEach(key => {
 					if (isAllChange(key)) {

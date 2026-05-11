@@ -1113,23 +1113,34 @@ const AxisControl = props => {
 		return values.every(value => `${value}` === `${firstValue}`);
 	};
 
-	const getAllSyncValue = customBreakpoint =>
-		showAllSides &&
-		['all', true].includes(getLastBreakpointAttribute({
-			target: getKey('sync'),
-			breakpoint: customBreakpoint ?? breakpoint,
-			attributes: props,
-			isHover,
-		})) &&
-		valuesCanSync(getAllSides(), customBreakpoint);
-
-	const getPairSyncValue = (pair, customBreakpoint) =>
+	const getSyncValue = (key, customBreakpoint) =>
 		getLastBreakpointAttribute({
-			target: getKey(`sync-${pair}`),
+			target: getKey(key),
 			breakpoint: customBreakpoint ?? breakpoint,
 			attributes: props,
 			isHover,
-		}) === true && valuesCanSync(getPairSides(pair), customBreakpoint);
+		});
+
+	const getAllSyncValue = customBreakpoint => {
+		const rawSync = getSyncValue('sync', customBreakpoint);
+
+		return (
+			showAllSides &&
+			!isNil(rawSync) &&
+			(rawSync === 'all' || rawSync === true) &&
+			valuesCanSync(getAllSides(), customBreakpoint)
+		);
+	};
+
+	const getPairSyncValue = (pair, customBreakpoint) => {
+		const rawSync = getSyncValue(`sync-${pair}`, customBreakpoint);
+
+		return (
+			!isNil(rawSync) &&
+			rawSync === true &&
+			valuesCanSync(getPairSides(pair), customBreakpoint)
+		);
+	};
 
 	const onChangePairSync = (pair, isSynced, customBreakpoint) => {
 		const response = {

@@ -131,6 +131,7 @@ const PositionControl = props => {
 			target: `${prefix}${target}`,
 			breakpoint,
 			attributes: props,
+			isHover,
 		});
 
 	const rawPlacement = {

@@ -488,9 +488,6 @@ const AdvancedNumberControl = props => {
 								options={getOptions()}
 								value={unit}
 								onChange={val => {
-									const unitInlinePayload = {
-										inline: { unit: val },
-									};
 									if (
 										Number(value) > minMaxSettings[val]?.max
 									) {
@@ -503,23 +500,10 @@ const AdvancedNumberControl = props => {
 										latestValueRef.current =
 											clampedValue.toString();
 										setCurrentValue(clampedValue);
-										onChangeValue?.(clampedValue, unitInlinePayload);
-										handleChange(
-											onChangeValue,
-											latestValueRef,
-											optionType
-										);
-									} else {
-										const currentVal =
-											optionType === 'string'
-												? latestValueRef.current.toString()
-												: +latestValueRef.current;
-										onChangeValue?.(currentVal, unitInlinePayload);
-										handleChange(
-											onChangeValue,
-											latestValueRef,
-											optionType
-										);
+										onChangeValue?.(clampedValue, {
+											inline: { unit: val },
+										});
+										onChangeValue?.(clampedValue);
 									}
 									onChangeUnit?.(val);
 								}}

@@ -1100,17 +1100,17 @@ const AxisControl = props => {
 
 	const hasAxisValue = value => !isNil(value) && value !== '';
 
-	// Keep default-linked new controls from overwriting older unequal saved sides.
+	// Keep default-linked new controls from overwriting older saved sides.
 	const valuesCanSync = (sides, customBreakpoint) => {
-		const values = sides
-			.map(side => getValue(side, customBreakpoint))
-			.filter(hasAxisValue);
+		const values = sides.map(side => getValue(side, customBreakpoint));
+		const valuesWithContent = values.filter(hasAxisValue);
 
-		if (values.length < 2) return true;
+		if (valuesWithContent.length === 0) return true;
+		if (valuesWithContent.length !== values.length) return false;
 
-		const firstValue = values[0];
+		const firstValue = valuesWithContent[0];
 
-		return values.every(value => `${value}` === `${firstValue}`);
+		return valuesWithContent.every(value => `${value}` === `${firstValue}`);
 	};
 
 	const getSyncValue = (key, customBreakpoint) =>

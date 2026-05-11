@@ -56,12 +56,18 @@ const Size = ({
 		);
 	};
 
-	const updateDimension = (dimension, value, unit, extras = {}) => {
+	const updateDimension = (
+		dimension,
+		value,
+		unit,
+		extras = {},
+		forceInclude = false
+	) => {
 		const result = { ...extras };
-		if (value !== undefined)
+		if (forceInclude || value !== undefined)
 			result[getAttributeKey(dimension, isHover, prefix, breakpoint)] =
 				value;
-		if (unit !== undefined)
+		if (forceInclude || unit !== undefined)
 			result[
 				getAttributeKey(
 					`${dimension}-unit`,
@@ -92,7 +98,7 @@ const Size = ({
 			  })
 			: getDefaultAttr(`${target}-unit`);
 
-		updateDimension(target, defVal, defUnit, { isReset: true });
+		updateDimension(target, defVal, defUnit, { isReset: true }, true);
 	};
 
 	return (

@@ -51,7 +51,7 @@
 	}
 
 	&__advanced-options {
-		animation: maxi-position-slideDown 0.3s ease-out;
+		animation: maxi-position-slide-down 0.3s ease-out;
 
 		.maxi-axis-control {
 			margin-bottom: 0;
@@ -155,7 +155,7 @@ body.maxi-blocks--active {
 	}
 }
 
-@keyframes maxi-position-slideDown {
+@keyframes maxi-position-slide-down {
 
 	from {
 		opacity: 0;

@@ -1,3 +1,5 @@
+@import "../focal-point-picker";
+
 // ============================================
 // Variables & Mixins
 // ============================================
@@ -335,16 +337,18 @@ body.maxi-blocks--active .components-popover__fallback-container {
 	}
 }
 
-@import '../focal-point-picker';
-
 // FocalPointPicker styling for background image layer
 .maxi-background-control__image-layer {
+
 	.maxi-focal-point-picker {
+
 		@include stacking-context;
+
 		margin-bottom: 8px;
 
 		// Target the WordPress FocalPointPicker with unique class
 		.maxi-background-position-picker {
+
 			@include stacking-context;
 		}
 
@@ -360,6 +364,6 @@ body.maxi-blocks--active .components-popover__fallback-container {
 	margin-right: -8px !important;
 }
 
-.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed='true']) {
+.maxi-tabs-control:has(.maxi-tabs-control__button-parallax[aria-pressed="true"]) {
 	margin-bottom: 8px;
 }

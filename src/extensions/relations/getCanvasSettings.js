@@ -59,8 +59,16 @@ const getCanvasSettings = ({ name }) => [
 				? onChange
 				: obj => {
 						const { 'background-layers': bgLayers, ...rest } = obj;
-						const newBgLayers = bgLayers.map(
+						const safeBgLayers = Array.isArray(bgLayers)
+							? bgLayers
+							: [];
+						const safeBlockBgLayers = Array.isArray(blockBgLayers)
+							? blockBgLayers
+							: [];
+						const newBgLayers = safeBgLayers.map(
 							(bgLayer, index) => {
+								const baseLayer =
+									safeBlockBgLayers[index] || {};
 								const newBgLayer = pickBy(
 									bgLayer,
 									(_value, key) =>
@@ -76,20 +84,20 @@ const getCanvasSettings = ({ name }) => [
 												([key, attr]) =>
 													!isEqual(
 														attr,
-														blockBgLayers[index][
-															key
-														]
+														baseLayer[key]
 													)
 											)
 									  )
 									: {};
 
-								const { order, type } =
-									blockBgLayers[index];
+								const {
+									order = bgLayer?.order,
+									type = bgLayer?.type,
+								} = baseLayer;
 
 								return {
 									...getRelatedAttributes({
-										props: blockBgLayers[index],
+										props: baseLayer,
 										IBAttributes,
 										relatedAttributes: [
 											'background-gradient-opacity',

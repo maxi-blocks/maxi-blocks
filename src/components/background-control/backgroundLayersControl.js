@@ -110,9 +110,13 @@ const getLayerCardContent = props => {
 			// can show the image preview.
 			let fallbackImageUrl;
 			if ((isHover || isIB) && normalLayers) {
-				const normalImageLayer = normalLayers.find(
-					l => l.type === 'image'
-				);
+				const normalImageLayer =
+					normalLayers.find(
+						l =>
+							l.type === 'image' &&
+							(l.id === layer.id || l.order === layer.order)
+					) || normalLayers.find(l => l.type === 'image');
+
 				if (normalImageLayer) {
 					fallbackImageUrl =
 						normalImageLayer['background-image-mediaURL'];

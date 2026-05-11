@@ -378,7 +378,7 @@ const interactionBuilderSettings = {
 			component: props => (
 				<>
 					<MarginControl {...props} />
-					<PaddingControl {...props} />
+					<PaddingControl {...props} noResponsiveTabs />
 				</>
 			),
 			helper: props => getMarginPaddingStyles(props),

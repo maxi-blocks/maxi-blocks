@@ -262,13 +262,16 @@ const AdvancedNumberControl = props => {
 		setShowHelpContent(state => !state);
 	};
 
+	const isAutoValue = enableAuto && value === 'auto';
+	const inputValue = isAutoValue ? '' : latestValueRef.current || currentValue;
+
 	return (
 		<>
 			{enableAuto && (
 				<ToggleSwitch
 					label={autoLabel || __('Auto', 'maxi-blocks')}
 					className={classNameAutoInput}
-					selected={value === 'auto'}
+					selected={isAutoValue}
 					onChange={val => (val ? onChangeValue('auto') : onReset())}
 				/>
 			)}
@@ -287,19 +290,21 @@ const AdvancedNumberControl = props => {
 					</div>
 				)}
 				{showHelpContent && helpContent}
-				{value !== 'auto' && (
-					<div className='maxi-advanced-number-control__controls-group'>
+				<div
+					className={classnames(
+						'maxi-advanced-number-control__controls-group',
+						isAutoValue &&
+							'maxi-advanced-number-control__controls-group--auto'
+					)}
+				>
 						<div className='maxi-advanced-number-control__input-wrapper'>
 							<input
 								id={advancedNumberControlId}
-								type={
-									!enableAuto || value !== 'auto'
-										? inputType
-										: 'hidden'
-								}
+								type={inputType}
 								className='maxi-advanced-number-control__value'
-								value={latestValueRef.current || currentValue}
+								value={inputValue}
 								onChange={handleInputChange}
+								disabled={isAutoValue}
 								onKeyDown={e => {
 									validateNumberInput(
 										e,
@@ -322,6 +327,8 @@ const AdvancedNumberControl = props => {
 									type='button'
 									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--up'
 									disabled={(() => {
+										if (isAutoValue) return true;
+
 										const currentVal =
 											parseFloat(
 												latestValueRef.current
@@ -394,6 +401,8 @@ const AdvancedNumberControl = props => {
 									type='button'
 									className='maxi-advanced-number-control__spinner-button maxi-advanced-number-control__spinner-button--down'
 									disabled={(() => {
+										if (isAutoValue) return true;
+
 										const currentVal =
 											parseFloat(
 												latestValueRef.current
@@ -468,6 +477,7 @@ const AdvancedNumberControl = props => {
 								className='maxi-dimensions-control__units'
 								options={getOptions()}
 								value={unit}
+								disabled={isAutoValue}
 								onChange={val => {
 									if (
 										Number(value) > minMaxSettings[val]?.max
@@ -507,9 +517,8 @@ const AdvancedNumberControl = props => {
 							/>
 						)}
 					</div>
-				)}
 
-				{!disableRange && (
+				{!isAutoValue && !disableRange && (
 					<RangeControl
 						label={label}
 						className={`maxi-advanced-number-control__range${
@@ -552,6 +561,7 @@ const AdvancedNumberControl = props => {
 						min={enableUnit ? minValueRange : min}
 						max={maxRange || (enableUnit ? maxValueRange : max)}
 						step={stepValue}
+						showTooltip={false}
 						withInputField={false}
 						initialPosition={value || initial}
 						__nextHasNoMarginBottom

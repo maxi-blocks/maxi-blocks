@@ -227,6 +227,27 @@ exports[`hoverAttributesCreator Returns a color bg object 1`] = `
   "background-color-wrapper-position-sync-general-hover": {
     "type": "string",
   },
+  "background-color-wrapper-position-sync-horizontal-general-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-l-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-m-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-s-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-xl-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-xs-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-horizontal-xxl-hover": {
+    "type": "boolean",
+  },
   "background-color-wrapper-position-sync-l-hover": {
     "type": "string",
   },
@@ -235,6 +256,27 @@ exports[`hoverAttributesCreator Returns a color bg object 1`] = `
   },
   "background-color-wrapper-position-sync-s-hover": {
     "type": "string",
+  },
+  "background-color-wrapper-position-sync-vertical-general-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-l-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-m-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-s-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-xl-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-xs-hover": {
+    "type": "boolean",
+  },
+  "background-color-wrapper-position-sync-vertical-xxl-hover": {
+    "type": "boolean",
   },
   "background-color-wrapper-position-sync-xl-hover": {
     "type": "string",

@@ -10,6 +10,7 @@ import { select } from '@wordpress/data';
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import BaseControl from '@components/base-control';
+import Button from '@components/button';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SelectControl from '@components/select-control';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
@@ -48,6 +49,51 @@ import {
 	paddingSyncDirection as paddingSyncDirectionIcon,
 } from '@maxi-icons';
 
+const linkedPairIcon = (
+	<svg
+		viewBox='0 0 28 28'
+		preserveAspectRatio='xMidYMid meet'
+		shapeRendering='geometricPrecision'
+		aria-hidden='true'
+		focusable='false'
+	>
+		<g>
+			<rect x='10' y='13' width='8' height='2' rx='1' fill='currentColor' />
+			<path
+				d='M11.3333 10H10C7.79086 10 6 11.7909 6 14V14C6 16.2091 7.79086 18 10 18H11.3333M16.6667 18H18C20.2091 18 22 16.2091 22 14V14C22 11.7909 20.2091 10 18 10H16.6667'
+				stroke='currentColor'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				fill='none'
+			/>
+		</g>
+	</svg>
+);
+
+const unlinkedPairIcon = (
+	<svg
+		viewBox='0 0 28 28'
+		preserveAspectRatio='xMidYMid meet'
+		shapeRendering='geometricPrecision'
+		aria-hidden='true'
+		focusable='false'
+	>
+		<g>
+			<path
+				d='M11.3333 10H10C7.79086 10 6 11.7909 6 14V14C6 16.2091 7.79086 18 10 18H11.3333M16.6667 18H18C20.2091 18 22 16.2091 22 14V14C22 11.7909 20.2091 10 18 10H16.6667'
+				stroke='currentColor'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				fill='none'
+			/>
+		</g>
+	</svg>
+);
+
+const getAxisInputLabel = label => capitalize(label.replace(/-/g, ' '));
+
 /**
  * Component
  */
@@ -68,19 +114,35 @@ const AxisInput = props => {
 		onReset,
 		disableRange,
 		extraClassName,
+		type,
+		isSpacingControl = false,
+		isCompactControl = false,
+		unitTarget,
+		supportsAuto = true,
 	} = props;
 
-	const value = getValue(target, breakpoint);
-	const lastValue = getLastBreakpointValue(target);
+	const rawValue = getValue(target, breakpoint);
+	const rawLastValue = getLastBreakpointValue(target);
+	const value =
+		isSpacingControl && !supportsAuto && rawValue === 'auto'
+			? ''
+			: rawValue;
+	const lastValue =
+		isSpacingControl && !supportsAuto && rawLastValue === 'auto'
+			? ''
+			: rawLastValue;
 
-	const unit = getLastBreakpointValue(`${target}-unit`, breakpoint);
+	const unit = getLastBreakpointValue(
+		unitTarget || `${target}-unit`,
+		breakpoint
+	);
 
 	const isAxisMode =
 		singleTarget === 'vertical' || singleTarget === 'horizontal';
 
 	return (
 		<AdvancedNumberControl
-			label={__(capitalize(label), 'maxi-blocks')}
+			label={__(getAxisInputLabel(label), 'maxi-blocks')}
 			className={classnames(
 				'maxi-axis-control__content__item',
 				`maxi-axis-control__content__item__${kebabCase(label)}`,
@@ -92,7 +154,7 @@ const AxisInput = props => {
 				onChangeValue(val, singleTarget, breakpoint, undefined, meta)
 			}
 			minMaxSettings={minMaxSettings}
-			enableAuto={!disableAuto}
+			enableAuto={!disableAuto && supportsAuto}
 			autoLabel={__(`Auto ${label.toLowerCase()}`, 'maxi-blocks')}
 			classNameAutoInput={classnames(
 				'maxi-axis-control__item-auto',
@@ -102,12 +164,14 @@ const AxisInput = props => {
 			min={minMaxSettings[currentUnit].min || 0}
 			max={minMaxSettings[currentUnit].max || 999}
 			step={minMaxSettings[currentUnit].step || 1}
-			onChangeUnit={val =>
-				onChangeUnit(val, singleTarget, breakpoint, '-unit')
-			}
+			onChangeUnit={val => {
+				if (unitTarget) onChangeUnit(val, singleTarget, breakpoint);
+				else onChangeUnit(val, singleTarget, breakpoint, '-unit');
+			}}
 			unit={unit}
 			onReset={onReset}
 			disableRange={disableRange}
+			resetButtonSize={isCompactControl ? 'small' : undefined}
 		/>
 	);
 };
@@ -131,6 +195,15 @@ const AxisContent = props => {
 		onChangeUnit,
 		enableAxisUnits,
 		disableRange,
+		target,
+		auxTarget,
+		showAllSides,
+		getPairSyncValue,
+		getAllSyncValue,
+		onChangePairSync,
+		onChangeAllSync,
+		getPairForSide,
+		onChangeSharedUnit,
 	} = props;
 
 	const sync = getLastBreakpointAttribute({
@@ -154,12 +227,223 @@ const AxisContent = props => {
 				return '';
 		}
 	};
+	const isSpacingControl = target === 'margin' || target === 'padding';
+	const supportsAuto = !disableAuto;
+	const usesSharedUnitInInputs = showAllSides && auxTarget === 'radius';
+	const shouldShowAllSides = showAllSides;
+
+	const getRows = () => {
+		if (auxTarget === 'radius') {
+			return [
+				{
+					pair: 'vertical',
+					left: inputsArray[0],
+					right: inputsArray[1],
+					leftReset: inputsArray[0],
+					rightReset: inputsArray[1],
+				},
+				{
+					pair: 'horizontal',
+					left: inputsArray[3],
+					right: inputsArray[2],
+					leftReset: inputsArray[3],
+					rightReset: inputsArray[2],
+				},
+			];
+		}
+
+		return [
+			{
+				pair: 'vertical',
+				left: inputsArray[0],
+				right: inputsArray[2],
+				leftReset: 'top',
+				rightReset: 'bottom',
+			},
+			{
+				pair: 'horizontal',
+				left: inputsArray[3],
+				right: inputsArray[1],
+				leftReset: 'left',
+				rightReset: 'right',
+			},
+		];
+	};
+
+	const renderSideInput = ({ side, reset, extraClassName }) => (
+		<AxisInput
+			label={side}
+			target={side}
+			singleTarget={side}
+			getValue={getValue}
+			getLastBreakpointValue={getLastBreakpointValue}
+			breakpoint={breakpoint}
+			disableAuto={disableAuto}
+			onChangeValue={onChangeValue}
+			minMaxSettings={minMaxSettings}
+			currentUnit={currentUnit}
+			type={type}
+			isSpacingControl={isSpacingControl}
+			isCompactControl={showAllSides}
+			supportsAuto={supportsAuto}
+			enableAxisUnits={enableAxisUnits || usesSharedUnitInInputs}
+			onChangeUnit={
+				usesSharedUnitInInputs
+					? (val, _singleTarget, customBreakpoint) =>
+							onChangeSharedUnit(val, customBreakpoint)
+					: onChangeUnit
+			}
+			unitTarget={usesSharedUnitInInputs ? 'unit' : undefined}
+			onReset={() => {
+				const pair = getPairForSide(side);
+
+				onReset({
+					reset: getAllSyncValue(breakpoint)
+						? 'all'
+						: getPairSyncValue(pair, breakpoint)
+						? pair
+						: reset,
+					customBreakpoint: breakpoint,
+				});
+			}}
+			extraClassName={extraClassName}
+			disableRange={disableRange}
+		/>
+	);
+
+	const renderPairActions = pair => {
+		const isAllLinked = getAllSyncValue(breakpoint);
+		const isLinked = getPairSyncValue(pair, breakpoint);
+		const isMuted = isAllLinked;
+		let linkLabel;
+
+		if (auxTarget === 'radius') {
+			linkLabel =
+				pair === 'vertical'
+					? __('Link top corners', 'maxi-blocks')
+					: __('Link bottom corners', 'maxi-blocks');
+		} else {
+			linkLabel =
+				pair === 'vertical'
+					? __('Link top and bottom', 'maxi-blocks')
+					: __('Link left and right', 'maxi-blocks');
+		}
+
+		return (
+			<div
+				className={classnames(
+					'maxi-axis-control__pair-actions',
+					`maxi-axis-control__pair-actions--${pair}`
+				)}
+			>
+				<Button
+					className={classnames(
+						'maxi-axis-control__pair-link',
+						isLinked &&
+							!isMuted &&
+							'maxi-axis-control__pair-link--active',
+						isMuted && 'maxi-axis-control__pair-link--muted'
+					)}
+					label={linkLabel}
+					isPressed={isLinked && !isMuted}
+					disabled={isMuted}
+					onClick={() =>
+						onChangePairSync(pair, !isLinked, breakpoint)
+					}
+				>
+					{isLinked ? linkedPairIcon : unlinkedPairIcon}
+				</Button>
+			</div>
+		);
+	};
+
+	const renderAllActions = () => {
+		const isLinked = getAllSyncValue(breakpoint);
+		const linkLabel =
+			auxTarget === 'radius'
+				? __('Link all corners', 'maxi-blocks')
+				: __('Link all sides', 'maxi-blocks');
+
+		return (
+			<div className='maxi-axis-control__all-actions'>
+				<div />
+				<div
+					className={classnames(
+						'maxi-axis-control__pair-actions',
+						'maxi-axis-control__pair-actions--all'
+					)}
+				>
+					<Button
+						className={classnames(
+							'maxi-axis-control__pair-link',
+							isLinked && 'maxi-axis-control__pair-link--active'
+						)}
+						label={linkLabel}
+						isPressed={isLinked}
+						onClick={() =>
+							onChangeAllSync(!isLinked, breakpoint)
+						}
+					>
+						{isLinked ? linkedPairIcon : unlinkedPairIcon}
+					</Button>
+				</div>
+				<div />
+			</div>
+		);
+	};
+
+	if (shouldShowAllSides) {
+		const rows = getRows();
+
+		return (
+			<div
+				className='maxi-axis-control__content__separate-grid'
+				data-sync='none'
+			>
+				<div className='maxi-axis-control__row-1 maxi-axis-control__row--top'>
+					<div>
+						{renderSideInput({
+							side: rows[0].left,
+							reset: rows[0].leftReset,
+							extraClassName:
+								'maxi-axis-control__item--top-row',
+						})}
+					</div>
+					{renderPairActions(rows[0].pair)}
+					<div>
+						{renderSideInput({
+							side: rows[0].right,
+							reset: rows[0].rightReset,
+							extraClassName:
+								'maxi-axis-control__item--top-row',
+						})}
+					</div>
+				</div>
+				{renderAllActions()}
+				<div className='maxi-axis-control__row-2'>
+					<div>
+						{renderSideInput({
+							side: rows[1].left,
+							reset: rows[1].leftReset,
+						})}
+					</div>
+					{renderPairActions(rows[1].pair)}
+					<div>
+						{renderSideInput({
+							side: rows[1].right,
+							reset: rows[1].rightReset,
+						})}
+					</div>
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div className={getContainerClass()} data-sync={sync}>
 			{(sync === 'all' || disableSync) && (
 				<AxisInput
-					label={type}
+					label={isSpacingControl ? '' : type}
 					target={inputsArray[0]}
 					getValue={getValue}
 					getLastBreakpointValue={getLastBreakpointValue}
@@ -169,6 +453,8 @@ const AxisContent = props => {
 					minMaxSettings={minMaxSettings}
 					currentUnit={currentUnit}
 					type={type}
+					isSpacingControl={isSpacingControl}
+					supportsAuto={supportsAuto}
 					enableAxisUnits={enableAxisUnits}
 					onChangeUnit={onChangeUnit}
 					onReset={() => onReset({ reset: 'all' })}
@@ -190,6 +476,8 @@ const AxisContent = props => {
 							minMaxSettings={minMaxSettings}
 							currentUnit={currentUnit}
 							type={type}
+							isSpacingControl={isSpacingControl}
+							supportsAuto={supportsAuto}
 							enableAxisUnits={enableAxisUnits}
 							onChangeUnit={onChangeUnit}
 							onReset={() => onReset({ reset: 'vertical' })}
@@ -211,6 +499,8 @@ const AxisContent = props => {
 								minMaxSettings={minMaxSettings}
 								currentUnit={currentUnit}
 								type={type}
+								isSpacingControl={isSpacingControl}
+								supportsAuto={supportsAuto}
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'horizontal' })}
@@ -237,6 +527,8 @@ const AxisContent = props => {
 								minMaxSettings={minMaxSettings}
 								currentUnit={currentUnit}
 								type={type}
+								isSpacingControl={isSpacingControl}
+								supportsAuto={supportsAuto}
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'top' })}
@@ -260,6 +552,8 @@ const AxisContent = props => {
 									minMaxSettings={minMaxSettings}
 									currentUnit={currentUnit}
 									type={type}
+									isSpacingControl={isSpacingControl}
+									supportsAuto={supportsAuto}
 									enableAxisUnits={enableAxisUnits}
 									onChangeUnit={onChangeUnit}
 									onReset={() => onReset({ reset: 'right' })}
@@ -284,6 +578,8 @@ const AxisContent = props => {
 								minMaxSettings={minMaxSettings}
 								currentUnit={currentUnit}
 								type={type}
+								isSpacingControl={isSpacingControl}
+								supportsAuto={supportsAuto}
 								enableAxisUnits={enableAxisUnits}
 								onChangeUnit={onChangeUnit}
 								onReset={() => onReset({ reset: 'bottom' })}
@@ -306,6 +602,8 @@ const AxisContent = props => {
 									minMaxSettings={minMaxSettings}
 									currentUnit={currentUnit}
 									type={type}
+									isSpacingControl={isSpacingControl}
+									supportsAuto={supportsAuto}
 									enableAxisUnits={enableAxisUnits}
 									onChangeUnit={onChangeUnit}
 									onReset={() => onReset({ reset: 'left' })}
@@ -335,7 +633,13 @@ const AxisControlContent = props => {
 		inputsArray,
 		disableSync = false,
 		enableAxisUnits,
+		target,
+		auxTarget,
+		showAllSides,
 	} = props;
+
+	const isSpacingControl = target === 'margin' || target === 'padding';
+	const shouldShowAllSides = showAllSides;
 
 	const sync =
 		getLastBreakpointAttribute({
@@ -406,6 +710,21 @@ const AxisControlContent = props => {
 		});
 	};
 
+	if (shouldShowAllSides) {
+		return (
+			<>
+				<div className='maxi-axis-control__spacing-heading'>
+					{__(type, 'maxi-blocks')}
+				</div>
+				<AxisContent
+					{...props}
+					auxTarget={auxTarget}
+					onChangeSharedUnit={onChangeUnit}
+				/>
+			</>
+		);
+	}
+
 	return (
 		<>
 			{!disableSync && (
@@ -438,7 +757,11 @@ const AxisControlContent = props => {
 						</BaseControl>
 					)}
 					<SettingTabsControl
-						label={getSyncLabel()}
+						label={
+							isSpacingControl
+								? __(type, 'maxi-blocks')
+								: getSyncLabel()
+						}
 						type='buttons'
 						className={classnames(
 							'maxi-axis-control__header',
@@ -537,17 +860,21 @@ const AxisControl = props => {
 		fullWidth,
 		enableAxisUnits,
 		defaultAttributes = null,
+		showAllSides = false,
 	} = props;
 
 	const classes = classnames(
 		'maxi-axis-control',
 		target && `maxi-axis-control__${target}`,
+		showAllSides && 'maxi-axis-control--show-all-sides',
+		showAllSides && !disableAuto && 'maxi-axis-control--has-auto',
 		disableAuto && 'maxi-axis-control__disable-auto',
 		className
 	);
 
 	const useResponsiveTabs =
-		!noResponsiveTabs && ['margin', 'padding'].includes(target);
+		!noResponsiveTabs &&
+		['margin', 'padding'].includes(target);
 
 	// Get sync mode to determine if left/right margin should be disabled
 	const sync = getLastBreakpointAttribute({
@@ -560,7 +887,7 @@ const AxisControl = props => {
 	// Only disable left/right margin when fullWidth is true AND sync is 'all' (equal mode)
 	// Allow left/right margins in 'none' (separate) and 'axis' (together) modes
 	const disableLeftRightMargin =
-		target === 'margin' && fullWidth && sync === 'all';
+		!showAllSides && target === 'margin' && fullWidth && sync === 'all';
 
 	const getOptions = () => {
 		const options = [];
@@ -578,10 +905,10 @@ const AxisControl = props => {
 		return `${prefix}${target}-${key}${auxTarget ? `-${auxTarget}` : ''}`;
 	};
 
-	const getLastBreakpointValue = key => {
+	const getLastBreakpointValue = (key, customBreakpoint) => {
 		const inputValue = getLastBreakpointAttribute({
 			target: getKey(key),
-			breakpoint,
+			breakpoint: customBreakpoint ?? breakpoint,
 			attributes: props,
 			isHover,
 			forceSingle: false,
@@ -678,12 +1005,18 @@ const AxisControl = props => {
 
 		const cases = {
 			all: [top, bottom, left, right],
-			vertical: [top, bottom],
-			horizontal: [left, right],
+			vertical: showAllSides ? getPairSides('vertical') : [top, bottom],
+			horizontal: showAllSides
+				? getPairSides('horizontal')
+				: [left, right],
 			top,
 			right,
 			bottom,
 			left,
+			[top]: top,
+			[right]: right,
+			[bottom]: bottom,
+			[left]: left,
 			unit: ['unit'],
 		};
 
@@ -701,6 +1034,25 @@ const AxisControl = props => {
 				)
 			] = getDefaultValue(key);
 		});
+
+		if (showAllSides) {
+			const syncKeys = {
+				all: ['sync', 'sync-vertical', 'sync-horizontal'],
+				vertical: ['sync-vertical'],
+				horizontal: ['sync-horizontal'],
+			};
+
+			syncKeys[reset]?.forEach(key => {
+				response[
+					getAttributeKey(
+						getKey(key),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = getDefaultValue(key);
+			});
+		}
 
 		onChange(response);
 	};
@@ -725,6 +1077,191 @@ const AxisControl = props => {
 			attributes: props,
 			isHover,
 		}) || 'px';
+
+	const getPairSides = pair =>
+		auxTarget === 'radius'
+			? pair === 'vertical'
+				? [inputsArray[0], inputsArray[1]]
+				: [inputsArray[3], inputsArray[2]]
+			: pair === 'vertical'
+			? [inputsArray[0], inputsArray[2]]
+			: [inputsArray[3], inputsArray[1]];
+
+	const getPairForSide = side =>
+		getPairSides('vertical').includes(side) ? 'vertical' : 'horizontal';
+
+	const usesSharedUnitInInputs = showAllSides && auxTarget === 'radius';
+
+	const getAllSides = () => inputsArray.slice(0, 4);
+
+	const getAllSyncValue = customBreakpoint =>
+		showAllSides &&
+		['all', true].includes(getLastBreakpointAttribute({
+			target: getKey('sync'),
+			breakpoint: customBreakpoint ?? breakpoint,
+			attributes: props,
+			isHover,
+		}));
+
+	const getPairSyncValue = (pair, customBreakpoint) =>
+		getLastBreakpointAttribute({
+			target: getKey(`sync-${pair}`),
+			breakpoint: customBreakpoint ?? breakpoint,
+			attributes: props,
+			isHover,
+		}) === true;
+
+	const onChangePairSync = (pair, isSynced, customBreakpoint) => {
+		const response = {
+			[getAttributeKey(
+				getKey(`sync-${pair}`),
+				isHover,
+				false,
+				customBreakpoint ?? breakpoint
+			)]: isSynced,
+		};
+
+		if (showAllSides) {
+			response[
+				getAttributeKey(
+					getKey('sync'),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			] = 'none';
+		}
+
+		if (isSynced) {
+			const pairSides = getPairSides(pair);
+			const firstValue = getValue(pairSides[0], customBreakpoint);
+			const secondValue = getValue(pairSides[1], customBreakpoint);
+			const source =
+				!isEmpty(firstValue) || isNumber(firstValue)
+					? pairSides[0]
+					: pairSides[1];
+			const sourceValue =
+				source === pairSides[0] ? firstValue : secondValue;
+			const sourceUnit = usesSharedUnitInInputs
+				? getLastBreakpointValue('unit', customBreakpoint) ||
+				  currentUnit
+				: getLastBreakpointValue(`${source}-unit`, customBreakpoint) ||
+				  currentUnit;
+
+			if (usesSharedUnitInInputs) {
+				response[
+					getAttributeKey(
+						getKey('unit'),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = sourceUnit;
+			}
+
+			pairSides.forEach(side => {
+				response[
+					getAttributeKey(
+						getKey(side),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = sourceValue;
+
+				if (enableAxisUnits && !usesSharedUnitInInputs) {
+					response[
+						getAttributeKey(
+							getKey(`${side}-unit`),
+							isHover,
+							false,
+							customBreakpoint ?? breakpoint
+						)
+					] = sourceUnit;
+				}
+			});
+		}
+
+		onChange(response);
+	};
+
+	const onChangeAllSync = (isSynced, customBreakpoint) => {
+		const response = {
+			[getAttributeKey(
+				getKey('sync'),
+				isHover,
+				false,
+				customBreakpoint ?? breakpoint
+			)]: isSynced ? 'all' : 'none',
+		};
+
+		if (isSynced) {
+			const allSides = getAllSides();
+			const source =
+				allSides.find(side => {
+					const sideValue = getValue(side, customBreakpoint);
+					return !isEmpty(sideValue) || isNumber(sideValue);
+				}) || allSides[0];
+			const sourceValue = getValue(source, customBreakpoint);
+			const sourceUnit = usesSharedUnitInInputs
+				? getLastBreakpointValue('unit', customBreakpoint) ||
+				  currentUnit
+				: getLastBreakpointValue(`${source}-unit`, customBreakpoint) ||
+				  currentUnit;
+
+			response[
+				getAttributeKey(
+					getKey('sync-vertical'),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			] = true;
+			response[
+				getAttributeKey(
+					getKey('sync-horizontal'),
+					isHover,
+					false,
+					customBreakpoint ?? breakpoint
+				)
+			] = true;
+
+			if (usesSharedUnitInInputs) {
+				response[
+					getAttributeKey(
+						getKey('unit'),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = sourceUnit;
+			}
+
+			allSides.forEach(side => {
+				response[
+					getAttributeKey(
+						getKey(side),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = sourceValue;
+
+				if (enableAxisUnits && !usesSharedUnitInInputs) {
+					response[
+						getAttributeKey(
+							getKey(`${side}-unit`),
+							isHover,
+							false,
+							customBreakpoint ?? breakpoint
+						)
+					] = sourceUnit;
+				}
+			});
+		}
+
+		onChange(response);
+	};
 
 	const onChangeValue = (
 		val,
@@ -752,6 +1289,30 @@ const AxisControl = props => {
 		});
 
 		let response = {};
+
+		if (showAllSides) {
+			const pair = getPairForSide(singleTarget);
+			const keysToUpdate =
+				getAllSyncValue(customBreakpoint)
+					? getAllSides()
+					: getPairSyncValue(pair, customBreakpoint)
+					? getPairSides(pair)
+					: [singleTarget];
+
+			keysToUpdate.forEach(key => {
+				response[
+					getAttributeKey(
+						getKey(`${key}${prefix || ''}`),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = newValue;
+			});
+
+			onChange({ ...response, meta });
+			return;
+		}
 
 		const isAllChange = key => {
 			if (prefix) {
@@ -803,7 +1364,7 @@ const AxisControl = props => {
 			);
 		};
 
-		switch (disableSync ? 'all' : sync) {
+		switch (showAllSides ? 'none' : disableSync ? 'all' : sync) {
 			case 'all': {
 				inputsArray.forEach(key => {
 					if (isAllChange(key)) {
@@ -905,6 +1466,12 @@ const AxisControl = props => {
 						onChangeSync={onChangeSync}
 						onChangeUnit={onChangeValue}
 						enableAxisUnits={enableAxisUnits}
+						showAllSides={showAllSides}
+						getPairSyncValue={getPairSyncValue}
+						getAllSyncValue={getAllSyncValue}
+						getPairForSide={getPairForSide}
+						onChangePairSync={onChangePairSync}
+						onChangeAllSync={onChangeAllSync}
 					/>
 				</ResponsiveTabsControl>
 			)}
@@ -929,6 +1496,12 @@ const AxisControl = props => {
 					onChangeSync={onChangeSync}
 					onChangeUnit={onChangeValue}
 					enableAxisUnits={enableAxisUnits}
+					showAllSides={showAllSides}
+					getPairSyncValue={getPairSyncValue}
+					getAllSyncValue={getAllSyncValue}
+					getPairForSide={getPairForSide}
+					onChangePairSync={onChangePairSync}
+					onChangeAllSync={onChangeAllSync}
 				/>
 			)}
 		</div>

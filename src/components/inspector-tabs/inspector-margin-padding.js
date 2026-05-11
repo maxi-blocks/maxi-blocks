@@ -48,6 +48,7 @@ const marginPadding = ({
 						fullWidth={fullWidth}
 					/>
 				)}
+				{!disableMargin && <hr />}
 				<PaddingControl
 					{...getGroupAttributes(
 						attributes,
@@ -58,6 +59,7 @@ const marginPadding = ({
 					prefix={prefix}
 					onChange={obj => maxiSetAttributes(obj)}
 					breakpoint={deviceType}
+					noResponsiveTabs={!disableMargin}
 				/>
 			</>
 		),

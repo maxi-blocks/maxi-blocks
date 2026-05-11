@@ -24,7 +24,12 @@ const SearchBox = ({ mapMarkers, maxiSetAttributes }) => {
 	const findMarkers = async keywords => {
 		if (keywords && keywords.length > 2) {
 			const response = await fetch(
-				`https://nominatim.openstreetmap.org/search?q=${keywords}&format=json`
+				`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+					keywords
+				)}&format=json`,
+				{
+					referrerPolicy: 'no-referrer-when-downgrade',
+				}
 			);
 
 			if (response.status !== 200) {

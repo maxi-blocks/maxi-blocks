@@ -1809,14 +1809,11 @@ class MaxiBlockComponent extends Component {
 					);
 					processRelations(this.relationInstances);
 				}
-				if (updated !== null) {
-					const processRemoveStart = getPerfStart();
-					processRelations(this.relationInstances, 'remove', updated);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
-					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
-				}			}
+			if (updated !== null) {
+				processRelations(this.relationInstances, 'remove', updated);
+				processRelations(this.relationInstances);
+			}
+			}
 
 			if (!isRelationsPreview) {
 				this.relationInstances = null;

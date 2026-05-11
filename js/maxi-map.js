@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 window.onload = () => {
 	const apiKey = maxiMap[1];
+	const leafletVersion = '1.9.4';
 	const mapItems = [];
 
 	for (const key in maxiMap[0]) {
@@ -203,18 +204,18 @@ window.onload = () => {
 			{
 				elementName: 'link',
 				properties: {
-					href: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.css',
+					href: `https://unpkg.com/leaflet@${leafletVersion}/dist/leaflet.css`,
 					rel: 'stylesheet',
 					integrity:
-						'sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==',
+						'sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==',
 					crossOrigin: '',
 				},
 			},
 			{
 				properties: {
-					src: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.js',
+					src: `https://unpkg.com/leaflet@${leafletVersion}/dist/leaflet.js`,
 					integrity:
-						'sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==',
+						'sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg==',
 					crossOrigin: '',
 				},
 			},

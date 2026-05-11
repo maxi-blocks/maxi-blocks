@@ -197,6 +197,7 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
 			const ref = useRef(null);
+			const interBlockInserterRef = useRef(null);
 			const styleObjKeys = useRef([]);
 
 			const insertInlineStyles = useCallback(
@@ -671,7 +672,7 @@ const withMaxiProps = createHigherOrderComponent(
 						}
 					/>
 					<InterBlockInserterSlot
-						ref={ref}
+						ref={interBlockInserterRef}
 						clientId={clientId}
 						name={name}
 					/>

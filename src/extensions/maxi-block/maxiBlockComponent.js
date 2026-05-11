@@ -73,7 +73,7 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
 const VIEWPORT_UNIT_VALUE_REGEX =
-	/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
+	/(^|[^a-zA-Z])(?:[-+]?\d*\.?\d+)?(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 /**
  * Class
@@ -1558,32 +1558,53 @@ class MaxiBlockComponent extends Component {
 			!isBaseBreakpointChange
 		) {
 			const currentBreakpoint = this.props.deviceType;
-			if (currentBreakpoint === 'xxl' && this.isXxlStyleCacheDirty) {
-				countProfile('maxiBlockComponent breakpoint cache dirty xxl');
-			}
-			const cachedStyleContent =
-				currentBreakpoint === 'xxl' &&
-				this.xxlStyleCache &&
-				!this.isXxlStyleCacheDirty
-					? this.xxlStyleCache
-					: this.getCachedStyleContent(uniqueID, currentBreakpoint);
+			const hasViewportDependentStyles = this.hasViewportUnits(
+				this.props.attributes
+			);
 
-			if (cachedStyleContent) {
-				countProfile('maxiBlockComponent breakpoint cache hit');
-				if (currentBreakpoint === 'xxl') {
-					this.xxlStyleCache = cachedStyleContent;
-					this.isXxlStyleCacheDirty = false;
-				}
-				this.applyStyleContent(
-					uniqueID,
-					cachedStyleContent,
-					currentBreakpoint
+			if (hasViewportDependentStyles) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible viewport'
 				);
-				recordProfile('maxiBlockComponent displayStyles', perfStart);
-				return;
-			}
+			} else {
+				if (currentBreakpoint === 'xxl') {
+					if (this.isXxlStyleCacheDirty) {
+						countProfile(
+							'maxiBlockComponent breakpoint cache dirty xxl'
+						);
+					}
+				}
 
-			countProfile('maxiBlockComponent breakpoint cache miss');
+				const cachedStyleContent =
+					currentBreakpoint === 'xxl' &&
+					this.xxlStyleCache &&
+					!this.isXxlStyleCacheDirty
+						? this.xxlStyleCache
+						: this.getCachedStyleContent(
+								uniqueID,
+								currentBreakpoint
+						  );
+
+				if (cachedStyleContent) {
+					countProfile('maxiBlockComponent breakpoint cache hit');
+					if (currentBreakpoint === 'xxl') {
+						this.xxlStyleCache = cachedStyleContent;
+						this.isXxlStyleCacheDirty = false;
+					}
+					this.applyStyleContent(
+						uniqueID,
+						cachedStyleContent,
+						currentBreakpoint
+					);
+					recordProfile(
+						'maxiBlockComponent displayStyles',
+						perfStart
+					);
+					return;
+				}
+
+				countProfile('maxiBlockComponent breakpoint cache miss');
+			}
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -2076,15 +2097,19 @@ class MaxiBlockComponent extends Component {
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
-
-		if (
+		const canReuseXxlStyleCache =
 			isBreakpointChange &&
 			currentBreakpoint === 'xxl' &&
 			!isBlockStyleChange &&
 			!forceGenerate &&
 			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
-		) {
+			!this.isXxlStyleCacheDirty;
+		const hasViewportDependentStyles =
+			canReuseXxlStyleCache &&
+			(this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(updatedStylesObj));
+
+		if (canReuseXxlStyleCache && !hasViewportDependentStyles) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
 			styles = this.generateStyles(

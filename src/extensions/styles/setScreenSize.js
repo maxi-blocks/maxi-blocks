@@ -8,8 +8,24 @@ import {
 let lastCallTime = 0;
 let pendingCall = null;
 
+const getSafeProfileStart = () => {
+	try {
+		return getProfileStart();
+	} catch {
+		return null;
+	}
+};
+
+const recordProfileSafely = (label, start) => {
+	try {
+		recordProfile(label, start);
+	} catch {
+		// Profiling must never block screen-size switching.
+	}
+};
+
 const setScreenSizeImmediate = size => {
-	const start = getProfileStart();
+	const start = getSafeProfileStart();
 	const xxlSize = select('maxiBlocks').receiveXXLSize();
 	const breakpoints = select('maxiBlocks').receiveMaxiBreakpoints();
 
@@ -21,11 +37,11 @@ const setScreenSizeImmediate = size => {
 			width: size !== 'xxl' ? breakpoints[size] : xxlSize,
 		});
 
-	recordProfile(`setScreenSize immediate ${size}`, start);
+	recordProfileSafely(`setScreenSize immediate ${size}`, start);
 };
 
 const setScreenSize = size => {
-	const start = getProfileStart();
+	const start = getSafeProfileStart();
 	const now = Date.now();
 
 	// Cancel any pending call
@@ -42,13 +58,13 @@ const setScreenSize = size => {
 			setScreenSizeImmediate(size);
 			pendingCall = null;
 		}, 50);
-		recordProfile(`setScreenSize ${size} throttled`, start);
+		recordProfileSafely(`setScreenSize ${size} throttled`, start);
 		return;
 	}
 
 	lastCallTime = now;
 	setScreenSizeImmediate(size);
-	recordProfile(`setScreenSize ${size}`, start);
+	recordProfileSafely(`setScreenSize ${size}`, start);
 };
 
 // Export for testing

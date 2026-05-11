@@ -709,12 +709,43 @@ const AxisControlContent = props => {
 		});
 	};
 
+	const renderUnitHeader = () =>
+		!enableAxisUnits && (
+			<BaseControl
+				__nextHasNoMarginBottom
+				label={__(type, 'maxi-blocks')}
+				className='maxi-axis-control__unit-header'
+			>
+				<SelectControl
+					__nextHasNoMarginBottom
+					className='maxi-axis-control__units'
+					hideLabelFromVision
+					label={__('Unit', 'maxi-blocks')}
+					options={getOptions()}
+					value={currentUnit}
+					onChange={onChangeUnit}
+				/>
+				<ResetButton
+					className='maxi-reset-button--absolute maxi-reset-button--typography'
+					isAbsolute
+					onReset={() =>
+						onReset({
+							reset: 'unit',
+							customBreakpoint: breakpoint,
+						})
+					}
+				/>
+			</BaseControl>
+		);
+
 	if (shouldShowAllSides) {
 		return (
 			<>
-				<div className='maxi-axis-control__spacing-heading'>
-					{__(type, 'maxi-blocks')}
-				</div>
+				{renderUnitHeader() || (
+					<div className='maxi-axis-control__spacing-heading'>
+						{__(type, 'maxi-blocks')}
+					</div>
+				)}
 				<AxisContent
 					{...props}
 					auxTarget={auxTarget}
@@ -728,33 +759,7 @@ const AxisControlContent = props => {
 		<>
 			{!disableSync && (
 				<>
-					{!enableAxisUnits && (
-						<BaseControl
-							__nextHasNoMarginBottom
-							label={__(type, 'maxi-blocks')}
-							className='maxi-axis-control__unit-header'
-						>
-							<SelectControl
-								__nextHasNoMarginBottom
-								className='maxi-axis-control__units'
-								hideLabelFromVision
-								label={__('Unit', 'maxi-blocks')}
-								options={getOptions()}
-								value={currentUnit}
-								onChange={onChangeUnit}
-							/>
-							<ResetButton
-								className='maxi-reset-button--absolute maxi-reset-button--typography'
-								isAbsolute
-								onReset={() =>
-									onReset({
-										reset: 'unit',
-										customBreakpoint: breakpoint,
-									})
-								}
-							/>
-						</BaseControl>
-					)}
+					{renderUnitHeader()}
 					<SettingTabsControl
 						label={
 							isSpacingControl
@@ -1093,6 +1098,21 @@ const AxisControl = props => {
 
 	const getAllSides = () => inputsArray.slice(0, 4);
 
+	const hasAxisValue = value => !isNil(value) && value !== '';
+
+	// Keep default-linked new controls from overwriting older unequal saved sides.
+	const valuesCanSync = (sides, customBreakpoint) => {
+		const values = sides
+			.map(side => getValue(side, customBreakpoint))
+			.filter(hasAxisValue);
+
+		if (values.length < 2) return true;
+
+		const firstValue = values[0];
+
+		return values.every(value => `${value}` === `${firstValue}`);
+	};
+
 	const getAllSyncValue = customBreakpoint =>
 		showAllSides &&
 		['all', true].includes(getLastBreakpointAttribute({
@@ -1100,7 +1120,8 @@ const AxisControl = props => {
 			breakpoint: customBreakpoint ?? breakpoint,
 			attributes: props,
 			isHover,
-		}));
+		})) &&
+		valuesCanSync(getAllSides(), customBreakpoint);
 
 	const getPairSyncValue = (pair, customBreakpoint) =>
 		getLastBreakpointAttribute({
@@ -1108,7 +1129,7 @@ const AxisControl = props => {
 			breakpoint: customBreakpoint ?? breakpoint,
 			attributes: props,
 			isHover,
-		}) === true;
+		}) === true && valuesCanSync(getPairSides(pair), customBreakpoint);
 
 	const onChangePairSync = (pair, isSynced, customBreakpoint) => {
 		const response = {

@@ -579,9 +579,7 @@ const ImageLayer = props => {
 		});
 	};
 
-	// Layers track hover via layer.isHover, not via key suffixes.
-	// Only use isHover in key construction for non-layer usage.
-	const keyIsHover = isLayer ? false : isHover;
+	const keyIsHover = isHover;
 
 	const getFocalPointChangeObject = focalPoint => ({
 		[getAttributeKey(

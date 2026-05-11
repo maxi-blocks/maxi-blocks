@@ -3,7 +3,13 @@
  */
 
 import { handleSetAttributes } from '@extensions/maxi-block';
-import { getAttributeKey } from '@extensions/styles';
+import {
+	getAttributeKey,
+	getBreakpointFromAttribute,
+	getHoverAttributeKey,
+	getIsHoverAttribute,
+	getSimpleLabel,
+} from '@extensions/styles';
 import * as backgroundLayers from './layers';
 
 /**
@@ -14,29 +20,31 @@ import { cloneDeep, findIndex, isEqual, isNil, omitBy } from 'lodash';
 /**
  * Utils
  */
+const sameLabelAttr = [
+	'type',
+	'isHover',
+	'background-video-mediaID',
+	'background-video-mediaURL',
+	'background-video-startTime',
+	'background-video-endTime',
+	'background-video-loop',
+	'background-svg-SVGElement',
+	'background-svg-SVGData',
+	'background-image-mediaURL',
+	'background-image-mediaID',
+	'background-image-parallax-status',
+	'background-image-parallax-speed',
+	'background-image-parallax-direction',
+];
+
+const layerMetaAttrs = ['id', 'order', 'isReset', 'meta'];
+
 export const setBreakpointToLayer = ({
 	layer,
 	breakpoint,
 	isHover = false,
 }) => {
 	const response = {};
-
-	const sameLabelAttr = [
-		'type',
-		'isHover',
-		'background-video-mediaID',
-		'background-video-mediaURL',
-		'background-video-startTime',
-		'background-video-endTime',
-		'background-video-loop',
-		'background-svg-SVGElement',
-		'background-svg-SVGData',
-		'background-image-mediaURL',
-		'background-image-mediaID',
-		'background-image-parallax-status',
-		'background-image-parallax-speed',
-		'background-image-parallax-direction',
-	];
 
 	Object.entries(layer).forEach(([key, val]) => {
 		if (!sameLabelAttr.includes(key)) {
@@ -67,6 +75,36 @@ export const setBreakpointToLayer = ({
 
 	return response;
 };
+
+const getHoverLayerChangeObject = layer =>
+	Object.entries(layer).reduce((response, [key, val]) => {
+		if (
+			sameLabelAttr.includes(key) ||
+			layerMetaAttrs.includes(key) ||
+			getIsHoverAttribute(key)
+		) {
+			response[key] = val;
+
+			return response;
+		}
+
+		const breakpoint = getBreakpointFromAttribute(key);
+
+		if (breakpoint) {
+			response[
+				getAttributeKey(
+					getSimpleLabel(key, breakpoint),
+					true,
+					false,
+					breakpoint
+				)
+			] = val;
+		} else {
+			response[getHoverAttributeKey(key)] = val;
+		}
+
+		return response;
+	}, {});
 
 export const getDefaultLayerAttrs = layerType => backgroundLayers[layerType];
 
@@ -147,7 +185,7 @@ export const onChangeLayer = (
  */
 export const handleOnChangeLayer = (layer, currentLayer, isHover) =>
 	handleSetAttributes({
-		obj: layer,
+		obj: isHover ? getHoverLayerChangeObject(layer) : layer,
 		attributes: currentLayer,
 		onChange: result => result,
 		defaultAttributes: {

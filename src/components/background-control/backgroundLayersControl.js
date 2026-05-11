@@ -126,7 +126,7 @@ const getLayerCardContent = props => {
 					onChange={obj => {
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						});
 					}}
 					breakpoint={breakpoint}
@@ -148,7 +148,7 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					breakpoint={breakpoint}
@@ -165,7 +165,7 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					breakpoint={breakpoint}
@@ -184,7 +184,7 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					layerOrder={layer.order}

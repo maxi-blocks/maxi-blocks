@@ -58,14 +58,27 @@ const linkedPairIcon = (
 		focusable='false'
 	>
 		<g>
-			<rect x='10' y='13' width='8' height='2' rx='1' fill='currentColor' />
 			<path
-				d='M11.3333 10H10C7.79086 10 6 11.7909 6 14V14C6 16.2091 7.79086 18 10 18H11.3333M16.6667 18H18C20.2091 18 22 16.2091 22 14V14C22 11.7909 20.2091 10 18 10H16.6667'
+				d='M11.25 10.5H10.1C8.17 10.5 6.6 12.07 6.6 14s1.57 3.5 3.5 3.5h1.15'
 				stroke='currentColor'
 				strokeWidth='2'
 				strokeLinecap='round'
 				strokeLinejoin='round'
 				fill='none'
+			/>
+			<path
+				d='M16.75 17.5h1.15c1.93 0 3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5h-1.15'
+				stroke='currentColor'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				fill='none'
+			/>
+			<path
+				d='M11.25 14h5.5'
+				stroke='currentColor'
+				strokeWidth='2'
+				strokeLinecap='round'
 			/>
 		</g>
 	</svg>
@@ -81,7 +94,15 @@ const unlinkedPairIcon = (
 	>
 		<g>
 			<path
-				d='M11.3333 10H10C7.79086 10 6 11.7909 6 14V14C6 16.2091 7.79086 18 10 18H11.3333M16.6667 18H18C20.2091 18 22 16.2091 22 14V14C22 11.7909 20.2091 10 18 10H16.6667'
+				d='M11.25 10.5H10.1C8.17 10.5 6.6 12.07 6.6 14s1.57 3.5 3.5 3.5h1.15'
+				stroke='currentColor'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				fill='none'
+			/>
+			<path
+				d='M16.75 17.5h1.15c1.93 0 3.5-1.57 3.5-3.5s-1.57-3.5-3.5-3.5h-1.15'
 				stroke='currentColor'
 				strokeWidth='2'
 				strokeLinecap='round'

@@ -16,10 +16,31 @@ const editAxisControl = async ({
 	resetAllAfter = false,
 }) => {
 	if (syncOption) {
-		await instance.$eval(
-			`.maxi-axis-control__header button[aria-label="${syncOption}"]`,
-			button => button.click()
+		// Traditional layout has sync buttons in the header (all/axis/none).
+		// showAllSides layout replaced the header with pair-link buttons in the grid.
+		const headerBtn = await instance.$(
+			`.maxi-axis-control__header button[aria-label="${syncOption}"]`
 		);
+		if (headerBtn) {
+			await headerBtn.click();
+		} else if (syncOption === 'none') {
+			// showAllSides: unlink the "all" toggle if currently linked, then
+			// also unlink any remaining linked pair buttons.
+			const linkAllBtn = await instance.$(
+				'.maxi-axis-control__all-actions .maxi-axis-control__pair-link--active'
+			);
+			if (linkAllBtn) await linkAllBtn.click();
+			const linkedPairBtns = await instance.$$(
+				'.maxi-axis-control__pair-actions .maxi-axis-control__pair-link--active'
+			);
+			for (const btn of linkedPairBtns) await btn.click();
+		} else if (syncOption === 'all') {
+			// showAllSides: click the "link all" toggle if currently unlinked.
+			const unlinkAllBtn = await instance.$(
+				'.maxi-axis-control__all-actions .maxi-axis-control__pair-link:not(.maxi-axis-control__pair-link--active)'
+			);
+			if (unlinkAllBtn) await unlinkAllBtn.click();
+		}
 	}
 
 	if (resetAllBefore)
@@ -40,13 +61,18 @@ const editAxisControl = async ({
 		'.maxi-axis-control__content__item input[type="number"]'
 	);
 
-	for (let i = 0; i < inputs.length; i += 1) {
-		const el = inputs[i];
+	// When a single (non-array) value is given, only type into the first input.
+	// The axis control's sync mechanism will propagate the value to all other
+	// inputs, so typing into subsequent inputs causes intermediate-digit onChange
+	// calls that can trigger preserveBaseBreakpoint to write unwanted attributes.
+	const inputsToType = isArray(values) ? inputs : [inputs[0]];
+
+	for (let i = 0; i < inputsToType.length; i += 1) {
+		const el = inputsToType[i];
+		const newValue = isArray(values) ? values[i] : values;
 
 		await el.focus();
 		await pressKeyWithModifier('primary', 'a');
-
-		const newValue = !isArray(values) ? values : values[i];
 
 		if (newValue === 'auto') {
 			await instance.$$eval(

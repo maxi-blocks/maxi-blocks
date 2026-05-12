@@ -328,9 +328,9 @@ describe('Button Maxi hover simple actions', () => {
 		// Border radius
 		await page.waitForTimeout(500);
 
-		await page.$$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			ANCs => ANCs[2].focus()
+		await page.$eval(
+			'.maxi-axis-control__content__item__top-left .maxi-advanced-number-control__value',
+			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('11', { delay: 350 });

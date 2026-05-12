@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/class-maxi-style-cards.php';
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/class-maxi-color-utils.php';
 

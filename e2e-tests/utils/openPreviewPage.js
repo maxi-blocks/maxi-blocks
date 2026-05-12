@@ -57,6 +57,13 @@ const openPreviewPage = async page => {
 
 	const previewPage = last(openTabs);
 
+	// Wait for the preview page to finish navigating before returning,
+	// so that subsequent waitForSelector calls measure from page-ready,
+	// not from when the tab was opened.
+	await previewPage
+		.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 })
+		.catch(() => {});
+
 	return previewPage;
 };
 

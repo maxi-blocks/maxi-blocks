@@ -178,6 +178,45 @@ describe('getBackgroundStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Keeps custom image focus transitionable on hover', () => {
+		const attributes = {
+			blockStyle: 'light',
+			'block-background-status-hover': true,
+			'background-layers': [
+				{
+					type: 'image',
+					order: 1,
+					'background-image-mediaURL': 'image.jpg',
+					'background-image-position-general': 'custom',
+					'background-image-position-width-general': 0,
+					'background-image-position-width-unit-general': '%',
+					'background-image-position-height-general': 0,
+					'background-image-position-height-unit-general': '%',
+					'background-image-position-general-hover': 'custom',
+					'background-image-position-width-general-hover': 100,
+					'background-image-position-width-unit-general-hover': '%',
+					'background-image-position-height-general-hover': 100,
+					'background-image-position-height-unit-general-hover': '%',
+				},
+			],
+		};
+
+		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
+		const normal =
+			result[
+				'maxi-test > .maxi-background-displayer .maxi-background-displayer__1'
+			].image.general;
+		const hover =
+			result[
+				'maxi-test:hover > .maxi-background-displayer .maxi-background-displayer__1'
+			].image.general;
+
+		expect(normal['background-position']).toBe('0% 0%');
+		expect(normal).not.toHaveProperty('transition');
+		expect(hover['background-position']).toBe('100% 100%');
+		expect(hover).not.toHaveProperty('transition');
+	});
+
 	it('Get correct block background styles for image layer with different values on different responsive stages', () => {
 		const result = getBlockBackgroundStyles({
 			target,

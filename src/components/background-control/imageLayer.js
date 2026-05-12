@@ -618,6 +618,29 @@ const ImageLayer = props => {
 		onChange(getFocalPointChangeObject(focalPoint));
 	};
 
+	const getFocalPointAttribute = (target, targetIsHover = keyIsHover) =>
+		getLastBreakpointAttribute({
+			target: `${prefix}${target}`,
+			breakpoint,
+			attributes: imageOptions,
+			isHover: targetIsHover,
+		});
+
+	const getFocalPointResetValue = target => {
+		if (!keyIsHover) return getDefaultAttr(target);
+
+		const normalValue = getFocalPointAttribute(target, false);
+
+		if (
+			normalValue === false ||
+			normalValue === null ||
+			normalValue === undefined
+		)
+			return getDefaultAttr(target);
+
+		return normalValue;
+	};
+
 	const backgroundImagePosition = getLastBreakpointAttribute({
 		target: `${prefix}background-image-position`,
 		breakpoint,
@@ -661,9 +684,27 @@ const ImageLayer = props => {
 		};
 	}, [backgroundImagePosition, breakpoint, imageOptions, keyIsHover, prefix]);
 
-	const defaultFocalPoint = getFocalPointFromPosition(
-		getDefaultAttr('background-image-position')
-	);
+	const resetFocalPoint = (() => {
+		const resetPosition = getFocalPointResetValue(
+			'background-image-position'
+		);
+
+		if (resetPosition !== 'custom')
+			return getFocalPointFromPosition(resetPosition);
+
+		return {
+			x: normalizePositionForPicker(
+				getFocalPointResetValue('background-image-position-width'),
+				getFocalPointResetValue('background-image-position-width-unit')
+			),
+			y: normalizePositionForPicker(
+				getFocalPointResetValue('background-image-position-height'),
+				getFocalPointResetValue('background-image-position-height-unit')
+			),
+		};
+	})();
+
+	const resetMeta = keyIsHover ? {} : { isReset: true };
 
 	const handleFocalPointReset = () => {
 		onChange({
@@ -672,32 +713,36 @@ const ImageLayer = props => {
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: getDefaultAttr('background-image-position'),
+			)]: getFocalPointResetValue('background-image-position'),
 			[getAttributeKey(
 				'background-image-position-width',
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: getDefaultAttr('background-image-position-width'),
+			)]: getFocalPointResetValue('background-image-position-width'),
 			[getAttributeKey(
 				'background-image-position-width-unit',
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: getDefaultAttr('background-image-position-width-unit'),
+			)]: getFocalPointResetValue(
+				'background-image-position-width-unit'
+			),
 			[getAttributeKey(
 				'background-image-position-height',
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: getDefaultAttr('background-image-position-height'),
+			)]: getFocalPointResetValue('background-image-position-height'),
 			[getAttributeKey(
 				'background-image-position-height-unit',
 				keyIsHover,
 				prefix,
 				breakpoint
-			)]: getDefaultAttr('background-image-position-height-unit'),
-			isReset: true,
+			)]: getFocalPointResetValue(
+				'background-image-position-height-unit'
+			),
+			...resetMeta,
 		});
 	};
 
@@ -705,9 +750,9 @@ const ImageLayer = props => {
 		onChange({
 			...getFocalPointChangeObject({
 				...currentFocalPoint,
-				x: defaultFocalPoint.x,
+				x: resetFocalPoint.x,
 			}),
-			isReset: true,
+			...resetMeta,
 		});
 	};
 
@@ -715,9 +760,9 @@ const ImageLayer = props => {
 		onChange({
 			...getFocalPointChangeObject({
 				...currentFocalPoint,
-				y: defaultFocalPoint.y,
+				y: resetFocalPoint.y,
 			}),
-			isReset: true,
+			...resetMeta,
 		});
 	};
 

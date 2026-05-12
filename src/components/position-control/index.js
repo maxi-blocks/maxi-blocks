@@ -48,7 +48,11 @@ const PositionControl = props => {
 		defaultAttributes,
 	} = props;
 
-	const classes = classnames('maxi-position-control', className);
+	const classes = classnames(
+		'maxi-position-control',
+		disablePosition && 'maxi-position-control--layer-placement',
+		className
+	);
 
 	const minMaxSettings = {
 		px: {
@@ -79,11 +83,26 @@ const PositionControl = props => {
 		return value;
 	};
 
+	const hasPlacementValue = value =>
+		value !== null &&
+		value !== undefined &&
+		value !== '' &&
+		value !== false;
+
 	const getPositionDefault = target => {
 		const key = getPositionKey(target);
 		const value = defaultAttributes?.[key] ?? getDefaultAttribute(key);
 
 		if (target === 'position-sync') return normalizePlacementSync(value);
+
+		if (disablePosition && target.includes('-unit')) return '%';
+
+		if (disablePosition && !hasPlacementValue(value)) {
+			if (target === 'position-top' || target === 'position-left')
+				return 0;
+			if (target === 'position-right' || target === 'position-bottom')
+				return '';
+		}
 
 		return value;
 	};
@@ -110,21 +129,31 @@ const PositionControl = props => {
 	// Helper to ensure FocalPointPicker receives valid 0-1 coordinates.
 	// Uses the explicit unit to decide whether the value can be mapped.
 	const normalizeCoordinate = (raw, unit) => {
-		if (raw === null || raw === undefined || raw === '') return 0.5;
+		if (!hasPlacementValue(raw)) return 0;
 
 		const numericValue = typeof raw === 'number' ? raw : parseFloat(raw);
 
-		if (!Number.isFinite(numericValue)) return 0.5;
+		if (!Number.isFinite(numericValue)) return 0;
 
 		// Non-percentage units (px, em, vw) can't meaningfully map to 0-1
-		if (unit && unit !== '%') return 0.5;
+		if (unit && unit !== '%') return 0;
 
 		// Values are stored as 0-100 percentages; convert to 0-1 for the picker
 		return Math.max(0, Math.min(1, numericValue / 100));
 	};
 
-	const hasPlacementValue = value =>
-		value !== null && value !== undefined && value !== '';
+	const canUseFocalCoordinate = (raw, unit) => {
+		if (!hasPlacementValue(raw)) return true;
+		if (unit && unit !== '%') return false;
+
+		const numericValue = typeof raw === 'number' ? raw : parseFloat(raw);
+
+		return (
+			Number.isFinite(numericValue) &&
+			numericValue >= 0 &&
+			numericValue <= 100
+		);
+	};
 
 	const getPlacementAttribute = target =>
 		getLastBreakpointAttribute({
@@ -140,38 +169,40 @@ const PositionControl = props => {
 		bottom: getPlacementAttribute('position-bottom'),
 		left: getPlacementAttribute('position-left'),
 		topUnit: getPlacementAttribute('position-top-unit'),
+		rightUnit: getPlacementAttribute('position-right-unit'),
+		bottomUnit: getPlacementAttribute('position-bottom-unit'),
 		leftUnit: getPlacementAttribute('position-left-unit'),
 		sync: normalizePlacementSync(getPlacementAttribute('position-sync')),
 	};
 
+	const topUnit = disablePosition
+		? '%'
+		: rawPlacement.topUnit || getPositionDefault('position-top-unit');
+	const leftUnit = disablePosition
+		? '%'
+		: rawPlacement.leftUnit || getPositionDefault('position-left-unit');
+
 	const hasAdvancedPlacement =
 		hasPlacementValue(rawPlacement.right) ||
 		hasPlacementValue(rawPlacement.bottom) ||
-		(hasPlacementValue(rawPlacement.top) &&
-			rawPlacement.topUnit &&
-			rawPlacement.topUnit !== '%') ||
-		(hasPlacementValue(rawPlacement.left) &&
-			rawPlacement.leftUnit &&
-			rawPlacement.leftUnit !== '%') ||
+		!canUseFocalCoordinate(rawPlacement.top, topUnit) ||
+		!canUseFocalCoordinate(rawPlacement.left, leftUnit) ||
 		(rawPlacement.sync && rawPlacement.sync !== 'all');
 
 	const [showAdvanced, setShowAdvanced] = useState(hasAdvancedPlacement);
+	const [useFocalRequested, setUseFocalRequested] = useState(false);
 
 	useEffect(() => {
-		if (hasAdvancedPlacement) setShowAdvanced(true);
-	}, [hasAdvancedPlacement]);
+		if (hasAdvancedPlacement && !useFocalRequested) setShowAdvanced(true);
+		if (!hasAdvancedPlacement) setUseFocalRequested(false);
+	}, [hasAdvancedPlacement, useFocalRequested]);
 
 	const layerPlacementPoint = useMemo(
 		() => ({
-			x: normalizeCoordinate(rawPlacement.left, rawPlacement.leftUnit),
-			y: normalizeCoordinate(rawPlacement.top, rawPlacement.topUnit),
+			x: normalizeCoordinate(rawPlacement.left, leftUnit),
+			y: normalizeCoordinate(rawPlacement.top, topUnit),
 		}),
-		[
-			rawPlacement.left,
-			rawPlacement.leftUnit,
-			rawPlacement.top,
-			rawPlacement.topUnit,
-		]
+		[rawPlacement.left, rawPlacement.top, leftUnit, topUnit]
 	);
 
 	const getPlacementChangeObject = focalPoint => ({
@@ -180,11 +211,59 @@ const PositionControl = props => {
 		[getPositionKey('position-left')]: Math.round(focalPoint.x * 100),
 		[getPositionKey('position-left-unit')]: '%',
 		[getPositionKey('position-right')]: '',
+		[getPositionKey('position-right-unit')]: '%',
 		[getPositionKey('position-bottom')]: '',
+		[getPositionKey('position-bottom-unit')]: '%',
+		[getPositionKey('position-sync')]: 'all',
 	});
 
 	const handlePlacementChange = focalPoint =>
 		onChange(getPlacementChangeObject(focalPoint));
+
+	const handleToggleAdvanced = () => {
+		if (showAdvanced) {
+			setUseFocalRequested(true);
+			setShowAdvanced(false);
+			onChange(getPlacementChangeObject(layerPlacementPoint));
+
+			return;
+		}
+
+		setUseFocalRequested(false);
+		setShowAdvanced(true);
+	};
+
+	const placementSides = ['top', 'right', 'bottom', 'left'];
+
+	const getAdvancedPlacementUnit = side => {
+		if (disablePosition) return '%';
+
+		const value = rawPlacement[side];
+		const unit = rawPlacement[`${side}Unit`];
+
+		if (!hasPlacementValue(value)) return '%';
+
+		return unit || getPositionDefault(`position-${side}-unit`);
+	};
+
+	const handleAdvancedPlacementChange = obj => {
+		const response = { ...obj };
+
+		placementSides.forEach(side => {
+			const valueKey = getPositionKey(`position-${side}`);
+			const unitKey = getPositionKey(`position-${side}-unit`);
+
+			if (disablePosition) response[unitKey] = '%';
+
+			if (
+				Object.prototype.hasOwnProperty.call(response, valueKey) &&
+				!Object.prototype.hasOwnProperty.call(response, unitKey)
+			)
+				response[unitKey] = getAdvancedPlacementUnit(side);
+		});
+
+		onChange(response);
+	};
 
 	const handlePlacementReset = () =>
 		onChange({ ...getCleanOptions(), isReset: true });
@@ -209,6 +288,8 @@ const PositionControl = props => {
 
 	const getAdvancedPlacementProps = () => {
 		const hasTop = hasPlacementValue(rawPlacement.top);
+		const hasRight = hasPlacementValue(rawPlacement.right);
+		const hasBottom = hasPlacementValue(rawPlacement.bottom);
 		const hasLeft = hasPlacementValue(rawPlacement.left);
 
 		return {
@@ -216,17 +297,23 @@ const PositionControl = props => {
 			[getPositionKey('position-top')]: hasTop
 				? rawPlacement.top
 				: Math.round(layerPlacementPoint.y * 100),
-			[getPositionKey('position-top-unit')]: hasTop
-				? rawPlacement.topUnit ||
-				  getPositionDefault('position-top-unit')
-				: '%',
+			[getPositionKey('position-top-unit')]:
+				getAdvancedPlacementUnit('top'),
+			[getPositionKey('position-right')]: hasRight
+				? rawPlacement.right
+				: '',
+			[getPositionKey('position-right-unit')]:
+				getAdvancedPlacementUnit('right'),
+			[getPositionKey('position-bottom')]: hasBottom
+				? rawPlacement.bottom
+				: '',
+			[getPositionKey('position-bottom-unit')]:
+				getAdvancedPlacementUnit('bottom'),
 			[getPositionKey('position-left')]: hasLeft
 				? rawPlacement.left
 				: Math.round(layerPlacementPoint.x * 100),
-			[getPositionKey('position-left-unit')]: hasLeft
-				? rawPlacement.leftUnit ||
-				  getPositionDefault('position-left-unit')
-				: '%',
+			[getPositionKey('position-left-unit')]:
+				getAdvancedPlacementUnit('left'),
 			[getPositionKey('position-sync')]:
 				rawPlacement.sync || getPositionDefault('position-sync'),
 		};
@@ -250,37 +337,36 @@ const PositionControl = props => {
 					/>
 				</div>
 			)}
-			{!hasAdvancedPlacement && (
-				<div className='maxi-position-control__advanced-toggle'>
-					<Button onClick={() => setShowAdvanced(!showAdvanced)}>
-						{showAdvanced
-							? __('Use focal placement', 'maxi-blocks')
-							: __(
-									'More layer placement settings',
-									'maxi-blocks'
-							  )}
-						<span
-							className={`maxi-position-control__toggle-arrow${
-								showAdvanced ? '--expanded' : ''
-							}`}
-						>
-							{arrowIcon}
-						</span>
-					</Button>
-				</div>
-			)}
+			<div className='maxi-position-control__advanced-toggle'>
+				<Button onClick={handleToggleAdvanced}>
+					{showAdvanced
+						? __('Use focal placement', 'maxi-blocks')
+						: __('More layer placement settings', 'maxi-blocks')}
+					<span
+						className={`maxi-position-control__toggle-arrow${
+							showAdvanced ? '--expanded' : ''
+						}`}
+					>
+						{arrowIcon}
+					</span>
+				</Button>
+			</div>
 			{showAdvanced && (
 				<div className='maxi-position-control__advanced-options'>
 					<AxisControl
 						{...getAdvancedPlacementProps()}
 						target='position'
 						prefix={prefix}
-						onChange={obj => onChange(obj)}
+						onChange={handleAdvancedPlacementChange}
 						breakpoint={breakpoint}
 						minMaxSettings={minMaxSettings}
 						optionType='string'
 						enableAxisUnits
-						allowedUnits={['px', 'em', 'vw', '%', '-']}
+						allowedUnits={
+							disablePosition
+								? ['%']
+								: ['px', 'em', 'vw', '%', '-']
+						}
 						isHover={isHover}
 						defaultAttributes={defaultAttributes}
 					/>

@@ -1,8 +1,7 @@
-@import "../focal-point-picker";
+@import '../focal-point-picker';
 
 // Position Control Toggle Styles
 .maxi-position-control {
-
 	&__advanced-toggle {
 		margin-top: 8px;
 		margin-bottom: 8px;
@@ -88,12 +87,36 @@
 		}
 
 		.maxi-axis-control__all-mode {
-
 			.maxi-axis-control__content__item {
-
 				.maxi-base-control__field {
 					grid-template-columns: minmax(0, 1fr);
 				}
+			}
+		}
+	}
+
+	&--layer-placement {
+		.maxi-position-control__advanced-options {
+			.maxi-axis-control__content__item {
+				.maxi-base-control__field {
+					grid-template-columns: minmax(70px, 1fr) auto;
+				}
+			}
+
+			.maxi-advanced-number-control__controls-group {
+				width: 94px;
+			}
+
+			.maxi-advanced-number-control__input-wrapper {
+				width: 66px !important;
+			}
+
+			.maxi-advanced-number-control__value {
+				max-width: 56px;
+			}
+
+			.maxi-dimensions-control__units {
+				display: none !important;
 			}
 		}
 	}
@@ -131,9 +154,7 @@
 
 // Global overrides for FocalPointPicker in position control (beats CSS-in-JS)
 body.maxi-blocks--active {
-
 	.maxi-position-control__focal-picker {
-
 		.components-focal-point-picker {
 			background-color: var(--maxi-whisper-green) !important;
 			border: 1px solid var(--maxi-grey) !important;
@@ -156,7 +177,6 @@ body.maxi-blocks--active {
 }
 
 @keyframes maxi-position-slide-down {
-
 	from {
 		opacity: 0;
 		transform: translateY(-10px);

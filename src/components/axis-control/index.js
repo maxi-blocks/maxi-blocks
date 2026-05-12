@@ -328,8 +328,8 @@ const AxisContent = props => {
 			}}
 			extraClassName={classnames(
 				extraClassName,
-				getAllSyncValue(breakpoint) &&
-					(target === 'margin' || target === 'padding') &&
+				showAllSides &&
+					isSpacingControl &&
 					`maxi-axis-control__content__item__${target}`,
 				auxTarget === 'radius' &&
 					'maxi-axis-control__content__item__border-radius'
@@ -915,11 +915,12 @@ const AxisControl = props => {
 		attributes: props,
 		isHover,
 	});
+	const effectiveSync = sync ?? 'all';
 
 	// Only disable left/right margin when fullWidth is true AND sync is 'all' (equal mode)
 	// Allow left/right margins in 'none' (separate) and 'axis' (together) modes
 	const disableLeftRightMargin =
-		!showAllSides && target === 'margin' && fullWidth && sync === 'all';
+		target === 'margin' && fullWidth && effectiveSync === 'all';
 
 	const getOptions = () => {
 		const options = [];
@@ -1124,7 +1125,10 @@ const AxisControl = props => {
 
 	const usesSharedUnitInInputs = showAllSides && auxTarget === 'radius';
 
-	const getAllSides = () => inputsArray.slice(0, 4);
+	const getAllSides = () =>
+		disableLeftRightMargin
+			? [inputsArray[0], inputsArray[2]]
+			: inputsArray.slice(0, 4);
 
 	const hasAxisValue = value => !isNil(value) && value !== '';
 
@@ -1134,7 +1138,6 @@ const AxisControl = props => {
 		const valuesWithContent = values.filter(hasAxisValue);
 
 		if (valuesWithContent.length === 0) return true;
-		if (valuesWithContent.length !== values.length) return false;
 
 		const firstValue = valuesWithContent[0];
 
@@ -1150,7 +1153,7 @@ const AxisControl = props => {
 		});
 
 	const getAllSyncValue = customBreakpoint => {
-		const rawSync = getSyncValue('sync', customBreakpoint);
+		const rawSync = getSyncValue('sync', customBreakpoint) ?? 'all';
 
 		return (
 			showAllSides &&

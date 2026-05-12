@@ -40,6 +40,18 @@ const editAxisControl = async ({
 				'.maxi-axis-control__all-actions .maxi-axis-control__pair-link:not(.maxi-axis-control__pair-link--active)'
 			);
 			if (unlinkAllBtn) await unlinkAllBtn.click();
+		} else if (syncOption === 'axis') {
+			// showAllSides: old axis mode maps to linked vertical and
+			// horizontal pairs with the global all-sides link disabled.
+			const linkAllBtn = await instance.$(
+				'.maxi-axis-control__all-actions .maxi-axis-control__pair-link--active'
+			);
+			if (linkAllBtn) await linkAllBtn.click();
+
+			const unlinkedPairBtns = await instance.$$(
+				'.maxi-axis-control__pair-actions:not(.maxi-axis-control__pair-actions--all) .maxi-axis-control__pair-link:not(.maxi-axis-control__pair-link--active)'
+			);
+			for (const btn of unlinkedPairBtns) await btn.click();
 		}
 	}
 
@@ -56,10 +68,46 @@ const editAxisControl = async ({
 		await selector.select(unit);
 	}
 
-	// Change values
-	const inputs = await instance.$$(
-		'.maxi-axis-control__content__item input[type="number"]'
-	);
+	if (typeof values === 'undefined') return;
+
+	// Change values. In the all-sides layout the visual DOM order can differ
+	// from the saved attribute order, so array values should keep the legacy
+	// AxisControl order: top/right/bottom/left or top-left/top-right/
+	// bottom-right/bottom-left.
+	const getInputs = async () => {
+		if (!isArray(values)) {
+			return instance.$$(
+				'.maxi-axis-control__content__item input[type="number"]'
+			);
+		}
+
+		const sideOrders = [
+			['top-left', 'bottom-left'],
+			['top', 'left'],
+			['top-left', 'top-right', 'bottom-right', 'bottom-left'],
+			['top', 'right', 'bottom', 'left'],
+		];
+
+		for (const sideOrder of sideOrders) {
+			const sideInputs = [];
+
+			for (const side of sideOrder) {
+				const sideInput = await instance.$(
+					`.maxi-axis-control__content__item__${side} input[type="number"]`
+				);
+
+				if (sideInput) sideInputs.push(sideInput);
+			}
+
+			if (sideInputs.length === values.length) return sideInputs;
+		}
+
+		return instance.$$(
+			'.maxi-axis-control__content__item input[type="number"]'
+		);
+	};
+
+	const inputs = await getInputs();
 
 	// When a single (non-array) value is given, only type into the first input.
 	// The axis control's sync mechanism will propagate the value to all other

@@ -326,7 +326,14 @@ const AxisContent = props => {
 					customBreakpoint: breakpoint,
 				});
 			}}
-			extraClassName={extraClassName}
+			extraClassName={classnames(
+				extraClassName,
+				getAllSyncValue(breakpoint) &&
+					(target === 'margin' || target === 'padding') &&
+					`maxi-axis-control__content__item__${target}`,
+				auxTarget === 'radius' &&
+					'maxi-axis-control__content__item__border-radius'
+			)}
 			disableRange={disableRange}
 		/>
 	);

@@ -203,6 +203,7 @@ const SizeAndPositionLayerControl = ({
 	isLayer = false,
 	breakpoint,
 	onlyWidth = false,
+	hideSize = false,
 }) => {
 	const { type } = options;
 	const prefix = `${rawPrefix}background-${
@@ -241,12 +242,14 @@ const SizeAndPositionLayerControl = ({
 
 	return (
 		<>
-			<Size
-				{...equivalentProps}
-				options={options}
-				isLayer={isLayer}
-				onlyWidth={onlyWidth}
-			/>
+			{!hideSize && (
+				<Size
+					{...equivalentProps}
+					options={options}
+					isLayer={isLayer}
+					onlyWidth={onlyWidth}
+				/>
+			)}
 			<PositionControl
 				{...options}
 				{...equivalentProps}

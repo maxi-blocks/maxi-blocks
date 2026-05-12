@@ -1369,6 +1369,22 @@ const AxisControl = props => {
 				] = newValue;
 			});
 
+			if (
+				target === 'position' &&
+				isHover &&
+				customBreakpoint !== 'general' &&
+				getSyncValue('sync', customBreakpoint) === 'none'
+			) {
+				response[
+					getAttributeKey(
+						getKey('sync'),
+						isHover,
+						false,
+						customBreakpoint ?? breakpoint
+					)
+				] = 'none';
+			}
+
 			onChange({ ...response, meta });
 			return;
 		}

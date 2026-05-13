@@ -18,6 +18,11 @@ const openPreviewPage = async page => {
 	// Wait a bit more to ensure the button is fully rendered and clickable
 	await page.waitForTimeout(200);
 
+	const previewHref = await page.$eval(
+		'.edit-post-header-preview__button-external',
+		button => button.href
+	);
+
 	// Use evaluate for more reliable clicking with retry logic
 	let clickSuccess = false;
 	let retries = 3;
@@ -50,12 +55,20 @@ const openPreviewPage = async page => {
 	// Wait for the new tab to open
 	await page.waitForTimeout(200);
 
-	while (openTabs.length < expectedTabsCount) {
+	for (let i = 0; i < 500 && openTabs.length < expectedTabsCount; i += 1) {
 		await page.waitForTimeout(1);
 		openTabs = await browser.pages();
 	}
 
-	const previewPage = last(openTabs);
+	let previewPage = last(openTabs);
+
+	if (openTabs.length < expectedTabsCount) {
+		previewPage = await browser.newPage();
+		await previewPage.goto(previewHref, {
+			waitUntil: 'domcontentloaded',
+			timeout: 30000,
+		});
+	}
 
 	// Wait for the preview page to finish navigating before returning,
 	// so that subsequent waitForSelector calls measure from page-ready,

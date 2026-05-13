@@ -1,9 +1,4 @@
 /**
- * WordPress dependencies
- */
-import { select } from '@wordpress/data';
-
-/**
  * Internal dependencies
  */
 import goThroughMaxiBlocks from './goThroughMaxiBlocks';
@@ -13,29 +8,10 @@ const getIsUniqueCustomLabelRepeated = (
 	uniqueIDToIgnore,
 	repeatCount = 1
 ) => {
-	const store = select('maxiBlocks/blocks');
-	const existingCount =
-		typeof store?.getCustomLabelCount === 'function'
-			? store.getCustomLabelCount(uniqueCustomLabelToCompare)
-			: 0;
-	const ignoredBlock = uniqueIDToIgnore
-		&& typeof store?.getBlock === 'function'
-		? store.getBlock(uniqueIDToIgnore)
-		: null;
-	const shouldIgnoreFromStore =
-		ignoredBlock?.customLabel === uniqueCustomLabelToCompare;
-	const adjustedCount =
-		shouldIgnoreFromStore && existingCount > 0
-			? Math.max(existingCount - 1, 0)
-			: existingCount;
-
-	if (adjustedCount > repeatCount) {
-		return true;
-	}
-
 	let currentRepeatCount = 0;
 
-	// Fallback to tree traversal to handle batch creation timing gaps
+	// Custom labels can change after a block is registered, so the editor tree
+	// remains the source of truth for duplicate detection.
 	goThroughMaxiBlocks(block => {
 		const { customLabel, uniqueID } = block.attributes;
 		if (

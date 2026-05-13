@@ -12,6 +12,10 @@ import { isEmpty, isNumber, isBoolean, isObject, merge, isEqual } from 'lodash';
  * Internal dependencies
  */
 import { MemoCache } from '@extensions/maxi-block/memoizationHelper';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * Styles resolver with LRU cache optimization
@@ -33,7 +37,9 @@ let cacheStats = {
 
 const cleanContent = content => {
 	// Generate cache key based on content structure
+	const cacheKeyStart = getProfileStart();
 	const cacheKey = JSON.stringify(content);
+	recordProfile('styleResolver cleanContent cache key', cacheKeyStart);
 
 	// Check cache first
 	const cached = cleanContentCache.get(cacheKey);
@@ -70,7 +76,9 @@ const cleanContent = content => {
 
 const getCleanContent = content => {
 	// Generate cache key based on content structure
+	const cacheKeyStart = getProfileStart();
 	const cacheKey = JSON.stringify(content);
+	recordProfile('styleResolver getCleanContent cache key', cacheKeyStart);
 
 	// Check cache first
 	const cached = getCleanContentCache.get(cacheKey);
@@ -101,7 +109,10 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!styles) return {};
 
 	// Generate cache key for the entire styleResolver operation
+	const resolverStart = getProfileStart();
+	const cacheKeyStart = getProfileStart();
 	const cacheKey = JSON.stringify({ styles, remover, breakpoints, uniqueID });
+	recordProfile('styleResolver root cache key', cacheKeyStart);
 	cacheStats.totalRequests += 1;
 
 	// Check cache first for non-remover operations (removers shouldn't be cached as they have side effects)
@@ -113,6 +124,7 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 			Object.entries(cached).forEach(([target]) => {
 				dispatch('maxiBlocks/styles').updateStyles(target, cached);
 			});
+			recordProfile('styleResolver total', resolverStart);
 			return cached;
 		}
 		cacheStats.misses += 1;
@@ -146,6 +158,8 @@ const styleResolver = ({ styles, remover = false, breakpoints, uniqueID }) => {
 	if (!remover) {
 		styleCache.set(cacheKey, response);
 	}
+
+	recordProfile('styleResolver total', resolverStart);
 
 	return response;
 };

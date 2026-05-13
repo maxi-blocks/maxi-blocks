@@ -7,6 +7,10 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import viewportUnitsProcessor from './viewportUnitsProcessor';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -102,17 +106,20 @@ const styleGenerator = (
 	isSiteEditor = false,
 	breakpoint
 ) => {
+	const generatorStart = getProfileStart();
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
 
+	const viewportStart = getProfileStart();
 	const styles = viewportUnitsProcessor(
 		rawStyles,
 		currentBreakpoint,
 		baseBreakpoint
 	); // replacing viewport units only for the editor
+	recordProfile('styleGenerator viewportUnitsProcessor', viewportStart);
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
@@ -162,6 +169,8 @@ const styleGenerator = (
 			});
 		});
 	});
+
+	recordProfile('styleGenerator total', generatorStart);
 
 	return response;
 };

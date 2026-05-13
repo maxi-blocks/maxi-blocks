@@ -4,7 +4,13 @@
 import { __ } from '@wordpress/i18n';
 import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
 import { select, useDispatch, useSelect } from '@wordpress/data';
-import { forwardRef, useContext, useRef, useState } from '@wordpress/element';
+import {
+	forwardRef,
+	memo,
+	useContext,
+	useRef,
+	useState,
+} from '@wordpress/element';
 import { Tooltip } from '@wordpress/components';
 
 /**
@@ -18,6 +24,7 @@ import Button from '@components/button';
 import Dropdown from '@components/dropdown';
 import Popover from '@components/popover';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import { countProfile } from '@extensions/performance/profiler';
 
 /**
  * Styles
@@ -33,7 +40,7 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/slide-maxi',
 ];
 
-const BlockInserter = props => {
+const BlockInserter = memo(props => {
 	const { className, clientId } = props;
 
 	const { selectBlock } = useDispatch('core/block-editor');
@@ -60,9 +67,9 @@ const BlockInserter = props => {
 			/>
 		</div>
 	);
-};
+});
 
-const ButtonInserter = props => {
+const ButtonInserter = memo(props => {
 	const { onToggle, style = {} } = props;
 
 	const repeaterStatus = useContext(RepeaterContext)?.repeaterStatus;
@@ -99,9 +106,9 @@ const ButtonInserter = props => {
 			</div>
 		</Tooltip>
 	);
-};
+});
 
-const WrapperBlockInserter = forwardRef((props, ref) => {
+const WrapperBlockInserter = memo(forwardRef((props, ref) => {
 	const { clientId, isSelected, hasSelectedChild } = props;
 
 	const { getBlockName, getBlockParents } = select('core/block-editor');
@@ -211,9 +218,11 @@ const WrapperBlockInserter = forwardRef((props, ref) => {
 		);
 
 	return null;
-});
+}));
 
-const InterBlockToggle = props => {
+const InterBlockToggle = memo(props => {
+	countProfile('InterBlockToggle render');
+
 	const { clientId, onToggleInserter, blockRef, isOpen } = props;
 
 	const [isHovered, setHovered] = useState(false);
@@ -292,9 +301,11 @@ const InterBlockToggle = props => {
 			)}
 		</div>
 	);
-};
+});
 
-const InterBlockInserter = forwardRef((props, ref) => {
+const InterBlockInserter = memo(forwardRef((props, ref) => {
+	countProfile('InterBlockInserter render');
+
 	const { clientId } = props;
 	const blockRef = ref?.current?.blockRef?.current;
 
@@ -355,7 +366,7 @@ const InterBlockInserter = forwardRef((props, ref) => {
 			/>
 		</Popover>
 	);
-});
+}));
 
 BlockInserter.WrapperInserter = WrapperBlockInserter;
 BlockInserter.InterBlockInserter = InterBlockInserter;

@@ -88,8 +88,9 @@ const editAxisControl = async ({
 
 	if (unit) {
 		// change unit
-		const selector = instance.locator('select');
-		await selector.first().selectOption(unit);
+		await instance
+			.locator('.maxi-axis-control__units select')
+			.selectOption(unit);
 	}
 
 	// Change values

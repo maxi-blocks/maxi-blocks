@@ -163,7 +163,9 @@ const Inspector = props => {
 										disablePadding: true,
 										content: (
 											<SettingTabsControl
+												className='maxi-search-settings-control__tabs'
 												disablePadding
+												disableIndicators
 												isNestedAccordion
 												hasBorder
 												items={[
@@ -265,6 +267,7 @@ const Inspector = props => {
 																					}
 																					buttonClasses={{
 																						left: 'maxi-search-control__left',
+																						center: 'maxi-search-control__center',
 																						right: 'maxi-search-control__right',
 																					}}
 																				/>

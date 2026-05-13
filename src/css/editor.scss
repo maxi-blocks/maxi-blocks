@@ -400,24 +400,6 @@ body .toolbar-item__popover {
 	}
 }
 
-// Tighten unit select spacing inside AdvancedNumberControl only
-body.maxi-blocks--active {
-	.maxi-advanced-number-control
-		.maxi-dimensions-control__units
-		select.maxi-select-control__input {
-		/* Prevent stretching and tighten internal spacing */
-		flex: 0 0 auto !important;
-		width: auto !important;
-		max-width: 60px !important;
-		min-width: 55px !important;
-		padding: 8px 6px !important;
-		background-color: var(--maxi-white) !important;
-		/* Ensure native borders are not shown */
-		border-left: none !important;
-		border-right: none !important;
-	}
-}
-
 /*******************************
 * Style Card Editor Boat Icon and Cloud library Icon
 *******************************/

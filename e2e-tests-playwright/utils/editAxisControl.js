@@ -31,8 +31,50 @@ const editAxisControl = async ({
 				'.maxi-axis-control__pair-actions:not(.maxi-axis-control__pair-actions--all) .maxi-axis-control__pair-link--active:not(.maxi-axis-control__pair-link--muted)'
 			);
 
-			while ((await linkedPairButtons.count()) > 0) {
-				await linkedPairButtons.first().click();
+			let linkedPairButtonCount = await linkedPairButtons.count();
+			const maxIterations = Math.max(linkedPairButtonCount + 2, 4);
+
+			for (
+				let iteration = 0;
+				linkedPairButtonCount > 0;
+				iteration += 1
+			) {
+				if (iteration >= maxIterations) {
+					throw new Error(
+						[
+							'editAxisControl: linkedPairButtons.count() stayed above 0',
+							`after ${iteration} linkedPairButtons.first().click() attempts;`,
+							`last count was ${linkedPairButtonCount}.`,
+						].join(' ')
+					);
+				}
+
+				try {
+					await linkedPairButtons.first().click();
+				} catch (error) {
+					throw new Error(
+						[
+							'editAxisControl: linkedPairButtons.first().click() failed',
+							`while linkedPairButtons.count() was ${linkedPairButtonCount}:`,
+							error.message,
+						].join(' ')
+					);
+				}
+
+				const nextLinkedPairButtonCount =
+					await linkedPairButtons.count();
+
+				if (nextLinkedPairButtonCount >= linkedPairButtonCount) {
+					throw new Error(
+						[
+							'editAxisControl: linkedPairButtons.count() did not decrease',
+							'after linkedPairButtons.first().click()',
+							`(before: ${linkedPairButtonCount}, after: ${nextLinkedPairButtonCount}).`,
+						].join(' ')
+					);
+				}
+
+				linkedPairButtonCount = nextLinkedPairButtonCount;
 			}
 		}
 	}

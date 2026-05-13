@@ -56,6 +56,11 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	countProfile,
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -68,6 +73,8 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+const VIEWPORT_UNIT_VALUE_REGEX =
+	/(^|[^a-zA-Z])(?:[-+]?\d*\.?\d+)?(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 /**
  * Fix 1: Singleton style sheet for block-move animation killer.
@@ -997,9 +1004,13 @@ class MaxiBlockComponent extends Component {
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
+		const perfStart = getProfileStart();
 		const iframeDocument = iframe?.contentDocument;
 		const editorWrapper = iframeDocument?.body;
-		if (!iframeDocument || !editorWrapper) return;
+		if (!iframeDocument || !editorWrapper) {
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
+			return;
+		}
 
 		const cache =
 			MaxiBlockComponent.iframeStylesCache ||
@@ -1012,6 +1023,7 @@ class MaxiBlockComponent extends Component {
 			cache.doc === iframeDocument &&
 			cache.breakpoint === currentBreakpoint
 		) {
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -1035,6 +1047,7 @@ class MaxiBlockComponent extends Component {
 
 		cache.doc = iframeDocument;
 		cache.breakpoint = currentBreakpoint;
+		recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 	}
 
 	setMaxiAttributes() {
@@ -1157,6 +1170,30 @@ class MaxiBlockComponent extends Component {
 		this.cachedStylesObjectAttributes = this.props.attributes;
 		this.cachedStylesObjectValue = this.getStylesObject;
 		return this.cachedStylesObjectValue;
+	}
+
+	getCachedStyleContent(uniqueID, breakpoint) {
+		const cacheStart = getProfileStart();
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		const styleContent = cssCache?.[breakpoint];
+		recordProfile(
+			`maxiBlockComponent getCSSCache ${breakpoint}`,
+			cacheStart
+		);
+
+		return typeof styleContent === 'string' ? styleContent : null;
+	}
+
+	applyStyleContent(uniqueID, styleContent, breakpoint) {
+		const isSiteEditor = getIsSiteEditor();
+
+		if (this.editorIframe?.contentDocument?.body) {
+			this.handleIframeStyles(this.editorIframe, breakpoint);
+		}
+
+		const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
+		addBlockStyles(uniqueID, styleContent, target);
+		this.updateResponsiveClasses(this.editorIframe, breakpoint);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1578,10 +1615,12 @@ class MaxiBlockComponent extends Component {
 		isBaseBreakpointChange = false,
 		attributesUnchanged = false
 	) {
+		const perfStart = getProfileStart();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
+			recordProfile('maxiBlockComponent displayStyles', perfStart);
 			return;
 		}
 
@@ -1590,31 +1629,82 @@ class MaxiBlockComponent extends Component {
 			this.updateDOMReferences();
 		}
 
-		// Fast path: breakpoints switch to XXL with no attribute changes
+		if (isBreakpointChange) {
+			if (!attributesUnchanged) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible attrs'
+				);
+			}
+			if (isBlockStyleChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible style'
+				);
+			}
+			if (isBaseBreakpointChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible base'
+				);
+			}
+		}
+
+		// Fast path: breakpoint switches with no attribute changes can reuse
+		// CSS generated from the existing style cache for that breakpoint.
 		if (
 			attributesUnchanged &&
 			isBreakpointChange &&
-			this.props.deviceType === 'xxl' &&
 			!isBlockStyleChange &&
-			!isBaseBreakpointChange &&
-			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
+			!isBaseBreakpointChange
 		) {
-			const isSiteEditor = getIsSiteEditor();
-			if (this.editorIframe?.contentDocument?.body) {
-				this.handleIframeStyles(
-					this.editorIframe,
-					this.props.deviceType
-				);
-			}
+			const currentBreakpoint = this.props.deviceType;
+			const stylesForViewportCheck = this.getCachedStylesObject || {};
+			const hasViewportDependentStyles =
+				this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(stylesForViewportCheck);
 
-			const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
-			addBlockStyles(uniqueID, this.xxlStyleCache, target);
-			this.updateResponsiveClasses(
-				this.editorIframe,
-				this.props.deviceType
-			);
-			return;
+			if (hasViewportDependentStyles) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible viewport'
+				);
+			} else {
+				if (
+					currentBreakpoint === 'xxl' &&
+					this.isXxlStyleCacheDirty
+				) {
+					countProfile(
+						'maxiBlockComponent breakpoint cache dirty xxl'
+					);
+				}
+
+				const cachedStyleContent =
+					currentBreakpoint === 'xxl' &&
+					this.xxlStyleCache &&
+					!this.isXxlStyleCacheDirty
+						? this.xxlStyleCache
+						: this.getCachedStyleContent(
+								uniqueID,
+								currentBreakpoint
+						  );
+
+				if (cachedStyleContent) {
+					countProfile('maxiBlockComponent breakpoint cache hit');
+					if (currentBreakpoint === 'xxl') {
+						this.xxlStyleCache = cachedStyleContent;
+						this.isXxlStyleCacheDirty = false;
+					}
+					this.applyStyleContent(
+						uniqueID,
+						cachedStyleContent,
+						currentBreakpoint
+					);
+					recordProfile(
+						'maxiBlockComponent displayStyles',
+						perfStart
+					);
+					return;
+				}
+
+				countProfile('maxiBlockComponent breakpoint cache miss');
+			}
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -1631,6 +1721,10 @@ class MaxiBlockComponent extends Component {
 
 			if (this.hasViewportUnits(stylesForViewportCheck)) {
 				shouldGenerateNewStyles = true;
+			} else {
+				countProfile(
+					'maxiBlockComponent breakpoint DOM-only update'
+				);
 			}
 		}
 
@@ -1665,18 +1759,35 @@ class MaxiBlockComponent extends Component {
 				cache.breakpoint = this.props.deviceType;
 			}
 
+			recordProfile('maxiBlockComponent displayStyles', perfStart);
 			return;
 		}
 
-	const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
-	const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
-	let obj;
-	let customDataRelations;
-	if (shouldGenerateNewStyles) {
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			countProfile('maxiBlockComponent breakpoint regenerate fallback');
+			shouldGenerateNewStyles = true;
+		}
+
+		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
+		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
+		let obj;
+		let customDataRelations;
+		if (shouldGenerateNewStyles) {
 			if (stylesForViewportCheck) {
 				obj = stylesForViewportCheck;
 			} else {
+				const stylesObjStart = getProfileStart();
 				obj = this.getCachedStylesObject || {};
+				recordProfile(
+					'maxiBlockComponent getStylesObject',
+					stylesObjStart
+				);
+				recordProfile(
+					`maxiBlockComponent getStylesObject ${
+						this.props.name || 'unknown'
+					}`,
+					stylesObjStart
+				);
 			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1689,13 +1800,21 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
+			const customDataStart = getProfileStart();
 			const customData = this.getCustomData;
+			recordProfile('maxiBlockComponent getCustomData', customDataStart);
 			if (customData) {
+				const updateCustomDataStart = getProfileStart();
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
+				recordProfile(
+					'maxiBlockComponent updateCustomData',
+					updateCustomDataStart
+				);
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
 
+		const injectStart = getProfileStart();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1707,6 +1826,7 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles,
 			this.editorIframe
 		);
+		recordProfile('maxiBlockComponent injectStyles', injectStart);
 
 		// Update responsive classes for non-XXL breakpoint changes, or when in general mode
 		// with a valid base breakpoint (handles first load with iframe canvas where the
@@ -1723,11 +1843,17 @@ class MaxiBlockComponent extends Component {
 
 		// Handle relations if they exist
 		if (customDataRelations) {
+			const relationsStart = getProfileStart();
 			const isRelationsPreview =
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
+				const processRelationsStart = getProfileStart();
 				this.relationInstances = processRelations(customDataRelations);
+				recordProfile(
+					'maxiBlockComponent processRelations',
+					processRelationsStart
+				);
 			}
 
 			this.relationInstances?.forEach(relationInstance => {
@@ -1802,17 +1928,37 @@ class MaxiBlockComponent extends Component {
 				);
 
 				if (removed !== null) {
+					const processRemoveStart = getProfileStart();
 					processRelations(
 						this.previousRelationInstances,
 						'remove',
 						removed
 					);
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
 					processRelations(this.relationInstances);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
 				}
-			if (updated !== null) {
-				processRelations(this.relationInstances, 'remove', updated);
-				processRelations(this.relationInstances);
-			}
+				if (updated !== null) {
+					const processRemoveStart = getProfileStart();
+					processRelations(this.relationInstances, 'remove', updated);
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
+					processRelations(this.relationInstances);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
+				}
 			}
 
 			if (!isRelationsPreview) {
@@ -1820,18 +1966,14 @@ class MaxiBlockComponent extends Component {
 			}
 
 			this.previousRelationInstances = this.relationInstances;
+			recordProfile('maxiBlockComponent relationsBlock', relationsStart);
 		}
 
+		recordProfile('maxiBlockComponent displayStyles', perfStart);
 	}
 
 	hasViewportUnits(stylesObj) {
 		if (!stylesObj) return false;
-
-		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
-		// Requires: number (with optional sign/decimal) + viewport unit
-		// Boundaries prevent matching "overview", URLs, or identifiers
-		const viewportUnitRegex =
-			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 		const stack = [stylesObj];
 
@@ -1839,7 +1981,7 @@ class MaxiBlockComponent extends Component {
 			const current = stack.pop();
 
 			if (typeof current === 'string') {
-				if (viewportUnitRegex.test(current)) {
+				if (VIEWPORT_UNIT_VALUE_REGEX.test(current)) {
 					return true;
 				}
 			} else if (isArray(current)) {
@@ -2084,6 +2226,7 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
+		const perfStart = getProfileStart();
 		let styleContent;
 		let styles;
 
@@ -2107,26 +2250,57 @@ class MaxiBlockComponent extends Component {
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
-
-		if (
+		const canReuseXxlStyleCache =
 			isBreakpointChange &&
 			currentBreakpoint === 'xxl' &&
 			!isBlockStyleChange &&
 			!forceGenerate &&
 			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
-		) {
+			!this.isXxlStyleCacheDirty;
+		const hasViewportDependentStyles =
+			canReuseXxlStyleCache &&
+			(this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(updatedStylesObj));
+
+		if (canReuseXxlStyleCache && !hasViewportDependentStyles) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
-			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor, currentBreakpoint);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
+			const styleGenStart = getProfileStart();
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
-			styles = this.generateStyles(updatedStylesObj, breakpoints, uniqueID);
-			styleContent = styleGenerator(styles, !!iframe, isSiteEditor, currentBreakpoint);
+			styles = this.generateStyles(
+				updatedStylesObj,
+				breakpoints,
+				uniqueID
+			);
+			const styleGenStart = getProfileStart();
+			styleContent = styleGenerator(
+				styles,
+				!!iframe,
+				isSiteEditor,
+				currentBreakpoint
+			);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		}
 
 		if (styles) {
-			dispatch('maxiBlocks/styles').saveCSSCache(uniqueID, styles, !!iframe, isSiteEditor);
+			dispatch('maxiBlocks/styles').saveCSSCache(
+				uniqueID,
+				styles,
+				!!iframe,
+				isSiteEditor
+			);
 		}
 
 		// Add !important to white-space: nowrap
@@ -2141,17 +2315,22 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
+		recordProfile('maxiBlockComponent generateStyleContent', perfStart);
 		return styleContent;
 	}
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		return styleResolver({
+		const perfStart = getProfileStart();
+		const styles = styleResolver({
 			styles: stylesObj,
 			remove: false,
 			breakpoints: breakpoints || this.getBreakpoints,
 			uniqueID,
 		});
+
+		recordProfile('maxiBlockComponent styleResolver', perfStart);
+		return styles;
 	}
 
 	removeStyles() {

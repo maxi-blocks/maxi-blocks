@@ -13,6 +13,10 @@ import {
 } from '@extensions/fse';
 import getWinBreakpoint from '@extensions/dom/getWinBreakpoint';
 import getCurrentPreviewDeviceType from '@extensions/dom/getCurrentPreviewDeviceType';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -21,6 +25,7 @@ import { omit } from 'lodash';
 
 
 const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
+	const resizeStart = getProfileStart();
 	const xxlSize = breakpoints.xl + 1;
 
 	const getEditorWrapper = () => {
@@ -50,7 +55,10 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	};
 	const editorWrapper = getEditorWrapper();
 
-	if (!editorWrapper) return;
+	if (!editorWrapper) {
+		recordProfile(`breakpointResizer ${size} no wrapper`, resizeStart);
+		return;
+	}
 
 	const responsiveAttrValue =
 		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints);
@@ -79,6 +87,10 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 			} else {
 				// Breakpoints not loaded yet, skip setting width for now
 				// This will be called again when breakpoints are loaded
+				recordProfile(
+					`breakpointResizer ${size} missing breakpoints`,
+					resizeStart
+				);
 				return;
 			}
 		} else {
@@ -130,6 +142,7 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 
 	// Clean prevSavedAttrs when changing the responsive stage
 	dispatch('maxiBlocks/styles').savePrevSavedAttrs([]);
+	recordProfile(`breakpointResizer ${size}`, resizeStart);
 };
 
 const reducer = (

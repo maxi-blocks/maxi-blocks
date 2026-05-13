@@ -250,18 +250,21 @@ const SizeAndPositionLayerControl = ({
 					onlyWidth={onlyWidth}
 				/>
 			)}
-			<PositionControl
-				{...options}
-				{...equivalentProps}
-				className='maxi-background-control__position'
-				disablePosition
-				defaultAttributes={getDefaultLayerWithBreakpoint(
-					`${type === 'shape' ? 'SVG' : type}Options`,
-					'general',
-					isHover
-				)}
-				disableRTC
-			/>
+			{!hideSize && (
+				<PositionControl
+					{...options}
+					{...equivalentProps}
+					className='maxi-background-control__position'
+					label={__('Position', 'maxi-blocks')}
+					disablePosition
+					defaultAttributes={getDefaultLayerWithBreakpoint(
+						`${type === 'shape' ? 'SVG' : type}Options`,
+						'general',
+						isHover
+					)}
+					disableRTC
+				/>
+			)}
 		</>
 	);
 };

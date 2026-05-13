@@ -15,11 +15,26 @@ const editAxisControl = async ({
 	resetAllAfter = false,
 }) => {
 	if (syncOption) {
-		await instance
-			.locator(
-				`.maxi-axis-control__header button[aria-label="${syncOption}"]`
-			)
-			.click();
+		const syncButton = instance.locator(
+			`.maxi-axis-control__header button[aria-label="${syncOption}"]`
+		);
+
+		if ((await syncButton.count()) > 0) await syncButton.click();
+		else if (syncOption === 'none') {
+			const linkAllButton = instance.locator(
+				'.maxi-axis-control__all-actions .maxi-axis-control__pair-link--active'
+			);
+
+			if ((await linkAllButton.count()) > 0) await linkAllButton.click();
+
+			const linkedPairButtons = instance.locator(
+				'.maxi-axis-control__pair-actions:not(.maxi-axis-control__pair-actions--all) .maxi-axis-control__pair-link--active:not(.maxi-axis-control__pair-link--muted)'
+			);
+
+			while ((await linkedPairButtons.count()) > 0) {
+				await linkedPairButtons.first().click();
+			}
+		}
 	}
 
 	if (resetAllBefore) {
@@ -32,7 +47,7 @@ const editAxisControl = async ({
 	if (unit) {
 		// change unit
 		const selector = instance.locator('select');
-		await selector.selectOption(unit);
+		await selector.first().selectOption(unit);
 	}
 
 	// Change values

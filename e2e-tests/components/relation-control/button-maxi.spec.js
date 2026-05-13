@@ -470,12 +470,9 @@ describe('Button Maxi hover simple actions', () => {
 		await page.waitForTimeout(350);
 
 		// Padding
-		await page.$$eval('.maxi-tabs-control', tabs =>
-			tabs[5]
-				.querySelector(
-					'.maxi-tabs-control__button.maxi-tabs-control__button-all'
-				)
-				.click()
+		await page.$eval(
+			'.maxi-axis-control__padding .maxi-axis-control__sync .maxi-tabs-control__button-all',
+			button => button.click()
 		);
 
 		await page.waitForTimeout(350);

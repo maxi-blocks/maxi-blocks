@@ -66,7 +66,14 @@ const Inspector = props => {
 	];
 
 	const imageData = useSelect(
-		select => select('core').getMedia(mediaID),
+		select =>
+			mediaID
+				? select('core').getEntityRecord(
+						'postType',
+						'attachment',
+						mediaID
+				  )
+				: null,
 		[mediaID]
 	);
 

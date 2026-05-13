@@ -1513,7 +1513,8 @@ class MaxiBlockComponent extends Component {
 						this.props.attributes.customLabel,
 						this.props.attributes.uniqueID
 					),
-				});			}
+				});
+			}
 
 			if (this.maxiBlockDidChangeUniqueID)
 				this.maxiBlockDidChangeUniqueID(newUniqueID);
@@ -1722,9 +1723,7 @@ class MaxiBlockComponent extends Component {
 			if (this.hasViewportUnits(stylesForViewportCheck)) {
 				shouldGenerateNewStyles = true;
 			} else {
-				countProfile(
-					'maxiBlockComponent breakpoint DOM-only update'
-				);
+				countProfile('maxiBlockComponent breakpoint DOM-only update');
 			}
 		}
 
@@ -2487,7 +2486,8 @@ class MaxiBlockComponent extends Component {
 		if (
 			cache.target === target &&
 			cache.breakpoint === resolvedBreakpoint
-		) {			return;
+		) {
+			return;
 		}
 
 		const editorWrapper = target.classList.contains('editor-styles-wrapper')

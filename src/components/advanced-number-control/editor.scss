@@ -3,7 +3,6 @@
 ===============================================*/
 
 .maxi-advanced-number-control {
-
 	.maxi-base-control {
 		margin-bottom: 0;
 	}
@@ -57,7 +56,7 @@
 			-webkit-appearance: none;
 		}
 
-		&[type="number"] {
+		&[type='number'] {
 			-moz-appearance: textfield;
 			appearance: textfield;
 		}
@@ -115,7 +114,7 @@
 			width: 1px;
 			height: 18px;
 			background-color: var(--maxi-grey-light);
-			content: "";
+			content: '';
 			pointer-events: none;
 			transform: translateY(-50%);
 		}
@@ -126,6 +125,14 @@
 
 		&::after {
 			right: -1px;
+		}
+
+		&::before {
+			left: -3px;
+		}
+
+		&::after {
+			right: -4px;
 		}
 	}
 
@@ -183,7 +190,6 @@
 	}
 
 	&__second-style {
-
 		.maxi-base-control__field {
 			position: relative;
 		}
@@ -204,7 +210,6 @@
 		}
 
 		&.maxi-advanced-number-control__range--small {
-
 			.components-simple-tooltip {
 				transform: none;
 			}
@@ -231,14 +236,21 @@
 	}
 
 	.maxi-dimensions-control__units .maxi-select-control__input {
+		background-color: var(--maxi-white) !important;
+		border-left: none !important;
+		border-right: none !important;
+		box-sizing: border-box;
+		flex: 0 0 auto !important;
+		width: 51px !important;
+		min-width: 51px !important;
+		max-width: 51px !important;
 		height: 36px !important;
 		min-height: 36px !important;
-		padding-right: 6px !important;
+		padding: 8px 6px !important;
 	}
 }
 
-html[dir="rtl"] .maxi-advanced-number-control {
-
+html[dir='rtl'] .maxi-advanced-number-control {
 	.maxi-select-control__input {
 		text-align: right;
 	}

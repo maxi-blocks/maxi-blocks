@@ -55,6 +55,11 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	countProfile,
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -67,62 +72,8 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
-
-const getPerfStart = () => {
-	if (
-		typeof window === 'undefined' ||
-		!window.__MAXI_PROFILE_MAXI_BLOCKS__ ||
-		typeof performance === 'undefined' ||
-		!performance.now
-	) {
-		return null;
-	}
-
-	return performance.now();
-};
-
-const recordPerf = (label, start) => {
-	if (start === null || typeof performance === 'undefined') {
-		return;
-	}
-
-	const duration = performance.now() - start;
-	const perfRoot = typeof window !== 'undefined' ? window : globalThis;
-	const perf =
-		perfRoot.__maxiBlocksPerfCounters__ ||
-		(perfRoot.__maxiBlocksPerfCounters__ = {
-			totals: {},
-			counts: {},
-			logScheduled: false,
-		});
-
-	perf.totals[label] = (perf.totals[label] || 0) + duration;
-	perf.counts[label] = (perf.counts[label] || 0) + 1;
-
-	if (!perf.logScheduled && typeof setTimeout === 'function') {
-		perf.logScheduled = true;
-		setTimeout(() => {
-			perf.logScheduled = false;
-			if (typeof console === 'undefined' || !console.info) {
-				perf.totals = {};
-				perf.counts = {};
-				return;
-			}
-
-			const totals = perf.totals;
-			const counts = perf.counts;
-			perf.totals = {};
-			perf.counts = {};
-
-			const parts = Object.keys(totals).map(
-				key => `${key} ${totals[key].toFixed(1)}ms/${counts[key]}`
-			);
-			if (parts.length) {
-				console.info('MaxiBlocks perf (1s):', parts.join(', '));
-			}
-		}, 1000);
-	}
-};
+const VIEWPORT_UNIT_VALUE_REGEX =
+	/(^|[^a-zA-Z])(?:[-+]?\d*\.?\d+)?(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 /**
  * Class
@@ -1009,11 +960,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const iframeDocument = iframe?.contentDocument;
 		const editorWrapper = iframeDocument?.body;
 		if (!iframeDocument || !editorWrapper) {
-			recordPerf('handleIframeStyles', perfStart);
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -1028,7 +979,7 @@ class MaxiBlockComponent extends Component {
 			cache.doc === iframeDocument &&
 			cache.breakpoint === currentBreakpoint
 		) {
-			recordPerf('handleIframeStyles', perfStart);
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -1052,7 +1003,7 @@ class MaxiBlockComponent extends Component {
 
 		cache.doc = iframeDocument;
 		cache.breakpoint = currentBreakpoint;
-		recordPerf('handleIframeStyles', perfStart);
+		recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 	}
 
 	setMaxiAttributes() {
@@ -1128,6 +1079,30 @@ class MaxiBlockComponent extends Component {
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
 		this.attributesMutated = true;
+	}
+
+	getCachedStyleContent(uniqueID, breakpoint) {
+		const cacheStart = getProfileStart();
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		const styleContent = cssCache?.[breakpoint];
+		recordProfile(
+			`maxiBlockComponent getCSSCache ${breakpoint}`,
+			cacheStart
+		);
+
+		return typeof styleContent === 'string' ? styleContent : null;
+	}
+
+	applyStyleContent(uniqueID, styleContent, breakpoint) {
+		const isSiteEditor = getIsSiteEditor();
+
+		if (this.editorIframe?.contentDocument?.body) {
+			this.handleIframeStyles(this.editorIframe, breakpoint);
+		}
+
+		const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
+		addBlockStyles(uniqueID, styleContent, target);
+		this.updateResponsiveClasses(this.editorIframe, breakpoint);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1552,12 +1527,12 @@ class MaxiBlockComponent extends Component {
 		isBaseBreakpointChange = false,
 		attributesUnchanged = false
 	) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
-			recordPerf('displayStyles', perfStart);
+			recordProfile('maxiBlockComponent displayStyles', perfStart);
 			return;
 		}
 
@@ -1566,32 +1541,80 @@ class MaxiBlockComponent extends Component {
 			this.updateDOMReferences();
 		}
 
-		// Fast path: breakpoints switch to XXL with no attribute changes
+		if (isBreakpointChange) {
+			if (!attributesUnchanged) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible attrs'
+				);
+			}
+			if (isBlockStyleChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible style'
+				);
+			}
+			if (isBaseBreakpointChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible base'
+				);
+			}
+		}
+
+		// Fast path: breakpoint switches with no attribute changes can reuse
+		// CSS generated from the existing style cache for that breakpoint.
 		if (
 			attributesUnchanged &&
 			isBreakpointChange &&
-			this.props.deviceType === 'xxl' &&
 			!isBlockStyleChange &&
-			!isBaseBreakpointChange &&
-			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
+			!isBaseBreakpointChange
 		) {
-			const isSiteEditor = getIsSiteEditor();
-			if (this.editorIframe?.contentDocument?.body) {
-				this.handleIframeStyles(
-					this.editorIframe,
-					this.props.deviceType
-				);
-			}
-
-			const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
-			addBlockStyles(uniqueID, this.xxlStyleCache, target);
-			this.updateResponsiveClasses(
-				this.editorIframe,
-				this.props.deviceType
+			const currentBreakpoint = this.props.deviceType;
+			const hasViewportDependentStyles = this.hasViewportUnits(
+				this.props.attributes
 			);
-			recordPerf('displayStyles', perfStart);
-			return;
+
+			if (hasViewportDependentStyles) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible viewport'
+				);
+			} else {
+				if (currentBreakpoint === 'xxl') {
+					if (this.isXxlStyleCacheDirty) {
+						countProfile(
+							'maxiBlockComponent breakpoint cache dirty xxl'
+						);
+					}
+				}
+
+				const cachedStyleContent =
+					currentBreakpoint === 'xxl' &&
+					this.xxlStyleCache &&
+					!this.isXxlStyleCacheDirty
+						? this.xxlStyleCache
+						: this.getCachedStyleContent(
+								uniqueID,
+								currentBreakpoint
+						  );
+
+				if (cachedStyleContent) {
+					countProfile('maxiBlockComponent breakpoint cache hit');
+					if (currentBreakpoint === 'xxl') {
+						this.xxlStyleCache = cachedStyleContent;
+						this.isXxlStyleCacheDirty = false;
+					}
+					this.applyStyleContent(
+						uniqueID,
+						cachedStyleContent,
+						currentBreakpoint
+					);
+					recordProfile(
+						'maxiBlockComponent displayStyles',
+						perfStart
+					);
+					return;
+				}
+
+				countProfile('maxiBlockComponent breakpoint cache miss');
+			}
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -1601,50 +1624,9 @@ class MaxiBlockComponent extends Component {
 			isBaseBreakpointChange ||
 			!attributesUnchanged;
 
-		let stylesForViewportCheck;
-
 		if (!shouldGenerateNewStyles && isBreakpointChange) {
-			const stylesObjStart = getPerfStart();
-			stylesForViewportCheck = this.getStylesObject || {};
-			recordPerf('getStylesObject', stylesObjStart);
-
-			if (this.hasViewportUnits(stylesForViewportCheck)) {
-				shouldGenerateNewStyles = true;
-			}
-		}
-
-		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
-		if (
-			isBreakpointChange &&
-			this.props.deviceType !== 'xxl' &&
-			!shouldGenerateNewStyles
-		) {
-			const iframeDoc = this.editorIframe?.contentDocument || null;
-			const cache =
-				MaxiBlockComponent.breakpointSwitchCache ||
-				(MaxiBlockComponent.breakpointSwitchCache = {
-					doc: null,
-					breakpoint: null,
-				});
-
-			if (
-				cache.doc !== iframeDoc ||
-				cache.breakpoint !== this.props.deviceType
-			) {
-				this.handleIframeStyles(
-					this.editorIframe,
-					this.props.deviceType
-				);
-				this.updateResponsiveClasses(
-					this.editorIframe,
-					this.props.deviceType
-				);
-				cache.doc = iframeDoc;
-				cache.breakpoint = this.props.deviceType;
-			}
-
-			recordPerf('displayStyles', perfStart);
-			return;
+			countProfile('maxiBlockComponent breakpoint regenerate fallback');
+			shouldGenerateNewStyles = true;
 		}
 
 		const breakpoints = shouldGenerateNewStyles
@@ -1657,13 +1639,15 @@ class MaxiBlockComponent extends Component {
 		let customDataRelations;
 
 		if (shouldGenerateNewStyles) {
-			if (stylesForViewportCheck) {
-				obj = stylesForViewportCheck;
-			} else {
-				const stylesObjStart = getPerfStart();
-				obj = this.getStylesObject || {};
-				recordPerf('getStylesObject', stylesObjStart);
-			}
+			const stylesObjStart = getProfileStart();
+			obj = this.getStylesObject || {};
+			recordProfile('maxiBlockComponent getStylesObject', stylesObjStart);
+			recordProfile(
+				`maxiBlockComponent getStylesObject ${
+					this.props.name || 'unknown'
+				}`,
+				stylesObjStart
+			);
 
 			// When duplicating, need to change the obj target for the new uniqueID
 			if (
@@ -1675,18 +1659,21 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
-			const customDataStart = getPerfStart();
+			const customDataStart = getProfileStart();
 			const customData = this.getCustomData;
-			recordPerf('getCustomData', customDataStart);
+			recordProfile('maxiBlockComponent getCustomData', customDataStart);
 			if (customData) {
-				const updateCustomDataStart = getPerfStart();
+				const updateCustomDataStart = getProfileStart();
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				recordPerf('updateCustomData', updateCustomDataStart);
+				recordProfile(
+					'maxiBlockComponent updateCustomData',
+					updateCustomDataStart
+				);
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
 
-		const injectStart = getPerfStart();
+		const injectStart = getProfileStart();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1698,7 +1685,7 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles,
 			this.editorIframe
 		);
-		recordPerf('injectStyles', injectStart);
+		recordProfile('maxiBlockComponent injectStyles', injectStart);
 
 		// Update responsive classes for non-XXL breakpoint changes
 		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
@@ -1710,14 +1697,17 @@ class MaxiBlockComponent extends Component {
 
 		// Handle relations if they exist
 		if (customDataRelations) {
-			const relationsStart = getPerfStart();
+			const relationsStart = getProfileStart();
 			const isRelationsPreview =
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
-				const processRelationsStart = getPerfStart();
+				const processRelationsStart = getProfileStart();
 				this.relationInstances = processRelations(customDataRelations);
-				recordPerf('processRelations', processRelationsStart);
+				recordProfile(
+					'maxiBlockComponent processRelations',
+					processRelationsStart
+				);
 			}
 
 			this.relationInstances?.forEach(relationInstance => {
@@ -1792,24 +1782,36 @@ class MaxiBlockComponent extends Component {
 				);
 
 				if (removed !== null) {
-					const processRemoveStart = getPerfStart();
+					const processRemoveStart = getProfileStart();
 					processRelations(
 						this.previousRelationInstances,
 						'remove',
 						removed
 					);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
 					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
 				}
 				if (updated !== null) {
-					const processRemoveStart = getPerfStart();
+					const processRemoveStart = getProfileStart();
 					processRelations(this.relationInstances, 'remove', updated);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
 					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
 				}
 			}
 
@@ -1818,20 +1820,14 @@ class MaxiBlockComponent extends Component {
 			}
 
 			this.previousRelationInstances = this.relationInstances;
-			recordPerf('relationsBlock', relationsStart);
+			recordProfile('maxiBlockComponent relationsBlock', relationsStart);
 		}
 
-		recordPerf('displayStyles', perfStart);
+		recordProfile('maxiBlockComponent displayStyles', perfStart);
 	}
 
 	hasViewportUnits(stylesObj) {
 		if (!stylesObj) return false;
-
-		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
-		// Requires: number (with optional sign/decimal) + viewport unit
-		// Boundaries prevent matching "overview", URLs, or identifiers
-		const viewportUnitRegex =
-			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 		const stack = [stylesObj];
 
@@ -1839,7 +1835,7 @@ class MaxiBlockComponent extends Component {
 			const current = stack.pop();
 
 			if (typeof current === 'string') {
-				if (viewportUnitRegex.test(current)) {
+				if (VIEWPORT_UNIT_VALUE_REGEX.test(current)) {
 					return true;
 				}
 			} else if (isArray(current)) {
@@ -2087,7 +2083,7 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		let styleContent;
 		let styles;
 
@@ -2111,15 +2107,19 @@ class MaxiBlockComponent extends Component {
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
-
-		if (
+		const canReuseXxlStyleCache =
 			isBreakpointChange &&
 			currentBreakpoint === 'xxl' &&
 			!isBlockStyleChange &&
 			!forceGenerate &&
 			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
-		) {
+			!this.isXxlStyleCacheDirty;
+		const hasViewportDependentStyles =
+			canReuseXxlStyleCache &&
+			(this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(updatedStylesObj));
+
+		if (canReuseXxlStyleCache && !hasViewportDependentStyles) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
 			styles = this.generateStyles(
@@ -2127,28 +2127,28 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			const styleGenStart = getPerfStart();
+			const styleGenStart = getProfileStart();
 			styleContent = styleGenerator(
 				styles,
 				!!iframe,
 				isSiteEditor,
 				currentBreakpoint
 			);
-			recordPerf('styleGenerator', styleGenStart);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
-			const styleGenStart = getPerfStart();
+			const styleGenStart = getProfileStart();
 			styleContent = styleGenerator(
 				styles,
 				!!iframe,
 				isSiteEditor,
 				currentBreakpoint
 			);
-			recordPerf('styleGenerator', styleGenStart);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		}
 
 		if (styles) {
@@ -2172,13 +2172,13 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		recordPerf('generateStyleContent', perfStart);
+		recordProfile('maxiBlockComponent generateStyleContent', perfStart);
 		return styleContent;
 	}
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const styles = styleResolver({
 			styles: stylesObj,
 			remove: false,
@@ -2186,7 +2186,7 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 		});
 
-		recordPerf('styleResolver', perfStart);
+		recordProfile('maxiBlockComponent styleResolver', perfStart);
 		return styles;
 	}
 

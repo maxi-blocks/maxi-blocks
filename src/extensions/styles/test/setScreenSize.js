@@ -2,10 +2,19 @@ import setScreenSize, {
 	resetThrottleState,
 } from '@extensions/styles/setScreenSize';
 import { select, dispatch } from '@wordpress/data';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(),
 	dispatch: jest.fn(),
+}));
+
+jest.mock('@extensions/performance/profiler', () => ({
+	getProfileStart: jest.fn(() => 0),
+	recordProfile: jest.fn(),
 }));
 
 describe('setScreenSize', () => {
@@ -21,6 +30,8 @@ describe('setScreenSize', () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 		resetThrottleState(); // Reset throttling state between tests
+		getProfileStart.mockReturnValue(0);
+		recordProfile.mockImplementation(() => {});
 		select.mockImplementation(store => {
 			if (store === 'maxiBlocks') return mockMaxiBlocksStore;
 			return {};
@@ -80,6 +91,21 @@ describe('setScreenSize', () => {
 		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
 			deviceType: 'xxl',
 			width: mockXXLSize,
+		});
+	});
+
+	it('Sets device type when profiling throws', () => {
+		getProfileStart.mockImplementationOnce(() => {
+			throw new Error('profile start failed');
+		});
+		recordProfile.mockImplementationOnce(() => {
+			throw new Error('profile record failed');
+		});
+
+		setScreenSize('general');
+
+		expect(mockMaxiBlocksDispatch.setMaxiDeviceType).toHaveBeenCalledWith({
+			deviceType: 'general',
 		});
 	});
 });

@@ -77,7 +77,11 @@ const CloudPlaceholder = forwardRef((props, ref) => {
 const SVGIconPlaceholder = forwardRef((props, ref) => {
 	const { uniqueID, clientId, onClick } = props;
 
-	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(ref);
+	const { isBlockSmall, isBlockSmaller } = useObserveBlockSize(
+		ref,
+		false,
+		150
+	);
 
 	return (
 		<div
@@ -92,6 +96,7 @@ const SVGIconPlaceholder = forwardRef((props, ref) => {
 				isPrimary
 				key={`maxi-block-library__modal-button--${clientId}`}
 				className='maxi-block-library__modal-button'
+				aria-label={__('Select icon', 'maxi-blocks')}
 				onClick={onClick}
 			>
 				<Icon

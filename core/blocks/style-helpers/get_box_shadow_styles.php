@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_box_shadow_styles($params)
 {
     $obj = $params['obj'];

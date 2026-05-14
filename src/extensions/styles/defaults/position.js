@@ -21,6 +21,14 @@ export const rawPosition = {
 		type: 'string',
 		default: 'all',
 	},
+	'position-sync-vertical': {
+		type: 'boolean',
+		default: true,
+	},
+	'position-sync-horizontal': {
+		type: 'boolean',
+		default: true,
+	},
 	'position-top-unit': {
 		type: 'string',
 		default: 'px',

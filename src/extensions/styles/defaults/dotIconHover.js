@@ -3,9 +3,6 @@ import dotIcon from './dotIcon';
 
 const dotIconHover = hoverAttributesCreator({
 	obj: dotIcon,
-	diffValAttr: {
-		'navigation-dot-icon-box-shadow-palette-color-general': 6,
-	},
 	newAttr: {
 		'navigation-dot-icon-status-hover': {
 			type: 'boolean',
@@ -26,10 +23,6 @@ const dotIconHover = hoverAttributesCreator({
 		'navigation-dot-icon-fill-palette-color-hover': {
 			type: 'number',
 			default: 6,
-		},
-		'navigation-dot-icon-box-shadow-status-hover': {
-			type: 'boolean',
-			default: false,
 		},
 	},
 });

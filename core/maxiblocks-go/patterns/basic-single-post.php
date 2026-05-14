@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
   * Title: Basic Single Post
   * Slug: maxiblocks-go/basic-single-post

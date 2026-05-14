@@ -409,7 +409,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         : '',
                     'ajaxUrl' => admin_url('admin-ajax.php'),
                     'nonce' => wp_create_nonce('maxi_license_validation'),
-                    'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                    'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
                     'pluginVersion' => MAXI_PLUGIN_VERSION,
                     'isMultisite' => is_multisite(),
                     'hasNetworkLicense' => $this->has_network_license(),
@@ -691,7 +691,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         esc_attr($tab_page) .
                         esc_attr($active_tab) .
                         '" href="' .
-                        $tab_info['url'] .
+                        esc_url($tab_info['url']) .
                         '">' .
                         wp_kses(
                             $tab_info['label'],
@@ -809,7 +809,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 '">';
             echo '<h4 class="maxi-dashboard_nav-tab-wrapper nav-tab-wrapper">';
             echo '<span class="maxi-dashboard_nav-tab nav-tab maxi-dashboard_nav-tab__active nav-tab-active">' .
-                __('License', 'maxi-blocks') .
+                esc_html__('License', 'maxi-blocks') .
                 '</span>';
             echo '</h4>';
 
@@ -1011,12 +1011,12 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         private function get_main_site_domain()
         {
             if (!is_multisite()) {
-                return parse_url(home_url(), PHP_URL_HOST);
+                return wp_parse_url(home_url(), PHP_URL_HOST);
             }
 
             // Get the main site URL
             $main_site_url = get_site_url(get_main_site_id());
-            return parse_url($main_site_url, PHP_URL_HOST);
+            return wp_parse_url($main_site_url, PHP_URL_HOST);
         }
 
         public function maxi_blocks_welcome()
@@ -1349,6 +1349,56 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 __('Hide the native Gutenberg responsive preview dropdown in the editor.', 'maxi-blocks') .
                 '</p>';
             $content .= $this->generate_setting($description, 'hide_gutenberg_responsive_preview');
+
+            $description =
+                '<h4>' . __('Global header scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all front-end pages in the <head> tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Useful for analytics, tracking codes, and custom CSS.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_header_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Global footer scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all front-end pages before the closing &lt;/body&gt; tag. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_footer_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Admin (wp-admin) scripts and styles', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Add code that loads on all wp-admin pages. Wrap JavaScript in &lt;script&gt; tags and CSS in &lt;style&gt; tags. Only visible to logged-in users with admin access.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_custom_js_admin_option',
+                '',
+                'textarea',
+            );
+
+            $description =
+                '<h4>' . __('Enable per-post/page custom scripts', 'maxi-blocks') . '</h4>';
+            $description .=
+                '<p>' .
+                __('Show a meta box on individual post and page edit screens to add custom header/footer scripts and styles for that post or page only. When disabled, any previously saved per-post/page scripts are also suppressed on the frontend.', 'maxi-blocks') .
+                '</p>';
+            $content .= $this->generate_setting(
+                $description,
+                'maxi_enable_post_custom_scripts',
+            );
 
             $content .= get_submit_button(__('Save changes', 'maxi-blocks'));
             $this->add_hidden_api_fields();
@@ -2054,7 +2104,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     : '',
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('maxi_license_validation'),
-                'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+                'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'pluginVersion' => MAXI_PLUGIN_VERSION,
                 'isMultisite' => is_multisite(),
                 'hasNetworkLicense' => $this->has_network_license(),
@@ -2172,20 +2222,21 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 str_replace('_', '-', $option) . '-visible-input';
 
             if ($type === 'textarea') {
-                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$input_value}</textarea>";
+                $escaped_value = esc_textarea($input_value);
+                $visible_input = "<textarea name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text\">{$escaped_value}</textarea>";
             } else {
                 // Always keep the name attribute for all inputs
                 $visible_input = "<input name=\"{$option}\" id=\"{$option}\" class=\"maxi-dashboard_main-content_accordion-item-input regular-text {$visible_input_class}\" type=\"{$type}\" value=\"{$input_value}\"/>";
             }
 
-            $input = <<<HTML
-			    <div class="maxi-dashboard_main-content_accordion-item-content-switcher">
-			        <span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">{$placeholder}</span>
-			        <div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">
-			            {$visible_input}
-			        </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher__input -->
-			    </div> <!-- maxi-dashboard_main-content_accordion-item-content-switcher -->
-			HTML;
+            $input = sprintf(
+                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher">' .
+                '<span class="maxi-dashboard_main-content_accordion-item-content-switcher__label">%s</span>' .
+                '<div class="maxi-dashboard_main-content_accordion-item-content-switcher__input">%s</div>' .
+                '</div>',
+                $placeholder,
+                $visible_input
+            );
 
             return $input;
         }
@@ -2381,6 +2432,13 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'type' => 'string',
                 'sanitize_callback' => 'sanitize_text_field',
             ];
+            $args_custom_js = [
+                'type' => 'string',
+                'sanitize_callback' => [
+                    'MaxiBlocks_Custom_Scripts',
+                    'sanitize_scripts_code',
+                ],
+            ];
 
             // List of settings and corresponding arguments
             $settings = [
@@ -2393,6 +2451,10 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'hide_tooltips' => $args,
                 'hide_fse_resizable_handles' => $args_true,
                 'hide_gutenberg_responsive_preview' => $args_true,
+                'maxi_custom_js_header_option' => $args_custom_js,
+                'maxi_custom_js_footer_option' => $args_custom_js,
+                'maxi_custom_js_admin_option' => $args_custom_js,
+                'maxi_enable_post_custom_scripts' => $args,
                 'google_api_key_option' => $args_api_key,
                 'openai_api_key_option' => $args_api_key,
                 'maxi_ai_model' => $args_ai_model,
@@ -2457,11 +2519,11 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                         if (is_dir($file_path)) {
                             $this->delete_all_files($file_path);
                         } elseif (is_file($file_path)) {
-                            @unlink($file_path);
+                            wp_delete_file($file_path);
                         }
                     }
 
-                    @rmdir($folder);
+                    @rmdir($folder); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- WP_Filesystem::rmdir() requires prior initialization; recursive delete handled by this method
                     return;
                 }
             }
@@ -3556,7 +3618,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
          */
         private function check_site_domain_migration()
         {
-            $current_domain = parse_url(home_url(), PHP_URL_HOST);
+            $current_domain = wp_parse_url(home_url(), PHP_URL_HOST);
             $license_data = get_option('maxi_pro', '');
 
             if (empty($license_data)) {
@@ -3783,7 +3845,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
         {
             // Use WordPress's proper admin_url() function and extract path
             $admin_url = admin_url();
-            $parsed = parse_url($admin_url);
+            $parsed = wp_parse_url($admin_url);
             return rtrim($parsed['path'], '/'); // Remove trailing slash to match JS function
         }
 
@@ -3804,7 +3866,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return;
             }
 
-            $domain = parse_url(home_url(), PHP_URL_HOST);
+            $domain = wp_parse_url(home_url(), PHP_URL_HOST);
 
             // Verify purchase code with middleware
             $result = $this->verify_purchase_code($purchase_code, $domain);
@@ -4374,7 +4436,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $actual_payload = [
                 'email' => $email,
                 'cookie' => $auth_key,
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'plugin_version' => MAXI_PLUGIN_VERSION,
                 'multisite' => is_multisite(),
                 'check_appwrite_login' => false,
@@ -4423,7 +4485,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
             $actual_appwrite_payload = [
                 'email' => $email,
                 'cookie' => $auth_key,
-                'domain' => parse_url(home_url(), PHP_URL_HOST),
+                'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                 'plugin_version' => MAXI_PLUGIN_VERSION,
                 'multisite' => is_multisite(),
                 'check_appwrite_login' => true,
@@ -4440,11 +4502,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if (is_wp_error($appwrite_response)) {
                 error_log(
-                    __(
-                        'MaxiBlocks Email Auth: ERROR - ' .
-                            $appwrite_response->get_error_message(),
-                        'maxi-blocks',
-                    ),
+                    'MaxiBlocks Email Auth: ERROR - ' . $appwrite_response->get_error_message(),
                 );
                 return false;
             }
@@ -4637,7 +4695,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 $current_license_data = get_option('maxi_pro', '');
                 $is_purchase_code_active = false;
                 $purchase_code = '';
-                $domain = parse_url(home_url(), PHP_URL_HOST);
+                $domain = wp_parse_url(home_url(), PHP_URL_HOST);
 
                 if (!empty($current_license_data)) {
                     $license_array = json_decode($current_license_data, true);
@@ -4734,7 +4792,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 'body' => wp_json_encode([
                     'email' => $email,
                     'cookie' => $auth_key,
-                    'domain' => parse_url(home_url(), PHP_URL_HOST),
+                    'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
                     'plugin_version' => MAXI_PLUGIN_VERSION,
                     'multisite' => is_multisite(),
                 ]),
@@ -4742,11 +4800,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
 
             if (is_wp_error($response)) {
                 error_log(
-                    __(
-                        'MaxiBlocks Email Session Logout: API call failed - ' .
-                            $response->get_error_message(),
-                        'maxi-blocks',
-                    ),
+                    'MaxiBlocks Email Session Logout: API call failed - ' . $response->get_error_message(),
                 );
                 return [
                     'success' => false,

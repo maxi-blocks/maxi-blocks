@@ -748,6 +748,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 					optionType='string'
 					minMaxSettings={minMaxSettings}
 					enableAxisUnits
+					showAllSides
 				/>
 			)}
 		</>
@@ -779,11 +780,34 @@ const IconControl = props => {
 		type = 'button-icon',
 		prefix = '',
 		[`${prefix}icon-content`]: iconContent,
+		[`${prefix}svgType`]: svgType,
 		disablePadding = false,
 	} = props;
 
-	// Get the current SVG type
-	const svgType = props[`${prefix}svgType`];
+	// Process default icon on mount if it contains data markers
+	useEffect(() => {
+		if (
+			iconContent &&
+			breakpoint === 'general' &&
+			!isHover &&
+			(iconContent.includes('data-fill') ||
+				iconContent.includes('data-stroke'))
+		) {
+			const processedIcon = getIconWithColor({
+				rawIcon: iconContent,
+				type: [
+					svgType !== 'Shape' && 'stroke',
+					svgType !== 'Line' && 'fill',
+				].filter(Boolean),
+			});
+
+			if (processedIcon !== iconContent) {
+				onChange({
+					[`${prefix}icon-content`]: processedIcon,
+				});
+			}
+		}
+	}, []); // Run only on mount
 
 	// Process icon with current colors for preview (uses svgAttributesReplacer to get actual colors)
 	const processedIcon = iconContent

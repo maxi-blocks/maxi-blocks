@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_row_gap_attributes($props)
 {
     $response = get_group_attributes($props, 'flex');

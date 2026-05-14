@@ -50,6 +50,14 @@ const border = ({
 				? '.maxi-background-displayer'
 				: ''
 			: inlineTarget;
+	// Get all border-related attributes for proper indicator detection
+	const groupAttributes = ['border', 'borderWidth', 'borderRadius'];
+	const normalIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, false, prefix)
+	);
+	const hoverIndicatorProps = Object.keys(
+		getGroupAttributes(attributes, groupAttributes, true, prefix)
+	).filter(key => !normalIndicatorProps.includes(key));
 
 	return {
 		label: __('Border', 'maxi-blocks'),
@@ -58,6 +66,7 @@ const border = ({
 				items={[
 					{
 						label: __('Normal', 'maxi-blocks'),
+						indicatorProps: normalIndicatorProps,
 						content: (
 							<BorderControl
 								{...getGroupAttributes(
@@ -85,6 +94,8 @@ const border = ({
 					},
 					{
 						label: __('Hover', 'maxi-blocks'),
+						indicatorProps: hoverStatus ? hoverIndicatorProps : [],
+						extraIndicators: [`${prefix}border-status-hover`],
 						content: (
 							<>
 								<ManageHoverTransitions />
@@ -126,7 +137,6 @@ const border = ({
 								)}
 							</>
 						),
-						extraIndicators: [`${prefix}border-status-hover`],
 					},
 					enableActiveState && {
 						label: __('Active', 'maxi-blocks'),

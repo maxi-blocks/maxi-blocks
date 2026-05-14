@@ -1,4 +1,4 @@
-import getFilteredData from '../getFilteredData';
+import getFilteredData from '@extensions/styles/getFilteredData';
 
 describe('getFilteredData', () => {
 	const mockStyles = {

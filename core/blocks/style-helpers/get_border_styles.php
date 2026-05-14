@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * IMPORTANT: version from https://github.com/maxi-blocks/maxi-blocks/pull/4679
  */

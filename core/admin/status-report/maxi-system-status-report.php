@@ -123,8 +123,8 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				get_site_url(),
 			);
 			$site_domain = preg_replace('/[^a-zA-Z0-9_-]/', '_', $site_domain);
-			$date = date('d_m_Y');
-			$time = date('H_i_s');
+			$date = gmdate('d_m_Y');
+			$time = gmdate('H_i_s');
 			$filename = "MaxiBlocks_Status_Report_{$site_domain}_{$date}_{$time}.txt";
 
 			$button_html = sprintf(
@@ -705,7 +705,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 					WP_CONTENT_DIR,
 					$this->get_directory_permission(WP_CONTENT_DIR),
 				),
-				is_readable(WP_CONTENT_DIR) && is_writable(WP_CONTENT_DIR),
+				is_readable(WP_CONTENT_DIR) && is_writable(WP_CONTENT_DIR), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 			);
 
 			$content .= $this->generate_status_row(
@@ -716,7 +716,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 					WP_PLUGIN_DIR,
 					$this->get_directory_permission(WP_PLUGIN_DIR),
 				),
-				is_readable(WP_PLUGIN_DIR) && is_writable(WP_PLUGIN_DIR),
+				is_readable(WP_PLUGIN_DIR) && is_writable(WP_PLUGIN_DIR), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 			);
 
 			$content .= $this->generate_status_row(
@@ -727,7 +727,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 					get_theme_root(),
 					$this->get_directory_permission(get_theme_root()),
 				),
-				is_readable(get_theme_root()) && is_writable(get_theme_root()),
+				is_readable(get_theme_root()) && is_writable(get_theme_root()), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 			);
 
 			// Get uploads directory info
@@ -742,7 +742,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 					$this->get_directory_permission($uploads_dir['basedir']),
 				),
 				is_readable($uploads_dir['basedir']) &&
-					is_writable($uploads_dir['basedir']),
+					is_writable($uploads_dir['basedir']), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 			);
 
 			// Add a separator for plugins
@@ -1016,7 +1016,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 		private function table_exists($table) {
 			global $wpdb;
 			$query = $wpdb->prepare('SHOW TABLES LIKE %s', $table);
-			return $wpdb->get_var($query) === $table;
+			return $wpdb->get_var($query) === $table; // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is already prepared via $wpdb->prepare() above
 		}
 
 		/**
@@ -1160,8 +1160,8 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			}
 
 			// Redact full URLs for security in text report
-			$site_url_parts = parse_url(site_url());
-			$home_url_parts = parse_url(home_url());
+			$site_url_parts = wp_parse_url(site_url());
+			$home_url_parts = wp_parse_url(home_url());
 
 			$report .= 'Site URL: ' . esc_url(site_url()) . "\n";
 			$report .= 'Home URL: ' . esc_url(home_url()) . "\n";
@@ -1335,7 +1335,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			$readable = is_readable($dir)
 				? __('Readable', 'maxi-blocks')
 				: __('Not Readable', 'maxi-blocks');
-			$writable = is_writable($dir)
+			$writable = is_writable($dir) // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 				? __('Writable', 'maxi-blocks')
 				: __('Not Writable', 'maxi-blocks');
 
@@ -1395,7 +1395,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 			}
 
 			// Read file safely
-			$f = fopen($log_path, 'rb');
+			$f = fopen($log_path, 'rb'); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- WP_Filesystem does not support random-access reading (fseek) needed for reverse log reading
 			if (!$f) {
 				return false;
 			}
@@ -1412,7 +1412,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				$read_size = $pos - $seek_pos;
 
 				fseek($f, $seek_pos);
-				$chunk = fread($f, $read_size);
+				$chunk = fread($f, $read_size); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fread
 
 				if ($chunk === false) {
 					break;
@@ -1454,7 +1454,7 @@ if (!class_exists('MaxiBlocks_System_Status_Report')):
 				$pos = $seek_pos;
 			}
 
-			fclose($f);
+			fclose($f); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
 			// Filter sensitive information from log output
 			$filtered_lines = [];

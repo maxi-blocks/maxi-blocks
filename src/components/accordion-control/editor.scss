@@ -38,7 +38,7 @@
 		}
 
 		&:last-child {
-			.maxi-accordion-control__item__button {
+			.maxi-accordion-control__item__button[aria-expanded='false'] {
 				border-bottom: 1px solid var(--maxi-grey-light);
 			}
 		}

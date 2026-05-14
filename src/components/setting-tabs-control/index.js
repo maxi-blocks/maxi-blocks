@@ -1,12 +1,8 @@
 /**
  * WordPress dependencies
  */
-import {
-	useState,
-	useEffect,
-	cloneElement,
-	useContext,
-} from '@wordpress/element';
+import { useState, useEffect, cloneElement, useContext } from '@wordpress/element';
+import { getBlockAttributes } from '@wordpress/blocks';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import { Tooltip } from '@wordpress/components';
 
@@ -21,12 +17,62 @@ import {
 	getMaxiAttrsFromChildren,
 	SettingTabsIndicatorContext,
 } from '@extensions/indicators';
+import { getBlockData } from '@extensions/attributes';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber, isPlainObject, isEqual } from 'lodash';
+
+/**
+ * CSS initial values for flex properties. When an attribute has no schema
+ * default (undefined), these values are treated as "cleared" because they
+ * represent the browser's default behaviour.
+ */
+const cssInitialValues = {
+	'flex-wrap': ['nowrap', 'wrap'],
+	'flex-direction': ['row'],
+	'justify-content': ['normal', 'flex-start'],
+	'align-items': ['normal', 'stretch'],
+	'align-content': ['normal', 'stretch'],
+};
+
+/**
+ * Checks if a value is considered "cleared" (inactive/default)
+ *
+ * @param {*}      value         The current value
+ * @param {*}      defaultValue  The default value
+ * @param {string} attributeName The attribute name (for special cases)
+ * @return {boolean} True if the value is cleared/inactive
+ */
+const isClearedValue = (value, defaultValue, attributeName = '') => {
+	if (value == null) return true; // null or undefined
+	if (value === false) return !defaultValue;
+	if (value === '') return true;
+	// Check equality first before special value checks
+	if (isEqual(value, defaultValue)) return true;
+	if (value === 'none' || value === 'unset' || value === 'normal')
+		return defaultValue === undefined;
+	if (Array.isArray(value) && value.length === 0) return true;
+	if (isPlainObject(value) && isEmpty(value)) return true;
+	// Treat 1 as cleared when default is undefined, only for opacity attributes
+	if (
+		value === 1 &&
+		defaultValue === undefined &&
+		/opacity/i.test(attributeName)
+	) {
+		return true;
+	}
+	// Treat CSS initial values as cleared for flex properties when no default
+	if (defaultValue === undefined && typeof value === 'string') {
+		const baseName = attributeName
+			.replace(/-(?:general|xxl|xl|l|m|s|xs)$/, '');
+		const initials = cssInitialValues[baseName];
+		if (initials && initials.includes(value)) return true;
+	}
+	return false;
+};
 
 /**
  * Styles and icons
@@ -59,11 +105,7 @@ const SettingTabsControl = props => {
 		depth,
 		hasBorder = false,
 		showTooltip = false,
-		/**
-		 * Optional class name to be appended to the content wrapper (`.maxi-tabs-content`).
-		 * Useful for one-off styling or visual debugging without affecting other instances.
-		 */
-		contentClassName,
+		disableIndicators = false,
 	} = props;
 	const { getBlockName, getSelectedBlockClientId } =
 		select('core/block-editor');
@@ -100,8 +142,7 @@ const SettingTabsControl = props => {
 	const classesContent = classnames(
 		'maxi-tabs-content',
 		disablePadding ? 'maxi-tabs-content--disable-padding' : null,
-		isNestedAccordion && 'maxi-tabs-content--nested',
-		contentClassName
+		isNestedAccordion && 'maxi-tabs-content--nested'
 	);
 
 	const setActiveTab = (tab, name) => {
@@ -138,10 +179,42 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
-						const buttonLabelSlug = String(buttonLabel).toLowerCase();
+						const buttonLabelSlug =
+							String(buttonLabel).toLowerCase();
 						const itemsIndicators = !isEmpty(item.content)
 							? cloneElement(item.content)
 							: item;
+
+						// Handle indicatorProps directly like accordions do
+						let isActiveTab = false;
+						if (item.indicatorProps) {
+							const { getBlock, getSelectedBlockClientId } =
+								select('core/block-editor');
+
+							const block = getBlock(getSelectedBlockClientId());
+							const { show_indicators: showIndicators } =
+								select('maxiBlocks')?.receiveMaxiSettings?.() ??
+								{};
+
+							if (
+								showIndicators &&
+								block &&
+								block.name.includes('maxi-blocks')
+							) {
+								const { attributes, name } = block;
+								const defaultAttributes = {
+									...getBlockAttributes(name),
+									...getBlockData(name)?.maxiAttributes,
+								};
+								isActiveTab = !item.indicatorProps.every(prop =>
+									isClearedValue(
+										attributes?.[prop],
+										defaultAttributes?.[prop],
+										prop
+									)
+								);
+							}
+						}
 
 						const showButton = (
 							<Button
@@ -154,23 +227,24 @@ const SettingTabsControl = props => {
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&
 										'maxi-tabs-control__button--nested',
-									getIsActiveTab(
-										getMaxiAttrsFromChildren({
-											items: itemsIndicators,
-											blockName:
-												blockName ??
-												getBlockName(
-													getSelectedBlockClientId()
-												),
-										}),
-										item.breakpoint,
-										item.extraIndicators,
-										item.extraIndicatorsResponsive,
-										item.ignoreIndicator,
-										item.ignoreIndicatorGroups,
-										indicatorContext
-									) && 'maxi-tabs-control__button--active',
-									item.className
+									!disableIndicators &&
+										(item.indicatorProps
+											? isActiveTab
+											: getIsActiveTab(
+													getMaxiAttrsFromChildren({
+														items: itemsIndicators,
+														blockName:
+															blockName ??
+															getBlockName(
+																getSelectedBlockClientId()
+															),
+													}),
+													item.breakpoint,
+													item.extraIndicators,
+													item.extraIndicatorsResponsive,
+													item.ignoreIndicator
+											  )) &&
+										'maxi-tabs-control__button--active'
 								)}
 								onClick={() => {
 									setActiveTab(i, item.label || item.value);
@@ -188,12 +262,22 @@ const SettingTabsControl = props => {
 								{!isEmpty(item.label) && item.label}
 								{!isEmpty(item.icon) && item.icon}
 								{item.showNotification && (
-									<div className='maxi-tabs-control__notification' />
+									<svg
+										className='maxi-tabs-control__notification'
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 9 9'
+									>
+										<path
+											fill='#ff4a17'
+											d='M4.5 0H9v4.5A4.5 4.5 0 0 1 4.5 9 4.5 4.5 0 0 1 0 4.5 4.5 4.5 0 0 1 4.5 0Z'
+										/>
+									</svg>
 								)}
 							</Button>
 						);
 						return showTooltip ? (
 							<Tooltip
+								// eslint-disable-next-line react/no-array-index-key
 								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}__tooltip`}
 								text={item.label || item.value}
 								placement='top'
@@ -215,7 +299,6 @@ const SettingTabsControl = props => {
 		<div className={classes}>
 			{type === 'buttons' && (
 				<BaseControl
-					__nextHasNoMarginBottom
 					label={label}
 					help={help}
 					aria-labelledby={label}

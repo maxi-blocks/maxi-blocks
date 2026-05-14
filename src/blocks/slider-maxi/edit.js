@@ -59,9 +59,9 @@ const SliderWrapper = props => {
 	const ALLOWED_BLOCKS = ['maxi-blocks/slide-maxi'];
 	const wrapperRef = useRef(null);
 	const iconRef = useRef(null);
-	const editor = document.querySelector('#editor');
-	let initPosition = 0;
-	let dragPosition = 0;
+	const editorRef = useRef(null);
+	const initPositionRef = useRef(0);
+	const dragPositionRef = useRef(0);
 
 	const getSliderEffect = () => {
 		let effect = '';
@@ -135,11 +135,11 @@ const SliderWrapper = props => {
 		let dragMove = 0;
 
 		if (e.type === 'touchmove') {
-			dragMove = dragPosition - e.touches[0].clientX;
-			dragPosition = e.touches[0].clientX;
+			dragMove = dragPositionRef.current - e.touches[0].clientX;
+			dragPositionRef.current = e.touches[0].clientX;
 		} else {
-			dragMove = dragPosition - e.clientX;
-			dragPosition = e.clientX;
+			dragMove = dragPositionRef.current - e.clientX;
+			dragPositionRef.current = e.clientX;
 		}
 
 		setWrapperTranslate(prev => prev + dragMove);
@@ -147,29 +147,33 @@ const SliderWrapper = props => {
 
 	const onDragEnd = e => {
 		if (isEditView) return;
-		if (dragPosition - initPosition < -100) {
+		if (dragPositionRef.current - initPositionRef.current < -100) {
 			nextSlide();
-		} else if (dragPosition - initPosition > 100) {
+		} else if (dragPositionRef.current - initPositionRef.current > 100) {
 			prevSlide();
 		} else {
 			addSliderTransition();
 			setWrapperTranslate(getSlidePosition(currentSlide));
 		}
 
-		editor.removeEventListener('mousemove', onDragAction);
-		editor.removeEventListener('mouseup', onDragEnd);
+		if (editorRef.current) {
+			editorRef.current.removeEventListener('mousemove', onDragAction);
+			editorRef.current.removeEventListener('mouseup', onDragEnd);
+		}
 	};
 
 	const onDragStart = e => {
 		if (isEditView) return;
 		if (e.type === 'touchstart') {
-			initPosition = e.touches[0].clientX;
+			initPositionRef.current = e.touches[0].clientX;
 		} else {
-			initPosition = e.clientX;
-			editor.addEventListener('mousemove', onDragAction);
-			editor.addEventListener('mouseup', onDragEnd);
+			initPositionRef.current = e.clientX;
+			if (editorRef.current) {
+				editorRef.current.addEventListener('mousemove', onDragAction);
+				editorRef.current.addEventListener('mouseup', onDragEnd);
+			}
 		}
-		dragPosition = initPosition;
+		dragPositionRef.current = initPositionRef.current;
 	};
 
 	const handleEnd = () => {
@@ -250,16 +254,21 @@ const SliderWrapper = props => {
 	};
 
 	useEffect(() => {
+		editorRef.current = document.querySelector('#editor');
+	}, []);
+
+	useEffect(() => {
 		const slider = wrapperRef.current;
+		const touchOptions = { passive: true };
 		slider.addEventListener('mousedown', onDragStart);
-		slider.addEventListener('touchstart', onDragStart);
-		slider.addEventListener('touchmove', onDragAction);
-		slider.addEventListener('touchend', onDragEnd);
+		slider.addEventListener('touchstart', onDragStart, touchOptions);
+		slider.addEventListener('touchmove', onDragAction, touchOptions);
+		slider.addEventListener('touchend', onDragEnd, touchOptions);
 		return () => {
 			slider.removeEventListener('mousedown', onDragStart);
-			slider.removeEventListener('touchstart', onDragStart);
-			slider.removeEventListener('touchmove', onDragAction);
-			slider.removeEventListener('touchend', onDragEnd);
+			slider.removeEventListener('touchstart', onDragStart, touchOptions);
+			slider.removeEventListener('touchmove', onDragAction, touchOptions);
+			slider.removeEventListener('touchend', onDragEnd, touchOptions);
 		};
 	}, [
 		currentSlide,

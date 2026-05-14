@@ -1,4 +1,4 @@
-import removeLinkFormat from '../removeLinkFormat';
+import removeLinkFormat from '@extensions/text/formats/removeLinkFormat';
 
 jest.mock('@wordpress/data', () => ({
 	dispatch: jest.fn(() => ({
@@ -6,7 +6,19 @@ jest.mock('@wordpress/data', () => ({
 	})),
 	select: jest.fn(() => ({
 		receiveMaxiSelectedStyleCard: jest.fn(() => ({ value: {} })),
+		getFormatType: jest.fn(() => undefined),
+		getFormatTypes: jest.fn(() => []),
 	})),
+	combineReducers: jest.fn(reducers => (state = {}, action) => {
+		const newState = {};
+		Object.keys(reducers).forEach(key => {
+			newState[key] = reducers[key](state[key], action);
+		});
+		return newState;
+	}),
+	createReduxStore: jest.fn(() => ({})),
+	register: jest.fn(),
+	createSelector: jest.fn(selector => selector),
 }));
 jest.mock('@extensions/styles', () => ({
 	getBlockStyle: jest.fn(() => 'light'),

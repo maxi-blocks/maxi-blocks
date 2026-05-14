@@ -136,6 +136,28 @@ exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] 
     "default": "all",
     "type": "string",
   },
+  "button-padding-sync-horizontal-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-l": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-m": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-s": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xl": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xs": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xxl": {
+    "type": "boolean",
+  },
   "button-padding-sync-l": {
     "type": "string",
   },
@@ -144,6 +166,28 @@ exports[`prefixAttributesCreator Returns prefixed object with custom values 1`] 
   },
   "button-padding-sync-s": {
     "type": "string",
+  },
+  "button-padding-sync-vertical-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-l": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-m": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-s": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xl": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xs": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xxl": {
+    "type": "boolean",
   },
   "button-padding-sync-xl": {
     "type": "string",
@@ -267,6 +311,50 @@ exports[`prefixAttributesCreator Returns prefixed object with default values 1`]
   },
   "button-border-right-width-xxl": {
     "type": "number",
+  },
+  "button-border-sync-horizontal-width-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-l": {
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-m": {
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-s": {
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-xl": {
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-xs": {
+    "type": "boolean",
+  },
+  "button-border-sync-horizontal-width-xxl": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-l": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-m": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-s": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-xl": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-xs": {
+    "type": "boolean",
+  },
+  "button-border-sync-vertical-width-xxl": {
+    "type": "boolean",
   },
   "button-border-sync-width-general": {
     "default": "all",
@@ -767,6 +855,28 @@ exports[`prefixAttributesCreator Returns prefixed object with default values 1`]
     "default": "all",
     "type": "string",
   },
+  "button-margin-sync-horizontal-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-l": {
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-m": {
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-s": {
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-xl": {
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-xs": {
+    "type": "boolean",
+  },
+  "button-margin-sync-horizontal-xxl": {
+    "type": "boolean",
+  },
   "button-margin-sync-l": {
     "type": "string",
   },
@@ -775,6 +885,28 @@ exports[`prefixAttributesCreator Returns prefixed object with default values 1`]
   },
   "button-margin-sync-s": {
     "type": "string",
+  },
+  "button-margin-sync-vertical-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-l": {
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-m": {
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-s": {
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-xl": {
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-xs": {
+    "type": "boolean",
+  },
+  "button-margin-sync-vertical-xxl": {
+    "type": "boolean",
   },
   "button-margin-sync-xl": {
     "type": "string",
@@ -923,6 +1055,28 @@ exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`
     "default": "all",
     "type": "string",
   },
+  "button-padding-sync-horizontal-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-l": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-m": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-s": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xl": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xs": {
+    "type": "boolean",
+  },
+  "button-padding-sync-horizontal-xxl": {
+    "type": "boolean",
+  },
   "button-padding-sync-l": {
     "type": "string",
   },
@@ -931,6 +1085,28 @@ exports[`prefixAttributesCreator Returns prefixed object with excluded values 1`
   },
   "button-padding-sync-s": {
     "type": "string",
+  },
+  "button-padding-sync-vertical-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-l": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-m": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-s": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xl": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xs": {
+    "type": "boolean",
+  },
+  "button-padding-sync-vertical-xxl": {
+    "type": "boolean",
   },
   "button-padding-sync-xl": {
     "type": "string",

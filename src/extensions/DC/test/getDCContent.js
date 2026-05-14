@@ -149,6 +149,12 @@ describe('getDCContent', () => {
 		expect(result).toBe('archive slug');
 	});
 
+	it('should return null for archive-type when template slug is not yet available (FSE)', async () => {
+		utils.getCurrentTemplateSlug.mockReturnValueOnce(null);
+		const result = await getDCContent({ field: 'archive-type' });
+		expect(result).toBeNull();
+	});
+
 	it('should return ACF field content', async () => {
 		getDCEntity.mockResolvedValue({ id: 123 });
 		getACFFieldContent.mockResolvedValue('ACF content');

@@ -60,10 +60,10 @@ const MaxiExportPopUp = forwardRef(({ setIsVisible }, ref) => {
 					};
 				}
 
-				const { getEditedPostId, getEditedPostType } =
-					select('core/edit-site');
-				const editedPostType = getEditedPostType();
-				const editedPostId = getEditedPostId();
+				const { getCurrentPostId, getCurrentPostType } =
+					select('core/editor');
+				const editedPostType = getCurrentPostType();
+				const editedPostId = getCurrentPostId();
 
 				let type = '';
 				let title = '';

@@ -1715,6 +1715,7 @@ class MaxiBlocks_DynamicContent
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
+                'post_status' => 'inherit',
                 'posts_per_page' => 1,
             ];
 

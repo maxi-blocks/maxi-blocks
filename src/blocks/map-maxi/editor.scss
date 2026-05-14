@@ -73,15 +73,30 @@
 				border-radius: 50%;
 				text-align: center;
 				transition: all 0.4s ease !important;
+				// Keep the icon white for both dashicon (legacy) and SVG icons.
+				// @wordpress/icons SVGs use fill:currentColor, so setting color
+				// here propagates to the svg fill automatically.
+				color: var(--maxi-white) !important;
 
+				svg {
+					fill: var(--maxi-white);
+				}
+
+				// Legacy dashicon fallback
 				span.dashicon {
 					&::before {
 						color: var(--maxi-white);
 					}
 				}
+
 				&:hover {
 					background: var(--maxi-black);
 					transition: all 0.4s ease !important;
+					color: var(--maxi-white) !important;
+
+					svg {
+						fill: var(--maxi-white);
+					}
 				}
 			}
 		}

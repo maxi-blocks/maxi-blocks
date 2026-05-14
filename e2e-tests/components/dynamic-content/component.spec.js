@@ -1,18 +1,25 @@
 import { createNewPost } from '@wordpress/e2e-test-utils';
-import { insertMaxiBlock } from '../../utils';
+import { insertMaxiBlock, getEditorFrame } from '../../utils';
 import {
 	addImageToLibrary,
 	removeUploadedImage,
 } from '../../utils/addImageToLibrary';
 
-const getDCContent = async page =>
-	page.$eval(
+const getDCContent = async page => {
+	const frame = await getEditorFrame(page);
+	return frame.$eval(
 		'.maxi-text-block .maxi-text-block__content',
 		el => el.textContent
 	);
+};
 
-const getDCImageContent = async page =>
-	page.$eval('.maxi-image-block .maxi-image-block__image', el => el.src);
+const getDCImageContent = async page => {
+	const frame = await getEditorFrame(page);
+	return frame.$eval(
+		'.maxi-image-block .maxi-image-block__image',
+		el => el.src
+	);
+};
 
 /**
  * Check if the response has loaded the DC data
@@ -160,7 +167,8 @@ describe('Dynamic content component for text blocks', () => {
 		await page.waitForTimeout(2000);
 
 		// Check if content element exists
-		const contentExists = await page.$(
+		const frame = await getEditorFrame(page);
+		const contentExists = await frame.$(
 			'.maxi-text-block .maxi-text-block__content'
 		);
 		if (!contentExists) {

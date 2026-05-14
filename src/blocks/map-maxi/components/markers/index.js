@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
+import { trash } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -112,17 +113,17 @@ const Markers = props => {
 								tagName='p'
 							/>
 							<div className='maxi-map-block__popup__content__marker-remove'>
-								<Button
-									icon='trash'
-									label={__(
-										'Remove this marker',
-										'maxi-blocks'
-									)}
-									onClick={event =>
-										handleRemoveMarker(event, index)
-									}
-									showTooltip
-								/>
+						<Button
+							icon={trash}
+							label={__(
+								'Remove this marker',
+								'maxi-blocks'
+							)}
+							onClick={event =>
+								handleRemoveMarker(event, index)
+							}
+							showTooltip
+						/>
 							</div>
 						</div>
 					</div>

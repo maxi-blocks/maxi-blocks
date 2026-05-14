@@ -368,6 +368,9 @@
 
 	.maxi-tabs-control__button {
 		margin-right: 5px !important;
+		svg {
+			flex-shrink: inherit;
+		}
 
 		&:last-child {
 			margin-right: 4px !important;

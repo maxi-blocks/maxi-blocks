@@ -12,6 +12,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -677,7 +678,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
 		await updateAllBlockUniqueIds(page);
 
 		await changeResponsive(page, 'xxl');

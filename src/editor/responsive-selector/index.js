@@ -297,8 +297,8 @@ const ResponsiveSelector = props => {
 			select('core/editor')?.getRenderingMode?.() === 'template-locked';
 
 		if (isFSE) {
-			const postId = select('core/edit-site').getEditedPostId();
-			const postType = select('core/edit-site').getEditedPostType();
+			const postId = select('core/editor').getCurrentPostId();
+			const postType = select('core/editor').getCurrentPostType();
 
 			if (
 				postType === 'wp_template' ||

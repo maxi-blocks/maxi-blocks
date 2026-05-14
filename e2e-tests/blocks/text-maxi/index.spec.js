@@ -25,6 +25,7 @@ import {
 	openPreviewPage,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 
 const linkExample = 'test.com';
@@ -38,7 +39,8 @@ const clickTextStyle = async (page, type = 'bold') => {
 	await page.$eval(`.toolbar-item__${type}`, button => button.click());
 
 	await page.keyboard.press('Escape');
-	await page.$eval('.maxi-text-block__content', el => el.focus());
+	const frame = await getEditorFrame(page);
+	await frame.$eval('.maxi-text-block__content', el => el.focus());
 };
 
 const pressKeyWithTimeout = async (key, times, timeout = 50) => {
@@ -239,7 +241,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -271,7 +274,8 @@ describe('TextMaxi', () => {
 		await page
 			.waitForSelector('a.components-external-link')
 			.catch(async () => {
-				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const editorFrame = await getEditorFrame(page);
+				const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);
@@ -304,7 +308,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -314,7 +319,8 @@ describe('TextMaxi', () => {
 		await page
 			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
-				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const editorFrame2 = await getEditorFrame(page);
+				const selectMaxiTextDiv = await editorFrame2.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);
@@ -350,7 +356,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -395,7 +402,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -473,7 +481,8 @@ describe('TextMaxi', () => {
 		await page
 			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
-				const selectMaxiTextDiv = await page.$('.maxi-text-block');
+				const editorFrame = await getEditorFrame(page);
+				const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);
@@ -555,7 +564,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -636,7 +646,8 @@ describe('TextMaxi', () => {
 		await page.keyboard.press('Enter');
 		await page.waitForTimeout(150);
 
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		const selectMaxiTextP = await selectMaxiTextDiv.$(
 			'.block-editor-rich-text__editable'
 		);
@@ -675,7 +686,8 @@ describe('TextMaxi', () => {
 			buttons => buttons[1].click()
 		);
 		await page.waitForTimeout(150);
-		const selectMaxiTextDiv = await page.$('.maxi-text-block');
+		const editorFrame = await getEditorFrame(page);
+		const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
 		await page.waitForTimeout(150);
 
 		const selectMaxiTextP = await selectMaxiTextDiv.$(

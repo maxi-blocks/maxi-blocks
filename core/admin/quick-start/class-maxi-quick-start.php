@@ -140,7 +140,7 @@ class MaxiBlocks_QuickStart
         );
 
         // Set title explicitly to avoid PHP 8.2+ warning about passing null to strip_tags
-        if (isset($_GET['page']) && 'maxi-blocks-quick-start' === $_GET['page']) {
+        if (isset($_GET['page']) && 'maxi-blocks-quick-start' === $_GET['page']) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             $title = $page_title;
         }
     }
@@ -155,9 +155,9 @@ class MaxiBlocks_QuickStart
             delete_transient('maxi_blocks_activation_redirect');
 
             // Safely check if the 'page' parameter is set and equals our target
-            $current_page = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+            $current_page = isset($_GET['page']) ? sanitize_key($_GET['page']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if (current_user_can('manage_options') && $current_page !== 'maxi-blocks-quick-start') {
-                wp_redirect(
+                wp_safe_redirect(
                     admin_url('admin.php?page=maxi-blocks-quick-start'),
                 );
                 exit();
@@ -172,13 +172,13 @@ class MaxiBlocks_QuickStart
     public function check_quick_start_step()
     {
         // Only run on our page
-        $page = isset($_GET['page']) ? sanitize_key($_GET['page']) : '';
+        $page = isset($_GET['page']) ? sanitize_key($_GET['page']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         if ($page !== 'maxi-blocks-quick-start') {
             return;
         }
 
         // Skip if step is already specified
-        if (isset($_GET['step'])) {
+        if (isset($_GET['step'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             return;
         }
 
@@ -199,7 +199,7 @@ class MaxiBlocks_QuickStart
                          '";</script>';
                 });
             } else {
-                wp_redirect(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start'));
+                wp_safe_redirect(admin_url('admin.php?page=maxi-blocks-quick-start&step=quick_start'));
                 exit;
             }
         }
@@ -293,7 +293,7 @@ class MaxiBlocks_QuickStart
             'middlewareKey' => defined('MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY') ? MAXI_BLOCKS_AUTH_MIDDLEWARE_KEY : '',
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('maxi_license_validation'),
-            'currentDomain' => parse_url(home_url(), PHP_URL_HOST),
+            'currentDomain' => wp_parse_url(home_url(), PHP_URL_HOST),
             'pluginVersion' => MAXI_PLUGIN_VERSION,
             'isMultisite' => is_multisite(),
             'hasNetworkLicense' => is_multisite() ? $dashboard->has_network_license() : false,
@@ -312,7 +312,7 @@ class MaxiBlocks_QuickStart
         $this->init_steps();
 
         // Get step and validate it's in our allowed steps list
-        $requested_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : '';
+        $requested_step = isset($_GET['step']) ? sanitize_key($_GET['step']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         $current_step = array_key_exists($requested_step, $this->steps)
             ? $requested_step
             : $this->get_first_step();
@@ -405,7 +405,7 @@ class MaxiBlocks_QuickStart
             echo sprintf(
                 '<li class="%s" data-number="%d" data-step="%s"><span>%s</span></li>',
                 esc_attr(implode(' ', $classes)),
-                $step_number,
+                absint($step_number),
                 esc_attr($key),
                 esc_html($step['name']),
             );
@@ -862,7 +862,7 @@ class MaxiBlocks_QuickStart
 
                     // If no purchase code, check for email auth (browser-specific)
                     if (!$is_active && isset($_COOKIE['maxi_blocks_key']) && !empty($_COOKIE['maxi_blocks_key'])) {
-                        $cookie_raw = $_COOKIE['maxi_blocks_key'];
+                        $cookie_raw = wp_unslash($_COOKIE['maxi_blocks_key']); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON decoded below
                         // Fix escaped quotes in cookie value
                         $cookie_fixed = str_replace('\\"', '"', $cookie_raw);
                         $cookie_data = json_decode($cookie_fixed, true);
@@ -931,7 +931,13 @@ class MaxiBlocks_QuickStart
 				<div class="maxi-license-auth-form">
 					<div class="maxi-license-input-group">
 						<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="<?php esc_attr_e('Cloud user email / purchase code / license key', 'maxi-blocks'); ?>" />
-						<p class="maxi-license-help-text"><?php printf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'); ?></p>
+						<p class="maxi-license-help-text"><?php
+					echo wp_kses(
+						/* translators: %s: Link to my.maxiblocks.com */
+						sprintf(__('Find your code or key in your account, inbox or %s', 'maxi-blocks'), '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'),
+						['a' => ['href' => [], 'target' => [], 'rel' => []]]
+					);
+					?></p>
 						<div id="maxi-license-validation-message" class="maxi-license-message" style="display: none;"></div>
 					</div>
 

@@ -1,4 +1,4 @@
-import getDefaultAttribute from '../getDefaultAttribute';
+import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
 import { select } from '@wordpress/data';
 import { getBlockAttributes } from '@wordpress/blocks';
 import { getBlockData } from '@extensions/attributes';

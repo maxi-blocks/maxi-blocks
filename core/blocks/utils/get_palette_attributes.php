@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_value($key, $prefix, $obj, $is_hover, $breakpoint) {
     return is_null($breakpoint)
         ? get_attributes_value([

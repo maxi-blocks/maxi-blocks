@@ -68,7 +68,11 @@ const AccordionLineControl = props => {
 				items={[
 					{
 						label: __('Normal', 'maxi-blocks'),
-						content: <DividerControl {...props} disableRTC />,
+						content: (
+							<div className='maxi-accordion-line-control__normal-state'>
+								<DividerControl {...props} disableRTC />
+							</div>
+						),
 					},
 					{
 						label: __('Hover', 'maxi-blocks'),

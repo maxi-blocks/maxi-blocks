@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -27,13 +27,15 @@ const MapEventsListener = props => {
 	} = props;
 
 	const [isFirstClick, setIsFirstClick] = useState(true);
+	const delayRef = useRef(null);
 
 	useEffect(() => {
-		isSelected === isFirstClick && setIsFirstClick(!isSelected);
+		setIsFirstClick(prev =>
+			isSelected === prev ? !isSelected : prev
+		);
 	}, [isSelected]);
 
 	const timeout = 300;
-	let delay;
 
 	const mapEvents = useMapEvents({
 		mousedown: event => {
@@ -43,7 +45,7 @@ const MapEventsListener = props => {
 				setIsDraggingMarker(false);
 			}
 			if (!isDraggingMarker && !isFirstClick) {
-				delay = setTimeout(() => {
+				delayRef.current = setTimeout(() => {
 					setIsAddingMarker(true);
 					setTimeout(() => {
 						// If hangs for too long, stop it.
@@ -53,12 +55,12 @@ const MapEventsListener = props => {
 			}
 		},
 		drag: () => {
-			clearTimeout(delay);
+			clearTimeout(delayRef.current);
 			setIsAddingMarker(false);
 			setIsDraggingMarker(false);
 		},
 		mouseup: event => {
-			clearTimeout(delay);
+			clearTimeout(delayRef.current);
 
 			if (isAddingMarker) {
 				const { lat, lng } = event.latlng;
@@ -94,6 +96,12 @@ const MapEventsListener = props => {
 		mapEvents.setMinZoom(mapMinZoom);
 		mapEvents.setMaxZoom(mapMaxZoom);
 	}, [mapMinZoom, mapMaxZoom]);
+
+	useEffect(() => {
+		return () => {
+			clearTimeout(delayRef.current);
+		};
+	}, []);
 
 	return null;
 };

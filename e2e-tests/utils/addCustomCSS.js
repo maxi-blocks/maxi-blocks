@@ -15,13 +15,9 @@ const checkCSS = async ({ page, cssInstances }) => {
 		// Type a valid declaration; semicolon avoids malformed concatenation
 		await page.keyboard.type('background: red');
 		await page.waitForTimeout(200);
-
-		// validate css
-		await page.waitForSelector(
-			`.maxi-css-code-editor__validate-button--${i + 1}`
+		await page.$eval(`.maxi-css-code-editor--${i + 1} textarea`, el =>
+			el.blur()
 		);
-		await page.click(`.maxi-css-code-editor__validate-button--${i + 1}`);
-		await page.waitForTimeout(250);
 	}
 };
 

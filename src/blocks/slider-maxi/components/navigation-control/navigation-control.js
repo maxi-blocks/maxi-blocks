@@ -23,6 +23,8 @@ const NavigationIconsControl = props => {
 		prefix = 'navigation-arrow-both-icon-',
 	} = props;
 
+	const label = prefix.includes('dot') ? 'dots' : 'arrows';
+
 	const getSvgType = prefix => {
 		switch (prefix) {
 			case 'navigation-arrow-both-icon-':
@@ -76,7 +78,10 @@ const NavigationIconsControl = props => {
 					content: (
 						<>
 							<ToggleSwitch
-								label={__('Enable icon hover', 'maxi-blocks')}
+								label={__(
+									`Enable ${label} icon hover`,
+									'maxi-blocks'
+								)}
 								selected={props[`${prefix}status-hover`]}
 								onChange={val =>
 									onChange({
@@ -107,7 +112,7 @@ const NavigationIconsControl = props => {
 						<>
 							<ToggleSwitch
 								label={__(
-									'Enable active icon state',
+									'Enable dots active state',
 									'maxi-blocks'
 								)}
 								selected={

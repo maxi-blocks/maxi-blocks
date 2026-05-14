@@ -104,6 +104,12 @@
 	}
 }
 
+div[data-name='carousel slider']
+	.maxi-carousel-slider__trigger-width
+	.maxi-advanced-number-control__input-wrapper {
+	width: 70px !important;
+}
+
 /*******************************
 * RTL
 *******************************/

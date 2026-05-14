@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/styles_defaults.php';
 
 function get_transition_styles($props, $transition_obj)

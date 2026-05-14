@@ -115,74 +115,77 @@ const getHoverObject = props => {
 
 const getIconStyles = (props, prefix = 'navigation-arrow-both-') => {
 	const iconPrefix = `${prefix}icon-`;
+	const isDot = prefix.includes('dot');
 
 	const response = {
-		background: props[`${iconPrefix}status-background`] &&
-			props[`${iconPrefix}background-active-media-general`] ===
-				'color' && {
-				...getColorBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['icon', 'iconBackgroundColor'],
-						false,
-						prefix
-					),
-					...getGroupAttributes(props, [
-						'background',
-						'backgroundColor',
-					]),
+		...(!isDot && {
+			background: props[`${iconPrefix}status-background`] &&
+				props[`${iconPrefix}background-active-media-general`] ===
+					'color' && {
+					...getColorBackgroundObject({
+						...getGroupAttributes(
+							props,
+							['icon', 'iconBackgroundColor'],
+							false,
+							prefix
+						),
+						...getGroupAttributes(props, [
+							'background',
+							'backgroundColor',
+						]),
+						prefix: iconPrefix,
+						blockStyle: props.blockStyle,
+						isIcon: true,
+					}),
+				},
+			gradient: props[`${iconPrefix}status-background`] &&
+				props[`${iconPrefix}background-active-media-general`] ===
+					'gradient' && {
+					...getGradientBackgroundObject({
+						...getGroupAttributes(
+							props,
+							['icon', 'iconBackground', 'iconBackgroundGradient'],
+							false,
+							prefix
+						),
+						prefix: iconPrefix,
+						isIcon: true,
+					}),
+				},
+			boxShadow:
+				props[`${iconPrefix}status-shadow`] &&
+				getBoxShadowStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							'iconBoxShadow',
+							false,
+							prefix
+						),
+					},
 					prefix: iconPrefix,
 					blockStyle: props.blockStyle,
-					isIcon: true,
 				}),
-			},
-		gradient: props[`${iconPrefix}status-background`] &&
-			props[`${iconPrefix}background-active-media-general`] ===
-				'gradient' && {
-				...getGradientBackgroundObject({
-					...getGroupAttributes(
-						props,
-						['icon', 'iconBackground', 'iconBackgroundGradient'],
-						false,
-						prefix
-					),
+			border:
+				props[`${iconPrefix}status-border`] &&
+				getBorderStyles({
+					obj: {
+						...getGroupAttributes(
+							props,
+							['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
+							false,
+							prefix
+						),
+					},
 					prefix: iconPrefix,
-					isIcon: true,
+					blockStyle: props.blockStyle,
 				}),
-			},
-		boxShadow:
-			props[`${iconPrefix}status-shadow`] &&
-			getBoxShadowStyles({
+			padding: getMarginPaddingStyles({
 				obj: {
-					...getGroupAttributes(
-						props,
-						'iconBoxShadow',
-						false,
-						prefix
-					),
+					...getGroupAttributes(props, 'iconPadding', false, prefix),
 				},
 				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
 			}),
-		border:
-			props[`${iconPrefix}status-border`] &&
-			getBorderStyles({
-				obj: {
-					...getGroupAttributes(
-						props,
-						['iconBorder', 'iconBorderWidth', 'iconBorderRadius'],
-						false,
-						prefix
-					),
-				},
-				prefix: iconPrefix,
-				blockStyle: props.blockStyle,
-			}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'iconPadding', false, prefix),
-			},
-			prefix: iconPrefix,
 		}),
 	};
 
@@ -194,8 +197,9 @@ const getIconHoverStyles = (props, prefix) => {
 	const iconHoverStatus = props[`${iconPrefix}status-hover`];
 	const iconHoverActiveMedia =
 		props[`${iconPrefix}background-active-media-general-hover`];
+	const isDot = prefix.includes('dot');
 
-	const response = iconHoverStatus
+	const response = iconHoverStatus && !isDot
 		? {
 				background: iconHoverActiveMedia === 'color' && {
 					...getColorBackgroundObject({
@@ -264,11 +268,13 @@ const getIconSpacing = (
 	prefix = 'navigation-arrow-both-'
 ) => {
 	const response = {
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding', isHover, prefix),
-			},
-			prefix: `${prefix}icon-`,
+		...(!prefix.includes('dot') && {
+			padding: getMarginPaddingStyles({
+				obj: {
+					...getGroupAttributes(props, 'padding', isHover, prefix),
+				},
+				prefix: `${prefix}icon-`,
+			}),
 		}),
 	};
 

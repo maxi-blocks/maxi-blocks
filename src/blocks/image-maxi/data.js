@@ -62,11 +62,21 @@ const copyPasteMapping = {
 				[__('Image width', 'maxi-blocks')]: 'img-width-general',
 				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
 			},
+			_ignore: [
+				'mediaID',
+				'mediaURL',
+				'mediaWidth',
+				'mediaHeight',
+				'cropOptions',
+			],
 		},
 		[__('Alignment', 'maxi-blocks')]: {
 			groupAttributes: 'alignment',
 		},
-		[__('Alt tag', 'maxi-blocks')]: ['mediaAlt', 'altSelector'],
+		[__('Alt tag', 'maxi-blocks')]: {
+			group: ['mediaAlt', 'altSelector'],
+			_ignore: ['mediaID'],
+		},
 		[__('Caption', 'maxi-blocks')]: {
 			group: {
 				[__('Caption type', 'maxi-blocks')]: 'captionType',

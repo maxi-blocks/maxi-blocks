@@ -57,6 +57,7 @@ const Inspector = props => {
 				items={[
 					{
 						label: __('Settings', 'maxi-blocks'),
+						ignoreIndicator: ['map-marker-icon'],
 						content: (
 							<AccordionControl
 								isPrimary

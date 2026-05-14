@@ -1,7 +1,7 @@
-import { getIsOverflowHidden } from '../getIsOverflowHidden';
-import getLastBreakpointAttribute from '../getLastBreakpointAttribute';
+import { getIsOverflowHidden } from '@extensions/styles/getIsOverflowHidden';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
-jest.mock('../getLastBreakpointAttribute', () =>
+jest.mock('@extensions/styles/getLastBreakpointAttribute', () =>
 	jest.fn(
 		({ target, breakpoint, attributes }) =>
 			attributes[`${target}-${breakpoint}`]

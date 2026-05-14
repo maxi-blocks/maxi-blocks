@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 
@@ -194,7 +196,7 @@ class MaxiBlocks_StyleCards
             if ($styles) {
                 wp_register_style('maxi-blocks-sc-styles', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-styles');
-                wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+                wp_add_inline_style('maxi-blocks-sc-styles', wp_strip_all_tags($styles));
             }
         }
 

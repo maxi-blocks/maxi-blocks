@@ -15,6 +15,34 @@ import {
 	updateAllBlockUniqueIds,
 } from '../../utils';
 
+// Helper to reliably select the row block in the editor
+const selectRowBlock = async () => {
+	await page.waitForSelector('.maxi-row-block', { timeout: 10000 });
+	await page.click('.maxi-row-block');
+	// Wait for block toolbar / selection indicator to confirm selection
+	await page.waitForSelector(
+		'.maxi-row-block.is-selected, .maxi-row-block.has-child-selected, .block-editor-block-list__block.is-selected .maxi-row-block',
+		{ timeout: 10000 }
+	).catch(() => {
+		// Fallback: click again if selection didn't register
+	});
+	await page.waitForTimeout(500);
+};
+
+// Helper to wait for pattern template buttons inside an accordion
+const waitForPatternButtons = async (accordion, minCount = 1) => {
+	// Poll until buttons appear (up to 10s)
+	let buttons = [];
+	for (let i = 0; i < 20; i++) {
+		buttons = await accordion.$$('.components-column-pattern__templates button');
+		if (buttons.length >= minCount) return buttons;
+		await page.waitForTimeout(500);
+	}
+	throw new Error(
+		`Expected at least ${minCount} pattern template buttons, found ${buttons.length}`
+	);
+};
+
 describe('ColumnPattern', () => {
 	it('Check column pattern', async () => {
 		await createNewPost();
@@ -22,10 +50,7 @@ describe('ColumnPattern', () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 		await updateAllBlockUniqueIds(page);
 
-		await page.$eval('.maxi-row-block', row => row.focus());
-
-		// Wait for block to be properly selected and sidebar to update
-		await page.waitForTimeout(500);
+		await selectRowBlock();
 
 		const accordionControl = await openSidebarTab(
 			page,
@@ -52,10 +77,9 @@ describe('ColumnPattern', () => {
 
 		await page.waitForTimeout(500);
 
-		await accordionControl.$$eval(
-			'.components-column-pattern__templates button',
-			click => click[0].click()
-		);
+		// Wait for pattern buttons to render before clicking
+		const patternButtons = await waitForPatternButtons(accordionControl, 1);
+		await patternButtons[0].click();
 
 		await page.waitForTimeout(500);
 
@@ -92,8 +116,7 @@ describe('ColumnPattern', () => {
 
 	it('Check responsive row-pattern', async () => {
 		// Ensure the row block is still selected
-		await page.$eval('.maxi-row-block', row => row.focus());
-		await page.waitForTimeout(500);
+		await selectRowBlock();
 
 		// s responsive
 		await changeResponsive(page, 's');
@@ -107,14 +130,15 @@ describe('ColumnPattern', () => {
 			'column picker'
 		);
 
-		await accordionControl.$$eval(
-			'.components-column-pattern__templates button',
-			click => click[1].click()
-		);
+		// Wait for at least 2 pattern buttons before clicking index [1]
+		let patternBtns = await waitForPatternButtons(accordionControl, 2);
+		await patternBtns[1].click();
+
+		await page.waitForTimeout(300);
 
 		const buttonClick = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
-			button => button[1].ariaPressed
+			button => button[1] && button[1].ariaPressed
 		);
 
 		expect(buttonClick).toBeTruthy();
@@ -157,9 +181,11 @@ describe('ColumnPattern', () => {
 
 		accordionControl = await openSidebarTab(page, 'style', 'column picker');
 
+		await waitForPatternButtons(accordionControl, 2);
+
 		const rowSelectedXs = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
-			button => button[1].ariaPressed
+			button => button[1] && button[1].ariaPressed
 		);
 
 		expect(rowSelectedXs).toBeTruthy();
@@ -196,9 +222,11 @@ describe('ColumnPattern', () => {
 
 		accordionControl = await openSidebarTab(page, 'style', 'column picker');
 
+		await waitForPatternButtons(accordionControl, 1);
+
 		const rowSelectedL = await accordionControl.$$eval(
 			'.components-column-pattern__templates button',
-			button => button[0].ariaPressed
+			button => button[0] && button[0].ariaPressed
 		);
 
 		expect(rowSelectedL).toBeTruthy();

@@ -184,7 +184,7 @@ describe('BorderControl', () => {
 		);
 
 		await page.$eval(
-			'.maxi-axis-control__content__item__border-width input',
+			'.maxi-axis-control__content__item__top input',
 			input => input.focus()
 		);
 
@@ -197,7 +197,7 @@ describe('BorderControl', () => {
 
 		// check border radius
 		await page.$eval(
-			'.maxi-axis-control__content__item__border-radius input',
+			'.maxi-axis-control__content__item__top-left input',
 			input => input.focus()
 		);
 
@@ -216,14 +216,14 @@ describe('BorderControl', () => {
 
 		// same value
 		const borderWidth = await page.$eval(
-			'.maxi-axis-control__content__item__border-width input',
+			'.maxi-axis-control__content__item__top input',
 			input => input.value
 		);
 		expect(borderWidth).toStrictEqual('59');
 
 		// check border radius
 		const borderRadius = await page.$eval(
-			'.maxi-axis-control__content__item__border-radius input',
+			'.maxi-axis-control__content__item__top-left input',
 			input => input.value
 		);
 
@@ -231,7 +231,7 @@ describe('BorderControl', () => {
 
 		// reset button
 		await page.$eval(
-			'.maxi-axis-control__border .maxi-axis-control__content__item__border-width .maxi-reset-button',
+			'.maxi-axis-control__border .maxi-axis-control__content__item__top .maxi-reset-button',
 			button => button.click()
 		);
 

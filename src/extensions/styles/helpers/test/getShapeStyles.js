@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getShapeStyles from '../getShapeStyles';
+import getShapeStyles from '@extensions/styles/helpers/getShapeStyles';
 
 // Mock dependencies
 jest.mock('src/extensions/styles/getColorRGBAString', () => {

@@ -71,9 +71,9 @@ describe('sc-variable', () => {
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
-		await waitForExpandedSCVars(page);
+		await waitForExpandedSCVars(previewPage);
 
-		const scVariableFront = await page.$eval(
+		const scVariableFront = await previewPage.$eval(
 			scVarsSelector,
 			content => content.innerText.trim()
 		);

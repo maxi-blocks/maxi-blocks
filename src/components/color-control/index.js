@@ -244,7 +244,8 @@ const ColorControl = props => {
 					prefix,
 					!avoidBreakpointForDefault ? deviceType : null
 				)
-			);
+			) ??
+			1;
 
 		onChange({
 			paletteStatus,

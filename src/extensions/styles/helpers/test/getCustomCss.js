@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getCustomCssObject from '../getCustomCss';
+import getCustomCssObject from '@extensions/styles/helpers/getCustomCss';
 
 // Mock dependencies
 jest.mock('src/extensions/styles/getLastBreakpointAttribute', () => {

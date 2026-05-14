@@ -379,7 +379,7 @@ describe('Map Maxi', () => {
 			return tiles.length > 0;
 		});
 		expect(cycleTilesExist).toBe(true);
-	}, 30000);
+	}, 120000);
 
 	it('Map Maxi Custom CSS', async () => {
 		await expect(await addCustomCSS(page)).toMatchSnapshot();

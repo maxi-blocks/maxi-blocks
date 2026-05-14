@@ -118,22 +118,22 @@ export default async function deactivatePlugin(slug) {
 			await visitAdminPage('plugins.php');
 			// eslint-disable-next-line no-await-in-loop
 			const deleteLink = await page.$(
-				`tr[data-slug="${slug}"] .delete a`
+				`tr[data-plugin^="${slug}/"] .delete a`
 			);
 			if (deleteLink) {
 				return;
 			}
 			// eslint-disable-next-line no-await-in-loop
 			await page.waitForSelector(
-				`tr[data-slug="${slug}"] .deactivate a`,
+				`tr[data-plugin^="${slug}/"] .deactivate a`,
 				{
 					timeout: 30000,
 				}
 			);
 			// eslint-disable-next-line no-await-in-loop
-			await page.click(`tr[data-slug="${slug}"] .deactivate a`);
+			await page.click(`tr[data-plugin^="${slug}/"] .deactivate a`);
 			// eslint-disable-next-line no-await-in-loop
-			await page.waitForSelector(`tr[data-slug="${slug}"] .delete a`, {
+			await page.waitForSelector(`tr[data-plugin^="${slug}/"] .delete a`, {
 				timeout: 30000,
 			});
 			break; // Success, exit retry loop

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 require_once MAXI_PLUGIN_DIR_PATH . 'core/blocks/utils/get_palette_color.php';
 
 function get_var_with_color($block_style, $variable)

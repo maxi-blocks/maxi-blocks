@@ -24,6 +24,7 @@ import { getIsHoverPreview } from '@extensions/maxi-block';
 import InnerBlocksBlock from './innerBlocksBlock';
 import MainMaxiBlock from './mainMaxiBlock';
 import { inlineLinkFields } from '@extensions/DC/constants';
+import { countProfile } from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -54,6 +55,7 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 			target,
 			breakpoint,
 			attributes,
+			forceSingle: true,
 		});
 
 	const isFullWidth = getValue('full-width');
@@ -95,6 +97,8 @@ const getBlockStyle = (attributes, breakpoint, marginValue) => {
 };
 
 const MaxiBlockContent = forwardRef((props, ref) => {
+	countProfile('MaxiBlockContent render');
+
 	const {
 		clientId,
 		blockName,
@@ -137,6 +141,7 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 		target: 'full-width',
 		breakpoint: deviceType,
 		attributes,
+		forceSingle: true,
 	});
 
 	// Gets if the block has to be disabled due to the device type
@@ -311,6 +316,8 @@ const MaxiBlockContent = forwardRef((props, ref) => {
 
 const MaxiBlock = memo(
 	forwardRef((props, ref) => {
+		countProfile('MaxiBlock render');
+
 		const {
 			clientId,
 			attributes,

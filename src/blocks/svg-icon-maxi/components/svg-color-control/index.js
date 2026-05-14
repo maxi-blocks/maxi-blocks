@@ -71,9 +71,30 @@ const SvgColorControl = props => {
 				{
 					label: __('Normal state', 'maxi-blocks'),
 					content: normalSvgColor,
+					indicatorProps: [
+						'svg-fill-palette-status',
+						'svg-fill-palette-color',
+						'svg-fill-palette-opacity',
+						'svg-fill-color',
+						'svg-line-palette-status',
+						'svg-line-palette-color',
+						'svg-line-palette-opacity',
+						'svg-line-color',
+					],
 				},
 				{
 					label: __('Hover state', 'maxi-blocks'),
+					indicatorProps: [
+						'svg-status-hover',
+						'svg-fill-palette-status-hover',
+						'svg-fill-palette-color-hover',
+						'svg-fill-palette-opacity-hover',
+						'svg-fill-color-hover',
+						'svg-line-palette-status-hover',
+						'svg-line-palette-color-hover',
+						'svg-line-palette-opacity-hover',
+						'svg-line-color-hover',
+					],
 					content: (
 						<>
 							<ManageHoverTransitions />

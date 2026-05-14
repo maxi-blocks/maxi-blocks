@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
   * Title: Pure Footer Dark PFD-PRO-105
   * Slug: maxiblocks-go/pure-footer-dark-pfd-pro-105

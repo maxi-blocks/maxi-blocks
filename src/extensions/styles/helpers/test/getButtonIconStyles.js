@@ -1,4 +1,4 @@
-import getButtonIconStyles from '../getButtonIconStyles';
+import getButtonIconStyles from '@extensions/styles/helpers/getButtonIconStyles';
 
 describe('getButtonIconStyles', () => {
 	it('Should return the correct styles for empty object', () => {

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_custom_formats_styles(
     $target,
     $custom_formats,

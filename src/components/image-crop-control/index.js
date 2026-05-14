@@ -133,6 +133,7 @@ const ImageCropControl = props => {
 		) {
 			const data = new FormData();
 			data.append('old_media_src', cropOptions.image.source_url);
+			data.append('nonce', window.maxiBlocksMain?.image_crop_nonce);
 
 			fetch(
 				`${
@@ -153,6 +154,7 @@ const ImageCropControl = props => {
 
 	const cropper = () => {
 		const data = new FormData();
+		data.append('nonce', window.maxiBlocksMain?.image_crop_nonce);
 		data.append('old_media_src', imageData.id);
 		data.append('src', imageData.id);
 		data.append('src_x', getX());

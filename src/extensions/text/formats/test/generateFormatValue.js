@@ -6,7 +6,7 @@ import { create } from '@wordpress/rich-text';
 /**
  * Internal dependencies
  */
-import generateFormatValue from '../generateFormatValue';
+import generateFormatValue from '@extensions/text/formats/generateFormatValue';
 
 jest.mock('@wordpress/rich-text', () => ({
 	create: jest.fn(input => input),

@@ -648,6 +648,7 @@ const ImageLayerSettings = props => {
 				isHover={isHover}
 				isLayer={isLayer}
 				breakpoint={breakpoint}
+				hideSize={parallaxStatus}
 			/>
 		</>
 	);

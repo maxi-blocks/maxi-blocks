@@ -64,6 +64,7 @@ const Inspector = props => {
 		updateInnerBlocksPositions,
 		attributes,
 	} = props;
+	const hasColumnPattern = !!attributes['row-pattern-general'];
 	const { selectors: allSelectors, categories: allCategories } = customCss;
 
 	// Get carousel status to conditionally show Arrows and Dots tabs
@@ -117,17 +118,26 @@ const Inspector = props => {
 										content: (
 											<ResponsiveTabsControl
 												breakpoint={deviceType}
+												{...(!hasColumnPattern && {
+													getIndicatorProps: () => [],
+												})}
 											>
 												<ColumnPicker {...props} />
 											</ResponsiveTabsControl>
 										),
-										ignoreIndicator: [
-											`row-pattern-${deviceType}`,
-										],
-										extraIndicators: [
-											'verticalAlign',
-											'horizontalAlign',
-										],
+										...(hasColumnPattern
+											? {
+													ignoreIndicator: [
+														`row-pattern-${deviceType}`,
+													],
+													extraIndicators: [
+														'verticalAlign',
+														'horizontalAlign',
+													],
+											  }
+											: {
+													indicatorProps: [],
+											  }),
 									},
 									...inspectorTabs.blockBackground({
 										props,

@@ -652,6 +652,28 @@ exports[`breakpointAttributesCreator Returns an image bg object 1`] = `
     "default": "all",
     "type": "string",
   },
+  "background-image-wrapper-position-sync-horizontal-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-l": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-m": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-s": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-xl": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-xs": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-horizontal-xxl": {
+    "type": "boolean",
+  },
   "background-image-wrapper-position-sync-l": {
     "type": "string",
   },
@@ -660,6 +682,28 @@ exports[`breakpointAttributesCreator Returns an image bg object 1`] = `
   },
   "background-image-wrapper-position-sync-s": {
     "type": "string",
+  },
+  "background-image-wrapper-position-sync-vertical-general": {
+    "default": true,
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-l": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-m": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-s": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-xl": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-xs": {
+    "type": "boolean",
+  },
+  "background-image-wrapper-position-sync-vertical-xxl": {
+    "type": "boolean",
   },
   "background-image-wrapper-position-sync-xl": {
     "type": "string",

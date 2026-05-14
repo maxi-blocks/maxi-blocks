@@ -93,6 +93,9 @@ const typography = ({
 			hasNonDefaultTextAlignment === false && {
 				ignoreIndicator: textAlignmentAttributes,
 			}),
+		...(allowLink && {
+			ignoreIndicatorGroups: ['link'],
+		}),
 		content: (
 			<>
 				{/* Font Level Control (Heading/Paragraph tags) */}
@@ -168,9 +171,7 @@ const typography = ({
 									disableCustomFormats={disableCustomFormats}
 									blockStyle={blockStyle}
 									styleCardPrefix={styleCardPrefix}
-									textLevel={
-										textLevel || attributes.textLevel
-									}
+									textLevel={textLevel}
 									inlineTarget={inlineTarget}
 									isList={isList}
 									allowLink={allowLink}
@@ -203,7 +204,7 @@ const typography = ({
 										<TypographyControl
 											{...getGroupAttributes(
 												attributes,
-												'typography',
+												typographyTarget,
 												true,
 												prefix
 											)}
@@ -220,7 +221,9 @@ const typography = ({
 											blockStyle={blockStyle}
 											styleCardPrefix={styleCardPrefix}
 											isList={isList}
+											allowLink={allowLink}
 											globalProps={hoverGlobalProps}
+											textLevel={textLevel}
 											prefix={prefix}
 										/>
 									)}

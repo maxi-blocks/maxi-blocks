@@ -233,6 +233,7 @@ const BorderWidthControl = props => {
 				}}
 				disableAuto
 				isHover={isHover}
+				{...(!isToolbar && { showAllSides: true })}
 				{...(isToolbar && { disableSync: true })}
 			/>
 		</div>
@@ -485,6 +486,7 @@ const BorderControl = props => {
 							},
 						}}
 						disableAuto
+						enableAxisUnits
 						isHover={isHover}
 						inputsArray={[
 							'top-left',
@@ -493,6 +495,7 @@ const BorderControl = props => {
 							'bottom-left',
 							'unit',
 						]}
+						showAllSides
 					/>
 				</>
 			)}

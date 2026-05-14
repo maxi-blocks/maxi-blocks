@@ -160,7 +160,7 @@ test.describe('Column Maxi', () => {
 			page,
 			instance: axisControlInstance,
 			syncOption: 'none',
-			values: ['16', '15', '24', '25'],
+			values: ['16', '15', '25', '24'],
 			unit: '%',
 		});
 
@@ -202,7 +202,7 @@ test.describe('Column Maxi', () => {
 			page,
 			instance: axisControlHoverInstance,
 			syncOption: 'none',
-			values: ['33', '25', '55', '12'],
+			values: ['33', '25', '12', '55'],
 			unit: '%',
 		});
 

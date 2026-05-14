@@ -11,6 +11,8 @@ exports[`Background color from Toolbar Test background color from toolbar 1`] = 
     "background-color-wrapper-position-left-unit-general": "px",
     "background-color-wrapper-position-right-unit-general": "px",
     "background-color-wrapper-position-sync-general": "all",
+    "background-color-wrapper-position-sync-horizontal-general": true,
+    "background-color-wrapper-position-sync-vertical-general": true,
     "background-color-wrapper-position-top-unit-general": "px",
     "background-color-wrapper-width-general": 100,
     "background-color-wrapper-width-unit-general": "%",

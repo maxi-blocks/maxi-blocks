@@ -23,6 +23,7 @@ const MarginControl = props => {
 			optionType='string'
 			fullWidth={fullWidth}
 			noResponsiveTabs={noResponsiveTabs}
+			showAllSides
 			minMaxSettings={{
 				px: {
 					min: -999,

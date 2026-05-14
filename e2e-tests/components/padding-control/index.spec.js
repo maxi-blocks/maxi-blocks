@@ -64,16 +64,10 @@ describe('Padding control', () => {
 	});
 
 	it('Checking padding together control', async () => {
-		await page.$eval(
-			'.maxi-axis-control__padding .maxi-axis-control__header .maxi-tabs-control .maxi-tabs-control__button-axis',
-			button => button.click()
-		);
-
 		await editAxisControl({
 			page,
-			instance: await page.$(
-				'.maxi-axis-control__padding .maxi-axis-control__content__item__top-bottom'
-			),
+			instance: await page.$('.maxi-axis-control__padding'),
+			syncOption: 'axis',
 			values: '34',
 			unit: '%',
 		});
@@ -81,7 +75,7 @@ describe('Padding control', () => {
 		await editAxisControl({
 			page,
 			instance: await page.$(
-				'.maxi-axis-control__padding .maxi-axis-control__content__item__left-right'
+				'.maxi-axis-control__padding .maxi-axis-control__content__item__left'
 			),
 			values: '44',
 			unit: 'em',
@@ -112,16 +106,10 @@ describe('Padding control', () => {
 	});
 
 	it('Checking padding separately control', async () => {
-		await page.$eval(
-			'.maxi-axis-control__padding .maxi-axis-control__header .maxi-tabs-control .maxi-tabs-control__button-none',
-			button => button.click()
-		);
-
 		await editAxisControl({
 			page,
-			instance: await page.$(
-				'.maxi-axis-control__padding .maxi-axis-control__content__item__top'
-			),
+			instance: await page.$('.maxi-axis-control__padding'),
+			syncOption: 'none',
 			values: '10',
 			unit: '%',
 		});
@@ -178,10 +166,11 @@ describe('Padding control', () => {
 	});
 
 	it('Checking responsive padding', async () => {
-		await page.$eval(
-			'.maxi-axis-control__padding .maxi-axis-control__header .maxi-tabs-control .maxi-tabs-control__button-all',
-			button => button.click()
-		);
+		await editAxisControl({
+			page,
+			instance: await page.$('.maxi-axis-control__padding'),
+			syncOption: 'all',
+		});
 
 		const responsiveValue = await addResponsiveTest({
 			page,

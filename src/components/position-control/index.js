@@ -93,6 +93,7 @@ const PositionControl = props => {
 		<AxisControl
 			{...props}
 			target='position'
+			label={__('Position', 'maxi-blocks')}
 			prefix={prefix}
 			onChange={obj => onChange(obj)}
 			breakpoint={breakpoint}
@@ -102,6 +103,7 @@ const PositionControl = props => {
 			allowedUnits={['px', 'em', 'vw', '%', '-']}
 			isHover={isHover}
 			defaultAttributes={defaultAttributes}
+			showAllSides
 		/>
 	);
 

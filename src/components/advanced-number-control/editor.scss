@@ -3,57 +3,57 @@
 ===============================================*/
 
 .maxi-advanced-number-control {
-	/*--- Shared Resets & Utils ---*/
-	&__input-wrapper,
-	&__value {
-		// Base and all interaction states
-		&,
-		&:focus,
-		&:focus-within,
-		&:focus-visible,
-		&:active {
-			border: none !important;
-			outline: none !important;
-			box-shadow: none !important;
-			background: transparent !important;
-		}
-	}
-
-	&__input-wrapper,
-	&__spinner-container,
-	&__spinner-button {
-		display: flex;
-		align-items: center;
-	}
-
-	/*--- Core Layout Components ---*/
 	.maxi-base-control {
 		margin-bottom: 0;
 	}
 
+	.maxi-base-control__label {
+		flex: 2;
+	}
+
 	&__input-wrapper {
 		position: relative;
+		display: flex;
+		align-items: center;
 		flex: none;
 		width: 70px !important;
+		border: none !important;
+		outline: none !important;
+		background: transparent !important;
+		box-shadow: none !important;
 
-		// Focus state (Keyboard Accessibility)
+		&:focus,
+		&:focus-visible,
+		&:active {
+			border: none !important;
+			outline: none !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
 		&:focus-within {
+			border: none !important;
 			outline: 2px solid var(--maxi-primary-color);
 			outline-offset: 2px;
+			background: transparent !important;
+			box-shadow: none !important;
 		}
 	}
 
 	&__value {
-		height: 36px;
-		padding: 0 5px 0 4px !important;
 		z-index: 0;
 		max-width: 55px;
+		height: 36px;
+		padding: 0 5px 0 4px !important;
+		border: none !important;
+		outline: none !important;
+		background: transparent !important;
+		box-shadow: none !important;
 
-		// Browser Spinner Hides
 		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button {
-			-webkit-appearance: none;
 			margin: 0;
+			-webkit-appearance: none;
 		}
 
 		&[type='number'] {
@@ -61,61 +61,105 @@
 			appearance: textfield;
 		}
 
-		// Focus state (Keyboard Accessibility)
+		&:focus,
+		&:focus-within,
+		&:active {
+			border: none !important;
+			outline: none !important;
+			background: transparent !important;
+			box-shadow: none !important;
+		}
+
 		&:focus-visible {
+			border: none !important;
 			outline: 2px solid var(--maxi-primary-color);
 			outline-offset: 2px;
+			background: transparent !important;
+			box-shadow: none !important;
 		}
 	}
 
-	/*--- Spinner Controls ---*/
+	&__controls-group {
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 5px;
+
+		&--auto {
+			opacity: 0.45;
+			pointer-events: none;
+
+			.maxi-advanced-number-control__value,
+			.maxi-select-control__input,
+			.maxi-reset-button {
+				cursor: not-allowed;
+			}
+		}
+	}
+
 	&__spinner-container {
 		position: absolute;
-		right: 2px;
 		top: 50%;
-		transform: translateY(-48%);
-		flex-direction: column;
+		right: 1px;
 		z-index: 1;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		transform: translateY(-48%);
 
-		// Divider line
-		&::before {
-			content: '';
+		&::before,
+		&::after {
 			position: absolute;
-			left: -3px;
 			top: 50%;
-			transform: translateY(-50%);
 			width: 1px;
 			height: 18px;
 			background-color: var(--maxi-grey-light);
+			content: '';
 			pointer-events: none;
+			transform: translateY(-50%);
+		}
+
+		&::before {
+			left: -3px;
+		}
+
+		&::after {
+			right: -1px;
+		}
+
+		&::before {
+			left: -3px;
+		}
+
+		&::after {
+			right: -4px;
 		}
 	}
 
 	&__spinner-button {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		width: 16px;
 		height: 12px;
 		padding: 0;
-		justify-content: center;
-		position: relative;
-
-		background: transparent;
 		border: none;
 		border-radius: 2px;
-
 		color: var(--maxi-grey);
-		cursor: pointer;
+		background: transparent;
 		transition: all 200ms ease;
+		cursor: pointer;
 
 		svg {
-			pointer-events: none;
 			transition: inherit;
+			pointer-events: none;
 		}
 
 		&--down {
 			border-top: 1px solid var(--maxi-grey);
 		}
 
-		// Interactive States
 		&:focus-visible,
 		&:hover {
 			outline: none;
@@ -124,9 +168,10 @@
 
 		&:hover {
 			color: var(--maxi-primary-color);
+
 			svg {
-				color: var(--maxi-primary-color);
 				border: none;
+				color: var(--maxi-primary-color);
 			}
 		}
 
@@ -137,28 +182,42 @@
 		&:disabled {
 			color: var(--maxi-grey);
 			cursor: not-allowed;
+
 			&:hover {
 				background: transparent;
 			}
 		}
 	}
 
-	/*--- Variants ---*/
 	&__second-style {
 		.maxi-base-control__field {
 			position: relative;
 		}
+
 		.maxi-base-control__label,
 		.maxi-select-control__input {
 			border: none !important;
 		}
 	}
 
-	/*--- Integrations & Overrides ---*/
+	.components-range-control {
+		width: 100%;
+		margin: 8px 0 0;
 
-	// Field Layout
-	.maxi-base-control__label {
-		flex: 2;
+		.components-range-control__tooltip,
+		.components-simple-tooltip {
+			display: none !important;
+		}
+
+		&.maxi-advanced-number-control__range--small {
+			.components-simple-tooltip {
+				transform: none;
+			}
+		}
+
+		&.maxi-advanced-number-control__range--big .components-simple-tooltip {
+			transform: translateX(-90%);
+		}
 	}
 
 	.maxi-base-control__field,
@@ -176,44 +235,26 @@
 		}
 	}
 
-	// Range Control
-	.components-range-control {
-		width: 100%;
-		margin: 8px 0 0;
-
-		&.maxi-advanced-number-control__range--small {
-			.components-simple-tooltip {
-				transform: none;
-			}
-		}
-		&.maxi-advanced-number-control__range--big .components-simple-tooltip {
-			transform: translateX(-90%);
-		}
-	}
-
-	// Dimensions Control Units
 	.maxi-dimensions-control__units .maxi-select-control__input {
+		background-color: var(--maxi-white) !important;
+		border-left: none !important;
+		border-right: none !important;
+		box-sizing: border-box;
+		flex: 0 0 auto !important;
+		width: 51px !important;
+		min-width: 51px !important;
+		max-width: 51px !important;
 		height: 36px !important;
 		min-height: 36px !important;
-		padding-right: 6px !important;
+		padding: 8px 6px !important;
 	}
 }
 
-/*===============================================
-   GLOBAL & RTL SUPPORT
-===============================================*/
-
-.maxi-advanced-number-control__controls-group {
-	display: flex;
-	align-items: center;
-	border: 1px solid var(--maxi-grey-light);
-	border-radius: 5px;
-}
-
-html[dir='rtl'] {
+html[dir='rtl'] .maxi-advanced-number-control {
 	.maxi-select-control__input {
 		text-align: right;
 	}
+
 	.maxi-base-control__label {
 		left: unset;
 		right: 8px;

@@ -143,6 +143,7 @@ const replaceColumnInnerBlocks = (
  * @param {Function}              differentColumnsStructureCallback runs when columns have different structure, if returns false - columns won't be transformed
  * @param {string}                rawColumnToValidateByClientId     column to validate by, first column by default
  * @param {boolean}               skipFirstMarkNotPersistent        skip first `__unstableMarkNextChangeAsNotPersistent` call
+ * @param {boolean}               rejectDisallowedBlocks            return false immediately when disallowed blocks are present (enable-toggle path only)
  * @returns {Promise<boolean>}    true if columns were transformed, false if not
  */
 const validateRowColumnsStructure = async (
@@ -150,7 +151,8 @@ const validateRowColumnsStructure = async (
 	innerBlocksPositions,
 	differentColumnsStructureCallback,
 	rawColumnToValidateByClientId,
-	skipFirstMarkNotPersistent = false
+	skipFirstMarkNotPersistent = false,
+	rejectDisallowedBlocks = false
 ) => {
 	const {
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
@@ -172,14 +174,16 @@ const validateRowColumnsStructure = async (
 		return true;
 	}
 
-	const blockEditor = select('core/block-editor');
-	const disallowedBlocks = getDisallowedRepeaterBlocksFromClientId(
-		rowClientId,
-		blockEditor
-	);
+	if (rejectDisallowedBlocks) {
+		const blockEditor = select('core/block-editor');
+		const disallowedBlocks = getDisallowedRepeaterBlocksFromClientId(
+			rowClientId,
+			blockEditor
+		);
 
-	if (disallowedBlocks.length > 0) {
-		return false;
+		if (disallowedBlocks.length > 0) {
+			return false;
+		}
 	}
 
 	let columnToValidateByIndex = 0;

@@ -91,6 +91,7 @@ const Repeater = ({
 										setResolveConfirmation(() => resolve);
 									}),
 								undefined,
+								true,
 								true
 							);
 

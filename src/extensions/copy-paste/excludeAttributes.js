@@ -53,7 +53,16 @@ const shouldDeleteKey = (
 	blockName,
 	customAllTimeExclude
 ) => {
+	const isDCLinkBlocksException =
+		!isRepeater &&
+		prop === 'dc-status' &&
+		DC_LINK_BLOCKS.includes(blockName);
+
 	if (isNil(attributesToExclude[prop])) {
+		return false;
+	}
+
+	if (isDCLinkBlocksException) {
 		return false;
 	}
 
@@ -69,13 +78,8 @@ const shouldDeleteKey = (
 			getDefaultAttribute(prop)
 		);
 
-		const isDCLinkBlocksException =
-			prop === 'dc-status' && DC_LINK_BLOCKS.includes(blockName);
-
 		return (
-			(!isSvgIconMaxiException &&
-				!isDCLinkBlocksException &&
-				isInAllTimeExclude) ||
+			(!isSvgIconMaxiException && isInAllTimeExclude) ||
 			!isEqualToDefault
 		);
 	}

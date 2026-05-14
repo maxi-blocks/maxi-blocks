@@ -34,6 +34,28 @@ describe('excludeAttributes', () => {
 		});
 	});
 
+
+	it('Keeps dc-status for DC link blocks outside repeater mode', () => {
+		const blockName = DC_LINK_BLOCKS[0];
+		const rawAttributesToExclude = {
+			'dc-status': true,
+			otherAttr: 'value',
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			{},
+			{ _exclude: [] },
+			false,
+			blockName
+		);
+
+		expect(result).toEqual({
+			'dc-status': true,
+			otherAttr: 'value',
+		});
+	});
+
 	it('Handles repeater mode with different exclusions', () => {
 		const rawAttributesToExclude = {
 			customLabel: 'label',
@@ -125,6 +147,28 @@ describe('excludeAttributes', () => {
 		);
 
 		expect(result).toEqual({});
+	});
+
+	it('Excludes dc-status for DC link blocks in repeater mode when at default value', () => {
+		const blockName = DC_LINK_BLOCKS[0];
+		getDefaultAttribute.mockReturnValue(false);
+
+		const rawAttributesToExclude = {
+			'dc-status': false,
+			otherAttr: 'value',
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			{ 'dc-status': false },
+			{ _exclude: [] },
+			true,
+			blockName
+		);
+
+		expect(result).toEqual({
+			otherAttr: 'value',
+		});
 	});
 
 	it('Respects custom all time exclude list', () => {

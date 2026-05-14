@@ -83,6 +83,7 @@ const templates = {
 	anchor: {
 		props: [
 			'anchor',
+			'anchorLink',
 			'linkSettings',
 			'dc-status',
 			'dc-link-status',

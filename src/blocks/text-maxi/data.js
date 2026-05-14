@@ -103,6 +103,9 @@ const copyPasteMapping = {
 		[__('Typography', 'maxi-blocks')]: {
 			template: 'typography',
 		},
+		[__('Text links', 'maxi-blocks')]: {
+			groupAttributes: 'link',
+		},
 		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},

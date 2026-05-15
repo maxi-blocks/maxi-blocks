@@ -88,6 +88,7 @@ let blockMoveStyleSheet = null;
  */
 let fseSingletonObserver = null;
 let fseSingletonObserverTimeout = null;
+const editorCanvasStateObservers = new WeakMap();
 
 function ensureBlockMoveStyleSheet() {
 	if (blockMoveStyleSheet) return;
@@ -1026,12 +1027,20 @@ class MaxiBlockComponent extends Component {
 			MaxiBlockComponent.iframeStylesCache ||
 			(MaxiBlockComponent.iframeStylesCache = {
 				doc: null,
+				body: null,
 				breakpoint: null,
 			});
+		const hasExpectedEditorState = this.hasResponsiveEditorState(
+			editorWrapper,
+			currentBreakpoint
+		);
 
 		if (
 			cache.doc === iframeDocument &&
-			cache.breakpoint === currentBreakpoint
+			cache.body === editorWrapper &&
+			cache.breakpoint === currentBreakpoint &&
+			editorWrapper.classList.contains('maxi-blocks--active') &&
+			hasExpectedEditorState
 		) {
 			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
@@ -1056,6 +1065,7 @@ class MaxiBlockComponent extends Component {
 		}
 
 		cache.doc = iframeDocument;
+		cache.body = editorWrapper;
 		cache.breakpoint = currentBreakpoint;
 		recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 	}
@@ -1748,12 +1758,20 @@ class MaxiBlockComponent extends Component {
 				MaxiBlockComponent.breakpointSwitchCache ||
 				(MaxiBlockComponent.breakpointSwitchCache = {
 					doc: null,
+					body: null,
 					breakpoint: null,
 				});
+			const iframeBody = iframeDoc?.body || null;
 
 			const cacheHit =
 				cache.doc === iframeDoc &&
-				cache.breakpoint === this.props.deviceType;
+				cache.body === iframeBody &&
+				cache.breakpoint === this.props.deviceType &&
+				iframeBody?.classList.contains('maxi-blocks--active') &&
+				this.hasResponsiveEditorState(
+					iframeBody,
+					this.props.deviceType
+				);
 
 			if (!cacheHit) {
 				this.handleIframeStyles(
@@ -1765,6 +1783,7 @@ class MaxiBlockComponent extends Component {
 					this.props.deviceType
 				);
 				cache.doc = iframeDoc;
+				cache.body = iframeBody;
 				cache.breakpoint = this.props.deviceType;
 			}
 
@@ -2065,6 +2084,10 @@ class MaxiBlockComponent extends Component {
 			this.copyMaxiVariablesToIframe(iframeDocument, iframe);
 			this.ensureMaxiStylesLoaded(iframeDocument, iframe);
 		}
+		if (iframe) {
+			this.ensureIframeEditorState(iframeDocument, currentBreakpoint);
+			this.setupEditorCanvasStateObserver(iframeDocument);
+		}
 
 		// Clear previous iframe references
 		if (this.previousIframeContent) {
@@ -2080,16 +2103,7 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
-		const { isPreview } = this.getPreviewElements(
-			editorWrapper,
-			currentBreakpoint
-		);
-
-		if (!isPreview) {
-			return;
-		}
-
-		editorWrapper.setAttribute('maxi-blocks-responsive', currentBreakpoint);
+		this.ensureResponsiveEditorState(editorWrapper, currentBreakpoint);
 	}
 
 	copyFontsToIframe(iframeDocument, iframe) {
@@ -2478,39 +2492,121 @@ class MaxiBlockComponent extends Component {
 		const target = iframe?.contentDocument?.body || document.body;
 		if (!target) return;
 
-		// Resolve 'general' to the actual window breakpoint so the attribute
-		// matches what breakpointResizer writes (e.g. 'xl' not 'general').
-		// This ensures CSS rules like [maxi-blocks-responsive="xl"] match.
-		const resolvedBreakpoint =
-			currentBreakpoint === 'general'
-				? this.props.baseBreakpoint || currentBreakpoint
-				: currentBreakpoint;
-
-		const cache =
-			MaxiBlockComponent.responsiveClassCache ||
-			(MaxiBlockComponent.responsiveClassCache = {
-				target: null,
-				breakpoint: null,
-			});
-
-		if (
-			cache.target === target &&
-			cache.breakpoint === resolvedBreakpoint
-		) {
+		if (this.hasResponsiveEditorState(target, currentBreakpoint)) {
 			return;
 		}
 
-		const editorWrapper = target.classList.contains('editor-styles-wrapper')
+		this.ensureResponsiveEditorState(target, currentBreakpoint);
+	}
+
+	getResolvedResponsiveBreakpoint(currentBreakpoint) {
+		const maxiBlocksStore = select('maxiBlocks');
+		const deviceType =
+			currentBreakpoint ??
+			maxiBlocksStore?.receiveMaxiDeviceType?.() ??
+			this.props.deviceType;
+
+		if (deviceType !== 'general') return deviceType;
+
+		return (
+			maxiBlocksStore?.receiveBaseBreakpoint?.() ??
+			this.props.baseBreakpoint ??
+			deviceType
+		);
+	}
+
+	getResponsiveEditorWrapper(target) {
+		if (!target) return null;
+
+		return target.classList?.contains('editor-styles-wrapper')
 			? target
-			: target.querySelector('.editor-styles-wrapper');
-		if (editorWrapper) {
+			: target.querySelector?.('.editor-styles-wrapper');
+	}
+
+	hasResponsiveEditorState(target, currentBreakpoint) {
+		const editorWrapper = this.getResponsiveEditorWrapper(target);
+		if (!editorWrapper) return false;
+
+		return (
+			editorWrapper.getAttribute('maxi-blocks-responsive') ===
+			this.getResolvedResponsiveBreakpoint(currentBreakpoint)
+		);
+	}
+
+	ensureResponsiveEditorState(target, currentBreakpoint) {
+		const editorWrapper = this.getResponsiveEditorWrapper(target);
+		if (!editorWrapper) return;
+
+		const resolvedBreakpoint =
+			this.getResolvedResponsiveBreakpoint(currentBreakpoint);
+
+		if (
+			editorWrapper.getAttribute('maxi-blocks-responsive') !==
+			resolvedBreakpoint
+		) {
 			editorWrapper.setAttribute(
 				'maxi-blocks-responsive',
 				resolvedBreakpoint
 			);
-			cache.target = target;
-			cache.breakpoint = resolvedBreakpoint;
 		}
+	}
+
+	ensureIframeEditorState(iframeDocument, currentBreakpoint) {
+		const editorWrapper = iframeDocument?.body;
+		if (!editorWrapper) return;
+
+		editorWrapper.classList.add('maxi-blocks--active');
+		this.ensureResponsiveEditorState(editorWrapper, currentBreakpoint);
+	}
+
+	setupEditorCanvasStateObserver(iframeDocument) {
+		if (
+			!iframeDocument?.documentElement ||
+			editorCanvasStateObservers.has(iframeDocument) ||
+			typeof MutationObserver === 'undefined'
+		) {
+			return;
+		}
+
+		let observedBody = null;
+		let bodyObserver = null;
+		const schedule =
+			typeof requestAnimationFrame === 'function'
+				? requestAnimationFrame
+				: callback => setTimeout(callback, 0);
+
+		const applyEditorState = () => {
+			this.ensureIframeEditorState(iframeDocument);
+
+			if (observedBody === iframeDocument.body) return;
+
+			if (bodyObserver) bodyObserver.disconnect();
+
+			observedBody = iframeDocument.body;
+			if (!observedBody) return;
+
+			bodyObserver = new MutationObserver(() => {
+				schedule(() => this.ensureIframeEditorState(iframeDocument));
+			});
+			bodyObserver.observe(observedBody, {
+				attributes: true,
+				attributeFilter: ['class', 'maxi-blocks-responsive'],
+			});
+		};
+
+		const documentObserver = new MutationObserver(() => {
+			schedule(applyEditorState);
+		});
+		documentObserver.observe(iframeDocument.documentElement, {
+			childList: true,
+		});
+		applyEditorState();
+		editorCanvasStateObservers.set(iframeDocument, {
+			documentObserver,
+			get bodyObserver() {
+				return bodyObserver;
+			},
+		});
 	}
 
 	copyGeneralToXL(obj) {

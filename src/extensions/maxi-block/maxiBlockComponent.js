@@ -850,7 +850,6 @@ class MaxiBlockComponent extends Component {
 		this.editorIframe = null;
 		this.templateModal = null;
 		this.previousIframeContent = null;
-		this.blockRef = null;
 
 		// Clear font cache references
 		if (this.fontCache) {
@@ -2439,7 +2438,7 @@ class MaxiBlockComponent extends Component {
 	 */
 	// eslint-disable-next-line class-methods-use-this
 	hasParentWithClass(ref, className) {
-		let parent = ref.current ? ref.current.parentNode : null;
+		let parent = ref?.current ? ref.current.parentNode : null;
 		while (parent) {
 			if (parent.classList && parent.classList.contains(className)) {
 				return true;

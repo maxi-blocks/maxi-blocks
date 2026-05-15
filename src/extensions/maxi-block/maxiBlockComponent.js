@@ -109,6 +109,39 @@ function ensureBlockMoveStyleSheet() {
  */
 let pendingStyleDisplays = [];
 let styleDisplayScheduled = false;
+let backendStyleFirstLoadCompat = null;
+
+function getWordPressCoreVersion() {
+	if (typeof window !== 'undefined') {
+		try {
+			return (
+				window.maxiSettings?.core?.version ??
+				window.parent?.maxiSettings?.core?.version
+			);
+		} catch (e) {
+			return window.maxiSettings?.core?.version;
+		}
+	}
+
+	return select('maxiBlocks')?.receiveMaxiSettings?.()?.core?.version;
+}
+
+function shouldRunBackendStyleFirstLoadCompat() {
+	if (backendStyleFirstLoadCompat !== null) {
+		return backendStyleFirstLoadCompat;
+	}
+
+	const coreVersion = getWordPressCoreVersion();
+
+	if (!coreVersion) {
+		return true;
+	}
+
+	backendStyleFirstLoadCompat =
+		compareVersions(String(coreVersion), '7.0') < 0;
+
+	return backendStyleFirstLoadCompat;
+}
 
 function flushStyleDisplays() {
 	if (pendingStyleDisplays.length === 0) return;
@@ -1029,10 +1062,9 @@ class MaxiBlockComponent extends Component {
 				body: null,
 				breakpoint: null,
 			});
-		const hasExpectedEditorState = this.hasResponsiveEditorState(
-			editorWrapper,
-			currentBreakpoint
-		);
+		const hasExpectedEditorState =
+			!this.shouldRunBackendStyleFirstLoadCompat() ||
+			this.hasResponsiveEditorState(editorWrapper, currentBreakpoint);
 
 		if (
 			cache.doc === iframeDocument &&
@@ -1858,9 +1890,14 @@ class MaxiBlockComponent extends Component {
 		// Update responsive classes for non-XXL breakpoint changes, or when in general mode
 		// with a valid base breakpoint (handles first load with iframe canvas where the
 		// maxi-blocks-responsive attribute is not set by breakpointResizer)
+		const shouldSyncFirstLoadResponsiveState =
+			this.shouldRunBackendStyleFirstLoadCompat() &&
+			this.props.deviceType === 'general' &&
+			this.props.baseBreakpoint;
+
 		if (
 			(isBreakpointChange && this.props.deviceType !== 'xxl') ||
-			(this.props.deviceType === 'general' && this.props.baseBreakpoint)
+			shouldSyncFirstLoadResponsiveState
 		) {
 			this.updateResponsiveClasses(
 				this.editorIframe,
@@ -2083,7 +2120,7 @@ class MaxiBlockComponent extends Component {
 			this.copyMaxiVariablesToIframe(iframeDocument, iframe);
 			this.ensureMaxiStylesLoaded(iframeDocument, iframe);
 		}
-		if (iframe) {
+		if (iframe && this.shouldRunBackendStyleFirstLoadCompat()) {
 			this.ensureIframeEditorState(iframeDocument, currentBreakpoint);
 			this.setupEditorCanvasStateObserver(iframeDocument);
 		}
@@ -2102,6 +2139,24 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
+
+		if (!this.shouldRunBackendStyleFirstLoadCompat()) {
+			const { isPreview } = this.getPreviewElements(
+				editorWrapper,
+				currentBreakpoint
+			);
+
+			if (!isPreview) {
+				return;
+			}
+
+			editorWrapper.setAttribute(
+				'maxi-blocks-responsive',
+				currentBreakpoint
+			);
+			return;
+		}
+
 		this.ensureResponsiveEditorState(editorWrapper, currentBreakpoint);
 	}
 
@@ -2498,6 +2553,11 @@ class MaxiBlockComponent extends Component {
 		this.ensureResponsiveEditorState(target, currentBreakpoint);
 	}
 
+	// eslint-disable-next-line class-methods-use-this
+	shouldRunBackendStyleFirstLoadCompat() {
+		return shouldRunBackendStyleFirstLoadCompat();
+	}
+
 	getResolvedResponsiveBreakpoint(currentBreakpoint) {
 		const maxiBlocksStore = select('maxiBlocks');
 		const deviceType =
@@ -2589,6 +2649,8 @@ class MaxiBlockComponent extends Component {
 			});
 			bodyObserver.observe(observedBody, {
 				attributes: true,
+				childList: true,
+				subtree: true,
 				attributeFilter: ['class', 'maxi-blocks-responsive'],
 			});
 		};

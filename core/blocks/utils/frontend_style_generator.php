@@ -48,9 +48,20 @@ function frontend_style_generator($styles, $style_id)
 
             foreach ($content as $suffix => $props) {
                 if (isset($props[$breakpoint]) && !empty($props[$breakpoint])) {
-                    $breakpointResponse .= "body.maxi-blocks--active #{$target}{$suffix}{";
-                    $breakpointResponse .= get_styles($props[$breakpoint]);
-                    $breakpointResponse .= '}';
+                    $media_query = null;
+                    $target_suffix = $suffix;
+
+                    if (is_advanced_css_media_query_target($suffix)) {
+                        $media_query_target = split_advanced_css_media_query_target($suffix);
+                        $media_query = $media_query_target['media_query'];
+                        $target_suffix = $media_query_target['selector'];
+                    }
+
+                    $style_rule = "body.maxi-blocks--active #{$target}{$target_suffix}{";
+                    $style_rule .= get_styles($props[$breakpoint]);
+                    $style_rule .= '}';
+
+                    $breakpointResponse .= $media_query ? "{$media_query}{{$style_rule}}" : $style_rule;
                 }
             }
 

@@ -1,4 +1,5 @@
 import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
+import { buildAdvancedCssMediaQueryTarget } from '@extensions/styles/advancedCssMediaQuery';
 
 describe('frontendStyleGenerator', () => {
 	it('Returns styles', () => {
@@ -51,5 +52,73 @@ describe('frontendStyleGenerator', () => {
 		const result = frontendStyleGenerator(styles);
 
 		expect(result).toMatchSnapshot();
+	});
+
+	it('wraps advanced CSS media query selectors around scoped frontend styles', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const styles = [
+			'group-maxi-1234-u',
+			{
+				breakpoints: {
+					xxl: 1920,
+					xl: 1920,
+					l: 1366,
+					m: 1024,
+					s: 767,
+					xs: 480,
+				},
+				content: {
+					[buildAdvancedCssMediaQueryTarget(
+						mediaQuery,
+						' .nav_search'
+					)]: {
+						general: {
+							css: 'background: red !important;',
+						},
+					},
+				},
+			},
+		];
+
+		const result = frontendStyleGenerator(styles);
+
+		expect(result).toBe(
+			`${mediaQuery}{body.maxi-blocks--active #group-maxi-1234-u .nav_search{background: red !important;}}`
+		);
+	});
+
+	it('wraps advanced CSS media query custom class selectors around the same frontend block', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const styles = [
+			'column-maxi-bf04696a-u',
+			{
+				breakpoints: {
+					xxl: 1920,
+					xl: 1920,
+					l: 1366,
+					m: 1024,
+					s: 767,
+					xs: 480,
+				},
+				content: {
+					[buildAdvancedCssMediaQueryTarget(
+						mediaQuery,
+						'.nav_search'
+					)]: {
+						general: {
+							css: 'background: red !important;',
+						},
+					},
+				},
+			},
+		];
+
+		const result = frontendStyleGenerator(styles);
+
+		expect(result).toBe(
+			`${mediaQuery}{body.maxi-blocks--active #column-maxi-bf04696a-u.nav_search{background: red !important;}}`
+		);
 	});
 });

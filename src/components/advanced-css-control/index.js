@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import Button from '@components/button';
 import CssCodeEditor from '@components/css-code-editor';
 import { getLastBreakpointAttribute } from '@extensions/styles';
+import { transformAdvancedCssCode } from './utils';
 
 /**
  * Styles
@@ -26,30 +27,6 @@ const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 		attributes,
 	});
 
-	const transformCssCode = code => {
-		if (!code) return '';
-
-		// Check if the code starts with a selector.
-		const selectorRegex =
-			/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/;
-		const matches = code.match(selectorRegex);
-
-		// If the code doesn't start with a selector, find the first selector and wrap everything before it with 'body'
-		if (!matches) {
-			const firstSelectorIndex = code.search(
-				/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/
-			);
-			if (firstSelectorIndex > 0) {
-				return `body {${code.substring(
-					0,
-					firstSelectorIndex
-				)}}${code.substring(firstSelectorIndex)}`;
-			}
-			return `body {${code}}`; // if there's no selector at all in the input
-		}
-		return code;
-	};
-
 	return (
 		<CssCodeEditor
 			label={__(
@@ -58,7 +35,7 @@ const AdvancedCssControl = ({ breakpoint, onChange, ...attributes }) => {
 			)}
 			value={value}
 			onChange={onChange}
-			transformCssCode={transformCssCode}
+			transformCssCode={transformAdvancedCssCode}
 		>
 			<div className='maxi-advanced-css-control__example-wrapper'>
 				<Button

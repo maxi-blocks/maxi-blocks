@@ -1,4 +1,5 @@
 import getAdvancedCssObject from '@extensions/styles/helpers/getAdvancedCssObject';
+import { buildAdvancedCssMediaQueryTarget } from '@extensions/styles/advancedCssMediaQuery';
 
 describe('getAdvancedCssObject', () => {
 	it('should handle basic CSS correctly', () => {
@@ -70,6 +71,118 @@ describe('getAdvancedCssObject', () => {
 		};
 		const result = getAdvancedCssObject(input);
 		expect(result).toMatchSnapshot();
+	});
+
+	it('should handle media query selectors', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const input = {
+			'advanced-css-general': `
+				${mediaQuery} {
+					.nav_search {
+						background: red !important;
+						color: white !important;
+					}
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		const mediaTarget = buildAdvancedCssMediaQueryTarget(
+			mediaQuery,
+			' .nav_search'
+		);
+
+		expect(result[mediaTarget].advancedCss.general.css).toBe(
+			'background: red !important; color: white !important;'
+		);
+		expect(result['']).toBeUndefined();
+	});
+
+	it('should scope media query selectors to the same block when they use a custom class', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const input = {
+			extraClassName: 'nav_search',
+			'advanced-css-general': `
+				${mediaQuery} {
+					.nav_search {
+						background: red !important;
+					}
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		const mediaTarget = buildAdvancedCssMediaQueryTarget(
+			mediaQuery,
+			'.nav_search'
+		);
+
+		expect(result[mediaTarget].advancedCss.general.css).toBe(
+			'background: red !important;'
+		);
+		expect(
+			result[
+				buildAdvancedCssMediaQueryTarget(mediaQuery, ' .nav_search')
+			]
+		).toBeUndefined();
+	});
+
+	it('should not scope selectors that only prefix-match a custom class', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const input = {
+			extraClassName: 'nav_search',
+			'advanced-css-general': `
+				${mediaQuery} {
+					.nav_search_extra {
+						background: red !important;
+					}
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		const descendantTarget = buildAdvancedCssMediaQueryTarget(
+			mediaQuery,
+			' .nav_search_extra'
+		);
+
+		expect(result[descendantTarget].advancedCss.general.css).toBe(
+			'background: red !important;'
+		);
+		expect(
+			result[
+				buildAdvancedCssMediaQueryTarget(mediaQuery, '.nav_search_extra')
+			]
+		).toBeUndefined();
+	});
+
+	it('should keep media query selectors separate from regular selectors', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const input = {
+			'advanced-css-general': `
+				${mediaQuery} {
+					.nav_search {
+						background: red !important;
+					}
+				}
+				.nav_search {
+					background: blue !important;
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+		const mediaTarget = buildAdvancedCssMediaQueryTarget(
+			mediaQuery,
+			' .nav_search'
+		);
+
+		expect(result[mediaTarget].advancedCss.general.css).toBe(
+			'background: red !important;'
+		);
+		expect(result[' .nav_search'].advancedCss.general.css).toBe(
+			'background: blue !important;'
+		);
 	});
 
 	it('should handle all responsive breakpoints correctly', () => {

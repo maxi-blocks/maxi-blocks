@@ -6,7 +6,11 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../../../utils';
+import {
+	insertMaxiBlock,
+	updateAllBlockUniqueIds,
+	getEditorFrame,
+} from '../../../../utils';
 
 describe('Delete block', () => {
 	it('Check delete block', async () => {
@@ -29,7 +33,8 @@ describe('Delete block', () => {
 
 		await page.keyboard.type('Block 1', { delay: 100 });
 
-		const textContent = await page.$eval(
+		const frame = await getEditorFrame(page);
+		const textContent = await frame.$eval(
 			'.is-root-container.block-editor-block-list__layout',
 			content => content.outerText
 		);
@@ -57,7 +62,7 @@ describe('Delete block', () => {
 		// 	if (element) element.textContent = '';
 		// });
 		// check block not exist
-		const textContentBeforeDelete = await page.$eval(
+		const textContentBeforeDelete = await frame.$eval(
 			'.is-root-container.block-editor-block-list__layout',
 			content => content.outerText
 		);

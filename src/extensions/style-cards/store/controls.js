@@ -145,7 +145,7 @@ const controls = {
 		}
 	},
 	async UPDATE_STYLE_CARD(styleCards, isUpdate) {
-		const varSC = getSCVariablesObject(styleCards.value, null, true);
+		const varSC = getSCVariablesObject(styleCards.value);
 		const varSCString = createSCStyleString(varSC);
 		const SCStyles = await getSCStyles(
 			varSC,

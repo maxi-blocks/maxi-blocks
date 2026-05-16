@@ -180,7 +180,7 @@ test.describe('Button Maxi', () => {
 
 		// Border width
 		const borderWidthInput = page.locator(
-			'.maxi-axis-control__content__item__border-width input[type="number"]'
+			'.maxi-border-width-control .maxi-axis-control__content__item input[type="number"]'
 		);
 		await borderWidthInput.first().fill('59');
 
@@ -204,7 +204,7 @@ test.describe('Button Maxi', () => {
 
 		// Icon padding
 		const iconPaddingInput = page.locator(
-			'.maxi-axis-control__content__item__icon-padding input[type="number"]'
+			'.maxi-axis-control__icon-padding .maxi-axis-control__content__item input[type="number"]'
 		);
 		await iconPaddingInput.first().fill('33');
 
@@ -288,7 +288,7 @@ test.describe('Button Maxi', () => {
 
 		// Border width
 		const borderWidthInput = page.locator(
-			'.maxi-axis-control__content__item__border-width input[type="number"]'
+			'.maxi-border-width-control .maxi-axis-control__content__item input[type="number"]'
 		);
 		await borderWidthInput.first().fill('70');
 

@@ -52,10 +52,12 @@ const ImageCropControl = props => {
 
 	const { imageData } = useSelect(
 		select => {
-			const { getMedia } = select('core');
+			const { getEntityRecord } = select('core');
 
 			return {
-				imageData: getMedia(mediaID),
+				imageData: mediaID
+					? getEntityRecord('postType', 'attachment', mediaID)
+					: null,
 			};
 		},
 		[mediaID]

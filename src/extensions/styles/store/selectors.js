@@ -1,4 +1,5 @@
 import { isNumber } from 'lodash';
+import { select } from '@wordpress/data';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 
 /**
@@ -55,15 +56,49 @@ export const getBlockMarginValue = state => {
 
 export const getAllStylesAreSaved = state => {
 	if (state.styles) {
+		const maxiBlocksStore = select('maxiBlocks/blocks');
+		const maxiBlocks = maxiBlocksStore?.getBlocks?.();
+		const maxiClientIds = maxiBlocksStore?.getBlockClientIds?.() ?? [];
+		const maxiBlocksCount = Object.keys(maxiBlocks ?? {}).length;
+		const hasCompleteStore =
+			maxiBlocksCount > 0 &&
+			maxiBlocksCount === maxiClientIds.length;
+
+		if (maxiBlocks && maxiBlocksCount > 0) {
+			const hasAllStyles = Object.keys(maxiBlocks).every(
+				uniqueID => !!state.styles[uniqueID]
+			);
+
+			if (!hasAllStyles) {
+				return false;
+			}
+
+			if (hasCompleteStore) {
+				return true;
+			}
+		}
+
 		let allStylesAreSaved = true;
 
-		goThroughMaxiBlocks(block => {
-			const {
-				attributes: { uniqueID },
-			} = block;
+		// skipTemplateParts=true: template part blocks are managed as separate
+		// entities and their styles are not registered in the current editor's
+		// store until they're rendered inline. Checking them causes false
+		// negatives that permanently block saving.
+		goThroughMaxiBlocks(
+			block => {
+				const {
+					attributes: { uniqueID },
+				} = block;
 
-			if (!state.styles[uniqueID]) allStylesAreSaved = false;
-		});
+				// Skip blocks without uniqueID (e.g. maxi-cloud)
+				if (!uniqueID) return;
+
+				if (!state.styles[uniqueID]) allStylesAreSaved = false;
+			},
+			false,
+			undefined,
+			true
+		);
 
 		return allStylesAreSaved;
 	}

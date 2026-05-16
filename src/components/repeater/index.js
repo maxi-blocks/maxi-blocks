@@ -1,8 +1,8 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
-import { useDispatch } from '@wordpress/data';
+import { __, sprintf } from '@wordpress/i18n';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 
 /**
@@ -12,7 +12,17 @@ import InfoBox from '@components/info-box';
 import ToggleSwitch from '@components/toggle-switch';
 import DialogBox from '@components/dialog-box';
 import { getAttributeKey, getAttributeValue } from '@extensions/styles';
-import { validateRowColumnsStructure } from '@extensions/repeater';
+import {
+	getDisallowedRepeaterBlocksFromClientId,
+	validateRowColumnsStructure,
+} from '@extensions/repeater';
+
+const DISALLOWED_BLOCK_LABELS = {
+	'maxi-blocks/accordion-maxi': __('Accordion', 'maxi-blocks'),
+	'maxi-blocks/slider-maxi': __('Slider', 'maxi-blocks'),
+	'maxi-blocks/map-maxi': __('Map', 'maxi-blocks'),
+	'maxi-blocks/search-maxi': __('Search', 'maxi-blocks'),
+};
 
 const Repeater = ({
 	clientId,
@@ -28,6 +38,23 @@ const Repeater = ({
 	const [isModalHidden, setIsModalHidden] = useState(true);
 	const [resolveConfirmation, setResolveConfirmation] = useState(null);
 
+	const disallowedBlocks = useSelect(
+		select => {
+			const blockEditor = select('core/block-editor');
+
+			return getDisallowedRepeaterBlocksFromClientId(
+				clientId,
+				blockEditor
+			);
+		},
+		[clientId]
+	);
+
+	const hasDisallowedBlocks = disallowedBlocks.length > 0;
+	const disallowedBlockLabels = disallowedBlocks.map(
+		blockName => DISALLOWED_BLOCK_LABELS[blockName] || blockName
+	);
+
 	const repeaterStatus = getAttributeValue({
 		target: 'repeater-status',
 		props: attributes,
@@ -42,6 +69,7 @@ const Repeater = ({
 					className={`${classes}__toggle`}
 					label={__('Enable repeater', 'maxi-blocks')}
 					selected={repeaterStatus}
+					disabled={!repeaterStatus && hasDisallowedBlocks}
 					onChange={async val => {
 						if (!val) {
 							onChange({
@@ -63,6 +91,7 @@ const Repeater = ({
 										setResolveConfirmation(() => resolve);
 									}),
 								undefined,
+								true,
 								true
 							);
 
@@ -73,6 +102,17 @@ const Repeater = ({
 							});
 						}
 					}}
+				/>
+			)}
+			{!isRepeaterInherited && hasDisallowedBlocks && (
+				<InfoBox
+					message={sprintf(
+						__(
+							'Repeater cannot be enabled because this row contains blocks that are not supported: %s. Remove them to enable repeater.',
+							'maxi-blocks'
+						),
+						disallowedBlockLabels.join(', ')
+					)}
 				/>
 			)}
 			<DialogBox

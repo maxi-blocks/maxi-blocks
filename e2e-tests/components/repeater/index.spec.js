@@ -11,6 +11,7 @@ import {
 	getEditedPostContent,
 	insertMaxiBlock,
 	openSidebarTab,
+	getEditorFrame,
 } from '../../utils';
 import {
 	codeEditorWithContentInFirstColumn,
@@ -26,7 +27,8 @@ const toggleRepeater = async page => {
 };
 
 const insertMaxiBlockIntoColumn = async (page, blockName, column) => {
-	await page.$eval(
+	const insertFrame = await getEditorFrame(page);
+	await insertFrame.$eval(
 		`.maxi-column-block:nth-child(${column}) .maxi-block-inserter__button`,
 		button => button.click()
 	);
@@ -52,11 +54,12 @@ describe('Repeater', () => {
 	it('Check basic adding/removing block and attributes changing', async () => {
 		await insertMaxiBlock(page, 'Container Maxi');
 
-		await page.waitForSelector('.maxi-row-block__template button');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(500);
 
 		// Click on non equal column template to check if columns will be resized on repeater toggle
-		await page.$$eval('.maxi-row-block__template button', button =>
+		await frame.$$eval('.maxi-row-block__template button', button =>
 			button[2].click()
 		);
 		await page.waitForTimeout(350);
@@ -69,12 +72,13 @@ describe('Repeater', () => {
 		await page.waitForTimeout(2000);
 
 		// Select button from second column
-		await page.$eval(
+		const buttonClientId = await frame.$eval(
 			'.maxi-column-block:nth-child(2) .maxi-button-block',
-			block =>
-				wp.data
-					.dispatch('core/block-editor')
-					.selectBlock(block.getAttribute('data-block'))
+			block => block.getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').selectBlock(id),
+			buttonClientId
 		);
 
 		await page.waitForTimeout(350);
@@ -102,10 +106,14 @@ describe('Repeater', () => {
 		).toMatchSnapshot();
 
 		// Remove button from second column
-		page.$$eval('.maxi-button-block', button =>
-			wp.data
-				.dispatch('core/block-editor')
-				.removeBlock(button[1].getAttribute('data-block'))
+		const frame2 = await getEditorFrame(page);
+		const buttonToRemoveClientId = await frame2.$$eval(
+			'.maxi-button-block',
+			buttons => buttons[1].getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').removeBlock(id),
+			buttonToRemoveClientId
 		);
 
 		await page.waitForTimeout(2000);
@@ -126,10 +134,14 @@ describe('Repeater', () => {
 		await page.waitForTimeout(500);
 
 		// Select row
-		await page.$eval('.maxi-row-block', block =>
-			wp.data
-				.dispatch('core/block-editor')
-				.selectBlock(block.getAttribute('data-block'))
+		const frame = await getEditorFrame(page);
+		const rowClientId = await frame.$eval(
+			'.maxi-row-block',
+			block => block.getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').selectBlock(id),
+			rowClientId
 		);
 		await page.waitForTimeout(150);
 
@@ -151,12 +163,14 @@ describe('Repeater', () => {
 		await page.waitForTimeout(1000);
 
 		// Select text from second column
-		await page.$eval(
+		const moveFrame = await getEditorFrame(page);
+		const textClientId = await moveFrame.$eval(
 			'.maxi-column-block:nth-child(2) .maxi-text-block',
-			block =>
-				wp.data
-					.dispatch('core/block-editor')
-					.selectBlock(block.getAttribute('data-block'))
+			block => block.getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').selectBlock(id),
+			textClientId
 		);
 		await page.waitForTimeout(350);
 
@@ -171,12 +185,13 @@ describe('Repeater', () => {
 		).toMatchSnapshot();
 
 		// Select nested(second) text from third column
-		await page.$$eval(
+		const nestedTextClientId = await moveFrame.$$eval(
 			'.maxi-column-block:nth-child(3) .maxi-text-block',
-			blocks =>
-				wp.data
-					.dispatch('core/block-editor')
-					.selectBlock(blocks[1].getAttribute('data-block'))
+			blocks => blocks[1].getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').selectBlock(id),
+			nestedTextClientId
 		);
 		await page.waitForTimeout(350);
 
@@ -200,10 +215,14 @@ describe('Repeater', () => {
 		await page.waitForTimeout(500);
 
 		// Select row
-		await page.$eval('.maxi-row-block', block =>
-			wp.data
-				.dispatch('core/block-editor')
-				.selectBlock(block.getAttribute('data-block'))
+		const frame = await getEditorFrame(page);
+		const diffRowClientId = await frame.$eval(
+			'.maxi-row-block',
+			block => block.getAttribute('data-block')
+		);
+		await page.evaluate(
+			id => wp.data.dispatch('core/block-editor').selectBlock(id),
+			diffRowClientId
 		);
 
 		await toggleRepeater(page);

@@ -670,6 +670,7 @@ const HoverEffectControl = props => {
 							disableAuto
 							optionType='string'
 							enableAxisUnits
+							showAllSides
 						/>
 					)}
 					<ToggleSwitch
@@ -695,6 +696,7 @@ const HoverEffectControl = props => {
 							optionType='string'
 							breakpoint={breakpoint}
 							enableAxisUnits
+							showAllSides
 						/>
 					)}
 				</>

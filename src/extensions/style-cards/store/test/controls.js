@@ -80,11 +80,7 @@ describe('style-cards store controls', () => {
 
 			await controls.UPDATE_STYLE_CARD(styleCards, isUpdate);
 
-			expect(getSCVariablesObject).toHaveBeenCalledWith(
-				styleCards.value,
-				null,
-				true
-			);
+			expect(getSCVariablesObject).toHaveBeenCalledWith(styleCards.value);
 			expect(createSCStyleString).toHaveBeenCalledWith(mockVarSC);
 			expect(getSCStyles).toHaveBeenCalledWith(
 				mockVarSC,

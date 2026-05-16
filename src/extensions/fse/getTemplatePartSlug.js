@@ -19,10 +19,10 @@ import getIsTemplatePart from './getIsTemplatePart';
 const getTemplatePartSlug = clientId => {
 	if (!getIsSiteEditor()) return false;
 
-	const { getEditedPostId } = select('core/edit-site');
+	const { getCurrentPostId } = select('core/editor');
 
 	// Checking if we on the FSE template part editor.
-	if (getIsTemplatePart()) return getEditedPostId().split('//', 2)[1];
+	if (getIsTemplatePart()) return getCurrentPostId().split('//', 2)[1];
 
 	const templatePartParent = getTemplatePart(clientId);
 

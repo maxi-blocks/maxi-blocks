@@ -66,16 +66,6 @@ wp.domReady(() => {
 		return scrollbarWidth;
 	};
 
-	const updateScrollbarWidth = () => {
-		document.documentElement.style.setProperty(
-			'--maxi-blocks-scrollbar-width',
-			`${getScrollbarWidth()}px`
-		);
-	};
-
-	// Initial set of scrollbar width
-	updateScrollbarWidth();
-
 	// Initialize List View highlight for hidden Maxi blocks
 	const cleanupHighlightHiddenBlocks = initHighlightHiddenBlocks();
 
@@ -160,9 +150,6 @@ wp.domReady(() => {
 	const resizeObserver = new ResizeObserver(() => {
 		setBaseBreakpoint();
 
-		// Update scrollbar width on resize
-		updateScrollbarWidth();
-
 		// On changing the canvas editor size, we must update the winBreakpoint
 		// to add the necessary attributes to display styles. The observer can't
 		// rely on the next element cause it disappears when selecting 's' or 'xs'
@@ -226,7 +213,7 @@ wp.domReady(() => {
 		}
 
 		if (isSiteEditor) {
-			const currentId = select('core/edit-site').getEditedPostId();
+			const currentId = select('core/editor').getCurrentPostId();
 			const isTemplatesListOpened = getIsTemplatesListOpened();
 			const siteEditorIframeBody = getSiteEditorIframeBody();
 

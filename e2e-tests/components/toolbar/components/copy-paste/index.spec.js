@@ -12,6 +12,7 @@ import {
 	getAttributes,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../../../utils';
 
 describe('CopyPaste from Toolbar', () => {
@@ -296,18 +297,19 @@ describe('CopyPaste from Toolbar', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.waitForSelector('.maxi-row-block__template button');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
-		await page.$$eval('.maxi-row-block__template button', button =>
+		await frame.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
-		await page.waitForSelector('.maxi-column-block');
+		await frame.waitForSelector('.maxi-column-block');
 
 		// Select column
-		await page.$eval('.maxi-column-block', column => column.focus());
+		await frame.$eval('.maxi-column-block', column => column.focus());
 
 		// Open appender on Column Maxi
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-column-block .block-editor-button-block-appender',
 			button => button.click()
 		);

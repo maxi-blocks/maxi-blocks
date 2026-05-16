@@ -6,7 +6,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock, updateAllBlockUniqueIds } from '../../utils';
+import { insertMaxiBlock, updateAllBlockUniqueIds, getEditorFrame } from '../../utils';
 
 describe('Breadcrumbs', () => {
 	it('Test breadcrumbs', async () => {
@@ -16,17 +16,18 @@ describe('Breadcrumbs', () => {
 
 		await updateAllBlockUniqueIds(page);
 
-		await page.waitForSelector('.maxi-row-block__template button');
-		await page.$eval('.maxi-row-block__template button', button =>
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
+		await frame.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
-		await page.waitForSelector('.maxi-column-block');
+		await frame.waitForSelector('.maxi-column-block');
 
 		// Select column
-		await page.$eval('.maxi-column-block', column => column.focus());
+		await frame.$eval('.maxi-column-block', column => column.focus());
 
 		// Open appender on Column Maxi
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-column-block .block-editor-button-block-appender',
 			button => button.click()
 		);
@@ -43,10 +44,10 @@ describe('Breadcrumbs', () => {
 			'.editor-block-list-item-maxi-blocks-group-maxi',
 			button => button.click()
 		);
-		await page.waitForSelector('.maxi-group-block');
+		await frame.waitForSelector('.maxi-group-block');
 
 		// Open appender on Group Maxi
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);
@@ -55,7 +56,7 @@ describe('Breadcrumbs', () => {
 		// Add Row Maxi - clear any existing search and wait longer
 		await page.keyboard.press('Escape'); // Clear any existing search
 		await page.waitForTimeout(500);
-		await page.$eval(
+		await frame.$eval(
 			'.maxi-group-block .block-editor-button-block-appender',
 			button => button.click()
 		);
@@ -73,14 +74,14 @@ describe('Breadcrumbs', () => {
 		await page.waitForTimeout(500);
 
 		// Select Row and add Column
-		await page.waitForSelector('.maxi-row-block__template');
-		await page.$eval('.maxi-row-block__template button', button =>
+		await frame.waitForSelector('.maxi-row-block__template');
+		await frame.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
 		await page.waitForTimeout(500);
 
 		// Select column
-		await page.$$eval('.maxi-column-block', columns =>
+		await frame.$$eval('.maxi-column-block', columns =>
 			columns[columns.length - 1].focus()
 		);
 

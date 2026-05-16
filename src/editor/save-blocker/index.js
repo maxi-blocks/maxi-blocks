@@ -6,24 +6,29 @@ import { useEffect } from '@wordpress/element';
 
 /**
  * Component to prevent saving until all MaxiBlocks are fully rendered
+ * and all block styles have been computed and stored.
  *
- * This component monitors the rendering state of all MaxiBlocks and prevents
- * saving/publishing until all blocks have completed their rendering process.
+ * This component monitors both the rendering state and the style state of all
+ * MaxiBlocks and prevents saving/publishing until both are complete.
  */
 const MaxiBlocksSaveBlocker = () => {
-	const { allBlocksFullyRendered } = useSelect(select => {
-		const maxiBlocksSelect = select('maxiBlocks');
+	const { allBlocksFullyRendered, allStylesAreSaved } = useSelect(
+		select => {
+			const maxiBlocksSelect = select('maxiBlocks');
+			const stylesSelect = select('maxiBlocks/styles');
 
-		return {
-			allBlocksFullyRendered:
-				maxiBlocksSelect.getAllBlocksFullyRendered(),
-		};
-	});
+			return {
+				allBlocksFullyRendered:
+					maxiBlocksSelect.getAllBlocksFullyRendered(),
+				allStylesAreSaved: stylesSelect.getAllStylesAreSaved(),
+			};
+		}
+	);
 
 	const { lockPostSaving, unlockPostSaving } = useDispatch('core/editor');
 
 	useEffect(() => {
-		const canSave = allBlocksFullyRendered;
+		const canSave = allBlocksFullyRendered && allStylesAreSaved;
 
 		if (!canSave) {
 			// Lock saving with a specific reason
@@ -93,7 +98,12 @@ const MaxiBlocksSaveBlocker = () => {
 		}
 
 		return () => {};
-	}, [allBlocksFullyRendered, lockPostSaving, unlockPostSaving]);
+	}, [
+		allBlocksFullyRendered,
+		allStylesAreSaved,
+		lockPostSaving,
+		unlockPostSaving,
+	]);
 
 	return null;
 };

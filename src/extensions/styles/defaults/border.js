@@ -32,6 +32,14 @@ export const rawBorderWidth = {
 		type: 'string',
 		default: 'all',
 	},
+	'border-sync-vertical-width': {
+		type: 'boolean',
+		default: true,
+	},
+	'border-sync-horizontal-width': {
+		type: 'boolean',
+		default: true,
+	},
 	'border-unit-width': {
 		type: 'string',
 		default: 'px',
@@ -54,6 +62,14 @@ export const rawBorderRadius = {
 	'border-sync-radius': {
 		type: 'string',
 		default: 'all',
+	},
+	'border-sync-vertical-radius': {
+		type: 'boolean',
+		default: true,
+	},
+	'border-sync-horizontal-radius': {
+		type: 'boolean',
+		default: true,
 	},
 	'border-unit-radius': {
 		type: 'string',

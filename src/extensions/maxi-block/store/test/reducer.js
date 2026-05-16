@@ -3,6 +3,9 @@ import reducer from '@extensions/maxi-block/store/reducer';
 describe('maxi-block reducer', () => {
 	const initialState = {
 		blocks: {},
+		blockClientIdsByUniqueID: {},
+		blocksByClientId: {},
+		customLabelClientIds: {},
 		lastInsertedBlocks: [],
 		blockClientIds: [],
 		newBlocksUniqueIDs: [],
@@ -23,6 +26,7 @@ describe('maxi-block reducer', () => {
 				uniqueID: 'test-block-123',
 				clientId: 'client-123',
 				blockRoot: 'blockRoot-123',
+				customLabel: null,
 			};
 
 			const state = reducer(initialState, action);
@@ -31,10 +35,20 @@ describe('maxi-block reducer', () => {
 			expect(state.blocks['test-block-123']).toEqual({
 				clientId: 'client-123',
 				blockRoot: 'blockRoot-123',
+				customLabel: null,
 			});
 			// Should also add to uniqueIDCache
 			expect(state.uniqueIDCache).toHaveProperty('test-block-123');
 			expect(state.uniqueIDCache['test-block-123']).toBe(true);
+			// Should populate index maps
+			expect(state.blockClientIdsByUniqueID['test-block-123']).toEqual([
+				'client-123',
+			]);
+			expect(state.blocksByClientId['client-123']).toMatchObject({
+				clientId: 'client-123',
+				uniqueID: 'test-block-123',
+				blockRoot: 'blockRoot-123',
+			});
 		});
 
 		it('Should keep existing blocks when adding a new one', () => {
@@ -44,6 +58,18 @@ describe('maxi-block reducer', () => {
 					'existing-block': {
 						clientId: 'existing-client',
 						blockRoot: 'existing-root',
+						customLabel: null,
+					},
+				},
+				blockClientIdsByUniqueID: {
+					'existing-block': ['existing-client'],
+				},
+				blocksByClientId: {
+					'existing-client': {
+						clientId: 'existing-client',
+						uniqueID: 'existing-block',
+						blockRoot: 'existing-root',
+						customLabel: null,
 					},
 				},
 				uniqueIDCache: {
@@ -56,6 +82,7 @@ describe('maxi-block reducer', () => {
 				uniqueID: 'test-block-123',
 				clientId: 'client-123',
 				blockRoot: 'blockRoot-123',
+				customLabel: null,
 			};
 
 			const state = reducer(existingState, action);
@@ -76,10 +103,30 @@ describe('maxi-block reducer', () => {
 					'test-block-123': {
 						clientId: 'client-123',
 						blockRoot: 'blockRoot-123',
+						customLabel: null,
 					},
 					'other-block': {
 						clientId: 'other-client',
 						blockRoot: 'other-root',
+						customLabel: null,
+					},
+				},
+				blockClientIdsByUniqueID: {
+					'test-block-123': ['client-123'],
+					'other-block': ['other-client'],
+				},
+				blocksByClientId: {
+					'client-123': {
+						clientId: 'client-123',
+						uniqueID: 'test-block-123',
+						blockRoot: 'blockRoot-123',
+						customLabel: null,
+					},
+					'other-client': {
+						clientId: 'other-client',
+						uniqueID: 'other-block',
+						blockRoot: 'other-root',
+						customLabel: null,
 					},
 				},
 				lastInsertedBlocks: ['client-123', 'other-client'],

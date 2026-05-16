@@ -19,7 +19,7 @@ import SelectControl from '@components/select-control';
 import BaseControl from '@components/base-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ResetButton from '@components/reset-control';
-import validateNumberInput from './utils';
+import validateNumberInput, { clampNumberInputValue } from './utils';
 
 /**
  * Styles
@@ -210,14 +210,16 @@ const AdvancedNumberControl = props => {
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
+		const minLimit = enableUnit ? minValue : min;
+		const maxLimit = enableUnit ? maxValue : max;
+		const isNumericInput = inputType === 'number';
 
-		if (enableUnit) {
-			if (value !== '' && value > maxValue) value = maxValue;
-			if (value !== '' && value < minValue) value = minValue;
-		} else {
-			if (value !== '' && +value > max) value = max;
-			if (value !== '' && +value !== 0 && +value < min) value = min;
-		}
+		if (isNumericInput)
+			value = clampNumberInputValue(value, {
+				min: minLimit,
+				max: maxLimit,
+				clampMin: false,
+			});
 
 		let result;
 		if (value === '' || optionType === 'string') {
@@ -232,6 +234,13 @@ const AdvancedNumberControl = props => {
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 
+		const isBelowMin =
+			isNumericInput &&
+			result !== '' &&
+			+result !== 0 &&
+			+result < minLimit;
+		if (isBelowMin) return;
+
 		const val =
 			result === '' || optionType === 'string'
 				? result.toString()
@@ -240,6 +249,29 @@ const AdvancedNumberControl = props => {
 		onChangeValue?.(val, inlinePayload);
 
 		handleChange(onChangeValue, latestValueRef, optionType);
+	};
+
+	const handleInputBlur = () => {
+		if (inputType !== 'number') return;
+
+		const minLimit = enableUnit ? minValue : min;
+		const maxLimit = enableUnit ? maxValue : max;
+		const clampedValue = clampNumberInputValue(latestValueRef.current, {
+			min: minLimit,
+			max: maxLimit,
+		});
+
+		if (clampedValue === latestValueRef.current) return;
+
+		const result =
+			optionType === 'string'
+				? clampedValue.toString()
+				: parseFloat((+clampedValue).toFixed(10));
+		latestValueRef.current = result.toString();
+		setCurrentValue(result);
+		onChangeValue?.(result, {
+			inline: enableUnit ? { unit } : {},
+		});
 	};
 
 	const rawPreferredValues = [
@@ -307,6 +339,7 @@ const AdvancedNumberControl = props => {
 								className='maxi-advanced-number-control__value'
 								value={inputValue}
 								onChange={handleInputChange}
+								onBlur={handleInputBlur}
 								disabled={isAutoValue}
 								onKeyDown={e => {
 									validateNumberInput(

@@ -213,6 +213,7 @@ const AdvancedNumberControl = props => {
 		const minLimit = enableUnit ? minValue : min;
 		const maxLimit = enableUnit ? maxValue : max;
 		const isNumericInput = inputType === 'number';
+		const hasPositiveMin = +minLimit > 0;
 
 		if (isNumericInput)
 			value = clampNumberInputValue(value, {
@@ -233,6 +234,8 @@ const AdvancedNumberControl = props => {
 		latestValueRef.current =
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
+
+		if (isNumericInput && hasPositiveMin && result === '') return;
 
 		const isBelowMin =
 			isNumericInput &&
@@ -256,10 +259,13 @@ const AdvancedNumberControl = props => {
 
 		const minLimit = enableUnit ? minValue : min;
 		const maxLimit = enableUnit ? maxValue : max;
-		const clampedValue = clampNumberInputValue(latestValueRef.current, {
+		let clampedValue = clampNumberInputValue(latestValueRef.current, {
 			min: minLimit,
 			max: maxLimit,
 		});
+
+		if (latestValueRef.current === '' && +minLimit > 0)
+			clampedValue = minLimit;
 
 		if (clampedValue === latestValueRef.current) return;
 

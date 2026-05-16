@@ -139,6 +139,77 @@ describe('AdvancedNumberControl', () => {
 		expect(onChangeValue).toHaveBeenCalledWith('15', { inline: {} });
 	});
 
+	it('allows marker-size-style values to be replaced with another valid value', () => {
+		const onChangeValue = jest.fn();
+
+		act(() => {
+			root.render(
+				createElement(AdvancedNumberControl, {
+					min: 15,
+					max: 40,
+					value: '20',
+					defaultValue: '20',
+					optionType: 'string',
+					onChangeValue,
+				})
+			);
+		});
+
+		const input = container.querySelector('input');
+
+		act(() => {
+			setInputValue(input, '');
+		});
+
+		expect(input.value).toBe('');
+		expect(onChangeValue).not.toHaveBeenCalled();
+
+		act(() => {
+			setInputValue(input, '3');
+		});
+
+		expect(input.value).toBe('3');
+		expect(onChangeValue).not.toHaveBeenCalled();
+
+		act(() => {
+			setInputValue(input, '30');
+		});
+
+		expect(input.value).toBe('30');
+		expect(onChangeValue).toHaveBeenCalledWith('30', { inline: {} });
+	});
+
+	it('clamps an empty positive-min numeric input on blur', () => {
+		const onChangeValue = jest.fn();
+
+		act(() => {
+			root.render(
+				createElement(AdvancedNumberControl, {
+					min: 15,
+					value: '20',
+					optionType: 'string',
+					onChangeValue,
+				})
+			);
+		});
+
+		const input = container.querySelector('input');
+
+		act(() => {
+			setInputValue(input, '');
+		});
+
+		expect(input.value).toBe('');
+		expect(onChangeValue).not.toHaveBeenCalled();
+
+		act(() => {
+			input.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+		});
+
+		expect(input.value).toBe('15');
+		expect(onChangeValue).toHaveBeenCalledWith('15', { inline: {} });
+	});
+
 	it('still clamps values above max while typing', () => {
 		const onChangeValue = jest.fn();
 

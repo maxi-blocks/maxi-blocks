@@ -697,15 +697,46 @@ const getHorizontalScrollBackgroundSizingObject = ({
 		attributes: props,
 		isHover,
 	});
+	const directHorizontalScrollStatus = getAttributeValue({
+		target: 'scroll-horizontal-status',
+		props,
+		breakpoint,
+		isHover,
+		returnValueWithoutBreakpoint: false,
+	});
+	const breakpointIndex = BREAKPOINTS.indexOf(breakpoint);
+	const previousBreakpoint = BREAKPOINTS[breakpointIndex - 1];
+	const previousHorizontalScrollStatus =
+		previousBreakpoint &&
+		getLastBreakpointAttribute({
+			target: 'scroll-horizontal-status',
+			breakpoint: previousBreakpoint,
+			attributes: props,
+			isHover,
+		});
 
-	return horizontalScrollStatus
-		? {
+	if (!horizontalScrollStatus) {
+		if (
+			directHorizontalScrollStatus === false &&
+			previousHorizontalScrollStatus
+		) {
+			return {
 				label: 'Background layer horizontal scroll sizing',
 				[breakpoint]: {
-					'min-width': 'max-content',
+					'min-width': 'initial',
 				},
-		  }
-		: {};
+			};
+		}
+
+		return {};
+	}
+
+	return {
+		label: 'Background layer horizontal scroll sizing',
+		[breakpoint]: {
+			'min-width': 'max-content',
+		},
+	};
 };
 
 /**

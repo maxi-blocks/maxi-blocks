@@ -618,14 +618,41 @@ function get_horizontal_scroll_background_sizing_object($args)
         'is_hover' => $is_hover,
     ]);
 
-    return $horizontal_scroll_status
-        ? [
+    $direct_horizontal_scroll_status_key = 'scroll-horizontal-status-' . $breakpoint . ($is_hover ? '-hover' : '');
+    $direct_horizontal_scroll_status = array_key_exists($direct_horizontal_scroll_status_key, $args)
+        ? $args[$direct_horizontal_scroll_status_key]
+        : null;
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    $breakpoint_index = array_search($breakpoint, $breakpoints, true);
+    $previous_breakpoint = $breakpoint_index > 0 ? $breakpoints[$breakpoint_index - 1] : null;
+    $previous_horizontal_scroll_status = $previous_breakpoint
+        ? get_last_breakpoint_attribute([
+            'target' => 'scroll-horizontal-status',
+            'breakpoint' => $previous_breakpoint,
+            'attributes' => $args,
+            'is_hover' => $is_hover,
+        ])
+        : false;
+
+    if (!$horizontal_scroll_status) {
+        if ($direct_horizontal_scroll_status === false && $previous_horizontal_scroll_status) {
+            return [
+                'label' => 'Background layer horizontal scroll sizing',
+                $breakpoint => [
+                    'min-width' => 'initial',
+                ],
+            ];
+        }
+
+        return [];
+    }
+
+    return [
             'label' => 'Background layer horizontal scroll sizing',
             $breakpoint => [
                 'min-width' => 'max-content',
             ],
-        ]
-        : [];
+        ];
 }
 
 

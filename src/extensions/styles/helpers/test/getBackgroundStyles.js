@@ -1579,12 +1579,13 @@ describe('getBackgroundStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
-	it('Adds max-content min width when a background layer uses horizontal scroll', () => {
+	it('Adds and resets min width when a background layer uses horizontal scroll', () => {
 		const result = getBlockBackgroundStyles({
 			target,
 			isHover: false,
 			blockStyle: 'light',
 			'scroll-horizontal-status-general': true,
+			'scroll-horizontal-status-m': false,
 			'background-layers': [
 				{
 					type: 'color',
@@ -1608,6 +1609,9 @@ describe('getBackgroundStyles', () => {
 				'min-width'
 			]
 		).toBe('max-content');
+		expect(
+			result[target].horizontalScrollBackgroundSizing.m['min-width']
+		).toBe('initial');
 	});
 
 	it('Should work for button background', () => {

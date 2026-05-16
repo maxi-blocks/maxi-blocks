@@ -103,26 +103,13 @@ const Inspector = props => {
 	};
 
 	const positionSettings = val => {
-		const inpRightWidth = props['input-border-left-width-general'];
-		const inpLeftWidth = props['input-border-right-width-general'];
-		const inpLeftPadding = props['input-padding-left-general'];
-		const inpRightPadding = props['input-padding-right-general'];
-
-		(val === 'center' || val === 'right') &&
+		['left', 'center', 'right'].includes(val) &&
 			maxiSetAttributes({
 				'icon-position': val,
-				'input-border-left-width-general': inpRightWidth || 4,
-				'input-border-right-width-general': inpLeftWidth || 0,
-				'input-padding-left-general': inpLeftPadding || 10,
-				'input-padding-right-general': inpRightPadding || 35,
-			});
-		val === 'left' &&
-			maxiSetAttributes({
-				'icon-position': val,
-				'input-border-left-width-general': inpRightWidth || 0,
-				'input-border-right-width-general': inpLeftWidth || 4,
-				'input-padding-left-general': inpLeftPadding || 35,
-				'input-padding-right-general': inpRightPadding || 10,
+				'input-border-left-width-general': val === 'left' ? 0 : 4,
+				'input-border-right-width-general': val === 'left' ? 4 : 0,
+				'input-padding-left-general': val === 'left' ? 35 : 10,
+				'input-padding-right-general': val === 'left' ? 10 : 35,
 			});
 	};
 

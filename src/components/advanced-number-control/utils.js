@@ -23,7 +23,6 @@ export const clampNumberInputValue = (
 	if (
 		clampMin &&
 		min !== undefined &&
-		numericValue !== 0 &&
 		numericValue < min
 	)
 		return min;

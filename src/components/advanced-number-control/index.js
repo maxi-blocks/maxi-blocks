@@ -240,9 +240,11 @@ const AdvancedNumberControl = props => {
 		const isBelowMin =
 			isNumericInput &&
 			result !== '' &&
-			+result !== 0 &&
 			+result < minLimit;
-		if (isBelowMin) return;
+		if (isBelowMin) {
+			handleChange.cancel?.();
+			return;
+		}
 
 		const val =
 			result === '' || optionType === 'string'

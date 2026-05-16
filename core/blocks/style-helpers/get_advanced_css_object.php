@@ -16,17 +16,123 @@ function find_advanced_css_matching_brace($code, $open_index)
 {
     $depth = 0;
     $length = strlen($code);
+    $quote = null;
+    $is_escaped = false;
 
     for ($index = $open_index; $index < $length; $index++) {
-        if ($code[$index] === '{') {
+        $character = $code[$index];
+        $next_character = $index + 1 < $length ? $code[$index + 1] : '';
+
+        if ($quote !== null) {
+            if ($is_escaped) {
+                $is_escaped = false;
+                continue;
+            }
+
+            if ($character === '\\') {
+                $is_escaped = true;
+                continue;
+            }
+
+            if ($character === $quote) {
+                $quote = null;
+            }
+
+            continue;
+        }
+
+        if ($character === '/' && $next_character === '*') {
+            $comment_end_index = strpos($code, '*/', $index + 2);
+
+            if ($comment_end_index === false) {
+                return -1;
+            }
+
+            $index = $comment_end_index + 1;
+            continue;
+        }
+
+        if ($character === '"' || $character === "'") {
+            $quote = $character;
+            continue;
+        }
+
+        if ($character === '{') {
             $depth++;
         }
 
-        if ($code[$index] === '}') {
+        if ($character === '}') {
             $depth--;
         }
 
         if ($depth === 0) {
+            return $index;
+        }
+    }
+
+    return -1;
+}
+
+function find_next_advanced_css_media_query_index($code, $start_index)
+{
+    $depth = 0;
+    $length = strlen($code);
+    $quote = null;
+    $is_escaped = false;
+
+    for ($index = $start_index; $index < $length; $index++) {
+        $character = $code[$index];
+        $next_character = $index + 1 < $length ? $code[$index + 1] : '';
+
+        if ($quote !== null) {
+            if ($is_escaped) {
+                $is_escaped = false;
+                continue;
+            }
+
+            if ($character === '\\') {
+                $is_escaped = true;
+                continue;
+            }
+
+            if ($character === $quote) {
+                $quote = null;
+            }
+
+            continue;
+        }
+
+        if ($character === '/' && $next_character === '*') {
+            $comment_end_index = strpos($code, '*/', $index + 2);
+
+            if ($comment_end_index === false) {
+                return -1;
+            }
+
+            $index = $comment_end_index + 1;
+            continue;
+        }
+
+        if ($character === '"' || $character === "'") {
+            $quote = $character;
+            continue;
+        }
+
+        if ($character === '{') {
+            $depth++;
+            continue;
+        }
+
+        if ($character === '}') {
+            $depth = max($depth - 1, 0);
+            continue;
+        }
+
+        if (
+            $depth === 0 &&
+            $character === '@' &&
+            preg_match('/^@media\b/i', substr($code, $index)) === 1
+        ) {
             return $index;
         }
     }
@@ -41,14 +147,13 @@ function extract_advanced_css_media_queries($code)
     $cursor = 0;
 
     while ($cursor < strlen($code)) {
-        $slice = substr($code, $cursor);
+        $media_index = find_next_advanced_css_media_query_index($code, $cursor);
 
-        if (!preg_match('/@media\b/i', $slice, $media_match, PREG_OFFSET_CAPTURE)) {
+        if ($media_index === -1) {
             $remaining_code .= substr($code, $cursor);
             break;
         }
 
-        $media_index = $cursor + $media_match[0][1];
         $open_brace_index = strpos($code, '{', $media_index);
 
         if ($open_brace_index === false) {

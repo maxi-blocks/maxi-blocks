@@ -5,6 +5,7 @@ export const buildAdvancedCssMediaQueryTarget = (mediaQuery, selector) =>
 	`${mediaQuery}${ADVANCED_CSS_MEDIA_QUERY_SEPARATOR}${selector}`;
 
 export const isAdvancedCssMediaQueryTarget = target =>
+	typeof target === 'string' &&
 	target.includes(ADVANCED_CSS_MEDIA_QUERY_SEPARATOR);
 
 export const splitAdvancedCssMediaQueryTarget = target => {

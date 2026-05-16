@@ -23,11 +23,97 @@ const selectorRegex =
 
 const findMatchingBrace = (code, openIndex) => {
 	let depth = 0;
+	let quote = null;
+	let isEscaped = false;
 
 	for (let index = openIndex; index < code.length; index += 1) {
-		if (code[index] === '{') depth += 1;
-		if (code[index] === '}') depth -= 1;
+		const character = code[index];
+		const nextCharacter = code[index + 1];
+
+		if (quote) {
+			if (isEscaped) {
+				isEscaped = false;
+				continue;
+			}
+			if (character === '\\') {
+				isEscaped = true;
+				continue;
+			}
+			if (character === quote) quote = null;
+			continue;
+		}
+
+		if (character === '/' && nextCharacter === '*') {
+			const commentEndIndex = code.indexOf('*/', index + 2);
+			if (commentEndIndex === -1) return -1;
+			index = commentEndIndex + 1;
+			continue;
+		}
+
+		if (character === '"' || character === "'") {
+			quote = character;
+			continue;
+		}
+
+		if (character === '{') depth += 1;
+		if (character === '}') depth -= 1;
 		if (depth === 0) return index;
+	}
+
+	return -1;
+};
+
+const findNextMediaQueryIndex = (code, startIndex) => {
+	let depth = 0;
+	let quote = null;
+	let isEscaped = false;
+
+	for (let index = startIndex; index < code.length; index += 1) {
+		const character = code[index];
+		const nextCharacter = code[index + 1];
+
+		if (quote) {
+			if (isEscaped) {
+				isEscaped = false;
+				continue;
+			}
+			if (character === '\\') {
+				isEscaped = true;
+				continue;
+			}
+			if (character === quote) quote = null;
+			continue;
+		}
+
+		if (character === '/' && nextCharacter === '*') {
+			const commentEndIndex = code.indexOf('*/', index + 2);
+			if (commentEndIndex === -1) return -1;
+			index = commentEndIndex + 1;
+			continue;
+		}
+
+		if (character === '"' || character === "'") {
+			quote = character;
+			continue;
+		}
+
+		if (character === '{') {
+			depth += 1;
+			continue;
+		}
+
+		if (character === '}') {
+			depth = Math.max(depth - 1, 0);
+			continue;
+		}
+
+		if (
+			depth === 0 &&
+			character === '@' &&
+			/^@media\b/i.test(code.slice(index))
+		) {
+			return index;
+		}
 	}
 
 	return -1;
@@ -39,14 +125,13 @@ const extractMediaQueries = code => {
 	let cursor = 0;
 
 	while (cursor < code.length) {
-		const mediaMatch = /@media\b/i.exec(code.slice(cursor));
+		const mediaIndex = findNextMediaQueryIndex(code, cursor);
 
-		if (!mediaMatch) {
+		if (mediaIndex === -1) {
 			remainingCode += code.slice(cursor);
 			break;
 		}
 
-		const mediaIndex = cursor + mediaMatch.index;
 		const openBraceIndex = code.indexOf('{', mediaIndex);
 
 		if (openBraceIndex === -1) {

@@ -3,25 +3,27 @@ export const transformAdvancedCssCode = code => {
 
 	const trimmedCode = code.trim();
 
-	if (/^@media\b/i.test(trimmedCode)) return code;
+	if (/^@media\b/i.test(trimmedCode)) return trimmedCode;
 
 	// Check if the code starts with a selector.
 	const selectorRegex =
-		/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/;
-	const matches = code.match(selectorRegex);
+		/^([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/;
+	const matches = trimmedCode.match(selectorRegex);
 
 	// If the code doesn't start with a selector, find the first selector and wrap everything before it with 'body'
 	if (!matches) {
-		const firstSelectorIndex = code.search(
-			/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/
+		const unanchoredSelectorRegex =
+			/([a-zA-Z0-9\-_\s.,#:*[\]="'>+~()|^$!/%]*?)\s*{([^}]*)}/;
+		const firstSelectorIndex = trimmedCode.search(
+			unanchoredSelectorRegex
 		);
 		if (firstSelectorIndex > 0) {
-			return `body {${code.substring(
+			return `body {${trimmedCode.substring(
 				0,
 				firstSelectorIndex
-			)}}${code.substring(firstSelectorIndex)}`;
+			)}}${trimmedCode.substring(firstSelectorIndex)}`;
 		}
-		return `body {${code}}`; // if there's no selector at all in the input
+		return `body {${trimmedCode}}`; // if there's no selector at all in the input
 	}
-	return code;
+	return trimmedCode;
 };

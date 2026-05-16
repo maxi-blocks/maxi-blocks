@@ -185,6 +185,22 @@ describe('getAdvancedCssObject', () => {
 		);
 	});
 
+	it('should ignore @media text inside selector declaration values', () => {
+		const input = {
+			'advanced-css-general': `
+				.nav_search::before {
+					content: "@media";
+					color: red;
+				}
+			`,
+		};
+		const result = getAdvancedCssObject(input);
+
+		expect(result[' .nav_search::before'].advancedCss.general.css).toBe(
+			'content: "@media"; color: red;'
+		);
+	});
+
 	it('should handle all responsive breakpoints correctly', () => {
 		const input = {
 			'advanced-css-general': `

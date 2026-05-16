@@ -1274,6 +1274,9 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'by-id';
         }
+        if (empty($dc_media_size)) {
+            $dc_media_size = 512;
+        }
 
         $media_alt = '';
         $media_caption = '';

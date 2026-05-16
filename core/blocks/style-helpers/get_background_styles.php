@@ -602,6 +602,32 @@ function get_wrapper_object($args)
     return !empty($response[$breakpoint]) ? $response : [];
 }
 
+function get_horizontal_scroll_background_sizing_object($args)
+{
+    $breakpoint = $args['breakpoint'] ?? 'general';
+    $is_hover = $args['is_hover'] ?? false;
+
+    if ($is_hover) {
+        return [];
+    }
+
+    $horizontal_scroll_status = get_last_breakpoint_attribute([
+        'target' => 'scroll-horizontal-status',
+        'breakpoint' => $breakpoint,
+        'attributes' => $args,
+        'is_hover' => $is_hover,
+    ]);
+
+    return $horizontal_scroll_status
+        ? [
+            'label' => 'Background layer horizontal scroll sizing',
+            $breakpoint => [
+                'min-width' => 'max-content',
+            ],
+        ]
+        : [];
+}
+
 
 function get_svg_background_object($options)
 {
@@ -1106,6 +1132,23 @@ function get_block_background_styles($args)
         $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
         foreach ($breakpoints as $breakpoint) {
+            $horizontal_scroll_background_sizing = get_horizontal_scroll_background_sizing_object(array_merge(
+                $args,
+                [
+                    'breakpoint' => $breakpoint,
+                    'is_hover' => $is_hover,
+                ]
+            ));
+
+            if (!empty($horizontal_scroll_background_sizing)) {
+                $response[$target]['horizontalScrollBackgroundSizing'] = array_replace_recursive(
+                    isset($response[$target]['horizontalScrollBackgroundSizing'])
+                        ? $response[$target]['horizontalScrollBackgroundSizing']
+                        : [],
+                    $horizontal_scroll_background_sizing
+                );
+            }
+
             $response =  get_background_layers([
                     'response' => $response,
                     'layers' => $layers,

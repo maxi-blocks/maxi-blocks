@@ -1579,6 +1579,37 @@ describe('getBackgroundStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Adds max-content min width when a background layer uses horizontal scroll', () => {
+		const result = getBlockBackgroundStyles({
+			target,
+			isHover: false,
+			blockStyle: 'light',
+			'scroll-horizontal-status-general': true,
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': true,
+					'background-palette-color-general': 1,
+					'background-palette-opacity-general': 1,
+					'background-color-clip-path-status-general': false,
+					'background-color-wrapper-width-general': 100,
+					'background-color-wrapper-width-unit-general': '%',
+					'background-color-wrapper-height-general': 100,
+					'background-color-wrapper-height-unit-general': '%',
+					order: 1,
+					id: 1,
+				},
+			],
+		});
+
+		expect(
+			result[target].horizontalScrollBackgroundSizing.general[
+				'min-width'
+			]
+		).toBe('max-content');
+	});
+
 	it('Should work for button background', () => {
 		const object = {
 			'button-background-active-media-general': 'color',

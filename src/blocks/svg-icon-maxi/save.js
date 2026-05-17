@@ -67,14 +67,19 @@ const save = props => {
 	const shouldWrapCanvas = linkSettings?.linkElement === 'canvas';
 	const shouldWrapIcon =
 		!shouldWrapCanvas && getHasLink(linkSettings, dynamicContent);
+	const icon = (
+		<RawHTML className='maxi-svg-icon-block__icon'>
+			{iconContent}
+		</RawHTML>
+	);
 
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			aria-label={attributes.ariaLabels?.canvas}
 		>
-			<div className='maxi-svg-icon-block__icon-wrapper'>
-				{shouldWrapIcon ? (
+			{shouldWrapIcon ? (
+				<div className='maxi-svg-icon-block__icon-wrapper'>
 					<WithLink
 						linkSettings={linkSettings ?? {}}
 						dynamicContent={dynamicContent}
@@ -82,12 +87,10 @@ const save = props => {
 					>
 						<RawHTML>{iconContent}</RawHTML>
 					</WithLink>
-				) : (
-					<RawHTML className='maxi-svg-icon-block__icon'>
-						{iconContent}
-					</RawHTML>
-				)}
-			</div>
+				</div>
+			) : (
+				icon
+			)}
 		</MaxiBlock.save>
 	);
 };

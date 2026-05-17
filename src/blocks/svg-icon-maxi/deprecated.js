@@ -27,24 +27,41 @@ const save = props => {
 			)}
 		</RawHTML>
 	);
+	// Before linkElement existed, SVG icon links were saved around the canvas.
+	const shouldWrapLegacyCanvas = linkSettings?.linkElement === undefined;
+	const shouldWrapIcon =
+		linkSettings?.linkElement !== 'canvas' && !shouldWrapLegacyCanvas;
 
-	return (
+	const block = (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			aria-label={attributes.ariaLabels?.canvas}
 		>
-			{linkSettings?.linkElement === 'canvas' ? (
-				icon
-			) : (
+			{shouldWrapIcon ? (
 				<WithLink
 					linkSettings={linkSettings ?? {}}
 					dynamicContent={dynamicContent}
 				>
 					{icon}
 				</WithLink>
+			) : (
+				icon
 			)}
 		</MaxiBlock.save>
 	);
+
+	if (shouldWrapLegacyCanvas) {
+		return (
+			<WithLink
+				linkSettings={linkSettings ?? {}}
+				dynamicContent={dynamicContent}
+			>
+				{block}
+			</WithLink>
+		);
+	}
+
+	return block;
 };
 
 const deprecated = attributes => [

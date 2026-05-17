@@ -22,6 +22,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
+import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
 	processSCAttribute,
@@ -832,37 +833,51 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<>
 									<div className='maxi-style-cards__quick-color-presets'>
-										{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-											<div
-												key={`maxi-style-cards__quick-color-presets__box__${item}`}
-												className={classnames(
-													'maxi-style-cards__quick-color-presets__box',
-													quickColorPreset === item &&
-														'maxi-style-cards__quick-color-presets__box--active'
-												)}
-												data-item={item}
-												onClick={e =>
-													setQuickColorPreset(
-														+e.currentTarget.dataset
-															.item
-													)
-												}
-											>
-												<span
+										{[1, 2, 3, 4, 5, 6, 7, 8].map(item => {
+											const colorLabel =
+												getStandardPaletteColorLabel(
+													item,
+													`${__(
+														'Colour',
+														'maxi-blocks'
+													)} ${item}`
+												);
+
+											return (
+												<div
+													key={`maxi-style-cards__quick-color-presets__box__${item}`}
 													className={classnames(
-														'maxi-style-cards__quick-color-presets__box__item',
-														`maxi-style-cards__quick-color-presets__box__item__${item}`
+														'maxi-style-cards__quick-color-presets__box',
+														quickColorPreset ===
+															item &&
+															'maxi-style-cards__quick-color-presets__box--active'
 													)}
-													style={{
-														background: `rgba(${processSCAttribute(
-															SC,
-															item,
-															'color'
-														)}, 1)`,
-													}}
-												/>
-											</div>
-										))}
+													data-item={item}
+													title={colorLabel}
+													aria-label={colorLabel}
+													onClick={e =>
+														setQuickColorPreset(
+															+e.currentTarget
+																.dataset.item
+														)
+													}
+												>
+													<span
+														className={classnames(
+															'maxi-style-cards__quick-color-presets__box__item',
+															`maxi-style-cards__quick-color-presets__box__item__${item}`
+														)}
+														style={{
+															background: `rgba(${processSCAttribute(
+																SC,
+																item,
+																'color'
+															)}, 1)`,
+														}}
+													/>
+												</div>
+											);
+										})}
 									</div>
 									<ColorControl
 										className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}

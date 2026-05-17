@@ -7,6 +7,8 @@ import { RawHTML } from '@wordpress/element';
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
+import { getHasLink, WithLink } from '@extensions/save/utils';
+import { getGroupAttributes } from '@extensions/styles';
 
 /**
  * External dependencies
@@ -16,7 +18,7 @@ import { isEmpty } from 'lodash';
 /**
  * Save
  */
-const addAlt = (content, title, description, uniqueID) => {
+export const addAlt = (content, title, description, uniqueID) => {
 	if (isEmpty(title) && isEmpty(description)) {
 		return content;
 	}
@@ -52,22 +54,40 @@ const addAlt = (content, title, description, uniqueID) => {
 
 const save = props => {
 	const { attributes } = props;
+	const { linkSettings } = attributes;
+	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 
 	const name = 'maxi-blocks/svg-icon-maxi';
+	const iconContent = addAlt(
+		attributes.content,
+		attributes.altTitle,
+		attributes.altDescription,
+		attributes.uniqueID
+	);
+	const shouldWrapCanvas = linkSettings?.linkElement === 'canvas';
+	const shouldWrapIcon =
+		!shouldWrapCanvas && getHasLink(linkSettings, dynamicContent);
 
 	return (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			aria-label={attributes.ariaLabels?.canvas}
 		>
-			<RawHTML className='maxi-svg-icon-block__icon'>
-				{addAlt(
-					attributes.content,
-					attributes.altTitle,
-					attributes.altDescription,
-					attributes.uniqueID
+			<div className='maxi-svg-icon-block__icon-wrapper'>
+				{shouldWrapIcon ? (
+					<WithLink
+						linkSettings={linkSettings ?? {}}
+						dynamicContent={dynamicContent}
+						className='maxi-svg-icon-block__icon'
+					>
+						<RawHTML>{iconContent}</RawHTML>
+					</WithLink>
+				) : (
+					<RawHTML className='maxi-svg-icon-block__icon'>
+						{iconContent}
+					</RawHTML>
 				)}
-			</RawHTML>
+			</div>
 		</MaxiBlock.save>
 	);
 };

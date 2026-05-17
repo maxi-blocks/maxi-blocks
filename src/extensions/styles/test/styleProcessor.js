@@ -20,6 +20,68 @@ jest.mock('src/components/transform-control/utils.js', () => ({
 jest.mock('src/extensions/DC/constants.js', () => ({}));
 
 describe('styleCleaner', () => {
+	const gradientA =
+		'linear-gradient(90deg,rgb(1,2,3) 0%,rgb(4,5,6) 100%)';
+	const gradientB =
+		'linear-gradient(90deg,rgb(7,8,9) 0%,rgb(10,11,12) 100%)';
+	const colorA = 'rgba(1,2,3,1)';
+	const colorB = 'rgba(7,8,9,1)';
+
+	const getBackgroundTransitionData = () => ({
+		transition: {
+			block: {
+				background: {
+					title: 'Background',
+					target: ' .target',
+					property: 'background',
+					hoverProp: 'background-status-hover',
+				},
+			},
+		},
+	});
+
+	const getBackgroundTransitionProps = ({ enabled = true } = {}) => ({
+		'background-status-hover': true,
+		transition: {
+			block: {
+				background: {
+					'transition-duration-general': 0.8,
+					'transition-delay-general': 0,
+					'easing-general': 'ease',
+					'transition-status-general': enabled,
+				},
+			},
+		},
+	});
+
+	const getProcessedBackgroundTransition = ({
+		baseProperty = 'background',
+		baseValue,
+		hoverProperty = 'background',
+		hoverValue,
+		transitionEnabled = true,
+	}) =>
+		styleProcessor(
+			{
+				' .target': {
+					background: {
+						general: {
+							[baseProperty]: baseValue,
+						},
+					},
+				},
+				' .target:hover': {
+					background: {
+						general: {
+							[hoverProperty]: hoverValue,
+						},
+					},
+				},
+			},
+			getBackgroundTransitionData(),
+			getBackgroundTransitionProps({ enabled: transitionEnabled })
+		);
+
 	it('Returns cleaned styles obj', () => {
 		const obj = {
 			'': {
@@ -300,5 +362,108 @@ describe('styleCleaner', () => {
 		expect(styleProcessor(obj, data, props)).toMatchSnapshot();
 		props['hover-type'] = 'text';
 		expect(styleProcessor(obj, data, props)).toMatchSnapshot();
+	});
+
+	it('fades gradient hover backgrounds through an opacity overlay', () => {
+		const result = getProcessedBackgroundTransition({
+			baseValue: gradientA,
+			hoverValue: gradientB,
+		});
+
+		expect(result[' .target'].gradientTransitionHost.general).toEqual({
+			position: 'relative',
+		});
+		expect(
+			result[' .target:before'].gradientTransitionOverlay.general
+		).toMatchObject({
+			content: '""',
+			position: 'absolute',
+			top: '0',
+			right: '0',
+			bottom: '0',
+			left: '0',
+			'border-radius': 'inherit',
+			'pointer-events': 'none',
+			background: gradientB,
+			opacity: 0,
+			transition: 'opacity 0.8s 0s ease',
+		});
+		expect(
+			result[' .target:hover:before'].gradientTransitionOverlay.general
+		).toMatchObject({
+			opacity: 1,
+			transition: 'opacity 0.8s 0s ease',
+		});
+		expect(result[' .target:hover']?.background).toBeUndefined();
+	});
+
+	it('fades from a normal color to a hover gradient through an opacity overlay', () => {
+		const result = getProcessedBackgroundTransition({
+			baseProperty: 'background-color',
+			baseValue: colorA,
+			hoverValue: gradientB,
+		});
+
+		expect(
+			result[' .target:before'].gradientTransitionOverlay.general
+				.background
+		).toBe(gradientB);
+		expect(
+			result[' .target:hover:before'].gradientTransitionOverlay.general
+				.opacity
+		).toBe(1);
+		expect(result[' .target:hover']?.background).toBeUndefined();
+	});
+
+	it('fades from a normal gradient to a hover color through an opacity overlay', () => {
+		const result = getProcessedBackgroundTransition({
+			baseValue: gradientA,
+			hoverProperty: 'background-color',
+			hoverValue: colorB,
+		});
+
+		expect(
+			result[' .target:before'].gradientTransitionOverlay.general
+				.background
+		).toBe(colorB);
+		expect(
+			result[' .target:hover:before'].gradientTransitionOverlay.general
+				.opacity
+		).toBe(1);
+		expect(result[' .target:hover']?.background).toBeUndefined();
+	});
+
+	it('keeps disabled gradient transitions from animating the overlay', () => {
+		const result = getProcessedBackgroundTransition({
+			baseValue: gradientA,
+			hoverValue: gradientB,
+			transitionEnabled: false,
+		});
+
+		expect(
+			result[' .target:before'].gradientTransitionOverlay.general
+				.transition
+		).toBe('opacity 0s 0s');
+		expect(
+			result[' .target:hover:before'].gradientTransitionOverlay.general
+				.transition
+		).toBe('opacity 0s 0s');
+	});
+
+	it('preserves direct background transitions for solid color hovers', () => {
+		const result = getProcessedBackgroundTransition({
+			baseProperty: 'background-color',
+			baseValue: colorA,
+			hoverProperty: 'background-color',
+			hoverValue: colorB,
+		});
+
+		expect(result[' .target:before']).toBeUndefined();
+		expect(result[' .target:hover'].background.general).toEqual({
+			'background-color': colorB,
+		});
+		expect(result[' .target'].transition.general.transition).toBe(
+			'background 0.8s 0s ease'
+		);
 	});
 });

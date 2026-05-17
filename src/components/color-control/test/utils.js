@@ -12,7 +12,7 @@ describe('color control utils', () => {
 			4: 'links, highlights',
 			5: 'headings',
 			6: 'hover',
-			7: 'icons',
+			7: 'icon line',
 			8: 'shadows',
 		});
 	});
@@ -35,7 +35,7 @@ describe('color control utils', () => {
 			'Colour 4: links, highlights',
 			'Colour 5: headings',
 			'Colour 6: hover',
-			'Colour 7: icons',
+			'Colour 7: icon line',
 			'Colour 8: shadows',
 		]);
 	});

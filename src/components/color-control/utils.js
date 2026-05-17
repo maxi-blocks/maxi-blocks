@@ -5,7 +5,7 @@ export const STANDARD_PALETTE_COLOR_DESCRIPTIONS = {
 	4: 'links, highlights',
 	5: 'headings',
 	6: 'hover',
-	7: 'icons',
+	7: 'icon line',
 	8: 'shadows',
 };
 

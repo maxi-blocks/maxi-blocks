@@ -466,4 +466,56 @@ describe('styleCleaner', () => {
 			'background 0.8s 0s ease'
 		);
 	});
+
+	it('uses background layer transition metadata for numbered gradient layers', () => {
+		const layerTarget =
+			' > .maxi-background-displayer .maxi-background-displayer__0';
+		const result = styleProcessor(
+			{
+				[layerTarget]: {
+					gradient: {
+						general: {
+							background: gradientA,
+						},
+					},
+				},
+				[`:hover${layerTarget}`]: {
+					gradient: {
+						general: {
+							background: gradientB,
+						},
+					},
+				},
+			},
+			{
+				transition: {
+					canvas: {
+						'background / layer': {
+							target: ' > .maxi-background-displayer > div',
+							property: false,
+							hoverProp: 'block-background-status-hover',
+						},
+					},
+				},
+			},
+			{
+				'block-background-status-hover': true,
+				transition: {
+					canvas: {
+						'background / layer': {
+							'transition-duration-general': 0.8,
+							'transition-delay-general': 0,
+							'easing-general': 'ease',
+							'transition-status-general': true,
+						},
+					},
+				},
+			}
+		);
+
+		expect(
+			result[`${layerTarget}:before`].gradientTransitionOverlay.general
+				.transition
+		).toBe('opacity 0.8s 0s ease');
+	});
 });

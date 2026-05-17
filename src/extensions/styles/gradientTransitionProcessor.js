@@ -21,6 +21,20 @@ const getBaseTarget = target => target.replace(/:hover/g, '');
 
 const getOverlayTarget = target => `${target}:before`;
 
+const getBackgroundLayerTransitionTargets = target => {
+	const baseTarget = getBaseTarget(target);
+	const backgroundLayerTarget = baseTarget.replace(
+		/ > \.maxi-background-displayer \.maxi-background-displayer__\d+$/,
+		' > .maxi-background-displayer > div'
+	);
+
+	if (backgroundLayerTarget === baseTarget) return [];
+
+	return target.includes(':hover')
+		? [`${backgroundLayerTarget}:hover`, backgroundLayerTarget]
+		: [backgroundLayerTarget];
+};
+
 const getBreakpointBackgrounds = targetStyles => {
 	const response = {};
 
@@ -80,10 +94,17 @@ const replaceTransitionProperty = transition => {
 		.join(', ');
 };
 
-const getTransition = (styles, target, breakpoint) =>
-	replaceTransitionProperty(
-		styles[target]?.transition?.[breakpoint]?.transition
-	);
+const getTransition = (styles, target, breakpoint) => {
+	const targets = [target, ...getBackgroundLayerTransitionTargets(target)];
+
+	return targets.reduce((response, currentTarget) => {
+		if (response) return response;
+
+		return replaceTransitionProperty(
+			styles[currentTarget]?.transition?.[breakpoint]?.transition
+		);
+	}, undefined);
+};
 
 const ensureBreakpointObject = (styles, target, group, breakpoint) => {
 	if (isNil(styles[target])) styles[target] = {};

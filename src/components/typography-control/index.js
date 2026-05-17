@@ -32,7 +32,11 @@ import {
 } from '@extensions/styles';
 import { getListTypographyAttributes } from '@extensions/text/lists';
 import { getDefaultSCValue } from '@extensions/style-cards';
-import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import {
+	getClosestAvailableFontWeight,
+	getWeightOptions,
+	shouldUseBlockTypographyFallback,
+} from './utils';
 import onChangeFontWeight from '@components/font-weight-control/utils';
 
 /**
@@ -347,6 +351,8 @@ const TypographyControl = props => {
 		blockStyle,
 		globalProps,
 		forceIndividualChanges = false,
+		useBlockLevelFallback = false,
+		isRichTextActive = true,
 		setShowLoader,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
@@ -391,6 +397,13 @@ const TypographyControl = props => {
 	const typography = listContext
 		? getListTypographyAttributes(listContext, rawTypography)
 		: rawTypography;
+
+	const useFallbackTypography = shouldUseBlockTypographyFallback({
+		useBlockLevelFallback,
+		isRichTextActive,
+		formatValue,
+		onChangeTextFormat,
+	});
 
 	const { styleCard, baseBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
@@ -654,7 +667,9 @@ const TypographyControl = props => {
 			isHover,
 			textLevel,
 			disableCustomFormats:
-				forceDisableCustomFormats || disableCustomFormats,
+				forceDisableCustomFormats ||
+				disableCustomFormats ||
+				useFallbackTypography,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});
@@ -669,14 +684,16 @@ const TypographyControl = props => {
 			: obj;
 
 		if (!isEmpty(filteredObj.formatValue)) {
-			const newFormatValue = {
-				...filteredObj.formatValue,
-				start: formatValue.start,
-				end: formatValue.end,
-			};
-			delete filteredObj.formatValue;
+			if (onChangeTextFormat) {
+				const newFormatValue = {
+					...filteredObj.formatValue,
+					start: formatValue.start,
+					end: formatValue.end,
+				};
 
-			onChangeTextFormat(newFormatValue);
+				onChangeTextFormat(newFormatValue);
+			}
+			delete filteredObj.formatValue;
 		}
 
 		if (!isReset) {

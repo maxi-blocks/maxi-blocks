@@ -1,4 +1,7 @@
-import { getClosestAvailableFontWeight } from '@components/typography-control/utils';
+import {
+	getClosestAvailableFontWeight,
+	shouldUseBlockTypographyFallback,
+} from '@components/typography-control/utils';
 import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => {
@@ -50,5 +53,59 @@ describe('getClosestAvailableFontWeight', () => {
 		const result = getClosestAvailableFontWeight(font, targetWeight);
 
 		expect(result).toBe(900);
+	});
+});
+
+describe('shouldUseBlockTypographyFallback', () => {
+	it('uses block typography when an opted-in caption control has no RichText format', () => {
+		const result = shouldUseBlockTypographyFallback({
+			useBlockLevelFallback: true,
+			formatValue: {},
+			onChangeTextFormat: jest.fn(),
+		});
+
+		expect(result).toBe(true);
+	});
+
+	it('keeps RichText formatting when an opted-in caption control has an active formatter', () => {
+		const result = shouldUseBlockTypographyFallback({
+			useBlockLevelFallback: true,
+			isRichTextActive: true,
+			formatValue: {
+				start: 0,
+				end: 7,
+				formats: [],
+				text: 'Caption',
+			},
+			onChangeTextFormat: jest.fn(),
+		});
+
+		expect(result).toBe(false);
+	});
+
+	it('uses block typography when the image is selected and caption RichText state is stale', () => {
+		const result = shouldUseBlockTypographyFallback({
+			useBlockLevelFallback: true,
+			isRichTextActive: false,
+			formatValue: {
+				start: 0,
+				end: 7,
+				formats: [],
+				text: 'Caption',
+			},
+			onChangeTextFormat: jest.fn(),
+		});
+
+		expect(result).toBe(true);
+	});
+
+	it('does not change existing typography controls unless they opt in', () => {
+		const result = shouldUseBlockTypographyFallback({
+			useBlockLevelFallback: false,
+			formatValue: {},
+			onChangeTextFormat: jest.fn(),
+		});
+
+		expect(result).toBe(false);
 	});
 });

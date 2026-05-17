@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 export const STANDARD_PALETTE_COLOR_DESCRIPTIONS = {
 	1: __('backgrounds', 'maxi-blocks'),
@@ -16,5 +16,10 @@ export const getStandardPaletteColorLabel = (color, fallbackLabel) => {
 
 	if (!description) return fallbackLabel;
 
-	return `${fallbackLabel}: ${description}`;
+	return sprintf(
+		// translators: 1: palette color label, 2: short usage description.
+		__('%1$s: %2$s', 'maxi-blocks'),
+		fallbackLabel,
+		description
+	);
 };

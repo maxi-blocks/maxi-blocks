@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	getStandardPaletteColorLabel,
 	STANDARD_PALETTE_COLOR_DESCRIPTIONS,
@@ -6,6 +6,13 @@ import {
 
 jest.mock('@wordpress/i18n', () => ({
 	__: jest.fn(text => `translated ${text}`),
+	sprintf: jest.fn((text, ...args) =>
+		args.reduce(
+			(output, value, index) =>
+				output.replace(`%${index + 1}$s`, value),
+			text
+		)
+	),
 }));
 
 describe('color control utils', () => {
@@ -25,7 +32,13 @@ describe('color control utils', () => {
 
 	it('builds the standard palette colour label with the description', () => {
 		expect(getStandardPaletteColorLabel(4, 'Colour 4')).toBe(
-			'Colour 4: translated links, highlights'
+			'translated Colour 4: translated links, highlights'
+		);
+		expect(__).toHaveBeenCalledWith('%1$s: %2$s', 'maxi-blocks');
+		expect(sprintf).toHaveBeenCalledWith(
+			'translated %1$s: %2$s',
+			'Colour 4',
+			'translated links, highlights'
 		);
 	});
 
@@ -35,14 +48,14 @@ describe('color control utils', () => {
 				getStandardPaletteColorLabel(item, `Colour ${item}`)
 			)
 		).toStrictEqual([
-			'Colour 1: translated backgrounds',
-			'Colour 2: translated backgrounds, borders',
-			'Colour 3: translated text, buttons',
-			'Colour 4: translated links, highlights',
-			'Colour 5: translated headings',
-			'Colour 6: translated hover',
-			'Colour 7: translated icon line',
-			'Colour 8: translated shadows',
+			'translated Colour 1: translated backgrounds',
+			'translated Colour 2: translated backgrounds, borders',
+			'translated Colour 3: translated text, buttons',
+			'translated Colour 4: translated links, highlights',
+			'translated Colour 5: translated headings',
+			'translated Colour 6: translated hover',
+			'translated Colour 7: translated icon line',
+			'translated Colour 8: translated shadows',
 		]);
 	});
 

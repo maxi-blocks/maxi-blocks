@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
@@ -837,15 +837,20 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 											const colorLabel =
 												getStandardPaletteColorLabel(
 													item,
-													`${__(
-														'Colour',
-														'maxi-blocks'
-													)} ${item}`
+													sprintf(
+														// translators: %s: color number.
+														__(
+															'Colour %s',
+															'maxi-blocks'
+														),
+														item
+													)
 												);
 
 											return (
-												<div
+												<button
 													key={`maxi-style-cards__quick-color-presets__box__${item}`}
+													type='button'
 													className={classnames(
 														'maxi-style-cards__quick-color-presets__box',
 														quickColorPreset ===
@@ -855,6 +860,10 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													data-item={item}
 													title={colorLabel}
 													aria-label={colorLabel}
+													aria-pressed={
+														quickColorPreset ===
+														item
+													}
 													onClick={e =>
 														setQuickColorPreset(
 															+e.currentTarget
@@ -875,7 +884,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 															)}, 1)`,
 														}}
 													/>
-												</div>
+												</button>
 											);
 										})}
 									</div>

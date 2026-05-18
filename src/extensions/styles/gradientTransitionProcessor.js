@@ -30,9 +30,13 @@ const getBackgroundLayerTransitionTargets = target => {
 
 	if (backgroundLayerTarget === baseTarget) return [];
 
-	return target.includes(':hover')
-		? [`${backgroundLayerTarget}:hover`, backgroundLayerTarget]
-		: [backgroundLayerTarget];
+	if (!target.includes(':hover')) return [backgroundLayerTarget];
+
+	return [
+		`:hover${backgroundLayerTarget}`,
+		`${backgroundLayerTarget}:hover`,
+		backgroundLayerTarget,
+	];
 };
 
 const getBreakpointBackgrounds = targetStyles => {
@@ -62,14 +66,24 @@ const getBreakpointBackgrounds = targetStyles => {
 	return response;
 };
 
-const hasBreakpointProperty = (targetStyles, breakpoint, prop) => {
-	if (isEmpty(targetStyles)) return false;
+const getBreakpointProperty = (targetStyles, breakpoint, prop) => {
+	if (isEmpty(targetStyles)) return undefined;
 
-	return Object.values(targetStyles).some(styleGroup => {
-		const breakpointStyles = styleGroup?.[breakpoint];
+	const breakpointIndex = BREAKPOINTS.indexOf(breakpoint);
+	const breakpointsToCheck = BREAKPOINTS.slice(
+		0,
+		breakpointIndex + 1
+	).reverse();
 
-		return !isNil(breakpointStyles?.[prop]);
-	});
+	return breakpointsToCheck.reduce((response, currentBreakpoint) => {
+		if (!isNil(response)) return response;
+
+		return Object.values(targetStyles).reduce((value, styleGroup) => {
+			if (!isNil(value)) return value;
+
+			return styleGroup?.[currentBreakpoint]?.[prop];
+		}, undefined);
+	}, undefined);
 };
 
 const removeBreakpointBackground = (targetStyles, breakpoint) => {
@@ -117,7 +131,13 @@ const ensureBreakpointObject = (styles, target, group, breakpoint) => {
 
 const ensureHostStyles = (styles, target, breakpoint) => {
 	if (target.includes('.maxi-background-displayer')) return;
-	if (hasBreakpointProperty(styles[target], breakpoint, 'position')) return;
+
+	const position = getBreakpointProperty(
+		styles[target],
+		breakpoint,
+		'position'
+	);
+	if (!isNil(position) && position !== 'static') return;
 
 	const hostStyles = ensureBreakpointObject(
 		styles,

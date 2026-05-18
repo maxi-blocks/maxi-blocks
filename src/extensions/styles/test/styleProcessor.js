@@ -518,4 +518,116 @@ describe('styleCleaner', () => {
 				.transition
 		).toBe('opacity 0.8s 0s ease');
 	});
+
+	it('prefers prefix hover transition metadata for numbered gradient layers', () => {
+		const layerTarget =
+			' > .maxi-background-displayer .maxi-background-displayer__0';
+		const backgroundLayerTarget = ' > .maxi-background-displayer > div';
+		const result = styleProcessor(
+			{
+				[layerTarget]: {
+					gradient: {
+						general: {
+							background: gradientA,
+						},
+					},
+				},
+				[`:hover${layerTarget}`]: {
+					gradient: {
+						general: {
+							background: gradientB,
+						},
+					},
+				},
+				[`:hover${backgroundLayerTarget}`]: {
+					transition: {
+						general: {
+							transition: 'all 1.1s 0.2s ease-in',
+						},
+					},
+				},
+				[`${backgroundLayerTarget}:hover`]: {
+					transition: {
+						general: {
+							transition: 'all 0.4s 0s linear',
+						},
+					},
+				},
+			},
+			{},
+			{}
+		);
+
+		expect(
+			result[`:hover${layerTarget}:before`].gradientTransitionOverlay
+				.general.transition
+		).toBe('opacity 1.1s 0.2s ease-in');
+	});
+
+	it('preserves inherited non-static host positions at narrower breakpoints', () => {
+		const result = styleProcessor(
+			{
+				' .target': {
+					position: {
+						general: {
+							position: 'absolute',
+						},
+					},
+					background: {
+						general: {
+							background: gradientA,
+						},
+					},
+				},
+				' .target:hover': {
+					background: {
+						xs: {
+							background: gradientB,
+						},
+					},
+				},
+			},
+			{},
+			{}
+		);
+
+		expect(result[' .target'].gradientTransitionHost).toBeUndefined();
+		expect(result[' .target'].position.general.position).toBe('absolute');
+		expect(
+			result[' .target:before'].gradientTransitionOverlay.xs.background
+		).toBe(gradientB);
+	});
+
+	it('adds a positioned host when the effective position is static', () => {
+		const result = styleProcessor(
+			{
+				' .target': {
+					position: {
+						general: {
+							position: 'static',
+						},
+					},
+					background: {
+						general: {
+							background: gradientA,
+						},
+					},
+				},
+				' .target:hover': {
+					background: {
+						xs: {
+							background: gradientB,
+						},
+					},
+				},
+			},
+			{},
+			{}
+		);
+
+		expect(result[' .target'].gradientTransitionHost.xs.position).toBe(
+			'relative'
+		);
+		expect(result[' .target'].position.general.position).toBe('static');
+	});
 });

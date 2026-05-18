@@ -506,7 +506,11 @@ function get_gradient_background_layer_transition_targets($target)
     }
 
     if (strpos($target, ':hover') !== false) {
-        return [$background_layer_target . ':hover', $background_layer_target];
+        return [
+            ':hover' . $background_layer_target,
+            $background_layer_target . ':hover',
+            $background_layer_target
+        ];
     }
 
     return [$background_layer_target];
@@ -548,19 +552,30 @@ function get_breakpoint_backgrounds($target_styles)
     return $response;
 }
 
-function has_breakpoint_property($target_styles, $breakpoint, $prop)
+function get_effective_breakpoint_property($target_styles, $breakpoint, $prop)
 {
     if (empty($target_styles) || !is_array($target_styles)) {
-        return false;
+        return null;
     }
 
-    foreach ($target_styles as $style_group) {
-        if (isset($style_group[$breakpoint][$prop])) {
-            return true;
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    $breakpoint_index = array_search($breakpoint, $breakpoints);
+
+    if ($breakpoint_index === false) {
+        return null;
+    }
+
+    $breakpoints_to_check = array_reverse(array_slice($breakpoints, 0, $breakpoint_index + 1));
+
+    foreach ($breakpoints_to_check as $current_breakpoint) {
+        foreach ($target_styles as $style_group) {
+            if (isset($style_group[$current_breakpoint][$prop])) {
+                return $style_group[$current_breakpoint][$prop];
+            }
         }
     }
 
-    return false;
+    return null;
 }
 
 function remove_breakpoint_background(&$target_styles, $breakpoint)
@@ -639,7 +654,8 @@ function ensure_gradient_host_styles(&$styles, $target, $breakpoint)
         return;
     }
 
-    if (has_breakpoint_property($styles[$target] ?? [], $breakpoint, 'position')) {
+    $position = get_effective_breakpoint_property($styles[$target] ?? [], $breakpoint, 'position');
+    if (!is_null($position) && $position !== 'static') {
         return;
     }
 

@@ -211,6 +211,7 @@ const getStyles = props => {
 						'boxShadow',
 					]),
 					blockStyle: props.blockStyle,
+					transition: props.transition,
 				}),
 				...getArrowStyles({
 					...getGroupAttributes(
@@ -228,6 +229,7 @@ const getStyles = props => {
 					...getGroupAttributes(props, ['arrow']),
 					blockStyle: props.blockStyle,
 					isHover: true,
+					transition: props.transition,
 				}),
 				...(props['cl-pagination'] && {
 					' .maxi-pagination': getPaginationStyles(props),

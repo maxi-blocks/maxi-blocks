@@ -128,6 +128,17 @@ const getBoxShadowStyles = ({
 
 		const { value: paletteOpacity, defaultValue: defaultPaletteOpacity } =
 			getValue('palette-opacity');
+		const paletteOpacityChanged =
+			paletteStatus &&
+			isNumber(paletteOpacity) &&
+			paletteOpacity !== defaultPaletteOpacity;
+		const resolvedPaletteColor = isNil(paletteColor)
+			? defaultPaletteColor
+			: paletteColor;
+		const resolvedPaletteOpacity =
+			isNil(paletteOpacity) && breakpoint !== 'general'
+				? defaultPaletteOpacity
+				: paletteOpacity;
 
 		const defaultColor = getCachedColor(
 			defaultPaletteColor,
@@ -136,8 +147,8 @@ const getBoxShadowStyles = ({
 		);
 
 		const color = getCachedColor(
-			paletteColor,
-			paletteOpacity,
+			resolvedPaletteColor,
+			resolvedPaletteOpacity,
 			paletteStatus
 		);
 
@@ -173,6 +184,7 @@ const getBoxShadowStyles = ({
 			(!isNil(values['spread-unit']?.value) &&
 				values['spread-unit']?.value !==
 					values['spread-unit']?.defaultValue) ||
+			paletteOpacityChanged ||
 			(!isNil(color) && color !== defaultColor);
 
 		if (!isNotDefault) return;

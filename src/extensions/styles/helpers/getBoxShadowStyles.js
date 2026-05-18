@@ -132,7 +132,7 @@ const getBoxShadowStyles = ({
 			paletteStatus &&
 			isNumber(paletteOpacity) &&
 			paletteOpacity !== defaultPaletteOpacity;
-		const resolvedPaletteColor = isNil(paletteColor)
+		const resolvedPaletteColor = isNil(paletteColor) && paletteOpacityChanged
 			? defaultPaletteColor
 			: paletteColor;
 		const resolvedPaletteOpacity =

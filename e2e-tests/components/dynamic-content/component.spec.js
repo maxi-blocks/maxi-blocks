@@ -52,6 +52,12 @@ const isResponseOk = (response, type, ...shouldInclude) => {
 	return true;
 };
 
+const ignoreWaitForResponseTimeout = error => {
+	if (error?.name !== 'TimeoutError') {
+		throw error;
+	}
+};
+
 describe('Dynamic content component for text blocks', () => {
 	beforeAll(async () => {
 		await createNewPost();
@@ -139,6 +145,7 @@ describe('Dynamic content component for text blocks', () => {
 			);
 		} catch (e) {
 			// Served from cache, no API call with orderby=date
+			ignoreWaitForResponseTimeout(e);
 		}
 		await page.waitForTimeout(300);
 
@@ -160,6 +167,7 @@ describe('Dynamic content component for text blocks', () => {
 			);
 		} catch (e) {
 			// Served from cache
+			ignoreWaitForResponseTimeout(e);
 		}
 		await page.waitForTimeout(300);
 
@@ -262,6 +270,7 @@ describe('Dynamic content component for text blocks', () => {
 			);
 		} catch (e) {
 			// Continue if no API call detected
+			ignoreWaitForResponseTimeout(e);
 		}
 
 		await page.waitForTimeout(1000);

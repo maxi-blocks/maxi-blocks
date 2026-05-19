@@ -6,7 +6,7 @@ import { cloneBlock } from '@wordpress/blocks';
 /**
  * Internal dependencies
  */
-import cleanInnerBlocks from '../cleanInnerBlocks';
+import cleanInnerBlocks from '@extensions/copy-paste/cleanInnerBlocks';
 
 jest.mock('@wordpress/blocks', () => ({
 	cloneBlock: jest.fn((block, attrs, innerBlocks) => ({

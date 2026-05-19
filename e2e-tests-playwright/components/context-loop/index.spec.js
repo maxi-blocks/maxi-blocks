@@ -26,17 +26,16 @@ async function setupTestPost(admin, editor, pageUtils, clipboardContent) {
 /**
  * Helper function to wait for content to load and verify expected results in editor
  */
-async function verifyEditorResults(page, expectedResults) {
-	await page.waitForSelector('.maxi-text-block__content', {
-		state: 'visible',
-	});
-	await page.waitForFunction(() => {
+async function verifyEditorResults(page, editor, expectedResults) {
+	await editor.canvas.locator('.maxi-text-block__content').first().waitFor({ state: 'visible' });
+	const editorFrame = page.frame({ name: 'editor-canvas' });
+	await editorFrame.waitForFunction(() => {
 		const element = document.querySelector('.maxi-text-block__content');
 		return element && element.innerText !== 'No content found';
 	});
 
 	for (const [block, expectedText] of Object.entries(expectedResults)) {
-		const actualText = await page.$eval(
+		const actualText = await editorFrame.$eval(
 			`.maxi-text-block.${block} .maxi-text-block__content`,
 			el => el.innerText
 		);
@@ -111,7 +110,7 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 1',
 		};
 
-		await verifyEditorResults(page, expectedResults);
+		await verifyEditorResults(page, editor, expectedResults);
 		await verifyPreviewResults(editor, expectedResults);
 	});
 
@@ -129,7 +128,7 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 1',
 		};
 
-		await verifyEditorResults(page, expectedResults);
+		await verifyEditorResults(page, editor, expectedResults);
 		await verifyPreviewResults(editor, expectedResults);
 	});
 
@@ -147,7 +146,7 @@ test.describe('Context Loop', () => {
 			'cl-text-3': 'Post 5',
 		};
 
-		await verifyEditorResults(page, expectedResults);
+		await verifyEditorResults(page, editor, expectedResults);
 		await verifyPreviewResults(editor, expectedResults);
 	});
 
@@ -162,12 +161,10 @@ test.describe('Context Loop', () => {
 		await editor.insertBlock({ name: 'maxi-blocks/container-maxi' });
 
 		// Wait for the container to be inserted
-		await page.waitForSelector('.maxi-container-block', {
-			state: 'visible',
-		});
+		await editor.canvas.locator('.maxi-container-block').waitFor({ state: 'visible' });
 
 		// Find the row block inside the container
-		const rowBlock = page.locator('.maxi-row-block').first();
+		const rowBlock = editor.canvas.locator('.maxi-row-block').first();
 		await rowBlock.click();
 
 		// Click on the Style tab
@@ -198,7 +195,7 @@ test.describe('Context Loop', () => {
 		await paginationToggle.click();
 
 		// Check that pagination is displayed
-		await expect(page.locator('.maxi-pagination')).toBeVisible();
+		await expect(editor.canvas.locator('.maxi-pagination')).toBeVisible();
 
 		// Turn off CL
 		const toggleSwitchOff = page
@@ -207,6 +204,6 @@ test.describe('Context Loop', () => {
 		await toggleSwitchOff.click();
 
 		// Check that pagination is removed
-		await expect(page.locator('.maxi-pagination')).not.toBeVisible();
+		await expect(editor.canvas.locator('.maxi-pagination')).not.toBeVisible();
 	});
 });

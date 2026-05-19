@@ -32,7 +32,11 @@ import {
 } from '@extensions/styles';
 import { getListTypographyAttributes } from '@extensions/text/lists';
 import { getDefaultSCValue } from '@extensions/style-cards';
-import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import {
+	getClosestAvailableFontWeight,
+	getToggledFontStyle,
+	getWeightOptions,
+} from './utils';
 import onChangeFontWeight from '@components/font-weight-control/utils';
 
 /**
@@ -1037,14 +1041,25 @@ const TypographyControl = props => {
 														targetWeight
 												  );
 
+										// If toggling bold back on and default
+										// weight is also bold, reset to default
+										const defaultWeight =
+											getDefault('font-weight');
+										const restoringDefault =
+											!isActive &&
+											defaultWeight > 400;
+										const finalWeight = restoringDefault
+											? undefined
+											: availableWeight;
+
 										onChangeFormat({
 											[`${prefix}font-weight`]:
-												availableWeight,
+												finalWeight,
 										});
 
 										// Load the font with the new weight
 										onChangeFontWeight(
-											availableWeight,
+											finalWeight ?? defaultWeight,
 											fontName,
 											getValue('font-style') ??
 												getDefault('font-style'),
@@ -1065,11 +1080,8 @@ const TypographyControl = props => {
 									onClick={() => {
 										const currentStyle =
 											getValue('font-style');
-										const isActive =
-											currentStyle === 'italic';
-										const targetStyle = isActive
-											? 'normal'
-											: 'italic';
+										const targetStyle =
+											getToggledFontStyle(currentStyle);
 										const fontName =
 											getValue('font-family') ??
 											getDefault('font-family');
@@ -1084,7 +1096,8 @@ const TypographyControl = props => {
 											getValue('font-weight') ??
 												getDefault('font-weight'),
 											fontName,
-											targetStyle,
+											targetStyle ??
+												getDefault('font-style'),
 											setShowLoader
 										);
 									}}

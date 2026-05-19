@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { RawHTML, useEffect } from '@wordpress/element';
+import { RawHTML, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { MediaUpload } from '@wordpress/block-editor';
 
@@ -48,16 +48,26 @@ const VideoPlayer = props => {
 	} = props;
 
 	const playerID = `${uniqueID}-player`;
-	let player;
+	const playerRef = useRef(null);
+	const videoElementRef = useRef(null);
+	const startTimeRef = useRef(startTime);
+	const endTimeRef = useRef(endTime);
+	const isLoopRef = useRef(isLoop);
+
+	useEffect(() => {
+		startTimeRef.current = startTime;
+		endTimeRef.current = endTime;
+		isLoopRef.current = isLoop;
+	}, [startTime, endTime, isLoop]);
 
 	const handleStateChange = state => {
-		if (state.data === 0 && isLoop) {
-			player.seekTo(startTime || 0);
+		if (state.data === 0 && isLoopRef.current && playerRef.current) {
+			playerRef.current.seekTo(startTimeRef.current || 0);
 		}
 	};
 
 	const handleYoutubeVideo = () => {
-		player = new window.YT.Player(playerID, {
+		playerRef.current = new window.YT.Player(playerID, {
 			events: {
 				onStateChange: handleStateChange,
 			},
@@ -65,12 +75,17 @@ const VideoPlayer = props => {
 	};
 
 	const handleVimeoVideo = () => {
-		const playerElement = document.getElementById(playerID);
-		player = new window.Vimeo.Player(playerElement);
-		player.on('timeupdate', data => {
-			if (data.seconds > +endTime) {
-				if (isLoop) player.setCurrentTime(startTime || '0');
-				else player.pause();
+		const playerElement =
+			videoElementRef.current ??
+			(videoElementRef.current?.ownerDocument ?? document).getElementById(playerID);
+		playerRef.current = new window.Vimeo.Player(playerElement);
+		playerRef.current.on('timeupdate', data => {
+			if (data.seconds > +endTimeRef.current) {
+				if (isLoopRef.current)
+					playerRef.current.setCurrentTime(
+						startTimeRef.current || '0'
+					);
+				else playerRef.current.pause();
 			}
 		});
 	};
@@ -102,12 +117,13 @@ const VideoPlayer = props => {
 				handleVimeoVideo();
 			}
 		}
-	}, [videoType, endTime, startTime, isLoop]);
+	}, [videoType, playerID]);
 
 	return (
 		<div className='maxi-video-block__video-container'>
 			{videoType === 'direct' ? (
 				<video
+					ref={videoElementRef}
 					src={embedUrl}
 					className='maxi-video-block__video-player'
 					id={playerID}
@@ -120,6 +136,7 @@ const VideoPlayer = props => {
 				</video>
 			) : (
 				<iframe
+					ref={videoElementRef}
 					className='maxi-video-block__video-player'
 					id={playerID}
 					title='video player'

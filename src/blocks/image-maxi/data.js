@@ -59,14 +59,37 @@ const copyPasteMapping = {
 			group: {
 				[__('Image size', 'maxi-blocks')]: 'imageSize',
 				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
+				[__('Fit on wrapper', 'maxi-blocks')]: 'fitParentSize',
+				[__('Adjust size', 'maxi-blocks')]: {
+					props: 'object-size',
+					hasBreakpoints: true,
+				},
+				[__('Image horizontal position', 'maxi-blocks')]: {
+					props: 'object-position-horizontal',
+					hasBreakpoints: true,
+				},
+				[__('Image vertical position', 'maxi-blocks')]: {
+					props: 'object-position-vertical',
+					hasBreakpoints: true,
+				},
 				[__('Image width', 'maxi-blocks')]: 'img-width-general',
 				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
 			},
+			_ignore: [
+				'mediaID',
+				'mediaURL',
+				'mediaWidth',
+				'mediaHeight',
+				'cropOptions',
+			],
 		},
 		[__('Alignment', 'maxi-blocks')]: {
 			groupAttributes: 'alignment',
 		},
-		[__('Alt tag', 'maxi-blocks')]: ['mediaAlt', 'altSelector'],
+		[__('Alt tag', 'maxi-blocks')]: {
+			group: ['mediaAlt', 'altSelector'],
+			_ignore: ['mediaID'],
+		},
 		[__('Caption', 'maxi-blocks')]: {
 			group: {
 				[__('Caption type', 'maxi-blocks')]: 'captionType',

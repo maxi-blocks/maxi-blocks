@@ -1,4 +1,7 @@
-export { default as DISALLOWED_BLOCKS } from './disallowedBlocks';
+export {
+	default as DISALLOWED_BLOCKS,
+	getDisallowedRepeaterBlocksFromClientId,
+} from './disallowedBlocks';
 export { default as handleBlockMove } from './handleBlockMove';
 export { default as insertBlockIntoColumns } from './insertBlockIntoColumns';
 export { default as removeBlockFromColumns } from './removeBlockFromColumns';

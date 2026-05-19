@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_hover_effects_background_styles($props, $block_style)
 {
     $response = [

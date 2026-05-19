@@ -2,7 +2,7 @@ import {
 	getPaginationStyles,
 	getPaginationLinksStyles,
 	getPaginationColours,
-} from '../getPaginationStyles';
+} from '@extensions/styles/helpers/getPaginationStyles';
 
 jest.mock('src/extensions/styles/getDefaultAttribute.js', () =>
 	jest.fn(() => 0)

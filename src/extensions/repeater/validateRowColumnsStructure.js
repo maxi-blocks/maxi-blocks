@@ -21,7 +21,7 @@ import { getBlockData } from '@extensions/attributes';
 import loadColumnsTemplate from '@extensions/column-templates/loadColumnsTemplate';
 import { getTemplates } from '@extensions/column-templates';
 import { getLastBreakpointAttribute } from '@extensions/styles';
-import DISALLOWED_BLOCKS from './disallowedBlocks';
+import { getDisallowedRepeaterBlocksFromClientId } from './disallowedBlocks';
 
 /**
  * External dependencies
@@ -143,6 +143,7 @@ const replaceColumnInnerBlocks = (
  * @param {Function}              differentColumnsStructureCallback runs when columns have different structure, if returns false - columns won't be transformed
  * @param {string}                rawColumnToValidateByClientId     column to validate by, first column by default
  * @param {boolean}               skipFirstMarkNotPersistent        skip first `__unstableMarkNextChangeAsNotPersistent` call
+ * @param {boolean}               rejectDisallowedBlocks            return false immediately when disallowed blocks are present (enable-toggle path only)
  * @returns {Promise<boolean>}    true if columns were transformed, false if not
  */
 const validateRowColumnsStructure = async (
@@ -150,10 +151,10 @@ const validateRowColumnsStructure = async (
 	innerBlocksPositions,
 	differentColumnsStructureCallback,
 	rawColumnToValidateByClientId,
-	skipFirstMarkNotPersistent = false
+	skipFirstMarkNotPersistent = false,
+	rejectDisallowedBlocks = false
 ) => {
 	const {
-		removeBlock,
 		__unstableMarkNextChangeAsNotPersistent: markNextChangeAsNotPersistent,
 	} = dispatch('core/block-editor');
 
@@ -171,6 +172,18 @@ const validateRowColumnsStructure = async (
 
 	if (isEmpty(childColumns)) {
 		return true;
+	}
+
+	if (rejectDisallowedBlocks) {
+		const blockEditor = select('core/block-editor');
+		const disallowedBlocks = getDisallowedRepeaterBlocksFromClientId(
+			rowClientId,
+			blockEditor
+		);
+
+		if (disallowedBlocks.length > 0) {
+			return false;
+		}
 	}
 
 	let columnToValidateByIndex = 0;
@@ -198,12 +211,7 @@ const validateRowColumnsStructure = async (
 	const columnsStructure = {};
 
 	const pushToStructure = (block, structureArray) => {
-		if (DISALLOWED_BLOCKS.includes(block.name)) {
-			modifiedMarkNextChangeAsNotPersistent();
-			removeBlock(block.clientId, false);
-		} else {
-			structureArray.push(block.name);
-		}
+		structureArray.push(block.name);
 	};
 
 	let proceedTransformingColumns = null;

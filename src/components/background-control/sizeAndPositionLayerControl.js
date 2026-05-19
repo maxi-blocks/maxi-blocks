@@ -164,6 +164,7 @@ const SizeAndPositionLayerControl = ({
 	breakpoint,
 	onlyWidth = false,
 	normalLayer,
+	hideSize = false,
 }) => {
 	const { type } = options;
 	const prefix = `${rawPrefix}background-${
@@ -202,25 +203,30 @@ const SizeAndPositionLayerControl = ({
 
 	return (
 		<>
-			<Size
-				{...equivalentProps}
-				options={options}
-				isLayer={isLayer}
-				onlyWidth={onlyWidth}
-			/>
-			<PositionControl
-				{...options}
-				{...equivalentProps}
-				className='maxi-background-control__position'
-				disablePosition
-				defaultAttributes={getDefaultLayerWithBreakpoint(
-					`${type === 'shape' ? 'SVG' : type}Options`,
-					'general',
-					isHover
-				)}
-				normalAttributes={normalLayer}
-				disableRTC
-			/>
+			{!hideSize && (
+				<Size
+					{...equivalentProps}
+					options={options}
+					isLayer={isLayer}
+					onlyWidth={onlyWidth}
+				/>
+			)}
+			{!hideSize && (
+				<PositionControl
+					{...options}
+					{...equivalentProps}
+					className='maxi-background-control__position'
+					label={__('Position', 'maxi-blocks')}
+					disablePosition
+					defaultAttributes={getDefaultLayerWithBreakpoint(
+						`${type === 'shape' ? 'SVG' : type}Options`,
+						'general',
+						isHover
+					)}
+					normalAttributes={normalLayer}
+					disableRTC
+				/>
+			)}
 		</>
 	);
 };

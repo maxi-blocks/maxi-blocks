@@ -162,10 +162,33 @@ class MaxiBlocks_Styles
                 'map',
                 'accordion',
                 'slider',
+                'row-carousel',
                 'email-obfuscate'
             ];
 
             $template_parts = $this->get_template_parts($template_content);
+
+            // Build combined raw block content (post + template + template parts) once,
+            // used below to filter stale block IDs from legacy meta tables.
+            // Scripts that use boolean flags instead of uniqueID keys are excluded.
+            $boolean_flag_scripts = ['bg_video', 'scroll_effects', 'slider', 'row_carousel'];
+            $all_raw_content = '';
+            global $post;
+            if ($post && !empty($post->post_content)) {
+                $all_raw_content .= $post->post_content;
+            }
+            $raw_template = get_block_template($template_id);
+            if ($raw_template && !empty($raw_template->content)) {
+                $all_raw_content .= $raw_template->content;
+            }
+            if ($template_parts) {
+                foreach ($template_parts as $part_id) {
+                    $raw_part = get_block_template($part_id, 'wp_template_part');
+                    if ($raw_part && !empty($raw_part->content)) {
+                        $all_raw_content .= $raw_part->content;
+                    }
+                }
+            }
 
             foreach ($scripts as &$script) {
                 $js_var = str_replace('-', '_', $script);
@@ -210,8 +233,8 @@ class MaxiBlocks_Styles
 
                         $result_decoded = $result[$js_var];
 
-                        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
-                        if (in_array($js_var, ['bg_video', 'scroll_effects', 'slider'])) {
+                        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects, slider and row_carousel meta
+                        if (in_array($js_var, ['bg_video', 'scroll_effects', 'slider', 'row_carousel'])) {
                             $template_parts_meta = array_merge($template_parts_meta, [true]);
                         } elseif (is_array($result_decoded) && !empty($result_decoded)) {
                             $template_parts_meta = array_merge($template_parts_meta, $result_decoded);
@@ -220,6 +243,15 @@ class MaxiBlocks_Styles
                 }
 
                 $meta = array_merge($post_meta, $template_meta, $template_parts_meta);
+
+                // Filter stale block IDs: the legacy custom_data tables can retain IDs for
+                // blocks that have since been deleted. For uniqueID-keyed scripts, keep only
+                // IDs that still appear somewhere in the active block content.
+                if (!in_array($js_var, $boolean_flag_scripts) && !empty($all_raw_content)) {
+                    $meta = array_filter($meta, function ($key) use ($all_raw_content) {
+                        return str_contains($all_raw_content, $key);
+                    }, ARRAY_FILTER_USE_KEY);
+                }
 
                 if (!empty($meta)) {
                     if ($script === 'number-counter') {
@@ -777,50 +809,22 @@ class MaxiBlocks_Styles
             return $font_url_cache[$font_url];
         }
 
-        // OPTIMIZATION: Try cURL first (often faster than get_headers)
-        if (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $font_url);
-            curl_setopt($ch, CURLOPT_NOBODY, true); // HEAD request
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1); // 1 second timeout
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1); // 1 second connection timeout
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Skip SSL verification for speed
-
-            $result = curl_exec($ch);
-            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-
-            $is_valid = ($http_code == 200);
-            $font_url_cache[$font_url] = $is_valid;
-
-            return $is_valid;
-        }
-
-        // Fallback to get_headers if cURL not available
-        $context = stream_context_create([
-            'http' => [
-                'method' => 'HEAD',
-                'timeout' => 1, // Reduced timeout
-                'ignore_errors' => true
-            ]
+        $response = wp_remote_head($font_url, [
+            'timeout'     => 1,
+            'redirection' => 3,
+            'sslverify'   => false,
         ]);
 
-        $headers = @get_headers($font_url, 0, $context);
-
-        if (!$headers) {
+        if (is_wp_error($response)) {
             $font_url_cache[$font_url] = false;
             return false;
         }
 
-        $string = $headers[0];
+        $http_code = wp_remote_retrieve_response_code($response);
+        $is_valid = ($http_code === 200);
+        $font_url_cache[$font_url] = $is_valid;
 
-        $result = strpos($string, '200') !== false;
-        $font_url_cache[$font_url] = $result;
-
-        return $result;
+        return $is_valid;
     }
 
     /**
@@ -1142,8 +1146,8 @@ class MaxiBlocks_Styles
 
         $result_decoded = $result[$metaJs];
 
-        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects and slider meta
-        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider'])) {
+        // TODO: This is a temporary solution to fix the issue with the bg_video, scroll_effects, slider and row_carousel meta
+        if (in_array($metaJs, ['bg_video', 'scroll_effects', 'slider', 'row_carousel'])) {
             return [ true ];
         }
 
@@ -1485,6 +1489,7 @@ class MaxiBlocks_Styles
                 'map',
                 'accordion',
                 'slider',
+                'row-carousel',
                 'navigation',
                 'email-obfuscate',
             ];
@@ -1497,6 +1502,7 @@ class MaxiBlocks_Styles
                 'relations' => true,
                 'navigation' => true,
                 'email-obfuscate' => true,
+                'row-carousel' => true,
             ];
 
             $script_configs = [];
@@ -2421,6 +2427,7 @@ class MaxiBlocks_Styles
             ...$ids_to_fetch
         );
 
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is built with $wpdb->prepare() above
         $results = $wpdb->get_results($query, ARRAY_A);
 
         // Populate cache
@@ -2751,11 +2758,13 @@ class MaxiBlocks_Styles
 
             do {
                 $query = $wpdb->prepare(
-                    "SELECT * FROM $db_css_table_name WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    "SELECT * FROM %i WHERE fonts_value LIKE %s LIMIT %d OFFSET %d",
+                    $db_css_table_name,
                     '%' . $wpdb->esc_like($font_name) . '%',
                     $chunk_size,
                     $offset
                 );
+                // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $query is built with $wpdb->prepare() above
                 $results = $wpdb->get_results($query);
 
                 foreach ($results as $row) {

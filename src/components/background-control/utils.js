@@ -142,6 +142,36 @@ export const getLayerLabel = type => {
 	}
 };
 
+const cleanRedundantPositionPairSync = layer =>
+	Object.entries(layer).reduce((acc, [key, value]) => {
+		if (
+			value === false &&
+			(key.includes('position-sync-horizontal') ||
+				key.includes('position-sync-vertical'))
+		) {
+			const pair = key.includes('position-sync-horizontal')
+				? 'horizontal'
+				: 'vertical';
+			const prefix = key.slice(0, key.indexOf(`sync-${pair}`));
+			const breakpoint = key.slice(key.lastIndexOf('-') + 1);
+			const sides =
+				pair === 'horizontal'
+					? ['left', 'right']
+					: ['top', 'bottom'];
+
+			if (
+				layer[`${prefix}sync-${breakpoint}`] === 'none' &&
+				sides.some(
+					side => !isNil(layer[`${prefix}${side}-${breakpoint}`])
+				)
+			)
+				return acc;
+		}
+
+		acc[key] = value;
+		return acc;
+	}, {});
+
 /**
  * Handle the onChange event for a layer
  *
@@ -158,7 +188,7 @@ export const onChangeLayer = (
 	layers,
 	target = false
 ) => {
-	const layer = omitBy(rawLayer, isNil);
+	const layer = omitBy(cleanRedundantPositionPairSync(rawLayer), isNil);
 	const isHoverLayer = layer.isHover;
 	const newLayers = cloneDeep(isHoverLayer ? layersHover : layers);
 
@@ -183,8 +213,8 @@ export const onChangeLayer = (
  * @param {boolean} isHover      - Whether the layer is a hover layer
  * @returns {Object} The updated layer
  */
-export const handleOnChangeLayer = (layer, currentLayer, isHover) =>
-	handleSetAttributes({
+export const handleOnChangeLayer = (layer, currentLayer, isHover) => {
+	const response = handleSetAttributes({
 		obj: isHover ? getHoverLayerChangeObject(layer) : layer,
 		attributes: currentLayer,
 		onChange: result => result,
@@ -196,3 +226,43 @@ export const handleOnChangeLayer = (layer, currentLayer, isHover) =>
 			}),
 		},
 	});
+
+	return Object.entries(response).reduce((acc, [key, value]) => {
+		if (value === false) {
+			if (
+				key.includes('position-sync-horizontal') ||
+				key.includes('position-sync-vertical')
+			) {
+				const pair = key.includes('position-sync-horizontal')
+					? 'horizontal'
+					: 'vertical';
+				const prefix = key.slice(0, key.indexOf(`sync-${pair}`));
+				const breakpoint = key.slice(key.lastIndexOf('-') + 1);
+				const sides =
+					pair === 'horizontal'
+						? ['left', 'right']
+						: ['top', 'bottom'];
+				const syncValue =
+					layer[`${prefix}sync-${breakpoint}`] ??
+					currentLayer[`${prefix}sync-${breakpoint}`];
+
+				if (
+					syncValue === 'none' &&
+					sides.some(
+						side =>
+							!isNil(layer[`${prefix}${side}-${breakpoint}`]) ||
+							!isNil(
+								currentLayer[`${prefix}${side}-${breakpoint}`]
+							)
+					)
+				) {
+					acc[key] = undefined;
+					return acc;
+				}
+			}
+		}
+
+		acc[key] = value;
+		return acc;
+	}, {});
+};

@@ -45,6 +45,7 @@ vendor/
 
 # Ignore Claude files
 CLAUDE.md
+**/.claude/
 
 # Ignore PHP CS Fixer config
 **/.php-cs-fixer.dist.php

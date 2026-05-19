@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_typography_styles($args)
 {
     $obj = $args['obj'];

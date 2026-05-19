@@ -6,7 +6,7 @@ import { createNewPost } from '@wordpress/e2e-test-utils';
 /**
  * Internal dependencies
  */
-import { insertMaxiBlock } from '../../utils';
+import { insertMaxiBlock, getEditorFrame } from '../../utils';
 
 describe('Placeholder', () => {
 	it('Test template library placeholder', async () => {
@@ -29,7 +29,8 @@ describe('Placeholder', () => {
 		);
 
 		// check placeholder
-		const placeholder = await page.$eval(
+		const frame = await getEditorFrame(page);
+		const placeholder = await frame.$eval(
 			'.maxi-block-library__placeholder ',
 			div => div.innerHTML
 		);
@@ -49,7 +50,8 @@ describe('Placeholder', () => {
 		await page.waitForTimeout(1500);
 
 		// check icon placeholder
-		const placeholder = await page.$eval(
+		const iconFrame = await getEditorFrame(page);
+		const placeholder = await iconFrame.$eval(
 			'.maxi-svg-icon-block__placeholder',
 			div => div.innerHTML
 		);
@@ -59,7 +61,8 @@ describe('Placeholder', () => {
 	it('Test image placeholder', async () => {
 		await insertMaxiBlock(page, 'Image Maxi');
 		// check image placeholder
-		const placeholder = await page.$eval(
+		const imageFrame = await getEditorFrame(page);
+		const placeholder = await imageFrame.$eval(
 			'.maxi-image-block__placeholder',
 			div => div.innerHTML
 		);

@@ -12,6 +12,7 @@ import {
  */
 import {
 	openSidebarTab,
+	editAxisControl,
 	editColorControl,
 	getAttributes,
 	addTypographyOptions,
@@ -328,9 +329,9 @@ describe('Button Maxi hover simple actions', () => {
 		// Border radius
 		await page.waitForTimeout(500);
 
-		await page.$$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			ANCs => ANCs[2].focus()
+		await page.$eval(
+			'.maxi-axis-control__content__item__top-left .maxi-advanced-number-control__value',
+			input => input.focus()
 		);
 		await pressKeyWithModifier('primary', 'a');
 		await page.keyboard.type('11', { delay: 350 });
@@ -459,33 +460,23 @@ describe('Button Maxi hover simple actions', () => {
 
 		await page.waitForTimeout(350);
 
-		// Margin
-		await page.$$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			ANCs => ANCs[0].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('1', { delay: 350 });
+		const marginControl = await page.$('.maxi-axis-control__margin');
+		await editAxisControl({
+			page,
+			instance: marginControl,
+			syncOption: 'all',
+			values: '1',
+		});
 
 		await page.waitForTimeout(350);
 
-		// Padding
-		await page.$$eval('.maxi-tabs-control', tabs =>
-			tabs[5]
-				.querySelector(
-					'.maxi-tabs-control__button.maxi-tabs-control__button-all'
-				)
-				.click()
-		);
-
-		await page.waitForTimeout(350);
-
-		await page.$$eval(
-			'.maxi-advanced-number-control .maxi-advanced-number-control__value',
-			ANCs => ANCs[1].focus()
-		);
-		await pressKeyWithModifier('primary', 'a');
-		await page.keyboard.type('2', { delay: 350 });
+		const paddingControl = await page.$('.maxi-axis-control__padding');
+		await editAxisControl({
+			page,
+			instance: paddingControl,
+			syncOption: 'all',
+			values: '2',
+		});
 
 		expect(await getAttributes('relations')).toMatchSnapshot();
 

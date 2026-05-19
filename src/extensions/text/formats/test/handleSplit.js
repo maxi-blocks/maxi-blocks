@@ -1,4 +1,4 @@
-import handleSplit from '../handleSplit';
+import handleSplit from '@extensions/text/formats/handleSplit';
 import { createBlock } from '@wordpress/blocks';
 
 jest.mock('@wordpress/blocks', () => ({

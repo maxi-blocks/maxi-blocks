@@ -11,6 +11,7 @@ import {
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../../../utils';
 
 describe('Column size from Toolbar', () => {
@@ -22,12 +23,13 @@ describe('Column size from Toolbar', () => {
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
 
-		await page.waitForSelector('.maxi-row-block__template button');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
-		await page.$eval('.maxi-row-block__template button', button =>
+		await frame.$eval('.maxi-row-block__template button', button =>
 			button.click()
 		);
-		await page.waitForSelector('.maxi-column-block');
+		await frame.waitForSelector('.maxi-column-block');
 
 		// column size
 		await page.$eval(

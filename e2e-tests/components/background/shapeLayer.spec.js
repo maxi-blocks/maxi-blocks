@@ -18,6 +18,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
@@ -191,7 +192,8 @@ describe('BackgroundControl', () => {
 	});
 
 	it('Check Background Shape layer display', async () => {
-		const checkEditor = await page.$eval(
+		const frame = await getEditorFrame(page);
+		const checkEditor = await frame.$eval(
 			'.maxi-background-displayer',
 			el => el.innerHTML
 		);

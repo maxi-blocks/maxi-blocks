@@ -32,21 +32,21 @@ describe('getTemplatePartSlug', () => {
 		getIsSiteEditor.mockReturnValue(true);
 		getIsTemplatePart.mockReturnValue(true);
 
-		const mockEditSiteStore = {
-			getEditedPostId: jest
+		const mockEditorStore = {
+			getCurrentPostId: jest
 				.fn()
 				.mockReturnValue('wp_template_part//header'),
 		};
 
-		select.mockReturnValue(mockEditSiteStore);
+		select.mockReturnValue(mockEditorStore);
 
 		const result = getTemplatePartSlug('test-client-id');
 
 		expect(result).toBe('header');
 		expect(getIsSiteEditor).toHaveBeenCalled();
 		expect(getIsTemplatePart).toHaveBeenCalled();
-		expect(select).toHaveBeenCalledWith('core/edit-site');
-		expect(mockEditSiteStore.getEditedPostId).toHaveBeenCalled();
+		expect(select).toHaveBeenCalledWith('core/editor');
+		expect(mockEditorStore.getCurrentPostId).toHaveBeenCalled();
 		expect(getTemplatePart).not.toHaveBeenCalled();
 	});
 

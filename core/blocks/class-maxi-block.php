@@ -268,7 +268,7 @@ if (!class_exists('MaxiBlocks_Block')):
                     }
 
                     $basic_config = [
-                        'api_version' => 2,
+                        'api_version' => 3,
                         'editor_script' => 'maxi-blocks-block-editor',
                         'render_callback' => [$this, 'render_block'],
                     ];
@@ -310,7 +310,7 @@ if (!class_exists('MaxiBlocks_Block')):
                         }
 
                         $basic_config = [
-                            'api_version' => 2,
+                            'api_version' => 3,
                             'editor_script' => 'maxi-blocks-block-editor',
                             'render_callback' => [$this, 'render_block'],
                         ];
@@ -347,7 +347,7 @@ if (!class_exists('MaxiBlocks_Block')):
             }
 
             $basic_config = [
-                'api_version' => 2,
+                'api_version' => 3,
                 'editor_script' => 'maxi-blocks-block-editor',
                 'render_callback' => [$this, 'render_block'],
             ];

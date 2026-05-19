@@ -53,6 +53,7 @@ const PositionControl = props => {
 		isHover = false,
 		defaultAttributes,
 		normalAttributes,
+		label = __('Position', 'maxi-blocks'),
 	} = props;
 
 	const classes = classnames(
@@ -389,6 +390,7 @@ const PositionControl = props => {
 						{...getAdvancedPlacementProps()}
 						target='position'
 						prefix={prefix}
+						label={label}
 						onChange={handleAdvancedPlacementChange}
 						breakpoint={breakpoint}
 						minMaxSettings={minMaxSettings}
@@ -399,6 +401,7 @@ const PositionControl = props => {
 						)}
 						isHover={isHover}
 						defaultAttributes={defaultAttributes}
+						showAllSides
 					/>
 				</div>
 			)}

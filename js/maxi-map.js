@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 window.onload = () => {
 	const apiKey = maxiMap[1];
+	const leafletVersion = '1.9.4';
 	const mapItems = [];
 
 	for (const key in maxiMap[0]) {
@@ -33,6 +34,10 @@ window.onload = () => {
 				mapItems.push(obj);
 			}
 		}
+	}
+
+	if (mapItems.length === 0) {
+		return;
 	}
 
 	const isGoogleScriptsNeeded = mapItems.some(
@@ -75,7 +80,8 @@ window.onload = () => {
 
 	const getOSMTileLayer = mapType => {
 		const tileUrls = {
-			standard: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			// Canonical OSMF endpoint (see https://operations.osmfoundation.org/policies/tiles/)
+			standard: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
 			humanitarian:
 				'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',
 			cycle: 'https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
@@ -117,7 +123,14 @@ window.onload = () => {
 			const defaultZoom = Math.floor((mapMinZoom + adjustedMaxZoom) / 2);
 			const zoomLevel = mapZoom !== undefined ? mapZoom : defaultZoom;
 
-			const map = L.map(`maxi-map-block__container-${uniqueID}`, {
+			const containerEl = document.getElementById(
+				`maxi-map-block__container-${uniqueID}`
+			);
+			if (!containerEl) {
+				return;
+			}
+
+			const map = L.map(containerEl, {
 				dragging: mapDragging,
 				touchZoom: mapTouchZoom,
 				doubleClickZoom: mapDoubleClickZoom,
@@ -133,9 +146,14 @@ window.onload = () => {
 					})
 					.addTo(map);
 			} else {
+				// OSMF tiles: Referer required (403r if missing). Use the policy OSM documents for sites.
+				// updateWhenZooming:false avoids requesting many tile sets mid-gesture (rate / referer edge cases).
+				// @see https://wiki.openstreetmap.org/wiki/Blocked_tiles
 				L.tileLayer(getOSMTileLayer(mapType || 'standard'), {
 					attribution:
 						'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+					referrerPolicy: 'no-referrer-when-downgrade',
+					updateWhenZooming: false,
 				}).addTo(map);
 			}
 
@@ -186,18 +204,18 @@ window.onload = () => {
 			{
 				elementName: 'link',
 				properties: {
-					href: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.css',
+					href: `https://unpkg.com/leaflet@${leafletVersion}/dist/leaflet.css`,
 					rel: 'stylesheet',
 					integrity:
-						'sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==',
+						'sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==',
 					crossOrigin: '',
 				},
 			},
 			{
 				properties: {
-					src: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.js',
+					src: `https://unpkg.com/leaflet@${leafletVersion}/dist/leaflet.js`,
 					integrity:
-						'sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==',
+						'sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg==',
 					crossOrigin: '',
 				},
 			},

@@ -83,25 +83,30 @@ class edit extends MaxiBlockComponent {
 			!isEmpty(SVGData) &&
 			Object.keys(SVGData)[0].split('__')[0] !== uniqueID
 		) {
-			const cleanedContent = DOMPurify.sanitize(SVGElement);
+			// Defer the store update so it fires after all blocks have mounted.
+			// Dispatching setAttributes during bulk mount triggers React
+			// reconciliation across every mounted block, causing ~400ms stalls.
+			setTimeout(() => {
+				const cleanedContent = DOMPurify.sanitize(SVGElement);
 
-			const svg = document
-				.createRange()
-				.createContextualFragment(cleanedContent).firstElementChild;
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
 
-			const resData = {
-				[`${uniqueID}__${uniqueId()}`]: {
-					color: '',
-					imageID: mediaID,
-					imageURL: mediaURL,
-				},
-			};
+				const resData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
 
-			const resEl = injectImgSVG(svg, resData, false, uniqueID);
-			maxiSetAttributes({
-				SVGElement: resEl.outerHTML,
-				SVGData: resData,
-			});
+				const resEl = injectImgSVG(svg, resData, false, uniqueID);
+				maxiSetAttributes({
+					SVGElement: resEl.outerHTML,
+					SVGData: resData,
+				});
+			}, 0);
 		}
 	}
 

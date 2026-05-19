@@ -521,6 +521,7 @@ const ImageLayerSettings = props => {
 				isLayer={isLayer}
 				breakpoint={breakpoint}
 				normalLayer={normalLayer}
+				hideSize={parallaxStatus}
 			/>
 		</>
 	);

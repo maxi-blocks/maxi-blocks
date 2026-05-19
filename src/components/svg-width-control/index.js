@@ -46,7 +46,12 @@ const SvgWidthControl = props => {
 		isHover ? '-hover' : ''
 	}`;
 	const width = props[widthAttrLabel];
-	const defaultWidth = getDefaultAttribute(widthAttrLabel);
+	let defaultWidth = getDefaultAttribute(widthAttrLabel);
+	if (defaultWidth === undefined && breakpoint !== 'general') {
+		defaultWidth = getDefaultAttribute(
+			getAttributeKey('width', isHover, prefix, 'general')
+		);
+	}
 	const placeholderWidth = getLastBreakpointAttribute({
 		target: `${prefix}width`,
 		breakpoint,
@@ -59,9 +64,14 @@ const SvgWidthControl = props => {
 		isHover,
 		attributes: props,
 	});
-	const defaultWidthUnit = getDefaultAttribute(
+	let defaultWidthUnit = getDefaultAttribute(
 		`${prefix}width-unit-${breakpoint}${isHover ? '-hover' : ''}`
 	);
+	if (defaultWidthUnit === undefined && breakpoint !== 'general') {
+		defaultWidthUnit = getDefaultAttribute(
+			getAttributeKey('width-unit', isHover, prefix, 'general')
+		);
+	}
 
 	const heightFitContent = getLastBreakpointAttribute({
 		target: `${prefix}width-fit-content`,

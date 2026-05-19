@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { renderToString } from '@wordpress/element';
+import { lazy, renderToString, Suspense } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -9,7 +9,6 @@ import { renderToString } from '@wordpress/element';
 import Inspector from './inspector';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { Toolbar } from '@components';
-import { MapContent } from './components';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { getGroupAttributes } from '@extensions/styles';
 import { getBreakpoints } from '@extensions/styles/helpers';
@@ -17,6 +16,8 @@ import getStyles from './styles';
 import { copyPasteMapping } from './data';
 import * as mapMarkerIcons from '@maxi-icons/map-icons/markers';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+
+const MapContent = lazy(() => import('./components/map-content'));
 
 /**
  * Edit
@@ -65,12 +66,20 @@ class edit extends MaxiBlockComponent {
 			});
 		}
 
-		// Use injected settings instead of API call
-		const googleApiKey =
-			typeof window !== 'undefined'
-				? window.maxiSettings?.google_api_key || ''
-				: '';
-		const provider = attributes?.['map-provider'];
+		// Diagnostic: check window context (API 3 iframe vs parent window)
+		const isIframe = window !== window.parent;
+		const hasMaxiSettings = typeof window.maxiSettings !== 'undefined';
+		const hasParentMaxiSettings =
+			typeof window.parent?.maxiSettings !== 'undefined';
+
+		// With API 3 the block runs in an iframe; maxiSettings is injected on the
+		// outer (parent) window, so fall back to it when the iframe context lacks it.
+		const maxiSettings =
+			window.maxiSettings ||
+			(isIframe ? window.parent?.maxiSettings : undefined);
+
+		const googleApiKey = maxiSettings?.google_api_key || '';
+
 		this.setState({
 			googleApiKey,
 			// Initialize as false to let MapContent handle error state
@@ -103,13 +112,15 @@ class edit extends MaxiBlockComponent {
 				showLoader={this.state.showLoader || isApiKeyLoading}
 				{...getMaxiBlockAttributes(this.props)}
 			>
-				<MapContent
-					{...this.props}
-					apiKey={googleApiKey}
-					isFirstClick={this.state.isFirstClick}
-					isGoogleMaps={mapProvider === 'googlemaps'}
-					isSelected={isSelected}
-				/>
+				<Suspense fallback={null}>
+					<MapContent
+						{...this.props}
+						apiKey={googleApiKey}
+						isFirstClick={this.state.isFirstClick}
+						isGoogleMaps={mapProvider === 'googlemaps'}
+						isSelected={isSelected}
+					/>
+				</Suspense>
 			</MaxiBlock>,
 		];
 	}

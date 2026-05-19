@@ -7,6 +7,8 @@ import {
 	useCallback,
 	useContext,
 	useEffect,
+	forwardRef,
+	memo,
 	useMemo,
 	useRef,
 } from '@wordpress/element';
@@ -34,6 +36,12 @@ import {
 	getBlockPosition,
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
+import {
+	countProfile,
+	getIsProfileEnabled,
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -41,6 +49,24 @@ import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 import { isEmpty, isEqual } from 'lodash';
 
 const DISABLED_BLOCKS = ['maxi-blocks/list-item-maxi'];
+
+const InterBlockInserterSlot = memo(
+	forwardRef(({ clientId, name }, ref) => {
+		const isTyping = useSelect(
+			select => select('core/block-editor').isTyping(),
+			[]
+		);
+
+		if (isTyping || DISABLED_BLOCKS.includes(name)) return null;
+
+		return (
+			<BlockInserter.InterBlockInserter ref={ref} clientId={clientId} />
+		);
+	}),
+	(oldProps, newProps) =>
+		oldProps.clientId === newProps.clientId &&
+		oldProps.name === newProps.name
+);
 
 const withMaxiProps = createHigherOrderComponent(
 	WrappedComponent =>
@@ -54,6 +80,7 @@ const withMaxiProps = createHigherOrderComponent(
 				isSelected,
 				contextLoopContext,
 			} = ownProps;
+			countProfile('withMaxiProps render');
 
 			const repeaterContext = useContext(RepeaterContext);
 
@@ -61,6 +88,7 @@ const withMaxiProps = createHigherOrderComponent(
 			const prevRelationsRef = useRef(attributes?.relations);
 			// Track if we're in the middle of a setAttributes call
 			const isSettingAttributesRef = useRef(false);
+			const responsiveDebugLogRef = useRef(null);
 
 			// Memoize selectors to prevent recreation on every render
 			const blockEditorSelectors = useMemo(() => {
@@ -68,18 +96,13 @@ const withMaxiProps = createHigherOrderComponent(
 				return {
 					getBlock: selectStore.getBlock,
 					getBlockOrder: selectStore.getBlockOrder,
-					getBlockParents: selectStore.getBlockParents,
 					getBlockParentsByBlockName:
 						selectStore.getBlockParentsByBlockName,
 				};
 			}, []);
 
-			const {
-				getBlock,
-				getBlockOrder,
-				getBlockParents,
-				getBlockParentsByBlockName,
-			} = blockEditorSelectors;
+			const { getBlock, getBlockOrder, getBlockParentsByBlockName } =
+				blockEditorSelectors;
 
 			const {
 				updateBlockAttributes,
@@ -95,17 +118,16 @@ const withMaxiProps = createHigherOrderComponent(
 				deviceType,
 				baseBreakpoint,
 				hasSelectedChild,
-				isTyping,
 				blockIndex,
 				blockRootClientId,
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 				// isLastBlock,
 			} = useSelect(select => {
+				const selectStart = getProfileStart();
 				const { receiveMaxiDeviceType, receiveBaseBreakpoint } =
 					select('maxiBlocks');
 				const {
 					hasSelectedInnerBlock,
-					isTyping,
 					getBlockIndex,
 					getBlockRootClientId,
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
@@ -113,14 +135,19 @@ const withMaxiProps = createHigherOrderComponent(
 				} = select('core/block-editor');
 
 				const currentBlockIndex = getBlockIndex(clientId);
+				const currentDeviceType = receiveMaxiDeviceType();
+				const currentBaseBreakpoint = receiveBaseBreakpoint();
+				const currentHasSelectedChild = hasSelectedInnerBlock(
+					clientId,
+					true
+				);
 				// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
 				// const allBlocks = getBlocks();
 
-				return {
-					deviceType: receiveMaxiDeviceType(),
-					baseBreakpoint: receiveBaseBreakpoint(),
-					hasSelectedChild: hasSelectedInnerBlock(clientId, true),
-					isTyping: isTyping(),
+				const selection = {
+					deviceType: currentDeviceType,
+					baseBreakpoint: currentBaseBreakpoint,
+					hasSelectedChild: currentHasSelectedChild,
 					blockIndex: currentBlockIndex,
 					blockRootClientId: getBlockRootClientId(clientId),
 					// TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806
@@ -128,9 +155,12 @@ const withMaxiProps = createHigherOrderComponent(
 					// 	attributes?.isFirstOnHierarchy &&
 					// 	currentBlockIndex === allBlocks.length - 1,
 				};
+				recordProfile('withMaxiProps useSelect', selectStart);
+
+				return selection;
 			});
 
-			const parentColumnClientId = useMemo(() => {
+				const parentColumnClientId = useMemo(() => {
 				if (repeaterContext?.repeaterStatus) {
 					const innerBlockPositions =
 						repeaterContext?.getInnerBlocksPositions();
@@ -167,6 +197,7 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
 			const ref = useRef(null);
+			const interBlockInserterRef = useRef(null);
 			const styleObjKeys = useRef([]);
 
 			const insertInlineStyles = useCallback(
@@ -394,40 +425,183 @@ const withMaxiProps = createHigherOrderComponent(
 				// No cleanup needed for this effect
 			}, [isSelected]);
 
-		// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
-		useEffect(() => {
-			const currentRelations = attributes?.relations;
-			const prevRelations = prevRelationsRef.current;
+			useEffect(() => {
+				if (
+					!isSelected ||
+					typeof console === 'undefined' ||
+					!console.info ||
+					!getIsProfileEnabled()
+				)
+					return;
 
-			// If we're intentionally setting relations (through maxiSetAttributes), don't restore
-			if (isSettingAttributesRef.current) {
-				isSettingAttributesRef.current = false;
-				prevRelationsRef.current = currentRelations;
-				return;
-			}
+				let animationFrameId;
+				let timeoutId;
+				let isActive = true;
 
-			// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
-			if (
-				prevRelations &&
-				Array.isArray(prevRelations) &&
-				prevRelations.length > 0 &&
-				(!currentRelations ||
-					(Array.isArray(currentRelations) &&
-						currentRelations.length < prevRelations.length))
-			) {
-				// Restore the previous relations
-				setAttributes({ relations: prevRelations });
-			}
+				const scheduleLogSelection = logSelection => {
+					if (typeof requestAnimationFrame === 'function') {
+						animationFrameId = requestAnimationFrame(() => {
+							timeoutId = setTimeout(logSelection, 0);
+						});
+					} else {
+						timeoutId = setTimeout(logSelection, 0);
+					}
+				};
 
-			// Update the ref for next render
-			if (
-				currentRelations &&
-				Array.isArray(currentRelations) &&
-				currentRelations.length > 0
-			) {
-				prevRelationsRef.current = currentRelations;
-			}
-		}, [attributes?.relations, setAttributes, clientId]);
+				import('@extensions/performance/responsiveDebug')
+					.then(
+						({
+							RESPONSIVE_BREAKPOINTS,
+							getDisplayDebugSnapshot,
+							getResponsiveAttributeAudit,
+							logDebugObject,
+							logDebugObjectChunks,
+							stringifyDebugValue,
+						}) => {
+							if (!isActive) return;
+
+							const responsiveAudit =
+								getResponsiveAttributeAudit(attributes);
+							const responsiveAttributesKey = stringifyDebugValue(
+								responsiveAudit.matrix
+							);
+							const logKey = [
+								clientId,
+								attributes?.uniqueID,
+								deviceType,
+								baseBreakpoint,
+								responsiveAttributesKey,
+							].join(':');
+
+							if (responsiveDebugLogRef.current === logKey)
+								return;
+							responsiveDebugLogRef.current = logKey;
+
+							const logSelection = () => {
+								if (!isActive) return;
+
+								const breakpointAttributeCounts =
+									Object.fromEntries(
+										RESPONSIVE_BREAKPOINTS.map(
+											breakpoint => [
+												breakpoint,
+												Object.keys(
+													responsiveAudit
+														.byBreakpoint[
+														breakpoint
+													] || {}
+												).length,
+											]
+										)
+									);
+								const summary = {
+									name,
+									clientId,
+									uniqueID: attributes?.uniqueID,
+									activeBreakpoint: deviceType,
+									baseBreakpoint,
+									totalAttributeCount:
+										responsiveAudit.totalAttributeCount,
+									responsiveAttributeCount:
+										responsiveAudit.responsiveAttributeCount,
+									nonResponsiveAttributeCount: Object.keys(
+										responsiveAudit.nonResponsiveAttributes
+									).length,
+									matrixAttributeCount: Object.keys(
+										responsiveAudit.matrix
+									).length,
+									breakpointAttributeCounts,
+								};
+
+								logDebugObject(
+									'responsive audit summary',
+									summary
+								);
+								logDebugObject(
+									'responsive display',
+									getDisplayDebugSnapshot(
+										clientId,
+										attributes?.uniqueID
+									)
+								);
+
+								RESPONSIVE_BREAKPOINTS.forEach(breakpoint => {
+									logDebugObjectChunks(
+										`responsive attrs ${breakpoint}`,
+										responsiveAudit.byBreakpoint[breakpoint]
+									);
+								});
+
+								logDebugObjectChunks(
+									'responsive matrix',
+									responsiveAudit.matrix
+								);
+								logDebugObjectChunks(
+									'nonresponsive attrs',
+									responsiveAudit.nonResponsiveAttributes
+								);
+							};
+
+							scheduleLogSelection(logSelection);
+						}
+					)
+					.catch(() => {});
+
+				return () => {
+					isActive = false;
+
+					if (
+						animationFrameId &&
+						typeof cancelAnimationFrame === 'function'
+					) {
+						cancelAnimationFrame(animationFrameId);
+					}
+
+					if (timeoutId) clearTimeout(timeoutId);
+				};
+			}, [
+				isSelected,
+				name,
+				clientId,
+				attributes,
+				deviceType,
+				baseBreakpoint,
+			]);
+
+			// CRITICAL FIX: Detect and restore relations if they unexpectedly become empty
+			useEffect(() => {
+				const currentRelations = attributes?.relations;
+				const prevRelations = prevRelationsRef.current;
+
+				// If we're intentionally setting relations (through maxiSetAttributes), don't restore
+				if (isSettingAttributesRef.current) {
+					isSettingAttributesRef.current = false;
+					prevRelationsRef.current = currentRelations;
+					return;
+				}
+
+				// Check if relations unexpectedly became empty or decreased (without going through setAttributes)
+				if (
+					prevRelations &&
+					Array.isArray(prevRelations) &&
+					prevRelations.length > 0 &&
+					(!currentRelations ||
+						(Array.isArray(currentRelations) &&
+							currentRelations.length < prevRelations.length))
+				) {
+					// Restore the previous relations
+					setAttributes({ relations: prevRelations });
+				}
+
+				// Update the ref for next render
+				if (
+					currentRelations &&
+					Array.isArray(currentRelations) &&
+					currentRelations.length > 0
+				) {
+					prevRelationsRef.current = currentRelations;
+				}
+			}, [attributes?.relations, setAttributes, clientId]);
 
 			// Effect for handling repeater block moves with proper cleanup
 			useEffect(() => {
@@ -484,13 +658,7 @@ const withMaxiProps = createHigherOrderComponent(
 						hasInnerBlocks={hasInnerBlocks}
 						parentColumnClientId={parentColumnClientId}
 						blockPositionFromColumn={blockPositionFromColumn}
-						isChild={
-							!isEmpty(
-								getBlockParents(clientId).filter(
-									val => val !== clientId
-								)
-							)
-						}
+						isChild={!!blockRootClientId}
 						hasSelectedChild={hasSelectedChild}
 						repeaterStatus={repeaterContext?.repeaterStatus}
 						repeaterRowClientId={
@@ -503,12 +671,11 @@ const withMaxiProps = createHigherOrderComponent(
 							repeaterContext?.updateInnerBlocksPositions
 						}
 					/>
-					{!isTyping && !DISABLED_BLOCKS.includes(ownProps.name) && (
-						<BlockInserter.InterBlockInserter
-							ref={ref}
-							{...ownProps}
-						/>
-					)}
+					<InterBlockInserterSlot
+						ref={interBlockInserterRef}
+						clientId={clientId}
+						name={name}
+					/>
 					{/* TODO: https://github.com/maxi-blocks/maxi-blocks/issues/5806 */}
 					{/* {isLastBlock && (
 						<BlockInserter className='maxi-block-inserter maxi-block-inserter__last' />

@@ -1,4 +1,6 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 require_once MAXI_PLUGIN_DIR_PATH . 'core/defaults/sc_defaults.php';
 
 
@@ -55,7 +57,7 @@ class MaxiBlocks_StyleCards
      */
     public function __construct()
     {
-        add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('enqueue_block_assets', [$this, 'enqueue_styles']);
 
         // Wrap wp_enqueue_scripts in wp action to check for blocks
         add_action('wp', function () {
@@ -194,7 +196,7 @@ class MaxiBlocks_StyleCards
             if ($styles) {
                 wp_register_style('maxi-blocks-sc-styles', false, [], MAXI_PLUGIN_VERSION);
                 wp_enqueue_style('maxi-blocks-sc-styles');
-                wp_add_inline_style('maxi-blocks-sc-styles', $styles);
+                wp_add_inline_style('maxi-blocks-sc-styles', wp_strip_all_tags($styles));
             }
         }
 

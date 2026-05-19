@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import getImgWidthStyles from '../getImgWidthStyles';
+import getImgWidthStyles from '@extensions/styles/helpers/getImgWidthStyles';
 
 jest.mock('src/extensions/styles/getAttributeKey', () => {
 	return jest.fn((base, isHover, prefix, breakpoint) => {

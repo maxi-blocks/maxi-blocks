@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function get_is_valid($val, $cleaned = false)
 {
     return ($cleaned &&

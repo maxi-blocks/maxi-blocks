@@ -75,6 +75,24 @@ describe('getTransitionStyles', () => {
 		'transition-status-general': true,
 	};
 
+	it('adds background layer transitions to parallax image media', () => {
+		const object = {
+			'block-background-status-hover': true,
+			transition: {
+				canvas: {
+					'background / layer': repeatedGeneralAttributes,
+				},
+			},
+		};
+
+		const result = getTransitionStyles(object);
+
+		expect(
+			result[' > .maxi-background-displayer > div img'].transition
+				.general.transition
+		).toBe('all 0.3s 0s ease');
+	});
+
 	it('Get a correct responsive transition styles', () => {
 		const object = {
 			'border-status-hover': true,

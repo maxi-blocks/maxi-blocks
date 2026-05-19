@@ -119,6 +119,7 @@ const ImageLayerSettings = props => {
 		isLayer,
 		getBounds,
 		getBlockClipPath, // for IB
+		normalLayer,
 	} = props;
 
 	// Use props.imageOptions directly as read-only (no cloning on every render)
@@ -519,6 +520,7 @@ const ImageLayerSettings = props => {
 				isHover={isHover}
 				isLayer={isLayer}
 				breakpoint={breakpoint}
+				normalLayer={normalLayer}
 			/>
 		</>
 	);

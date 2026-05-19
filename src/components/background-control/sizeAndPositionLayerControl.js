@@ -163,6 +163,7 @@ const SizeAndPositionLayerControl = ({
 	isLayer = false,
 	breakpoint,
 	onlyWidth = false,
+	normalLayer,
 }) => {
 	const { type } = options;
 	const prefix = `${rawPrefix}background-${
@@ -217,6 +218,7 @@ const SizeAndPositionLayerControl = ({
 					'general',
 					isHover
 				)}
+				normalAttributes={normalLayer}
 				disableRTC
 			/>
 		</>

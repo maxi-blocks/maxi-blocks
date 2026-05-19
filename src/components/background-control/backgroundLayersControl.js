@@ -63,6 +63,15 @@ const getLayerCardContent = props => {
 		getBlockClipPath, // for IB
 		clientId,
 	} = props;
+	const normalLayer =
+		(isHover || isIB) && normalLayers
+			? normalLayers.find(
+					normalCandidate =>
+						normalCandidate.type === layer.type &&
+						(normalCandidate.id === layer.id ||
+							normalCandidate.order === layer.order)
+			  )
+			: undefined;
 
 	const handleGetBounds = () =>
 		getBounds(
@@ -102,6 +111,7 @@ const getLayerCardContent = props => {
 					clientId={clientId}
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					normalLayer={normalLayer}
 				/>
 			);
 		case 'image': {
@@ -141,6 +151,7 @@ const getLayerCardContent = props => {
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
 					fallbackImageUrl={fallbackImageUrl}
+					normalLayer={normalLayer}
 				/>
 			);
 		}
@@ -159,6 +170,7 @@ const getLayerCardContent = props => {
 					isHover={isHover}
 					isIB={isIB}
 					isLayer
+					normalLayer={normalLayer}
 				/>
 			);
 		case 'gradient':
@@ -178,6 +190,7 @@ const getLayerCardContent = props => {
 					isLayer
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					normalLayer={normalLayer}
 				/>
 			);
 		case 'shape':
@@ -196,6 +209,7 @@ const getLayerCardContent = props => {
 					isHover={isHover}
 					isLayer
 					isIB={isIB}
+					normalLayer={normalLayer}
 				/>
 			);
 		default:

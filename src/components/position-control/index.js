@@ -17,6 +17,12 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import {
+	getLayerPlacementAllowedUnits,
+	getLayerPlacementResetValue,
+	hasPlacementValue,
+	normalizePlacementSync,
+} from './utils';
 
 /**
  * External dependencies
@@ -46,6 +52,7 @@ const PositionControl = props => {
 		prefix = '',
 		isHover = false,
 		defaultAttributes,
+		normalAttributes,
 	} = props;
 
 	const classes = classnames(
@@ -75,19 +82,6 @@ const PositionControl = props => {
 
 	const getPositionKey = target =>
 		getAttributeKey(target, isHover, prefix, breakpoint);
-
-	const normalizePlacementSync = value => {
-		if (value === true) return 'all';
-		if (value === false) return 'none';
-
-		return value;
-	};
-
-	const hasPlacementValue = value =>
-		value !== null &&
-		value !== undefined &&
-		value !== '' &&
-		value !== false;
 
 	const getPositionDefault = target => {
 		const key = getPositionKey(target);
@@ -122,6 +116,44 @@ const PositionControl = props => {
 			(acc, target) => ({
 				...acc,
 				[getPositionKey(target)]: getPositionDefault(target),
+			}),
+			{}
+		);
+
+	const getNormalPlacementAttribute = target =>
+		normalAttributes
+			? getLastBreakpointAttribute({
+					target: `${prefix}${target}`,
+					breakpoint,
+					attributes: normalAttributes,
+					isHover: false,
+			  })
+			: undefined;
+
+	const getPositionResetValue = target =>
+		getLayerPlacementResetValue({
+			target,
+			disablePosition,
+			isHover,
+			normalValue: getNormalPlacementAttribute(target),
+			defaultValue: getPositionDefault(target),
+		});
+
+	const getResetOptions = () =>
+		[
+			'position-top',
+			'position-right',
+			'position-bottom',
+			'position-left',
+			'position-sync',
+			'position-top-unit',
+			'position-right-unit',
+			'position-bottom-unit',
+			'position-left-unit',
+		].reduce(
+			(acc, target) => ({
+				...acc,
+				[getPositionKey(target)]: getPositionResetValue(target),
 			}),
 			{}
 		);
@@ -266,23 +298,23 @@ const PositionControl = props => {
 	};
 
 	const handlePlacementReset = () =>
-		onChange({ ...getCleanOptions(), isReset: true });
+		onChange({ ...getResetOptions(), isReset: true });
 
 	const handlePlacementResetX = () =>
 		onChange({
 			[getPositionKey('position-left')]:
-				getPositionDefault('position-left'),
+				getPositionResetValue('position-left'),
 			[getPositionKey('position-left-unit')]:
-				getPositionDefault('position-left-unit'),
+				getPositionResetValue('position-left-unit'),
 			isReset: true,
 		});
 
 	const handlePlacementResetY = () =>
 		onChange({
 			[getPositionKey('position-top')]:
-				getPositionDefault('position-top'),
+				getPositionResetValue('position-top'),
 			[getPositionKey('position-top-unit')]:
-				getPositionDefault('position-top-unit'),
+				getPositionResetValue('position-top-unit'),
 			isReset: true,
 		});
 
@@ -362,11 +394,9 @@ const PositionControl = props => {
 						minMaxSettings={minMaxSettings}
 						optionType='string'
 						enableAxisUnits
-						allowedUnits={
+						allowedUnits={getLayerPlacementAllowedUnits(
 							disablePosition
-								? ['%']
-								: ['px', 'em', 'vw', '%', '-']
-						}
+						)}
 						isHover={isHover}
 						defaultAttributes={defaultAttributes}
 					/>

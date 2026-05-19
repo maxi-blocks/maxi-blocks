@@ -23,6 +23,7 @@ const SVGLayer = props => {
 		isHover = false,
 		isLayer = false,
 		isIB = false,
+		normalLayer,
 	} = props;
 
 	const SVGOptions = cloneDeep(props.SVGOptions);
@@ -76,6 +77,7 @@ const SVGLayer = props => {
 						isLayer={isLayer}
 						breakpoint={breakpoint}
 						onlyWidth
+						normalLayer={normalLayer}
 					/>
 				</>
 			)}

@@ -15,7 +15,7 @@ import ShapeDivider from '@components/shape-divider';
 import { BlockIndicators } from '@components';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { getMaxiBlockAttributes } from '@components/maxi-block';
-import { getGroupAttributes } from '@extensions/styles';
+import { getGroupAttributes, getIsOverflowHidden } from '@extensions/styles';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
 import {
@@ -161,6 +161,10 @@ class edit extends MaxiBlockComponent {
 								'padding',
 								'margin',
 							])}
+							isOverflowHidden={getIsOverflowHidden(
+								attributes,
+								deviceType
+							)}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
 							avoidIndicators={

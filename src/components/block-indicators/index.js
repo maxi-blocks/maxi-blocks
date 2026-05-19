@@ -8,6 +8,13 @@ import { dispatch } from '@wordpress/data';
  * Internal dependencies
  */
 import { getLastBreakpointAttribute } from '@extensions/styles';
+import {
+	getIndicatorDirection,
+	getIndicatorHandleStyles,
+	getIndicatorSize,
+	getIndicatorStyle,
+	isVerticalDirection,
+} from './utils';
 
 /**
  * External dependencies
@@ -25,9 +32,6 @@ import './editor.scss';
  * Component
  */
 
-const minSizeValue = 10;
-const minSize = `var(--maxi-block-indicators-min-size, ${minSizeValue}px)`;
-
 const Indicator = props => {
 	const {
 		value: val,
@@ -39,6 +43,7 @@ const Indicator = props => {
 		onChange,
 		cleanInlineStyles,
 		isBlockSelected,
+		isOverflowHidden,
 	} = props;
 
 	const [value, setValue] = useState(val);
@@ -55,54 +60,19 @@ const Indicator = props => {
 		`maxi-block-indicators__${type}`
 	);
 
-	const getDirection = dir => {
-		if (type === 'margin') return dir;
+	const isVertical = isVerticalDirection(dir);
 
-		// Need to do inverse for padding to allow good UX on dragging
-		switch (dir) {
-			case 'top':
-				return 'bottom';
-			case 'bottom':
-				return 'bottom';
-			case 'left':
-				return 'right';
-			case 'right':
-			default:
-				return 'left';
-		}
-	};
+	const style = getIndicatorStyle({
+		value,
+		unit,
+		dir,
+		type,
+		isOverflowHidden,
+	});
 
-	const isVertical = dir === 'top' || dir === 'bottom';
+	const size = getIndicatorSize(dir);
 
-	const style = {
-		[isVertical ? 'height' : 'width']: `${value}${unit}`,
-		[isVertical ? 'minHeight' : 'minWidth']: minSize,
-		...(type === 'margin' &&
-			value > 0 && {
-				[dir]: `${-value}${unit}`,
-			}),
-		...(type === 'padding' &&
-			!isVertical && {
-				[dir]: 0,
-				...(dir === 'right' && {
-					right: '1px',
-				}),
-			}),
-	};
-
-	const size = {
-		height: '100%',
-		width: '100%',
-		[isVertical ? 'minHeight' : 'minWidth']: minSize,
-	};
-
-	const handleStyles = {
-		[getDirection(dir)]: {
-			[getDirection(dir)]: 0,
-			[isVertical ? 'height' : 'width']: `${value}${unit}`,
-			[isVertical ? 'minHeight' : 'minWidth']: minSize,
-		},
-	};
+	const handleStyles = getIndicatorHandleStyles({ dir, type, value, unit });
 
 	const handleChanges = (e, ref) => {
 		// Only preventDefault for non-touch events to avoid passive listener issues
@@ -212,7 +182,7 @@ const Indicator = props => {
 			<Resizable
 				className='maxi-block-indicator__content'
 				handleClasses={{
-					[getDirection(dir)]: classnames(
+					[getIndicatorDirection(dir, type)]: classnames(
 						`maxi-block-indicators__${dir}-handle`,
 						'maxi-block-indicators__handle'
 					),
@@ -221,10 +191,12 @@ const Indicator = props => {
 				minWidth={0}
 				minHeight={0}
 				enable={{
-					top: dir !== 'bottom' && dir === getDirection('top'),
-					right: dir === getDirection('right'),
+					top:
+						dir !== 'bottom' &&
+						dir === getIndicatorDirection('top', type),
+					right: dir === getIndicatorDirection('right', type),
 					bottom: dir === 'top' || dir === 'bottom',
-					left: dir === getDirection('left'),
+					left: dir === getIndicatorDirection('left', type),
 					topRight: false,
 					bottomRight: false,
 					bottomLeft: false,
@@ -308,9 +280,13 @@ const MainIndicator = props => {
 };
 
 const BlockIndicators = props => {
-	const { children, className, clientId } = props;
+	const { children, className, clientId, isOverflowHidden } = props;
 
-	const classes = classnames('maxi-block-indicators', className);
+	const classes = classnames(
+		'maxi-block-indicators',
+		isOverflowHidden && 'maxi-block-indicators--overflow',
+		className
+	);
 
 	return (
 		<div className={classes}>

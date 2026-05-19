@@ -935,6 +935,35 @@ const AxisControl = props => {
 	const getAttributeValue = key =>
 		hasInlinePreviewAttribute(key) ? inlinePreviewAttributes[key] : props[key];
 
+	const clearInlinePreviewAttributes = response => {
+		const responseKeys = Object.keys(response).filter(key => key !== 'meta');
+
+		if (!responseKeys.length) return;
+
+		setInlinePreviewAttributes(prevPreviewAttributes => {
+			if (
+				!responseKeys.some(key =>
+					Object.prototype.hasOwnProperty.call(prevPreviewAttributes, key)
+				)
+			) {
+				return prevPreviewAttributes;
+			}
+
+			const nextPreviewAttributes = { ...prevPreviewAttributes };
+
+			responseKeys.forEach(key => {
+				delete nextPreviewAttributes[key];
+			});
+
+			return nextPreviewAttributes;
+		});
+	};
+
+	const onChangeWithPreviewClear = response => {
+		clearInlinePreviewAttributes(response);
+		onChange(response);
+	};
+
 	// Get sync mode to determine if left/right margin should be disabled
 	const sync = getLastBreakpointAttribute({
 		target: `${prefix}${target}-sync`,
@@ -1119,6 +1148,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1132,6 +1162,7 @@ const AxisControl = props => {
 			)]: value,
 		};
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1276,6 +1307,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1354,6 +1386,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1393,7 +1426,10 @@ const AxisControl = props => {
 
 					return nextPreviewAttributes;
 				});
+				return;
 			}
+
+			clearInlinePreviewAttributes(nextResponse);
 		};
 
 		if (showAllSides) {
@@ -1577,7 +1613,7 @@ const AxisControl = props => {
 						currentUnit={currentUnit}
 						target={target}
 						isHover={isHover}
-						onChange={onChange}
+						onChange={onChangeWithPreviewClear}
 						onReset={onReset}
 						inputsArray={inputsArray}
 						getLastBreakpointValue={getLastBreakpointValue}
@@ -1608,7 +1644,7 @@ const AxisControl = props => {
 					currentUnit={currentUnit}
 					target={target}
 					isHover={isHover}
-					onChange={onChange}
+					onChange={onChangeWithPreviewClear}
 					onReset={onReset}
 					inputsArray={inputsArray}
 					getLastBreakpointValue={getLastBreakpointValue}

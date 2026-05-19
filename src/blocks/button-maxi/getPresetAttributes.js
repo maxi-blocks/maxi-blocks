@@ -12,13 +12,18 @@ import * as defaultPresets from './defaults';
 const preserveExistingIconAttribute = attr =>
 	/^icon-(width|height)(-unit|-fit-content)?-/.test(attr);
 
+const shouldPreserveExistingIconAttributes = svgType =>
+	['Fill', 'Filled', 'Shape'].includes(svgType);
+
 export const getPresetInlineStyleTargets = ({
 	inlineStylesTargets = {},
 	presetAttributes = {},
 }) => {
 	const shouldCleanIcon = Object.entries(presetAttributes).some(
 		([key, value]) =>
-			key.startsWith('icon-background-active-media') && value === 'none'
+			key.startsWith('icon-background-active-media') &&
+			!key.includes('-hover') &&
+			value === 'none'
 	);
 
 	return shouldCleanIcon && inlineStylesTargets.icon
@@ -42,11 +47,13 @@ const getPresetAttributes = ({
 	if (type === 'icon' && !isEmpty(attributes['icon-content'])) {
 		preset['icon-content'] = attributes['icon-content'];
 
-		if (!isNil(attributes.svgType)) preset.svgType = attributes.svgType;
+		if (shouldPreserveExistingIconAttributes(attributes.svgType)) {
+			if (!isNil(attributes.svgType)) preset.svgType = attributes.svgType;
 
-		Object.entries(attributes).forEach(([key, value]) => {
-			if (preserveExistingIconAttribute(key)) preset[key] = value;
-		});
+			Object.entries(attributes).forEach(([key, value]) => {
+				if (preserveExistingIconAttribute(key)) preset[key] = value;
+			});
+		}
 	}
 
 	if (

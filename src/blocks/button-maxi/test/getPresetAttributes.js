@@ -48,6 +48,26 @@ describe('button maxi getPresetAttributes', () => {
 		expect(result['icon-width-xxl']).toBe('140');
 	});
 
+	it('uses preset icon widths when switching between line icon quick styles', () => {
+		const result = getPresetAttributes({
+			attributes: {
+				'icon-content': iconContent,
+				'icon-width-general': '14',
+				'icon-width-unit-general': 'px',
+				'icon-width-xxl': '18',
+				'icon-width-l': '14',
+				svgType: 'Line',
+			},
+			getIconWithColor,
+			number: 7,
+			type: 'icon',
+		});
+
+		expect(result['icon-width-general']).toBe('23');
+		expect(result['icon-width-xxl']).toBe('35');
+		expect(result['icon-width-l']).toBeUndefined();
+	});
+
 	it('marks icon inline styles for cleanup when a quick style turns icon background off', () => {
 		const targets = getPresetInlineStyleTargets({
 			inlineStylesTargets: {
@@ -59,5 +79,19 @@ describe('button maxi getPresetAttributes', () => {
 		});
 
 		expect(targets).toEqual([' .maxi-button-block__icon']);
+	});
+
+	it('does not mark icon inline styles for cleanup when only hover icon background is off', () => {
+		const targets = getPresetInlineStyleTargets({
+			inlineStylesTargets: {
+				icon: ' .maxi-button-block__icon',
+			},
+			presetAttributes: {
+				'icon-background-active-media-general': 'color',
+				'icon-background-active-media-general-hover': 'none',
+			},
+		});
+
+		expect(targets).toEqual([]);
 	});
 });

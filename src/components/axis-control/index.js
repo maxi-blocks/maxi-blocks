@@ -4,6 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -908,6 +909,32 @@ const AxisControl = props => {
 		!noResponsiveTabs &&
 		['margin', 'padding'].includes(target);
 
+	const [inlinePreviewAttributes, setInlinePreviewAttributes] = useState({});
+
+	useEffect(() => {
+		setInlinePreviewAttributes(prevPreviewAttributes => {
+			const nextPreviewAttributes = {};
+			let hasChanged = false;
+
+			Object.entries(prevPreviewAttributes).forEach(([key, value]) => {
+				if (props[key] === value) {
+					hasChanged = true;
+					return;
+				}
+
+				nextPreviewAttributes[key] = value;
+			});
+
+			return hasChanged ? nextPreviewAttributes : prevPreviewAttributes;
+		});
+	}, [props]);
+
+	const hasInlinePreviewAttribute = key =>
+		Object.prototype.hasOwnProperty.call(inlinePreviewAttributes, key);
+
+	const getAttributeValue = key =>
+		hasInlinePreviewAttribute(key) ? inlinePreviewAttributes[key] : props[key];
+
 	// Get sync mode to determine if left/right margin should be disabled
 	const sync = getLastBreakpointAttribute({
 		target: `${prefix}${target}-sync`,
@@ -953,25 +980,30 @@ const AxisControl = props => {
 
 	const getValue = (key, customBreakpoint) => {
 		let value;
+		const exactAttributeKey = getAttributeKey(
+			getKey(key),
+			isHover,
+			false,
+			customBreakpoint ?? breakpoint
+		);
+
+		if (hasInlinePreviewAttribute(exactAttributeKey)) {
+			return inlinePreviewAttributes[exactAttributeKey];
+		}
 
 		if (breakpoint === 'general' || customBreakpoint === 'general') {
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+			const baseAttributeKey = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				baseBreakpoint
+			);
 
-			value =
-				props[
-					getAttributeKey(getKey(key), isHover, false, baseBreakpoint)
-				];
+			value = getAttributeValue(baseAttributeKey);
 		}
 		if (isNil(value)) {
-			value =
-				props[
-					getAttributeKey(
-						getKey(key),
-						isHover,
-						false,
-						customBreakpoint ?? breakpoint
-					)
-				];
+			value = getAttributeValue(exactAttributeKey);
 		}
 
 		if (isNumber(value) || value) return value;
@@ -1351,6 +1383,18 @@ const AxisControl = props => {
 		});
 
 		let response = {};
+		const updateInlinePreviewAttributes = nextResponse => {
+			if (meta?.inline) {
+				setInlinePreviewAttributes(prevPreviewAttributes => {
+					const nextPreviewAttributes = {
+						...prevPreviewAttributes,
+						...nextResponse,
+					};
+
+					return nextPreviewAttributes;
+				});
+			}
+		};
 
 		if (showAllSides) {
 			const pair = getPairForSide(singleTarget);
@@ -1388,6 +1432,7 @@ const AxisControl = props => {
 				] = 'none';
 			}
 
+			updateInlinePreviewAttributes(response);
 			onChange({ ...response, meta });
 			return;
 		}
@@ -1516,6 +1561,7 @@ const AxisControl = props => {
 			}
 		}
 
+		updateInlinePreviewAttributes(response);
 		onChange({ ...response, meta });
 	};
 

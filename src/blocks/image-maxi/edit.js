@@ -35,6 +35,7 @@ import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { injectImgSVG } from '@extensions/svg';
 import { copyPasteMapping } from './data';
+import { getImageResizerClassName } from './utils';
 import { TextContext, onChangeRichText } from '@extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
@@ -421,7 +422,7 @@ class edit extends MaxiBlockComponent {
 					{showImage ? (
 						<BlockResizer
 							key={uniqueID}
-							className='maxi-block__resizer maxi-image-block__resizer'
+							className={getImageResizerClassName(captionType)}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,

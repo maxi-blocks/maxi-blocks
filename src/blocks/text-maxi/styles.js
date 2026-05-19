@@ -378,6 +378,16 @@ const getListParagraphObject = props => {
 
 const getMarkerObject = props => {
 	const { typeOfList, listStyle, listStyleCustom, blockStyle } = props;
+	const isCustomURLMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		isURL(listStyleCustom);
+	const isCustomSVGMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		listStyleCustom.includes('</svg>');
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -431,16 +441,20 @@ const getMarkerObject = props => {
 					general: {
 						...(listStyle === 'custom' &&
 							listStyleCustom && {
-								...(isURL(listStyleCustom) && {
-									content: `url('${listStyleCustom}')`,
+								...(isCustomURLMarker && {
+									content: '""',
+									'background-image': `url('${listStyleCustom}')`,
+									'background-position': 'center',
+									'background-repeat': 'no-repeat',
+									'background-size': 'contain',
 								}),
-								...(listStyleCustom.includes('</svg>') && {
+								...(isCustomSVGMarker && {
 									content: `url("data:image/svg+xml,${getSVGListStyle(
 										listStyleCustom
 									)}")`,
 								}),
-								...(!isURL(listStyleCustom) &&
-									!listStyleCustom.includes('</svg>') && {
+								...(!isCustomURLMarker &&
+									!isCustomSVGMarker && {
 										content: `"${listStyleCustom}"`,
 									}),
 							}),
@@ -549,25 +563,32 @@ const getMarkerObject = props => {
 						attributes: props,
 					}) || 'px';
 
+				const markerSize = sizeNum + sizeUnit;
+				const markerHeight = !isNil(heightNum)
+					? heightNum + heightUnit
+					: undefined;
+				const customImageMarkerSize = {
+					width: markerSize,
+					...(isCustomURLMarker && {
+						height: !isNil(heightNum) ? markerHeight : markerSize,
+					}),
+					...(isCustomSVGMarker &&
+						!isNil(heightNum) && {
+							height: markerHeight,
+							// Vertically center the SVG marker content if the height is set
+							...(textPosition === 'middle' && {
+								top: `calc(${heightNum / 2 + heightUnit} - (${
+									sizeNum / 2 + sizeUnit
+								}))`,
+							}),
+						}),
+				};
+
 				response.listSize[breakpoint] = {
-					...(typeOfList === 'ul' &&
-					listStyle === 'custom' &&
-					listStyleCustom &&
-					listStyleCustom.includes('</svg>')
-						? {
-								width: sizeNum + sizeUnit,
-								...(!isNil(heightNum) && {
-									height: heightNum + heightUnit,
-									// Vertically center the SVG marker content if the height is set
-									...(textPosition === 'middle' && {
-										top: `calc(${
-											heightNum / 2 + heightUnit
-										} - (${sizeNum / 2 + sizeUnit}))`,
-									}),
-								}),
-						  }
+					...(isCustomSVGMarker || isCustomURLMarker
+						? customImageMarkerSize
 						: {
-								'font-size': sizeNum + sizeUnit,
+								'font-size': markerSize,
 						  }),
 					'line-height':
 						lineHeightMarkerNum +

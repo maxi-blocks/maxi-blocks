@@ -67,18 +67,8 @@ const getPresetAttributes = ({
 			'icon-'
 		);
 
-		const nonHoverAttr = getGroupAttributes(
-			{ ...preset },
-			['border', 'borderWidth', 'borderRadius'],
-			false,
-			'icon-'
-		);
-
 		Object.keys(hoverAttr).forEach(h => {
 			if (!h.includes('hover')) delete hoverAttr[h];
-		});
-		Object.keys(nonHoverAttr).forEach(h => {
-			if (h.includes('hover')) delete nonHoverAttr[h];
 		});
 
 		newDefaultPresets[presetKey] = {

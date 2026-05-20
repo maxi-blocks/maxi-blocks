@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-18T10:31:40+00:00\n"
+"POT-Creation-Date: 2026-05-20T11:04:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -980,7 +980,6 @@ msgstr ""
 msgid "Cloud user email / purchase code / license key"
 msgstr ""
 
-#. translators: %s: Link to MaxiBlocks account page
 #. translators: %s: Link to my.maxiblocks.com
 #: core/admin/class-maxi-dashboard.php:3027
 #: core/admin/quick-start/class-maxi-quick-start.php:937
@@ -1028,15 +1027,15 @@ msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:3709
 #: core/admin/class-maxi-dashboard.php:4007
-#: core/admin/class-maxi-dashboard.php:4896
-#: core/admin/class-maxi-dashboard.php:4971
-#: core/admin/class-maxi-dashboard.php:5189
+#: core/admin/class-maxi-dashboard.php:4817
+#: core/admin/class-maxi-dashboard.php:4892
+#: core/admin/class-maxi-dashboard.php:5110
 msgid "Security check failed"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:3717
-#: core/admin/class-maxi-dashboard.php:4904
-#: core/admin/class-maxi-dashboard.php:4979
+#: core/admin/class-maxi-dashboard.php:4825
+#: core/admin/class-maxi-dashboard.php:4900
 msgid "Insufficient permissions"
 msgstr ""
 
@@ -1086,60 +1085,56 @@ msgstr ""
 msgid "MaxiBlocks: Missing middleware configuration for email authentication"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4579
-msgid "MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response"
-msgstr ""
-
-#: core/admin/class-maxi-dashboard.php:4688
-#: core/admin/class-maxi-dashboard.php:4744
+#: core/admin/class-maxi-dashboard.php:4609
+#: core/admin/class-maxi-dashboard.php:4665
 msgid "Signed out successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4729
+#: core/admin/class-maxi-dashboard.php:4650
 msgid "MaxiBlocks: Purchase code deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4771
+#: core/admin/class-maxi-dashboard.php:4692
 msgid "MaxiBlocks: Missing middleware configuration for email session logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4823
+#: core/admin/class-maxi-dashboard.php:4744
 msgid "MaxiBlocks Email Session Logout: Middleware logout failed, but continuing with local logout"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4929
+#: core/admin/class-maxi-dashboard.php:4850
 msgid "Missing required parameters"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4941
+#: core/admin/class-maxi-dashboard.php:4862
 msgid "License data saved successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:4999
+#: core/admin/class-maxi-dashboard.php:4920
 msgid "Network purchase code is required"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5012
+#: core/admin/class-maxi-dashboard.php:4933
 msgid "Multisite detected. Please activate your MaxiBlocks email on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5020
+#: core/admin/class-maxi-dashboard.php:4941
 msgid "Multisite detected. Please activate your MaxiBlocks license key on each sub-site separately."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5052
+#: core/admin/class-maxi-dashboard.php:4973
 msgid "Invalid purchase code. Please check your code and try again."
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5105
+#: core/admin/class-maxi-dashboard.php:5026
 msgid "Network license activated successfully"
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5153
+#: core/admin/class-maxi-dashboard.php:5074
 msgid "MaxiBlocks: Network license deactivation failed: "
 msgstr ""
 
-#: core/admin/class-maxi-dashboard.php:5165
+#: core/admin/class-maxi-dashboard.php:5086
 msgid "Network license deactivated successfully"
 msgstr ""
 
@@ -1271,7 +1266,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:267
 #: core/admin/quick-start/class-maxi-quick-start.php:706
 #: core/admin/quick-start/class-maxi-quick-start.php:957
-#: src/components/repeater/index.js:124
+#: src/components/repeater/index.js:125
 msgid "Continue"
 msgstr ""
 
@@ -1387,7 +1382,7 @@ msgstr ""
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:110
 #: src/components/inspector-tabs/inspector-border.js:142
 #: src/components/inspector-tabs/inspector-box-shadow.js:114
-#: src/components/typography-control/index.js:112
+#: src/components/typography-control/index.js:116
 msgid "Active"
 msgstr ""
 
@@ -1652,7 +1647,7 @@ msgstr ""
 #: src/components/dynamic-content/index.js:174
 #: src/components/image-alt-control/index.js:53
 #: src/components/image-alt-control/index.js:64
-#: src/components/typography-control/index.js:1798
+#: src/components/typography-control/index.js:1799
 msgid "None"
 msgstr ""
 
@@ -2745,7 +2740,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-background.js:79
 #: src/components/inspector-tabs/inspector-border.js:68
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
-#: src/components/typography-control/index.js:1906
+#: src/components/typography-control/index.js:1907
 msgid "Normal"
 msgstr ""
 
@@ -2758,7 +2753,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-background.js:103
 #: src/components/inspector-tabs/inspector-border.js:96
 #: src/components/inspector-tabs/inspector-box-shadow.js:73
-#: src/components/typography-control/index.js:102
+#: src/components/typography-control/index.js:106
 msgid "Hover"
 msgstr ""
 
@@ -4118,7 +4113,7 @@ msgstr ""
 #: src/components/inspector-tabs/inspector-link-settings.js:38
 #: src/components/toolbar/components/link/index.js:128
 #: src/components/toolbar/components/text-link/index.js:293
-#: src/components/typography-control/index.js:92
+#: src/components/typography-control/index.js:96
 #: src/extensions/DC/constants.js:163
 #: src/extensions/DC/constants.js:178
 #: src/extensions/DC/constants.js:189
@@ -4661,11 +4656,11 @@ msgid "Placeholder text"
 msgstr ""
 
 #: src/blocks/search-maxi/components/placeholder-color-control/index.js:35
-#: src/components/typography-control/index.js:136
-#: src/components/typography-control/index.js:179
-#: src/components/typography-control/index.js:224
-#: src/components/typography-control/index.js:272
-#: src/components/typography-control/index.js:1257
+#: src/components/typography-control/index.js:140
+#: src/components/typography-control/index.js:183
+#: src/components/typography-control/index.js:228
+#: src/components/typography-control/index.js:276
+#: src/components/typography-control/index.js:1258
 msgid "Font"
 msgstr ""
 
@@ -5060,7 +5055,7 @@ msgid "List style position"
 msgstr ""
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1352
+#: src/components/typography-control/index.js:1353
 msgid "Text indent"
 msgstr ""
 
@@ -5138,7 +5133,7 @@ msgid "Ordered"
 msgstr ""
 
 #: src/blocks/text-maxi/components/list-options-control/index.js:762
-#: src/components/typography-control/index.js:1646
+#: src/components/typography-control/index.js:1647
 msgid "Style"
 msgstr ""
 
@@ -5466,43 +5461,43 @@ msgstr ""
 msgid "Examples:"
 msgstr ""
 
-#: src/components/axis-control/index.js:350
+#: src/components/axis-control/index.js:351
 msgid "Link top corners"
 msgstr ""
 
-#: src/components/axis-control/index.js:351
+#: src/components/axis-control/index.js:352
 msgid "Link bottom corners"
 msgstr ""
 
-#: src/components/axis-control/index.js:355
+#: src/components/axis-control/index.js:356
 msgid "Link top and bottom"
 msgstr ""
 
-#: src/components/axis-control/index.js:356
+#: src/components/axis-control/index.js:357
 msgid "Link left and right"
 msgstr ""
 
-#: src/components/axis-control/index.js:391
+#: src/components/axis-control/index.js:392
 msgid "Link all corners"
 msgstr ""
 
-#: src/components/axis-control/index.js:392
+#: src/components/axis-control/index.js:393
 msgid "Link all sides"
 msgstr ""
 
-#: src/components/axis-control/index.js:690
+#: src/components/axis-control/index.js:691
 msgid "Set equal"
 msgstr ""
 
-#: src/components/axis-control/index.js:694
+#: src/components/axis-control/index.js:695
 msgid "Set together"
 msgstr ""
 
-#: src/components/axis-control/index.js:699
+#: src/components/axis-control/index.js:700
 msgid "Set separate"
 msgstr ""
 
-#: src/components/axis-control/index.js:751
+#: src/components/axis-control/index.js:752
 msgid "Unit"
 msgstr ""
 
@@ -7816,7 +7811,7 @@ msgstr ""
 
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:311
-#: src/components/repeater/index.js:123
+#: src/components/repeater/index.js:124
 #: src/editor/style-cards/maxiStyleCardsEditor.js:796
 #: src/editor/style-cards/maxiStyleCardsEditor.js:838
 #: src/editor/style-cards/maxiStyleCardsEditor.js:1017
@@ -8070,16 +8065,17 @@ msgstr ""
 msgid "Enable repeater"
 msgstr ""
 
-#: src/components/repeater/index.js:110
+#. translators: %s: Comma-separated list of unsupported block names
+#: src/components/repeater/index.js:111
 #, js-format
 msgid "Repeater cannot be enabled because this row contains blocks that are not supported: %s. Remove them to enable repeater."
 msgstr ""
 
-#: src/components/repeater/index.js:119
+#: src/components/repeater/index.js:120
 msgid "Columns are not uniformly structured. To standardize, all columns will be updated to match the first one."
 msgstr ""
 
-#: src/components/repeater/index.js:136
+#: src/components/repeater/index.js:137
 msgid "Inherited from parent row. To edit, please disable higher level repeater."
 msgstr ""
 
@@ -8610,7 +8606,7 @@ msgid "Bold"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-overline/index.js:111
-#: src/components/typography-control/index.js:1693
+#: src/components/typography-control/index.js:1694
 msgid "Overline"
 msgstr ""
 
@@ -8627,7 +8623,7 @@ msgid "Superscript"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-underline/index.js:77
-#: src/components/typography-control/index.js:1707
+#: src/components/typography-control/index.js:1708
 msgid "Underline"
 msgstr ""
 
@@ -8648,7 +8644,7 @@ msgid "Add"
 msgstr ""
 
 #: src/components/toolbar/components/text-italic/index.js:57
-#: src/components/typography-control/index.js:1657
+#: src/components/typography-control/index.js:1658
 msgid "Italic"
 msgstr ""
 
@@ -8708,174 +8704,174 @@ msgstr ""
 msgid "Transition delay"
 msgstr ""
 
-#: src/components/typography-control/index.js:122
+#: src/components/typography-control/index.js:126
 msgid "Visited"
 msgstr ""
 
-#: src/components/typography-control/index.js:805
+#: src/components/typography-control/index.js:809
 msgid "Text size"
 msgstr ""
 
-#: src/components/typography-control/index.js:866
+#: src/components/typography-control/index.js:870
 msgid "Line height"
 msgstr ""
 
-#: src/components/typography-control/index.js:922
+#: src/components/typography-control/index.js:926
 msgid "Bottom gap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1068
+#: src/components/typography-control/index.js:1072
 msgid "Remove bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:1069
+#: src/components/typography-control/index.js:1073
 msgid "Apply bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:1108
+#: src/components/typography-control/index.js:1109
 msgid "Remove italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1109
+#: src/components/typography-control/index.js:1110
 msgid "Apply italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1139
+#: src/components/typography-control/index.js:1140
 msgid "Remove underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1143
+#: src/components/typography-control/index.js:1144
 msgid "Apply underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1176
+#: src/components/typography-control/index.js:1177
 msgid "Remove strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1180
+#: src/components/typography-control/index.js:1181
 msgid "Apply strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1335
+#: src/components/typography-control/index.js:1336
 msgid "Show more text options"
 msgstr ""
 
-#: src/components/typography-control/index.js:1443
+#: src/components/typography-control/index.js:1444
 msgid "Word Spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1536
+#: src/components/typography-control/index.js:1537
 msgid "Letter spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1595
+#: src/components/typography-control/index.js:1596
 msgid "Text transform"
 msgstr ""
 
-#: src/components/typography-control/index.js:1602
-#: src/components/typography-control/index.js:1653
-#: src/components/typography-control/index.js:1689
+#: src/components/typography-control/index.js:1603
+#: src/components/typography-control/index.js:1654
+#: src/components/typography-control/index.js:1690
 msgid "Default"
 msgstr ""
 
-#: src/components/typography-control/index.js:1606
+#: src/components/typography-control/index.js:1607
 msgid "Capitalize"
 msgstr ""
 
-#: src/components/typography-control/index.js:1613
+#: src/components/typography-control/index.js:1614
 msgid "Uppercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:1620
+#: src/components/typography-control/index.js:1621
 msgid "Lowercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:1661
+#: src/components/typography-control/index.js:1662
 msgid "Oblique"
 msgstr ""
 
-#: src/components/typography-control/index.js:1682
+#: src/components/typography-control/index.js:1683
 msgid "Text decoration"
 msgstr ""
 
-#: src/components/typography-control/index.js:1700
+#: src/components/typography-control/index.js:1701
 msgid "Line through"
 msgstr ""
 
-#: src/components/typography-control/index.js:1714
+#: src/components/typography-control/index.js:1715
 msgid "Underline overline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1740
+#: src/components/typography-control/index.js:1741
 msgid "Text wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1747
+#: src/components/typography-control/index.js:1748
 msgid "Wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1751
-#: src/components/typography-control/index.js:1910
+#: src/components/typography-control/index.js:1752
+#: src/components/typography-control/index.js:1911
 msgid "No wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1755
+#: src/components/typography-control/index.js:1756
 msgid "Balance"
 msgstr ""
 
-#: src/components/typography-control/index.js:1759
+#: src/components/typography-control/index.js:1760
 msgid "Pretty"
 msgstr ""
 
-#: src/components/typography-control/index.js:1763
+#: src/components/typography-control/index.js:1764
 msgid "Stable"
 msgstr ""
 
-#: src/components/typography-control/index.js:1786
+#: src/components/typography-control/index.js:1787
 msgid "Text orientation"
 msgstr ""
 
-#: src/components/typography-control/index.js:1805
+#: src/components/typography-control/index.js:1806
 msgid "Mixed"
 msgstr ""
 
-#: src/components/typography-control/index.js:1812
+#: src/components/typography-control/index.js:1813
 msgid "Upright"
 msgstr ""
 
-#: src/components/typography-control/index.js:1819
+#: src/components/typography-control/index.js:1820
 msgid "Sideways"
 msgstr ""
 
-#: src/components/typography-control/index.js:1851
+#: src/components/typography-control/index.js:1852
 msgid "Text direction"
 msgstr ""
 
-#: src/components/typography-control/index.js:1863
+#: src/components/typography-control/index.js:1864
 msgid "Left to right"
 msgstr ""
 
-#: src/components/typography-control/index.js:1870
+#: src/components/typography-control/index.js:1871
 msgid "Right to left"
 msgstr ""
 
-#: src/components/typography-control/index.js:1899
+#: src/components/typography-control/index.js:1900
 msgid "White space"
 msgstr ""
 
-#: src/components/typography-control/index.js:1914
+#: src/components/typography-control/index.js:1915
 msgid "Pre"
 msgstr ""
 
-#: src/components/typography-control/index.js:1918
+#: src/components/typography-control/index.js:1919
 msgid "Pre line"
 msgstr ""
 
-#: src/components/typography-control/index.js:1925
+#: src/components/typography-control/index.js:1926
 msgid "Pre wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1932
+#: src/components/typography-control/index.js:1933
 msgid "Break spaces"
 msgstr ""
 
@@ -8937,7 +8933,7 @@ msgstr ""
 msgid "Invalid email format"
 msgstr ""
 
-#: src/editor/auth/index.js:1188
+#: src/editor/auth/index.js:1194
 msgid "MaxiBlocks Toolbar Email Logout: Exception"
 msgstr ""
 

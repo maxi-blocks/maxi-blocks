@@ -3023,7 +3023,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<div class="maxi-license-input-group">';
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email / purchase code / license key', 'maxi-blocks') . '" />';
                     $content .= '<p class="maxi-license-help-text">' . sprintf(
-                        /* translators: %s: Link to MaxiBlocks account page */
+                        /* translators: %s: Link to my.maxiblocks.com */
                         __('Find your code or key in your account, inbox or %s', 'maxi-blocks'),
                         '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'
                     ) . '</p>';

@@ -104,3 +104,6 @@ export const shouldUseBlockTypographyFallback = ({
 		isEmpty(formatValue) ||
 		isNil(formatValue.start) ||
 		isNil(formatValue.end));
+
+export const getToggledFontStyle = fontStyle =>
+	fontStyle === 'italic' ? 'normal' : 'italic';

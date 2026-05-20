@@ -1,5 +1,6 @@
 import {
 	getClosestAvailableFontWeight,
+	getToggledFontStyle,
 	shouldUseBlockTypographyFallback,
 } from '@components/typography-control/utils';
 import { select } from '@wordpress/data';
@@ -107,5 +108,16 @@ describe('shouldUseBlockTypographyFallback', () => {
 		});
 
 		expect(result).toBe(false);
+	});
+});
+
+describe('getToggledFontStyle', () => {
+	it('returns italic when the current style is not italic', () => {
+		expect(getToggledFontStyle('normal')).toBe('italic');
+		expect(getToggledFontStyle(undefined)).toBe('italic');
+	});
+
+	it('returns normal when the current style is italic', () => {
+		expect(getToggledFontStyle('italic')).toBe('normal');
 	});
 });

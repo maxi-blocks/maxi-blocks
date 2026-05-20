@@ -65,8 +65,12 @@ const syncSelectedBlockInserterRoot = () => {
 		selectedClientId,
 	});
 
-	if (!rootClientId || currentSelectedInserterRootClientId === rootClientId)
+	if (!rootClientId) {
+		currentSelectedInserterRootClientId = null;
 		return;
+	}
+
+	if (currentSelectedInserterRootClientId === rootClientId) return;
 
 	currentSelectedInserterRootClientId = rootClientId;
 

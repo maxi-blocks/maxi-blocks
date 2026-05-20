@@ -692,6 +692,972 @@ describe('Relation class', () => {
 		});
 	});
 
+	describe('setIsPreview', () => {
+		let relation;
+		let scheduledFrames;
+		let animationTarget;
+
+		beforeEach(() => {
+			scheduledFrames = [];
+			animationTarget = {
+				animate: jest.fn(() => ({
+					cancel: jest.fn(),
+				})),
+				getBoundingClientRect: jest.fn(() => ({
+					left: 0,
+					top: 0,
+					right: 100,
+					bottom: 100,
+					width: 100,
+					height: 100,
+				})),
+				getAttribute: jest.fn(() => null),
+			};
+			relation = new Relation({});
+			relation.id = 'test-id';
+			relation.uniqueID = 'test-unique-id';
+			relation.action = 'hover';
+			relation.trigger = 'test-trigger';
+			relation.mainDocument = document;
+			relation.mainDocument.querySelectorAll = jest.fn(
+				() => [animationTarget]
+			);
+			relation.stylesEl = {
+				id: 'styles',
+				innerText:
+					'body.maxi-blocks--active .block[data-maxi-relations="true"] { opacity: 0.5; }',
+				setAttribute: jest.fn(),
+				remove: jest.fn(),
+			};
+			relation.inTransitionEl = {
+				id: 'in-transition',
+				innerText:
+					'body.maxi-blocks--active .block[data-maxi-relations="true"] { transition: opacity 0.3s ease 0s; }',
+				setAttribute: jest.fn(),
+				remove: jest.fn(),
+			};
+			relation.outTransitionEl = {
+				id: 'out-transition',
+				innerText:
+					'body.maxi-blocks--active .block[data-maxi-relations="true"] { transition: opacity 0.2s ease 0s; }',
+				setAttribute: jest.fn(),
+				remove: jest.fn(),
+			};
+			relation.mainWindow = {
+				requestAnimationFrame: jest.fn(callback => {
+					scheduledFrames.push(callback);
+					return scheduledFrames.length;
+				}),
+				cancelAnimationFrame: jest.fn(),
+				getComputedStyle: jest.fn(() => ({
+					getPropertyValue: prop =>
+						({
+							opacity: '1',
+							transform: 'none',
+							transition: 'none 0s ease 0s',
+							'transition-duration': '0s',
+							'transition-delay': '0s',
+						})[prop] || '',
+				})),
+			};
+			relation.triggerEl = {
+				addEventListener: jest.fn(),
+				removeEventListener: jest.fn(),
+			};
+			relation.blockTargetEl = {
+				matches: jest.fn(() => false),
+			};
+			relation.targetEl = {
+				matches: jest.fn(() => false),
+			};
+			relation.isContained = false;
+			relation.addRelationSubscriber = jest.fn();
+			relation.removeRelationSubscriber = jest.fn();
+			relation.removeAddAttrToBlock = jest.fn();
+			relation.addTransition = jest.fn();
+			relation.removeTransition = jest.fn();
+			relation.removeStyles = jest.fn();
+			relation.addDataAttrToBlock = jest.fn();
+			relation.addStyles = jest.fn();
+			relation.forcePreviewReflow = jest.fn();
+			relation.getTransitionTimeout = jest.fn(() => 0);
+			relation.getCurrentBreakpoint = jest.fn(() => 'general');
+			relation.addStyleEl = jest.fn();
+			relation.breakpoints = [
+				'general',
+				'xxl',
+				'xl',
+				'l',
+				'm',
+				's',
+				'xs',
+			];
+			relation.breakpointsObj = { general: '' };
+			relation.dataTarget = '.block[data-maxi-relations="true"]';
+			relation.target = '';
+			relation.stylesObjs = [
+				{
+					general: {
+						opacity: '0.5',
+						transform: 'translateX(20px)',
+					},
+				},
+			];
+			relation.effectsObjs = [
+				{
+					general: {
+						'transition-status': true,
+						'transition-duration': 0.3,
+						'transition-delay': 0,
+						easing: 'ease',
+						split: false,
+					},
+				},
+			];
+			relation.effects = [{ disableTransition: false }];
+			relation.hasMultipleTargetsArray = [false];
+			relation.transitionTargetsArray = [['']];
+		});
+
+		it('uses Web Animations preview without exporting hover end-state CSS', () => {
+			relation.setIsPreview(true);
+
+			expect(relation.removeStyles).toHaveBeenCalled();
+			expect(relation.removeAddAttrToBlock).toHaveBeenCalled();
+			expect(relation.triggerEl.addEventListener).toHaveBeenCalledWith(
+				'mouseenter',
+				expect.any(Function)
+			);
+			expect(relation.triggerEl.addEventListener).toHaveBeenCalledWith(
+				'mouseleave',
+				expect.any(Function)
+			);
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.addStyles).not.toHaveBeenCalled();
+			expect(relation.addStyleEl).not.toHaveBeenCalled();
+			expect(animationTarget.animate).not.toHaveBeenCalled();
+		});
+
+		it('plays a Web Animations preview on mouse enter without toggling the target attribute', () => {
+			relation.setIsPreview(true);
+			relation.addStyleEl.mockClear();
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			onMouseEnter();
+
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.addRelationSubscriber).not.toHaveBeenCalled();
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+			expect(relation.addStyles).not.toHaveBeenCalled();
+			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(relation.addStyleEl).not.toHaveBeenCalledWith(
+				relation.stylesEl
+			);
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ opacity: '1', transform: 'none' },
+					{ opacity: '0.5', transform: 'translateX(20px)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+		});
+
+		it('uses Web Animations preview for SVG transform interactions', () => {
+			relation.isSVG = true;
+			relation.sids = ['t'];
+			relation.stylesEl.innerText =
+				'body.maxi-blocks--active .block[data-maxi-relations="true"] { transform: scaleX(1); transform-origin: 50% 50%; }';
+			relation.inTransitionEl.innerText =
+				'body.maxi-blocks--active .block[data-maxi-relations="true"] { transition: transform 0.3s ease 0s, transform-origin 0.3s ease 0s; }';
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'scaleX(1) scaleY(1)',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: 'matrix(0, 0, 0, 0, 0, 0)',
+					})[prop] || '',
+			}));
+
+			relation.setIsPreview(true);
+			relation.addStyleEl.mockClear();
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			onMouseEnter();
+
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+			expect(relation.supportsWebAnimationPreview()).toBe(true);
+			expect(relation.getPreviewMode()).toBe('web-animation');
+			expect(relation.previewTransitionType).toBe('web-animation');
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'matrix(0, 0, 0, 0, 0, 0)' },
+					{ transform: 'scaleX(1) scaleY(1)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+		});
+
+		it('keeps SVG canvas transform preview CSS on the block target', () => {
+			relation.isSVG = true;
+			relation.sids = ['t'];
+			relation.dataTarget =
+				'.block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"]';
+			relation.stylesEl.innerText =
+				'body.maxi-blocks--active .block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"] { transform: scale(1.2) translateX(30px) rotateZ(20deg); transform-origin: 50% 50%; }';
+			relation.inTransitionEl.innerText =
+				'body.maxi-blocks--active .block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"] { transition: transform 0.3s ease 0s, transform-origin 0.3s ease 0s; }';
+
+			const hoverContent = relation.getPreviewHoverContent(
+				relation.stylesEl
+			);
+			const transitionContent = relation.getPreviewHoverContent(
+				relation.inTransitionEl
+			);
+
+			expect(hoverContent).toContain(
+				'body.maxi-blocks--active:has(.test-trigger:hover) .block.svg-icon-maxi-test[data-type="maxi-blocks/svg-icon-maxi"] { transform: scale(1.2) translateX(30px) rotateZ(20deg); transform-origin: 50% 50%; }'
+			);
+			expect(transitionContent).toContain(
+				'body.maxi-blocks--active:has(.test-trigger:hover) .block.svg-icon-maxi-test[data-type="maxi-blocks/svg-icon-maxi"] { transition: transform 0.3s ease 0s, transform-origin 0.3s ease 0s; }'
+			);
+			expect(hoverContent).not.toContain(
+				'.maxi-svg-icon-block__icon'
+			);
+		});
+
+		it('does not inject a pre-hover SVG transform reset', () => {
+			relation.isSVG = true;
+			relation.sids = ['t'];
+			relation.blockTarget = '.svg-icon-maxi-test';
+			relation.dataTarget =
+				'.block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"]';
+
+			relation.setIsPreview(true);
+
+			expect(relation.previewSvgStartStylesEl).toBeNull();
+			expect(
+				relation.addStyleEl.mock.calls.some(
+					([styleEl]) =>
+						styleEl?.innerText?.includes(
+							'transform: none !important'
+						)
+				)
+			).toBe(false);
+		});
+
+		it('includes relation config and animation traces in preview diagnostics', () => {
+			relation.isSVG = true;
+			relation.sids = ['t'];
+			relation.transitionTargetsArray = [['']];
+			relation.hasMultipleTargetsArray = [false];
+
+			const details = relation.getPreviewRelationConfigDebugDetails();
+
+			expect(details).toEqual(
+				expect.objectContaining({
+					previewMode: 'web-animation',
+					sids: ['t'],
+					isSVG: true,
+					hasMultipleTargetsArray: [false],
+					transitionTargetsArray: [['']],
+					styles: [
+						expect.objectContaining({
+							index: 0,
+							breakpoints: ['general'],
+							properties: ['opacity', 'transform'],
+						}),
+					],
+					effects: [
+						expect.objectContaining({
+							index: 0,
+							breakpoints: ['general'],
+							current: expect.objectContaining({
+								'transition-duration': 0.3,
+								easing: 'ease',
+							}),
+						}),
+					],
+					animationTargets: [
+						expect.objectContaining({
+							index: 0,
+							selector: '.block ',
+							keyframes: [
+								{ opacity: '1', transform: 'none' },
+								{
+									opacity: '0.5',
+									transform: 'translateX(20px)',
+								},
+							],
+							options: expect.objectContaining({
+								duration: 300,
+								easing: 'ease',
+							}),
+						}),
+					],
+				})
+			);
+		});
+
+		it('builds deep preview diagnostics with full CSS and selector matches', () => {
+			relation.isSVG = true;
+			relation.sids = ['t'];
+			relation.blockTarget = '.svg-icon-maxi-test';
+			relation.dataTarget =
+				'.block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"]';
+			relation.stylesEl.innerText =
+				'body.maxi-blocks--active .block.svg-icon-maxi-test[data-maxi-relations="true"][data-type="maxi-blocks/svg-icon-maxi"] { transform: scale(1.2); }';
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'scale(1.2)',
+					},
+				},
+			];
+
+			relation.setIsPreview(true);
+
+			const details = relation.getDeepPreviewDebugDetails(
+				'test-stage'
+			);
+
+			expect(details.stage).toBe('test-stage');
+			expect(details.generated.stylesObjs).toBe(relation.stylesObjs);
+			expect(details.styleElements.staticStyles.content).toContain(
+				'transform: scale(1.2)'
+			);
+			expect(details.styleElements.previewStyles).toBeNull();
+			expect(details.animationTargets).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						selector:
+							'.block.svg-icon-maxi-test[data-type="maxi-blocks/svg-icon-maxi"] ',
+						keyframes: [
+							{ transform: 'none' },
+							{ transform: 'scale(1.2)' },
+						],
+					}),
+				])
+			);
+			expect(details.selectors).toEqual(
+				expect.arrayContaining([
+					expect.objectContaining({
+						selector: expect.stringContaining(
+							'.block.svg-icon-maxi-test'
+						),
+						matchCount: 1,
+					}),
+				])
+			);
+		});
+
+		it('reverses the Web Animations preview on mouse leave', () => {
+			jest.useFakeTimers();
+			relation.setIsPreview(true);
+			relation.removeStyles.mockClear();
+			relation.removeAddAttrToBlock.mockClear();
+			relation.removeRelationSubscriber.mockClear();
+			relation.removeTransition.mockClear();
+			relation.addTransition.mockClear();
+			relation.forcePreviewReflow.mockClear();
+
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+				([eventName]) => eventName === 'mouseleave'
+			)[1];
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			onMouseEnter();
+			animationTarget.animate.mockClear();
+			onMouseLeave();
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+
+			jest.advanceTimersByTime(120);
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(relation.removeStyles).not.toHaveBeenCalled();
+			expect(relation.removeAddAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.removeRelationSubscriber).not.toHaveBeenCalled();
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ opacity: '1', transform: 'none' },
+					{ opacity: '1', transform: 'none' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+			jest.useRealTimers();
+		});
+
+		it('includes hit-testing and computed styles in hover diagnostics', () => {
+			const elementFromPoint = {
+				nodeName: 'DIV',
+				id: 'overlay',
+				className: 'block-editor-overlay',
+				getAttribute: jest.fn(attr =>
+					attr === 'data-type' ? 'core/overlay' : null
+				),
+			};
+			const eventTarget = {
+				nodeName: 'DIV',
+				className: 'trigger-child',
+				getAttribute: jest.fn(() => null),
+			};
+
+			relation.mainDocument.elementFromPoint = jest.fn(
+				() => elementFromPoint
+			);
+			relation.mainWindow.getComputedStyle = jest.fn(element => ({
+				getPropertyValue: prop =>
+					({
+						transition: 'transform 0.3s ease 0s',
+						'transition-duration': '0.3s',
+						'transition-delay': '0s',
+						transform:
+							element === relation.targetEl
+								? 'matrix(1, 0, 0, 1, 20, 0)'
+								: 'none',
+						opacity: element === relation.targetEl ? '0.4' : '1',
+					})[prop],
+			}));
+			relation.triggerEl.getBoundingClientRect = jest.fn(() => ({
+				left: 10,
+				top: 20,
+				right: 110,
+				bottom: 120,
+				width: 100,
+				height: 100,
+			}));
+			relation.blockTargetEl = {
+				matches: jest.fn(() => false),
+				getAttribute: jest.fn(attr =>
+					attr === 'data-maxi-relations' ? 'false' : null
+				),
+				getBoundingClientRect: jest.fn(() => ({
+					left: 30,
+					top: 40,
+					right: 130,
+					bottom: 140,
+					width: 100,
+					height: 100,
+				})),
+			};
+			relation.targetEl = {
+				matches: jest.fn(() => false),
+				getBoundingClientRect: jest.fn(() => ({
+					left: 35,
+					top: 45,
+					right: 135,
+					bottom: 145,
+					width: 100,
+					height: 100,
+				})),
+			};
+
+			const details = relation.getPreviewHoverEventDetails({
+				clientX: 50,
+				clientY: 60,
+				target: eventTarget,
+				currentTarget: relation.triggerEl,
+				relatedTarget: null,
+			});
+
+			expect(details).toEqual(
+				expect.objectContaining({
+					pointer: { x: 50, y: 60 },
+					pointerInsideTriggerBounds: true,
+					webAnimationPreview: true,
+					cssHoverPreview: false,
+					blockDataAttr: 'false',
+					elementFromPoint: expect.objectContaining({
+						id: 'overlay',
+						className: 'block-editor-overlay',
+						dataType: 'core/overlay',
+					}),
+					eventTarget: expect.objectContaining({
+						className: 'trigger-child',
+					}),
+					targetComputed: expect.objectContaining({
+						transform: 'matrix(1, 0, 0, 1, 20, 0)',
+						opacity: '0.4',
+					}),
+				})
+			);
+		});
+
+		it('keeps hover preview active when the editor fires mouseleave while the trigger is still hovered', () => {
+			relation.setIsPreview(true);
+			relation.triggerEl.matches = jest.fn(selector => {
+				return selector === ':hover';
+			});
+			relation.removeTransition.mockClear();
+			relation.addTransition.mockClear();
+			relation.forcePreviewReflow.mockClear();
+
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+			onMouseLeave();
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+		});
+
+		it('keeps hover preview active when the editor fires mouseleave while a contained target is still hovered', () => {
+			jest.useFakeTimers();
+			relation.isContained = true;
+			relation.blockTargetEl.matches = jest.fn(selector => {
+				return selector === ':hover';
+			});
+			relation.setIsPreview(true);
+			relation.forcePreviewReflow.mockClear();
+			relation.removeAddAttrToBlock.mockClear();
+
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+			onMouseLeave();
+			jest.runOnlyPendingTimers();
+
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+			expect(relation.removeAddAttrToBlock).not.toHaveBeenCalled();
+			jest.useRealTimers();
+		});
+
+		it('debounces hover leave so editor hover flicker can be cancelled by a quick re-enter', () => {
+			jest.useFakeTimers();
+			relation.setIsPreview(true);
+			relation.removeTransition.mockClear();
+			relation.addTransition.mockClear();
+			relation.forcePreviewReflow.mockClear();
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseLeave();
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+
+			onMouseEnter();
+			jest.runOnlyPendingTimers();
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+
+			jest.useRealTimers();
+		});
+
+		it('uses a short hover leave debounce even when the transition is longer', () => {
+			jest.useFakeTimers();
+			relation.getTransitionTimeout = jest.fn(() => 400);
+			relation.setIsPreview(true);
+			relation.removeTransition.mockClear();
+			relation.addTransition.mockClear();
+			relation.forcePreviewReflow.mockClear();
+
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseLeave();
+			jest.advanceTimersByTime(119);
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+
+			jest.advanceTimersByTime(1);
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.removeAddAttrToBlock).toHaveBeenCalled();
+
+			jest.useRealTimers();
+		});
+
+		it('keeps hover preview active when editor mouseleave is still inside the trigger bounds', () => {
+			jest.useFakeTimers();
+			relation.triggerEl.getBoundingClientRect = jest.fn(() => ({
+				left: 10,
+				top: 20,
+				right: 110,
+				bottom: 120,
+				width: 100,
+				height: 100,
+			}));
+			relation.setIsPreview(true);
+			relation.removeTransition.mockClear();
+			relation.addTransition.mockClear();
+			relation.forcePreviewReflow.mockClear();
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseEnter({ clientX: 50, clientY: 60 });
+			relation.forcePreviewReflow.mockClear();
+			onMouseLeave({ clientX: 50, clientY: 60 });
+			jest.runOnlyPendingTimers();
+
+			expect(relation.removeTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+
+			jest.useRealTimers();
+		});
+
+		it('enables click preview without applying the end state until click', () => {
+			relation.action = 'click';
+			relation.setIsPreview(true);
+
+			expect(relation.triggerEl.addEventListener).toHaveBeenCalledWith(
+				'click',
+				expect.any(Function)
+			);
+
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.addStyles).not.toHaveBeenCalled();
+
+			const onClick = relation.triggerEl.addEventListener.mock.calls.find(
+				([eventName]) => eventName === 'click'
+			)[1];
+			onClick();
+
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
+			expect(relation.addStyles).not.toHaveBeenCalled();
+			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ opacity: '1', transform: 'none' },
+					{ opacity: '0.5', transform: 'translateX(20px)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+		});
+
+		it('removes preview event listeners when preview is disabled', () => {
+			relation.setIsPreview(true);
+			const previewElements = relation.addStyleEl.mock.calls.map(
+				([element]) => element
+			);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			relation.setIsPreview(false);
+
+			expect(relation.triggerEl.removeEventListener).toHaveBeenCalledWith(
+				'mouseenter',
+				onMouseEnter
+			);
+			expect(relation.triggerEl.removeEventListener).toHaveBeenCalledWith(
+				'mouseleave',
+				onMouseLeave
+			);
+			previewElements.forEach(element => {
+				expect(element.remove).toHaveBeenCalled();
+			});
+		});
+
+		it('shows the static end state without scheduling or adding transitions', () => {
+			relation.setIsPreview(false, { staticState: 'end' });
+
+			expect(relation.removeTransition).toHaveBeenCalledWith(
+				relation.inTransitionEl
+			);
+			expect(relation.removeTransition).toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.addTransition).not.toHaveBeenCalled();
+			expect(relation.addDataAttrToBlock).toHaveBeenCalled();
+			expect(relation.addStyles).toHaveBeenCalled();
+		});
+
+		it('returns to the static start state without playing the out transition', () => {
+			relation.setIsPreview(false, { staticState: 'start' });
+
+			expect(relation.addTransition).not.toHaveBeenCalledWith(
+				relation.outTransitionEl
+			);
+			expect(relation.removeAddAttrToBlock).toHaveBeenCalled();
+			expect(relation.removeStyles).toHaveBeenCalled();
+			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
+			expect(relation.addStyles).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('forcePreviewReflow', () => {
+		it('enables preview diagnostics automatically on local hosts', () => {
+			const relation = new Relation({});
+
+			relation.mainWindow = {
+				maxiIBAllowLocalDebugInTests: true,
+				location: {
+					hostname: 'localhost',
+				},
+				navigator: {
+					userAgent:
+						'Mozilla/5.0 Chrome/148.0.7778.168 Safari/537.36',
+				},
+			};
+
+			expect(relation.isPreviewDebugEnabled()).toBe(true);
+		});
+
+		it('keeps preview diagnostics off for non-local hosts by default', () => {
+			const relation = new Relation({});
+
+			relation.mainWindow = {
+				location: {
+					hostname: 'example.com',
+				},
+				localStorage: {
+					getItem: jest.fn(() => null),
+				},
+				navigator: {
+					userAgent:
+						'Mozilla/5.0 Chrome/148.0.7778.168 Safari/537.36',
+				},
+			};
+
+			expect(relation.isPreviewDebugEnabled()).toBe(false);
+		});
+
+		it('flushes layout and computed transition styles for preview targets', () => {
+			const relation = new Relation({});
+			const offsetHeightGetter = jest.fn(() => 10);
+			const getBoundingClientRect = jest.fn(() => ({
+				width: 10,
+				height: 10,
+			}));
+			const getPropertyValue = jest.fn(() => 'opacity 0.3s ease 0s');
+			const targetEl = { getBoundingClientRect };
+
+			Object.defineProperty(targetEl, 'offsetHeight', {
+				get: offsetHeightGetter,
+			});
+
+			relation.transitionTargetsArray = [[' .target']];
+			relation.dataTarget = '.block[data-maxi-relations="true"]';
+			relation.mainDocument = {
+				querySelectorAll: jest.fn(() => [targetEl]),
+			};
+			relation.mainWindow = {
+				getComputedStyle: jest.fn(() => ({ getPropertyValue })),
+			};
+
+			relation.forcePreviewReflow();
+
+			expect(relation.mainDocument.querySelectorAll).toHaveBeenCalledWith(
+				'.block[data-maxi-relations="true"] .target'
+			);
+			expect(getBoundingClientRect).toHaveBeenCalled();
+			expect(offsetHeightGetter).toHaveBeenCalled();
+			expect(relation.mainWindow.getComputedStyle).toHaveBeenCalledWith(
+				targetEl
+			);
+			expect(getPropertyValue).toHaveBeenCalledWith('transition');
+		});
+
+		it('logs target diagnostics as warnings when local debug is enabled', () => {
+			const relation = new Relation({});
+			const warn = jest.fn();
+			jest.spyOn(window.console, 'warn').mockImplementation(jest.fn());
+			const targetEl = {
+				getBoundingClientRect: jest.fn(() => ({
+					width: 10,
+					height: 10,
+				})),
+				offsetHeight: 10,
+			};
+
+			relation.id = 3;
+			relation.uniqueID = 'text-maxi-test';
+			relation.action = 'hover';
+			relation.trigger = 'trigger-test';
+			relation.target = '';
+			relation.transitionTargetsArray = [[' .target']];
+			relation.dataTarget =
+				'.block[data-maxi-relations="true"][data-type="maxi-blocks/text-maxi"]';
+			relation.blockTargetEl = {
+				getAttribute: jest.fn(() => 'true'),
+			};
+			relation.mainDocument = {
+				querySelectorAll: jest.fn(() => [targetEl]),
+			};
+			relation.mainWindow = {
+				console: { warn },
+				localStorage: {
+					getItem: jest.fn(() => 'true'),
+				},
+				getComputedStyle: jest.fn(() => ({
+					getPropertyValue: prop =>
+						({
+							transition: 'transform 0.3s ease 0s',
+							transform: 'matrix(1, 0, 0, 1, 10, 0)',
+							opacity: '1',
+						})[prop],
+				})),
+			};
+
+			relation.forcePreviewReflow();
+
+			expect(warn).toHaveBeenCalledWith(
+				'[Maxi IB Preview]',
+				'force-reflow',
+				expect.objectContaining({
+					id: 3,
+					uniqueID: 'text-maxi-test',
+					action: 'hover',
+					targets: [
+						expect.objectContaining({
+							matchCount: 1,
+							blockDataAttr: 'true',
+							computed: expect.objectContaining({
+								transition: 'transform 0.3s ease 0s',
+								transform: 'matrix(1, 0, 0, 1, 10, 0)',
+							}),
+						}),
+					],
+				})
+			);
+		});
+
+		it('logs when a relation cannot find the trigger or target element', () => {
+			const warn = jest.fn();
+
+			jest.spyOn(window.console, 'warn').mockImplementation(warn);
+			window.maxiIBAllowLocalDebugInTests = true;
+			Object.defineProperty(window, 'location', {
+				value: { hostname: 'localhost' },
+				configurable: true,
+			});
+			Object.defineProperty(window, 'navigator', {
+				value: {
+					userAgent:
+						'Mozilla/5.0 Chrome/148.0.7778.168 Safari/537.36',
+				},
+				configurable: true,
+			});
+
+			document.querySelector.mockReturnValue(null);
+
+			new Relation({
+				id: 9,
+				uniqueID: 'missing-target',
+				trigger: 'missing-trigger',
+				target: '.missing-target',
+				css: [{ general: { styles: { opacity: '0' } } }],
+			});
+
+			expect(warn).toHaveBeenCalledWith(
+				'[Maxi IB Preview]',
+				'constructor:missing-elements',
+				expect.objectContaining({
+					id: 9,
+					uniqueID: 'missing-target',
+					triggerFound: false,
+					targetFound: false,
+				})
+			);
+			delete window.maxiIBAllowLocalDebugInTests;
+		});
+	});
+
 	describe('getLastUsableBreakpoint', () => {
 		let relation;
 
@@ -1989,6 +2955,24 @@ describe('Relation class', () => {
 				false
 			);
 			expect(result).toBe('transform 0.2s ease 0s, color 0.3s ease 0s, ');
+		});
+
+		test('should ignore computed none default transition', () => {
+			relation.defaultTransition = 'none';
+			const styleObj = { transform: 'scaleX(1)' };
+			const effectsObj = {
+				'transition-status': true,
+				'transition-duration': 0.3,
+				'transition-delay': 0,
+				easing: 'ease',
+			};
+
+			const result = relation.getTransitionString(
+				styleObj,
+				effectsObj,
+				false
+			);
+			expect(result).toBe('transform 0.3s ease 0s, ');
 		});
 
 		test('should not duplicate default transition when already included', () => {

@@ -3,6 +3,14 @@
  */
 import getBlockNameFromUniqueID from '@extensions/attributes/getBlockNameFromUniqueID';
 import { getIsSiteEditor, getSiteEditorIframe } from '@extensions/fse';
+import {
+	debugPreview as debugRelationPreview,
+	isPreviewDebugEnabled as getIsPreviewDebugEnabled,
+	isPreviewDeepDebugEnabled as getIsPreviewDeepDebugEnabled,
+} from './debugPreview';
+
+const PREVIEW_HOVER_LEAVE_DEBOUNCE = 120;
+const PREVIEW_HOVER_BOUNDS_TOLERANCE = 2;
 
 // Relations (IB)
 class Relation {
@@ -69,7 +77,15 @@ class Relation {
 			this.uniqueID
 		)}"]`}`;
 
-		if (!this.triggerEl || !this.targetEl) return;
+		if (!this.triggerEl || !this.targetEl) {
+			this.debugPreview('constructor:missing-elements', {
+				triggerFound: !!this.triggerEl,
+				targetFound: !!this.targetEl,
+				triggerSelector: `.${this.trigger}`,
+				targetSelector: this.fullTarget,
+			});
+			return;
+		}
 
 		this.defaultTransition = this.mainWindow
 			.getComputedStyle(this.targetEl)
@@ -158,6 +174,12 @@ class Relation {
 		this.stylesEl = null;
 		this.inTransitionEl = null;
 		this.outTransitionEl = null;
+		this.previewStylesEl = null;
+		this.previewInTransitionEl = null;
+		this.previewOutTransitionEl = null;
+		this.previewTransitionType = null;
+		this.previewAnimations = [];
+		this.previewAnimationBaseStyles = new Map();
 		this.generateStylesEls();
 
 		// Prevents removing the IB transitions before they end when mouse leave the IB trigger
@@ -165,6 +187,21 @@ class Relation {
 		// Prevents IB transitions overwrite native hover ones (when is contained) when mouse
 		// leave the hover transition trigger
 		this.contentTimeout = null;
+		this.previewDemoRequestId = null;
+		this.previewDemoRequestType = null;
+		this.previewHoverLeaveTimeout = null;
+		this.previewHoverBounds = null;
+		this.previewPointerPosition = null;
+		this.debugPreview('constructor:ready', {
+			defaultTransition: this.defaultTransition,
+			inTransition: this.getStyleDebug(this.inTransitionEl),
+			outTransition: this.getStyleDebug(this.outTransitionEl),
+			style: this.getStyleDebug(this.stylesEl),
+			targets: this.getPreviewTargetDetails(),
+		});
+		this.debugPreviewDeep('constructor:ready:deep', () =>
+			this.getDeepPreviewDebugDetails('constructor:ready')
+		);
 	}
 
 	// Create two different <style> elements, one for the styles and one for the transitions.
@@ -210,6 +247,544 @@ class Relation {
 		);
 	}
 
+	getPreviewStyleContent(styleEl) {
+		return styleEl?.innerText || styleEl?.textContent || '';
+	}
+
+	getRelationDataAttributeRegExp() {
+		return /\[data-maxi-relations=(?:"true"|'true'|true)\]/g;
+	}
+
+	getPreviewContentWithoutDataAttribute(content) {
+		return (content || '').replace(
+			this.getRelationDataAttributeRegExp(),
+			''
+		);
+	}
+
+	getPreviewBodyTargetSelector(target) {
+		const targetSelector = target.trim();
+
+		return this.isSiteEditor || this.isEditorIframe
+			? `body.maxi-blocks--active${targetSelector}`.replace(
+					/\s{2,}/g,
+					' '
+			  )
+			: `body.maxi-blocks--active ${targetSelector}`.replace(
+					/\s{2,}/g,
+					' '
+			  );
+	}
+
+	getPreviewHoverRootSelector() {
+		return `body.maxi-blocks--active:has(.${this.trigger}:hover)`;
+	}
+
+	getPreviewHoverContent(styleEl) {
+		return this.getPreviewContentWithoutDataAttribute(
+			this.getPreviewStyleContent(styleEl)
+		).replace(
+			/body\.maxi-blocks--active/g,
+			this.getPreviewHoverRootSelector()
+		);
+	}
+
+	getPreviewBaseTargetContent(styleEl) {
+		return this.getPreviewContentWithoutDataAttribute(
+			this.getPreviewStyleContent(styleEl)
+		);
+	}
+
+	getPreviewTransitionContent(styleEl) {
+		return this.getPreviewStyleContent(styleEl).replace(
+			this.getRelationDataAttributeRegExp(),
+			':not([data-maxi-relations="__maxi-preview-disabled__"])'
+		);
+	}
+
+	supportsCssHoverPreview() {
+		if (this.action !== 'hover') return false;
+		if (this.supportsWebAnimationPreview()) return false;
+
+		const supports = this.mainWindow?.CSS?.supports;
+
+		if (typeof supports !== 'function') return true;
+
+		try {
+			return supports.call(this.mainWindow.CSS, 'selector(:has(*))');
+		} catch (error) {
+			return true;
+		}
+	}
+
+	getAnimationPropertyName(property) {
+		return property.replace(/-([a-z])/g, (_match, letter) =>
+			letter.toUpperCase()
+		);
+	}
+
+	getAnimationCssPropertyName(property) {
+		return property.replace(/[A-Z]/g, match => `-${match.toLowerCase()}`);
+	}
+
+	cleanAnimationStyleValue(value) {
+		if (value === null || typeof value === 'undefined') return null;
+
+		return String(value).replace(/\s*!important\s*$/i, '').trim();
+	}
+
+	getCurrentResponsiveStyles(stylesObj) {
+		if (!stylesObj) return null;
+
+		const currentBreakpoint = this.getCurrentBreakpoint();
+		const currentBreakpointIndex = this.breakpoints.indexOf(
+			currentBreakpoint
+		);
+		const usableBreakpoints =
+			currentBreakpointIndex >= 0
+				? this.breakpoints.slice(0, currentBreakpointIndex + 1)
+				: this.breakpoints;
+		const styles = {};
+
+		usableBreakpoints.forEach(breakpoint => {
+			if (stylesObj?.[breakpoint])
+				Object.assign(styles, stylesObj[breakpoint]);
+		});
+
+		return Object.keys(styles).length ? styles : null;
+	}
+
+	getCurrentEffectsObj(index, direction = 'in') {
+		const effectsObj = this.effectsObjs?.[index];
+
+		if (!effectsObj) return {};
+
+		const currentBreakpoint = this.getCurrentBreakpoint();
+		const breakpoint =
+			this.getLastUsableBreakpoint(
+				currentBreakpoint,
+				breakpoint => !!effectsObj[breakpoint]
+			) || 'general';
+		const currentEffects = effectsObj[breakpoint] || {};
+
+		if (
+			direction === 'out' &&
+			currentEffects.split &&
+			currentEffects.out
+		)
+			return currentEffects.out;
+
+		return currentEffects;
+	}
+
+	getPreviewAnimationOptions(index, direction = 'in') {
+		const effectsObj = this.getCurrentEffectsObj(index, direction);
+		const transitionEnabled = effectsObj['transition-status'] !== false;
+		const duration = transitionEnabled
+			? Number(effectsObj['transition-duration'] || 0) * 1000
+			: 0;
+		const delay = transitionEnabled
+			? Number(effectsObj['transition-delay'] || 0) * 1000
+			: 0;
+
+		return {
+			duration: Number.isFinite(duration) ? duration : 0,
+			delay: Number.isFinite(delay) ? delay : 0,
+			easing: effectsObj.easing || 'ease',
+			fill: 'forwards',
+		};
+	}
+
+	getAnimationTargetSelector() {
+		return this.getPreviewContentWithoutDataAttribute(this.dataTarget);
+	}
+
+	getPreviewAnimationTargetEntries() {
+		const mainTarget = this.getAnimationTargetSelector();
+		const entries = [];
+
+		this.stylesObjs?.forEach((stylesObj, index) => {
+			if (!stylesObj || this.effects?.[index]?.disableTransition) return;
+
+			const addEntriesForSelector = (styles, selector) => {
+				const animationStyles = this.getCurrentResponsiveStyles(styles);
+
+				if (!animationStyles) return;
+
+				let elements = [];
+				try {
+					elements = Array.from(
+						this.mainDocument?.querySelectorAll?.(selector) || []
+					);
+				} catch (error) {
+					if (error?.name !== 'SyntaxError') throw error;
+				}
+
+				elements.forEach(element => {
+					entries.push({
+						element,
+						index,
+						selector,
+						styles: animationStyles,
+					});
+				});
+			};
+
+			if (this.hasMultipleTargetsArray?.[index]) {
+				Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
+					addEntriesForSelector(styles, `${mainTarget} ${targetSelector}`);
+				});
+				return;
+			}
+
+			this.transitionTargetsArray?.[index]?.forEach(transitionTarget => {
+				addEntriesForSelector(
+					stylesObj,
+					this.getTargetForLine(transitionTarget, mainTarget)
+				);
+			});
+		});
+
+		return entries;
+	}
+
+	supportsWebAnimationPreview() {
+		if (!['hover', 'click'].includes(this.action)) return false;
+
+		return this.getPreviewAnimationTargetEntries().some(
+			({ element }) => typeof element?.animate === 'function'
+		);
+	}
+
+	getPreviewMode() {
+		if (this.supportsWebAnimationPreview()) return 'web-animation';
+		if (this.supportsCssHoverPreview()) return 'css-hover';
+		return 'js-toggle';
+	}
+
+	getPreviewStyleConfigDebugDetails() {
+		return (
+			this.stylesObjs?.map((stylesObj, index) => {
+				const breakpointKeys = Object.keys(stylesObj || {}).filter(
+					key => this.breakpoints?.includes?.(key)
+				);
+				const targetKeys = Object.keys(stylesObj || {}).filter(
+					key => !this.breakpoints?.includes?.(key)
+				);
+				const sourceStyles = this.hasMultipleTargetsArray?.[index]
+					? targetKeys.reduce(
+							(acc, targetKey) => ({
+								...acc,
+								...(this.getCurrentResponsiveStyles(
+									stylesObj[targetKey]
+								) || {}),
+							}),
+							{}
+					  )
+					: this.getCurrentResponsiveStyles(stylesObj);
+
+				return {
+					index,
+					breakpoints: breakpointKeys,
+					targets: targetKeys,
+					properties: Object.keys(sourceStyles || {}),
+					current: sourceStyles || {},
+				};
+			}) || []
+		);
+	}
+
+	getPreviewEffectsConfigDebugDetails() {
+		return (
+			this.effectsObjs?.map((effectsObj, index) => ({
+				index,
+				breakpoints: Object.keys(effectsObj || {}),
+				current: this.getCurrentEffectsObj(index),
+				out: this.getCurrentEffectsObj(index, 'out'),
+			})) || []
+		);
+	}
+
+	getSvgPreviewCandidateDetails(element) {
+		if (!this.isSVG || !element?.querySelectorAll) return [];
+
+		return [
+			'.maxi-svg-icon-block__icon',
+			'.maxi-svg-icon-block__icon svg',
+			'.maxi-svg-icon-block__icon svg path',
+		].flatMap(selector => {
+			try {
+				return Array.from(element.querySelectorAll(selector) || []).map(
+					candidate => ({
+						selector,
+						element: this.getNodeDebugDetails(candidate),
+						bounds: this.getElementBounds(candidate),
+						computed: this.getComputedDebugDetails(candidate),
+					})
+				);
+			} catch (error) {
+				if (error?.name !== 'SyntaxError') throw error;
+				return [
+					{
+						selector,
+						error: error?.message || String(error),
+					},
+				];
+			}
+		});
+	}
+
+	getPreviewAnimationDebugDetails(direction = 'in') {
+		return this.getPreviewAnimationTargetEntries().map(entry => {
+			const keyframes = this.getPreviewAnimationKeyframes(
+				entry,
+				direction
+			);
+			const options = this.getPreviewAnimationOptions(
+				entry.index,
+				direction
+			);
+			const bounds = this.getElementBounds(entry.element);
+
+			return {
+				index: entry.index,
+				selector: entry.selector,
+				styles: entry.styles,
+				keyframes,
+				options,
+				element: this.getNodeDebugDetails(entry.element),
+				bounds,
+				zeroSized:
+					!!bounds && (bounds.width === 0 || bounds.height === 0),
+				computed: this.getComputedDebugDetails(entry.element),
+				svgCandidates: this.getSvgPreviewCandidateDetails(entry.element),
+			};
+		});
+	}
+
+	getPreviewRelationConfigDebugDetails({
+		includeAnimationTargets = true,
+	} = {}) {
+		return {
+			previewMode: this.getPreviewMode(),
+			currentBreakpoint: this.getCurrentBreakpoint(),
+			sids: this.sids,
+			isSVG: this.isSVG,
+			isIconArray: this.isIconArray,
+			hasMultipleTargetsArray: this.hasMultipleTargetsArray,
+			transitionTargetsArray: this.transitionTargetsArray,
+			transitionTriggers: this.transitionTriggers,
+			styles: this.getPreviewStyleConfigDebugDetails(),
+			effects: this.getPreviewEffectsConfigDebugDetails(),
+			...(includeAnimationTargets && {
+				animationTargets: this.getPreviewAnimationDebugDetails(),
+			}),
+		};
+	}
+
+	getStoredPreviewAnimationBaseStyle(element, cssProperty) {
+		if (!this.previewAnimationBaseStyles)
+			this.previewAnimationBaseStyles = new Map();
+
+		if (!this.previewAnimationBaseStyles.has(element))
+			this.previewAnimationBaseStyles.set(element, {});
+
+		const baseStyles = this.previewAnimationBaseStyles.get(element);
+
+		if (!Object.prototype.hasOwnProperty.call(baseStyles, cssProperty)) {
+			baseStyles[cssProperty] =
+				this.mainWindow
+					?.getComputedStyle?.(element)
+					?.getPropertyValue?.(cssProperty) || '';
+		}
+
+		return baseStyles[cssProperty];
+	}
+
+	getPreviewAnimationKeyframes(entry, direction = 'in') {
+		const fromStyles = {};
+		const toStyles = {};
+		const computed = this.mainWindow?.getComputedStyle?.(entry.element);
+
+		Object.entries(entry.styles || {}).forEach(([property, value]) => {
+			if (property.startsWith('--')) return;
+
+			const cleanValue = this.cleanAnimationStyleValue(value);
+			if (cleanValue === null || cleanValue === '') return;
+
+			const animationProperty = this.getAnimationPropertyName(property);
+			const cssProperty =
+				property.includes('-') || property.startsWith('--')
+					? property
+					: this.getAnimationCssPropertyName(property);
+			const currentValue =
+				computed?.getPropertyValue?.(cssProperty) ||
+				computed?.getPropertyValue?.(property) ||
+				'';
+			const baseValue = this.getStoredPreviewAnimationBaseStyle(
+				entry.element,
+				cssProperty
+			);
+
+			fromStyles[animationProperty] = currentValue;
+			toStyles[animationProperty] =
+				direction === 'out' ? baseValue : cleanValue;
+		});
+
+		if (!Object.keys(toStyles).length) return null;
+
+		return [fromStyles, toStyles];
+	}
+
+	cancelPreviewAnimations() {
+		if (!this.previewAnimations) this.previewAnimations = [];
+
+		this.previewAnimations?.forEach(animation => {
+			animation?.cancel?.();
+		});
+		this.previewAnimations = [];
+	}
+
+	playPreviewAnimations(direction = 'in') {
+		const entries = this.getPreviewAnimationTargetEntries().filter(
+			({ element }) => typeof element?.animate === 'function'
+		);
+		const preparedAnimations = entries
+			.map(entry => ({
+				...entry,
+				keyframes: this.getPreviewAnimationKeyframes(entry, direction),
+				options: this.getPreviewAnimationOptions(
+					entry.index,
+					direction
+				),
+			}))
+			.filter(({ keyframes }) => !!keyframes);
+
+		this.cancelPreviewAnimations();
+
+		this.previewAnimations = preparedAnimations
+			.map(({ element, keyframes, options }) =>
+				element.animate(keyframes, options)
+			)
+			.filter(Boolean);
+
+		this.debugPreview('preview-animation:play', {
+			direction,
+			animationCount: this.previewAnimations.length,
+			targets: preparedAnimations.map(
+				({ selector, keyframes, options, element }) => ({
+					selector,
+					keyframes,
+					options,
+					element: this.getNodeDebugDetails(element),
+					bounds: this.getElementBounds(element),
+					computed: this.getComputedDebugDetails(element),
+				})
+			),
+		});
+	}
+
+	createPreviewStyleEl(
+		styleEl,
+		content = this.getPreviewStyleContent(styleEl),
+		idSuffix = 'preview'
+	) {
+		if (!styleEl || !this.mainDocument?.createElement) return null;
+
+		const previewStyleEl = this.mainDocument.createElement('style');
+		previewStyleEl.id = `${styleEl.id}-${idSuffix}`;
+		previewStyleEl.setAttribute?.('data-type', this.action);
+		previewStyleEl.setAttribute?.('data-sids', this.sids);
+		previewStyleEl.setAttribute?.('data-preview', 'true');
+		previewStyleEl.innerText = content;
+
+		return previewStyleEl;
+	}
+
+	addPreviewTransition(type = 'in') {
+		const isOut = type === 'out';
+		const previewTransitionEl = isOut
+			? this.previewOutTransitionEl
+			: this.previewInTransitionEl;
+
+		if (!previewTransitionEl) return;
+		if (this.previewTransitionType === type) return;
+
+		(
+			isOut
+				? this.previewInTransitionEl
+				: this.previewOutTransitionEl
+		)?.remove?.();
+		this.addStyleEl(previewTransitionEl);
+		this.previewTransitionType = type;
+	}
+
+	addPreviewStyles() {
+		this.removePreviewStyles();
+
+		if (this.supportsWebAnimationPreview()) {
+			this.previewTransitionType = 'web-animation';
+		} else if (this.supportsCssHoverPreview()) {
+			this.previewStylesEl = this.createPreviewStyleEl(
+				this.stylesEl,
+				this.getPreviewHoverContent(this.stylesEl)
+			);
+			this.previewInTransitionEl = this.createPreviewStyleEl(
+				this.inTransitionEl,
+				this.getPreviewHoverContent(this.inTransitionEl)
+			);
+			this.previewOutTransitionEl = this.createPreviewStyleEl(
+				this.outTransitionEl,
+				this.getPreviewBaseTargetContent(this.outTransitionEl)
+			);
+
+			this.addStyleEl(this.previewOutTransitionEl);
+			this.addStyleEl(this.previewStylesEl);
+			this.addStyleEl(this.previewInTransitionEl);
+			this.previewTransitionType = 'hover-css';
+		} else {
+			this.previewStylesEl = this.createPreviewStyleEl(this.stylesEl);
+			this.previewInTransitionEl = this.createPreviewStyleEl(
+				this.inTransitionEl,
+				this.getPreviewTransitionContent(this.inTransitionEl)
+			);
+			this.previewOutTransitionEl = this.createPreviewStyleEl(
+				this.outTransitionEl,
+				this.getPreviewTransitionContent(this.outTransitionEl)
+			);
+
+			this.addStyleEl(this.previewStylesEl);
+			this.addPreviewTransition('in');
+		}
+
+		this.debugPreview('preview-styles:exported', {
+			mode: this.getPreviewMode(),
+			style: this.getStyleDebug(this.previewStylesEl),
+			inTransition: this.getStyleDebug(this.previewInTransitionEl),
+			outTransition: this.getStyleDebug(this.previewOutTransitionEl),
+			svgStart: this.getStyleDebug(this.previewSvgStartStylesEl),
+			config: this.getPreviewRelationConfigDebugDetails(),
+			targets: this.getPreviewTargetDetails(),
+		});
+		this.debugPreviewDeep('preview-styles:exported:deep', () =>
+			this.getDeepPreviewDebugDetails('preview-styles:exported')
+		);
+	}
+
+	removePreviewStyles() {
+		this.cancelPreviewAnimations();
+		this.previewSvgStartStylesEl?.remove?.();
+		this.previewStylesEl?.remove?.();
+		this.previewInTransitionEl?.remove?.();
+		this.previewOutTransitionEl?.remove?.();
+		this.previewSvgStartStylesEl = null;
+		this.previewStylesEl = null;
+		this.previewInTransitionEl = null;
+		this.previewOutTransitionEl = null;
+		this.previewTransitionType = null;
+		this.debugPreview('preview-styles:removed');
+	}
+
 	getLastUsableBreakpoint(currentBreakpoint, callback) {
 		return [...this.breakpoints]
 			.splice(0, this.breakpoints.indexOf(currentBreakpoint) + 1)
@@ -217,14 +792,955 @@ class Relation {
 			.find(breakpoint => callback(breakpoint));
 	}
 
-	setIsPreview(isPreview) {
-		this.isPreview = isPreview;
+	getCurrentBreakpoint() {
+		const winWidth = this.mainWindow?.innerWidth || window.innerWidth;
 
-		if (this.isPreview) {
-			this.enableTransitions();
-		} else {
-			this.disableTransitions();
+		let currentBreakpoint = 'general';
+
+		Object.entries(this.breakpointsObj || {}).forEach(
+			([breakpoint, value]) => {
+				if (!['general', 'xxl'].includes(breakpoint)) {
+					if (breakpoint === 'general') return;
+
+					if (winWidth <= this.breakpointsObj.xl)
+						currentBreakpoint = breakpoint;
+				}
+				if (winWidth <= value) currentBreakpoint = breakpoint;
+			}
+		);
+
+		return currentBreakpoint;
+	}
+
+	getTransitionTimeout() {
+		const currentBreakpoint = this.getCurrentBreakpoint();
+
+		const getTransitionValue = (effects, prop) =>
+			effects[
+				`transition-${prop}-${this.getLastUsableBreakpoint(
+					currentBreakpoint,
+					breakpoint =>
+						Object.prototype.hasOwnProperty.call(
+							effects,
+							`transition-${prop}-${breakpoint}`
+						)
+				)}`
+			];
+
+		return this.effects.reduce((promise, effects) => {
+			if (effects.disableTransition) return promise;
+
+			let transitionTimeout = 0;
+			[effects, effects?.out].forEach(effects => {
+				if (!effects) return;
+
+				const transitionDuration = getTransitionValue(
+					effects,
+					'duration'
+				);
+				const transitionDelay = getTransitionValue(effects, 'delay');
+				const transitionTimeoutTemp =
+					(transitionDuration + transitionDelay) * 1000;
+
+				transitionTimeout = Math.max(
+					transitionTimeout,
+					transitionTimeoutTemp
+				);
+			});
+
+			return Math.max(promise, transitionTimeout);
+		}, 0);
+	}
+
+	setIsPreview(isPreview, { staticState = 'start' } = {}) {
+		this.debugPreview('set-preview', { isPreview, staticState });
+
+		if (isPreview) {
+			this.isPreview = true;
+			this.enablePreviewInteractions();
+			return;
 		}
+
+		this.isPreview = false;
+
+		if (staticState === 'end') {
+			this.enableStaticEndState();
+			return;
+		}
+
+		this.enableStaticStartState();
+	}
+
+	getPreviewDemoWindow() {
+		if (this.mainWindow) return this.mainWindow;
+		if (typeof window !== 'undefined') return window;
+		return null;
+	}
+
+	isPreviewDebugEnabled() {
+		return getIsPreviewDebugEnabled(this.getPreviewDemoWindow());
+	}
+
+	isPreviewDeepDebugEnabled() {
+		return getIsPreviewDeepDebugEnabled(this.getPreviewDemoWindow());
+	}
+
+	debugPreview(event, details = {}, options = {}) {
+		const targetWindow = this.getPreviewDemoWindow();
+		const context = {
+			id: this.id,
+			uniqueID: this.uniqueID,
+			action: this.action,
+			trigger: this.trigger,
+			target: this.target,
+			dataTarget: this.dataTarget,
+			isEditorIframe: this.isEditorIframe,
+			isPreview: this.isPreview,
+			...details,
+		};
+
+		debugRelationPreview(event, context, targetWindow, options);
+	}
+
+	debugPreviewDeep(event, detailsFactory = {}) {
+		if (!this.isPreviewDeepDebugEnabled()) return;
+
+		const details =
+			typeof detailsFactory === 'function'
+				? detailsFactory()
+				: detailsFactory;
+
+		this.debugPreview(event, details, { deep: true });
+	}
+
+	getStyleDebug(styleEl) {
+		if (!styleEl) return null;
+
+		return {
+			id: styleEl.id,
+			type: styleEl.getAttribute?.('data-type'),
+			sids: styleEl.getAttribute?.('data-sids'),
+			length: styleEl.innerText?.length || styleEl.textContent?.length || 0,
+			preview: (styleEl.innerText || styleEl.textContent || '').slice(
+				0,
+				240
+			),
+		};
+	}
+
+	getDeepStyleDebug(styleEl) {
+		if (!styleEl) return null;
+
+		const content = this.getPreviewStyleContent(styleEl);
+
+		return {
+			...this.getStyleDebug(styleEl),
+			content,
+		};
+	}
+
+	getPreviewTargetSelector(
+		previewMode = this.isPreview ? this.getPreviewMode() : 'data-attribute'
+	) {
+		if (
+			this.isPreview &&
+			['css-hover', 'web-animation'].includes(previewMode)
+		) {
+			return this.getPreviewContentWithoutDataAttribute(this.dataTarget);
+		}
+
+		return this.dataTarget;
+	}
+
+	getNodeDebugDetails(element) {
+		if (!element) return null;
+
+		const className =
+			typeof element.className === 'string'
+				? element.className
+				: element.className?.baseVal || String(element.className || '');
+
+		return {
+			nodeName: element.nodeName,
+			id: element.id || null,
+			className,
+			dataBlock: element.getAttribute?.('data-block') || null,
+			dataType: element.getAttribute?.('data-type') || null,
+			dataMaxiRelations:
+				element.getAttribute?.('data-maxi-relations') || null,
+		};
+	}
+
+	getComputedDebugDetails(element) {
+		const computed = element
+			? this.mainWindow?.getComputedStyle?.(element)
+			: null;
+
+		if (!computed) return null;
+
+		return {
+			transition: computed.getPropertyValue?.('transition'),
+			transitionDuration: computed.getPropertyValue?.(
+				'transition-duration'
+			),
+			transitionDelay: computed.getPropertyValue?.('transition-delay'),
+			transform: computed.getPropertyValue?.('transform'),
+			transformOrigin: computed.getPropertyValue?.('transform-origin'),
+			transformBox: computed.getPropertyValue?.('transform-box'),
+			opacity: computed.getPropertyValue?.('opacity'),
+			display: computed.getPropertyValue?.('display'),
+			visibility: computed.getPropertyValue?.('visibility'),
+			position: computed.getPropertyValue?.('position'),
+			width: computed.getPropertyValue?.('width'),
+			height: computed.getPropertyValue?.('height'),
+			pointerEvents: computed.getPropertyValue?.('pointer-events'),
+		};
+	}
+
+	getDeepPreviewSelectors() {
+		const selectors = [
+			this.trigger ? `.${this.trigger}` : null,
+			this.blockTarget,
+			this.fullTarget,
+			this.dataTarget,
+			this.getPreviewContentWithoutDataAttribute(this.dataTarget),
+			this.getPreviewTargetSelector(
+				this.isPreview ? this.getPreviewMode() : 'data-attribute'
+			),
+			...(this.getPreviewTargetDetails?.() || []).map(
+				({ selector }) => selector
+			),
+		].filter(Boolean);
+
+		return Array.from(new Set(selectors));
+	}
+
+	getDeepSelectorMatchDetails(selector) {
+		try {
+			const elements = Array.from(
+				this.mainDocument?.querySelectorAll?.(selector) || []
+			);
+
+			return {
+				selector,
+				matchCount: elements.length,
+				matches: elements.slice(0, 5).map(element => ({
+					element: this.getNodeDebugDetails(element),
+					bounds: this.getElementBounds(element),
+					computed: this.getComputedDebugDetails(element),
+					svgCandidates: this.getSvgPreviewCandidateDetails(element),
+				})),
+			};
+		} catch (error) {
+			return {
+				selector,
+				error: error?.message || String(error),
+			};
+		}
+	}
+
+	getDeepPreviewDebugDetails(stage, extra = {}) {
+		return {
+			stage,
+			extra,
+			relation: {
+				id: this.id,
+				uniqueID: this.uniqueID,
+				action: this.action,
+				trigger: this.trigger,
+				target: this.target,
+				blockTarget: this.blockTarget,
+				fullTarget: this.fullTarget,
+				dataTarget: this.dataTarget,
+				isSVG: this.isSVG,
+				isPreview: this.isPreview,
+				isEditorIframe: this.isEditorIframe,
+				isSiteEditor: this.isSiteEditor,
+				previewMode: this.getPreviewMode(),
+				currentBreakpoint: this.getCurrentBreakpoint(),
+			},
+			rawRelation: {
+				css: this.css,
+				effects: this.effects,
+			},
+			generated: {
+				stylesString: this.stylesString,
+				inTransitionString: this.inTransitionString,
+				outTransitionString: this.outTransitionString,
+				stylesObjs: this.stylesObjs,
+				effectsObjs: this.effectsObjs,
+				sids: this.sids,
+				transitionTargetsArray: this.transitionTargetsArray,
+				hasMultipleTargetsArray: this.hasMultipleTargetsArray,
+				avoidHoverArray: this.avoidHoverArray,
+			},
+			styleElements: {
+				staticStyles: this.getDeepStyleDebug(this.stylesEl),
+				staticInTransition: this.getDeepStyleDebug(
+					this.inTransitionEl
+				),
+				staticOutTransition: this.getDeepStyleDebug(
+					this.outTransitionEl
+				),
+				previewSvgStart: this.getDeepStyleDebug(
+					this.previewSvgStartStylesEl
+				),
+				previewStyles: this.getDeepStyleDebug(this.previewStylesEl),
+				previewInTransition: this.getDeepStyleDebug(
+					this.previewInTransitionEl
+				),
+				previewOutTransition: this.getDeepStyleDebug(
+					this.previewOutTransitionEl
+				),
+			},
+			selectors: this.getDeepPreviewSelectors().map(selector =>
+				this.getDeepSelectorMatchDetails(selector)
+			),
+			animationTargets: this.getPreviewAnimationDebugDetails(),
+			keyNodes: {
+				trigger: {
+					element: this.getNodeDebugDetails(this.triggerEl),
+					bounds: this.getElementBounds(this.triggerEl),
+					computed: this.getComputedDebugDetails(this.triggerEl),
+				},
+				blockTarget: {
+					element: this.getNodeDebugDetails(this.blockTargetEl),
+					bounds: this.getElementBounds(this.blockTargetEl),
+					computed: this.getComputedDebugDetails(
+						this.blockTargetEl
+					),
+					svgCandidates: this.getSvgPreviewCandidateDetails(
+						this.blockTargetEl
+					),
+				},
+				target: {
+					element: this.getNodeDebugDetails(this.targetEl),
+					bounds: this.getElementBounds(this.targetEl),
+					computed: this.getComputedDebugDetails(this.targetEl),
+					svgCandidates: this.getSvgPreviewCandidateDetails(
+						this.targetEl
+					),
+				},
+			},
+			config: this.getPreviewRelationConfigDebugDetails({
+				includeAnimationTargets: false,
+			}),
+		};
+	}
+
+	getPreviewTargetDetails() {
+		const transitionTargets = Array.from(
+			new Set(this.transitionTargetsArray?.flat?.() || [''])
+		);
+		const previewSelectorMode = this.isPreview
+			? this.getPreviewMode()
+			: 'data-attribute';
+		const mainTarget = this.getPreviewTargetSelector(previewSelectorMode);
+
+		return transitionTargets.map(transitionTarget => {
+			const selector = this.getTargetForLine(
+				transitionTarget,
+				mainTarget
+			).replace(/\s{2,}/g, ' ');
+
+			try {
+				const elements = Array.from(
+					this.mainDocument?.querySelectorAll?.(selector) || []
+				);
+				const firstElement = elements[0];
+				const computed = firstElement
+					? this.mainWindow?.getComputedStyle?.(firstElement)
+					: null;
+
+				return {
+					selector,
+					matchCount: elements.length,
+					previewSelectorMode,
+					blockDataAttr:
+						this.blockTargetEl?.getAttribute?.(
+							'data-maxi-relations'
+						) || null,
+					element: this.getNodeDebugDetails(firstElement),
+					bounds: this.getElementBounds(firstElement),
+					computed: this.getComputedDebugDetails(firstElement),
+				};
+			} catch (error) {
+				return {
+					selector,
+					error: error?.message || String(error),
+				};
+			}
+		});
+	}
+
+	schedulePreviewDemo(callback) {
+		this.cancelPreviewDemo();
+
+		const targetWindow = this.getPreviewDemoWindow();
+
+		if (targetWindow?.requestAnimationFrame) {
+			this.debugPreview('schedule-frame', { type: 'animationFrame' });
+			this.previewDemoRequestType = 'animationFrame';
+			this.previewDemoRequestId = targetWindow.requestAnimationFrame(
+				() => {
+					this.previewDemoRequestId = null;
+					this.previewDemoRequestType = null;
+					callback();
+				}
+			);
+			return;
+		}
+
+		const setTargetTimeout = targetWindow?.setTimeout || setTimeout;
+		this.debugPreview('schedule-frame', { type: 'timeout' });
+		this.previewDemoRequestType = 'timeout';
+		this.previewDemoRequestId = setTargetTimeout(() => {
+			this.previewDemoRequestId = null;
+			this.previewDemoRequestType = null;
+			callback();
+		}, 0);
+	}
+
+	cancelPreviewDemo() {
+		if (
+			this.previewDemoRequestId === null ||
+			typeof this.previewDemoRequestId === 'undefined'
+		)
+			return;
+
+		const targetWindow = this.getPreviewDemoWindow();
+
+		if (this.previewDemoRequestType === 'animationFrame') {
+			targetWindow?.cancelAnimationFrame?.(this.previewDemoRequestId);
+		} else {
+			const clearTargetTimeout = targetWindow?.clearTimeout || clearTimeout;
+			clearTargetTimeout(this.previewDemoRequestId);
+		}
+
+		this.previewDemoRequestId = null;
+		this.previewDemoRequestType = null;
+	}
+
+	cancelPreviewHoverLeave() {
+		if (
+			this.previewHoverLeaveTimeout === null ||
+			typeof this.previewHoverLeaveTimeout === 'undefined'
+		)
+			return;
+
+		const targetWindow = this.getPreviewDemoWindow();
+		const clearTargetTimeout = targetWindow?.clearTimeout || clearTimeout;
+		clearTargetTimeout(this.previewHoverLeaveTimeout);
+		this.previewHoverLeaveTimeout = null;
+		this.debugPreview('hover-leave:cancelled');
+	}
+
+	schedulePreviewHoverLeave(callback) {
+		this.cancelPreviewHoverLeave();
+
+		const targetWindow = this.getPreviewDemoWindow();
+		const setTargetTimeout = targetWindow?.setTimeout || setTimeout;
+		const delay = this.getPreviewHoverLeaveDelay();
+
+		this.debugPreview('hover-leave:scheduled', {
+			delay,
+			...this.getPreviewHoverEventDetails(),
+		});
+		this.previewHoverLeaveTimeout = setTargetTimeout(() => {
+			this.previewHoverLeaveTimeout = null;
+			callback();
+		}, delay);
+	}
+
+	getPreviewHoverLeaveDelay() {
+		return PREVIEW_HOVER_LEAVE_DEBOUNCE;
+	}
+
+	getEventPointerPosition(event) {
+		if (
+			!Number.isFinite(event?.clientX) ||
+			!Number.isFinite(event?.clientY)
+		)
+			return null;
+
+		return {
+			x: event.clientX,
+			y: event.clientY,
+		};
+	}
+
+	updatePreviewPointerPosition(event) {
+		const pointerPosition = this.getEventPointerPosition(event);
+
+		if (pointerPosition) this.previewPointerPosition = pointerPosition;
+	}
+
+	getElementBounds(element) {
+		const rect = element?.getBoundingClientRect?.();
+
+		if (!rect) return null;
+
+		const left = Number(rect.left);
+		const top = Number(rect.top);
+		const right = Number(rect.right);
+		const bottom = Number(rect.bottom);
+
+		if (
+			!Number.isFinite(left) ||
+			!Number.isFinite(top) ||
+			!Number.isFinite(right) ||
+			!Number.isFinite(bottom)
+		)
+			return null;
+
+		return {
+			left,
+			top,
+			right,
+			bottom,
+			width: Number.isFinite(rect.width) ? rect.width : right - left,
+			height: Number.isFinite(rect.height) ? rect.height : bottom - top,
+		};
+	}
+
+	capturePreviewHoverBounds() {
+		this.previewHoverBounds = this.getElementBounds(this.triggerEl);
+	}
+
+	isPointerInsideBounds(pointer, bounds) {
+		if (!pointer || !bounds) return false;
+
+		return (
+			pointer.x >= bounds.left - PREVIEW_HOVER_BOUNDS_TOLERANCE &&
+			pointer.x <= bounds.right + PREVIEW_HOVER_BOUNDS_TOLERANCE &&
+			pointer.y >= bounds.top - PREVIEW_HOVER_BOUNDS_TOLERANCE &&
+			pointer.y <= bounds.bottom + PREVIEW_HOVER_BOUNDS_TOLERANCE
+		);
+	}
+
+	isPreviewPointerInsideHoverBounds(event) {
+		const pointer =
+			this.getEventPointerPosition(event) || this.previewPointerPosition;
+
+		return this.isPointerInsideBounds(pointer, this.previewHoverBounds);
+	}
+
+	getPreviewHoverEventDetails(event) {
+		const pointer =
+			this.getEventPointerPosition(event) || this.previewPointerPosition;
+		const currentBounds = this.getElementBounds(this.triggerEl);
+		const elementFromPoint = pointer
+			? this.mainDocument?.elementFromPoint?.(pointer.x, pointer.y)
+			: null;
+		const relatedTarget = event?.relatedTarget;
+
+		return {
+			pointer,
+			triggerBounds: currentBounds,
+			blockTargetBounds: this.getElementBounds(this.blockTargetEl),
+			targetBounds: this.getElementBounds(this.targetEl),
+			previewHoverBounds: this.previewHoverBounds,
+			pointerInsideTriggerBounds: this.isPointerInsideBounds(
+				pointer,
+				currentBounds
+			),
+			pointerInsidePreviewHoverBounds:
+				this.isPointerInsideBounds(pointer, this.previewHoverBounds),
+			triggerMatchesHover: !!this.triggerEl?.matches?.(':hover'),
+			targetMatchesHover: !!this.targetEl?.matches?.(':hover'),
+			blockTargetMatchesHover: !!this.blockTargetEl?.matches?.(':hover'),
+			webAnimationPreview: this.supportsWebAnimationPreview(),
+			cssHoverPreview: this.supportsCssHoverPreview(),
+			elementFromPoint: this.getNodeDebugDetails(elementFromPoint),
+			eventTarget: this.getNodeDebugDetails(event?.target),
+			eventCurrentTarget: this.getNodeDebugDetails(event?.currentTarget),
+			relatedTarget: this.getNodeDebugDetails(relatedTarget),
+			triggerComputed: this.getComputedDebugDetails(this.triggerEl),
+			targetComputed: this.getComputedDebugDetails(this.targetEl),
+			blockDataAttr:
+				this.blockTargetEl?.getAttribute?.('data-maxi-relations') ||
+				null,
+		};
+	}
+
+	shouldIgnorePreviewHoverLeave(event) {
+		if (this.triggerEl?.matches?.(':hover')) return true;
+		if (
+			this.isContained &&
+			(this.blockTargetEl?.matches?.(':hover') ||
+				this.targetEl?.matches?.(':hover'))
+		)
+			return true;
+		if (this.isPreviewPointerInsideHoverBounds(event)) return true;
+
+		const relatedTarget = event?.relatedTarget;
+		if (!relatedTarget) return false;
+
+		return (
+			!!this.triggerEl?.contains?.(relatedTarget) ||
+			!!this.targetEl?.contains?.(relatedTarget)
+		);
+	}
+
+	forcePreviewReflow() {
+		const targetDetails = this.getPreviewTargetDetails();
+		let didReflow = false;
+
+		targetDetails.forEach(({ selector }) => {
+			try {
+				this.mainDocument
+					?.querySelectorAll?.(selector)
+					?.forEach(element => {
+						didReflow = true;
+						element?.getBoundingClientRect?.();
+						void element?.offsetHeight;
+						void this.mainWindow
+							?.getComputedStyle?.(element)
+							?.getPropertyValue?.('transition');
+					});
+			} catch (error) {
+				if (error?.name !== 'SyntaxError') throw error;
+			}
+		});
+
+		if (!didReflow) {
+			this.targetEl?.getBoundingClientRect?.();
+			void this.targetEl?.offsetHeight;
+		}
+
+		this.debugPreview('force-reflow', {
+			didReflow,
+			targets: targetDetails,
+		});
+		this.debugPreviewDeep('force-reflow:deep', () =>
+			this.getDeepPreviewDebugDetails('force-reflow', {
+				didReflow,
+				targets: targetDetails,
+			})
+		);
+	}
+
+	removePreviewTransitions() {
+		this.removeTransition(this.inTransitionEl);
+		this.removeTransition(this.outTransitionEl);
+	}
+
+	enableStaticEndState() {
+		this.debugPreview('static-end:start');
+		this.cancelPreviewDemo();
+		this.cancelPreviewHoverLeave();
+		clearTimeout(this.transitionTimeout);
+		this.removePreviewEvents();
+		this.removeRelationSubscriber();
+		this.removePreviewTransitions();
+		this.removePreviewStyles();
+
+		this.addDataAttrToBlock();
+		this.addStyles();
+		this.addRelationSubscriber();
+		this.debugPreview('static-end:applied', {
+			style: this.getStyleDebug(this.stylesEl),
+			targets: this.getPreviewTargetDetails(),
+		});
+	}
+
+	enableStaticStartState() {
+		this.debugPreview('static-start:start');
+		this.cancelPreviewDemo();
+		this.cancelPreviewHoverLeave();
+		clearTimeout(this.transitionTimeout);
+		this.removePreviewEvents();
+		this.removeRelationSubscriber();
+		this.removePreviewTransitions();
+		this.removePreviewStyles();
+
+		this.removeStyles();
+		this.removeAddAttrToBlock();
+		this.debugPreview('static-start:applied', {
+			targets: this.getPreviewTargetDetails(),
+		});
+	}
+
+	enablePreviewInteractions() {
+		this.debugPreview('preview-interactions:start');
+		this.enableStaticStartState();
+		this.addPreviewStyles();
+		this.addPreviewEvents();
+	}
+
+	addPreviewEvents() {
+		this.removePreviewEvents();
+
+		if (!this.triggerEl?.addEventListener) {
+			this.debugPreview('preview-events:missing-trigger', {
+				triggerFound: !!this.triggerEl,
+			});
+			return;
+		}
+
+		switch (this.action) {
+			case 'hover':
+				this.addHoverEvents();
+				break;
+			case 'click':
+			default:
+				this.addClickEvents();
+				break;
+		}
+
+		this.debugPreview('preview-events:attached', {
+			eventType: this.action === 'hover' ? 'hover' : 'click',
+			triggerMatches: this.mainDocument?.querySelectorAll?.(
+				`.${this.trigger}`
+			)?.length,
+		});
+	}
+
+	removePreviewEvents() {
+		this.cancelPreviewHoverLeave();
+
+		if (this.boundOnMouseEnter) {
+			this.triggerEl?.removeEventListener?.(
+				'mouseenter',
+				this.boundOnMouseEnter
+			);
+		}
+		if (this.boundOnMouseLeave) {
+			this.triggerEl?.removeEventListener?.(
+				'mouseleave',
+				this.boundOnMouseLeave
+			);
+		}
+		if (this.boundOnMouseClick) {
+			this.triggerEl?.removeEventListener?.(
+				'click',
+				this.boundOnMouseClick
+			);
+		}
+		if (this.boundOnPreviewPointerMove) {
+			this.mainDocument?.removeEventListener?.(
+				'mousemove',
+				this.boundOnPreviewPointerMove,
+				true
+			);
+		}
+
+		this.previewTransitionTriggerHandlers?.forEach(
+			({ element, onMouseEnter, onMouseLeave }) => {
+				element?.removeEventListener?.('mouseenter', onMouseEnter);
+				element?.removeEventListener?.('mouseleave', onMouseLeave);
+			}
+		);
+
+		this.boundOnMouseEnter = null;
+		this.boundOnMouseLeave = null;
+		this.boundOnMouseClick = null;
+		this.boundOnPreviewPointerMove = null;
+		this.previewHoverBounds = null;
+		this.previewPointerPosition = null;
+		this.previewTransitionTriggerHandlers = [];
+	}
+
+	addHoverEvents() {
+		this.boundOnMouseEnter = this.onMouseEnter.bind(this);
+		this.boundOnMouseLeave = this.onMouseLeave.bind(this);
+		this.boundOnPreviewPointerMove =
+			this.onPreviewPointerMove.bind(this);
+
+		this.triggerEl.addEventListener('mouseenter', this.boundOnMouseEnter);
+		this.triggerEl.addEventListener('mouseleave', this.boundOnMouseLeave);
+		this.mainDocument?.addEventListener?.(
+			'mousemove',
+			this.boundOnPreviewPointerMove,
+			true
+		);
+
+		if (this.supportsCssHoverPreview()) return;
+
+		if (!this.isHoveredContained) return;
+
+		this.previewTransitionTriggerHandlers = [];
+		this.transitionTriggerEls?.forEach(transitionTriggerEl => {
+			const onMouseEnter = () => {
+				this.removeTransition(this.inTransitionEl);
+				clearTimeout(this.contentTimeout);
+			};
+
+			const onMouseLeave = () => {
+				const transitionDuration = Array.from(
+					new Set(this.transitionTargetsArray.flat())
+				)
+					.filter(Boolean)
+					.reduce((promise, transitionTarget) => {
+						const transitionTargetEl =
+							this.mainDocument.querySelector(
+								`${this.dataTarget} ${transitionTarget ?? ''}`
+							);
+
+						const transitionDuration = transitionTargetEl
+							? ['transition-duration', 'transition-delay'].reduce(
+									(sum, prop) =>
+										sum +
+										parseFloat(
+											this.mainWindow
+												.getComputedStyle(
+													transitionTargetEl
+												)
+												.getPropertyValue(prop)
+												.replace('s', '')
+										),
+									0
+							  ) * 1000
+							: 0;
+
+						return Math.max(promise, transitionDuration);
+					}, 0);
+
+				this.contentTimeout = setTimeout(() => {
+					this.addTransition(this.inTransitionEl);
+				}, transitionDuration);
+			};
+
+			transitionTriggerEl?.addEventListener?.(
+				'mouseenter',
+				onMouseEnter
+			);
+			transitionTriggerEl?.addEventListener?.(
+				'mouseleave',
+				onMouseLeave
+			);
+			this.previewTransitionTriggerHandlers.push({
+				element: transitionTriggerEl,
+				onMouseEnter,
+				onMouseLeave,
+			});
+		});
+	}
+
+	addClickEvents() {
+		this.boundOnMouseClick = this.onMouseClick.bind(this);
+		this.triggerEl.addEventListener('click', this.boundOnMouseClick);
+	}
+
+	onPreviewPointerMove(event) {
+		this.updatePreviewPointerPosition(event);
+	}
+
+	onMouseEnter(event) {
+		this.updatePreviewPointerPosition(event);
+		this.capturePreviewHoverBounds();
+		this.debugPreview(
+			'event:hover-enter',
+			this.getPreviewHoverEventDetails(event)
+		);
+		this.debugPreviewDeep('event:hover-enter:deep', () =>
+			this.getDeepPreviewDebugDetails('event:hover-enter', {
+				event: this.getPreviewHoverEventDetails(event),
+			})
+		);
+
+		if (this.supportsWebAnimationPreview()) {
+			this.playPreviewAnimations('in');
+			this.forcePreviewReflow();
+			return;
+		}
+
+		if (this.supportsCssHoverPreview()) {
+			this.forcePreviewReflow();
+			return;
+		}
+
+		this.cancelPreviewHoverLeave();
+		this.enableTransitions();
+	}
+
+	onMouseLeave(event) {
+		this.updatePreviewPointerPosition(event);
+		this.debugPreview(
+			'event:hover-leave',
+			this.getPreviewHoverEventDetails(event)
+		);
+		this.debugPreviewDeep('event:hover-leave:deep', () =>
+			this.getDeepPreviewDebugDetails('event:hover-leave', {
+				event: this.getPreviewHoverEventDetails(event),
+			})
+		);
+
+		if (this.supportsWebAnimationPreview()) {
+			this.playPreviewAnimations('out');
+			this.forcePreviewReflow();
+			return;
+		}
+
+		if (this.supportsCssHoverPreview()) {
+			this.forcePreviewReflow();
+			return;
+		}
+
+		if (this.shouldIgnorePreviewHoverLeave(event)) {
+			this.debugPreview(
+				'hover-leave:ignored-still-hovered',
+				this.getPreviewHoverEventDetails(event)
+			);
+			return;
+		}
+
+		this.schedulePreviewHoverLeave(() => {
+			if (!this.isPreview) return;
+
+			if (this.shouldIgnorePreviewHoverLeave()) {
+				this.debugPreview(
+					'hover-leave:ignored-still-hovered',
+					this.getPreviewHoverEventDetails()
+				);
+				return;
+			}
+
+			this.addPreviewTransition('out');
+			this.debugPreview('hover-leave:out-transition-added', {
+				transition: this.getStyleDebug(this.previewOutTransitionEl),
+				targets: this.getPreviewTargetDetails(),
+			});
+			this.forcePreviewReflow();
+
+			this.removeRelationSubscriber();
+			this.removeAddAttrToBlock();
+			this.debugPreview('hover-leave:styles-removed', {
+				targets: this.getPreviewTargetDetails(),
+			});
+		});
+	}
+
+	addClickEffects() {
+		if (this.supportsWebAnimationPreview()) {
+			this.playPreviewAnimations('in');
+			this.forcePreviewReflow();
+			return;
+		}
+
+		if (this.transitionTimeout) this.addPreviewTransition('in');
+		clearTimeout(this.transitionTimeout);
+
+		this.addPreviewTransition('in');
+		this.debugPreview('click:in-transition-added', {
+			transition: this.getStyleDebug(this.previewInTransitionEl),
+			targets: this.getPreviewTargetDetails(),
+		});
+
+		this.forcePreviewReflow();
+		this.addDataAttrToBlock();
+		this.debugPreview('click:styles-applied', {
+			style: this.getStyleDebug(this.previewStylesEl),
+			targets: this.getPreviewTargetDetails(),
+		});
+	}
+
+	onMouseClick() {
+		this.debugPreview('event:click');
+		this.debugPreviewDeep('event:click:deep', () =>
+			this.getDeepPreviewDebugDetails('event:click')
+		);
+		this.addClickEffects();
 	}
 
 	/**
@@ -937,6 +2453,11 @@ class Relation {
 		element?.remove();
 	}
 
+	// eslint-disable-next-line class-methods-use-this
+	isEmptyDefaultTransition(defaultTransition) {
+		return /^none(?:\s|$)/.test((defaultTransition || '').trim());
+	}
+
 	getTransitionString(styleObj, effectsObj, isIcon) {
 		const {
 			'transition-status': status,
@@ -958,7 +2479,7 @@ class Relation {
 			  );
 
 		if (
-			this.defaultTransition !== 'none 0s ease 0s' &&
+			!this.isEmptyDefaultTransition(this.defaultTransition) &&
 			!transitionString.includes(this.defaultTransition)
 		) {
 			return `${this.defaultTransition}, ${transitionString}`;
@@ -1000,26 +2521,36 @@ class Relation {
 	}
 
 	enableTransitions() {
+		this.debugPreview('hover-enter:start');
 		// console.log('IB is active'); // 🔥
-		if (this.transitionTimeout) this.removeTransition(this.outTransitionEl);
+		if (this.transitionTimeout) this.addPreviewTransition('in');
 		clearTimeout(this.transitionTimeout);
 
-		this.addRelationSubscriber();
-
+		this.addPreviewTransition('in');
+		this.debugPreview('hover-enter:in-transition-added', {
+			transition: this.getStyleDebug(this.previewInTransitionEl),
+			targets: this.getPreviewTargetDetails(),
+		});
+		this.forcePreviewReflow();
 		this.addDataAttrToBlock();
-		this.addTransition(this.inTransitionEl);
-		this.addStyles();
+		this.addRelationSubscriber();
+		this.debugPreview('hover-enter:styles-applied', {
+			style: this.getStyleDebug(this.previewStylesEl),
+			targets: this.getPreviewTargetDetails(),
+		});
 	}
 
 	disableTransitions() {
+		this.cancelPreviewDemo();
 		// console.log('IB is inactive'); // 🔥
-		this.removeTransition(this.inTransitionEl);
-		this.addTransition(this.outTransitionEl);
+		this.addPreviewTransition('out');
 
-		this.removeStyles();
+		this.removeAddAttrToBlock();
 	}
 
 	removePreviousStylesAndTransitions() {
+		this.enableStaticStartState();
+
 		// IDs for the styles and transitions elements
 		const previousStylesElId = `relations--${this.uniqueID}-${this.id}-styles`;
 		const previousInTransitionsElId = `relations--${this.uniqueID}-${this.id}-in-transitions`;
@@ -1038,9 +2569,14 @@ class Relation {
 		};
 
 		// Remove the previous styles and transitions elements
-		removeElementsById(previousStylesElId);
-		removeElementsById(previousInTransitionsElId);
-		removeElementsById(previousOutTransitionsElId);
+		[
+			previousStylesElId,
+			previousInTransitionsElId,
+			previousOutTransitionsElId,
+		].forEach(elementId => {
+			removeElementsById(elementId);
+			removeElementsById(`${elementId}-preview`);
+		});
 	}
 }
 

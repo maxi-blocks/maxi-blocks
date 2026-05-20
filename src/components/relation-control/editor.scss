@@ -174,6 +174,75 @@
 		display: none; /* Using background SVG arrow instead */
 	}
 
+	&__selected {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		padding: 0 8px 9px;
+	}
+
+	&__selected-item {
+		display: inline-flex;
+		align-items: center;
+		max-width: 100%;
+		min-height: 24px;
+		padding: 3px 4px 3px 8px;
+		background: var(--maxi-whisper-green);
+		border: 1px solid var(--maxi-light-green);
+		border-radius: 5px;
+		color: var(--maxi-grey-dark);
+		font-size: 11px;
+		line-height: 14px;
+	}
+
+	&__selected-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&__selected-remove {
+		position: relative;
+		display: block;
+		width: 16px;
+		height: 16px;
+		min-width: 16px;
+		margin: 0 0 0 5px;
+		padding: 0;
+		background-color: var(--maxi-golden-orange);
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+		font-size: 0;
+		transition: background-color 0.2s ease;
+
+		&:hover,
+		&:focus {
+			background-color: var(--maxi-orange-red) !important;
+		}
+
+		&:focus {
+			outline: 1px solid var(--maxi-secondary-color);
+			outline-offset: 2px;
+		}
+
+		&::after,
+		&::before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 11px;
+			height: 2px;
+			background-color: var(--maxi-white);
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
+
+		&::after {
+			transform: translate(-50%, -50%) rotate(135deg);
+		}
+	}
+
 	&__dropdown {
 		position: absolute;
 		top: 100%;
@@ -218,6 +287,9 @@
 	}
 
 	&__option {
+		display: flex;
+		align-items: center;
+		gap: 8px;
 		padding: 8px 12px;
 		cursor: pointer;
 		font-size: 12px;
@@ -240,6 +312,36 @@
 			outline: 2px solid var(--maxi-light-green);
 			outline-offset: -2px;
 		}
+	}
+
+	&__option-check {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 14px;
+		min-width: 14px;
+		height: 14px;
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 3px;
+		box-sizing: border-box;
+	}
+
+	&__option--selected &__option-check {
+		background: var(--maxi-light-green);
+		border-color: var(--maxi-light-green);
+		color: var(--maxi-white);
+
+		&::before {
+			content: '\2713';
+			font-size: 10px;
+			line-height: 1;
+		}
+	}
+
+	&__option-label {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	&__no-results {

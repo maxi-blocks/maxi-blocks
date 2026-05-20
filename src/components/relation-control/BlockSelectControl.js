@@ -9,7 +9,7 @@ import {
 	useMemo,
 	useId,
 } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * External dependencies
@@ -32,6 +32,7 @@ const BlockSelectControl = ({
 	onOptionHover,
 	className,
 	newStyle = false,
+	multiple = false,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -47,14 +48,28 @@ const BlockSelectControl = ({
 	const triggerId = `${instanceId}-trigger`;
 	const listboxId = `${instanceId}-listbox`;
 
+	const selectedValues = useMemo(() => {
+		if (multiple) {
+			if (Array.isArray(value)) return value.filter(Boolean);
+			return value ? [value] : [];
+		}
+
+		return value ? [value] : [];
+	}, [multiple, value]);
+
+	const selectableOptions = useMemo(
+		() => (multiple ? options.filter(option => option.value) : options),
+		[multiple, options]
+	);
+
 	const filteredOptions = useMemo(
 		() =>
-			options.filter(option =>
+			selectableOptions.filter(option =>
 				String(option.label)
 					.toLowerCase()
 					.includes(searchQuery.toLowerCase())
 			),
-		[options, searchQuery]
+		[selectableOptions, searchQuery]
 	);
 
 	const clearHover = useCallback(() => {
@@ -91,23 +106,23 @@ const BlockSelectControl = ({
 			}
 			// Set initial active index to selected option or first option
 			const selectedIdx = filteredOptions.findIndex(
-				opt => opt.value === value
+				opt => selectedValues.includes(opt.value)
 			);
 			setActiveIndex(selectedIdx >= 0 ? selectedIdx : 0);
 		}
-	}, [isOpen, filteredOptions, value]);
+	}, [isOpen, filteredOptions, selectedValues]);
 
 	// Update active index when search changes
 	useEffect(() => {
 		if (isOpen && filteredOptions.length > 0) {
 			const selectedIdx = filteredOptions.findIndex(
-				opt => opt.value === value
+				opt => selectedValues.includes(opt.value)
 			);
 			setActiveIndex(selectedIdx >= 0 ? selectedIdx : 0);
 		} else if (filteredOptions.length === 0) {
 			setActiveIndex(-1);
 		}
-	}, [isOpen, filteredOptions, value]);
+	}, [isOpen, filteredOptions, selectedValues]);
 
 	useEffect(() => {
 		if (!isOpen) return;
@@ -123,8 +138,18 @@ const BlockSelectControl = ({
 	}, [filteredOptions, isOpen, clearHover]);
 
 	const selectedOption = options.find(opt => opt.value === value);
-	const displayLabel =
-		selectedOption?.label || __('Select block…', 'maxi-blocks');
+	const selectedOptions = options.filter(option =>
+		selectedValues.includes(option.value)
+	);
+	const displayLabel = multiple
+		? selectedOptions.length
+			? `${selectedOptions.length} ${
+					selectedOptions.length === 1
+						? __('block selected', 'maxi-blocks')
+						: __('blocks selected', 'maxi-blocks')
+			  }`
+			: __('Add blocks...', 'maxi-blocks')
+		: selectedOption?.label || __('Select block…', 'maxi-blocks');
 
 	const classes = classnames(
 		'maxi-block-select-control',
@@ -158,10 +183,29 @@ const BlockSelectControl = ({
 	const handleSelect = useCallback(
 		optionValue => {
 			clearHover();
+			if (multiple) {
+				const nextValue = selectedValues.includes(optionValue)
+					? selectedValues.filter(item => item !== optionValue)
+					: [...selectedValues, optionValue];
+
+				onChange(nextValue);
+				handleClose();
+				return;
+			}
+
 			onChange(optionValue);
 			handleClose();
 		},
-		[onChange, handleClose, clearHover]
+		[onChange, handleClose, clearHover, multiple, selectedValues]
+	);
+
+	const handleRemoveSelected = useCallback(
+		optionValue => {
+			clearHover();
+			if (onOptionHover) onOptionHover(optionValue, false);
+			onChange(selectedValues.filter(item => item !== optionValue));
+		},
+		[clearHover, onChange, onOptionHover, selectedValues]
 	);
 
 	// Keyboard handler for the trigger button
@@ -265,6 +309,7 @@ const BlockSelectControl = ({
 	const getOptionId = index => `${instanceId}-option-${index}`;
 	const activeDescendant =
 		activeIndex >= 0 ? getOptionId(activeIndex) : undefined;
+	const isSelected = optionValue => selectedValues.includes(optionValue);
 
 	return (
 		<BaseControl label={label} className={classes}>
@@ -290,6 +335,48 @@ const BlockSelectControl = ({
 						▾
 					</span>
 				</button>
+				{multiple && selectedOptions.length > 0 && (
+					<div className='maxi-block-select-control__selected'>
+						{selectedOptions.map(option => (
+							<span
+								key={option.value}
+								className='maxi-block-select-control__selected-item'
+								onMouseEnter={() =>
+									onOptionHover?.(option.value, true)
+								}
+								onMouseLeave={() =>
+									onOptionHover?.(option.value, false)
+								}
+							>
+								<span className='maxi-block-select-control__selected-label'>
+									{option.label}
+								</span>
+								<button
+									type='button'
+									className='maxi-block-select-control__selected-remove'
+									title={__('Remove target', 'maxi-blocks')}
+									aria-label={sprintf(
+										__(
+											'Remove %s',
+											'maxi-blocks'
+										),
+										option.label
+									)}
+									onMouseDown={event => {
+										event.preventDefault();
+										event.stopPropagation();
+									}}
+									onClick={event => {
+										event.stopPropagation();
+										handleRemoveSelected(option.value);
+									}}
+								>
+									x
+								</button>
+							</span>
+						))}
+					</div>
+				)}
 				{isOpen && (
 					<div className='maxi-block-select-control__dropdown'>
 						<div className='maxi-block-select-control__search'>
@@ -319,6 +406,7 @@ const BlockSelectControl = ({
 							className='maxi-block-select-control__options'
 							role='listbox'
 							aria-label={label}
+							aria-multiselectable={multiple || undefined}
 							onMouseLeave={clearHover}
 						>
 							{filteredOptions.length > 0 ? (
@@ -330,12 +418,14 @@ const BlockSelectControl = ({
 										id={getOptionId(index)}
 										value={option.value}
 										role='option'
-										aria-selected={option.value === value}
+										aria-selected={isSelected(
+											option.value
+										)}
 										className={classnames(
 											'maxi-block-select-control__option',
 											{
 												'maxi-block-select-control__option--selected':
-													option.value === value,
+													isSelected(option.value),
 												'maxi-block-select-control__option--active':
 													index === activeIndex,
 											}
@@ -380,7 +470,13 @@ const BlockSelectControl = ({
 											handleSelect(option.value)
 										}
 									>
-										{option.label}
+										<span
+											className='maxi-block-select-control__option-check'
+											aria-hidden='true'
+										/>
+										<span className='maxi-block-select-control__option-label'>
+											{option.label}
+										</span>
 									</li>
 								))
 							) : (

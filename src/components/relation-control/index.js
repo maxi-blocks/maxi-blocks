@@ -27,7 +27,20 @@ import { getSelectedIBSettings } from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
 import getHoverStatus from '@extensions/relations/getHoverStatus';
+import {
+	debugPreview as debugRelationPreview,
+} from '@extensions/relations/debugPreview';
 import SettingTabsIndicatorContext from '@extensions/indicators/context';
+import {
+	createEmptyRelation,
+	getCommonIBSettings,
+	getRelationId,
+	getRelationStaticStateUpdate,
+	groupRelations,
+	removeRelationGroup,
+	syncRelationGroupTargets,
+	updateRelationsInGroup,
+} from './utils';
 
 /**
  * External dependencies
@@ -83,6 +96,7 @@ const RelationControl = props => {
 		);
 		return filtered;
 	}, [rawRelations]);
+	const relationGroups = useMemo(() => groupRelations(relations), [relations]);
 
 	const blockDataByClientId = useSelect(
 		selectFn => {
@@ -195,37 +209,182 @@ const RelationControl = props => {
 		}
 	}, [relations]);
 
-	const getRelationId = rels =>
-		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;
+	const getBlockDataForClientId = clientId => {
+		if (!clientId) return null;
 
-	const onChangeRelation = (rels, id, obj) => {
-		const newRels = cloneDeep(rels).map(r =>
-			r.id === id ? { ...r, ...obj } : r
+		const cachedBlockData = blockDataByClientId.get(clientId);
+		if (cachedBlockData) return cachedBlockData;
+
+		const block = select('core/block-editor').getBlock(clientId);
+		if (!block) return null;
+
+		return {
+			attributes: block.attributes,
+			name: block.name,
+		};
+	};
+
+	const getGroupOptions = relationGroup => {
+		const optionsList = relationGroup.uniqueIDs
+			.map(uid => getClientIdFromUniqueId(uid))
+			.map(clientId => getIBOptionsFromBlockData(clientId))
+			.filter(options => options && Object.keys(options).length);
+
+		return getCommonIBSettings(optionsList);
+	};
+
+	const isSidAvailableForGroup = (sid, relationGroup, uniqueIDs) => {
+		if (!sid) return true;
+
+		const groupToCheck = {
+			...relationGroup,
+			uniqueIDs,
+		};
+		const commonOptions = getGroupOptions(groupToCheck);
+
+		return Object.values(commonOptions)
+			.flat()
+			.some(option => option.sid === sid);
+	};
+
+	const normalizeRelationForTarget = relation => {
+		if (!relation.uniqueID) return relation;
+		if (!relation.sid) {
+			return {
+				...relation,
+				target: '',
+				attributes: {},
+				css: {},
+			};
+		}
+
+		const targetClientId = getClientIdFromUniqueId(relation.uniqueID);
+		const blockData = getBlockDataForClientId(targetClientId);
+		const blockAttributes = blockData?.attributes;
+		const selectedSettings = getSelectedIBSettings(
+			targetClientId,
+			relation.sid
 		);
-		onChange({ relations: newRels });
+
+		if (!targetClientId || !blockAttributes || !selectedSettings) {
+			return {
+				...relation,
+				sid: '',
+				target: '',
+				attributes: {},
+				css: {},
+			};
+		}
+
+		const prefix = selectedSettings?.prefix || '';
+		const { cleanAttributesObject, tempAttributes } =
+			getCleanResponseIBAttributes(
+				relation.attributes || {},
+				blockAttributes,
+				relation.uniqueID,
+				selectedSettings,
+				deviceType,
+				prefix,
+				relation.sid,
+				targetClientId
+			);
+		const mergedAttributes = merge(
+			{},
+			cleanAttributesObject,
+			tempAttributes
+		);
+		const stylesObj = getIBStylesObj({
+			clientId: targetClientId,
+			sid: relation.sid,
+			attributes: mergedAttributes,
+			blockAttributes,
+			breakpoint: deviceType,
+		});
+		const styles = getIBStyles({
+			stylesObj,
+			blockAttributes,
+			isFirst: true,
+		});
+
+		if (styles.xxl?.styles?.border === 'none') {
+			delete styles.xxl.styles.border;
+			if (Object.keys(styles.xxl.styles).length === 0) {
+				delete styles.xxl;
+			}
+		}
+
+		const newAttributes = omitBy(
+			{
+				...relation.attributes,
+				...cleanAttributesObject,
+			},
+			isNil
+		);
+
+		Object.keys(newAttributes).forEach(key => {
+			if (key.includes('-unit-') && newAttributes[key] === '') {
+				newAttributes[key] = 'px';
+			}
+		});
+
+		return {
+			...relation,
+			target: selectedSettings?.target || '',
+			attributes: newAttributes,
+			css: styles,
+		};
+	};
+
+	const onChangeRelationGroup = (relationGroup, updates) => {
+		const newRelations = updateRelationsInGroup(
+			relations,
+			relationGroup,
+			updates
+		);
+		onChange({ relations: newRelations });
+	};
+
+	const onChangeRelationStaticState = (relationGroup, state) => {
+		markNextChangeAsNotPersistent();
+		onChange(
+			getRelationStaticStateUpdate({
+				relationGroup,
+				state,
+				isPreviewActive: !!props['relations-preview'],
+			})
+		);
 	};
 
 	/**
 	 * FIX: Proper Deletion Logic
 	 * Ensures the filtered array is passed to onChange and resets preview if empty
 	 */
-	const onRemoveRelation = id => {
-		const removedRelation = relations.find(relation => relation.id === id);
-		if (removedRelation?.uniqueID) {
-			handleHighlight(removedRelation.uniqueID, false);
-		}
+	const onRemoveRelationGroup = relationGroup => {
+		relationGroup.uniqueIDs.forEach(uid => handleHighlight(uid, false));
 
 		// 1. Create a clean filtered array
-		const newRelations = relations.filter(relation => relation.id !== id);
+		const newRelations = removeRelationGroup(relations, relationGroup);
 
 		// 2. Prepare the update object
 		const updateObj = {
 			relations: newRelations,
 		};
+		const activeRelationIds = new Set(
+			(props['relations-preview-relation-ids'] || []).map(String)
+		);
+		const removesActiveStaticState = relationGroup.relationIds.some(id =>
+			activeRelationIds.has(String(id))
+		);
 
 		// 3. If no interactions left, kill the preview mode
 		if (newRelations.length === 0) {
 			updateObj['relations-preview'] = false;
+		}
+
+		if (removesActiveStaticState) {
+			updateObj['relations-preview'] = false;
+			updateObj['relations-preview-state'] = 'start';
+			updateObj['relations-preview-relation-ids'] = [];
 		}
 
 		// 4. Dispatch the change
@@ -254,15 +413,17 @@ const RelationControl = props => {
 	 * FIX: Deep Equality Sync
 	 * Uses isEqual for nested object comparison to prevent false positives
 	 */
-	const displayBeforeSetting = item => {
+	const displayBeforeSetting = relationGroup => {
+		const item =
+			relationGroup.relations.find(relation => relation.uniqueID) ||
+			relationGroup.item;
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-		if (!targetClientId || !blockDataByClientId.has(targetClientId))
-			return null;
+		const blockData = getBlockDataForClientId(targetClientId);
+		if (!targetClientId || !blockData) return null;
 		const selectedSettings = getSelectedIBSettings(
 			targetClientId,
 			item.sid
 		);
-		const blockData = blockDataByClientId.get(targetClientId);
 		const currentActualAttributes = blockData?.attributes;
 
 		if (!selectedSettings || !currentActualAttributes) return null;
@@ -294,45 +455,68 @@ const RelationControl = props => {
 							selectedSettings?.prefix || ''
 						),
 						attributes: attributesWithId,
-					blockAttributes: currentActualAttributes,
-					onChange: async newValues => {
-						if (isUpdating.current) {
-							return;
-						}
-
-						const { isReset, meta, ...cleanValues } =
-							newValues || {};
-
-						// USE DEEP EQUALITY: Prevents false positives with nested objects
-						const hasChanged = Object.keys(cleanValues).some(
-							key =>
-								!isEqual(
-									cleanValues[key],
-									currentActualAttributes[key]
-								)
-						);
-
-						if (hasChanged) {
-							try {
-								isUpdating.current = true;
-								await Promise.resolve(
-									updateBlockAttributes(
-										targetClientId,
-										cleanValues
-									)
-								);
-							} catch (error) {
-								// eslint-disable-next-line no-console
-								console.error(
-									'Failed to update relation block attributes:',
-									error
-								);
-							} finally {
-								// Release lock after async work completes
-								isUpdating.current = false;
+						blockAttributes: currentActualAttributes,
+						onChange: async newValues => {
+							if (isUpdating.current) {
+								return;
 							}
-						}
-					},
+
+							const { isReset, meta, ...cleanValues } =
+								newValues || {};
+
+							const targetUpdates = relationGroup.uniqueIDs
+								.map(uid => {
+									const clientId =
+										getClientIdFromUniqueId(uid);
+									const targetBlockData =
+										getBlockDataForClientId(clientId);
+									const attributes =
+										targetBlockData?.attributes;
+
+									if (!clientId || !attributes) return null;
+
+									const hasChanged = Object.keys(
+										cleanValues
+									).some(
+										key =>
+											!isEqual(
+												cleanValues[key],
+												attributes[key]
+											)
+									);
+
+									return hasChanged
+										? { clientId, cleanValues }
+										: null;
+								})
+								.filter(Boolean);
+
+							if (targetUpdates.length) {
+								try {
+									isUpdating.current = true;
+									await Promise.all(
+										targetUpdates.map(
+											({ clientId, cleanValues }) =>
+												Promise.resolve(
+													updateBlockAttributes(
+														clientId,
+														cleanValues
+													)
+												)
+										)
+									);
+								} catch (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'Failed to update relation block attributes:',
+										error
+									);
+								} finally {
+									// Release lock after async work completes
+									isUpdating.current = false;
+								}
+							}
+						},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,
@@ -343,34 +527,34 @@ const RelationControl = props => {
 	};
 
 	const onAddRelation = () => {
+		const id = getRelationId(relations);
+
 		onChange({
 			relations: [
 				...relations,
 				{
-					id: getRelationId(relations),
-					title: '',
-					uniqueID: '',
-					target: '',
-					action: '',
-					sid: '',
-					attributes: {},
-					css: {},
+					...createEmptyRelation({
+						id,
+						groupId: `relation-group-${id}`,
+						isButton,
+					}),
 					effects: createTransitionObj(),
-					isButton,
 				},
 			],
 		});
 	};
 
-	const displaySelectedSetting = item => {
+	const displaySelectedSetting = relationGroup => {
+		const item =
+			relationGroup.relations.find(relation => relation.uniqueID) ||
+			relationGroup.item;
 		const targetClientId = getClientIdFromUniqueId(item.uniqueID);
-		if (!targetClientId || !blockDataByClientId.has(targetClientId))
-			return null;
+		const blockData = getBlockDataForClientId(targetClientId);
+		if (!targetClientId || !blockData) return null;
 		const selectedSettings = getSelectedIBSettings(
 			targetClientId,
 			item.sid
 		);
-		const blockData = blockDataByClientId.get(targetClientId);
 		const blockAttributes = blockData?.attributes;
 
 		if (!selectedSettings || !blockAttributes) return null;
@@ -424,74 +608,23 @@ const RelationControl = props => {
 						attributes: attributesWithId,
 						blockAttributes: blockAttributesWithId,
 						onChange: obj => {
-							const newAttributesObj = {
-								...item.attributes,
-								...obj,
-								...transformGeneralAttributesToBaseBreakpoint(
-									obj
-								),
-							};
-
-							const { cleanAttributesObject, tempAttributes } =
-								getCleanResponseIBAttributes(
-									newAttributesObj,
-									blockAttributes,
-									item.uniqueID,
-									selectedSettings,
-									deviceType,
-									selectedSettings?.prefix || '',
-									item.sid,
-									targetClientId
-								);
-
-							const mergedAttributes = merge(
-								{},
-								cleanAttributesObject,
-								tempAttributes
-							);
-							const stylesObj = getIBStylesObj({
-								clientId: targetClientId,
-								sid: item.sid,
-								attributes: mergedAttributes,
-								blockAttributes,
-								breakpoint: deviceType,
-							});
-							const styles = getIBStyles({
-								stylesObj,
-								blockAttributes,
-								isFirst: true,
-							});
-							// Remove empty/default border styles from XXL
-							if (styles.xxl?.styles?.border === 'none') {
-								delete styles.xxl.styles.border;
-								if (
-									Object.keys(styles.xxl.styles).length === 0
-								) {
-									delete styles.xxl;
-								}
-							}
-							const newAttributes = omitBy(
-								{
-									...item.attributes,
-									...cleanAttributesObject,
-								},
-								isNil
+							const newRelations = updateRelationsInGroup(
+								relations,
+								relationGroup,
+								relation =>
+									normalizeRelationForTarget({
+										...relation,
+										attributes: {
+											...relation.attributes,
+											...obj,
+											...transformGeneralAttributesToBaseBreakpoint(
+												obj
+											),
+										},
+									})
 							);
 
-							// Convert empty string units to "px" for explicit representation
-							Object.keys(newAttributes).forEach(key => {
-								if (
-									key.includes('-unit-') &&
-									newAttributes[key] === ''
-								) {
-									newAttributes[key] = 'px';
-								}
-							});
-
-							onChangeRelation(relations, item.id, {
-								attributes: newAttributes,
-								css: styles,
-							});
+							onChange({ relations: newRelations });
 						},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
@@ -500,6 +633,83 @@ const RelationControl = props => {
 				</div>
 			</SettingTabsIndicatorContext.Provider>
 		);
+	};
+
+	const getRelationGroupItem = relationGroup =>
+		relationGroup.relations.find(relation => relation.uniqueID) ||
+		relationGroup.item;
+
+	const onChangeRelationGroupTargets = (relationGroup, uniqueIDs) => {
+		const item = getRelationGroupItem(relationGroup);
+		const selectedUniqueIDs = Array.isArray(uniqueIDs)
+			? uniqueIDs
+			: [uniqueIDs].filter(Boolean);
+		const keepSid = isSidAvailableForGroup(
+			item.sid,
+			relationGroup,
+			selectedUniqueIDs
+		);
+		const sid = keepSid ? item.sid : '';
+
+		const newRelations = syncRelationGroupTargets({
+			relations,
+			relationGroup,
+			uniqueIDs: selectedUniqueIDs,
+			isButton,
+			normalizeRelation: relation =>
+				normalizeRelationForTarget({
+					...relation,
+					sid,
+					target: sid ? relation.target : '',
+					attributes: sid ? relation.attributes : {},
+					css: sid ? relation.css : {},
+					effects: sid ? relation.effects : createTransitionObj(),
+				}),
+		});
+
+		onChange({ relations: newRelations });
+	};
+
+	const onChangeRelationGroupSettings = (relationGroup, sid) => {
+		const newRelations = updateRelationsInGroup(
+			relations,
+			relationGroup,
+			relation => {
+				const targetClientId = getClientIdFromUniqueId(
+					relation.uniqueID
+				);
+				const selectedSettings = getSelectedIBSettings(
+					targetClientId,
+					sid
+				);
+				const { transitionTarget, transitionTrigger, hoverProp } =
+					selectedSettings || {};
+				const blockData = getBlockDataForClientId(targetClientId);
+				const hoverStatus =
+					hoverProp &&
+					getHoverStatus(
+						hoverProp,
+						blockData?.attributes || {},
+						relation.attributes
+					);
+
+				return normalizeRelationForTarget({
+					...relation,
+					sid,
+					target: selectedSettings?.target || '',
+					effects: {
+						...relation.effects,
+						transitionTarget,
+						transitionTrigger,
+						hoverStatus: !!hoverStatus,
+						disableTransition:
+							!!selectedSettings?.disableTransition,
+					},
+				});
+			}
+		);
+
+		onChange({ relations: newRelations });
 	};
 
 	// Helper for select options
@@ -547,6 +757,14 @@ const RelationControl = props => {
 					label={__('Preview all interactions', 'maxi-blocks')}
 					selected={props['relations-preview']}
 					onChange={value => {
+						debugRelationPreview('relation-control:preview-toggle', {
+							value,
+							relationCount: relations.length,
+							groupCount: relationGroups.length,
+							selectedState: props['relations-preview-state'],
+							selectedRelationIds:
+								props['relations-preview-relation-ids'],
+						});
 						markNextChangeAsNotPersistent();
 						onChange({ 'relations-preview': value });
 					}}
@@ -562,35 +780,44 @@ const RelationControl = props => {
 
 			{!isEmpty(relations) && (
 				<ListControl>
-					{relations.map(item => (
+					{relationGroups.map(relationGroup => {
+						const item = getRelationGroupItem(relationGroup);
+						const groupOptions = getGroupOptions(relationGroup);
+						const selectedUniqueIDs = relationGroup.uniqueIDs;
+						const relationGroupTitle =
+							relationGroup.title || item.title;
+
+						return (
 						<ListItemControl
-							key={item.id}
-							id={item.id}
+							key={relationGroup.id}
+							id={relationGroup.id}
 							title={
-								item.title ||
+								relationGroupTitle ||
 								__('Untitled interaction', 'maxi-blocks')
 							}
 							onMouseEnter={() => {
-								hoveredUniqueIdRef.current = item.uniqueID;
-								handleHighlight(item.uniqueID, true);
+								relationGroup.uniqueIDs.forEach(uid =>
+									handleHighlight(uid, true)
+								);
 							}}
 							onMouseLeave={() => {
 								hoveredUniqueIdRef.current = null;
-								handleHighlight(item.uniqueID, false);
+								relationGroup.uniqueIDs.forEach(uid =>
+									handleHighlight(uid, false)
+								);
 							}}
 							content={
 								<div className='maxi-relation-control__item__content'>
 									<TextControl
 										label={__('Name', 'maxi-blocks')}
-										value={item.title}
+										value={relationGroupTitle}
 										placeholder={__(
 											'Give memorable name…',
 											'maxi-blocks'
 										)}
 										onChange={v =>
-											onChangeRelation(
-												relations,
-												item.id,
+											onChangeRelationGroup(
+												relationGroup,
 												{
 													title: v,
 												}
@@ -599,10 +826,11 @@ const RelationControl = props => {
 									/>
 									<BlockSelectControl
 										label={__(
-											'Block to affect',
+											'Blocks to affect',
 											'maxi-blocks'
 										)}
-										value={item.uniqueID}
+										value={selectedUniqueIDs}
+										multiple
 										options={[
 											{
 												label: __(
@@ -615,12 +843,9 @@ const RelationControl = props => {
 										]}
 										onOptionHover={handleHighlight}
 										onChange={v =>
-											onChangeRelation(
-												relations,
-												item.id,
-												{
-													uniqueID: v,
-												}
+											onChangeRelationGroupTargets(
+												relationGroup,
+												v
 											)
 										}
 									/>
@@ -651,16 +876,15 @@ const RelationControl = props => {
 											},
 										]}
 										onChange={v =>
-											onChangeRelation(
-												relations,
-												item.id,
+											onChangeRelationGroup(
+												relationGroup,
 												{
 													action: v,
 												}
 											)
 										}
 									/>
-									{item.uniqueID && (
+									{!isEmpty(selectedUniqueIDs) && (
 										<SelectControl
 											label={__(
 												'Settings',
@@ -668,66 +892,36 @@ const RelationControl = props => {
 											)}
 											value={item.sid}
 											options={getParsedOptions(
-												getIBOptionsFromBlockData(
-													getClientIdFromUniqueId(
-														item.uniqueID
-													)
-												)
+												groupOptions
 											)}
-											onChange={v => {
-												const targetClientId =
-													getClientIdFromUniqueId(
-														item.uniqueID
-													);
-												const selectedSettings =
-													getSelectedIBSettings(
-														targetClientId,
-														v
-													);
-												const {
-													transitionTarget,
-													transitionTrigger,
-													hoverProp,
-												} = selectedSettings || {};
-												const blockData =
-													blockDataByClientId.get(
-														targetClientId
-													);
-												const hoverStatus =
-													hoverProp &&
-													getHoverStatus(
-														hoverProp,
-														blockData?.attributes ||
-															{},
-														item.attributes
-													);
-												onChangeRelation(
-													relations,
-													item.id,
-													{
-														sid: v,
-														target:
-															selectedSettings?.target ||
-															'',
-														effects: {
-															...item.effects,
-															transitionTarget,
-															transitionTrigger,
-															hoverStatus:
-																!!hoverStatus,
-															disableTransition:
-																!!selectedSettings?.disableTransition,
-														},
-													}
-												);
-											}}
+											onChange={v =>
+												onChangeRelationGroupSettings(
+													relationGroup,
+													v
+												)
+											}
 										/>
 									)}
-									{item.uniqueID && item.sid && (
+									{!isEmpty(selectedUniqueIDs) && item.sid && (
 										<SettingTabsControl
-											depth={`interaction-${item.id}`}
+											depth={`interaction-${relationGroup.id}`}
 											deviceType={deviceType}
 											className='maxi-relation-control__interaction-tabs'
+											callback={(...args) => {
+												const tabIndex = args[1];
+												if (tabIndex === 0) {
+													onChangeRelationStaticState(
+														relationGroup,
+														'start'
+													);
+												}
+												if (tabIndex === 1) {
+													onChangeRelationStaticState(
+														relationGroup,
+														'end'
+													);
+												}
+											}}
 											items={[
 												{
 													label: __(
@@ -736,7 +930,7 @@ const RelationControl = props => {
 													),
 													content:
 														displayBeforeSetting(
-															item
+															relationGroup
 														),
 												},
 												{
@@ -746,7 +940,7 @@ const RelationControl = props => {
 													),
 													content:
 														displaySelectedSetting(
-															item
+															relationGroup
 														),
 												},
 												{
@@ -766,16 +960,15 @@ const RelationControl = props => {
 																getDefaultTransitionAttribute
 															}
 															onChange={obj =>
-																onChangeRelation(
-																	relations,
-																	item.id,
-																	{
+																onChangeRelationGroup(
+																	relationGroup,
+																	relation => ({
 																		effects:
 																			{
-																				...item.effects,
+																				...relation.effects,
 																				...obj,
 																			},
-																	}
+																	})
 																)
 															}
 														/>
@@ -786,9 +979,12 @@ const RelationControl = props => {
 									)}
 								</div>
 							}
-							onRemove={() => onRemoveRelation(item.id)}
+							onRemove={() =>
+								onRemoveRelationGroup(relationGroup)
+							}
 						/>
-					))}
+						);
+					})}
 				</ListControl>
 			)}
 		</div>

@@ -73,6 +73,18 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	handleCaptionFocus = () => {
+		this.setState({
+			captionRichTextActive: true,
+		});
+	};
+
+	handleCaptionBlur = () => {
+		this.setState({
+			captionRichTextActive: false,
+		});
+	};
+
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
@@ -475,16 +487,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
-										onFocus={() =>
-											this.setState({
-												captionRichTextActive: true,
-											})
-										}
-										onBlur={() =>
-											this.setState({
-												captionRichTextActive: false,
-											})
-										}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(
@@ -571,16 +575,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
-										onFocus={() =>
-											this.setState({
-												captionRichTextActive: true,
-											})
-										}
-										onBlur={() =>
-											this.setState({
-												captionRichTextActive: false,
-											})
-										}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(

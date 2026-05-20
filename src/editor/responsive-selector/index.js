@@ -315,7 +315,7 @@ const ResponsiveSelector = props => {
 						return true;
 					}
 					return false;
-				});
+				}, true);
 			}
 		}
 
@@ -329,7 +329,7 @@ const ResponsiveSelector = props => {
 						return true;
 					}
 					return false;
-				});
+				}, true);
 			}
 		}
 

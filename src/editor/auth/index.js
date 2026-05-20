@@ -822,6 +822,12 @@ export async function authConnect(withRedirect = false, email = false) {
 		// Try to authenticate with existing cookie
 		const authResult = await checkEmailAuthenticationStatus(email);
 		if (authResult && authResult.success) {
+			processLocalActivation(
+				email,
+				authResult.user_name || email,
+				'yes',
+				existingCookie
+			);
 			return true;
 		}
 		if (authResult && authResult.error) {

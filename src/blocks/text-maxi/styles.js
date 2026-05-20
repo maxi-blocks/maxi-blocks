@@ -570,7 +570,7 @@ const getMarkerObject = props => {
 				const customImageMarkerSize = {
 					width: markerSize,
 					...(isCustomURLMarker && {
-						height: !isNil(heightNum) ? markerHeight : markerSize,
+						height: markerSize,
 					}),
 					...(isCustomSVGMarker &&
 						!isNil(heightNum) && {

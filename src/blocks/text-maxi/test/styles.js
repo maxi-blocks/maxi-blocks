@@ -60,6 +60,8 @@ describe('text-maxi styles', () => {
 				'list-gap-unit-general': 'em',
 				'list-marker-size-general': 48,
 				'list-marker-size-unit-general': 'px',
+				'list-marker-height-general': 12,
+				'list-marker-height-unit-general': 'px',
 				'list-marker-indent-general': 0,
 				'list-marker-indent-unit-general': 'px',
 				'list-marker-line-height-general': 1,
@@ -88,6 +90,44 @@ describe('text-maxi styles', () => {
 			expect.objectContaining({
 				width: '48px',
 				height: '48px',
+			})
+		);
+	});
+
+	it('uses marker height styles for custom SVG list markers', () => {
+		const styles = getStyles(
+			{
+				uniqueID: 'text-list',
+				isList: true,
+				typeOfList: 'ul',
+				listStyle: 'custom',
+				listStyleCustom: '<svg><path d="M0 0h10v10H0z" /></svg>',
+				blockStyle: 'light',
+				'list-gap-general': 1,
+				'list-gap-unit-general': 'em',
+				'list-marker-size-general': 48,
+				'list-marker-size-unit-general': 'px',
+				'list-marker-height-general': 12,
+				'list-marker-height-unit-general': 'px',
+				'list-marker-indent-general': 0,
+				'list-marker-indent-unit-general': 'px',
+				'list-marker-line-height-general': 1,
+				'list-marker-line-height-unit-general': 'em',
+				'list-style-position-general': 'outside',
+				'list-text-position-general': 'middle',
+			},
+			() => 1
+		);
+
+		const markerStyles =
+			styles['text-list'][
+				' ul li .maxi-list-item-block__content::before'
+			];
+
+		expect(markerStyles.listSize.general).toEqual(
+			expect.objectContaining({
+				width: '48px',
+				height: '12px',
 			})
 		);
 	});

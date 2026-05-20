@@ -4,7 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -910,24 +910,44 @@ const AxisControl = props => {
 		['margin', 'padding'].includes(target);
 
 	const [inlinePreviewAttributes, setInlinePreviewAttributes] = useState({});
+	const inlinePreviewAttributesRef = useRef(inlinePreviewAttributes);
 
 	useEffect(() => {
-		setInlinePreviewAttributes(prevPreviewAttributes => {
-			const nextPreviewAttributes = {};
-			let hasChanged = false;
+		inlinePreviewAttributesRef.current = inlinePreviewAttributes;
+	}, [inlinePreviewAttributes]);
 
-			Object.entries(prevPreviewAttributes).forEach(([key, value]) => {
-				if (props[key] === value) {
-					hasChanged = true;
-					return;
-				}
+	useEffect(() => {
+		const matchingKeys = Object.entries(inlinePreviewAttributes).reduce(
+			(acc, [key, value]) => {
+				if (props[key] === value) acc.push(key);
 
-				nextPreviewAttributes[key] = value;
+				return acc;
+			},
+			[]
+		);
+
+		if (!matchingKeys.length) return undefined;
+
+		const timeout = setTimeout(() => {
+			setInlinePreviewAttributes(prevPreviewAttributes => {
+				const nextPreviewAttributes = { ...prevPreviewAttributes };
+				let hasChanged = false;
+
+				matchingKeys.forEach(key => {
+					if (props[key] === inlinePreviewAttributesRef.current[key]) {
+						delete nextPreviewAttributes[key];
+						hasChanged = true;
+					}
+				});
+
+				return hasChanged
+					? nextPreviewAttributes
+					: prevPreviewAttributes;
 			});
+		}, 500);
 
-			return hasChanged ? nextPreviewAttributes : prevPreviewAttributes;
-		});
-	}, [props]);
+		return () => clearTimeout(timeout);
+	}, [inlinePreviewAttributes, props]);
 
 	const hasInlinePreviewAttribute = key =>
 		Object.prototype.hasOwnProperty.call(inlinePreviewAttributes, key);
@@ -1428,8 +1448,6 @@ const AxisControl = props => {
 				});
 				return;
 			}
-
-			clearInlinePreviewAttributes(nextResponse);
 		};
 
 		if (showAllSides) {

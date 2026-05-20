@@ -21,6 +21,7 @@ import SkinControl from './components/skin-control';
 import PlaceholderColorControl from './components/placeholder-color-control';
 import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
+import { getIconRevealPositionSettings } from './utils';
 import { withMaxiInspector } from '@extensions/inspector';
 import * as inspectorTabs from '@components/inspector-tabs';
 
@@ -103,13 +104,12 @@ const Inspector = props => {
 	};
 
 	const positionSettings = val => {
-		['left', 'center', 'right'].includes(val) &&
+		const iconRevealPositionSettings = getIconRevealPositionSettings(val);
+
+		iconRevealPositionSettings &&
 			maxiSetAttributes({
 				'icon-position': val,
-				'input-border-left-width-general': val === 'left' ? 0 : 4,
-				'input-border-right-width-general': val === 'left' ? 4 : 0,
-				'input-padding-left-general': val === 'left' ? 35 : 10,
-				'input-padding-right-general': val === 'left' ? 10 : 35,
+				...iconRevealPositionSettings,
 			});
 	};
 

@@ -203,7 +203,9 @@ const SliderWrapper = props => {
 		)[slideIndex];
 
 		if (!slide) {
-			const clone = document.createElement('li');
+			const clone = (
+				wrapperRef.current?.ownerDocument ?? document
+			).createElement('li');
 			clone.classList.add('maxi-slide-block', 'maxi-slide-block--clone');
 			return clone;
 		}
@@ -254,7 +256,9 @@ const SliderWrapper = props => {
 	};
 
 	useEffect(() => {
-		editorRef.current = document.querySelector('#editor');
+		editorRef.current =
+			wrapperRef.current?.ownerDocument?.querySelector('#editor') ??
+			document.querySelector('#editor');
 	}, []);
 
 	useEffect(() => {

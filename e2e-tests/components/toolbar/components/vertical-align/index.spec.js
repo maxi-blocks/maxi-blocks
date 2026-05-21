@@ -14,6 +14,7 @@ import {
 	openSidebarTab,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../../../utils';
 
 describe('Vertical align align from Toolbar', () => {
@@ -26,16 +27,17 @@ describe('Vertical align align from Toolbar', () => {
 		// Wait for toolbar to be visible
 		await page.waitForSelector('.toolbar-wrapper');
 
-		await page.waitForSelector('.maxi-row-block__template');
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-row-block__template');
 
-		await page.waitForSelector('.maxi-row-block__template button');
+		await frame.waitForSelector('.maxi-row-block__template button');
 		await page.waitForTimeout(100);
-		await page.$$eval('.maxi-row-block__template button', button =>
+		await frame.$$eval('.maxi-row-block__template button', button =>
 			button[0].click()
 		);
-		await page.waitForSelector('.maxi-column-block');
+		await frame.waitForSelector('.maxi-column-block');
 
-		const columnClientId = await page.$eval('.maxi-column-block', column =>
+		const columnClientId = await frame.$eval('.maxi-column-block', column =>
 			column.getAttribute('data-block')
 		);
 		await selectBlockByClientId(columnClientId);

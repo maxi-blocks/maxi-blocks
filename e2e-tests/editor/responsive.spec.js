@@ -12,6 +12,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../utils';
 
 describe('Responsive attributes mechanisms', () => {
@@ -491,7 +492,7 @@ describe('Responsive attributes mechanisms', () => {
 		let borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius input',
+			'.maxi-axis-control__content__item__top-left input',
 			input => input.focus()
 		);
 		await page.keyboard.type('100', { delay: 300 });
@@ -517,7 +518,7 @@ describe('Responsive attributes mechanisms', () => {
 		borderAccordion = await openSidebarTab(page, 'style', 'border');
 
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius input',
+			'.maxi-axis-control__content__item__top-left input',
 			input => input.focus()
 		);
 		await page.keyboard.type('150', { delay: 300 });
@@ -540,7 +541,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius .maxi-reset-button',
+			'.maxi-axis-control__content__item__top-left .maxi-reset-button',
 			button => button.click()
 		);
 
@@ -566,7 +567,7 @@ describe('Responsive attributes mechanisms', () => {
 
 		// Reset
 		await borderAccordion.$eval(
-			'.maxi-axis-control__content__item__border-radius .maxi-reset-button',
+			'.maxi-axis-control__content__item__top-left .maxi-reset-button',
 			button => button.click()
 		);
 
@@ -677,7 +678,6 @@ describe('Responsive attributes mechanisms', () => {
 
 		await createNewPost();
 		await insertMaxiBlock(page, 'Group Maxi');
-		await page.waitForSelector('.maxi-group-block');
 		await updateAllBlockUniqueIds(page);
 
 		await changeResponsive(page, 'xxl');

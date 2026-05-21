@@ -30,9 +30,10 @@ const MapEventsListener = props => {
 	const delayRef = useRef(null);
 
 	useEffect(() => {
-		setIsFirstClick(prev =>
-			isSelected === prev ? !isSelected : prev
-		);
+		setIsFirstClick(prev => {
+			const next = isSelected === prev ? !isSelected : prev;
+			return next;
+		});
 	}, [isSelected]);
 
 	const timeout = 300;
@@ -41,6 +42,7 @@ const MapEventsListener = props => {
 		mousedown: event => {
 			const elementClicked =
 				event.originalEvent.target.nodeName.toLowerCase();
+
 			if (elementClicked === 'div') {
 				setIsDraggingMarker(false);
 			}

@@ -5,15 +5,17 @@ import { useEffect, useMemo, useState } from '@wordpress/element';
  *
  * @param {React.RefObject} ref                        - The ref object to observe.
  * @param {boolean}         [isCloudPlaceholder=false] - Whether the block is a cloud placeholder.
+ * @param {number}          [smallBreakpoint=120]      - Width where the block switches to compact mode.
  * @returns {Object} An object containing the block size states.
  */
-const useObserveBlockSize = (ref, isCloudPlaceholder = false) => {
+const useObserveBlockSize = (ref, isCloudPlaceholder = false, smallBreakpoint = 120) => {
 	const [isBlockSmall, setIsBlockSmall] = useState(null);
 	const [isBlockSmaller, setIsBlockSmaller] = useState(null);
 
 	const resizeObserver = useMemo(() => {
 		return new ResizeObserver(entries => {
-			const newIsSmallBlock = entries[0].contentRect.width < 120;
+			const newIsSmallBlock =
+				entries[0].contentRect.width < smallBreakpoint;
 			const newIsSmallerBlock = entries[0].contentRect.width < 38;
 
 			if (newIsSmallBlock !== isBlockSmall)
@@ -21,7 +23,7 @@ const useObserveBlockSize = (ref, isCloudPlaceholder = false) => {
 			if (newIsSmallerBlock !== isBlockSmaller)
 				setIsBlockSmaller(newIsSmallerBlock);
 		});
-	}, [setIsBlockSmall, setIsBlockSmaller, isBlockSmall, isBlockSmaller]);
+	}, [isBlockSmall, isBlockSmaller, smallBreakpoint]);
 
 	useEffect(() => {
 		const elementToObserve = isCloudPlaceholder

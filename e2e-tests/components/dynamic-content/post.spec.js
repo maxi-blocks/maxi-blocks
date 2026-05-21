@@ -3,6 +3,7 @@
  */
 import {
 	createNewPost,
+	saveDraft,
 	setClipboardData,
 	pressKeyWithModifier,
 } from '@wordpress/e2e-test-utils';
@@ -11,14 +12,49 @@ import {
  * Internal dependencies
  */
 import { postCodeEditor } from './content';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
+	let helloWorldPostId;
+
+	beforeAll(async () => {
+		await createNewPost();
+		helloWorldPostId = await page.evaluate(async () => {
+			const response = await wp.apiFetch({
+				path: '/wp/v2/posts',
+				method: 'POST',
+				data: {
+					title: 'Hello world!',
+					content: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!',
+					excerpt: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing!',
+					status: 'publish',
+				},
+			});
+			return response.id;
+		});
+	});
+
+	afterAll(async () => {
+		if (helloWorldPostId) {
+			await page.evaluate(async id => {
+				await wp.apiFetch({
+					path: `/wp/v2/posts/${id}`,
+					method: 'DELETE',
+					data: { force: true },
+				});
+			}, helloWorldPostId);
+		}
+	});
+
 	it('Should return post DC content', async () => {
 		await createNewPost();
 
-		// Set code editor as clipboard data
-		const codeEditor = postCodeEditor;
+		// Replace hardcoded post ID 1 with the actual created post ID.
+		// Use a negative lookahead so dc-id:1377 and dc-id:1441 are not corrupted.
+		const codeEditor = postCodeEditor.replace(
+			/"dc-id":1(?!\d)/g,
+			`"dc-id":${helloWorldPostId}`
+		);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -28,7 +64,8 @@ describe('Dynamic content', () => {
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
 
-		await page.waitForSelector('.maxi-text-block__content', {
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
 
@@ -58,7 +95,7 @@ describe('Dynamic content', () => {
 		const tagBlocks = ['text-dc-tags-1', 'text-dc-tags-2'];
 
 		const getBackResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]
@@ -100,6 +137,9 @@ describe('Dynamic content', () => {
 		expect(categoriesPass).toBe(true);
 		expect(tagPass).toBe(true);
 
+		// Save the post so the blocks are persisted for PHP server-side rendering
+		await saveDraft();
+
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector(
@@ -108,7 +148,7 @@ describe('Dynamic content', () => {
 				visible: true,
 			}
 		);
-		await previewPage.waitForTimeout(1000);
+		await previewPage.waitForTimeout(3000);
 
 		const getFrontResults = async (block, type) =>
 			previewPage.$eval(

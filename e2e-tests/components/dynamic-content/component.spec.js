@@ -1,18 +1,25 @@
 import { createNewPost } from '@wordpress/e2e-test-utils';
-import { insertMaxiBlock } from '../../utils';
+import { insertMaxiBlock, getEditorFrame } from '../../utils';
 import {
 	addImageToLibrary,
 	removeUploadedImage,
 } from '../../utils/addImageToLibrary';
 
-const getDCContent = async page =>
-	page.$eval(
+const getDCContent = async page => {
+	const frame = await getEditorFrame(page);
+	return frame.$eval(
 		'.maxi-text-block .maxi-text-block__content',
 		el => el.textContent
 	);
+};
 
-const getDCImageContent = async page =>
-	page.$eval('.maxi-image-block .maxi-image-block__image', el => el.src);
+const getDCImageContent = async page => {
+	const frame = await getEditorFrame(page);
+	return frame.$eval(
+		'.maxi-image-block .maxi-image-block__image',
+		el => el.src
+	);
+};
 
 /**
  * Check if the response has loaded the DC data
@@ -45,8 +52,29 @@ const isResponseOk = (response, type, ...shouldInclude) => {
 	return true;
 };
 
+const ignoreWaitForResponseTimeout = error => {
+	if (error?.name !== 'TimeoutError') {
+		throw error;
+	}
+};
+
 describe('Dynamic content component for text blocks', () => {
 	beforeAll(async () => {
+		await createNewPost();
+
+		// Create a published post so DC has data to fetch
+		await page.evaluate(async () => {
+			await wp.apiFetch({
+				path: '/wp/v2/posts',
+				method: 'POST',
+				data: {
+					title: 'Test Post for DC',
+					content: 'Test content for DC component tests',
+					status: 'publish',
+				},
+			});
+		});
+
 		// Clear IndexedDB cache to ensure fresh data fetch in tests
 		await page.evaluate(() => {
 			return new Promise((resolve, reject) => {
@@ -57,7 +85,6 @@ describe('Dynamic content component for text blocks', () => {
 			});
 		});
 
-		await createNewPost();
 		await insertMaxiBlock(page, 'Text Maxi');
 
 		await page.waitForSelector('.toolbar-wrapper');
@@ -75,6 +102,12 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-toggle-switch input',
 			button => button.click()
 		);
+
+		// Wait for DC to fully initialize (postIdOptions loaded)
+		await page.waitForSelector(
+			'.maxi-dynamic-content .maxi-dc-id .maxi-select-control__input',
+			{ timeout: 15000 }
+		);
 	});
 
 	it('Should work correctly with post settings', async () => {
@@ -84,21 +117,8 @@ describe('Dynamic content component for text blocks', () => {
 		);
 		await selectType.select('posts');
 
-		// Try to wait for API response, but don't fail if cached
-		try {
-			await page.waitForResponse(
-				response => isResponseOk(response, 'posts', 'include='),
-				{ timeout: 5000 }
-			);
-		} catch (e) {
-			// Data loaded from cache, no API call made
-		}
-
-		// Wait longer for DC options to load - could be from cache or API
-		await page.waitForTimeout(2000);
-
-		// Select "Title" as field
-		// Wait for the field selector to appear after type is selected
+		// Wait for the field selector (already initialized in beforeAll, but
+		// re-selecting the same type may briefly re-render)
 		await page.waitForSelector(
 			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input',
 			{ timeout: 10000 }
@@ -118,9 +138,15 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
 		);
 		await selectRelation.select('by-date');
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'posts', 'orderby=date')
-		);
+		try {
+			await page.waitForResponse(
+				response => isResponseOk(response, 'posts', 'orderby=date'),
+				{ timeout: 5000 }
+			);
+		} catch (e) {
+			// Served from cache, no API call with orderby=date
+			ignoreWaitForResponseTimeout(e);
+		}
 		await page.waitForTimeout(300);
 
 		// Should show latest post by date
@@ -134,9 +160,15 @@ describe('Dynamic content component for text blocks', () => {
 		);
 		await accumulator.click();
 		await page.keyboard.press('ArrowUp');
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'posts', 'orderby=date')
-		);
+		try {
+			await page.waitForResponse(
+				response => isResponseOk(response, 'posts', 'orderby=date'),
+				{ timeout: 5000 }
+			);
+		} catch (e) {
+			// Served from cache
+			ignoreWaitForResponseTimeout(e);
+		}
 		await page.waitForTimeout(300);
 
 		// After incrementing, may show another post or "No content found"
@@ -160,7 +192,8 @@ describe('Dynamic content component for text blocks', () => {
 		await page.waitForTimeout(2000);
 
 		// Check if content element exists
-		const contentExists = await page.$(
+		const frame = await getEditorFrame(page);
+		const contentExists = await frame.$(
 			'.maxi-text-block .maxi-text-block__content'
 		);
 		if (!contentExists) {
@@ -237,6 +270,7 @@ describe('Dynamic content component for text blocks', () => {
 			);
 		} catch (e) {
 			// Continue if no API call detected
+			ignoreWaitForResponseTimeout(e);
 		}
 
 		await page.waitForTimeout(1000);

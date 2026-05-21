@@ -12,7 +12,7 @@ import {
  * Internal dependencies
  */
 import { catCodeEditor } from './content';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
 	it('Should return categories DC content', async () => {
@@ -85,10 +85,12 @@ describe('Dynamic content', () => {
 		);
 		await setClipboardData({ plainText: codeEditor });
 
+		const frame = await getEditorFrame(page);
+
 		/**
 		 * Wait for the editor to be ready for input
 		 */
-		await page.waitForSelector(
+		await frame.waitForSelector(
 			'.editor-post-title__input, .wp-block-post-title',
 			{
 				visible: true,
@@ -109,7 +111,7 @@ describe('Dynamic content', () => {
 		 * Wait for blocks to be inserted and rendered
 		 * Dynamic content blocks need time to fetch and render data
 		 */
-		await page.waitForSelector('.maxi-text-block__content', {
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 			timeout: 15000,
 		});
@@ -118,7 +120,7 @@ describe('Dynamic content', () => {
 		 * Wait for dynamic content to be fully loaded
 		 * Check that at least one block has non-empty content
 		 */
-		await page.waitForFunction(
+		await frame.waitForFunction(
 			() => {
 				const blocks = document.querySelectorAll(
 					'.maxi-text-block__content'
@@ -165,7 +167,7 @@ describe('Dynamic content', () => {
 		const linkBlocks = ['text-dc-link-1', 'text-dc-link-2'];
 
 		const getBackResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
 				expectedResults[type]

@@ -23,6 +23,7 @@ import {
  */
 import { omit } from 'lodash';
 
+
 const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 	const resizeStart = getProfileStart();
 	const xxlSize = breakpoints.xl + 1;
@@ -59,11 +60,12 @@ const breakpointResizer = ({ size, breakpoints, winSize = 0 }) => {
 		return;
 	}
 
-	[editorWrapper, getSiteEditorIframeBody()].forEach(element => {
-		element?.setAttribute(
-			'maxi-blocks-responsive',
-			size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints)
-		);
+	const responsiveAttrValue =
+		size !== 'general' ? size : getWinBreakpoint(winSize, breakpoints);
+	const iframeBody = getSiteEditorIframeBody();
+
+	[editorWrapper, iframeBody].forEach(element => {
+		element?.setAttribute('maxi-blocks-responsive', responsiveAttrValue);
 	});
 
 	const winHeight = window.outerWidth;

@@ -17,6 +17,7 @@ import {
 	getAttributes,
 	openPreviewPage,
 	insertMaxiBlock,
+	getEditorFrame,
 } from '../../utils';
 
 describe('Divider Maxi hover simple actions', () => {
@@ -41,8 +42,9 @@ describe('Divider Maxi hover simple actions', () => {
 			}
 		});
 		// Add native paragraph block
+		const frame = await getEditorFrame(page);
 		await selectBlockByClientId(
-			await page.$eval('.maxi-divider-block', el =>
+			await frame.$eval('.maxi-divider-block', el =>
 				el.getAttribute('data-block')
 			)
 		);

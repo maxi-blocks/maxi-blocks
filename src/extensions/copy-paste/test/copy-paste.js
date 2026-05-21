@@ -56,6 +56,41 @@ describe('getOrganizedAttributes', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+
+	it('Includes dynamic content link attributes from anchor template', () => {
+		const mapping = {
+			advanced: {
+				Anchor: {
+					template: 'anchor',
+				},
+			},
+		};
+
+		const attributes = {
+			anchor: 'my-anchor',
+			linkSettings: { url: 'https://example.com' },
+			'dc-status': true,
+			'dc-link-status': true,
+			'dc-link-target': 'author_email',
+			'dc-type': 'post',
+			'dc-field': 'author',
+			'dc-sub-field': 'email',
+		};
+
+		const result = getOrganizedAttributes(attributes, mapping, true);
+
+		expect(result).toMatchObject({
+			anchor: 'my-anchor',
+			linkSettings: { url: 'https://example.com' },
+			'dc-status': true,
+			'dc-link-status': true,
+			'dc-link-target': 'author_email',
+			'dc-type': 'post',
+			'dc-field': 'author',
+			'dc-sub-field': 'email',
+		});
+	});
+
 	it('Ensure it works with groups', () => {
 		const copyPasteMapping = {
 			settings: {
@@ -207,6 +242,21 @@ describe('getOrganizedAttributes', () => {
 
 		const result = getOrganizedAttributes(attributes, copyPasteMapping);
 		expect(result).toMatchSnapshot();
+	});
+
+	it('Includes anchorLink from the advanced template anchor settings', () => {
+		const copyPasteMapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const attributes = {
+			anchorLink: 'section-anchor',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		expect(result.advanced.Anchor.anchorLink).toBe('section-anchor');
 	});
 
 	it('Ensure it works with group attributes with prefix', () => {
@@ -449,6 +499,19 @@ describe('getOrganizedAttributes', () => {
 					group: {
 						'Image size': 'imageSize',
 						'Use original size': 'useInitSize',
+						'Fit on wrapper': 'fitParentSize',
+						'Adjust size': {
+							props: 'object-size',
+							hasBreakpoints: true,
+						},
+						'Image horizontal position': {
+							props: 'object-position-horizontal',
+							hasBreakpoints: true,
+						},
+						'Image vertical position': {
+							props: 'object-position-vertical',
+							hasBreakpoints: true,
+						},
 						'Image width': 'img-width-general',
 						'Image ratio': 'imageRatio',
 					},
@@ -576,6 +639,10 @@ describe('getOrganizedAttributes', () => {
 			imageSize: 'full',
 			isImageUrl: false,
 			altSelector: 'title',
+			fitParentSize: true,
+			'object-size-general': 2.1,
+			'object-position-horizontal-general': 23,
+			'object-position-vertical-general': 67,
 			'img-width-general': 82,
 			'clip-path-status-general': false,
 			'link-palette-status-general': true,

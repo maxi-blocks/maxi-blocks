@@ -602,6 +602,7 @@ const NavigationIconControl = props => {
 									minMaxSettings={minMaxSettings}
 									prefix={prefix}
 									noResponsiveTabs
+									showAllSides
 								/>
 							)}
 						</>

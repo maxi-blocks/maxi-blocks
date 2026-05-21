@@ -15,12 +15,29 @@ const openPreviewPage = async page => {
 	await page.waitForTimeout(100);
 	await page.waitForSelector('.edit-post-header-preview__button-external');
 
+	// Wait for the button to have a valid href (href may be populated async)
+	await page
+		.waitForFunction(
+			() => {
+				const button = document.querySelector(
+					'.edit-post-header-preview__button-external'
+				);
+				return (
+					button &&
+					button.href &&
+					button.href.startsWith('http')
+				);
+			},
+			{ timeout: 5000 }
+		)
+		.catch(() => {});
+
 	// Wait a bit more to ensure the button is fully rendered and clickable
 	await page.waitForTimeout(200);
 
 	const previewHref = await page.$eval(
 		'.edit-post-header-preview__button-external',
-		button => button.href
+		button => button.href || button.getAttribute('href')
 	);
 
 	// Use evaluate for more reliable clicking with retry logic
@@ -64,6 +81,11 @@ const openPreviewPage = async page => {
 
 	if (openTabs.length < expectedTabsCount) {
 		previewPage = await browser.newPage();
+		if (!previewHref) {
+			throw new Error(
+				'Preview tab did not open and preview URL could not be determined'
+			);
+		}
 		await previewPage.goto(previewHref, {
 			waitUntil: 'domcontentloaded',
 			timeout: 30000,

@@ -4,6 +4,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * Internal dependencies
@@ -908,6 +909,81 @@ const AxisControl = props => {
 		!noResponsiveTabs &&
 		['margin', 'padding'].includes(target);
 
+	const [inlinePreviewAttributes, setInlinePreviewAttributes] = useState({});
+	const inlinePreviewAttributesRef = useRef(inlinePreviewAttributes);
+
+	useEffect(() => {
+		inlinePreviewAttributesRef.current = inlinePreviewAttributes;
+	}, [inlinePreviewAttributes]);
+
+	useEffect(() => {
+		const matchingKeys = Object.entries(inlinePreviewAttributes).reduce(
+			(acc, [key, value]) => {
+				if (props[key] === value) acc.push(key);
+
+				return acc;
+			},
+			[]
+		);
+
+		if (!matchingKeys.length) return undefined;
+
+		const timeout = setTimeout(() => {
+			setInlinePreviewAttributes(prevPreviewAttributes => {
+				const nextPreviewAttributes = { ...prevPreviewAttributes };
+				let hasChanged = false;
+
+				matchingKeys.forEach(key => {
+					if (props[key] === inlinePreviewAttributesRef.current[key]) {
+						delete nextPreviewAttributes[key];
+						hasChanged = true;
+					}
+				});
+
+				return hasChanged
+					? nextPreviewAttributes
+					: prevPreviewAttributes;
+			});
+		}, 500);
+
+		return () => clearTimeout(timeout);
+	}, [inlinePreviewAttributes, props]);
+
+	const hasInlinePreviewAttribute = key =>
+		Object.prototype.hasOwnProperty.call(inlinePreviewAttributes, key);
+
+	const getAttributeValue = key =>
+		hasInlinePreviewAttribute(key) ? inlinePreviewAttributes[key] : props[key];
+
+	const clearInlinePreviewAttributes = response => {
+		const responseKeys = Object.keys(response).filter(key => key !== 'meta');
+
+		if (!responseKeys.length) return;
+
+		setInlinePreviewAttributes(prevPreviewAttributes => {
+			if (
+				!responseKeys.some(key =>
+					Object.prototype.hasOwnProperty.call(prevPreviewAttributes, key)
+				)
+			) {
+				return prevPreviewAttributes;
+			}
+
+			const nextPreviewAttributes = { ...prevPreviewAttributes };
+
+			responseKeys.forEach(key => {
+				delete nextPreviewAttributes[key];
+			});
+
+			return nextPreviewAttributes;
+		});
+	};
+
+	const onChangeWithPreviewClear = response => {
+		clearInlinePreviewAttributes(response);
+		onChange(response);
+	};
+
 	// Get sync mode to determine if left/right margin should be disabled
 	const sync = getLastBreakpointAttribute({
 		target: `${prefix}${target}-sync`,
@@ -953,25 +1029,30 @@ const AxisControl = props => {
 
 	const getValue = (key, customBreakpoint) => {
 		let value;
+		const exactAttributeKey = getAttributeKey(
+			getKey(key),
+			isHover,
+			false,
+			customBreakpoint ?? breakpoint
+		);
+
+		if (hasInlinePreviewAttribute(exactAttributeKey)) {
+			return inlinePreviewAttributes[exactAttributeKey];
+		}
 
 		if (breakpoint === 'general' || customBreakpoint === 'general') {
 			const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
+			const baseAttributeKey = getAttributeKey(
+				getKey(key),
+				isHover,
+				false,
+				baseBreakpoint
+			);
 
-			value =
-				props[
-					getAttributeKey(getKey(key), isHover, false, baseBreakpoint)
-				];
+			value = getAttributeValue(baseAttributeKey);
 		}
 		if (isNil(value)) {
-			value =
-				props[
-					getAttributeKey(
-						getKey(key),
-						isHover,
-						false,
-						customBreakpoint ?? breakpoint
-					)
-				];
+			value = getAttributeValue(exactAttributeKey);
 		}
 
 		if (isNumber(value) || value) return value;
@@ -1087,6 +1168,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1100,6 +1182,7 @@ const AxisControl = props => {
 			)]: value,
 		};
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1244,6 +1327,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1322,6 +1406,7 @@ const AxisControl = props => {
 			});
 		}
 
+		clearInlinePreviewAttributes(response);
 		onChange(response);
 	};
 
@@ -1351,6 +1436,19 @@ const AxisControl = props => {
 		});
 
 		let response = {};
+		const updateInlinePreviewAttributes = nextResponse => {
+			if (meta?.inline) {
+				setInlinePreviewAttributes(prevPreviewAttributes => {
+					const nextPreviewAttributes = {
+						...prevPreviewAttributes,
+						...nextResponse,
+					};
+
+					return nextPreviewAttributes;
+				});
+				return;
+			}
+		};
 
 		if (showAllSides) {
 			const pair = getPairForSide(singleTarget);
@@ -1388,6 +1486,7 @@ const AxisControl = props => {
 				] = 'none';
 			}
 
+			updateInlinePreviewAttributes(response);
 			onChange({ ...response, meta });
 			return;
 		}
@@ -1516,6 +1615,7 @@ const AxisControl = props => {
 			}
 		}
 
+		updateInlinePreviewAttributes(response);
 		onChange({ ...response, meta });
 	};
 
@@ -1531,7 +1631,7 @@ const AxisControl = props => {
 						currentUnit={currentUnit}
 						target={target}
 						isHover={isHover}
-						onChange={onChange}
+						onChange={onChangeWithPreviewClear}
 						onReset={onReset}
 						inputsArray={inputsArray}
 						getLastBreakpointValue={getLastBreakpointValue}
@@ -1562,7 +1662,7 @@ const AxisControl = props => {
 					currentUnit={currentUnit}
 					target={target}
 					isHover={isHover}
-					onChange={onChange}
+					onChange={onChangeWithPreviewClear}
 					onReset={onReset}
 					inputsArray={inputsArray}
 					getLastBreakpointValue={getLastBreakpointValue}

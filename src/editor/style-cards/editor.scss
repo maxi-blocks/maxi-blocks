@@ -268,7 +268,7 @@ body .maxi-style-cards__popover {
 	background-color: var(--maxi-white);
 	border-left: 1.5px solid var(--maxi-grey-light);
 
-	button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__custom-color-presets__remove-button):hover {
+	button:not(.maxi-reset-button):not(.maxi-color-control__palette-box):not(.maxi-style-cards__quick-color-presets__box):not(.maxi-style-cards__custom-color-presets__remove-button):hover {
 		background-color: var(--maxi-whisper-green) !important;
 		opacity: 1;
 		color: var(--maxi-primary-color) !important;

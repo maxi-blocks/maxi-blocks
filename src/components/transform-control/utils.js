@@ -167,3 +167,40 @@ export const getDisabledTransformCategories = (
 
 	return [...disabledCategories, ...bgLayersWithParallaxCategories];
 };
+
+export const getUpdatedTransformOptions = ({
+	transformOptions,
+	updates,
+	breakpoint,
+	baseBreakpoint,
+}) => {
+	const nextTransformOptions = { ...transformOptions };
+
+	Object.entries(updates).forEach(([type, diffTypeObj]) => {
+		const breakpointKey = `${type}-${breakpoint}`;
+		const typeObj = { ...nextTransformOptions[breakpointKey] };
+
+		Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
+			typeObj[target] = {
+				...typeObj?.[target],
+				...targetObj,
+			};
+		});
+
+		nextTransformOptions[breakpointKey] = {
+			...nextTransformOptions[breakpointKey],
+			...typeObj,
+		};
+
+		if (breakpoint === 'general' && baseBreakpoint) {
+			const baseBreakpointKey = `${type}-${baseBreakpoint}`;
+
+			nextTransformOptions[baseBreakpointKey] = {
+				...nextTransformOptions[baseBreakpointKey],
+				...typeObj,
+			};
+		}
+	});
+
+	return nextTransformOptions;
+};

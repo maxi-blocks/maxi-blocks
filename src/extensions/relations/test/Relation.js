@@ -719,9 +719,9 @@ describe('Relation class', () => {
 			relation.action = 'hover';
 			relation.trigger = 'test-trigger';
 			relation.mainDocument = document;
-			relation.mainDocument.querySelectorAll = jest.fn(
-				() => [animationTarget]
-			);
+			relation.mainDocument.querySelectorAll = jest.fn(() => [
+				animationTarget,
+			]);
 			relation.stylesEl = {
 				id: 'styles',
 				innerText:
@@ -757,7 +757,7 @@ describe('Relation class', () => {
 							transition: 'none 0s ease 0s',
 							'transition-duration': '0s',
 							'transition-delay': '0s',
-						})[prop] || '',
+						}[prop] || ''),
 				})),
 			};
 			relation.triggerEl = {
@@ -852,13 +852,15 @@ describe('Relation class', () => {
 			expect(relation.addRelationSubscriber).not.toHaveBeenCalled();
 			expect(relation.forcePreviewReflow).toHaveBeenCalled();
 			expect(relation.addStyles).not.toHaveBeenCalled();
-			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(
+				relation.mainWindow.requestAnimationFrame
+			).not.toHaveBeenCalled();
 			expect(relation.addStyleEl).not.toHaveBeenCalledWith(
 				relation.stylesEl
 			);
 			expect(animationTarget.animate).toHaveBeenCalledWith(
 				[
-					{ opacity: '1', transform: 'none' },
+					{ opacity: '1', transform: 'translateX(0px)' },
 					{ opacity: '0.5', transform: 'translateX(20px)' },
 				],
 				expect.objectContaining({
@@ -868,6 +870,72 @@ describe('Relation class', () => {
 					fill: 'forwards',
 				})
 			);
+		});
+
+		it('does not play the transform out animation when the editor fires mouseleave while the trigger is still hovered', () => {
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'translateY(30px)',
+					},
+				},
+			];
+			relation.triggerEl.matches = jest.fn(selector => {
+				return selector === ':hover';
+			});
+			relation.setIsPreview(true);
+			animationTarget.animate.mockClear();
+
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+			onMouseLeave();
+
+			expect(animationTarget.animate).not.toHaveBeenCalled();
+			expect(relation.previewHoverLeaveTimeout).toBeFalsy();
+		});
+
+		it('debounces transform Web Animations hover leave so a quick re-enter cancels the out animation', () => {
+			jest.useFakeTimers();
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'translateY(30px)',
+					},
+				},
+			];
+			relation.setIsPreview(true);
+			animationTarget.animate.mockClear();
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseLeave();
+			expect(animationTarget.animate).not.toHaveBeenCalled();
+
+			onMouseEnter();
+			jest.runOnlyPendingTimers();
+
+			expect(animationTarget.animate).toHaveBeenCalledTimes(1);
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'translateY(0px)' },
+					{ transform: 'translateY(30px)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					easing: 'ease',
+				})
+			);
+
+			jest.useRealTimers();
 		});
 
 		it('uses Web Animations preview for SVG transform interactions', () => {
@@ -888,7 +956,7 @@ describe('Relation class', () => {
 				getPropertyValue: prop =>
 					({
 						transform: 'matrix(0, 0, 0, 0, 0, 0)',
-					})[prop] || '',
+					}[prop] || ''),
 			}));
 
 			relation.setIsPreview(true);
@@ -907,7 +975,7 @@ describe('Relation class', () => {
 			expect(relation.previewTransitionType).toBe('web-animation');
 			expect(animationTarget.animate).toHaveBeenCalledWith(
 				[
-					{ transform: 'matrix(0, 0, 0, 0, 0, 0)' },
+					{ transform: 'scaleX(0) scaleY(0)' },
 					{ transform: 'scaleX(1) scaleY(1)' },
 				],
 				expect.objectContaining({
@@ -917,6 +985,338 @@ describe('Relation class', () => {
 					fill: 'forwards',
 				})
 			);
+		});
+
+		it('normalizes zero-matrix scale preview keyframes to compatible transform functions', () => {
+			jest.useFakeTimers();
+			let computedTransform = 'matrix(0, 0, 0, 0, 0, 0)';
+			let computedTransformOrigin = '36px 0px';
+
+			relation.stylesObjs = [
+				{
+					general: {
+						transform:
+							'scaleX(1) scaleY(1) translateX(0%) translateY(0px) rotateZ(0deg)',
+						'transform-origin': '100% 0%',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: computedTransform,
+						'transform-origin': computedTransformOrigin,
+					}[prop] || ''),
+			}));
+
+			relation.setIsPreview(true);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+			onMouseEnter();
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{
+						transform:
+							'scaleX(0) scaleY(0) translateX(0%) translateY(0px) rotateZ(0deg)',
+						transformOrigin: '36px 0px',
+					},
+					{
+						transform:
+							'scaleX(1) scaleY(1) translateX(0%) translateY(0px) rotateZ(0deg)',
+						transformOrigin: '100% 0%',
+					},
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			animationTarget.animate.mockClear();
+			computedTransform = 'matrix(1, 0, 0, 1, 0, 0)';
+			computedTransformOrigin = '100% 0%';
+
+			onMouseLeave();
+			jest.advanceTimersByTime(120);
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{
+						transform:
+							'scaleX(1) scaleY(1) translateX(0%) translateY(0px) rotateZ(0deg)',
+						transformOrigin: '100% 0%',
+					},
+					{
+						transform:
+							'scaleX(0) scaleY(0) translateX(0%) translateY(0px) rotateZ(0deg)',
+						transformOrigin: '36px 0px',
+					},
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			jest.useRealTimers();
+		});
+
+		it('normalizes zero-matrix non-scale transform previews without injecting scale', () => {
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'translateX(25%) rotateZ(15deg)',
+						'transform-origin': '25% 75%',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: 'matrix(0, 0, 0, 0, 0, 0)',
+						'transform-origin': '50% 50%',
+					}[prop] || ''),
+			}));
+
+			relation.setIsPreview(true);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			onMouseEnter();
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{
+						transform: 'translateX(0%) rotateZ(0deg)',
+						transformOrigin: '50% 50%',
+					},
+					{
+						transform: 'translateX(25%) rotateZ(15deg)',
+						transformOrigin: '25% 75%',
+					},
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+		});
+
+		it('normalizes identity and translated matrices to compatible translate preview keyframes', () => {
+			jest.useFakeTimers();
+			let computedTransform = 'none';
+
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'translateX(0%) translateY(30px)',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: computedTransform,
+					}[prop] || ''),
+			}));
+
+			relation.setIsPreview(true);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseEnter();
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'translateX(0%) translateY(0px)' },
+					{ transform: 'translateX(0%) translateY(30px)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			animationTarget.animate.mockClear();
+			computedTransform = 'matrix(1, 0, 0, 1, 0, 30)';
+
+			onMouseLeave();
+			jest.advanceTimersByTime(120);
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'translateX(0%) translateY(30px)' },
+					{ transform: 'translateX(0%) translateY(0px)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			jest.useRealTimers();
+		});
+
+		it('normalizes none and identity matrix rotate previews to compatible rotate keyframes', () => {
+			jest.useFakeTimers();
+			let computedTransform = 'none';
+
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'rotateZ(45deg)',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: computedTransform,
+					}[prop] || ''),
+			}));
+
+			relation.setIsPreview(true);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseEnter();
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'rotateZ(0deg)' },
+					{ transform: 'rotateZ(45deg)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			animationTarget.animate.mockClear();
+			computedTransform =
+				'matrix(0.707107, 0.707107, -0.707107, 0.707107, 0, 0)';
+
+			onMouseLeave();
+			jest.advanceTimersByTime(120);
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'rotateZ(45deg)' },
+					{ transform: 'rotateZ(0deg)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			jest.useRealTimers();
+		});
+
+		it('normalizes matrix3d rotate previews to authored rotate keyframes on hover out', () => {
+			jest.useFakeTimers();
+			let computedTransform =
+				'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)';
+
+			relation.stylesObjs = [
+				{
+					general: {
+						transform: 'rotateX(45deg)',
+					},
+				},
+			];
+			relation.mainWindow.getComputedStyle = jest.fn(() => ({
+				getPropertyValue: prop =>
+					({
+						transform: computedTransform,
+					}[prop] || ''),
+			}));
+
+			relation.setIsPreview(true);
+
+			const onMouseEnter =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseenter'
+				)[1];
+			const onMouseLeave =
+				relation.triggerEl.addEventListener.mock.calls.find(
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
+
+			onMouseEnter();
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'rotateX(0deg)' },
+					{ transform: 'rotateX(45deg)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			animationTarget.animate.mockClear();
+			computedTransform =
+				'matrix3d(1, 0, 0, 0, 0, 0.707107, 0.707107, 0, 0, -0.707107, 0.707107, 0, 0, 0, 0, 1)';
+
+			onMouseLeave();
+			jest.advanceTimersByTime(120);
+
+			expect(animationTarget.animate).toHaveBeenCalledWith(
+				[
+					{ transform: 'rotateX(45deg)' },
+					{ transform: 'rotateX(0deg)' },
+				],
+				expect.objectContaining({
+					duration: 300,
+					delay: 0,
+					easing: 'ease',
+					fill: 'forwards',
+				})
+			);
+
+			jest.useRealTimers();
 		});
 
 		it('keeps SVG canvas transform preview CSS on the block target', () => {
@@ -942,9 +1342,7 @@ describe('Relation class', () => {
 			expect(transitionContent).toContain(
 				'body.maxi-blocks--active:has(.test-trigger:hover) .block.svg-icon-maxi-test[data-type="maxi-blocks/svg-icon-maxi"] { transition: transform 0.3s ease 0s, transform-origin 0.3s ease 0s; }'
 			);
-			expect(hoverContent).not.toContain(
-				'.maxi-svg-icon-block__icon'
-			);
+			expect(hoverContent).not.toContain('.maxi-svg-icon-block__icon');
 		});
 
 		it('does not inject a pre-hover SVG transform reset', () => {
@@ -958,11 +1356,8 @@ describe('Relation class', () => {
 
 			expect(relation.previewSvgStartStylesEl).toBeNull();
 			expect(
-				relation.addStyleEl.mock.calls.some(
-					([styleEl]) =>
-						styleEl?.innerText?.includes(
-							'transform: none !important'
-						)
+				relation.addStyleEl.mock.calls.some(([styleEl]) =>
+					styleEl?.innerText?.includes('transform: none !important')
 				)
 			).toBe(false);
 		});
@@ -1004,7 +1399,7 @@ describe('Relation class', () => {
 							index: 0,
 							selector: '.block ',
 							keyframes: [
-								{ opacity: '1', transform: 'none' },
+								{ opacity: '1', transform: 'translateX(0px)' },
 								{
 									opacity: '0.5',
 									transform: 'translateX(20px)',
@@ -1038,9 +1433,7 @@ describe('Relation class', () => {
 
 			relation.setIsPreview(true);
 
-			const details = relation.getDeepPreviewDebugDetails(
-				'test-stage'
-			);
+			const details = relation.getDeepPreviewDebugDetails('test-stage');
 
 			expect(details.stage).toBe('test-stage');
 			expect(details.generated.stylesObjs).toBe(relation.stylesObjs);
@@ -1054,7 +1447,7 @@ describe('Relation class', () => {
 						selector:
 							'.block.svg-icon-maxi-test[data-type="maxi-blocks/svg-icon-maxi"] ',
 						keyframes: [
-							{ transform: 'none' },
+							{ transform: 'scale(1)' },
 							{ transform: 'scale(1.2)' },
 						],
 					}),
@@ -1084,8 +1477,8 @@ describe('Relation class', () => {
 
 			const onMouseLeave =
 				relation.triggerEl.addEventListener.mock.calls.find(
-				([eventName]) => eventName === 'mouseleave'
-			)[1];
+					([eventName]) => eventName === 'mouseleave'
+				)[1];
 			const onMouseEnter =
 				relation.triggerEl.addEventListener.mock.calls.find(
 					([eventName]) => eventName === 'mouseenter'
@@ -1110,14 +1503,16 @@ describe('Relation class', () => {
 				relation.outTransitionEl
 			);
 			expect(relation.forcePreviewReflow).toHaveBeenCalled();
-			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(
+				relation.mainWindow.requestAnimationFrame
+			).not.toHaveBeenCalled();
 			expect(relation.removeStyles).not.toHaveBeenCalled();
 			expect(relation.removeAddAttrToBlock).not.toHaveBeenCalled();
 			expect(relation.removeRelationSubscriber).not.toHaveBeenCalled();
 			expect(animationTarget.animate).toHaveBeenCalledWith(
 				[
-					{ opacity: '1', transform: 'none' },
-					{ opacity: '1', transform: 'none' },
+					{ opacity: '1', transform: 'translateX(0px)' },
+					{ opacity: '1', transform: 'translateX(0px)' },
 				],
 				expect.objectContaining({
 					duration: 300,
@@ -1158,7 +1553,7 @@ describe('Relation class', () => {
 								? 'matrix(1, 0, 0, 1, 20, 0)'
 								: 'none',
 						opacity: element === relation.targetEl ? '0.4' : '1',
-					})[prop],
+					}[prop]),
 			}));
 			relation.triggerEl.getBoundingClientRect = jest.fn(() => ({
 				left: 10,
@@ -1408,10 +1803,12 @@ describe('Relation class', () => {
 			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
 			expect(relation.forcePreviewReflow).toHaveBeenCalled();
 			expect(relation.addStyles).not.toHaveBeenCalled();
-			expect(relation.mainWindow.requestAnimationFrame).not.toHaveBeenCalled();
+			expect(
+				relation.mainWindow.requestAnimationFrame
+			).not.toHaveBeenCalled();
 			expect(animationTarget.animate).toHaveBeenCalledWith(
 				[
-					{ opacity: '1', transform: 'none' },
+					{ opacity: '1', transform: 'translateX(0px)' },
 					{ opacity: '0.5', transform: 'translateX(20px)' },
 				],
 				expect.objectContaining({
@@ -1481,7 +1878,7 @@ describe('Relation class', () => {
 	});
 
 	describe('forcePreviewReflow', () => {
-		it('enables preview diagnostics automatically on local hosts', () => {
+		it('keeps preview diagnostics opt-in even on local hosts', () => {
 			const relation = new Relation({});
 
 			relation.mainWindow = {
@@ -1493,6 +1890,14 @@ describe('Relation class', () => {
 					userAgent:
 						'Mozilla/5.0 Chrome/148.0.7778.168 Safari/537.36',
 				},
+			};
+
+			expect(relation.isPreviewDebugEnabled()).toBe(false);
+
+			relation.mainWindow.localStorage = {
+				getItem: jest.fn(key =>
+					key === 'maxiIBDebug' ? 'true' : null
+				),
 			};
 
 			expect(relation.isPreviewDebugEnabled()).toBe(true);
@@ -1590,7 +1995,7 @@ describe('Relation class', () => {
 							transition: 'transform 0.3s ease 0s',
 							transform: 'matrix(1, 0, 0, 1, 10, 0)',
 							opacity: '1',
-						})[prop],
+						}[prop]),
 				})),
 			};
 
@@ -1622,6 +2027,7 @@ describe('Relation class', () => {
 
 			jest.spyOn(window.console, 'warn').mockImplementation(warn);
 			window.maxiIBAllowLocalDebugInTests = true;
+			window.maxiIBDebug = true;
 			Object.defineProperty(window, 'location', {
 				value: { hostname: 'localhost' },
 				configurable: true,
@@ -1655,6 +2061,7 @@ describe('Relation class', () => {
 				})
 			);
 			delete window.maxiIBAllowLocalDebugInTests;
+			delete window.maxiIBDebug;
 		});
 	});
 

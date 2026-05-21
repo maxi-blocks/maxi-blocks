@@ -1,8 +1,14 @@
 import {
 	getCommonIBSettings,
+	getChangedRelationTargetUpdates,
+	getHighlightableBlockElements,
+	getRelationBlockOption,
+	getRelationControlId,
 	getRelationId,
 	getRelationStaticStateUpdate,
 	groupRelations,
+	mergeRelationStartAttributeUpdates,
+	revealRelationBlockElement,
 	removeRelationGroup,
 	syncRelationGroupTargets,
 	updateRelationsInGroup,
@@ -167,6 +173,48 @@ describe('relation-control utils', () => {
 		expect(nextRelations[3]).toEqual(unrelated);
 	});
 
+	it('keeps the rendered control id stable when a single relation becomes a multi-target group', () => {
+		const [singleGroup] = groupRelations([baseRelation]);
+		const groupedRelations = syncRelationGroupTargets({
+			relations: [baseRelation],
+			relationGroup: singleGroup,
+			uniqueIDs: ['target-a', 'target-b'],
+			isButton: false,
+		});
+		const [multiTargetGroup] = groupRelations(groupedRelations);
+
+		expect(singleGroup.id).toBe('relation-single-1');
+		expect(multiTargetGroup.id).toBe('relation-group-1');
+		expect(getRelationControlId(singleGroup)).toBe('relation-group-1');
+		expect(getRelationControlId(multiTargetGroup)).toBe(
+			'relation-group-1'
+		);
+	});
+
+	it('keeps the rendered control id stable when a legacy group becomes an explicit group', () => {
+		const legacyRelations = [
+			baseRelation,
+			{
+				...baseRelation,
+				id: 2,
+				uniqueID: 'target-b',
+			},
+		];
+		const [legacyGroup] = groupRelations(legacyRelations);
+		const groupedRelations = syncRelationGroupTargets({
+			relations: legacyRelations,
+			relationGroup: legacyGroup,
+			uniqueIDs: ['target-a', 'target-b', 'target-c'],
+			isButton: false,
+		});
+		const [explicitGroup] = groupRelations(groupedRelations);
+
+		expect(legacyGroup.id).toMatch(/^relation-legacy-/);
+		expect(explicitGroup.id).toBe('relation-group-1');
+		expect(getRelationControlId(legacyGroup)).toBe('relation-group-1');
+		expect(getRelationControlId(explicitGroup)).toBe('relation-group-1');
+	});
+
 	it('removes deselected targets from a group', () => {
 		const relations = [
 			{ ...baseRelation, groupId: 'relation-group-1' },
@@ -227,6 +275,107 @@ describe('relation-control utils', () => {
 				action: 'click',
 				effects: { 'transition-duration-general': 0.5 },
 			}),
+		]);
+	});
+
+	it('keeps the latest queued start transform update for rapid rotate changes', () => {
+		const firstUpdate = {
+			'transform-rotate-xl': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+						z: 9,
+					},
+				},
+			},
+		};
+		const latestUpdate = {
+			'transform-rotate-xl': {
+				canvas: {
+					normal: {
+						z: 90,
+					},
+				},
+			},
+		};
+
+		expect(
+			mergeRelationStartAttributeUpdates(firstUpdate, latestUpdate)
+		).toEqual({
+			'transform-rotate-xl': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+						z: 90,
+					},
+				},
+			},
+		});
+	});
+
+	it('detects non-zero start rotate values as target block updates', () => {
+		const updates = getChangedRelationTargetUpdates({
+			uniqueIDs: ['target-a', 'target-b'],
+			cleanValues: {
+				'transform-rotate-xl': {
+					canvas: {
+						normal: {
+							x: 0,
+							y: 0,
+							z: 90,
+						},
+					},
+				},
+			},
+			getClientIdFromUniqueId: uid => `client-${uid}`,
+			getBlockDataForClientId: clientId => ({
+				attributes: {
+					uniqueID: clientId.replace('client-', ''),
+					'transform-rotate-xl': {
+						canvas: {
+							normal: {
+								x: 0,
+								y: 0,
+								z: 0,
+							},
+						},
+					},
+				},
+			}),
+			isEqual: (a, b) => JSON.stringify(a) === JSON.stringify(b),
+		});
+
+		expect(updates).toEqual([
+			{
+				clientId: 'client-target-a',
+				cleanValues: {
+					'transform-rotate-xl': {
+						canvas: {
+							normal: {
+								x: 0,
+								y: 0,
+								z: 90,
+							},
+						},
+					},
+				},
+			},
+			{
+				clientId: 'client-target-b',
+				cleanValues: {
+					'transform-rotate-xl': {
+						canvas: {
+							normal: {
+								x: 0,
+								y: 0,
+								z: 90,
+							},
+						},
+					},
+				},
+			},
 		]);
 	});
 
@@ -369,4 +518,209 @@ describe('relation-control utils', () => {
 			'relations-preview-relation-ids': [2],
 		});
 	});
+
+	it('builds block picker options grouped by the closest container label', () => {
+		const containerBlock = {
+			clientId: 'container-client',
+			name: 'maxi-blocks/container-maxi',
+			attributes: {
+				customLabel: 'Hero container',
+				uniqueID: 'container-uid',
+			},
+		};
+		const textBlock = {
+			clientId: 'text-client',
+			name: 'maxi-blocks/text-maxi',
+			attributes: {
+				customLabel: 'Headline',
+				uniqueID: 'text-uid',
+			},
+		};
+		const columnBlock = {
+			clientId: 'column-client',
+			name: 'maxi-blocks/column-maxi',
+			attributes: {
+				customLabel: 'Hero column',
+				uniqueID: 'column-uid',
+			},
+		};
+
+		expect(
+			getRelationBlockOption({
+				block: textBlock,
+				currentUniqueID: 'text-uid',
+				currentLabel: 'Current',
+				fallbackGroupLabel: 'Canvas',
+				getBlockParentsByBlockName: (_clientId, blockName) =>
+					blockName === 'maxi-blocks/container-maxi'
+						? ['container-client']
+						: ['column-client'],
+				getBlock: clientId => {
+					if (clientId === 'container-client') return containerBlock;
+					if (clientId === 'column-client') return columnBlock;
+					return null;
+				},
+			})
+		).toEqual({
+			label: 'Headline',
+			value: 'text-uid',
+			blockType: 'text',
+			blockTypeLabel: 'Text',
+			hoverValue: 'text-client',
+			groupLabel: 'Hero container',
+			groupValue: 'container-uid',
+			groupHoverValue: 'container-client',
+			columnLabel: 'Hero column',
+			columnValue: 'column-uid',
+			columnHoverValue: 'column-client',
+			isCurrentBlock: true,
+			isCurrentGroup: true,
+			isCurrentColumn: true,
+		});
+	});
+
+	it('groups blocks without a container under the canvas label', () => {
+		const looseBlock = {
+			clientId: 'text-client',
+			name: 'maxi-blocks/text-maxi',
+			attributes: {
+				customLabel: 'Loose text',
+				uniqueID: 'text-uid',
+			},
+		};
+
+		expect(
+			getRelationBlockOption({
+				block: looseBlock,
+				fallbackGroupLabel: 'Canvas',
+				getBlockParentsByBlockName: () => [],
+				getBlock: () => null,
+			})
+		).toEqual({
+			label: 'Loose text',
+			value: 'text-uid',
+			blockType: 'text',
+			blockTypeLabel: 'Text',
+			hoverValue: 'text-client',
+			groupLabel: 'Canvas',
+			groupValue: '',
+			groupHoverValue: '',
+			columnLabel: '',
+			columnValue: '',
+			columnHoverValue: '',
+			isCurrentBlock: false,
+			isCurrentGroup: false,
+			isCurrentColumn: false,
+		});
+	});
+
+	it('finds the text content element for nested group child highlights instead of list view duplicates', () => {
+		document.body.innerHTML = `
+			<div class="block-editor-list-view__block" data-block="text-client"></div>
+			<div class="editor-styles-wrapper">
+				<div class="block-editor-block-list__layout">
+					<div class="wp-block" data-block="group-client">
+						<div class="wp-block" data-block="text-client">
+							<div class="maxi-block maxi-text-block">
+								<p class="maxi-text-block__content">Grouped text</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+
+		const textContentElement = document.querySelector(
+			'.editor-styles-wrapper [data-block="text-client"] .maxi-text-block__content'
+		);
+
+		expect(
+			getHighlightableBlockElements({
+				clientId: 'text-client',
+				searchContexts: [document],
+			})
+		).toEqual([textContentElement]);
+
+		document.body.innerHTML = '';
+	});
+
+	it('finds the text content element when the editor data-block is on the text block wrapper', () => {
+		document.body.innerHTML = `
+			<div class="editor-styles-wrapper">
+				<div class="block-editor-block-list__layout">
+					<div class="maxi-block maxi-text-block" data-block="text-client">
+						<p class="maxi-text-block__content">Direct text</p>
+					</div>
+				</div>
+			</div>
+		`;
+
+		const textContentElement = document.querySelector(
+			'.editor-styles-wrapper [data-block="text-client"] > .maxi-text-block__content'
+		);
+
+		expect(
+			getHighlightableBlockElements({
+				clientId: 'text-client',
+				searchContexts: [document],
+			})
+		).toEqual([textContentElement]);
+
+		document.body.innerHTML = '';
+	});
+
+	it('keeps group highlight targets on the group wrapper even when it contains text blocks', () => {
+		document.body.innerHTML = `
+			<div class="editor-styles-wrapper">
+				<div class="block-editor-block-list__layout">
+					<div class="wp-block" data-block="group-client">
+						<div class="maxi-block maxi-group-block">
+							<div class="wp-block" data-block="text-client">
+								<div class="maxi-block maxi-text-block">
+									<p class="maxi-text-block__content">Grouped text</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+
+		const groupCanvasElement = document.querySelector(
+			'.editor-styles-wrapper [data-block="group-client"]'
+		);
+
+		expect(
+			getHighlightableBlockElements({
+				clientId: 'group-client',
+				searchContexts: [document],
+			})
+		).toEqual([groupCanvasElement]);
+
+		document.body.innerHTML = '';
+	});
+
+	it('scrolls to a revealed block and removes the reveal pulse after the animation window', () => {
+		jest.useFakeTimers();
+
+		const element = document.createElement('div');
+		element.scrollIntoView = jest.fn();
+		element.getBoundingClientRect = jest.fn(() => ({}));
+
+		revealRelationBlockElement(element);
+
+		expect(element.scrollIntoView).toHaveBeenCalledWith({
+			behavior: 'smooth',
+			block: 'center',
+			inline: 'center',
+		});
+		expect(element.classList.contains('maxi-block--revealed')).toBe(true);
+
+		jest.advanceTimersByTime(1200);
+
+		expect(element.classList.contains('maxi-block--revealed')).toBe(false);
+
+		jest.useRealTimers();
+	});
+
 });

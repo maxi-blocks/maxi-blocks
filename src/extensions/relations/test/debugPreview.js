@@ -11,7 +11,7 @@ describe('relations preview diagnostics', () => {
 		jest.restoreAllMocks();
 	});
 
-	it('enables diagnostics automatically for local editor hosts', () => {
+	it('recognizes local editor hosts without enabling diagnostics by default', () => {
 		const localWindow = {
 			location: { hostname: 'localhost' },
 			navigator: { userAgent: 'Chrome' },
@@ -20,7 +20,7 @@ describe('relations preview diagnostics', () => {
 		};
 
 		expect(isLocalPreviewDebugHost(localWindow)).toBe(true);
-		expect(isPreviewDebugEnabled(localWindow)).toBe(true);
+		expect(isPreviewDebugEnabled(localWindow)).toBe(false);
 	});
 
 	it('keeps diagnostics off for non-local hosts by default', () => {
@@ -48,7 +48,11 @@ describe('relations preview diagnostics', () => {
 		const normalDebugWindow = {
 			location: { hostname: 'localhost' },
 			navigator: { userAgent: 'Chrome' },
-			localStorage: { getItem: jest.fn(() => null) },
+			localStorage: {
+				getItem: jest.fn(key =>
+					key === 'maxiIBDebug' ? 'true' : null
+				),
+			},
 			maxiIBAllowLocalDebugInTests: true,
 		};
 		const deepDebugWindow = {
@@ -112,6 +116,40 @@ describe('relations preview diagnostics', () => {
 		);
 	});
 
+	it('auto-logs local diagnostics only when the event opts in', () => {
+		const warn = jest.fn();
+		jest.spyOn(window.console, 'warn').mockImplementation(jest.fn());
+
+		const localWindow = {
+			console: { warn },
+			location: { hostname: 'localhost' },
+			navigator: { userAgent: 'Chrome' },
+			localStorage: { getItem: jest.fn(() => null) },
+			maxiIBAllowLocalDebugInTests: true,
+		};
+
+		debugPreview(
+			'relation-control:block-select:select',
+			{ optionValue: 'text-client' },
+			localWindow
+		);
+
+		expect(warn).not.toHaveBeenCalled();
+
+		debugPreview(
+			'relation-control:block-select:select',
+			{ optionValue: 'text-client' },
+			localWindow,
+			{ autoLocal: true }
+		);
+
+		expect(warn).toHaveBeenCalledWith(
+			'[Maxi IB Preview]',
+			'relation-control:block-select:select',
+			{ optionValue: 'text-client' }
+		);
+	});
+
 	it('mirrors iframe diagnostics to the host console', () => {
 		const iframeWarn = jest.fn();
 		const hostWarn = jest.fn();
@@ -122,7 +160,11 @@ describe('relations preview diagnostics', () => {
 			console: { warn: iframeWarn },
 			location: { hostname: 'localhost' },
 			navigator: { userAgent: 'Chrome' },
-			localStorage: { getItem: jest.fn(() => null) },
+			localStorage: {
+				getItem: jest.fn(key =>
+					key === 'maxiIBDebug' ? 'true' : null
+				),
+			},
 			maxiIBAllowLocalDebugInTests: true,
 		};
 

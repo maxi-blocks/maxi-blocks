@@ -25,8 +25,7 @@ export const isPreviewDebugEnabled = (
 		try {
 			return (
 				win.maxiIBDebug === true ||
-				win.localStorage?.getItem?.('maxiIBDebug') === 'true' ||
-				isLocalPreviewDebugHost(win)
+				win.localStorage?.getItem?.('maxiIBDebug') === 'true'
 			);
 		} catch (error) {
 			return false;
@@ -92,11 +91,20 @@ export const debugPreview = (
 	event,
 	details = {},
 	targetWindow = typeof window !== 'undefined' ? window : null,
-	{ deep = false } = {}
+	{ autoLocal = false, deep = false } = {}
 ) => {
 	if (deep) {
 		if (!isPreviewDeepDebugEnabled(targetWindow)) return;
-	} else if (!isPreviewDebugEnabled(targetWindow)) return;
+	} else if (
+		!isPreviewDebugEnabled(targetWindow) &&
+		!(
+			autoLocal &&
+			[targetWindow, typeof window !== 'undefined' ? window : null]
+				.filter(Boolean)
+				.some(isLocalPreviewDebugHost)
+		)
+	)
+		return;
 
 	const loggers = [
 		targetWindow?.console,

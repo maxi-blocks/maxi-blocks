@@ -330,16 +330,312 @@ class Relation {
 	cleanAnimationStyleValue(value) {
 		if (value === null || typeof value === 'undefined') return null;
 
-		return String(value).replace(/\s*!important\s*$/i, '').trim();
+		return String(value)
+			.replace(/\s*!important\s*$/i, '')
+			.trim();
+	}
+
+	isZeroTransformMatrix(value) {
+		const normalizedValue = this.cleanAnimationStyleValue(value)
+			?.replace(/\s+/g, '')
+			.toLowerCase();
+
+		return normalizedValue === 'matrix(0,0,0,0,0,0)';
+	}
+
+	isTransformMatrixValue(value) {
+		const cleanValue = this.cleanAnimationStyleValue(value);
+
+		return /^matrix(?:3d)?\(/i.test(cleanValue || '');
+	}
+
+	isNoneTransformValue(value) {
+		return this.cleanAnimationStyleValue(value)?.toLowerCase() === 'none';
+	}
+
+	parseTransformMatrix(value) {
+		const cleanValue = this.cleanAnimationStyleValue(value);
+		const match = cleanValue?.match(/^matrix\(([^)]+)\)$/i);
+		if (!match) return null;
+
+		const parts = match[1]
+			.split(',')
+			.map(part => Number.parseFloat(part.trim()));
+
+		if (parts.length !== 6 || parts.some(part => !Number.isFinite(part)))
+			return null;
+
+		const [a, b, c, d, e, f] = parts;
+
+		return { a, b, c, d, e, f };
+	}
+
+	isIdentityTransformMatrix3d(value) {
+		const cleanValue = this.cleanAnimationStyleValue(value);
+		const match = cleanValue?.match(/^matrix3d\(([^)]+)\)$/i);
+		if (!match) return false;
+
+		const parts = match[1]
+			.split(',')
+			.map(part => Number.parseFloat(part.trim()));
+		const identity = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+
+		return (
+			parts.length === identity.length &&
+			parts.every(
+				(part, index) =>
+					Number.isFinite(part) &&
+					Math.abs(part - identity[index]) < 0.000001
+			)
+		);
+	}
+
+	hasScaleTransformValue(value) {
+		const cleanValue = this.cleanAnimationStyleValue(value);
+
+		return /\bscale(?:3d|x|y)?\s*\(/i.test(cleanValue || '');
+	}
+
+	formatTransformNumber(value) {
+		if (!Number.isFinite(value)) return '0';
+
+		const normalizedValue = Math.abs(value) < 0.000001 ? 0 : value;
+
+		return `${Number.parseFloat(normalizedValue.toFixed(6))}`;
+	}
+
+	getTransformArgumentUnit(argument, fallback = '') {
+		const cleanArgument = this.cleanAnimationStyleValue(argument);
+		const match = cleanArgument?.match(/[a-z%]+$/i);
+
+		return match?.[0] ?? fallback;
+	}
+
+	getCompatibleTranslateValue(value, targetArgument) {
+		const unit = this.getTransformArgumentUnit(targetArgument, 'px');
+		const formattedValue = this.formatTransformNumber(value);
+
+		if (formattedValue === '0') return `0${unit}`;
+		if (unit === 'px') return `${formattedValue}px`;
+
+		return (
+			this.cleanAnimationStyleValue(targetArgument) ||
+			`${formattedValue}px`
+		);
+	}
+
+	getCompatibleAngleValue(value, targetArgument) {
+		const unit = this.getTransformArgumentUnit(targetArgument, 'deg');
+		const formattedValue = this.formatTransformNumber(value);
+
+		if (formattedValue === '0' || unit === 'deg')
+			return `${formattedValue}${unit}`;
+
+		return (
+			this.cleanAnimationStyleValue(targetArgument) ||
+			`${formattedValue}deg`
+		);
+	}
+
+	splitTransformArguments(value) {
+		return String(value)
+			.split(',')
+			.map(part => part.trim())
+			.filter(Boolean);
+	}
+
+	getMatrixTransformParts(matrix) {
+		if (!matrix) return null;
+
+		const { a, b, c, d, e, f } = matrix;
+		const scaleX = Math.sqrt(a * a + b * b);
+		const determinant = a * d - b * c;
+		const scaleY =
+			scaleX < 0.000001 ? Math.sqrt(c * c + d * d) : determinant / scaleX;
+		const rotateZ =
+			scaleX < 0.000001 ? 0 : (Math.atan2(b, a) * 180) / Math.PI;
+
+		return {
+			scaleX,
+			scaleY,
+			translateX: e,
+			translateY: f,
+			rotateZ,
+		};
+	}
+
+	getCompatibleTransformValue(targetValue, value) {
+		const cleanTargetValue = this.cleanAnimationStyleValue(targetValue);
+		if (!cleanTargetValue)
+			return this.cleanAnimationStyleValue(value) || 'none';
+
+		const matrix = this.parseTransformMatrix(value);
+		const matrixParts =
+			matrix && !this.isZeroTransformMatrix(value)
+				? this.getMatrixTransformParts(matrix)
+				: null;
+		const zeroScale =
+			this.isZeroTransformMatrix(value) &&
+			this.hasScaleTransformValue(cleanTargetValue);
+		const scaleX = zeroScale ? 0 : matrixParts?.scaleX ?? 1;
+		const scaleY = zeroScale ? 0 : matrixParts?.scaleY ?? 1;
+		const translateX = matrixParts?.translateX ?? 0;
+		const translateY = matrixParts?.translateY ?? 0;
+		const rotateZ = matrixParts?.rotateZ ?? 0;
+		let hasCompatibleFunction = false;
+
+		const markCompatible = () => {
+			hasCompatibleFunction = true;
+		};
+
+		const compatibleValue = cleanTargetValue
+			.replace(/\bscale3d\(([^)]*)\)/gi, () => {
+				markCompatible();
+				return `scale3d(${this.formatTransformNumber(
+					scaleX
+				)}, ${this.formatTransformNumber(scaleY)}, 1)`;
+			})
+			.replace(/\bscaleX\([^)]*\)/gi, () => {
+				markCompatible();
+				return `scaleX(${this.formatTransformNumber(scaleX)})`;
+			})
+			.replace(/\bscaleY\([^)]*\)/gi, () => {
+				markCompatible();
+				return `scaleY(${this.formatTransformNumber(scaleY)})`;
+			})
+			.replace(/\bscale\(([^)]*)\)/gi, (_match, args) => {
+				markCompatible();
+				const parts = this.splitTransformArguments(args);
+
+				if (parts.length > 1)
+					return `scale(${this.formatTransformNumber(
+						scaleX
+					)}, ${this.formatTransformNumber(scaleY)})`;
+
+				return `scale(${this.formatTransformNumber(scaleX)})`;
+			})
+			.replace(/\btranslate3d\(([^)]*)\)/gi, (_match, args) => {
+				markCompatible();
+				const parts = this.splitTransformArguments(args);
+
+				return `translate3d(${this.getCompatibleTranslateValue(
+					translateX,
+					parts[0]
+				)}, ${this.getCompatibleTranslateValue(
+					translateY,
+					parts[1]
+				)}, ${parts[2] || '0px'})`;
+			})
+			.replace(/\btranslateX\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `translateX(${this.getCompatibleTranslateValue(
+					translateX,
+					argument
+				)})`;
+			})
+			.replace(/\btranslateY\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `translateY(${this.getCompatibleTranslateValue(
+					translateY,
+					argument
+				)})`;
+			})
+			.replace(/\btranslate\(([^)]*)\)/gi, (_match, args) => {
+				markCompatible();
+				const parts = this.splitTransformArguments(args);
+
+				return `translate(${this.getCompatibleTranslateValue(
+					translateX,
+					parts[0]
+				)}, ${this.getCompatibleTranslateValue(translateY, parts[1])})`;
+			})
+			.replace(/\brotate3d\(([^)]*)\)/gi, (_match, args) => {
+				markCompatible();
+				const parts = this.splitTransformArguments(args);
+
+				return `rotate3d(${parts[0] || 0}, ${parts[1] || 0}, ${
+					parts[2] || 1
+				}, ${this.getCompatibleAngleValue(rotateZ, parts[3])})`;
+			})
+			.replace(/\brotateX\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `rotateX(${this.getCompatibleAngleValue(0, argument)})`;
+			})
+			.replace(/\brotateY\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `rotateY(${this.getCompatibleAngleValue(0, argument)})`;
+			})
+			.replace(/\brotateZ\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `rotateZ(${this.getCompatibleAngleValue(
+					rotateZ,
+					argument
+				)})`;
+			})
+			.replace(/\brotate\(([^)]*)\)/gi, (_match, argument) => {
+				markCompatible();
+				return `rotate(${this.getCompatibleAngleValue(
+					rotateZ,
+					argument
+				)})`;
+			});
+
+		return hasCompatibleFunction
+			? compatibleValue
+			: this.cleanAnimationStyleValue(value) || 'none';
+	}
+
+	getZeroScaleTransformValue(targetValue) {
+		const cleanTargetValue = this.cleanAnimationStyleValue(targetValue);
+
+		if (!cleanTargetValue || !this.hasScaleTransformValue(cleanTargetValue))
+			return 'none';
+
+		return this.getCompatibleTransformValue(
+			cleanTargetValue,
+			'matrix(0, 0, 0, 0, 0, 0)'
+		);
+	}
+
+	normalizePreviewAnimationStyleValue(
+		cssProperty,
+		value,
+		targetValue,
+		context = 'current'
+	) {
+		if (cssProperty === 'transform' && this.isTransformMatrixValue(value)) {
+			const cleanValue = this.cleanAnimationStyleValue(value);
+			const isMatrix3d = /^matrix3d\(/i.test(cleanValue || '');
+
+			if (
+				context === 'out-current' &&
+				isMatrix3d &&
+				!this.isIdentityTransformMatrix3d(cleanValue)
+			)
+				return this.cleanAnimationStyleValue(targetValue) || value;
+
+			if (isMatrix3d && !this.isIdentityTransformMatrix3d(cleanValue))
+				return value;
+
+			return this.getCompatibleTransformValue(targetValue, value);
+		}
+
+		if (cssProperty === 'transform' && this.isNoneTransformValue(value)) {
+			return this.getCompatibleTransformValue(
+				targetValue,
+				'matrix(1, 0, 0, 1, 0, 0)'
+			);
+		}
+
+		return value;
 	}
 
 	getCurrentResponsiveStyles(stylesObj) {
 		if (!stylesObj) return null;
 
 		const currentBreakpoint = this.getCurrentBreakpoint();
-		const currentBreakpointIndex = this.breakpoints.indexOf(
-			currentBreakpoint
-		);
+		const currentBreakpointIndex =
+			this.breakpoints.indexOf(currentBreakpoint);
 		const usableBreakpoints =
 			currentBreakpointIndex >= 0
 				? this.breakpoints.slice(0, currentBreakpointIndex + 1)
@@ -367,11 +663,7 @@ class Relation {
 			) || 'general';
 		const currentEffects = effectsObj[breakpoint] || {};
 
-		if (
-			direction === 'out' &&
-			currentEffects.split &&
-			currentEffects.out
-		)
+		if (direction === 'out' && currentEffects.split && currentEffects.out)
 			return currentEffects.out;
 
 		return currentEffects;
@@ -431,9 +723,14 @@ class Relation {
 			};
 
 			if (this.hasMultipleTargetsArray?.[index]) {
-				Object.entries(stylesObj).forEach(([targetSelector, styles]) => {
-					addEntriesForSelector(styles, `${mainTarget} ${targetSelector}`);
-				});
+				Object.entries(stylesObj).forEach(
+					([targetSelector, styles]) => {
+						addEntriesForSelector(
+							styles,
+							`${mainTarget} ${targetSelector}`
+						);
+					}
+				);
 				return;
 			}
 
@@ -557,7 +854,9 @@ class Relation {
 				zeroSized:
 					!!bounds && (bounds.width === 0 || bounds.height === 0),
 				computed: this.getComputedDebugDetails(entry.element),
-				svgCandidates: this.getSvgPreviewCandidateDetails(entry.element),
+				svgCandidates: this.getSvgPreviewCandidateDetails(
+					entry.element
+				),
 			};
 		});
 	}
@@ -625,10 +924,24 @@ class Relation {
 				entry.element,
 				cssProperty
 			);
+			const normalizedCurrentValue =
+				this.normalizePreviewAnimationStyleValue(
+					cssProperty,
+					currentValue,
+					cleanValue,
+					direction === 'out' ? 'out-current' : 'current'
+				);
+			const normalizedBaseValue =
+				this.normalizePreviewAnimationStyleValue(
+					cssProperty,
+					baseValue,
+					cleanValue,
+					'base'
+				);
 
-			fromStyles[animationProperty] = currentValue;
+			fromStyles[animationProperty] = normalizedCurrentValue;
 			toStyles[animationProperty] =
-				direction === 'out' ? baseValue : cleanValue;
+				direction === 'out' ? normalizedBaseValue : cleanValue;
 		});
 
 		if (!Object.keys(toStyles).length) return null;
@@ -710,10 +1023,9 @@ class Relation {
 		if (!previewTransitionEl) return;
 		if (this.previewTransitionType === type) return;
 
-		(
-			isOut
-				? this.previewInTransitionEl
-				: this.previewOutTransitionEl
+		(isOut
+			? this.previewInTransitionEl
+			: this.previewOutTransitionEl
 		)?.remove?.();
 		this.addStyleEl(previewTransitionEl);
 		this.previewTransitionType = type;
@@ -920,7 +1232,8 @@ class Relation {
 			id: styleEl.id,
 			type: styleEl.getAttribute?.('data-type'),
 			sids: styleEl.getAttribute?.('data-sids'),
-			length: styleEl.innerText?.length || styleEl.textContent?.length || 0,
+			length:
+				styleEl.innerText?.length || styleEl.textContent?.length || 0,
 			preview: (styleEl.innerText || styleEl.textContent || '').slice(
 				0,
 				240
@@ -1076,9 +1389,7 @@ class Relation {
 			},
 			styleElements: {
 				staticStyles: this.getDeepStyleDebug(this.stylesEl),
-				staticInTransition: this.getDeepStyleDebug(
-					this.inTransitionEl
-				),
+				staticInTransition: this.getDeepStyleDebug(this.inTransitionEl),
 				staticOutTransition: this.getDeepStyleDebug(
 					this.outTransitionEl
 				),
@@ -1106,9 +1417,7 @@ class Relation {
 				blockTarget: {
 					element: this.getNodeDebugDetails(this.blockTargetEl),
 					bounds: this.getElementBounds(this.blockTargetEl),
-					computed: this.getComputedDebugDetails(
-						this.blockTargetEl
-					),
+					computed: this.getComputedDebugDetails(this.blockTargetEl),
 					svgCandidates: this.getSvgPreviewCandidateDetails(
 						this.blockTargetEl
 					),
@@ -1213,7 +1522,8 @@ class Relation {
 		if (this.previewDemoRequestType === 'animationFrame') {
 			targetWindow?.cancelAnimationFrame?.(this.previewDemoRequestId);
 		} else {
-			const clearTargetTimeout = targetWindow?.clearTimeout || clearTimeout;
+			const clearTargetTimeout =
+				targetWindow?.clearTimeout || clearTimeout;
 			clearTargetTimeout(this.previewDemoRequestId);
 		}
 
@@ -1344,8 +1654,10 @@ class Relation {
 				pointer,
 				currentBounds
 			),
-			pointerInsidePreviewHoverBounds:
-				this.isPointerInsideBounds(pointer, this.previewHoverBounds),
+			pointerInsidePreviewHoverBounds: this.isPointerInsideBounds(
+				pointer,
+				this.previewHoverBounds
+			),
 			triggerMatchesHover: !!this.triggerEl?.matches?.(':hover'),
 			targetMatchesHover: !!this.targetEl?.matches?.(':hover'),
 			blockTargetMatchesHover: !!this.blockTargetEl?.matches?.(':hover'),
@@ -1544,8 +1856,7 @@ class Relation {
 	addHoverEvents() {
 		this.boundOnMouseEnter = this.onMouseEnter.bind(this);
 		this.boundOnMouseLeave = this.onMouseLeave.bind(this);
-		this.boundOnPreviewPointerMove =
-			this.onPreviewPointerMove.bind(this);
+		this.boundOnPreviewPointerMove = this.onPreviewPointerMove.bind(this);
 
 		this.triggerEl.addEventListener('mouseenter', this.boundOnMouseEnter);
 		this.triggerEl.addEventListener('mouseleave', this.boundOnMouseLeave);
@@ -1578,7 +1889,10 @@ class Relation {
 							);
 
 						const transitionDuration = transitionTargetEl
-							? ['transition-duration', 'transition-delay'].reduce(
+							? [
+									'transition-duration',
+									'transition-delay',
+							  ].reduce(
 									(sum, prop) =>
 										sum +
 										parseFloat(
@@ -1601,14 +1915,8 @@ class Relation {
 				}, transitionDuration);
 			};
 
-			transitionTriggerEl?.addEventListener?.(
-				'mouseenter',
-				onMouseEnter
-			);
-			transitionTriggerEl?.addEventListener?.(
-				'mouseleave',
-				onMouseLeave
-			);
+			transitionTriggerEl?.addEventListener?.('mouseenter', onMouseEnter);
+			transitionTriggerEl?.addEventListener?.('mouseleave', onMouseLeave);
 			this.previewTransitionTriggerHandlers.push({
 				element: transitionTriggerEl,
 				onMouseEnter,
@@ -1640,6 +1948,7 @@ class Relation {
 		);
 
 		if (this.supportsWebAnimationPreview()) {
+			this.cancelPreviewHoverLeave();
 			this.playPreviewAnimations('in');
 			this.forcePreviewReflow();
 			return;
@@ -1667,8 +1976,30 @@ class Relation {
 		);
 
 		if (this.supportsWebAnimationPreview()) {
-			this.playPreviewAnimations('out');
-			this.forcePreviewReflow();
+			if (this.shouldIgnorePreviewHoverLeave(event)) {
+				this.debugPreview(
+					'hover-leave:ignored-still-hovered',
+					this.getPreviewHoverEventDetails(event)
+				);
+				this.forcePreviewReflow();
+				return;
+			}
+
+			this.schedulePreviewHoverLeave(() => {
+				if (!this.isPreview) return;
+
+				if (this.shouldIgnorePreviewHoverLeave()) {
+					this.debugPreview(
+						'hover-leave:ignored-still-hovered',
+						this.getPreviewHoverEventDetails()
+					);
+					this.forcePreviewReflow();
+					return;
+				}
+
+				this.playPreviewAnimations('out');
+				this.forcePreviewReflow();
+			});
 			return;
 		}
 
@@ -2068,15 +2399,16 @@ class Relation {
 								`[maxi-blocks-responsive="${breakpoint}"]`
 							);
 
-						const selector = (this.isSiteEditor || this.isEditorIframe)
-							? `body.maxi-blocks--active${finalTarget} {`.replace(
-									/\s{2,}/g,
-									' '
-							  )
-							: `body.maxi-blocks--active ${finalTarget} {`.replace(
-									/\s{2,}/g,
-									' '
-							  );
+						const selector =
+							this.isSiteEditor || this.isEditorIframe
+								? `body.maxi-blocks--active${finalTarget} {`.replace(
+										/\s{2,}/g,
+										' '
+								  )
+								: `body.maxi-blocks--active ${finalTarget} {`.replace(
+										/\s{2,}/g,
+										' '
+								  );
 
 						Object.entries(stylesObj[breakpoint]).forEach(
 							([key, value]) => {
@@ -2284,15 +2616,16 @@ class Relation {
 								let fullTransitionString =
 									fullTransitionStringRaw;
 
-								let selector = (this.isSiteEditor || this.isEditorIframe)
-									? `body.maxi-blocks--active${transitionTarget} {`.replace(
-											/\s{2,}/g,
-											' '
-									  )
-									: `body.maxi-blocks--active ${transitionTarget} {`.replace(
-											/\s{2,}/g,
-											' '
-									  );
+								let selector =
+									this.isSiteEditor || this.isEditorIframe
+										? `body.maxi-blocks--active${transitionTarget} {`.replace(
+												/\s{2,}/g,
+												' '
+										  )
+										: `body.maxi-blocks--active ${transitionTarget} {`.replace(
+												/\s{2,}/g,
+												' '
+										  );
 								if (
 									breakpoint !== 'general' &&
 									selector.includes(
@@ -2522,7 +2855,6 @@ class Relation {
 
 	enableTransitions() {
 		this.debugPreview('hover-enter:start');
-		// console.log('IB is active'); // 🔥
 		if (this.transitionTimeout) this.addPreviewTransition('in');
 		clearTimeout(this.transitionTimeout);
 
@@ -2542,7 +2874,6 @@ class Relation {
 
 	disableTransitions() {
 		this.cancelPreviewDemo();
-		// console.log('IB is inactive'); // 🔥
 		this.addPreviewTransition('out');
 
 		this.removeAddAttrToBlock();

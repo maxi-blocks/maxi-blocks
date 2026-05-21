@@ -20,8 +20,10 @@ jest.mock('../save', () => ({
 	addAlt: jest.fn(content => content),
 }));
 
+const entry = deprecated({})[0];
+
 const renderDeprecatedSvgIcon = linkSettings =>
-	deprecated({})[0].save({
+	entry.save({
 		attributes: {
 			content: '<svg><path></path></svg>',
 			linkSettings,
@@ -35,7 +37,7 @@ const resolveElement = element =>
 		: element;
 
 describe('svg icon deprecated save', () => {
-	it('keeps legacy links wrapped around the canvas when linkElement is missing', () => {
+	it('wraps canvas in a link when linkElement is missing (legacy shape)', () => {
 		const markup = renderDeprecatedSvgIcon({
 			url: 'https://example.com',
 		});
@@ -48,32 +50,28 @@ describe('svg icon deprecated save', () => {
 		expect(block.props.className).toBe('maxi-block');
 	});
 
-	it('wraps only the icon when the svg link target is selected', () => {
-		const markup = renderDeprecatedSvgIcon({
-			url: 'https://example.com',
-			linkElement: 'svg',
-		});
+	it('renders without a link wrapper when there is no URL', () => {
+		const markup = renderDeprecatedSvgIcon(undefined);
 		const block = resolveElement(markup);
-		const link = resolveElement(block.props.children);
-		const icon = link.props.children;
 
 		expect(block.type).toBe('div');
 		expect(block.props.className).toBe('maxi-block');
-		expect(link.type).toBe('a');
-		expect(link.props.className).toBe('maxi-link-wrapper');
-		expect(icon.props.className).toBe('maxi-svg-icon-block__icon');
+	});
+});
+
+describe('svg icon deprecated migrate', () => {
+	it('sets linkElement to canvas to preserve legacy canvas-link behaviour', () => {
+		const result = entry.migrate({
+			linkSettings: { url: 'https://example.com' },
+		});
+
+		expect(result.linkSettings.linkElement).toBe('canvas');
+		expect(result.linkSettings.url).toBe('https://example.com');
 	});
 
-	it('does not wrap inside the deprecated save when the canvas link target is selected', () => {
-		const markup = renderDeprecatedSvgIcon({
-			url: 'https://example.com',
-			linkElement: 'canvas',
-		});
-		const block = resolveElement(markup);
-		const icon = block.props.children;
+	it('leaves linkSettings untouched when there are none', () => {
+		const result = entry.migrate({ linkSettings: undefined });
 
-		expect(block.type).toBe('div');
-		expect(block.props.className).toBe('maxi-block');
-		expect(icon.props.className).toBe('maxi-svg-icon-block__icon');
+		expect(result.linkSettings).toBeUndefined();
 	});
 });

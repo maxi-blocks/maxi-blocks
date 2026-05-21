@@ -27,47 +27,39 @@ const save = props => {
 			)}
 		</RawHTML>
 	);
-	// Before linkElement existed, SVG icon links were saved around the canvas.
-	const shouldWrapLegacyCanvas = linkSettings?.linkElement === undefined;
-	const shouldWrapIcon =
-		linkSettings?.linkElement !== 'canvas' && !shouldWrapLegacyCanvas;
 
+	// Before linkElement existed, SVG icon links were saved around the canvas.
 	const block = (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			aria-label={attributes.ariaLabels?.canvas}
 		>
-			{shouldWrapIcon ? (
-				<WithLink
-					linkSettings={linkSettings ?? {}}
-					dynamicContent={dynamicContent}
-				>
-					{icon}
-				</WithLink>
-			) : (
-				icon
-			)}
+			{icon}
 		</MaxiBlock.save>
 	);
 
-	if (shouldWrapLegacyCanvas) {
-		return (
-			<WithLink
-				linkSettings={linkSettings ?? {}}
-				dynamicContent={dynamicContent}
-			>
-				{block}
-			</WithLink>
-		);
-	}
-
-	return block;
+	return (
+		<WithLink
+			linkSettings={linkSettings ?? {}}
+			dynamicContent={dynamicContent}
+		>
+			{block}
+		</WithLink>
+	);
 };
+
+const migrate = attrs => ({
+	...attrs,
+	linkSettings: attrs.linkSettings
+		? { ...attrs.linkSettings, linkElement: 'canvas' }
+		: attrs.linkSettings,
+});
 
 const deprecated = attributes => [
 	{
 		attributes,
 		save,
+		migrate,
 	},
 ];
 

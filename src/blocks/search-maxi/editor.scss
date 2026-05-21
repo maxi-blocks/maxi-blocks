@@ -29,37 +29,80 @@
 }
 
 .maxi-skin-control__reveal-action-tabs {
-	.components-button {
-		background: var(--maxi-white);
-		border: none;
-		border-radius: 10px;
-		padding: 6px 12px;
-		margin: 0;
-		min-width: 70px;
-		height: 30px;
-		box-shadow: 0 0 0 1px var(--maxi-grey-light);
-		color: var(--maxi-grey-dark);
-		transition: all 0.2s ease;
+	.maxi-base-control__field {
+		align-items: center;
+		display: flex;
+	}
 
-		&:first-child {
-			margin-right: 8px;
-		}
-		&:last-child {
-			margin-right: 2px !important;
-		}
+	.maxi-base-control__label {
+		flex: 1 0 auto;
+		margin-bottom: 0 !important;
+	}
+
+	.maxi-tabs-control {
+		flex: 0 1 156px;
+		gap: 8px;
+		min-width: 0;
+	}
+
+	.maxi-tabs-control__button {
+		align-items: center;
+		background: var(--maxi-white);
+		border: 1.5px solid var(--maxi-grey-light) !important;
+		border-radius: 4px;
+		box-sizing: border-box;
+		flex: 1 1 0;
+		flex-direction: row;
+		justify-content: center;
+		line-height: 1;
+		padding: 0 10px !important;
+		margin: 0 !important;
+		min-width: 0;
+		width: auto;
+		height: 30px;
+		box-shadow: none;
+		color: var(--maxi-grey-dark);
+		transition: all 0.5s ease;
 
 		&:hover {
-			background: var(--maxi-white);
-			box-shadow: 0 0 0 1px var(--maxi-primary-color);
-			color: var(--maxi-primary-color);
+			background-color: var(--maxi-whisper-green);
+			border-color: var(--maxi-secondary-color);
+			color: var(--maxi-black);
 		}
 
 		&:active,
 		&[aria-pressed='true'] {
 			background: var(--maxi-whisper-green) !important;
-			box-shadow: 0 0 0 1px var(--maxi-mid-green) !important;
-			color: var(--maxi-grey-dark) !important;
+			border-color: var(--maxi-secondary-color) !important;
+			box-shadow: none !important;
+			color: var(--maxi-secondary-color) !important;
 			font-weight: 700;
 		}
+	}
+}
+
+.maxi-search-settings-control__tabs {
+	> .maxi-tabs-control--nested {
+		margin-bottom: 0;
+		padding-top: 0;
+
+		> .maxi-tabs-control__button {
+			align-items: center;
+			justify-content: center;
+			min-height: 30px;
+			padding: 8px;
+		}
+	}
+
+	> .maxi-tabs-content--nested {
+		border: 0;
+		border-radius: 0;
+		margin-bottom: 0;
+		padding: 0;
+	}
+
+	.maxi-accordion-control__item[data-name='close icon']
+		> .maxi-accordion-control__item__panel {
+		padding: 0;
 	}
 }

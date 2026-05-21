@@ -374,7 +374,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
         {
             $labels = [
                 'name' => __('Maxi Images', 'maxi-blocks'),
-                'singular_name' => __('maxi-image-type', 'maxi-blocks'),
+                'singular_name' => 'maxi-image-type',
                 'search_items' => __('Search Maxi Images', 'maxi-blocks'),
                 'all_items' => __('All Maxi Images', 'maxi-blocks'),
                 'edit_item' => __('Edit Maxi Image', 'maxi-blocks'),

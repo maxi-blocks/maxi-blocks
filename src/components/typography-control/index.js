@@ -32,7 +32,11 @@ import {
 } from '@extensions/styles';
 import { getListTypographyAttributes } from '@extensions/text/lists';
 import { getDefaultSCValue } from '@extensions/style-cards';
-import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import {
+	getClosestAvailableFontWeight,
+	getToggledFontStyle,
+	getWeightOptions,
+} from './utils';
 import onChangeFontWeight from '@components/font-weight-control/utils';
 
 /**
@@ -1076,11 +1080,8 @@ const TypographyControl = props => {
 									onClick={() => {
 										const currentStyle =
 											getValue('font-style');
-										const isActive =
-											currentStyle === 'italic';
-										const targetStyle = isActive
-											? undefined
-											: 'italic';
+										const targetStyle =
+											getToggledFontStyle(currentStyle);
 										const fontName =
 											getValue('font-family') ??
 											getDefault('font-family');

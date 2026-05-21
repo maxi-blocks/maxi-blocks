@@ -223,6 +223,7 @@ const SettingTabsControl = props => {
 								className={classnames(
 									'maxi-tabs-control__button',
 									`maxi-tabs-control__button-${buttonLabelSlug}`,
+									item.className,
 									selected === item.value &&
 										'maxi-tabs-control__button--selected',
 									isNestedAccordion &&

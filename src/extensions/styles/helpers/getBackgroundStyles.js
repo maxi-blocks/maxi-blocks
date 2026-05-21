@@ -678,6 +678,68 @@ const getWrapperObject = ({
 };
 
 /**
+ * Get background layer sizing object for horizontal scroll effects
+ *
+ * @param {string}  breakpoint The breakpoint
+ * @param {boolean} isHover    Whether the styles are for a hover state
+ * @param {Object}  props      The attributes
+ */
+const getHorizontalScrollBackgroundSizingObject = ({
+	breakpoint,
+	isHover = false,
+	...props
+}) => {
+	if (isHover) return {};
+
+	const horizontalScrollStatus = getLastBreakpointAttribute({
+		target: 'scroll-horizontal-status',
+		breakpoint,
+		attributes: props,
+		isHover,
+	});
+	const directHorizontalScrollStatus = getAttributeValue({
+		target: 'scroll-horizontal-status',
+		props,
+		breakpoint,
+		isHover,
+		returnValueWithoutBreakpoint: false,
+	});
+	const breakpointIndex = BREAKPOINTS.indexOf(breakpoint);
+	const previousBreakpoint = BREAKPOINTS[breakpointIndex - 1];
+	const previousHorizontalScrollStatus =
+		previousBreakpoint &&
+		getLastBreakpointAttribute({
+			target: 'scroll-horizontal-status',
+			breakpoint: previousBreakpoint,
+			attributes: props,
+			isHover,
+		});
+
+	if (!horizontalScrollStatus) {
+		if (
+			directHorizontalScrollStatus === false &&
+			previousHorizontalScrollStatus
+		) {
+			return {
+				label: 'Background layer horizontal scroll sizing',
+				[breakpoint]: {
+					'min-width': 'initial',
+				},
+			};
+		}
+
+		return {};
+	}
+
+	return {
+		label: 'Background layer horizontal scroll sizing',
+		[breakpoint]: {
+			'min-width': 'max-content',
+		},
+	};
+};
+
+/**
  * Get SVG background object
  *
  * @param {'light'|'dark'} blockStyle The block style
@@ -1341,6 +1403,24 @@ export const getBlockBackgroundStyles = ({
 
 	if (layers.length > 0) {
 		BREAKPOINTS.forEach(breakpoint => {
+			const horizontalScrollBackgroundSizing =
+				getHorizontalScrollBackgroundSizingObject({
+					...props,
+					breakpoint,
+					isHover,
+				});
+
+			if (!isEmpty(horizontalScrollBackgroundSizing)) {
+				response[target] = {
+					...response[target],
+					horizontalScrollBackgroundSizing: merge(
+						{},
+						response?.[target]?.horizontalScrollBackgroundSizing,
+						horizontalScrollBackgroundSizing
+					),
+				};
+			}
+
 			const backgroundLayers = getBackgroundLayers({
 				response,
 				layers,

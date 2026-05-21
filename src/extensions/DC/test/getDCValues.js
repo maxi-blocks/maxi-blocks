@@ -9,6 +9,7 @@ jest.mock('@extensions/DC/constants', () => ({
 		relation: 'current',
 		author: '',
 		content: props => props.testProperty || 'default content',
+		'media-size': 512,
 	},
 }));
 
@@ -95,6 +96,22 @@ describe('getDCValues', () => {
 			source: 'wp', // default
 			relation: 'current', // default
 			author: '', // default
+		});
+	});
+
+	it('should default avatar media size when dynamic content does not provide one', () => {
+		const dynamicContent = {
+			'dc-status': true,
+			'dc-field': 'author_avatar',
+			'dc-media-size': undefined,
+		};
+
+		const result = getDCValues(dynamicContent, null);
+
+		expect(result).toEqual({
+			status: true,
+			field: 'author_avatar',
+			mediaSize: 512,
 		});
 	});
 

@@ -235,7 +235,10 @@ const AdvancedNumberControl = props => {
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 
-		if (isNumericInput && hasPositiveMin && result === '') return;
+		if (isNumericInput && hasPositiveMin && result === '') {
+			handleChange.cancel?.();
+			return;
+		}
 
 		const isBelowMin =
 			isNumericInput &&

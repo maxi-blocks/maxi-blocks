@@ -20,14 +20,55 @@ if (process.env.NODE_ENV !== 'production') {
 	window.maxiBlocksClearStyleCardsCache = clearIndexedDB;
 }
 
+const STYLE_CARDS_RETRY_DELAY = 500;
+const STYLE_CARDS_FETCH_ATTEMPTS = 3;
+
+const isInvalidJSONError = error => error?.code === 'invalid_json';
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const parseStyleCardsResponse = response => {
+	if (response && response.data) {
+		return typeof response.data === 'string'
+			? JSON.parse(response.data)
+			: response.data;
+	}
+
+	return typeof response === 'string' ? JSON.parse(response) : response;
+};
+
+const fetchStyleCards = async path => {
+	let lastError;
+
+	for (let attempt = 1; attempt <= STYLE_CARDS_FETCH_ATTEMPTS; attempt += 1) {
+		try {
+			return await apiFetch({ path });
+		} catch (error) {
+			lastError = error;
+
+			if (
+				!isInvalidJSONError(error) ||
+				attempt === STYLE_CARDS_FETCH_ATTEMPTS
+			) {
+				throw error;
+			}
+
+			await wait(STYLE_CARDS_RETRY_DELAY);
+		}
+	}
+
+	throw lastError;
+};
+
 /**
  * Controls
  */
 const controls = {
 	async RECEIVE_STYLE_CARDS() {
+		let cachedData = null;
+
 		try {
 			// Step 1: Try to load from IndexedDB cache first
-			let cachedData = null;
 			try {
 				cachedData = await loadFromIndexedDB();
 			} catch (cacheError) {
@@ -42,11 +83,11 @@ const controls = {
 			if (cachedData && cachedData.styleCards && cachedData.hash) {
 				// We have cached data, verify if it's still valid
 				try {
-					const response = await apiFetch({
-						path: `/maxi-blocks/v1.0/style-cards/?client_hash=${encodeURIComponent(
+					const response = await fetchStyleCards(
+						`/maxi-blocks/v1.0/style-cards/?client_hash=${encodeURIComponent(
 							cachedData.hash
-						)}`,
-					});
+						)}`
+					);
 
 					// Check if cache is still valid
 					if (response && response.status === 'not_modified') {
@@ -56,10 +97,7 @@ const controls = {
 
 					// Cache is stale, update with new data
 					if (response && response.data) {
-						const styleCards =
-							typeof response.data === 'string'
-								? JSON.parse(response.data)
-								: response.data;
+						const styleCards = parseStyleCardsResponse(response);
 
 						// Save to IndexedDB for next time
 						try {
@@ -75,25 +113,24 @@ const controls = {
 						return styleCards;
 					}
 				} catch (validationError) {
-					// eslint-disable-next-line no-console
-					console.warn(
-						'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:',
-						JSON.stringify(validationError)
-					);
+					if (!isInvalidJSONError(validationError)) {
+						// eslint-disable-next-line no-console
+						console.warn(
+							'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:',
+							JSON.stringify(validationError)
+						);
+					}
 					// Fall through to fresh fetch below
 				}
 			}
 
 			// Step 2: No cache or failed to load, fetch fresh data
-			const response = await apiFetch({
-				path: '/maxi-blocks/v1.0/style-cards/',
-			});
+			const response = await fetchStyleCards(
+				'/maxi-blocks/v1.0/style-cards/'
+			);
 
 			if (response && response.data) {
-				const styleCards =
-					typeof response.data === 'string'
-						? JSON.parse(response.data)
-						: response.data;
+				const styleCards = parseStyleCardsResponse(response);
 
 				// Save to IndexedDB for next time
 				if (response.hash) {
@@ -112,10 +149,12 @@ const controls = {
 			}
 
 			// Fallback to old format (backwards compatibility)
-			return typeof response === 'string'
-				? JSON.parse(response)
-				: response;
+			return parseStyleCardsResponse(response);
 		} catch (error) {
+			if (isInvalidJSONError(error)) {
+				return cachedData?.styleCards || {};
+			}
+
 			// eslint-disable-next-line no-console
 			console.warn(
 				'[RECEIVE_STYLE_CARDS] Error fetching style cards:',

@@ -91,3 +91,6 @@ export const getClosestAvailableFontWeight = (font, targetWeight) =>
 			Math.abs(Number(targetWeight) - Number(prevValue)) -
 			Math.abs(Number(targetWeight) - Number(currValue))
 	)[0].value;
+
+export const getToggledFontStyle = fontStyle =>
+	fontStyle === 'italic' ? 'normal' : 'italic';

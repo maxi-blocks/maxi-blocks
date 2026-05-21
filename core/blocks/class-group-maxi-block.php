@@ -82,6 +82,7 @@ if (!class_exists('MaxiBlocks_Group_Maxi_Block')):
                         'border',
                         'borderWidth',
                         'borderRadius',
+                        'scroll',
                     ]),
                     [ 'block_style' => $block_style,]
                 )

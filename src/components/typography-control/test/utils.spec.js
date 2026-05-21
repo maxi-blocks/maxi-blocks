@@ -1,4 +1,7 @@
-import { getClosestAvailableFontWeight } from '@components/typography-control/utils';
+import {
+	getClosestAvailableFontWeight,
+	getToggledFontStyle,
+} from '@components/typography-control/utils';
 import { select } from '@wordpress/data';
 
 jest.mock('@wordpress/data', () => {
@@ -50,5 +53,16 @@ describe('getClosestAvailableFontWeight', () => {
 		const result = getClosestAvailableFontWeight(font, targetWeight);
 
 		expect(result).toBe(900);
+	});
+});
+
+describe('getToggledFontStyle', () => {
+	it('returns italic when the current style is not italic', () => {
+		expect(getToggledFontStyle('normal')).toBe('italic');
+		expect(getToggledFontStyle(undefined)).toBe('italic');
+	});
+
+	it('returns normal when the current style is italic', () => {
+		expect(getToggledFontStyle('italic')).toBe('normal');
 	});
 });

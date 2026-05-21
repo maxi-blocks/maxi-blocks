@@ -107,6 +107,7 @@ const Repeater = ({
 			{!isRepeaterInherited && hasDisallowedBlocks && (
 				<InfoBox
 					message={sprintf(
+						/* translators: %s: Comma-separated list of unsupported block names */
 						__(
 							'Repeater cannot be enabled because this row contains blocks that are not supported: %s. Remove them to enable repeater.',
 							'maxi-blocks'

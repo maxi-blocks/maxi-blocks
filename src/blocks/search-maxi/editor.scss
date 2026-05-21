@@ -45,12 +45,17 @@
 		min-width: 0;
 	}
 
-	.components-button {
+	.maxi-tabs-control__button {
+		align-items: center;
 		background: var(--maxi-white);
-		border: 1.5px solid var(--maxi-grey-light);
+		border: 1.5px solid var(--maxi-grey-light) !important;
 		border-radius: 4px;
+		box-sizing: border-box;
 		flex: 1 1 0;
-		padding: 8px;
+		flex-direction: row;
+		justify-content: center;
+		line-height: 1;
+		padding: 0 10px !important;
 		margin: 0 !important;
 		min-width: 0;
 		width: auto;

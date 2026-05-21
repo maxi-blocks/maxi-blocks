@@ -21,6 +21,7 @@ import SkinControl from './components/skin-control';
 import PlaceholderColorControl from './components/placeholder-color-control';
 import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
+import { getIconRevealPositionSettings } from './utils';
 import { withMaxiInspector } from '@extensions/inspector';
 import * as inspectorTabs from '@components/inspector-tabs';
 
@@ -103,26 +104,12 @@ const Inspector = props => {
 	};
 
 	const positionSettings = val => {
-		const inpRightWidth = props['input-border-left-width-general'];
-		const inpLeftWidth = props['input-border-right-width-general'];
-		const inpLeftPadding = props['input-padding-left-general'];
-		const inpRightPadding = props['input-padding-right-general'];
+		const iconRevealPositionSettings = getIconRevealPositionSettings(val);
 
-		(val === 'center' || val === 'right') &&
+		iconRevealPositionSettings &&
 			maxiSetAttributes({
 				'icon-position': val,
-				'input-border-left-width-general': inpRightWidth || 4,
-				'input-border-right-width-general': inpLeftWidth || 0,
-				'input-padding-left-general': inpLeftPadding || 10,
-				'input-padding-right-general': inpRightPadding || 35,
-			});
-		val === 'left' &&
-			maxiSetAttributes({
-				'icon-position': val,
-				'input-border-left-width-general': inpRightWidth || 0,
-				'input-border-right-width-general': inpLeftWidth || 4,
-				'input-padding-left-general': inpLeftPadding || 35,
-				'input-padding-right-general': inpRightPadding || 10,
+				...iconRevealPositionSettings,
 			});
 	};
 

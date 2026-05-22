@@ -130,6 +130,12 @@ const getLightBoxObject = props => {
 
 const getOverlayImagePositionStyles = (props, prefix) => {
 	const response = {};
+	const isValidPositionValue = value =>
+		value !== false &&
+		value !== undefined &&
+		value !== null &&
+		`${value}`.trim() !== '' &&
+		!Number.isNaN(Number(value));
 
 	breakpoints.forEach(breakpoint => {
 		const horizontalPosition = getLastBreakpointAttribute({
@@ -144,12 +150,8 @@ const getOverlayImagePositionStyles = (props, prefix) => {
 		});
 
 		response[breakpoint] = {
-			...(horizontalPosition !== false &&
-				horizontalPosition !== undefined &&
-				horizontalPosition !== null &&
-				verticalPosition !== false &&
-				verticalPosition !== undefined &&
-				verticalPosition !== null && {
+			...(isValidPositionValue(horizontalPosition) &&
+				isValidPositionValue(verticalPosition) && {
 					'object-position': `${horizontalPosition}% ${verticalPosition}%`,
 				}),
 		};

@@ -69,4 +69,24 @@ describe('Video Maxi styles', () => {
 			'object-position': '25% 75%',
 		});
 	});
+
+	it('does not add object-position styles when a popup overlay image position is empty', () => {
+		const uniqueID = 'video-maxi-test';
+		const styles = getStyles({
+			uniqueID,
+			blockStyle: 'light',
+			playerType: 'popup',
+			'overlay-media-width-general': '100',
+			'overlay-media-width-unit-general': '%',
+			'overlay-media-height-general': '100',
+			'overlay-media-height-unit-general': '%',
+			'overlay-media-object-position-horizontal-general': '',
+			'overlay-media-object-position-vertical-general': 75,
+		});
+
+		expect(
+			styles[uniqueID][' .maxi-video-block__overlay-image']
+				.objectPosition
+		).toBeUndefined();
+	});
 });

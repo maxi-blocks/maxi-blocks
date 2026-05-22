@@ -368,8 +368,12 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
 				if (
 					false !== $horizontal_position &&
 					null !== $horizontal_position &&
+					'' !== trim((string) $horizontal_position) &&
+					is_numeric($horizontal_position) &&
 					false !== $vertical_position &&
-					null !== $vertical_position
+					null !== $vertical_position &&
+					'' !== trim((string) $vertical_position) &&
+					is_numeric($vertical_position)
 				) {
 					$response[$breakpoint]['object-position'] =
 						"{$horizontal_position}% {$vertical_position}%";

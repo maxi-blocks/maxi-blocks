@@ -169,6 +169,27 @@ describe('applyLinkFormat', () => {
 		});
 	});
 
+	it('Omits whitespace-only title and aria label attributes', () => {
+		const props = {
+			formatValue: { text: 'test' },
+			typography: { size: '16px' },
+			linkAttributes: {
+				url: 'https://example.com',
+				title: '   ',
+				ariaLabel: ' \t ',
+			},
+		};
+
+		applyLinkFormat(props);
+
+		expect(applyFormat).toHaveBeenCalledWith(props.formatValue, {
+			type: 'maxi-blocks/text-link',
+			attributes: {
+				url: 'https://example.com',
+			},
+		});
+	});
+
 	it('Preserves non-empty title and aria label attributes', () => {
 		const props = {
 			formatValue: { text: 'test' },

@@ -63,6 +63,7 @@ const save = props => {
 		...sanitizeLinkAttributes(linkProps),
 		isInlineLink,
 	};
+	const hasLink = !isEmpty(sanitizedLinkProps.href);
 	const linkAriaLabel = sanitizedLinkProps['aria-label'];
 
 	const buttonClasses = classnames(
@@ -81,11 +82,12 @@ const save = props => {
 			<Button
 				className={buttonClasses}
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
-				{...(!isEmpty(sanitizedLinkProps.href) && sanitizedLinkProps)}
+				{...(hasLink && sanitizedLinkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
-				{...(linkAriaLabel && {
-					'aria-label': linkAriaLabel,
-				})}
+				{...(hasLink &&
+					linkAriaLabel && {
+						'aria-label': linkAriaLabel,
+					})}
 				{...(dcLinkTarget === 'author_email' && {
 					'data-email-obfuscated': true,
 				})}

@@ -44,10 +44,13 @@ const DISABLED_BLOCKS = [
 
 const getManualLinkTitle = (linkSettings = {}) => {
 	const { title, url } = linkSettings;
+	const normalizedTitle = title?.trim?.();
+	const normalizedUrl = url?.trim?.();
 
-	if (isEmpty(title) || title === url) return null;
+	if (isEmpty(normalizedTitle) || normalizedTitle === normalizedUrl)
+		return null;
 
-	return title;
+	return normalizedTitle;
 };
 
 /**

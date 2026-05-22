@@ -335,7 +335,46 @@ if (!class_exists('MaxiBlocks_Video_Maxi_Block')):
 					false,
 					$prefix,
 				),
+				'objectPosition' => self::get_overlay_image_position_styles(
+					$props,
+					$prefix,
+				),
 			];
+
+			return $response;
+		}
+
+		public static function get_overlay_image_position_styles(
+			$props,
+			$prefix
+		) {
+			$response = [];
+			$breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+			foreach ($breakpoints as $breakpoint) {
+				$horizontal_position = get_last_breakpoint_attribute([
+					'target' => "{$prefix}object-position-horizontal",
+					'breakpoint' => $breakpoint,
+					'attributes' => $props,
+				]);
+				$vertical_position = get_last_breakpoint_attribute([
+					'target' => "{$prefix}object-position-vertical",
+					'breakpoint' => $breakpoint,
+					'attributes' => $props,
+				]);
+
+				$response[$breakpoint] = [];
+
+				if (
+					false !== $horizontal_position &&
+					null !== $horizontal_position &&
+					false !== $vertical_position &&
+					null !== $vertical_position
+				) {
+					$response[$breakpoint]['object-position'] =
+						"{$horizontal_position}% {$vertical_position}%";
+				}
+			}
 
 			return $response;
 		}

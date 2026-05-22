@@ -128,6 +128,36 @@ const getLightBoxObject = props => {
 	return response;
 };
 
+const getOverlayImagePositionStyles = (props, prefix) => {
+	const response = {};
+
+	breakpoints.forEach(breakpoint => {
+		const horizontalPosition = getLastBreakpointAttribute({
+			target: `${prefix}object-position-horizontal`,
+			breakpoint,
+			attributes: props,
+		});
+		const verticalPosition = getLastBreakpointAttribute({
+			target: `${prefix}object-position-vertical`,
+			breakpoint,
+			attributes: props,
+		});
+
+		response[breakpoint] = {
+			...(horizontalPosition !== false &&
+				horizontalPosition !== undefined &&
+				horizontalPosition !== null &&
+				verticalPosition !== false &&
+				verticalPosition !== undefined &&
+				verticalPosition !== null && {
+					'object-position': `${horizontalPosition}% ${verticalPosition}%`,
+				}),
+		};
+	});
+
+	return response;
+};
+
 const getOverlayImageStyles = props => {
 	const prefix = 'overlay-media-';
 
@@ -145,6 +175,7 @@ const getOverlayImageStyles = props => {
 			false,
 			prefix
 		),
+		objectPosition: getOverlayImagePositionStyles(props, prefix),
 	};
 
 	return response;

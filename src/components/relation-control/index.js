@@ -38,6 +38,7 @@ import {
 	getRelationControlId,
 	getRelationId,
 	getRelationStaticStateUpdate,
+	getSyncedRelationPreviewIds,
 	groupRelations,
 	mergeRelationStartAttributeUpdates,
 	revealRelationBlockElement,
@@ -752,7 +753,31 @@ const RelationControl = props => {
 				}),
 		});
 
-		onChange({ relations: newRelations });
+		const updateObj = { relations: newRelations };
+
+		if (
+			!props['relations-preview'] &&
+			props['relations-preview-state'] === 'end'
+		) {
+			const nextPreviewRelationIds = getSyncedRelationPreviewIds({
+				relationGroup,
+				relations: newRelations,
+				selectedRelationIds:
+					props['relations-preview-relation-ids'] || [],
+			});
+
+			if (
+				!isEqual(
+					nextPreviewRelationIds,
+					props['relations-preview-relation-ids'] || []
+				)
+			) {
+				updateObj['relations-preview-relation-ids'] =
+					nextPreviewRelationIds;
+			}
+		}
+
+		onChange(updateObj);
 	};
 
 	const onChangeRelationGroupSettings = (relationGroup, sid) => {

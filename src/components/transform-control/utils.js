@@ -168,6 +168,33 @@ export const getDisabledTransformCategories = (
 	return [...disabledCategories, ...bgLayersWithParallaxCategories];
 };
 
+const isPlainObject = value =>
+	!!value && typeof value === 'object' && !Array.isArray(value);
+
+const mergeTransformTarget = (target = {}, update = {}) =>
+	Object.entries(update).reduce(
+		(acc, [key, value]) => ({
+			...acc,
+			[key]:
+				isPlainObject(acc[key]) && isPlainObject(value)
+					? {
+							...acc[key],
+							...value,
+					  }
+					: value,
+		}),
+		{ ...target }
+	);
+
+const applyTransformDiff = (currentOptions = {}, diffTypeObj = {}) =>
+	Object.entries(diffTypeObj).reduce(
+		(acc, [target, targetObj]) => ({
+			...acc,
+			[target]: mergeTransformTarget(acc[target], targetObj),
+		}),
+		{ ...currentOptions }
+	);
+
 export const getUpdatedTransformOptions = ({
 	transformOptions,
 	updates,
@@ -178,27 +205,20 @@ export const getUpdatedTransformOptions = ({
 
 	Object.entries(updates).forEach(([type, diffTypeObj]) => {
 		const breakpointKey = `${type}-${breakpoint}`;
-		const typeObj = { ...nextTransformOptions[breakpointKey] };
+		const typeObj = applyTransformDiff(
+			nextTransformOptions[breakpointKey],
+			diffTypeObj
+		);
 
-		Object.entries(diffTypeObj).forEach(([target, targetObj]) => {
-			typeObj[target] = {
-				...typeObj?.[target],
-				...targetObj,
-			};
-		});
-
-		nextTransformOptions[breakpointKey] = {
-			...nextTransformOptions[breakpointKey],
-			...typeObj,
-		};
+		nextTransformOptions[breakpointKey] = typeObj;
 
 		if (breakpoint === 'general' && baseBreakpoint) {
 			const baseBreakpointKey = `${type}-${baseBreakpoint}`;
 
-			nextTransformOptions[baseBreakpointKey] = {
-				...nextTransformOptions[baseBreakpointKey],
-				...typeObj,
-			};
+			nextTransformOptions[baseBreakpointKey] = applyTransformDiff(
+				nextTransformOptions[baseBreakpointKey],
+				diffTypeObj
+			);
 		}
 	});
 

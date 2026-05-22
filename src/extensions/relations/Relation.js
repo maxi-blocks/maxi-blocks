@@ -1457,9 +1457,6 @@ class Relation {
 					this.mainDocument?.querySelectorAll?.(selector) || []
 				);
 				const firstElement = elements[0];
-				const computed = firstElement
-					? this.mainWindow?.getComputedStyle?.(firstElement)
-					: null;
 
 				return {
 					selector,

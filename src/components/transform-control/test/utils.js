@@ -58,4 +58,81 @@ describe('transform control utils', () => {
 			nextTransformOptions['transform-rotate-xxl'].canvas.normal.z
 		).toBe(45);
 	});
+
+	it('preserves unchanged base breakpoint targets when general updates are mirrored', () => {
+		const transformOptions = {
+			'transform-rotate-general': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+						z: 0,
+					},
+				},
+				image: {
+					normal: {
+						x: 0,
+						y: 0,
+						z: 12,
+					},
+				},
+			},
+			'transform-rotate-xxl': {
+				canvas: {
+					normal: {
+						x: 10,
+						y: 20,
+						z: 30,
+					},
+				},
+				image: {
+					normal: {
+						x: 1,
+						y: 2,
+						z: 3,
+					},
+				},
+			},
+		};
+
+		const nextTransformOptions = getUpdatedTransformOptions({
+			transformOptions,
+			updates: {
+				'transform-rotate': {
+					canvas: {
+						normal: {
+							z: 45,
+						},
+					},
+				},
+			},
+			breakpoint: 'general',
+			baseBreakpoint: 'xxl',
+		});
+
+		expect(
+			nextTransformOptions['transform-rotate-general'].canvas.normal
+		).toEqual({
+			x: 0,
+			y: 0,
+			z: 45,
+		});
+		expect(
+			nextTransformOptions['transform-rotate-general'].image.normal.z
+		).toBe(12);
+		expect(
+			nextTransformOptions['transform-rotate-xxl'].canvas.normal
+		).toEqual({
+			x: 10,
+			y: 20,
+			z: 45,
+		});
+		expect(
+			nextTransformOptions['transform-rotate-xxl'].image.normal
+		).toEqual({
+			x: 1,
+			y: 2,
+			z: 3,
+		});
+	});
 });

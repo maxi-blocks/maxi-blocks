@@ -6,6 +6,7 @@ import {
 	getRelationControlId,
 	getRelationId,
 	getRelationStaticStateUpdate,
+	getSyncedRelationPreviewIds,
 	groupRelations,
 	mergeRelationStartAttributeUpdates,
 	revealRelationBlockElement,
@@ -410,6 +411,44 @@ describe('relation-control utils', () => {
 				groupId: 'relation-group-7',
 			}),
 		]);
+	});
+
+	it('syncs static end preview IDs when a selected relation group target is replaced', () => {
+		const relations = [baseRelation];
+		const [group] = groupRelations(relations);
+		const nextRelations = syncRelationGroupTargets({
+			relations,
+			relationGroup: group,
+			uniqueIDs: ['target-b'],
+			isButton: false,
+		});
+
+		expect(
+			getSyncedRelationPreviewIds({
+				relationGroup: group,
+				relations: nextRelations,
+				selectedRelationIds: [1],
+			})
+		).toEqual([2]);
+	});
+
+	it('keeps static end preview IDs when another relation group changes', () => {
+		const relations = [baseRelation];
+		const [group] = groupRelations(relations);
+		const nextRelations = syncRelationGroupTargets({
+			relations,
+			relationGroup: group,
+			uniqueIDs: ['target-b'],
+			isButton: false,
+		});
+
+		expect(
+			getSyncedRelationPreviewIds({
+				relationGroup: group,
+				relations: nextRelations,
+				selectedRelationIds: [9],
+			})
+		).toEqual([9]);
 	});
 
 	it('keeps one empty relation when every target is deselected', () => {

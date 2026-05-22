@@ -206,6 +206,35 @@ export const getRelationStaticStateUpdate = ({
 	'relations-preview-relation-ids': relationGroup.relationIds,
 });
 
+export const getSyncedRelationPreviewIds = ({
+	relationGroup,
+	relations = [],
+	selectedRelationIds = [],
+}) => {
+	const selectedRelationIdSet = new Set(
+		(selectedRelationIds || []).map(id => String(id))
+	);
+	const relationIds = getRelationIdSet(relationGroup);
+
+	if (
+		!relationGroup?.relationIds?.some(id =>
+			selectedRelationIdSet.has(String(id))
+		)
+	) {
+		return selectedRelationIds;
+	}
+
+	const groupId = getRelationGroupId(relationGroup);
+
+	return relations
+		.filter(
+			relation =>
+				relation.groupId === groupId ||
+				(!relation.groupId && relationIds.has(relation.id))
+		)
+		.map(relation => relation.id);
+};
+
 const RELATION_CONTAINER_BLOCK_NAME = 'maxi-blocks/container-maxi';
 const RELATION_COLUMN_BLOCK_NAME = 'maxi-blocks/column-maxi';
 const RELATION_REVEAL_CLASS_NAME = 'maxi-block--revealed';

@@ -14,17 +14,15 @@ import { isEmpty, without } from 'lodash';
  * Internal dependencies
  */
 import AccordionControl from '@components/accordion-control';
-import AxisPositionControl from '@components/axis-position-control';
+import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ButtonControl from './components/button-control';
 import SkinControl from './components/skin-control';
 import PlaceholderColorControl from './components/placeholder-color-control';
+import SearchPositionControl from './components/position-control';
 import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
-import {
-	getIconRevealPositionSettings,
-	getResponsiveIconPosition,
-} from './utils';
+import { getIconRevealPositionSettings } from './utils';
 import { withMaxiInspector } from '@extensions/inspector';
 import * as inspectorTabs from '@components/inspector-tabs';
 
@@ -49,7 +47,6 @@ const Inspector = props => {
 		'icon-content': iconContent,
 		[`${closeIconPrefix}icon-content`]: closeIconContent,
 	} = attributes;
-	const buttonPosition = getResponsiveIconPosition(attributes, deviceType);
 	const { selectors, categories } = customCss;
 
 	const getCategoriesCss = () => {
@@ -106,8 +103,7 @@ const Inspector = props => {
 		disableVideo: true,
 	};
 
-	const positionSettings = val => {
-		const breakpoint = deviceType || 'general';
+	const positionSettings = (val, breakpoint = deviceType || 'general') => {
 		const iconRevealPositionSettings = getIconRevealPositionSettings(
 			val,
 			breakpoint
@@ -243,36 +239,36 @@ const Inspector = props => {
 																		),
 																		content:
 																			(
-																				<AxisPositionControl
-																					label='Button'
-																					selected={
-																						buttonPosition
-																					}
-																					onChange={val => {
-																						positionSettings(
-																							val
-																						);
-																					}}
+																				<ResponsiveTabsControl
 																					breakpoint={
 																						deviceType
 																					}
-																					responsive
-																					disableY
-																					enableCenter={
-																						skin ===
-																						'icon-reveal'
-																					}
-																					buttonClasses={{
-																						left: 'maxi-search-control__left',
-																						center: 'maxi-search-control__center',
-																						right: 'maxi-search-control__right',
-																					}}
-																				/>
+																					target='search-icon-position'
+																				>
+																					<SearchPositionControl
+																						attributes={
+																							attributes
+																						}
+																						breakpoint={
+																							deviceType
+																						}
+																						onChange={
+																							positionSettings
+																						}
+																						skin={
+																							skin
+																						}
+																					/>
+																				</ResponsiveTabsControl>
 																			),
 																		extraIndicators:
 																			[
 																				'icon-position',
 																				`icon-position-${deviceType}`,
+																			],
+																		extraIndicatorsResponsive:
+																			[
+																				'icon-position',
 																			],
 																	},
 																	...inspectorTabs.border(

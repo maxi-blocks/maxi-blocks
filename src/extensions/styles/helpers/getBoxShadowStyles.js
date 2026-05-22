@@ -182,12 +182,8 @@ const getBoxShadowStyles = ({
 				? values[target].value
 				: values[target]?.defaultValue;
 
-		const horizontalValue = isNumber(values.horizontal?.value)
-			? values.horizontal.value
-			: values.horizontal?.defaultValue;
-		const verticalValue = isNumber(values.vertical?.value)
-			? values.vertical.value
-			: values.vertical?.defaultValue;
+		const horizontalValue = getDimensionValue('horizontal');
+		const verticalValue = getDimensionValue('vertical');
 		const hasNonZeroShadowDimension = [
 			'horizontal',
 			'vertical',

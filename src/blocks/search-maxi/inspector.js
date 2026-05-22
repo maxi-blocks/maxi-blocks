@@ -21,7 +21,10 @@ import SkinControl from './components/skin-control';
 import PlaceholderColorControl from './components/placeholder-color-control';
 import { getGroupAttributes } from '@extensions/styles';
 import { ariaLabelsCategories, customCss, prefixes } from './data';
-import { getIconRevealPositionSettings } from './utils';
+import {
+	getIconRevealPositionSettings,
+	getResponsiveIconPosition,
+} from './utils';
 import { withMaxiInspector } from '@extensions/inspector';
 import * as inspectorTabs from '@components/inspector-tabs';
 
@@ -40,13 +43,13 @@ const Inspector = props => {
 
 	const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 	const {
-		'icon-position': buttonPosition,
 		buttonSkin,
 		iconRevealAction,
 		skin,
 		'icon-content': iconContent,
 		[`${closeIconPrefix}icon-content`]: closeIconContent,
 	} = attributes;
+	const buttonPosition = getResponsiveIconPosition(attributes, deviceType);
 	const { selectors, categories } = customCss;
 
 	const getCategoriesCss = () => {
@@ -104,11 +107,18 @@ const Inspector = props => {
 	};
 
 	const positionSettings = val => {
-		const iconRevealPositionSettings = getIconRevealPositionSettings(val);
+		const breakpoint = deviceType || 'general';
+		const iconRevealPositionSettings = getIconRevealPositionSettings(
+			val,
+			breakpoint
+		);
 
 		iconRevealPositionSettings &&
 			maxiSetAttributes({
-				'icon-position': val,
+				[`icon-position-${breakpoint}`]: val,
+				...(breakpoint === 'general' && {
+					'icon-position': val,
+				}),
 				...iconRevealPositionSettings,
 			});
 	};
@@ -226,8 +236,7 @@ const Inspector = props => {
 																				prefix: closeIconPrefix,
 																			}
 																		)),
-																	...(deviceType ===
-																		'general' && {
+																	{
 																		label: __(
 																			'Position',
 																			'maxi-blocks'
@@ -247,6 +256,7 @@ const Inspector = props => {
 																					breakpoint={
 																						deviceType
 																					}
+																					responsive
 																					disableY
 																					enableCenter={
 																						skin ===
@@ -262,8 +272,9 @@ const Inspector = props => {
 																		extraIndicators:
 																			[
 																				'icon-position',
+																				`icon-position-${deviceType}`,
 																			],
-																	}),
+																	},
 																	...inspectorTabs.border(
 																		{
 																			props,

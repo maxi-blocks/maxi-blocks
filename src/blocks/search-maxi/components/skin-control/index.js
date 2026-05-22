@@ -38,6 +38,10 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		`${inputPrefix}border-left-width-general`,
 		`${inputPrefix}border-right-width-general`,
 	]);
+	const resetPosition = {
+		'icon-position': 'right',
+		'icon-position-general': 'right',
+	};
 
 	return (
 		<>
@@ -68,7 +72,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					} else if (skin === 'boxed') {
 						onChange({
@@ -77,7 +81,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					} else if (skin === 'icon-reveal') {
 						onChange({
@@ -91,7 +95,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
 							...resetBorders,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					}
 

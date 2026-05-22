@@ -40,9 +40,15 @@ import { toolbarLink } from '@maxi-icons';
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
-const LinkContent = props => {
-	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
-		props;
+export const LinkContent = props => {
+	const {
+		onChange,
+		isList,
+		textLevel,
+		onClose = () => {},
+		blockStyle,
+		styleCard,
+	} = props;
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 

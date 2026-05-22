@@ -1,5 +1,6 @@
 import { inlineLinkFields } from '@extensions/DC/constants';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
+import sanitizeLinkAttributes from '@extensions/link/sanitizeLinkAttributes';
 
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
@@ -32,14 +33,16 @@ const getLinkAttributesFromLinkSettings = (
 		dcLinkTarget
 	);
 
-	return {
+	return sanitizeLinkAttributes({
 		rel,
 		href,
 		target,
+		title: linkSettings.title,
+		'aria-label': linkSettings.ariaLabel,
 		...(isEmailLinkObfuscated && {
 			'data-email-obfuscated': isEmailLinkObfuscated,
 		}),
-	};
+	});
 };
 
 const WithLink = props => {

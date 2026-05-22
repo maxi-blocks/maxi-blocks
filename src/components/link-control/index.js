@@ -11,6 +11,7 @@ import { useEffect } from '@wordpress/element';
  * Internal dependencies
  */
 import Button from '@components/button';
+import TextControl from '@components/text-control';
 import ToggleSwitch from '@components/toggle-switch';
 
 /**
@@ -30,6 +31,8 @@ const LinkControl = ({
 	disableOpenInNewTab,
 	onChangeLink,
 	onRemoveLink,
+	showRemoveLink = true,
+	showAccessibility = true,
 }) => {
 	// Add effect to disable browser autocomplete
 	useEffect(() => {
@@ -48,6 +51,20 @@ const LinkControl = ({
 		return () => clearTimeout(timer);
 	}, []);
 
+	const onChangeNativeLink = value => {
+		const isUrlChanged = value.url !== linkValue.url;
+		const title =
+			isUrlChanged && linkValue.title === linkValue.url
+				? ''
+				: linkValue.title;
+
+		onChangeLink({
+			...value,
+			title,
+			ariaLabel: linkValue.ariaLabel,
+		});
+	};
+
 	return (
 		<div
 			className={classnames(
@@ -59,11 +76,22 @@ const LinkControl = ({
 				searchInputPlaceholder={__('Search or type URL', 'maxi-blocks')}
 				value={linkValue}
 				forceIsEditingLink={isDCLinkActive ? false : undefined}
-				onChange={onChangeLink}
+				onChange={onChangeNativeLink}
 				settings={[]}
 			/>
 			{(isDCLinkActive || !isEmpty(linkValue.url)) && (
 				<>
+					<TextControl
+						label={__('Title', 'maxi-blocks')}
+						newStyle
+						value={linkValue.title || ''}
+						onChange={title =>
+							onChangeLink({
+								...linkValue,
+								title,
+							})
+						}
+					/>
 					<div className='maxi-link-control__options'>
 						{[
 							[
@@ -110,7 +138,25 @@ const LinkControl = ({
 							</div>
 						))}
 					</div>
-					{!isDCLinkActive && (
+					{showAccessibility && (
+						<div className='maxi-link-control__accessibility'>
+							<span className='maxi-link-control__section-title'>
+								{__('Accessibility', 'maxi-blocks')}
+							</span>
+							<TextControl
+								label={__('Aria label', 'maxi-blocks')}
+								newStyle
+								value={linkValue.ariaLabel || ''}
+								onChange={ariaLabel =>
+									onChangeLink({
+										...linkValue,
+										ariaLabel,
+									})
+								}
+							/>
+						</div>
+					)}
+					{showRemoveLink && !isDCLinkActive && (
 						<Button
 							className='maxi-link-control__link-destroyer'
 							onClick={onRemoveLink}

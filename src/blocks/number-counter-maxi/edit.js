@@ -4,14 +4,10 @@
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import { round } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
+import getNumberCounterDisplayValue from './utils';
 
 import {
 	getResizerSize,
@@ -181,8 +177,8 @@ const NumberCounter = attributes => {
 		replayCounter,
 	} = attributes;
 	const startTimeRef = useRef(Date.now());
-	const startCountValue = Math.ceil((startNumber * 360) / 100);
-	const endCountValue = Math.ceil((endNumber * 360) / 100);
+	const startCountValue = Number(startNumber);
+	const endCountValue = Number(endNumber);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -317,12 +313,12 @@ const NumberCounter = attributes => {
 									: ''
 							}
 							strokeDasharray={`${Math.ceil(
-								(count / 360) * circumference
+								(count / 100) * circumference
 							)} ${circumference}`}
 						/>
 					</svg>
 					<span className='maxi-number-counter__box__text'>
-						{`${round((count / 360) * 100)}`}
+						{getNumberCounterDisplayValue(count)}
 						{usePercentage &&
 							(centeredPercentage ? '%' : <sup>%</sup>)}
 					</span>
@@ -330,7 +326,7 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
-					{`${round((count / 360) * 100)}`}
+					{getNumberCounterDisplayValue(count)}
 					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>
 			)}

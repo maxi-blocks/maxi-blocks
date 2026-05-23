@@ -90,12 +90,28 @@
 .maxi-link-wrapper {
 	display: contents;
 
-	.maxi-text-block__content {
-		transition: color 0.3s ease;
-	}
-
 	> .maxi-block--has-link {
 		max-width: inherit;
+		pointer-events: none;
+
+		> * {
+			pointer-events: none;
+		}
+
+		&::after {
+			content: "";
+			position: absolute;
+			inset: 0;
+			z-index: 3;
+			display: block;
+			border-radius: inherit;
+			cursor: pointer;
+			pointer-events: auto;
+		}
+	}
+
+	.maxi-text-block__content {
+		transition: color 0.3s ease;
 	}
 
 	// Override the default button style that makes cursor default for links

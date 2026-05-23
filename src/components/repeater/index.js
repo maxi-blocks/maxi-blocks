@@ -12,10 +12,8 @@ import InfoBox from '@components/info-box';
 import ToggleSwitch from '@components/toggle-switch';
 import DialogBox from '@components/dialog-box';
 import { getAttributeKey, getAttributeValue } from '@extensions/styles';
-import {
-	getDisallowedRepeaterBlocksFromClientId,
-	validateRowColumnsStructure,
-} from '@extensions/repeater';
+import { getDisallowedRepeaterBlocksFromClientId } from '@extensions/repeater';
+import enableRepeater from './enableRepeater';
 
 const DISALLOWED_BLOCK_LABELS = {
 	'maxi-blocks/accordion-maxi': __('Accordion', 'maxi-blocks'),
@@ -78,29 +76,17 @@ const Repeater = ({
 							return;
 						}
 
-						const newInnerBlocksPositions =
-							updateInnerBlocksPositions();
-
-						const isStructureValidated =
-							await validateRowColumnsStructure(
-								clientId,
-								newInnerBlocksPositions,
-								async () =>
-									new Promise(resolve => {
-										setIsModalHidden(false);
-										setResolveConfirmation(() => resolve);
-									}),
-								undefined,
-								true,
-								true
-							);
-
-						if (isStructureValidated) {
-							markNextChangeAsNotPersistent();
-							onChange({
-								[getAttributeKey('repeater-status')]: val,
-							});
-						}
+						await enableRepeater({
+							clientId,
+							updateInnerBlocksPositions,
+							requestStructureConfirmation: async () =>
+								new Promise(resolve => {
+									setIsModalHidden(false);
+									setResolveConfirmation(() => resolve);
+								}),
+							markNextChangeAsNotPersistent,
+							onChange,
+						});
 					}}
 				/>
 			)}

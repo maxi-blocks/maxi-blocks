@@ -208,4 +208,71 @@ describe('excludeAttributes', () => {
 			normalAttr: 'keep',
 		});
 	});
+
+	it('Keeps image size response fields for image blocks in repeater mode', () => {
+		const rawAttributesToExclude = {
+			imageSize: 'medium',
+			mediaID: 123,
+			mediaURL: 'medium.jpg',
+			mediaWidth: 300,
+			mediaHeight: 200,
+			mediaAlt: 'Alt text',
+		};
+
+		const attributes = {
+			imageSize: 'full',
+			mediaID: 456,
+			mediaURL: 'full.jpg',
+			mediaWidth: 900,
+			mediaHeight: 600,
+			mediaAlt: 'Existing alt text',
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			attributes,
+			{
+				_exclude: [
+					'mediaID',
+					'mediaURL',
+					'mediaWidth',
+					'mediaHeight',
+					'mediaAlt',
+				],
+			},
+			true,
+			'maxi-blocks/image-maxi'
+		);
+
+		expect(result).toEqual({
+			imageSize: 'medium',
+			mediaURL: 'medium.jpg',
+			mediaWidth: 300,
+			mediaHeight: 200,
+		});
+	});
+
+	it('Still excludes image media fields in repeater mode when image size is unchanged', () => {
+		const rawAttributesToExclude = {
+			mediaURL: 'replacement.jpg',
+			mediaWidth: 300,
+			mediaHeight: 200,
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			{
+				mediaURL: 'existing.jpg',
+				mediaWidth: 900,
+				mediaHeight: 600,
+			},
+			{
+				_exclude: ['mediaURL', 'mediaWidth', 'mediaHeight'],
+			},
+			true,
+			'maxi-blocks/image-maxi'
+		);
+
+		expect(result).toEqual({});
+	});
 });

@@ -45,6 +45,19 @@ const ALL_TIME_EXCLUDE = [
 	'cl-grandchild-accumulator',
 ];
 
+const IMAGE_SIZE_RESPONSE_ATTRIBUTES = ['mediaURL', 'mediaWidth', 'mediaHeight'];
+
+const shouldKeepImageSizeResponseAttribute = (
+	prop,
+	attributesToExclude,
+	isRepeater,
+	blockName
+) =>
+	isRepeater &&
+	blockName === 'maxi-blocks/image-maxi' &&
+	!isNil(attributesToExclude.imageSize) &&
+	IMAGE_SIZE_RESPONSE_ATTRIBUTES.includes(prop);
+
 const shouldDeleteKey = (
 	prop,
 	attributesToExclude,
@@ -63,6 +76,17 @@ const shouldDeleteKey = (
 	}
 
 	if (isDCLinkBlocksException) {
+		return false;
+	}
+
+	if (
+		shouldKeepImageSizeResponseAttribute(
+			prop,
+			attributesToExclude,
+			isRepeater,
+			blockName
+		)
+	) {
 		return false;
 	}
 

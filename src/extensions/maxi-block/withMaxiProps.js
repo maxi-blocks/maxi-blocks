@@ -291,6 +291,8 @@ const withMaxiProps = createHigherOrderComponent(
 								}
 							);
 						},
+						updateAttributesOnInlineChange:
+							!!repeaterContext?.repeaterStatus,
 						onChange: newAttributes => {
 							// Ensure that blockStyle is preserved in all cases where it's not explicitly changed
 							if (

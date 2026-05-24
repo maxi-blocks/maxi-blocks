@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { select, useSelect, useDispatch, dispatch } from '@wordpress/data';
 import { useContext, useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
@@ -32,6 +32,11 @@ import {
 } from '@extensions/repeater/utils';
 import RepeaterContext from '@blocks/row-maxi/repeaterContext';
 import { openSidebarAccordion } from '@extensions/inspector';
+import {
+	getUpdatedSavedStyles,
+	hasReachedSavedStylesLimit,
+	MAX_SAVED_STYLES,
+} from './utils';
 
 /**
  * External dependencies
@@ -501,6 +506,67 @@ const CopyPaste = props => {
 		}
 	};
 
+	const showSavedStyleErrorNotice = message => {
+		dispatch('core/notices').createNotice('error', message, {
+			type: 'snackbar',
+			isDismissible: true,
+		});
+	};
+
+	const onSaveStyles = async () => {
+		const currentStyles = savedStyles || {};
+
+		if (hasReachedSavedStylesLimit(currentStyles)) {
+			showSavedStyleErrorNotice(
+				sprintf(
+					__(
+						'Maximum number of saved styles (%d) reached. Please delete some styles before saving new ones.',
+						'maxi-blocks'
+					),
+					MAX_SAVED_STYLES
+				)
+			);
+			return;
+		}
+
+		const { newStyleName, updatedStyles } = getUpdatedSavedStyles({
+			savedStyles: currentStyles,
+			blockName,
+			blockAttributes,
+		});
+
+		try {
+			await apiFetch({
+				path: '/maxi-blocks/v1.0/saved-styles',
+				method: 'POST',
+				data: {
+					styles: JSON.stringify(updatedStyles),
+				},
+			});
+
+			setSavedStyles(updatedStyles);
+
+			window.maxiLastSavedStyleName = newStyleName;
+			window.maxiLastSavedStyleBlockType = blockName;
+
+			const currentAccordion =
+				select('maxiBlocks').receiveInspectorPath()?.[1]?.value;
+			const accordionName = 'copy and paste styles';
+			const accordionUid = accordionName.replace(/[^a-zA-Z0-9]+/g, '');
+
+			if (currentAccordion !== accordionUid) {
+				openSidebarAccordion(0, accordionName);
+			}
+
+			closeMoreSettings();
+		} catch (err) {
+			console.error('Error saving style:', err);
+			showSavedStyleErrorNotice(
+				__('Failed to save style. Please try again.', 'maxi-blocks')
+			);
+		}
+	};
+
 	const getTabItems = () => {
 		const response = [];
 
@@ -642,96 +708,7 @@ const CopyPaste = props => {
 			</Button>
 			<Button
 				className='toolbar-item__copy-paste__popover__button'
-				onClick={async () => {
-					// Get current time and date
-					const now = new Date();
-					const dateStr = now.toLocaleDateString();
-					const timeStr = now.toLocaleTimeString([], {
-						hour: '2-digit',
-						minute: '2-digit',
-						hour12: false,
-					});
-
-					// Find next available style number
-					const currentStyles = savedStyles || {};
-					const styleNumbers = Object.keys(currentStyles)
-						.map(key => {
-							const match = key.match(/Style (\d+)/);
-							return match ? parseInt(match[1], 10) : 0;
-						})
-						.filter(num => !Number.isNaN(num));
-
-					const nextStyleNumber =
-						styleNumbers.length > 0
-							? Math.max(...styleNumbers) + 1
-							: 1;
-
-					// Create new style name with number and timestamp
-					const newStyleName = `Style ${nextStyleNumber} - ${dateStr} ${timeStr}`;
-
-					// Check if we've reached the maximum number of styles (100)
-					const MAX_SAVED_STYLES = 100;
-					if (Object.keys(currentStyles).length >= MAX_SAVED_STYLES) {
-						// Show an error notification
-						dispatch('core/notices').createNotice(
-							'error',
-							__(
-								'Maximum number of saved styles (100) reached. Please delete some styles before saving new ones.',
-								'maxi-blocks'
-							),
-							{
-								type: 'snackbar',
-								isDismissible: true,
-							}
-						);
-						return;
-					}
-
-					const updatedStyles = {
-						...currentStyles,
-						[newStyleName]: {
-							blockType: blockName,
-							styles: blockAttributes,
-						},
-					};
-
-					try {
-						// Call the API directly
-						await apiFetch({
-							path: '/maxi-blocks/v1.0/saved-styles',
-							method: 'POST',
-							data: {
-								styles: JSON.stringify(updatedStyles),
-							},
-						});
-
-						// Update local state
-						setSavedStyles(updatedStyles);
-
-						// Set global variable for the saved-styles component to use
-						window.maxiLastSavedStyleName = newStyleName;
-						window.maxiLastSavedStyleBlockType = blockName;
-
-						// Only open the sidebar if it's not already open on the "copy and paste styles" accordion
-						const currentAccordion =
-							select('maxiBlocks').receiveInspectorPath()?.[1]
-								?.value;
-						const accordionName = 'copy and paste styles';
-						const accordionUid = accordionName.replace(
-							/[^a-zA-Z0-9]+/g,
-							''
-						);
-
-						// If the current accordion is not already the "copy and paste styles", open it
-						if (currentAccordion !== accordionUid) {
-							openSidebarAccordion(0, accordionName);
-						}
-
-						closeMoreSettings();
-					} catch (err) {
-						console.error('Error saving style:', err);
-					}
-				}}
+				onClick={onSaveStyles}
 			>
 				{__('Save styles', 'maxi-blocks')}
 			</Button>

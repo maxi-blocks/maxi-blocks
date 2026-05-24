@@ -11,6 +11,7 @@ import { dispatch, select } from '@wordpress/data';
  */
 import Button from '@components/button';
 import SelectControl from '@components/select-control';
+import { getRenamedSavedStyles } from './utils';
 import './editor.scss';
 
 /**
@@ -209,10 +210,21 @@ const SavedStyles = props => {
 
 		setIsLoading(true);
 		try {
-			const currentStyles = { ...dbSavedStyles };
-			const styleData = currentStyles[selectedStyle];
-			delete currentStyles[selectedStyle];
-			currentStyles[newName] = styleData;
+			const currentStyles = getRenamedSavedStyles({
+				savedStyles: dbSavedStyles,
+				selectedStyle,
+				newName,
+			});
+
+			if (!currentStyles) {
+				dispatch('core/notices').createNotice(
+					'error',
+					__('A style with that name already exists.', 'maxi-blocks'),
+					{ type: 'snackbar', isDismissible: true }
+				);
+				setIsLoading(false);
+				return;
+			}
 
 			// Save to database
 			const success = await saveStylesToDatabase(currentStyles);

@@ -43,7 +43,7 @@ jest.mock('@extensions/styles', () => ({
 	),
 }));
 
-jest.mock('@blocks/image-maxi/data', () => ({
+jest.mock('../data', () => ({
 	ariaLabelsCategories: {},
 	customCss: {
 		categories: {},

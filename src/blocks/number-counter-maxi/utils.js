@@ -1,3 +1,11 @@
+export const NUMBER_COUNTER_ANIMATION_SCALE = 360 / 100;
+
+export const getNumberCounterAnimationValue = value =>
+	Number(value) * NUMBER_COUNTER_ANIMATION_SCALE;
+
+export const getNumberCounterValueFromAnimation = value =>
+	Number(value) / NUMBER_COUNTER_ANIMATION_SCALE;
+
 const getNumberCounterDisplayValue = value => {
 	const numberValue = Number(value);
 

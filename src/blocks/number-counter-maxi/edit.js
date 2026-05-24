@@ -7,7 +7,10 @@ import { useState, useEffect, useRef, createRef } from '@wordpress/element';
  * Internal dependencies
  */
 import Inspector from './inspector';
-import getNumberCounterDisplayValue from './utils';
+import getNumberCounterDisplayValue, {
+	getNumberCounterAnimationValue,
+	getNumberCounterValueFromAnimation,
+} from './utils';
 
 import {
 	getResizerSize,
@@ -177,8 +180,8 @@ const NumberCounter = attributes => {
 		replayCounter,
 	} = attributes;
 	const startTimeRef = useRef(Date.now());
-	const startCountValue = Number(startNumber);
-	const endCountValue = Number(endNumber);
+	const startCountValue = getNumberCounterAnimationValue(startNumber);
+	const endCountValue = getNumberCounterAnimationValue(endNumber);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -313,12 +316,14 @@ const NumberCounter = attributes => {
 									: ''
 							}
 							strokeDasharray={`${Math.ceil(
-								(count / 100) * circumference
+								(count / 360) * circumference
 							)} ${circumference}`}
 						/>
 					</svg>
 					<span className='maxi-number-counter__box__text'>
-						{getNumberCounterDisplayValue(count)}
+						{getNumberCounterDisplayValue(
+							getNumberCounterValueFromAnimation(count)
+						)}
 						{usePercentage &&
 							(centeredPercentage ? '%' : <sup>%</sup>)}
 					</span>
@@ -326,7 +331,9 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
-					{getNumberCounterDisplayValue(count)}
+					{getNumberCounterDisplayValue(
+						getNumberCounterValueFromAnimation(count)
+					)}
 					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>
 			)}

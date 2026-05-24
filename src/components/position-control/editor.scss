@@ -59,62 +59,6 @@
 		.maxi-axis-control__header {
 			margin-bottom: 8px;
 		}
-
-		.maxi-axis-control__content__item {
-			margin-bottom: 8px;
-
-			.maxi-base-control__field {
-				display: grid !important;
-				grid-template-columns: minmax(70px, 1fr) minmax(0, 145px);
-				column-gap: 8px;
-				align-items: center;
-				margin-bottom: 0 !important;
-			}
-
-			.maxi-base-control__label {
-				min-width: 0;
-			}
-
-			.maxi-advanced-number-control__controls-group {
-				justify-self: end;
-				width: 145px;
-			}
-
-			.components-range-control {
-				grid-column: 1 / -1;
-				margin-top: 4px;
-			}
-		}
-
-		.maxi-axis-control__all-mode {
-			.maxi-axis-control__content__item {
-				.maxi-base-control__field {
-					grid-template-columns: minmax(0, 1fr);
-				}
-			}
-		}
-	}
-
-	&--layer-placement {
-		.maxi-position-control__advanced-options {
-			.maxi-axis-control__content__item {
-				.maxi-base-control__field {
-					grid-template-columns: minmax(70px, 1fr) auto;
-				}
-			}
-
-			.maxi-advanced-number-control__controls-group {
-				width: 136px;
-			}
-
-			.maxi-advanced-number-control__input-wrapper {
-				width: 72px !important;
-			}
-
-			.maxi-advanced-number-control__value {
-				max-width: 62px;
-			}
-		}
 	}
 
 	// FocalPointPicker styling for layer placement

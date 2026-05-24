@@ -17,6 +17,9 @@ export const hasPositionResetValue = value =>
 export const getLayerPlacementAllowedUnits = disablePosition =>
 	disablePosition ? ['%'] : ['px', 'em', 'vw', '%', '-'];
 
+export const shouldUseFocalPlacementControls = disablePosition =>
+	disablePosition === true;
+
 export const getLayerPlacementResetValue = ({
 	target,
 	disablePosition,

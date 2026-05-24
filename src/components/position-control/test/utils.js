@@ -3,6 +3,7 @@ import {
 	getLayerPlacementResetValue,
 	hasPlacementValue,
 	normalizePlacementSync,
+	shouldUseFocalPlacementControls,
 } from '../utils';
 
 describe('position-control utils', () => {
@@ -28,6 +29,12 @@ describe('position-control utils', () => {
 			'%',
 			'-',
 		]);
+	});
+
+	it('uses focal placement controls only for layer placement', () => {
+		expect(shouldUseFocalPlacementControls(true)).toBe(true);
+		expect(shouldUseFocalPlacementControls(false)).toBe(false);
+		expect(shouldUseFocalPlacementControls(undefined)).toBe(false);
 	});
 
 	it('resets hover layer placement from the matching normal layer', () => {

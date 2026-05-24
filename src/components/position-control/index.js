@@ -22,6 +22,7 @@ import {
 	getLayerPlacementResetValue,
 	hasPlacementValue,
 	normalizePlacementSync,
+	shouldUseFocalPlacementControls,
 } from './utils';
 
 /**
@@ -56,9 +57,13 @@ const PositionControl = props => {
 		label = __('Position', 'maxi-blocks'),
 	} = props;
 
+	const useFocalPlacementControls =
+		shouldUseFocalPlacementControls(disablePosition);
+
 	const classes = classnames(
 		'maxi-position-control',
-		disablePosition && 'maxi-position-control--layer-placement',
+		useFocalPlacementControls &&
+			'maxi-position-control--layer-placement',
 		className
 	);
 
@@ -90,9 +95,9 @@ const PositionControl = props => {
 
 		if (target === 'position-sync') return normalizePlacementSync(value);
 
-		if (disablePosition && target.includes('-unit')) return '%';
+		if (useFocalPlacementControls && target.includes('-unit')) return '%';
 
-		if (disablePosition && !hasPlacementValue(value)) {
+		if (useFocalPlacementControls && !hasPlacementValue(value)) {
 			if (target === 'position-top' || target === 'position-left')
 				return 0;
 			if (target === 'position-right' || target === 'position-bottom')
@@ -134,7 +139,7 @@ const PositionControl = props => {
 	const getPositionResetValue = target =>
 		getLayerPlacementResetValue({
 			target,
-			disablePosition,
+			disablePosition: useFocalPlacementControls,
 			isHover,
 			normalValue: getNormalPlacementAttribute(target),
 			defaultValue: getPositionDefault(target),
@@ -208,27 +213,34 @@ const PositionControl = props => {
 		sync: normalizePlacementSync(getPlacementAttribute('position-sync')),
 	};
 
-	const topUnit = disablePosition
+	const topUnit = useFocalPlacementControls
 		? '%'
 		: rawPlacement.topUnit || getPositionDefault('position-top-unit');
-	const leftUnit = disablePosition
+	const leftUnit = useFocalPlacementControls
 		? '%'
 		: rawPlacement.leftUnit || getPositionDefault('position-left-unit');
 
 	const hasAdvancedPlacement =
-		hasPlacementValue(rawPlacement.right) ||
-		hasPlacementValue(rawPlacement.bottom) ||
-		!canUseFocalCoordinate(rawPlacement.top, topUnit) ||
-		!canUseFocalCoordinate(rawPlacement.left, leftUnit) ||
-		(rawPlacement.sync && rawPlacement.sync !== 'all');
+		useFocalPlacementControls &&
+		(hasPlacementValue(rawPlacement.right) ||
+			hasPlacementValue(rawPlacement.bottom) ||
+			!canUseFocalCoordinate(rawPlacement.top, topUnit) ||
+			!canUseFocalCoordinate(rawPlacement.left, leftUnit) ||
+			(rawPlacement.sync && rawPlacement.sync !== 'all'));
 
 	const [showAdvanced, setShowAdvanced] = useState(hasAdvancedPlacement);
 	const [useFocalRequested, setUseFocalRequested] = useState(false);
 
 	useEffect(() => {
+		if (!useFocalPlacementControls) return;
+
 		if (hasAdvancedPlacement && !useFocalRequested) setShowAdvanced(true);
 		if (!hasAdvancedPlacement) setUseFocalRequested(false);
-	}, [hasAdvancedPlacement, useFocalRequested]);
+	}, [
+		hasAdvancedPlacement,
+		useFocalPlacementControls,
+		useFocalRequested,
+	]);
 
 	const layerPlacementPoint = useMemo(
 		() => ({
@@ -269,7 +281,7 @@ const PositionControl = props => {
 	const placementSides = ['top', 'right', 'bottom', 'left'];
 
 	const getAdvancedPlacementUnit = side => {
-		if (disablePosition) return '%';
+		if (useFocalPlacementControls) return '%';
 
 		const value = rawPlacement[side];
 		const unit = rawPlacement[`${side}Unit`];
@@ -286,7 +298,7 @@ const PositionControl = props => {
 			const valueKey = getPositionKey(`position-${side}`);
 			const unitKey = getPositionKey(`position-${side}-unit`);
 
-			if (disablePosition) response[unitKey] = '%';
+			if (useFocalPlacementControls) response[unitKey] = '%';
 
 			if (
 				Object.prototype.hasOwnProperty.call(response, valueKey) &&
@@ -352,6 +364,24 @@ const PositionControl = props => {
 		};
 	};
 
+	const PositionAxisControl = (
+		<AxisControl
+			{...props}
+			target='position'
+			label={label}
+			prefix={prefix}
+			onChange={obj => onChange(obj)}
+			breakpoint={breakpoint}
+			minMaxSettings={minMaxSettings}
+			optionType='string'
+			enableAxisUnits
+			allowedUnits={['px', 'em', 'vw', '%', '-']}
+			isHover={isHover}
+			defaultAttributes={defaultAttributes}
+			showAllSides
+		/>
+	);
+
 	// Reusable component for the position picker and advanced settings
 	const PositionPickerSection = (
 		<>
@@ -397,7 +427,7 @@ const PositionControl = props => {
 						optionType='string'
 						enableAxisUnits
 						allowedUnits={getLayerPlacementAllowedUnits(
-							disablePosition
+							useFocalPlacementControls
 						)}
 						isHover={isHover}
 						defaultAttributes={defaultAttributes}
@@ -468,7 +498,7 @@ const PositionControl = props => {
 						target: `${prefix}position`,
 						breakpoint,
 						attributes: props,
-					}) !== 'inherit' && PositionPickerSection}
+					}) !== 'inherit' && PositionAxisControl}
 				</>
 			) : (
 				PositionPickerSection

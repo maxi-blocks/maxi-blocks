@@ -1,4 +1,4 @@
-import { handleOnChangeLayer } from '../utils';
+import { handleOnChangeLayer, normalizePositionForPicker } from '../utils';
 
 jest.mock('@extensions/maxi-block', () => ({
 	handleSetAttributes: jest.fn(({ obj, onChange }) => onChange(obj)),
@@ -82,6 +82,17 @@ jest.mock('@wordpress/data', () => ({
 }));
 
 describe('background control utils', () => {
+	it('keeps numeric focal point values that are already normalized', () => {
+		expect(normalizePositionForPicker(0)).toBe(0);
+		expect(normalizePositionForPicker(0.5)).toBe(0.5);
+		expect(normalizePositionForPicker(1)).toBe(1);
+	});
+
+	it('converts percentage values to focal point coordinates', () => {
+		expect(normalizePositionForPicker('1%')).toBe(0.01);
+		expect(normalizePositionForPicker(50)).toBe(0.5);
+	});
+
 	it('keeps hover layer edits out of normal focal position keys', () => {
 		const currentLayer = {
 			type: 'image',

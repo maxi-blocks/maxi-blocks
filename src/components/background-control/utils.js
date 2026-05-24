@@ -39,6 +39,32 @@ const sameLabelAttr = [
 
 const layerMetaAttrs = ['id', 'order', 'isReset', 'meta'];
 
+/**
+ * Helper to normalize position value to 0-1 range for FocalPointPicker.
+ */
+export const normalizePositionForPicker = (value, unit = '%') => {
+	if (value === null || value === undefined || value === '') return 0.5;
+
+	if (unit && unit !== '%') return 0.5;
+
+	const numericValue = typeof value === 'number' ? value : parseFloat(value);
+
+	if (
+		typeof value === 'string' &&
+		value.includes('%') &&
+		Number.isFinite(numericValue)
+	)
+		return Math.max(0, Math.min(100, numericValue)) / 100;
+
+	if (Number.isFinite(numericValue)) {
+		if (numericValue >= 0 && numericValue <= 1) return numericValue;
+
+		return Math.max(0, Math.min(100, numericValue)) / 100;
+	}
+
+	return 0.5;
+};
+
 export const setBreakpointToLayer = ({
 	layer,
 	breakpoint,

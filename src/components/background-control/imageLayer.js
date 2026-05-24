@@ -27,32 +27,13 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
-import { getDefaultLayerAttr } from './utils';
+import { getDefaultLayerAttr, normalizePositionForPicker } from './utils';
 import DynamicContent from '@components/dynamic-content';
 import { getDCValues } from '@extensions/DC';
 
 /**
  * External dependencies
  */
-/**
- * Helper to normalize position value to 0-1 range for FocalPointPicker
- */
-const normalizePositionForPicker = (value, unit = '%') => {
-	if (value === null || value === undefined || value === '') return 0.5;
-
-	if (unit && unit !== '%') return 0.5;
-
-	const numericValue = typeof value === 'number' ? value : parseFloat(value);
-
-	if (Number.isFinite(numericValue)) {
-		if (numericValue > 0 && numericValue < 1) return numericValue;
-
-		return Math.max(0, Math.min(100, numericValue)) / 100;
-	}
-
-	return 0.5;
-};
-
 const keywordPositionX = {
 	left: 0,
 	right: 1,

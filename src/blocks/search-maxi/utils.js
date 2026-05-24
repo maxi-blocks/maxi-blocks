@@ -1,4 +1,12 @@
-const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+export const iconPositionBreakpoints = [
+	'general',
+	'xxl',
+	'xl',
+	'l',
+	'm',
+	's',
+	'xs',
+];
 
 const breakpointFallbacks = {
 	general: ['general'],
@@ -97,6 +105,17 @@ const createResponsiveStyleObject = label => ({
 
 const hasBreakpointValue = styles => Object.keys(styles).length > 1;
 
+export const getIconPositionResetAttributes = (position = 'right') =>
+	iconPositionBreakpoints.reduce(
+		(acc, breakpoint) => ({
+			...acc,
+			[`icon-position-${breakpoint}`]: position,
+		}),
+		{
+			'icon-position': position,
+		}
+	);
+
 export const getIconRevealPositionSettings = (
 	position,
 	breakpoint = 'general'
@@ -137,8 +156,12 @@ export const getIconRevealPositionStyles = attributes => {
 		),
 	};
 
-	breakpoints.forEach(breakpoint => {
-		const position = attributes?.[`icon-position-${breakpoint}`];
+	iconPositionBreakpoints.forEach(breakpoint => {
+		const position =
+			attributes?.[`icon-position-${breakpoint}`] ||
+			(breakpoint === 'general'
+				? attributes?.['icon-position']
+				: undefined);
 		const positionStyles = positions[position];
 
 		if (!positionStyles) return;

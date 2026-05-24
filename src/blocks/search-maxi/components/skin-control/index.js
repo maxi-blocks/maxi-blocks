@@ -10,6 +10,7 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import { getDefaultAttribute } from '@extensions/styles';
 import { prefixes } from '@blocks/search-maxi/data';
+import { getIconPositionResetAttributes } from '@blocks/search-maxi/utils';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	const { buttonPrefix, inputPrefix } = prefixes;
@@ -38,10 +39,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		`${inputPrefix}border-left-width-general`,
 		`${inputPrefix}border-right-width-general`,
 	]);
-	const resetPosition = {
-		'icon-position': 'right',
-		'icon-position-general': 'right',
-	};
+	const resetPosition = getIconPositionResetAttributes();
 
 	return (
 		<>

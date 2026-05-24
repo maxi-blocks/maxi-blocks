@@ -1,8 +1,24 @@
 import {
+	getIconPositionResetAttributes,
 	getIconRevealPositionSettings,
 	getIconRevealPositionStyles,
 	getResponsiveIconPosition,
 } from '@blocks/search-maxi/utils';
+
+describe('getIconPositionResetAttributes', () => {
+	it('resets legacy and responsive icon position attributes', () => {
+		expect(getIconPositionResetAttributes()).toEqual({
+			'icon-position': 'right',
+			'icon-position-general': 'right',
+			'icon-position-xxl': 'right',
+			'icon-position-xl': 'right',
+			'icon-position-l': 'right',
+			'icon-position-m': 'right',
+			'icon-position-s': 'right',
+			'icon-position-xs': 'right',
+		});
+	});
+});
 
 describe('getIconRevealPositionSettings', () => {
 	it.each([
@@ -71,7 +87,7 @@ describe('getResponsiveIconPosition', () => {
 });
 
 describe('getIconRevealPositionStyles', () => {
-	it('returns responsive layout styles only for configured breakpoint positions', () => {
+	it('returns responsive layout styles for configured breakpoint positions', () => {
 		expect(
 			getIconRevealPositionStyles({
 				'icon-position': 'right',
@@ -80,18 +96,28 @@ describe('getIconRevealPositionStyles', () => {
 		).toEqual({
 			block: {
 				label: 'Icon reveal position',
+				general: {
+					'justify-content': 'flex-end',
+				},
 				m: {
 					'justify-content': 'flex-start',
 				},
 			},
 			button: {
 				label: 'Icon reveal button position',
+				general: {
+					order: 2,
+				},
 				m: {
 					order: 0,
 				},
 			},
 			input: {
 				label: 'Icon reveal input position',
+				general: {
+					'margin-left': '0 !important',
+					'margin-right': '-25px !important',
+				},
 				m: {
 					'margin-left': '-25px !important',
 					'margin-right': '0 !important',
@@ -99,6 +125,14 @@ describe('getIconRevealPositionStyles', () => {
 			},
 			hiddenInput: {
 				label: 'Icon reveal hidden input position',
+				general: {
+					'border-left-width': '4px !important',
+					'border-right-width': '0 !important',
+					'margin-left': '0 !important',
+					'margin-right': '-25px !important',
+					'padding-left': '10px !important',
+					'padding-right': '35px !important',
+				},
 				m: {
 					'border-left-width': '0 !important',
 					'border-right-width': '4px !important',
@@ -106,6 +140,45 @@ describe('getIconRevealPositionStyles', () => {
 					'margin-right': '0 !important',
 					'padding-left': '35px !important',
 					'padding-right': '10px !important',
+				},
+			},
+		});
+	});
+
+	it('uses the legacy icon position for general styles when responsive state is missing', () => {
+		expect(
+			getIconRevealPositionStyles({
+				'icon-position': 'right',
+			})
+		).toEqual({
+			block: {
+				label: 'Icon reveal position',
+				general: {
+					'justify-content': 'flex-end',
+				},
+			},
+			button: {
+				label: 'Icon reveal button position',
+				general: {
+					order: 2,
+				},
+			},
+			input: {
+				label: 'Icon reveal input position',
+				general: {
+					'margin-left': '0 !important',
+					'margin-right': '-25px !important',
+				},
+			},
+			hiddenInput: {
+				label: 'Icon reveal hidden input position',
+				general: {
+					'border-left-width': '4px !important',
+					'border-right-width': '0 !important',
+					'margin-left': '0 !important',
+					'margin-right': '-25px !important',
+					'padding-left': '10px !important',
+					'padding-right': '35px !important',
 				},
 			},
 		});

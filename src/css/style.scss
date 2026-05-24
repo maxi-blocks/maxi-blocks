@@ -108,6 +108,11 @@
 			cursor: pointer;
 			pointer-events: auto;
 		}
+
+		&.maxi-block--disabled::after {
+			cursor: default;
+			pointer-events: none;
+		}
 	}
 
 	.maxi-text-block__content {

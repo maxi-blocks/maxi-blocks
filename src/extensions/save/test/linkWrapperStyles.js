@@ -13,5 +13,8 @@ describe('link wrapper frontend styles', () => {
 		expect(style).toContain('> .maxi-block--has-link');
 		expect(style).toContain('border-radius: inherit;');
 		expect(style).toContain('pointer-events: auto;');
+		expect(style).toMatch(
+			/&\.maxi-block--disabled::after\s*{\s*cursor: default;\s*pointer-events: none;\s*}/
+		);
 	});
 });

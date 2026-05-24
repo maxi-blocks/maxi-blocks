@@ -47,15 +47,24 @@ const ALL_TIME_EXCLUDE = [
 
 const IMAGE_SIZE_RESPONSE_ATTRIBUTES = ['mediaURL', 'mediaWidth', 'mediaHeight'];
 
+const hasMatchingMediaID = (sourceAttributes, targetAttributes) => {
+	const sourceMediaID = sourceAttributes?.mediaID;
+	const targetMediaID = targetAttributes?.mediaID;
+
+	return (
+		!isNil(sourceMediaID) &&
+		sourceMediaID !== '' &&
+		!isNil(targetMediaID) &&
+		targetMediaID !== '' &&
+		String(sourceMediaID) === String(targetMediaID)
+	);
+};
+
 const shouldKeepImageSizeResponseAttribute = (
 	prop,
-	attributesToExclude,
-	isRepeater,
-	blockName
+	shouldKeepImageSizeResponseAttributes
 ) =>
-	isRepeater &&
-	blockName === 'maxi-blocks/image-maxi' &&
-	!isNil(attributesToExclude.imageSize) &&
+	shouldKeepImageSizeResponseAttributes &&
 	IMAGE_SIZE_RESPONSE_ATTRIBUTES.includes(prop);
 
 const shouldDeleteKey = (
@@ -64,7 +73,8 @@ const shouldDeleteKey = (
 	attributes,
 	isRepeater,
 	blockName,
-	customAllTimeExclude
+	customAllTimeExclude,
+	shouldKeepImageSizeResponseAttributes
 ) => {
 	const isDCLinkBlocksException =
 		!isRepeater &&
@@ -82,9 +92,7 @@ const shouldDeleteKey = (
 	if (
 		shouldKeepImageSizeResponseAttribute(
 			prop,
-			attributesToExclude,
-			isRepeater,
-			blockName
+			shouldKeepImageSizeResponseAttributes
 		)
 	) {
 		return false;
@@ -144,6 +152,11 @@ const excludeAttributes = (
 	customAllTimeExclude = []
 ) => {
 	const attributesToExclude = { ...rawAttributesToExclude };
+	const shouldKeepImageSizeResponseAttributes =
+		isRepeater &&
+		blockName === 'maxi-blocks/image-maxi' &&
+		!isNil(rawAttributesToExclude.imageSize) &&
+		hasMatchingMediaID(rawAttributesToExclude, attributes);
 
 	const keysToExclude = [
 		...(isRepeater ? REPEATER_GLOBAL_EXCLUDE : GLOBAL_EXCLUDE),
@@ -158,7 +171,8 @@ const excludeAttributes = (
 				attributes,
 				isRepeater,
 				blockName,
-				customAllTimeExclude
+				customAllTimeExclude,
+				shouldKeepImageSizeResponseAttributes
 			)
 		) {
 			delete attributesToExclude[prop];

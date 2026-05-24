@@ -209,7 +209,7 @@ describe('excludeAttributes', () => {
 		});
 	});
 
-	it('Keeps image size response fields for image blocks in repeater mode', () => {
+	it('Keeps image size response fields for matching image blocks in repeater mode', () => {
 		const rawAttributesToExclude = {
 			imageSize: 'medium',
 			mediaID: 123,
@@ -221,7 +221,7 @@ describe('excludeAttributes', () => {
 
 		const attributes = {
 			imageSize: 'full',
-			mediaID: 456,
+			mediaID: 123,
 			mediaURL: 'full.jpg',
 			mediaWidth: 900,
 			mediaHeight: 600,
@@ -249,6 +249,43 @@ describe('excludeAttributes', () => {
 			mediaURL: 'medium.jpg',
 			mediaWidth: 300,
 			mediaHeight: 200,
+		});
+	});
+
+	it('Does not copy image size response fields to repeater images with different media IDs', () => {
+		const rawAttributesToExclude = {
+			imageSize: 'medium',
+			mediaID: 123,
+			mediaURL: 'source-medium.jpg',
+			mediaWidth: 300,
+			mediaHeight: 200,
+		};
+
+		const attributes = {
+			imageSize: 'full',
+			mediaID: 456,
+			mediaURL: 'target-full.jpg',
+			mediaWidth: 900,
+			mediaHeight: 600,
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			attributes,
+			{
+				_exclude: [
+					'mediaID',
+					'mediaURL',
+					'mediaWidth',
+					'mediaHeight',
+				],
+			},
+			true,
+			'maxi-blocks/image-maxi'
+		);
+
+		expect(result).toEqual({
+			imageSize: 'medium',
 		});
 	});
 

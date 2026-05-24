@@ -36,6 +36,13 @@ const Repeater = ({
 	const [isModalHidden, setIsModalHidden] = useState(true);
 	const [resolveConfirmation, setResolveConfirmation] = useState(null);
 
+	const resolveStructureConfirmation = value => {
+		if (resolveConfirmation) {
+			resolveConfirmation(value);
+		}
+		setResolveConfirmation(null);
+	};
+
 	const disallowedBlocks = useSelect(
 		select => {
 			const blockEditor = select('core/block-editor');
@@ -111,12 +118,8 @@ const Repeater = ({
 				confirmLabel={__('Continue', 'maxi-blocks')}
 				isHidden={isModalHidden}
 				setIsHidden={setIsModalHidden}
-				onConfirm={() => {
-					if (resolveConfirmation) {
-						resolveConfirmation(true);
-					}
-					setResolveConfirmation(null);
-				}}
+				onCancel={() => resolveStructureConfirmation(false)}
+				onConfirm={() => resolveStructureConfirmation(true)}
 			/>
 			{isRepeaterInherited && (
 				<InfoBox

@@ -12,6 +12,7 @@ import {
 import styleCleaner from './styleCleaner';
 import getTransformTransitionData from './transitions/getTransformTransitionData';
 import transitionDefault from './transitions/transitionDefault';
+import applyGradientBackgroundTransitions from './gradientTransitionProcessor';
 
 /**
  * External dependencies
@@ -92,6 +93,9 @@ const styleProcessor = (obj, data, props) => {
 			});
 		}
 	}
+
+	applyGradientBackgroundTransitions(styles);
+
 	return styleCleaner(styles);
 };
 

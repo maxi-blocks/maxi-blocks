@@ -138,6 +138,39 @@ describe('getBoxShadowStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Returns responsive box-shadow when only palette opacity changes for the same palette color', () => {
+		const object = {
+			'box-shadow-palette-status-general': true,
+			'box-shadow-palette-color-general': 4,
+			'box-shadow-palette-opacity-general': 1,
+			'box-shadow-palette-opacity-l': 0.2,
+			'box-shadow-horizontal-general': 1,
+			'box-shadow-vertical-general': 2,
+			'box-shadow-blur-general': 3,
+			'box-shadow-spread-general': 4,
+			'box-shadow-blur-unit-general': 'px',
+			'box-shadow-horizontal-unit-general': 'px',
+			'box-shadow-vertical-unit-general': 'px',
+			'box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+		});
+
+		expect(result).toEqual({
+			general: {
+				'box-shadow':
+					'1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),1)',
+			},
+			l: {
+				'box-shadow':
+					'1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),0.2)',
+			},
+		});
+	});
+
 	it('Returns box-shadow default styles for IB', () => {
 		const object = {
 			'box-shadow-palette-status-general': true,

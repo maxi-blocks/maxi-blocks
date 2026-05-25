@@ -1667,4 +1667,18 @@ describe('getBackgroundStyles', () => {
 
 		expect(result).toMatchSnapshot();
 	});
+
+	it('keeps multiplying global gradient opacity into rgba color stops', () => {
+		const result = getBackgroundStyles({
+			'background-active-media-general': 'gradient',
+			'background-gradient-general':
+				'linear-gradient(90deg,rgba(10,20,30,0.5) 0%,rgb(40,50,60) 100%)',
+			'background-gradient-opacity-general': 0.4,
+			blockStyle: 'light',
+		});
+
+		expect(result.background.general.background).toBe(
+			'linear-gradient(90deg,rgba(10,20,30,0.2) 0%,rgba(40,50,60,0.4) 100%)'
+		);
+	});
 });

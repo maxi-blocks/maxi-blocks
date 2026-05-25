@@ -715,7 +715,7 @@ const ListOptionsControl = props => {
 			<SelectControl
 				__nextHasNoMarginBottom
 				label={__('Text position', 'maxi-blocks')}
-				className='maxi-text-inspector__list-style'
+				className='maxi-text-inspector__list-text-position'
 				value={getLastBreakpointAttribute({
 					target: 'list-text-position',
 					breakpoint: deviceType,

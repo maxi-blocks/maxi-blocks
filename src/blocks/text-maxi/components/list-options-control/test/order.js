@@ -18,6 +18,7 @@ const expectedControlOrder = [
 	"label={__('Marker vertical offset', 'maxi-blocks')}",
 	"label={__('Marker line-height', 'maxi-blocks')}",
 	"label={__('Text position', 'maxi-blocks')}",
+	"className='maxi-text-inspector__list-text-position'",
 	'<ListOptionsSeparator />',
 	"label={__('Text indent', 'maxi-blocks')}",
 	"label={__('List gap', 'maxi-blocks')}",

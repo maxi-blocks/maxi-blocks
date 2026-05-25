@@ -48,7 +48,6 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-circle-bar-palette-status-general': true,
 			'number-counter-circle-bar-palette-color-general': 4,
 			'number-counter-title-font-size-general': 40,
-			'font-family-general': 'Roboto',
 		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';
@@ -103,7 +102,21 @@ describe('getNumberCounterStyles', () => {
 		);
 	});
 
-	it('Does not emit the legacy Roboto default as a block font override', () => {
+	it('Does not emit a block font override when no font family is set', () => {
+		const result = getNumberCounterStyles({
+			obj: {},
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general['font-family']
+		).toBeUndefined();
+	});
+
+	it('Keeps explicit Roboto font family overrides', () => {
 		const result = getNumberCounterStyles({
 			obj: {
 				'font-family-general': 'Roboto',
@@ -116,7 +129,7 @@ describe('getNumberCounterStyles', () => {
 			result[
 				' .maxi-number-counter__box .maxi-number-counter__box__text'
 			].numberCounterText.general['font-family']
-		).toBeUndefined();
+		).toBe('Roboto');
 	});
 
 	it('Keeps explicit Number Counter font family overrides', () => {

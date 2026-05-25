@@ -73,7 +73,6 @@ const numberCounter = {
 		obj: {
 			'number-counter-title-font-size': {
 				type: 'number',
-				default: 40,
 			},
 			'font-family': {
 				type: 'string',

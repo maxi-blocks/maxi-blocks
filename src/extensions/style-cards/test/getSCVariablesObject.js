@@ -21,6 +21,16 @@ describe('getSCVariablesObject', () => {
 			'palette-color': 4,
 			'palette-opacity': 1,
 			color: '',
+			'circle-background-color-global': true,
+			'circle-background-palette-status': true,
+			'circle-background-palette-color': 2,
+			'circle-background-palette-opacity': 0.7,
+			'circle-background-color': '',
+			'circle-bar-color-global': true,
+			'circle-bar-palette-status': true,
+			'circle-bar-palette-color': 6,
+			'circle-bar-palette-opacity': 0.6,
+			'circle-bar-color': '',
 			'font-family-general': 'Poppins',
 			'font-size-general': 44,
 			'font-size-unit-general': 'px',
@@ -32,6 +42,16 @@ describe('getSCVariablesObject', () => {
 			'palette-color': 5,
 			'palette-opacity': 1,
 			color: '',
+			'circle-background-color-global': true,
+			'circle-background-palette-status': true,
+			'circle-background-palette-color': 1,
+			'circle-background-palette-opacity': 0.75,
+			'circle-background-color': '',
+			'circle-bar-color-global': true,
+			'circle-bar-palette-status': true,
+			'circle-bar-palette-color': 4,
+			'circle-bar-palette-opacity': 0.65,
+			'circle-bar-color': '',
 			'font-family-general': 'Inter',
 			'font-size-general': 42,
 			'font-size-unit-general': 'px',
@@ -44,12 +64,20 @@ describe('getSCVariablesObject', () => {
 			expect.objectContaining({
 				'--maxi-light-number-counter-color':
 					'rgba(var(--maxi-light-color-4),1)',
+				'--maxi-light-number-counter-circle-background':
+					'rgba(var(--maxi-light-color-2),0.7)',
+				'--maxi-light-number-counter-circle-bar':
+					'rgba(var(--maxi-light-color-6),0.6)',
 				'--maxi-light-number-counter-font-family-general':
 					'"Poppins"',
 				'--maxi-light-number-counter-font-size-general': '44px',
 				'--maxi-light-number-counter-font-weight-general': 700,
 				'--maxi-dark-number-counter-color':
 					'rgba(var(--maxi-dark-color-5),1)',
+				'--maxi-dark-number-counter-circle-background':
+					'rgba(var(--maxi-dark-color-1),0.75)',
+				'--maxi-dark-number-counter-circle-bar':
+					'rgba(var(--maxi-dark-color-4),0.65)',
 				'--maxi-dark-number-counter-font-family-general': '"Inter"',
 				'--maxi-dark-number-counter-font-size-general': '42px',
 				'--maxi-dark-number-counter-font-weight-general': 600,

@@ -10,10 +10,6 @@ import { isNil } from 'lodash';
 import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-const LEGACY_DEFAULT_FONT_FAMILY = 'Roboto';
-
-const isLegacyDefaultFontFamily = fontFamily =>
-	fontFamily?.replaceAll('"', '').trim() === LEGACY_DEFAULT_FONT_FAMILY;
 
 const getSCColourString = ({
 	obj,
@@ -114,10 +110,9 @@ const getTextStyles = (obj, blockStyle) => {
 					obj[`number-counter-title-font-size-${breakpoint}`]
 				}px`,
 			}),
-			...(!isNil(fontFamily) &&
-				!isLegacyDefaultFontFamily(fontFamily) && {
-					'font-family': `${fontFamily}`,
-				}),
+			...(!isNil(fontFamily) && {
+				'font-family': `${fontFamily}`,
+			}),
 			...(!isNil(obj[`font-weight-${breakpoint}`]) && {
 				'font-weight': `${obj[`font-weight-${breakpoint}`]}`,
 			}),

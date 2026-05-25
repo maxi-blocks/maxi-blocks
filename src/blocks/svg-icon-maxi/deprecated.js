@@ -50,9 +50,9 @@ const save = props => {
 
 const migrate = attrs => ({
 	...attrs,
-	linkSettings: attrs.linkSettings
-		? { ...attrs.linkSettings, linkElement: 'canvas' }
-		: attrs.linkSettings,
+	...(attrs.linkSettings && {
+		linkSettings: { ...attrs.linkSettings, linkElement: 'canvas' },
+	}),
 });
 
 const deprecated = attributes => [

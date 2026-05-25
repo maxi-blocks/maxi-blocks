@@ -1,3 +1,46 @@
+const dynamicContentProps = [
+	'dc-status',
+	'dc-hide',
+	'dc-source',
+	'dc-type',
+	'dc-relation',
+	'dc-id',
+	'dc-author',
+	'dc-show',
+	'dc-field',
+	'dc-sub-field',
+	'dc-format',
+	'dc-custom-format',
+	'dc-custom-date',
+	'dc-year',
+	'dc-month',
+	'dc-day',
+	'dc-hour',
+	'dc-hour12',
+	'dc-minute',
+	'dc-second',
+	'dc-locale',
+	'dc-timezone',
+	'dc-timezone-name',
+	'dc-weekday',
+	'dc-era',
+	'dc-limit',
+	'dc-link-status',
+	'dc-link-target',
+	'dc-custom-delimiter-status',
+	'dc-delimiter-content',
+	'dc-order-by',
+	'dc-order',
+	'dc-accumulator',
+	'dc-acf-group',
+	'dc-acf-field-type',
+	'dc-image-accumulator',
+	'dc-keep-only-text-content',
+	'dc-acf-char-limit',
+	'dc-limit-by-archive',
+	'dc-media-size',
+];
+
 const templates = {
 	background: {
 		group: {
@@ -93,6 +136,10 @@ const templates = {
 			'dc-sub-field',
 		],
 	},
+	dynamicContent: {
+		props: dynamicContentProps,
+		_skipIfEmpty: true,
+	},
 	interaction: {
 		props: 'relations',
 	},
@@ -132,6 +179,9 @@ const templates = {
 		},
 		Anchor: {
 			template: 'anchor',
+		},
+		'Dynamic content': {
+			template: 'dynamicContent',
 		},
 		Interaction: {
 			template: 'interaction',

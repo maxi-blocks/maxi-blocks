@@ -45,6 +45,20 @@ const ALL_TIME_EXCLUDE = [
 	'cl-grandchild-accumulator',
 ];
 
+const DC_BLOCKS = [
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/divider-maxi',
+];
+
+const DC_GLOBAL_EXCLUDE_EXCEPTIONS = [
+	'dc-status',
+	'dc-id',
+	'dc-accumulator',
+	'dc-limit-by-archive',
+];
+
 const shouldDeleteKey = (
 	prop,
 	attributesToExclude,
@@ -57,12 +71,16 @@ const shouldDeleteKey = (
 		!isRepeater &&
 		prop === 'dc-status' &&
 		DC_LINK_BLOCKS.includes(blockName);
+	const isDCBlockException =
+		!isRepeater &&
+		DC_BLOCKS.includes(blockName) &&
+		DC_GLOBAL_EXCLUDE_EXCEPTIONS.includes(prop);
 
 	if (isNil(attributesToExclude[prop])) {
 		return false;
 	}
 
-	if (isDCLinkBlocksException) {
+	if (isDCLinkBlocksException || isDCBlockException) {
 		return false;
 	}
 

@@ -223,9 +223,24 @@ const getDividerDebugLoggers = win => {
 	return loggers;
 };
 
+const getCopyableSnapshotLog = snapshot => {
+	try {
+		return `[MaxiBlocks][DividerDebugJSON] ${JSON.stringify(snapshot)}`;
+	} catch {
+		return null;
+	}
+};
+
 const writeDividerDebugLog = (logger, title, snapshot) => {
 	if (typeof logger.warn === 'function') logger.warn(title, snapshot);
 	else if (typeof logger.log === 'function') logger.log(title, snapshot);
+
+	const copyableSnapshotLog = getCopyableSnapshotLog(snapshot);
+
+	if (copyableSnapshotLog) {
+		if (typeof logger.warn === 'function') logger.warn(copyableSnapshotLog);
+		else if (typeof logger.log === 'function') logger.log(copyableSnapshotLog);
+	}
 
 	if (typeof logger.groupCollapsed === 'function') {
 		logger.groupCollapsed(`${title} details`);

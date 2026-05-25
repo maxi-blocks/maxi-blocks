@@ -157,4 +157,45 @@ describe('divider-maxi debug helpers', () => {
 
 		expect(console.groupCollapsed).toHaveBeenCalledTimes(callCount);
 	});
+
+	it('writes a copyable JSON snapshot line for pasted console logs', () => {
+		const root = document.createElement('div');
+		root.className = 'maxi-divider-block--vertical';
+		root.innerHTML = '<hr class="maxi-divider-block__divider" />';
+
+		logDividerDebugSnapshot({
+			label: 'manual-check',
+			root,
+			deviceType: 's',
+			attributes: {
+				uniqueID: 'divider-maxi-debug-u',
+				'line-orientation-s': 'vertical',
+			},
+		});
+
+		const jsonCall = console.warn.mock.calls.find(
+			([message, extra]) =>
+				typeof message === 'string' &&
+				message.startsWith('[MaxiBlocks][DividerDebugJSON] ') &&
+				extra === undefined
+		);
+
+		expect(jsonCall).toBeTruthy();
+
+		const snapshot = JSON.parse(
+			jsonCall[0].replace('[MaxiBlocks][DividerDebugJSON] ', '')
+		);
+
+		expect(snapshot).toMatchObject({
+			label: 'manual-check',
+			deviceType: 's',
+			uniqueID: 'divider-maxi-debug-u',
+			breakpointClasses: {
+				isVertical: true,
+			},
+			attributes: {
+				'line-orientation-s': 'vertical',
+			},
+		});
+	});
 });

@@ -31,6 +31,7 @@ const GradientLayerContent = props => {
 		isLayer = false,
 		getBounds,
 		getBlockClipPath, // for IB
+		normalLayer,
 	} = props;
 
 	const gradientOptions = cloneDeep(props.gradientOptions);
@@ -72,6 +73,7 @@ const GradientLayerContent = props => {
 				isHover={isHover}
 				isLayer={isLayer}
 				breakpoint={breakpoint}
+				normalLayer={normalLayer}
 			/>
 		</>
 	);

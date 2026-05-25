@@ -41,6 +41,8 @@ const MediaUploader = props => {
 		extendSelector,
 		replaceButton = __('Replace', 'maxi-blocks'),
 		removeButton = __('Remove', 'maxi-blocks'),
+		showRemove = true,
+		showPreview = true,
 		alternativeImage,
 		allowedTypes = ['image'],
 	} = props;
@@ -103,46 +105,52 @@ const MediaUploader = props => {
 										: ''
 								}`}
 							{!!mediaID && !imageData && <Spinner />}
-							{mediaType === 'image' && !!mediaID && imageData && (
-								<div className='maxi-mediauploader-control__responsive-wrapper'>
-									<img
-										src={
+							{mediaType === 'image' &&
+								showPreview &&
+								!!mediaID &&
+								imageData && (
+									<div className='maxi-mediauploader-control__responsive-wrapper'>
+										<img
+											src={
+												alternativeImage
+													? alternativeImage.source_url
+													: imageData.source_url
+											}
+											alt={__('Image', 'maxi-blocks')}
+										/>
+									</div>
+								)}
+							{mediaType === 'video' &&
+								showPreview &&
+								!!mediaID &&
+								imageData && (
+									<ResponsiveWrapper
+										naturalWidth={
 											alternativeImage
-												? alternativeImage.source_url
-												: imageData.source_url
+												? alternativeImage.width
+												: imageData?.media_details?.width ?? 640
 										}
-										alt={__('Image', 'maxi-blocks')}
-									/>
-								</div>
-							)}
-							{mediaType === 'video' && !!mediaID && imageData && (
-								<ResponsiveWrapper
-									naturalWidth={
-										alternativeImage
-											? alternativeImage.width
-											: imageData.media_details.width
-									}
-									naturalHeight={
-										alternativeImage
-											? alternativeImage.height
-											: imageData.media_details.height
-									}
-									className='maxi-mediauploader-control__responsive-wrapper'
-								>
-									<video
-										controls
-										autoPlay={false}
-										loop={false}
-										muted
-										preload
-										src={
+										naturalHeight={
 											alternativeImage
-												? alternativeImage.source_url
-												: imageData.source_url
+												? alternativeImage.height
+												: imageData?.media_details?.height ?? 360
 										}
-									/>
-								</ResponsiveWrapper>
-							)}
+										className='maxi-mediauploader-control__responsive-wrapper'
+									>
+										<video
+											controls
+											autoPlay={false}
+											loop={false}
+											muted
+											preload='metadata'
+											src={
+												alternativeImage
+													? alternativeImage.source_url
+													: imageData.source_url
+											}
+										/>
+									</ResponsiveWrapper>
+								)}
 						</Button>
 					)}
 				/>
@@ -173,7 +181,7 @@ const MediaUploader = props => {
 					/>
 				</MediaUploadCheck>
 			)}
-			{!!mediaID && (
+			{!!mediaID && showRemove && (
 				<MediaUploadCheck>
 					<Button
 						onClick={onRemoveImage}

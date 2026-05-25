@@ -55,6 +55,7 @@ const getLayerCardContent = props => {
 		isHover,
 		isIB,
 		layer,
+		normalLayers,
 		onChangeInline = null,
 		onChange,
 		previewRef,
@@ -62,6 +63,15 @@ const getLayerCardContent = props => {
 		getBlockClipPath, // for IB
 		clientId,
 	} = props;
+	const normalLayer =
+		(isHover || isIB) && normalLayers
+			? normalLayers.find(
+					normalCandidate =>
+						normalCandidate.type === layer.type &&
+						(normalCandidate.id === layer.id ||
+							normalCandidate.order === layer.order)
+			  )
+			: undefined;
 
 	const handleGetBounds = () =>
 		getBounds(
@@ -101,19 +111,38 @@ const getLayerCardContent = props => {
 					clientId={clientId}
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					normalLayer={normalLayer}
 				/>
 			);
-		case 'image':
+		case 'image': {
+			// For hover/IB layers, find the image URL from the
+			// corresponding normal-state layer so FocalPointPicker
+			// can show the image preview.
+			let fallbackImageUrl;
+			if ((isHover || isIB) && normalLayers) {
+				const normalImageLayer =
+					normalLayers.find(
+						l =>
+							l.type === 'image' &&
+							(l.id === layer.id || l.order === layer.order)
+					) || normalLayers.find(l => l.type === 'image');
+
+				if (normalImageLayer) {
+					fallbackImageUrl =
+						normalImageLayer['background-image-mediaURL'];
+				}
+			}
+
 			return (
 				<ImageLayer
 					key={`background-image-layer--${layer.order}`}
 					imageOptions={layer}
-					onChange={obj =>
+					onChange={obj => {
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
-						})
-					}
+							...handleOnChangeLayer(obj, layer, isHover),
+						});
+					}}
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isIB={isIB}
@@ -121,8 +150,11 @@ const getLayerCardContent = props => {
 					isLayer
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					fallbackImageUrl={fallbackImageUrl}
+					normalLayer={normalLayer}
 				/>
 			);
+		}
 		case 'video':
 			return (
 				<VideoLayer
@@ -131,13 +163,14 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					breakpoint={breakpoint}
 					isHover={isHover}
 					isIB={isIB}
 					isLayer
+					normalLayer={normalLayer}
 				/>
 			);
 		case 'gradient':
@@ -148,7 +181,7 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					breakpoint={breakpoint}
@@ -157,6 +190,7 @@ const getLayerCardContent = props => {
 					isLayer
 					getBounds={handleGetBounds}
 					getBlockClipPath={handleGetBlockClipPath}
+					normalLayer={normalLayer}
 				/>
 			);
 		case 'shape':
@@ -167,7 +201,7 @@ const getLayerCardContent = props => {
 					onChange={obj =>
 						onChange({
 							...layer,
-							...handleOnChangeLayer(obj, layer),
+							...handleOnChangeLayer(obj, layer, isHover),
 						})
 					}
 					layerOrder={layer.order}
@@ -175,6 +209,7 @@ const getLayerCardContent = props => {
 					isHover={isHover}
 					isLayer
 					isIB={isIB}
+					normalLayer={normalLayer}
 				/>
 			);
 		default:
@@ -574,6 +609,7 @@ const BackgroundLayersControl = ({
 										isHover,
 										isIB,
 										layer,
+										normalLayers: layers,
 										onChangeInline,
 										onChange: (rawLayer, target = false) =>
 											onChangeLayer(

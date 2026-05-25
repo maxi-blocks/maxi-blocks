@@ -45,6 +45,7 @@ const ColorLayer = props => {
 		isToolbar = false,
 		getBounds,
 		getBlockClipPath, // for IB
+		normalLayer,
 	} = props;
 
 	const colorOptions = cloneDeep(props.colorOptions);
@@ -262,6 +263,7 @@ const ColorLayer = props => {
 				isHover={isHover}
 				isLayer={isLayer}
 				breakpoint={breakpoint}
+				normalLayer={normalLayer}
 			/>
 		</>
 	);

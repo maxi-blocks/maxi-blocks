@@ -140,11 +140,21 @@ if (!class_exists('MaxiBlocks_Blocks')):
 
             $index_js = 'build/index.min.js';
             $script_asset = require $script_asset_path;
+            $asset_version = $script_asset['version'] ?? MAXI_PLUGIN_VERSION;
+            $index_js_path = MAXI_PLUGIN_DIR_PATH . $index_js;
+            $index_js_version = file_exists($index_js_path)
+                ? filemtime($index_js_path)
+                : $asset_version;
+
+            if (wp_script_is('maxi-blocks-block-editor', 'registered')) {
+                wp_deregister_script('maxi-blocks-block-editor');
+            }
+
             wp_register_script(
                 'maxi-blocks-block-editor',
                 plugins_url($index_js, dirname(__FILE__)),
                 $script_asset['dependencies'],
-                MAXI_PLUGIN_VERSION,
+                $index_js_version,
                 true,
             );
 
@@ -333,11 +343,20 @@ if (!class_exists('MaxiBlocks_Blocks')):
             );
 
             $editor_css = 'build/index.min.css';
+            $editor_css_path = MAXI_PLUGIN_DIR_PATH . $editor_css;
+            $editor_css_version = file_exists($editor_css_path)
+                ? filemtime($editor_css_path)
+                : $asset_version;
+
+            if (wp_style_is('maxi-blocks-block-editor', 'registered')) {
+                wp_deregister_style('maxi-blocks-block-editor');
+            }
+
             wp_register_style(
                 'maxi-blocks-block-editor',
                 plugins_url($editor_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION,
+                $editor_css_version,
             );
 
             register_block_type('maxi-blocks/block-settings', [
@@ -346,11 +365,20 @@ if (!class_exists('MaxiBlocks_Blocks')):
             ]);
 
             $style_css = 'build/style-index.min.css';
+            $style_css_path = MAXI_PLUGIN_DIR_PATH . $style_css;
+            $style_css_version = file_exists($style_css_path)
+                ? filemtime($style_css_path)
+                : $asset_version;
+
+            if (wp_style_is('maxi-blocks-block', 'registered')) {
+                wp_deregister_style('maxi-blocks-block');
+            }
+
             wp_register_style(
                 'maxi-blocks-block',
                 plugins_url($style_css, dirname(__FILE__)),
                 [],
-                MAXI_PLUGIN_VERSION,
+                $style_css_version,
             );
             if (!is_admin()) {
                 wp_enqueue_style('maxi-blocks-block');

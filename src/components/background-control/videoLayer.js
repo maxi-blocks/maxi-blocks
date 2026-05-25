@@ -131,7 +131,14 @@ const VideoLayerContent = props => {
 };
 
 const VideoLayer = props => {
-	const { isIB, onChange, isHover = false, prefix = '', breakpoint } = props;
+	const {
+		isIB,
+		onChange,
+		isHover = false,
+		prefix = '',
+		breakpoint,
+		normalLayer,
+	} = props;
 
 	const videoOptions = cloneDeep(props.videoOptions);
 	const isLayerHover = videoOptions.isHover;
@@ -297,6 +304,7 @@ const VideoLayer = props => {
 						isHover={isHover}
 						isLayer
 						breakpoint={breakpoint}
+						normalLayer={normalLayer}
 					/>
 				</>
 			</ResponsiveTabsControl>

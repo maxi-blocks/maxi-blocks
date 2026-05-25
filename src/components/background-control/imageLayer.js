@@ -2,13 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useMemo } from '@wordpress/element';
 
 /**
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import ClipPathControl from '@components/clip-path-control';
+import FocalPointControl from '@components/focal-point-control';
 import ImageAltControl from '@components/image-alt-control';
 import ImageCropControl from '@components/image-crop-control';
 import ImageUrlUpload from '@components/image-url-upload';
@@ -26,13 +27,59 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
-import { getDefaultLayerAttr } from './utils';
+import { getDefaultLayerAttr, normalizePositionForPicker } from './utils';
 import DynamicContent from '@components/dynamic-content';
+import { getDCValues } from '@extensions/DC';
 
 /**
  * External dependencies
  */
-import { cloneDeep } from 'lodash';
+const keywordPositionX = {
+	left: 0,
+	right: 1,
+};
+
+const keywordPositionY = {
+	top: 0,
+	bottom: 1,
+};
+
+const getFocalPointFromPosition = position => {
+	if (!position || position === 'custom') return { x: 0.5, y: 0.5 };
+
+	const tokens = position.toLowerCase().trim().split(/\s+/);
+	let x;
+	let y;
+
+	tokens.forEach(token => {
+		if (token === 'center') {
+			if (x === undefined) x = 0.5;
+			else if (y === undefined) y = 0.5;
+
+			return;
+		}
+
+		if (token in keywordPositionX) {
+			x = keywordPositionX[token];
+			return;
+		}
+
+		if (token in keywordPositionY) {
+			y = keywordPositionY[token];
+			return;
+		}
+
+		if (token.endsWith('%')) {
+			if (x === undefined) x = normalizePositionForPicker(token);
+			else if (y === undefined) y = normalizePositionForPicker(token);
+		}
+	});
+
+	return {
+		x: x ?? 0.5,
+		y: y ?? 0.5,
+	};
+};
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -53,15 +100,21 @@ const ImageLayerSettings = props => {
 		isLayer,
 		getBounds,
 		getBlockClipPath, // for IB
+		normalLayer,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
-	const parallaxStatus = getAttributeValue({
-		target: 'background-image-parallax-status',
-		props: imageOptions,
-		prefix,
-	});
+	const parallaxStatus = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-parallax-status',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	return (
 		<>
@@ -250,206 +303,6 @@ const ImageLayerSettings = props => {
 						})
 					}
 				/>
-			)}
-			<SelectControl
-				__nextHasNoMarginBottom
-				label={__('Background position', 'maxi-blocks')}
-				className='maxi-background-control__image-layer__position-selector'
-				value={getLastBreakpointAttribute({
-					target: `${prefix}background-image-position`,
-					breakpoint,
-					attributes: imageOptions,
-					isHover,
-				})}
-				defaultValue={getDefaultAttr('background-image-position')}
-				newStyle
-				options={[
-					{
-						label: __('Left top', 'maxi-blocks'),
-						value: 'left top',
-					},
-					{
-						label: __('Left center', 'maxi-blocks'),
-						value: 'left center',
-					},
-					{
-						label: __('Left bottom', 'maxi-blocks'),
-						value: 'left bottom',
-					},
-					{
-						label: __('Right top', 'maxi-blocks'),
-						value: 'right top',
-					},
-					{
-						label: __('Right center', 'maxi-blocks'),
-						value: 'right center',
-					},
-					{
-						label: __('Right bottom', 'maxi-blocks'),
-						value: 'right bottom',
-					},
-					{
-						label: __('Center top', 'maxi-blocks'),
-						value: 'center top',
-					},
-					{
-						label: __('Center center', 'maxi-blocks'),
-						value: 'center center',
-					},
-					{
-						label: __('Center bottom', 'maxi-blocks'),
-						value: 'center bottom',
-					},
-					{
-						label: __('Custom', 'maxi-blocks'),
-						value: 'custom',
-					},
-				]}
-				onChange={val =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: val,
-					})
-				}
-				onReset={() =>
-					onChange({
-						[getAttributeKey(
-							'background-image-position',
-							isHover,
-							prefix,
-							breakpoint
-						)]: getDefaultAttr('background-image-position'),
-					})
-				}
-			/>
-			{getLastBreakpointAttribute({
-				target: `${prefix}background-image-position`,
-				breakpoint,
-				attributes: imageOptions,
-				isHover,
-			}) === 'custom' && (
-				<>
-					<AdvancedNumberControl
-						label={__('Y-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width-unit`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: `${prefix}background-image-position-width`,
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-width',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width'
-								),
-								[getAttributeKey(
-									'background-image-position-width-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-width-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-					<AdvancedNumberControl
-						label={__('X-axis', 'maxi-blocks')}
-						enableUnit
-						unit={getLastBreakpointAttribute({
-							target: 'background-image-position-height-unit',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeUnit={val =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-							})
-						}
-						value={getLastBreakpointAttribute({
-							target: 'background-image-position-height',
-							breakpoint,
-							attributes: imageOptions,
-							isHover,
-						})}
-						onChangeValue={(val, meta) =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: val,
-								meta,
-							})
-						}
-						onReset={() =>
-							onChange({
-								[getAttributeKey(
-									'background-image-position-height',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height'
-								),
-								[getAttributeKey(
-									'background-image-position-height-unit',
-									isHover,
-									prefix,
-									breakpoint
-								)]: getDefaultAttr(
-									'background-image-position-height-unit'
-								),
-								isReset: true,
-							})
-						}
-					/>
-				</>
 			)}
 			{!parallaxStatus && (
 				<>
@@ -648,6 +501,7 @@ const ImageLayerSettings = props => {
 				isHover={isHover}
 				isLayer={isLayer}
 				breakpoint={breakpoint}
+				normalLayer={normalLayer}
 				hideSize={parallaxStatus}
 			/>
 		</>
@@ -663,9 +517,11 @@ const ImageLayer = props => {
 		hideSettings = false,
 		isLayer = false,
 		disableUpload = false,
+		fallbackImageUrl,
 	} = props;
 
-	const imageOptions = cloneDeep(props.imageOptions);
+	// Use props.imageOptions directly as read-only (no cloning on every render)
+	const { imageOptions } = props;
 
 	const [moreSettings, setMoreSettings] = useState(false);
 
@@ -680,11 +536,15 @@ const ImageLayer = props => {
 		);
 	};
 
-	const mediaID = getAttributeValue({
-		target: 'background-image-mediaID',
-		props: imageOptions,
-		prefix,
-	});
+	const mediaID = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaID',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
 
 	const handleSelectImage = imageData => {
 		onChange({
@@ -703,8 +563,233 @@ const ImageLayer = props => {
 		});
 	};
 
+	const keyIsHover = isHover;
+
+	const getFocalPointChangeObject = focalPoint => ({
+		[getAttributeKey(
+			'background-image-position',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: 'custom',
+		[getAttributeKey(
+			'background-image-position-width',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: Math.round(focalPoint.x * 100),
+		[getAttributeKey(
+			'background-image-position-width-unit',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: '%',
+		[getAttributeKey(
+			'background-image-position-height',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: Math.round(focalPoint.y * 100),
+		[getAttributeKey(
+			'background-image-position-height-unit',
+			keyIsHover,
+			prefix,
+			breakpoint
+		)]: '%',
+	});
+
+	const handleFocalPointChange = focalPoint => {
+		onChange(getFocalPointChangeObject(focalPoint));
+	};
+
+	const getFocalPointAttribute = (target, targetIsHover = keyIsHover) =>
+		getLastBreakpointAttribute({
+			target: `${prefix}${target}`,
+			breakpoint,
+			attributes: imageOptions,
+			isHover: targetIsHover,
+		});
+
+	const getFocalPointResetValue = target => {
+		if (!keyIsHover) return getDefaultAttr(target);
+
+		const normalValue = getFocalPointAttribute(target, false);
+
+		if (
+			normalValue === false ||
+			normalValue === null ||
+			normalValue === undefined
+		)
+			return getDefaultAttr(target);
+
+		return normalValue;
+	};
+
+	const backgroundImagePosition = getLastBreakpointAttribute({
+		target: `${prefix}background-image-position`,
+		breakpoint,
+		attributes: imageOptions,
+		isHover: keyIsHover,
+	});
+
+	const currentFocalPoint = useMemo(() => {
+		if (backgroundImagePosition !== 'custom')
+			return getFocalPointFromPosition(backgroundImagePosition);
+
+		return {
+			x: normalizePositionForPicker(
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-width`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				}),
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-width-unit`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				})
+			),
+			y: normalizePositionForPicker(
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-height`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				}),
+				getLastBreakpointAttribute({
+					target: `${prefix}background-image-position-height-unit`,
+					breakpoint,
+					attributes: imageOptions,
+					isHover: keyIsHover,
+				})
+			),
+		};
+	}, [backgroundImagePosition, breakpoint, imageOptions, keyIsHover, prefix]);
+
+	const resetFocalPoint = (() => {
+		const resetPosition = getFocalPointResetValue(
+			'background-image-position'
+		);
+
+		if (resetPosition !== 'custom')
+			return getFocalPointFromPosition(resetPosition);
+
+		return {
+			x: normalizePositionForPicker(
+				getFocalPointResetValue('background-image-position-width'),
+				getFocalPointResetValue('background-image-position-width-unit')
+			),
+			y: normalizePositionForPicker(
+				getFocalPointResetValue('background-image-position-height'),
+				getFocalPointResetValue('background-image-position-height-unit')
+			),
+		};
+	})();
+
+	const resetMeta = keyIsHover ? {} : { isReset: true };
+
+	const handleFocalPointReset = () => {
+		onChange({
+			[getAttributeKey(
+				'background-image-position',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getFocalPointResetValue('background-image-position'),
+			[getAttributeKey(
+				'background-image-position-width',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getFocalPointResetValue('background-image-position-width'),
+			[getAttributeKey(
+				'background-image-position-width-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getFocalPointResetValue(
+				'background-image-position-width-unit'
+			),
+			[getAttributeKey(
+				'background-image-position-height',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getFocalPointResetValue('background-image-position-height'),
+			[getAttributeKey(
+				'background-image-position-height-unit',
+				keyIsHover,
+				prefix,
+				breakpoint
+			)]: getFocalPointResetValue(
+				'background-image-position-height-unit'
+			),
+			...resetMeta,
+		});
+	};
+
+	const handleFocalPointResetLeft = () => {
+		onChange({
+			...getFocalPointChangeObject({
+				...currentFocalPoint,
+				x: resetFocalPoint.x,
+			}),
+			...resetMeta,
+		});
+	};
+
+	const handleFocalPointResetTop = () => {
+		onChange({
+			...getFocalPointChangeObject({
+				...currentFocalPoint,
+				y: resetFocalPoint.y,
+			}),
+			...resetMeta,
+		});
+	};
+
+	// Compute URL once for validation and prop usage
+	const imageUrl = useMemo(
+		() =>
+			getAttributeValue({
+				target: 'background-image-mediaURL',
+				props: imageOptions,
+				prefix,
+			}),
+		[imageOptions, prefix]
+	);
+
+	// Get DC values for dynamic content images
+	const { status: dcStatus, mediaUrl: dcMediaUrl } = useMemo(
+		() =>
+			getDCValues(getGroupAttributes(imageOptions, 'dynamicContent'), {}),
+		[imageOptions]
+	);
+
+	// Use DC URL when DC is active, otherwise use regular image URL,
+	// falling back to the normal-state layer URL for hover/IB layers.
+	const effectiveImageUrl = dcStatus
+		? dcMediaUrl
+		: imageUrl || fallbackImageUrl;
+
 	return (
 		<div className='maxi-background-control__image-layer'>
+			{effectiveImageUrl && (
+				<div className='maxi-focal-point-picker'>
+					<FocalPointControl
+						className='maxi-background-position-picker'
+						label={__('Image focus', 'maxi-blocks')}
+						url={effectiveImageUrl}
+						value={currentFocalPoint}
+						onChange={handleFocalPointChange}
+						onReset={handleFocalPointReset}
+						onResetX={handleFocalPointResetLeft}
+						onResetY={handleFocalPointResetTop}
+					/>
+				</div>
+			)}
 			{!disableUpload && (
 				<>
 					{!imageOptions['dc-status'] && (
@@ -717,6 +802,7 @@ const ImageLayer = props => {
 									prefix,
 								})}
 								onSelectImage={handleSelectImage}
+								showPreview={false}
 								onRemoveImage={() =>
 									onChange({
 										[getAttributeKey(
@@ -731,12 +817,12 @@ const ImageLayer = props => {
 										)]: '',
 										[getAttributeKey(
 											'background-image-width',
-											isHover,
+											false,
 											prefix
 										)]: '',
 										[getAttributeKey(
 											'background-image-height',
-											isHover,
+											false,
 											prefix
 										)]: '',
 									})
@@ -749,6 +835,7 @@ const ImageLayer = props => {
 							/>
 						</>
 					)}
+
 					<DynamicContent
 						{...getGroupAttributes(imageOptions, 'dynamicContent')}
 						onChange={obj => {

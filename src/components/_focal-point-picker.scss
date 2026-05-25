@@ -1,0 +1,189 @@
+// ============================================
+// Shared FocalPointPicker styles
+// Used by background-control and position-control
+// ============================================
+
+@mixin focal-point-picker-layout {
+	.components-focal-point-picker {
+		position: relative !important;
+		overflow: visible !important;
+		isolation: isolate;
+	}
+
+	// The label/title should be on top
+	.components-base-control__field {
+		display: flex !important;
+		flex-direction: column !important;
+		align-items: stretch !important;
+		width: 100%;
+
+		// Label styling - order -1 ensures it's always first
+		.components-base-control__label {
+			margin-bottom: 8px !important;
+			order: -1;
+			font-size: 13px;
+			text-transform: none !important;
+		}
+
+		// Image picker container - stack in middle
+		.components-focal-point-picker {
+			order: 1;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			overflow: hidden;
+		}
+	}
+
+	// Hide the WordPress core Left/Top fields. They are scrub-draggable by
+	// default; Maxi renders explicit controls below the media instead.
+	.focal-point-picker__controls {
+		display: none !important;
+	}
+
+	.maxi-focal-point-control {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 100%;
+	}
+
+	.maxi-focal-point-control__picker {
+		width: 100%;
+	}
+
+	.maxi-focal-point-control__custom-controls {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: stretch;
+		width: 100%;
+	}
+
+	.maxi-focal-point-control__axis-controls {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
+		min-width: 0;
+		width: 100%;
+	}
+
+	.maxi-focal-point-control__axis {
+		display: flex;
+		align-items: flex-start;
+		gap: 4px;
+		min-width: 0;
+	}
+
+	.maxi-focal-point-control__axis-input {
+		min-width: 0;
+		width: 100%;
+
+		.maxi-base-control__label {
+			font-size: 13px;
+			line-height: 16px;
+			margin-bottom: 2px;
+			min-height: 16px;
+		}
+
+		.maxi-base-control__field {
+			margin-bottom: 0 !important;
+			width: 100%;
+		}
+
+		.maxi-advanced-number-control__controls-group,
+		.maxi-advanced-number-control__input-wrapper {
+			width: 100% !important;
+		}
+
+		.maxi-advanced-number-control__value {
+			max-width: none;
+			width: 100%;
+		}
+	}
+
+	.maxi-focal-point-control__axis-reset.maxi-reset-button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		align-self: flex-start;
+		box-sizing: border-box;
+		flex: 0 0 36px;
+		width: 36px !important;
+		height: 36px !important;
+		min-width: 36px;
+		min-height: 36px !important;
+		padding: 0 !important;
+		margin: 18px 0 0 !important;
+		border: 1px solid var(--maxi-grey-light);
+		border-radius: 4px !important;
+		background: var(--maxi-white);
+		color: var(--maxi-grey-dark);
+
+		&:hover {
+			border-color: var(--maxi-primary-color);
+			background: var(--maxi-whisper-green);
+			color: var(--maxi-primary-color);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--maxi-primary-color);
+			outline-offset: 2px;
+		}
+
+		svg {
+			width: 12px;
+			height: 12px;
+			margin: 0;
+			fill: currentcolor;
+		}
+	}
+
+	// Fallback targeting for different WordPress versions
+	.components-focal-point-picker__media {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	// Create isolated positioning context for focal point
+	.components-focal-point-picker-wrapper {
+		position: relative !important;
+		isolation: isolate;
+		width: 95%;
+		margin: 8px auto 4px;
+	}
+
+	// Fix the focal point circle indicator
+	.components-focal-point-picker__icon_container {
+		position: absolute !important;
+		width: 24px !important;
+		height: 24px !important;
+		margin: 0 !important; // Reset WordPress negative margins
+		transform: translate(-50%, -50%) !important;
+		transition: none !important;
+		will-change: left, top;
+		border-radius: 50% !important;
+		border: 0 !important;
+		box-shadow: inset 0 0 0 2px var(--maxi-white),
+			0 0 0 3px rgba(0, 0, 0, 0.9),
+			0 0 6px rgba(0, 0, 0, 0.35) !important;
+		background: transparent !important;
+		outline: 2px solid transparent;
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
+		}
+
+		&:focus-visible {
+			box-shadow: inset 0 0 0 3px var(--maxi-white),
+				0 0 0 4px rgba(0, 0, 0, 0.9),
+				0 0 7px rgba(0, 0, 0, 0.35) !important;
+		}
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+	}
+}

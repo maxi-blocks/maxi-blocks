@@ -10,6 +10,7 @@ import Inspector from './inspector';
 import getNumberCounterDisplayValue, {
 	getNumberCounterAnimationValue,
 	getNumberCounterValueFromAnimation,
+	getDecimalPlaces,
 } from './utils';
 
 import {
@@ -182,6 +183,10 @@ const NumberCounter = attributes => {
 	const startTimeRef = useRef(Date.now());
 	const startCountValue = getNumberCounterAnimationValue(startNumber);
 	const endCountValue = getNumberCounterAnimationValue(endNumber);
+	const counterDecimalPlaces = Math.max(
+		getDecimalPlaces(startNumber),
+		getDecimalPlaces(endNumber)
+	);
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -322,7 +327,8 @@ const NumberCounter = attributes => {
 					</svg>
 					<span className='maxi-number-counter__box__text'>
 						{getNumberCounterDisplayValue(
-							getNumberCounterValueFromAnimation(count)
+							getNumberCounterValueFromAnimation(count),
+							counterDecimalPlaces
 						)}
 						{usePercentage &&
 							(centeredPercentage ? '%' : <sup>%</sup>)}
@@ -332,7 +338,8 @@ const NumberCounter = attributes => {
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
 					{getNumberCounterDisplayValue(
-						getNumberCounterValueFromAnimation(count)
+						getNumberCounterValueFromAnimation(count),
+						counterDecimalPlaces
 					)}
 					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>

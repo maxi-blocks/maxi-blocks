@@ -250,6 +250,46 @@ describe('getArrowStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('adds background transitions to callout arrow color elements', () => {
+		const object = {
+			target: '',
+			blockStyle: 'light',
+			'arrow-status-general': true,
+			'block-background-status-hover': true,
+			'background-layers': [
+				{
+					type: 'color',
+					'display-general': 'block',
+					'background-palette-status-general': false,
+					'background-color-general': 'rgba(150,200,90)',
+					order: 0,
+				},
+			],
+			transition: {
+				canvas: {
+					'background / layer': {
+						'transition-duration-general': 0.3,
+						'transition-delay-general': 0,
+						'easing-general': 'ease',
+						'transition-status-general': true,
+					},
+				},
+			},
+		};
+
+		const result = getArrowStyles(object);
+
+		expect(
+			result[' .maxi-container-arrow:before'].transition.general
+				.transition
+		).toBe('background-color 0.3s 0s ease');
+		expect(
+			result[
+				' .maxi-container-arrow .maxi-container-arrow--content:after'
+			].transition.general.transition
+		).toBe('background-color 0.3s 0s ease');
+	});
+
 	it('Return empty arrow styles when arrow status is off', () => {
 		const object = {
 			target: '',

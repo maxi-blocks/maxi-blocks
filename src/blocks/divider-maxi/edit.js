@@ -26,7 +26,6 @@ import {
 	getDividerResizerSize,
 	syncDividerResizerSize,
 } from './utils';
-import { createDividerDebugController } from './debug';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 import { withMaxiContextLoopContext } from '@extensions/DC';
 
@@ -38,11 +37,6 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
-		this.dividerDebug = createDividerDebugController(() => ({
-			root: this.blockRef?.current,
-			attributes: this.props.attributes,
-			deviceType: this.props.deviceType,
-		}));
 	}
 
 	get getStylesObject() {
@@ -55,9 +49,6 @@ class edit extends MaxiBlockComponent {
 			this.props.attributes,
 			this.props.deviceType
 		);
-
-		this.dividerDebug.attach();
-		this.dividerDebug.schedule('update-after-raf');
 	}
 
 	maxiBlockDidMount() {
@@ -66,13 +57,6 @@ class edit extends MaxiBlockComponent {
 			this.props.attributes,
 			this.props.deviceType
 		);
-
-		this.dividerDebug.attach();
-		this.dividerDebug.schedule('mount-after-styles', 2);
-	}
-
-	maxiBlockWillUnmount() {
-		this.dividerDebug.detach();
 	}
 
 	render() {

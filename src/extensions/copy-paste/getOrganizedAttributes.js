@@ -40,14 +40,22 @@ const getTemplate = templateName => {
 const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 	const { prefix, hasBreakpoints, isPalette, isHover } = conditions;
 
-	const props = isString(rawProps) ? [rawProps] : rawProps;
+	const props = isArray(rawProps) ? rawProps : [rawProps];
 
-	props.forEach(prop => {
-		const key = `${prefix}${prop}`;
+	props.forEach(rawProp => {
+		const {
+			prop,
+			prefix: propPrefix = prefix,
+			hasBreakpoints: propHasBreakpoints = hasBreakpoints,
+			isPalette: propIsPalette = isPalette,
+			isHover: propIsHover = isHover,
+		} = isPlainObject(rawProp) ? rawProp : { prop: rawProp };
+
+		const key = `${propPrefix}${prop}`;
 
 		let currAttrKeys = [key];
 
-		if (isPalette) {
+		if (propIsPalette) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				Object.keys(
 					paletteAttributesCreator({ prefix: `${currAttrKey}-` })
@@ -55,13 +63,13 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 			);
 		}
 
-		if (hasBreakpoints) {
+		if (propHasBreakpoints) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				breakpoints.map(breakpoint => `${currAttrKey}-${breakpoint}`)
 			);
 		}
 
-		if (isHover)
+		if (propIsHover)
 			currAttrKeys = currAttrKeys.map(
 				currAttrKey => `${currAttrKey}-hover`
 			);
@@ -153,6 +161,10 @@ const getOrganizedAttributes = (
 							attributes,
 							localCondition
 						);
+					}
+
+					if (!isClean && value.pasteWith) {
+						attr._pasteWith = value.pasteWith;
 					}
 				}
 			}

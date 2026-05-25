@@ -1,3 +1,116 @@
+const typographyItem = (
+	props,
+	isHover = false,
+	hasBreakpoints = true,
+	pasteWith = false
+) => ({
+	props,
+	...(hasBreakpoints && { hasBreakpoints: true }),
+	...(isHover && { isHover: true }),
+	...(pasteWith && { pasteWith }),
+});
+
+const typographyHoverItem = (props, hasBreakpoints = true) =>
+	typographyItem(props, true, hasBreakpoints, 'typography-status-hover');
+
+const typographyGroups = {
+	'Font family': typographyItem('font-family'),
+	'Font colour': typographyItem([
+		'palette-status',
+		'palette-sc-status',
+		'palette-color',
+		'color',
+	]),
+	'Colour opacity': typographyItem('palette-opacity'),
+	'Font size': typographyItem(['font-size', 'font-size-unit']),
+	'Line height': typographyItem(['line-height', 'line-height-unit']),
+	'Letter spacing': typographyItem([
+		'letter-spacing',
+		'letter-spacing-unit',
+	]),
+	'Font style': typographyItem([
+		'font-weight',
+		'text-transform',
+		'font-style',
+		'text-decoration',
+	]),
+	'Text spacing': typographyItem([
+		'text-indent',
+		'text-indent-unit',
+		'word-spacing',
+		'word-spacing-unit',
+		'bottom-gap',
+		'bottom-gap-unit',
+	]),
+	'Text layout': typographyItem([
+		'vertical-align',
+		'text-orientation',
+		'text-direction',
+		'text-wrap',
+		'white-space',
+	]),
+	'Text shadow': typographyItem('text-shadow'),
+	'Custom formats': typographyItem('custom-formats', false, false),
+	'List font colour': typographyItem([
+		'list-palette-status',
+		'list-palette-sc-status',
+		'list-palette-color',
+		'list-color',
+	]),
+	'List colour opacity': typographyItem('list-palette-opacity'),
+};
+
+const typographyHoverGroups = {
+	'Hover state': { props: 'typography-status', isHover: true },
+	'Hover font family': typographyHoverItem('font-family'),
+	'Hover font colour': typographyHoverItem([
+		'palette-status',
+		'palette-sc-status',
+		'palette-color',
+		'color',
+	]),
+	'Hover colour opacity': typographyHoverItem('palette-opacity'),
+	'Hover font size': typographyHoverItem(['font-size', 'font-size-unit']),
+	'Hover line height': typographyHoverItem([
+		'line-height',
+		'line-height-unit',
+	]),
+	'Hover letter spacing': typographyHoverItem([
+		'letter-spacing',
+		'letter-spacing-unit',
+	]),
+	'Hover font style': typographyHoverItem([
+		'font-weight',
+		'text-transform',
+		'font-style',
+		'text-decoration',
+	]),
+	'Hover text spacing': typographyHoverItem([
+		'text-indent',
+		'text-indent-unit',
+		'word-spacing',
+		'word-spacing-unit',
+		'bottom-gap',
+		'bottom-gap-unit',
+	]),
+	'Hover text layout': typographyHoverItem([
+		'vertical-align',
+		'text-orientation',
+		'text-direction',
+		'text-wrap',
+		'white-space',
+	]),
+	'Hover text shadow': typographyHoverItem('text-shadow'),
+	'Hover custom formats': typographyHoverItem('custom-formats', false),
+	'Hover list font colour': typographyHoverItem([
+		'list-palette-status',
+		'list-palette-sc-status',
+		'list-palette-color',
+		'list-color',
+	]),
+	'Hover list colour opacity': typographyHoverItem('list-palette-opacity'),
+};
+
 const templates = {
 	background: {
 		group: {
@@ -52,12 +165,8 @@ const templates = {
 	},
 	typography: {
 		group: {
-			Typography: {
-				groupAttributes: 'typography',
-			},
-			'Typography hover': {
-				groupAttributes: 'typographyHover',
-			},
+			...typographyGroups,
+			...typographyHoverGroups,
 		},
 	},
 	size: {

@@ -319,18 +319,36 @@ const CopyPaste = props => {
 		setSpecialPaste(specPaste);
 	};
 
+	const getSpecialPasteAttributes = selectedAttributes => {
+		const { _pasteWith, ...pasteAttributes } = selectedAttributes;
+
+		if (!_pasteWith) return pasteAttributes;
+
+		const pasteWith = isArray(_pasteWith) ? _pasteWith : [_pasteWith];
+
+		return pasteWith.reduce((acc, attrName) => {
+			if (Object.prototype.hasOwnProperty.call(copiedStyles, attrName)) {
+				acc[attrName] = copiedStyles[attrName];
+			}
+
+			return acc;
+		}, pasteAttributes);
+	};
+
 	const onSpecialPaste = () => {
 		let res = {};
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
 			keys.forEach(key => {
+				const selectedAttributes = isString(key)
+					? organizedAttributes[tab][key]
+					: organizedAttributes[tab][Object.keys(key)[0]][
+							Object.values(key)[0]
+					  ];
+
 				res = {
 					...res,
-					...(isString(key)
-						? organizedAttributes[tab][key]
-						: organizedAttributes[tab][Object.keys(key)[0]][
-								Object.values(key)[0]
-						  ]),
+					...getSpecialPasteAttributes(selectedAttributes),
 				};
 			});
 		});

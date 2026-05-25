@@ -146,29 +146,49 @@ describe('getOrganizedAttributes', () => {
 		expect(result).not.toHaveProperty('dc-media-url');
 	});
 
-	it('Keeps dynamic content settings when pasting into a Dynamic Content block', () => {
-		const copiedAttributes = {
-			'dc-status': true,
-			'dc-type': 'posts',
-			'dc-relation': 'by-category',
-			'dc-id': 14,
-			'dc-order-by': 'date',
-			'dc-order': 'desc',
-			'dc-limit': 48,
-			'dc-accumulator': 2,
-			'dc-limit-by-archive': 'include',
+	it('Omits empty dynamic content advanced sections', () => {
+		const mapping = {
+			advanced: {
+				template: 'advanced',
+			},
 		};
 
-		const result = excludeAttributes(
-			copiedAttributes,
-			{},
-			{ _exclude: [] },
-			false,
-			'maxi-blocks/text-maxi'
-		);
+		const result = getOrganizedAttributes({}, mapping);
 
-		expect(result).toEqual(copiedAttributes);
+		expect(result.advanced).not.toHaveProperty('Dynamic content');
 	});
+
+	it.each([
+		'maxi-blocks/text-maxi',
+		'maxi-blocks/button-maxi',
+		'maxi-blocks/image-maxi',
+		'maxi-blocks/divider-maxi',
+	])(
+		'Keeps dynamic content settings when pasting into %s',
+		blockName => {
+			const copiedAttributes = {
+				'dc-status': true,
+				'dc-type': 'posts',
+				'dc-relation': 'by-category',
+				'dc-id': 14,
+				'dc-order-by': 'date',
+				'dc-order': 'desc',
+				'dc-limit': 48,
+				'dc-accumulator': 2,
+				'dc-limit-by-archive': 'include',
+			};
+
+			const result = excludeAttributes(
+				copiedAttributes,
+				{},
+				{ _exclude: [] },
+				false,
+				blockName
+			);
+
+			expect(result).toEqual(copiedAttributes);
+		}
+	);
 
 	it('Ensure it works with groups', () => {
 		const copyPasteMapping = {

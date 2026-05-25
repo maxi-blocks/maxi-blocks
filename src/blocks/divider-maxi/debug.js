@@ -53,6 +53,8 @@ const ATTRIBUTE_PREFIXES = [
 
 const dividerDebugEntries = new Set();
 
+const hasDividerIdentity = attributes => Boolean(attributes?.uniqueID);
+
 const hasDottedDividerStyle = attributes =>
 	Object.entries(attributes || {}).some(
 		([key, value]) =>
@@ -80,6 +82,8 @@ export const isDividerDebugEnabled = (
 	attributes = {}
 ) => {
 	if (!win) return false;
+
+	if (hasDividerIdentity(attributes)) return true;
 
 	if (hasDottedDividerStyle(attributes)) return true;
 
@@ -164,6 +168,7 @@ export const getDividerDebugSnapshot = ({
 		deviceType,
 		uniqueID: attributes?.uniqueID,
 		debugEnabledBy: {
+			autoDivider: hasDividerIdentity(attributes),
 			autoDotted: hasDottedDividerStyle(attributes),
 			storageOrQuery: isDividerDebugEnabled(win),
 		},
@@ -197,6 +202,36 @@ export const getDividerDebugSnapshot = ({
 		},
 		styleTagMatches: getStyleTagMatches(root, attributes?.uniqueID),
 	};
+};
+
+const getDividerDebugLoggers = win => {
+	const loggers = [];
+	const addLogger = logger => {
+		if (logger && !loggers.includes(logger)) loggers.push(logger);
+	};
+
+	addLogger(win?.console);
+
+	try {
+		if (win?.parent && win.parent !== win) addLogger(win.parent.console);
+	} catch {
+		// Cross-frame access can fail in some editor contexts.
+	}
+
+	addLogger(typeof console !== 'undefined' ? console : null);
+
+	return loggers;
+};
+
+const writeDividerDebugLog = (logger, title, snapshot) => {
+	if (typeof logger.warn === 'function') logger.warn(title, snapshot);
+	else if (typeof logger.log === 'function') logger.log(title, snapshot);
+
+	if (typeof logger.groupCollapsed === 'function') {
+		logger.groupCollapsed(`${title} details`);
+		logger.log(snapshot);
+		logger.groupEnd();
+	}
 };
 
 const getLiveDebugEntries = () =>
@@ -268,15 +303,10 @@ export const logDividerDebugSnapshot = (context, { force = false } = {}) => {
 
 	const snapshot = getDividerDebugSnapshot(context);
 	const title = `[MaxiBlocks][DividerDebug] ${snapshot.label} ${snapshot.deviceType} ${snapshot.uniqueID}`;
-	const logger = win?.console || console;
 
-	if (typeof logger.groupCollapsed === 'function') {
-		logger.groupCollapsed(title);
-		logger.log(snapshot);
-		logger.groupEnd();
-	} else {
-		logger.log(title, snapshot);
-	}
+	getDividerDebugLoggers(win).forEach(logger =>
+		writeDividerDebugLog(logger, title, snapshot)
+	);
 
 	return true;
 };

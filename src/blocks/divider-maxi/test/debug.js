@@ -14,6 +14,7 @@ describe('divider-maxi debug helpers', () => {
 		jest.spyOn(console, 'groupCollapsed').mockImplementation(jest.fn());
 		jest.spyOn(console, 'groupEnd').mockImplementation(jest.fn());
 		jest.spyOn(console, 'log').mockImplementation(jest.fn());
+		jest.spyOn(console, 'warn').mockImplementation(jest.fn());
 	});
 
 	afterEach(() => {
@@ -37,6 +38,14 @@ describe('divider-maxi debug helpers', () => {
 		expect(
 			isDividerDebugEnabled(window, {
 				'divider-border-style-general': 'dotted',
+			})
+		).toBe(true);
+	});
+
+	it('automatically enables divider diagnostics for any divider block', () => {
+		expect(
+			isDividerDebugEnabled(window, {
+				uniqueID: 'divider-maxi-debug-u',
 			})
 		).toBe(true);
 	});
@@ -80,6 +89,7 @@ describe('divider-maxi debug helpers', () => {
 		});
 
 		expect(snapshot.breakpointClasses.isHorizontal).toBe(true);
+		expect(snapshot.debugEnabledBy.autoDivider).toBe(true);
 		expect(snapshot.debugEnabledBy.autoDotted).toBe(true);
 		expect(snapshot.attributes).toEqual({
 			uniqueID,
@@ -98,7 +108,7 @@ describe('divider-maxi debug helpers', () => {
 		expect(snapshot.styleTagMatches[0].snippet).toContain(uniqueID);
 	});
 
-	it('does not log diagnostics while the debug gate is disabled', () => {
+	it('does not log diagnostics when there is no divider identity and the debug gate is disabled', () => {
 		const root = document.createElement('div');
 
 		expect(
@@ -106,10 +116,11 @@ describe('divider-maxi debug helpers', () => {
 				label: 'update-after-raf',
 				root,
 				deviceType: 'm',
-				attributes: { uniqueID: 'divider-maxi-debug-u' },
+				attributes: {},
 			})
 		).toBe(false);
 		expect(console.log).not.toHaveBeenCalled();
+		expect(console.warn).not.toHaveBeenCalled();
 	});
 
 	it('attaches hover diagnostics only while the controller is active', () => {
@@ -128,8 +139,16 @@ describe('divider-maxi debug helpers', () => {
 		controller.attach();
 		root.dispatchEvent(new window.Event('pointerenter'));
 
+		expect(console.warn).toHaveBeenCalledWith(
+			expect.stringContaining('[MaxiBlocks][DividerDebug] hover-before'),
+			expect.objectContaining({
+				label: 'hover-before',
+			})
+		);
 		expect(console.groupCollapsed).toHaveBeenCalledWith(
-			expect.stringContaining('[MaxiBlocks][DividerDebug] hover-before')
+			expect.stringContaining(
+				'[MaxiBlocks][DividerDebug] hover-before'
+			)
 		);
 
 		const callCount = console.groupCollapsed.mock.calls.length;

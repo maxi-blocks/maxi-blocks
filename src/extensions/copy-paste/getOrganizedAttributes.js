@@ -12,6 +12,17 @@ import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const prefixPasteWith = (pasteWith, prefix = '') => {
+	const pasteWithArray = isArray(pasteWith) ? pasteWith : [pasteWith];
+	const prefixedPasteWith = pasteWithArray.map(attrName =>
+		prefix && isString(attrName) && !attrName.startsWith(prefix)
+			? `${prefix}${attrName}`
+			: attrName
+	);
+
+	return isArray(pasteWith) ? prefixedPasteWith : prefixedPasteWith[0];
+};
+
 const getTemplate = templateName => {
 	const getNestedTemplates = obj => {
 		let response = {};
@@ -164,7 +175,10 @@ const getOrganizedAttributes = (
 					}
 
 					if (!isClean && value.pasteWith) {
-						attr._pasteWith = value.pasteWith;
+						attr._pasteWith = prefixPasteWith(
+							value.pasteWith,
+							prefix
+						);
 					}
 				}
 			}

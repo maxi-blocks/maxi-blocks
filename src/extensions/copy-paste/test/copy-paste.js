@@ -274,6 +274,32 @@ describe('getOrganizedAttributes', () => {
 		});
 	});
 
+	it('Prefixes hover typography paste metadata', () => {
+		const copyPasteMapping = {
+			settings: {
+				'Button typography': {
+					template: 'typography',
+					prefix: 'button-',
+				},
+			},
+		};
+
+		const attributes = {
+			'button-typography-status-hover': true,
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		const typography = result.settings['Button typography'];
+
+		expect(typography['Hover font size']).toMatchObject({
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+			_pasteWith: 'button-typography-status-hover',
+		});
+	});
+
 	it('Ensure it works with group attributes', () => {
 		const copyPasteMapping = {
 			settings: {

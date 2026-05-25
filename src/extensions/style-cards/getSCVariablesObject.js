@@ -102,6 +102,10 @@ const getSCVariablesObject = (
 		'padding-left',
 		'padding-right',
 	];
+	const getElementSettings = element =>
+		element === 'number-counter'
+			? settings.filter(setting => !setting.includes('padding'))
+			: settings;
 
 	const mergeStyleCards = (defaultStyleCard, styleCard) =>
 		merge(
@@ -138,7 +142,7 @@ const getSCVariablesObject = (
 			if (isEmpty(obj)) return;
 
 			if (!elementsForColor.includes(element))
-				settings.forEach(setting => {
+				getElementSettings(element).forEach(setting => {
 					const isFontFamily = setting === 'font-family';
 
 					breakpoints.forEach(breakpoint => {

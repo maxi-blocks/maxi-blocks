@@ -79,6 +79,14 @@ describe('getSCVariablesObject', () => {
 				'--maxi-dark-number-counter-font-weight-general': 600,
 			})
 		);
+
+		const varSC = getSCVariablesObject(styleCard);
+
+		expect(
+			Object.keys(varSC).some(key =>
+				key.includes('number-counter-padding')
+			)
+		).toBe(false);
 	});
 
 	it('Returns the correct object', () => {

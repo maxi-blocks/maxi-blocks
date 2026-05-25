@@ -21,7 +21,11 @@ import {
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { copyPasteMapping } from './data';
-import { getDividerEditClasses } from './utils';
+import {
+	getDividerEditClasses,
+	getDividerResizerSize,
+	syncDividerResizerSize,
+} from './utils';
 import { createDividerDebugController } from './debug';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 import { withMaxiContextLoopContext } from '@extensions/DC';
@@ -46,84 +50,22 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.resizableObject.current) {
-			const width = getLastBreakpointAttribute({
-				target: 'width',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const height = `${getLastBreakpointAttribute({
-				target: 'height',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}`;
-
-			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-
-			const { width: resizerWidth, height: resizerHeight } =
-				this.resizableObject.current.state;
-
-			if (
-				resizerWidth !== `${width}${widthUnit}` ||
-				resizerHeight !== height
-			) {
-				this.resizableObject.current.updateSize({
-					width: width ? `${width}${widthUnit}` : '100%',
-					height: forceAspectRatio ? 'auto' : height,
-				});
-			}
-		}
+		syncDividerResizerSize(
+			this.resizableObject,
+			this.props.attributes,
+			this.props.deviceType
+		);
 
 		this.dividerDebug.attach();
 		this.dividerDebug.schedule('update-after-raf');
 	}
 
 	maxiBlockDidMount() {
-		if (this.resizableObject.current) {
-			const width = getLastBreakpointAttribute({
-				target: 'width',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const height = `${getLastBreakpointAttribute({
-				target: 'height',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}`;
-
-			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-
-			this.resizableObject.current.updateSize({
-				width: width ? `${width}${widthUnit}` : '100%',
-				height: forceAspectRatio ? 'auto' : height,
-			});
-		}
+		syncDividerResizerSize(
+			this.resizableObject,
+			this.props.attributes,
+			this.props.deviceType
+		);
 
 		this.dividerDebug.attach();
 		this.dividerDebug.schedule('mount-after-styles', 2);
@@ -197,18 +139,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden(attributes, deviceType)}
-				defaultSize={{
-					width: '100%',
-					height: `${getLastBreakpointAttribute({
-						target: 'height',
-						breakpoint: deviceType,
-						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'height-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
-				}}
+				defaultSize={getDividerResizerSize(attributes, deviceType)}
 				showHandle={
 					!getLastBreakpointAttribute({
 						target: 'force-aspect-ratio',

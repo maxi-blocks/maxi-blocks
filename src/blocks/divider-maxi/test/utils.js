@@ -1,4 +1,4 @@
-import { getDividerEditClasses } from '../utils';
+import { getDividerEditClasses, syncDividerResizerSize } from '../utils';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(store => {
@@ -39,5 +39,39 @@ describe('divider-maxi utils', () => {
 		expect(getDividerEditClasses(attributes, 'm')).toContain(
 			'maxi-divider-block__resizer__divider-maxi-test-u'
 		);
+	});
+
+	it('syncs stale resizer DOM styles to the current breakpoint size', () => {
+		const resizable = document.createElement('div');
+		resizable.style.width = '9.43396%';
+		resizable.style.height = '100%';
+
+		const updateSize = jest.fn();
+		const resizableObject = {
+			current: {
+				state: {
+					width: '9.43396%',
+					height: '100%',
+				},
+				resizable,
+				updateSize,
+			},
+		};
+
+		const didSync = syncDividerResizerSize(resizableObject, {
+			'width-general': 20,
+			'width-unit-general': 'px',
+			'height-general': 100,
+			'height-unit-general': '%',
+			'force-aspect-ratio-general': false,
+		});
+
+		expect(didSync).toBe(true);
+		expect(updateSize).toHaveBeenCalledWith({
+			width: '20px',
+			height: '100%',
+		});
+		expect(resizable.style.width).toBe('20px');
+		expect(resizable.style.height).toBe('100%');
 	});
 });

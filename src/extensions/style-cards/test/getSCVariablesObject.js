@@ -12,6 +12,75 @@ describe('getSCVariablesObject', () => {
 		expect(cleanVarSC).toMatchSnapshot();
 	});
 
+	it('Includes Number Counter style card variables', () => {
+		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
+
+		styleCard.light.defaultStyleCard['number-counter'] = {
+			'color-global': true,
+			'palette-status': true,
+			'palette-color': 4,
+			'palette-opacity': 1,
+			color: '',
+			'font-family-general': 'Poppins',
+			'font-size-general': 44,
+			'font-size-unit-general': 'px',
+			'font-weight-general': 700,
+		};
+		styleCard.dark.defaultStyleCard['number-counter'] = {
+			'color-global': true,
+			'palette-status': true,
+			'palette-color': 5,
+			'palette-opacity': 1,
+			color: '',
+			'font-family-general': 'Inter',
+			'font-size-general': 42,
+			'font-size-unit-general': 'px',
+			'font-weight-general': 600,
+		};
+
+		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
+
+		expect(cleanVarSC).toEqual(
+			expect.objectContaining({
+				'--maxi-light-number-counter-color':
+					'rgba(var(--maxi-light-color-4),1)',
+				'--maxi-light-number-counter-font-family-general':
+					'"Poppins"',
+				'--maxi-light-number-counter-font-size-general': '44px',
+				'--maxi-light-number-counter-font-weight-general': 700,
+				'--maxi-dark-number-counter-color':
+					'rgba(var(--maxi-dark-color-5),1)',
+				'--maxi-dark-number-counter-font-family-general': '"Inter"',
+				'--maxi-dark-number-counter-font-size-general': '42px',
+				'--maxi-dark-number-counter-font-weight-general': 600,
+			})
+		);
+	});
+
+	it('Falls back to Paragraph variables when Number Counter is missing from saved style cards', () => {
+		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
+
+		delete styleCard.light.defaultStyleCard['number-counter'];
+		delete styleCard.dark.defaultStyleCard['number-counter'];
+
+		styleCard.light.defaultStyleCard.p['font-family-general'] = 'Poppins';
+		styleCard.light.defaultStyleCard.p['font-weight-general'] = 700;
+		styleCard.dark.defaultStyleCard.p['font-family-general'] = 'Inter';
+		styleCard.dark.defaultStyleCard.p['font-weight-general'] = 600;
+
+		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
+
+		expect(cleanVarSC).toEqual(
+			expect.objectContaining({
+				'--maxi-light-number-counter-font-family-general':
+					'"Poppins"',
+				'--maxi-light-number-counter-font-weight-general': 700,
+				'--maxi-dark-number-counter-font-family-general': '"Inter"',
+				'--maxi-dark-number-counter-font-weight-general': 600,
+			})
+		);
+	});
+
 	it('Returns the correct object', () => {
 		const styleCard = {
 			name: 'Maxi (Default) - test',

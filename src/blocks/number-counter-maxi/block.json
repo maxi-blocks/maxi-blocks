@@ -15,5 +15,18 @@
 		"anchor": false,
 		"html": false
 	},
-	"editorScript": "maxi-blocks-block-editor"
+	"editorScript": "maxi-blocks-block-editor",
+	"scProps": {
+		"scElements": [
+			"color-global",
+			"palette-color",
+			"circle-background-color-global",
+			"circle-background-palette-color",
+			"circle-bar-color-global",
+			"circle-bar-palette-color",
+			"font-family-general",
+			"font-weight-general"
+		],
+		"scType": "number-counter"
+	}
 }

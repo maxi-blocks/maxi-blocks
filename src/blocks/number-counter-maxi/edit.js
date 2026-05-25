@@ -28,7 +28,7 @@ import {
 } from '@extensions/styles';
 import getStyles from './styles';
 import { getBreakpoints } from '@extensions/styles/helpers';
-import { copyPasteMapping } from './data';
+import { copyPasteMapping, scProps } from './data';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
@@ -42,6 +42,8 @@ class edit extends MaxiBlockComponent {
 	}
 
 	resetNumberHelper;
+
+	scProps = scProps;
 
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {

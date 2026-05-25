@@ -77,7 +77,6 @@ const numberCounter = {
 			},
 			'font-family': {
 				type: 'string',
-				default: 'Roboto',
 			},
 			'font-weight': {
 				type: 'string',

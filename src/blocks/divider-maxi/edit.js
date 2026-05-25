@@ -4,11 +4,6 @@
 import { createRef } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -26,6 +21,8 @@ import {
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { copyPasteMapping } from './data';
+import { getDividerEditClasses } from './utils';
+import { createDividerDebugController } from './debug';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 import { withMaxiContextLoopContext } from '@extensions/DC';
 
@@ -37,6 +34,11 @@ class edit extends MaxiBlockComponent {
 		super(props);
 
 		this.resizableObject = createRef();
+		this.dividerDebug = createDividerDebugController(() => ({
+			root: this.blockRef?.current,
+			attributes: this.props.attributes,
+			deviceType: this.props.deviceType,
+		}));
 	}
 
 	get getStylesObject() {
@@ -84,6 +86,9 @@ class edit extends MaxiBlockComponent {
 				});
 			}
 		}
+
+		this.dividerDebug.attach();
+		this.dividerDebug.schedule('update-after-raf');
 	}
 
 	maxiBlockDidMount() {
@@ -119,20 +124,21 @@ class edit extends MaxiBlockComponent {
 				height: forceAspectRatio ? 'auto' : height,
 			});
 		}
+
+		this.dividerDebug.attach();
+		this.dividerDebug.schedule('mount-after-styles', 2);
+	}
+
+	maxiBlockWillUnmount() {
+		this.dividerDebug.detach();
 	}
 
 	render() {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			lineOrientation === 'vertical'
-				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal',
-			'maxi-divider-block__resizer',
-			`maxi-divider-block__resizer__${uniqueID}`
-		);
+		const classes = getDividerEditClasses(attributes, deviceType);
 		const handleOnResizeStart = event => {
 			event.preventDefault();
 

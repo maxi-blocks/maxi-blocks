@@ -8,6 +8,10 @@ import { select } from '@wordpress/data';
  */
 import viewportUnitsProcessor from './viewportUnitsProcessor';
 import {
+	isAdvancedCssMediaQueryTarget,
+	splitAdvancedCssMediaQueryTarget,
+} from './advancedCssMediaQuery';
+import {
 	getProfileStart,
 	recordProfile,
 } from '@extensions/performance/profiler';
@@ -100,6 +104,9 @@ const styleStringGenerator = (
 	return string;
 };
 
+const wrapWithMediaQuery = (style, mediaQuery) =>
+	mediaQuery ? `${mediaQuery}{${style}}` : style;
+
 const styleGenerator = (
 	rawStyles,
 	isIframe = false,
@@ -126,6 +133,12 @@ const styleGenerator = (
 			const target = getTarget(key);
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
+				const mediaQueryTarget = isAdvancedCssMediaQueryTarget(suffix)
+					? splitAdvancedCssMediaQueryTarget(suffix)
+					: null;
+				const targetSuffix = mediaQueryTarget?.selector ?? suffix;
+				const mediaQuery = mediaQueryTarget?.mediaQuery;
+
 				if (!props[breakpoint]) return;
 
 				const isBaseLowerThanCurrent =
@@ -141,29 +154,38 @@ const styleGenerator = (
 
 				const style = getResponsiveStyles(props[breakpoint]);
 
-				response += styleStringGenerator(
-					`${target}${suffix}`,
-					style,
-					breakpoint,
-					isIframe,
-					isSiteEditor
+				response += wrapWithMediaQuery(
+					styleStringGenerator(
+						`${target}${targetSuffix}`,
+						style,
+						breakpoint,
+						isIframe,
+						isSiteEditor
+					),
+					mediaQuery
 				);
 
 				if (breakpoint === 'general') {
-					response += styleStringGenerator(
-						`${target}${suffix}`,
-						getResponsiveStyles(props.general),
-						baseBreakpoint,
-						isIframe,
-						isSiteEditor
-					);
-					if (props?.[baseBreakpoint])
-						response += styleStringGenerator(
-							`${target}${suffix}`,
-							getResponsiveStyles(props[baseBreakpoint]),
+					response += wrapWithMediaQuery(
+						styleStringGenerator(
+							`${target}${targetSuffix}`,
+							getResponsiveStyles(props.general),
 							baseBreakpoint,
 							isIframe,
 							isSiteEditor
+						),
+						mediaQuery
+					);
+					if (props?.[baseBreakpoint])
+						response += wrapWithMediaQuery(
+							styleStringGenerator(
+								`${target}${targetSuffix}`,
+								getResponsiveStyles(props[baseBreakpoint]),
+								baseBreakpoint,
+								isIframe,
+								isSiteEditor
+							),
+							mediaQuery
 						);
 				}
 			});

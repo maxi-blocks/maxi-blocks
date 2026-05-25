@@ -19,7 +19,7 @@ import SelectControl from '@components/select-control';
 import BaseControl from '@components/base-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ResetButton from '@components/reset-control';
-import validateNumberInput from './utils';
+import validateNumberInput, { clampNumberInputValue } from './utils';
 
 /**
  * Styles
@@ -210,14 +210,17 @@ const AdvancedNumberControl = props => {
 
 	const handleInputChange = e => {
 		let value = getNewValueFromEmpty(e);
+		const minLimit = enableUnit ? minValue : min;
+		const maxLimit = enableUnit ? maxValue : max;
+		const isNumericInput = inputType === 'number';
+		const hasPositiveMin = +minLimit > 0;
 
-		if (enableUnit) {
-			if (value !== '' && value > maxValue) value = maxValue;
-			if (value !== '' && value < minValue) value = minValue;
-		} else {
-			if (value !== '' && +value > max) value = max;
-			if (value !== '' && +value !== 0 && +value < min) value = min;
-		}
+		if (isNumericInput)
+			value = clampNumberInputValue(value, {
+				min: minLimit,
+				max: maxLimit,
+				clampMin: !hasPositiveMin,
+			});
 
 		let result;
 		if (value === '' || optionType === 'string') {
@@ -232,6 +235,21 @@ const AdvancedNumberControl = props => {
 			typeof result === 'number' ? result.toString() : result;
 		setCurrentValue(result);
 
+		if (isNumericInput && hasPositiveMin && result === '') {
+			handleChange.cancel?.();
+			return;
+		}
+
+		const isBelowMin =
+			isNumericInput &&
+			hasPositiveMin &&
+			result !== '' &&
+			+result < minLimit;
+		if (isBelowMin) {
+			handleChange.cancel?.();
+			return;
+		}
+
 		const val =
 			result === '' || optionType === 'string'
 				? result.toString()
@@ -240,6 +258,32 @@ const AdvancedNumberControl = props => {
 		onChangeValue?.(val, inlinePayload);
 
 		handleChange(onChangeValue, latestValueRef, optionType);
+	};
+
+	const handleInputBlur = () => {
+		if (inputType !== 'number') return;
+
+		const minLimit = enableUnit ? minValue : min;
+		const maxLimit = enableUnit ? maxValue : max;
+		let clampedValue = clampNumberInputValue(latestValueRef.current, {
+			min: minLimit,
+			max: maxLimit,
+		});
+
+		if (latestValueRef.current === '' && +minLimit > 0)
+			clampedValue = minLimit;
+
+		if (clampedValue === latestValueRef.current) return;
+
+		const result =
+			optionType === 'string'
+				? clampedValue.toString()
+				: parseFloat((+clampedValue).toFixed(10));
+		latestValueRef.current = result.toString();
+		setCurrentValue(result);
+		onChangeValue?.(result, {
+			inline: enableUnit ? { unit } : {},
+		});
 	};
 
 	const rawPreferredValues = [
@@ -307,6 +351,7 @@ const AdvancedNumberControl = props => {
 								className='maxi-advanced-number-control__value'
 								value={inputValue}
 								onChange={handleInputChange}
+								onBlur={handleInputBlur}
 								disabled={isAutoValue}
 								onKeyDown={e => {
 									validateNumberInput(

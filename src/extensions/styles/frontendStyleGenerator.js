@@ -2,6 +2,10 @@
  * External dependencies
  */
 import { isNil, isEmpty } from 'lodash';
+import {
+	isAdvancedCssMediaQueryTarget,
+	splitAdvancedCssMediaQueryTarget,
+} from './advancedCssMediaQuery';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -53,9 +57,17 @@ const frontendStyleGenerator = styles => {
 
 		Object.entries(content).forEach(([suffix, props]) => {
 			if (!isNil(props[breakpoint]) && !isEmpty(props[breakpoint])) {
-				breakpointResponse += `body.maxi-blocks--active #${target}${suffix}{`;
-				breakpointResponse += getStyles(props[breakpoint]);
-				breakpointResponse += '}';
+				const mediaQueryTarget = isAdvancedCssMediaQueryTarget(suffix)
+					? splitAdvancedCssMediaQueryTarget(suffix)
+					: null;
+				const targetSuffix = mediaQueryTarget?.selector ?? suffix;
+				const styleRule = `body.maxi-blocks--active #${target}${targetSuffix}{${getStyles(
+					props[breakpoint]
+				)}}`;
+
+				breakpointResponse += mediaQueryTarget
+					? `${mediaQueryTarget.mediaQuery}{${styleRule}}`
+					: styleRule;
 			}
 		});
 

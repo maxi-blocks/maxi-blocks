@@ -7,6 +7,13 @@ import {
 } from '@extensions/copy-paste/scanCopyPasteCoverage';
 
 describe('scanCopyPasteCoverage', () => {
+	const repoRoot = path.resolve(__dirname, '../../../../');
+	let attributeCoverageReport;
+	const getAttributeCoverageReport = () => {
+		attributeCoverageReport ??= runCopyPasteAttributeCoverageScan(repoRoot);
+		return attributeCoverageReport;
+	};
+
 	it('collects mapped keys from template-based mappings', () => {
 		const fixturePath = path.resolve(
 			__dirname,
@@ -20,9 +27,7 @@ describe('scanCopyPasteCoverage', () => {
 	});
 
 	it('runs scan over repository blocks and returns all block entries', () => {
-		const report = runCopyPasteCoverageScan(
-			path.resolve(__dirname, '../../../../')
-		);
+		const report = runCopyPasteCoverageScan(repoRoot);
 		expect(report).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({
@@ -78,9 +83,7 @@ describe('scanCopyPasteCoverage', () => {
 	});
 
 	it('runs all-attribute scan over repository blocks', () => {
-		const report = runCopyPasteAttributeCoverageScan(
-			path.resolve(__dirname, '../../../../')
-		);
+		const report = getAttributeCoverageReport();
 		expect(report).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({
@@ -92,9 +95,7 @@ describe('scanCopyPasteCoverage', () => {
 	});
 
 	it('has no repository attribute coverage gaps outside Dynamic Content', () => {
-		const report = runCopyPasteAttributeCoverageScan(
-			path.resolve(__dirname, '../../../../')
-		);
+		const report = getAttributeCoverageReport();
 		const nonDynamicContentGaps = report.flatMap(block =>
 			Object.entries(block.missingAttributeCategories)
 				.filter(([category]) => category !== 'dynamic-content')

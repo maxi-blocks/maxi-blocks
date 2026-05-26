@@ -1486,9 +1486,8 @@ const collectCopyPasteKeys = (
 ) => {
 	const output = new Set();
 	if (!node) return output;
-	const nodeKey = `${moduleInfo?.path || 'unknown'}:${node.start}:${node.end}`;
-	if (callStack.has(nodeKey)) return output;
-	callStack.add(nodeKey);
+	if (callStack.has(node)) return output;
+	callStack.add(node);
 
 	if (
 		node.type === 'StringLiteral' ||
@@ -1504,7 +1503,7 @@ const collectCopyPasteKeys = (
 		)) {
 			output.add(key);
 		}
-		callStack.delete(nodeKey);
+		callStack.delete(node);
 		return output;
 	}
 
@@ -1522,7 +1521,7 @@ const collectCopyPasteKeys = (
 				output.add(key);
 			}
 		}
-		callStack.delete(nodeKey);
+		callStack.delete(node);
 		return output;
 	}
 
@@ -1540,12 +1539,12 @@ const collectCopyPasteKeys = (
 				output.add(key);
 			}
 		}
-		callStack.delete(nodeKey);
+		callStack.delete(node);
 		return output;
 	}
 
 	if (node.type !== 'ObjectExpression') {
-		callStack.delete(nodeKey);
+		callStack.delete(node);
 		return output;
 	}
 
@@ -1692,7 +1691,7 @@ const collectCopyPasteKeys = (
 		}
 	}
 
-	callStack.delete(nodeKey);
+	callStack.delete(node);
 	return output;
 };
 

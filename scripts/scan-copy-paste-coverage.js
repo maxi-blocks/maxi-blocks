@@ -21,6 +21,9 @@ for (let i = 0; i < args.length; i += 1) {
 const report = runCopyPasteCoverageScan(path.normalize(root));
 if (outputJson) {
 	console.log(JSON.stringify(report, null, 2));
+	process.exitCode = report.some(item => item.missingStyleKeys.length > 0)
+		? 1
+		: 0;
 } else {
 	const missing = report.filter(item => item.missingStyleKeys.length > 0);
 	const totalMissing = missing.reduce(

@@ -844,6 +844,30 @@ class MaxiBlockComponent extends Component {
 			this.popoverStyles = null;
 		}
 
+		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+			this.props.clientId
+		);
+
+		// Check both the parent document AND the iframe document for cloned elements.
+		// Blocks render inside iframe[name="editor-canvas"], so bare `document`
+		// (parent frame) won't find them.
+		let keepStylesOnCloning =
+			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
+		if (!keepStylesOnCloning) {
+			try {
+				if (this.editorIframe?.contentDocument) {
+					keepStylesOnCloning =
+						Array.from(
+							this.editorIframe.contentDocument.getElementsByClassName(
+								uniqueID
+							)
+						).length > 1;
+				}
+			} catch (e) {
+				// Cross-origin or disconnected iframe — ignore
+			}
+		}
+
 		// Clear DOM references
 		this.rootSlot = null;
 		this.editorIframe = null;
@@ -857,33 +881,6 @@ class MaxiBlockComponent extends Component {
 		}
 		if (this.areFontsLoaded) {
 			this.areFontsLoaded.current = false;
-		}
-
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
-			this.props.clientId
-		);
-
-		// Check both the parent document AND the iframe document for cloned elements.
-		// Blocks render inside iframe[name="editor-canvas"], so bare `document`
-		// (parent frame) won't find them.
-		let keepStylesOnCloning =
-			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		if (!keepStylesOnCloning) {
-			try {
-				const editorIframe = document.querySelector(
-					'iframe[name="editor-canvas"]'
-				);
-				if (editorIframe?.contentDocument) {
-					keepStylesOnCloning =
-						Array.from(
-							editorIframe.contentDocument.getElementsByClassName(
-								uniqueID
-							)
-						).length > 1;
-				}
-			} catch (e) {
-				// Cross-origin or disconnected iframe — ignore
-			}
 		}
 
 		// Fallback: verify the block is truly gone by checking if its clientId

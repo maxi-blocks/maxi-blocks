@@ -14,6 +14,22 @@ describe('getDecimalPlaces', () => {
 		expect(getDecimalPlaces(87.5)).toBe(1);
 		expect(getDecimalPlaces(12.34)).toBe(2);
 	});
+
+	it('handles exponential notation from very small numbers', () => {
+		expect(getDecimalPlaces(0.0000001)).toBe(7);
+		expect(getDecimalPlaces(1e-7)).toBe(7);
+	});
+
+	it('handles negative values', () => {
+		expect(getDecimalPlaces(-87.5)).toBe(1);
+		expect(getDecimalPlaces(-100)).toBe(0);
+	});
+
+	it('returns 0 for non-numeric inputs', () => {
+		expect(getDecimalPlaces(NaN)).toBe(0);
+		expect(getDecimalPlaces(Infinity)).toBe(0);
+		expect(getDecimalPlaces('abc')).toBe(0);
+	});
 });
 
 describe('getNumberCounterDisplayValue', () => {

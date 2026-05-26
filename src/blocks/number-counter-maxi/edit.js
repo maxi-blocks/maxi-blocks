@@ -187,6 +187,10 @@ const NumberCounter = attributes => {
 		getDecimalPlaces(startNumber),
 		getDecimalPlaces(endNumber)
 	);
+	const endDisplayLength = getNumberCounterDisplayValue(
+		endNumber,
+		counterDecimalPlaces
+	).length;
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -280,7 +284,7 @@ const NumberCounter = attributes => {
 			maxWidth='100%'
 			minWidth={
 				!circleStatus
-					? `${fontSize * (endCountValue.toString().length - 1)}px`
+					? `${fontSize * endDisplayLength}px`
 					: `${fontSize}px`
 			}
 			minHeight={circleStatus && `${fontSize}px`}

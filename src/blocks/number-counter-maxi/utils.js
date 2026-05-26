@@ -8,12 +8,27 @@ export const getNumberCounterValueFromAnimation = value =>
 
 /**
  * Returns the number of decimal places in a numeric value.
- * Uses string conversion to avoid floating-point artifacts.
+ * Handles exponential notation (e.g. 1e-7 → 7) that
+ * String(Number()) can produce for very small numbers.
  */
 export const getDecimalPlaces = value => {
-	const str = String(Number(value));
-	const dot = str.indexOf('.');
-	return dot === -1 ? 0 : str.length - dot - 1;
+	const num = Number(value);
+	if (!Number.isFinite(num)) return 0;
+
+	const str = String(num);
+	const eIdx = str.indexOf('e');
+
+	if (eIdx === -1) {
+		const dot = str.indexOf('.');
+		return dot === -1 ? 0 : str.length - dot - 1;
+	}
+
+	const mantissa = str.slice(0, eIdx);
+	const exponent = Number(str.slice(eIdx + 1));
+	const dot = mantissa.indexOf('.');
+	const mantissaDecimals = dot === -1 ? 0 : mantissa.length - dot - 1;
+
+	return Math.max(0, mantissaDecimals - exponent);
 };
 
 /**

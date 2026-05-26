@@ -97,6 +97,7 @@ const icons = {
 		obj: rawIcon,
 		prefix: 'close-',
 		diffValAttr: {
+			'close-svgType': 'Shape',
 			'close-icon-spacing-general': 5,
 			'close-icon-position': 'top-screen-right',
 			'close-icon-fill-palette-color': 1,
@@ -108,6 +109,7 @@ const icons = {
 		obj: rawIcon,
 		prefix: 'play-',
 		diffValAttr: {
+			'play-svgType': 'Shape',
 			'play-icon-fill-palette-color': 1,
 			'play-icon-height-general': '50',
 			'play-icon-content':

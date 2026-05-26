@@ -3379,6 +3379,13 @@ class MaxiBlocks_DynamicContent
                         $content_sanitized,
                     );
 
+                    // SVG icon blocks are decorative companions to DC text in some patterns.
+                    $content_sanitized = preg_replace(
+                        '/<div[^>]*class="[^"]*maxi-svg-icon-block__icon[^"]*"[^>]*>.*?<\/div>/s',
+                        '',
+                        $content_sanitized,
+                    );
+
                     $allowed_tags = '<svg><img><iframe><hr>';
                     $text_content = strip_tags(
                         $content_sanitized ?? '',

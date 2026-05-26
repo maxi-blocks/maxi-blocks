@@ -4,41 +4,63 @@
  */
 import { last } from 'lodash';
 
+const previewToggleSelector =
+	'.block-editor-post-preview__button-toggle:not([disabled])';
+const previewExternalButtonSelector =
+	'.edit-post-header-preview__button-external';
+
+const getPreviewHref = page =>
+	page.evaluate(selector => {
+		const button = document.querySelector(selector);
+		const href = button?.href || button?.getAttribute('href') || '';
+
+		if (href.startsWith('http')) return href;
+
+		const previewLink =
+			window.wp?.data
+				?.select?.('core/editor')
+				?.getEditedPostPreviewLink?.() || '';
+
+		return previewLink.startsWith('http') ? previewLink : '';
+	}, previewExternalButtonSelector);
+
+const waitForPreviewHref = async page => {
+	await page
+		.waitForFunction(
+			selector => {
+				const button = document.querySelector(selector);
+				const href = button?.href || button?.getAttribute('href') || '';
+
+				if (href.startsWith('http')) return true;
+
+				const previewLink =
+					window.wp?.data
+						?.select?.('core/editor')
+						?.getEditedPostPreviewLink?.() || '';
+
+				return previewLink.startsWith('http');
+			},
+			{ timeout: 30000 },
+			previewExternalButtonSelector
+		)
+		.catch(() => {});
+
+	return getPreviewHref(page);
+};
+
 const openPreviewPage = async page => {
 	let openTabs = await browser.pages();
 
 	const expectedTabsCount = openTabs.length + 1;
-	await page.waitForSelector(
-		'.block-editor-post-preview__button-toggle:not([disabled])'
-	);
-	await page.click('.block-editor-post-preview__button-toggle');
+	await page.waitForSelector(previewToggleSelector);
+	await page.click(previewToggleSelector);
 	await page.waitForTimeout(100);
-	await page.waitForSelector('.edit-post-header-preview__button-external');
+	await page.waitForSelector(previewExternalButtonSelector);
 
-	// Wait for the button to have a valid href (href may be populated async)
-	await page
-		.waitForFunction(
-			() => {
-				const button = document.querySelector(
-					'.edit-post-header-preview__button-external'
-				);
-				return (
-					button &&
-					button.href &&
-					button.href.startsWith('http')
-				);
-			},
-			{ timeout: 5000 }
-		)
-		.catch(() => {});
+	const previewHref = await waitForPreviewHref(page);
 
 	// Wait a bit more to ensure the button is fully rendered and clickable
 	await page.waitForTimeout(200);
-
-	const previewHref = await page.$eval(
-		'.edit-post-header-preview__button-external',
-		button => button.href || button.getAttribute('href')
-	);
 
 	// Use evaluate for more reliable clicking with retry logic
 	let clickSuccess = false;
@@ -72,8 +94,8 @@ const openPreviewPage = async page => {
 	// Wait for the new tab to open
 	await page.waitForTimeout(200);
 
-	for (let i = 0; i < 500 && openTabs.length < expectedTabsCount; i += 1) {
-		await page.waitForTimeout(1);
+	for (let i = 0; i < 50 && openTabs.length < expectedTabsCount; i += 1) {
+		await page.waitForTimeout(100);
 		openTabs = await browser.pages();
 	}
 
@@ -83,7 +105,7 @@ const openPreviewPage = async page => {
 		previewPage = await browser.newPage();
 		if (!previewHref) {
 			throw new Error(
-				'Preview tab did not open and preview URL could not be determined'
+				'Preview tab did not open and preview URL could not be determined from the preview button or editor store'
 			);
 		}
 		await previewPage.goto(previewHref, {

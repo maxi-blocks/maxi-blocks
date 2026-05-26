@@ -3,6 +3,11 @@
  */
 import { dispatch, select } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import { debugIB } from '@extensions/relations/debug';
+
 const reducer = (
 	state = {
 		relations: {},
@@ -56,6 +61,47 @@ const reducer = (
 					...state.relations,
 					[triggerUniqueID]: triggerBlockRelations,
 				},
+			};
+		}
+		case 'SET_RELATIONS': {
+			const { triggerBlock, targetBlocks = [] } = action;
+
+			const { clientId: triggerClientId, uniqueID: triggerUniqueID } =
+				triggerBlock;
+
+			if (!triggerUniqueID) return state;
+
+			const triggerBlockRelations = targetBlocks.reduce(
+				(acc, targetBlock) => {
+					if (!targetBlock?.uniqueID) return acc;
+
+					return {
+						...acc,
+						[targetBlock.uniqueID]: targetBlock.clientId,
+					};
+				},
+				{ clientId: triggerClientId }
+			);
+
+			const newRelations = { ...state.relations };
+
+			if (Object.keys(triggerBlockRelations).length === 1) {
+				delete newRelations[triggerUniqueID];
+			} else {
+				newRelations[triggerUniqueID] = triggerBlockRelations;
+			}
+
+			debugIB('relations-store.set-relations', {
+				triggerUniqueID,
+				triggerClientId,
+				targetBlocks,
+				previous: state.relations[triggerUniqueID],
+				next: newRelations[triggerUniqueID],
+			});
+
+			return {
+				...state,
+				relations: newRelations,
 			};
 		}
 		case 'REMOVE_BLOCK_RELATION': {

@@ -11,6 +11,7 @@ import { getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
 import batchRelationsUpdater from './batchRelationsUpdater';
+import { debugIB, summarizeRelations } from './debug';
 
 /**
  * External dependencies
@@ -52,6 +53,14 @@ const updateRelationsRemotely = ({
 			// eslint-disable-next-line no-continue
 			continue;
 		}
+
+		debugIB('update-relations-remotely.match-target', {
+			blockTriggerClientId,
+			blockTargetClientId,
+			targetUniqueID: uniqueID,
+			relationId: item.id,
+			sid: item.sid,
+		});
 
 		const selectedSettings = getSelectedIBSettings(
 			blockTargetClientId,
@@ -149,6 +158,15 @@ const updateRelationsRemotely = ({
 	const hasDiff = !isEmpty(diffResult);
 
 	if (hasDiff) {
+		debugIB('update-relations-remotely.queue-update', {
+			blockTriggerClientId,
+			blockTargetClientId,
+			targetUniqueID: uniqueID,
+			diffResult,
+			previousRelations: summarizeRelations(relations),
+			nextRelations: summarizeRelations(newRelations),
+		});
+
 		// Add to batch queue instead of immediate update
 		batchRelationsUpdater.addUpdate(blockTriggerClientId, newRelations);
 	}

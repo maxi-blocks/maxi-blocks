@@ -28,7 +28,10 @@ import { getSiteEditorIframeBody } from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
 import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
-import { getSelectedIBSettings } from '@extensions/relations/utils';
+import {
+	cleanIBStyles,
+	getSelectedIBSettings,
+} from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
 import getHoverStatus from '@extensions/relations/getHoverStatus';
@@ -477,20 +480,13 @@ const RelationControl = props => {
 								blockAttributes,
 								breakpoint: deviceType,
 							});
-							const styles = getIBStyles({
-								stylesObj,
-								blockAttributes,
-								isFirst: true,
-							});
-							// Remove empty/default border styles from XXL
-							if (styles.xxl?.styles?.border === 'none') {
-								delete styles.xxl.styles.border;
-								if (
-									Object.keys(styles.xxl.styles).length === 0
-								) {
-									delete styles.xxl;
-								}
-							}
+							const styles = cleanIBStyles(
+								getIBStyles({
+									stylesObj,
+									blockAttributes,
+									isFirst: true,
+								})
+							);
 							const newAttributes = omitBy(
 								{
 									...item.attributes,

@@ -73,7 +73,8 @@ const reducer = (
 
 			const triggerBlockRelations = targetBlocks.reduce(
 				(acc, targetBlock) => {
-					if (!targetBlock?.uniqueID) return acc;
+					if (!targetBlock?.uniqueID || !targetBlock?.clientId)
+						return acc;
 
 					return {
 						...acc,

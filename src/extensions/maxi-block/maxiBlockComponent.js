@@ -1086,11 +1086,27 @@ class MaxiBlockComponent extends Component {
 	syncRelationsStore(relations = []) {
 		const { clientId, attributes } = this.props;
 		const { uniqueID } = attributes;
-		const targetBlocks = (relations || []).map(
-			({ uniqueID: targetUniqueID }) => ({
-				uniqueID: targetUniqueID,
-				clientId: getClientIdFromUniqueId(targetUniqueID),
-			})
+		const unresolvedTargetUniqueIDs = [];
+		const targetBlocks = (relations || []).reduce(
+			(acc, { uniqueID: targetUniqueID }) => {
+				const targetClientId = getClientIdFromUniqueId(targetUniqueID);
+
+				if (!targetUniqueID || !targetClientId) {
+					if (targetUniqueID) {
+						unresolvedTargetUniqueIDs.push(targetUniqueID);
+					}
+					return acc;
+				}
+
+				return [
+					...acc,
+					{
+						uniqueID: targetUniqueID,
+						clientId: targetClientId,
+					},
+				];
+			},
+			[]
 		);
 
 		debugIB('maxi-block.sync-relations-store', {
@@ -1098,6 +1114,7 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 			relations: summarizeRelations(relations),
 			targetBlocks,
+			unresolvedTargetUniqueIDs,
 		});
 
 		dispatch('maxiBlocks/relations').setRelations(

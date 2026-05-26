@@ -239,6 +239,38 @@ describe('relations/reducer', () => {
 				relations: {},
 			});
 		});
+
+		it('should skip target blocks with missing clientId', () => {
+			const initialState = { relations: {} };
+			const action = {
+				type: 'SET_RELATIONS',
+				triggerBlock: {
+					clientId: 'trigger-client-id',
+					uniqueID: 'trigger-unique-id',
+				},
+				targetBlocks: [
+					{
+						clientId: 'valid-client-id',
+						uniqueID: 'valid-target-id',
+					},
+					{
+						clientId: undefined,
+						uniqueID: 'invalid-target-id',
+					},
+				],
+			};
+
+			const newState = reducer(initialState, action);
+
+			expect(newState).toEqual({
+				relations: {
+					'trigger-unique-id': {
+						'valid-target-id': 'valid-client-id',
+						clientId: 'trigger-client-id',
+					},
+				},
+			});
+		});
 	});
 
 	describe('REMOVE_BLOCK_RELATION', () => {

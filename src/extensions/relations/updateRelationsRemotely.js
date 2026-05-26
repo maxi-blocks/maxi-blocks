@@ -7,7 +7,7 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getCleanResponseIBAttributes from './getCleanResponseIBAttributes';
-import { getSelectedIBSettings } from './utils';
+import { cleanIBStyles, getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
 import batchRelationsUpdater from './batchRelationsUpdater';
@@ -131,11 +131,13 @@ const updateRelationsRemotely = ({
 			breakpoint,
 		});
 
-		const styles = getIBStyles({
-			stylesObj,
-			blockAttributes,
-			isFirst: true,
-		});
+		const styles = cleanIBStyles(
+			getIBStyles({
+				stylesObj,
+				blockAttributes,
+				isFirst: true,
+			})
+		);
 
 		const newItem = {
 			...item,

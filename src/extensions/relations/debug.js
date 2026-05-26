@@ -58,7 +58,8 @@ const getDebugState = root => {
 export const summarizeRelation = relation => {
 	if (!relation) return relation;
 
-	const { attributes = {}, css = {}, effects = {} } = relation;
+	const getKeys = value =>
+		value && typeof value === 'object' ? Object.keys(value) : [];
 
 	return {
 		id: relation.id,
@@ -67,9 +68,9 @@ export const summarizeRelation = relation => {
 		target: relation.target,
 		action: relation.action,
 		sid: relation.sid,
-		attributeKeys: Object.keys(attributes),
-		cssKeys: Object.keys(css),
-		effectKeys: Object.keys(effects),
+		attributeKeys: getKeys(relation.attributes),
+		cssKeys: getKeys(relation.css),
+		effectKeys: getKeys(relation.effects),
 	};
 };
 

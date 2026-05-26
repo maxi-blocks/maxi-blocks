@@ -1,12 +1,15 @@
 /**
  * Internal dependencies
  */
-import { getSelectedIBSettings } from '@extensions/relations/utils';
+import {
+	cleanIBStyles,
+	getSelectedIBSettings,
+} from '@extensions/relations/utils';
 import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
 
 jest.mock('@extensions/relations/getIBOptionsFromBlockData', () => jest.fn());
 
-describe('getSelectedIBSettings', () => {
+describe('relations/utils', () => {
 	const mockClientId = 'test-client-id';
 	const mockValue = 'test-value';
 
@@ -62,5 +65,50 @@ describe('getSelectedIBSettings', () => {
 
 		const result = getSelectedIBSettings(mockClientId, mockValue);
 		expect(result).toEqual(firstMatch);
+	});
+
+	it('removes empty XXL default border styles', () => {
+		expect(
+			cleanIBStyles({
+				general: {
+					styles: {
+						'border-width': '2px',
+					},
+				},
+				xxl: {
+					breakpoint: 1921,
+					styles: {
+						border: 'none',
+					},
+				},
+			})
+		).toEqual({
+			general: {
+				styles: {
+					'border-width': '2px',
+				},
+			},
+		});
+	});
+
+	it('preserves non-empty XXL style groups after removing default border', () => {
+		expect(
+			cleanIBStyles({
+				xxl: {
+					breakpoint: 1921,
+					styles: {
+						border: 'none',
+						color: 'red',
+					},
+				},
+			})
+		).toEqual({
+			xxl: {
+				breakpoint: 1921,
+				styles: {
+					color: 'red',
+				},
+			},
+		});
 	});
 });

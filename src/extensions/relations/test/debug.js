@@ -82,4 +82,25 @@ describe('relations/debug', () => {
 			summarizeRelation(relation),
 		]);
 	});
+
+	it('handles nullable relation payload sections', () => {
+		expect(
+			summarizeRelation({
+				id: 1,
+				attributes: null,
+				css: null,
+				effects: null,
+			})
+		).toEqual({
+			id: 1,
+			title: undefined,
+			uniqueID: undefined,
+			target: undefined,
+			action: undefined,
+			sid: undefined,
+			attributeKeys: [],
+			cssKeys: [],
+			effectKeys: [],
+		});
+	});
 });

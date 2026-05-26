@@ -174,4 +174,16 @@ describe('VideoIconControl', () => {
 		expect(iconStyleTabsOrder).toBeLessThan(iconHeightOrder);
 		expect(strokeWidthOrder).toBeGreaterThan(iconHeightOrder);
 	});
+
+	it('keeps stroke width changes from rewriting the selected SVG content', () => {
+		act(() => {
+			root.render(<VideoIconControl {...defaultProps} />);
+		});
+
+		expect(mockSvgStrokeWidthControl).toHaveBeenCalledWith(
+			expect.objectContaining({
+				disableContentUpdate: true,
+			})
+		);
+	});
 });

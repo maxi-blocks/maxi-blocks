@@ -315,6 +315,7 @@ const IconSettings = props => {
 									breakpoint={breakpoint}
 									isHover={isHover}
 									content={props[`${prefix}icon-content`]}
+									disableContentUpdate
 								/>
 							)}
 							{prefix === 'close-' && (

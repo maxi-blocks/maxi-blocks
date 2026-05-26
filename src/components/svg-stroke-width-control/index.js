@@ -32,6 +32,7 @@ const SvgStrokeWidthControl = props => {
 		isHover = false,
 		customLabel = 'Stroke width',
 		className,
+		disableContentUpdate = false,
 	} = props;
 
 	const classes = classnames('maxi-svg-stroke-width-control', className);
@@ -70,7 +71,8 @@ const SvgStrokeWidthControl = props => {
 				onChange({
 					[strokeAttrLabel]:
 						val !== undefined && val !== '' ? val : '',
-					...(!prefix.includes('navigation') && {
+					...(!disableContentUpdate &&
+						!prefix.includes('navigation') && {
 						[`${prefix === 'svg-' ? '' : prefix}content`]:
 							setSVGStrokeWidth(content, val),
 					}),
@@ -83,7 +85,8 @@ const SvgStrokeWidthControl = props => {
 			onReset={() => {
 				onChange({
 					[strokeAttrLabel]: defaultStroke,
-					...(!prefix.includes('navigation') && {
+					...(!disableContentUpdate &&
+						!prefix.includes('navigation') && {
 						[`${prefix === 'svg-' ? '' : prefix}content`]:
 							setSVGStrokeWidth(content, defaultStroke),
 					}),

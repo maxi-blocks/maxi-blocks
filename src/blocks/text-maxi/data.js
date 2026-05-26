@@ -34,6 +34,7 @@ const copyPasteMapping = {
 		[__('Heading / Paragraph tag', 'maxi-blocks')]: 'textLevel',
 		[__('List options', 'maxi-blocks')]: {
 			group: {
+				[__('List mode', 'maxi-blocks')]: 'isList',
 				[__('List indent', 'maxi-blocks')]: {
 					props: 'list-indent',
 					hasBreakpoints: true,
@@ -66,6 +67,14 @@ const copyPasteMapping = {
 					props: 'list-marker-size-unit',
 					hasBreakpoints: true,
 				},
+				[__('Marker height', 'maxi-blocks')]: {
+					props: 'list-marker-height',
+					hasBreakpoints: true,
+				},
+				[__('Marker height unit', 'maxi-blocks')]: {
+					props: 'list-marker-height-unit',
+					hasBreakpoints: true,
+				},
 				[__('List marker indent', 'maxi-blocks')]: {
 					props: 'list-marker-indent',
 					hasBreakpoints: true,
@@ -82,9 +91,21 @@ const copyPasteMapping = {
 					props: 'list-marker-line-height-unit',
 					hasBreakpoints: true,
 				},
+				[__('List marker vertical offset', 'maxi-blocks')]: {
+					props: 'list-marker-vertical-offset',
+					hasBreakpoints: true,
+				},
+				[__('List marker vertical offset unit', 'maxi-blocks')]: {
+					props: 'list-marker-vertical-offset-unit',
+					hasBreakpoints: true,
+				},
 				[__('List colour', 'maxi-blocks')]: {
 					props: 'list',
 					isPalette: true,
+				},
+				[__('List style position', 'maxi-blocks')]: {
+					props: 'list-style-position',
+					hasBreakpoints: true,
 				},
 				[__('List text position', 'maxi-blocks')]: {
 					props: 'list-text-position',

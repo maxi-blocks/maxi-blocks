@@ -49,7 +49,7 @@ const copyPasteMapping = {
 		},
 	},
 	button: {
-		[__('Skin', 'maxi-blocks')]: 'skin',
+		[__('Skin', 'maxi-blocks')]: ['skin', 'iconRevealAction'],
 		[__('Button', 'maxi-blocks')]: {
 			group: {
 				[__('Skin', 'maxi-blocks')]: 'buttonSkin',
@@ -100,6 +100,10 @@ const copyPasteMapping = {
 		},
 		[__('Input background', 'maxi-blocks')]: {
 			template: 'background',
+			prefix: inputPrefix,
+		},
+		[__('Margin/Padding', 'maxi-blocks')]: {
+			template: 'marginPadding',
 			prefix: inputPrefix,
 		},
 		[__('Padding', 'maxi-blocks')]: {

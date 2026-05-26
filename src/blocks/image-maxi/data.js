@@ -45,6 +45,11 @@ const copyPasteMapping = {
 		'mediaHeight',
 		'mediaAlt',
 		'captionContent',
+		'cropOptions',
+		'imgWidth',
+		'isImageUrlInvalid',
+		'SVGData',
+		'SVGElement',
 	],
 	settings: {
 		[__('Image', 'maxi-blocks')]: [
@@ -73,7 +78,14 @@ const copyPasteMapping = {
 					hasBreakpoints: true,
 				},
 				[__('Image width', 'maxi-blocks')]: 'img-width-general',
-				[__('Image ratio', 'maxi-blocks')]: 'imageRatio',
+				[__('Responsive image width', 'maxi-blocks')]: {
+					props: 'img-width',
+					hasBreakpoints: true,
+				},
+				[__('Image ratio', 'maxi-blocks')]: [
+					'imageRatio',
+					'imageRatioCustom',
+				],
 			},
 			_ignore: [
 				'mediaID',
@@ -150,7 +162,10 @@ const copyPasteMapping = {
 			},
 		},
 		[__('Clip path', 'maxi-blocks')]: {
-			groupAttributes: 'clipPath',
+			groupAttributes: ['clipPath', 'clipPathHover'],
+		},
+		[__('Shape', 'maxi-blocks')]: {
+			groupAttributes: ['imageShape', 'imageShapeHover'],
 		},
 		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
@@ -166,6 +181,7 @@ const copyPasteMapping = {
 		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
+			prefix,
 		},
 	},
 	canvas: {

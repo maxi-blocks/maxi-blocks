@@ -37,6 +37,7 @@ const copyPasteMapping = {
 		},
 		[__('Accordion title', 'maxi-blocks')]: {
 			groupAttributes: 'accordionTitle',
+			props: ['title-bottom-gap', 'active-title-bottom-gap'],
 		},
 		[__('Icon', 'maxi-blocks')]: { groupAttributes: 'accordionIcon' },
 		[__('Active icon', 'maxi-blocks')]: {
@@ -55,12 +56,18 @@ const copyPasteMapping = {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
+		[__('Opacity', 'maxi-blocks')]: {
+			template: 'opacity',
+		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 	},
 };
 

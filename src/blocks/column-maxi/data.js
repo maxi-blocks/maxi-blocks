@@ -45,12 +45,18 @@ const copyPasteMapping = {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
+		[__('Opacity', 'maxi-blocks')]: {
+			template: 'opacity',
+		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 	},
 };
 const customCss = {

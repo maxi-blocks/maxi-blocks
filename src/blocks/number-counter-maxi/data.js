@@ -29,7 +29,15 @@ const copyPasteMapping = {
 			groupAttributes: 'alignment',
 		},
 		[__('Number', 'maxi-blocks')]: {
-			groupAttributes: 'numberCounter',
+			group: {
+				[__('Number settings', 'maxi-blocks')]: {
+					groupAttributes: 'numberCounter',
+				},
+				[__('Number size', 'maxi-blocks')]: {
+					template: 'size',
+					prefix,
+				},
+			},
 		},
 		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
@@ -47,6 +55,7 @@ const copyPasteMapping = {
 	canvas: {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
+			props: ['number-counter-width'],
 		},
 		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',

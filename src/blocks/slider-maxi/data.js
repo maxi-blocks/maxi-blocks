@@ -18,6 +18,7 @@ const copyPasteMapping = {
 		'active-navigation-dot-icon-content',
 		'navigation-arrow-first-icon-content',
 		'navigation-arrow-second-icon-content',
+		'numberOfSlides',
 	],
 	settings: {
 		[__('Slider settings', 'maxi-blocks')]: {
@@ -80,12 +81,18 @@ const copyPasteMapping = {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
+		[__('Opacity', 'maxi-blocks')]: {
+			template: 'opacity',
+		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 	},
 };
 const customCss = {

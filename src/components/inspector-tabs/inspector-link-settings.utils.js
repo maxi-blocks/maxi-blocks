@@ -30,7 +30,7 @@ const isLinkOverrideKey = (key, prefix = '') =>
 			key.startsWith(`${prefix}${target}-color`)
 	);
 
-const getCustomFormatsWithoutLinkOverrides = customFormats => {
+const getCustomFormatsWithoutLinkOverrides = (customFormats, prefix = '') => {
 	if (!customFormats || typeof customFormats !== 'object') return customFormats;
 
 	return Object.fromEntries(
@@ -43,7 +43,7 @@ const getCustomFormatsWithoutLinkOverrides = customFormats => {
 				formatKey,
 				Object.fromEntries(
 					Object.entries(formatValue).filter(
-						([key]) => !isLinkOverrideKey(key)
+						([key]) => !isLinkOverrideKey(key, prefix)
 					)
 				),
 			];
@@ -101,7 +101,10 @@ export const getLinkPaletteScStatusUpdates = (
 				? [
 						[
 							'custom-formats',
-							getCustomFormatsWithoutLinkOverrides(customFormats),
+							getCustomFormatsWithoutLinkOverrides(
+								customFormats,
+								prefix
+							),
 						],
 				  ]
 				: []),

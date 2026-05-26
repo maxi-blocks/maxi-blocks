@@ -98,6 +98,33 @@ describe('inspector link settings', () => {
 		});
 	});
 
+	it('removes prefixed link overrides from custom formats when disabling overwrite', () => {
+		expect(
+			getLinkPaletteScStatusUpdates(
+				'foo-',
+				false,
+				'general',
+				{},
+				{
+					'maxi-text-block__custom-format--0': {
+						'foo-link-palette-color-general': 2,
+						'foo-link-active-palette-color-general': 2,
+						'foo-link-hover-palette-color-general': 5,
+						'link-palette-color-general': 4,
+						'font-weight-general': 700,
+					},
+				}
+			)
+		).toMatchObject({
+			'custom-formats': {
+				'maxi-text-block__custom-format--0': {
+					'link-palette-color-general': 4,
+					'font-weight-general': 700,
+				},
+			},
+		});
+	});
+
 	it('detects enabled overwrite from any inherited link state', () => {
 		expect(
 			getIsLinkStyleCardOverwriteEnabled(

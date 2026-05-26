@@ -180,6 +180,7 @@ const IconSettings = props => {
 						disablePadding
 						disablePosition
 						disableSpacing
+						disableWidth
 						disableHeightFitContent
 						getIconWithColor={args =>
 							getVideoIconWithColor(props, args, prefix)

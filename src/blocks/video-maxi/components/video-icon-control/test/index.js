@@ -15,6 +15,7 @@ const mockSettingTabsControl = jest.fn(props => {
 		</div>
 	);
 });
+const mockSvgWidthControl = jest.fn(() => null);
 
 jest.mock('@wordpress/i18n', () => ({
 	__: text => text,
@@ -41,7 +42,9 @@ jest.mock('@components/responsive-tabs-control', () => ({ children }) => (
 ));
 jest.mock('@components/select-control', () => () => null);
 jest.mock('@components/svg-stroke-width-control', () => () => null);
-jest.mock('@components/svg-width-control', () => () => null);
+jest.mock('@components/svg-width-control', () => props =>
+	mockSvgWidthControl(props)
+);
 jest.mock('@components/toggle-switch', () => () => null);
 jest.mock('@editor/library/modal', () => () => null);
 jest.mock('@extensions/maxi-block/withRTC', () => Component => Component);
@@ -125,5 +128,13 @@ describe('VideoIconControl', () => {
 			'color',
 			'fill',
 		]);
+	});
+
+	it('does not expose the shared icon width control', () => {
+		act(() => {
+			root.render(<VideoIconControl {...defaultProps} />);
+		});
+
+		expect(mockSvgWidthControl).not.toHaveBeenCalled();
 	});
 });

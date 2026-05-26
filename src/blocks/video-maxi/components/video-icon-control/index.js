@@ -10,6 +10,7 @@ import AdvancedNumberControl from '@components/advanced-number-control';
 import IconControl from '@components/icon-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import MaxiModal from '@editor/library/modal';
@@ -131,6 +132,7 @@ const IconSettings = props => {
 		onChangeInline,
 		onChange,
 		breakpoint,
+		[`${prefix}svgType`]: svgType,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
 	} = props;
 
@@ -181,6 +183,7 @@ const IconSettings = props => {
 						disablePosition
 						disableSpacing
 						disableWidth
+						disableStrokeWidth
 						disableHeightFitContent
 						getIconWithColor={args =>
 							getVideoIconWithColor(props, args, prefix)
@@ -303,6 +306,17 @@ const IconSettings = props => {
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
 							/>
+							{svgType !== 'Shape' && (
+								<SvgStrokeWidthControl
+									{...props}
+									className='maxi-video-icon-control__stroke-width'
+									onChange={onChange}
+									prefix={`${prefix}icon-`}
+									breakpoint={breakpoint}
+									isHover={isHover}
+									content={props[`${prefix}icon-content`]}
+								/>
+							)}
 							{prefix === 'close-' && (
 								<AdvancedNumberControl
 									label={__('Icon spacing', 'maxi-blocks')}

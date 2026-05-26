@@ -15,6 +15,8 @@ const mockSettingTabsControl = jest.fn(props => {
 		</div>
 	);
 });
+const mockAdvancedNumberControl = jest.fn(() => null);
+const mockSvgStrokeWidthControl = jest.fn(() => null);
 const mockSvgWidthControl = jest.fn(() => null);
 
 jest.mock('@wordpress/i18n', () => ({
@@ -29,7 +31,9 @@ jest.mock('@wordpress/element', () => {
 	};
 });
 
-jest.mock('@components/advanced-number-control', () => () => null);
+jest.mock('@components/advanced-number-control', () => props =>
+	mockAdvancedNumberControl(props)
+);
 jest.mock('@components/axis-control', () => () => null);
 jest.mock('@components/axis-position-control', () => () => null);
 jest.mock('@components/border-control', () => () => null);
@@ -41,7 +45,9 @@ jest.mock('@components/responsive-tabs-control', () => ({ children }) => (
 	<>{children}</>
 ));
 jest.mock('@components/select-control', () => () => null);
-jest.mock('@components/svg-stroke-width-control', () => () => null);
+jest.mock('@components/svg-stroke-width-control', () => props =>
+	mockSvgStrokeWidthControl(props)
+);
 jest.mock('@components/svg-width-control', () => props =>
 	mockSvgWidthControl(props)
 );
@@ -102,6 +108,22 @@ describe('VideoIconControl', () => {
 			.map(([props]) => props)
 			.find(props => props.className === 'maxi-icon-styles-control');
 
+	const getIconStyleTabsCallOrder = () => {
+		const callIndex = mockSettingTabsControl.mock.calls.findIndex(
+			([props]) => props.className === 'maxi-icon-styles-control'
+		);
+
+		return mockSettingTabsControl.mock.invocationCallOrder[callIndex];
+	};
+
+	const getAdvancedControlCallOrder = label => {
+		const callIndex = mockAdvancedNumberControl.mock.calls.findIndex(
+			([props]) => props.label === label
+		);
+
+		return mockAdvancedNumberControl.mock.invocationCallOrder[callIndex];
+	};
+
 	beforeEach(() => {
 		container = document.createElement('div');
 		document.body.appendChild(container);
@@ -136,5 +158,20 @@ describe('VideoIconControl', () => {
 		});
 
 		expect(mockSvgWidthControl).not.toHaveBeenCalled();
+	});
+
+	it('groups stroke width with icon height after the colour tabs', () => {
+		act(() => {
+			root.render(<VideoIconControl {...defaultProps} />);
+		});
+
+		const iconStyleTabsOrder = getIconStyleTabsCallOrder();
+		const iconHeightOrder = getAdvancedControlCallOrder('Icon height');
+		const strokeWidthOrder =
+			mockSvgStrokeWidthControl.mock.invocationCallOrder[0];
+
+		expect(mockSvgStrokeWidthControl).toHaveBeenCalledTimes(1);
+		expect(iconStyleTabsOrder).toBeLessThan(iconHeightOrder);
+		expect(strokeWidthOrder).toBeGreaterThan(iconHeightOrder);
 	});
 });

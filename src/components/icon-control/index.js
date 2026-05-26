@@ -82,6 +82,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePosition = false, // Hide position controls
 		disableSpacing = false, // Hide spacing controls
 		disableWidth = false, // Hide width controls
+		disableStrokeWidth = false, // Hide stroke width controls
 		disableHeightFitContent = false, // Disable height fit content
 		disablePositionY = false, // Disable Y-axis positioning
 		getIconWithColor, // Function to apply colors to icon SVG
@@ -259,7 +260,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* Stroke width control: Always show for non-Shape SVGs */}
-			{svgType !== 'Shape' && (
+			{!disableStrokeWidth && svgType !== 'Shape' && (
 				<SvgStrokeWidthControl
 					{...getGroupAttributes(props, 'icon', isHover, prefix)}
 					{...(isHover && {

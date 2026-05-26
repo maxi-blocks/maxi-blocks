@@ -58,6 +58,7 @@ class edit extends MaxiBlockComponent {
 			isUploaderOpen: false,
 			formatValue: {},
 			onChangeFormat: null,
+			captionRichTextActive: false,
 		};
 
 		this.textRef = createRef(null);
@@ -71,6 +72,18 @@ class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
+
+	handleCaptionFocus = () => {
+		this.setState({
+			captionRichTextActive: true,
+		});
+	};
+
+	handleCaptionBlur = () => {
+		this.setState({
+			captionRichTextActive: false,
+		});
+	};
 
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
@@ -295,7 +308,8 @@ class edit extends MaxiBlockComponent {
 				value={{
 					formatValue: this.state.formatValue,
 					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
+						if (this.state.onChangeFormat)
+							this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -316,6 +330,7 @@ class edit extends MaxiBlockComponent {
 						this.setState({ showLoader: value })
 					}
 					{...this.props}
+					captionRichTextActive={this.state.captionRichTextActive}
 				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
@@ -472,6 +487,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(
@@ -558,6 +575,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(

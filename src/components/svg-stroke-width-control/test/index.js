@@ -11,8 +11,9 @@ jest.mock('@wordpress/i18n', () => ({
 	__: text => text,
 }));
 
-jest.mock('@components/advanced-number-control', () => props =>
-	mockAdvancedNumberControl(props)
+jest.mock(
+	'@components/advanced-number-control',
+	() => props => mockAdvancedNumberControl(props)
 );
 
 jest.mock('@extensions/styles', () => ({
@@ -65,6 +66,12 @@ describe('SvgStrokeWidthControl', () => {
 		onChangeValue('4', { source: 'test' });
 	};
 
+	const resetStrokeWidth = () => {
+		const [{ onReset }] = mockAdvancedNumberControl.mock.calls[0];
+
+		onReset();
+	};
+
 	it('updates SVG content by default for existing icon flows', () => {
 		renderControl();
 
@@ -90,6 +97,34 @@ describe('SvgStrokeWidthControl', () => {
 		expect(defaultProps.onChange).toHaveBeenCalledWith({
 			'play-icon-stroke-general': '4',
 			meta: { source: 'test' },
+		});
+	});
+
+	it('resets SVG content by default for existing icon flows', () => {
+		renderControl();
+
+		resetStrokeWidth();
+
+		expect(setSVGStrokeWidth).toHaveBeenCalledWith(
+			defaultProps.content,
+			''
+		);
+		expect(defaultProps.onChange).toHaveBeenCalledWith({
+			'play-icon-stroke-general': '',
+			'play-icon-content': '<svg stroke-width="4" />',
+			isReset: true,
+		});
+	});
+
+	it('can reset stroke width without rewriting SVG content', () => {
+		renderControl({ disableContentUpdate: true });
+
+		resetStrokeWidth();
+
+		expect(setSVGStrokeWidth).not.toHaveBeenCalled();
+		expect(defaultProps.onChange).toHaveBeenCalledWith({
+			'play-icon-stroke-general': '',
+			isReset: true,
 		});
 	});
 });

@@ -29,10 +29,15 @@ const handleSetAttributes = ({
 	isStyleCard = false,
 	onChangeInline,
 	cleanInlineStyles,
+	updateAttributesOnInlineChange = false,
 }) => {
 	if (meta?.inline) {
 		if (onChangeInline) {
-			return onChangeInline(obj, meta.inline);
+			const inlineResponse = onChangeInline(obj, meta.inline);
+
+			if (!updateAttributesOnInlineChange) {
+				return inlineResponse;
+			}
 		}
 	} else if (cleanInlineStyles) {
 		cleanInlineStyles(obj);

@@ -204,4 +204,61 @@ describe('getBoxShadowStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Does not emit zero-value drop-shadow for masked image SVGs', () => {
+		const object = {
+			SVGElement: '<svg viewBox="0 0 36 36"></svg>',
+			'image-box-shadow-palette-status-general': true,
+			'image-box-shadow-palette-color-general': 4,
+			'image-box-shadow-palette-opacity-general': 1,
+			'image-box-shadow-horizontal-general': 0,
+			'image-box-shadow-horizontal-unit-general': 'px',
+			'image-box-shadow-vertical-general': 0,
+			'image-box-shadow-vertical-unit-general': 'px',
+			'image-box-shadow-blur-general': 0,
+			'image-box-shadow-blur-unit-general': 'px',
+			'image-box-shadow-spread-general': 0,
+			'image-box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+			dropShadow: true,
+			forClipPath: true,
+			prefix: 'image-',
+		});
+
+		expect(result).toEqual({});
+	});
+
+	it('Preserves non-zero drop-shadow for masked image SVGs', () => {
+		const object = {
+			SVGElement: '<svg viewBox="0 0 36 36"></svg>',
+			'image-box-shadow-palette-status-general': true,
+			'image-box-shadow-palette-color-general': 4,
+			'image-box-shadow-palette-opacity-general': 1,
+			'image-box-shadow-horizontal-general': 0,
+			'image-box-shadow-horizontal-unit-general': 'px',
+			'image-box-shadow-vertical-general': 6,
+			'image-box-shadow-vertical-unit-general': 'px',
+			'image-box-shadow-blur-general': 9,
+			'image-box-shadow-blur-unit-general': 'px',
+			'image-box-shadow-spread-general': 0,
+			'image-box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+			dropShadow: true,
+			forClipPath: true,
+			prefix: 'image-',
+		});
+
+		expect(result.general).toEqual({
+			filter:
+				'drop-shadow(0px 6px 3px rgba(var(--maxi-light-color-4,255,74,23),1))',
+		});
+	});
 });

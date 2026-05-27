@@ -68,6 +68,21 @@ jest.mock('../updateRelationsInColumn', () => jest.fn());
 
 const { select: mockSelect, dispatch: mockDispatch } =
 	jest.requireMock('@wordpress/data');
+const { goThroughMaxiBlocks } = jest.requireMock('@extensions/maxi-block');
+
+const createBlock = (clientId, name, innerBlocks = []) => ({
+	clientId,
+	name,
+	attributes: {},
+	innerBlocks,
+});
+
+const traverseBlocks = (callback, blocks = []) => {
+	blocks.forEach(block => {
+		callback(block);
+		traverseBlocks(callback, block.innerBlocks);
+	});
+};
 
 describe('validateRowColumnsStructure', () => {
 	beforeEach(() => {
@@ -90,6 +105,9 @@ describe('validateRowColumnsStructure', () => {
 		});
 
 		getDisallowedRepeaterBlocksFromClientId.mockReturnValue([]);
+		goThroughMaxiBlocks.mockImplementation((callback, _deep, blocks) =>
+			traverseBlocks(callback, blocks)
+		);
 	});
 
 	describe('rejectDisallowedBlocks flag', () => {
@@ -152,6 +170,71 @@ describe('validateRowColumnsStructure', () => {
 			const result = await validateRowColumnsStructure('row', null, null);
 
 			expect(result).toBe(true);
+		});
+	});
+
+	describe('structure confirmation', () => {
+		it('asks for confirmation once when multiple columns differ from the reference column', async () => {
+			const referenceText = createBlock(
+				'text-1',
+				'maxi-blocks/text-maxi'
+			);
+			const extraText = createBlock('text-2', 'maxi-blocks/text-maxi');
+			const extraButton = createBlock(
+				'button-1',
+				'maxi-blocks/button-maxi'
+			);
+			const referenceColumn = createBlock(
+				'col-1',
+				'maxi-blocks/column-maxi',
+				[referenceText]
+			);
+			const mismatchColumnOne = createBlock(
+				'col-2',
+				'maxi-blocks/column-maxi',
+				[referenceText, extraText]
+			);
+			const mismatchColumnTwo = createBlock(
+				'col-3',
+				'maxi-blocks/column-maxi',
+				[referenceText, extraText, extraButton]
+			);
+			const rowWithMismatchedColumns = {
+				...rowBlock,
+				innerBlocks: [
+					referenceColumn,
+					mismatchColumnOne,
+					mismatchColumnTwo,
+				],
+			};
+			const blocksByClientId = {
+				row: rowWithMismatchedColumns,
+				'col-1': referenceColumn,
+				'col-2': mismatchColumnOne,
+				'col-3': mismatchColumnTwo,
+			};
+			const confirmDifferentStructure = jest.fn(async () => true);
+
+			mockSelect.mockReturnValue({
+				getBlock: jest.fn(id => blocksByClientId[id] || null),
+				getBlocks: jest.fn(id =>
+					id === 'row' ? rowWithMismatchedColumns.innerBlocks : []
+				),
+				getBlockOrder: jest.fn(() => []),
+				getBlockName: jest.fn(() => 'maxi-blocks/column-maxi'),
+				getBlockAttributes: jest.fn(() => ({})),
+				getBlockParents: jest.fn(() => []),
+				getBlockParentsByBlockName: jest.fn(() => []),
+			});
+
+			const result = await validateRowColumnsStructure(
+				'row',
+				null,
+				confirmDifferentStructure
+			);
+
+			expect(result).toBe(true);
+			expect(confirmDifferentStructure).toHaveBeenCalledTimes(1);
 		});
 	});
 });

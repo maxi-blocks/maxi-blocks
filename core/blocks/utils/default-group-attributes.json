@@ -48741,6 +48741,50 @@
 		"overlay-media-opacity-xs": {
 			"type": "number"
 		},
+		"overlay-media-object-position-horizontal-general": {
+			"type": "number",
+			"default": 50
+		},
+		"overlay-media-object-position-horizontal-xxl": {
+			"type": "number"
+		},
+		"overlay-media-object-position-horizontal-xl": {
+			"type": "number"
+		},
+		"overlay-media-object-position-horizontal-l": {
+			"type": "number"
+		},
+		"overlay-media-object-position-horizontal-m": {
+			"type": "number"
+		},
+		"overlay-media-object-position-horizontal-s": {
+			"type": "number"
+		},
+		"overlay-media-object-position-horizontal-xs": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-general": {
+			"type": "number",
+			"default": 50
+		},
+		"overlay-media-object-position-vertical-xxl": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-xl": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-l": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-m": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-s": {
+			"type": "number"
+		},
+		"overlay-media-object-position-vertical-xs": {
+			"type": "number"
+		},
 		"overlay-mediaID": {
 			"type": "number"
 		},

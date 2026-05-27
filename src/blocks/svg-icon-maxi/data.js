@@ -266,6 +266,7 @@ const inlineStylesTargets = {
 	iconPath: `${iconClass} svg path`,
 	iconSvg: `${iconClass} svg`,
 };
+const linkElements = ['svg', 'canvas'];
 
 const attributesToStyles = {
 	'svg-stroke': {
@@ -477,6 +478,7 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	linkElements,
 	attributesToStyles,
 };
 

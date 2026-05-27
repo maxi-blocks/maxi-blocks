@@ -4,6 +4,7 @@
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { RawHTML } from '@components';
 import { getIconPositionClass } from '@extensions/styles';
+import { getResponsiveIconPosition } from './utils';
 
 /**
  * External dependencies
@@ -29,7 +30,10 @@ const save = props => {
 
 	const classes = classnames(
 		'maxi-search-block',
-		getIconPositionClass(attributes['icon-position'], 'maxi-search-block')
+		getIconPositionClass(
+			getResponsiveIconPosition(attributes, 'general'),
+			'maxi-search-block'
+		)
 	);
 
 	const inputClasses = classnames(

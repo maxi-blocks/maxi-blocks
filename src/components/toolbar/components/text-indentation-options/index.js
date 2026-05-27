@@ -78,7 +78,7 @@ const TextIndentationOptions = ({ blockName, clientId, tooltipsHide }) => {
 					className='toolbar-item__list-outdent-option'
 					icon={toolbarOutdentList}
 					label={__('Outdent', 'maxi-blocks')}
-					onClick={() => outdentListItem(clientId)}
+					onClick={() => outdentListItem()}
 					tooltipsHide={tooltipsHide}
 				/>
 			)}

@@ -1,9 +1,10 @@
 import { useCallback } from '@wordpress/element';
 import { useDispatch, useRegistry, useSelect } from '@wordpress/data';
-import { cloneBlock } from '@wordpress/blocks';
+import { createBlock } from '@wordpress/blocks';
 
 import {
 	canOutdentListItem,
+	getNestedListAttributes,
 	getParentListItemClientId,
 	TEXT_BLOCK,
 } from './listItemIndentation';
@@ -68,10 +69,13 @@ const useOutdentListItem = () => {
 						);
 
 					if (!nestedListClientId) {
-						const nestedListBlock = cloneBlock(
-							selectors.getBlock(parentListClientId),
-							{},
-							[]
+						const parentBlock =
+							selectors.getBlock(parentListClientId);
+						const nestedListBlock = createBlock(
+							TEXT_BLOCK,
+							getNestedListAttributes(
+								parentBlock?.attributes
+							)
 						);
 						nestedListClientId = nestedListBlock.clientId;
 						insertBlock(nestedListBlock, 0, firstClientId, false);

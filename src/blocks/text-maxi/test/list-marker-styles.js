@@ -138,14 +138,16 @@ describe('text-maxi list marker styles', () => {
 		);
 
 		expect(markerStyles.listStyle.general).toEqual({
-			content: `url('${markerUrl}')`,
+			content: '""',
+			'background-image': `url('${markerUrl}')`,
+			'background-position': 'center',
+			'background-repeat': 'no-repeat',
+			'background-size': 'contain',
 		});
-		expect(markerStyles.listStyle.general).not.toHaveProperty(
-			'background-image'
-		);
 		expect(markerStyles.listSize.general).toEqual(
 			expect.objectContaining({
-				'font-size': '48px',
+				width: '48px',
+				height: '48px',
 				'margin-left': '-48px',
 			})
 		);

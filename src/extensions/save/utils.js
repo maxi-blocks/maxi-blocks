@@ -42,9 +42,7 @@ const getLinkAttributesFromLinkSettings = (
 	};
 };
 
-const WithLink = props => {
-	const { linkSettings, dynamicContent, children } = props;
-
+const getHasLink = (linkSettings, dynamicContent) => {
 	const {
 		'dc-status': dcStatus,
 		'dc-link-status': dcLinkStatus,
@@ -56,10 +54,24 @@ const WithLink = props => {
 	const hasDCLink =
 		dcStatus && dcLinkStatus && !inlineLinkFields.includes(dcLinkTarget);
 
-	if (hasLink || hasDCLink) {
+	return !!(hasLink || hasDCLink);
+};
+
+const WithLink = props => {
+	const { linkSettings, dynamicContent, children, className } = props;
+
+	const {
+		'dc-status': dcStatus,
+		'dc-link-status': dcLinkStatus,
+		'dc-link-target': dcLinkTarget,
+	} = dynamicContent || false;
+
+	if (getHasLink(linkSettings, dynamicContent)) {
 		return (
 			<a
-				className='maxi-link-wrapper'
+				className={['maxi-link-wrapper', className]
+					.filter(Boolean)
+					.join(' ')}
 				{...getLinkAttributesFromLinkSettings(
 					linkSettings,
 					dcStatus,
@@ -75,4 +87,4 @@ const WithLink = props => {
 	return children;
 };
 
-export { getLinkAttributesFromLinkSettings, WithLink };
+export { getHasLink, getLinkAttributesFromLinkSettings, WithLink };

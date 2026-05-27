@@ -115,6 +115,20 @@
 		}
 	}
 
+	.maxi-svg-icon-block__icon-wrapper {
+		display: flex;
+		align-items: center;
+	}
+
+	.maxi-link-wrapper.maxi-svg-icon-block__icon {
+		display: flex;
+		text-decoration: none;
+
+		> div {
+			display: contents;
+		}
+	}
+
 	.maxi-library-modal__action-section {
 		margin-right: 0;
 		width: 100%;

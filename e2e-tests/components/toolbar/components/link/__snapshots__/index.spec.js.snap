@@ -2,6 +2,7 @@
 
 exports[`Button link Check button link 1`] = `
 {
+  "linkElement": "button",
   "noFollow": true,
   "opensInNewTab": true,
   "sponsored": true,
@@ -12,6 +13,7 @@ exports[`Button link Check button link 1`] = `
 
 exports[`Button link Should work correctly with dynamic content 1`] = `
 {
+  "linkElement": "button",
   "title": "http://localhost:8889",
   "url": "http://localhost:8889",
 }

@@ -7,6 +7,7 @@ import { addFilter } from '@wordpress/hooks';
  * Internal dependencies
  */
 import { WithLink } from './utils';
+import { shouldWrapWithLink } from './linkWrapper';
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import { getBlockData } from '@extensions/attributes';
 
@@ -21,6 +22,7 @@ const allowedBlocks = [
 	'maxi-blocks/image-maxi',
 	'maxi-blocks/container-maxi',
 	'maxi-blocks/group-maxi',
+	'maxi-blocks/pane-maxi',
 	'maxi-blocks/number-counter-maxi',
 	'maxi-blocks/svg-icon-maxi',
 	'maxi-blocks/slider-maxi',
@@ -42,13 +44,15 @@ const withSave = (element, blockType, attributes) => {
 	const linkSettings = { ...attributes.linkSettings };
 	const dynamicContent = getGroupAttributes(attributes, 'dynamicContent');
 	const linkElements = getBlockData(blockType.name)?.linkElements;
+	const shouldWrap = shouldWrapWithLink({
+		blockName: blockType.name,
+		allowedBlocks,
+		linkElements,
+		linkSettings,
+		dynamicContent,
+	});
 
-	if (
-		(allowedBlocks.includes(blockType.name) &&
-			(!linkElements || linkSettings.linkElement === 'canvas')) ||
-		(dynamicContent['dc-status'] &&
-			blockType.name === 'maxi-blocks/text-maxi')
-	) {
+	if (shouldWrap) {
 		return (
 			<WithLink
 				linkSettings={linkSettings}

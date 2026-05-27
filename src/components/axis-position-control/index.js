@@ -27,11 +27,12 @@ const AxisPositionControl = ({
 	disableY = false,
 	enableCenter = false,
 	buttonClasses = {},
+	responsive = false,
 }) => {
 	const classes = classnames('maxi-axis-position-control', className);
 
 	return (
-		breakpoint === 'general' && (
+		(breakpoint === 'general' || responsive) && (
 			<SettingTabsControl
 				label={__(`${label} position`, 'maxi-blocks')}
 				className={classes}

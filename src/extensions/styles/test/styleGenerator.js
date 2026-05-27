@@ -1,4 +1,5 @@
 import styleGenerator from '@extensions/styles/styleGenerator';
+import { buildAdvancedCssMediaQueryTarget } from '@extensions/styles/advancedCssMediaQuery';
 
 jest.mock('@wordpress/data', () => {
 	return {
@@ -176,5 +177,59 @@ describe('styleGenerator', () => {
 		const result = styleGenerator(styles, true);
 
 		expect(result).toMatchSnapshot();
+	});
+
+	it('wraps advanced CSS media query selectors around scoped editor styles', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const styles = {
+			'group-maxi-1234-u': {
+				breakpoints: {},
+				content: {
+					[buildAdvancedCssMediaQueryTarget(
+						mediaQuery,
+						' .nav_search'
+					)]: {
+						general: {
+							css: 'background: red !important;',
+						},
+					},
+				},
+			},
+		};
+
+		const result = styleGenerator(styles);
+
+		expect(result).toContain(
+			`${mediaQuery}{body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.group-maxi-1234-u .nav_search`
+		);
+		expect(result).toContain('background: red !important;');
+	});
+
+	it('wraps advanced CSS media query custom class selectors around the same editor block', () => {
+		const mediaQuery =
+			'@media screen and (max-width:1160px) and (min-width:1025px)';
+		const styles = {
+			'column-maxi-bf04696a-u': {
+				breakpoints: {},
+				content: {
+					[buildAdvancedCssMediaQueryTarget(
+						mediaQuery,
+						'.nav_search'
+					)]: {
+						general: {
+							css: 'background: red !important;',
+						},
+					},
+				},
+			},
+		};
+
+		const result = styleGenerator(styles);
+
+		expect(result).toContain(
+			`${mediaQuery}{body.maxi-blocks--active .edit-post-visual-editor .maxi-block.maxi-block--backend.column-maxi-bf04696a-u.nav_search`
+		);
+		expect(result).toContain('background: red !important;');
 	});
 });

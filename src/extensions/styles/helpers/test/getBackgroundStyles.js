@@ -3,6 +3,8 @@ import { isNaN, merge } from 'lodash';
 import {
 	getBlockBackgroundStyles,
 	getBackgroundStyles,
+	getColorBackgroundObject,
+	getImageBackgroundObject,
 } from '@extensions/styles/helpers/getBackgroundStyles';
 
 jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
@@ -779,6 +781,58 @@ describe('getBackgroundStyles', () => {
 		const result = getBlockBackgroundNormalAndHoverStyles(attributes);
 
 		expect(result).toMatchSnapshot();
+	});
+
+	it('resets background image clip-path when disabled at a lower breakpoint', () => {
+		const result = getImageBackgroundObject({
+			breakpoint: 'm',
+			ignoreMediaAttributes: true,
+			'background-image-size-general': 'cover',
+			'background-image-clip-path-status-xl': true,
+			'background-image-clip-path-xl':
+				'polygon(50% 0%, 0% 100%, 100% 100%)',
+			'background-image-clip-path-status-m': false,
+		});
+
+		expect(result.m['clip-path']).toBe('none');
+	});
+
+	it('resets background color clip-path when disabled at a lower breakpoint', () => {
+		const result = getColorBackgroundObject({
+			breakpoint: 'm',
+			blockStyle: 'light',
+			'background-color-clip-path-status-xl': true,
+			'background-color-clip-path-xl':
+				'polygon(50% 0%, 0% 100%, 100% 100%)',
+			'background-color-clip-path-status-m': false,
+		});
+
+		expect(result.m['clip-path']).toBe('none');
+	});
+
+	it('keeps background image clip-path active on a lower breakpoint until explicitly disabled', () => {
+		const clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+		const result = getImageBackgroundObject({
+			breakpoint: 'm',
+			ignoreMediaAttributes: true,
+			'background-image-size-general': 'cover',
+			'background-image-clip-path-status-xl': true,
+			'background-image-clip-path-xl': clipPath,
+		});
+
+		expect(result.m['clip-path']).toBe(clipPath);
+	});
+
+	it('does not activate background image clip-path from a stored shape without active status', () => {
+		const result = getImageBackgroundObject({
+			breakpoint: 'm',
+			ignoreMediaAttributes: true,
+			'background-image-size-general': 'cover',
+			'background-image-clip-path-xl':
+				'polygon(50% 0%, 0% 100%, 100% 100%)',
+		});
+
+		expect(result.m['clip-path']).toBeUndefined();
 	});
 
 	it('Get correct block background styles for video layer with different values on different responsive stages and hovers', () => {

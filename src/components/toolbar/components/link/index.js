@@ -87,15 +87,6 @@ const Link = props => {
 		}
 	}, [selectedDCType, dcField, dcLinkStatus]);
 
-	useEffect(() => {
-		const linkSettingsWithDefaultElement =
-			getLinkSettingsWithDefaultLinkElement(linkSettings, linkElements);
-
-		if (linkSettingsWithDefaultElement !== linkSettings) {
-			onChange(linkSettingsWithDefaultElement);
-		}
-	}, [linkElements, linkSettings, onChange]);
-
 	const updateCanvasLinkElement = checked => {
 		onChange({
 			...linkSettings,

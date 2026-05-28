@@ -62,15 +62,36 @@ describe('svg icon save', () => {
 		);
 	});
 
-	it('keeps the icon unwrapped inside the block when the canvas target is selected', () => {
-		const block = resolveElement(
-			renderSvgIcon({
-				url: 'https://example.com',
-				linkElement: 'canvas',
-			})
-		);
+	it('wraps the whole block when canvas target is selected', () => {
+		const element = renderSvgIcon({
+			url: 'https://example.com',
+			linkElement: 'canvas',
+		});
+		const link = resolveElement(element);
+
+		expect(link.type).toBe('a');
+		expect(link.props.className).toBe('maxi-link-wrapper');
+
+		const block = resolveElement(link.props.children);
 		const icon = block.props.children;
 
+		expect(block.type).toBe('div');
+		expect(block.props.className).toBe('maxi-block');
 		expect(icon.props.className).toBe('maxi-svg-icon-block__icon');
+	});
+
+	it('wraps the whole block when linkElement is absent (backward compat)', () => {
+		const element = renderSvgIcon({
+			url: 'https://example.com',
+		});
+		const link = resolveElement(element);
+
+		expect(link.type).toBe('a');
+		expect(link.props.className).toBe('maxi-link-wrapper');
+
+		const block = resolveElement(link.props.children);
+
+		expect(block.type).toBe('div');
+		expect(block.props.className).toBe('maxi-block');
 	});
 });

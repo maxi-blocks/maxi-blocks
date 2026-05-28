@@ -138,6 +138,39 @@ describe('getBoxShadowStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Returns responsive box-shadow when only palette opacity changes for the same palette color', () => {
+		const object = {
+			'box-shadow-palette-status-general': true,
+			'box-shadow-palette-color-general': 4,
+			'box-shadow-palette-opacity-general': 1,
+			'box-shadow-palette-opacity-l': 0.2,
+			'box-shadow-horizontal-general': 1,
+			'box-shadow-vertical-general': 2,
+			'box-shadow-blur-general': 3,
+			'box-shadow-spread-general': 4,
+			'box-shadow-blur-unit-general': 'px',
+			'box-shadow-horizontal-unit-general': 'px',
+			'box-shadow-vertical-unit-general': 'px',
+			'box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+		});
+
+		expect(result).toEqual({
+			general: {
+				'box-shadow':
+					'1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),1)',
+			},
+			l: {
+				'box-shadow':
+					'1px 2px 3px 4px rgba(var(--maxi-light-color-4,255,74,23),0.2)',
+			},
+		});
+	});
+
 	it('Returns box-shadow default styles for IB', () => {
 		const object = {
 			'box-shadow-palette-status-general': true,
@@ -170,5 +203,62 @@ describe('getBoxShadowStyles', () => {
 			isIB: true,
 		});
 		expect(result).toMatchSnapshot();
+	});
+
+	it('Does not emit zero-value drop-shadow for masked image SVGs', () => {
+		const object = {
+			SVGElement: '<svg viewBox="0 0 36 36"></svg>',
+			'image-box-shadow-palette-status-general': true,
+			'image-box-shadow-palette-color-general': 4,
+			'image-box-shadow-palette-opacity-general': 1,
+			'image-box-shadow-horizontal-general': 0,
+			'image-box-shadow-horizontal-unit-general': 'px',
+			'image-box-shadow-vertical-general': 0,
+			'image-box-shadow-vertical-unit-general': 'px',
+			'image-box-shadow-blur-general': 0,
+			'image-box-shadow-blur-unit-general': 'px',
+			'image-box-shadow-spread-general': 0,
+			'image-box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+			dropShadow: true,
+			forClipPath: true,
+			prefix: 'image-',
+		});
+
+		expect(result).toEqual({});
+	});
+
+	it('Preserves non-zero drop-shadow for masked image SVGs', () => {
+		const object = {
+			SVGElement: '<svg viewBox="0 0 36 36"></svg>',
+			'image-box-shadow-palette-status-general': true,
+			'image-box-shadow-palette-color-general': 4,
+			'image-box-shadow-palette-opacity-general': 1,
+			'image-box-shadow-horizontal-general': 0,
+			'image-box-shadow-horizontal-unit-general': 'px',
+			'image-box-shadow-vertical-general': 6,
+			'image-box-shadow-vertical-unit-general': 'px',
+			'image-box-shadow-blur-general': 9,
+			'image-box-shadow-blur-unit-general': 'px',
+			'image-box-shadow-spread-general': 0,
+			'image-box-shadow-spread-unit-general': 'px',
+		};
+
+		const result = getBoxShadowStyles({
+			obj: object,
+			blockStyle: 'light',
+			dropShadow: true,
+			forClipPath: true,
+			prefix: 'image-',
+		});
+
+		expect(result.general).toEqual({
+			filter:
+				'drop-shadow(0px 6px 3px rgba(var(--maxi-light-color-4,255,74,23),1))',
+		});
 	});
 });

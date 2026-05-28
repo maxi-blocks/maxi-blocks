@@ -42,6 +42,7 @@ import { retrieveInnerBlocksPositions } from '@extensions/repeater';
 import getRowGapProps from '@extensions/attributes/getRowGapProps';
 import getStyles from './styles';
 import { copyPasteMapping, maxiAttributes } from './data';
+import getRowInnerBlocksSettings from './getRowInnerBlocksSettings';
 import {
 	withMaxiContextLoop,
 	withMaxiContextLoopContext,
@@ -395,31 +396,26 @@ class edit extends MaxiBlockComponent {
 							...repeaterContext,
 						})}
 						useInnerBlocks
-						innerBlocksSettings={{
-							...(hasInnerBlocks && { templateLock: 'insert' }),
+						innerBlocksSettings={getRowInnerBlocksSettings({
 							allowedBlocks: ALLOWED_BLOCKS,
-							orientation: 'horizontal',
-							renderAppender: !hasInnerBlocks
-								? () => (
-										<RowBlockTemplate
-											clientId={clientId}
-											maxiSetAttributes={
-												maxiSetAttributes
-											}
-											deviceType={deviceType}
-											repeaterStatus={
-												repeaterContext.repeaterStatus
-											}
-											repeaterRowClientId={
-												repeaterContext.repeaterRowClientId
-											}
-											getInnerBlocksPositions={
-												repeaterContext.getInnerBlocksPositions
-											}
-										/>
-								  )
-								: false,
-						}}
+							hasInnerBlocks,
+							renderEmptyAppender: () => (
+								<RowBlockTemplate
+									clientId={clientId}
+									maxiSetAttributes={maxiSetAttributes}
+									deviceType={deviceType}
+									repeaterStatus={
+										repeaterContext.repeaterStatus
+									}
+									repeaterRowClientId={
+										repeaterContext.repeaterRowClientId
+									}
+									getInnerBlocksPositions={
+										repeaterContext.getInnerBlocksPositions
+									}
+								/>
+							),
+						})}
 						renderWrapperInserter={false}
 					/>
 				</RepeaterContext.Provider>

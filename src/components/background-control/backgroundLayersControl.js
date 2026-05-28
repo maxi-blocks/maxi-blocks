@@ -29,6 +29,7 @@ import {
 	onChangeLayer,
 	setBreakpointToLayer,
 } from './utils';
+import { getLayerTransformCleanupAttributes } from './transformCleanup';
 import { isSVGColorLight } from '../../editor/library/util';
 import SelectControl from '@components/select-control';
 import ListControl from '@components/list-control';
@@ -434,6 +435,7 @@ const BackgroundLayersControl = ({
 	layersOptions,
 	layersHoverOptions,
 	transition,
+	transformAttributes,
 	isHover = false,
 	isIB = false,
 	onChangeInline,
@@ -535,9 +537,13 @@ const BackgroundLayersControl = ({
 
 		onChange({
 			[`background-layers${isHover ? '-hover' : ''}`]: newLayers,
+			...getLayerTransformCleanupAttributes(
+				transformAttributes,
+				idOfRemovedLayer
+			),
 			transition: {
 				...transition,
-				transform: omit(transition.transform, `_${idOfRemovedLayer}`),
+				transform: omit(transition?.transform, `_${idOfRemovedLayer}`),
 			},
 		});
 	};

@@ -31,5 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (emailLink.getAttribute('title') === encodedEmail) {
 			emailLink.setAttribute('title', decodedEmail);
 		}
+
+		// Handle canvas link case: title is on an inner element (e.g. button)
+		const innerObfuscated = emailLink.querySelectorAll(
+			'[data-email-obfuscated="true"][title]'
+		);
+		innerObfuscated.forEach(el => {
+			if (el.getAttribute('title') === encodedEmail) {
+				el.setAttribute('title', decodedEmail);
+			}
+		});
 	});
 });

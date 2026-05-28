@@ -249,12 +249,6 @@ const RelationControl = props => {
 				);
 				expandedSet.add(pid);
 
-				console.log(JSON.stringify({
-					event: 'listViewReveal:expanded',
-					pid,
-					attempt,
-				}));
-
 				setTimeout(() => revealInListView(attempt + 1), 200);
 				return;
 			}
@@ -265,11 +259,6 @@ const RelationControl = props => {
 				setTimeout(() => revealInListView(attempt + 1), 200);
 				return;
 			}
-
-			console.log(JSON.stringify({
-				event: 'listViewReveal:found',
-				attempt,
-			}));
 
 			targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			targetRow.classList.add(REVEAL_CLASS);

@@ -112,6 +112,21 @@ body.maxi-blocks--active
 	}
 }
 
+tr.maxi-block--list-view-revealed,
+tr.maxi-block--list-view-revealed td {
+	animation: maxi-list-view-reveal-pulse 2.5s ease-out forwards;
+}
+
+@keyframes maxi-list-view-reveal-pulse {
+	0%,
+	60% {
+		background-color: rgba(192, 38, 211, 0.25);
+	}
+	100% {
+		background-color: transparent;
+	}
+}
+
 /* Highlight only setting tabs with interaction indicators (not top-level tabs) */
 .maxi-relation-control__interaction-setting .maxi-tabs-control__button--active {
 	color: var(--maxi-interaction-pink) !important;

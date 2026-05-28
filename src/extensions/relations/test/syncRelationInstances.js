@@ -1,5 +1,7 @@
 import syncRelationInstances from '@extensions/relations/syncRelationInstances';
 
+const makeDOMElement = () => document.createElement('div');
+
 const makeRelation = overrides => ({
 	id: 'relation-1',
 	uniqueID: 'target-1',
@@ -7,6 +9,8 @@ const makeRelation = overrides => ({
 	trigger: 'trigger-1',
 	target: '',
 	blockTarget: '.target-1',
+	triggerEl: makeDOMElement(),
+	targetEl: makeDOMElement(),
 	stylesString: '.target-1 { opacity: 0; }',
 	inTransitionString: '.target-1 { transition: opacity 0.3s ease; }',
 	outTransitionString: '.target-1 { transition: opacity 0.3s ease; }',
@@ -148,6 +152,39 @@ describe('syncRelationInstances', () => {
 			staticState: 'end',
 		});
 		expect(equivalentNextRelation.setIsPreview).not.toHaveBeenCalled();
+	});
+
+	it('does not reuse an instance whose constructor failed to find DOM elements', () => {
+		const brokenPrevious = makeRelation({
+			triggerEl: null,
+			targetEl: null,
+			stylesString: undefined,
+		});
+
+		const firstSync = syncRelationInstances({
+			previousRelationInstances: null,
+			nextRelationInstances: [brokenPrevious],
+			shouldRenderRelations: true,
+			isPreview: true,
+			staticState: 'start',
+		});
+
+		const workingNext = makeRelation();
+		const secondSync = syncRelationInstances({
+			previousRelationInstances: firstSync.relationInstances,
+			nextRelationInstances: [workingNext],
+			shouldRenderRelations: true,
+			isPreview: true,
+			staticState: 'start',
+		});
+
+		expect(secondSync.relationInstances).toEqual([workingNext]);
+		expect(workingNext.setIsPreview).toHaveBeenCalledWith(true, {
+			staticState: 'start',
+		});
+		expect(
+			brokenPrevious.removePreviousStylesAndTransitions
+		).toHaveBeenCalledTimes(1);
 	});
 
 	it('removes previous instances that are no longer rendered', () => {

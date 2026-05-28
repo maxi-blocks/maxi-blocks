@@ -2,7 +2,7 @@
  * WordPress dependencies.
  */
 import { __ } from '@wordpress/i18n';
-import { useDispatch, useSelect, select } from '@wordpress/data';
+import { dispatch, useDispatch, useSelect, select } from '@wordpress/data';
 import { useRef, useEffect, useMemo } from '@wordpress/element';
 
 /**
@@ -41,8 +41,8 @@ import {
 	getSyncedRelationPreviewIds,
 	groupRelations,
 	mergeRelationStartAttributeUpdates,
-	revealRelationBlockElement,
 	removeRelationGroup,
+	revealRelationBlockElement,
 	syncRelationGroupTargets,
 	updateRelationsInGroup,
 } from './utils';
@@ -179,12 +179,104 @@ const RelationControl = props => {
 		}
 	};
 
+	/**
+	 * Reveals the target block on the canvas (scroll + pulse) and also
+	 * opens the List View sidebar with the tree expanded to the target
+	 * row highlighted. Does NOT select the block so the user keeps the
+	 * current IB context.
+	 */
 	const handleReveal = targetId => {
 		const targetClientId = getTargetClientId(targetId);
 		if (!targetClientId) return;
 
 		const [blockElement] = getBlockElements(targetClientId);
 		revealRelationBlockElement(blockElement);
+
+		const editorDispatch = dispatch('core/editor');
+		const editPostDispatch = dispatch('core/edit-post');
+
+		if (editorDispatch?.setIsListViewOpened) {
+			editorDispatch.setIsListViewOpened(true);
+		} else if (editPostDispatch?.setIsListViewOpened) {
+			editPostDispatch.setIsListViewOpened(true);
+		}
+
+		const parents = select('core/block-editor').getBlockParents(
+			targetClientId
+		);
+		const REVEAL_CLASS = 'maxi-block--list-view-revealed';
+
+		const findRow = (tree, id) =>
+			tree.querySelector(`a[href$="#block-${id}"]`)?.closest('tr');
+
+		const expandedSet = new Set();
+
+		const revealInListView = (attempt = 0) => {
+			if (attempt > 30) return;
+
+			const tree = document.querySelector(
+				'.block-editor-list-view-tree'
+			);
+			if (!tree) {
+				setTimeout(() => revealInListView(attempt + 1), 120);
+				return;
+			}
+
+			// Expand one collapsed parent per pass
+			for (let i = 0; i < parents.length; i++) {
+				const pid = parents[i];
+				if (expandedSet.has(pid)) continue;
+
+				const row = findRow(tree, pid);
+				if (!row) continue;
+
+				const nextId =
+					i < parents.length - 1
+						? parents[i + 1]
+						: targetClientId;
+
+				if (findRow(tree, nextId)) continue;
+
+				// This parent's child isn't visible yet — expand it
+				const expander = row.querySelector(
+					'.block-editor-list-view__expander'
+				);
+				if (!expander) continue;
+
+				const svg = expander.querySelector('svg') || expander;
+				svg.dispatchEvent(
+					new MouseEvent('click', { bubbles: true, cancelable: true })
+				);
+				expandedSet.add(pid);
+
+				console.log(JSON.stringify({
+					event: 'listViewReveal:expanded',
+					pid,
+					attempt,
+				}));
+
+				setTimeout(() => revealInListView(attempt + 1), 200);
+				return;
+			}
+
+			// All parents done — find and highlight the target
+			const targetRow = findRow(tree, targetClientId);
+			if (!targetRow) {
+				setTimeout(() => revealInListView(attempt + 1), 200);
+				return;
+			}
+
+			console.log(JSON.stringify({
+				event: 'listViewReveal:found',
+				attempt,
+			}));
+
+			targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			targetRow.classList.add(REVEAL_CLASS);
+			setTimeout(() => targetRow.classList.remove(REVEAL_CLASS), 2500);
+		};
+
+		setTimeout(() => revealInListView(), 300);
 	};
 
 	useEffect(() => {

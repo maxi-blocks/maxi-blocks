@@ -111,10 +111,27 @@ describe('Column Maxi hover simple actions', () => {
 		await page.keyboard.type('Hello World!', { delay: 350 });
 		await page.waitForTimeout(150);
 
-		// Add target
+		// Add target — the column lives inside a container group that is
+		// collapsed by default in the grouped picker, so expand all
+		// collapsed groups and columns first.
 		await page.waitForSelector('.maxi-block-select-control__trigger');
 		await page.click('.maxi-block-select-control__trigger');
 		await page.waitForSelector('.maxi-block-select-control__dropdown');
+
+		await page.$$eval(
+			'.maxi-block-select-control__option-group-button[aria-expanded="false"]',
+			buttons => buttons.forEach(b => b.click())
+		);
+		await page.waitForTimeout(200);
+		await page.$$eval(
+			'.maxi-block-select-control__option-column-button[aria-expanded="false"]',
+			buttons => buttons.forEach(b => b.click())
+		);
+		await page.waitForTimeout(200);
+
+		await page.waitForSelector(
+			'.maxi-block-select-control__options li[value="column-maxi-1se8ef1z-u"]'
+		);
 		await page.click(
 			'.maxi-block-select-control__options li[value="column-maxi-1se8ef1z-u"]'
 		);

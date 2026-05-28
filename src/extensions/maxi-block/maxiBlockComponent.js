@@ -711,7 +711,12 @@ class MaxiBlockComponent extends Component {
 		const attributesUnchanged =
 			isEmpty(diffAttributes) && !contextLoopChanged;
 
-		if (!shouldDisplayStyles && !onlyRelationsChanged) {
+		const hasActiveRelationPreview =
+			onlyRelationsChanged &&
+			(this.props.attributes['relations-preview'] ||
+				this.props.attributes['relations-preview-state'] === 'end');
+
+		if (!shouldDisplayStyles && (!onlyRelationsChanged || hasActiveRelationPreview)) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -1793,10 +1798,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
+		const hasRelationPreviewAttrs =
+			this.props.attributes['relations-preview'] ||
+			this.props.attributes['relations-preview-state'] === 'end' ||
+			this.props.attributes['relations-preview-relation-ids']?.length;
+
 		if (
 			isBreakpointChange &&
 			this.props.deviceType !== 'xxl' &&
-			!shouldGenerateNewStyles
+			!shouldGenerateNewStyles &&
+			!hasRelationPreviewAttrs
 		) {
 			const iframeDoc = this.editorIframe?.contentDocument || null;
 			const cache =

@@ -25,8 +25,15 @@ const DEEP_COMPARE_KEYS = [
 export const getRelationStateKey = (isPreview, staticState) =>
 	isPreview ? 'preview' : `static-${staticState}`;
 
+const isRelationInitialized = relation =>
+	!!(relation.triggerEl && relation.targetEl);
+
 export const areRelationInstancesEquivalent = (previous, next) => {
 	if (!previous || !next) return false;
+
+	// Never reuse an instance whose constructor early-returned before
+	// resolving DOM elements — it has no styles, events, or transitions.
+	if (!isRelationInitialized(previous)) return false;
 
 	const hasSameShallowValues = SHALLOW_COMPARE_KEYS.every(
 		key => previous[key] === next[key]

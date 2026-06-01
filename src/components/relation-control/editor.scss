@@ -384,10 +384,9 @@ tr.maxi-block--list-view-revealed td {
 		height: 14px;
 		border-radius: 50%;
 		background: var(--maxi-grey-light);
-		color: var(--maxi-white);
 		font-size: 12px;
-		font-weight: 700;
-		line-height: 1;
+		font-weight: 700 !important;
+		line-height: 106%;
 	}
 
 	&__selected-clear {
@@ -466,7 +465,7 @@ tr.maxi-block--list-view-revealed td {
 
 	&__close {
 		position: absolute;
-		top: 24px;
+		top: 27px;
 		right: 14px;
 		width: 18px;
 		height: 18px;
@@ -531,7 +530,7 @@ tr.maxi-block--list-view-revealed td {
 
 		&:hover {
 			background-color: var(--maxi-whisper-green);
-			color: var(--maxi-grey-dark);
+			color: var(--maxi-grey-dark) !important;
 		}
 
 		&--selected {
@@ -542,8 +541,6 @@ tr.maxi-block--list-view-revealed td {
 
 		&--active {
 			background-color: var(--maxi-light-green-soft, #e8f5e9);
-			outline: 2px solid var(--maxi-grey-light);
-			outline-offset: -2px;
 		}
 	}
 

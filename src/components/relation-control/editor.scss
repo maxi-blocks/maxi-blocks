@@ -255,7 +255,7 @@ tr.maxi-block--list-view-revealed td {
 		min-height: 24px;
 		padding: 3px 4px 3px 8px;
 		background: var(--maxi-whisper-green);
-		border: 1px solid var(--maxi-light-green);
+		border: 1px solid var(--maxi-grey-light);
 		border-radius: 5px;
 		color: var(--maxi-grey-dark);
 		font-size: 11px;
@@ -355,7 +355,7 @@ tr.maxi-block--list-view-revealed td {
 		min-height: 28px;
 		padding: 5px 8px;
 		background: var(--maxi-white);
-		border: 1px dashed var(--maxi-light-green);
+		border: 1px dashed var(--maxi-grey-light);
 		border-radius: 5px;
 		color: var(--maxi-grey-dark);
 		cursor: pointer;
@@ -383,7 +383,7 @@ tr.maxi-block--list-view-revealed td {
 		width: 14px;
 		height: 14px;
 		border-radius: 50%;
-		background: var(--maxi-light-green);
+		background: var(--maxi-grey-light);
 		color: var(--maxi-white);
 		font-size: 12px;
 		font-weight: 700;
@@ -448,7 +448,7 @@ tr.maxi-block--list-view-revealed td {
 		box-sizing: border-box;
 
 		&:focus {
-			border-color: var(--maxi-light-green);
+			border-color: var(--maxi-grey-light);
 		}
 
 		&::placeholder {
@@ -542,7 +542,7 @@ tr.maxi-block--list-view-revealed td {
 
 		&--active {
 			background-color: var(--maxi-light-green-soft, #e8f5e9);
-			outline: 2px solid var(--maxi-light-green);
+			outline: 2px solid var(--maxi-grey-light);
 			outline-offset: -2px;
 		}
 	}
@@ -579,7 +579,7 @@ tr.maxi-block--list-view-revealed td {
 		}
 
 		&:focus {
-			outline: 2px solid var(--maxi-light-green);
+			outline: 2px solid var(--maxi-grey-light);
 			outline-offset: -2px;
 		}
 	}
@@ -641,7 +641,7 @@ tr.maxi-block--list-view-revealed td {
 		}
 
 		&:focus {
-			outline: 2px solid var(--maxi-light-green);
+			outline: 2px solid var(--maxi-grey-light);
 			outline-offset: -2px;
 		}
 	}
@@ -704,8 +704,8 @@ tr.maxi-block--list-view-revealed td {
 	}
 
 	&__option--selected &__option-check {
-		background: var(--maxi-light-green);
-		border-color: var(--maxi-light-green);
+		background: var(--maxi-grey-light);
+		border-color: var(--maxi-grey-light);
 		color: var(--maxi-white);
 
 		&::before {

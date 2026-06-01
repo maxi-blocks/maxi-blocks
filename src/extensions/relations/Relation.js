@@ -1775,6 +1775,16 @@ class Relation {
 		this.enableStaticStartState();
 		this.addPreviewStyles();
 		this.addPreviewEvents();
+
+		// For click actions, auto-apply the end state so the user sees the
+		// result immediately (matches the master behaviour where preview
+		// injected the IB CSS styles directly).
+		if (this.action === 'click') {
+			this.schedulePreviewDemo(() => {
+				if (!this.isPreview) return;
+				this.addClickEffects();
+			});
+		}
 	}
 
 	addPreviewEvents() {

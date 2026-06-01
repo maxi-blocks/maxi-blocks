@@ -305,11 +305,12 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const newObj = handleSetAttributes({
 			obj: isTypography ? obj.typography : obj,
 			attributes: {
-				...selectedSCValue[currentSCStyle].defaultStyleCard[type],
-				...selectedSCValue[currentSCStyle].styleCard[type],
+				...(selectedSCValue[currentSCStyle].defaultStyleCard[type] ??
+					{}),
+				...(selectedSCValue[currentSCStyle].styleCard[type] ?? {}),
 			},
 			defaultAttributes:
-				selectedSCValue[currentSCStyle].defaultStyleCard[type],
+				selectedSCValue[currentSCStyle].defaultStyleCard[type] ?? {},
 			onChange: response => response,
 			isStyleCard: true,
 		});
@@ -330,7 +331,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					styleCard: {
 						...newSC[currentSCStyle].styleCard,
 						[type]: {
-							...newSC[currentSCStyle].styleCard[type],
+							...(newSC[currentSCStyle].styleCard[type] ?? {}),
 							[prop]: value,
 						},
 					},

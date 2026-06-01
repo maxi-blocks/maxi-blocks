@@ -22,6 +22,15 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
+	const scBlockDefaults = obj.__scBlockDefaults || {};
+
+	const getSCBlockDefaultValue = (target, breakpoint, fallbackValue) => {
+		const meta = scBlockDefaults[`${prefix}${target}-${breakpoint}`];
+
+		if (!meta?.cssVar) return fallbackValue;
+
+		return `var(${meta.cssVar}, ${meta.fallback || fallbackValue})`;
+	};
 
 	const getValue = (target, breakpoint) => {
 		let fullWidthNormalStyles = {};
@@ -124,7 +133,9 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (isValidNumber(num) && !isNil(unit))
 				return {
-					[target]: auto || num + unit,
+					[target]:
+						auto ||
+						getSCBlockDefaultValue(target, breakpoint, num + unit),
 					...fullWidthNormalStyles,
 				};
 		}

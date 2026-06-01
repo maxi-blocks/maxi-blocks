@@ -22,6 +22,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
+import SelectControl from '@components/select-control';
 import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
@@ -35,6 +36,12 @@ import {
 	getTypographyFromSC,
 } from '@extensions/style-cards';
 import getDefaultSCAttribute from './getDefaultSCAttribute';
+import {
+	blockDefaultBlocks,
+	BLOCK_DEFAULTS_GROUP,
+	getBlockDefaultKey,
+	getShippedBlockDefault,
+} from '@extensions/style-cards/blockDefaults';
 
 /**
  * Icons
@@ -412,6 +419,122 @@ const SCAccordion = props => {
 					)}
 				</>
 			)}
+		</>
+	);
+};
+
+const formatBlockLabel = blockName =>
+	blockName
+		.replace('-maxi', '')
+		.split('-')
+		.map(part => part.charAt(0).toUpperCase() + part.slice(1))
+		.join(' ');
+
+const blockDefaultSizeControls = [
+	{
+		label: __('Max width', 'maxi-blocks'),
+		target: 'max-width',
+	},
+	{
+		label: __('Width', 'maxi-blocks'),
+		target: 'width',
+	},
+	{
+		label: __('Min width', 'maxi-blocks'),
+		target: 'min-width',
+	},
+	{
+		label: __('Max height', 'maxi-blocks'),
+		target: 'max-height',
+	},
+	{
+		label: __('Height', 'maxi-blocks'),
+		target: 'height',
+	},
+	{
+		label: __('Min height', 'maxi-blocks'),
+		target: 'min-height',
+	},
+];
+
+const BlockDefaults = ({ SC, breakpoint, onChangeValue }) => {
+	const [selectedBlock, setSelectedBlock] = useState('row-maxi');
+
+	const getAttr = target => `${target}-${breakpoint}`;
+	const getUnitAttr = target => `${target}-unit-${breakpoint}`;
+	const getSCAttr = attr =>
+		processSCAttribute(
+			SC,
+			getBlockDefaultKey(selectedBlock, attr),
+			BLOCK_DEFAULTS_GROUP
+		);
+	const getDefaultValue = attr =>
+		getShippedBlockDefault(selectedBlock, attr, '');
+	const getDefaultUnit = attr =>
+		getShippedBlockDefault(selectedBlock, attr, 'px');
+
+	return (
+		<>
+			<SelectControl
+				label={__('Block', 'maxi-blocks')}
+				value={selectedBlock}
+				options={blockDefaultBlocks.map(blockName => ({
+					label: formatBlockLabel(blockName),
+					value: blockName,
+				}))}
+				onChange={setSelectedBlock}
+			/>
+			{blockDefaultSizeControls.map(({ label, target }) => {
+				const attr = getAttr(target);
+				const unitAttr = getUnitAttr(target);
+				const defaultValue = getDefaultValue(attr);
+				const defaultUnit = getDefaultUnit(unitAttr);
+
+				return (
+					<AdvancedNumberControl
+						key={`${selectedBlock}-${attr}`}
+						label={label}
+						value={getSCAttr(attr) ?? defaultValue}
+						unit={getSCAttr(unitAttr) ?? defaultUnit}
+						defaultValue={defaultValue}
+						enableUnit
+						optionType='string'
+						onChangeValue={value =>
+							onChangeValue(
+								{
+									[getBlockDefaultKey(selectedBlock, attr)]:
+										value,
+								},
+								BLOCK_DEFAULTS_GROUP
+							)
+						}
+						onChangeUnit={unit =>
+							onChangeValue(
+								{
+									[getBlockDefaultKey(
+										selectedBlock,
+										unitAttr
+									)]: unit,
+								},
+								BLOCK_DEFAULTS_GROUP
+							)
+						}
+						onReset={() =>
+							onChangeValue(
+								{
+									[getBlockDefaultKey(selectedBlock, attr)]:
+										defaultValue,
+									[getBlockDefaultKey(
+										selectedBlock,
+										unitAttr
+									)]: defaultUnit,
+								},
+								BLOCK_DEFAULTS_GROUP
+							)
+						}
+					/>
+				);
+			})}
 		</>
 	);
 };
@@ -1220,6 +1343,18 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 								/>
 							),
 						},
+						{
+							label: __('Block defaults', 'maxi-blocks'),
+							classNameItem:
+								'maxi-blocks-sc__type--block-defaults',
+							content: (
+								<BlockDefaults
+									SC={SC}
+									breakpoint={breakpoint}
+									onChangeValue={onChangeValue}
+								/>
+							),
+						},
 						breakpoint === 'general' && {
 							label: linkTabs.label,
 							classNameItem: 'maxi-blocks-sc__type--link',
@@ -1241,7 +1376,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<SettingTabsControl
-										className="maxi-style-cards-headings-tabs"
+										className='maxi-style-cards-headings-tabs'
 										hasBorder
 										items={headingItems()}
 									/>

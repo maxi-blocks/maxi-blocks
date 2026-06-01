@@ -3,6 +3,7 @@
  */
 import { getIsValid } from './utils';
 import * as defaults from './defaults/index';
+import { applySCBlockDefaultsToAttributes } from '@extensions/style-cards/blockDefaults';
 
 // WeakMap-based cache: keyed by the attributes object reference.
 // Cache validation uses two-layer approach:
@@ -53,7 +54,9 @@ const getGroupAttributes = (
 	const enableCache = cleaned;
 
 	// Build cache key from the non-object arguments
-	const cacheKey = `${Array.isArray(target) ? target.join(',') : target}|${isHover ? 1 : 0}|${prefix}|${cleaned ? 1 : 0}`;
+	const cacheKey = `${Array.isArray(target) ? target.join(',') : target}|${
+		isHover ? 1 : 0
+	}|${prefix}|${cleaned ? 1 : 0}`;
 
 	// Get default attributes to use for validation
 	const targets = Array.isArray(target) ? target : [target];
@@ -72,7 +75,11 @@ const getGroupAttributes = (
 			const cached = attrCache.get(cacheKey);
 			if (cached) {
 				// Validate the cache is still accurate
-				const currentValidation = createValidationKey(attributes, allDefaultKeys, prefix);
+				const currentValidation = createValidationKey(
+					attributes,
+					allDefaultKeys,
+					prefix
+				);
 				if (currentValidation === cached.validation) {
 					return cached.result;
 				}
@@ -118,11 +125,27 @@ const getGroupAttributes = (
 			attrCache = new Map();
 			_cache.set(attributes, attrCache);
 		}
-		const validation = createValidationKey(attributes, allDefaultKeys, prefix);
+		const validation = createValidationKey(
+			attributes,
+			allDefaultKeys,
+			prefix
+		);
 		attrCache.set(cacheKey, { result: response, validation });
 	}
 
-	return response;
+	return applySCBlockDefaultsToAttributes({
+		response,
+		attributes,
+		defaultAttributes: targets.reduce((acc, el) => {
+			const defaultAttributes =
+				defaults[`${el}${isHover ? 'Hover' : ''}`] || defaults[el];
+
+			return {
+				...acc,
+				...(defaultAttributes || {}),
+			};
+		}, {}),
+	});
 };
 
 export default getGroupAttributes;

@@ -12,6 +12,38 @@ describe('getSCVariablesObject', () => {
 		expect(cleanVarSC).toMatchSnapshot();
 	});
 
+	it('includes block default CSS variables', () => {
+		const cleanVarSC = getSCVariablesObject(
+			{
+				light: {
+					defaultStyleCard: {
+						blockDefaults: {},
+					},
+					styleCard: {
+						blockDefaults: {
+							'row-maxi|max-width-xl': '1280',
+							'row-maxi|max-width-unit-xl': 'px',
+						},
+					},
+				},
+				dark: {
+					defaultStyleCard: {
+						blockDefaults: {},
+					},
+					styleCard: {
+						blockDefaults: {},
+					},
+				},
+			},
+			null,
+			true
+		);
+
+		expect(
+			cleanVarSC['--maxi-light-block-default-row-maxi-max-width-xl']
+		).toBe('1280px');
+	});
+
 	it('Returns the correct object', () => {
 		const styleCard = {
 			name: 'Maxi (Default) - test',

@@ -515,4 +515,24 @@ describe('getSizeStyles', () => {
 		const result = getSizeStyles(object);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('uses Style Card block default CSS variables for default-like size values', () => {
+		const result = getSizeStyles({
+			'size-advanced-options': true,
+			'max-width-xl': '1280',
+			'max-width-unit-xl': 'px',
+			__scBlockDefaults: {
+				'max-width-xl': {
+					blockName: 'row-maxi',
+					blockStyle: 'light',
+					cssVar: '--maxi-light-block-default-row-maxi-max-width-xl',
+					fallback: '1170px',
+				},
+			},
+		});
+
+		expect(result.xl['max-width']).toBe(
+			'var(--maxi-light-block-default-row-maxi-max-width-xl, 1170px)'
+		);
+	});
 });

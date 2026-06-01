@@ -1348,11 +1348,13 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							classNameItem:
 								'maxi-blocks-sc__type--block-defaults',
 							content: (
-								<BlockDefaults
-									SC={SC}
-									breakpoint={breakpoint}
-									onChangeValue={onChangeValue}
-								/>
+								<ResponsiveTabsControl breakpoint={breakpoint}>
+									<BlockDefaults
+										SC={SC}
+										breakpoint={breakpoint}
+										onChangeValue={onChangeValue}
+									/>
+								</ResponsiveTabsControl>
 							),
 						},
 						breakpoint === 'general' && {

@@ -141,12 +141,10 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 	const isAllRefined = isEmpty(currentRefinement);
 	const isFreeRefined = isMenuSelectItemRefined(
 		currentRefinement,
-		freeElement,
 		'Free'
 	);
 	const isProRefined = isMenuSelectItemRefined(
 		currentRefinement,
-		proElement,
 		'Pro'
 	);
 

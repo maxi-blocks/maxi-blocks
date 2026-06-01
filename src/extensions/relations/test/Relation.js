@@ -1780,7 +1780,7 @@ describe('Relation class', () => {
 			jest.useRealTimers();
 		});
 
-		it('enables click preview without applying the end state until click', () => {
+		it('enables click preview and auto-applies the end state via scheduled demo', () => {
 			relation.action = 'click';
 			relation.setIsPreview(true);
 
@@ -1789,23 +1789,15 @@ describe('Relation class', () => {
 				expect.any(Function)
 			);
 
-			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
-			expect(relation.addStyles).not.toHaveBeenCalled();
-
-			const onClick = relation.triggerEl.addEventListener.mock.calls.find(
-				([eventName]) => eventName === 'click'
-			)[1];
-			onClick();
-
-			expect(relation.addTransition).not.toHaveBeenCalledWith(
-				relation.inTransitionEl
-			);
-			expect(relation.addDataAttrToBlock).not.toHaveBeenCalled();
-			expect(relation.forcePreviewReflow).toHaveBeenCalled();
-			expect(relation.addStyles).not.toHaveBeenCalled();
 			expect(
 				relation.mainWindow.requestAnimationFrame
-			).not.toHaveBeenCalled();
+			).toHaveBeenCalledWith(expect.any(Function));
+
+			const rAfCallback =
+				relation.mainWindow.requestAnimationFrame.mock.calls[0][0];
+			rAfCallback();
+
+			expect(relation.forcePreviewReflow).toHaveBeenCalled();
 			expect(animationTarget.animate).toHaveBeenCalledWith(
 				[
 					{ opacity: '1', transform: 'translateX(0px)' },

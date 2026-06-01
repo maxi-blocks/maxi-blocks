@@ -58,7 +58,7 @@ describe('relation-control editor styles', () => {
 		);
 
 		expect(styles).toMatch(
-			/\.maxi-block-select-control[\s\S]*&__selected-add\s*\{[\s\S]*width:\s*100%;[\s\S]*border:\s*1px dashed var\(--maxi-light-green\);/
+			/\.maxi-block-select-control[\s\S]*&__selected-add\s*\{[\s\S]*width:\s*100%;[\s\S]*border:\s*1px dashed var\(--maxi-grey-light\);/
 		);
 	});
 
@@ -101,7 +101,7 @@ describe('relation-control editor styles', () => {
 			/\.maxi-block-select-control[\s\S]*&__search-count\s*\{[\s\S]*font-size:\s*10px;/
 		);
 		expect(styles).toMatch(
-			/\.maxi-block-select-control[\s\S]*&__close\s*\{[\s\S]*top:\s*24px;[\s\S]*transform:\s*translateY\(-50%\);/
+			/\.maxi-block-select-control[\s\S]*&__close\s*\{[\s\S]*top:\s*27px;[\s\S]*transform:\s*translateY\(-50%\);/
 		);
 		expect(styles).toMatch(
 			/\.maxi-block-select-control[\s\S]*&__selected-locate\s*\{[\s\S]*background:\s*transparent;/

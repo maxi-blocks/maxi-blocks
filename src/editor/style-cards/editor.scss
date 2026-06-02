@@ -288,31 +288,6 @@ $breakpoints: (
 	padding-top: 8px;
 }
 
-.maxi-style-cards-block-default-tabs {
-	> .maxi-tabs-control {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 4px;
-		padding: 8px 0;
-
-		.maxi-tabs-control__button {
-			flex: 1 1 calc(50% - 4px);
-			min-width: calc(50% - 4px);
-			min-height: 34px;
-			padding: 7px 6px;
-			border: 1.5px solid var(--maxi-grey-light) !important;
-			border-radius: 5px;
-			font-size: 12px;
-			line-height: 1.2;
-			white-space: normal;
-		}
-	}
-
-	> .maxi-tabs-content {
-		padding: 0;
-	}
-}
-
 .maxi-style-cards__settings {
 	padding: 0;
 

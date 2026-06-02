@@ -539,8 +539,8 @@ const BlockDefaultsControls = ({
 
 export const BlockDefaults = ({ SC, breakpoint, onChangeValue }) => (
 	<SettingTabsControl
-		className='maxi-style-cards-block-default-tabs'
-		hasBorder
+		disablePadding
+		className='maxi-style-cards-advanced-globals-tabs'
 		items={blockDefaultBlocks.map(blockName => ({
 			label: formatBlockLabel(blockName),
 			key: blockName,

@@ -205,13 +205,14 @@ describe('MaxiStyleCardsTab', () => {
 			.map(([props]) => props)
 			.find(
 				props =>
-					props.className === 'maxi-style-cards-block-default-tabs'
+					props.className === 'maxi-style-cards-advanced-globals-tabs'
 			);
 
 		expect(blockTabs.items.map(item => item.label)).toEqual([
 			'Row',
 			'Container',
 		]);
+		expect(blockTabs.disablePadding).toBe(true);
 	});
 
 	it('uses the compact dark override wording and hides controls while off', () => {

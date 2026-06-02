@@ -4,6 +4,7 @@
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
 import { isValidNumber } from '@extensions/styles/utils';
+import { debugSCBlockDefaults } from '@extensions/style-cards/blockDefaults';
 
 /**
  * External dependencies
@@ -27,9 +28,30 @@ const getSizeStyles = (obj, prefix = '') => {
 	const getSCBlockDefaultValue = (target, breakpoint, fallbackValue) => {
 		const meta = scBlockDefaults[`${prefix}${target}-${breakpoint}`];
 
-		if (!meta?.cssVar) return fallbackValue;
+		if (!meta?.cssVar) {
+			debugSCBlockDefaults('size style fallback', {
+				target,
+				breakpoint,
+				fallbackValue,
+				prefix,
+				meta,
+				availableMetaKeys: Object.keys(scBlockDefaults),
+			});
+			return fallbackValue;
+		}
 
-		return `var(${meta.cssVar}, ${meta.fallback || fallbackValue})`;
+		const value = `var(${meta.cssVar}, ${meta.fallback || fallbackValue})`;
+
+		debugSCBlockDefaults('size style css var', {
+			target,
+			breakpoint,
+			fallbackValue,
+			prefix,
+			meta,
+			value,
+		});
+
+		return value;
 	};
 
 	const getValue = (target, breakpoint) => {

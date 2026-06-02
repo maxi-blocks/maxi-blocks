@@ -11,6 +11,7 @@ import {
 	getSiteEditorIframe,
 	getSiteEditorPreviewIframes,
 } from '@extensions/fse';
+import { debugSCBlockDefaults } from './blockDefaults';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 
@@ -122,6 +123,19 @@ const updateSCOnEditor = (
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+	const blockDefaultVariables = Object.fromEntries(
+		Object.entries(SCObject).filter(([key]) =>
+			key.includes('block-default')
+		)
+	);
+
+	debugSCBlockDefaults('editor update prepared', {
+		activeSCColour,
+		blockDefaultVariables,
+		hasBlockDefaultVariables: !isEmpty(blockDefaultVariables),
+		isPreview,
+		targetCount: isArray(rawElements) ? rawElements.length : 1,
+	});
 
 	// FSE editor patterns previews - handle white overlay
 	if (siteEditorPreviewIframes.length > 0) {
@@ -155,6 +169,18 @@ const updateSCOnEditor = (
 		if (!element) return;
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		const existingSCVarsText = SCVarEl?.innerHTML || '';
+
+		debugSCBlockDefaults('editor update target', {
+			hasElement: Boolean(element),
+			elementURL: element.URL,
+			hadSCVarsElement: Boolean(SCVarEl),
+			previousContainsBlockDefaults:
+				existingSCVarsText.includes('block-default'),
+			nextContainsBlockDefaults:
+				SCVariableString.includes('block-default'),
+			nextLength: SCVariableString.length,
+		});
 
 		if (!SCVarEl) {
 			SCVarEl = element.createElement('style');
@@ -176,6 +202,14 @@ const updateSCOnEditor = (
 				styleCards.gutenberg_blocks_status
 			);
 		}
+
+		debugSCBlockDefaults('editor update target complete', {
+			elementURL: element.URL,
+			hasSCVarsElement: Boolean(SCVarEl),
+			currentContainsBlockDefaults:
+				SCVarEl?.innerHTML?.includes('block-default'),
+			currentLength: SCVarEl?.innerHTML?.length,
+		});
 
 		if (!isEmpty(allSCFonts)) {
 			loadFonts(allSCFonts, false, element);

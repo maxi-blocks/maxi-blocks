@@ -57,6 +57,11 @@ import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
 import {
+	debugSCBlockDefaults,
+	parseBlockDefaultKey,
+	SC_BLOCK_DEFAULTS_UPDATE_EVENT,
+} from '@extensions/style-cards/blockDefaults';
+import {
 	countProfile,
 	getProfileStart,
 	recordProfile,
@@ -172,6 +177,8 @@ class MaxiBlockComponent extends Component {
 		this.isPatternsPreview = false;
 		this.xxlStyleCache = null;
 		this.isXxlStyleCacheDirty = false;
+		this.handleStyleCardBlockDefaultsUpdate =
+			this.handleStyleCardBlockDefaultsUpdate.bind(this);
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
@@ -346,6 +353,11 @@ class MaxiBlockComponent extends Component {
 		if (this.isPatternsPreview || this.templateModal) {
 			return;
 		}
+
+		window.addEventListener(
+			SC_BLOCK_DEFAULTS_UPDATE_EVENT,
+			this.handleStyleCardBlockDefaultsUpdate
+		);
 
 		// Step 2: FSE iframe styles and observer
 		if (getIsSiteEditor()) {
@@ -785,13 +797,17 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
-
 	}
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
 
 		// Block cleanup initiated
+
+		window.removeEventListener(
+			SC_BLOCK_DEFAULTS_UPDATE_EVENT,
+			this.handleStyleCardBlockDefaultsUpdate
+		);
 
 		// Return early checks
 		if (
@@ -891,9 +907,7 @@ class MaxiBlockComponent extends Component {
 		if (!keepStylesOnEditor && !keepStylesOnCloning) {
 			try {
 				const allClientIds =
-					select(
-						'core/block-editor'
-					).getClientIdsWithDescendants();
+					select('core/block-editor').getClientIdsWithDescendants();
 				keepStylesOnStorePresence = allClientIds.includes(
 					this.props.clientId
 				);
@@ -914,9 +928,8 @@ class MaxiBlockComponent extends Component {
 			const batchStyleOperations = () => {
 				// Double-check: the block might have been re-added (reconciliation)
 				// between unmount and this rAF callback firing
-				const stillGone = !select('core/block-editor').getBlock(
-					clientId
-				);
+				const stillGone =
+					!select('core/block-editor').getBlock(clientId);
 				if (!stillGone) {
 					return;
 				}
@@ -963,6 +976,37 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 		}
+	}
+
+	handleStyleCardBlockDefaultsUpdate(event) {
+		if (this.isPatternsPreview || this.templateModal) return;
+
+		const blockName = this.props.name?.replace('maxi-blocks/', '');
+		const blockDefaults = event?.detail?.blockDefaults ?? {};
+		const affectedBlockNames = [
+			...new Set(
+				Object.keys(blockDefaults)
+					.map(key => parseBlockDefaultKey(key)?.blockName)
+					.filter(Boolean)
+			),
+		];
+
+		if (
+			affectedBlockNames.length > 0 &&
+			!affectedBlockNames.includes(blockName)
+		)
+			return;
+
+		debugSCBlockDefaults('block refresh from defaults update', {
+			blockName,
+			uniqueID: this.props.attributes?.uniqueID,
+			affectedBlockNames,
+		});
+
+		this.invalidateAttributeCaches();
+		this.isXxlStyleCacheDirty = true;
+		this.displayStyles(false, false, false, false);
+		this.forceUpdate();
 	}
 
 	// Add new helper method for repeater cleanup
@@ -1727,10 +1771,7 @@ class MaxiBlockComponent extends Component {
 					'maxiBlockComponent breakpoint cache ineligible viewport'
 				);
 			} else {
-				if (
-					currentBreakpoint === 'xxl' &&
-					this.isXxlStyleCacheDirty
-				) {
+				if (currentBreakpoint === 'xxl' && this.isXxlStyleCacheDirty) {
 					countProfile(
 						'maxiBlockComponent breakpoint cache dirty xxl'
 					);
@@ -1827,8 +1868,12 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles = true;
 		}
 
-		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
-		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
+		const breakpoints = shouldGenerateNewStyles
+			? this.getBreakpoints
+			: null;
+		const isSiteEditor = shouldGenerateNewStyles
+			? getIsSiteEditor()
+			: false;
 		let obj;
 		let customDataRelations;
 		if (shouldGenerateNewStyles) {

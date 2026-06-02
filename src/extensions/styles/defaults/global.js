@@ -32,6 +32,9 @@ const global = {
 	relations: {
 		type: 'array',
 	},
+	scBlockDefaultsExcludedAttributes: {
+		type: 'array',
+	},
 	preview: { type: 'boolean', default: false },
 	ariaLabels: {
 		type: 'object',

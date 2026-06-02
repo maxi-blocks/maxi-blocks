@@ -1166,6 +1166,8 @@
 				}
 			}
 		},
-		"gutenberg_blocks_status": true
+		"gutenberg_blocks_status": true,
+		"sync_style_settings_tones_status": true,
+		"dark_tone_style_overrides": []
 	}
 }

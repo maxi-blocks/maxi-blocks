@@ -6,6 +6,10 @@ import resolvers from '@extensions/style-cards/store/resolvers';
 import updateSCOnEditor from '@extensions/style-cards/updateSCOnEditor';
 import getActiveStyleCard from '@extensions/style-cards/getActiveStyleCard';
 import { getActiveColourFromSC } from '@editor/style-cards/utils';
+import {
+	DARK_TONE_STYLE_OVERRIDES,
+	SYNC_STYLE_SETTINGS_TONES_STATUS,
+} from '@extensions/style-cards/syncTypography';
 import { isEmpty } from 'lodash';
 
 jest.mock('@extensions/style-cards/store/actions', () => ({
@@ -33,8 +37,15 @@ describe('style-cards store resolvers', () => {
 					name: 'Maxi',
 					status: 'active',
 					gutenberg_blocks_status: true,
+					[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+					[DARK_TONE_STYLE_OVERRIDES]: [],
 				},
-				sc_custom: { name: 'Custom', gutenberg_blocks_status: true },
+				sc_custom: {
+					name: 'Custom',
+					gutenberg_blocks_status: true,
+					[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+					[DARK_TONE_STYLE_OVERRIDES]: [],
+				},
 			};
 
 			receiveMaxiStyleCards.mockReturnValue(mockStyleCards);
@@ -76,7 +87,7 @@ describe('style-cards store resolvers', () => {
 			expect(sendMaxiStyleCards).toHaveBeenCalledWith(mockStyleCards);
 		});
 
-		it('Migrates style cards without gutenberg_blocks_status', async () => {
+		it('Migrates style cards without default status flags', async () => {
 			const mockStyleCards = {
 				sc_maxi: { name: 'Maxi', status: 'active' },
 				sc_custom: { name: 'Custom' },
@@ -87,10 +98,14 @@ describe('style-cards store resolvers', () => {
 					name: 'Maxi',
 					status: 'active',
 					gutenberg_blocks_status: true,
+					[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+					[DARK_TONE_STYLE_OVERRIDES]: [],
 				},
 				sc_custom: {
 					name: 'Custom',
 					gutenberg_blocks_status: true,
+					[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+					[DARK_TONE_STYLE_OVERRIDES]: [],
 				},
 			};
 
@@ -129,9 +144,13 @@ describe('style-cards store resolvers', () => {
 				expect.objectContaining({
 					sc_maxi: expect.objectContaining({
 						gutenberg_blocks_status: true,
+						[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+						[DARK_TONE_STYLE_OVERRIDES]: [],
 					}),
 					sc_custom: expect.objectContaining({
 						gutenberg_blocks_status: true,
+						[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+						[DARK_TONE_STYLE_OVERRIDES]: [],
 					}),
 				})
 			);

@@ -45,6 +45,9 @@ const size = ({
 			<FullSizeControl
 				{...getGroupAttributes(attributes, 'size', false, prefix)}
 				prefix={prefix}
+				scBlockDefaultsExcludedAttributes={
+					attributes.scBlockDefaultsExcludedAttributes
+				}
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={deviceType}
 				hideHeight={hideHeight}
@@ -58,9 +61,7 @@ const size = ({
 				isImage={isImage}
 			/>
 		),
-		extraIndicators: [
-			isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth',
-		],
+		extraIndicators: [isFirstOnHierarchy ? 'blockFullWidth' : 'fullWidth'],
 	};
 };
 

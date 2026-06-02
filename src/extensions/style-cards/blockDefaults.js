@@ -3,8 +3,38 @@ import { select } from '@wordpress/data';
 import getActiveStyleCard from './getActiveStyleCard';
 
 export const BLOCK_DEFAULTS_GROUP = 'blockDefaults';
+export const SC_BLOCK_DEFAULTS_UPDATE_EVENT =
+	'maxi-blocks:style-card-block-defaults-update';
+export const SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES =
+	'scBlockDefaultsExcludedAttributes';
 const BLOCK_DEFAULT_KEY_SEPARATOR = '|';
 const SC_BLOCK_DEFAULTS_META_KEY = '__scBlockDefaults';
+
+export const isSCBlockDefaultsDebugEnabled = () => {
+	try {
+		const isLocalWampEditor =
+			typeof window !== 'undefined' &&
+			window.location?.hostname === 'localhost' &&
+			window.location?.pathname?.includes('/maxi-blocks-local/');
+
+		return (
+			typeof window !== 'undefined' &&
+			(isLocalWampEditor ||
+				window.maxiDebugSCBlockDefaults === true ||
+				window.localStorage?.getItem('maxiDebugSCBlockDefaults') ===
+					'1')
+		);
+	} catch {
+		return false;
+	}
+};
+
+export const debugSCBlockDefaults = (label, payload = {}) => {
+	if (!isSCBlockDefaultsDebugEnabled()) return;
+
+	// eslint-disable-next-line no-console
+	console.info(`[SC block defaults] ${label}`, payload);
+};
 
 export const blockDefaultBlocks = [
 	'accordion-maxi',
@@ -157,6 +187,31 @@ const shouldRespectSizeToggle = (attr, attributes) => {
 	return Boolean(fullWidth || fitContent);
 };
 
+export const getSCBlockDefaultsExcludedAttributes = attributes => {
+	const value = attributes?.[SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES];
+
+	return Array.isArray(value) ? value : [];
+};
+
+export const getSCBlockDefaultsExcludedAttributesUpdate = ({
+	attributes,
+	attr,
+	exclude,
+}) => {
+	const currentExclusions = getSCBlockDefaultsExcludedAttributes(attributes);
+	const nextExclusions = exclude
+		? Array.from(new Set([...currentExclusions, attr]))
+		: currentExclusions.filter(excludedAttr => excludedAttr !== attr);
+
+	return {
+		[SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES]:
+			nextExclusions.length > 0 ? nextExclusions : undefined,
+	};
+};
+
+const isSCBlockDefaultExcluded = (attributes, attr) =>
+	getSCBlockDefaultsExcludedAttributes(attributes).includes(attr);
+
 export const normalizeBlockName = value => {
 	if (!value) return null;
 
@@ -198,6 +253,12 @@ const getActiveStyleCardValue = () => {
 	}
 
 	const styleCards = store?.receiveMaxiStyleCards?.();
+
+	debugSCBlockDefaults('active style card lookup', {
+		hasStore: Boolean(store),
+		hasStyleCards: Boolean(styleCards),
+		styleCardKeys: styleCards ? Object.keys(styleCards) : [],
+	});
 
 	if (!styleCards) return null;
 
@@ -294,6 +355,13 @@ export const applySCBlockDefaultsToAttributes = ({
 		? attributes.blockStyle
 		: null;
 
+	debugSCBlockDefaults('apply start', {
+		blockName,
+		blockStyle,
+		uniqueID: attributes?.uniqueID,
+		defaultAttributeKeys: Object.keys(defaultAttributes ?? {}),
+	});
+
 	if (!blockName || !blockStyle) return response;
 
 	const styleCard = rawStyleCard || getActiveStyleCardValue();
@@ -301,11 +369,35 @@ export const applySCBlockDefaultsToAttributes = ({
 
 	const blockDefaults = getBlockDefaults(styleCard, blockStyle);
 
+	debugSCBlockDefaults('style card values', {
+		blockName,
+		blockStyle,
+		blockDefaultKeys: Object.keys(blockDefaults),
+	});
+
 	const nextResponse = { ...response };
 
 	Object.keys(defaultAttributes).forEach(attr => {
 		if (attr.includes('-unit-')) return;
-		if (shouldRespectSizeToggle(attr, attributes)) return;
+		if (isSCBlockDefaultExcluded(attributes, attr)) {
+			debugSCBlockDefaults('skip explicit block default opt-out', {
+				blockName,
+				blockStyle,
+				attr,
+			});
+			return;
+		}
+		if (shouldRespectSizeToggle(attr, attributes)) {
+			debugSCBlockDefaults('skip size toggle', {
+				blockName,
+				blockStyle,
+				attr,
+				fullWidth: attributes?.[`full-width-${getBreakpoint(attr)}`],
+				fitContent:
+					attributes?.[`width-fit-content-${getBreakpoint(attr)}`],
+			});
+			return;
+		}
 
 		const unitAttr = getUnitAttribute(attr);
 		const attributeChanged = isAttributeChanged({
@@ -316,7 +408,16 @@ export const applySCBlockDefaultsToAttributes = ({
 			defaultAttributes,
 		});
 
-		if (attributeChanged) return;
+		if (attributeChanged) {
+			debugSCBlockDefaults('skip custom value', {
+				blockName,
+				blockStyle,
+				attr,
+				currentValue: attributes?.[attr],
+				currentUnit: unitAttr ? attributes?.[unitAttr] : undefined,
+			});
+			return;
+		}
 
 		const scValue = getBlockDefaultValue({
 			styleCard,
@@ -361,6 +462,25 @@ export const applySCBlockDefaultsToAttributes = ({
 				fallback,
 			},
 		};
+
+		debugSCBlockDefaults('apply value', {
+			blockName,
+			blockStyle,
+			attr,
+			unitAttr,
+			scValue,
+			value,
+			scUnit,
+			fallback,
+			cssVar: nextResponse[SC_BLOCK_DEFAULTS_META_KEY][attr].cssVar,
+		});
+	});
+
+	debugSCBlockDefaults('apply result', {
+		blockName,
+		blockStyle,
+		response,
+		nextResponse,
 	});
 
 	return nextResponse;
@@ -395,6 +515,8 @@ export const getStyleCardBlockDefaultVariables = styleCard => {
 			] = `${value}${unit ?? ''}`;
 		});
 	});
+
+	debugSCBlockDefaults('generated variables', response);
 
 	return response;
 };

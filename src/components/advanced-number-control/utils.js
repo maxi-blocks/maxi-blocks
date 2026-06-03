@@ -10,4 +10,24 @@ const validateNumberInput = (event, regex = /[a-zA-Z]/) => {
 		event.preventDefault();
 };
 
+export const clampNumberInputValue = (
+	value,
+	{ min, max, clampMin = true, clampMax = true } = {}
+) => {
+	if (value === '') return value;
+
+	const numericValue = +value;
+
+	if (Number.isNaN(numericValue)) return value;
+	if (clampMax && max !== undefined && numericValue > max) return max;
+	if (
+		clampMin &&
+		min !== undefined &&
+		numericValue < min
+	)
+		return min;
+
+	return value;
+};
+
 export default validateNumberInput;

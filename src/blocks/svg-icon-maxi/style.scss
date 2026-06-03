@@ -1,9 +1,16 @@
 body.maxi-blocks--active .maxi-svg-icon-block {
 	display: flex;
 
+	.maxi-svg-icon-block__icon-wrapper {
+		display: flex;
+		align-items: center;
+		z-index: 20;
+	}
+
 	.maxi-svg-icon-block__icon {
 		display: flex;
 		z-index: 20;
+		text-decoration: none;
 
 		svg {
 			position: relative;
@@ -12,6 +19,14 @@ body.maxi-blocks--active .maxi-svg-icon-block {
 			width: 100%;
 			margin: auto;
 			height: 100%;
+		}
+	}
+
+	.maxi-link-wrapper.maxi-svg-icon-block__icon {
+		display: flex;
+
+		> div {
+			display: contents;
 		}
 	}
 

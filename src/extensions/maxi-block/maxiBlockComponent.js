@@ -844,6 +844,30 @@ class MaxiBlockComponent extends Component {
 			this.popoverStyles = null;
 		}
 
+		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+			this.props.clientId
+		);
+
+		// Check both the parent document AND the iframe document for cloned elements.
+		// Blocks render inside iframe[name="editor-canvas"], so bare `document`
+		// (parent frame) won't find them.
+		let keepStylesOnCloning =
+			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
+		if (!keepStylesOnCloning) {
+			try {
+				if (this.editorIframe?.contentDocument) {
+					keepStylesOnCloning =
+						Array.from(
+							this.editorIframe.contentDocument.getElementsByClassName(
+								uniqueID
+							)
+						).length > 1;
+				}
+			} catch (e) {
+				// Cross-origin or disconnected iframe — ignore
+			}
+		}
+
 		// Clear DOM references
 		this.rootSlot = null;
 		this.editorIframe = null;
@@ -859,18 +883,44 @@ class MaxiBlockComponent extends Component {
 			this.areFontsLoaded.current = false;
 		}
 
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
-			this.props.clientId
-		);
-		const keepStylesOnCloning =
-			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
+		// Fallback: verify the block is truly gone by checking if its clientId
+		// is still listed among descendants. This guards against transient
+		// block-tree inconsistencies in WP 6.9.x where getBlock() can briefly
+		// return null during reconciliation after a sibling removal.
+		let keepStylesOnStorePresence = false;
+		if (!keepStylesOnEditor && !keepStylesOnCloning) {
+			try {
+				const allClientIds =
+					select(
+						'core/block-editor'
+					).getClientIdsWithDescendants();
+				keepStylesOnStorePresence = allClientIds.includes(
+					this.props.clientId
+				);
+			} catch (e) {
+				// Selector unavailable — skip
+			}
+		}
+
+		const isBlockBeingRemoved =
+			!keepStylesOnEditor &&
+			!keepStylesOnCloning &&
+			!keepStylesOnStorePresence;
 
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 
 			// Use a single rAF for all style operations
 			const batchStyleOperations = () => {
+				// Double-check: the block might have been re-added (reconciliation)
+				// between unmount and this rAF callback firing
+				const stillGone = !select('core/block-editor').getBlock(
+					clientId
+				);
+				if (!stillGone) {
+					return;
+				}
+
 				const obj = this.getStylesObject;
 
 				// Batch all style removals into a single operation

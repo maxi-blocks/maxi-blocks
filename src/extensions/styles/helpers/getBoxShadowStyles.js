@@ -128,6 +128,17 @@ const getBoxShadowStyles = ({
 
 		const { value: paletteOpacity, defaultValue: defaultPaletteOpacity } =
 			getValue('palette-opacity');
+		const paletteOpacityChanged =
+			paletteStatus &&
+			isNumber(paletteOpacity) &&
+			paletteOpacity !== defaultPaletteOpacity;
+		const resolvedPaletteColor = isNil(paletteColor) && paletteOpacityChanged
+			? defaultPaletteColor
+			: paletteColor;
+		const resolvedPaletteOpacity =
+			isNil(paletteOpacity) && breakpoint !== 'general'
+				? defaultPaletteOpacity
+				: paletteOpacity;
 
 		const defaultColor = getCachedColor(
 			defaultPaletteColor,
@@ -136,8 +147,8 @@ const getBoxShadowStyles = ({
 		);
 
 		const color = getCachedColor(
-			paletteColor,
-			paletteOpacity,
+			resolvedPaletteColor,
+			resolvedPaletteOpacity,
 			paletteStatus
 		);
 
@@ -173,20 +184,34 @@ const getBoxShadowStyles = ({
 			(!isNil(values['spread-unit']?.value) &&
 				values['spread-unit']?.value !==
 					values['spread-unit']?.defaultValue) ||
+			paletteOpacityChanged ||
 			(!isNil(color) && color !== defaultColor);
 
 		if (!isNotDefault) return;
 
-		const horizontalValue = isNumber(values.horizontal?.value)
-			? values.horizontal.value
-			: values.horizontal?.defaultValue;
-		const verticalValue = isNumber(values.vertical?.value)
-			? values.vertical.value
-			: values.vertical?.defaultValue;
+		const getDimensionValue = target =>
+			isNumber(values[target]?.value)
+				? values[target].value
+				: values[target]?.defaultValue;
+
+		const horizontalValue = getDimensionValue('horizontal');
+		const verticalValue = getDimensionValue('vertical');
+		const hasNonZeroShadowDimension = [
+			'horizontal',
+			'vertical',
+			'blur',
+			'spread',
+		].some(target => {
+			const value = getDimensionValue(target);
+			return isNumber(value) && value !== 0;
+		});
 
 		let boxShadowString = '';
 
 		if (dropShadow) {
+			if (forClipPath && clipPathExists && !hasNonZeroShadowDimension)
+				return;
+
 			const blurValue = round(
 				(isNumber(values.blur?.value)
 					? values.blur.value

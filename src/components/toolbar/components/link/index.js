@@ -23,11 +23,16 @@ import SelectControl from '@components/select-control';
 import { getLinkTargets } from '@extensions/DC/utils';
 import InfoBox from '@components/info-box';
 import { getBlockData } from '@extensions/attributes';
+import {
+	canToggleCanvasLink,
+	getLinkElementFromCanvasToggle,
+	getLinkSettingsWithDefaultLinkElement,
+} from './utils';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty, capitalize } from 'lodash';
+import { isNil, isEmpty } from 'lodash';
 
 /**
  * Styles & Icons
@@ -76,25 +81,50 @@ const Link = props => {
 	const showDCLink = clStatus && DC_LINK_BLOCKS.includes(blockName);
 	const showUseDCLink = dcStatus || showDCLink;
 	const selectedDCType = dcType ?? clType;
-	const { linkElements, linkElementOptions } = useMemo(() => {
-		const linkElements = getBlockData(blockName)?.linkElements;
-		const linkElementOptions = linkElements?.map(element => ({
-			label: capitalize(element),
-			value: element,
-		}));
+	const { linkElements, showCanvasLinkToggle } = useMemo(() => {
+		const blockData = getBlockData(blockName);
+		const linkElements = blockData?.linkElements;
 
 		return {
 			linkElements,
-			linkElementOptions,
+			showCanvasLinkToggle: canToggleCanvasLink(blockData),
 		};
 	}, [blockName]);
-	const showLinkElementSelect = !!linkElements;
+	const isCanvasLinkSelected = linkSettings?.linkElement === 'canvas';
 
 	useEffect(() => {
 		if (dcLinkStatus) {
 			setLinkTargetOptions(getLinkTargets(selectedDCType, dcField));
 		}
 	}, [selectedDCType, dcField, dcLinkStatus]);
+
+	// Auto-set the default linkElement for blocks that need it, but skip
+	// svg-icon-maxi: its save.js handles both linkElement states and
+	// auto-injecting would corrupt old blocks that use the external wrapper.
+	useEffect(() => {
+		if (blockName === 'maxi-blocks/svg-icon-maxi') return;
+
+		const linkSettingsWithDefaultElement =
+			getLinkSettingsWithDefaultLinkElement(linkSettings, linkElements);
+
+		if (linkSettingsWithDefaultElement !== linkSettings) {
+			onChange(linkSettingsWithDefaultElement);
+		}
+	}, [blockName, linkElements, linkSettings, onChange]);
+
+	const updateCanvasLinkElement = checked => {
+		onChange({
+			...linkSettings,
+			linkElement: getLinkElementFromCanvasToggle(
+				checked,
+				linkElements
+			),
+		});
+	};
+
+	const updateLink = value => {
+		onChange(getLinkSettingsWithDefaultLinkElement(value, linkElements));
+	};
 
 	if (DISABLED_BLOCKS.includes(blockName) && !disableCustomFormats)
 		return null;
@@ -251,20 +281,6 @@ const Link = props => {
 									)}
 							</>
 						)}
-						{showLinkElementSelect && (
-							<SelectControl
-								label={__('Apply link on', 'maxi-blocks')}
-								value={linkSettings?.linkElement}
-								options={linkElementOptions}
-								newStyle
-								onChange={value => {
-									onChange({
-										...linkSettings,
-										linkElement: value,
-									});
-								}}
-							/>
-						)}
 						<ToolbarContext.Consumer>
 							{context => (
 								<LinkControl
@@ -277,7 +293,23 @@ const Link = props => {
 										dcLinkStatus &&
 										['author_email'].includes(dcLinkTarget)
 									}
-									onChangeLink={onChange}
+									canvasLinkControl={
+										showCanvasLinkToggle && (
+											<ToggleSwitch
+												label={__(
+													'Add link to Canvas',
+													'maxi-blocks'
+												)}
+												selected={
+													isCanvasLinkSelected
+												}
+												onChange={
+													updateCanvasLinkElement
+												}
+											/>
+										)
+									}
+									onChangeLink={updateLink}
 									onRemoveLink={() => {
 										removeLinkHandle();
 										context.onClose();

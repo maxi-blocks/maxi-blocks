@@ -23,6 +23,7 @@ import {
 	getZIndexStyles,
 } from '@extensions/styles/helpers';
 import data, { prefixes } from './data';
+import { getIconRevealPositionStyles } from './utils';
 
 const { buttonPrefix, closeIconPrefix, inputPrefix } = prefixes;
 
@@ -339,15 +340,36 @@ const getSearchInputPlaceholderStyles = props => {
 
 const getStyles = props => {
 	const { uniqueID } = props;
+	const iconRevealPositionStyles = getIconRevealPositionStyles(props);
 
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getNormalObject(props),
-				' .maxi-search-block__input': getSearchInputStyles(props),
+				'': {
+					...getNormalObject(props),
+					...(iconRevealPositionStyles.block && {
+						iconRevealPosition: iconRevealPositionStyles.block,
+					}),
+				},
+				' .maxi-search-block__input': {
+					...getSearchInputStyles(props),
+					...(iconRevealPositionStyles.input && {
+						iconRevealPosition: iconRevealPositionStyles.input,
+					}),
+				},
 				' .maxi-search-block__input::placeholder':
 					getSearchInputPlaceholderStyles(props),
-				' .maxi-search-block__button': getSearchButtonStyles(props),
+				' .maxi-search-block__button': {
+					...getSearchButtonStyles(props),
+					...(iconRevealPositionStyles.button && {
+						iconRevealPosition: iconRevealPositionStyles.button,
+					}),
+				},
+				...(iconRevealPositionStyles.hiddenInput && {
+					' .maxi-search-block__input--hidden': {
+						iconRevealPosition: iconRevealPositionStyles.hiddenInput,
+					},
+				}),
 				...getSearchButtonIconStyles(props),
 				' .maxi-search-block__button__content':
 					getSearchButtonContentStyles(props),

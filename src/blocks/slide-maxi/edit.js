@@ -75,6 +75,7 @@ class edit extends MaxiBlockComponent {
 				blockName =>
 					[
 						'maxi-blocks/container-maxi',
+						'maxi-blocks/column-maxi',
 						'maxi-blocks/slide-maxi',
 						'maxi-blocks/maxi-cloud',
 						'maxi-blocks/list-item-maxi',

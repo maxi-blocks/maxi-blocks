@@ -29,6 +29,7 @@ const LinkControl = ({
 	linkValue = {},
 	isDCLinkActive,
 	disableOpenInNewTab,
+	canvasLinkControl,
 	onChangeLink,
 	onRemoveLink,
 	showRemoveLink = true,
@@ -154,6 +155,11 @@ const LinkControl = ({
 									})
 								}
 							/>
+						</div>
+					)}
+					{canvasLinkControl && (
+						<div className='maxi-link-control__canvas-option'>
+							{canvasLinkControl}
 						</div>
 					)}
 					{showRemoveLink && !isDCLinkActive && (

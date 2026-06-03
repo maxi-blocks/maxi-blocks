@@ -8,12 +8,27 @@ import classnames from 'classnames';
  */
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
-const getDividerOrientation = (attributes, deviceType) =>
-	getLastBreakpointAttribute({
+/**
+ * Resolves the divider orientation for the given breakpoint.
+ * Falls back to the legacy camelCase `lineOrientation` attribute
+ * so old blocks saved before the breakpoint schema still resolve
+ * correctly instead of defaulting to 'horizontal'.
+ *
+ * @param {Object}  attributes Block attributes.
+ * @param {string=} deviceType Current breakpoint (e.g. 'general', 'm', 's').
+ * @return {string} 'horizontal' | 'vertical'
+ */
+export const getDividerOrientation = (attributes, deviceType) => {
+	const resolved = getLastBreakpointAttribute({
 		target: 'line-orientation',
 		breakpoint: deviceType,
 		attributes,
 	});
+
+	if (resolved) return resolved;
+
+	return attributes?.lineOrientation ?? 'horizontal';
+};
 
 export const getDividerResizerSize = (attributes, deviceType = 'general') => {
 	const width = getLastBreakpointAttribute({

@@ -1,4 +1,8 @@
-import { getDividerEditClasses, syncDividerResizerSize } from '../utils';
+import {
+	getDividerEditClasses,
+	getDividerOrientation,
+	syncDividerResizerSize,
+} from '../utils';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(store => {
@@ -73,5 +77,52 @@ describe('divider-maxi utils', () => {
 		});
 		expect(resizable.style.width).toBe('20px');
 		expect(resizable.style.height).toBe('100%');
+	});
+
+	describe('getDividerOrientation', () => {
+		it('returns the breakpoint value when it exists', () => {
+			expect(
+				getDividerOrientation(
+					{ 'line-orientation-general': 'vertical' },
+					'general'
+				)
+			).toBe('vertical');
+		});
+
+		it('falls back to legacy lineOrientation for old blocks', () => {
+			expect(
+				getDividerOrientation(
+					{ lineOrientation: 'vertical' },
+					'general'
+				)
+			).toBe('vertical');
+		});
+
+		it('defaults to horizontal when both are missing', () => {
+			expect(getDividerOrientation({}, 'general')).toBe('horizontal');
+		});
+
+		it('prefers breakpoint value over legacy lineOrientation', () => {
+			expect(
+				getDividerOrientation(
+					{
+						lineOrientation: 'vertical',
+						'line-orientation-general': 'horizontal',
+					},
+					'general'
+				)
+			).toBe('horizontal');
+		});
+	});
+
+	it('falls back to legacy lineOrientation for editor classes', () => {
+		const attributes = {
+			uniqueID: 'divider-maxi-legacy-u',
+			lineOrientation: 'vertical',
+		};
+
+		expect(getDividerEditClasses(attributes, 'general')).toContain(
+			'maxi-divider-block--vertical'
+		);
 	});
 });

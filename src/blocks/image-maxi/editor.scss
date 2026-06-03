@@ -5,6 +5,12 @@ body.maxi-blocks--active .maxi-image-block {
 		height: inherit !important;
 		min-height: inherit;
 		max-height: inherit;
+
+		&--has-caption {
+			height: auto !important;
+			min-height: 0;
+			max-height: none;
+		}
 	}
 
 	&__image {
@@ -77,6 +83,13 @@ body.maxi-blocks--active .maxi-image-block {
 		height: 100%;
 		max-height: 100%;
 		margin: auto;
+	}
+
+	.maxi-image-block__resizer--has-caption {
+		.maxi-image-block-wrapper {
+			height: auto;
+			max-height: none;
+		}
 	}
 }
 .mb-hover-bg {

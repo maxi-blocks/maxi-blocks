@@ -28,6 +28,8 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 
 	Object.entries(transitionObj).forEach(([type, obj]) => {
 		Object.entries(obj).forEach(([key, value]) => {
+			if (!transition[type]?.[key]) return;
+
 			const { hoverProp: rawHoverProp, isTransform = false } = value;
 			const hoverProp =
 				!rawHoverProp || isArray(rawHoverProp)

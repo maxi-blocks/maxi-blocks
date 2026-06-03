@@ -16,7 +16,6 @@ const getDCContent = async page => {
 const waitForDCContent = async page => {
 	const selector = '.maxi-text-block .maxi-text-block__content';
 	const frame = await getEditorFrame(page);
-
 	await frame.waitForFunction(
 		selector => {
 			const content = document.querySelector(selector)?.textContent.trim();

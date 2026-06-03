@@ -4,11 +4,6 @@
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Save
  */
 const save = props => {
@@ -19,11 +14,10 @@ const save = props => {
 
 	const orientation =
 		attributes['line-orientation-general'] || 'horizontal';
-	const classes = classnames(
+	const classes =
 		orientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal'
-	);
+			: 'maxi-divider-block--horizontal';
 
 	return (
 		<MaxiBlock.save

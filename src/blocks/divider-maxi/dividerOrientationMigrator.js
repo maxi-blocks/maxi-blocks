@@ -3,11 +3,6 @@
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 
-/**
- * External dependencies
- */
-import classnames from 'classnames';
-
 const NAME = 'Divider orientation';
 
 /**
@@ -29,11 +24,10 @@ const oldSave = props => {
 
 	const name = 'maxi-blocks/divider-maxi';
 
-	const classes = classnames(
+	const classes =
 		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
-			: 'maxi-divider-block--horizontal'
-	);
+			: 'maxi-divider-block--horizontal';
 
 	return (
 		<MaxiBlock.save

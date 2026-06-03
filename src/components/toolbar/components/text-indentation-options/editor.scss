@@ -1,0 +1,21 @@
+.toolbar-item {
+	&__list-indent-option,
+	&__list-outdent-option {
+		.toolbar-item__icon {
+			path {
+				fill: none !important;
+				stroke: var(--maxi-black) !important;
+			}
+		}
+
+		&:hover,
+		&:focus {
+			.toolbar-item__icon {
+				path {
+					fill: none !important;
+					stroke: var(--maxi-secondary-color) !important;
+				}
+			}
+		}
+	}
+}

@@ -192,6 +192,11 @@ class edit extends MaxiBlockComponent {
 					)}
 					ref={this.blockRef}
 					tagName='li'
+					useInnerBlocks
+					innerBlocksSettings={{
+						allowedBlocks: ['maxi-blocks/text-maxi'],
+						renderAppender: false,
+					}}
 					showLoader={this.state.showLoader}
 					{...getMaxiBlockAttributes(this.props)}
 				>

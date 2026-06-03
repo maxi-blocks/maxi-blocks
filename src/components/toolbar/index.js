@@ -49,6 +49,7 @@ import SliderSlidesSettings from './components/slider-slides-settings';
 import SvgWidth from './components/svg-width';
 import TextColor from './components/text-color';
 import TextLevel from './components/text-level';
+import TextIndentationOptions from './components/text-indentation-options';
 import TextLink from './components/text-link';
 import TextListOptions from './components/text-list-options';
 import ToolbarColumnPattern from './components/column-pattern';
@@ -341,6 +342,11 @@ const MaxiToolbar = memo(
 								}}
 							/>
 						)}
+						<TextIndentationOptions
+							clientId={clientId}
+							blockName={name}
+							tooltipsHide={tooltipsHide}
+						/>
 						{name === 'maxi-blocks/svg-icon-maxi' && (
 							<>
 								{svgType !== 'Line' && (

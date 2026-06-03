@@ -7,7 +7,7 @@ import {
 } from '../utils';
 
 jest.mock('@extensions/DC/constants', () => ({
-	inlineLinkFields: [],
+	inlineLinkFields: ['categories', 'tags'],
 }));
 
 jest.mock('@extensions/DC/utils', () => ({

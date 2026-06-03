@@ -3,6 +3,7 @@ import {
 	getDividerOrientation,
 	syncDividerResizerSize,
 } from '../utils';
+import dividerOrientationMigrator from '../dividerOrientationMigrator';
 
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(store => {
@@ -124,5 +125,34 @@ describe('divider-maxi utils', () => {
 		expect(getDividerEditClasses(attributes, 'general')).toContain(
 			'maxi-divider-block--vertical'
 		);
+	});
+
+	describe('dividerOrientationMigrator', () => {
+		it('is always eligible', () => {
+			expect(dividerOrientationMigrator.isEligible({})).toBe(true);
+		});
+
+		it('copies lineOrientation to line-orientation-general', () => {
+			const attrs = { lineOrientation: 'vertical' };
+			const result = dividerOrientationMigrator.migrate(attrs);
+
+			expect(result['line-orientation-general']).toBe('vertical');
+			expect(result.lineOrientation).toBeUndefined();
+		});
+
+		it('leaves attributes unchanged when lineOrientation is absent', () => {
+			const attrs = { 'line-orientation-general': 'horizontal' };
+			const result = dividerOrientationMigrator.migrate({ ...attrs });
+
+			expect(result['line-orientation-general']).toBe('horizontal');
+			expect(result.lineOrientation).toBeUndefined();
+		});
+
+		it('declares legacy lineOrientation attribute for parsing', () => {
+			const extra = dividerOrientationMigrator.attributes();
+
+			expect(extra).toHaveProperty('lineOrientation');
+			expect(extra.lineOrientation.type).toBe('string');
+		});
 	});
 });

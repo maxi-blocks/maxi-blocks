@@ -13,12 +13,14 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { lineOrientation, ariaLabels = {} } = attributes;
+	const { ariaLabels = {} } = attributes;
 
 	const name = 'maxi-blocks/divider-maxi';
 
+	const orientation =
+		attributes['line-orientation-general'] || 'horizontal';
 	const classes = classnames(
-		lineOrientation === 'vertical'
+		orientation === 'vertical'
 			? 'maxi-divider-block--vertical'
 			: 'maxi-divider-block--horizontal'
 	);

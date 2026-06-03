@@ -216,9 +216,11 @@ const validateRowColumnsStructure = async (
 
 	let proceedTransformingColumns = null;
 
-	await goThroughColumns(childColumns, null, async column => {
+	for (let i = 0; i < childColumns.length; i++) {
+		const column = childColumns[i];
+
 		if (proceedTransformingColumns === false) {
-			return;
+			break;
 		}
 
 		// we can't just compare inner blocks, because if they different attributes - it's ok
@@ -238,7 +240,7 @@ const validateRowColumnsStructure = async (
 		);
 
 		if (isColumnToValidateBy) {
-			return;
+			continue;
 		}
 
 		if (
@@ -253,7 +255,7 @@ const validateRowColumnsStructure = async (
 				!differentColumnsStructureCallback ||
 				(await differentColumnsStructureCallback());
 		}
-	});
+	}
 
 	if (proceedTransformingColumns === false) {
 		return false;

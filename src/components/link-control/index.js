@@ -28,6 +28,7 @@ const LinkControl = ({
 	linkValue = {},
 	isDCLinkActive,
 	disableOpenInNewTab,
+	canvasLinkControl,
 	onChangeLink,
 	onRemoveLink,
 }) => {
@@ -110,6 +111,11 @@ const LinkControl = ({
 							</div>
 						))}
 					</div>
+					{canvasLinkControl && (
+						<div className='maxi-link-control__canvas-option'>
+							{canvasLinkControl}
+						</div>
+					)}
 					{!isDCLinkActive && (
 						<Button
 							className='maxi-link-control__link-destroyer'

@@ -26,9 +26,6 @@ body .maxi-alignment-control {
 			fill: var(--maxi-secondary-color);
 		}
 
-		&:first-child {
-		}
-
 		&:last-child {
 			margin-right: 0;
 		}
@@ -36,6 +33,14 @@ body .maxi-alignment-control {
 		&[aria-pressed='true'] {
 			background-color: var(--maxi-whisper-green);
 			border-color: var(--maxi-secondary-color);
+		}
+	}
+
+	&.maxi-alignment-control--standalone {
+		.maxi-tabs-control__button {
+			align-items: center;
+			justify-content: center;
+			padding: 4px 8px;
 		}
 	}
 

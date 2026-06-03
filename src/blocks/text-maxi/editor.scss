@@ -47,6 +47,13 @@
 		display: none;
 	}
 }
+
+.maxi-text-inspector__list-options-separator {
+	border: 0;
+	border-top: 1px solid var(--maxi-grey-light);
+	margin: 14px 0;
+}
+
 /*******************************
 * RTL
 *******************************/

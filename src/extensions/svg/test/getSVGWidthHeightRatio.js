@@ -44,4 +44,26 @@ describe('getSVGWidthHeightRatio', () => {
 
 		expect(getSVGWidthHeightRatio(svg)).toBe(3.03);
 	});
+
+	it('Calculates ratio from fallback SVG markup when no rendered SVG is available', () => {
+		const originalGetBBox = window.SVGElement.prototype.getBBox;
+		window.SVGElement.prototype.getBBox = jest
+			.fn()
+			.mockReturnValue({ width: 36, height: 9 });
+
+		try {
+			expect(
+				getSVGWidthHeightRatio(
+					null,
+					'<svg viewBox="0 0 36 36"><path d="M0 13h36v9H0z" /></svg>'
+				)
+			).toBe(4);
+		} finally {
+			if (originalGetBBox) {
+				window.SVGElement.prototype.getBBox = originalGetBBox;
+			} else {
+				delete window.SVGElement.prototype.getBBox;
+			}
+		}
+	});
 });

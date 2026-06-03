@@ -130,8 +130,11 @@ class edit extends MaxiBlockComponent {
 					nestedClientIds.forEach(nestedId => {
 						const nested =
 							select('core/block-editor').getBlock(nestedId);
+
+						if (!nested) return;
+
 						const nestedAttrs = getNestedListAttributes(
-							nested?.attributes
+							nested.attributes
 						);
 
 						if (!isEqual(nestedAttrs, currentListAttrs))

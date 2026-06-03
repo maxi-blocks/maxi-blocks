@@ -1,4 +1,5 @@
 import hoverAttributesCreator from '@extensions/styles/hoverAttributesCreator';
+import breakpointAttributesCreator from '@extensions/styles/breakpointAttributesCreator';
 import prefixAttributesCreator from '@extensions/styles/prefixAttributesCreator';
 import { background, backgroundColor } from './background';
 import opacity from './opacity';
@@ -48,6 +49,21 @@ const videoOverlay = {
 			'overlay-media-height-general': '100',
 			'overlay-media-height-unit-general': '%',
 		},
+	}),
+	...prefixAttributesCreator({
+		obj: breakpointAttributesCreator({
+			obj: {
+				'object-position-horizontal': {
+					type: 'number',
+					default: 50,
+				},
+				'object-position-vertical': {
+					type: 'number',
+					default: 50,
+				},
+			},
+		}),
+		prefix: 'overlay-media-',
 	}),
 
 	'overlay-mediaID': {

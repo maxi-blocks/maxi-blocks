@@ -23,6 +23,10 @@ function get_transition_styles($props, $transition_obj)
 
     foreach ($transition_obj as $type => $obj) {
         foreach ($obj as $key => $value) {
+            if (!isset($transition[$type][$key])) {
+                continue;
+            }
+
             $raw_hover_prop = $value['hoverProp'] ?? false;
             $is_transform = $value['isTransform'] ?? false;
             $hover_prop = !$raw_hover_prop || is_array($raw_hover_prop)

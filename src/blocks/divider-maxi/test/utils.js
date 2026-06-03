@@ -5,6 +5,11 @@ import {
 } from '../utils';
 import dividerOrientationMigrator from '../dividerOrientationMigrator';
 
+jest.mock('@components/maxi-block', () => ({
+	MaxiBlock: { save: jest.fn() },
+	getMaxiBlockAttributes: jest.fn(() => ({})),
+}));
+
 jest.mock('@wordpress/data', () => ({
 	select: jest.fn(store => {
 		if (store === 'core/block-editor') {

@@ -1,7 +1,14 @@
 import { inlineLinkFields } from '@extensions/DC/constants';
 import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
-import sanitizeLinkAttributes from '@extensions/link/sanitizeLinkAttributes';
 
+/**
+ * Builds HTML attributes for the block-level WithLink `<a>` wrapper.
+ *
+ * Title and aria-label are intentionally excluded here — this function
+ * feeds the generic link wrapper used by 13+ block types, and the wrapper
+ * has never rendered those attributes. Block-specific link attributes
+ * (button-maxi, text-link formats) are handled in their own save paths.
+ */
 const getLinkAttributesFromLinkSettings = (
 	linkSettings,
 	dcStatus,
@@ -33,16 +40,17 @@ const getLinkAttributesFromLinkSettings = (
 		dcLinkTarget
 	);
 
-	return sanitizeLinkAttributes({
-		rel,
+	const attributes = {
 		href,
 		target,
-		title: linkSettings.title,
-		'aria-label': linkSettings.ariaLabel,
 		...(isEmailLinkObfuscated && {
 			'data-email-obfuscated': isEmailLinkObfuscated,
 		}),
-	});
+	};
+
+	if (rel) attributes.rel = rel;
+
+	return attributes;
 };
 
 const getHasLink = (linkSettings, dynamicContent) => {

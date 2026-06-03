@@ -64,7 +64,6 @@ const save = props => {
 		isInlineLink,
 	};
 	const hasLink = !isEmpty(sanitizedLinkProps.href);
-	const linkAriaLabel = sanitizedLinkProps['aria-label'];
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
@@ -84,10 +83,6 @@ const save = props => {
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
 				{...(hasLink && sanitizedLinkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
-				{...(hasLink &&
-					linkAriaLabel && {
-						'aria-label': linkAriaLabel,
-					})}
 				{...(dcLinkTarget === 'author_email' && {
 					'data-email-obfuscated': true,
 				})}

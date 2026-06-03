@@ -15,12 +15,12 @@ jest.mock('@extensions/DC/utils', () => ({
 }));
 
 describe('save link utils', () => {
-	it('omits empty title and aria label attributes', () => {
+	it('never includes title or aria-label on the block link wrapper', () => {
 		const result = getLinkAttributesFromLinkSettings(
 			{
 				url: 'https://example.com',
-				title: '',
-				ariaLabel: '',
+				title: 'Some title',
+				ariaLabel: 'Some label',
 			},
 			false,
 			false
@@ -28,23 +28,7 @@ describe('save link utils', () => {
 
 		expect(result).not.toHaveProperty('title');
 		expect(result).not.toHaveProperty('aria-label');
-	});
-
-	it('preserves trimmed manual title and aria label attributes', () => {
-		const result = getLinkAttributesFromLinkSettings(
-			{
-				url: 'https://example.com',
-				title: '  Example title  ',
-				ariaLabel: '  Accessible example link  ',
-			},
-			false,
-			false
-		);
-
-		expect(result).toMatchObject({
-			title: 'Example title',
-			'aria-label': 'Accessible example link',
-		});
+		expect(result).toHaveProperty('href', 'https://example.com');
 	});
 
 	it('detects static and dynamic links that render a wrapper', () => {

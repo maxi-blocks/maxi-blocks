@@ -12,9 +12,14 @@ const previewExternalButtonSelector =
 const getPreviewHref = page =>
 	page.evaluate(selector => {
 		const button = document.querySelector(selector);
-		const href = button?.href || button?.getAttribute('href') || '';
+		const raw = button?.getAttribute('href') || '';
+		const href = raw.includes('://') || raw.startsWith('http') ? raw : '';
 
-		if (href.startsWith('http')) return href;
+		if (href) return href;
+
+		const normalized = button?.href || '';
+		if (normalized.startsWith('http') && !['#', ''].includes(raw))
+			return normalized;
 
 		const previewLink =
 			window.wp?.data
@@ -27,19 +32,25 @@ const getPreviewHref = page =>
 const waitForPreviewHref = async page => {
 	await page
 		.waitForFunction(
-			selector => {
-				const button = document.querySelector(selector);
-				const href = button?.href || button?.getAttribute('href') || '';
+		selector => {
+			const button = document.querySelector(selector);
+			const raw = button?.getAttribute('href') || '';
+			const href =
+				raw.includes('://') || raw.startsWith('http') ? raw : '';
 
-				if (href.startsWith('http')) return true;
+			if (href) return true;
 
-				const previewLink =
-					window.wp?.data
-						?.select?.('core/editor')
-						?.getEditedPostPreviewLink?.() || '';
+			const normalized = button?.href || '';
+			if (normalized.startsWith('http') && !['#', ''].includes(raw))
+				return true;
 
-				return previewLink.startsWith('http');
-			},
+			const previewLink =
+				window.wp?.data
+					?.select?.('core/editor')
+					?.getEditedPostPreviewLink?.() || '';
+
+			return previewLink.startsWith('http');
+		},
 			{ timeout: 30000 },
 			previewExternalButtonSelector
 		)

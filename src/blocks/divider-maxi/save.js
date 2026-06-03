@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
-import { getDividerOrientation } from './utils';
 
 /**
  * External dependencies
@@ -14,13 +13,12 @@ import classnames from 'classnames';
  */
 const save = props => {
 	const { attributes } = props;
-	const { ariaLabels = {} } = attributes;
+	const { lineOrientation, ariaLabels = {} } = attributes;
 
 	const name = 'maxi-blocks/divider-maxi';
 
-	const orientation = getDividerOrientation(attributes, 'general');
 	const classes = classnames(
-		orientation === 'vertical'
+		lineOrientation === 'vertical'
 			? 'maxi-divider-block--vertical'
 			: 'maxi-divider-block--horizontal'
 	);

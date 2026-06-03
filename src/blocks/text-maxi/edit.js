@@ -3,13 +3,13 @@
  * WordPress dependencies
  */
 import { RichText, useInnerBlocksProps } from '@wordpress/block-editor';
-import { select } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 /**
  * External dependencies
  */
 import classnames from 'classnames';
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 /**
  * Internal dependencies
@@ -37,6 +37,10 @@ import { setSVGColor } from '@extensions/svg';
 import { copyPasteMapping, scProps } from './data';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+import {
+	collectNestedListBlockClientIds,
+	getNestedListAttributes,
+} from '@extensions/text/lists';
 
 const List = props => {
 	const { clientId, hasInnerBlocks, typeOfList, start, reversed, className } =
@@ -101,10 +105,44 @@ class edit extends MaxiBlockComponent {
 		this.removeGutenbergWhiteSpace();
 	}
 
-	maxiBlockDidUpdate() {
-		const { attributes, setAttributes } = this.props;
+	maxiBlockDidUpdate(prevProps) {
+		const { attributes, setAttributes, clientId } = this.props;
 		const { blockStyle, isList, typeOfList, listStyle, listStyleCustom } =
 			attributes;
+
+		// Propagate list attribute changes to all nested text-maxi list blocks
+		if (isList) {
+			const currentListAttrs = getNestedListAttributes(attributes);
+			const prevListAttrs = getNestedListAttributes(
+				prevProps.attributes
+			);
+
+			if (!isEqual(currentListAttrs, prevListAttrs)) {
+				const block =
+					select('core/block-editor').getBlock(clientId);
+				const nestedClientIds =
+					collectNestedListBlockClientIds(block);
+
+				if (nestedClientIds.length) {
+					const { updateBlockAttributes } =
+						dispatch('core/block-editor');
+
+					nestedClientIds.forEach(nestedId => {
+						const nested =
+							select('core/block-editor').getBlock(nestedId);
+						const nestedAttrs = getNestedListAttributes(
+							nested?.attributes
+						);
+
+						if (!isEqual(nestedAttrs, currentListAttrs))
+							updateBlockAttributes(
+								nestedId,
+								currentListAttrs
+							);
+					});
+				}
+			}
+		}
 
 		// Ensures svg list markers change the colour when SC color changes
 		if (

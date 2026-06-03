@@ -50,6 +50,39 @@ const getLastNestedListIndex = (innerBlocks = []) => {
 	return -1;
 };
 
+/**
+ * Recursively collects clientIds of all nested text-maxi list blocks
+ * within the block tree rooted at the given parent block.
+ *
+ * Walks: parent text-maxi → list-item-maxi children → nested text-maxi (isList) → recurse
+ *
+ * @param {Object} block Block object with innerBlocks from getBlock()
+ * @return {string[]}    ClientIds of all descendant text-maxi list blocks
+ */
+export const collectNestedListBlockClientIds = block => {
+	const result = [];
+
+	if (!block?.innerBlocks?.length) return result;
+
+	for (const innerBlock of block.innerBlocks) {
+		if (innerBlock.name !== LIST_ITEM_BLOCK) continue;
+
+		for (const childBlock of innerBlock.innerBlocks || []) {
+			if (
+				childBlock.name === TEXT_BLOCK &&
+				childBlock.attributes?.isList
+			) {
+				result.push(childBlock.clientId);
+				result.push(
+					...collectNestedListBlockClientIds(childBlock)
+				);
+			}
+		}
+	}
+
+	return result;
+};
+
 export const appendBlocksToListItem = ({
 	listItemBlock,
 	blocks,

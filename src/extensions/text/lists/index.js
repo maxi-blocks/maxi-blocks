@@ -7,6 +7,8 @@ export { default as toHTMLString } from './toHTMLString';
 export {
 	canIndentListItem,
 	canOutdentListItem,
+	collectNestedListBlockClientIds,
+	getNestedListAttributes,
 	LIST_ITEM_BLOCK,
 	TEXT_BLOCK,
 } from './listItemIndentation';

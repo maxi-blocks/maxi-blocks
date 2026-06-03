@@ -158,6 +158,26 @@ describe('getOrganizedAttributes', () => {
 		expect(result.advanced).not.toHaveProperty('Dynamic content');
 	});
 
+	it('Omits dynamic content section when dc-status is falsy despite DC defaults', () => {
+		const mapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const attributesWithDefaults = {
+			'dc-hide': true,
+			'dc-limit': 100,
+			'dc-format': 'd.m.Y t',
+			'dc-locale': 'en',
+			'dc-media-size': 512,
+		};
+
+		const result = getOrganizedAttributes(attributesWithDefaults, mapping);
+
+		expect(result.advanced).not.toHaveProperty('Dynamic content');
+	});
+
 	it.each([
 		'maxi-blocks/text-maxi',
 		'maxi-blocks/button-maxi',

@@ -139,6 +139,7 @@ const templates = {
 	dynamicContent: {
 		props: dynamicContentProps,
 		_skipIfEmpty: true,
+		_gatekeeper: 'dc-status',
 	},
 	interaction: {
 		props: 'relations',

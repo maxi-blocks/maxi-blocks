@@ -92,6 +92,7 @@ const getOrganizedAttributes = (
 			if (isEmpty(rawValue) || key.startsWith('_')) return;
 			let attr = {};
 			let skipIfEmpty = false;
+			let gatekeeper = null;
 
 			if (isString(rawValue) || isArray(rawValue)) {
 				getAttrsFromConditions(rawValue, attr, attributes, conditions);
@@ -103,6 +104,7 @@ const getOrganizedAttributes = (
 					  }
 					: rawValue;
 				skipIfEmpty = !!value._skipIfEmpty;
+				gatekeeper = value._gatekeeper || null;
 
 				const localCondition = {
 					prefix: value?.prefix || conditions?.prefix || '',
@@ -164,7 +166,10 @@ const getOrganizedAttributes = (
 					...newObj,
 					...attr,
 				};
-			} else if (!skipIfEmpty || !isEmpty(attr)) {
+			} else if (
+				!skipIfEmpty ||
+				(!isEmpty(attr) && !(gatekeeper && !attr[gatekeeper]))
+			) {
 				newObj[key] = attr;
 			}
 		});

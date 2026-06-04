@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -21,6 +22,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import { getDefaultSCValue } from '@extensions/style-cards';
 
 /**
  * Styles
@@ -31,8 +33,44 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChangeInline, onChange, setShowLoader } =
-		props;
+	const {
+		className,
+		breakpoint,
+		onChangeInline,
+		onChange,
+		setShowLoader,
+		blockStyle = 'light',
+	} = props;
+
+	const styleCard = useSelect(select => {
+		const { receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
+		);
+		return receiveMaxiSelectedStyleCard()?.value || {};
+	});
+
+	/**
+	 * Returns the SC default for the given SC property name,
+	 * falling back through breakpoints when needed.
+	 */
+	const getSCDefault = scTarget => {
+		const val = getDefaultSCValue({
+			target: `${scTarget}-${breakpoint}`,
+			SC: styleCard,
+			SCStyle: blockStyle,
+			groupAttr: 'number-counter',
+		});
+		if (val !== null && val !== undefined) return val;
+		if (breakpoint !== 'general') {
+			return getDefaultSCValue({
+				target: `${scTarget}-general`,
+				SC: styleCard,
+				SCStyle: blockStyle,
+				groupAttr: 'number-counter',
+			});
+		}
+		return null;
+	};
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -270,12 +308,17 @@ const NumberCounterControl = props => {
 			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				defaultValue={getDefaultAttribute(`font-family-${breakpoint}`)}
-				font={getLastBreakpointAttribute({
-					target: 'font-family',
-					breakpoint,
-					attributes: props,
-				})}
+				defaultValue={
+					getDefaultAttribute(`font-family-${breakpoint}`) ||
+					getSCDefault('font-family')
+				}
+				font={
+					getLastBreakpointAttribute({
+						target: 'font-family',
+						breakpoint,
+						attributes: props,
+					}) || getSCDefault('font-family')
+				}
 				onChange={font =>
 					onChange({
 						[`font-family-${breakpoint}`]: font.value,
@@ -290,9 +333,10 @@ const NumberCounterControl = props => {
 				}}
 				onReset={() => {
 					onChange({
-						[`font-weight-${breakpoint}`]: getDefaultAttribute(
-							`font-weight-${breakpoint}`
-						),
+						[`font-weight-${breakpoint}`]:
+							getDefaultAttribute(
+								`font-weight-${breakpoint}`
+							) || getSCDefault('font-weight'),
 						isReset: true,
 					});
 				}}
@@ -301,13 +345,17 @@ const NumberCounterControl = props => {
 						target: 'font-weight',
 						breakpoint,
 						attributes: props,
-					}) || '400'
+					}) ||
+					getSCDefault('font-weight') ||
+					'400'
 				}
-				fontName={getLastBreakpointAttribute({
-					target: 'font-family',
-					breakpoint,
-					attributes: props,
-				})}
+				fontName={
+					getLastBreakpointAttribute({
+						target: 'font-family',
+						breakpoint,
+						attributes: props,
+					}) || getSCDefault('font-family')
+				}
 				breakpoint={breakpoint}
 				setShowLoader={setShowLoader}
 			/>
@@ -318,11 +366,14 @@ const NumberCounterControl = props => {
 				max={999}
 				initial={32}
 				step={1}
-				value={getLastBreakpointAttribute({
-					target: 'number-counter-title-font-size',
-					breakpoint,
-					attributes: props,
-				})}
+				value={
+					getLastBreakpointAttribute({
+						target: 'number-counter-title-font-size',
+						breakpoint,
+						attributes: props,
+					}) ?? getSCDefault('font-size')
+				}
+				placeholder={getSCDefault('font-size')}
 				onChangeValue={(val, meta) =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]: val,
@@ -334,7 +385,7 @@ const NumberCounterControl = props => {
 						[`number-counter-title-font-size-${breakpoint}`]:
 							getDefaultAttribute(
 								`number-counter-title-font-size-${breakpoint}`
-							),
+							) ?? getSCDefault('font-size'),
 						isReset: true,
 					})
 				}

@@ -163,18 +163,19 @@ const carouselSlider = ({ props }) => {
 								})
 							}
 						/>
-						<AlignmentControl
-							label={__('Alignment', 'maxi-blocks')}
-							{...getGroupAttributes(
-								attributes,
-								'rowCarouselAlignment'
-							)}
-							onChange={obj => onChange(obj)}
-							breakpoint={breakpoint}
-							prefix='row-carousel-'
-							disableJustify
-							disableRTC
-						/>
+					<AlignmentControl
+						className='maxi-alignment-control--standalone'
+						label={__('Alignment', 'maxi-blocks')}
+						{...getGroupAttributes(
+							attributes,
+							'rowCarouselAlignment'
+						)}
+						onChange={obj => onChange(obj)}
+						breakpoint={breakpoint}
+						prefix='row-carousel-'
+						disableJustify
+						disableRTC
+					/>
 						<AdvancedNumberControl
 							label={__(
 								'Gap between columns (px)',

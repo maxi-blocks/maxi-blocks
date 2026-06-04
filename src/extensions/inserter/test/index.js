@@ -68,7 +68,6 @@ describe('syncSelectedBlockInserterRoot', () => {
 
 		expect(mockSetIsInserterOpened).toHaveBeenCalledWith({
 			rootClientId: 'row-client-id',
-			insertionIndex: 1,
 		});
 
 		mockSetIsInserterOpened.mockClear();
@@ -89,7 +88,6 @@ describe('syncSelectedBlockInserterRoot', () => {
 
 		expect(mockSetIsInserterOpened).toHaveBeenCalledWith({
 			rootClientId: 'row-client-id',
-			insertionIndex: 1,
 		});
 	});
 });

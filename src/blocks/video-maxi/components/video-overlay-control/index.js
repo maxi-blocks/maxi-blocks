@@ -309,6 +309,79 @@ const VideoOverlayControl = props => {
 						allowedUnits={['px', 'em', 'vw', '%']}
 						optionType='string'
 					/>
+					<AdvancedNumberControl
+						label={__(
+							'Image horizontal position',
+							'maxi-blocks'
+						)}
+						className='maxi-video-overlay-control__horizontal-position'
+						placeholder={getLastBreakpointAttribute({
+							target: `${mediaPrefix}object-position-horizontal`,
+							breakpoint,
+							attributes: props,
+						})}
+						value={
+							props[
+								`${mediaPrefix}object-position-horizontal-${breakpoint}`
+							]
+						}
+						onChangeValue={(val, meta) =>
+							onChange({
+								[`${mediaPrefix}object-position-horizontal-${breakpoint}`]:
+									val,
+								meta,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`${mediaPrefix}object-position-horizontal-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange({
+								[`${mediaPrefix}object-position-horizontal-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}object-position-horizontal-${breakpoint}`
+									),
+								isReset: true,
+							});
+						}}
+						min={0}
+						max={100}
+					/>
+					<AdvancedNumberControl
+						label={__('Image vertical position', 'maxi-blocks')}
+						className='maxi-video-overlay-control__vertical-position'
+						placeholder={getLastBreakpointAttribute({
+							target: `${mediaPrefix}object-position-vertical`,
+							breakpoint,
+							attributes: props,
+						})}
+						value={
+							props[
+								`${mediaPrefix}object-position-vertical-${breakpoint}`
+							]
+						}
+						onChangeValue={(val, meta) =>
+							onChange({
+								[`${mediaPrefix}object-position-vertical-${breakpoint}`]:
+									val,
+								meta,
+							})
+						}
+						defaultValue={getDefaultAttribute(
+							`${mediaPrefix}object-position-vertical-${breakpoint}`
+						)}
+						onReset={() => {
+							onChange({
+								[`${mediaPrefix}object-position-vertical-${breakpoint}`]:
+									getDefaultAttribute(
+										`${mediaPrefix}object-position-vertical-${breakpoint}`
+									),
+								isReset: true,
+							});
+						}}
+						min={0}
+						max={100}
+					/>
 					<OpacityControl
 						label={__('Image opacity', 'maxi-blocks')}
 						opacity={getLastBreakpointAttribute({

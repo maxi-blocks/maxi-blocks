@@ -8,6 +8,8 @@ import { RichText } from '@wordpress/block-editor';
  * Internal dependencies
  */
 import { getMaxiBlockAttributes, MaxiBlock } from '@components/maxi-block';
+import uniqueIDGenerator from '@extensions/attributes/uniqueIDGenerator';
+import getCustomLabel from '@extensions/maxi-block/getCustomLabel';
 
 /**
  * External dependencies
@@ -40,8 +42,12 @@ const migrate = newAttributes => {
 	// Use traditional for loop for better performance
 	for (let i = 0; i < matches.length; i++) {
 		const liContent = matches[i].replace(LI_CLEAN_REGEX, '');
+		const uniqueID = uniqueIDGenerator({ blockName: LIST_ITEM_BLOCK });
+
 		newInnerBlocks[i] = createBlock(LIST_ITEM_BLOCK, {
 			content: liContent,
+			customLabel: getCustomLabel('', uniqueID),
+			uniqueID,
 		});
 	}
 

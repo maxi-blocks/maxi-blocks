@@ -4,14 +4,14 @@
 import { useState, useEffect, useRef, createRef } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import { round } from 'lodash';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
+import getNumberCounterDisplayValue, {
+	getNumberCounterAnimationValue,
+	getNumberCounterValueFromAnimation,
+	getDecimalPlaces,
+} from './utils';
 
 import {
 	getResizerSize,
@@ -183,8 +183,16 @@ const NumberCounter = attributes => {
 		replayCounter,
 	} = attributes;
 	const startTimeRef = useRef(Date.now());
-	const startCountValue = Math.ceil((startNumber * 360) / 100);
-	const endCountValue = Math.ceil((endNumber * 360) / 100);
+	const startCountValue = getNumberCounterAnimationValue(startNumber);
+	const endCountValue = getNumberCounterAnimationValue(endNumber);
+	const counterDecimalPlaces = Math.max(
+		getDecimalPlaces(startNumber),
+		getDecimalPlaces(endNumber)
+	);
+	const endDisplayLength = getNumberCounterDisplayValue(
+		endNumber,
+		counterDecimalPlaces
+	).length;
 	const radius = 90;
 
 	const [count, setCount] = useState(startCountValue);
@@ -278,7 +286,7 @@ const NumberCounter = attributes => {
 			maxWidth='100%'
 			minWidth={
 				!circleStatus
-					? `${fontSize * (endCountValue.toString().length - 1)}px`
+					? `${fontSize * Math.max(1, endDisplayLength - 1)}px`
 					: `${fontSize}px`
 			}
 			minHeight={circleStatus && `${fontSize}px`}
@@ -324,7 +332,10 @@ const NumberCounter = attributes => {
 						/>
 					</svg>
 					<span className='maxi-number-counter__box__text'>
-						{`${round((count / 360) * 100)}`}
+						{getNumberCounterDisplayValue(
+							getNumberCounterValueFromAnimation(count),
+							counterDecimalPlaces
+						)}
 						{usePercentage &&
 							(centeredPercentage ? '%' : <sup>%</sup>)}
 					</span>
@@ -332,7 +343,10 @@ const NumberCounter = attributes => {
 			)}
 			{circleStatus && (
 				<span className='maxi-number-counter__box__text circle-hidden'>
-					{`${round((count / 360) * 100)}`}
+					{getNumberCounterDisplayValue(
+						getNumberCounterValueFromAnimation(count),
+						counterDecimalPlaces
+					)}
 					{usePercentage && (centeredPercentage ? '%' : <sup>%</sup>)}
 				</span>
 			)}

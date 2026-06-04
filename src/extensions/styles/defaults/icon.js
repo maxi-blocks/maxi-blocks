@@ -31,6 +31,13 @@ export const icon = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
+			'icon-position': {
+				type: 'string',
+			},
+		},
+	}),
+	...breakpointAttributesCreator({
+		obj: {
 			'icon-spacing': {
 				type: 'number',
 				default: 5,

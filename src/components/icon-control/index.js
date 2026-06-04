@@ -216,6 +216,10 @@ const IconControlResponsiveSettings = withRTC(props => {
 		iconBackgroundActiveMedia || 'none'
 	);
 
+	useEffect(() => {
+		setIconBgActive(iconBackgroundActiveMedia || 'none');
+	}, [iconBackgroundActiveMedia]);
+
 	return (
 		<>
 			{/* Icon-only toggle: Only show on general breakpoint, not in hover state or image blocks */}

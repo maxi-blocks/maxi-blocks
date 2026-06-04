@@ -10,6 +10,7 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import { getDefaultAttribute } from '@extensions/styles';
 import { prefixes } from '@blocks/search-maxi/data';
+import { getIconPositionResetAttributes } from '@blocks/search-maxi/utils';
 
 const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 	const { buttonPrefix, inputPrefix } = prefixes;
@@ -38,6 +39,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 		`${inputPrefix}border-left-width-general`,
 		`${inputPrefix}border-right-width-general`,
 	]);
+	const resetPosition = getIconPositionResetAttributes();
 
 	return (
 		<>
@@ -68,7 +70,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					} else if (skin === 'boxed') {
 						onChange({
@@ -77,7 +79,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							...resetBorders,
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					} else if (skin === 'icon-reveal') {
 						onChange({
@@ -91,7 +93,7 @@ const SkinControl = ({ skin, iconRevealAction, onChange }) => {
 							[`${inputPrefix}padding-left-general`]: 10,
 							[`${inputPrefix}padding-right-general`]: 30,
 							...resetBorders,
-							'icon-position': 'right',
+							...resetPosition,
 						});
 					}
 

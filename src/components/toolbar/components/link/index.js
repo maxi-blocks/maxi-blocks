@@ -47,6 +47,17 @@ const DISABLED_BLOCKS = [
 	'maxi-blocks/slider-maxi',
 ];
 
+const getManualLinkTitle = (linkSettings = {}) => {
+	const { title, url } = linkSettings;
+	const normalizedTitle = title?.trim?.();
+	const normalizedUrl = url?.trim?.();
+
+	if (isEmpty(normalizedTitle) || normalizedTitle === normalizedUrl)
+		return null;
+
+	return normalizedTitle;
+};
+
 /**
  * Link
  */
@@ -87,14 +98,19 @@ const Link = props => {
 		}
 	}, [selectedDCType, dcField, dcLinkStatus]);
 
+	// Auto-set the default linkElement for blocks that need it, but skip
+	// svg-icon-maxi: its save.js handles both linkElement states and
+	// auto-injecting would corrupt old blocks that use the external wrapper.
 	useEffect(() => {
+		if (blockName === 'maxi-blocks/svg-icon-maxi') return;
+
 		const linkSettingsWithDefaultElement =
 			getLinkSettingsWithDefaultLinkElement(linkSettings, linkElements);
 
 		if (linkSettingsWithDefaultElement !== linkSettings) {
 			onChange(linkSettingsWithDefaultElement);
 		}
-	}, [linkElements, linkSettings, onChange]);
+	}, [blockName, linkElements, linkSettings, onChange]);
 
 	const updateCanvasLinkElement = checked => {
 		onChange({
@@ -186,7 +202,9 @@ const Link = props => {
 												? {
 														...linkSettings,
 														url,
-														title: url,
+														title: getManualLinkTitle(
+															linkSettings
+														),
 												  }
 												: {
 														...linkSettings,
@@ -238,7 +256,9 @@ const Link = props => {
 														{
 															...linkSettings,
 															url,
-															title: url,
+															title: getManualLinkTitle(
+																linkSettings
+															),
 														},
 														{
 															'dc-link-target':

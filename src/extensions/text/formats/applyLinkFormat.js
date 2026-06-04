@@ -8,6 +8,7 @@ import { applyFormat } from '@wordpress/rich-text';
  */
 import getFormattedString from './getFormattedString';
 import setFormat from './setFormat';
+import sanitizeLinkAttributes from '@extensions/link/sanitizeLinkAttributes';
 
 /**
  * Generates formats for links
@@ -31,9 +32,10 @@ const applyLinkFormat = ({
 	saveFormatValue = false,
 	onChangeTextFormat,
 }) => {
+	const sanitizedLinkAttributes = sanitizeLinkAttributes(linkAttributes);
 	const linkCustomFormatValue = applyFormat(formatValue, {
 		type: 'maxi-blocks/text-link',
-		attributes: linkAttributes,
+		attributes: sanitizedLinkAttributes,
 	});
 
 	const response = setFormat({

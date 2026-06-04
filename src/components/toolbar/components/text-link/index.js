@@ -40,9 +40,15 @@ import { toolbarLink } from '@maxi-icons';
  */
 const ALLOWED_BLOCKS = ['maxi-blocks/text-maxi', 'maxi-blocks/list-item-maxi'];
 
-const LinkContent = props => {
-	const { onChange, isList, textLevel, onClose, blockStyle, styleCard } =
-		props;
+export const LinkContent = props => {
+	const {
+		onChange,
+		isList,
+		textLevel,
+		onClose = () => {},
+		blockStyle,
+		styleCard,
+	} = props;
 	const typography = { ...getGroupAttributes(props, 'typography') };
 	const formatName = 'maxi-blocks/text-link';
 
@@ -185,7 +191,6 @@ const LinkContent = props => {
 
 		const newLinkAttributes = createLinkAttributes({
 			url: '',
-			linkValue,
 		});
 
 		const newLinkValue = createLinkValue({
@@ -221,10 +226,7 @@ const LinkContent = props => {
 	};
 
 	const updateLinkString = attributes => {
-		const newLinkAttributes = createLinkAttributes({
-			...attributes,
-			linkValue,
-		});
+		const newLinkAttributes = createLinkAttributes(attributes);
 		const content = getFormattedString({
 			formatValue: getUpdatedFormatValue(formatValue, newLinkAttributes),
 			isList,
@@ -235,10 +237,7 @@ const LinkContent = props => {
 
 	const onChangeLink = attributes => {
 		const newAttributes = prepareUrl(attributes);
-		const newLinkAttributes = createLinkAttributes({
-			...newAttributes,
-			linkValue,
-		});
+		const newLinkAttributes = createLinkAttributes(newAttributes);
 
 		if (!formatOptions.current && !isEmpty(newAttributes.url))
 			setLinkFormat(newAttributes, newLinkAttributes);

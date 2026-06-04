@@ -12,10 +12,8 @@ import InfoBox from '@components/info-box';
 import ToggleSwitch from '@components/toggle-switch';
 import DialogBox from '@components/dialog-box';
 import { getAttributeKey, getAttributeValue } from '@extensions/styles';
-import {
-	getDisallowedRepeaterBlocksFromClientId,
-	validateRowColumnsStructure,
-} from '@extensions/repeater';
+import { getDisallowedRepeaterBlocksFromClientId } from '@extensions/repeater';
+import enableRepeater from './enableRepeater';
 
 const DISALLOWED_BLOCK_LABELS = {
 	'maxi-blocks/accordion-maxi': __('Accordion', 'maxi-blocks'),
@@ -37,6 +35,13 @@ const Repeater = ({
 
 	const [isModalHidden, setIsModalHidden] = useState(true);
 	const [resolveConfirmation, setResolveConfirmation] = useState(null);
+
+	const resolveStructureConfirmation = value => {
+		if (resolveConfirmation) {
+			resolveConfirmation(value);
+		}
+		setResolveConfirmation(null);
+	};
 
 	const disallowedBlocks = useSelect(
 		select => {
@@ -78,29 +83,17 @@ const Repeater = ({
 							return;
 						}
 
-						const newInnerBlocksPositions =
-							updateInnerBlocksPositions();
-
-						const isStructureValidated =
-							await validateRowColumnsStructure(
-								clientId,
-								newInnerBlocksPositions,
-								async () =>
-									new Promise(resolve => {
-										setIsModalHidden(false);
-										setResolveConfirmation(() => resolve);
-									}),
-								undefined,
-								true,
-								true
-							);
-
-						if (isStructureValidated) {
-							markNextChangeAsNotPersistent();
-							onChange({
-								[getAttributeKey('repeater-status')]: val,
-							});
-						}
+						await enableRepeater({
+							clientId,
+							updateInnerBlocksPositions,
+							requestStructureConfirmation: async () =>
+								new Promise(resolve => {
+									setIsModalHidden(false);
+									setResolveConfirmation(() => resolve);
+								}),
+							markNextChangeAsNotPersistent,
+							onChange,
+						});
 					}}
 				/>
 			)}
@@ -125,12 +118,8 @@ const Repeater = ({
 				confirmLabel={__('Continue', 'maxi-blocks')}
 				isHidden={isModalHidden}
 				setIsHidden={setIsModalHidden}
-				onConfirm={() => {
-					if (resolveConfirmation) {
-						resolveConfirmation(true);
-					}
-					setResolveConfirmation(null);
-				}}
+				onCancel={() => resolveStructureConfirmation(false)}
+				onConfirm={() => resolveStructureConfirmation(true)}
 			/>
 			{isRepeaterInherited && (
 				<InfoBox

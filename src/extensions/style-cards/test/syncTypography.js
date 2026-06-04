@@ -109,6 +109,47 @@ describe('Style Card style settings sync', () => {
 		).toEqual(['light']);
 	});
 
+	it('supports block-level override grouping for block defaults', () => {
+		const styleCard = {
+			...baseStyleCard,
+			[DARK_TONE_STYLE_OVERRIDES]: ['container-maxi'],
+		};
+
+		expect(
+			getStyleCardToneKeysForChange({
+				currentSCStyle: 'light',
+				type: 'blockDefaults',
+				group: 'container-maxi',
+				styleCard,
+			})
+		).toEqual(['light']);
+		expect(
+			getStyleCardToneKeysForChange({
+				currentSCStyle: 'light',
+				type: 'blockDefaults',
+				styleCard,
+			})
+		).toEqual(['light', 'dark']);
+	});
+
+	it('can force shared updates for UI sections without dark controls', () => {
+		const styleCard = {
+			...baseStyleCard,
+			[SYNC_STYLE_SETTINGS_TONES_STATUS]: false,
+			[DARK_TONE_STYLE_OVERRIDES]: ['container-maxi'],
+		};
+
+		expect(
+			getStyleCardToneKeysForChange({
+				currentSCStyle: 'light',
+				type: 'blockDefaults',
+				group: 'container-maxi',
+				forceSyncedTones: true,
+				styleCard,
+			})
+		).toEqual(['light', 'dark']);
+	});
+
 	it('tracks dark tone overrides without duplicating entries', () => {
 		const added = getDarkToneStyleOverridesUpdate({
 			styleCard: {

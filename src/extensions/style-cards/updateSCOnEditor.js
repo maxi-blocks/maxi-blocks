@@ -11,7 +11,10 @@ import {
 	getSiteEditorIframe,
 	getSiteEditorPreviewIframes,
 } from '@extensions/fse';
-import { debugSCBlockDefaults } from './blockDefaults';
+import {
+	debugSCBlockDefaults,
+	setActiveStyleCardValueForBlockDefaults,
+} from './blockDefaults';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 
@@ -120,6 +123,7 @@ const updateSCOnEditor = (
 	}
 
 	const SCObject = getSCVariablesObject(clonedStyleCards, activeSCColour);
+	setActiveStyleCardValueForBlockDefaults(clonedStyleCards);
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();

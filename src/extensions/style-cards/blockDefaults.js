@@ -9,28 +9,113 @@ export const SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES =
 	'scBlockDefaultsExcludedAttributes';
 const BLOCK_DEFAULT_KEY_SEPARATOR = '|';
 const SC_BLOCK_DEFAULTS_META_KEY = '__scBlockDefaults';
+const SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY = 'maxiSCBlockDefaultsDebugLog';
+const SC_BLOCK_DEFAULTS_DEBUG_LOG_LIMIT = 500;
+let latestEditorStyleCardValue = null;
+const debugLayoutBlocks = ['container-maxi', 'row-maxi'];
+const focusedDebugLabels = [
+	'advanced globals change',
+	'editor onChangeValue result',
+	'editor dispatch block defaults update',
+	'block refresh from defaults update',
+	'library layout sequence matched',
+	'library layout sequence not matched',
+];
+const layoutDebugAttributePattern =
+	/(^|\|)(padding|margin|row-gap|column-gap|flex-wrap|max-width|width|min-width|max-height|height|min-height|full-width|width-fit-content|size-advanced-options)-/;
+
+const isSCBlockDefaultsLocalWampEditor = () =>
+	typeof window !== 'undefined' &&
+	window.location?.hostname === 'localhost' &&
+	window.location?.pathname?.includes('/maxi-blocks-local/');
+
+const isSCBlockDefaultsExplicitDebugEnabled = () =>
+	typeof window !== 'undefined' &&
+	(window.maxiDebugSCBlockDefaults === true ||
+		window.localStorage?.getItem('maxiDebugSCBlockDefaults') === '1');
+
+const isSCBlockDefaultsVerboseDebugEnabled = () =>
+	typeof window !== 'undefined' &&
+	(isSCBlockDefaultsExplicitDebugEnabled() ||
+		window.maxiDebugSCBlockDefaultsVerbose === true ||
+		window.localStorage?.getItem('maxiDebugSCBlockDefaultsVerbose') ===
+			'1');
 
 export const isSCBlockDefaultsDebugEnabled = () => {
 	try {
-		const isLocalWampEditor =
-			typeof window !== 'undefined' &&
-			window.location?.hostname === 'localhost' &&
-			window.location?.pathname?.includes('/maxi-blocks-local/');
-
 		return (
 			typeof window !== 'undefined' &&
-			(isLocalWampEditor ||
-				window.maxiDebugSCBlockDefaults === true ||
-				window.localStorage?.getItem('maxiDebugSCBlockDefaults') ===
-					'1')
+			(isSCBlockDefaultsLocalWampEditor() ||
+				isSCBlockDefaultsExplicitDebugEnabled() ||
+				isSCBlockDefaultsVerboseDebugEnabled())
 		);
 	} catch {
 		return false;
 	}
 };
 
+const hasLayoutBlockReference = value => {
+	if (!value) return false;
+	if (typeof value === 'string')
+		return debugLayoutBlocks.some(blockName => value.includes(blockName));
+	if (Array.isArray(value)) return value.some(hasLayoutBlockReference);
+	if (typeof value === 'object')
+		return Object.values(value).some(hasLayoutBlockReference);
+
+	return false;
+};
+
+const hasLayoutAttributeReference = value => {
+	if (!value) return false;
+	if (typeof value === 'string')
+		return layoutDebugAttributePattern.test(value);
+	if (Array.isArray(value)) return value.some(hasLayoutAttributeReference);
+	if (typeof value === 'object')
+		return Object.entries(value).some(
+			([key, nestedValue]) =>
+				hasLayoutAttributeReference(key) ||
+				hasLayoutAttributeReference(nestedValue)
+		);
+
+	return false;
+};
+
+const isFocusedDebugEntry = (label, payload) =>
+	focusedDebugLabels.includes(label) ||
+	(hasLayoutAttributeReference(payload) &&
+		(debugLayoutBlocks.includes(payload?.blockName) ||
+			debugLayoutBlocks.includes(payload?.meta?.blockName) ||
+			hasLayoutBlockReference(payload?.availableMetaBlocks) ||
+			hasLayoutBlockReference(payload?.prefixedValues) ||
+			hasLayoutBlockReference(payload?.response)));
+
 export const debugSCBlockDefaults = (label, payload = {}) => {
 	if (!isSCBlockDefaultsDebugEnabled()) return;
+	if (
+		!isSCBlockDefaultsVerboseDebugEnabled() &&
+		!isFocusedDebugEntry(label, payload)
+	)
+		return;
+
+	try {
+		const entry = {
+			label,
+			payload,
+			time: new Date().toISOString(),
+		};
+		const currentLog = Array.isArray(window[SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY])
+			? window[SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY]
+			: [];
+
+		window[SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY] = [
+			...currentLog,
+			entry,
+		].slice(-SC_BLOCK_DEFAULTS_DEBUG_LOG_LIMIT);
+		window.getMaxiSCBlockDefaultsDebugLog = () =>
+			window[SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY];
+	} catch {
+		// Keep console debugging available even when window helpers are blocked.
+	}
 
 	// eslint-disable-next-line no-console
 	console.info(`[SC block defaults] ${label}`, payload);
@@ -87,6 +172,183 @@ const shippedBlockDefaults = {
 	},
 };
 
+const libraryLayoutDefaultSequences = {
+	'container-maxi': [
+		...['padding-top', 'padding-bottom'].flatMap(target => [
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '100',
+					xxl: '150',
+					xl: '100',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '100',
+					xxl: '150',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+					xl: '150',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+					xl: '150',
+					s: '60',
+					xs: '40',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+					xl: '150',
+					l: '120',
+					m: '100',
+					s: '60',
+					xs: '40',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					l: '120',
+					m: '100',
+					s: '80',
+					xs: '60',
+				},
+			},
+		]),
+		...['margin-top', 'margin-bottom'].map(target => ({
+			target,
+			unit: 'px',
+			values: {
+				general: '100',
+			},
+		})),
+	],
+	'row-maxi': [
+		...['padding-top', 'padding-bottom'].flatMap(target => [
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '100',
+					xxl: '150',
+					s: '0',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+					s: '0',
+				},
+			},
+			{
+				target,
+				unit: 'px',
+				values: {
+					general: '150',
+					xxl: '200',
+					xl: '150',
+					s: '0',
+				},
+			},
+		]),
+		{
+			target: 'row-gap',
+			unit: 'px',
+			values: {
+				general: '20',
+				xs: '10',
+			},
+		},
+		{
+			target: 'column-gap',
+			unit: '%',
+			values: {
+				general: '0',
+			},
+		},
+		{
+			target: 'column-gap',
+			unit: '%',
+			values: {
+				m: '2.5',
+				s: '2.5',
+				xs: '2.5',
+			},
+		},
+		{
+			target: 'column-gap',
+			unit: '%',
+			values: {
+				m: '2.5',
+				s: '2.5',
+			},
+		},
+		{
+			target: 'flex-wrap',
+			values: {
+				general: 'nowrap',
+				xs: 'wrap',
+			},
+		},
+		{
+			target: 'flex-wrap',
+			values: {
+				general: 'wrap',
+			},
+		},
+		{
+			target: 'flex-wrap',
+			values: {
+				general: 'wrap',
+				m: 'wrap',
+				s: 'wrap',
+				xs: 'wrap',
+			},
+		},
+		{
+			target: 'flex-wrap',
+			values: {
+				general: 'wrap',
+				m: 'wrap',
+				s: 'wrap',
+			},
+		},
+	],
+};
+
 const cssLengthTargets = [
 	'max-width',
 	'min-width',
@@ -114,6 +376,20 @@ const cssLengthTargets = [
 	'column-gap',
 ];
 
+const libraryLayoutSequenceTargets = [
+	'margin-top',
+	'margin-right',
+	'margin-bottom',
+	'margin-left',
+	'padding-top',
+	'padding-right',
+	'padding-bottom',
+	'padding-left',
+	'row-gap',
+	'column-gap',
+	'flex-wrap',
+];
+
 export const getBlockDefaultKey = (blockName, attr) =>
 	`${blockName}${BLOCK_DEFAULT_KEY_SEPARATOR}${attr}`;
 
@@ -132,6 +408,19 @@ const isValidValue = value =>
 	value !== undefined && value !== null && value !== '';
 
 const stringify = value => (isValidValue(value) ? `${value}` : value);
+
+const getDebugBlockDefaultSummary = (blockDefaults, blockName) =>
+	Object.entries(blockDefaults ?? {})
+		.filter(([key]) => {
+			const parsedKey = parseBlockDefaultKey(key);
+
+			return (
+				parsedKey?.blockName === blockName &&
+				layoutDebugAttributePattern.test(key)
+			);
+		})
+		.slice(0, 40)
+		.map(([key, value]) => `${key}=${stringify(value)}`);
 
 const getBreakpoint = attr =>
 	breakpoints.find(breakpoint => attr.endsWith(`-${breakpoint}`));
@@ -163,6 +452,140 @@ const getResponsiveValue = (attributes, target, breakpoint) => {
 	}
 
 	return undefined;
+};
+
+const getResponsiveSequenceSnapshot = (attributes, target) =>
+	breakpoints.reduce((acc, breakpoint) => {
+		const attr = `${target}-${breakpoint}`;
+		const unitAttr = getUnitAttribute(attr);
+		const value = attributes?.[attr];
+		const unit = unitAttr ? attributes?.[unitAttr] : undefined;
+
+		if (isValidValue(value) || isValidValue(unit)) {
+			acc[breakpoint] = {
+				value,
+				unit,
+			};
+		}
+
+		return acc;
+	}, {});
+
+const getLibraryLayoutDefaultSequenceMatch = ({
+	blockName,
+	attr,
+	attributes,
+}) => {
+	const target = withoutBreakpoint(attr);
+	const breakpoint = getBreakpoint(attr);
+
+	if (!target || !breakpoint)
+		return {
+			matched: false,
+			reason: 'missing target or breakpoint',
+			target,
+			breakpoint,
+		};
+
+	const candidateSequences = (
+		libraryLayoutDefaultSequences[blockName] || []
+	).filter(
+		({ target: sequenceTarget, values }) =>
+			sequenceTarget === target &&
+			Object.prototype.hasOwnProperty.call(values, breakpoint)
+	);
+
+	const actualValues = getResponsiveSequenceSnapshot(attributes, target);
+	let closestCandidate = null;
+
+	for (const candidate of candidateSequences) {
+		const { unit, values } = candidate;
+		const mismatches = breakpoints.reduce((acc, currentBreakpoint) => {
+			const currentAttr = `${target}-${currentBreakpoint}`;
+			const currentValue = attributes?.[currentAttr];
+			const expectedValue = values[currentBreakpoint];
+			const unitAttr = getUnitAttribute(currentAttr);
+			const currentUnit = unitAttr ? attributes?.[unitAttr] : null;
+
+			if (expectedValue === undefined) {
+				if (isValidValue(currentValue)) {
+					acc.push({
+						breakpoint: currentBreakpoint,
+						actual: currentValue,
+						expected: undefined,
+						reason: 'unexpected breakpoint value',
+					});
+				}
+
+				return acc;
+			}
+
+			if (
+				!isValidValue(currentValue) ||
+				stringify(currentValue) !== stringify(expectedValue)
+			) {
+				acc.push({
+					breakpoint: currentBreakpoint,
+					actual: currentValue,
+					expected: expectedValue,
+					reason: 'value mismatch',
+				});
+
+				return acc;
+			}
+
+			if (
+				unit &&
+				isValidValue(currentUnit) &&
+				stringify(currentUnit) !== stringify(unit)
+			) {
+				acc.push({
+					breakpoint: currentBreakpoint,
+					actual: currentUnit,
+					expected: unit,
+					reason: 'unit mismatch',
+				});
+			}
+
+			return acc;
+		}, []);
+
+		const candidateDetails = {
+			unit,
+			values,
+			mismatches,
+		};
+
+		if (!mismatches.length) {
+			return {
+				...candidateDetails,
+				actualValues,
+				breakpoint,
+				matched: true,
+				reason: 'matched library layout sequence',
+				target,
+			};
+		}
+
+		if (
+			!closestCandidate ||
+			mismatches.length < closestCandidate.mismatches.length
+		) {
+			closestCandidate = candidateDetails;
+		}
+	}
+
+	return {
+		...(closestCandidate || {}),
+		actualValues,
+		breakpoint,
+		candidateCount: candidateSequences.length,
+		matched: false,
+		reason: candidateSequences.length
+			? 'no library layout sequence matched'
+			: 'no library layout sequence configured for attr',
+		target,
+	};
 };
 
 const shouldRespectSizeToggle = (attr, attributes) => {
@@ -243,7 +666,26 @@ const getBlockDefaultValue = ({ styleCard, blockStyle, blockName, attr }) =>
 		getBlockDefaultKey(blockName, attr)
 	];
 
+export const setActiveStyleCardValueForBlockDefaults = styleCard => {
+	latestEditorStyleCardValue = styleCard || null;
+
+	debugSCBlockDefaults('active style card snapshot set', {
+		hasStyleCard: Boolean(latestEditorStyleCardValue),
+		blockDefaultKeys: styles.reduce(
+			(acc, blockStyle) => ({
+				...acc,
+				[blockStyle]: Object.keys(
+					getBlockDefaults(latestEditorStyleCardValue, blockStyle)
+				),
+			}),
+			{}
+		),
+	});
+};
+
 const getActiveStyleCardValue = () => {
+	if (latestEditorStyleCardValue) return latestEditorStyleCardValue;
+
 	let store = null;
 
 	try {
@@ -302,6 +744,56 @@ const getFallback = ({ blockName, attr, unitAttr, defaultAttributes }) => {
 	return `${value}${unit ?? ''}`;
 };
 
+const getFallbackValue = ({
+	blockName,
+	attr,
+	unitAttr,
+	currentValue,
+	value,
+	attributes,
+	defaultAttributes,
+	scUnit,
+}) => {
+	const fallbackValue = isValidValue(currentValue) ? currentValue : value;
+	const fallbackUnit = unitAttr
+		? attributes?.[unitAttr] ??
+		  getShippedDefaultValue({
+				blockName,
+				attr: unitAttr,
+				defaultAttributes,
+		  }) ??
+		  scUnit ??
+		  ''
+		: '';
+
+	return fallbackValue === 'auto'
+		? fallbackValue
+		: `${fallbackValue}${fallbackUnit}`;
+};
+
+const getStyleCardFallbackValue = ({
+	blockName,
+	attr,
+	unitAttr,
+	value,
+	attributes,
+	defaultAttributes,
+	scUnit,
+}) => {
+	const fallbackUnit = unitAttr
+		? scUnit ??
+		  attributes?.[unitAttr] ??
+		  getShippedDefaultValue({
+				blockName,
+				attr: unitAttr,
+				defaultAttributes,
+		  }) ??
+		  ''
+		: '';
+
+	return value === 'auto' ? value : `${value}${fallbackUnit}`;
+};
+
 const isAttributeChanged = ({
 	attr,
 	unitAttr,
@@ -315,10 +807,50 @@ const isAttributeChanged = ({
 		attr,
 		defaultAttributes,
 	});
+	const hasCurrentValue = isValidValue(currentValue);
+	const hasShippedValue = isValidValue(shippedValue);
+	const hasLibraryLayoutDefaultSequences = Boolean(
+		libraryLayoutDefaultSequences[blockName]?.length
+	);
+	const isLayoutSequenceTarget = libraryLayoutSequenceTargets.includes(
+		withoutBreakpoint(attr)
+	) && hasLibraryLayoutDefaultSequences;
+	const librarySequenceMatch = isLayoutSequenceTarget
+		? getLibraryLayoutDefaultSequenceMatch({
+				blockName,
+				attr,
+				attributes,
+		  })
+		: null;
+
+	if (hasCurrentValue && librarySequenceMatch?.matched) {
+		debugSCBlockDefaults('library layout sequence matched', {
+			blockName,
+			attr,
+			currentValue,
+			currentUnit: unitAttr ? attributes?.[unitAttr] : undefined,
+			...librarySequenceMatch,
+		});
+
+		return false;
+	}
+
+	if (hasCurrentValue && isLayoutSequenceTarget) {
+		debugSCBlockDefaults('library layout sequence not matched', {
+			blockName,
+			attr,
+			currentValue,
+			currentUnit: unitAttr ? attributes?.[unitAttr] : undefined,
+			...librarySequenceMatch,
+		});
+	}
+
+	if (hasCurrentValue && !hasShippedValue && isLayoutSequenceTarget)
+		return true;
 
 	if (
-		isValidValue(currentValue) &&
-		isValidValue(shippedValue) &&
+		hasCurrentValue &&
+		hasShippedValue &&
 		stringify(currentValue) !== stringify(shippedValue)
 	)
 		return true;
@@ -330,6 +862,13 @@ const isAttributeChanged = ({
 			attr: unitAttr,
 			defaultAttributes,
 		});
+
+		if (
+			isValidValue(currentUnit) &&
+			!isValidValue(shippedUnit) &&
+			isLayoutSequenceTarget
+		)
+			return true;
 
 		if (
 			isValidValue(currentUnit) &&
@@ -373,6 +912,10 @@ export const applySCBlockDefaultsToAttributes = ({
 		blockName,
 		blockStyle,
 		blockDefaultKeys: Object.keys(blockDefaults),
+		blockDefaultSummary: getDebugBlockDefaultSummary(
+			blockDefaults,
+			blockName
+		),
 	});
 
 	const nextResponse = { ...response };
@@ -445,13 +988,32 @@ export const applySCBlockDefaultsToAttributes = ({
 		if (unitAttr && isValidValue(scUnit)) nextResponse[unitAttr] = scUnit;
 		if (!isValidValue(scValue) && !hasDefaultLikeCurrentValue) return;
 
-		const fallback =
-			getFallback({
-				blockName,
-				attr,
-				unitAttr,
-				defaultAttributes,
-			}) || `${value}${unitAttr ? attributes?.[unitAttr] ?? '' : ''}`;
+		const fallback = isValidValue(scValue)
+			? getStyleCardFallbackValue({
+					blockName,
+					attr,
+					unitAttr,
+					value: scValue,
+					attributes,
+					defaultAttributes,
+					scUnit,
+			  })
+			: getFallback({
+					blockName,
+					attr,
+					unitAttr,
+					defaultAttributes,
+			  }) ||
+			  getFallbackValue({
+					blockName,
+					attr,
+					unitAttr,
+					currentValue,
+					value,
+					attributes,
+					defaultAttributes,
+					scUnit,
+			  });
 
 		nextResponse[SC_BLOCK_DEFAULTS_META_KEY] = {
 			...nextResponse[SC_BLOCK_DEFAULTS_META_KEY],
@@ -484,6 +1046,50 @@ export const applySCBlockDefaultsToAttributes = ({
 	});
 
 	return nextResponse;
+};
+
+export const getSCBlockDefaultStyleValue = ({
+	scBlockDefaults = {},
+	prefix = '',
+	target,
+	breakpoint,
+	fallbackValue,
+}) => {
+	const meta = scBlockDefaults[`${prefix}${target}-${breakpoint}`];
+	const availableMetaBlocks = Array.from(
+		new Set(
+			Object.values(scBlockDefaults)
+				.map(value => value?.blockName)
+				.filter(Boolean)
+		)
+	);
+
+	if (!meta?.cssVar) {
+		debugSCBlockDefaults('style fallback', {
+			target,
+			breakpoint,
+			fallbackValue,
+			prefix,
+			meta,
+			availableMetaBlocks,
+			availableMetaKeys: Object.keys(scBlockDefaults),
+		});
+
+		return fallbackValue;
+	}
+
+	const value = `var(${meta.cssVar}, ${meta.fallback || fallbackValue})`;
+
+	debugSCBlockDefaults('style css var', {
+		target,
+		breakpoint,
+		fallbackValue,
+		prefix,
+		meta,
+		value,
+	});
+
+	return value;
 };
 
 export const getStyleCardBlockDefaultVariables = styleCard => {

@@ -44,15 +44,25 @@ export const getDarkToneStyleOverridesUpdate = ({
 export const getStyleCardToneKeysForChange = ({
 	currentSCStyle,
 	forceToneOnly = false,
+	forceSyncedTones = false,
 	type,
 	styleCard,
+	group,
 }) => {
+	const toneGroup = group || type;
+
 	if (
 		forceToneOnly ||
 		currentSCStyle !== 'light' ||
-		type === 'color' ||
+		type === 'color'
+	)
+		return [currentSCStyle];
+
+	if (forceSyncedTones) return STYLE_CARD_TONE_KEYS;
+
+	if (
 		!isStyleSettingsSyncEnabled(styleCard) ||
-		hasDarkToneStyleOverride(styleCard, type)
+		hasDarkToneStyleOverride(styleCard, toneGroup)
 	)
 		return [currentSCStyle];
 

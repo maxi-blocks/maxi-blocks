@@ -147,4 +147,47 @@ describe('getFlexStyles', () => {
 			},
 		});
 	});
+
+	it('should use Style Card block default CSS variables for row spacing defaults', () => {
+		const obj = {
+			'row-gap': '30',
+			'row-gap-unit': 'px',
+			'column-gap': '4',
+			'column-gap-unit': '%',
+			'flex-wrap': 'wrap',
+			__scBlockDefaults: {
+				'row-gap-general': {
+					blockName: 'row-maxi',
+					blockStyle: 'light',
+					cssVar: '--maxi-light-block-default-row-maxi-row-gap-general',
+					fallback: '20px',
+				},
+				'column-gap-general': {
+					blockName: 'row-maxi',
+					blockStyle: 'light',
+					cssVar:
+						'--maxi-light-block-default-row-maxi-column-gap-general',
+					fallback: '2.5%',
+				},
+				'flex-wrap-general': {
+					blockName: 'row-maxi',
+					blockStyle: 'light',
+					cssVar:
+						'--maxi-light-block-default-row-maxi-flex-wrap-general',
+					fallback: 'wrap',
+				},
+			},
+		};
+
+		const result = getFlexStyles(obj);
+
+		expect(result.general).toEqual({
+			'flex-wrap':
+				'var(--maxi-light-block-default-row-maxi-flex-wrap-general, wrap)',
+			'row-gap':
+				'var(--maxi-light-block-default-row-maxi-row-gap-general, 20px)',
+			'column-gap':
+				'var(--maxi-light-block-default-row-maxi-column-gap-general, 2.5%)',
+		});
+	});
 });

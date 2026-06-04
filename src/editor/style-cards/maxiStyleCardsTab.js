@@ -17,11 +17,15 @@ import Button from '@components/button';
 import ColorControl from '@components/color-control';
 import Icon from '@components/icon';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
+import FullSizeControl from '@components/full-size-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
-import AdvancedNumberControl from '@components/advanced-number-control';
+import MarginControl from '@components/margin-control';
 import PaddingControl from '@components/padding-control';
+import FlexGapControl from '@components/flex-settings-control/flex-gap-control';
+import FlexWrapControl from '@components/flex-settings-control/flex-wrap-control';
+import AdvancedNumberControl from '@components/advanced-number-control';
 import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
@@ -36,11 +40,11 @@ import {
 } from '@extensions/style-cards';
 import getDefaultSCAttribute from './getDefaultSCAttribute';
 import {
-	blockDefaultBlocks,
+	getBlockDefaultKey,
+	SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES,
 	BLOCK_DEFAULTS_GROUP,
 	debugSCBlockDefaults,
-	getBlockDefaultKey,
-	getShippedBlockDefault,
+	getUnitAttribute,
 } from '@extensions/style-cards/blockDefaults';
 import { hasDarkToneStyleOverride } from '@extensions/style-cards/syncTypography';
 
@@ -424,137 +428,149 @@ const SCAccordion = props => {
 	);
 };
 
-const formatBlockLabel = blockName =>
-	blockName
-		.replace('-maxi', '')
-		.split('-')
-		.map(part => part.charAt(0).toUpperCase() + part.slice(1))
-		.join(' ');
+const getBlockDefaultAttributes = (styleCard, blockName) =>
+	Object.entries(processSCAttributes(styleCard, '', BLOCK_DEFAULTS_GROUP))
+		.filter(([key]) => key.startsWith(`${blockName}|`))
+		.reduce((acc, [key, value]) => {
+			acc[key.replace(`${blockName}|`, '')] = value;
+			return acc;
+		}, {});
 
-const blockDefaultSizeControls = [
-	{
-		label: __('Max width', 'maxi-blocks'),
-		target: 'max-width',
-	},
-	{
-		label: __('Width', 'maxi-blocks'),
-		target: 'width',
-	},
-	{
-		label: __('Min width', 'maxi-blocks'),
-		target: 'min-width',
-	},
-	{
-		label: __('Max height', 'maxi-blocks'),
-		target: 'max-height',
-	},
-	{
-		label: __('Height', 'maxi-blocks'),
-		target: 'height',
-	},
-	{
-		label: __('Min height', 'maxi-blocks'),
-		target: 'min-height',
-	},
-];
-
-const BlockDefaultsControls = ({
+const BlockDefaultMarginPaddingControls = ({
 	SC,
-	breakpoint,
-	onChangeValue,
 	blockName,
+	onChange,
+	breakpoint,
 }) => {
-	const getAttr = target => `${target}-${breakpoint}`;
-	const getUnitAttr = target => `${target}-unit-${breakpoint}`;
-	const getSCAttr = attr =>
-		processSCAttribute(
-			SC,
-			getBlockDefaultKey(blockName, attr),
-			BLOCK_DEFAULTS_GROUP
-		);
-	const getDefaultValue = attr => getShippedBlockDefault(blockName, attr, '');
-	const getDefaultUnit = attr =>
-		getShippedBlockDefault(blockName, attr, 'px');
-	const updateBlockDefault = (attr, value) => {
-		debugSCBlockDefaults('control change', {
-			blockName,
-			breakpoint,
-			attr,
-			value,
-		});
-		onChangeValue(
-			{
-				[getBlockDefaultKey(blockName, attr)]: value,
-			},
-			BLOCK_DEFAULTS_GROUP
-		);
-	};
+	const defaultAttrs = getBlockDefaultAttributes(SC, blockName);
 
 	return (
 		<>
-			{blockDefaultSizeControls.map(({ label, target }) => {
-				const attr = getAttr(target);
-				const unitAttr = getUnitAttr(target);
-				const defaultValue = getDefaultValue(attr);
-				const defaultUnit = getDefaultUnit(unitAttr);
-
-				return (
-					<AdvancedNumberControl
-						key={`${blockName}-${attr}`}
-						label={label}
-						value={getSCAttr(attr) ?? defaultValue}
-						unit={getSCAttr(unitAttr) ?? defaultUnit}
-						defaultValue={defaultValue}
-						enableUnit
-						optionType='string'
-						onChangeValue={value => updateBlockDefault(attr, value)}
-						onChangeUnit={unit =>
-							updateBlockDefault(unitAttr, unit)
-						}
-						onReset={() => {
-							debugSCBlockDefaults('control reset', {
-								blockName,
-								breakpoint,
-								attr,
-								unitAttr,
-								defaultValue,
-								defaultUnit,
-							});
-							onChangeValue(
-								{
-									[getBlockDefaultKey(blockName, attr)]:
-										defaultValue,
-									[getBlockDefaultKey(blockName, unitAttr)]:
-										defaultUnit,
-								},
-								BLOCK_DEFAULTS_GROUP
-							);
-						}}
-					/>
-				);
-			})}
+			<MarginControl
+				{...defaultAttrs}
+				onChange={onChange}
+				breakpoint={breakpoint}
+				noResponsiveTabs
+			/>
+			<hr />
+			<PaddingControl
+				{...defaultAttrs}
+				onChange={onChange}
+				breakpoint={breakpoint}
+				noResponsiveTabs
+			/>
 		</>
 	);
 };
 
-export const BlockDefaults = ({ SC, breakpoint, onChangeValue }) => (
-	<SettingTabsControl
-		disablePadding
-		className='maxi-style-cards-advanced-globals-tabs'
-		items={blockDefaultBlocks.map(blockName => ({
-			label: formatBlockLabel(blockName),
-			key: blockName,
-			content: (
-				<BlockDefaultsControls
+const BlockDefaultRowSpacingControls = ({
+	SC,
+	blockName,
+	onChange,
+	breakpoint,
+}) => {
+	const defaultAttrs = getBlockDefaultAttributes(SC, blockName);
+
+	return (
+		<>
+			<FlexGapControl
+				{...defaultAttrs}
+				onChange={onChange}
+				breakpoint={breakpoint}
+			/>
+			<FlexWrapControl
+				{...defaultAttrs}
+				onChange={onChange}
+				breakpoint={breakpoint}
+			/>
+		</>
+	);
+};
+
+const addBlockDefaultPrefix = (blockName, values) => {
+	const inlineUnit = values?.meta?.inline?.unit;
+
+	return Object.entries(values).reduce((acc, [key, value]) => {
+		if (
+			key === 'meta' ||
+			key === 'isReset' ||
+			key === SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES
+		) {
+			return acc;
+		}
+
+		acc[getBlockDefaultKey(blockName, key)] = value;
+
+		const unitAttribute = inlineUnit ? getUnitAttribute(key) : null;
+
+		if (
+			unitAttribute &&
+			!Object.prototype.hasOwnProperty.call(values, unitAttribute)
+		) {
+			acc[getBlockDefaultKey(blockName, unitAttribute)] = inlineUnit;
+		}
+
+		return acc;
+	}, {});
+};
+
+const getBlockDefaultHeightWidthItems = ({
+	blockName,
+	SC,
+	breakpoint,
+	onChange,
+}) => [
+	{
+		label: __('Height / Width', 'maxi-blocks'),
+		content: (
+			<FullSizeControl
+				{...getBlockDefaultAttributes(SC, blockName)}
+				onChange={onChange}
+				breakpoint={breakpoint}
+			/>
+		),
+	},
+	{
+		label: __('Margin / Padding', 'maxi-blocks'),
+		content: (
+			<ResponsiveTabsControl breakpoint={breakpoint}>
+				<BlockDefaultMarginPaddingControls
 					SC={SC}
-					breakpoint={breakpoint}
-					onChangeValue={onChangeValue}
 					blockName={blockName}
+					onChange={onChange}
+					breakpoint={breakpoint}
 				/>
-			),
-		}))}
-	/>
-);
+			</ResponsiveTabsControl>
+		),
+	},
+];
+
+const getRowLayoutItems = ({
+	blockName,
+	SC,
+	breakpoint,
+	onChange,
+}) => [
+	...getBlockDefaultHeightWidthItems({
+		blockName,
+		SC,
+		breakpoint,
+		onChange,
+	}),
+	{
+		label: __('Row spacing', 'maxi-blocks'),
+		content: (
+			<ResponsiveTabsControl breakpoint={breakpoint}>
+				<BlockDefaultRowSpacingControls
+					SC={SC}
+					blockName={blockName}
+					onChange={onChange}
+					breakpoint={breakpoint}
+				/>
+			</ResponsiveTabsControl>
+		),
+	},
+];
 
 const ColourPaletteControls = ({
 	SC,
@@ -696,42 +712,89 @@ export const DarkToneOverrides = ({ enabled, onChange, children }) => (
 const BlockDefaultsWithOverrides = ({
 	styleCard,
 	breakpoint,
+	blockName,
 	onChangeValue,
 	onChangeDarkToneOverride,
+	showDarkToneOverrides = false,
 }) => {
 	const lightSC = styleCard?.light;
-	const darkSC = styleCard?.dark;
-	const isDarkOverrideEnabled = hasDarkToneStyleOverride(
-		styleCard,
-		BLOCK_DEFAULTS_GROUP
-	);
 	const lightOnChangeValue = (obj, type) =>
-		onChangeValue(obj, type, { SCStyle: 'light' });
+		onChangeValue(obj, type, {
+			SCStyle: 'light',
+			group: blockName,
+			forceSyncedTones: !showDarkToneOverrides,
+		});
 	const darkOnChangeValue = (obj, type) =>
 		onChangeValue(obj, type, {
 			SCStyle: 'dark',
+			group: blockName,
 			forceToneOnly: true,
 		});
+	const lightOnChange = values => {
+		const prefixedValues = addBlockDefaultPrefix(blockName, values);
+
+		debugSCBlockDefaults('advanced globals change', {
+			blockName,
+			breakpoint,
+			tone: 'light',
+			values,
+			prefixedValues,
+		});
+
+		lightOnChangeValue(prefixedValues, BLOCK_DEFAULTS_GROUP);
+	};
+	const darkOnChange = values => {
+		const prefixedValues = addBlockDefaultPrefix(blockName, values);
+
+		debugSCBlockDefaults('advanced globals change', {
+			blockName,
+			breakpoint,
+			tone: 'dark',
+			values,
+			prefixedValues,
+		});
+
+		darkOnChangeValue(prefixedValues, BLOCK_DEFAULTS_GROUP);
+	};
+	const getControls = (currentSC, onChangeHandler) => {
+		const controlProps = {
+			blockName,
+			SC: currentSC,
+			breakpoint,
+			onChange: onChangeHandler,
+		};
+
+		return blockName === 'row-maxi'
+			? getRowLayoutItems(controlProps)
+			: getBlockDefaultHeightWidthItems(controlProps);
+	};
 
 	return (
 		<>
-			<BlockDefaults
-				SC={lightSC}
-				breakpoint={breakpoint}
-				onChangeValue={lightOnChangeValue}
+			<AccordionControl
+				className='maxi-style-cards-advanced-globals__sections'
+				isSecondary
+				isStyleCard
+				items={getControls(lightSC, lightOnChange)}
 			/>
-			<DarkToneOverrides
-				enabled={isDarkOverrideEnabled}
-				onChange={value =>
-					onChangeDarkToneOverride(BLOCK_DEFAULTS_GROUP, value)
-				}
-			>
-				<BlockDefaults
-					SC={darkSC}
-					breakpoint={breakpoint}
-					onChangeValue={darkOnChangeValue}
-				/>
-			</DarkToneOverrides>
+			{showDarkToneOverrides && (
+				<DarkToneOverrides
+					enabled={hasDarkToneStyleOverride(
+						styleCard,
+						blockName
+					)}
+					onChange={value =>
+						onChangeDarkToneOverride(blockName, value)
+					}
+				>
+					<AccordionControl
+						className='maxi-style-cards-advanced-globals__sections'
+						isSecondary
+						isStyleCard
+						items={getControls(styleCard?.dark, darkOnChange)}
+					/>
+				</DarkToneOverrides>
+			)}
 		</>
 	);
 };
@@ -741,33 +804,45 @@ export const MaxiStyleCardsAdvancedTab = ({
 	breakpoint,
 	onChangeValue,
 	onChangeDarkToneOverride,
-}) => (
-	<div className='maxi-tab-content__box maxi-style-cards-advanced-globals'>
-		<AccordionControl
-			key='sc-accordion__advanced-block-defaults'
-			isSecondary
-			isStyleCard
-			items={[
-				{
-					label: __('Block defaults', 'maxi-blocks'),
-					classNameItem: 'maxi-blocks-sc__type--block-defaults',
-					content: (
-						<ResponsiveTabsControl breakpoint={breakpoint}>
-							<BlockDefaultsWithOverrides
-								styleCard={styleCard}
-								breakpoint={breakpoint}
-								onChangeValue={onChangeValue}
-								onChangeDarkToneOverride={
-									onChangeDarkToneOverride
-								}
-							/>
-						</ResponsiveTabsControl>
-					),
-				},
-			]}
-		/>
-	</div>
-);
+}) => {
+	const blockDefaultItems = [
+		{
+			label: __('Container layout', 'maxi-blocks'),
+			blockName: 'container-maxi',
+			classNameItem: 'maxi-blocks-sc__type--container',
+		},
+		{
+			label: __('Row layout', 'maxi-blocks'),
+			blockName: 'row-maxi',
+			classNameItem: 'maxi-blocks-sc__type--row',
+		},
+	].map(({ label, blockName, classNameItem }) => ({
+		label,
+		classNameItem,
+		content: (
+			<BlockDefaultsWithOverrides
+				styleCard={styleCard}
+				breakpoint={breakpoint}
+				blockName={blockName}
+				onChangeValue={onChangeValue}
+				onChangeDarkToneOverride={onChangeDarkToneOverride}
+				showDarkToneOverrides={false}
+			/>
+		),
+	}));
+
+	return (
+		<div className='maxi-tab-content__box maxi-style-cards-advanced-globals'>
+			<AccordionControl
+				className='maxi-style-cards-advanced-globals__blocks'
+				key='sc-accordion__advanced-block-defaults'
+				isSecondary
+				isStyleCard
+				items={blockDefaultItems}
+			/>
+		</div>
+	);
+};
 
 const MaxiStyleCardsTab = ({
 	styleCard,
@@ -778,8 +853,16 @@ const MaxiStyleCardsTab = ({
 	onChangeStyleSettingsSyncStatus,
 }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
+	const [
+		isStyleSettingsSyncInfoVisible,
+		setIsStyleSettingsSyncInfoVisible,
+	] = useState(false);
 	const lightSC = styleCard?.light;
 	const darkSC = styleCard?.dark;
+	const styleSettingsSyncDescription = __(
+		'Fonts, sizes, spacing and other non-colour settings will be shared between both tones. Colours can still be edited separately.',
+		'maxi-blocks'
+	);
 	const lightOnChangeValue = (obj, type) =>
 		onChangeValue(obj, type, { SCStyle: 'light' });
 	const darkOnChangeValue = (obj, type) =>
@@ -1266,19 +1349,40 @@ const MaxiStyleCardsTab = ({
 	return (
 		<div className='maxi-tab-content__box'>
 			{onChangeStyleSettingsSyncStatus && (
-				<ToggleSwitch
-					className='maxi-style-cards__sync-style-settings'
-					label={__(
-						'Sync style settings between light and dark tones',
-						'maxi-blocks'
+				<>
+					<div className='maxi-style-cards__sync-style-settings-row'>
+						<ToggleSwitch
+							className='maxi-style-cards__sync-style-settings'
+							label={__(
+								'Sync style settings between light and dark tones',
+								'maxi-blocks'
+							)}
+							selected={isStyleSettingsSyncSelected}
+							onChange={onChangeStyleSettingsSyncStatus}
+						/>
+						<button
+							type='button'
+							className='block-info-icon maxi-style-cards__sync-style-settings-info-button'
+							aria-expanded={isStyleSettingsSyncInfoVisible}
+							aria-label={__(
+								'Show sync style settings help',
+								'maxi-blocks'
+							)}
+							onClick={() =>
+								setIsStyleSettingsSyncInfoVisible(
+									isVisible => !isVisible
+								)
+							}
+						>
+							<span className='block-info-icon-span'>i</span>
+						</button>
+					</div>
+					{isStyleSettingsSyncInfoVisible && (
+						<p className='maxi-style-cards__sync-style-settings-help'>
+							{styleSettingsSyncDescription}
+						</p>
 					)}
-					help={__(
-						'Fonts, sizes, spacing and other non-colour settings will be shared between both tones. Colours can still be edited separately.',
-						'maxi-blocks'
-					)}
-					selected={isStyleSettingsSyncSelected}
-					onChange={onChangeStyleSettingsSyncStatus}
-				/>
+				</>
 			)}
 			<AccordionControl
 				key='sc-accordion__quick-color-presets'

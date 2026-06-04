@@ -341,7 +341,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const toneKeys = getStyleCardToneKeysForChange({
 			currentSCStyle: activeSCStyle,
 			forceToneOnly: options.forceToneOnly,
+			forceSyncedTones: options.forceSyncedTones,
 			type,
+			group: options.group,
 			styleCard: selectedSCValue,
 		});
 
@@ -377,8 +379,31 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				...newSC,
 			},
 		};
+		const getBlockDefaultsSummary = tone =>
+			Object.entries(newSC?.[tone]?.styleCard?.blockDefaults ?? {})
+				.filter(
+					([key]) =>
+						!options.group || key.startsWith(`${options.group}|`)
+				)
+				.slice(0, 40)
+				.map(([key, value]) => `${key}=${value}`);
+
 		debugSCBlockDefaults('editor onChangeValue result', {
 			type,
+			activeSCStyle,
+			toneKeys,
+			group: options.group,
+			changedKeys: Object.keys(newObj),
+			toneBlockDefaultSummary:
+				type === BLOCK_DEFAULTS_GROUP
+					? toneKeys.reduce(
+							(acc, tone) => ({
+								...acc,
+								[tone]: getBlockDefaultsSummary(tone),
+							}),
+							{}
+					  )
+					: undefined,
 			newObj,
 			styleCardBlockDefaults:
 				newSC?.[activeSCStyle]?.styleCard?.blockDefaults,

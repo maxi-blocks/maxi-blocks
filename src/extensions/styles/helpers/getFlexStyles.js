@@ -6,6 +6,7 @@ import { isNil, isEmpty } from 'lodash';
  * Internal dependencies
  */
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
+import { getSCBlockDefaultStyleValue } from '@extensions/style-cards/blockDefaults';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
@@ -14,6 +15,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getFlexStyles = (obj, prefix = '') => {
 	const response = {};
+	const scBlockDefaults = obj.__scBlockDefaults || {};
 	breakpoints.forEach(breakpoint => {
 		let flexBasis = getLastBreakpointAttribute({
 			target: `${prefix}flex-basis`,
@@ -86,6 +88,17 @@ const getFlexStyles = (obj, prefix = '') => {
 			attributes: obj,
 		});
 
+		const rowGapUnit = getLastBreakpointAttribute({
+			target: `${prefix}row-gap-unit`,
+			breakpoint,
+			attributes: obj,
+		});
+		const columnGapUnit = getLastBreakpointAttribute({
+			target: `${prefix}column-gap-unit`,
+			breakpoint,
+			attributes: obj,
+		});
+
 		response[breakpoint] = {
 			...((flexBasis || flexGrow || flexShrink) && {
 				flex: `${flexGrow || 0} ${flexShrink || 1} ${
@@ -93,7 +106,13 @@ const getFlexStyles = (obj, prefix = '') => {
 				}`,
 			}),
 			...(!isNil(flexWrap) && {
-				'flex-wrap': flexWrap,
+				'flex-wrap': getSCBlockDefaultStyleValue({
+					scBlockDefaults,
+					prefix,
+					target: 'flex-wrap',
+					breakpoint,
+					fallbackValue: flexWrap,
+				}),
 			}),
 			...(!isNil(flexOrder) && {
 				order: flexOrder,
@@ -111,18 +130,22 @@ const getFlexStyles = (obj, prefix = '') => {
 				'align-content': alignContent,
 			}),
 			...(!isNil(rowGapProps) && {
-				'row-gap': `${rowGapProps}${getLastBreakpointAttribute({
-					target: `${prefix}row-gap-unit`,
+				'row-gap': getSCBlockDefaultStyleValue({
+					scBlockDefaults,
+					prefix,
+					target: 'row-gap',
 					breakpoint,
-					attributes: obj,
-				})}`,
+					fallbackValue: `${rowGapProps}${rowGapUnit}`,
+				}),
 			}),
 			...(!isNil(columnGap) && {
-				'column-gap': `${columnGap}${getLastBreakpointAttribute({
-					target: `${prefix}column-gap-unit`,
+				'column-gap': getSCBlockDefaultStyleValue({
+					scBlockDefaults,
+					prefix,
+					target: 'column-gap',
 					breakpoint,
-					attributes: obj,
-				})}`,
+					fallbackValue: `${columnGap}${columnGapUnit}`,
+				}),
 			}),
 		};
 

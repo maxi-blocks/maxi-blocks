@@ -3,6 +3,7 @@
  */
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import { isValidNumber } from '@extensions/styles/utils';
+import { getSCBlockDefaultStyleValue } from '@extensions/style-cards/blockDefaults';
 
 /**
  * General
@@ -12,6 +13,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 	const keyWords = ['top', 'right', 'bottom', 'left'];
 	const response = {};
+	const scBlockDefaults = obj.__scBlockDefaults || {};
 
 	for (const breakpoint of breakpoints) {
 		response[breakpoint] = {};
@@ -47,10 +49,19 @@ const getMarginPaddingStyles = ({ obj, prefix = '' }) => {
 							? lastUnit || unit
 							: unit || lastUnit;
 
-						response[breakpoint][`${type}-${key}`] =
+						const fallbackValue =
 							useValue === 'auto'
 								? 'auto'
 								: `${useValue}${useUnit}`;
+
+						response[breakpoint][`${type}-${key}`] =
+							getSCBlockDefaultStyleValue({
+								scBlockDefaults,
+								prefix,
+								target: `${type}-${key}`,
+								breakpoint,
+								fallbackValue,
+							});
 					}
 				}
 

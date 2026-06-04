@@ -28,6 +28,13 @@ import {
 } from '@extensions/styles';
 import { setSVGColor } from '@extensions/svg';
 
+const ListOptionsSeparator = () => (
+	<hr
+		aria-hidden='true'
+		className='maxi-text-inspector__list-options-separator'
+	/>
+);
+
 const ListOptionsControl = props => {
 	const {
 		attributes,
@@ -137,590 +144,6 @@ const ListOptionsControl = props => {
 
 	return (
 		<>
-			<SelectControl
-				__nextHasNoMarginBottom
-				label={__('List style position', 'maxi-blocks')}
-				className='maxi-text-inspector__list-style-position'
-				value={getLastBreakpointAttribute({
-					target: 'list-style-position',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				defaultValue={getDefaultAttribute(
-					`list-style-position-${deviceType}`
-				)}
-				onReset={() =>
-					maxiSetAttributes({
-						[`list-style-position-${deviceType}`]:
-							getDefaultAttribute(
-								`list-style-position-${deviceType}`
-							),
-						isReset: true,
-					})
-				}
-				options={[
-					{
-						label: __('Inside', 'maxi-blocks'),
-						value: 'inside',
-					},
-					{
-						label: __('Outside', 'maxi-blocks'),
-						value: 'outside',
-					},
-				]}
-				onChange={val =>
-					maxiSetAttributes({
-						[`list-style-position-${deviceType}`]: val,
-					})
-				}
-			/>
-			<AdvancedNumberControl
-				label={__('Text indent', 'maxi-blocks')}
-				className='maxi-text-inspector__list-indent'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-indent',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-indent-${deviceType}`]}
-				onChangeValue={(val, meta) =>
-					maxiSetAttributes({
-						[`list-indent-${deviceType}`]: val,
-						meta,
-					})
-				}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-indent-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				minMaxSettings={{
-					px: {
-						min: -999,
-						max: 999,
-					},
-					em: {
-						min: -99,
-						max: 99,
-					},
-					vw: {
-						min: -99,
-						max: 99,
-					},
-					'%': {
-						min: -100,
-						max: 100,
-					},
-				}}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-indent-unit-${deviceType}`]: val,
-					})
-				}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-indent-${deviceType}`]: getDefaultAttribute(
-							`list-indent-${deviceType}`
-						),
-						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
-							`list-indent-unit-${deviceType}`
-						),
-						isReset: true,
-					});
-				}}
-			/>
-			<AdvancedNumberControl
-				label={__('List gap', 'maxi-blocks')}
-				className='maxi-text-inspector__list-gap'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-gap',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-gap-${deviceType}`]}
-				onChangeValue={(val, meta) =>
-					maxiSetAttributes({
-						[`list-gap-${deviceType}`]: val,
-						meta,
-					})
-				}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-gap-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				minMaxSettings={{
-					px: {
-						min: 0,
-						max: 999,
-						step: 1,
-					},
-					em: {
-						min: 0,
-						max: 99,
-						step: 1,
-					},
-					vw: {
-						min: 0,
-						max: 99,
-						step: 1,
-					},
-					'%': {
-						min: 0,
-						max: 100,
-						step: 1,
-					},
-				}}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-gap-unit-${deviceType}`]: val,
-					})
-				}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-gap-${deviceType}`]: getDefaultAttribute(
-							`list-gap-${deviceType}`
-						),
-						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
-							`list-gap-unit-${deviceType}`
-						),
-						isReset: true,
-					});
-				}}
-			/>
-			<AdvancedNumberControl
-				label={__('Paragraph spacing', 'maxi-blocks')}
-				className='maxi-text-inspector__list-paragraph-spacing'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-paragraph-spacing',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-paragraph-spacing-${deviceType}`]}
-				onChangeValue={(val, meta) => {
-					maxiSetAttributes({
-						[`list-paragraph-spacing-${deviceType}`]: val,
-						meta,
-					});
-				}}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-paragraph-spacing-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				minMaxSettings={{
-					px: {
-						min: 0,
-						max: 999,
-						step: 1,
-					},
-					em: {
-						min: 0,
-						max: 99,
-						step: 1,
-					},
-					vw: {
-						min: 0,
-						max: 99,
-						step: 1,
-					},
-					'%': {
-						min: 0,
-						max: 100,
-						step: 1,
-					},
-				}}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-paragraph-spacing-unit-${deviceType}`]: val,
-					})
-				}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-paragraph-spacing-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-${deviceType}`
-							),
-						[`list-paragraph-spacing-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-paragraph-spacing-unit-${deviceType}`
-							),
-						isReset: true,
-					});
-				}}
-			/>
-			<AdvancedNumberControl
-				label={
-					isSVGMarker
-						? __('Marker width', 'maxi-blocks')
-						: __('Marker size', 'maxi-blocks')
-				}
-				className='maxi-text-inspector__list-marker-size'
-				value={getLastBreakpointAttribute({
-					target: 'list-marker-size',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeValue={(val, meta) => {
-					maxiSetAttributes({
-						[`list-marker-size-${deviceType}`]:
-							val !== undefined && val !== '' ? val : '',
-						meta,
-					});
-				}}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-marker-size-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeUnit={val => {
-					maxiSetAttributes({
-						[`list-marker-size-unit-${deviceType}`]: val,
-					});
-				}}
-				breakpoint={deviceType}
-				minMaxSettings={{
-					px: {
-						min: 0,
-						max: 999,
-					},
-					em: {
-						min: 0,
-						max: 99,
-					},
-					vw: {
-						min: 0,
-						max: 99,
-					},
-					'%': {
-						min: 0,
-						max: 999,
-					},
-				}}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
-							`list-marker-size-${deviceType}`
-						),
-						[`list-marker-size-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-size-unit-${deviceType}`
-							),
-						isReset: true,
-					});
-				}}
-			/>
-			{isSVGMarker && (
-				<AdvancedNumberControl
-					label={__('Marker height', 'maxi-blocks')}
-					className='maxi-text-inspector__list-marker-height'
-					placeholder={getLastBreakpointAttribute({
-						target: 'list-marker-height',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					value={attributes[`list-marker-height-${deviceType}`]}
-					onChangeValue={(val, meta) =>
-						maxiSetAttributes({
-							[`list-marker-height-${deviceType}`]: val,
-							meta,
-						})
-					}
-					enableUnit
-					unit={getLastBreakpointAttribute({
-						target: 'list-marker-height-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}
-					onChangeUnit={val =>
-						maxiSetAttributes({
-							[`list-marker-height-unit-${deviceType}`]: val,
-						})
-					}
-					onReset={() => {
-						maxiSetAttributes({
-							[`list-marker-height-${deviceType}`]:
-								getDefaultAttribute(
-									`list-marker-height-${deviceType}`
-								),
-							[`list-marker-height-unit-${deviceType}`]:
-								getDefaultAttribute(
-									`list-marker-height-unit-${deviceType}`
-								),
-							isReset: true,
-						});
-					}}
-					allowedUnits={['px', 'em', 'vw', '%']}
-				/>
-			)}
-			<AdvancedNumberControl
-				label={__('Marker line-height', 'maxi-blocks')}
-				className='maxi-text-inspector__list-marker-line-height'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-marker-line-height',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-marker-line-height-${deviceType}`]}
-				onChangeValue={(val, meta) =>
-					maxiSetAttributes({
-						[`list-marker-line-height-${deviceType}`]: val,
-						meta,
-					})
-				}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-marker-line-height-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-marker-line-height-unit-${deviceType}`]: val,
-					})
-				}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-line-height-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-${deviceType}`
-							),
-						[`list-marker-line-height-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-line-height-unit-${deviceType}`
-							),
-						isReset: true,
-					});
-				}}
-				allowedUnits={['px', 'em', 'vw', '%', '-']}
-			/>
-			<AdvancedNumberControl
-				label={__('Marker vertical offset', 'maxi-blocks')}
-				className='maxi-text-inspector__list-marker-offset'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-marker-vertical-offset',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-marker-vertical-offset-${deviceType}`]}
-				onChangeValue={(val, meta) =>
-					maxiSetAttributes({
-						[`list-marker-vertical-offset-${deviceType}`]: val,
-						meta,
-					})
-				}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-marker-vertical-offset-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-marker-vertical-offset-unit-${deviceType}`]: val,
-					})
-				}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-vertical-offset-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-vertical-offset-${deviceType}`
-							),
-						[`list-marker-vertical-offset-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-vertical-offset-unit-${deviceType}`
-							),
-						isReset: true,
-					});
-				}}
-				minMaxSettings={{
-					px: {
-						min: -999,
-						max: 999,
-					},
-					em: {
-						min: -99,
-						max: 99,
-					},
-					vw: {
-						min: -99,
-						max: 99,
-					},
-					'%': {
-						min: -100,
-						max: 100,
-					},
-				}}
-			/>
-			<AdvancedNumberControl
-				label={__('Marker indent', 'maxi-blocks')}
-				className='maxi-text-inspector__list-marker-indent'
-				placeholder={getLastBreakpointAttribute({
-					target: 'list-marker-indent',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				value={attributes[`list-marker-indent-${deviceType}`]}
-				onChangeValue={(val, meta) =>
-					maxiSetAttributes({
-						[`list-marker-indent-${deviceType}`]: val,
-						meta,
-					})
-				}
-				enableUnit
-				unit={getLastBreakpointAttribute({
-					target: 'list-marker-indent-unit',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				onChangeUnit={val =>
-					maxiSetAttributes({
-						[`list-marker-indent-unit-${deviceType}`]: val,
-					})
-				}
-				breakpoint={deviceType}
-				minMaxSettings={{
-					px: {
-						min: -999,
-						max: 999,
-					},
-					em: {
-						min: -99,
-						max: 99,
-					},
-					vw: {
-						min: -99,
-						max: 99,
-					},
-					'%': {
-						min: -100,
-						max: 100,
-					},
-				}}
-				onReset={() => {
-					maxiSetAttributes({
-						[`list-marker-indent-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-${deviceType}`
-							),
-						[`list-marker-indent-unit-${deviceType}`]:
-							getDefaultAttribute(
-								`list-marker-indent-unit-${deviceType}`
-							),
-						isReset: true,
-					});
-				}}
-			/>
-			{deviceType === 'general' && (
-				<ColorControl
-					label={__('Marker', 'maxi-blocks')}
-					color={attributes['list-color']}
-					paletteStatus={attributes['list-palette-status']}
-					paletteSCStatus={attributes['list-palette-sc-status']}
-					paletteColor={attributes['list-palette-color']}
-					paletteOpacity={attributes['list-palette-opacity']}
-					prefix='list-'
-					avoidBreakpointForDefault
-					onChangeInline={({ color }) =>
-						insertInlineStyles({
-							obj: { color },
-							target: 'li',
-							isMultiplySelector: false,
-							pseudoElement: '::before',
-						})
-					}
-					onChange={({
-						paletteStatus,
-						paletteSCStatus,
-						paletteColor,
-						paletteOpacity,
-						color,
-					}) => {
-						const colorStr = paletteStatus
-							? getColorRGBAString({
-									firstVar: `color-${paletteColor}`,
-									opacity: paletteOpacity,
-									blockStyle,
-							  })
-							: color;
-
-						maxiSetAttributes({
-							'list-palette-status': paletteStatus,
-							'list-palette-sc-status': paletteSCStatus,
-							'list-palette-color': paletteColor,
-							'list-palette-opacity': paletteOpacity,
-							'list-color': color,
-							...(listStyleCustom?.includes('<svg ') && {
-								listStyleCustom: setSVGColor({
-									svg: listStyleCustom,
-									color: colorStr,
-									type: 'fill',
-								}),
-							}),
-						});
-						cleanInlineStyles('li', '::before');
-					}}
-				/>
-			)}
-			<SelectControl
-				__nextHasNoMarginBottom
-				label={__('Text position', 'maxi-blocks')}
-				className='maxi-text-inspector__list-style'
-				value={getLastBreakpointAttribute({
-					target: 'list-text-position',
-					breakpoint: deviceType,
-					attributes,
-				})}
-				defaultValue={getDefaultAttribute(
-					`list-text-position-${deviceType}`
-				)}
-				onReset={() =>
-					maxiSetAttributes({
-						[`list-text-position-${deviceType}`]:
-							getDefaultAttribute(
-								`list-text-position-${deviceType}`
-							),
-						isReset: true,
-					})
-				}
-				options={[
-					{
-						label: __('Baseline', 'maxi-blocks'),
-						value: 'baseline',
-					},
-					{ label: __('Sub', 'maxi-blocks'), value: 'sub' },
-					{
-						label: __('Super', 'maxi-blocks'),
-						value: 'super',
-					},
-					{ label: __('Top', 'maxi-blocks'), value: 'top' },
-					{
-						label: __('Text-top', 'maxi-blocks'),
-						value: 'text-top',
-					},
-					{
-						label: __('Middle', 'maxi-blocks'),
-						value: 'middle',
-					},
-					{
-						label: __('Bottom', 'maxi-blocks'),
-						value: 'bottom',
-					},
-					{
-						label: __('Text-bottom', 'maxi-blocks'),
-						value: 'text-bottom',
-					},
-				]}
-				onChange={val =>
-					maxiSetAttributes({
-						[`list-text-position-${deviceType}`]: val,
-					})
-				}
-			/>
 			{deviceType === 'general' && (
 				<SelectControl
 					__nextHasNoMarginBottom
@@ -936,6 +359,593 @@ const ListOptionsControl = props => {
 					)}
 				</>
 			)}
+			{deviceType === 'general' && <ListOptionsSeparator />}
+			{deviceType === 'general' && (
+				<ColorControl
+					label={__('Marker', 'maxi-blocks')}
+					color={attributes['list-color']}
+					paletteStatus={attributes['list-palette-status']}
+					paletteSCStatus={attributes['list-palette-sc-status']}
+					paletteColor={attributes['list-palette-color']}
+					paletteOpacity={attributes['list-palette-opacity']}
+					prefix='list-'
+					avoidBreakpointForDefault
+					onChangeInline={({ color }) =>
+						insertInlineStyles({
+							obj: { color },
+							target: 'li',
+							isMultiplySelector: false,
+							pseudoElement: '::before',
+						})
+					}
+					onChange={({
+						paletteStatus,
+						paletteSCStatus,
+						paletteColor,
+						paletteOpacity,
+						color,
+					}) => {
+						const colorStr = paletteStatus
+							? getColorRGBAString({
+									firstVar: `color-${paletteColor}`,
+									opacity: paletteOpacity,
+									blockStyle,
+							  })
+							: color;
+
+						maxiSetAttributes({
+							'list-palette-status': paletteStatus,
+							'list-palette-sc-status': paletteSCStatus,
+							'list-palette-color': paletteColor,
+							'list-palette-opacity': paletteOpacity,
+							'list-color': color,
+							...(listStyleCustom?.includes('<svg ') && {
+								listStyleCustom: setSVGColor({
+									svg: listStyleCustom,
+									color: colorStr,
+									type: 'fill',
+								}),
+							}),
+						});
+						cleanInlineStyles('li', '::before');
+					}}
+				/>
+			)}
+			<AdvancedNumberControl
+				label={
+					isSVGMarker
+						? __('Marker width', 'maxi-blocks')
+						: __('Marker size', 'maxi-blocks')
+				}
+				className='maxi-text-inspector__list-marker-size'
+				value={getLastBreakpointAttribute({
+					target: 'list-marker-size',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeValue={(val, meta) => {
+					maxiSetAttributes({
+						[`list-marker-size-${deviceType}`]:
+							val !== undefined && val !== '' ? val : '',
+						meta,
+					});
+				}}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-size-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val => {
+					maxiSetAttributes({
+						[`list-marker-size-unit-${deviceType}`]: val,
+					});
+				}}
+				breakpoint={deviceType}
+				minMaxSettings={{
+					px: {
+						min: 0,
+						max: 999,
+					},
+					em: {
+						min: 0,
+						max: 99,
+					},
+					vw: {
+						min: 0,
+						max: 99,
+					},
+					'%': {
+						min: 0,
+						max: 999,
+					},
+				}}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-size-${deviceType}`]: getDefaultAttribute(
+							`list-marker-size-${deviceType}`
+						),
+						[`list-marker-size-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-size-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+			/>
+			{isSVGMarker && (
+				<AdvancedNumberControl
+					label={__('Marker height', 'maxi-blocks')}
+					className='maxi-text-inspector__list-marker-height'
+					placeholder={getLastBreakpointAttribute({
+						target: 'list-marker-height',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					value={attributes[`list-marker-height-${deviceType}`]}
+					onChangeValue={(val, meta) =>
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]: val,
+							meta,
+						})
+					}
+					enableUnit
+					unit={getLastBreakpointAttribute({
+						target: 'list-marker-height-unit',
+						breakpoint: deviceType,
+						attributes,
+					})}
+					onChangeUnit={val =>
+						maxiSetAttributes({
+							[`list-marker-height-unit-${deviceType}`]: val,
+						})
+					}
+					onReset={() => {
+						maxiSetAttributes({
+							[`list-marker-height-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-${deviceType}`
+								),
+							[`list-marker-height-unit-${deviceType}`]:
+								getDefaultAttribute(
+									`list-marker-height-unit-${deviceType}`
+								),
+							isReset: true,
+						});
+					}}
+					allowedUnits={['px', 'em', 'vw', '%']}
+				/>
+			)}
+			<ListOptionsSeparator />
+			<SelectControl
+				__nextHasNoMarginBottom
+				label={__('List style position', 'maxi-blocks')}
+				className='maxi-text-inspector__list-style-position'
+				value={getLastBreakpointAttribute({
+					target: 'list-style-position',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				defaultValue={getDefaultAttribute(
+					`list-style-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-style-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-style-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
+				options={[
+					{
+						label: __('Inside', 'maxi-blocks'),
+						value: 'inside',
+					},
+					{
+						label: __('Outside', 'maxi-blocks'),
+						value: 'outside',
+					},
+				]}
+				onChange={val =>
+					maxiSetAttributes({
+						[`list-style-position-${deviceType}`]: val,
+					})
+				}
+			/>
+			<AdvancedNumberControl
+				label={__('Marker indent', 'maxi-blocks')}
+				className='maxi-text-inspector__list-marker-indent'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-marker-indent',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-marker-indent-${deviceType}`]}
+				onChangeValue={(val, meta) =>
+					maxiSetAttributes({
+						[`list-marker-indent-${deviceType}`]: val,
+						meta,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-indent-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-marker-indent-unit-${deviceType}`]: val,
+					})
+				}
+				breakpoint={deviceType}
+				minMaxSettings={{
+					px: {
+						min: -999,
+						max: 999,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-indent-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-indent-${deviceType}`
+							),
+						[`list-marker-indent-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-indent-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+			/>
+			<AdvancedNumberControl
+				label={__('Marker vertical offset', 'maxi-blocks')}
+				className='maxi-text-inspector__list-marker-offset'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-marker-vertical-offset-${deviceType}`]}
+				onChangeValue={(val, meta) =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]: val,
+						meta,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-vertical-offset-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-vertical-offset-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-${deviceType}`
+							),
+						[`list-marker-vertical-offset-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-vertical-offset-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+				minMaxSettings={{
+					px: {
+						min: -999,
+						max: 999,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+			/>
+			<AdvancedNumberControl
+				label={__('Marker line-height', 'maxi-blocks')}
+				className='maxi-text-inspector__list-marker-line-height'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-marker-line-height',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-marker-line-height-${deviceType}`]}
+				onChangeValue={(val, meta) =>
+					maxiSetAttributes({
+						[`list-marker-line-height-${deviceType}`]: val,
+						meta,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-marker-line-height-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-marker-line-height-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-marker-line-height-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-line-height-${deviceType}`
+							),
+						[`list-marker-line-height-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-marker-line-height-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+				allowedUnits={['px', 'em', 'vw', '%', '-']}
+			/>
+			<SelectControl
+				__nextHasNoMarginBottom
+				label={__('Text position', 'maxi-blocks')}
+				className='maxi-text-inspector__list-text-position'
+				value={getLastBreakpointAttribute({
+					target: 'list-text-position',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				defaultValue={getDefaultAttribute(
+					`list-text-position-${deviceType}`
+				)}
+				onReset={() =>
+					maxiSetAttributes({
+						[`list-text-position-${deviceType}`]:
+							getDefaultAttribute(
+								`list-text-position-${deviceType}`
+							),
+						isReset: true,
+					})
+				}
+				options={[
+					{
+						label: __('Baseline', 'maxi-blocks'),
+						value: 'baseline',
+					},
+					{ label: __('Sub', 'maxi-blocks'), value: 'sub' },
+					{
+						label: __('Super', 'maxi-blocks'),
+						value: 'super',
+					},
+					{ label: __('Top', 'maxi-blocks'), value: 'top' },
+					{
+						label: __('Text-top', 'maxi-blocks'),
+						value: 'text-top',
+					},
+					{
+						label: __('Middle', 'maxi-blocks'),
+						value: 'middle',
+					},
+					{
+						label: __('Bottom', 'maxi-blocks'),
+						value: 'bottom',
+					},
+					{
+						label: __('Text-bottom', 'maxi-blocks'),
+						value: 'text-bottom',
+					},
+				]}
+				onChange={val =>
+					maxiSetAttributes({
+						[`list-text-position-${deviceType}`]: val,
+					})
+				}
+			/>
+			<ListOptionsSeparator />
+			<AdvancedNumberControl
+				label={__('Text indent', 'maxi-blocks')}
+				className='maxi-text-inspector__list-indent'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-indent',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-indent-${deviceType}`]}
+				onChangeValue={(val, meta) =>
+					maxiSetAttributes({
+						[`list-indent-${deviceType}`]: val,
+						meta,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-indent-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				minMaxSettings={{
+					px: {
+						min: -999,
+						max: 999,
+					},
+					em: {
+						min: -99,
+						max: 99,
+					},
+					vw: {
+						min: -99,
+						max: 99,
+					},
+					'%': {
+						min: -100,
+						max: 100,
+					},
+				}}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-indent-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-indent-${deviceType}`]: getDefaultAttribute(
+							`list-indent-${deviceType}`
+						),
+						[`list-indent-unit-${deviceType}`]: getDefaultAttribute(
+							`list-indent-unit-${deviceType}`
+						),
+						isReset: true,
+					});
+				}}
+			/>
+			<AdvancedNumberControl
+				label={__('List gap', 'maxi-blocks')}
+				className='maxi-text-inspector__list-gap'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-gap',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-gap-${deviceType}`]}
+				onChangeValue={(val, meta) =>
+					maxiSetAttributes({
+						[`list-gap-${deviceType}`]: val,
+						meta,
+					})
+				}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-gap-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				minMaxSettings={{
+					px: {
+						min: 0,
+						max: 999,
+						step: 1,
+					},
+					em: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					vw: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					'%': {
+						min: 0,
+						max: 100,
+						step: 1,
+					},
+				}}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-gap-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-gap-${deviceType}`]: getDefaultAttribute(
+							`list-gap-${deviceType}`
+						),
+						[`list-gap-unit-${deviceType}`]: getDefaultAttribute(
+							`list-gap-unit-${deviceType}`
+						),
+						isReset: true,
+					});
+				}}
+			/>
+			<AdvancedNumberControl
+				label={__('Paragraph spacing', 'maxi-blocks')}
+				className='maxi-text-inspector__list-paragraph-spacing'
+				placeholder={getLastBreakpointAttribute({
+					target: 'list-paragraph-spacing',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				value={attributes[`list-paragraph-spacing-${deviceType}`]}
+				onChangeValue={(val, meta) => {
+					maxiSetAttributes({
+						[`list-paragraph-spacing-${deviceType}`]: val,
+						meta,
+					});
+				}}
+				enableUnit
+				unit={getLastBreakpointAttribute({
+					target: 'list-paragraph-spacing-unit',
+					breakpoint: deviceType,
+					attributes,
+				})}
+				minMaxSettings={{
+					px: {
+						min: 0,
+						max: 999,
+						step: 1,
+					},
+					em: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					vw: {
+						min: 0,
+						max: 99,
+						step: 1,
+					},
+					'%': {
+						min: 0,
+						max: 100,
+						step: 1,
+					},
+				}}
+				onChangeUnit={val =>
+					maxiSetAttributes({
+						[`list-paragraph-spacing-unit-${deviceType}`]: val,
+					})
+				}
+				onReset={() => {
+					maxiSetAttributes({
+						[`list-paragraph-spacing-${deviceType}`]:
+							getDefaultAttribute(
+								`list-paragraph-spacing-${deviceType}`
+							),
+						[`list-paragraph-spacing-unit-${deviceType}`]:
+							getDefaultAttribute(
+								`list-paragraph-spacing-unit-${deviceType}`
+							),
+						isReset: true,
+					});
+				}}
+			/>
 		</>
 	);
 };

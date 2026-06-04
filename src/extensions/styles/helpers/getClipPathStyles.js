@@ -9,6 +9,8 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
  */
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const hasUsableClipPath = clipPath => !!clipPath && clipPath !== 'none';
+
 /**
  *
  * @param {Object} obj Block clip-path properties
@@ -24,6 +26,26 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 			isHover,
 			breakpoint,
 		});
+		const isCurrentBreakpointDisabled =
+			!isHover &&
+			getAttributeValue({
+				target: 'clip-path-status',
+				props: obj,
+				isHover,
+				breakpoint,
+				returnValueWithoutBreakpoint: false,
+			}) === false;
+		const inheritedClipPath = isCurrentBreakpointDisabled
+			? getLastBreakpointAttribute({
+					target: 'clip-path',
+					breakpoint,
+					attributes: obj,
+					isHover,
+			  })
+			: null;
+		const shouldResetClipPath =
+			isCurrentBreakpointDisabled &&
+			hasUsableClipPath(inheritedClipPath || currentClipPath);
 
 		omitClipPath = omitClipPath
 			? !currentClipPath || currentClipPath === 'none'
@@ -31,7 +53,9 @@ const getClipPathStyles = ({ obj, isHover = false, isIB = false }) => {
 		if (omitClipPath) return;
 
 		response[breakpoint] = {
-			...(currentClipPath &&
+			...(shouldResetClipPath && { 'clip-path': 'none' }),
+			...(!shouldResetClipPath &&
+				currentClipPath &&
 				(isHover
 					? obj['clip-path-status-hover']
 					: getLastBreakpointAttribute({

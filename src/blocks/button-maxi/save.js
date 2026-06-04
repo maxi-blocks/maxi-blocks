@@ -9,6 +9,7 @@ import { RawHTML } from '@wordpress/element';
 import { Button } from '@components';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import getAreaLabel from './utils';
+import sanitizeLinkAttributes from '@extensions/link/sanitizeLinkAttributes';
 
 /**
  * External dependencies
@@ -42,9 +43,11 @@ const save = props => {
 
 	const isInlineLink = dcStatus && dcLinkStatus && dcContainsHTML;
 	const linkProps = {
-		...linkOpt,
 		href: dcStatus && dcLinkStatus ? '$link-to-replace' : linkOpt.url ?? '',
 		target: linkOpt.opensInNewTab ? '_blank' : '_self',
+		linkElement: linkOpt.linkElement,
+		title: linkOpt.title,
+		'aria-label': linkOpt.ariaLabel,
 		isInlineLink,
 	};
 
@@ -56,6 +59,11 @@ const save = props => {
 	if (relValues.length > 0) {
 		linkProps.rel = relValues.join(' ');
 	}
+	const sanitizedLinkProps = {
+		...sanitizeLinkAttributes(linkProps),
+		isInlineLink,
+	};
+	const hasLink = !isEmpty(sanitizedLinkProps.href);
 
 	const buttonClasses = classnames(
 		'maxi-button-block__button',
@@ -73,7 +81,7 @@ const save = props => {
 			<Button
 				className={buttonClasses}
 				{...(iconOnly && { 'aria-label': getAreaLabel(iconContent) })}
-				{...(!isEmpty(linkProps.href) && linkProps)}
+				{...(hasLink && sanitizedLinkProps)}
 				{...(ariaLabels.button && { 'aria-label': ariaLabels.button })}
 				{...(dcLinkTarget === 'author_email' && {
 					'data-email-obfuscated': true,

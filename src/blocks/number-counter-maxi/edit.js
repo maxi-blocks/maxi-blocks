@@ -45,6 +45,41 @@ class edit extends MaxiBlockComponent {
 
 	scProps = scProps;
 
+	/**
+	 * Strips legacy typography defaults (Roboto / 400 / 40) that predate
+	 * SC integration so SC CSS variables take over.  Intentional user
+	 * overrides (values that differ from the old defaults) are preserved.
+	 */
+	maxiBlockDidMount() {
+		const { attributes, maxiSetAttributes } = this.props;
+		const staleAttrs = {};
+
+		const oldDefaults = {
+			'number-counter-title-font-size': 40,
+			'font-family': 'Roboto',
+			'font-weight': '400',
+		};
+
+		const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+		breakpoints.forEach(bp => {
+			Object.entries(oldDefaults).forEach(([base, oldVal]) => {
+				const key = `${base}-${bp}`;
+				const cur = attributes[key];
+				if (
+					cur !== undefined &&
+					String(cur) === String(oldVal)
+				) {
+					staleAttrs[key] = undefined;
+				}
+			});
+		});
+
+		if (Object.keys(staleAttrs).length > 0) {
+			maxiSetAttributes({ ...staleAttrs, isReset: true });
+		}
+	}
+
 	maxiBlockDidUpdate() {
 		if (this.resizableObject.current) {
 			const svgWidth = getLastBreakpointAttribute({
@@ -265,11 +300,12 @@ const NumberCounter = attributes => {
 		};
 	};
 
-	const fontSize = getLastBreakpointAttribute({
-		target: 'number-counter-title-font-size',
-		breakpoint: deviceType,
-		attributes,
-	});
+	const fontSize =
+		getLastBreakpointAttribute({
+			target: 'number-counter-title-font-size',
+			breakpoint: deviceType,
+			attributes,
+		}) || 40;
 
 	replayCounter(() => {
 		setCount(startCountValue);

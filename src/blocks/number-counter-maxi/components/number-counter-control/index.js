@@ -22,7 +22,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
-import { getDefaultSCValue } from '@extensions/style-cards';
+import { getTypographyFromSC } from '@extensions/style-cards';
 
 /**
  * Styles
@@ -42,35 +42,21 @@ const NumberCounterControl = props => {
 		blockStyle = 'light',
 	} = props;
 
-	const styleCard = useSelect(select => {
+	const scTypography = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
 			'maxiBlocks/style-cards'
 		);
-		return receiveMaxiSelectedStyleCard()?.value || {};
-	});
+		const sc = receiveMaxiSelectedStyleCard()?.value?.[blockStyle];
+		return getTypographyFromSC(sc, 'number-counter');
+	}, [blockStyle]);
 
-	/**
-	 * Returns the SC default for the given SC property name,
-	 * falling back through breakpoints when needed.
-	 */
-	const getSCDefault = scTarget => {
-		const val = getDefaultSCValue({
-			target: `${scTarget}-${breakpoint}`,
-			SC: styleCard,
-			SCStyle: blockStyle,
-			groupAttr: 'number-counter',
+	/** Returns the current active SC value for a typography property. */
+	const getSCValue = scTarget =>
+		getLastBreakpointAttribute({
+			target: scTarget,
+			breakpoint,
+			attributes: scTypography,
 		});
-		if (val !== null && val !== undefined) return val;
-		if (breakpoint !== 'general') {
-			return getDefaultSCValue({
-				target: `${scTarget}-general`,
-				SC: styleCard,
-				SCStyle: blockStyle,
-				groupAttr: 'number-counter',
-			});
-		}
-		return null;
-	};
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -308,20 +294,22 @@ const NumberCounterControl = props => {
 			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				defaultValue={
-					getDefaultAttribute(`font-family-${breakpoint}`) ||
-					getSCDefault('font-family')
-				}
 				font={
 					getLastBreakpointAttribute({
 						target: 'font-family',
 						breakpoint,
 						attributes: props,
-					}) || getSCDefault('font-family')
+					}) || getSCValue('font-family') || 'Roboto'
 				}
 				onChange={font =>
 					onChange({
 						[`font-family-${breakpoint}`]: font.value,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[`font-family-${breakpoint}`]: undefined,
+						isReset: true,
 					})
 				}
 				breakpoint={breakpoint}
@@ -333,10 +321,7 @@ const NumberCounterControl = props => {
 				}}
 				onReset={() => {
 					onChange({
-						[`font-weight-${breakpoint}`]:
-							getDefaultAttribute(
-								`font-weight-${breakpoint}`
-							) || getSCDefault('font-weight'),
+						[`font-weight-${breakpoint}`]: undefined,
 						isReset: true,
 					});
 				}}
@@ -346,7 +331,7 @@ const NumberCounterControl = props => {
 						breakpoint,
 						attributes: props,
 					}) ||
-					getSCDefault('font-weight') ||
+					getSCValue('font-weight') ||
 					'400'
 				}
 				fontName={
@@ -354,7 +339,7 @@ const NumberCounterControl = props => {
 						target: 'font-family',
 						breakpoint,
 						attributes: props,
-					}) || getSCDefault('font-family')
+					}) || getSCValue('font-family') || 'Roboto'
 				}
 				breakpoint={breakpoint}
 				setShowLoader={setShowLoader}
@@ -366,14 +351,12 @@ const NumberCounterControl = props => {
 				max={999}
 				initial={32}
 				step={1}
-				value={
-					getLastBreakpointAttribute({
-						target: 'number-counter-title-font-size',
-						breakpoint,
-						attributes: props,
-					}) ?? getSCDefault('font-size')
-				}
-				placeholder={getSCDefault('font-size')}
+				value={getLastBreakpointAttribute({
+					target: 'number-counter-title-font-size',
+					breakpoint,
+					attributes: props,
+				})}
+				placeholder={getSCValue('font-size') || 40}
 				onChangeValue={(val, meta) =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]: val,
@@ -383,9 +366,7 @@ const NumberCounterControl = props => {
 				onReset={() =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-title-font-size-${breakpoint}`
-							) ?? getSCDefault('font-size'),
+							undefined,
 						isReset: true,
 					})
 				}

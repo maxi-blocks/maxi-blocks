@@ -328,6 +328,97 @@ describe('getOrganizedAttributes', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Separates typography into practical paste special groups', () => {
+		const copyPasteMapping = {
+			settings: {
+				Typography: {
+					template: 'typography',
+				},
+			},
+		};
+
+		const attributes = {
+			'font-size-general': 26,
+			'font-size-unit-general': 'px',
+			'line-height-general': 36,
+			'line-height-unit-general': 'px',
+			'letter-spacing-general': 1,
+			'letter-spacing-unit-general': 'px',
+			'palette-status-general': true,
+			'palette-color-general': 4,
+			'palette-opacity-general': 0.72,
+			'color-general': '#ff4a1c',
+			'typography-status-hover': true,
+			'font-size-general-hover': 30,
+			'font-size-unit-general-hover': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		const typography = result.settings.Typography;
+
+		expect(typography.Typography).toBeUndefined();
+		expect(typography['Font colour']).toMatchObject({
+			'palette-status-general': true,
+			'palette-color-general': 4,
+			'color-general': '#ff4a1c',
+		});
+		expect(typography['Colour opacity']).toEqual({
+			'palette-opacity-general': 0.72,
+			'palette-opacity-xxl': undefined,
+			'palette-opacity-xl': undefined,
+			'palette-opacity-l': undefined,
+			'palette-opacity-m': undefined,
+			'palette-opacity-s': undefined,
+			'palette-opacity-xs': undefined,
+		});
+		expect(typography['Font size']).toMatchObject({
+			'font-size-general': 26,
+			'font-size-unit-general': 'px',
+		});
+		expect(typography['Font size']).not.toHaveProperty(
+			'line-height-general'
+		);
+		expect(typography['Line height']).toMatchObject({
+			'line-height-general': 36,
+			'line-height-unit-general': 'px',
+		});
+		expect(typography['Letter spacing']).toMatchObject({
+			'letter-spacing-general': 1,
+			'letter-spacing-unit-general': 'px',
+		});
+		expect(typography['Hover font size']).toMatchObject({
+			'font-size-general-hover': 30,
+			'font-size-unit-general-hover': 'px',
+			_pasteWith: 'typography-status-hover',
+		});
+	});
+
+	it('Prefixes hover typography paste metadata', () => {
+		const copyPasteMapping = {
+			settings: {
+				'Button typography': {
+					template: 'typography',
+					prefix: 'button-',
+				},
+			},
+		};
+
+		const attributes = {
+			'button-typography-status-hover': true,
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		const typography = result.settings['Button typography'];
+
+		expect(typography['Hover font size']).toMatchObject({
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+			_pasteWith: 'button-typography-status-hover',
+		});
+	});
+
 	it('Ensure it works with group attributes', () => {
 		const copyPasteMapping = {
 			settings: {

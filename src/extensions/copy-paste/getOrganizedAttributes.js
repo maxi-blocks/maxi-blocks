@@ -12,6 +12,17 @@ import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const prefixPasteWith = (pasteWith, prefix = '') => {
+	const pasteWithArray = isArray(pasteWith) ? pasteWith : [pasteWith];
+	const prefixedPasteWith = pasteWithArray.map(attrName =>
+		prefix && isString(attrName) && !attrName.startsWith(prefix)
+			? `${prefix}${attrName}`
+			: attrName
+	);
+
+	return isArray(pasteWith) ? prefixedPasteWith : prefixedPasteWith[0];
+};
+
 const getTemplate = templateName => {
 	const getNestedTemplates = obj => {
 		let response = {};
@@ -40,14 +51,22 @@ const getTemplate = templateName => {
 const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 	const { prefix, hasBreakpoints, isPalette, isHover } = conditions;
 
-	const props = isString(rawProps) ? [rawProps] : rawProps;
+	const props = isArray(rawProps) ? rawProps : [rawProps];
 
-	props.forEach(prop => {
-		const key = `${prefix}${prop}`;
+	props.forEach(rawProp => {
+		const {
+			prop,
+			prefix: propPrefix = prefix,
+			hasBreakpoints: propHasBreakpoints = hasBreakpoints,
+			isPalette: propIsPalette = isPalette,
+			isHover: propIsHover = isHover,
+		} = isPlainObject(rawProp) ? rawProp : { prop: rawProp };
+
+		const key = `${propPrefix}${prop}`;
 
 		let currAttrKeys = [key];
 
-		if (isPalette) {
+		if (propIsPalette) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				Object.keys(
 					paletteAttributesCreator({ prefix: `${currAttrKey}-` })
@@ -55,13 +74,13 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 			);
 		}
 
-		if (hasBreakpoints) {
+		if (propHasBreakpoints) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				breakpoints.map(breakpoint => `${currAttrKey}-${breakpoint}`)
 			);
 		}
 
-		if (isHover)
+		if (propIsHover)
 			currAttrKeys = currAttrKeys.map(
 				currAttrKey => `${currAttrKey}-hover`
 			);
@@ -156,6 +175,13 @@ const getOrganizedAttributes = (
 							attr,
 							attributes,
 							localCondition
+						);
+					}
+
+					if (!isClean && value.pasteWith) {
+						attr._pasteWith = prefixPasteWith(
+							value.pasteWith,
+							prefix
 						);
 					}
 				}

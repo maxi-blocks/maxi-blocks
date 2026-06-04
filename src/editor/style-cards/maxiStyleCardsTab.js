@@ -234,6 +234,8 @@ const SCAccordion = props => {
 		disableTypography = false,
 		disableOpacity = false,
 		disableResponsiveTabs = false,
+		hideLineHeight = false,
+		hideAdvancedTextOptions = false,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -279,6 +281,8 @@ const SCAccordion = props => {
 					disableCustomFormats
 					disableFontFamily={breakpoint !== 'general'}
 					disableResponsiveTabs={disableResponsiveTabs}
+					hideLineHeight={hideLineHeight}
+					hideAdvancedTextOptions={hideAdvancedTextOptions}
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -742,6 +746,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 	const numberCounterTabs = {
 		label: __('Number Counter globals', 'maxi-blocks'),
 		groupAttr: 'number-counter',
+		hideLineHeight: true,
+		hideAdvancedTextOptions: true,
 		colorContent: [
 			{
 				label: __('Number', 'maxi-blocks'),

@@ -132,7 +132,9 @@ const numberCounterObject = {
 const numberCounterExists = styleCard => {
 	return (
 		styleCard?.value?.dark?.defaultStyleCard?.['number-counter'] !==
-		undefined
+			undefined &&
+		styleCard?.value?.light?.defaultStyleCard?.['number-counter'] !==
+			undefined
 	);
 };
 
@@ -158,7 +160,7 @@ const addNumberCounterToStyleCards = styleCard => {
 			];
 			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
 				if (key === 'number-counter') {
-					obj[key] = numberCounterObject['number-counter'];
+					obj[key] = { ...numberCounterObject['number-counter'] };
 				} else {
 					obj[key] = defaultStyleCard[key];
 				}

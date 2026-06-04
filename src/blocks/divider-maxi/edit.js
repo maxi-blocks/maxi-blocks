@@ -4,11 +4,6 @@
 import { createRef } from '@wordpress/element';
 
 /**
- * External dependencies
- */
-import classnames from 'classnames';
-
-/**
  * Internal dependencies
  */
 import Inspector from './inspector';
@@ -26,6 +21,11 @@ import {
 import getStyles from './styles';
 import { MaxiBlock, getMaxiBlockAttributes } from '@components/maxi-block';
 import { copyPasteMapping } from './data';
+import {
+	getDividerEditClasses,
+	getDividerResizerSize,
+	syncDividerResizerSize,
+} from './utils';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 import { withMaxiContextLoopContext } from '@extensions/DC';
 
@@ -44,95 +44,27 @@ class edit extends MaxiBlockComponent {
 	}
 
 	maxiBlockDidUpdate() {
-		if (this.resizableObject.current) {
-			const width = getLastBreakpointAttribute({
-				target: 'width',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const height = `${getLastBreakpointAttribute({
-				target: 'height',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}`;
-
-			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-
-			const { width: resizerWidth, height: resizerHeight } =
-				this.resizableObject.current.state;
-
-			if (
-				resizerWidth !== `${width}${widthUnit}` ||
-				resizerHeight !== height
-			) {
-				this.resizableObject.current.updateSize({
-					width: width ? `${width}${widthUnit}` : '100%',
-					height: forceAspectRatio ? 'auto' : height,
-				});
-			}
-		}
+		syncDividerResizerSize(
+			this.resizableObject,
+			this.props.attributes,
+			this.props.deviceType
+		);
 	}
 
 	maxiBlockDidMount() {
-		if (this.resizableObject.current) {
-			const width = getLastBreakpointAttribute({
-				target: 'width',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const widthUnit = getLastBreakpointAttribute({
-				target: 'width-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-			const height = `${getLastBreakpointAttribute({
-				target: 'height',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}${getLastBreakpointAttribute({
-				target: 'height-unit',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			})}`;
-
-			const forceAspectRatio = getLastBreakpointAttribute({
-				target: 'force-aspect-ratio',
-				breakpoint: this.props.deviceType,
-				attributes: this.props.attributes,
-			});
-
-			this.resizableObject.current.updateSize({
-				width: width ? `${width}${widthUnit}` : '100%',
-				height: forceAspectRatio ? 'auto' : height,
-			});
-		}
+		syncDividerResizerSize(
+			this.resizableObject,
+			this.props.attributes,
+			this.props.deviceType
+		);
 	}
 
 	render() {
 		const { attributes, deviceType, isSelected, maxiSetAttributes } =
 			this.props;
-		const { uniqueID, lineOrientation } = attributes;
+		const { uniqueID } = attributes;
 
-		const classes = classnames(
-			lineOrientation === 'vertical'
-				? 'maxi-divider-block--vertical'
-				: 'maxi-divider-block--horizontal',
-			'maxi-divider-block__resizer',
-			`maxi-divider-block__resizer__${uniqueID}`
-		);
+		const classes = getDividerEditClasses(attributes, deviceType);
 		const handleOnResizeStart = event => {
 			event.preventDefault();
 
@@ -191,18 +123,7 @@ class edit extends MaxiBlockComponent {
 				{...getMaxiBlockAttributes(this.props)}
 				tagName={BlockResizer}
 				isOverflowHidden={getIsOverflowHidden(attributes, deviceType)}
-				defaultSize={{
-					width: '100%',
-					height: `${getLastBreakpointAttribute({
-						target: 'height',
-						breakpoint: deviceType,
-						attributes,
-					})}${getLastBreakpointAttribute({
-						target: 'height-unit',
-						breakpoint: deviceType,
-						attributes,
-					})}`,
-				}}
+				defaultSize={getDividerResizerSize(attributes, deviceType)}
 				showHandle={
 					!getLastBreakpointAttribute({
 						target: 'force-aspect-ratio',

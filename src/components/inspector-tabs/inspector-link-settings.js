@@ -12,7 +12,7 @@ import { getGroupAttributes } from '@extensions/styles';
 /**
  * Component
  *
- * Renders a dedicated Link settings panel using TypographyControl in link-only mode.
+ * Renders a dedicated Link styles panel using TypographyControl in link-only mode.
  */
 const linkSettings = ({
 	props,
@@ -35,7 +35,7 @@ const linkSettings = ({
 	} = props;
 
 	const { blockStyle, isList } = attributes;
-	const label = customLabel ?? __('Link', 'maxi-blocks');
+	const label = customLabel ?? __('Link styles', 'maxi-blocks');
 
 	return {
 		label,

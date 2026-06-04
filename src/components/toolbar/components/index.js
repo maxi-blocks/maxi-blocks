@@ -34,6 +34,7 @@ export { default as TextGenerator } from './text-generator';
 export { default as TextItalic } from './text-italic';
 export { default as TextLevel } from './text-level';
 export { default as TextLink } from './text-link';
+export { default as TextIndentationOptions } from './text-indentation-options';
 export { default as TextListOptions } from './text-list-options';
 export { default as TextMargin } from './text-margin';
 export { default as TextOptions } from './text-options';

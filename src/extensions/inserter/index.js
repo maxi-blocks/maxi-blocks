@@ -74,10 +74,12 @@ const syncSelectedBlockInserterRoot = () => {
 
 	currentSelectedInserterRootClientId = rootClientId;
 
-	dispatch(inserterStoreName).setIsInserterOpened({
-		rootClientId,
-		insertionIndex: blockEditor.getBlockOrder(rootClientId).length,
-	});
+	// Only pass rootClientId — omitting insertionIndex prevents Gutenberg's
+	// setIsInserterOpened from dispatching setInsertionPoint into the block
+	// editor store. That stale insertionPoint would otherwise override the
+	// rootClientId used by every subsequent QuickInserter (the inline "+"
+	// appender), causing it to resolve blocks for the wrong parent.
+	dispatch(inserterStoreName).setIsInserterOpened({ rootClientId });
 };
 
 subscribe(syncSelectedBlockInserterRoot);

@@ -408,13 +408,6 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 		].forEach(target => {
 			const sentences = [...numberCounterSentences['number-counter']];
 
-			const marginSentence = sentences?.find(
-				sentence => sentence?.indexOf('margin-bottom') > -1
-			);
-
-			if (marginSentence)
-				sentences?.splice(sentences?.indexOf(marginSentence), 1);
-
 			if (sentences?.length > 0) {
 				const styles = sentences?.join(' ').trim();
 				if (styles) {

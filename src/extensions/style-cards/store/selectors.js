@@ -105,6 +105,70 @@ const navigationObject = {
 	},
 };
 
+const numberCounterObject = {
+	'number-counter': {
+		'color-global': false,
+		'palette-status': true,
+		'palette-color': 4,
+		'palette-opacity': 1,
+		color: '',
+		'circle-background-color-global': false,
+		'circle-background-palette-status': true,
+		'circle-background-palette-color': 2,
+		'circle-background-palette-opacity': 1,
+		'circle-background-color': '',
+		'circle-bar-color-global': false,
+		'circle-bar-palette-status': true,
+		'circle-bar-palette-color': 4,
+		'circle-bar-palette-opacity': 1,
+		'circle-bar-color': '',
+		'font-family-general': 'Roboto',
+		'font-size-general': 40,
+		'font-size-unit-general': 'px',
+		'font-weight-general': 400,
+	},
+};
+
+const numberCounterExists = styleCard => {
+	return (
+		styleCard?.value?.dark?.defaultStyleCard?.['number-counter'] !==
+		undefined
+	);
+};
+
+/**
+ * Injects number-counter defaults into saved style cards that predate the
+ * Number Counter style-card wiring. Mirrors the navigation injection pattern.
+ */
+const addNumberCounterToStyleCards = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			!styleValue.defaultStyleCard['number-counter']
+		) {
+			const { defaultStyleCard } = styleValue;
+			const keys = Object.keys(defaultStyleCard);
+			const dividerIndex = keys.indexOf('divider');
+			const newKeys = [
+				...keys.slice(0, dividerIndex + 1),
+				'number-counter',
+				...keys.slice(dividerIndex + 1),
+			];
+			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
+				if (key === 'number-counter') {
+					obj[key] = numberCounterObject['number-counter'];
+				} else {
+					obj[key] = defaultStyleCard[key];
+				}
+				return obj;
+			}, {});
+			styleCard.value[style].defaultStyleCard = newDefaultStyleCard;
+		}
+	});
+};
+
 const navigationExists = styleCard => {
 	return styleCard?.value?.dark?.defaultStyleCard?.navigation !== undefined;
 };
@@ -164,6 +228,9 @@ export const receiveMaxiSelectedStyleCard = state => {
 		const selectedStyleCard = getActiveStyleCard(state.styleCards, true);
 		if (!navigationExists(selectedStyleCard)) {
 			addNavigationToStyleCards(selectedStyleCard);
+		}
+		if (!numberCounterExists(selectedStyleCard)) {
+			addNumberCounterToStyleCards(selectedStyleCard);
 		}
 		return selectedStyleCard;
 	}

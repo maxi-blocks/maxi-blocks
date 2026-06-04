@@ -102,10 +102,9 @@ const getSCVariablesObject = (
 		'padding-left',
 		'padding-right',
 	];
+	const numberCounterSettings = ['font-family', 'font-size', 'font-weight'];
 	const getElementSettings = element =>
-		element === 'number-counter'
-			? settings.filter(setting => !setting.includes('padding'))
-			: settings;
+		element === 'number-counter' ? numberCounterSettings : settings;
 
 	const mergeStyleCards = (defaultStyleCard, styleCard) =>
 		merge(
@@ -134,10 +133,7 @@ const getSCVariablesObject = (
 
 	styles.forEach(style => {
 		elements.forEach(element => {
-			const rawObj =
-				SC[style][element] ||
-				(element === 'number-counter' ? SC[style].p : {});
-			const obj = getParsedObj(rawObj || {});
+			const obj = getParsedObj(SC[style][element] || {});
 
 			if (isEmpty(obj)) return;
 

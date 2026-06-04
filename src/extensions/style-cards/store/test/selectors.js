@@ -132,6 +132,53 @@ describe('style-cards store selectors', () => {
 			);
 		});
 
+		it('Adds number-counter to style card if missing', () => {
+			const styleCards = {
+				sc_maxi: {
+					name: 'Maxi',
+					value: {
+						dark: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+						light: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+					},
+				},
+			};
+			const state = { styleCards };
+
+			const selectedStyleCard = {
+				value: styleCards.sc_maxi.value,
+				key: 'sc_maxi',
+			};
+
+			getActiveStyleCard.mockReturnValue(selectedStyleCard);
+
+			const result = receiveMaxiSelectedStyleCard(state);
+
+			expect(result.value.dark.defaultStyleCard).toHaveProperty(
+				'number-counter'
+			);
+			expect(result.value.light.defaultStyleCard).toHaveProperty(
+				'number-counter'
+			);
+			expect(
+				result.value.light.defaultStyleCard['number-counter'][
+					'font-size-general'
+				]
+			).toBe(40);
+			expect(
+				result.value.light.defaultStyleCard['number-counter'][
+					'font-family-general'
+				]
+			).toBe('Roboto');
+		});
+
 		it('Returns false when style cards are not in state', () => {
 			const state = {};
 

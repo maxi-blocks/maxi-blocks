@@ -85,34 +85,17 @@ describe('getSCVariablesObject', () => {
 		);
 	});
 
-	it('Falls back to Paragraph variables when Number Counter is missing from saved style cards', () => {
+	it('Skips number-counter variables when element is missing from style card', () => {
 		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
 
 		delete styleCard.light.defaultStyleCard['number-counter'];
 		delete styleCard.dark.defaultStyleCard['number-counter'];
 
-		styleCard.light.defaultStyleCard.p['font-family-general'] = 'Poppins';
-		styleCard.light.defaultStyleCard.p['font-weight-general'] = 700;
-		styleCard.dark.defaultStyleCard.p['font-family-general'] = 'Inter';
-		styleCard.dark.defaultStyleCard.p['font-weight-general'] = 600;
-
 		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
 
-		expect(cleanVarSC).toEqual(
-			expect.objectContaining({
-				'--maxi-light-number-counter-font-family-general':
-					'"Poppins"',
-				'--maxi-light-number-counter-font-weight-general': 700,
-				'--maxi-dark-number-counter-font-family-general': '"Inter"',
-				'--maxi-dark-number-counter-font-weight-general': 600,
-			})
-		);
-
-		const varSC = getSCVariablesObject(styleCard);
-
 		expect(
-			Object.keys(varSC).some(key =>
-				key.includes('number-counter-padding')
+			Object.keys(cleanVarSC).some(key =>
+				key.includes('number-counter')
 			)
 		).toBe(false);
 	});

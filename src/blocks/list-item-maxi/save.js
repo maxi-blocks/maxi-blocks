@@ -27,6 +27,7 @@ const save = props => {
 		<MaxiBlock.save
 			tagName='li'
 			{...getMaxiBlockAttributes({ ...props, name })}
+			useInnerBlocks
 			aria-label={ariaLabels['list item wrapper']}
 		>
 			<RichText.Content

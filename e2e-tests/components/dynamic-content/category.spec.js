@@ -78,6 +78,41 @@ describe('Dynamic content', () => {
 			throw new Error('No categories found in WordPress');
 		}
 
+		const getExpectedResults = selectedCategory => ({
+			title: selectedCategory.name,
+			description: selectedCategory.description || 'No content found',
+			slug: selectedCategory.slug,
+			parent:
+				selectedCategory.parent === 0 ? 'No parent' : 'Has parent',
+			count:
+				selectedCategory.count > 0
+					? String(selectedCategory.count)
+					: 'No content found',
+			link: selectedCategory.link,
+		});
+
+		const byIdBlocksByType = {
+			title: ['text-dc-title-1'],
+			description: ['text-dc-description-1'],
+			slug: ['text-dc-slug-1'],
+			parent: ['text-dc-parent-1'],
+			count: ['text-dc-count-1'],
+			link: ['text-dc-link-1'],
+		};
+		const randomBlocksByType = {
+			title: ['text-dc-title-2'],
+			description: ['text-dc-description-2'],
+			slug: ['text-dc-slug-2'],
+			parent: ['text-dc-parent-2'],
+			count: ['text-dc-count-2'],
+			link: ['text-dc-link-2'],
+		};
+		const randomBlockClasses = Object.values(randomBlocksByType).flat();
+		const allDynamicBlockClasses = [
+			...Object.values(byIdBlocksByType).flat(),
+			...randomBlockClasses,
+		];
+
 		// Set code editor as clipboard data with real category ID
 		const codeEditor = catCodeEditor.replaceAll(
 			'"dc-id":1',
@@ -117,90 +152,67 @@ describe('Dynamic content', () => {
 		});
 
 		/**
-		 * Wait for dynamic content to be fully loaded
-		 * Check that at least one block has non-empty content
+		 * Wait for the target dynamic content blocks to be fully loaded.
 		 */
 		await frame.waitForFunction(
-			() => {
-				const blocks = document.querySelectorAll(
-					'.maxi-text-block__content'
-				);
-				if (blocks.length === 0) return false;
+			blockClasses => {
+				return blockClasses.every(blockClass => {
+					const content = document.querySelector(
+						`.${blockClass}.maxi-text-block .maxi-text-block__content`
+					);
+					const text =
+						content && content.innerText && content.innerText.trim();
 
-				// Check if at least some blocks have content
-				let loadedBlocks = 0;
-				blocks.forEach(block => {
-					if (block.innerText && block.innerText.trim().length > 0) {
-						loadedBlocks += 1;
-					}
+					return text && text !== '$text-to-replace';
 				});
-
-				// We expect at least 6 blocks with content (title, description, slug, parent, count, link)
-				return loadedBlocks >= 6;
 			},
-			{ timeout: 15000 }
+			{ timeout: 15000 },
+			allDynamicBlockClasses
 		);
 
 		await page.waitForTimeout(2000);
 
 		// Check backend - use actual category data
-		const expectedResults = {
-			title: category.name,
-			description: category.description || 'No content found',
-			slug: category.slug,
-			parent: category.parent === 0 ? 'No parent' : 'Has parent',
-			count:
-				category.count > 0
-					? String(category.count)
-					: 'No content found',
-			link: category.link,
-		};
+		const expectedResults = getExpectedResults(category);
 
-		const titleBlocks = ['text-dc-title-1', 'text-dc-title-2'];
-		const descriptionBlocks = [
-			'text-dc-description-1',
-			'text-dc-description-2',
-		];
-		const slugBlocks = ['text-dc-slug-1', 'text-dc-slug-2'];
-		const parentBlocks = ['text-dc-parent-1', 'text-dc-parent-2'];
-		const countBlocks = ['text-dc-count-1', 'text-dc-count-2'];
-		const linkBlocks = ['text-dc-link-1', 'text-dc-link-2'];
-
-		const getBackResults = async (block, type) =>
+		const getBackResults = async (block, type, expectedResultSet) =>
 			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
-				expectedResults[type]
+				expectedResultSet[type]
 			);
 
-		const titleResults = await Promise.all(
-			titleBlocks.map(async block => getBackResults(block, 'title'))
+		const getBackResultSet = (blocksByType, expectedResultSet) =>
+			Promise.all(
+				Object.entries(blocksByType).flatMap(([type, blocks]) =>
+					blocks.map(block =>
+						getBackResults(block, type, expectedResultSet)
+					)
+				)
+			);
+
+		const getBlockHasContent = async (targetPage, block) =>
+			targetPage.$eval(
+				`.${block}.maxi-text-block .maxi-text-block__content`,
+				el => {
+					const text = el.innerText.trim();
+					return text.length > 0 && text !== '$text-to-replace';
+				}
+			);
+		const getBlocksHaveContent = (targetPage, blocks) =>
+			Promise.all(
+				blocks.map(block => getBlockHasContent(targetPage, block))
+			);
+
+		const byIdResults = await getBackResultSet(
+			byIdBlocksByType,
+			expectedResults
 		);
-		const descriptionResults = await Promise.all(
-			descriptionBlocks.map(async block =>
-				getBackResults(block, 'description')
-			)
+		const randomResults = await getBlocksHaveContent(
+			frame,
+			randomBlockClasses
 		);
-		const slugResults = await Promise.all(
-			slugBlocks.map(async block => getBackResults(block, 'slug'))
-		);
-		const parentResults = await Promise.all(
-			parentBlocks.map(async block => getBackResults(block, 'parent'))
-		);
-		const countResults = await Promise.all(
-			countBlocks.map(async block => getBackResults(block, 'count'))
-		);
-		const linkResults = await Promise.all(
-			linkBlocks.map(async block => getBackResults(block, 'link'))
-		);
-		const results = [
-			...titleResults,
-			...descriptionResults,
-			...slugResults,
-			...parentResults,
-			...countResults,
-			...linkResults,
-		];
+		const results = [...byIdResults, ...randomResults];
 
 		expect(results.every(result => result)).toBe(true);
 
@@ -220,67 +232,52 @@ describe('Dynamic content', () => {
 		);
 
 		/**
-		 * Ensure dynamic content is fully loaded on frontend
+		 * Ensure dynamic content is fully loaded on frontend.
 		 */
 		await previewPage.waitForFunction(
-			() => {
-				const blocks = document.querySelectorAll(
-					'.maxi-text-block__content'
-				);
-				if (blocks.length === 0) return false;
+			blockClasses => {
+				return blockClasses.every(blockClass => {
+					const content = document.querySelector(
+						`.${blockClass}.maxi-text-block .maxi-text-block__content`
+					);
+					const text =
+						content && content.innerText && content.innerText.trim();
 
-				// Check if at least some blocks have content
-				let loadedBlocks = 0;
-				blocks.forEach(block => {
-					if (block.innerText && block.innerText.trim().length > 0) {
-						loadedBlocks += 1;
-					}
+					return text && text !== '$text-to-replace';
 				});
-
-				// We expect at least 6 blocks with content
-				return loadedBlocks >= 6;
 			},
-			{ timeout: 15000 }
+			{ timeout: 15000 },
+			allDynamicBlockClasses
 		);
 
 		await previewPage.waitForTimeout(1000);
 
-		const getFrontResults = async (block, type) =>
+		const getFrontResults = async (block, type, expectedResultSet) =>
 			previewPage.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => el.innerText === expect,
-				expectedResults[type]
+				expectedResultSet[type]
 			);
 
-		const frontTitleResults = await Promise.all(
-			titleBlocks.map(async block => getFrontResults(block, 'title'))
+		const getFrontResultSet = (blocksByType, expectedResultSet) =>
+			Promise.all(
+				Object.entries(blocksByType).flatMap(([type, blocks]) =>
+					blocks.map(block =>
+						getFrontResults(block, type, expectedResultSet)
+					)
+				)
+			);
+
+		const frontByIdResults = await getFrontResultSet(
+			byIdBlocksByType,
+			expectedResults
 		);
-		const frontContentResults = await Promise.all(
-			descriptionBlocks.map(async block =>
-				getFrontResults(block, 'description')
-			)
-		);
-		const frontExcerptResults = await Promise.all(
-			slugBlocks.map(async block => getFrontResults(block, 'slug'))
-		);
-		const frontAuthorResults = await Promise.all(
-			parentBlocks.map(async block => getFrontResults(block, 'parent'))
-		);
-		const frontCountResults = await Promise.all(
-			countBlocks.map(async block => getFrontResults(block, 'count'))
-		);
-		const frontLinkResults = await Promise.all(
-			linkBlocks.map(async block => getFrontResults(block, 'link'))
+		const frontRandomResults = await getBlocksHaveContent(
+			previewPage,
+			randomBlockClasses
 		);
 
-		const frontResults = [
-			...frontTitleResults,
-			...frontContentResults,
-			...frontExcerptResults,
-			...frontAuthorResults,
-			...frontCountResults,
-			...frontLinkResults,
-		];
+		const frontResults = [...frontByIdResults, ...frontRandomResults];
 
 		expect(frontResults.every(result => result)).toBe(true);
 	}, 90000);

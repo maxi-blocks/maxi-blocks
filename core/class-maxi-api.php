@@ -3195,9 +3195,22 @@ if (!class_exists('MaxiBlocks_API')):
                 $model = $use_shared ? $default_model_shared : $default_model_dedicated;
             }
 
+            // Only accept a client-side model override when it is compatible
+            // with the active provider. Prevents sending e.g. "gpt-5.4" to
+            // the Anthropic API when the user switched providers but the
+            // stored model name was not updated.
             $request_model = $request->get_param('model');
             if (is_string($request_model) && $request_model !== '') {
-                $model = sanitize_text_field(trim($request_model));
+                $request_model = sanitize_text_field(trim($request_model));
+                $model_matches_provider = match ($provider) {
+                    'anthropic' => str_starts_with($request_model, 'claude'),
+                    'openai'    => !str_starts_with($request_model, 'claude') && !str_starts_with($request_model, 'gemini'),
+                    'gemini'    => str_starts_with($request_model, 'gemini'),
+                    default     => true,
+                };
+                if ($model_matches_provider) {
+                    $model = $request_model;
+                }
             }
 
             if (!$api_key) {

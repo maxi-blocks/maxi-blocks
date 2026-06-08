@@ -22,6 +22,23 @@ import { main } from '@maxi-icons';
 const AI_CHAT_STATE_EVENT = 'maxi-ai-chat-state';
 
 /**
+ * Lazy-loads the AI chat panel chunk (~2.8 MB) on first use.
+ * After mount, subsequent toggles go through window.maxiToggleAIChat.
+ */
+let aiPanelMountPromise = null;
+const ensureAiPanelMounted = () => {
+	if (window.maxiToggleAIChat) return Promise.resolve();
+	if (aiPanelMountPromise) return aiPanelMountPromise;
+	aiPanelMountPromise = import(
+		/* webpackChunkName: "maxi-ai-chat-panel" */
+		'@components/ai-chat-panel/mount'
+	).then(({ mountAiChatPanel }) => {
+		mountAiChatPanel({ defaultOpen: true });
+	});
+	return aiPanelMountPromise;
+};
+
+/**
  * Component
  */
 const getUserToolbarPreference = () => {
@@ -114,8 +131,10 @@ const ToolbarButtons = () => {
 			window.maxiToggleAIChat();
 			return;
 		}
-		window.dispatchEvent(new CustomEvent('maxi-ai-toggle'));
-		setIsAIChatOpen(prev => !prev);
+		// First click — lazy-load the AI panel chunk, mount opens it
+		ensureAiPanelMounted().then(() => {
+			setIsAIChatOpen(true);
+		});
 	};
 
 	return (

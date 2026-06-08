@@ -9,19 +9,42 @@ import { __ } from '@wordpress/i18n';
 import { requestAiChatCompletion } from './requestAiChatCompletion';
 
 /**
- * Resolves the model id for the chat API (matches shared vs dedicated key in maxiSettings).
+ * Provider-aware model resolution for the chat API.
+ * Picks a sane default when the stored model is empty or mismatched
+ * with the active provider (e.g. an OpenAI slug stored but Anthropic selected).
  *
- * @returns {string} Non-empty model id.
+ * @returns {string} Non-empty model id compatible with the active provider.
  */
+const PROVIDER_DEFAULTS = {
+	openai: 'gpt-4o-mini',
+	anthropic: 'claude-sonnet-4-20250514',
+	gemini: 'gemini-2.0-flash',
+};
+
+const modelMatchesProvider = (model, provider) => {
+	if (!model || !provider) return true;
+	switch (provider) {
+		case 'anthropic': return model.startsWith('claude');
+		case 'gemini':    return model.startsWith('gemini');
+		case 'openai':    return !model.startsWith('claude') && !model.startsWith('gemini');
+		default:          return true;
+	}
+};
+
 export function resolveAiPanelModel() {
 	const ai = typeof window !== 'undefined' ? window.maxiSettings?.ai_settings ?? {} : {};
 	const useShared = ai.ai_panel_use_shared !== false;
+	const provider = useShared
+		? (ai.maxi_ai_provider || 'openai')
+		: (ai.ai_panel_provider || 'openai');
 	const raw = useShared ? ai.model : ai.ai_panel_model;
 	const trimmed = typeof raw === 'string' ? raw.trim() : '';
-	if (trimmed !== '') {
+
+	if (trimmed !== '' && modelMatchesProvider(trimmed, provider)) {
 		return trimmed;
 	}
-	return useShared ? 'gpt-3.5-turbo' : 'gpt-4o-mini';
+
+	return PROVIDER_DEFAULTS[provider] || 'gpt-4o-mini';
 }
 
 /**

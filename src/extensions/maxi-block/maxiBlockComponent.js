@@ -54,6 +54,11 @@ import updateRelationsRemotely from '@extensions/relations/updateRelationsRemote
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
+import getPreviewState from '@extensions/relations/getPreviewState';
+import syncRelationInstances from '@extensions/relations/syncRelationInstances';
+import {
+	debugPreview as debugRelationPreview,
+} from '@extensions/relations/debugPreview';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
 import {
@@ -706,7 +711,12 @@ class MaxiBlockComponent extends Component {
 		const attributesUnchanged =
 			isEmpty(diffAttributes) && !contextLoopChanged;
 
-		if (!shouldDisplayStyles && !onlyRelationsChanged) {
+		const hasActiveRelationPreview =
+			onlyRelationsChanged &&
+			(this.props.attributes['relations-preview'] ||
+				this.props.attributes['relations-preview-state'] === 'end');
+
+		if (!shouldDisplayStyles && (!onlyRelationsChanged || hasActiveRelationPreview)) {
 			// Call directly without debouncing to avoid memory accumulation
 			!this.isReusable &&
 				this.displayStyles(
@@ -1788,10 +1798,16 @@ class MaxiBlockComponent extends Component {
 		}
 
 		// Only run breakpoint DOM updates once per switch for non-XXL breakpoints
+		const hasRelationPreviewAttrs =
+			this.props.attributes['relations-preview'] ||
+			this.props.attributes['relations-preview-state'] === 'end' ||
+			this.props.attributes['relations-preview-relation-ids']?.length;
+
 		if (
 			isBreakpointChange &&
 			this.props.deviceType !== 'xxl' &&
-			!shouldGenerateNewStyles
+			!shouldGenerateNewStyles &&
+			!hasRelationPreviewAttrs
 		) {
 			const iframeDoc = this.editorIframe?.contentDocument || null;
 			const cache =
@@ -1900,129 +1916,111 @@ class MaxiBlockComponent extends Component {
 			);
 		}
 
+		const previewRelationIds =
+			this.props.attributes['relations-preview-relation-ids'];
+		const hasRelationPreviewAttributes =
+			this.props.attributes['relations-preview'] ||
+			this.props.attributes['relations-preview-state'] === 'end' ||
+			previewRelationIds?.length;
+
+		if (hasRelationPreviewAttributes) {
+			debugRelationPreview('maxi-block:relations-check', {
+				uniqueID,
+				hasCustomDataRelations: !!customDataRelations,
+				relationCount: customDataRelations?.length || 0,
+				preview: this.props.attributes['relations-preview'],
+				previewState: this.props.attributes['relations-preview-state'],
+				previewRelationIds,
+				shouldGenerateNewStyles,
+			});
+		}
+
 		// Handle relations if they exist
 		if (customDataRelations) {
 			const relationsStart = getProfileStart();
-			const isRelationsPreview =
-				this.props.attributes['relations-preview'];
+			const relationPreviewState = getPreviewState({
+				relations: customDataRelations,
+				isPreview: this.props.attributes['relations-preview'],
+				selectedState:
+					this.props.attributes['relations-preview-state'],
+				selectedRelationIds:
+					this.props.attributes['relations-preview-relation-ids'],
+			});
+			debugRelationPreview('maxi-block:preview-state', {
+				uniqueID,
+				isPreview: relationPreviewState.isPreview,
+				shouldRenderRelations:
+					relationPreviewState.shouldRenderRelations,
+				staticState: relationPreviewState.staticState,
+				relationCount: relationPreviewState.relations?.length || 0,
+			});
+			const getRelationDebugSummary = relation => ({
+				id: relation?.id,
+				uniqueID: relation?.uniqueID,
+				trigger: relation?.trigger,
+				action: relation?.action,
+				target: relation?.target,
+				triggerFound: !!relation?.triggerEl,
+				targetFound: !!relation?.targetEl,
+				blockTargetFound: !!relation?.blockTargetEl,
+				hasStyles: !!relation?.stylesEl?.innerText,
+				hasInTransition: !!relation?.inTransitionEl?.innerText,
+				hasOutTransition: !!relation?.outTransitionEl?.innerText,
+				inTransitionLength:
+					relation?.inTransitionEl?.innerText?.length || 0,
+				outTransitionLength:
+					relation?.outTransitionEl?.innerText?.length || 0,
+				targets: relation?.getPreviewTargetDetails?.(),
+			});
+			const previousRelationInstances = this.previousRelationInstances;
+			let nextRelationInstances = null;
 
-			if (isRelationsPreview) {
+			if (relationPreviewState.shouldRenderRelations) {
 				const processRelationsStart = getProfileStart();
-				this.relationInstances = processRelations(customDataRelations);
+				nextRelationInstances = processRelations(
+					relationPreviewState.relations
+				);
 				recordProfile(
 					'maxiBlockComponent processRelations',
 					processRelationsStart
 				);
+				debugRelationPreview('maxi-block:relations-processed', {
+					uniqueID,
+					instanceCount: nextRelationInstances?.length || 0,
+					relations:
+						nextRelationInstances?.map(getRelationDebugSummary) ||
+						[],
+				});
 			}
 
-			this.relationInstances?.forEach(relationInstance => {
-				relationInstance.setIsPreview(isRelationsPreview);
+			const relationSync = syncRelationInstances({
+				previousRelationInstances,
+				nextRelationInstances,
+				shouldRenderRelations: relationPreviewState.shouldRenderRelations,
+				isPreview: relationPreviewState.isPreview,
+				staticState: relationPreviewState.staticState,
 			});
+			this.relationInstances = relationSync.relationInstances;
 
-			if (
-				isRelationsPreview &&
-				this.relationInstances !== null &&
-				this.previousRelationInstances !== null
-			) {
-				const keysToCompare = [
-					'action',
-					'uniqueID',
-					'trigger',
-					'target',
-					'blockTarget',
-					'stylesString',
-				];
-
-				const isEquivalent = (a, b) => {
-					for (const key of keysToCompare) {
-						if (a[key] !== b[key]) {
-							return false;
-						}
-					}
-					return true;
-				};
-
-				const compareRelations = (
-					previousRelations,
-					currentRelations
-				) => {
-					const previousIds = new Set(
-						previousRelations.map(relation => relation.id)
-					);
-					const currentIds = new Set(
-						currentRelations.map(relation => relation.id)
-					);
-
-					let removed = null;
-					let updated = null;
-
-					// Identify removed relation
-					for (const relation of previousRelations) {
-						if (!currentIds.has(relation.id)) {
-							removed = relation.id;
-							break; // Stop after finding the first removed item
-						}
-					}
-
-					// Identify updated relation
-					for (const relation of currentRelations) {
-						if (previousIds.has(relation.id)) {
-							const previousRelation = previousRelations.find(
-								prev => prev.id === relation.id
-							);
-							if (!isEquivalent(relation, previousRelation)) {
-								updated = relation.id;
-								break;
-							}
-						}
-					}
-
-					return { removed, updated };
-				};
-
-				// Usage
-				const { removed, updated } = compareRelations(
-					this.previousRelationInstances,
-					this.relationInstances
-				);
-
-				if (removed !== null) {
-					const processRemoveStart = getProfileStart();
-					processRelations(
-						this.previousRelationInstances,
-						'remove',
-						removed
-					);
-					recordProfile(
-						'maxiBlockComponent processRelationsRemove',
-						processRemoveStart
-					);
-					const processRelationsStart = getProfileStart();
-					processRelations(this.relationInstances);
-					recordProfile(
-						'maxiBlockComponent processRelations',
-						processRelationsStart
-					);
-				}
-				if (updated !== null) {
-					const processRemoveStart = getProfileStart();
-					processRelations(this.relationInstances, 'remove', updated);
-					recordProfile(
-						'maxiBlockComponent processRelationsRemove',
-						processRemoveStart
-					);
-					const processRelationsStart = getProfileStart();
-					processRelations(this.relationInstances);
-					recordProfile(
-						'maxiBlockComponent processRelations',
-						processRelationsStart
-					);
-				}
-			}
-
-			if (!isRelationsPreview) {
-				this.relationInstances = null;
-			}
+			debugRelationPreview('maxi-block:relations-synced', {
+				uniqueID,
+				instanceCount: this.relationInstances?.length || 0,
+				reusedCount: relationSync.reusedCount,
+				appliedCount: relationSync.appliedCount,
+				removedCount: relationSync.removedCount,
+				isPreview: relationPreviewState.isPreview,
+				staticState: relationPreviewState.staticState,
+				relations:
+					this.relationInstances?.map(getRelationDebugSummary) || [],
+			});
+			debugRelationPreview('maxi-block:preview-applied', {
+				uniqueID,
+				instanceCount: this.relationInstances?.length || 0,
+				isPreview: relationPreviewState.isPreview,
+				staticState: relationPreviewState.staticState,
+				relations:
+					this.relationInstances?.map(getRelationDebugSummary) || [],
+			});
 
 			this.previousRelationInstances = this.relationInstances;
 			recordProfile('maxiBlockComponent relationsBlock', relationsStart);

@@ -167,3 +167,60 @@ export const getDisabledTransformCategories = (
 
 	return [...disabledCategories, ...bgLayersWithParallaxCategories];
 };
+
+const isPlainObject = value =>
+	!!value && typeof value === 'object' && !Array.isArray(value);
+
+const mergeTransformTarget = (target = {}, update = {}) =>
+	Object.entries(update).reduce(
+		(acc, [key, value]) => ({
+			...acc,
+			[key]:
+				isPlainObject(acc[key]) && isPlainObject(value)
+					? {
+							...acc[key],
+							...value,
+					  }
+					: value,
+		}),
+		{ ...target }
+	);
+
+const applyTransformDiff = (currentOptions = {}, diffTypeObj = {}) =>
+	Object.entries(diffTypeObj).reduce(
+		(acc, [target, targetObj]) => ({
+			...acc,
+			[target]: mergeTransformTarget(acc[target], targetObj),
+		}),
+		{ ...currentOptions }
+	);
+
+export const getUpdatedTransformOptions = ({
+	transformOptions,
+	updates,
+	breakpoint,
+	baseBreakpoint,
+}) => {
+	const nextTransformOptions = { ...transformOptions };
+
+	Object.entries(updates).forEach(([type, diffTypeObj]) => {
+		const breakpointKey = `${type}-${breakpoint}`;
+		const typeObj = applyTransformDiff(
+			nextTransformOptions[breakpointKey],
+			diffTypeObj
+		);
+
+		nextTransformOptions[breakpointKey] = typeObj;
+
+		if (breakpoint === 'general' && baseBreakpoint) {
+			const baseBreakpointKey = `${type}-${baseBreakpoint}`;
+
+			nextTransformOptions[baseBreakpointKey] = applyTransformDiff(
+				nextTransformOptions[baseBreakpointKey],
+				diffTypeObj
+			);
+		}
+	});
+
+	return nextTransformOptions;
+};

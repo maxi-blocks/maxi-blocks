@@ -179,6 +179,62 @@ describe('style-cards store selectors', () => {
 			).toBe('Roboto');
 		});
 
+		it('Backfills number-counter into light when only dark has it', () => {
+			const darkNumberCounter = {
+				'font-size-general': 40,
+				'font-family-general': 'Roboto',
+				'palette-color': 4,
+			};
+			const styleCards = {
+				sc_maxi: {
+					name: 'Maxi',
+					value: {
+						dark: {
+							defaultStyleCard: {
+								divider: {},
+								'number-counter': darkNumberCounter,
+							},
+						},
+						light: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+					},
+				},
+			};
+			const state = { styleCards };
+
+			const selectedStyleCard = {
+				value: styleCards.sc_maxi.value,
+				key: 'sc_maxi',
+			};
+
+			getActiveStyleCard.mockReturnValue(selectedStyleCard);
+
+			const result = receiveMaxiSelectedStyleCard(state);
+
+			// dark should remain unchanged
+			expect(
+				result.value.dark.defaultStyleCard['number-counter']
+			).toBe(darkNumberCounter);
+
+			// light should now have number-counter injected with default values
+			expect(result.value.light.defaultStyleCard).toHaveProperty(
+				'number-counter'
+			);
+			expect(
+				result.value.light.defaultStyleCard['number-counter'][
+					'font-size-general'
+				]
+			).toBe(40);
+			expect(
+				result.value.light.defaultStyleCard['number-counter'][
+					'font-family-general'
+				]
+			).toBe('Roboto');
+		});
+
 		it('Returns false when style cards are not in state', () => {
 			const state = {};
 

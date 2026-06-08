@@ -7,6 +7,7 @@ import {
 	normalizeValueWithBreakpoint as normalizeLayoutValueWithBreakpoint,
 } from './layoutAGroup';
 import { sanitizeUrl } from './messageExtractors';
+import { sanitizeCssValue } from './cssSecurityUtils';
 import {
 	RESPONSIVE_BREAKPOINTS,
 	extractNumericValue,
@@ -890,7 +891,7 @@ const mergeAdvancedCss = (attributes, css, breakpoint = 'general') => {
 	if (!css) return null;
 	const key = `advanced-css-${breakpoint}`;
 	const existing = attributes?.[key];
-	const trimmed = String(css).trim();
+	const trimmed = sanitizeCssValue(String(css).trim());
 	if (!existing) return { [key]: trimmed };
 	const existingTrimmed = String(existing).trim();
 	if (existingTrimmed.includes(trimmed)) return { [key]: existingTrimmed };
@@ -1239,7 +1240,7 @@ const buildCustomCssChanges = (value, attributes) => {
 			? rawValue
 			: { css: rawValue };
 
-	const css = normalizeCss(config.css || config.value || '');
+	const css = sanitizeCssValue(normalizeCss(config.css || config.value || ''));
 	if (!css || /[{}]/.test(css)) return null;
 
 	const category = config.category || 'container';
@@ -1336,12 +1337,16 @@ const buildContainerCGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
-	// Cloud Library signals: if the message looks like a Cloud Library request,
-	// don't let greedy loop extractors (e.g. "random", "latest") hijack it.
+	// Guard: don't let greedy loop extractors (e.g. "random", "latest") hijack
+	// messages that are about the Cloud Library, block insertion, or icon search.
 	const hasCloudSignal = /\b(cloud|library|import|browse|pattern|template)\b/i.test(
 		message || ''
 	);
-	const skipLoopExtractors = hasCloudSignal && !hasExplicitLoopIntent;
+	const hasBlockInsertSignal = /\b(add|insert|create|put|place)\b.*\b(button|icon|svg|image|block|container)\b/i.test(
+		message || ''
+	);
+	const hasIconSignal = /\b(icon|svg)\b/i.test(message || '');
+	const skipLoopExtractors = (hasCloudSignal || hasBlockInsertSignal || hasIconSignal) && !hasExplicitLoopIntent;
 
 	const loopStatus = extractLoopStatus(message);
 	const loopType = skipLoopExtractors ? null : extractLoopType(message);

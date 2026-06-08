@@ -3393,10 +3393,11 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (is_wp_error($response)) {
+                error_log('[Maxi AI] OpenAI request failed: ' . $response->get_error_message());
                 return new WP_Error(
                     'openai_request_failed',
-                    $response->get_error_message(),
-                    ['status' => 500],
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
                 );
             }
 
@@ -3404,9 +3405,10 @@ if (!class_exists('MaxiBlocks_API')):
             $response_body = wp_remote_retrieve_body($response);
 
             if ($response_code !== 200) {
+                error_log('[Maxi AI] OpenAI API error (HTTP ' . $response_code . '): ' . $response_body);
                 return new WP_Error(
                     'openai_api_error',
-                    'OpenAI API returned error: ' . $response_body,
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
                     ['status' => $response_code],
                 );
             }
@@ -3467,10 +3469,11 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (is_wp_error($response)) {
+                error_log('[Maxi AI] Anthropic request failed: ' . $response->get_error_message());
                 return new WP_Error(
                     'anthropic_request_failed',
-                    $response->get_error_message(),
-                    ['status' => 500],
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
                 );
             }
 
@@ -3478,9 +3481,10 @@ if (!class_exists('MaxiBlocks_API')):
             $response_body = wp_remote_retrieve_body($response);
 
             if ($response_code !== 200) {
+                error_log('[Maxi AI] Anthropic API error (HTTP ' . $response_code . '): ' . $response_body);
                 return new WP_Error(
-                    'openai_api_error',
-                    'Anthropic API returned error: ' . $response_body,
+                    'anthropic_api_error',
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
                     ['status' => $response_code],
                 );
             }
@@ -3547,10 +3551,11 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (is_wp_error($response)) {
+                error_log('[Maxi AI] Gemini request failed: ' . $response->get_error_message());
                 return new WP_Error(
                     'gemini_request_failed',
-                    $response->get_error_message(),
-                    ['status' => 500],
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
                 );
             }
 
@@ -3558,9 +3563,10 @@ if (!class_exists('MaxiBlocks_API')):
             $response_body = wp_remote_retrieve_body($response);
 
             if ($response_code !== 200) {
+                error_log('[Maxi AI] Gemini API error (HTTP ' . $response_code . '): ' . $response_body);
                 return new WP_Error(
-                    'openai_api_error',
-                    'Gemini API returned error: ' . $response_body,
+                    'gemini_api_error',
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
                     ['status' => $response_code],
                 );
             }

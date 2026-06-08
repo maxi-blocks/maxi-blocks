@@ -1547,6 +1547,11 @@ const routeCloudIcon = ( rawMessage, ctx ) => {
 
 	if ( isIconColorIntent ) return null; // skip this pattern
 
+	// Skip cloud icon when the user is asking to INSERT a new non-icon block
+	// (e.g. "add a button with a random icon") — let insert_maxi_block handle it.
+	const isNewBlockInsert = /\b(add|insert|create|put|place)\b\s+(?:a\s+|an\s+)?(?:maxi\s+)?\b(button|text|image|video|divider|container|section|row|column|heading|paragraph)\b/i.test( lowerMessage );
+	if ( isNewBlockInsert ) return null;
+
 	// Skip cloud icon search when user is asking about icon sizing
 	const isIconSizingIntent =
 		/\b(\d+\s*(?:px|%)|\d+\s*x\b|twice|double)\b/.test( lowerMessage ) ||

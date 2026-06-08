@@ -3,6 +3,7 @@ import {
 	normalizeValueWithBreakpoint as normalizeLayoutValueWithBreakpoint,
 } from './layoutAGroup';
 import { extractAnchorLink, extractAriaLabel } from './metaAGroup';
+import { sanitizeCssValue } from './cssSecurityUtils';
 import {
 	RESPONSIVE_BREAKPOINTS,
 	extractNumericValue,
@@ -1747,7 +1748,7 @@ const buildCustomCssChanges = (value, attributes) => {
 			? rawValue
 			: { css: rawValue };
 
-	const css = normalizeCss(config.css || config.value || '');
+	const css = sanitizeCssValue(normalizeCss(config.css || config.value || ''));
 	if (!css || /[{}]/.test(css)) return null;
 
 	const category = config.category || 'button';

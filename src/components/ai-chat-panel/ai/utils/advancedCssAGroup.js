@@ -1,3 +1,5 @@
+import { sanitizeCssValue } from './cssSecurityUtils';
+
 const RESPONSIVE_BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 const BREAKPOINT_ALIASES = [
@@ -96,7 +98,7 @@ export const buildAdvancedCssAGroupAttributeChanges = (property, value) => {
 	if (property !== 'advanced_css') return null;
 
 	const { value: rawValue, breakpoint } = normalizeValueWithBreakpoint(value);
-	const cssValue = String(rawValue || '');
+	const cssValue = sanitizeCssValue(String(rawValue || ''));
 	return breakpoint
 		? { [`advanced-css-${breakpoint}`]: cssValue }
 		: buildResponsiveValueChanges('advanced-css', cssValue);

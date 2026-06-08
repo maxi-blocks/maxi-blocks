@@ -37,6 +37,13 @@ import data from './data';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getStyleCardGroupAttributes = (
+	props,
+	target,
+	isHover = false,
+	prefix = ''
+) => getGroupAttributes(props, target, isHover, prefix, false, true);
+
 const getNormalObject = props => {
 	const response = {
 		boxShadow: getBoxShadowStyles({
@@ -56,13 +63,13 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+			...getStyleCardGroupAttributes(props, 'size'),
 		}),
 		margin: getMarginPaddingStyles({
-			obj: { ...getGroupAttributes(props, 'margin') },
+			obj: { ...getStyleCardGroupAttributes(props, 'margin') },
 		}),
 		padding: getMarginPaddingStyles({
-			obj: { ...getGroupAttributes(props, 'padding') },
+			obj: { ...getStyleCardGroupAttributes(props, 'padding') },
 		}),
 		opacity: getOpacityStyles({
 			...getGroupAttributes(props, 'opacity'),
@@ -83,7 +90,7 @@ const getNormalObject = props => {
 			...getGroupAttributes(props, 'overflow'),
 		}),
 		flex: getFlexStyles({
-			...getGroupAttributes(props, 'flex'),
+			...getStyleCardGroupAttributes(props, 'flex'),
 		}),
 	};
 

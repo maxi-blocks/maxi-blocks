@@ -50,12 +50,21 @@ import updateRelationHoverStatus from './updateRelationHoverStatus';
 import propagateNewUniqueID from './propagateNewUniqueID';
 import propsObjectCleaner from './propsObjectCleaner';
 import { addBlockStyles, removeBlockStyles } from './globalStyleManager';
+import getBlockElementForStyleDebug from './getBlockElementForStyleDebug';
 import updateRelationsRemotely from '@extensions/relations/updateRelationsRemotely';
 import getIsUniqueCustomLabelRepeated from './getIsUniqueCustomLabelRepeated';
 import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	debugSCBlockDefaults,
+	getAffectedBlockNamesFromBlockDefaults,
+	getLayoutDebugValueSummary,
+	isSCBlockDefaultsDebugEnabled,
+	isSCBlockDefaultsVerboseDebugEnabled,
+	subscribeSCBlockDefaultsUpdate,
+} from '@extensions/style-cards/blockDefaults';
 import {
 	countProfile,
 	getProfileStart,
@@ -172,6 +181,9 @@ class MaxiBlockComponent extends Component {
 		this.isPatternsPreview = false;
 		this.xxlStyleCache = null;
 		this.isXxlStyleCacheDirty = false;
+		this.unsubscribeStyleCardBlockDefaultsUpdate = null;
+		this.handleStyleCardBlockDefaultsUpdate =
+			this.handleStyleCardBlockDefaultsUpdate.bind(this);
 
 		const previewIframes = getSiteEditorPreviewIframes();
 
@@ -345,6 +357,19 @@ class MaxiBlockComponent extends Component {
 
 		if (this.isPatternsPreview || this.templateModal) {
 			return;
+		}
+
+		const blockName = this.props.name?.replace('maxi-blocks/', '');
+		this.unsubscribeStyleCardBlockDefaultsUpdate =
+			subscribeSCBlockDefaultsUpdate(
+				this.handleStyleCardBlockDefaultsUpdate,
+				blockName
+			);
+		if (['container-maxi', 'row-maxi'].includes(blockName)) {
+			debugSCBlockDefaults('block subscribed to defaults update', {
+				blockName,
+				uniqueID: this.props.attributes?.uniqueID,
+			});
 		}
 
 		// Step 2: FSE iframe styles and observer
@@ -785,13 +810,15 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
-
 	}
 
 	componentWillUnmount() {
 		const { uniqueID } = this.props.attributes;
 
 		// Block cleanup initiated
+
+		this.unsubscribeStyleCardBlockDefaultsUpdate?.();
+		this.unsubscribeStyleCardBlockDefaultsUpdate = null;
 
 		// Return early checks
 		if (
@@ -891,9 +918,7 @@ class MaxiBlockComponent extends Component {
 		if (!keepStylesOnEditor && !keepStylesOnCloning) {
 			try {
 				const allClientIds =
-					select(
-						'core/block-editor'
-					).getClientIdsWithDescendants();
+					select('core/block-editor').getClientIdsWithDescendants();
 				keepStylesOnStorePresence = allClientIds.includes(
 					this.props.clientId
 				);
@@ -914,9 +939,8 @@ class MaxiBlockComponent extends Component {
 			const batchStyleOperations = () => {
 				// Double-check: the block might have been re-added (reconciliation)
 				// between unmount and this rAF callback firing
-				const stillGone = !select('core/block-editor').getBlock(
-					clientId
-				);
+				const stillGone =
+					!select('core/block-editor').getBlock(clientId);
 				if (!stillGone) {
 					return;
 				}
@@ -963,6 +987,76 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockWillUnmount) {
 			this.maxiBlockWillUnmount(isBlockBeingRemoved);
 		}
+	}
+
+	handleStyleCardBlockDefaultsUpdate(event) {
+		const blockName = this.props.name?.replace('maxi-blocks/', '');
+		const uniqueID = this.props.attributes?.uniqueID;
+		const isLayoutBlock = ['container-maxi', 'row-maxi'].includes(
+			blockName
+		);
+
+		if (this.isPatternsPreview || this.templateModal) {
+			if (isLayoutBlock) {
+				debugSCBlockDefaults('block defaults update skipped', {
+					blockName,
+					uniqueID,
+					reason: 'preview-or-template',
+					isPatternsPreview: this.isPatternsPreview,
+					hasTemplateModal: Boolean(this.templateModal),
+				});
+			}
+
+			return;
+		}
+
+		const blockDefaults = event?.detail?.blockDefaults ?? {};
+		const affectedBlockNames =
+			getAffectedBlockNamesFromBlockDefaults(blockDefaults);
+		const blockDefaultsSummary = getLayoutDebugValueSummary(
+			blockDefaults,
+			blockName
+		);
+
+		if (isLayoutBlock) {
+			debugSCBlockDefaults('block defaults update handler invoked', {
+				blockName,
+				uniqueID,
+				eventType: event?.type,
+				hasBlockDefaults: Object.keys(blockDefaults).length > 0,
+				affectedBlockNames,
+				blockDefaultsSummary,
+			});
+		}
+
+		if (
+			affectedBlockNames.length > 0 &&
+			!affectedBlockNames.includes(blockName)
+		) {
+			if (isLayoutBlock) {
+				debugSCBlockDefaults('block defaults update skipped', {
+					blockName,
+					uniqueID,
+					reason: 'unaffected-block',
+					affectedBlockNames,
+					blockDefaultsSummary,
+				});
+			}
+
+			return;
+		}
+
+		debugSCBlockDefaults('block refresh from defaults update', {
+			blockName,
+			uniqueID,
+			affectedBlockNames,
+			blockDefaultsSummary,
+		});
+
+		this.invalidateAttributeCaches();
+		this.isXxlStyleCacheDirty = true;
+		this.displayStyles(false, false, false, false);
+		this.forceUpdate();
 	}
 
 	// Add new helper method for repeater cleanup
@@ -1253,7 +1347,96 @@ class MaxiBlockComponent extends Component {
 
 		const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
 		addBlockStyles(uniqueID, styleContent, target);
+		this.debugComputedLayoutAfterStyleApply(
+			uniqueID,
+			styleContent,
+			breakpoint,
+			target
+		);
 		this.updateResponsiveClasses(this.editorIframe, breakpoint);
+	}
+
+	debugComputedLayoutAfterStyleApply(
+		uniqueID,
+		styleContent,
+		breakpoint,
+		targetDocument
+	) {
+		if (
+			!isSCBlockDefaultsDebugEnabled() ||
+			!isSCBlockDefaultsVerboseDebugEnabled()
+		)
+			return;
+
+		const blockName = this.props.name?.replace('maxi-blocks/', '');
+		if (!['container-maxi', 'row-maxi'].includes(blockName)) return;
+
+		const target = targetDocument || document;
+		const requestFrame =
+			target?.defaultView?.requestAnimationFrame ||
+			(typeof requestAnimationFrame === 'function'
+				? requestAnimationFrame
+				: callback => setTimeout(callback, 0));
+
+		requestFrame(() => {
+			const {
+				element: blockElement,
+				method: blockLookupMethod,
+			} = getBlockElementForStyleDebug(target, uniqueID);
+			const styleElement = target?.getElementById?.(
+				'maxi-blocks__consolidated-styles'
+			);
+			const computed =
+				blockElement && target?.defaultView?.getComputedStyle
+					? target.defaultView.getComputedStyle(blockElement)
+					: null;
+			const blockStyle = this.props.attributes?.blockStyle;
+			const cssVarPrefix = `--maxi-${blockStyle}-block-default-${blockName}`;
+			const getComputedVar = suffix =>
+				computed?.getPropertyValue?.(`${cssVarPrefix}-${suffix}`)?.trim();
+			const cssVarPaddingTop =
+				getComputedVar(`padding-top-${breakpoint}`) ||
+				getComputedVar('padding-top-general');
+			const cssVarPaddingBottom =
+				getComputedVar(`padding-bottom-${breakpoint}`) ||
+				getComputedVar('padding-bottom-general');
+
+			debugSCBlockDefaults('block computed layout after style apply', {
+				blockName,
+				uniqueID,
+				breakpoint,
+				blockStyle,
+				foundBlockElement: Boolean(blockElement),
+				blockLookupMethod,
+				foundConsolidatedStyle: Boolean(styleElement),
+				consolidatedStyleIncludesBlock: Boolean(
+					styleElement?.textContent?.includes(uniqueID)
+				),
+				styleContentIncludesBlockDefault:
+					styleContent?.includes('block-default'),
+				styleContentIncludesIndicator:
+					styleContent?.includes('maxi-block-indicators'),
+				computedLayoutSummary: [
+					`lookup=${blockLookupMethod || 'missing'}`,
+					`paddingTop=${computed?.paddingTop || 'n/a'}`,
+					`paddingBottom=${computed?.paddingBottom || 'n/a'}`,
+					`paddingLeft=${computed?.paddingLeft || 'n/a'}`,
+					`paddingRight=${computed?.paddingRight || 'n/a'}`,
+					`marginTop=${computed?.marginTop || 'n/a'}`,
+					`marginBottom=${computed?.marginBottom || 'n/a'}`,
+					`cssVarPaddingTop=${cssVarPaddingTop || 'n/a'}`,
+					`cssVarPaddingBottom=${cssVarPaddingBottom || 'n/a'}`,
+				].join(', '),
+				computedPaddingTop: computed?.paddingTop,
+				computedPaddingBottom: computed?.paddingBottom,
+				computedPaddingLeft: computed?.paddingLeft,
+				computedPaddingRight: computed?.paddingRight,
+				computedMarginTop: computed?.marginTop,
+				computedMarginBottom: computed?.marginBottom,
+				cssVarPaddingTop,
+				cssVarPaddingBottom,
+			});
+		});
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1727,10 +1910,7 @@ class MaxiBlockComponent extends Component {
 					'maxiBlockComponent breakpoint cache ineligible viewport'
 				);
 			} else {
-				if (
-					currentBreakpoint === 'xxl' &&
-					this.isXxlStyleCacheDirty
-				) {
+				if (currentBreakpoint === 'xxl' && this.isXxlStyleCacheDirty) {
 					countProfile(
 						'maxiBlockComponent breakpoint cache dirty xxl'
 					);
@@ -1827,8 +2007,12 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles = true;
 		}
 
-		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
-		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
+		const breakpoints = shouldGenerateNewStyles
+			? this.getBreakpoints
+			: null;
+		const isSiteEditor = shouldGenerateNewStyles
+			? getIsSiteEditor()
+			: false;
 		let obj;
 		let customDataRelations;
 		if (shouldGenerateNewStyles) {
@@ -2087,6 +2271,12 @@ class MaxiBlockComponent extends Component {
 				isSiteEditor
 			);
 			addBlockStyles(uniqueID, styleContent, target);
+			this.debugComputedLayoutAfterStyleApply(
+				uniqueID,
+				styleContent,
+				currentBreakpoint,
+				target
+			);
 		}
 	}
 
@@ -2368,6 +2558,73 @@ class MaxiBlockComponent extends Component {
 				WHITE_SPACE_REGEX,
 				'white-space: nowrap !important'
 			);
+			if (isSCBlockDefaultsVerboseDebugEnabled()) {
+				const blockName = this.props.name?.replace('maxi-blocks/', '');
+				const isLayoutBlock = ['container-maxi', 'row-maxi'].includes(
+					blockName
+				);
+				const relevantStyleIndexes = [
+					'block-default',
+					'padding-top',
+					'padding-bottom',
+					'margin-top',
+					'margin-bottom',
+					'max-width',
+					'row-gap',
+					'column-gap',
+				]
+					.map(target => styleContent.indexOf(target))
+					.filter(index => index >= 0);
+				const firstRelevantStyleIndex = relevantStyleIndexes.length
+					? Math.min(...relevantStyleIndexes)
+					: -1;
+
+				if (
+					styleContent.includes('block-default') ||
+					(isLayoutBlock && firstRelevantStyleIndex >= 0)
+				) {
+					const snippetIndex = styleContent.includes('block-default')
+						? styleContent.indexOf('block-default')
+						: firstRelevantStyleIndex;
+					const getDeclaration = property =>
+						styleContent.match(
+							new RegExp(`${property}:\\s*([^;]+);`)
+						)?.[1] || 'n/a';
+
+					debugSCBlockDefaults('block style content generated', {
+						blockName,
+						uniqueID,
+						currentBreakpoint,
+						styleContentSummary: [
+							`hasUniqueID=${styleContent.includes(uniqueID)}`,
+							`containsBlockDefault=${styleContent.includes(
+								'block-default'
+							)}`,
+							`containsIndicatorSelector=${styleContent.includes(
+								'maxi-block-indicators'
+							)}`,
+							`paddingTop=${getDeclaration('padding-top')}`,
+							`paddingBottom=${getDeclaration(
+								'padding-bottom'
+							)}`,
+							`marginTop=${getDeclaration('margin-top')}`,
+							`marginBottom=${getDeclaration('margin-bottom')}`,
+						].join(', '),
+						isIframe: !!iframe,
+						isSiteEditor,
+						styleLength: styleContent.length,
+						containsBlockDefault:
+							styleContent.includes('block-default'),
+						containsIndicatorSelector: styleContent.includes(
+							'maxi-block-indicators'
+						),
+						styleSnippet: styleContent.slice(
+							Math.max(0, snippetIndex - 180),
+							snippetIndex + 420
+						),
+					});
+				}
+			}
 			if (currentBreakpoint === 'xxl') {
 				this.xxlStyleCache = styleContent;
 				this.isXxlStyleCacheDirty = false;

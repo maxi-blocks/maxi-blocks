@@ -220,4 +220,26 @@ describe('getMarginPaddingStyles', () => {
 		});
 		expect(result).toMatchSnapshot();
 	});
+
+	it('uses Style Card block default CSS variables for default-like padding values', () => {
+		const result = getMarginPaddingStyles({
+			obj: {
+				'padding-top-general': '80',
+				'padding-top-unit-general': 'px',
+				__scBlockDefaults: {
+					'padding-top-general': {
+						blockName: 'container-maxi',
+						blockStyle: 'light',
+						cssVar:
+							'--maxi-light-block-default-container-maxi-padding-top-general',
+						fallback: '100px',
+					},
+				},
+			},
+		});
+
+		expect(result.general['padding-top']).toBe(
+			'var(--maxi-light-block-default-container-maxi-padding-top-general, 100px)'
+		);
+	});
 });

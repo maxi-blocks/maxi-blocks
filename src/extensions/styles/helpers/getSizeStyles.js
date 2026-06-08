@@ -4,6 +4,7 @@
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import getDefaultAttribute from '@extensions/styles/getDefaultAttribute';
 import { isValidNumber } from '@extensions/styles/utils';
+import { getSCBlockDefaultStyleValue } from '@extensions/style-cards/blockDefaults';
 
 /**
  * External dependencies
@@ -22,6 +23,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 const getSizeStyles = (obj, prefix = '') => {
 	const response = {};
+	const scBlockDefaults = obj.__scBlockDefaults || {};
 
 	const getValue = (target, breakpoint) => {
 		let fullWidthNormalStyles = {};
@@ -124,7 +126,15 @@ const getSizeStyles = (obj, prefix = '') => {
 
 			if (isValidNumber(num) && !isNil(unit))
 				return {
-					[target]: auto || num + unit,
+					[target]:
+						auto ||
+						getSCBlockDefaultStyleValue({
+							scBlockDefaults,
+							prefix,
+							target,
+							breakpoint,
+							fallbackValue: num + unit,
+						}),
 					...fullWidthNormalStyles,
 				};
 		}

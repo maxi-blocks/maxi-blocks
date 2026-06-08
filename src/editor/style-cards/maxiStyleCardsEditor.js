@@ -23,10 +23,26 @@ import Icon from '@components/icon';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ReactSelectControl from '@components/react-select-control';
-import MaxiStyleCardsTab from './maxiStyleCardsTab';
+import MaxiStyleCardsTab, {
+	MaxiStyleCardsAdvancedTab,
+} from './maxiStyleCardsTab';
 import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
 import { updateSCOnEditor } from '@extensions/style-cards';
+import {
+	BLOCK_DEFAULTS_GROUP,
+	debugSCBlockDefaults,
+	dispatchSCBlockDefaultsUpdate,
+	getLayoutDebugValueSummary,
+} from '@extensions/style-cards/blockDefaults';
+import {
+	DARK_TONE_STYLE_OVERRIDES,
+	SYNC_STYLE_SETTINGS_TONES_STATUS,
+	applyStyleCardTypeChange,
+	getDarkToneStyleOverridesUpdate,
+	getStyleCardToneKeysForChange,
+	isStyleSettingsSyncEnabled,
+} from '@extensions/style-cards/syncTypography';
 import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
 import { handleSetAttributes } from '@extensions/maxi-block';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
@@ -169,7 +185,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 	const [styleCardName, setStyleCardName] = useState(
 		`${activeSCValue?.name} - `
 	);
-	const [currentSCStyle, setCurrentSCStyle] = useState('light');
+	const [currentSCStyle] = useState('light');
 
 	const getIsUserCreatedStyleCard = (card = selectedSCValue) => {
 		return card?.type === 'user';
@@ -240,11 +256,24 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const gutenbergStatusChanged =
 			styleCards[keySC]?.gutenberg_blocks_status !==
 			savedStyleCards[keySC]?.gutenberg_blocks_status;
+		const styleSettingsSyncChanged =
+			isStyleSettingsSyncEnabled(styleCards[keySC]) !==
+			isStyleSettingsSyncEnabled(savedStyleCards[keySC]);
+		const darkToneOverridesChanged = !isEqual(
+			styleCards[keySC]?.[DARK_TONE_STYLE_OVERRIDES] ?? [],
+			savedStyleCards[keySC]?.[DARK_TONE_STYLE_OVERRIDES] ?? []
+		);
 
 		// Use general objects comparison for other changes
 		const otherChanges = !isEqual(currentSC, savedSC);
 
-		return customColorsChanged || otherChanges || gutenbergStatusChanged;
+		return (
+			customColorsChanged ||
+			otherChanges ||
+			gutenbergStatusChanged ||
+			styleSettingsSyncChanged ||
+			darkToneOverridesChanged
+		);
 	};
 
 	const canBeApplied = (keySC, activeSCKey) => {
@@ -259,7 +288,16 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		return true;
 	};
 
-	const onChangeValue = (obj, type) => {
+	const onChangeValue = (obj, type, options = {}) => {
+		const activeSCStyle = options.SCStyle ?? currentSCStyle;
+		debugSCBlockDefaults('editor onChangeValue start', {
+			type,
+			obj,
+			currentSCStyle: activeSCStyle,
+			selectedSCKey,
+			options,
+		});
+
 		let newSC = { ...selectedSCValue };
 		// Special case for customColors
 		if (type === 'color' && 'customColors' in obj) {
@@ -301,41 +339,39 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		}
 
 		const isTypography = Object.keys(obj)[0] === 'typography';
+		const toneKeys = getStyleCardToneKeysForChange({
+			currentSCStyle: activeSCStyle,
+			forceToneOnly: options.forceToneOnly,
+			forceSyncedTones: options.forceSyncedTones,
+			type,
+			group: options.group,
+			styleCard: selectedSCValue,
+		});
 
 		const newObj = handleSetAttributes({
 			obj: isTypography ? obj.typography : obj,
 			attributes: {
-				...selectedSCValue[currentSCStyle].defaultStyleCard[type],
-				...selectedSCValue[currentSCStyle].styleCard[type],
+				...(selectedSCValue[activeSCStyle].defaultStyleCard[type] ??
+					{}),
+				...(selectedSCValue[activeSCStyle].styleCard[type] ?? {}),
 			},
 			defaultAttributes:
-				selectedSCValue[currentSCStyle].defaultStyleCard[type],
+				selectedSCValue[activeSCStyle].defaultStyleCard[type] ?? {},
 			onChange: response => response,
 			isStyleCard: true,
 		});
 
 		Object.entries(newObj).forEach(([prop, value]) => {
-			if (isTypography) {
-				if (isNil(value)) {
-					delete selectedSCValue[currentSCStyle].styleCard?.[type]?.[
-						prop
-					];
-				}
-			}
-
-			newSC = {
-				...newSC,
-				[currentSCStyle]: {
-					...newSC[currentSCStyle],
-					styleCard: {
-						...newSC[currentSCStyle].styleCard,
-						[type]: {
-							...newSC[currentSCStyle].styleCard[type],
-							[prop]: value,
-						},
-					},
-				},
-			};
+			toneKeys.forEach(tone => {
+				newSC = applyStyleCardTypeChange({
+					styleCard: newSC,
+					tone,
+					type,
+					prop,
+					value,
+					shouldDeleteNilValue: isTypography && isNil(value),
+				});
+			});
 		});
 
 		const newStyleCards = {
@@ -344,8 +380,62 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				...newSC,
 			},
 		};
+		const getBlockDefaultsSummary = tone =>
+			Object.entries(newSC?.[tone]?.styleCard?.blockDefaults ?? {})
+				.filter(
+					([key]) =>
+						!options.group || key.startsWith(`${options.group}|`)
+				)
+				.slice(0, 40)
+				.map(([key, value]) => `${key}=${value}`);
+
+		debugSCBlockDefaults('editor onChangeValue result', {
+			type,
+			activeSCStyle,
+			toneKeys,
+			group: options.group,
+			changedKeys: Object.keys(newObj),
+			changedLayoutSummary:
+				type === BLOCK_DEFAULTS_GROUP
+					? getLayoutDebugValueSummary(newObj, options.group)
+					: undefined,
+			toneBlockDefaultSummary:
+				type === BLOCK_DEFAULTS_GROUP
+					? toneKeys.reduce(
+							(acc, tone) => ({
+								...acc,
+								[tone]: getBlockDefaultsSummary(tone),
+							}),
+							{}
+					  )
+					: undefined,
+			newObj,
+			styleCardBlockDefaults:
+				newSC?.[activeSCStyle]?.styleCard?.blockDefaults,
+			defaultBlockDefaults:
+				newSC?.[activeSCStyle]?.defaultStyleCard?.blockDefaults,
+		});
 		saveMaxiStyleCards(newStyleCards);
 		updateSCOnEditor(newSC, activeSCColour);
+
+		if (type === BLOCK_DEFAULTS_GROUP) {
+			const blockDefaults =
+				newSC?.[activeSCStyle]?.styleCard?.blockDefaults ?? {};
+
+			debugSCBlockDefaults('editor dispatch block defaults update', {
+				currentSCStyle: activeSCStyle,
+				blockDefaultsSummary: getLayoutDebugValueSummary(
+					blockDefaults,
+					options.group
+				),
+				blockDefaults,
+			});
+
+			dispatchSCBlockDefaultsUpdate({
+				blockDefaults,
+				currentSCStyle: activeSCStyle,
+			});
+		}
 	};
 
 	const [postDate] = useState();
@@ -540,6 +630,36 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			[selectedSCKey]: {
 				...selectedSCValue,
 				gutenberg_blocks_status: value,
+			},
+		};
+
+		saveMaxiStyleCards(newStyleCards);
+		updateSCOnEditor(newStyleCards[selectedSCKey], activeSCColour);
+	};
+
+	const onChangeStyleSettingsSyncStatus = value => {
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: {
+				...selectedSCValue,
+				[SYNC_STYLE_SETTINGS_TONES_STATUS]: value,
+			},
+		};
+
+		saveMaxiStyleCards(newStyleCards);
+		updateSCOnEditor(newStyleCards[selectedSCKey], activeSCColour);
+	};
+
+	const onChangeDarkToneOverride = (group, value) => {
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: {
+				...selectedSCValue,
+				...getDarkToneStyleOverridesUpdate({
+					styleCard: selectedSCValue,
+					group,
+					enabled: value,
+				}),
 			},
 		};
 
@@ -964,6 +1084,15 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 													selectedSCValue
 														? selectedSCValue.gutenberg_blocks_status
 														: true,
+												[SYNC_STYLE_SETTINGS_TONES_STATUS]:
+													isStyleSettingsSyncEnabled(
+														selectedSCValue
+													),
+												[DARK_TONE_STYLE_OVERRIDES]: [
+													...(selectedSCValue?.[
+														DARK_TONE_STYLE_OVERRIDES
+													] ?? []),
+												],
 												dark: {
 													defaultStyleCard: {
 														...(selectedSCValue.dark
@@ -1037,38 +1166,43 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						}
 					>
 						<SettingTabsControl
+							className='maxi-style-cards-global-tabs'
 							disablePadding
-							returnValue={({ key }) => setCurrentSCStyle(key)}
 							items={[
 								{
-									label: __(
-										'Light tone globals',
-										'maxi-blocks'
-									),
-									key: 'light',
+									label: __('Tone globals', 'maxi-blocks'),
+									key: 'tone-globals',
 									content: (
 										<MaxiStyleCardsTab
-											SC={selectedSCValue.light}
-											SCStyle='light'
+											styleCard={selectedSCValue}
 											onChangeValue={onChangeValue}
 											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
+											onChangeDarkToneOverride={
+												onChangeDarkToneOverride
+											}
+											isStyleSettingsSyncSelected={isStyleSettingsSyncEnabled(
+												selectedSCValue
+											)}
+											onChangeStyleSettingsSyncStatus={
+												onChangeStyleSettingsSyncStatus
+											}
 										/>
 									),
 								},
 								{
 									label: __(
-										'Dark tone globals',
+										'Advanced globals',
 										'maxi-blocks'
 									),
-									key: 'dark',
+									key: 'advanced-globals',
 									content: (
-										<MaxiStyleCardsTab
-											SC={selectedSCValue.dark}
-											SCStyle='dark'
-											onChangeValue={onChangeValue}
+										<MaxiStyleCardsAdvancedTab
+											styleCard={selectedSCValue}
 											breakpoint={breakpoint}
-											currentKey={selectedSCKey}
+											onChangeValue={onChangeValue}
+											onChangeDarkToneOverride={
+												onChangeDarkToneOverride
+											}
 										/>
 									),
 								},

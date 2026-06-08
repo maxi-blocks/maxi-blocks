@@ -10,6 +10,7 @@ import {
 	createSCStyleString,
 	getSCFontsData,
 } from '@extensions/style-cards/updateSCOnEditor';
+import updateSCOnEditor from '@extensions/style-cards/updateSCOnEditor';
 import standardSC from '@maxi-core/defaults/defaultSC.json';
 import getSCVariablesObject from '@extensions/style-cards/getSCVariablesObject';
 
@@ -25,6 +26,13 @@ jest.mock('@extensions/styles/transitions/getTransitionData.js', () =>
 jest.mock('@extensions/attributes/getBlockData.js', () => jest.fn());
 jest.mock('src/components/transform-control/utils.js', () => jest.fn());
 jest.mock('src/extensions/DC/constants.js', () => ({}));
+jest.mock('@extensions/text/fonts', () => ({
+	loadFonts: jest.fn(),
+}));
+jest.mock('@extensions/fse', () => ({
+	getSiteEditorIframe: jest.fn(() => null),
+	getSiteEditorPreviewIframes: jest.fn(() => []),
+}));
 
 const styleCards = {
 	name: 'Maxi (Default)',
@@ -635,6 +643,56 @@ describe('getSCVariablesObject', () => {
 		const parsedSC = createSCStyleString(varSC);
 
 		expect(parsedSC).toMatchSnapshot();
+	});
+});
+
+describe('updateSCOnEditor', () => {
+	beforeEach(() => {
+		document.body.innerHTML = '';
+		document.head.innerHTML = '';
+	});
+
+	it('updates block default CSS variables in the editor canvas iframe', () => {
+		const iframe = document.createElement('iframe');
+		iframe.setAttribute('name', 'editor-canvas');
+		document.body.appendChild(iframe);
+
+		const blockDefaultStyleCards = {
+			light: {
+				defaultStyleCard: {},
+				styleCard: {
+					blockDefaults: {
+						'container-maxi|padding-top-xl': 21,
+						'container-maxi|padding-top-unit-xl': 'px',
+					},
+				},
+			},
+			dark: {
+				defaultStyleCard: {},
+				styleCard: {
+					blockDefaults: {
+						'container-maxi|padding-top-xl': 42,
+						'container-maxi|padding-top-unit-xl': 'px',
+					},
+				},
+			},
+		};
+
+		updateSCOnEditor(blockDefaultStyleCards, null, [document]);
+
+		const parentStyle = document.getElementById(
+			'maxi-blocks-sc-vars-inline-css'
+		);
+		const iframeStyle = iframe.contentDocument.getElementById(
+			'maxi-blocks-sc-vars-inline-css'
+		);
+
+		expect(parentStyle.innerHTML).toContain(
+			'--maxi-light-block-default-container-maxi-padding-top-xl:21px'
+		);
+		expect(iframeStyle.innerHTML).toContain(
+			'--maxi-light-block-default-container-maxi-padding-top-xl:21px'
+		);
 	});
 });
 

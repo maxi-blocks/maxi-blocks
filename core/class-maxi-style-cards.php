@@ -1471,6 +1471,15 @@ class MaxiBlocks_StyleCards
                         continue;
                     }
 
+                    if ($element === 'blockDefaults') {
+                        foreach ($element_data as $block_default) {
+                            $var_name = $block_default['var_name'];
+                            $value = $block_default['value'];
+                            $var_sc_string .= "{$var_name}:{$value};";
+                        }
+                        continue;
+                    }
+
                     foreach ($element_data as $breakpoint => $breakpoint_data) {
                         foreach ($breakpoint_data as $setting => $value) {
                             if (is_array($value)) {
@@ -1690,6 +1699,41 @@ class MaxiBlocks_StyleCards
 
                     $organized_values[$style]['menu'][$menu_prop] = [
                         'value' => $rgba_value,
+                        'var_name' => $var_name
+                    ];
+                }
+            }
+
+            if (isset($style_data['blockDefaults']) && is_array($style_data['blockDefaults'])) {
+                foreach ($style_data['blockDefaults'] as $key => $value) {
+                    if (strpos($key, '|') === false || strpos($key, '-unit-') !== false) {
+                        continue;
+                    }
+
+                    $parts = explode('|', $key, 2);
+                    $block_name = $parts[0];
+                    $attr = $parts[1];
+                    $block_default_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                    $unit_attr = null;
+
+                    foreach ($block_default_breakpoints as $breakpoint) {
+                        if (substr($attr, -strlen("-{$breakpoint}")) === "-{$breakpoint}") {
+                            $base_attr = substr($attr, 0, -strlen("-{$breakpoint}"));
+                            $unit_attr = "{$base_attr}-unit-{$breakpoint}";
+                            break;
+                        }
+                    }
+
+                    $unit_key = $unit_attr ? "{$block_name}|{$unit_attr}" : null;
+                    $unit = $unit_key && isset($style_data['blockDefaults'][$unit_key])
+                        ? $style_data['blockDefaults'][$unit_key]
+                        : '';
+                    $sanitized_block_name = preg_replace('/[^a-zA-Z0-9-]/', '-', $block_name);
+                    $sanitized_attr = preg_replace('/[^a-zA-Z0-9-]/', '-', $attr);
+                    $var_name = "--maxi-{$style}-block-default-{$sanitized_block_name}-{$sanitized_attr}";
+
+                    $organized_values[$style]['blockDefaults'][$var_name] = [
+                        'value' => "{$value}{$unit}",
                         'var_name' => $var_name
                     ];
                 }

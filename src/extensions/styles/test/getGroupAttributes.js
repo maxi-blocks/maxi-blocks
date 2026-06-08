@@ -1,4 +1,8 @@
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
+import {
+	getBlockDefaultKey,
+	setActiveStyleCardValueForBlockDefaults,
+} from '@extensions/style-cards/blockDefaults';
 
 const attributes = {
 	extraClassName: '',
@@ -167,6 +171,10 @@ const attributes = {
 };
 
 describe('getGroupAttributes', () => {
+	afterEach(() => {
+		setActiveStyleCardValueForBlockDefaults(null);
+	});
+
 	it('Return basic attributes from string', () => {
 		expect(getGroupAttributes(attributes, 'border')).toMatchSnapshot();
 	});
@@ -201,5 +209,64 @@ describe('getGroupAttributes', () => {
 		expect(
 			getGroupAttributes(attributes, 'border', false, 'icon-')
 		).toMatchSnapshot();
+	});
+
+	it('can return raw group attributes without Style Card block defaults for UI controls', () => {
+		setActiveStyleCardValueForBlockDefaults({
+			light: {
+				styleCard: {
+					blockDefaults: {
+						[getBlockDefaultKey(
+							'container-maxi',
+							'padding-top-general'
+						)]: '20',
+						[getBlockDefaultKey(
+							'container-maxi',
+							'padding-top-unit-general'
+						)]: 'px',
+					},
+				},
+				defaultStyleCard: {
+					blockDefaults: {},
+				},
+			},
+			dark: {
+				styleCard: {
+					blockDefaults: {},
+				},
+				defaultStyleCard: {
+					blockDefaults: {},
+				},
+			},
+		});
+
+		const containerAttributes = {
+			uniqueID: 'container-maxi-test-u',
+			blockStyle: 'light',
+			'padding-top-general': '150',
+			'padding-top-unit-general': 'px',
+			'padding-top-xxl': '200',
+			'padding-top-xl': '150',
+			'padding-top-s': '60',
+			'padding-top-xs': '40',
+		};
+
+		const rawAttributes = getGroupAttributes(
+			containerAttributes,
+			'padding'
+		);
+		const styleAttributes = getGroupAttributes(
+			containerAttributes,
+			'padding',
+			false,
+			'',
+			false,
+			true
+		);
+
+		expect(rawAttributes['padding-top-general']).toBe('150');
+		expect(rawAttributes.__scBlockDefaults).toBeUndefined();
+		expect(styleAttributes['padding-top-general']).toBe('20');
+		expect(styleAttributes.__scBlockDefaults).toBeDefined();
 	});
 });

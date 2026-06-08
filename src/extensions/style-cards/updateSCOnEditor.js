@@ -11,6 +11,10 @@ import {
 	getSiteEditorIframe,
 	getSiteEditorPreviewIframes,
 } from '@extensions/fse';
+import {
+	debugSCBlockDefaults,
+	setActiveStyleCardValueForBlockDefaults,
+} from './blockDefaults';
 import getSCVariablesObject from './getSCVariablesObject';
 import getSCStyles from './getSCStyles';
 
@@ -82,6 +86,40 @@ const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 	}
 };
 
+const getEditorCanvasDocuments = () => {
+	const iframeDocuments = [];
+
+	if (typeof document === 'undefined' || !document.querySelectorAll) {
+		return iframeDocuments;
+	}
+
+	try {
+		document
+			.querySelectorAll('iframe[name="editor-canvas"]')
+			.forEach(iframe => {
+				try {
+					if (iframe?.contentDocument) {
+						iframeDocuments.push(iframe.contentDocument);
+					}
+				} catch {
+					// Iframe access can fail while Gutenberg is replacing the canvas.
+				}
+			});
+	} catch {
+		// Keep Style Card updates working in non-browser test/runtime contexts.
+	}
+
+	return iframeDocuments;
+};
+
+const getStyleCardUpdateTargets = rawElements =>
+	Array.from(
+		new Set([
+			...(isArray(rawElements) ? rawElements : [rawElements]),
+			...getEditorCanvasDocuments(),
+		])
+	).filter(Boolean);
+
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
@@ -119,9 +157,24 @@ const updateSCOnEditor = (
 	}
 
 	const SCObject = getSCVariablesObject(clonedStyleCards, activeSCColour);
+	setActiveStyleCardValueForBlockDefaults(clonedStyleCards);
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+	const elements = getStyleCardUpdateTargets(rawElements);
+	const blockDefaultVariables = Object.fromEntries(
+		Object.entries(SCObject).filter(([key]) =>
+			key.includes('block-default')
+		)
+	);
+
+	debugSCBlockDefaults('editor update prepared', {
+		activeSCColour,
+		blockDefaultVariables,
+		hasBlockDefaultVariables: !isEmpty(blockDefaultVariables),
+		isPreview,
+		targetCount: elements.length,
+	});
 
 	// FSE editor patterns previews - handle white overlay
 	if (siteEditorPreviewIframes.length > 0) {
@@ -148,13 +201,22 @@ const updateSCOnEditor = (
 		});
 	}
 
-	// Always update SC variables in the main elements (even if preview iframes exist)
-	const elements = isArray(rawElements) ? rawElements : [rawElements];
-
 	elements.forEach(element => {
 		if (!element) return;
 
 		let SCVarEl = element.getElementById('maxi-blocks-sc-vars-inline-css');
+		const existingSCVarsText = SCVarEl?.innerHTML || '';
+
+		debugSCBlockDefaults('editor update target', {
+			hasElement: Boolean(element),
+			elementURL: element.URL,
+			hadSCVarsElement: Boolean(SCVarEl),
+			previousContainsBlockDefaults:
+				existingSCVarsText.includes('block-default'),
+			nextContainsBlockDefaults:
+				SCVariableString.includes('block-default'),
+			nextLength: SCVariableString.length,
+		});
 
 		if (!SCVarEl) {
 			SCVarEl = element.createElement('style');
@@ -176,6 +238,14 @@ const updateSCOnEditor = (
 				styleCards.gutenberg_blocks_status
 			);
 		}
+
+		debugSCBlockDefaults('editor update target complete', {
+			elementURL: element.URL,
+			hasSCVarsElement: Boolean(SCVarEl),
+			currentContainsBlockDefaults:
+				SCVarEl?.innerHTML?.includes('block-default'),
+			currentLength: SCVarEl?.innerHTML?.length,
+		});
 
 		if (!isEmpty(allSCFonts)) {
 			loadFonts(allSCFonts, false, element);

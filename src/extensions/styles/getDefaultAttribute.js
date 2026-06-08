@@ -10,6 +10,7 @@ import { getBlockAttributes } from '@wordpress/blocks';
 import * as defaults from './defaults/index';
 import { getIsValid, getBreakpointFromAttribute } from './utils';
 import { getBlockData } from '@extensions/attributes';
+import { debugSCBlockDefaults } from '@extensions/style-cards/blockDefaults';
 
 /**
  * External dependencies
@@ -59,8 +60,23 @@ const getDefaultAttribute = (
 		blockName = blockNameProp || getBlocksName(getSelectedBlockClientIds());
 	}
 
+	const debugDefaultAttribute = (stage, value, extra = {}) => {
+		if (!prop.includes('width') && !prop.includes('height')) return;
+
+		debugSCBlockDefaults('sidebar default attribute', {
+			stage,
+			prop,
+			blockName,
+			value,
+			...extra,
+		});
+	};
+
 	const isMaxiBlock = blockName && blockName.includes('maxi-blocks');
-	if (!isMaxiBlock) return null;
+	if (!isMaxiBlock) {
+		debugDefaultAttribute('non-maxi-block', null);
+		return null;
+	}
 
 	// eslint-disable-next-line @wordpress/no-unused-vars-before-return
 	const maxiBlocksStore = select('maxiBlocks');
@@ -72,7 +88,10 @@ const getDefaultAttribute = (
 	}
 
 	const isGeneral = getBreakpointFromAttribute(prop) === 'general';
-	if (getIsValid(response, true)) return response;
+	if (getIsValid(response, true)) {
+		debugDefaultAttribute('block attribute default', response);
+		return response;
+	}
 	if (isGeneral) {
 		if (avoidBaseBreakpoint) return response;
 
@@ -82,7 +101,12 @@ const getDefaultAttribute = (
 				prop.replace('general', baseBreakpoint)
 			];
 
-		if (getIsValid(baseAttribute, true)) return baseAttribute;
+		if (getIsValid(baseAttribute, true)) {
+			debugDefaultAttribute('base breakpoint default', baseAttribute, {
+				baseBreakpoint,
+			});
+			return baseAttribute;
+		}
 	}
 
 	// Check default value
@@ -96,6 +120,8 @@ const getDefaultAttribute = (
 			prop.replace('general', baseBreakpoint, clientIds)
 		);
 	}
+
+	debugDefaultAttribute('resolved default', response);
 
 	return response;
 };

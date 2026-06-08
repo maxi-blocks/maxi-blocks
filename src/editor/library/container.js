@@ -11,6 +11,10 @@ import { CheckboxControl } from '@wordpress/components';
  * Internal dependencies
  */
 import { updateSCOnEditor } from '@extensions/style-cards';
+import {
+	DARK_TONE_STYLE_OVERRIDES,
+	SYNC_STYLE_SETTINGS_TONES_STATUS,
+} from '@extensions/style-cards/syncTypography';
 import { svgAttributesReplacer, isSVGColorLight, fitSvg } from './util';
 import { injectImgSVG } from '@extensions/svg';
 import MasonryItem from './MasonryItem';
@@ -813,6 +817,8 @@ const LibraryContainer = props => {
 
 		const defaultSCvalues = {
 			gutenberg_blocks_status: true,
+			[SYNC_STYLE_SETTINGS_TONES_STATUS]: true,
+			[DARK_TONE_STYLE_OVERRIDES]: [],
 			dark: {
 				defaultStyleCard: {
 					link: {
@@ -1435,11 +1441,11 @@ const LibraryContainer = props => {
 									className='maxi-cloud-container__content-svg-shape__categories'
 									attribute='svg_category'
 									defaultRefinement={
-									type === 'navigation-icon' &&
-									prefix.includes('dot')
-										? 'Shape'
-										: 'Line'
-								}
+										type === 'navigation-icon' &&
+										prefix.includes('dot')
+											? 'Shape'
+											: 'Line'
+									}
 									translations={{
 										seeAllOption: __(
 											'All icons',

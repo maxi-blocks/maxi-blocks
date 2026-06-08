@@ -417,4 +417,24 @@ describe('handleSetAttributes', () => {
 
 		expect(handleSetAttributes(args)).toStrictEqual(expectedAttrs);
 	});
+
+	it('preserves Style Card block-default keys that use the block separator', () => {
+		const result = handleSetAttributes({
+			obj: {
+				'container-maxi|padding-top-xl': '20',
+				'container-maxi|padding-top-unit-xl': 'px',
+			},
+			attributes: {},
+			defaultAttributes: {},
+			onChange,
+			isStyleCard: true,
+		});
+
+		expect(result).toEqual(
+			expect.objectContaining({
+				'container-maxi|padding-top-xl': '20',
+				'container-maxi|padding-top-unit-xl': 'px',
+			})
+		);
+	});
 });

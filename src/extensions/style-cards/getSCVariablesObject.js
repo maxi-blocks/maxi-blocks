@@ -10,6 +10,10 @@ import { getActiveColourFromSC } from '@editor/style-cards/utils';
 import getTypographyStyles from '@extensions/styles/helpers/getTypographyStyles';
 import replaceUndefinedWithNull from './utils';
 import extractRGBValues from './extractRGBValues';
+import {
+	debugSCBlockDefaults,
+	getStyleCardBlockDefaultVariables,
+} from './blockDefaults';
 
 /**
  * External dependencies
@@ -418,6 +422,13 @@ const getSCVariablesObject = (
 	});
 
 	response['--maxi-active-sc-color'] = activeSCColour;
+
+	const blockDefaultVariables = getStyleCardBlockDefaultVariables(styleCards);
+	debugSCBlockDefaults('variables object block defaults', {
+		cleanResponse,
+		blockDefaultVariables,
+	});
+	Object.assign(response, blockDefaultVariables);
 
 	return response;
 };

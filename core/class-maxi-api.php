@@ -3247,9 +3247,21 @@ if (!class_exists('MaxiBlocks_API')):
             $temperature = $request->get_param('temperature');
             $streaming   = $request->get_param('streaming') ?: false;
 
+            // Clamp temperature to valid range (0.0 – 2.0).
+            if ($temperature !== null) {
+                $temperature = max(0.0, min(2.0, (float) $temperature));
+            }
+
             // Convert messages to OpenAI format if needed
             if (is_string($messages)) {
-                $messages = json_decode($messages, true);
+                $messages = json_decode($messages, true, 32);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return new WP_Error(
+                        'invalid_json',
+                        'Messages JSON is malformed',
+                        ['status' => 400],
+                    );
+                }
             }
 
             // Validate message format
@@ -3261,43 +3273,67 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
+            // ── Message cap + validation ───────────────────────────────────
+            $max_messages  = (int) apply_filters('maxi_ai_max_messages', 30);
+            $max_bytes     = (int) apply_filters('maxi_ai_max_payload_bytes', 128_000);
+            $allowed_roles = ['system', 'user', 'assistant'];
+
+            if (count($messages) > $max_messages) {
+                return new WP_Error(
+                    'too_many_messages',
+                    sprintf('Too many messages (max %d).', $max_messages),
+                    ['status' => 400],
+                );
+            }
+
             // Convert LangChain format to OpenAI format
             $converted_messages = [];
+            $total_bytes        = 0;
             foreach ($messages as $message) {
                 if (isset($message['id']) && is_array($message['id'])) {
                     // This is a LangChain message format
                     $message_type = end($message['id']); // Get last element (SystemMessage, HumanMessage, etc.)
                     $content = $message['kwargs']['content'] ?? '';
 
-                    switch ($message_type) {
-                        case 'SystemMessage':
-                            $converted_messages[] = [
-                                'role' => 'system',
-                                'content' => $content,
-                            ];
-                            break;
-                        case 'HumanMessage':
-                            $converted_messages[] = [
-                                'role' => 'user',
-                                'content' => $content,
-                            ];
-                            break;
-                        case 'AIMessage':
-                            $converted_messages[] = [
-                                'role' => 'assistant',
-                                'content' => $content,
-                            ];
-                            break;
-                        default:
-                            // Fallback to user role for unknown types
-                            $converted_messages[] = [
-                                'role' => 'user',
-                                'content' => $content,
-                            ];
-                    }
+                    $role = match ($message_type) {
+                        'SystemMessage' => 'system',
+                        'HumanMessage'  => 'user',
+                        'AIMessage'     => 'assistant',
+                        default         => 'user',
+                    };
+
+                    $converted_messages[] = [
+                        'role'    => $role,
+                        'content' => $content,
+                    ];
+                    $total_bytes += strlen($content);
                 } else {
-                    // Already in OpenAI format, use as-is
-                    $converted_messages[] = $message;
+                    // Already in OpenAI format — strip to role + content only.
+                    $role    = $message['role'] ?? 'user';
+                    $content = $message['content'] ?? '';
+
+                    if (!in_array($role, $allowed_roles, true)) {
+                        $role = 'user';
+                    }
+
+                    // Ensure content is a string (some providers accept arrays).
+                    if (!is_string($content)) {
+                        $content = wp_json_encode($content);
+                    }
+
+                    $converted_messages[] = [
+                        'role'    => $role,
+                        'content' => $content,
+                    ];
+                    $total_bytes += strlen($content);
+                }
+
+                if ($total_bytes > $max_bytes) {
+                    return new WP_Error(
+                        'payload_too_large',
+                        sprintf('Message payload exceeds %d bytes.', $max_bytes),
+                        ['status' => 413],
+                    );
                 }
             }
 

@@ -4,6 +4,7 @@
  */
 
 import { setSVGStrokeWidth } from '@extensions/svg';
+import { sanitizeSvg } from '../../iconSearch';
 
 export const getIconSidebarTarget = property => {
 	const normalized = String(property || '').replace(/-/g, '_');
@@ -233,8 +234,10 @@ export const handleIconUpdate = (block, property, value, _prefix, context = {}) 
 		const nextSvgType = typeof value === 'object' ? value?.svgType : null;
 		const nextAltTitle = typeof value === 'object' ? value?.title || value?.label : null;
 		if (!rawSvg) return null;
+		const cleanSvg = sanitizeSvg(rawSvg);
+		if (!cleanSvg) return null;
 		return {
-			content: rawSvg,
+			content: cleanSvg,
 			...(nextSvgType ? { svgType: nextSvgType } : {}),
 			...(nextAltTitle ? { altTitle: String(nextAltTitle) } : {}),
 		};

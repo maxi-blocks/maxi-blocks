@@ -5,6 +5,8 @@
 
 import { SHARED_FLOWS, BUTTON_RADIUS_PRESETS, SHADOW_PRESETS_BUTTON } from '../flows/flowConfig';
 import { runFlow } from '../flows/flowEngine';
+import { sanitizeSvg } from '../../iconSearch';
+import { sanitizeUrl } from '../utils/messageExtractors';
 
 /**
  * Flow configuration for the Button block.
@@ -487,16 +489,18 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			}
 			break;
 
-		case 'button_url':
-			if (value) {
+		case 'button_url': {
+			const safeUrl = sanitizeUrl(String(value || ''));
+			if (safeUrl) {
 				changes = {
 					linkSettings: {
 						...linkSettings,
-						url: String(value)
+						url: safeUrl
 					}
 				};
 			}
 			break;
+		}
 
 		case 'link_target':
 			changes = {
@@ -526,7 +530,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 
 		case 'button_icon_add':
 			changes = {
-				'icon-content': value,
+				'icon-content': sanitizeSvg(String(value || '')),
 				'icon-only': false
 			};
 			break;
@@ -534,9 +538,10 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 		case 'button_icon_svg': {
 			const rawSvg = typeof value === 'string' ? value : value?.svgCode;
 			const nextSvgType = typeof value === 'object' ? value?.svgType : null;
-			if (rawSvg) {
+			const cleanSvg = rawSvg ? sanitizeSvg(rawSvg) : '';
+			if (cleanSvg) {
 				changes = {
-					'icon-content': rawSvg,
+					'icon-content': cleanSvg,
 					'icon-only': false,
 					...(nextSvgType ? { svgType: nextSvgType } : {}),
 				};
@@ -553,7 +558,7 @@ export const handleButtonUpdate = (block, property, value, prefix, context = {})
 			break;
 
 		case 'button_icon_change':
-			changes = { 'icon-content': value };
+			changes = { 'icon-content': sanitizeSvg(String(value || '')) };
 			break;
 
 		case 'icon_spacing':

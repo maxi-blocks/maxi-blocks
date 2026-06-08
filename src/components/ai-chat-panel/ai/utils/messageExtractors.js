@@ -19,6 +19,24 @@ export const extractQuotedText = message => {
 	return match ? match[1].trim() : null;
 };
 
+/**
+ * Returns the URL if it uses a safe protocol, or empty string otherwise.
+ * Allows http:, https:, mailto:, tel:, and relative paths.
+ *
+ * @param {string} url Raw URL value.
+ * @returns {string} Sanitized URL or ''.
+ */
+export const sanitizeUrl = url => {
+	if (typeof url !== 'string') return '';
+	const trimmed = url.trim();
+	if (!trimmed) return '';
+	if (/^(https?:|mailto:|tel:|\/)/.test(trimmed)) return trimmed;
+	if (/^www\./i.test(trimmed)) return `https://${trimmed}`;
+	if (/^\s*(javascript|data|vbscript)\s*:/i.test(trimmed)) return '';
+	if (/^[a-z0-9.-]+\.[a-z]{2,}/i.test(trimmed)) return `https://${trimmed}`;
+	return trimmed;
+};
+
 export const extractUrl = message => {
 	if (!message) return null;
 	const match = message.match(/https?:\/\/[^\s"'<>]+/i);

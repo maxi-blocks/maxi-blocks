@@ -1176,6 +1176,21 @@ const routeLayoutPatterns = ( rawMessage, ctx, selectFn ) => {
 				/\b(image|photo|picture|text|paragraph|heading|button|cta|call.to.action|video|divider|separator|icon|svg)\b/i
 			);
 			const leafType = leafMatch ? leafMatch[ 1 ].toLowerCase() : 'image';
+
+			// When the user says "insert svg with a skull" or "add an icon of a star",
+			// the extra words after the block type are a search query — route to
+			// cloud_icon so we search + insert instead of inserting a blank block.
+			if ( leafType === 'icon' || leafType === 'svg' ) {
+				const afterBlockType = lowerMessage
+					.replace( /^.*?\b(icon|svg)\b\s*/i, '' )
+					.replace( /\b(block|maxi)\b/gi, '' )
+					.trim();
+				if ( afterBlockType.length > 1 ) {
+					const iconResult = routeCloudIcon( rawMessage, ctx );
+					if ( iconResult ) return iconResult;
+				}
+			}
+
 			return {
 				type: 'insert_maxi_block',
 				params: {

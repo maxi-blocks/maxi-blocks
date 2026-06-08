@@ -12,6 +12,7 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
 import { loadColumnsTemplate, getTemplates } from '@extensions/column-templates';
 import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
+import { sanitizeSvg } from '../iconSearch';
 import { findBestIcon, extractIconQuery } from '../iconSearch';
 import { getAiHandlerForBlock, getAiFlowConfig } from '../ai/registry';
 import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';
@@ -541,6 +542,58 @@ const useAiChatActions = ({
 		return chunks;
 	};
 
+	// ─── LLM action sanitizer ───────────────────────────────────────────────
+
+	const DANGEROUS_URL_RE = /^\s*(javascript|data|vbscript)\s*:/i;
+	const ALLOWED_ACTIONS = new Set([
+		'MODIFY_BLOCK', 'CLARIFY', 'CLOUD_MODAL_UI', 'message',
+		'update_selection', 'update_page', 'apply_theme', 'update_style_card',
+		'post_management', 'switch_viewport', 'sc_action', 'browse_cloud_sc',
+		'cloud_icon', 'navigate_sidebar',
+	]);
+
+	/**
+	 * In-place sanitization of an LLM-generated action object.
+	 * Strips dangerous values that could cause stored XSS when written to
+	 * block attributes — called before any execution branch.
+	 *
+	 * @param {Object} action Parsed LLM action (mutated in place).
+	 */
+	const sanitizeLlmAction = action => {
+		if (!action || typeof action !== 'object') return;
+
+		// Reject unknown action types → will fall through to plain-text display.
+		if (action.action && !ALLOWED_ACTIONS.has(action.action)) {
+			logAIDebug('sanitizeLlmAction: rejected unknown action type', JSON.stringify(action.action));
+			delete action.action;
+			return;
+		}
+
+		// Recursively walk the action tree and sanitize dangerous values.
+		const walk = obj => {
+			if (!obj || typeof obj !== 'object') return;
+			for (const key of Object.keys(obj)) {
+				const val = obj[key];
+				if (typeof val === 'string') {
+					// Block dangerous URL protocols in any URL-like field.
+					if (/url|href|link|src/i.test(key) && DANGEROUS_URL_RE.test(val)) {
+						logAIDebug('sanitizeLlmAction: blocked dangerous URL in', JSON.stringify(key));
+						obj[key] = '';
+					}
+					// Sanitize raw SVG/HTML in content-like fields.
+					if (/content|svg|icon/i.test(key) && /<\s*(script|iframe|object|embed|on\w+)\b/i.test(val)) {
+						obj[key] = sanitizeSvg(val);
+					}
+				} else if (Array.isArray(val)) {
+					val.forEach(walk);
+				} else if (typeof val === 'object' && val !== null) {
+					walk(val);
+				}
+			}
+		};
+		walk(action);
+	};
+
 	// ─── Main action parser ──────────────────────────────────────────────────
 
 	/**
@@ -620,6 +673,9 @@ const useAiChatActions = ({
 			}
 
 			console.log('[Maxi AI Debug] Parsed action:', JSON.stringify(action, null, 2));
+
+			// ── Sanitize LLM action before execution ────────────────────────────
+			sanitizeLlmAction(action);
 
 			// ── CLARIFY ──────────────────────────────────────────────────────────
 			if (action.action === 'CLARIFY') {

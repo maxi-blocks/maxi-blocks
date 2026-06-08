@@ -6,6 +6,7 @@ import {
 	extractBreakpointToken as extractLayoutBreakpointToken,
 	normalizeValueWithBreakpoint as normalizeLayoutValueWithBreakpoint,
 } from './layoutAGroup';
+import { sanitizeUrl } from './messageExtractors';
 import {
 	RESPONSIVE_BREAKPOINTS,
 	extractNumericValue,
@@ -2254,6 +2255,9 @@ const buildContainerLGroupAttributeChanges = (
 
 	if (normalized === 'link_settings') {
 		const incoming = value && typeof value === 'object' ? value : { url: value };
+		if (incoming.url) {
+			incoming.url = sanitizeUrl(String(incoming.url));
+		}
 		const existing = attributes?.linkSettings || {};
 		const next = {
 			...existing,
@@ -2278,7 +2282,7 @@ const buildContainerLGroupAttributeChanges = (
 		return {
 			'dc-link-status': payload.status ?? true,
 			...(payload.target ? { 'dc-link-target': payload.target } : {}),
-			...(payload.url ? { 'dc-link-url': payload.url } : {}),
+			...(payload.url ? { 'dc-link-url': sanitizeUrl(String(payload.url)) } : {}),
 		};
 	}
 
@@ -2291,7 +2295,7 @@ const buildContainerLGroupAttributeChanges = (
 	}
 
 	if (normalized === 'dc_link_url') {
-		return { 'dc-link-url': value };
+		return { 'dc-link-url': sanitizeUrl(String(value || '')) };
 	}
 
 	return null;

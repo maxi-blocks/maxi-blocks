@@ -18,6 +18,7 @@ import { select } from '@wordpress/data';
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import applyLinkFormat from '@extensions/text/formats/applyLinkFormat';
 import { createLinkAttributes } from '@components/toolbar/components/text-link/utils';
+import { sanitizeUrl } from '../utils/messageExtractors';
 import { SHARED_FLOWS } from '../flows/flowConfig';
 import { runFlow } from '../flows/flowEngine';
 
@@ -464,7 +465,7 @@ const buildTextDynamicChanges = fieldValue => {
 const buildTextLinkChanges = (block, linkValue) => {
 	const incoming =
 		typeof linkValue === 'object' && linkValue ? linkValue : { url: linkValue };
-	const url = incoming?.url ? String(incoming.url) : '';
+	const url = incoming?.url ? sanitizeUrl(String(incoming.url)) : '';
 	if (!url) return null;
 
 	const content = block?.attributes?.content || '';

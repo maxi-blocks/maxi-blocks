@@ -4,7 +4,20 @@
  * Provides Typesense search functionality for Cloud Library SVG icons.
  */
 
+import DOMPurify from 'dompurify';
 import { svgAttributesReplacer } from '../../editor/library/util';
+
+/**
+ * Sanitizes SVG markup to remove scripts, event handlers, and other
+ * XSS vectors while preserving valid SVG elements including <use>.
+ *
+ * @param {string} svg Raw SVG string.
+ * @returns {string} Sanitized SVG string.
+ */
+export const sanitizeSvg = svg => {
+	if (typeof svg !== 'string' || !svg) return '';
+	return DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true }, ADD_TAGS: ['use'] });
+};
 
 /**
  * Search the Cloud Library for SVG icons matching a query.
@@ -307,7 +320,7 @@ export const findBestIcon = async (query, options = {}) => {
 				? icon.svg_category[0]
 				: icon.svg_category;
 			const rawSvg = icon.svg_code || '';
-			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
+			const svgCode = rawSvg ? sanitizeSvg(svgAttributesReplacer(rawSvg, target)) : '';
 			const matchStats = getMatchStats(query, icon);
 			const styleMatch = normalizedStyle
 				? matchesIconStyle(icon, normalizedStyle)
@@ -394,7 +407,7 @@ export const findIconCandidates = async (query, options = {}) => {
 				? icon.svg_category[0]
 				: icon.svg_category;
 			const rawSvg = icon.svg_code || '';
-			const svgCode = rawSvg ? svgAttributesReplacer(rawSvg, target) : '';
+			const svgCode = rawSvg ? sanitizeSvg(svgAttributesReplacer(rawSvg, target)) : '';
 			const matchStats = getMatchStats(query, icon);
 			const styleMatch = normalizedStyle
 				? matchesIconStyle(icon, normalizedStyle)

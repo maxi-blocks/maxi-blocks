@@ -1156,7 +1156,6 @@ const collectKeysFromStyleNode = (
 	}
 
 	if (functionName === 'linkAttributesCreator') {
-		const withDefaults = getLiteralBoolean(firstArg) ?? true;
 		const prefixes = ['link-', 'link-hover-', 'link-active-', 'link-visited-'];
 		for (const prefix of prefixes) {
 			for (const bp of BREAKPOINTS) {

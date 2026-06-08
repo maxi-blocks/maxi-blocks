@@ -5,7 +5,7 @@
 
 import { SHARED_FLOWS, BUTTON_RADIUS_PRESETS, SHADOW_PRESETS_BUTTON } from '../flows/flowConfig';
 import { runFlow } from '../flows/flowEngine';
-import { sanitizeSvg } from '../../iconSearch';
+import { sanitizeSvg } from '../../utils/sanitizeSvg';
 import { sanitizeUrl } from '../utils/messageExtractors';
 
 /**

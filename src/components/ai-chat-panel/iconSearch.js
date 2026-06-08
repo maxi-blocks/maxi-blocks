@@ -4,20 +4,10 @@
  * Provides Typesense search functionality for Cloud Library SVG icons.
  */
 
-import DOMPurify from 'dompurify';
 import { svgAttributesReplacer } from '../../editor/library/util';
+import { sanitizeSvg } from './utils/sanitizeSvg';
 
-/**
- * Sanitizes SVG markup to remove scripts, event handlers, and other
- * XSS vectors while preserving valid SVG elements including <use>.
- *
- * @param {string} svg Raw SVG string.
- * @returns {string} Sanitized SVG string.
- */
-export const sanitizeSvg = svg => {
-	if (typeof svg !== 'string' || !svg) return '';
-	return DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true }, ADD_TAGS: ['use'] });
-};
+export { sanitizeSvg };
 
 /**
  * Search the Cloud Library for SVG icons matching a query.

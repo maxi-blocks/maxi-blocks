@@ -4,7 +4,7 @@
  */
 
 import { setSVGStrokeWidth } from '@extensions/svg';
-import { sanitizeSvg } from '../../iconSearch';
+import { sanitizeSvg } from '../../utils/sanitizeSvg';
 
 export const getIconSidebarTarget = property => {
 	const normalized = String(property || '').replace(/-/g, '_');

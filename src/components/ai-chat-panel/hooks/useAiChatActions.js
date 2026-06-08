@@ -12,7 +12,7 @@ import { openSidebarAccordion } from '@extensions/inspector/inspectorPath';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
 import { loadColumnsTemplate, getTemplates } from '@extensions/column-templates';
 import ACTION_PROPERTY_ALIASES from '../ai/actions/actionPropertyAliases';
-import { sanitizeSvg } from '../iconSearch';
+import { sanitizeSvg } from '../utils/sanitizeSvg';
 import { findBestIcon, extractIconQuery } from '../iconSearch';
 import { getAiHandlerForBlock, getAiFlowConfig } from '../ai/registry';
 import { executeCloudModalUiOps } from '../utils/aiCloudModalDriver';

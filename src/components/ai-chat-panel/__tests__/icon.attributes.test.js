@@ -128,7 +128,7 @@ describe('icon prompt to attributes', () => {
 		});
 
 		expect(changes).toEqual({
-			content: '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z"/></svg>',
+			content: '<svg viewBox="0 0 24 24"><path d="M0 0h24v24H0z"></path></svg>',
 			svgType: 'Line',
 			altTitle: 'Cart',
 		});

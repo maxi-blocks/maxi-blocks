@@ -3172,6 +3172,27 @@ if (!class_exists('MaxiBlocks_API')):
          */
         public function proxy_ai_chat($request)
         {
+            // ── Rate limiting ──────────────────────────────────────────────
+            $user_id        = get_current_user_id();
+            $transient_key  = 'maxi_ai_rate_' . $user_id;
+            $max_requests   = (int) apply_filters('maxi_ai_rate_limit', 30);
+            $window_seconds = (int) apply_filters('maxi_ai_rate_window', 60);
+            $current_count  = (int) get_transient($transient_key);
+
+            if ($current_count >= $max_requests) {
+                return new WP_Error(
+                    'rate_limit_exceeded',
+                    sprintf(
+                        'Rate limit exceeded. Maximum %d requests per %d seconds.',
+                        $max_requests,
+                        $window_seconds
+                    ),
+                    ['status' => 429],
+                );
+            }
+
+            set_transient($transient_key, $current_count + 1, $window_seconds);
+
             // Determine effective provider / key / model
             $use_shared = (bool) get_option('maxi_ai_panel_use_shared', true);
 

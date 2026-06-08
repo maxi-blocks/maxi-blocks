@@ -721,11 +721,26 @@ const extractFunctionResultNode = (
 	}
 
 	const localScope = new Map(scope);
+	const resolveArg = arg => {
+		if (!arg) return arg;
+		if (arg.type === 'Identifier' && scope.has(arg.name)) {
+			return scope.get(arg.name) || arg;
+		}
+		return arg;
+	};
 	const parameters = functionNode.params || [];
 	for (let index = 0; index < parameters.length; index += 1) {
 		const param = parameters[index];
 		if (param.type === 'Identifier') {
-			localScope.set(param.name, args[index]);
+			localScope.set(param.name, resolveArg(args[index]));
+		} else if (
+			param.type === 'AssignmentPattern' &&
+			param.left.type === 'Identifier'
+		) {
+			localScope.set(
+				param.left.name,
+				resolveArg(args[index]) || param.right
+			);
 		}
 	}
 
@@ -1323,6 +1338,22 @@ const expandFromProps = (
 			rawValues.add(normalizeKey(resolved));
 		}
 	} else if (node.type === 'Identifier') {
+		const scopeEntry = scope.get(node.name);
+		if (scopeEntry) {
+			const scopeNode = scopeEntry.node || scopeEntry;
+			if (scopeNode !== node && scopeNode.type !== 'Identifier') {
+				for (const key of expandFromProps(
+					scopeNode,
+					context,
+					scopeEntry.moduleInfo || moduleInfo,
+					seen,
+					scope
+				)) {
+					result.add(key);
+				}
+				return result;
+			}
+		}
 		const resolved = resolveIdentifierWithModule(moduleInfo, node.name, seen);
 		if (resolved.node) {
 			for (const key of collectKeysFromStyleNode(
@@ -1467,6 +1498,45 @@ const getGroupAttributeKeys = groupName => {
 	return ordered;
 };
 
+/**
+ * Resolves spread arguments of the form `...(condition && { key: value })`
+ * to extract ObjectProperties when the condition is statically truthy.
+ */
+const resolveSpreadForContext = (argument, moduleInfo, seen, scope) => {
+	if (!argument) return [];
+	if (argument.type === 'ObjectExpression') {
+		return argument.properties.filter(p => p.type === 'ObjectProperty');
+	}
+	if (
+		argument.type === 'LogicalExpression' &&
+		argument.operator === '&&' &&
+		argument.right?.type === 'ObjectExpression'
+	) {
+		const left = argument.left;
+		let conditionTrue = false;
+		if (left.type === 'BooleanLiteral') {
+			conditionTrue = left.value;
+		} else if (left.type === 'Identifier' && scope.has(left.name)) {
+			const scopeVal = scope.get(left.name);
+			if (scopeVal?.type === 'BooleanLiteral') {
+				conditionTrue = scopeVal.value;
+			} else if (!scopeVal) {
+				conditionTrue = false;
+			} else {
+				conditionTrue = true;
+			}
+		} else if (left.type === 'Identifier') {
+			conditionTrue = resolveLiteralBoolean(left, moduleInfo, seen) === true;
+		}
+		if (conditionTrue) {
+			return argument.right.properties.filter(
+				p => p.type === 'ObjectProperty'
+			);
+		}
+	}
+	return [];
+};
+
 const collectCopyPasteKeys = (
 	node,
 	moduleInfo,
@@ -1546,6 +1616,9 @@ const collectCopyPasteKeys = (
 		)?.value
 	);
 	const templateNode = getTemplateNode(templateName);
+	const templateModuleInfo = templateNode
+		? getModuleInfo(STYLE_TEMPLATES_PATH)
+		: null;
 	if (templateNode) {
 		workingNode = mergeTemplateAndOverride(templateNode, node);
 	}
@@ -1553,6 +1626,21 @@ const collectCopyPasteKeys = (
 	const nextContext = { ...context };
 	const properties = workingNode?.properties || [];
 	for (const property of properties) {
+		if (property.type === 'SpreadElement') {
+			const spreadProps = resolveSpreadForContext(
+				property.argument,
+				moduleInfo,
+				seen,
+				scope
+			);
+			for (const sp of spreadProps) {
+				const spKey = getPropKey(sp, moduleInfo, seen, scope);
+				if (spKey === 'hasBreakpoints') nextContext.hasBreakpoints = true;
+				if (spKey === 'isPalette') nextContext.isPalette = true;
+				if (spKey === 'isHover') nextContext.isHover = true;
+			}
+			continue;
+		}
 		if (property.type !== 'ObjectProperty') continue;
 		const key = getPropKey(property, moduleInfo, seen, scope);
 		if (key === 'template' && templateNode) continue;
@@ -1636,7 +1724,7 @@ const collectCopyPasteKeys = (
 		if (groupEntry?.value) {
 			for (const key of collectCopyPasteKeys(
 				groupEntry.value,
-				moduleInfo,
+				templateModuleInfo || moduleInfo,
 				nextContext,
 				seen,
 				scope,
@@ -1657,7 +1745,7 @@ const collectCopyPasteKeys = (
 
 			for (const key of collectCopyPasteKeys(
 				property.value,
-				moduleInfo,
+				templateModuleInfo || moduleInfo,
 				nextContext,
 				seen,
 				scope,
@@ -1671,7 +1759,7 @@ const collectCopyPasteKeys = (
 		if (property.type === 'SpreadElement') {
 			for (const key of collectCopyPasteKeys(
 				property.argument,
-				moduleInfo,
+				templateModuleInfo || moduleInfo,
 				nextContext,
 				seen,
 				scope,

@@ -1,35 +1,19 @@
-const getBlockEditor = () =>
-	typeof window !== 'undefined' && window.wp?.data
-		? window.wp.data
-		: null;
+/**
+ * WordPress dependencies
+ */
+import { select, dispatch } from '@wordpress/data';
 
-export const getSelectedClientIds = () => {
-	const data = getBlockEditor();
-	if (!data) return [];
-	const selector = data.select('core/block-editor');
-	return selector?.getSelectedBlockClientIds?.() || [];
-};
+export const getSelectedClientIds = () =>
+	select('core/block-editor')?.getSelectedBlockClientIds?.() || [];
 
-export const getBlockAttributes = clientId => {
-	const data = getBlockEditor();
-	if (!data) return {};
-	const selector = data.select('core/block-editor');
-	return selector?.getBlockAttributes?.(clientId) || {};
-};
+export const getBlockAttributes = clientId =>
+	select('core/block-editor')?.getBlockAttributes?.(clientId) || {};
 
-export const updateBlockAttributes = (clientId, attributes) => {
-	const data = getBlockEditor();
-	if (!data) return null;
-	const dispatch = data.dispatch('core/block-editor');
-	return dispatch?.updateBlockAttributes?.(clientId, attributes);
-};
+export const updateBlockAttributes = (clientId, attributes) =>
+	dispatch('core/block-editor')?.updateBlockAttributes?.(clientId, attributes);
 
-export const getBlocks = () => {
-	const data = getBlockEditor();
-	if (!data) return [];
-	const selector = data.select('core/block-editor');
-	return selector?.getBlocks?.() || [];
-};
+export const getBlocks = () =>
+	select('core/block-editor')?.getBlocks?.() || [];
 
 export default {
 	getSelectedClientIds,

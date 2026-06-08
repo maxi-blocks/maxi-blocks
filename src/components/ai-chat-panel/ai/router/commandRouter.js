@@ -5,14 +5,18 @@
  * without touching any React state. The hook is responsible for acting on
  * the returned result (state updates, block attribute writes, API calls).
  *
- * Processing order mirrors the original sendMessage() cascade:
- *   1.  Text-link detection
+ * Processing order:
+ *   0.  Early Style Card (when SC keyword present)
+ *   1.  Post / page management (publish, save, draft, title, slug, preview, schedule)
+ *   1a. FSE operations (template parts, reusable blocks, WP patterns)
+ *   1b. Cloud Library (must precede attribute groups to avoid false context-loop matches)
+ *   1c. Text-link detection
  *   2.  Attribute-group builders (L, Meta, CSS, DC, Button A/B/C/I, Text, Container A-Z)
  *   3.  Numeric-value patterns (spacing, image sizing, size limits, border radius)
  *   4.  Direct-removal patterns (corners, shadow, border)
  *   5.  Hex-colour direct action
  *   6.  Shape-divider clarification
- *   6b. Open Cloud Library (insert maxi-cloud block)
+ *   6c. Style Cards cloud library browser
  *   7.  LAYOUT_PATTERNS loop (flow triggers, aesthetic, cloud icon, create block,
  *       colour clarify, use_prompt, standard patterns)
  *   8.  Gap patterns
@@ -1727,7 +1731,10 @@ const extractTitleFromMessage = rawMessage => {
 	const patterns = [
 		/\b(?:set|change|update|give\s+(?:it|this))\s+(?:the\s+)?(?:page\s+|post\s+)?title\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
 		/\btitle\s*[:=]\s*["']?(.+?)["']?\s*$/i,
-		/\brename\s+(?:it|this|the\s+(?:page|post))\s+(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		// "rename the page to X", "rename this to X", "rename it to X"
+		/\brename\s+(?:the\s+)?(?:page\s+|post\s+|it\s+|this\s+)?(?:to|as)\s+["']?(.+?)["']?\s*$/i,
+		// "name the page X", "name this post X"
+		/\bname\s+(?:the\s+)?(?:page|post|it|this)\s+["']?(.+?)["']?\s*$/i,
 		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+["']?(.+?)["']?\s*$/i,
 		/\btitled?\s+["'](.+?)["']\s*$/i,
 		/\bnamed?\s+["'](.+?)["']\s*$/i,
@@ -1848,6 +1855,10 @@ const routePostManagement = rawMessage => {
 		/\btitle\s*[:=]/i,
 		/\bcall\s+(?:it|this|the\s+(?:page|post))\s+/i,
 		/\bwith\s+(?:a\s+)?title\b/i,
+		// "rename the page to X", "rename this post to X"
+		/\brename\s+(?:the\s+)?(?:page|post|it|this)\s+(?:to|as)\b/i,
+		// "name the page X", "name this post X"
+		/\bname\s+(?:the\s+)?(?:page|post|it|this)\s+/i,
 	];
 	if ( setTitleIntents.some( re => re.test( lower ) ) ) {
 		const title = extractTitleFromMessage( rawMessage );
@@ -1948,6 +1959,10 @@ const routeOpenCloudLibrary = rawMessage => {
 		/\b(import|insert|get)\s+(a\s+|an\s+|the\s+)[\s\S]{0,120}\b(page|pages|pattern|patterns)\b/i,
 		// "Add a hero pattern" — patterns only (avoid "add a page" → site editor ambiguity).
 		/\badd\s+(a\s+|an\s+|the\s+)?[\s\S]{0,100}\b(pattern|patterns)\b/i,
+		// "add/load/get ... from the cloud" — any content request mentioning the cloud
+		/\b(add|load|get|insert|use)\b[\s\S]{0,120}\bfrom\s+(the\s+)?cloud\b/i,
+		// "load a random Testimonial", "load a free page" — load + article implies Cloud Library
+		/\bload\s+(a\s+|an\s+|the\s+)[\s\S]{0,80}\b(page|pattern|testimonial|hero|pricing|team|about|contact|faq|feature|service|portfolio|footer|header|blog|gallery|cta|call[\s-]to[\s-]action)\b/i,
 	];
 
 	if ( intents.some( re => re.test( lower ) ) ) {
@@ -2136,7 +2151,13 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	const fseResult = routeFSEOperations( rawMessage );
 	if ( fseResult ) return fseResult;
 
-	// 1b. Text link
+	// 1b. Cloud Library — must run before attribute groups so that
+	//     "add a random Testimonial from the Cloud" is not misread as
+	//     a context loop ordering change.
+	const earlyCloudResult = routeOpenCloudLibrary( rawMessage );
+	if ( earlyCloudResult ) return earlyCloudResult;
+
+	// 1c. Text link
 	const textLinkResult = routeTextLink( rawMessage, ctx );
 	if ( textLinkResult ) return textLinkResult;
 
@@ -2177,9 +2198,7 @@ export const routeClientSide = async ( rawMessage, ctx, selectFn = null ) => {
 	const cloudSCResult = routeCloudSC( rawMessage );
 	if ( cloudSCResult ) return cloudSCResult;
 
-	// 6c. Cloud Library (browse/search/insert UI — patterns/pages)
-	const openCloudResult = routeOpenCloudLibrary( rawMessage );
-	if ( openCloudResult ) return openCloudResult;
+	// Cloud Library already checked in step 1b (before attribute groups).
 
 	// 7. Layout patterns
 	const layoutResult = routeLayoutPatterns( rawMessage, ctx, selectFn );

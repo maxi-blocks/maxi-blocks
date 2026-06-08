@@ -4,7 +4,65 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { dispatch, select, resolveSelect } from '@wordpress/data';
 import { createBlock, parse } from '@wordpress/blocks';
-import { store as reusableBlocksStore } from '@wordpress/reusable-blocks';
+/**
+ * WP 7.0 renamed "Reusable Blocks" to "Synced Patterns".
+ * The @wordpress/reusable-blocks store and its __experimental helpers may be
+ * removed. We try the stable store first, then fall back to the legacy import.
+ */
+let reusableBlocksStore;
+try {
+	// eslint-disable-next-line global-require
+	reusableBlocksStore = require('@wordpress/reusable-blocks').store;
+} catch (_e) {
+	reusableBlocksStore = null;
+}
+
+/**
+ * Version-safe wrapper to convert blocks to a synced pattern / reusable block.
+ *
+ * @param {string[]} clientIds
+ * @param {string}   title
+ * @returns {Promise<void>}
+ */
+const convertBlocksToReusable = async (clientIds, title) => {
+	// WP 7.0+ stable API on core/blocks store
+	const stableConvert = dispatch('core/blocks')?.convertBlocksToReusable;
+	if (typeof stableConvert === 'function') {
+		return stableConvert(clientIds, title);
+	}
+	// Legacy experimental API
+	if (reusableBlocksStore) {
+		const { __experimentalConvertBlocksToReusable: legacyConvert } =
+			dispatch(reusableBlocksStore);
+		if (typeof legacyConvert === 'function') {
+			return legacyConvert(clientIds, title);
+		}
+	}
+	throw new Error('No convertBlocksToReusable API found in this WordPress version.');
+};
+
+/**
+ * Version-safe wrapper to detach / convert reusable block to static blocks.
+ *
+ * @param {string} clientId
+ * @returns {Promise<void>}
+ */
+const convertBlocksToStatic = async clientId => {
+	// WP 7.0+ stable API on core/blocks store
+	const stableConvert = dispatch('core/blocks')?.convertBlocksToStatic;
+	if (typeof stableConvert === 'function') {
+		return stableConvert(clientId);
+	}
+	// Legacy experimental API
+	if (reusableBlocksStore) {
+		const { __experimentalConvertBlocksToStatic: legacyConvert } =
+			dispatch(reusableBlocksStore);
+		if (typeof legacyConvert === 'function') {
+			return legacyConvert(clientId);
+		}
+	}
+	throw new Error('No convertBlocksToStatic API found in this WordPress version.');
+};
 
 /**
  * Internal dependencies
@@ -414,8 +472,7 @@ const useAiChatMessages = ({
 			setConversationContext(null);
 			setIsLoading(true);
 			try {
-				const { __experimentalConvertBlocksToReusable: convertToReusable } = dispatch(reusableBlocksStore);
-				await convertToReusable([reusableClientId], reusableTitle);
+				await convertBlocksToReusable([reusableClientId], reusableTitle);
 				setMessages(prev => [
 					...prev,
 					{ role: 'assistant', content: sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), reusableTitle), executed: true },
@@ -1252,8 +1309,7 @@ const useAiChatMessages = ({
 					await runFseOp(
 						sprintf(__('Saving as reusable block "%s"…', 'maxi-blocks'), title),
 						async () => {
-							const { __experimentalConvertBlocksToReusable: convertToReusable } = dispatch(reusableBlocksStore);
-							await convertToReusable([clientId], title);
+							await convertBlocksToReusable([clientId], title);
 							return sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), title);
 						},
 						sprintf(__('Saved as reusable block "%s". ✓', 'maxi-blocks'), title)
@@ -1278,11 +1334,7 @@ const useAiChatMessages = ({
 				await runFseOp(
 					__('Detaching reusable block…', 'maxi-blocks'),
 					async () => {
-						const { __experimentalConvertBlocksToStatic: convertToStatic } = dispatch(reusableBlocksStore);
-						if (!convertToStatic) {
-							return __('Detach is not available in this version of WordPress.', 'maxi-blocks');
-						}
-						await convertToStatic(clientId);
+						await convertBlocksToStatic(clientId);
 						return __('Converted to regular blocks. ✓', 'maxi-blocks');
 					},
 					__('Converted to regular blocks. ✓', 'maxi-blocks')

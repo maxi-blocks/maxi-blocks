@@ -85,6 +85,10 @@ import {
 	buildWidthChanges,
 	buildHeightChanges,
 } from '../ai/utils/responsiveHelpers';
+import {
+	getAllEditorDocuments,
+	getAllEditorWindows,
+} from '../utils/editorDom';
 
 /**
  * Provides the action parsing and execution layer for the AI chat panel.
@@ -300,25 +304,16 @@ const useAiChatActions = ({
 
 	// ─── Internal sidebar opener (extends the hook-level one with link-toolbar handling) ──
 
+	// WP 7.0+: the editor canvas is inside iframe[name="editor-canvas"].
+	// Target it specifically instead of brute-scanning every iframe on the page.
 	const getToolbarDocuments = () => {
-		const docs = [];
-		if (typeof document === 'undefined') return docs;
-		docs.push(document);
-		document.querySelectorAll('iframe').forEach(frame => {
-			try { if (frame.contentDocument) docs.push(frame.contentDocument); } catch (err) { logAIDebug('Unable to access iframe document', String(err)); }
-		});
-		return docs;
+		if (typeof document === 'undefined') return [];
+		return getAllEditorDocuments();
 	};
 
 	const getToolbarWindows = () => {
-		const wins = [];
-		if (typeof window === 'undefined') return wins;
-		wins.push(window);
-		if (typeof document === 'undefined') return wins;
-		document.querySelectorAll('iframe').forEach(frame => {
-			try { if (frame.contentWindow) wins.push(frame.contentWindow); } catch (err) { logAIDebug('Unable to access iframe window', String(err)); }
-		});
-		return wins;
+		if (typeof window === 'undefined') return [];
+		return getAllEditorWindows();
 	};
 
 	const tryClickToolbarButton = (selector, label) => {
@@ -1170,9 +1165,15 @@ const useAiChatActions = ({
 			if (action.action === 'switch_viewport') {
 				const device = action.value || 'Mobile';
 				try {
-					dispatch('core/edit-post').__experimentalSetPreviewDeviceType(device);
-				} catch (e) {
-					try { dispatch('core/editor').setDeviceType(device); } catch (e2) { console.warn('Could not switch viewport', e2); }
+					// Stable API (WP 6.5+/7.0)
+					dispatch('core/editor').setDeviceType(device);
+				} catch (_e) {
+					try {
+						// Legacy fallback for WP < 6.5
+						dispatch('core/edit-post').__experimentalSetPreviewDeviceType(device);
+					} catch (_e2) {
+						console.warn('[Maxi AI] Could not switch viewport — no supported API found');
+					}
 				}
 				return { executed: true, message: action.message || `Switched to ${device} view.` };
 			}

@@ -1335,13 +1335,20 @@ const buildContainerCGroupAction = (message, { scope = 'selection' } = {}) => {
 		};
 	}
 
+	// Cloud Library signals: if the message looks like a Cloud Library request,
+	// don't let greedy loop extractors (e.g. "random", "latest") hijack it.
+	const hasCloudSignal = /\b(cloud|library|import|browse|pattern|template)\b/i.test(
+		message || ''
+	);
+	const skipLoopExtractors = hasCloudSignal && !hasExplicitLoopIntent;
+
 	const loopStatus = extractLoopStatus(message);
-	const loopType = extractLoopType(message);
-	const loopOrder = extractLoopOrder(message);
-	const loopRelation = extractLoopRelation(message);
-	const authorFilter = extractAuthorFilter(message);
-	const idFilter = extractIdFilter(message);
-	const perPage = extractLoopPerPage(message);
+	const loopType = skipLoopExtractors ? null : extractLoopType(message);
+	const loopOrder = skipLoopExtractors ? null : extractLoopOrder(message);
+	const loopRelation = skipLoopExtractors ? null : extractLoopRelation(message);
+	const authorFilter = skipLoopExtractors ? null : extractAuthorFilter(message);
+	const idFilter = skipLoopExtractors ? null : extractIdFilter(message);
+	const perPage = skipLoopExtractors ? null : extractLoopPerPage(message);
 	const paginationStatus = extractPaginationStatus(message);
 	const paginationShowPages = extractPaginationPageList(message);
 	const paginationType = extractPaginationType(message);

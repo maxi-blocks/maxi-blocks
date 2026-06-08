@@ -15,6 +15,7 @@ import { isEmpty } from 'lodash';
 import { getIsSiteEditor } from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import { clickOpenCloudPlaceholder } from './aiCloudModalDriver';
+import { queryEditorCanvas } from './editorDom';
 
 /**
  * @param {{ name?: string, attributes?: Record<string, *> }|null|undefined} block
@@ -66,7 +67,8 @@ const openExistingEmptyMaxiCloudBlock = async clientId => {
 		await new Promise( resolve => {
 			setTimeout( resolve, attempt === 0 ? 60 : 90 );
 		} );
-		const wrap = document.querySelector( `[data-block="${ clientId }"]` );
+		// Block DOM lives inside the editor canvas iframe in WP 7.0+
+		const wrap = queryEditorCanvas( `[data-block="${ clientId }"]` );
 		if ( wrap ) {
 			for ( const sel of placeholderSelectors ) {
 				const btn = wrap.querySelector( sel );
@@ -104,8 +106,9 @@ export async function insertMaxiCloudLibraryBlock() {
 		select( 'core/editor' )?.getRenderingMode?.() === 'template-locked';
 
 	if ( isFSE ) {
-		const postId = select( 'core/edit-site' ).getEditedPostId();
-		const postType = select( 'core/edit-site' ).getEditedPostType();
+		const siteEditor = select( 'core/edit-site' );
+		const postId = siteEditor?.getEditedPostId?.();
+		const postType = siteEditor?.getEditedPostType?.();
 
 		if (
 			postType === 'wp_template' ||

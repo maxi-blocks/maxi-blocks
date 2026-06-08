@@ -9,6 +9,7 @@
  * - Named exports below — imperative calls from code.
  * - `window.maxiAiCloudModal` — full surface for devtools / manual checks.
  */
+import { getAllEditorDocuments } from './editorDom';
 
 /**
  * @typedef {Object} CloudModalOp
@@ -418,11 +419,15 @@ export const clickOpenCloudPlaceholder = () => {
 		'.maxi-block-library__modal-button__placeholder',
 		'.maxi-block-library__placeholder .maxi-block-library__modal-button__placeholder',
 	];
-	for ( const sel of selectors ) {
-		const btn = document.querySelector( sel );
-		if ( btn && ! btn.disabled ) {
-			btn.click();
-			return true;
+	// Block placeholders live inside the editor canvas iframe in WP 7.0+
+	const docs = getAllEditorDocuments();
+	for ( const doc of docs ) {
+		for ( const sel of selectors ) {
+			const btn = doc.querySelector( sel );
+			if ( btn && ! btn.disabled ) {
+				btn.click();
+				return true;
+			}
 		}
 	}
 	return false;

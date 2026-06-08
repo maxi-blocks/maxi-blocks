@@ -1803,6 +1803,19 @@ const extractScheduleDateFromMessage = rawMessage => {
 const routePostManagement = rawMessage => {
 	const lower = rawMessage.toLowerCase();
 
+	// ── Clear / remove all blocks ────────────────────────────────────────────
+	const clearPageIntents = [
+		/\b(?:remove|delete|clear|wipe|empty)\s+(?:all\s+)?(?:the\s+)?(?:blocks?|content)\s*(?:from|on|off)?\s*(?:the\s+)?(?:page|post|this)?\b/i,
+		/\b(?:clear|empty|wipe)\s+(?:the\s+)?(?:page|post|canvas|editor)\b/i,
+		/\bstart\s+(?:with\s+)?(?:a\s+)?(?:blank|clean|empty)\s+(?:page|post|canvas|slate)\b/i,
+	];
+	if ( clearPageIntents.some( re => re.test( lower ) ) ) {
+		return {
+			type: 'post_management',
+			params: { operation: 'clear_page', rawMessage },
+		};
+	}
+
 	// ── Publish ──────────────────────────────────────────────────────────────
 	const publishIntents = [
 		/\bpublish\s+(?:the\s+)?(?:current\s+)?(?:page|post|article|this)\b/i,

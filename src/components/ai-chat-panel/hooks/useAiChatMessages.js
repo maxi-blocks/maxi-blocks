@@ -1474,6 +1474,23 @@ const useAiChatMessages = ({
 					);
 					return;
 				}
+				case 'clear_page': {
+					const blockCount = select('core/block-editor').getBlocks().length;
+					await runPostOp(
+						__('Removing all blocks…', 'maxi-blocks'),
+						() => {
+							const topBlocks = select('core/block-editor').getBlocks();
+							for (const b of topBlocks) {
+								dispatch('core/block-editor').removeBlock(b.clientId);
+							}
+						},
+						sprintf(
+							__('Removed %d block(s) from the page. ✓', 'maxi-blocks'),
+							blockCount
+						)
+					);
+					return;
+				}
 				case 'preview': {
 					const previewUrl = select('core/editor').getEditedPostPreviewLink?.();
 					if (previewUrl) {

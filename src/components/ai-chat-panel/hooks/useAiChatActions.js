@@ -770,6 +770,16 @@ const useAiChatActions = ({
 					let sawExistingParent = false;
 
 					for (const op of opsQueue) {
+						// Clear all top-level blocks from the page
+						if (op.op === 'clear_all') {
+							const topBlocks = editorSelect.getBlocks();
+							for (const b of topBlocks) {
+								dispatch('core/block-editor').removeBlock(b.clientId);
+								removed += 1;
+							}
+							logAIDebug('MODIFY_BLOCK clear_all: removed', String(removed), 'top-level blocks');
+							continue;
+						}
 						if (op.op === 'remove' && op.clientId) {
 							const blockToRemove = editorSelect.getBlock(op.clientId);
 							if (blockToRemove) { dispatch('core/block-editor').removeBlock(op.clientId); removed += 1; }
@@ -1386,6 +1396,14 @@ const useAiChatActions = ({
 							await editorDispatch.editPost({ status: 'future', date });
 							await editorDispatch.savePost();
 							return { executed: true, message: action.message || `Scheduled for ${date}.` };
+						case 'clear_page': {
+							const blockEditorSelect = select('core/block-editor');
+							const topBlocks = blockEditorSelect.getBlocks();
+							for (const b of topBlocks) {
+								dispatch('core/block-editor').removeBlock(b.clientId);
+							}
+							return { executed: true, message: action.message || `Removed ${topBlocks.length} block(s) from the page.` };
+						}
 						case 'preview': {
 							const previewUrl = editorSelect.getEditedPostPreviewLink?.();
 							if (previewUrl) {

@@ -134,7 +134,7 @@ describe('List in Text-maxi', () => {
 
 		// Text Position
 		const textPosition = await page.$(
-			'.maxi-text-inspector__list-style select'
+			'.maxi-text-inspector__list-text-position select'
 		);
 		await textPosition.select('sub');
 
@@ -315,7 +315,7 @@ describe('List in Text-maxi', () => {
 
 		// Text Position
 		const textPosition = await page.$(
-			'.maxi-text-inspector__list-style select'
+			'.maxi-text-inspector__list-text-position select'
 		);
 		await textPosition.select('sub');
 
@@ -339,8 +339,8 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('listStart')).toStrictEqual(-23);
 
 		// Style
-		const style = await page.$$('.maxi-text-inspector__list-style select');
-		await style[1].select('armenian');
+		const style = await page.$('.maxi-text-inspector__list-style select');
+		await style.select('armenian');
 
 		expect(await getAttributes('listStyle')).toStrictEqual('armenian');
 		expect(await getAttributes('listStart')).toStrictEqual(0);
@@ -404,22 +404,22 @@ describe('List in Text-maxi', () => {
 		expect(await getAttributes('typeOfList')).toStrictEqual('ul');
 
 		// style default
-		const style = await page.$$('.maxi-text-inspector__list-style select');
-		await style[1].select('circle');
+		const style = await page.$('.maxi-text-inspector__list-style select');
+		await style.select('circle');
 
 		await page.waitForTimeout(500);
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 
 		// Style custom
-		const styleCustom = await page.$$(
+		const styleCustom = await page.$(
 			'.maxi-text-inspector__list-style select'
 		);
-		await styleCustom[1].select('custom');
+		await styleCustom.select('custom');
 
 		await page.waitForTimeout(150);
 
-		const source = await page.$(
+		const source = await page.waitForSelector(
 			'.maxi-text-inspector__list-source-selector select'
 		);
 
@@ -555,16 +555,16 @@ describe('List in Text-maxi', () => {
 		await openSidebarTab(page, 'style', 'list options');
 
 		// Style custom
-		const styleCustom = await page.$$(
+		const styleCustom = await page.$(
 			'.maxi-text-inspector__list-style select'
 		);
 		await page.waitForTimeout(700);
 
-		await styleCustom[1].select('custom');
+		await styleCustom.select('custom');
 
 		await page.waitForTimeout(150);
 
-		const source = await page.$(
+		const source = await page.waitForSelector(
 			'.maxi-text-inspector__list-source-selector select'
 		);
 
@@ -725,10 +725,10 @@ describe('List in Text-maxi', () => {
 		await openSidebarTab(page, 'style', 'list options');
 
 		// Style none
-		const styleNone = await page.$$(
+		const styleNone = await page.$(
 			'.maxi-text-inspector__list-style select'
 		);
-		await styleNone[1].select('none');
+		await styleNone.select('none');
 
 		expect(await getBlockStyle(page)).toMatchSnapshot();
 

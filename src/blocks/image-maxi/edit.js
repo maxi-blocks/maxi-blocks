@@ -35,6 +35,7 @@ import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { injectImgSVG } from '@extensions/svg';
 import { copyPasteMapping } from './data';
+import { getImageResizerClassName } from './utils';
 import { TextContext, onChangeRichText } from '@extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
@@ -58,6 +59,7 @@ class edit extends MaxiBlockComponent {
 			isUploaderOpen: false,
 			formatValue: {},
 			onChangeFormat: null,
+			captionRichTextActive: false,
 		};
 
 		this.textRef = createRef(null);
@@ -71,6 +73,18 @@ class edit extends MaxiBlockComponent {
 	get getStylesObject() {
 		return getStyles(this.props.attributes);
 	}
+
+	handleCaptionFocus = () => {
+		this.setState({
+			captionRichTextActive: true,
+		});
+	};
+
+	handleCaptionBlur = () => {
+		this.setState({
+			captionRichTextActive: false,
+		});
+	};
 
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
@@ -295,7 +309,8 @@ class edit extends MaxiBlockComponent {
 				value={{
 					formatValue: this.state.formatValue,
 					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
+						if (this.state.onChangeFormat)
+							this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -316,6 +331,7 @@ class edit extends MaxiBlockComponent {
 						this.setState({ showLoader: value })
 					}
 					{...this.props}
+					captionRichTextActive={this.state.captionRichTextActive}
 				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
@@ -421,7 +437,7 @@ class edit extends MaxiBlockComponent {
 					{showImage ? (
 						<BlockResizer
 							key={uniqueID}
-							className='maxi-block__resizer maxi-image-block__resizer'
+							className={getImageResizerClassName(captionType)}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,
@@ -472,6 +488,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(
@@ -558,6 +576,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(

@@ -32,6 +32,32 @@ describe('getClipPathStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('resets clipPath styles when disabled at a lower breakpoint', () => {
+		const result = getClipPathStyles({
+			obj: {
+				'clip-path-status-xl': true,
+				'clip-path-xl':
+					'polygon(50% 0%, 0% 100%, 100% 100%)',
+				'clip-path-status-m': false,
+			},
+		});
+
+		expect(result.m).toEqual({ 'clip-path': 'none' });
+	});
+
+	it('does not activate clipPath styles from a stored shape without active status', () => {
+		const result = getClipPathStyles({
+			obj: {
+				'clip-path-xl':
+					'polygon(50% 0%, 0% 100%, 100% 100%)',
+			},
+		});
+
+		expect(
+			Object.values(result).some(styles => styles['clip-path'])
+		).toBe(false);
+	});
+
 	it('Get a correct hover clipPath styles', () => {
 		const result = getClipPathStyles({ obj: object, isHover: true });
 		expect(result).toMatchSnapshot();

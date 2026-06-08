@@ -9,7 +9,7 @@ exports[`removeLinkFormat Should remove custom formats when removing partial lin
 
 exports[`removeLinkFormat Should remove custom formats when removing partial of whole link 1`] = `
 {
-  "content": "<maxi-blocks/text-link url="https://test.com" title=""><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">lorem </maxi-blocks/text-custom></maxi-blocks/text-link>ipsum <maxi-blocks/text-link url="https://test.com" title=""><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">dolor sit</maxi-blocks/text-custom></maxi-blocks/text-link>",
+  "content": "<maxi-blocks/text-link url="https://test.com"><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">lorem </maxi-blocks/text-custom></maxi-blocks/text-link>ipsum <maxi-blocks/text-link url="https://test.com"><maxi-blocks/text-custom className="maxi-text-block__custom-format--1">dolor sit</maxi-blocks/text-custom></maxi-blocks/text-link>",
   "custom-formats": {
     "maxi-text-block__custom-format--1": {
       "text-decoration-general": "underline",

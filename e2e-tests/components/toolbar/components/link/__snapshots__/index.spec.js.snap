@@ -2,9 +2,11 @@
 
 exports[`Button link Check button link 1`] = `
 {
+  "linkElement": "button",
   "noFollow": true,
   "opensInNewTab": true,
   "sponsored": true,
+  "title": "",
   "ugc": true,
   "url": "test.com",
 }
@@ -12,7 +14,8 @@ exports[`Button link Check button link 1`] = `
 
 exports[`Button link Should work correctly with dynamic content 1`] = `
 {
-  "title": "http://localhost:8889",
+  "linkElement": "button",
+  "title": null,
   "url": "http://localhost:8889",
 }
 `;

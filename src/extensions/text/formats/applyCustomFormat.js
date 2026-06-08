@@ -4,6 +4,11 @@
 import { applyFormat, toHTMLString } from '@wordpress/rich-text';
 
 /**
+ * Internal dependencies
+ */
+import sanitizeLinkFormatValue from './sanitizeLinkFormatValue';
+
+/**
  * Applies requested format and returns new content
  *
  * @param {Object}  [$0]             Optional named arguments.
@@ -20,7 +25,7 @@ const applyCustomFormat = ({ formatValue, formatName, isList, attributes }) => {
 	});
 
 	const newContent = toHTMLString({
-		value: newFormat,
+		value: sanitizeLinkFormatValue(newFormat),
 		multilineTag: isList ? 'li' : null,
 		preserveWhiteSpace: false,
 	});

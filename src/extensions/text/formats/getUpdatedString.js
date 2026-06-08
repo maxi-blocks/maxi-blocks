@@ -4,6 +4,11 @@
 import { toHTMLString } from '@wordpress/rich-text';
 
 /**
+ * Internal dependencies
+ */
+import sanitizeLinkFormatValue from './sanitizeLinkFormatValue';
+
+/**
  * Updates the content of the string
  *
  * @param {Object} [$0]             Optional named arguments.
@@ -14,7 +19,7 @@ import { toHTMLString } from '@wordpress/rich-text';
  */
 const getUpdatedString = ({ formatValue, isList }) => {
 	const newContent = toHTMLString({
-		value: formatValue,
+		value: sanitizeLinkFormatValue(formatValue),
 		multilineTag: (isList && 'li') || null,
 	});
 

@@ -1,4 +1,5 @@
 import getOrganizedAttributes from '@extensions/copy-paste/getOrganizedAttributes';
+import excludeAttributes from '@extensions/copy-paste/excludeAttributes';
 import { copyPasteMapping } from '@blocks/image-maxi/data';
 
 jest.mock('@wordpress/blocks', () => jest.fn());
@@ -8,6 +9,8 @@ jest.mock('src/extensions/dom/dom.js', () => jest.fn());
 // Add these mock statements at the top of your test file
 jest.mock('src/extensions/styles/index.js', () => ({
 	createIconTransitions: jest.fn(),
+	getAttributeKey: jest.fn(prop => prop),
+	getDefaultAttribute: jest.fn(),
 }));
 jest.mock('src/blocks/search-maxi/data.js', () => ({}));
 jest.mock('src/components/transform-control/utils.js', () => ({}));
@@ -90,6 +93,122 @@ describe('getOrganizedAttributes', () => {
 			'dc-sub-field': 'email',
 		});
 	});
+
+	it('Includes editable dynamic content settings from the advanced template', () => {
+		const mapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const attributes = {
+			'dc-status': true,
+			'dc-hide': false,
+			'dc-source': 'wp',
+			'dc-type': 'posts',
+			'dc-relation': 'by-category',
+			'dc-id': 14,
+			'dc-author': 3,
+			'dc-field': 'content',
+			'dc-sub-field': 'email',
+			'dc-order-by': 'date',
+			'dc-order': 'desc',
+			'dc-limit': 48,
+			'dc-limit-by-archive': 'include',
+			'dc-acf-char-limit': 32,
+			'dc-custom-delimiter-status': true,
+			'dc-delimiter-content': ' / ',
+			'dc-content': 'Fetched content should not be copied',
+			'dc-media-url': 'https://example.com/image.jpg',
+		};
+
+		const result = getOrganizedAttributes(attributes, mapping, true);
+
+		expect(result).toMatchObject({
+			'dc-status': true,
+			'dc-hide': false,
+			'dc-source': 'wp',
+			'dc-type': 'posts',
+			'dc-relation': 'by-category',
+			'dc-id': 14,
+			'dc-author': 3,
+			'dc-field': 'content',
+			'dc-sub-field': 'email',
+			'dc-order-by': 'date',
+			'dc-order': 'desc',
+			'dc-limit': 48,
+			'dc-limit-by-archive': 'include',
+			'dc-acf-char-limit': 32,
+			'dc-custom-delimiter-status': true,
+			'dc-delimiter-content': ' / ',
+		});
+		expect(result).not.toHaveProperty('dc-content');
+		expect(result).not.toHaveProperty('dc-media-url');
+	});
+
+	it('Omits empty dynamic content advanced sections', () => {
+		const mapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const result = getOrganizedAttributes({}, mapping);
+
+		expect(result.advanced).not.toHaveProperty('Dynamic content');
+	});
+
+	it('Omits dynamic content section when dc-status is falsy despite DC defaults', () => {
+		const mapping = {
+			advanced: {
+				template: 'advanced',
+			},
+		};
+
+		const attributesWithDefaults = {
+			'dc-hide': true,
+			'dc-limit': 100,
+			'dc-format': 'd.m.Y t',
+			'dc-locale': 'en',
+			'dc-media-size': 512,
+		};
+
+		const result = getOrganizedAttributes(attributesWithDefaults, mapping);
+
+		expect(result.advanced).not.toHaveProperty('Dynamic content');
+	});
+
+	it.each([
+		'maxi-blocks/text-maxi',
+		'maxi-blocks/button-maxi',
+		'maxi-blocks/image-maxi',
+		'maxi-blocks/divider-maxi',
+	])(
+		'Keeps dynamic content settings when pasting into %s',
+		blockName => {
+			const copiedAttributes = {
+				'dc-status': true,
+				'dc-type': 'posts',
+				'dc-relation': 'by-category',
+				'dc-id': 14,
+				'dc-order-by': 'date',
+				'dc-order': 'desc',
+				'dc-limit': 48,
+				'dc-accumulator': 2,
+				'dc-limit-by-archive': 'include',
+			};
+
+			const result = excludeAttributes(
+				copiedAttributes,
+				{},
+				{ _exclude: [] },
+				false,
+				blockName
+			);
+
+			expect(result).toEqual(copiedAttributes);
+		}
+	);
 
 	it('Ensure it works with groups', () => {
 		const copyPasteMapping = {
@@ -207,6 +326,97 @@ describe('getOrganizedAttributes', () => {
 
 		const result = getOrganizedAttributes(attributes, copyPasteMapping);
 		expect(result).toMatchSnapshot();
+	});
+
+	it('Separates typography into practical paste special groups', () => {
+		const copyPasteMapping = {
+			settings: {
+				Typography: {
+					template: 'typography',
+				},
+			},
+		};
+
+		const attributes = {
+			'font-size-general': 26,
+			'font-size-unit-general': 'px',
+			'line-height-general': 36,
+			'line-height-unit-general': 'px',
+			'letter-spacing-general': 1,
+			'letter-spacing-unit-general': 'px',
+			'palette-status-general': true,
+			'palette-color-general': 4,
+			'palette-opacity-general': 0.72,
+			'color-general': '#ff4a1c',
+			'typography-status-hover': true,
+			'font-size-general-hover': 30,
+			'font-size-unit-general-hover': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		const typography = result.settings.Typography;
+
+		expect(typography.Typography).toBeUndefined();
+		expect(typography['Font colour']).toMatchObject({
+			'palette-status-general': true,
+			'palette-color-general': 4,
+			'color-general': '#ff4a1c',
+		});
+		expect(typography['Colour opacity']).toEqual({
+			'palette-opacity-general': 0.72,
+			'palette-opacity-xxl': undefined,
+			'palette-opacity-xl': undefined,
+			'palette-opacity-l': undefined,
+			'palette-opacity-m': undefined,
+			'palette-opacity-s': undefined,
+			'palette-opacity-xs': undefined,
+		});
+		expect(typography['Font size']).toMatchObject({
+			'font-size-general': 26,
+			'font-size-unit-general': 'px',
+		});
+		expect(typography['Font size']).not.toHaveProperty(
+			'line-height-general'
+		);
+		expect(typography['Line height']).toMatchObject({
+			'line-height-general': 36,
+			'line-height-unit-general': 'px',
+		});
+		expect(typography['Letter spacing']).toMatchObject({
+			'letter-spacing-general': 1,
+			'letter-spacing-unit-general': 'px',
+		});
+		expect(typography['Hover font size']).toMatchObject({
+			'font-size-general-hover': 30,
+			'font-size-unit-general-hover': 'px',
+			_pasteWith: 'typography-status-hover',
+		});
+	});
+
+	it('Prefixes hover typography paste metadata', () => {
+		const copyPasteMapping = {
+			settings: {
+				'Button typography': {
+					template: 'typography',
+					prefix: 'button-',
+				},
+			},
+		};
+
+		const attributes = {
+			'button-typography-status-hover': true,
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+		};
+
+		const result = getOrganizedAttributes(attributes, copyPasteMapping);
+		const typography = result.settings['Button typography'];
+
+		expect(typography['Hover font size']).toMatchObject({
+			'button-font-size-general-hover': 30,
+			'button-font-size-unit-general-hover': 'px',
+			_pasteWith: 'button-typography-status-hover',
+		});
 	});
 
 	it('Ensure it works with group attributes', () => {

@@ -192,6 +192,8 @@ function get_svg_path_stroke_styles($obj, $block_style, $is_hover, $prefix = 'sv
 
         switch ($prefix) {
             case 'icon-':
+            case 'close-icon-':
+            case 'play-icon-':
             case 'active-icon-':
             case 'navigation-arrow-both-icon-':
             case 'navigation-dot-icon-':

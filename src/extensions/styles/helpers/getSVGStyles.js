@@ -203,6 +203,7 @@ const getSVGPathStrokeStyles = (
 	const linePrefix = [
 		'icon-',
 		'close-icon-',
+		'play-icon-',
 		'active-icon-',
 		'navigation-arrow-both-icon-',
 		'navigation-dot-icon-',

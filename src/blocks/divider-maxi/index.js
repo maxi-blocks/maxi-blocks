@@ -25,6 +25,7 @@ import { dividerIcon } from '@maxi-icons';
  * Migrators
  */
 import { blockMigrator } from '@extensions/styles/migrators';
+import dividerOrientationMigrator from './dividerOrientationMigrator';
 
 /**
  * Block
@@ -44,6 +45,7 @@ registerBlockType(metadata, {
 		attributes,
 		save,
 		selectors: customCss.selectors,
+		migrators: [dividerOrientationMigrator],
 	}),
 	customCss,
 });

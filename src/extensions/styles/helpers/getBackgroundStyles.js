@@ -28,6 +28,31 @@ import { __ } from '@wordpress/i18n';
 
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const hasUsableClipPath = clipPath => !isEmpty(clipPath) && clipPath !== 'none';
+
+const isClipPathDisabledAtBreakpoint = ({
+	target,
+	breakpoint,
+	props,
+	isHover,
+	clipPath,
+}) =>
+	getAttributeValue({
+		target,
+		props,
+		isHover,
+		breakpoint,
+		returnValueWithoutBreakpoint: false,
+	}) === false && hasUsableClipPath(clipPath);
+
+const getClipPathStyleValue = ({ clipPath, isActive, isDisabled }) => {
+	if (isDisabled) return 'none';
+
+	if (isActive) return isEmpty(clipPath) ? 'none' : clipPath;
+
+	return null;
+};
+
 /**
  * Clean BackgroundControl object for being delivered for styling
  *
@@ -93,6 +118,17 @@ export const getColorBackgroundObject = ({
 		breakpoint,
 		attributes: props,
 		isHover,
+	});
+	const bgColorClipPathStyle = getClipPathStyleValue({
+		clipPath: bgClipPath,
+		isActive: isBgColorClipPathActive,
+		isDisabled: isClipPathDisabledAtBreakpoint({
+			target: `${prefix}background-color-clip-path-status`,
+			breakpoint,
+			props,
+			isHover,
+			clipPath: bgClipPath,
+		}),
 	});
 
 	if (!paletteStatus && !isEmpty(color))
@@ -182,10 +218,8 @@ export const getColorBackgroundObject = ({
 		else response[breakpoint].background = '';
 	}
 
-	if (isBgColorClipPathActive)
-		response[breakpoint]['clip-path'] = isEmpty(bgClipPath)
-			? 'none'
-			: bgClipPath;
+	if (!isNil(bgColorClipPathStyle))
+		response[breakpoint]['clip-path'] = bgColorClipPathStyle;
 
 	return response;
 };
@@ -243,6 +277,17 @@ export const getGradientBackgroundObject = ({
 		breakpoint,
 		attributes: props,
 		isHover,
+	});
+	const bgGradientClipPathStyle = getClipPathStyleValue({
+		clipPath: bgGradientClipPath,
+		isActive: isbgGradientClipPathActive,
+		isDisabled: isClipPathDisabledAtBreakpoint({
+			target: `${prefix}background-gradient-clip-path-status`,
+			breakpoint,
+			props,
+			isHover,
+			clipPath: bgGradientClipPath,
+		}),
 	});
 
 	if (
@@ -314,10 +359,8 @@ export const getGradientBackgroundObject = ({
 			if (background) response[breakpoint].background = background;
 		}
 
-		if (isbgGradientClipPathActive)
-			response[breakpoint]['clip-path'] = isEmpty(bgGradientClipPath)
-				? 'none'
-				: bgGradientClipPath;
+		if (!isNil(bgGradientClipPathStyle))
+			response[breakpoint]['clip-path'] = bgGradientClipPathStyle;
 	}
 
 	return response;
@@ -420,6 +463,17 @@ export const getImageBackgroundObject = ({
 		breakpoint,
 		attributes: props,
 		isHover,
+	});
+	const bgImageClipPathStyle = getClipPathStyleValue({
+		clipPath: bgImageClipPath,
+		isActive: isbgImageClipPathActive,
+		isDisabled: isClipPathDisabledAtBreakpoint({
+			target: `${prefix}background-image-clip-path-status`,
+			breakpoint,
+			props,
+			isHover,
+			clipPath: bgImageClipPath,
+		}),
 	});
 
 	if (!isParallax) {
@@ -540,10 +594,8 @@ export const getImageBackgroundObject = ({
 	}
 
 	// Clip-path
-	if (isbgImageClipPathActive)
-		response[breakpoint]['clip-path'] = isEmpty(bgImageClipPath)
-			? 'none'
-			: bgImageClipPath;
+	if (!isNil(bgImageClipPathStyle))
+		response[breakpoint]['clip-path'] = bgImageClipPathStyle;
 
 	return response;
 };

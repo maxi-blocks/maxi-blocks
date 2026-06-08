@@ -94,6 +94,7 @@ const alignment = ({
 			<>
 				{isAlignment && (
 					<AlignmentControl
+						className='maxi-alignment-control--standalone'
 						label={alignmentLabel}
 						{...getGroupAttributes(attributes, 'alignment')}
 						onChange={obj => maxiSetAttributes(obj)}
@@ -104,6 +105,7 @@ const alignment = ({
 				)}
 				{isTextAlignment && (
 					<AlignmentControl
+						className='maxi-alignment-control--standalone'
 						label={textAlignmentLabel}
 						{...getGroupAttributes(attributes, 'textAlignment')}
 						onChange={obj => maxiSetAttributes(obj)}

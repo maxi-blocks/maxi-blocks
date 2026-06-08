@@ -20,6 +20,7 @@ import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { getIconPositionClass } from '@extensions/styles';
 import getStyles from './styles';
 import { prefixes, copyPasteMapping } from './data';
+import { getResponsiveIconPosition } from './utils';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
 
 /**
@@ -169,7 +170,7 @@ class edit extends MaxiBlockComponent {
 		const classes = classnames(
 			'maxi-search-block',
 			getIconPositionClass(
-				attributes['icon-position'],
+				getResponsiveIconPosition(attributes, 'general'),
 				'maxi-search-block'
 			)
 		);

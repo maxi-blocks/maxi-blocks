@@ -64,32 +64,52 @@ const save = props => {
 		attributes.altDescription,
 		attributes.uniqueID
 	);
-	const shouldWrapCanvas = linkSettings?.linkElement === 'canvas';
-	const shouldWrapIcon =
-		!shouldWrapCanvas && getHasLink(linkSettings, dynamicContent);
+	const hasLink = getHasLink(linkSettings, dynamicContent);
 
-	return (
+	// 'svg' = link wraps just the icon (internal <a> inside the block)
+	// 'canvas' or undefined = link wraps the whole block (external <a>)
+	const wrapIcon =
+		linkSettings?.linkElement === 'svg' && hasLink;
+	const wrapCanvas =
+		!wrapIcon && hasLink;
+
+	const icon = wrapIcon ? (
+		<div className='maxi-svg-icon-block__icon-wrapper'>
+			<WithLink
+				linkSettings={linkSettings ?? {}}
+				dynamicContent={dynamicContent}
+				className='maxi-svg-icon-block__icon'
+			>
+				<RawHTML>{iconContent}</RawHTML>
+			</WithLink>
+		</div>
+	) : (
+		<RawHTML className='maxi-svg-icon-block__icon'>
+			{iconContent}
+		</RawHTML>
+	);
+
+	const block = (
 		<MaxiBlock.save
 			{...getMaxiBlockAttributes({ ...props, name })}
 			aria-label={attributes.ariaLabels?.canvas}
 		>
-			{shouldWrapIcon ? (
-				<div className='maxi-svg-icon-block__icon-wrapper'>
-					<WithLink
-						linkSettings={linkSettings ?? {}}
-						dynamicContent={dynamicContent}
-						className='maxi-svg-icon-block__icon'
-					>
-						<RawHTML>{iconContent}</RawHTML>
-					</WithLink>
-				</div>
-			) : (
-				<RawHTML className='maxi-svg-icon-block__icon'>
-					{iconContent}
-				</RawHTML>
-			)}
+			{icon}
 		</MaxiBlock.save>
 	);
+
+	if (wrapCanvas) {
+		return (
+			<WithLink
+				linkSettings={linkSettings ?? {}}
+				dynamicContent={dynamicContent}
+			>
+				{block}
+			</WithLink>
+		);
+	}
+
+	return block;
 };
 
 export default save;

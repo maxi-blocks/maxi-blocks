@@ -142,13 +142,30 @@ describe('Dynamic content', () => {
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
+		await previewPage
+			.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 })
+			.catch(() => {});
 		await previewPage.waitForSelector(
 			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
+				timeout: 30000,
 			}
 		);
-		await previewPage.waitForTimeout(3000);
+
+		// Wait until at least one title block contains the expected DC text,
+		// polling instead of a fixed timeout to handle slow environments.
+		await previewPage.waitForFunction(
+			expected => {
+				const el = document.querySelector(
+					'.text-dc-title-1.maxi-text-block .maxi-text-block__content,' +
+						'.text-dc-title-2.maxi-text-block .maxi-text-block__content'
+				);
+				return el && el.innerText === expected;
+			},
+			{ timeout: 30000 },
+			expectedResults.title
+		);
 
 		const getFrontResults = async (block, type) =>
 			previewPage.$eval(

@@ -872,9 +872,13 @@ const resolveCallExpression = (
 	if (!callExpression || callExpression.type !== 'CallExpression') return null;
 
 	const callee = callExpression.callee;
-	let functionName = null;
+	let functionModule = null;
 	if (callee.type === 'Identifier') {
-		functionName = getImportedSymbol(callee.name, moduleInfo);
+		functionModule = resolveIdentifierWithModule(
+			moduleInfo,
+			callee.name,
+			seen
+		);
 	} else if (
 		callee.type === 'MemberExpression' &&
 		callee.object.type === 'Identifier' &&
@@ -882,16 +886,13 @@ const resolveCallExpression = (
 	) {
 		const importInfo = moduleInfo?.imports.get(callee.object.name);
 		if (importInfo && importInfo.type === 'namespace') {
-			functionName = callee.property.name;
+			functionModule = resolveExportedValueWithModule(
+				importInfo.sourceFile,
+				callee.property.name,
+				seen
+			);
 		}
 	}
-	if (!functionName) return null;
-
-	const functionModule = resolveIdentifierWithModule(
-		moduleInfo,
-		functionName,
-		seen
-	);
 
 	if (!functionModule?.node || !functionModule.moduleInfo) return null;
 	if (

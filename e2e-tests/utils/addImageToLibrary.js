@@ -1,32 +1,38 @@
 const addImageToLibrary = async page => {
-	await page.evaluate(() =>
-		fetch(
-			'https://img.maxiblocks.com/2024/12/Pure-Image-Dark-PID-PRO-108-1734710451-273045251-1734710451-1041076938.webp'
-		)
-			.then(res => res.blob())
-			.catch(err => {
-				console.error('Failed to fetch image:', err);
-			})
-			.then(blob => {
-				if (!blob) return;
-				try {
-					window.wp.mediaUtils.uploadMedia({
-						filesList: [
-							new File([blob], 'foo.webp', {
-								type: 'image/webp',
-							}),
-						],
-						onFileChange: () => null,
-						onError: err => {
-							console.error('Failed to upload media:', err);
-						},
+	await page.evaluate(
+		() =>
+			new Promise((resolve, reject) => {
+				fetch(
+					'https://img.maxiblocks.com/2024/12/Pure-Image-Dark-PID-PRO-108-1734710451-273045251-1734710451-1041076938.webp'
+				)
+					.then(res => res.blob())
+					.then(blob => {
+						if (!blob) {
+							reject(new Error('Failed to fetch image blob'));
+							return;
+						}
+						window.wp.mediaUtils.uploadMedia({
+							filesList: [
+								new File([blob], 'foo.webp', {
+									type: 'image/webp',
+								}),
+							],
+							onFileChange: files => {
+								// onFileChange fires twice: first with a temporary blob URL,
+								// then again once the server responds with a real id.
+								// Only resolve when the upload is fully committed to the DB.
+								if (files[0]?.id) resolve();
+							},
+							onError: err => {
+								reject(
+									new Error(`Failed to upload media: ${err}`)
+								);
+							},
+						});
+					})
+					.catch(err => {
+						reject(new Error(`Failed to fetch image: ${err}`));
 					});
-				} catch (err) {
-					console.error('Failed to create File or upload:', err);
-				}
-			})
-			.catch(err => {
-				console.error('Unhandled error:', err);
 			})
 	);
 };

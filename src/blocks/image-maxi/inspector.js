@@ -16,6 +16,7 @@ import { isEmpty } from 'lodash';
  */
 import AccordionControl from '@components/accordion-control';
 import AdvancedNumberControl from '@components/advanced-number-control';
+import AlignmentControl from '@components/alignment-control';
 import ImageAltControl from '@components/image-alt-control';
 import ImageShape from '@components/image-shape';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
@@ -66,7 +67,14 @@ const Inspector = props => {
 	];
 
 	const imageData = useSelect(
-		select => select('core').getMedia(mediaID),
+		select =>
+			mediaID
+				? select('core').getEntityRecord(
+						'postType',
+						'attachment',
+						mediaID
+				  )
+				: null,
 		[mediaID]
 	);
 
@@ -196,9 +204,10 @@ const Inspector = props => {
 									{
 										label: __('Caption', 'maxi-blocks'),
 										content: (
-											<ResponsiveTabsControl
-												breakpoint={deviceType}
-											>
+											<>
+												<ResponsiveTabsControl
+													breakpoint={deviceType}
+												>
 												<>
 													<SelectControl
 														__nextHasNoMarginBottom
@@ -334,59 +343,83 @@ const Inspector = props => {
 																	)
 																}
 															/>
-															<TypographyControl
-																{...getGroupAttributes(
-																	attributes,
-																	[
-																		'typography',
-																		'textAlignment',
-																		'link',
-																	]
-																)}
-																textLevel='p'
-																onChange={obj => {
-																	if (
-																		'content' in
-																		obj
-																	) {
-																		const newCaptionContent =
-																			obj.content;
-
-																		delete obj.content;
-																		obj.captionContent =
-																			newCaptionContent;
-																	}
-
-																	maxiSetAttributes(
-																		obj
-																	);
-																}}
-																breakpoint={
-																	deviceType
-																}
-																clientId={
-																	clientId
-																}
-																blockStyle={
-																	blockStyle
-																}
-																globalProps={{
-																	target: '',
-																	type: 'p',
-																}}
-																hoverGlobalProps={{
-																	target: 'hover',
-																	type: 'p',
-																}}
-																styleCardPrefix=''
-																setShowLoader={
-																	props.setShowLoader
-																}
-															/>
 														</>
 													)}
 												</>
-											</ResponsiveTabsControl>
+												</ResponsiveTabsControl>
+												{captionType !== 'none' && (
+													<>
+														<div className='maxi-typography-control__alignment-buttons'>
+															<AlignmentControl
+																{...getGroupAttributes(
+																	attributes,
+																	'textAlignment'
+																)}
+																className='maxi-typography-control__text-alignment maxi-typography-panel__text-alignment'
+																onChange={
+																	maxiSetAttributes
+																}
+																breakpoint={
+																	deviceType
+																}
+																type='text'
+																disableRTC
+															/>
+														</div>
+														<TypographyControl
+															{...getGroupAttributes(
+																attributes,
+																[
+																	'typography',
+																	'textAlignment',
+																	'link',
+																]
+															)}
+															textLevel='p'
+															onChange={obj => {
+																if (
+																	'content' in
+																	obj
+																) {
+																	const newCaptionContent =
+																		obj.content;
+
+																	delete obj.content;
+																	obj.captionContent =
+																		newCaptionContent;
+																}
+
+																maxiSetAttributes(
+																	obj
+																);
+															}}
+															breakpoint={
+																deviceType
+															}
+															clientId={clientId}
+															blockStyle={
+																blockStyle
+															}
+															globalProps={{
+																target: '',
+																type: 'p',
+															}}
+															hoverGlobalProps={{
+																target: 'hover',
+																type: 'p',
+															}}
+															styleCardPrefix=''
+															useBlockLevelFallback
+															isRichTextActive={
+																props.captionRichTextActive
+															}
+															setShowLoader={
+																props.setShowLoader
+															}
+														/>
+													</>
+												)}
+											</>
 										),
 										extraIndicators: ['captionType'],
 									},

@@ -88,6 +88,62 @@ jest.mock('@wordpress/data', () => {
 describe('handleSetAttributes', () => {
 	const onChange = result => result;
 
+	it('continues to attribute updates for repeater inline dimension changes when requested', () => {
+		const onChangeInline = jest.fn();
+		const onChangeWithInline = jest.fn(result => result);
+
+		handleSetAttributes({
+			obj: {
+				'object-size-general': 2,
+				meta: {
+					inline: {},
+				},
+			},
+			attributes: {},
+			onChange: onChangeWithInline,
+			onChangeInline,
+			updateAttributesOnInlineChange: true,
+		});
+
+		expect(onChangeInline).toHaveBeenCalledWith(
+			{
+				'object-size-general': 2,
+			},
+			{}
+		);
+		expect(onChangeWithInline).toHaveBeenCalledWith(
+			expect.objectContaining({
+				'object-size-general': 2,
+			})
+		);
+	});
+
+	it('keeps inline changes inline-only by default', () => {
+		const onChangeInline = jest.fn(() => 'inline-only');
+		const onChangeWithInline = jest.fn(result => result);
+
+		const result = handleSetAttributes({
+			obj: {
+				'object-size-general': 2,
+				meta: {
+					inline: {},
+				},
+			},
+			attributes: {},
+			onChange: onChangeWithInline,
+			onChangeInline,
+		});
+
+		expect(result).toBe('inline-only');
+		expect(onChangeInline).toHaveBeenCalledWith(
+			{
+				'object-size-general': 2,
+			},
+			{}
+		);
+		expect(onChangeWithInline).not.toHaveBeenCalled();
+	});
+
 	it('On change number attributes from XXL responsive without General attribute, it changes on XXL and General all time', () => {
 		const firstRound = {
 			obj: {

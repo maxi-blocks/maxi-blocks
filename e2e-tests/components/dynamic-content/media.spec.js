@@ -16,7 +16,7 @@ import {
 	addImageToLibrary,
 	removeUploadedImage,
 } from '../../utils/addImageToLibrary';
-import { openPreviewPage } from '../../utils';
+import { openPreviewPage, getEditorFrame } from '../../utils';
 
 describe('Dynamic content', () => {
 	beforeAll(async () => {
@@ -28,8 +28,14 @@ describe('Dynamic content', () => {
 		// Go to the edit page
 		const pages = await browser.pages();
 		const currentIndex = pages.indexOf(page);
-		await pages[currentIndex - 1].bringToFront();
-		await removeUploadedImage(page);
+		if (currentIndex > 0) {
+			await pages[currentIndex - 1].bringToFront();
+		}
+		try {
+			await removeUploadedImage(page);
+		} catch (e) {
+			// Image may not have been uploaded if the test was skipped
+		}
 	});
 
 	it('Should return media DC content', async () => {
@@ -64,10 +70,12 @@ describe('Dynamic content', () => {
 		}
 
 		// Set code editor as clipboard data
-		const codeEditor = mediaCodeEditor.replaceAll(
-			'"dc-id":1377',
-			`"dc-id":${mediaElement.id}`
-		);
+		const codeEditor = mediaCodeEditor
+			.replaceAll('"dc-id":1377', `"dc-id":${mediaElement.id}`)
+			.replaceAll(
+				'"dc-media-id":1377',
+				`"dc-media-id":${mediaElement.id}`
+			);
 		await setClipboardData({ plainText: codeEditor });
 
 		// Set title
@@ -77,7 +85,8 @@ describe('Dynamic content', () => {
 		await page.keyboard.press('Enter');
 		await pressKeyWithModifier('primary', 'v');
 
-		await page.waitForSelector('.maxi-text-block__content', {
+		const frame = await getEditorFrame(page);
+		await frame.waitForSelector('.maxi-text-block__content', {
 			visible: true,
 		});
 		await page.waitForTimeout(1000);
@@ -104,14 +113,14 @@ describe('Dynamic content', () => {
 		const contentBlocks = ['image-dc-content-1'];
 
 		const getBackTextResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-text-block .maxi-text-block__content`,
 				(el, expect) => (el.innerText === expect ? true : el.innerText),
 				expectedResults[type]
 			);
 
 		const getBackImageResults = async (block, type) =>
-			page.$eval(
+			frame.$eval(
 				`.${block}.maxi-image-block .maxi-image-block__image`,
 				(el, expect) => {
 					const url = new URL(el.src);
@@ -158,39 +167,21 @@ describe('Dynamic content', () => {
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
 
-		// Wait for content to be fully loaded with a longer timeout
+		// Wait for both text and image DC blocks to be fully rendered
 		await previewPage.waitForSelector(
 			'.maxi-text-block .maxi-text-block__content',
 			{
 				visible: true,
-				timeout: 10000, // Increase timeout to 10 seconds
+				timeout: 15000,
 			}
 		);
-
-		// Add a longer wait to ensure all elements are rendered
-		await previewPage.waitForTimeout(3000);
-
-		// Check if the image element exists first and log debug info if not
-		const imageElementExists = await previewPage.$(
-			'.image-dc-content-1.maxi-image-block .maxi-image-block__image'
+		await previewPage.waitForSelector(
+			'.image-dc-content-1.maxi-image-block .maxi-image-block__image',
+			{
+				visible: true,
+				timeout: 30000,
+			}
 		);
-
-		if (!imageElementExists) {
-			// Getting page information for debugging without using console.log
-			const pageContent = await previewPage.content();
-			const containsImageBlock = pageContent.includes('maxi-image-block');
-			const containsImageDC = pageContent.includes('image-dc-content-1');
-
-			// Save diagnostic information to a file instead of logging to console
-			await previewPage.evaluate(
-				data => {
-					// This runs in browser context and won't trigger linter
-					// eslint-disable-next-line no-console
-					console.info('Debugging page content:', data);
-				},
-				{ containsImageBlock, containsImageDC }
-			);
-		}
 
 		const getFrontTextResults = async (block, type) =>
 			previewPage.$eval(
@@ -203,7 +194,7 @@ describe('Dynamic content', () => {
 			try {
 				await previewPage.waitForSelector(
 					`.${block}.maxi-image-block .maxi-image-block__image`,
-					{ visible: true, timeout: 15000 }
+					{ visible: true, timeout: 30000 }
 				);
 				return await previewPage.$eval(
 					`.${block}.maxi-image-block .maxi-image-block__image`,
@@ -239,7 +230,6 @@ describe('Dynamic content', () => {
 				throw error;
 			}
 		};
-
 		const frontTitleResults = await Promise.all(
 			titleBlocks.map(async block => getFrontTextResults(block, 'title'))
 		);

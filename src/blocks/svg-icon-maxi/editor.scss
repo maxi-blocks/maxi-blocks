@@ -58,10 +58,15 @@
 
 		&--small {
 			.maxi-block-library__modal-button {
+				width: 44px;
+				max-width: 100%;
+				min-width: 0;
+				height: 44px;
 				padding: 0;
 				transition: none;
 
 				svg {
+					max-width: 100%;
 					margin: auto;
 					border-right: none;
 				}
@@ -110,7 +115,22 @@
 		}
 	}
 
+	.maxi-svg-icon-block__icon-wrapper {
+		display: flex;
+		align-items: center;
+	}
+
+	.maxi-link-wrapper.maxi-svg-icon-block__icon {
+		display: flex;
+		text-decoration: none;
+
+		> div {
+			display: contents;
+		}
+	}
+
 	.maxi-library-modal__action-section {
 		margin-right: 0;
+		width: 100%;
 	}
 }

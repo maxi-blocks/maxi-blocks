@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
@@ -22,6 +22,7 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
+import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
 	processSCAttribute,
@@ -233,6 +234,8 @@ const SCAccordion = props => {
 		disableTypography = false,
 		disableOpacity = false,
 		disableResponsiveTabs = false,
+		hideLineHeight = false,
+		hideAdvancedTextOptions = false,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -278,6 +281,8 @@ const SCAccordion = props => {
 					disableCustomFormats
 					disableFontFamily={breakpoint !== 'general'}
 					disableResponsiveTabs={disableResponsiveTabs}
+					hideLineHeight={hideLineHeight}
+					hideAdvancedTextOptions={hideAdvancedTextOptions}
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -738,6 +743,38 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 			},
 		],
 	};
+	const numberCounterTabs = {
+		label: __('Number Counter globals', 'maxi-blocks'),
+		groupAttr: 'number-counter',
+		hideLineHeight: true,
+		hideAdvancedTextOptions: true,
+		colorContent: [
+			{
+				label: __('Number', 'maxi-blocks'),
+				globalAttr: 'color-global',
+				paletteStatus: 'palette-status',
+				paletteColor: 'palette-color',
+				paletteOpacity: 'palette-opacity',
+				color: 'color',
+			},
+			{
+				label: __('Circle background', 'maxi-blocks'),
+				globalAttr: 'circle-background-color-global',
+				paletteStatus: 'circle-background-palette-status',
+				paletteColor: 'circle-background-palette-color',
+				paletteOpacity: 'circle-background-palette-opacity',
+				color: 'circle-background-color',
+			},
+			{
+				label: __('Circle bar', 'maxi-blocks'),
+				globalAttr: 'circle-bar-color-global',
+				paletteStatus: 'circle-bar-palette-status',
+				paletteColor: 'circle-bar-palette-color',
+				paletteOpacity: 'circle-bar-palette-opacity',
+				color: 'circle-bar-color',
+			},
+		],
+	};
 	const navigationTabs = {
 		label: __('Navigation menu globals', 'maxi-blocks'),
 		groupAttr: 'navigation',
@@ -832,37 +869,60 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<>
 									<div className='maxi-style-cards__quick-color-presets'>
-										{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-											<div
-												key={`maxi-style-cards__quick-color-presets__box__${item}`}
-												className={classnames(
-													'maxi-style-cards__quick-color-presets__box',
-													quickColorPreset === item &&
-														'maxi-style-cards__quick-color-presets__box--active'
-												)}
-												data-item={item}
-												onClick={e =>
-													setQuickColorPreset(
-														+e.currentTarget.dataset
-															.item
+										{[1, 2, 3, 4, 5, 6, 7, 8].map(item => {
+											const colorLabel =
+												getStandardPaletteColorLabel(
+													item,
+													sprintf(
+														// translators: %s: color number.
+														__(
+															'Colour %s',
+															'maxi-blocks'
+														),
+														item
 													)
-												}
-											>
-												<span
+												);
+
+											return (
+												<button
+													key={`maxi-style-cards__quick-color-presets__box__${item}`}
+													type='button'
 													className={classnames(
-														'maxi-style-cards__quick-color-presets__box__item',
-														`maxi-style-cards__quick-color-presets__box__item__${item}`
+														'maxi-style-cards__quick-color-presets__box',
+														quickColorPreset ===
+															item &&
+															'maxi-style-cards__quick-color-presets__box--active'
 													)}
-													style={{
-														background: `rgba(${processSCAttribute(
-															SC,
-															item,
-															'color'
-														)}, 1)`,
-													}}
-												/>
-											</div>
-										))}
+													data-item={item}
+													title={colorLabel}
+													aria-label={colorLabel}
+													aria-pressed={
+														quickColorPreset ===
+														item
+													}
+													onClick={e =>
+														setQuickColorPreset(
+															+e.currentTarget
+																.dataset.item
+														)
+													}
+												>
+													<span
+														className={classnames(
+															'maxi-style-cards__quick-color-presets__box__item',
+															`maxi-style-cards__quick-color-presets__box__item__${item}`
+														)}
+														style={{
+															background: `rgba(${processSCAttribute(
+																SC,
+																item,
+																'color'
+															)}, 1)`,
+														}}
+													/>
+												</button>
+											);
+										})}
 									</div>
 									<ColorControl
 										className={`maxi-style-cards-control__sc__color-${quickColorPreset}-${SCStyle}`}
@@ -1252,6 +1312,21 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
 									disableTypography
+								/>
+							),
+						},
+						{
+							label: numberCounterTabs.label,
+							classNameItem:
+								'maxi-blocks-sc__type--number-counter',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${numberCounterTabs.label}`}
+									{...numberCounterTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
 								/>
 							),
 						},

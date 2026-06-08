@@ -68,6 +68,9 @@ if (!class_exists('MaxiBlocks_Blocks')):
             // Always enqueue in admin
             if (is_admin()) {
                 add_action('init', [$this, 'enqueue_blocks_assets']);
+                add_action('enqueue_block_assets', function () {
+                    wp_enqueue_style('maxi-blocks-block');
+                });
             } else {
                 // For frontend, check for blocks after post is loaded
                 add_action('wp', function () {
@@ -350,7 +353,9 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 [],
                 $asset_version,
             );
-            wp_enqueue_style('maxi-blocks-block');
+            if (!is_admin()) {
+                wp_enqueue_style('maxi-blocks-block');
+            }
         }
 
         /**
@@ -370,7 +375,7 @@ if (!class_exists('MaxiBlocks_Blocks')):
         {
             $labels = [
                 'name' => __('Maxi Images', 'maxi-blocks'),
-                'singular_name' => __('maxi-image-type', 'maxi-blocks'),
+                'singular_name' => 'maxi-image-type',
                 'search_items' => __('Search Maxi Images', 'maxi-blocks'),
                 'all_items' => __('All Maxi Images', 'maxi-blocks'),
                 'edit_item' => __('Edit Maxi Image', 'maxi-blocks'),

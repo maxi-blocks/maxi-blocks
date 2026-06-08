@@ -8,7 +8,7 @@ import { useCallback, useEffect } from '@wordpress/element';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, cloneDeep, without } from 'lodash';
+import { isEmpty, without } from 'lodash';
 
 /**
  * Internal dependencies
@@ -17,8 +17,10 @@ import AccordionControl from '@components/accordion-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import DefaultStylesControl from '@components/default-styles-control';
 import Icon from '@components/icon';
-import * as defaultPresets from './defaults';
-import { getGroupAttributes, getIconWithColor } from '@extensions/styles';
+import getPresetAttributes, {
+	getPresetInlineStyleTargets,
+} from './getPresetAttributes';
+import { getIconWithColor } from '@extensions/styles';
 import { ariaLabelsCategories, customCss } from './data';
 import * as inspectorTabs from '@components/inspector-tabs';
 import { withMaxiInspector } from '@extensions/inspector';
@@ -32,8 +34,13 @@ import * as iconPresets from '@maxi-icons/button-presets/index';
  * Inspector
  */
 const Inspector = props => {
-	const { attributes, deviceType, maxiSetAttributes, inlineStylesTargets } =
-		props;
+	const {
+		attributes,
+		cleanInlineStyles,
+		deviceType,
+		inlineStylesTargets,
+		maxiSetAttributes,
+	} = props;
 	const {
 		'icon-only': iconOnly,
 		'icon-content': icon,
@@ -60,92 +67,19 @@ const Inspector = props => {
 	);
 
 	const onChangePreset = (number, type = 'normal') => {
-		const newDefaultPresets = cloneDeep({ ...defaultPresets });
-
-		if (
-			type === 'icon' &&
-			!isEmpty(attributes['icon-content']) &&
-			attributes['icon-content'] !==
-				defaultPresets[`preset${number}`]['icon-content']
-		)
-			newDefaultPresets[`preset${number}`]['icon-content'] =
-				attributes['icon-content'];
-
-		if (
-			!isNil(
-				defaultPresets[`preset${number}`][
-					'icon-border-style-general-hover'
-				]
-			) &&
-			defaultPresets[`preset${number}`][
-				'icon-border-style-general-hover'
-			] !== 'none'
-		) {
-			const hoverAttr = getGroupAttributes(
-				{ ...newDefaultPresets[`preset${number}`] },
-				['border', 'borderWidth', 'borderRadius'],
-				true,
-				'icon-'
-			);
-
-			const nonHoverAttr = getGroupAttributes(
-				{ ...newDefaultPresets[`preset${number}`] },
-				['border', 'borderWidth', 'borderRadius'],
-				false,
-				'icon-'
-			);
-
-			Object.keys(hoverAttr).forEach(h => {
-				if (!h.includes('hover')) delete hoverAttr[h];
-			});
-			Object.keys(nonHoverAttr).forEach(h => {
-				if (h.includes('hover')) delete nonHoverAttr[h];
-			});
-
-			newDefaultPresets[`preset${number}`] = {
-				...newDefaultPresets[`preset${number}`],
-				...hoverAttr,
-			};
-		}
-
-		const {
-			'icon-stroke-palette-status': strokePaletteStatus,
-			'icon-stroke-palette-status-hover': strokePaletteHoverStatus,
-			'icon-content': rawIcon,
-		} = newDefaultPresets[`preset${number}`];
-
-		let icon = null;
-
-		if (rawIcon && (strokePaletteStatus || strokePaletteHoverStatus)) {
-			const {
-				'icon-stroke-palette-color': strokePaletteColor,
-				'icon-stroke-palette-color-hover': strokePaletteHoverColor,
-				'icon-inherit': rawIconInherit,
-				'icon-only': rawIconOnly,
-			} = newDefaultPresets[`preset${number}`];
-
-			icon = getIconWithColor(attributes, {
-				paletteStatus: strokePaletteStatus,
-				paletteColor: strokePaletteColor,
-				rawIcon,
-				isInherit: rawIconInherit,
-				isIconOnly: rawIconOnly,
-			});
-
-			icon = getIconWithColor(attributes, {
-				paletteStatus: strokePaletteHoverStatus,
-				paletteColor: strokePaletteHoverColor,
-				isHover: true,
-				rawIcon: icon,
-				isInherit: rawIconInherit,
-				isIconOnly: rawIconOnly,
-			});
-		}
-
-		maxiSetAttributes({
-			...newDefaultPresets[`preset${number}`],
-			...(icon && { 'icon-content': icon }),
+		const presetAttributes = getPresetAttributes({
+			attributes,
+			getIconWithColor,
+			number,
+			type,
 		});
+
+		maxiSetAttributes(presetAttributes);
+
+		getPresetInlineStyleTargets({
+			inlineStylesTargets,
+			presetAttributes,
+		}).forEach(target => cleanInlineStyles?.(target));
 	};
 
 	const getCategoriesCss = () => {

@@ -38,9 +38,9 @@ describe('Video maxi control', () => {
 		// End time - must be >= start time (31), so we append '0' to make '310'
 		await page.$eval('.maxi-video-end-time input', input => input.focus());
 
-		await page.keyboard.press('End');
+		await pressKeyWithModifier('primary', 'a');
 
-		await page.keyboard.type('10', { delay: 350 });
+		await page.keyboard.type('310', { delay: 350 });
 
 		expect(await getAttributes('endTime')).toStrictEqual('310');
 

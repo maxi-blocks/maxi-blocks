@@ -910,6 +910,8 @@ class MaxiBlocks_DynamicContent
         }
 
         if (in_array($block_name, self::$link_only_blocks)) {
+            $content = self::render_dc_classes($attributes, $content);
+            $content = self::strip_placeholder_links($content);
             return $content;
         } elseif ($block_name !== 'image-maxi') {
             $content = self::render_dc_content($attributes, $content, $block_name);
@@ -918,7 +920,7 @@ class MaxiBlocks_DynamicContent
         }
 
         $content = self::render_dc_classes($attributes, $content);
-        $content = str_replace('$link-to-replace', '', $content);
+        $content = self::strip_placeholder_links($content);
 
         return $content;
     }
@@ -1274,6 +1276,9 @@ class MaxiBlocks_DynamicContent
         if (empty($dc_relation)) {
             $dc_relation = 'by-id';
         }
+        if (empty($dc_media_size)) {
+            $dc_media_size = 512;
+        }
 
         $media_alt = '';
         $media_caption = '';
@@ -1460,6 +1465,35 @@ class MaxiBlocks_DynamicContent
 
             return $content;
         }
+
+        return $content;
+    }
+
+    /**
+     * Strips anchor wrappers whose href was never resolved from the
+     * $link-to-replace placeholder, then clears any remaining placeholder
+     * occurrences (e.g. in title attributes). Unresolved placeholders appear
+     * on hidden context-loop items that have no backing post and would
+     * otherwise cause 404 errors for crawlers.
+     *
+     * @param string $content Block HTML content.
+     * @return string Cleaned content.
+     */
+    private static function strip_placeholder_links($content)
+    {
+        if (strpos($content, '$link-to-replace') === false) {
+            return $content;
+        }
+
+        // Remove anchor wrappers whose href was never resolved, keeping inner content
+        $content = preg_replace(
+            '/<a\b[^>]*href="\$link-to-replace"[^>]*>(.*?)<\/a>/s',
+            '$1',
+            $content,
+        );
+
+        // Clear any remaining placeholder occurrences (e.g. in title attributes)
+        $content = str_replace('$link-to-replace', '', $content);
 
         return $content;
     }
@@ -1715,6 +1749,7 @@ class MaxiBlocks_DynamicContent
         } elseif ($dc_type === 'media') {
             $args = [
                 'post_type' => 'attachment',
+                'post_status' => 'inherit',
                 'posts_per_page' => 1,
             ];
 
@@ -3371,6 +3406,13 @@ class MaxiBlocks_DynamicContent
                     // Remove <div> elements containing <svg> with the class 'maxi-background-displayer__svg'
                     $content_sanitized = preg_replace(
                         '/<div[^>]*class="[^"]*maxi-background-displayer__svg[^"]*"[^>]*>.*?<\/div>/s',
+                        '',
+                        $content_sanitized,
+                    );
+
+                    // SVG icon blocks are decorative companions to DC text in some patterns.
+                    $content_sanitized = preg_replace(
+                        '/<div[^>]*class="[^"]*maxi-svg-icon-block__icon[^"]*"[^>]*>.*?<\/div>/s',
                         '',
                         $content_sanitized,
                     );

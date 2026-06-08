@@ -41,6 +41,29 @@ import { isNil, isNumber } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const isCustomTextListMarker = ({ typeOfList, listStyle, listStyleCustom }) =>
+	typeOfList === 'ul' &&
+	listStyle === 'custom' &&
+	listStyleCustom &&
+	!isURL(listStyleCustom) &&
+	!listStyleCustom.includes('</svg>');
+
+const getCustomTextMarkerSlot = (markerSize, listStyleCustom) => {
+	const markerLength = listStyleCustom.length;
+
+	if (markerLength <= 1) return markerSize;
+
+	return `max(${markerSize}, ${markerLength}ch)`;
+};
+
+const getNegativeCustomTextMarkerSlot = (markerSize, listStyleCustom) => {
+	const markerLength = listStyleCustom.length;
+
+	if (markerLength <= 1) return `-${markerSize}`;
+
+	return `min(-${markerSize}, -${markerLength}ch)`;
+};
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -240,6 +263,10 @@ const getListObject = (props, getListItemsLength) => {
 						breakpoint,
 						attributes: props,
 					}) || 'px';
+				const markerSize = sizeNum + sizeUnit;
+				const customTextMarkerSlot = isCustomTextListMarker(props)
+					? getCustomTextMarkerSlot(markerSize, props.listStyleCustom)
+					: markerSize;
 
 				// Marker indent
 				const indentMarkerNum =
@@ -260,9 +287,9 @@ const getListObject = (props, getListItemsLength) => {
 				const padding =
 					listStylePosition === 'inside'
 						? gapNum + gapUnit
-						: `calc(${gapNum + gapUnit} + ${
-								sizeNum + sizeUnit
-						  } + ${indentMarkerSum})`;
+						: `calc(${
+								gapNum + gapUnit
+						  } + ${customTextMarkerSlot} + ${indentMarkerSum})`;
 
 				if (!isNil(gapNum) && !isNil(gapUnit)) {
 					response.listGap[breakpoint] = {
@@ -378,6 +405,17 @@ const getListParagraphObject = props => {
 
 const getMarkerObject = props => {
 	const { typeOfList, listStyle, listStyleCustom, blockStyle } = props;
+	const isCustomTextMarker = isCustomTextListMarker(props);
+	const isCustomURLMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		isURL(listStyleCustom);
+	const isCustomSVGMarker =
+		typeOfList === 'ul' &&
+		listStyle === 'custom' &&
+		listStyleCustom &&
+		listStyleCustom.includes('</svg>');
 
 	const { paletteStatus, paletteColor, paletteOpacity, color } =
 		getPaletteAttributes({
@@ -431,16 +469,20 @@ const getMarkerObject = props => {
 					general: {
 						...(listStyle === 'custom' &&
 							listStyleCustom && {
-								...(isURL(listStyleCustom) && {
-									content: `url('${listStyleCustom}')`,
+								...(isCustomURLMarker && {
+									content: '""',
+									'background-image': `url('${listStyleCustom}')`,
+									'background-position': 'center',
+									'background-repeat': 'no-repeat',
+									'background-size': 'contain',
 								}),
-								...(listStyleCustom.includes('</svg>') && {
+								...(isCustomSVGMarker && {
 									content: `url("data:image/svg+xml,${getSVGListStyle(
 										listStyleCustom
 									)}")`,
 								}),
-								...(!isURL(listStyleCustom) &&
-									!listStyleCustom.includes('</svg>') && {
+								...(!isCustomURLMarker &&
+									!isCustomSVGMarker && {
 										content: `"${listStyleCustom}"`,
 									}),
 							}),
@@ -479,6 +521,16 @@ const getMarkerObject = props => {
 						breakpoint,
 						attributes: props,
 					}) || 'px';
+				const markerSize = sizeNum + sizeUnit;
+				const customTextMarkerSlot = isCustomTextMarker
+					? getCustomTextMarkerSlot(markerSize, listStyleCustom)
+					: markerSize;
+				const negativeCustomTextMarkerSlot = isCustomTextMarker
+					? getNegativeCustomTextMarkerSlot(
+							markerSize,
+							listStyleCustom
+					  )
+					: `-${markerSize}`;
 
 				// List marker height
 				const heightNum = getLastBreakpointAttribute({
@@ -549,25 +601,34 @@ const getMarkerObject = props => {
 						attributes: props,
 					}) || 'px';
 
+				const markerHeight = !isNil(heightNum)
+					? heightNum + heightUnit
+					: undefined;
+				const customImageMarkerSize = {
+					width: markerSize,
+					...(isCustomURLMarker && {
+						height: markerSize,
+					}),
+					...(isCustomSVGMarker &&
+						!isNil(heightNum) && {
+							height: markerHeight,
+							// Vertically center the SVG marker content if the height is set
+							...(textPosition === 'middle' && {
+								top: `calc(${heightNum / 2 + heightUnit} - (${
+									sizeNum / 2 + sizeUnit
+								}))`,
+							}),
+						}),
+				};
+
 				response.listSize[breakpoint] = {
-					...(typeOfList === 'ul' &&
-					listStyle === 'custom' &&
-					listStyleCustom &&
-					listStyleCustom.includes('</svg>')
-						? {
-								width: sizeNum + sizeUnit,
-								...(!isNil(heightNum) && {
-									height: heightNum + heightUnit,
-									// Vertically center the SVG marker content if the height is set
-									...(textPosition === 'middle' && {
-										top: `calc(${
-											heightNum / 2 + heightUnit
-										} - (${sizeNum / 2 + sizeUnit}))`,
-									}),
-								}),
-						  }
+					...(isCustomSVGMarker || isCustomURLMarker
+						? customImageMarkerSize
 						: {
-								'font-size': sizeNum + sizeUnit,
+								'font-size': markerSize,
+								...(isCustomTextMarker && {
+									width: customTextMarkerSlot,
+								}),
 						  }),
 					'line-height':
 						lineHeightMarkerNum +
@@ -588,7 +649,9 @@ const getMarkerObject = props => {
 							  }
 							: {
 									[isRTL ? 'margin-right' : 'margin-left']:
-										-sizeNum + sizeUnit,
+										isCustomTextMarker
+											? negativeCustomTextMarkerSlot
+											: -sizeNum + sizeUnit,
 							  })),
 					...(listStylePosition === 'inside' && {
 						[isRTL ? 'margin-left' : 'margin-right']:

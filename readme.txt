@@ -3,10 +3,10 @@
 Contributors: ckp267, kyrapieterse, svitlana41319, serifkonjevic, olekrut, naaaaiix, rustamsamsonyan, andriivalenia, dashaversha, myroslavv, fitsedivi, maxiblocks
 Tags: block, blocks, gutenberg blocks, page builder, starter sites
 Donate link: https://ko-fi.com/maxiblocks
-Requires at least: 6.2.2
-Tested up to: 6.9
+Requires at least: 6.3
+Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 2.1.9
+Stable tag: 2.2.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -327,53 +327,41 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 20 May 2026_
+MaxiBlocks v2.2.0
+* Update: Added WordPress 7.0 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Optimized block traversal and uniqueness checks with store-backed indexes, improving editor performance and reliability.
+* Update: Optimized breakpoint style cache updates for faster and more consistent responsive editing.
+* Update: Refined spacing controls UI with improved layout, clearer line controls, and more consistent handling across related settings.
+* Update: Expanded Dynamic Content link controls with a dedicated link toggle for improved configuration flexibility.
+* Fix: Resolved potential translation issue with Interaction Builder for improved localization reliability.
+* Fix: Improved Advanced Number Control inline meta handling for spinner, reset, and unit controls.
+* Fix: Corrected Advanced Number Control unit widths for more consistent control sizing.
+* Fix: Hid background image size controls when parallax is enabled, preventing incompatible settings from appearing together.
+* Fix: Corrected Icon block Cloud button responsive label display.
+* Fix: Resolved Image block copy-paste issues to preserve settings more reliably.
+* Fix: Improved Text block link settings copy-paste behaviour.
+* Fix: Improved repeater handling for unsupported blocks.
+* Fix: Restored Typography italic toggle behaviour.
+
+_Updates 27 Apr 2026_
+MaxiBlocks v2.1.10
+* Security: Fixed authenticated (Author+) stored cross-site scripting via the Style Card REST API (CVE-2026-6378). Thanks to Athiwat Tiprasaharn (Jitlada) for the responsible disclosure.
+* Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
+* Update: Introduced Carousel functionality for Row Block, enabling content carousels within row layouts.
+* Update: Implemented Custom Scripts and Styles feature with site-wide and per-page/post injection options, providing advanced customization capabilities.
+* Update: Enhanced SVG icons in Cloud modals to dynamically inherit colours from their configured settings, ensuring consistent visual presentation.
+* Update: Optimized breakpoint switching performance by implementing CSS caching for XXL breakpoint, resulting in faster responsive switching.
+* Update: Implemented lazy-loading for Map Block editor and conditional Leaflet library loading, reducing initial page load times when no maps are present.
+* Update: Enhanced editor interaction performance with optimized event handling and reduced re-renders for a smoother editing experience.
+* Fix: Resolved Interaction Builder relations disappearing when several relations target the same block, ensuring a consistent editing experience and maintaining interaction configurations.
+
 _Updates 6 Mar 2026_
 MaxiBlocks v2.1.9
 * Security: Fixed missing authorization vulnerability for authenticated (Author+) media file deletion via 'old_media_src' parameter (CVE-2026-2028). Thanks to Teerachai Somprasong for the responsible disclosure.
 * Update: Implemented comprehensive fixes and improvements to meet WordPress.org plugin directory standards, ensuring full compliance and enhanced quality.
 * Update: Updated npm packages and dependencies to the latest versions for enhanced security measures and improved stability across all plugin features.
-
-_Updates 5 Feb 2026_
-MaxiBlocks v2.1.8
-* Update: Introduced support for Custom fonts from WordPress Site Editor options.
-* Update: Enhanced relation control, hidden blocks, and background interactions with improved highlighting in List View and Editor Experience.
-* Update: Enabled loading patterns and layouts from Cloud modal with Style Cards styles exclusively.
-* Update: Refreshed wordpress.org readme.txt to better reflect MaxiBlocks branding and feature set.
-* Update: Delivered comprehensive UI/UX enhancements for the Style Cards editor, providing a more intuitive interface.
-* Update: Upgraded npm packages and dependencies to latest versions for strengthened security and improved stability across all plugin functionality.
-* Update: Built translation toolkit to generate mo translation files from po files, including German translation.
-* Update: Optimized backend processing speed with comprehensive performance improvements.
-* Update: Accelerated editing speed for settings within Advanced Number Control.
-* Update: Redesigned toolbar and sidebar architecture for enhanced editor compatibility and streamlined editing workflow.
-* Update: Integrated Settings link into plugin action links on the Plugins page.
-* Update: Configured master toolbar to open by default on first launch and memorize state per site user.
-* Update: Eliminated cache notice from admin pages.
-* Update: Aligned start and end time validation for Video block controls.
-* Update: Introduced customizable popup animation duration for Video block.
-* Update: Expanded Dynamic Content options for Button block with tags and categories support.
-* Update: Integrated Text Wrap control in Typography settings with options: Wrap, No Wrap, Balance, Pretty, and Stable.
-* Fix: Background Shape scale 0 values now function correctly.
-* Fix: Video block transition behaviour on hover.
-* Fix: Overflow handling for Image block.
-* Fix: Column exclusion when pasting into column blocks.
-* Fix: Move actions now properly prevented when mover buttons are disabled, with corrected block animation behaviour.
-* Fix: Transition properties for buttons and SVG icons in Editor Experience.
-* Fix: Flex wrapping behaviour in colour control within Editor Experience.
-* Fix: Column Picker tone now adapts based on parent block tone.
-* Fix: Hover border palette toggle and axis unit switching for image hover controls.
-* Fix: Responsive styles with vh/vw units in Editor.
-* Fix: SVG element processing with enhanced error recovery and fallback mechanisms for consistent behaviour across different environments and edge cases.
-
-_Updates 26 Nov 2025_
-MaxiBlocks v2.1.7
-* Update: Implemented comprehensive UI/UX improvements across the Editor Experience, delivering a more intuitive interface.
-* Update: Rebuilt translation system architecture to ensure proper localization support on WordPress.org, enabling seamless multilingual functionality and improved plugin accessibility for international users.
-* Update: Updated npm packages and dependencies to latest versions for enhanced security measures and improved stability across all plugin features.
-* Fix: Resolved styling inconsistencies with synced blocks and template parts in the Editor Experience for proper visual presentation and consistent design rendering across all editing contexts.
-* Fix: Corrected Starter Sites functionality to properly overwrite existing templates and template parts on block themes instead of creating duplicates, maintaining a cleaner template structure and preventing conflicts.
-* Fix: Enhanced Interaction Builder reliability for Show/Hide actions with consistent behaviour and proper execution of visibility toggles across all interactive elements.
-* Fix: Resolved frontend pagination issues when displaying posts from child taxonomies with accurate post filtering and proper navigation through hierarchical taxonomy structures.
-* Fix: Corrected Scroll Effects functionality on smaller screens when using anchor links for proper navigation across all responsive breakpoints.
 
 == Upgrade Notice ==
 

@@ -32,7 +32,12 @@ import {
 } from '@extensions/styles';
 import { getListTypographyAttributes } from '@extensions/text/lists';
 import { getDefaultSCValue } from '@extensions/style-cards';
-import { getClosestAvailableFontWeight, getWeightOptions } from './utils';
+import {
+	getClosestAvailableFontWeight,
+	getToggledFontStyle,
+	getWeightOptions,
+	shouldUseBlockTypographyFallback,
+} from './utils';
 import onChangeFontWeight from '@components/font-weight-control/utils';
 
 /**
@@ -340,6 +345,8 @@ const TypographyControl = props => {
 		disablePalette = false,
 		disableFontFamily = false,
 		disableResponsiveTabs = false,
+		hideLineHeight = false,
+		hideAdvancedTextOptions = false,
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
@@ -347,6 +354,8 @@ const TypographyControl = props => {
 		blockStyle,
 		globalProps,
 		forceIndividualChanges = false,
+		useBlockLevelFallback = false,
+		isRichTextActive = true,
 		setShowLoader,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
@@ -391,6 +400,13 @@ const TypographyControl = props => {
 	const typography = listContext
 		? getListTypographyAttributes(listContext, rawTypography)
 		: rawTypography;
+
+	const useFallbackTypography = shouldUseBlockTypographyFallback({
+		useBlockLevelFallback,
+		isRichTextActive,
+		formatValue,
+		onChangeTextFormat,
+	});
 
 	const { styleCard, baseBreakpoint } = useSelect(select => {
 		const { receiveMaxiSelectedStyleCard } = select(
@@ -654,7 +670,9 @@ const TypographyControl = props => {
 			isHover,
 			textLevel,
 			disableCustomFormats:
-				forceDisableCustomFormats || disableCustomFormats,
+				forceDisableCustomFormats ||
+				disableCustomFormats ||
+				useFallbackTypography,
 			styleCardPrefix,
 			returnFormatValue: true,
 		});
@@ -669,14 +687,16 @@ const TypographyControl = props => {
 			: obj;
 
 		if (!isEmpty(filteredObj.formatValue)) {
-			const newFormatValue = {
-				...filteredObj.formatValue,
-				start: formatValue.start,
-				end: formatValue.end,
-			};
-			delete filteredObj.formatValue;
+			if (onChangeTextFormat) {
+				const newFormatValue = {
+					...filteredObj.formatValue,
+					start: formatValue.start,
+					end: formatValue.end,
+				};
 
-			onChangeTextFormat(newFormatValue);
+				onChangeTextFormat(newFormatValue);
+			}
+			delete filteredObj.formatValue;
 		}
 
 		if (!isReset) {
@@ -861,7 +881,7 @@ const TypographyControl = props => {
 						</div>
 
 						<div className='maxi-typography-control__spacing-controls'>
-							<AdvancedNumberControl
+							{!hideLineHeight && <AdvancedNumberControl
 								className='maxi-typography-control__line-height'
 								label={__('Line height', 'maxi-blocks')}
 								enableUnit
@@ -915,7 +935,7 @@ const TypographyControl = props => {
 									'%',
 									'-',
 								]}
-							/>
+							/>}
 							{showBottomGap && (
 								<AdvancedNumberControl
 									className='maxi-typography-control__bottom-gap'
@@ -1076,11 +1096,8 @@ const TypographyControl = props => {
 									onClick={() => {
 										const currentStyle =
 											getValue('font-style');
-										const isActive =
-											currentStyle === 'italic';
-										const targetStyle = isActive
-											? undefined
-											: 'italic';
+										const targetStyle =
+											getToggledFontStyle(currentStyle);
 										const fontName =
 											getValue('font-family') ??
 											getDefault('font-family');
@@ -1324,6 +1341,8 @@ const TypographyControl = props => {
 								<hr className='maxi-typography-control__separator' />
 							)}
 
+						{!hideAdvancedTextOptions && (
+						<>
 						{/* Toggle button for advanced text options */}
 						<div className='maxi-typography-control__advanced-toggle'>
 							<Button
@@ -1981,6 +2000,8 @@ const TypographyControl = props => {
 									</>
 								)}
 							</div>
+						)}
+						</>
 						)}
 					</>
 				)}

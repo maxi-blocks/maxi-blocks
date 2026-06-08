@@ -7,6 +7,14 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import viewportUnitsProcessor from './viewportUnitsProcessor';
+import {
+	isAdvancedCssMediaQueryTarget,
+	splitAdvancedCssMediaQueryTarget,
+} from './advancedCssMediaQuery';
+import {
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 const ALLOWED_BREAKPOINTS = ['xs', 's', 'm', 'l', 'xl'];
 const BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -96,29 +104,41 @@ const styleStringGenerator = (
 	return string;
 };
 
+const wrapWithMediaQuery = (style, mediaQuery) =>
+	mediaQuery ? `${mediaQuery}{${style}}` : style;
+
 const styleGenerator = (
 	rawStyles,
 	isIframe = false,
 	isSiteEditor = false,
 	breakpoint
 ) => {
+	const generatorStart = getProfileStart();
 	let response = '';
 
 	const baseBreakpoint = select('maxiBlocks').receiveBaseBreakpoint();
 	const currentBreakpoint =
 		breakpoint ?? select('maxiBlocks').receiveMaxiDeviceType();
 
+	const viewportStart = getProfileStart();
 	const styles = viewportUnitsProcessor(
 		rawStyles,
 		currentBreakpoint,
 		baseBreakpoint
 	); // replacing viewport units only for the editor
+	recordProfile('styleGenerator viewportUnitsProcessor', viewportStart);
 
 	BREAKPOINTS.forEach(breakpoint => {
 		Object.entries(styles).forEach(([key, value]) => {
 			const target = getTarget(key);
 			const { content } = value;
 			Object.entries(content).forEach(([suffix, props]) => {
+				const mediaQueryTarget = isAdvancedCssMediaQueryTarget(suffix)
+					? splitAdvancedCssMediaQueryTarget(suffix)
+					: null;
+				const targetSuffix = mediaQueryTarget?.selector ?? suffix;
+				const mediaQuery = mediaQueryTarget?.mediaQuery;
+
 				if (!props[breakpoint]) return;
 
 				const isBaseLowerThanCurrent =
@@ -134,34 +154,45 @@ const styleGenerator = (
 
 				const style = getResponsiveStyles(props[breakpoint]);
 
-				response += styleStringGenerator(
-					`${target}${suffix}`,
-					style,
-					breakpoint,
-					isIframe,
-					isSiteEditor
+				response += wrapWithMediaQuery(
+					styleStringGenerator(
+						`${target}${targetSuffix}`,
+						style,
+						breakpoint,
+						isIframe,
+						isSiteEditor
+					),
+					mediaQuery
 				);
 
 				if (breakpoint === 'general') {
-					response += styleStringGenerator(
-						`${target}${suffix}`,
-						getResponsiveStyles(props.general),
-						baseBreakpoint,
-						isIframe,
-						isSiteEditor
-					);
-					if (props?.[baseBreakpoint])
-						response += styleStringGenerator(
-							`${target}${suffix}`,
-							getResponsiveStyles(props[baseBreakpoint]),
+					response += wrapWithMediaQuery(
+						styleStringGenerator(
+							`${target}${targetSuffix}`,
+							getResponsiveStyles(props.general),
 							baseBreakpoint,
 							isIframe,
 							isSiteEditor
+						),
+						mediaQuery
+					);
+					if (props?.[baseBreakpoint])
+						response += wrapWithMediaQuery(
+							styleStringGenerator(
+								`${target}${targetSuffix}`,
+								getResponsiveStyles(props[baseBreakpoint]),
+								baseBreakpoint,
+								isIframe,
+								isSiteEditor
+							),
+							mediaQuery
 						);
 				}
 			});
 		});
 	});
+
+	recordProfile('styleGenerator total', generatorStart);
 
 	return response;
 };

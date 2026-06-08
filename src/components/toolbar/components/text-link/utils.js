@@ -1,7 +1,12 @@
 /**
+ * Internal dependencies
+ */
+import sanitizeLinkAttributes from '@extensions/link/sanitizeLinkAttributes';
+
+/**
  * External dependencies
  */
-import { isEmpty, trim } from 'lodash';
+import { isEmpty } from 'lodash';
 
 export const createLinkAttributes = ({
 	url,
@@ -12,39 +17,27 @@ export const createLinkAttributes = ({
 	sponsored,
 	ugc,
 	title = '',
-	linkValue,
+	ariaLabel = '',
 }) => {
-	const attributes = {
+	const relValues = [];
+	const attributes = sanitizeLinkAttributes({
 		url,
-		rel: '',
 		title,
-	};
+		ariaLabel,
+	});
 
 	if (type) attributes.type = type;
 	if (id) attributes.id = id;
 
 	if (opensInNewTab) {
 		attributes.target = '_blank';
-		attributes.rel += 'noreferrer noopener';
+		relValues.push('noreferrer', 'noopener');
 	}
-	if (noFollow) attributes.rel += ' nofollow';
-	if (sponsored) attributes.rel += ' sponsored';
-	if (ugc) attributes.rel += ' ugc';
-	if (attributes.target !== '_blank' && !noFollow && !sponsored && !ugc) {
-		delete attributes.rel;
-	} else {
-		attributes.rel = attributes.rel.trim();
-	}
+	if (noFollow) relValues.push('nofollow');
+	if (sponsored) relValues.push('sponsored');
+	if (ugc) relValues.push('ugc');
 
-	// Clean empty attributes, as it returns error on RichText
-	// and trims the rest
-	Object.entries(attributes).forEach(([key, val]) => {
-		if (isEmpty(val)) delete attributes[key];
-
-		attributes[key] = trim(val);
-	});
-	if (url !== linkValue?.url && title === linkValue?.title)
-		attributes.title = '';
+	if (!isEmpty(relValues)) attributes.rel = relValues.join(' ');
 
 	return attributes;
 };
@@ -52,9 +45,15 @@ export const createLinkAttributes = ({
 export const createLinkValue = ({ formatOptions, formatValue }) => {
 	if (!formatOptions || isEmpty(formatValue)) return { url: '' };
 
+	const { attributes = {} } = formatOptions;
 	const {
-		attributes: { url, target, id, rel, title = '' },
-	} = formatOptions;
+		url,
+		target,
+		id,
+		rel,
+		title = '',
+		ariaLabel = attributes['aria-label'] || '',
+	} = attributes;
 
 	const value = {
 		url,
@@ -64,6 +63,7 @@ export const createLinkValue = ({ formatOptions, formatValue }) => {
 		sponsored: rel && rel.indexOf('sponsored') >= 0,
 		ugc: rel && rel.indexOf('ugc') >= 0,
 		title,
+		ariaLabel,
 	};
 
 	return value;

@@ -35,6 +35,7 @@ import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { injectImgSVG } from '@extensions/svg';
 import { copyPasteMapping } from './data';
+import { getImageResizerClassName } from './utils';
 import { TextContext, onChangeRichText } from '@extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
@@ -58,6 +59,7 @@ class edit extends MaxiBlockComponent {
 			isUploaderOpen: false,
 			formatValue: {},
 			onChangeFormat: null,
+			captionRichTextActive: false,
 		};
 
 		this.textRef = createRef(null);
@@ -72,6 +74,18 @@ class edit extends MaxiBlockComponent {
 		return getStyles(this.props.attributes);
 	}
 
+	handleCaptionFocus = () => {
+		this.setState({
+			captionRichTextActive: true,
+		});
+	};
+
+	handleCaptionBlur = () => {
+		this.setState({
+			captionRichTextActive: false,
+		});
+	};
+
 	maxiBlockDidMount() {
 		const { attributes, maxiSetAttributes } = this.props;
 		const { SVGData, SVGElement, uniqueID, mediaID, mediaURL } = attributes;
@@ -83,25 +97,30 @@ class edit extends MaxiBlockComponent {
 			!isEmpty(SVGData) &&
 			Object.keys(SVGData)[0].split('__')[0] !== uniqueID
 		) {
-			const cleanedContent = DOMPurify.sanitize(SVGElement);
+			// Defer the store update so it fires after all blocks have mounted.
+			// Dispatching setAttributes during bulk mount triggers React
+			// reconciliation across every mounted block, causing ~400ms stalls.
+			setTimeout(() => {
+				const cleanedContent = DOMPurify.sanitize(SVGElement);
 
-			const svg = document
-				.createRange()
-				.createContextualFragment(cleanedContent).firstElementChild;
+				const svg = document
+					.createRange()
+					.createContextualFragment(cleanedContent).firstElementChild;
 
-			const resData = {
-				[`${uniqueID}__${uniqueId()}`]: {
-					color: '',
-					imageID: mediaID,
-					imageURL: mediaURL,
-				},
-			};
+				const resData = {
+					[`${uniqueID}__${uniqueId()}`]: {
+						color: '',
+						imageID: mediaID,
+						imageURL: mediaURL,
+					},
+				};
 
-			const resEl = injectImgSVG(svg, resData, false, uniqueID);
-			maxiSetAttributes({
-				SVGElement: resEl.outerHTML,
-				SVGData: resData,
-			});
+				const resEl = injectImgSVG(svg, resData, false, uniqueID);
+				maxiSetAttributes({
+					SVGElement: resEl.outerHTML,
+					SVGData: resData,
+				});
+			}, 0);
 		}
 	}
 
@@ -290,7 +309,8 @@ class edit extends MaxiBlockComponent {
 				value={{
 					formatValue: this.state.formatValue,
 					onChangeTextFormat: newFormatValue => {
-						this.state.onChangeFormat(newFormatValue);
+						if (this.state.onChangeFormat)
+							this.state.onChangeFormat(newFormatValue);
 						onChangeRichText({
 							attributes,
 							maxiSetAttributes,
@@ -311,6 +331,7 @@ class edit extends MaxiBlockComponent {
 						this.setState({ showLoader: value })
 					}
 					{...this.props}
+					captionRichTextActive={this.state.captionRichTextActive}
 				/>
 				<Toolbar
 					key={`toolbar-${uniqueID}`}
@@ -416,7 +437,7 @@ class edit extends MaxiBlockComponent {
 					{showImage ? (
 						<BlockResizer
 							key={uniqueID}
-							className='maxi-block__resizer maxi-image-block__resizer'
+							className={getImageResizerClassName(captionType)}
 							resizableObject={this.resizableObject}
 							isOverflowHidden={getIsOverflowHidden(
 								attributes,
@@ -467,6 +488,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(
@@ -553,6 +576,8 @@ class edit extends MaxiBlockComponent {
 										ref={this.textRef}
 										className='maxi-image-block__caption'
 										value={captionContent}
+										onFocus={this.handleCaptionFocus}
+										onBlur={this.handleCaptionBlur}
 										onChange={processContent}
 										tagName='figcaption'
 										placeholder={__(

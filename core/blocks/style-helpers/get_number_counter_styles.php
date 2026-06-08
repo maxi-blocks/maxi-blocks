@@ -2,6 +2,41 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+function get_number_counter_sc_colour_string($args)
+{
+    $palette = get_palette_attributes([
+        'obj' => $args['obj'],
+        'prefix' => $args['prefix'],
+        'breakpoint' => $args['breakpoint'] ?? null,
+    ]);
+
+    if (
+        isset($palette['palette_status']) &&
+        $palette['palette_status'] &&
+        !empty($palette['palette_color'])
+    ) {
+        $palette_variable = 'color-' . $palette['palette_color'];
+        $should_use_style_card_variable =
+            !isset($palette['palette_sc_status']) || !$palette['palette_sc_status'];
+
+        $color_args = [
+            'first_var' => $should_use_style_card_variable
+                ? $args['sc_variable']
+                : $palette_variable,
+            'opacity' => $palette['palette_opacity'],
+            'block_style' => $args['block_style'],
+        ];
+
+        if ($should_use_style_card_variable) {
+            $color_args['second_var'] = $palette_variable;
+        }
+
+        return get_color_rgba_string($color_args);
+    }
+
+    return !empty($palette['color']) ? $palette['color'] : null;
+}
+
 function get_circle_bar_styles($obj, $block_style)
 {
     $response = [
@@ -10,23 +45,13 @@ function get_circle_bar_styles($obj, $block_style)
     ];
 
     $get_color = function ($breakpoint) use ($obj, $block_style) {
-        $palette = get_palette_attributes([
+        return get_number_counter_sc_colour_string([
             'obj' => $obj,
             'prefix' => 'number-counter-circle-bar-',
-            'breakpoint' => $breakpoint
+            'breakpoint' => $breakpoint,
+            'block_style' => $block_style,
+            'sc_variable' => 'number-counter-circle-bar',
         ]);
-
-        if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
-            return $palette['color'];
-        }
-
-        if (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
-            return get_color_rgba_string([
-                'first_var' => 'color-' . $palette['palette_color'],
-                'opacity' => $palette['palette_opacity'],
-                'block_style' => $block_style,
-            ]);
-        }
     };
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -47,19 +72,15 @@ function get_circle_background_styles($obj, $block_style)
         'general' => []
     ];
 
-    $palette = get_palette_attributes([
+    $color = get_number_counter_sc_colour_string([
         'obj' => $obj,
-        'prefix' => 'number-counter-circle-background-'
+        'prefix' => 'number-counter-circle-background-',
+        'block_style' => $block_style,
+        'sc_variable' => 'number-counter-circle-background',
     ]);
 
-    if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
-        $response['general']['stroke'] = $palette['color'];
-    } elseif (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
-        $response['general']['stroke'] = get_color_rgba_string([
-            'first_var'=> "color-{$palette['palette_color']}",
-            'opacity' => $palette['palette_opacity'],
-            'block_style' => $block_style
-        ]);
+    if (isset($color)) {
+        $response['general']['stroke'] = $color;
     }
 
     return ['numberCounterBackground' => $response];
@@ -73,23 +94,13 @@ function get_text_styles($obj, $block_style)
     ];
 
     $get_color = function ($breakpoint) use ($obj, $block_style) {
-        $palette = get_palette_attributes([
+        return get_number_counter_sc_colour_string([
             'obj' => $obj,
             'prefix' => 'number-counter-text-',
-            'breakpoint' => $breakpoint
+            'breakpoint' => $breakpoint,
+            'block_style' => $block_style,
+            'sc_variable' => 'number-counter-color',
         ]);
-
-        if ((!isset($palette['palette_status']) || !$palette['palette_status']) && isset($palette['color'])) {
-            return $palette['color'];
-        }
-
-        if (isset($palette['palette_status']) && $palette['palette_status'] && isset($palette['palette_color'])) {
-            return get_color_rgba_string([
-                'first_var'=> "color-{$palette['palette_color']}",
-                'opacity'=>$palette['palette_opacity'],
-                'block_style'=>$block_style
-            ]);
-        }
     };
 
     $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];

@@ -6,11 +6,13 @@ import getColorRGBAString from '@extensions/styles/getColorRGBAString';
 import getGroupAttributes from '@extensions/styles/getGroupAttributes';
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import getPaletteAttributes from '@extensions/styles/getPaletteAttributes';
+import getTransitionStyles from './getTransitionStyles';
+import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 
 /**
  * External dependencies
  */
-import { isNil, isEmpty, isNumber } from 'lodash';
+import { isNil, isEmpty, isNumber, merge } from 'lodash';
 import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
@@ -274,7 +276,20 @@ const getArrowStyles = props => {
 		}),
 	};
 
-	return response;
+	const arrowBackgroundTransition = getTransitionStyles(props, {
+		canvas: {
+			'background / layer': {
+				...transitionDefault.canvas['background / layer'],
+				target: [
+					`${target} .maxi-container-arrow:before`,
+					`${target} .maxi-container-arrow .maxi-container-arrow--content:after`,
+				],
+				property: 'background-color',
+			},
+		},
+	});
+
+	return merge(response, arrowBackgroundTransition || {});
 };
 
 export default getArrowStyles;

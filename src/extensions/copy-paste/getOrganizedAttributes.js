@@ -12,6 +12,17 @@ import { isArray, isEmpty, isPlainObject, isString, omit } from 'lodash';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const prefixPasteWith = (pasteWith, prefix = '') => {
+	const pasteWithArray = isArray(pasteWith) ? pasteWith : [pasteWith];
+	const prefixedPasteWith = pasteWithArray.map(attrName =>
+		prefix && isString(attrName) && !attrName.startsWith(prefix)
+			? `${prefix}${attrName}`
+			: attrName
+	);
+
+	return isArray(pasteWith) ? prefixedPasteWith : prefixedPasteWith[0];
+};
+
 const getTemplate = templateName => {
 	const getNestedTemplates = obj => {
 		let response = {};
@@ -40,14 +51,22 @@ const getTemplate = templateName => {
 const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 	const { prefix, hasBreakpoints, isPalette, isHover } = conditions;
 
-	const props = isString(rawProps) ? [rawProps] : rawProps;
+	const props = isArray(rawProps) ? rawProps : [rawProps];
 
-	props.forEach(prop => {
-		const key = `${prefix}${prop}`;
+	props.forEach(rawProp => {
+		const {
+			prop,
+			prefix: propPrefix = prefix,
+			hasBreakpoints: propHasBreakpoints = hasBreakpoints,
+			isPalette: propIsPalette = isPalette,
+			isHover: propIsHover = isHover,
+		} = isPlainObject(rawProp) ? rawProp : { prop: rawProp };
+
+		const key = `${propPrefix}${prop}`;
 
 		let currAttrKeys = [key];
 
-		if (isPalette) {
+		if (propIsPalette) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				Object.keys(
 					paletteAttributesCreator({ prefix: `${currAttrKey}-` })
@@ -55,18 +74,24 @@ const getAttrsFromConditions = (rawProps, attr, attributes, conditions) => {
 			);
 		}
 
-		if (hasBreakpoints) {
+		if (propHasBreakpoints) {
 			currAttrKeys = currAttrKeys.flatMap(currAttrKey =>
 				breakpoints.map(breakpoint => `${currAttrKey}-${breakpoint}`)
 			);
 		}
 
-		if (isHover)
+		if (propIsHover)
 			currAttrKeys = currAttrKeys.map(
 				currAttrKey => `${currAttrKey}-hover`
 			);
 
 		currAttrKeys.forEach(currAttrKey => {
+			// Keep legacy snapshot shape by omitting unset dynamic content keys.
+			const isUnsetDynamicContentAttr =
+				currAttrKey.startsWith('dc-') &&
+				typeof attributes[currAttrKey] === 'undefined';
+			if (isUnsetDynamicContentAttr) return;
+
 			attr[currAttrKey] = attributes[currAttrKey];
 		});
 	});
@@ -85,6 +110,8 @@ const getOrganizedAttributes = (
 		Object.entries(obj).forEach(([key, rawValue]) => {
 			if (isEmpty(rawValue) || key.startsWith('_')) return;
 			let attr = {};
+			let skipIfEmpty = false;
+			let gatekeeper = null;
 
 			if (isString(rawValue) || isArray(rawValue)) {
 				getAttrsFromConditions(rawValue, attr, attributes, conditions);
@@ -95,6 +122,8 @@ const getOrganizedAttributes = (
 							...getTemplate(rawValue.template),
 					  }
 					: rawValue;
+				skipIfEmpty = !!value._skipIfEmpty;
+				gatekeeper = value._gatekeeper || null;
 
 				const localCondition = {
 					prefix: value?.prefix || conditions?.prefix || '',
@@ -148,6 +177,13 @@ const getOrganizedAttributes = (
 							localCondition
 						);
 					}
+
+					if (!isClean && value.pasteWith) {
+						attr._pasteWith = prefixPasteWith(
+							value.pasteWith,
+							prefix
+						);
+					}
 				}
 			}
 
@@ -156,7 +192,10 @@ const getOrganizedAttributes = (
 					...newObj,
 					...attr,
 				};
-			} else {
+			} else if (
+				!skipIfEmpty ||
+				(!isEmpty(attr) && !(gatekeeper && !attr[gatekeeper]))
+			) {
 				newObj[key] = attr;
 			}
 		});

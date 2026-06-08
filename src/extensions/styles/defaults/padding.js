@@ -33,6 +33,14 @@ const rawPadding = {
 		type: 'string',
 		default: 'all',
 	},
+	'padding-sync-vertical': {
+		type: 'boolean',
+		default: true,
+	},
+	'padding-sync-horizontal': {
+		type: 'boolean',
+		default: true,
+	},
 };
 
 const padding = breakpointAttributesCreator({

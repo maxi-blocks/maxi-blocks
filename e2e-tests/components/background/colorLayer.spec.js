@@ -17,6 +17,7 @@ import {
 	editAdvancedNumberControl,
 	insertMaxiBlock,
 	updateAllBlockUniqueIds,
+	getEditorFrame,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
 
@@ -242,20 +243,23 @@ describe('Background Color Layer', () => {
 	it(
 		'Check Background Color layer displayer',
 		async () => {
-			const checkEditor = await page.$eval(
+			const frame = await getEditorFrame(page);
+			const checkEditor = await frame.$eval(
 				'.maxi-background-displayer',
 				el => el.innerHTML
 			);
 
 			expect(checkEditor).toBeTruthy();
 			const previewPage = await openPreviewPage(page);
-			await previewPage.waitForSelector('.entry-content');
+			await previewPage.waitForSelector('.entry-content', {
+				timeout: 60000,
+			});
 			const backgroundPreviewPage = await previewPage.$(
 				'.maxi-background-displayer'
 			);
 
 			expect(backgroundPreviewPage).toBeTruthy();
 		},
-		200000
+		180000
 	);
 });

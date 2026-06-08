@@ -18,6 +18,7 @@ import masonryGenerator from './masonryGenerator';
 import useInterval from '@extensions/dom/useInterval';
 import InfiniteHits from './InfiniteHits';
 import onRequestInsertPattern from './utils/onRequestInsertPattern';
+import isMenuSelectItemRefined from './utils/menuSelect';
 import { ContentLoader } from '@components';
 
 /**
@@ -137,6 +138,15 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 		count: 0,
 		isRefined: false,
 	};
+	const isAllRefined = isEmpty(currentRefinement);
+	const isFreeRefined = isMenuSelectItemRefined(
+		currentRefinement,
+		'Free'
+	);
+	const isProRefined = isMenuSelectItemRefined(
+		currentRefinement,
+		'Pro'
+	);
 
 	return (
 		<div className='top-Menu'>
@@ -145,9 +155,10 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 				value=''
 				className={classnames(
 					'maxi-cloud-container__content-svg-shape__button',
-					isEmpty(currentRefinement) &&
+					isAllRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
 				)}
+				aria-pressed={isAllRefined}
 				onClick={event => {
 					event.preventDefault();
 					refine('');
@@ -160,14 +171,14 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 				key='Free'
 				className={classnames(
 					'maxi-cloud-container__content-svg-shape__button',
-					freeElement?.isRefined &&
+					isFreeRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
 				)}
+				aria-pressed={isFreeRefined}
 				value='Free'
 				onClick={event => {
 					event.preventDefault();
 					refine('Free');
-					freeElement.isRefined = true;
 				}}
 			>
 				{__('Free', 'maxi-blocks')}
@@ -177,14 +188,14 @@ const MenuSelect = ({ items, currentRefinement, refine }) => {
 				key='Pro'
 				className={classnames(
 					'maxi-cloud-container__content-svg-shape__button',
-					proElement?.isRefined &&
+					isProRefined &&
 						' maxi-cloud-container__content-svg-shape__button___pressed'
 				)}
+				aria-pressed={isProRefined}
 				value='Pro'
 				onClick={event => {
 					event.preventDefault();
 					refine('Pro');
-					proElement.isRefined = true;
 				}}
 			>
 				{__('Cloud', 'maxi-blocks')}

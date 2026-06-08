@@ -8,6 +8,7 @@ module.exports = {
 	setupFiles: ['<rootDir>/jest/jest-unit.setup.js'],
 
 	moduleNameMapper: {
+		'^uuid$': '<rootDir>/jest/uuid-cjs-shim.js',
 		'^@blocks$': '<rootDir>/src/blocks',
 		'^@blocks/(.*)$': '<rootDir>/src/blocks/$1',
 		'^@components$': '<rootDir>/src/components',

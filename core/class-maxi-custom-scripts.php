@@ -33,14 +33,16 @@ if (!class_exists('MaxiBlocks_Custom_Scripts')):
             add_action('wp_footer', [$this, 'render_footer_scripts'], 999);
             add_action('admin_head', [$this, 'render_admin_scripts']);
 
-            add_filter('manage_post_posts_columns', [$this, 'add_custom_scripts_column']);
-            add_filter('manage_page_posts_columns', [$this, 'add_custom_scripts_column']);
-            add_action('manage_post_posts_custom_column', [$this, 'render_custom_scripts_column'], 10, 2);
-            add_action('manage_page_posts_custom_column', [$this, 'render_custom_scripts_column'], 10, 2);
+            if (get_option('maxi_enable_post_custom_scripts')) {
+                add_filter('manage_post_posts_columns', [$this, 'add_custom_scripts_column']);
+                add_filter('manage_page_posts_columns', [$this, 'add_custom_scripts_column']);
+                add_action('manage_post_posts_custom_column', [$this, 'render_custom_scripts_column'], 10, 2);
+                add_action('manage_page_posts_custom_column', [$this, 'render_custom_scripts_column'], 10, 2);
 
-            add_action('quick_edit_custom_box', [$this, 'quick_edit_fields'], 10, 2);
-            add_action('admin_footer-edit.php', [$this, 'quick_edit_script']);
-            add_action('save_post', [$this, 'save_quick_edit_fields']);
+                add_action('quick_edit_custom_box', [$this, 'quick_edit_fields'], 10, 2);
+                add_action('admin_footer-edit.php', [$this, 'quick_edit_script']);
+                add_action('save_post', [$this, 'save_quick_edit_fields']);
+            }
         }
 
         public static function sanitize_scripts_code($value)

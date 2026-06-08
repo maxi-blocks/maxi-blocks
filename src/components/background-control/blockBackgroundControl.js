@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { getAttributeValue } from '@extensions/styles';
+import { getAttributeValue, getGroupAttributes } from '@extensions/styles';
 import BackgroundLayersControl from './backgroundLayersControl';
 
 /**
@@ -35,6 +35,7 @@ const BlockBackgroundControl = props => {
 		disableSVG = false,
 		disableAddLayer = false,
 		transition,
+		transformAttributes,
 		getBounds,
 		getBlockClipPath, // for IB
 	} = props;
@@ -82,6 +83,9 @@ const BlockBackgroundControl = props => {
 				breakpoint={breakpoint}
 				hoverStatus={hoverStatus}
 				transition={transition}
+				transformAttributes={
+					transformAttributes ?? getGroupAttributes(props, 'transform')
+				}
 				getBounds={getBounds}
 				getBlockClipPath={getBlockClipPath}
 			/>

@@ -12,6 +12,94 @@ describe('getSCVariablesObject', () => {
 		expect(cleanVarSC).toMatchSnapshot();
 	});
 
+	it('Includes Number Counter style card variables', () => {
+		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
+
+		styleCard.light.defaultStyleCard['number-counter'] = {
+			'color-global': true,
+			'palette-status': true,
+			'palette-color': 4,
+			'palette-opacity': 1,
+			color: '',
+			'circle-background-color-global': true,
+			'circle-background-palette-status': true,
+			'circle-background-palette-color': 2,
+			'circle-background-palette-opacity': 0.7,
+			'circle-background-color': '',
+			'circle-bar-color-global': true,
+			'circle-bar-palette-status': true,
+			'circle-bar-palette-color': 6,
+			'circle-bar-palette-opacity': 0.6,
+			'circle-bar-color': '',
+			'font-family-general': 'Poppins',
+			'font-size-general': 44,
+			'font-size-unit-general': 'px',
+			'font-weight-general': 700,
+		};
+		styleCard.dark.defaultStyleCard['number-counter'] = {
+			'color-global': true,
+			'palette-status': true,
+			'palette-color': 5,
+			'palette-opacity': 1,
+			color: '',
+			'circle-background-color-global': true,
+			'circle-background-palette-status': true,
+			'circle-background-palette-color': 1,
+			'circle-background-palette-opacity': 0.75,
+			'circle-background-color': '',
+			'circle-bar-color-global': true,
+			'circle-bar-palette-status': true,
+			'circle-bar-palette-color': 4,
+			'circle-bar-palette-opacity': 0.65,
+			'circle-bar-color': '',
+			'font-family-general': 'Inter',
+			'font-size-general': 42,
+			'font-size-unit-general': 'px',
+			'font-weight-general': 600,
+		};
+
+		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
+
+		expect(cleanVarSC).toEqual(
+			expect.objectContaining({
+				'--maxi-light-number-counter-color':
+					'rgba(var(--maxi-light-color-4),1)',
+				'--maxi-light-number-counter-circle-background':
+					'rgba(var(--maxi-light-color-2),0.7)',
+				'--maxi-light-number-counter-circle-bar':
+					'rgba(var(--maxi-light-color-6),0.6)',
+				'--maxi-light-number-counter-font-family-general':
+					'"Poppins"',
+				'--maxi-light-number-counter-font-size-general': '44px',
+				'--maxi-light-number-counter-font-weight-general': 700,
+				'--maxi-dark-number-counter-color':
+					'rgba(var(--maxi-dark-color-5),1)',
+				'--maxi-dark-number-counter-circle-background':
+					'rgba(var(--maxi-dark-color-1),0.75)',
+				'--maxi-dark-number-counter-circle-bar':
+					'rgba(var(--maxi-dark-color-4),0.65)',
+				'--maxi-dark-number-counter-font-family-general': '"Inter"',
+				'--maxi-dark-number-counter-font-size-general': '42px',
+				'--maxi-dark-number-counter-font-weight-general': 600,
+			})
+		);
+	});
+
+	it('Skips number-counter variables when element is missing from style card', () => {
+		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
+
+		delete styleCard.light.defaultStyleCard['number-counter'];
+		delete styleCard.dark.defaultStyleCard['number-counter'];
+
+		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
+
+		expect(
+			Object.keys(cleanVarSC).some(key =>
+				key.includes('number-counter')
+			)
+		).toBe(false);
+	});
+
 	it('Returns the correct object', () => {
 		const styleCard = {
 			name: 'Maxi (Default) - test',

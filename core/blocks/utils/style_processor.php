@@ -469,6 +469,300 @@ function deepMergeArrays($arr1, $arr2)
     return $arr1;
 }
 
+function is_gradient_background_value($value)
+{
+    return is_string($value) && preg_match('/(?:repeating-)?(?:linear|radial|conic)-gradient\(/i', $value);
+}
+
+function is_pseudo_gradient_target($target)
+{
+    return strpos($target, ':before') !== false ||
+        strpos($target, ':after') !== false ||
+        strpos($target, '::before') !== false ||
+        strpos($target, '::after') !== false;
+}
+
+function get_gradient_base_target($target)
+{
+    return str_replace(':hover', '', $target);
+}
+
+function get_gradient_overlay_target($target)
+{
+    return $target . ':before';
+}
+
+function get_gradient_background_layer_transition_targets($target)
+{
+    $base_target = get_gradient_base_target($target);
+    $background_layer_target = preg_replace(
+        '/ > \.maxi-background-displayer \.maxi-background-displayer__\d+$/',
+        ' > .maxi-background-displayer > div',
+        $base_target
+    );
+
+    if ($background_layer_target === $base_target) {
+        return [];
+    }
+
+    if (strpos($target, ':hover') !== false) {
+        return [
+            ':hover' . $background_layer_target,
+            $background_layer_target . ':hover',
+            $background_layer_target
+        ];
+    }
+
+    return [$background_layer_target];
+}
+
+function get_breakpoint_backgrounds($target_styles)
+{
+    $response = [];
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    $background_props = ['background', 'background-color'];
+
+    if (empty($target_styles) || !is_array($target_styles)) {
+        return $response;
+    }
+
+    foreach ($target_styles as $style_group) {
+        if (empty($style_group) || !is_array($style_group)) {
+            continue;
+        }
+
+        foreach ($breakpoints as $breakpoint) {
+            if (empty($style_group[$breakpoint]) || !is_array($style_group[$breakpoint])) {
+                continue;
+            }
+
+            foreach ($background_props as $prop) {
+                if (isset($response[$breakpoint]) || !isset($style_group[$breakpoint][$prop])) {
+                    continue;
+                }
+
+                $response[$breakpoint] = [
+                    'prop' => $prop,
+                    'value' => $style_group[$breakpoint][$prop],
+                ];
+            }
+        }
+    }
+
+    return $response;
+}
+
+function get_effective_breakpoint_property($target_styles, $breakpoint, $prop)
+{
+    if (empty($target_styles) || !is_array($target_styles)) {
+        return null;
+    }
+
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+    $breakpoint_index = array_search($breakpoint, $breakpoints);
+
+    if ($breakpoint_index === false) {
+        return null;
+    }
+
+    $breakpoints_to_check = array_reverse(array_slice($breakpoints, 0, $breakpoint_index + 1));
+
+    foreach ($breakpoints_to_check as $current_breakpoint) {
+        foreach ($target_styles as $style_group) {
+            if (isset($style_group[$current_breakpoint][$prop])) {
+                return $style_group[$current_breakpoint][$prop];
+            }
+        }
+    }
+
+    return null;
+}
+
+function remove_breakpoint_background(&$target_styles, $breakpoint)
+{
+    $background_props = ['background', 'background-color'];
+
+    if (empty($target_styles) || !is_array($target_styles)) {
+        return;
+    }
+
+    foreach ($target_styles as &$style_group) {
+        if (empty($style_group[$breakpoint]) || !is_array($style_group[$breakpoint])) {
+            continue;
+        }
+
+        foreach ($background_props as $prop) {
+            unset($style_group[$breakpoint][$prop]);
+        }
+    }
+
+    unset($style_group);
+}
+
+function replace_transition_property_with_opacity($transition)
+{
+    if (!is_string($transition)) {
+        return null;
+    }
+
+    $parts = array_map('trim', explode(',', $transition));
+
+    $parts = array_map(function ($part) {
+        return preg_replace('/^\S+/', 'opacity', $part);
+    }, $parts);
+
+    return implode(', ', $parts);
+}
+
+function get_gradient_transition($styles, $target, $breakpoint)
+{
+    $targets = array_merge([$target], get_gradient_background_layer_transition_targets($target));
+
+    foreach ($targets as $current_target) {
+        $transition = replace_transition_property_with_opacity(
+            $styles[$current_target]['transition'][$breakpoint]['transition'] ?? null
+        );
+
+        if ($transition) {
+            return $transition;
+        }
+    }
+
+    return null;
+}
+
+function ensure_breakpoint_object(&$styles, $target, $group, $breakpoint)
+{
+    if (!isset($styles[$target]) || !is_array($styles[$target])) {
+        $styles[$target] = [];
+    }
+
+    if (!isset($styles[$target][$group]) || !is_array($styles[$target][$group])) {
+        $styles[$target][$group] = [];
+    }
+
+    if (!isset($styles[$target][$group][$breakpoint]) || !is_array($styles[$target][$group][$breakpoint])) {
+        $styles[$target][$group][$breakpoint] = [];
+    }
+
+    return $styles[$target][$group][$breakpoint];
+}
+
+function ensure_gradient_host_styles(&$styles, $target, $breakpoint)
+{
+    if (strpos($target, '.maxi-background-displayer') !== false) {
+        return;
+    }
+
+    $position = get_effective_breakpoint_property($styles[$target] ?? [], $breakpoint, 'position');
+    if (!is_null($position) && $position !== 'static') {
+        return;
+    }
+
+    ensure_breakpoint_object($styles, $target, 'gradientTransitionHost', $breakpoint);
+    $styles[$target]['gradientTransitionHost'][$breakpoint]['position'] = 'relative';
+}
+
+function add_gradient_overlay_styles(&$styles, $base_target, $hover_target, $breakpoint, $background)
+{
+    $base_overlay_target = get_gradient_overlay_target($base_target);
+    $hover_overlay_target = get_gradient_overlay_target($hover_target);
+    $base_transition = get_gradient_transition($styles, $base_target, $breakpoint);
+    $hover_transition = get_gradient_transition($styles, $hover_target, $breakpoint) ?: $base_transition;
+
+    ensure_gradient_host_styles($styles, $base_target, $breakpoint);
+
+    ensure_breakpoint_object($styles, $base_overlay_target, 'gradientTransitionOverlay', $breakpoint);
+    $styles[$base_overlay_target]['gradientTransitionOverlay'][$breakpoint] = array_merge(
+        $styles[$base_overlay_target]['gradientTransitionOverlay'][$breakpoint],
+        [
+            'content' => '""',
+            'position' => 'absolute',
+            'top' => '0',
+            'right' => '0',
+            'bottom' => '0',
+            'left' => '0',
+            'border-radius' => 'inherit',
+            'pointer-events' => 'none',
+            'background' => $background,
+            'opacity' => 0,
+        ]
+    );
+
+    if ($base_transition) {
+        $styles[$base_overlay_target]['gradientTransitionOverlay'][$breakpoint]['transition'] = $base_transition;
+    }
+
+    ensure_breakpoint_object($styles, $hover_overlay_target, 'gradientTransitionOverlay', $breakpoint);
+    $styles[$hover_overlay_target]['gradientTransitionOverlay'][$breakpoint]['opacity'] = 1;
+
+    if ($hover_transition) {
+        $styles[$hover_overlay_target]['gradientTransitionOverlay'][$breakpoint]['transition'] = $hover_transition;
+    }
+}
+
+function is_gradient_style_target_map($styles)
+{
+    if (empty($styles) || !is_array($styles)) {
+        return false;
+    }
+
+    foreach (array_keys($styles) as $target) {
+        if (is_string($target) && strpos($target, ':hover') !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function apply_gradient_background_transitions($styles)
+{
+    if (empty($styles) || !is_array($styles)) {
+        return $styles;
+    }
+
+    foreach (array_keys($styles) as $hover_target) {
+        if (
+            strpos($hover_target, ':hover') === false ||
+            is_pseudo_gradient_target($hover_target)
+        ) {
+            continue;
+        }
+
+        $hover_backgrounds = get_breakpoint_backgrounds($styles[$hover_target]);
+        if (empty($hover_backgrounds)) {
+            continue;
+        }
+
+        $base_target = get_gradient_base_target($hover_target);
+        $base_backgrounds = get_breakpoint_backgrounds($styles[$base_target] ?? []);
+
+        foreach ($hover_backgrounds as $breakpoint => $hover_background) {
+            $base_background = $base_backgrounds[$breakpoint] ?? null;
+
+            if (
+                !is_gradient_background_value($hover_background['value']) &&
+                !is_gradient_background_value($base_background['value'] ?? null)
+            ) {
+                continue;
+            }
+
+            add_gradient_overlay_styles(
+                $styles,
+                $base_target,
+                $hover_target,
+                $breakpoint,
+                $hover_background['value']
+            );
+
+            remove_breakpoint_background($styles[$hover_target], $breakpoint);
+        }
+    }
+
+    return $styles;
+}
+
 function style_processor($obj, $data, $props)
 {
 
@@ -546,6 +840,17 @@ function style_processor($obj, $data, $props)
     }
 
 
+    if (is_gradient_style_target_map($styles)) {
+        $styles = apply_gradient_background_transitions($styles);
+    } else {
+        foreach ($styles as $key => &$value) {
+            if (is_array($value)) {
+                $value = apply_gradient_background_transitions($value);
+            }
+        }
+
+        unset($value);
+    }
 
     return style_cleaner($styles);
 }

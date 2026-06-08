@@ -14,6 +14,38 @@ import {
 	updateAllBlockUniqueIds,
 } from '../utils';
 
+const scVarsSelector = '#maxi-blocks-sc-vars-inline-css';
+
+const waitForExpandedSCVars = async currentPage => {
+	await currentPage.waitForSelector(scVarsSelector);
+
+	await currentPage.waitForFunction(
+		selector => {
+			const el = document.querySelector(selector);
+			if (!el || !el.innerText) return false;
+
+			const content = el.innerText.trim();
+			const requiredVariables = [
+				'--maxi-light-button-font-family-general:',
+				'--maxi-light-button-font-family-xs:',
+				'--maxi-light-button-padding-right-xs:',
+				'--maxi-dark-navigation-padding-right-xs:',
+				'--maxi-active-sc-color:',
+			];
+
+			return (
+				content.startsWith(':root{') &&
+				content.endsWith('}') &&
+				requiredVariables.every(variable =>
+					content.includes(variable)
+				)
+			);
+		},
+		{ timeout: 15000 },
+		scVarsSelector
+	);
+};
+
 describe('sc-variable', () => {
 	it('Check sc-vars', async () => {
 		await createNewPost();
@@ -28,75 +60,22 @@ describe('sc-variable', () => {
 
 		await page.waitForTimeout(5000);
 
-		// Wait for the SC vars element and ensure content is fully generated
-		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
-
-		// Wait for content to be complete by checking for all breakpoints
-		await page.waitForFunction(
-			() => {
-				const el = document.getElementById(
-					'maxi-blocks-sc-vars-inline-css'
-				);
-				if (!el || !el.innerText) return false;
-				const content = el.innerText;
-				// Check that all breakpoints are present and content is substantial
-				const hasAllBreakpoints = [
-					'general',
-					'xxl',
-					'xl',
-					'l',
-					'm',
-					's',
-					'xs',
-				].every(bp => content.includes(`-${bp}:`));
-				// Also verify minimum content length to ensure it's fully generated
-				const hasMinimumContent = content.length > 10000;
-				return hasAllBreakpoints && hasMinimumContent;
-			},
-			{ timeout: 15000 }
-		);
+		await waitForExpandedSCVars(page);
 
 		const scVariable = await page.$eval(
-			'#maxi-blocks-sc-vars-inline-css',
-			content => content.innerText
+			scVarsSelector,
+			content => content.innerText.trim()
 		);
 
 		expect(scVariable).toMatchSnapshot();
 
 		const previewPage = await openPreviewPage(page);
 		await previewPage.waitForSelector('.entry-content');
+		await waitForExpandedSCVars(previewPage);
 
-		// Wait for the SC vars element and ensure content is fully generated on preview page
-		await page.waitForSelector('#maxi-blocks-sc-vars-inline-css');
-
-		// Wait for content to be complete by checking for all breakpoints
-		await page.waitForFunction(
-			() => {
-				const el = document.getElementById(
-					'maxi-blocks-sc-vars-inline-css'
-				);
-				if (!el || !el.innerText) return false;
-				const content = el.innerText;
-				// Check that all breakpoints are present and content is substantial
-				const hasAllBreakpoints = [
-					'general',
-					'xxl',
-					'xl',
-					'l',
-					'm',
-					's',
-					'xs',
-				].every(bp => content.includes(`-${bp}:`));
-				// Also verify minimum content length to ensure it's fully generated
-				const hasMinimumContent = content.length > 10000;
-				return hasAllBreakpoints && hasMinimumContent;
-			},
-			{ timeout: 15000 }
-		);
-
-		const scVariableFront = await page.$eval(
-			'#maxi-blocks-sc-vars-inline-css',
-			content => content.innerText
+		const scVariableFront = await previewPage.$eval(
+			scVarsSelector,
+			content => content.innerText.trim()
 		);
 
 		expect(scVariableFront).toMatchSnapshot();

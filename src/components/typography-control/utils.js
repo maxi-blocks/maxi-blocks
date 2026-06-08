@@ -3,7 +3,7 @@
  */
 import { select } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { isNil } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 export const getWeightLabel = weight => {
 	const weightOptions = {
@@ -91,3 +91,19 @@ export const getClosestAvailableFontWeight = (font, targetWeight) =>
 			Math.abs(Number(targetWeight) - Number(prevValue)) -
 			Math.abs(Number(targetWeight) - Number(currValue))
 	)[0].value;
+
+export const shouldUseBlockTypographyFallback = ({
+	useBlockLevelFallback,
+	isRichTextActive = true,
+	formatValue,
+	onChangeTextFormat,
+}) =>
+	useBlockLevelFallback &&
+	(!isRichTextActive ||
+		!onChangeTextFormat ||
+		isEmpty(formatValue) ||
+		isNil(formatValue.start) ||
+		isNil(formatValue.end));
+
+export const getToggledFontStyle = fontStyle =>
+	fontStyle === 'italic' ? 'normal' : 'italic';

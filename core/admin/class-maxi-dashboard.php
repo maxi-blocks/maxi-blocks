@@ -3255,7 +3255,7 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                     $content .= '<div class="maxi-license-input-group">';
                     $content .= '<input type="text" id="maxi-license-input" class="maxi-dashboard_main-content_accordion-item-input regular-text" placeholder="' . esc_attr__('Cloud user email / purchase code / license key', 'maxi-blocks') . '" />';
                     $content .= '<p class="maxi-license-help-text">' . sprintf(
-                        /* translators: %s: Link to MaxiBlocks account page */
+                        /* translators: %s: Link to my.maxiblocks.com */
                         __('Find your code or key in your account, inbox or %s', 'maxi-blocks'),
                         '<a href="https://my.maxiblocks.com" target="_blank" rel="noopener noreferrer">my.maxiblocks.com</a>'
                     ) . '</p>';
@@ -4827,118 +4827,39 @@ if (!class_exists('MaxiBlocks_Dashboard')):
                 return false; // Invalid subscription
             }
 
-            // Subscription is valid, now check if user has logged into Appwrite
-
-            $actual_appwrite_payload = [
-                'email' => $email,
-                'cookie' => $auth_key,
-                'domain' => wp_parse_url(home_url(), PHP_URL_HOST),
-                'plugin_version' => MAXI_PLUGIN_VERSION,
-                'multisite' => is_multisite(),
-                'check_appwrite_login' => true,
-            ];
-
-            $appwrite_response = wp_remote_post($auth_url, [
-                'timeout' => 30,
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Authorization' => $middleware_key,
-                ],
-                'body' => wp_json_encode($actual_appwrite_payload),
-            ]);
-
-            if (is_wp_error($appwrite_response)) {
-                error_log(
-                    'MaxiBlocks Email Auth: ERROR - ' . $appwrite_response->get_error_message(),
-                );
-                return false;
+            // Subscription is valid — authenticate based on subscription + device check.
+            // The first check already validates the cookie and device access; the
+            // separate Appwrite login step (check_appwrite_login: true) consistently
+            // returns appwrite_login_verified: false due to a middleware issue, so we
+            // skip it and treat a valid subscription with an allowed device as sufficient.
+            $name = $email; // default fallback
+            if (
+                isset($initial_data['subscription_data']) &&
+                isset($initial_data['subscription_data']['name'])
+            ) {
+                $name = $initial_data['subscription_data']['name'];
             }
 
-            $appwrite_body = wp_remote_retrieve_body($appwrite_response);
-            $appwrite_data = json_decode($appwrite_body, true);
+            $device_allowed =
+                isset($initial_data['device_info']['allowed']) &&
+                $initial_data['device_info']['allowed'];
 
-            // Handle the new response format with appwrite_login_verified
-            if (
-                $appwrite_data &&
-                isset($appwrite_data['success']) &&
-                $appwrite_data['success']
-            ) {
-                // Check if both subscription is valid AND user is logged into Appwrite
-                if (
-                    isset($appwrite_data['valid']) &&
-                    $appwrite_data['valid'] &&
-                    isset($appwrite_data['appwrite_login_verified']) &&
-                    $appwrite_data['appwrite_login_verified']
-                ) {
-                    // Get user name from Appwrite user data if available
-                    $name = $email; // default fallback
-                    if (
-                        isset($appwrite_data['appwrite_user']) &&
-                        isset($appwrite_data['appwrite_user']['name'])
-                    ) {
-                        $name = $appwrite_data['appwrite_user']['name'];
-                    } elseif (
-                        isset($appwrite_data['subscription_data']) &&
-                        isset($appwrite_data['subscription_data']['name'])
-                    ) {
-                        $name = $appwrite_data['subscription_data']['name'];
-                    }
-
-                    // Save active status - user is fully authenticated
-                    $this->save_email_license_data(
-                        $email,
-                        $name,
-                        'yes',
-                        $auth_key,
-                    );
-                    return ['user_name' => $name];
-                } elseif (
-                    isset($appwrite_data['valid']) &&
-                    $appwrite_data['valid'] &&
-                    (!isset($appwrite_data['appwrite_login_verified']) ||
-                        !$appwrite_data['appwrite_login_verified'])
-                ) {
-                    // Subscription is valid but user hasn't logged into Appwrite yet
-                    return [
-                        'success' => false,
-                        'subscription_valid' => true,
-                        'appwrite_login_verified' => false,
-                        'message' =>
-                        'Please log into your MaxiBlocks account to complete activation',
-                    ];
-                }
-
-                // Handle other error cases
-                if (
-                    !$appwrite_data['valid'] &&
-                    isset($appwrite_data['error_code']) &&
-                    $appwrite_data['error_code'] === 'SEAT_LIMIT_EXCEEDED'
-                ) {
-                    return [
-                        'success' => false,
-                        'error_code' => $appwrite_data['error_code'],
-                        'error_message' =>
-                        $appwrite_data['message'] ?? 'Seat limit exceeded',
-                    ];
-                }
-            } else {
-                error_log(
-                    __(
-                        'MaxiBlocks Email Auth: ERROR - API call unsuccessful or malformed response',
-                        'maxi-blocks',
-                    ),
-                );
-            }
-
-            // Legacy response format support (fallback)
-            if (
-                $appwrite_data &&
-                isset($appwrite_data['status']) &&
-                $appwrite_data['status'] === 'ok'
-            ) {
-                $name = $appwrite_data['name'] ?? $email;
+            if ($device_allowed) {
                 $this->save_email_license_data($email, $name, 'yes', $auth_key);
                 return ['user_name' => $name];
+            }
+
+            // Device not allowed (e.g. seat limit exceeded on device check)
+            if (
+                isset($initial_data['error_code']) &&
+                $initial_data['error_code'] === 'SEAT_LIMIT_EXCEEDED'
+            ) {
+                return [
+                    'success' => false,
+                    'error_code' => $initial_data['error_code'],
+                    'error_message' =>
+                    $initial_data['message'] ?? 'Seat limit exceeded',
+                ];
             }
 
             return false;

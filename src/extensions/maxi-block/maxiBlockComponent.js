@@ -40,6 +40,7 @@ import {
 	getTemplatePartChooseList,
 	getTemplateViewIframe,
 	getSiteEditorPreviewIframes,
+	ensureOsmReferrerMetaInAllEditorCanvasIframes,
 } from '@extensions/fse';
 import {
 	getClientIdFromUniqueId,
@@ -55,6 +56,11 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import {
+	countProfile,
+	getProfileStart,
+	recordProfile,
+} from '@extensions/performance/profiler';
 
 /**
  * External dependencies
@@ -67,62 +73,72 @@ import { isLinkObfuscationEnabled } from '@extensions/DC/utils';
  * Constants
  */
 const WHITE_SPACE_REGEX = /white-space:\s*nowrap(?!\s*!important)/g;
+const VIEWPORT_UNIT_VALUE_REGEX =
+	/(^|[^a-zA-Z])(?:[-+]?\d*\.?\d+)?(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
-const getPerfStart = () => {
-	if (
-		typeof window === 'undefined' ||
-		!window.__MAXI_PROFILE_MAXI_BLOCKS__ ||
-		typeof performance === 'undefined' ||
-		!performance.now
-	) {
-		return null;
-	}
+/**
+ * Fix 1: Singleton style sheet for block-move animation killer.
+ * One <style> element shared across all blocks instead of one per block.
+ */
+let blockMoveStyleSheet = null;
 
-	return performance.now();
-};
+/**
+ * Fix 2: Singleton MutationObserver for the FSE iframe.
+ * One observer shared across all blocks instead of one per block.
+ */
+let fseSingletonObserver = null;
+let fseSingletonObserverTimeout = null;
 
-const recordPerf = (label, start) => {
-	if (start === null || typeof performance === 'undefined') {
-		return;
-	}
+function ensureBlockMoveStyleSheet() {
+	if (blockMoveStyleSheet) return;
+	const el = document.createElement('style');
+	el.id = 'maxi-block-move-blocker';
+	// Single generic rule covers every Maxi block — no per-block tracking needed.
+	el.textContent =
+		'[data-type^="maxi-blocks/"][style*="translate3d"] { transform: none !important; }';
+	document.head.appendChild(el);
+	blockMoveStyleSheet = el;
+}
 
-	const duration = performance.now() - start;
-	const perfRoot = typeof window !== 'undefined' ? window : globalThis;
-	const perf =
-		perfRoot.__maxiBlocksPerfCounters__ ||
-		(perfRoot.__maxiBlocksPerfCounters__ = {
-			totals: {},
-			counts: {},
-			logScheduled: false,
+/**
+ * Fix 3: Batch displayStyles() calls that happen during bulk mount.
+ * All componentDidMount calls within the same React render batch are
+ * collected and processed together in the next animation frame, so the
+ * browser gets a chance to paint before the style-generation work begins.
+ */
+let pendingStyleDisplays = [];
+let styleDisplayScheduled = false;
+
+function flushStyleDisplays() {
+	if (pendingStyleDisplays.length === 0) return;
+	styleDisplayScheduled = false;
+
+	const batch = pendingStyleDisplays.splice(0);
+
+	batch.forEach(({ block: b, isBreakpointChange: isBP }) => {
+		try {
+			b.displayStyles(isBP);
+		} catch (error) {
+			console.warn('MaxiBlocks: Display styles error:', error);
+		}
+	});
+}
+
+/**
+ * Flush any pending deferred style displays synchronously.
+ * Call this before saving to ensure all block styles are in the store.
+ */
+export const flushPendingStyleDisplays = flushStyleDisplays;
+
+function scheduleDisplayStyles(block, isBreakpointChange) {
+	pendingStyleDisplays.push({ block, isBreakpointChange });
+	if (!styleDisplayScheduled) {
+		styleDisplayScheduled = true;
+		requestAnimationFrame(() => {
+			flushStyleDisplays();
 		});
-
-	perf.totals[label] = (perf.totals[label] || 0) + duration;
-	perf.counts[label] = (perf.counts[label] || 0) + 1;
-
-	if (!perf.logScheduled && typeof setTimeout === 'function') {
-		perf.logScheduled = true;
-		setTimeout(() => {
-			perf.logScheduled = false;
-			if (typeof console === 'undefined' || !console.info) {
-				perf.totals = {};
-				perf.counts = {};
-				return;
-			}
-
-			const totals = perf.totals;
-			const counts = perf.counts;
-			perf.totals = {};
-			perf.counts = {};
-
-			const parts = Object.keys(totals).map(
-				key => `${key} ${totals[key].toFixed(1)}ms/${counts[key]}`
-			);
-			if (parts.length) {
-				console.info('MaxiBlocks perf (1s):', parts.join(', '));
-			}
-		}, 1000);
 	}
-};
+}
 
 /**
  * Class
@@ -248,8 +264,17 @@ class MaxiBlockComponent extends Component {
 		this.setMaxiAttributes();
 		this.setRelations();
 
+		// Capture customLabel at mount so unmount always removes from the
+		// correct bucket, even if the attribute changes before unmount.
+		this.registeredCustomLabel = this.props.attributes.customLabel ?? null;
+
 		// Add block to store (batched for performance)
-		batchBlockDispatcher.addBlock(newUniqueID, clientId, this.rootSlot);
+		batchBlockDispatcher.addBlock(
+			newUniqueID,
+			clientId,
+			this.rootSlot,
+			this.registeredCustomLabel
+		);
 
 		// In case the blockRoot has been saved on the store, we get it back. It will avoid 2 situations:
 		// 1. Adding again the root and having a React error
@@ -472,13 +497,9 @@ class MaxiBlockComponent extends Component {
 		// Step 6: Font loading
 		this.loadFonts();
 
-		// Step 7: Display styles
-		try {
-			// Call directly without debouncing to avoid memory accumulation
-			this?.displayStyles(!!this?.rootSlot);
-		} catch (error) {
-			console.warn('MaxiBlocks: Display styles error:', error);
-		}
+		// Step 7: Display styles — deferred via rAF to batch bulk-mount scenarios
+		// (editor open, template insert, code-editor switch) into one frame.
+		scheduleDisplayStyles(this, !!this?.rootSlot);
 
 		// Step 8: Force update if needed
 		if (!this.getBreakpoints.xxl) {
@@ -677,13 +698,13 @@ class MaxiBlockComponent extends Component {
 		if (
 			hasNonRelationChanges ||
 			this.props.baseBreakpoint !== prevProps.baseBreakpoint ||
-			this.props.attributes.blockStyle !==
-				prevProps.attributes.blockStyle
+			this.props.attributes.blockStyle !== prevProps.attributes.blockStyle
 		) {
 			this.isXxlStyleCacheDirty = true;
 		}
 
-		const attributesUnchanged = isEmpty(diffAttributes) && !contextLoopChanged;
+		const attributesUnchanged =
+			isEmpty(diffAttributes) && !contextLoopChanged;
 
 		if (!shouldDisplayStyles && !onlyRelationsChanged) {
 			// Call directly without debouncing to avoid memory accumulation
@@ -764,6 +785,7 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
+
 	}
 
 	componentWillUnmount() {
@@ -812,22 +834,38 @@ class MaxiBlockComponent extends Component {
 			this.previewObservers = null;
 		}
 
-		// Disconnect FSE observer if present
-		if (this.fseIframeObserver) {
-			this.fseIframeObserver.disconnect();
-			this.fseIframeObserver = null;
-		}
+		// FSE observer is now a module-level singleton — not disconnected per block.
 
-		// Remove block move animation killer style
-		if (this.blockMoveStyleBlocker) {
-			this.blockMoveStyleBlocker.remove();
-			this.blockMoveStyleBlocker = null;
-		}
+		// Block move animation killer is now a module-level singleton — not removed per block.
 
 		// Remove temporary popover-hiding styles if still injected
 		if (this.popoverStyles) {
 			this.popoverStyles.remove();
 			this.popoverStyles = null;
+		}
+
+		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
+			this.props.clientId
+		);
+
+		// Check both the parent document AND the iframe document for cloned elements.
+		// Blocks render inside iframe[name="editor-canvas"], so bare `document`
+		// (parent frame) won't find them.
+		let keepStylesOnCloning =
+			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
+		if (!keepStylesOnCloning) {
+			try {
+				if (this.editorIframe?.contentDocument) {
+					keepStylesOnCloning =
+						Array.from(
+							this.editorIframe.contentDocument.getElementsByClassName(
+								uniqueID
+							)
+						).length > 1;
+				}
+			} catch (e) {
+				// Cross-origin or disconnected iframe — ignore
+			}
 		}
 
 		// Clear DOM references
@@ -845,18 +883,44 @@ class MaxiBlockComponent extends Component {
 			this.areFontsLoaded.current = false;
 		}
 
-		const keepStylesOnEditor = !!select('core/block-editor').getBlock(
-			this.props.clientId
-		);
-		const keepStylesOnCloning =
-			Array.from(document.getElementsByClassName(uniqueID)).length > 1;
-		const isBlockBeingRemoved = !keepStylesOnEditor && !keepStylesOnCloning;
+		// Fallback: verify the block is truly gone by checking if its clientId
+		// is still listed among descendants. This guards against transient
+		// block-tree inconsistencies in WP 6.9.x where getBlock() can briefly
+		// return null during reconciliation after a sibling removal.
+		let keepStylesOnStorePresence = false;
+		if (!keepStylesOnEditor && !keepStylesOnCloning) {
+			try {
+				const allClientIds =
+					select(
+						'core/block-editor'
+					).getClientIdsWithDescendants();
+				keepStylesOnStorePresence = allClientIds.includes(
+					this.props.clientId
+				);
+			} catch (e) {
+				// Selector unavailable — skip
+			}
+		}
+
+		const isBlockBeingRemoved =
+			!keepStylesOnEditor &&
+			!keepStylesOnCloning &&
+			!keepStylesOnStorePresence;
 
 		if (isBlockBeingRemoved) {
 			const { clientId } = this.props;
 
 			// Use a single rAF for all style operations
 			const batchStyleOperations = () => {
+				// Double-check: the block might have been re-added (reconciliation)
+				// between unmount and this rAF callback firing
+				const stillGone = !select('core/block-editor').getBlock(
+					clientId
+				);
+				if (!stillGone) {
+					return;
+				}
+
 				const obj = this.getStylesObject;
 
 				// Batch all style removals into a single operation
@@ -873,7 +937,8 @@ class MaxiBlockComponent extends Component {
 					const batchedDispatch = () => {
 						dispatch('maxiBlocks/blocks').removeBlock(
 							uniqueID,
-							clientId
+							clientId,
+							this.registeredCustomLabel ?? null
 						);
 						dispatch('maxiBlocks/customData').removeCustomData(
 							uniqueID
@@ -999,11 +1064,11 @@ class MaxiBlockComponent extends Component {
 	}
 
 	handleIframeStyles(iframe, currentBreakpoint) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const iframeDocument = iframe?.contentDocument;
 		const editorWrapper = iframeDocument?.body;
 		if (!iframeDocument || !editorWrapper) {
-			recordPerf('handleIframeStyles', perfStart);
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -1018,7 +1083,7 @@ class MaxiBlockComponent extends Component {
 			cache.doc === iframeDocument &&
 			cache.breakpoint === currentBreakpoint
 		) {
-			recordPerf('handleIframeStyles', perfStart);
+			recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 			return;
 		}
 
@@ -1042,7 +1107,7 @@ class MaxiBlockComponent extends Component {
 
 		cache.doc = iframeDocument;
 		cache.breakpoint = currentBreakpoint;
-		recordPerf('handleIframeStyles', perfStart);
+		recordProfile('maxiBlockComponent handleIframeStyles', perfStart);
 	}
 
 	setMaxiAttributes() {
@@ -1117,7 +1182,78 @@ class MaxiBlockComponent extends Component {
 		this.cachedDiffAttributes = undefined;
 		this.cachedBreakpointsAttributes = null;
 		this.cachedBreakpoints = null;
+		this.cachedStylesObjectAttributes = null;
+		this.cachedStylesObjectValue = null;
 		this.attributesMutated = true;
+	}
+
+	/**
+	 * Safely update block attributes with automatic cache invalidation
+	 * Use this instead of direct mutation: this.props.attributes.X = Y
+	 *
+	 * @param {Object} updates - Object with attribute updates { key: value }
+	 * @param {boolean} invalidateCache - Whether to invalidate caches (default: true)
+	 */
+	updateAttributes(updates, invalidateCache = true) {
+		// Increment cache generation to invalidate WeakMap caches
+		this.props.attributes.__cacheGeneration =
+			(this.props.attributes.__cacheGeneration || 0) + 1;
+
+		// Apply updates to current attributes object
+		Object.assign(this.props.attributes, updates);
+
+		// Mark XXL cache as dirty
+		this.isXxlStyleCacheDirty = true;
+
+		// Invalidate all attribute-based caches
+		if (invalidateCache) {
+			this.invalidateAttributeCaches();
+		}
+	}
+
+	/**
+	 * Memoised wrapper around the per-block getStylesObject getter.
+	 * The styles object only depends on block attributes, so we cache it
+	 * by attributes reference equality. This avoids re-running the (expensive)
+	 * style-object computation when only the breakpoint changed but attributes
+	 * are unchanged – which is exactly the case on every XXL switch.
+	 *
+	 * Invalidated via invalidateAttributeCaches() whenever attributes mutate.
+	 */
+	get getCachedStylesObject() {
+		if (
+			this.cachedStylesObjectAttributes !== null &&
+			this.cachedStylesObjectAttributes === this.props.attributes
+		) {
+			return this.cachedStylesObjectValue;
+		}
+		this.cachedStylesObjectAttributes = this.props.attributes;
+		this.cachedStylesObjectValue = this.getStylesObject;
+		return this.cachedStylesObjectValue;
+	}
+
+	getCachedStyleContent(uniqueID, breakpoint) {
+		const cacheStart = getProfileStart();
+		const cssCache = select('maxiBlocks/styles').getCSSCache(uniqueID);
+		const styleContent = cssCache?.[breakpoint];
+		recordProfile(
+			`maxiBlockComponent getCSSCache ${breakpoint}`,
+			cacheStart
+		);
+
+		return typeof styleContent === 'string' ? styleContent : null;
+	}
+
+	applyStyleContent(uniqueID, styleContent, breakpoint) {
+		const isSiteEditor = getIsSiteEditor();
+
+		if (this.editorIframe?.contentDocument?.body) {
+			this.handleIframeStyles(this.editorIframe, breakpoint);
+		}
+
+		const target = this.getStyleTarget(isSiteEditor, this.editorIframe);
+		addBlockStyles(uniqueID, styleContent, target);
+		this.updateResponsiveClasses(this.editorIframe, breakpoint);
 	}
 
 	// eslint-disable-next-line class-methods-use-this
@@ -1196,9 +1332,7 @@ class MaxiBlockComponent extends Component {
 		const newBlockStyle = getBlockStyle(clientId);
 
 		if (blockStyle !== newBlockStyle) {
-			this.props.attributes.blockStyle = newBlockStyle;
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({ blockStyle: newBlockStyle });
 			return true;
 		}
 
@@ -1383,57 +1517,40 @@ class MaxiBlockComponent extends Component {
 		const isBlockCopied =
 			!isNewBlock && lastInsertedBlocks.includes(this.props.clientId);
 
-		// OPTIMIZATION: Skip expensive uniqueID check if block is being loaded from DB
-		// Only check uniqueID in these scenarios:
-		// 1. Block was just copied/pasted (isBlockCopied = true)
-		// 2. Block is in lastInsertedBlocks (new insertion, pattern, or template)
-		// 3. Block is marked as new (first-time creation)
-		// EXCEPTION: Skip uniqueID duplication check during cloud import
-		// Cloud patterns may intentionally use the same uniqueID across multiple blocks
 		const needsUniqueIDCheck =
-			!window.maxiBlocksCloudImporting &&
-			(isBlockCopied ||
-				(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
-				isNewBlock);
+			isBlockCopied ||
+			(lastInsertedBlocks && lastInsertedBlocks.includes(clientId)) ||
+			isNewBlock;
 
 		// Fast path: Block is being loaded from saved content, trust the ID
 		if (!needsUniqueIDCheck) {
 			// Still check custom label even if we skip uniqueID check
 			if (getIsUniqueCustomLabelRepeated(customLabel)) {
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-				this.isXxlStyleCacheDirty = true;
-				this.invalidateAttributeCaches();
+				this.updateAttributes({
+					customLabel: getCustomLabel(
+						this.props.attributes.customLabel,
+						this.props.attributes.uniqueID
+					),
+				});
 			}
 			return idToCheck;
 		}
 
 		// Slow path: Actually check if uniqueID is unique (only for copy/paste/new blocks)
-		const isUnique = getIsIDTrulyUnique(idToCheck, 1, clientId);
 
-		if (isBlockCopied || !isUnique) {
+		if (!getIsIDTrulyUnique(idToCheck, 1, clientId)) {
 			const newUniqueID = uniqueIDGenerator({
 				blockName,
 			});
 
-			// Immediately add to cache for batch paste optimization
-			// This ensures subsequent blocks in the same paste operation see this ID
-			dispatch('maxiBlocks/blocks').addToUniqueIDCache(newUniqueID);
-
 			propagateNewUniqueID(
 				idToCheck,
 				newUniqueID,
-				clientId,
 				this.props.repeaterStatus,
-				this.props.repeaterRowClientId,
 				this.props.attributes['background-layers']
 			);
 
-			this.props.attributes.uniqueID = newUniqueID;
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({ uniqueID: newUniqueID });
 
 			/**
 			 * Use `updateBlockAttributes` for `uniqueID` update in case if
@@ -1451,12 +1568,12 @@ class MaxiBlockComponent extends Component {
 			}
 
 			if (!this.props.repeaterStatus) {
-				this.props.attributes.customLabel = getCustomLabel(
-					this.props.attributes.customLabel,
-					this.props.attributes.uniqueID
-				);
-				this.isXxlStyleCacheDirty = true;
-				this.invalidateAttributeCaches();
+				this.updateAttributes({
+					customLabel: getCustomLabel(
+						this.props.attributes.customLabel,
+						this.props.attributes.uniqueID
+					),
+				});
 			}
 
 			if (this.maxiBlockDidChangeUniqueID)
@@ -1466,12 +1583,12 @@ class MaxiBlockComponent extends Component {
 		}
 
 		if (getIsUniqueCustomLabelRepeated(customLabel)) {
-			this.props.attributes.customLabel = getCustomLabel(
-				this.props.attributes.customLabel,
-				this.props.attributes.uniqueID
-			);
-			this.isXxlStyleCacheDirty = true;
-			this.invalidateAttributeCaches();
+			this.updateAttributes({
+				customLabel: getCustomLabel(
+					this.props.attributes.customLabel,
+					this.props.attributes.uniqueID
+				),
+			});
 		}
 
 		return idToCheck;
@@ -1559,12 +1676,12 @@ class MaxiBlockComponent extends Component {
 		isBaseBreakpointChange = false,
 		attributesUnchanged = false
 	) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const { uniqueID } = this.props.attributes;
 
 		// Early return for invalid states
 		if (this.isPatternsPreview || this.templateModal || !uniqueID) {
-			recordPerf('displayStyles', perfStart);
+			recordProfile('maxiBlockComponent displayStyles', perfStart);
 			return;
 		}
 
@@ -1573,35 +1690,82 @@ class MaxiBlockComponent extends Component {
 			this.updateDOMReferences();
 		}
 
-		// Fast path: breakpoints switch to XXL with no attribute changes
+		if (isBreakpointChange) {
+			if (!attributesUnchanged) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible attrs'
+				);
+			}
+			if (isBlockStyleChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible style'
+				);
+			}
+			if (isBaseBreakpointChange) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible base'
+				);
+			}
+		}
+
+		// Fast path: breakpoint switches with no attribute changes can reuse
+		// CSS generated from the existing style cache for that breakpoint.
 		if (
 			attributesUnchanged &&
 			isBreakpointChange &&
-			this.props.deviceType === 'xxl' &&
 			!isBlockStyleChange &&
-			!isBaseBreakpointChange &&
-			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
+			!isBaseBreakpointChange
 		) {
-			const isSiteEditor = getIsSiteEditor();
-			if (this.editorIframe?.contentDocument?.body) {
-				this.handleIframeStyles(
-					this.editorIframe,
-					this.props.deviceType
-				);
-			}
+			const currentBreakpoint = this.props.deviceType;
+			const stylesForViewportCheck = this.getCachedStylesObject || {};
+			const hasViewportDependentStyles =
+				this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(stylesForViewportCheck);
 
-			const target = this.getStyleTarget(
-				isSiteEditor,
-				this.editorIframe
-			);
-			addBlockStyles(uniqueID, this.xxlStyleCache, target);
-			this.updateResponsiveClasses(
-				this.editorIframe,
-				this.props.deviceType
-			);
-			recordPerf('displayStyles', perfStart);
-			return;
+			if (hasViewportDependentStyles) {
+				countProfile(
+					'maxiBlockComponent breakpoint cache ineligible viewport'
+				);
+			} else {
+				if (
+					currentBreakpoint === 'xxl' &&
+					this.isXxlStyleCacheDirty
+				) {
+					countProfile(
+						'maxiBlockComponent breakpoint cache dirty xxl'
+					);
+				}
+
+				const cachedStyleContent =
+					currentBreakpoint === 'xxl' &&
+					this.xxlStyleCache &&
+					!this.isXxlStyleCacheDirty
+						? this.xxlStyleCache
+						: this.getCachedStyleContent(
+								uniqueID,
+								currentBreakpoint
+						  );
+
+				if (cachedStyleContent) {
+					countProfile('maxiBlockComponent breakpoint cache hit');
+					if (currentBreakpoint === 'xxl') {
+						this.xxlStyleCache = cachedStyleContent;
+						this.isXxlStyleCacheDirty = false;
+					}
+					this.applyStyleContent(
+						uniqueID,
+						cachedStyleContent,
+						currentBreakpoint
+					);
+					recordProfile(
+						'maxiBlockComponent displayStyles',
+						perfStart
+					);
+					return;
+				}
+
+				countProfile('maxiBlockComponent breakpoint cache miss');
+			}
 		}
 
 		// Generate new styles if it's not a breakpoint change or if it's XXL breakpoint
@@ -1614,12 +1778,12 @@ class MaxiBlockComponent extends Component {
 		let stylesForViewportCheck;
 
 		if (!shouldGenerateNewStyles && isBreakpointChange) {
-			const stylesObjStart = getPerfStart();
-			stylesForViewportCheck = this.getStylesObject || {};
-			recordPerf('getStylesObject', stylesObjStart);
+			stylesForViewportCheck = this.getCachedStylesObject || {};
 
 			if (this.hasViewportUnits(stylesForViewportCheck)) {
 				shouldGenerateNewStyles = true;
+			} else {
+				countProfile('maxiBlockComponent breakpoint DOM-only update');
 			}
 		}
 
@@ -1637,10 +1801,11 @@ class MaxiBlockComponent extends Component {
 					breakpoint: null,
 				});
 
-			if (
-				cache.doc !== iframeDoc ||
-				cache.breakpoint !== this.props.deviceType
-			) {
+			const cacheHit =
+				cache.doc === iframeDoc &&
+				cache.breakpoint === this.props.deviceType;
+
+			if (!cacheHit) {
 				this.handleIframeStyles(
 					this.editorIframe,
 					this.props.deviceType
@@ -1653,22 +1818,35 @@ class MaxiBlockComponent extends Component {
 				cache.breakpoint = this.props.deviceType;
 			}
 
-			recordPerf('displayStyles', perfStart);
+			recordProfile('maxiBlockComponent displayStyles', perfStart);
 			return;
+		}
+
+		if (!shouldGenerateNewStyles && isBreakpointChange) {
+			countProfile('maxiBlockComponent breakpoint regenerate fallback');
+			shouldGenerateNewStyles = true;
 		}
 
 		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
 		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
 		let obj;
 		let customDataRelations;
-
 		if (shouldGenerateNewStyles) {
 			if (stylesForViewportCheck) {
 				obj = stylesForViewportCheck;
 			} else {
-				const stylesObjStart = getPerfStart();
-				obj = this.getStylesObject || {};
-				recordPerf('getStylesObject', stylesObjStart);
+				const stylesObjStart = getProfileStart();
+				obj = this.getCachedStylesObject || {};
+				recordProfile(
+					'maxiBlockComponent getStylesObject',
+					stylesObjStart
+				);
+				recordProfile(
+					`maxiBlockComponent getStylesObject ${
+						this.props.name || 'unknown'
+					}`,
+					stylesObjStart
+				);
 			}
 
 			// When duplicating, need to change the obj target for the new uniqueID
@@ -1681,18 +1859,21 @@ class MaxiBlockComponent extends Component {
 				delete obj[this.props.attributes.uniqueID];
 			}
 
-			const customDataStart = getPerfStart();
+			const customDataStart = getProfileStart();
 			const customData = this.getCustomData;
-			recordPerf('getCustomData', customDataStart);
+			recordProfile('maxiBlockComponent getCustomData', customDataStart);
 			if (customData) {
-				const updateCustomDataStart = getPerfStart();
+				const updateCustomDataStart = getProfileStart();
 				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				recordPerf('updateCustomData', updateCustomDataStart);
+				recordProfile(
+					'maxiBlockComponent updateCustomData',
+					updateCustomDataStart
+				);
 				customDataRelations = customData[uniqueID]?.relations;
 			}
 		}
 
-		const injectStart = getPerfStart();
+		const injectStart = getProfileStart();
 		this.injectStyles(
 			uniqueID,
 			obj,
@@ -1704,10 +1885,15 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles,
 			this.editorIframe
 		);
-		recordPerf('injectStyles', injectStart);
+		recordProfile('maxiBlockComponent injectStyles', injectStart);
 
-		// Update responsive classes for non-XXL breakpoint changes
-		if (isBreakpointChange && this.props.deviceType !== 'xxl') {
+		// Update responsive classes for non-XXL breakpoint changes, or when in general mode
+		// with a valid base breakpoint (handles first load with iframe canvas where the
+		// maxi-blocks-responsive attribute is not set by breakpointResizer)
+		if (
+			(isBreakpointChange && this.props.deviceType !== 'xxl') ||
+			(this.props.deviceType === 'general' && this.props.baseBreakpoint)
+		) {
 			this.updateResponsiveClasses(
 				this.editorIframe,
 				this.props.deviceType
@@ -1716,14 +1902,17 @@ class MaxiBlockComponent extends Component {
 
 		// Handle relations if they exist
 		if (customDataRelations) {
-			const relationsStart = getPerfStart();
+			const relationsStart = getProfileStart();
 			const isRelationsPreview =
 				this.props.attributes['relations-preview'];
 
 			if (isRelationsPreview) {
-				const processRelationsStart = getPerfStart();
+				const processRelationsStart = getProfileStart();
 				this.relationInstances = processRelations(customDataRelations);
-				recordPerf('processRelations', processRelationsStart);
+				recordProfile(
+					'maxiBlockComponent processRelations',
+					processRelationsStart
+				);
 			}
 
 			this.relationInstances?.forEach(relationInstance => {
@@ -1798,25 +1987,37 @@ class MaxiBlockComponent extends Component {
 				);
 
 				if (removed !== null) {
-					const processRemoveStart = getPerfStart();
+					const processRemoveStart = getProfileStart();
 					processRelations(
 						this.previousRelationInstances,
 						'remove',
 						removed
 					);
-					recordPerf('processRelationsRemove', processRemoveStart);
-					const processRelationsStart = getPerfStart();
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
 					processRelations(this.relationInstances);
-					recordPerf('processRelations', processRelationsStart);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
 				}
-			if (updated !== null) {
-				const processRemoveStart = getPerfStart();
-				processRelations(this.relationInstances, 'remove', updated);
-				recordPerf('processRelationsRemove', processRemoveStart);
-				const processRelationsStart = getPerfStart();
-				processRelations(this.relationInstances);
-				recordPerf('processRelations', processRelationsStart);
-			}
+				if (updated !== null) {
+					const processRemoveStart = getProfileStart();
+					processRelations(this.relationInstances, 'remove', updated);
+					recordProfile(
+						'maxiBlockComponent processRelationsRemove',
+						processRemoveStart
+					);
+					const processRelationsStart = getProfileStart();
+					processRelations(this.relationInstances);
+					recordProfile(
+						'maxiBlockComponent processRelations',
+						processRelationsStart
+					);
+				}
 			}
 
 			if (!isRelationsPreview) {
@@ -1824,20 +2025,14 @@ class MaxiBlockComponent extends Component {
 			}
 
 			this.previousRelationInstances = this.relationInstances;
-			recordPerf('relationsBlock', relationsStart);
+			recordProfile('maxiBlockComponent relationsBlock', relationsStart);
 		}
 
-		recordPerf('displayStyles', perfStart);
+		recordProfile('maxiBlockComponent displayStyles', perfStart);
 	}
 
 	hasViewportUnits(stylesObj) {
 		if (!stylesObj) return false;
-
-		// Regex to match actual CSS viewport units (e.g., "100vw", "-0.5vh", ".5vmin")
-		// Requires: number (with optional sign/decimal) + viewport unit
-		// Boundaries prevent matching "overview", URLs, or identifiers
-		const viewportUnitRegex =
-			/(?<![a-zA-Z])[-+]?\d*\.?\d+(vw|vh|vmin|vmax)(?![a-zA-Z])/;
 
 		const stack = [stylesObj];
 
@@ -1845,7 +2040,7 @@ class MaxiBlockComponent extends Component {
 			const current = stack.pop();
 
 			if (typeof current === 'string') {
-				if (viewportUnitRegex.test(current)) {
+				if (VIEWPORT_UNIT_VALUE_REGEX.test(current)) {
 					return true;
 				}
 			} else if (isArray(current)) {
@@ -1891,8 +2086,6 @@ class MaxiBlockComponent extends Component {
 				iframe,
 				isSiteEditor
 			);
-
-			// Use batched style injection instead of individual style elements
 			addBlockStyles(uniqueID, styleContent, target);
 		}
 	}
@@ -1937,7 +2130,6 @@ class MaxiBlockComponent extends Component {
 
 	addMaxiClassesToIframe(iframeDocument, editorWrapper, currentBreakpoint) {
 		iframeDocument.body.classList.add('maxi-blocks--active');
-		iframeDocument.documentElement.style.scrollbarWidth = 'none';
 		const { isPreview } = this.getPreviewElements(
 			editorWrapper,
 			currentBreakpoint
@@ -2093,7 +2285,7 @@ class MaxiBlockComponent extends Component {
 		iframe,
 		isSiteEditor
 	) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		let styleContent;
 		let styles;
 
@@ -2117,15 +2309,19 @@ class MaxiBlockComponent extends Component {
 			isOriginVersionBelow156
 				? this.copyGeneralToXL(stylesObj)
 				: stylesObj;
-
-		if (
+		const canReuseXxlStyleCache =
 			isBreakpointChange &&
 			currentBreakpoint === 'xxl' &&
 			!isBlockStyleChange &&
 			!forceGenerate &&
 			this.xxlStyleCache &&
-			!this.isXxlStyleCacheDirty
-		) {
+			!this.isXxlStyleCacheDirty;
+		const hasViewportDependentStyles =
+			canReuseXxlStyleCache &&
+			(this.hasViewportUnits(this.props.attributes) ||
+				this.hasViewportUnits(updatedStylesObj));
+
+		if (canReuseXxlStyleCache && !hasViewportDependentStyles) {
 			styleContent = this.xxlStyleCache;
 		} else if (isBlockStyleChange || forceGenerate) {
 			styles = this.generateStyles(
@@ -2133,28 +2329,28 @@ class MaxiBlockComponent extends Component {
 				breakpoints,
 				uniqueID
 			);
-			const styleGenStart = getPerfStart();
+			const styleGenStart = getProfileStart();
 			styleContent = styleGenerator(
 				styles,
 				!!iframe,
 				isSiteEditor,
 				currentBreakpoint
 			);
-			recordPerf('styleGenerator', styleGenStart);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		} else if (!isBreakpointChange || currentBreakpoint === 'xxl') {
 			styles = this.generateStyles(
 				updatedStylesObj,
 				breakpoints,
 				uniqueID
 			);
-			const styleGenStart = getPerfStart();
+			const styleGenStart = getProfileStart();
 			styleContent = styleGenerator(
 				styles,
 				!!iframe,
 				isSiteEditor,
 				currentBreakpoint
 			);
-			recordPerf('styleGenerator', styleGenStart);
+			recordProfile('maxiBlockComponent styleGenerator', styleGenStart);
 		}
 
 		if (styles) {
@@ -2178,13 +2374,13 @@ class MaxiBlockComponent extends Component {
 			}
 		}
 
-		recordPerf('generateStyleContent', perfStart);
+		recordProfile('maxiBlockComponent generateStyleContent', perfStart);
 		return styleContent;
 	}
 
 	// Helper method to generate styles
 	generateStyles(stylesObj, breakpoints, uniqueID) {
-		const perfStart = getPerfStart();
+		const perfStart = getProfileStart();
 		const styles = styleResolver({
 			styles: stylesObj,
 			remove: false,
@@ -2192,7 +2388,7 @@ class MaxiBlockComponent extends Component {
 			uniqueID,
 		});
 
-		recordPerf('styleResolver', perfStart);
+		recordProfile('maxiBlockComponent styleResolver', perfStart);
 		return styles;
 	}
 
@@ -2332,6 +2528,14 @@ class MaxiBlockComponent extends Component {
 		const target = iframe?.contentDocument?.body || document.body;
 		if (!target) return;
 
+		// Resolve 'general' to the actual window breakpoint so the attribute
+		// matches what breakpointResizer writes (e.g. 'xl' not 'general').
+		// This ensures CSS rules like [maxi-blocks-responsive="xl"] match.
+		const resolvedBreakpoint =
+			currentBreakpoint === 'general'
+				? this.props.baseBreakpoint || currentBreakpoint
+				: currentBreakpoint;
+
 		const cache =
 			MaxiBlockComponent.responsiveClassCache ||
 			(MaxiBlockComponent.responsiveClassCache = {
@@ -2341,7 +2545,7 @@ class MaxiBlockComponent extends Component {
 
 		if (
 			cache.target === target &&
-			cache.breakpoint === currentBreakpoint
+			cache.breakpoint === resolvedBreakpoint
 		) {
 			return;
 		}
@@ -2352,10 +2556,10 @@ class MaxiBlockComponent extends Component {
 		if (editorWrapper) {
 			editorWrapper.setAttribute(
 				'maxi-blocks-responsive',
-				currentBreakpoint
+				resolvedBreakpoint
 			);
 			cache.target = target;
-			cache.breakpoint = currentBreakpoint;
+			cache.breakpoint = resolvedBreakpoint;
 		}
 	}
 
@@ -2476,6 +2680,9 @@ class MaxiBlockComponent extends Component {
 	}
 
 	static addMaxiFSEIframeStylesNow() {
+		// OSM tiles: every editor-canvas iframe (full template vs part vs reusable path).
+		ensureOsmReferrerMetaInAllEditorCanvasIframes();
+
 		// Get the FSE iframe
 		const now =
 			typeof performance !== 'undefined' && performance.now
@@ -2576,59 +2783,48 @@ class MaxiBlockComponent extends Component {
 
 	// Call this method in componentDidMount
 	setupFSEIframeObserver() {
-		// Only create observer if it doesn't exist yet
-		if (!this.fseIframeObserver) {
-			this.fseIframeObserver = new MutationObserver(mutations => {
-				for (const mutation of mutations) {
-					if (mutation.type === 'childList') {
-						const fseIframes = document.querySelectorAll(
-							'iframe.edit-site-visual-editor__editor-canvas'
-						);
-						if (fseIframes.length > 0) {
-							// Clear any existing FSE iframe timeout
-							if (this.fseIframeTimeout) {
-								clearTimeout(this.fseIframeTimeout);
-							}
+		// Singleton: only one observer for all Maxi blocks in FSE.
+		if (fseSingletonObserver) return;
 
-							// Wait for iframe to fully load
-							this.fseIframeTimeout = setTimeout(() => {
-								this.fseIframeTimeout = null;
-								this.addMaxiFSEIframeStyles();
-							}, 500);
+		fseSingletonObserver = new MutationObserver(mutations => {
+			for (const mutation of mutations) {
+				if (mutation.type === 'childList') {
+					const fseIframes = document.querySelectorAll(
+						'iframe.edit-site-visual-editor__editor-canvas'
+					);
+					if (fseIframes.length > 0) {
+						// Clear any existing FSE iframe timeout
+						if (fseSingletonObserverTimeout) {
+							clearTimeout(fseSingletonObserverTimeout);
 						}
+
+						// Wait for iframe to fully load
+						fseSingletonObserverTimeout = setTimeout(() => {
+							fseSingletonObserverTimeout = null;
+							MaxiBlockComponent.addMaxiFSEIframeStylesNow();
+						}, 500);
 					}
 				}
-			});
+			}
+		});
 
-			// Observe the document body for when iframes get added/removed
-			this.fseIframeObserver.observe(document.body, {
-				childList: true,
-				subtree: true,
-			});
-		}
+		// Observe the document body for when iframes get added/removed
+		fseSingletonObserver.observe(document.body, {
+			childList: true,
+			subtree: true,
+		});
 	}
 
 	/**
 	 * Disables Gutenberg's block movement animation.
 	 * When clicking up/down mover arrows, Gutenberg applies translate3d() via JS
 	 * which causes visual jiggle when MaxiBlocks transforms are present.
-	 * This injects a CSS rule that blocks translate3d from rendering.
+	 * Uses a singleton <style> element (one for all blocks) with a single generic
+	 * rule, avoiding N head.appendChild calls that each trigger style recalculation.
 	 */
 	setupBlockMoveAnimationKiller() {
-		const { clientId } = this.props;
-		const blockId = `block-${clientId}`;
-
-		// Create a style element that blocks translate3d for this specific block
-		// Using CSS is more reliable than MutationObserver because it prevents
-		// the translate3d from ever being rendered (no flash/jump)
-		this.blockMoveStyleBlocker = document.createElement('style');
-		this.blockMoveStyleBlocker.id = `maxi-block-move-blocker-${clientId}`;
-		this.blockMoveStyleBlocker.textContent = `
-			#${blockId}[style*="translate3d"] {
-				transform: none !important;
-			}
-		`;
-		document.head.appendChild(this.blockMoveStyleBlocker);
+		ensureBlockMoveStyleSheet();
+		// No per-block tracking needed — the singleton handles all Maxi blocks.
 	}
 }
 

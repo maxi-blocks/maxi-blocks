@@ -10,6 +10,7 @@ import { useSelect } from '@wordpress/data';
 import BaseControl from '@components/base-control';
 import OpacityControl from '@components/opacity-control';
 import ResetButton from '@components/reset-control';
+import { getStandardPaletteColorLabel } from './utils';
 /**
  * External dependencies
  */
@@ -98,35 +99,44 @@ const ColorPaletteControl = props => {
 			>
 				<div className='maxi-color-control__palette-container'>
 					{/* Standard palette colors */}
-					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => (
-						<button
-							key={`maxi-color-control__palette-box__${item}`}
-							type='button'
-							aria-label={sprintf(
+					{[1, 2, 3, 4, 5, 6, 7, 8].map(item => {
+						const colorLabel = getStandardPaletteColorLabel(
+							item,
+							sprintf(
 								// translators: %s: color number
-								__('Pallet box colour %s', 'maxi-blocks'),
+								__('Colour %s', 'maxi-blocks'),
 								item
-							)}
-							className={classnames(
-								'maxi-color-control__palette-box',
-								getIsActive(item) &&
-									'maxi-color-control__palette-box--active'
-							)}
-							data-item={item}
-							onClick={e =>
-								onChange({
-									paletteColor: +e.currentTarget.dataset.item,
-								})
-							}
-						>
-							<span
+							)
+						);
+
+						return (
+							<button
+								key={`maxi-color-control__palette-box__${item}`}
+								type='button'
+								aria-label={colorLabel}
+								title={colorLabel}
 								className={classnames(
-									'maxi-color-control__palette-item',
-									`maxi-color-control__palette-item__${item}`
+									'maxi-color-control__palette-box',
+									getIsActive(item) &&
+										'maxi-color-control__palette-box--active'
 								)}
-							/>
-						</button>
-					))}
+								data-item={item}
+								onClick={e =>
+									onChange({
+										paletteColor:
+											+e.currentTarget.dataset.item,
+									})
+								}
+							>
+								<span
+									className={classnames(
+										'maxi-color-control__palette-item',
+										`maxi-color-control__palette-item__${item}`
+									)}
+								/>
+							</button>
+						);
+					})}
 				</div>
 				{/* Custom palette colors */}
 				{customColors.length > 0 && (

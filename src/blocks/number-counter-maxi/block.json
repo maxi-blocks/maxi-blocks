@@ -1,6 +1,6 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
+	"apiVersion": 3,
 	"name": "maxi-blocks/number-counter-maxi",
 	"title": "Number Counter Maxi",
 	"category": "maxi-blocks",
@@ -15,5 +15,28 @@
 		"anchor": false,
 		"html": false
 	},
-	"editorScript": "maxi-blocks-block-editor"
+	"editorScript": "maxi-blocks-block-editor",
+	"scProps": {
+		"scElements": [
+			"color-global",
+			"palette-status",
+			"palette-color",
+			"palette-opacity",
+			"color",
+			"circle-background-color-global",
+			"circle-background-palette-status",
+			"circle-background-palette-color",
+			"circle-background-palette-opacity",
+			"circle-background-color",
+			"circle-bar-color-global",
+			"circle-bar-palette-status",
+			"circle-bar-palette-color",
+			"circle-bar-palette-opacity",
+			"circle-bar-color",
+			"font-family-general",
+			"font-size-general",
+			"font-weight-general"
+		],
+		"scType": "number-counter"
+	}
 }

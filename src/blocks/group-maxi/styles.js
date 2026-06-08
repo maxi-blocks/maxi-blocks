@@ -109,20 +109,30 @@ const getHoverObject = props => {
 const getStyles = props => {
 	const { uniqueID } = props;
 
+	const blockBackgroundStyles = getBlockBackgroundStyles({
+		...getGroupAttributes(props, [
+			'blockBackground',
+			'border',
+			'borderWidth',
+			'borderRadius',
+			'scroll',
+		]),
+		blockStyle: props.blockStyle,
+	});
+	const {
+		'': blockBackgroundRootStyles = {},
+		...blockBackgroundTargetStyles
+	} = blockBackgroundStyles;
+
 	const response = {
 		[uniqueID]: styleProcessor(
 			{
-				'': getNormalObject(props),
+				'': {
+					...getNormalObject(props),
+					...blockBackgroundRootStyles,
+				},
 				':hover': getHoverObject(props),
-				...getBlockBackgroundStyles({
-					...getGroupAttributes(props, [
-						'blockBackground',
-						'border',
-						'borderWidth',
-						'borderRadius',
-					]),
-					blockStyle: props.blockStyle,
-				}),
+				...blockBackgroundTargetStyles,
 				...getBlockBackgroundStyles({
 					...getGroupAttributes(
 						props,

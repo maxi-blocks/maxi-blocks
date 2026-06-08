@@ -23,9 +23,11 @@ const ImageAltControl = ({
 }) => {
 	const { wpAlt, titleAlt } = useSelect(
 		select => {
-			const { getMedia } = select('core');
+			const { getEntityRecord } = select('core');
 
-			const mediaData = getMedia(mediaID) ?? {
+			const mediaData = (mediaID
+				? getEntityRecord('postType', 'attachment', mediaID)
+				: null) ?? {
 				alt_text: { wpAlt: '' },
 				title: { rendered: { titleAlt: '' } },
 			};

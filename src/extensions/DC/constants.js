@@ -737,5 +737,6 @@ export const attributeDefaults = {
 		return dictionary[relation];
 	},
 	accumulator: 0,
+	'media-size': 512,
 	'limit-by-archive': null,
 };

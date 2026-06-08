@@ -115,6 +115,29 @@ const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
 };
+const scProps = {
+	scElements: [
+		'color-global',
+		'palette-status',
+		'palette-color',
+		'palette-opacity',
+		'color',
+		'circle-background-color-global',
+		'circle-background-palette-status',
+		'circle-background-palette-color',
+		'circle-background-palette-opacity',
+		'circle-background-color',
+		'circle-bar-color-global',
+		'circle-bar-palette-status',
+		'circle-bar-palette-color',
+		'circle-bar-palette-opacity',
+		'circle-bar-color',
+		'font-family-general',
+		'font-size-general',
+		'font-weight-general',
+	],
+	scType: 'number-counter',
+};
 
 const inlineStylesTargets = {
 	block: '',
@@ -339,6 +362,7 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	scProps,
 	attributesToStyles,
 };
 
@@ -347,6 +371,7 @@ export {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	scProps,
 	ariaLabelsCategories,
 	attributesToStyles,
 };

@@ -41458,8 +41458,7 @@
 			"type": "string"
 		},
 		"number-counter-title-font-size-general": {
-			"type": "number",
-			"default": 40
+			"type": "number"
 		},
 		"number-counter-title-font-size-xxl": {
 			"type": "number"
@@ -41480,8 +41479,7 @@
 			"type": "number"
 		},
 		"font-family-general": {
-			"type": "string",
-			"default": "Roboto"
+			"type": "string"
 		},
 		"font-family-xxl": {
 			"type": "string"

@@ -2,6 +2,7 @@
  * WordPress Dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
 
 /**
  * External dependencies
@@ -21,6 +22,7 @@ import {
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import { getTypographyFromSC } from '@extensions/style-cards';
 
 /**
  * Styles
@@ -31,8 +33,30 @@ import './editor.scss';
  * Component
  */
 const NumberCounterControl = props => {
-	const { className, breakpoint, onChangeInline, onChange, setShowLoader } =
-		props;
+	const {
+		className,
+		breakpoint,
+		onChangeInline,
+		onChange,
+		setShowLoader,
+		blockStyle = 'light',
+	} = props;
+
+	const scTypography = useSelect(select => {
+		const { receiveMaxiSelectedStyleCard } = select(
+			'maxiBlocks/style-cards'
+		);
+		const sc = receiveMaxiSelectedStyleCard()?.value?.[blockStyle];
+		return getTypographyFromSC(sc, 'number-counter');
+	}, [blockStyle]);
+
+	/** Returns the current active SC value for a typography property. */
+	const getSCValue = scTarget =>
+		getLastBreakpointAttribute({
+			target: scTarget,
+			breakpoint,
+			attributes: scTypography,
+		});
 
 	const classes = classnames('maxi-number-counter-control', className);
 
@@ -270,15 +294,22 @@ const NumberCounterControl = props => {
 			)}
 			<FontFamilySelector
 				className='maxi-typography-control__font-family'
-				defaultValue={getDefaultAttribute(`font-family-${breakpoint}`)}
-				font={getLastBreakpointAttribute({
-					target: 'font-family',
-					breakpoint,
-					attributes: props,
-				})}
+				font={
+					getLastBreakpointAttribute({
+						target: 'font-family',
+						breakpoint,
+						attributes: props,
+					}) || getSCValue('font-family') || 'Roboto'
+				}
 				onChange={font =>
 					onChange({
 						[`font-family-${breakpoint}`]: font.value,
+					})
+				}
+				onReset={() =>
+					onChange({
+						[`font-family-${breakpoint}`]: undefined,
+						isReset: true,
 					})
 				}
 				breakpoint={breakpoint}
@@ -290,9 +321,7 @@ const NumberCounterControl = props => {
 				}}
 				onReset={() => {
 					onChange({
-						[`font-weight-${breakpoint}`]: getDefaultAttribute(
-							`font-weight-${breakpoint}`
-						),
+						[`font-weight-${breakpoint}`]: undefined,
 						isReset: true,
 					});
 				}}
@@ -301,13 +330,17 @@ const NumberCounterControl = props => {
 						target: 'font-weight',
 						breakpoint,
 						attributes: props,
-					}) || '400'
+					}) ||
+					getSCValue('font-weight') ||
+					'400'
 				}
-				fontName={getLastBreakpointAttribute({
-					target: 'font-family',
-					breakpoint,
-					attributes: props,
-				})}
+				fontName={
+					getLastBreakpointAttribute({
+						target: 'font-family',
+						breakpoint,
+						attributes: props,
+					}) || getSCValue('font-family') || 'Roboto'
+				}
 				breakpoint={breakpoint}
 				setShowLoader={setShowLoader}
 			/>
@@ -323,6 +356,7 @@ const NumberCounterControl = props => {
 					breakpoint,
 					attributes: props,
 				})}
+				placeholder={getSCValue('font-size') || 40}
 				onChangeValue={(val, meta) =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]: val,
@@ -332,9 +366,7 @@ const NumberCounterControl = props => {
 				onReset={() =>
 					onChange({
 						[`number-counter-title-font-size-${breakpoint}`]:
-							getDefaultAttribute(
-								`number-counter-title-font-size-${breakpoint}`
-							),
+							undefined,
 						isReset: true,
 					})
 				}

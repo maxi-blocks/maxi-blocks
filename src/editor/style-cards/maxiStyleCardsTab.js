@@ -234,6 +234,8 @@ const SCAccordion = props => {
 		disableTypography = false,
 		disableOpacity = false,
 		disableResponsiveTabs = false,
+		hideLineHeight = false,
+		hideAdvancedTextOptions = false,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -279,6 +281,8 @@ const SCAccordion = props => {
 					disableCustomFormats
 					disableFontFamily={breakpoint !== 'general'}
 					disableResponsiveTabs={disableResponsiveTabs}
+					hideLineHeight={hideLineHeight}
+					hideAdvancedTextOptions={hideAdvancedTextOptions}
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -736,6 +740,38 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 				paletteColor: 'palette-color',
 				paletteOpacity: 'palette-opacity',
 				color: 'color',
+			},
+		],
+	};
+	const numberCounterTabs = {
+		label: __('Number Counter globals', 'maxi-blocks'),
+		groupAttr: 'number-counter',
+		hideLineHeight: true,
+		hideAdvancedTextOptions: true,
+		colorContent: [
+			{
+				label: __('Number', 'maxi-blocks'),
+				globalAttr: 'color-global',
+				paletteStatus: 'palette-status',
+				paletteColor: 'palette-color',
+				paletteOpacity: 'palette-opacity',
+				color: 'color',
+			},
+			{
+				label: __('Circle background', 'maxi-blocks'),
+				globalAttr: 'circle-background-color-global',
+				paletteStatus: 'circle-background-palette-status',
+				paletteColor: 'circle-background-palette-color',
+				paletteOpacity: 'circle-background-palette-opacity',
+				color: 'circle-background-color',
+			},
+			{
+				label: __('Circle bar', 'maxi-blocks'),
+				globalAttr: 'circle-bar-color-global',
+				paletteStatus: 'circle-bar-palette-status',
+				paletteColor: 'circle-bar-palette-color',
+				paletteOpacity: 'circle-bar-palette-opacity',
+				color: 'circle-bar-color',
 			},
 		],
 	};
@@ -1276,6 +1312,21 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
 									disableTypography
+								/>
+							),
+						},
+						{
+							label: numberCounterTabs.label,
+							classNameItem:
+								'maxi-blocks-sc__type--number-counter',
+							content: (
+								<SCAccordion
+									key={`sc-accordion__${numberCounterTabs.label}`}
+									{...numberCounterTabs}
+									breakpoint={breakpoint}
+									SC={SC}
+									SCStyle={SCStyle}
+									onChangeValue={onChangeValue}
 								/>
 							),
 						},

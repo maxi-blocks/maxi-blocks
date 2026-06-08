@@ -2559,6 +2559,7 @@ class MaxiBlocks_Styles
         switch ($block_name) {
             case 'maxi-blocks/number-counter-maxi':
                 $typography = get_group_attributes($props, 'numberCounter');
+                $text_level = 'number-counter';
                 break;
             case 'maxi-blocks/button-maxi':
                 $typography = get_group_attributes($props, 'typography');

@@ -700,15 +700,6 @@ function resolveIdentifierValue(moduleInfo, name, seen) {
 	return resolveIdentifierWithModule(moduleInfo, name, seen).node;
 }
 
-function resolveImportedValue(sourceFile, importedName, seen) {
-	const { node } = resolveExportedValueWithModule(
-		sourceFile,
-		importedName,
-		seen
-	);
-	return node;
-}
-
 const getImportedSymbol = (calleeName, moduleInfo) => {
 	const importInfo = moduleInfo?.imports.get(calleeName);
 	return importInfo ? importInfo.importedName : calleeName;

@@ -23,6 +23,7 @@ import {
 	withMaxiContextLoopContext,
 } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
+import { shouldApplySCBlockDefaultsToControl } from '@extensions/style-cards/blockDefaults';
 
 /**
  * General
@@ -113,6 +114,10 @@ class edit extends MaxiBlockComponent {
 			isSelected,
 		} = this.props;
 		const { uniqueID, isFirstOnHierarchy } = attributes;
+		const applyStyleCardDefaults = shouldApplySCBlockDefaultsToControl({
+			name: this.props.name,
+			attributes,
+		});
 
 		return [
 			<Inspector key={`block-settings-${uniqueID}`} {...this.props} />,
@@ -157,10 +162,14 @@ class edit extends MaxiBlockComponent {
 						/>
 						<BlockIndicators
 							key={`indicators-${uniqueID}`}
-							{...getGroupAttributes(attributes, [
-								'padding',
-								'margin',
-							])}
+							{...getGroupAttributes(
+								attributes,
+								['padding', 'margin'],
+								false,
+								'',
+								false,
+								applyStyleCardDefaults
+							)}
 							onChange={obj => maxiSetAttributes(obj)}
 							breakpoint={deviceType}
 							avoidIndicators={

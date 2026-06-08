@@ -11,13 +11,29 @@ const BLOCK_DEFAULT_KEY_SEPARATOR = '|';
 const SC_BLOCK_DEFAULTS_META_KEY = '__scBlockDefaults';
 const SC_BLOCK_DEFAULTS_DEBUG_LOG_KEY = 'maxiSCBlockDefaultsDebugLog';
 const SC_BLOCK_DEFAULTS_DEBUG_LOG_LIMIT = 500;
+const SC_BLOCK_DEFAULTS_SUBSCRIBERS_KEY =
+	'maxiSCBlockDefaultsUpdateSubscribers';
 let latestEditorStyleCardValue = null;
 const debugLayoutBlocks = ['container-maxi', 'row-maxi'];
 const focusedDebugLabels = [
 	'advanced globals change',
 	'editor onChangeValue result',
 	'editor dispatch block defaults update',
+	'editor dispatch block defaults update targets',
+	'block subscribed to defaults update',
+	'block defaults update handler invoked',
+	'block defaults update skipped',
 	'block refresh from defaults update',
+];
+const verboseDebugLabels = [
+	'apply start',
+	'style card values',
+	'apply value',
+	'apply result',
+	'skip custom value',
+	'style fallback',
+	'block style content generated',
+	'block computed layout after style apply',
 	'library layout sequence matched',
 	'library layout sequence not matched',
 ];
@@ -34,10 +50,9 @@ const isSCBlockDefaultsExplicitDebugEnabled = () =>
 	(window.maxiDebugSCBlockDefaults === true ||
 		window.localStorage?.getItem('maxiDebugSCBlockDefaults') === '1');
 
-const isSCBlockDefaultsVerboseDebugEnabled = () =>
+export const isSCBlockDefaultsVerboseDebugEnabled = () =>
 	typeof window !== 'undefined' &&
-	(isSCBlockDefaultsExplicitDebugEnabled() ||
-		window.maxiDebugSCBlockDefaultsVerbose === true ||
+	(window.maxiDebugSCBlockDefaultsVerbose === true ||
 		window.localStorage?.getItem('maxiDebugSCBlockDefaultsVerbose') ===
 			'1');
 
@@ -80,6 +95,24 @@ const hasLayoutAttributeReference = value => {
 	return false;
 };
 
+export const getLayoutDebugValueSummary = (values, blockName) => {
+	if (!values || typeof values !== 'object') return '';
+
+	const blockPrefix = blockName ? `${blockName}|` : null;
+
+	return Object.entries(values)
+		.filter(([key]) => hasLayoutAttributeReference(key))
+		.filter(
+			([key]) =>
+				!blockPrefix || key.startsWith(blockPrefix) || !key.includes('|')
+		)
+		.sort(([firstKey], [secondKey]) =>
+			firstKey.localeCompare(secondKey)
+		)
+		.map(([key, value]) => `${key}=${String(value)}`)
+		.join(', ');
+};
+
 const isFocusedDebugEntry = (label, payload) =>
 	focusedDebugLabels.includes(label) ||
 	(hasLayoutAttributeReference(payload) &&
@@ -91,8 +124,17 @@ const isFocusedDebugEntry = (label, payload) =>
 
 export const debugSCBlockDefaults = (label, payload = {}) => {
 	if (!isSCBlockDefaultsDebugEnabled()) return;
+	const isExplicitDebug = isSCBlockDefaultsExplicitDebugEnabled();
+	const isVerboseDebug = isSCBlockDefaultsVerboseDebugEnabled();
+
 	if (
-		!isSCBlockDefaultsVerboseDebugEnabled() &&
+		!isVerboseDebug &&
+		verboseDebugLabels.includes(label)
+	)
+		return;
+	if (
+		!isExplicitDebug &&
+		!isVerboseDebug &&
 		!isFocusedDebugEntry(label, payload)
 	)
 		return;
@@ -119,6 +161,144 @@ export const debugSCBlockDefaults = (label, payload = {}) => {
 
 	// eslint-disable-next-line no-console
 	console.info(`[SC block defaults] ${label}`, payload);
+};
+
+const addDispatchTarget = (targets, target) => {
+	if (target && typeof target.dispatchEvent === 'function') {
+		targets.add(target);
+	}
+};
+
+const getWindowBlockDefaultsSubscribers = target => {
+	if (!target) return null;
+
+	if (!target[SC_BLOCK_DEFAULTS_SUBSCRIBERS_KEY]) {
+		target[SC_BLOCK_DEFAULTS_SUBSCRIBERS_KEY] = new Set();
+	}
+
+	return target[SC_BLOCK_DEFAULTS_SUBSCRIBERS_KEY];
+};
+
+const getSCBlockDefaultsDispatchTargets = () => {
+	const targets = new Set();
+
+	if (typeof window === 'undefined') return targets;
+
+	addDispatchTarget(targets, window);
+
+	try {
+		document
+			.querySelectorAll('iframe[name="editor-canvas"]')
+			.forEach(iframe => {
+				addDispatchTarget(targets, iframe.contentWindow);
+			});
+	} catch {
+		// Iframe access can fail during editor teardown; parent dispatch remains.
+	}
+
+	return targets;
+};
+
+const createBlockDefaultsUpdateEvent = (target, detail) => {
+	const EventConstructor =
+		target?.CustomEvent ||
+		target?.document?.defaultView?.CustomEvent ||
+		window.CustomEvent;
+
+	return new EventConstructor(SC_BLOCK_DEFAULTS_UPDATE_EVENT, {
+		detail,
+	});
+};
+
+const getAffectedSubscriberBlockNames = blockDefaults =>
+	Array.from(
+		new Set(
+			Object.keys(blockDefaults ?? {})
+				.map(key => {
+					const separatorIndex = key.indexOf(
+						BLOCK_DEFAULT_KEY_SEPARATOR
+					);
+
+					return separatorIndex === -1
+						? null
+						: key.slice(0, separatorIndex);
+				})
+				.filter(Boolean)
+		)
+	);
+
+const getSubscriberRecord = subscriber =>
+	typeof subscriber === 'function'
+		? {
+				callback: subscriber,
+				blockName: null,
+		  }
+		: subscriber;
+
+const notifySCBlockDefaultsSubscribers = (target, event) => {
+	const subscribers = target?.[SC_BLOCK_DEFAULTS_SUBSCRIBERS_KEY];
+	let notifyCount = 0;
+
+	if (!subscribers || typeof subscribers.forEach !== 'function') {
+		return notifyCount;
+	}
+
+	subscribers.forEach(subscriber => {
+		const { callback } = getSubscriberRecord(subscriber) ?? {};
+
+		if (typeof callback !== 'function') return;
+
+		try {
+			callback(event);
+			notifyCount += 1;
+		} catch {
+			// Keep the remaining mounted blocks refreshing if one listener fails.
+		}
+	});
+
+	return notifyCount;
+};
+
+export const subscribeSCBlockDefaultsUpdate = (callback, blockName = null) => {
+	if (typeof window === 'undefined' || typeof callback !== 'function') {
+		return () => {};
+	}
+
+	const subscribers = getWindowBlockDefaultsSubscribers(window);
+	const subscriber = {
+		callback,
+		blockName: blockName?.replace('maxi-blocks/', '') ?? null,
+	};
+	subscribers.add(subscriber);
+
+	return () => {
+		subscribers.delete(subscriber);
+	};
+};
+
+export const dispatchSCBlockDefaultsUpdate = detail => {
+	const targets = getSCBlockDefaultsDispatchTargets();
+	let dispatchCount = 0;
+	let subscriberCount = 0;
+
+	targets.forEach(target => {
+		try {
+			const event = createBlockDefaultsUpdateEvent(target, detail);
+			target.dispatchEvent(event);
+			dispatchCount += 1;
+			subscriberCount += notifySCBlockDefaultsSubscribers(target, event);
+		} catch {
+			// Keep the remaining targets alive if one iframe is not ready.
+		}
+	});
+
+	debugSCBlockDefaults('editor dispatch block defaults update targets', {
+		dispatchCount,
+		subscriberCount,
+		hasIframeTarget: dispatchCount > 1,
+	});
+
+	return dispatchCount;
 };
 
 export const blockDefaultBlocks = [
@@ -389,6 +569,7 @@ const libraryLayoutSequenceTargets = [
 	'column-gap',
 	'flex-wrap',
 ];
+const internalBlockDefaultAttributes = ['size-advanced-options'];
 
 export const getBlockDefaultKey = (blockName, attr) =>
 	`${blockName}${BLOCK_DEFAULT_KEY_SEPARATOR}${attr}`;
@@ -403,6 +584,9 @@ export const parseBlockDefaultKey = key => {
 		attr: key.slice(separatorIndex + 1),
 	};
 };
+
+export const getAffectedBlockNamesFromBlockDefaults = blockDefaults =>
+	getAffectedSubscriberBlockNames(blockDefaults);
 
 const isValidValue = value =>
 	value !== undefined && value !== null && value !== '';
@@ -429,6 +613,9 @@ const withoutBreakpoint = attr => {
 	const breakpoint = getBreakpoint(attr);
 	return breakpoint ? attr.slice(0, -breakpoint.length - 1) : attr;
 };
+
+const isInternalBlockDefaultAttribute = attr =>
+	internalBlockDefaultAttributes.includes(withoutBreakpoint(attr));
 
 export const getUnitAttribute = attr => {
 	if (attr.includes('-unit-')) return null;
@@ -646,6 +833,22 @@ export const normalizeBlockName = value => {
 			normalizedValue.startsWith(`${blockName}-`)
 		) || null
 	);
+};
+
+const blockDefaultControlBlocks = ['container-maxi', 'row-maxi'];
+
+export const shouldApplySCBlockDefaultsToControl = ({
+	name,
+	attributes,
+	prefix = '',
+}) => {
+	if (prefix) return false;
+
+	const blockName = normalizeBlockName(
+		name || attributes?.blockName || attributes?.uniqueID
+	);
+
+	return blockDefaultControlBlocks.includes(blockName);
 };
 
 const sanitizeCssPart = value => value.replace(/[^a-zA-Z0-9-]/g, '-');
@@ -922,6 +1125,14 @@ export const applySCBlockDefaultsToAttributes = ({
 
 	Object.keys(defaultAttributes).forEach(attr => {
 		if (attr.includes('-unit-')) return;
+		if (isInternalBlockDefaultAttribute(attr)) {
+			debugSCBlockDefaults('skip internal block default attribute', {
+				blockName,
+				blockStyle,
+				attr,
+			});
+			return;
+		}
 		if (isSCBlockDefaultExcluded(attributes, attr)) {
 			debugSCBlockDefaults('skip explicit block default opt-out', {
 				blockName,
@@ -1109,6 +1320,7 @@ export const getStyleCardBlockDefaultVariables = styleCard => {
 			if (!parsedKey || !isValidValue(value)) return;
 
 			const { blockName, attr } = parsedKey;
+			if (isInternalBlockDefaultAttribute(attr)) return;
 			if (attr.includes('-unit-')) return;
 
 			const unitAttr = getUnitAttribute(attr);

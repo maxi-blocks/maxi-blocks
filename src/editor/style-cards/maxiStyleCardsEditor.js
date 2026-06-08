@@ -32,7 +32,8 @@ import { updateSCOnEditor } from '@extensions/style-cards';
 import {
 	BLOCK_DEFAULTS_GROUP,
 	debugSCBlockDefaults,
-	SC_BLOCK_DEFAULTS_UPDATE_EVENT,
+	dispatchSCBlockDefaultsUpdate,
+	getLayoutDebugValueSummary,
 } from '@extensions/style-cards/blockDefaults';
 import {
 	DARK_TONE_STYLE_OVERRIDES,
@@ -394,6 +395,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			toneKeys,
 			group: options.group,
 			changedKeys: Object.keys(newObj),
+			changedLayoutSummary:
+				type === BLOCK_DEFAULTS_GROUP
+					? getLayoutDebugValueSummary(newObj, options.group)
+					: undefined,
 			toneBlockDefaultSummary:
 				type === BLOCK_DEFAULTS_GROUP
 					? toneKeys.reduce(
@@ -419,17 +424,17 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 			debugSCBlockDefaults('editor dispatch block defaults update', {
 				currentSCStyle: activeSCStyle,
+				blockDefaultsSummary: getLayoutDebugValueSummary(
+					blockDefaults,
+					options.group
+				),
 				blockDefaults,
 			});
 
-			window.dispatchEvent(
-				new CustomEvent(SC_BLOCK_DEFAULTS_UPDATE_EVENT, {
-					detail: {
-						blockDefaults,
-						currentSCStyle: activeSCStyle,
-					},
-				})
-			);
+			dispatchSCBlockDefaultsUpdate({
+				blockDefaults,
+				currentSCStyle: activeSCStyle,
+			});
 		}
 	};
 

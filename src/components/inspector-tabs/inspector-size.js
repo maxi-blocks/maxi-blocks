@@ -11,6 +11,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import { shouldApplySCBlockDefaultsToControl } from '@extensions/style-cards/blockDefaults';
 
 /**
  * Component
@@ -28,11 +29,24 @@ const size = ({
 }) => {
 	const { attributes, deviceType, maxiSetAttributes, name } = props;
 	const { isFirstOnHierarchy } = attributes;
+	const applyStyleCardDefaults = shouldApplySCBlockDefaultsToControl({
+		name,
+		attributes,
+		prefix,
+	});
+	const sizeAttributes = getGroupAttributes(
+		attributes,
+		'size',
+		false,
+		prefix,
+		false,
+		applyStyleCardDefaults
+	);
 
 	const isBlockFullWidth = getLastBreakpointAttribute({
 		target: `${prefix}full-width`,
 		breakpoint: deviceType,
-		attributes,
+		attributes: sizeAttributes,
 	});
 
 	const showFullWidth =
@@ -43,7 +57,7 @@ const size = ({
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<FullSizeControl
-				{...getGroupAttributes(attributes, 'size', false, prefix)}
+				{...sizeAttributes}
 				prefix={prefix}
 				scBlockDefaultsExcludedAttributes={
 					attributes.scBlockDefaultsExcludedAttributes

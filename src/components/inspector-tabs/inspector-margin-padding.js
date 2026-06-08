@@ -13,6 +13,7 @@ import {
 	getGroupAttributes,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
+import { shouldApplySCBlockDefaultsToControl } from '@extensions/style-cards/blockDefaults';
 
 const MarginPaddingContent = ({
 	breakpoint,
@@ -21,28 +22,48 @@ const MarginPaddingContent = ({
 	prefix,
 	disableMargin,
 	fullWidth,
-}) => (
-	<>
-		{!disableMargin && (
-			<MarginControl
-				{...getGroupAttributes(attributes, 'margin', false, prefix)}
+	applyStyleCardDefaults,
+}) => {
+	const marginAttributes = getGroupAttributes(
+		attributes,
+		'margin',
+		false,
+		prefix,
+		false,
+		applyStyleCardDefaults
+	);
+	const paddingAttributes = getGroupAttributes(
+		attributes,
+		'padding',
+		false,
+		prefix,
+		false,
+		applyStyleCardDefaults
+	);
+
+	return (
+		<>
+			{!disableMargin && (
+				<MarginControl
+					{...marginAttributes}
+					prefix={prefix}
+					onChange={obj => maxiSetAttributes(obj)}
+					breakpoint={breakpoint}
+					fullWidth={fullWidth}
+					noResponsiveTabs
+				/>
+			)}
+			{!disableMargin && <hr />}
+			<PaddingControl
+				{...paddingAttributes}
 				prefix={prefix}
 				onChange={obj => maxiSetAttributes(obj)}
 				breakpoint={breakpoint}
-				fullWidth={fullWidth}
 				noResponsiveTabs
 			/>
-		)}
-		{!disableMargin && <hr />}
-		<PaddingControl
-			{...getGroupAttributes(attributes, 'padding', false, prefix)}
-			prefix={prefix}
-			onChange={obj => maxiSetAttributes(obj)}
-			breakpoint={breakpoint}
-			noResponsiveTabs
-		/>
-	</>
-);
+		</>
+	);
+};
 
 /**
  * Component
@@ -53,12 +74,24 @@ const marginPadding = ({
 	customLabel,
 	disableMargin = false,
 }) => {
-	const { attributes, deviceType, maxiSetAttributes } = props;
+	const { attributes, deviceType, maxiSetAttributes, name } = props;
+	const applyStyleCardDefaults = shouldApplySCBlockDefaultsToControl({
+		name,
+		attributes,
+		prefix,
+	});
 
 	const fullWidth = getLastBreakpointAttribute({
 		target: `${prefix}full-width`,
 		breakpoint: deviceType,
-		attributes,
+		attributes: getGroupAttributes(
+			attributes,
+			'size',
+			false,
+			prefix,
+			false,
+			applyStyleCardDefaults
+		),
 	});
 
 	return {
@@ -71,6 +104,7 @@ const marginPadding = ({
 					prefix={prefix}
 					disableMargin={disableMargin}
 					fullWidth={fullWidth}
+					applyStyleCardDefaults={applyStyleCardDefaults}
 				/>
 			</ResponsiveTabsControl>
 		),

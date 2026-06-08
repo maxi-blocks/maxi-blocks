@@ -43,7 +43,8 @@ const getGroupAttributes = (
 	target,
 	isHover = false,
 	prefix = '',
-	cleaned = false
+	cleaned = false,
+	applyStyleCardDefaults = false
 ) => {
 	if (!target) return null;
 
@@ -96,7 +97,14 @@ const getGroupAttributes = (
 	if (isHover) {
 		Object.assign(
 			response,
-			getGroupAttributes(attributes, target, false, prefix, cleaned)
+			getGroupAttributes(
+				attributes,
+				target,
+				false,
+				prefix,
+				cleaned,
+				applyStyleCardDefaults
+			)
 		);
 	}
 
@@ -132,6 +140,8 @@ const getGroupAttributes = (
 		);
 		attrCache.set(cacheKey, { result: response, validation });
 	}
+
+	if (!applyStyleCardDefaults) return response;
 
 	return applySCBlockDefaultsToAttributes({
 		response,

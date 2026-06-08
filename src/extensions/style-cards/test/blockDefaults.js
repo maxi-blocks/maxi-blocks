@@ -1,15 +1,24 @@
 import {
 	applySCBlockDefaultsToAttributes,
 	debugSCBlockDefaults,
+	dispatchSCBlockDefaultsUpdate,
+	getAffectedBlockNamesFromBlockDefaults,
 	getBlockDefaultKey,
+	getLayoutDebugValueSummary,
 	getSCBlockDefaultsExcludedAttributesUpdate,
 	getStyleCardBlockDefaultVariables,
 	isSCBlockDefaultsDebugEnabled,
+	isSCBlockDefaultsVerboseDebugEnabled,
 	SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES,
 	setActiveStyleCardValueForBlockDefaults,
+	shouldApplySCBlockDefaultsToControl,
+	subscribeSCBlockDefaultsUpdate,
 } from '@extensions/style-cards/blockDefaults';
 
 const sizeDefaults = {
+	'size-advanced-options': {
+		default: true,
+	},
 	'max-width-xl': {},
 	'max-width-unit-xl': {
 		default: 'px',
@@ -116,13 +125,13 @@ const getStyleCard = blockDefaults => ({
 
 describe('Style Card block defaults', () => {
 	afterEach(() => {
-		setActiveStyleCardValueForBlockDefaults(null);
 		delete window.maxiDebugSCBlockDefaults;
 		delete window.maxiDebugSCBlockDefaultsVerbose;
 		delete window.maxiSCBlockDefaultsDebugLog;
 		delete window.getMaxiSCBlockDefaultsDebugLog;
 		window.localStorage?.removeItem('maxiDebugSCBlockDefaults');
 		window.localStorage?.removeItem('maxiDebugSCBlockDefaultsVerbose');
+		setActiveStyleCardValueForBlockDefaults(null);
 		window.history.pushState({}, '', '/');
 	});
 
@@ -201,6 +210,56 @@ describe('Style Card block defaults', () => {
 			attr: 'padding-top-xl',
 		});
 
+		expect(console).not.toHaveInformed();
+		expect(window.maxiSCBlockDefaultsDebugLog).toBeUndefined();
+
+		debugSCBlockDefaults('advanced globals change', {
+			blockName: 'container-maxi',
+			attr: 'padding-top-xl',
+		});
+
+		expect(console).toHaveInformedWith(
+			'[SC block defaults] advanced globals change',
+			{
+				blockName: 'container-maxi',
+				attr: 'padding-top-xl',
+			}
+		);
+		expect(window.maxiSCBlockDefaultsDebugLog).toEqual([
+			expect.objectContaining({
+				label: 'advanced globals change',
+				payload: {
+					blockName: 'container-maxi',
+					attr: 'padding-top-xl',
+				},
+			}),
+		]);
+	});
+
+	it('keeps detailed automatic local debug behind the verbose flag', () => {
+		window.history.pushState(
+			{},
+			'',
+			'/maxi-blocks-local/wp-admin/post.php'
+		);
+
+		expect(isSCBlockDefaultsVerboseDebugEnabled()).toBe(false);
+		debugSCBlockDefaults('apply value', {
+			blockName: 'container-maxi',
+			attr: 'padding-top-xl',
+		});
+
+		expect(console).not.toHaveInformed();
+		expect(window.maxiSCBlockDefaultsDebugLog).toBeUndefined();
+
+		window.localStorage?.setItem('maxiDebugSCBlockDefaultsVerbose', '1');
+
+		expect(isSCBlockDefaultsVerboseDebugEnabled()).toBe(true);
+		debugSCBlockDefaults('apply value', {
+			blockName: 'container-maxi',
+			attr: 'padding-top-xl',
+		});
+
 		expect(console).toHaveInformedWith('[SC block defaults] apply value', {
 			blockName: 'container-maxi',
 			attr: 'padding-top-xl',
@@ -214,6 +273,177 @@ describe('Style Card block defaults', () => {
 				},
 			}),
 		]);
+	});
+
+	it('summarises layout debug values for copy-pasted console output', () => {
+		expect(
+			getLayoutDebugValueSummary(
+				{
+					'container-maxi|padding-top-general': 20,
+					'container-maxi|padding-top-unit-general': 'px',
+					'container-maxi|padding-bottom-xl': 30,
+					'container-maxi|padding-bottom-unit-xl': 'px',
+					'button-maxi|font-size-general': 18,
+					random: 'ignored',
+				},
+				'container-maxi'
+			)
+		).toBe(
+			'container-maxi|padding-bottom-unit-xl=px, container-maxi|padding-bottom-xl=30, container-maxi|padding-top-general=20, container-maxi|padding-top-unit-general=px'
+		);
+	});
+
+	it('extracts affected block names from Style Card block defaults', () => {
+		expect(
+			getAffectedBlockNamesFromBlockDefaults({
+				[getBlockDefaultKey(
+					'container-maxi',
+					'padding-top-general'
+				)]: 21,
+				[getBlockDefaultKey(
+					'container-maxi',
+					'padding-bottom-general'
+				)]: 21,
+				[getBlockDefaultKey('row-maxi', 'max-width-xl')]: 900,
+				invalid: 1,
+			})
+		).toEqual(['container-maxi', 'row-maxi']);
+	});
+
+	it('limits effective block default controls to unprefixed Container and Row layout controls', () => {
+		expect(
+			shouldApplySCBlockDefaultsToControl({
+				name: 'maxi-blocks/container-maxi',
+				attributes: {},
+			})
+		).toBe(true);
+		expect(
+			shouldApplySCBlockDefaultsToControl({
+				name: 'maxi-blocks/row-maxi',
+				attributes: {},
+			})
+		).toBe(true);
+		expect(
+			shouldApplySCBlockDefaultsToControl({
+				attributes: {
+					uniqueID: 'container-maxi-test-u',
+				},
+			})
+		).toBe(true);
+		expect(
+			shouldApplySCBlockDefaultsToControl({
+				name: 'maxi-blocks/container-maxi',
+				attributes: {},
+				prefix: 'image-',
+			})
+		).toBe(false);
+		expect(
+			shouldApplySCBlockDefaultsToControl({
+				name: 'maxi-blocks/button-maxi',
+				attributes: {},
+			})
+		).toBe(false);
+	});
+
+	it('dispatches block default updates to the parent window and editor iframe', () => {
+		const iframe = document.createElement('iframe');
+		iframe.setAttribute('name', 'editor-canvas');
+		document.body.appendChild(iframe);
+
+		const parentListener = jest.fn();
+		const iframeListener = jest.fn();
+		window.addEventListener(
+			'maxi-blocks:style-card-block-defaults-update',
+			parentListener
+		);
+		iframe.contentWindow.addEventListener(
+			'maxi-blocks:style-card-block-defaults-update',
+			iframeListener
+		);
+
+		const detail = {
+			currentSCStyle: 'light',
+			blockDefaults: {
+				'container-maxi|padding-top-general': 50,
+			},
+		};
+
+		expect(dispatchSCBlockDefaultsUpdate(detail)).toBe(2);
+		expect(parentListener).toHaveBeenCalledWith(
+			expect.objectContaining({ detail })
+		);
+		expect(iframeListener).toHaveBeenCalledWith(
+			expect.objectContaining({ detail })
+		);
+
+		window.removeEventListener(
+			'maxi-blocks:style-card-block-defaults-update',
+			parentListener
+		);
+	});
+
+	it('notifies in-process block default update subscribers', () => {
+		const subscriber = jest.fn();
+		const unsubscribe = subscribeSCBlockDefaultsUpdate(subscriber);
+		const detail = {
+			currentSCStyle: 'light',
+			blockDefaults: {
+				'container-maxi|padding-top-general': 22,
+			},
+		};
+
+		dispatchSCBlockDefaultsUpdate(detail);
+
+		expect(subscriber).toHaveBeenCalledWith(
+			expect.objectContaining({ detail })
+		);
+
+		unsubscribe();
+		dispatchSCBlockDefaultsUpdate(detail);
+
+		expect(subscriber).toHaveBeenCalledTimes(1);
+	});
+
+	it('notifies all in-process subscribers for scoped block default updates', () => {
+		const containerSubscriber = jest.fn();
+		const rowSubscriber = jest.fn();
+		const genericSubscriber = jest.fn();
+		const unsubscribeContainer = subscribeSCBlockDefaultsUpdate(
+			containerSubscriber,
+			'container-maxi'
+		);
+		const unsubscribeRow = subscribeSCBlockDefaultsUpdate(
+			rowSubscriber,
+			'row-maxi'
+		);
+		const unsubscribeGeneric =
+			subscribeSCBlockDefaultsUpdate(genericSubscriber);
+
+		dispatchSCBlockDefaultsUpdate({
+			currentSCStyle: 'light',
+			blockDefaults: {
+				'container-maxi|padding-top-general': 22,
+			},
+		});
+
+		expect(containerSubscriber).toHaveBeenCalledTimes(1);
+		expect(rowSubscriber).toHaveBeenCalledTimes(1);
+		expect(genericSubscriber).toHaveBeenCalledTimes(1);
+
+		dispatchSCBlockDefaultsUpdate({
+			currentSCStyle: 'light',
+			blockDefaults: {
+				'row-maxi|row-gap-general': 30,
+			},
+		});
+
+		expect(containerSubscriber).toHaveBeenCalledTimes(2);
+		expect(rowSubscriber).toHaveBeenCalledTimes(2);
+		expect(genericSubscriber).toHaveBeenCalledTimes(2);
+
+		unsubscribeContainer();
+		unsubscribeRow();
+		unsubscribeGeneric();
 	});
 
 	it('tracks explicit block default opt-outs without duplicating entries', () => {
@@ -290,6 +520,43 @@ describe('Style Card block defaults', () => {
 
 		expect(result['max-width-xl']).toBe('900');
 		expect(result.__scBlockDefaults).toBeUndefined();
+	});
+
+	it('does not let saved Style Card size toggle values disable container max-width defaults', () => {
+		const result = applySCBlockDefaultsToAttributes({
+			response: {
+				'size-advanced-options': true,
+				'max-width-xl': '1170',
+				'max-width-unit-xl': 'px',
+			},
+			attributes: {
+				uniqueID: 'container-maxi-test-u',
+				blockStyle: 'light',
+				'size-advanced-options': true,
+				'max-width-xl': '1170',
+				'max-width-unit-xl': 'px',
+			},
+			defaultAttributes: sizeDefaults,
+			styleCard: getStyleCard({
+				[getBlockDefaultKey(
+					'container-maxi',
+					'size-advanced-options'
+				)]: false,
+				[getBlockDefaultKey('container-maxi', 'max-width-xl')]:
+					'1280',
+				[getBlockDefaultKey('container-maxi', 'max-width-unit-xl')]:
+					'px',
+			}),
+		});
+
+		expect(result['size-advanced-options']).toBe(true);
+		expect(result['max-width-xl']).toBe('1280');
+		expect(result.__scBlockDefaults['size-advanced-options']).toBe(
+			undefined
+		);
+		expect(result.__scBlockDefaults['max-width-xl'].cssVar).toBe(
+			'--maxi-light-block-default-container-maxi-max-width-xl'
+		);
 	});
 
 	it('marks shipped defaults with CSS variable metadata before an override exists', () => {
@@ -570,7 +837,7 @@ describe('Style Card block defaults', () => {
 	});
 
 	it('keeps custom container padding sequences explicit', () => {
-		window.maxiDebugSCBlockDefaults = true;
+		window.maxiDebugSCBlockDefaultsVerbose = true;
 
 		const result = applySCBlockDefaultsToAttributes({
 			response: {

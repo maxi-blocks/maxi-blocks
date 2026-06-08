@@ -44,6 +44,8 @@ import {
 	SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES,
 	BLOCK_DEFAULTS_GROUP,
 	debugSCBlockDefaults,
+	getLayoutDebugValueSummary,
+	getShippedBlockDefault,
 	getUnitAttribute,
 } from '@extensions/style-cards/blockDefaults';
 import { hasDarkToneStyleOverride } from '@extensions/style-cards/syncTypography';
@@ -436,6 +438,35 @@ const getBlockDefaultAttributes = (styleCard, blockName) =>
 			return acc;
 		}, {});
 
+const blockDefaultSizeControlAttrs = [
+	'size-advanced-options',
+	...[
+		'max-width',
+		'width',
+		'min-width',
+		'max-height',
+		'height',
+		'min-height',
+	].flatMap(target =>
+		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].flatMap(breakpoint => [
+			`${target}-${breakpoint}`,
+			`${target}-unit-${breakpoint}`,
+		])
+	),
+];
+
+const getBlockDefaultSizeAttributes = (styleCard, blockName) => ({
+	...blockDefaultSizeControlAttrs.reduce((acc, attr) => {
+		const defaultValue = getShippedBlockDefault(blockName, attr);
+
+		if (defaultValue !== '') acc[attr] = defaultValue;
+
+		return acc;
+	}, {}),
+	...getBlockDefaultAttributes(styleCard, blockName),
+	'size-advanced-options': true,
+});
+
 const BlockDefaultMarginPaddingControls = ({
 	SC,
 	blockName,
@@ -524,9 +555,11 @@ const getBlockDefaultHeightWidthItems = ({
 		label: __('Height / Width', 'maxi-blocks'),
 		content: (
 			<FullSizeControl
-				{...getBlockDefaultAttributes(SC, blockName)}
+				{...getBlockDefaultSizeAttributes(SC, blockName)}
 				onChange={onChange}
 				breakpoint={breakpoint}
+				forceSizeAdvancedOptions
+				hideSizeAdvancedOptionsToggle
 			/>
 		),
 	},
@@ -737,6 +770,10 @@ const BlockDefaultsWithOverrides = ({
 			blockName,
 			breakpoint,
 			tone: 'light',
+			layoutSummary: getLayoutDebugValueSummary(
+				prefixedValues,
+				blockName
+			),
 			values,
 			prefixedValues,
 		});
@@ -750,6 +787,10 @@ const BlockDefaultsWithOverrides = ({
 			blockName,
 			breakpoint,
 			tone: 'dark',
+			layoutSummary: getLayoutDebugValueSummary(
+				prefixedValues,
+				blockName
+			),
 			values,
 			prefixedValues,
 		});

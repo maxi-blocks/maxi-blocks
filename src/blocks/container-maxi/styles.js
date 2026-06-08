@@ -23,6 +23,13 @@ import {
 } from '@extensions/styles/helpers';
 import data from './data';
 
+const getStyleCardGroupAttributes = (
+	props,
+	target,
+	isHover = false,
+	prefix = ''
+) => getGroupAttributes(props, target, isHover, prefix, false, true);
+
 const getNormalObject = props => {
 	const response = {
 		border: getBorderStyles({
@@ -36,7 +43,7 @@ const getNormalObject = props => {
 			blockStyle: props.blockStyle,
 		}),
 		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
+			...getStyleCardGroupAttributes(props, 'size'),
 		}),
 		boxShadow: getBoxShadowStyles({
 			obj: {
@@ -61,16 +68,16 @@ const getNormalObject = props => {
 		}),
 		margin: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'margin'),
+				...getStyleCardGroupAttributes(props, 'margin'),
 			},
 		}),
 		padding: getMarginPaddingStyles({
 			obj: {
-				...getGroupAttributes(props, 'padding'),
+				...getStyleCardGroupAttributes(props, 'padding'),
 			},
 		}),
 		flex: getFlexStyles({
-			...getGroupAttributes(props, 'flex'),
+			...getStyleCardGroupAttributes(props, 'flex'),
 		}),
 	};
 
@@ -125,7 +132,7 @@ const getStyles = props => {
 						shapeDivider: {
 							...getShapeDividerStyles(
 								{
-									...getGroupAttributes(props, [
+									...getStyleCardGroupAttributes(props, [
 										'shapeDivider',
 										'padding',
 									]),
@@ -138,7 +145,7 @@ const getStyles = props => {
 						shapeDivider: {
 							...getShapeDividerSVGStyles(
 								{
-									...getGroupAttributes(props, [
+									...getStyleCardGroupAttributes(props, [
 										'shapeDivider',
 										'padding',
 									]),
@@ -154,7 +161,7 @@ const getStyles = props => {
 						shapeDivider: {
 							...getShapeDividerStyles(
 								{
-									...getGroupAttributes(props, [
+									...getStyleCardGroupAttributes(props, [
 										'shapeDivider',
 										'padding',
 									]),
@@ -167,7 +174,7 @@ const getStyles = props => {
 						shapeDivider: {
 							...getShapeDividerSVGStyles(
 								{
-									...getGroupAttributes(props, [
+									...getStyleCardGroupAttributes(props, [
 										'shapeDivider',
 										'padding',
 									]),

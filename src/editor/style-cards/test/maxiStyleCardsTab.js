@@ -106,6 +106,11 @@ jest.mock('@extensions/style-cards/blockDefaults', () => ({
 	SC_BLOCK_DEFAULTS_EXCLUDED_ATTRIBUTES:
 		'scBlockDefaultsExcludedAttributes',
 	debugSCBlockDefaults: jest.fn(),
+	getLayoutDebugValueSummary: jest.fn(values =>
+		Object.entries(values)
+			.map(([key, value]) => `${key}=${value}`)
+			.join(', ')
+	),
 	getBlockDefaultKey: (block, attr) => `${block}-${attr}`,
 	getShippedBlockDefault: jest.fn((block, attr, fallback) => fallback),
 	getUnitAttribute: attr => {

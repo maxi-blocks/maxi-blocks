@@ -54,6 +54,7 @@ jest.mock('src/extensions/style-cards/getActiveStyleCard.js', () => {
 import getStyles from '../styles';
 import { getBlockDefaultKey } from '@extensions/style-cards/blockDefaults';
 import frontendStyleGenerator from '@extensions/styles/frontendStyleGenerator';
+import styleGenerator from '@extensions/styles/styleGenerator';
 import styleResolver from '@extensions/styles/styleResolver';
 
 const getBaseStyleCard = () => ({
@@ -223,5 +224,52 @@ describe('container-maxi styles', () => {
 		expect(frontendCss).toContain(
 			`@media only screen and (max-width:1920px){body.maxi-blocks--active #${uniqueID}{min-width:initial;padding-top:var(--maxi-light-block-default-container-maxi-padding-top-xl, 200px);}}`
 		);
+	});
+
+	it('renders editor and frontend CSS with XL Style Card padding over a 150px library container', () => {
+		const uniqueID = 'container-maxi-sc-editor-xl-padding-test-u';
+
+		mockActiveStyleCard.light.styleCard.blockDefaults = {
+			[getBlockDefaultKey('container-maxi', 'padding-top-xl')]: '20',
+			[getBlockDefaultKey('container-maxi', 'padding-top-unit-xl')]:
+				'px',
+			[getBlockDefaultKey('container-maxi', 'padding-bottom-xl')]: '20',
+			[getBlockDefaultKey('container-maxi', 'padding-bottom-unit-xl')]:
+				'px',
+		};
+
+		const resolvedStyles = styleResolver({
+			styles: getStyles({
+				uniqueID,
+				blockStyle: 'light',
+				'padding-top-general': '150',
+				'padding-top-unit-general': 'px',
+				'padding-top-xxl': '200',
+				'padding-top-unit-xxl': 'px',
+				'padding-top-xl': '150',
+				'padding-top-unit-xl': 'px',
+				'padding-bottom-general': '150',
+				'padding-bottom-unit-general': 'px',
+				'padding-bottom-xxl': '200',
+				'padding-bottom-unit-xxl': 'px',
+				'padding-bottom-xl': '150',
+				'padding-bottom-unit-xl': 'px',
+			}),
+			breakpoints,
+			uniqueID,
+		});
+
+		const frontendCss = frontendStyleGenerator(
+			Object.entries(resolvedStyles)[0]
+		);
+		const editorCss = styleGenerator(resolvedStyles, true, false, 'xl');
+
+		expect(frontendCss).toContain(
+			`padding-top:var(--maxi-light-block-default-container-maxi-padding-top-xl, 20px);padding-bottom:var(--maxi-light-block-default-container-maxi-padding-bottom-xl, 20px);`
+		);
+		expect(editorCss).toContain(
+			`padding-top: var(--maxi-light-block-default-container-maxi-padding-top-xl, 20px); padding-bottom: var(--maxi-light-block-default-container-maxi-padding-bottom-xl, 20px);`
+		);
+		expect(editorCss).not.toContain('maxi-block-indicators');
 	});
 });

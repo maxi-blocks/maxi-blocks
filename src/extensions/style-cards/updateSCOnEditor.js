@@ -86,6 +86,40 @@ const updateSCStyles = async (element, SCObject, gutenbergBlocksStatus) => {
 	}
 };
 
+const getEditorCanvasDocuments = () => {
+	const iframeDocuments = [];
+
+	if (typeof document === 'undefined' || !document.querySelectorAll) {
+		return iframeDocuments;
+	}
+
+	try {
+		document
+			.querySelectorAll('iframe[name="editor-canvas"]')
+			.forEach(iframe => {
+				try {
+					if (iframe?.contentDocument) {
+						iframeDocuments.push(iframe.contentDocument);
+					}
+				} catch {
+					// Iframe access can fail while Gutenberg is replacing the canvas.
+				}
+			});
+	} catch {
+		// Keep Style Card updates working in non-browser test/runtime contexts.
+	}
+
+	return iframeDocuments;
+};
+
+const getStyleCardUpdateTargets = rawElements =>
+	Array.from(
+		new Set([
+			...(isArray(rawElements) ? rawElements : [rawElements]),
+			...getEditorCanvasDocuments(),
+		])
+	).filter(Boolean);
+
 const updateSCOnEditor = (
 	styleCards,
 	activeSCColour,
@@ -127,6 +161,7 @@ const updateSCOnEditor = (
 	const allSCFonts = getSCFontsData(SCObject);
 	const SCVariableString = createSCStyleString(SCObject);
 	const siteEditorPreviewIframes = getSiteEditorPreviewIframes();
+	const elements = getStyleCardUpdateTargets(rawElements);
 	const blockDefaultVariables = Object.fromEntries(
 		Object.entries(SCObject).filter(([key]) =>
 			key.includes('block-default')
@@ -138,7 +173,7 @@ const updateSCOnEditor = (
 		blockDefaultVariables,
 		hasBlockDefaultVariables: !isEmpty(blockDefaultVariables),
 		isPreview,
-		targetCount: isArray(rawElements) ? rawElements.length : 1,
+		targetCount: elements.length,
 	});
 
 	// FSE editor patterns previews - handle white overlay
@@ -165,9 +200,6 @@ const updateSCOnEditor = (
 			}
 		});
 	}
-
-	// Always update SC variables in the main elements (even if preview iframes exist)
-	const elements = isArray(rawElements) ? rawElements : [rawElements];
 
 	elements.forEach(element => {
 		if (!element) return;

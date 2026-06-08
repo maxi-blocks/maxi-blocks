@@ -42,6 +42,8 @@ const FullSizeControl = props => {
 		isBlockFullWidth,
 		allowForceAspectRatio = false,
 		showFullWidth = false,
+		forceSizeAdvancedOptions = false,
+		hideSizeAdvancedOptionsToggle = false,
 		block = false,
 		isImage = false,
 	} = props;
@@ -92,6 +94,8 @@ const FullSizeControl = props => {
 		!hideWidth &&
 		!isBlockFullWidth &&
 		!getSizeAttribute('width-fit-content');
+	const showSizeAdvancedOptions =
+		forceSizeAdvancedOptions || props[`${prefix}size-advanced-options`];
 
 	return (
 		<div className={classes}>
@@ -241,17 +245,19 @@ const FullSizeControl = props => {
 					optionType='string'
 				/>
 			)}
-			<ToggleSwitch
-				label={__('Set custom min/max values', 'maxi-blocks')}
-				className='maxi-full-size-control__custom-min-max'
-				selected={props[`${prefix}size-advanced-options`] || 0}
-				onChange={val => {
-					onChange({
-						[`${prefix}size-advanced-options`]: val,
-					});
-				}}
-			/>
-			{props[`${prefix}size-advanced-options`] && (
+			{!hideSizeAdvancedOptionsToggle && (
+				<ToggleSwitch
+					label={__('Set custom min/max values', 'maxi-blocks')}
+					className='maxi-full-size-control__custom-min-max'
+					selected={showSizeAdvancedOptions}
+					onChange={val => {
+						onChange({
+							[`${prefix}size-advanced-options`]: val,
+						});
+					}}
+				/>
+			)}
+			{showSizeAdvancedOptions && (
 				<>
 					{!hideMaxWidth && !getSizeAttribute('width-fit-content') && (
 						<AdvancedNumberControl

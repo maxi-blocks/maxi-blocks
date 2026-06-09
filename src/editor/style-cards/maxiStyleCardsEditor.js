@@ -26,6 +26,11 @@ import ReactSelectControl from '@components/react-select-control';
 import MaxiStyleCardsTab from './maxiStyleCardsTab';
 import MaxiModal from '@editor/library/modal';
 import { exportStyleCard, getActiveColourFromSC } from './utils';
+import {
+	areSCSettingsSynced,
+	getLightSettingsForDark,
+	isSyncableSCKey,
+} from './typographySync';
 import { updateSCOnEditor } from '@extensions/style-cards';
 import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
 import { handleSetAttributes } from '@extensions/maxi-block';
@@ -181,6 +186,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		getActiveColourFromSC(activeStyleCard, 4)
 	);
 	const [originalCustomColors, setOriginalCustomColors] = useState([]);
+	// Transient (session-only) per-element override of the typography sync state
+	// on the Dark tab. Keyed by element type (e.g. 'button', 'p', 'h1').
+	// `true` = overridden/unsynced, `false` = synced. Never persisted to the SC.
+	const [typoSyncOverride, setTypoSyncOverride] = useState({});
 
 	useEffect(() => {
 		if (selectedSCValue) {
@@ -199,6 +208,20 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			setOriginalCustomColors(getShapedCustomColors(rawCustomColors));
 		}
 	}, [selectedSCKey, activeSCColour]);
+
+	// Reset the transient typography sync overrides whenever the selected card
+	// changes, so the Dark tab toggles fall back to the derived (comparison) state.
+	useEffect(() => {
+		setTypoSyncOverride({});
+	}, [selectedSCKey]);
+
+	// Whether an element's typography on the Dark tab is overridden (unsynced).
+	// Falls back to the derived comparison when the user hasn't toggled it.
+	const isElementOverridden = type => {
+		if (type in typoSyncOverride) return typoSyncOverride[type];
+
+		return !areSCSettingsSynced(selectedSCValue, type);
+	};
 
 	const canBeSaved = keySC => {
 		// Check if style card exists in both current and saved states
@@ -314,28 +337,43 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 			isStyleCard: true,
 		});
 
-		Object.entries(newObj).forEach(([prop, value]) => {
-			if (isTypography) {
-				if (isNil(value)) {
-					delete selectedSCValue[currentSCStyle].styleCard?.[type]?.[
-						prop
-					];
-				}
+		// When this element is synced, mirror the change onto the other tone too.
+		// Only syncable props are mirrored (color and global settings never are),
+		// so changing a color or a global nav option stays scoped to one tone.
+		// Edits normally happen on the Light tab.
+		const changedKeys = Object.keys(newObj);
+		const shouldMirror =
+			!isElementOverridden(type) &&
+			changedKeys.length > 0 &&
+			changedKeys.every(key => isSyncableSCKey(type, key));
+		const otherSCStyle = currentSCStyle === 'light' ? 'dark' : 'light';
+
+		const writeProp = (SCStyle, sc, prop, value) => {
+			if (isTypography && isNil(value)) {
+				delete selectedSCValue[SCStyle].styleCard?.[type]?.[prop];
 			}
 
-			newSC = {
-				...newSC,
-				[currentSCStyle]: {
-					...newSC[currentSCStyle],
+			return {
+				...sc,
+				[SCStyle]: {
+					...sc[SCStyle],
 					styleCard: {
-						...newSC[currentSCStyle].styleCard,
+						...sc[SCStyle].styleCard,
 						[type]: {
-							...newSC[currentSCStyle].styleCard[type],
+							...sc[SCStyle].styleCard[type],
 							[prop]: value,
 						},
 					},
 				},
 			};
+		};
+
+		Object.entries(newObj).forEach(([prop, value]) => {
+			newSC = writeProp(currentSCStyle, newSC, prop, value);
+
+			if (shouldMirror) {
+				newSC = writeProp(otherSCStyle, newSC, prop, value);
+			}
 		});
 
 		const newStyleCards = {
@@ -344,6 +382,42 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 				...newSC,
 			},
 		};
+		saveMaxiStyleCards(newStyleCards);
+		updateSCOnEditor(newSC, activeSCColour);
+	};
+
+	// Toggle the settings override for an element on the Dark tab.
+	// `isOverridden` true = unsynced (edit dark independently);
+	// false = re-sync, copying the light settings onto dark (colors and global
+	// settings preserved).
+	const onToggleTypoSync = (type, isOverridden) => {
+		setTypoSyncOverride(prev => ({ ...prev, [type]: isOverridden }));
+
+		// Unsyncing is UI-only; no SC data changes.
+		if (isOverridden) return;
+
+		// Re-sync: copy light syncable settings onto dark, keeping dark colors.
+		const lightSettings = getLightSettingsForDark(selectedSCValue, type);
+
+		const newSC = {
+			...selectedSCValue,
+			dark: {
+				...selectedSCValue.dark,
+				styleCard: {
+					...selectedSCValue.dark.styleCard,
+					[type]: {
+						...selectedSCValue.dark.styleCard[type],
+						...lightSettings,
+					},
+				},
+			},
+		};
+
+		const newStyleCards = {
+			...styleCards,
+			[selectedSCKey]: newSC,
+		};
+
 		saveMaxiStyleCards(newStyleCards);
 		updateSCOnEditor(newSC, activeSCColour);
 	};
@@ -1053,6 +1127,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 											onChangeValue={onChangeValue}
 											breakpoint={breakpoint}
 											currentKey={selectedSCKey}
+											isElementOverridden={
+												isElementOverridden
+											}
+											onToggleTypoSync={onToggleTypoSync}
 										/>
 									),
 								},
@@ -1069,6 +1147,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 											onChangeValue={onChangeValue}
 											breakpoint={breakpoint}
 											currentKey={selectedSCKey}
+											isElementOverridden={
+												isElementOverridden
+											}
+											onToggleTypoSync={onToggleTypoSync}
 										/>
 									),
 								},

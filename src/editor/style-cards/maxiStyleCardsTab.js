@@ -236,6 +236,8 @@ const SCAccordion = props => {
 		disableResponsiveTabs = false,
 		hideLineHeight = false,
 		hideAdvancedTextOptions = false,
+		isElementOverridden = () => false,
+		onToggleTypoSync = () => {},
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -243,6 +245,17 @@ const SCAccordion = props => {
 	);
 
 	const ifNavigationTab = ['navigation'].some(tag => groupAttr === tag);
+
+	// On the Dark tab, syncable settings (typography, plus navigation padding)
+	// can be synced from Light. When synced the override toggle is OFF and those
+	// controls are hidden. Colors and global nav options are handled separately.
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showSyncableSettings =
+		!disableTypography && (!isDarkTab || isOverridden);
+	const overrideLabel = ifNavigationTab
+		? __('Override light tone settings', 'maxi-blocks')
+		: __('Override light tone typography', 'maxi-blocks');
 
 	const overwriteMobile = ifNavigationTab
 		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
@@ -262,7 +275,15 @@ const SCAccordion = props => {
 
 	return (
 		<>
-			{!disableTypography && (
+			{isDarkTab && !disableTypography && (
+				<ToggleSwitch
+					label={overrideLabel}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showSyncableSettings && (
 				<TypographyControl
 					typography={getTypographyFromSC(SC, groupAttr)}
 					className={`maxi-style-cards-control__sc__${groupAttr}-typography`}
@@ -283,6 +304,17 @@ const SCAccordion = props => {
 					disableResponsiveTabs={disableResponsiveTabs}
 					hideLineHeight={hideLineHeight}
 					hideAdvancedTextOptions={hideAdvancedTextOptions}
+				/>
+			)}
+			{/* Item padding is per-tone: synced with Light and hidden on
+			    Dark until overridden (same as typography). */}
+			{ifNavigationTab && showSyncableSettings && (
+				<PaddingControl
+					{...processSCAttributes(SC, 'padding', groupAttr)}
+					label={__('Item padding', 'maxi-blocks')}
+					onChange={obj => onChangeValue(obj, groupAttr)}
+					breakpoint={breakpoint}
+					disableAuto
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -314,15 +346,10 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
-			{ifNavigationTab && (
+			{ifNavigationTab && !isDarkTab && (
 				<>
-					<PaddingControl
-						{...processSCAttributes(SC, 'padding', groupAttr)}
-						label={__('Item padding', 'maxi-blocks')}
-						onChange={obj => onChangeValue(obj, groupAttr)}
-						breakpoint={breakpoint}
-						disableAuto
-					/>
+					{/* The options below are applied globally (no light/dark
+					    separation), so they live on the Light tab only. */}
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(
@@ -420,8 +447,18 @@ const SCAccordion = props => {
 	);
 };
 
-const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
+const MaxiStyleCardsTab = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+}) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
+
+	// Typography sync state/handlers forwarded to each typography-bearing accordion.
+	const typoSyncProps = { isElementOverridden, onToggleTypoSync };
 
 	const getAvailableCustomColors = (styleCard, style) => {
 		if (!styleCard) {
@@ -573,6 +610,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						SCStyle={SCStyle}
 						onChangeValue={onChangeValue}
 						disableResponsiveTabs
+						{...typoSyncProps}
 					/>
 				),
 				classNameItem: `maxi-blocks-sc__type--h${item}`,
@@ -1239,6 +1277,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
@@ -1253,6 +1292,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
@@ -1277,7 +1317,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<SettingTabsControl
-										className="maxi-style-cards-headings-tabs"
+										className='maxi-style-cards-headings-tabs'
 										hasBorder
 										items={headingItems()}
 									/>
@@ -1327,6 +1367,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
@@ -1341,6 +1382,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},

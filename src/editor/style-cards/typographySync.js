@@ -2,6 +2,7 @@
  * Internal dependencies
  */
 import { getTypographyFromSC } from '@extensions/style-cards';
+import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 
 /**
  * External dependencies
@@ -95,3 +96,33 @@ export const areSCSettingsSynced = (selectedSCValue, type) => {
  */
 export const getLightSettingsForDark = (selectedSCValue, type) =>
 	getSyncableSCValues(selectedSCValue.light, type);
+
+/**
+ * Resolves the effective light-tone value for a syncable attribute at a given
+ * breakpoint. Used as the reset target on the Dark tab: resetting a dark setting
+ * falls back to the current light value rather than the factory default.
+ *
+ * @param {Object} selectedSCValue The full SC object with light/dark tones
+ * @param {string} type            The element key
+ * @param {string} target          The base attribute (e.g. 'font-size')
+ * @param {string} breakpoint      The active breakpoint
+ * @return {*} The light value, or undefined when not a syncable attribute
+ */
+export const resolveLightSyncValue = (
+	selectedSCValue,
+	type,
+	target,
+	breakpoint
+) => {
+	if (!selectedSCValue?.light || !isSyncableSCKey(type, target)) {
+		return undefined;
+	}
+
+	const lightValues = getSyncableSCValues(selectedSCValue.light, type);
+
+	return getLastBreakpointAttribute({
+		target,
+		breakpoint,
+		attributes: lightValues,
+	});
+};

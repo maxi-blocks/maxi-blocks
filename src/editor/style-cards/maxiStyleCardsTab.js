@@ -238,6 +238,7 @@ const SCAccordion = props => {
 		hideAdvancedTextOptions = false,
 		isElementOverridden = () => false,
 		onToggleTypoSync = () => {},
+		getDarkResetValue = () => undefined,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -256,6 +257,12 @@ const SCAccordion = props => {
 	const overrideLabel = ifNavigationTab
 		? __('Override light tone settings', 'maxi-blocks')
 		: __('Override light tone typography', 'maxi-blocks');
+
+	// On the Dark tab, resetting a typography setting falls back to the light
+	// value instead of the factory default.
+	const getSCResetValue = isDarkTab
+		? (target, bp) => getDarkResetValue(groupAttr, target, bp)
+		: undefined;
 
 	const overwriteMobile = ifNavigationTab
 		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
@@ -304,6 +311,7 @@ const SCAccordion = props => {
 					disableResponsiveTabs={disableResponsiveTabs}
 					hideLineHeight={hideLineHeight}
 					hideAdvancedTextOptions={hideAdvancedTextOptions}
+					getSCResetValue={getSCResetValue}
 				/>
 			)}
 			{/* Item padding is per-tone: synced with Light and hidden on
@@ -454,11 +462,16 @@ const MaxiStyleCardsTab = ({
 	onChangeValue,
 	isElementOverridden = () => false,
 	onToggleTypoSync = () => {},
+	getDarkResetValue = () => undefined,
 }) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
 
 	// Typography sync state/handlers forwarded to each typography-bearing accordion.
-	const typoSyncProps = { isElementOverridden, onToggleTypoSync };
+	const typoSyncProps = {
+		isElementOverridden,
+		onToggleTypoSync,
+		getDarkResetValue,
+	};
 
 	const getAvailableCustomColors = (styleCard, style) => {
 		if (!styleCard) {

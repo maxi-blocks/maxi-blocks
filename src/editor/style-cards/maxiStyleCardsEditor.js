@@ -30,6 +30,7 @@ import {
 	areSCSettingsSynced,
 	getLightSettingsForDark,
 	isSyncableSCKey,
+	resolveLightSyncValue,
 } from './typographySync';
 import { updateSCOnEditor } from '@extensions/style-cards';
 import { clearCSSVariableCache } from '@extensions/style-cards/getPaletteColor';
@@ -222,6 +223,11 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 
 		return !areSCSettingsSynced(selectedSCValue, type);
 	};
+
+	// Reset target for a syncable setting on the Dark tab: the current light
+	// value, so resetting dark falls back to light rather than the factory default.
+	const getDarkResetValue = (type, target, breakpoint) =>
+		resolveLightSyncValue(selectedSCValue, type, target, breakpoint);
 
 	const canBeSaved = keySC => {
 		// Check if style card exists in both current and saved states
@@ -1131,6 +1137,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 												isElementOverridden
 											}
 											onToggleTypoSync={onToggleTypoSync}
+											getDarkResetValue={
+												getDarkResetValue
+											}
 										/>
 									),
 								},
@@ -1151,6 +1160,9 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 												isElementOverridden
 											}
 											onToggleTypoSync={onToggleTypoSync}
+											getDarkResetValue={
+												getDarkResetValue
+											}
 										/>
 									),
 								},

@@ -321,6 +321,14 @@ const loadFonts = async (
 						? `${weight === '400' ? '' : weight}italic`
 						: weight;
 
+				const getFallbackWeightFile = fontFiles => {
+					if ('400' in fontFiles) return '400';
+
+					return Object.keys(fontFiles).find(weightFile =>
+						/^\d+$/.test(weightFile)
+					);
+				};
+
 				/**
 				 * Returns font weight from weightFile
 				 *
@@ -341,7 +349,11 @@ const loadFonts = async (
 									currentFontStyle
 								);
 								if (!(weightFile in fontFiles)) {
-									weightFile = '400';
+									weightFile =
+										getFallbackWeightFile(fontFiles);
+
+									if (!weightFile) return;
+
 									const newFontWeightArr = uniq(
 										fontWeightArr
 									).filter(value => {

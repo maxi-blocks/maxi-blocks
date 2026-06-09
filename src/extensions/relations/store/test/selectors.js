@@ -25,6 +25,31 @@ describe('relations/selectors', () => {
 			});
 		});
 
+		it('should return relations for a specific trigger uniqueID', () => {
+			const state = {
+				relations: {
+					'trigger-unique-id': {
+						'target-unique-id': 'target-client-id',
+						clientId: 'trigger-client-id',
+					},
+					'other-trigger-id': {
+						'other-target-id': 'other-target-client-id',
+						clientId: 'other-trigger-client-id',
+					},
+				},
+			};
+
+			const result = selectors.receiveRelations(
+				state,
+				'trigger-unique-id'
+			);
+
+			expect(result).toEqual({
+				'target-unique-id': 'target-client-id',
+				clientId: 'trigger-client-id',
+			});
+		});
+
 		it('should return false if state is not provided', () => {
 			const result = selectors.receiveRelations(null);
 			expect(result).toBe(false);

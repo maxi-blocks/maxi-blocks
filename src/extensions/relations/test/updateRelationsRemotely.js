@@ -15,6 +15,23 @@ jest.mock('@wordpress/data', () => ({
 }));
 
 jest.mock('@extensions/relations/utils', () => ({
+	cleanIBStyles: jest.fn(styles => {
+		const cleanedStyles = { ...styles };
+
+		if (cleanedStyles.xxl?.styles?.border !== 'none') return cleanedStyles;
+
+		cleanedStyles.xxl = {
+			...cleanedStyles.xxl,
+			styles: { ...cleanedStyles.xxl.styles },
+		};
+		delete cleanedStyles.xxl.styles.border;
+
+		if (Object.keys(cleanedStyles.xxl.styles).length === 0) {
+			delete cleanedStyles.xxl;
+		}
+
+		return cleanedStyles;
+	}),
 	getSelectedIBSettings: jest.fn(),
 }));
 
@@ -312,6 +329,78 @@ describe('updateRelationsRemotely', () => {
 					}),
 					css: {
 						'border-width': '2px',
+					},
+				}),
+			])
+		);
+	});
+
+	it('should remove empty XXL default border styles when refreshing relations', () => {
+		select.mockReturnValue({
+			getBlockAttributes: jest.fn().mockReturnValue({
+				relations: [
+					{
+						uniqueID: 'target-unique-id',
+						sid: 'border',
+						attributes: {
+							'border-status': true,
+						},
+						css: {
+							general: {
+								styles: {
+									'border-width': '1px',
+								},
+							},
+						},
+					},
+				],
+			}),
+		});
+
+		getSelectedIBSettings.mockReturnValue({
+			prefix: '',
+			attrGroupName: 'border',
+		});
+		getCleanResponseIBAttributes.mockReturnValue({
+			cleanAttributesObject: {
+				'border-width': '2px',
+			},
+			tempAttributes: {},
+		});
+		getIBStylesObj.mockReturnValue({});
+		getIBStyles.mockReturnValue({
+			general: {
+				breakpoint: null,
+				styles: {
+					'border-width': '2px',
+				},
+			},
+			xxl: {
+				breakpoint: 1921,
+				styles: {
+					border: 'none',
+				},
+			},
+		});
+
+		updateRelationsRemotely({
+			blockTriggerClientId: mockBlockTriggerClientId,
+			blockTargetClientId: mockBlockTargetClientId,
+			blockAttributes: mockBlockAttributes,
+			breakpoint: mockBreakpoint,
+		});
+
+		expect(batchRelationsUpdater.addUpdate).toHaveBeenCalledWith(
+			mockBlockTriggerClientId,
+			expect.arrayContaining([
+				expect.objectContaining({
+					css: {
+						general: {
+							breakpoint: null,
+							styles: {
+								'border-width': '2px',
+							},
+						},
 					},
 				}),
 			])

@@ -14,6 +14,7 @@ import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
  */
 const name = 'group-maxi';
 const copyPasteMapping = {
+	_exclude: ['show-warning-box'],
 	settings: {
 		[__('Callout arrow', 'maxi-blocks')]: {
 			group: {
@@ -42,6 +43,9 @@ const copyPasteMapping = {
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},

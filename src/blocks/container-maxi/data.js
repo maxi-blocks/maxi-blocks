@@ -29,20 +29,29 @@ const shapeDividerCopyPasteGenerator = position => {
 				[__(
 					'Divider opacity',
 					'maxi-blocks'
-				)]: `shape-divider-${position}-opacity`,
-				[__('Divider color', 'maxi-blocks')]: [
-					`shape-divider-${position}-palette-color`,
-					`shape-divider-${position}-color`,
-					`shape-divider-${position}-palette-status`,
-				],
+				)]: {
+					props: `shape-divider-${position}-opacity`,
+					hasBreakpoints: true,
+				},
+				[__('Divider color', 'maxi-blocks')]: {
+					props: `shape-divider-${position}`,
+					isPalette: true,
+					hasBreakpoints: true,
+				},
 				[__(
 					'Divider height',
 					'maxi-blocks'
-				)]: `shape-divider-${position}-height`,
+				)]: {
+					props: `shape-divider-${position}-height`,
+					hasBreakpoints: true,
+				},
 				[__(
 					'Divider height unit',
 					'maxi-blocks'
-				)]: `shape-divider-${position}-height-unit`,
+				)]: {
+					props: `shape-divider-${position}-height-unit`,
+					hasBreakpoints: true,
+				},
 				[__(
 					'Divider scroll effect',
 					'maxi-blocks'
@@ -57,6 +66,7 @@ const shapeDividerCopyPasteGenerator = position => {
  */
 const name = 'container-maxi';
 const copyPasteMapping = {
+	_exclude: ['show-warning-box'],
 	settings: {
 		[__('Callout arrow', 'maxi-blocks')]: {
 			group: {
@@ -81,12 +91,18 @@ const copyPasteMapping = {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
 		},
+		[__('Opacity', 'maxi-blocks')]: {
+			template: 'opacity',
+		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
 		},
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 	},
 };
 const customCss = {

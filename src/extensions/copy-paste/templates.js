@@ -171,6 +171,19 @@ const templates = {
 			},
 		},
 	},
+	backgroundActive: {
+		group: {
+			'Background color active': {
+				groupAttributes: ['backgroundActive', 'backgroundColorActive'],
+			},
+			'Background gradient active': {
+				groupAttributes: [
+					'backgroundActive',
+					'backgroundGradientActive',
+				],
+			},
+		},
+	},
 	blockBackground: {
 		groupAttributes: 'blockBackground',
 	},
@@ -196,6 +209,19 @@ const templates = {
 			},
 		},
 	},
+	borderActive: {
+		group: {
+			'Border active': {
+				groupAttributes: 'borderActive',
+			},
+			'Border width active': {
+				groupAttributes: 'borderWidthActive',
+			},
+			'Border radius active': {
+				groupAttributes: 'borderRadiusActive',
+			},
+		},
+	},
 	boxShadow: {
 		group: {
 			'Box shadow': {
@@ -205,6 +231,9 @@ const templates = {
 				groupAttributes: 'boxShadowHover',
 			},
 		},
+	},
+	boxShadowActive: {
+		groupAttributes: 'boxShadowActive',
 	},
 	typography: {
 		group: {
@@ -226,13 +255,17 @@ const templates = {
 		},
 	},
 	opacity: {
-		groupAttributes: 'opacity',
+		groupAttributes: ['opacity', 'opacityHover'],
 	},
 	// Advanced
+	blockSettings: {
+		props: ['ariaLabels', 'blockStyle'],
+	},
 	customCssClasses: {
 		props: 'extraClassName',
 	},
 	anchor: {
+		groupAttributes: 'link',
 		props: [
 			'anchor',
 			'anchorLink',
@@ -259,6 +292,12 @@ const templates = {
 	customCss: {
 		groupAttributes: 'customCss',
 	},
+	advancedCss: {
+		groupAttributes: 'advancedCss',
+	},
+	contextLoop: {
+		groupAttributes: 'contextLoop',
+	},
 	scroll: {
 		groupAttributes: 'scroll',
 	},
@@ -284,6 +323,9 @@ const templates = {
 		groupAttributes: 'zIndex',
 	},
 	advanced: {
+		'Block settings': {
+			template: 'blockSettings',
+		},
 		'Custom CSS classes': {
 			template: 'customCssClasses',
 		},
@@ -301,6 +343,9 @@ const templates = {
 		},
 		'Custom CSS': {
 			template: 'customCss',
+		},
+		'Advanced CSS': {
+			template: 'advancedCss',
 		},
 		Scroll: {
 			template: 'scroll',

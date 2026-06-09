@@ -109,6 +109,11 @@ const loadColumnsTemplate = (
 		)
 	);
 
+	// Bail out when the template name doesn't resolve to a known template
+	// (e.g. an unrecognised value pasted from another block), avoiding a
+	// crash on `template.content`.
+	if (!template) return;
+
 	isRowEmpty
 		? loadTemplate(template, clientId)
 		: updateTemplate(

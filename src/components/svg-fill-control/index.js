@@ -134,7 +134,7 @@ const SVGFillControl = props => {
 		clientId,
 		isHover,
 		isLayer,
-		SVGOptions,
+		SVGOptions = {},
 		breakpoint = '',
 		isIB = false,
 	} = props;
@@ -142,10 +142,11 @@ const SVGFillControl = props => {
 	const classes = classnames('maxi-svg-fill-control', className);
 
 	const SVGElement = SVGOptions['background-svg-SVGElement'];
-	const SVGData = cloneDeep(
-		SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
-			SVGOptions['background-svg-SVGData']
-	);
+	const SVGData =
+		cloneDeep(
+			SVGOptions[getAttributeKey('background-svg-SVGData', isHover)] ||
+				SVGOptions['background-svg-SVGData']
+		) || {};
 
 	const bgImage = Object.values(SVGData)[0]?.imageURL;
 	const [useImage, changeUseImage] = useState(!isEmpty(bgImage));
@@ -305,9 +306,13 @@ const SVGFillControl = props => {
 		);
 	};
 
-	return (
-		<div className={classes}>{getFillItem(Object.entries(SVGData)[0])}</div>
-	);
+	const firstFillEntry = Object.entries(SVGData)[0];
+
+	if (!firstFillEntry) {
+		return <div className={classes} />;
+	}
+
+	return <div className={classes}>{getFillItem(firstFillEntry)}</div>;
 };
 
 export default SVGFillControl;

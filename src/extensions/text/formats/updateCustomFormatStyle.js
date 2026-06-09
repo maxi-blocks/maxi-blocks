@@ -12,8 +12,8 @@ import { isEmpty, isNil, isNumber, isBoolean } from 'lodash';
  * Internal dependencies
  */
 import getCustomFormat from './getCustomFormat';
-import { getBlockStyle } from '@extensions/styles';
-import { getTypographyFromSC } from '@extensions/style-cards';
+import getBlockStyle from '@extensions/styles/getBlockStyle';
+import getTypographyFromSC from '@extensions/style-cards/getTypographyFromSC';
 
 /**
  * Ensures that custom formats on typography is an object
@@ -49,8 +49,9 @@ export const styleObjectManipulator = ({
 	const style = { ...currentStyle };
 	const blockStyle = getBlockStyle();
 
-	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
-	const SC = styleCard || receiveMaxiSelectedStyleCard().value;
+	const styleCardsSelectors = select('maxiBlocks/style-cards');
+	const SC =
+		styleCard || styleCardsSelectors?.receiveMaxiSelectedStyleCard?.().value || {};
 
 	const sameDefaultLevels = ['p', 'ul', 'ol'];
 
@@ -59,7 +60,7 @@ export const styleObjectManipulator = ({
 			? 'p'
 			: textLevel;
 
-	const defaultTypography = getTypographyFromSC(SC[blockStyle], prefix);
+	const defaultTypography = getTypographyFromSC(SC?.[blockStyle] || {}, prefix);
 
 	const getCurrentValue = target =>
 		typography[`${target}-${breakpoint}${isHover ? '-hover' : ''}`];

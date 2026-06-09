@@ -13,6 +13,13 @@ const actions = {
 			targetBlock,
 		};
 	},
+	setRelations(triggerBlock, targetBlocks) {
+		return {
+			type: 'SET_RELATIONS',
+			triggerBlock,
+			targetBlocks,
+		};
+	},
 	removeBlockRelation(uniqueID) {
 		return {
 			type: 'REMOVE_BLOCK_RELATION',

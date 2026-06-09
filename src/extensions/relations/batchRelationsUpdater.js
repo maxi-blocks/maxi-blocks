@@ -4,6 +4,11 @@
 import { dispatch, select } from '@wordpress/data';
 
 /**
+ * Internal dependencies
+ */
+import { debugIB, summarizeRelations } from './debug';
+
+/**
  * Batch Relations Updater
  *
  * Collects updateRelationsRemotely calls and batches them to reduce React re-renders.
@@ -28,6 +33,11 @@ class BatchRelationsUpdater {
 	addUpdate(blockTriggerClientId, newRelations) {
 		// Store the update (will overwrite if same block is updated multiple times)
 		this.pendingUpdates.set(blockTriggerClientId, { newRelations });
+		debugIB('batch-relations-updater.add-update', {
+			blockTriggerClientId,
+			pendingCount: this.pendingUpdates.size,
+			newRelations: summarizeRelations(newRelations),
+		});
 
 		// Schedule flush if not already scheduled
 		if (!this.flushScheduled) {
@@ -52,6 +62,12 @@ class BatchRelationsUpdater {
 		const updatesToProcess = Array.from(this.pendingUpdates.entries());
 		this.pendingUpdates.clear();
 		this.flushScheduled = false;
+		debugIB('batch-relations-updater.flush', {
+			updateCount: updatesToProcess.length,
+			blockTriggerClientIds: updatesToProcess.map(
+				([clientId]) => clientId
+			),
+		});
 
 		const editor = dispatch('core/block-editor');
 		const blockEditor = select('core/block-editor');
@@ -67,13 +83,31 @@ class BatchRelationsUpdater {
 				const blockAttributes =
 					blockEditor.getBlockAttributes(blockTriggerClientId);
 				if (blockAttributes) {
+					debugIB('batch-relations-updater.apply-update', {
+						blockTriggerClientId,
+						previousRelations: summarizeRelations(
+							blockAttributes.relations
+						),
+						nextRelations: summarizeRelations(newRelations),
+					});
+
 					// Mark this specific update as non-persistent
 					editor.__unstableMarkNextChangeAsNotPersistent();
 					editor.updateBlockAttributes(blockTriggerClientId, {
 						relations: newRelations,
 					});
+				} else {
+					debugIB('batch-relations-updater.missing-trigger-block', {
+						blockTriggerClientId,
+						nextRelations: summarizeRelations(newRelations),
+					});
 				}
 			} catch (error) {
+				debugIB('batch-relations-updater.apply-error', {
+					blockTriggerClientId,
+					message: error?.message,
+				});
+
 				// eslint-disable-next-line no-console
 				console.error(
 					`[MaxiBlocks Relations] Error updating relations for ${blockTriggerClientId}:`,

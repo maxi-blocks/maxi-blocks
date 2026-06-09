@@ -56,6 +56,7 @@ import { removeBlockFromColumns } from '@extensions/repeater';
 import processRelations from '@extensions/relations/processRelations';
 import compareVersions from './compareVersions';
 import batchBlockDispatcher from './batchBlockDispatcher';
+import { debugIB, summarizeRelations } from '@extensions/relations/debug';
 import {
 	countProfile,
 	getProfileStart,
@@ -738,25 +739,17 @@ class MaxiBlockComponent extends Component {
 			if (Object.keys(diffAttributes).some(key => key === 'relations')) {
 				const { relations } = this.props.attributes;
 
-				if (
-					relations &&
-					Object.values(
-						select('maxiBlocks/relations').receiveRelations(
-							uniqueID
-						)
-					).length !== relations.length
-				) {
-					relations.forEach(({ uniqueID: targetUniqueID }) =>
-						dispatch('maxiBlocks/relations').addRelation(
-							{ uniqueID, clientId: this.props.clientId },
-							{
-								uniqueID: targetUniqueID,
-								clientId:
-									getClientIdFromUniqueId(targetUniqueID),
-							}
-						)
-					);
-				}
+				debugIB('maxi-block.relations-attribute-changed', {
+					clientId: this.props.clientId,
+					uniqueID: this.props.attributes.uniqueID,
+					previousRelations: summarizeRelations(
+						prevProps.attributes.relations
+					),
+					nextRelations: summarizeRelations(relations),
+				});
+
+				this.syncRelationsStore(relations);
+				this.syncCustomDataStore();
 			}
 
 			// If there's a relation affecting this concrete block, check if is necessary
@@ -785,7 +778,6 @@ class MaxiBlockComponent extends Component {
 		if (this.maxiBlockDidUpdate) {
 			this.maxiBlockDidUpdate(prevProps, prevState, shouldDisplayStyles);
 		}
-
 	}
 
 	componentWillUnmount() {
@@ -1141,28 +1133,68 @@ class MaxiBlockComponent extends Component {
 		}
 	}
 
+	syncRelationsStore(relations = []) {
+		const { clientId, attributes } = this.props;
+		const { uniqueID } = attributes;
+		const unresolvedTargetUniqueIDs = [];
+		const targetBlocks = (relations || []).reduce(
+			(acc, { uniqueID: targetUniqueID }) => {
+				const targetClientId = getClientIdFromUniqueId(targetUniqueID);
+
+				if (!targetUniqueID || !targetClientId) {
+					if (targetUniqueID) {
+						unresolvedTargetUniqueIDs.push(targetUniqueID);
+					}
+					return acc;
+				}
+
+				return [
+					...acc,
+					{
+						uniqueID: targetUniqueID,
+						clientId: targetClientId,
+					},
+				];
+			},
+			[]
+		);
+
+		debugIB('maxi-block.sync-relations-store', {
+			clientId,
+			uniqueID,
+			relations: summarizeRelations(relations),
+			targetBlocks,
+			unresolvedTargetUniqueIDs,
+		});
+
+		dispatch('maxiBlocks/relations').setRelations(
+			{ uniqueID, clientId },
+			targetBlocks
+		);
+	}
+
+	syncCustomDataStore() {
+		const { uniqueID } = this.props.attributes;
+		const customData = this.getCustomData;
+
+		if (!customData) return null;
+
+		debugIB('maxi-block.sync-custom-data-store', {
+			uniqueID,
+			relations: summarizeRelations(customData[uniqueID]?.relations),
+		});
+
+		dispatch('maxiBlocks/customData').updateCustomData(customData);
+
+		return customData[uniqueID]?.relations;
+	}
+
 	setRelations() {
 		if (this.isPatternsPreview || this.templateModal) return;
 
-		const { clientId, attributes } = this.props;
-		const { relations, uniqueID } = attributes;
+		const { relations } = this.props.attributes;
 
-		if (!isEmpty(relations)) {
-			relations.forEach(relation => {
-				const { uniqueID: targetUniqueID } = relation;
-
-				dispatch('maxiBlocks/relations').addRelation(
-					{
-						uniqueID,
-						clientId,
-					},
-					{
-						uniqueID: targetUniqueID,
-						clientId: getClientIdFromUniqueId(targetUniqueID),
-					}
-				);
-			});
-		}
+		if (!isEmpty(relations)) this.syncRelationsStore(relations);
 	}
 
 	get getBreakpoints() {
@@ -1727,10 +1759,7 @@ class MaxiBlockComponent extends Component {
 					'maxiBlockComponent breakpoint cache ineligible viewport'
 				);
 			} else {
-				if (
-					currentBreakpoint === 'xxl' &&
-					this.isXxlStyleCacheDirty
-				) {
+				if (currentBreakpoint === 'xxl' && this.isXxlStyleCacheDirty) {
 					countProfile(
 						'maxiBlockComponent breakpoint cache dirty xxl'
 					);
@@ -1827,8 +1856,12 @@ class MaxiBlockComponent extends Component {
 			shouldGenerateNewStyles = true;
 		}
 
-		const breakpoints = shouldGenerateNewStyles ? this.getBreakpoints : null;
-		const isSiteEditor = shouldGenerateNewStyles ? getIsSiteEditor() : false;
+		const breakpoints = shouldGenerateNewStyles
+			? this.getBreakpoints
+			: null;
+		const isSiteEditor = shouldGenerateNewStyles
+			? getIsSiteEditor()
+			: false;
 		let obj;
 		let customDataRelations;
 		if (shouldGenerateNewStyles) {
@@ -1860,17 +1893,8 @@ class MaxiBlockComponent extends Component {
 			}
 
 			const customDataStart = getProfileStart();
-			const customData = this.getCustomData;
+			customDataRelations = this.syncCustomDataStore();
 			recordProfile('maxiBlockComponent getCustomData', customDataStart);
-			if (customData) {
-				const updateCustomDataStart = getProfileStart();
-				dispatch('maxiBlocks/customData').updateCustomData(customData);
-				recordProfile(
-					'maxiBlockComponent updateCustomData',
-					updateCustomDataStart
-				);
-				customDataRelations = customData[uniqueID]?.relations;
-			}
 		}
 
 		const injectStart = getProfileStart();

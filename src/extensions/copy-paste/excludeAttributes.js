@@ -20,6 +20,19 @@ const GLOBAL_EXCLUDE = [
 	'cl-grandchild-accumulator',
 	'dc-limit-by-archive',
 	'cl-limit-by-archive',
+	'isFirstOnHierarchy',
+	'maxi-version-current',
+	'maxi-version-origin',
+	'preview',
+	'openFirstTime',
+	'transition-block-selected',
+	'transition-button-selected',
+	'transition-canvas-selected',
+	'transition-content-selected',
+	'transition-header-selected',
+	'transition-input-selected',
+	'transition-pane-selected',
+	'transition-transform-selected',
 ];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(

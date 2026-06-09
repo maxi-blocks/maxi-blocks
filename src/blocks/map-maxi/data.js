@@ -28,6 +28,10 @@ const copyPasteMapping = {
 		[__('Configure map', 'maxi-blocks')]: {
 			group: {
 				[__('Map provider', 'maxi-blocks')]: 'map-provider',
+				[__('Map type', 'maxi-blocks')]: 'map-type',
+				[__('Latitude', 'maxi-blocks')]: 'map-latitude',
+				[__('Longitude', 'maxi-blocks')]: 'map-longitude',
+				[__('Zoom', 'maxi-blocks')]: 'map-zoom',
 				[__('Minimum zoom', 'maxi-blocks')]: 'map-min-zoom',
 				[__('Maximum zoom', 'maxi-blocks')]: 'map-max-zoom',
 			},
@@ -39,6 +43,9 @@ const copyPasteMapping = {
 					'map-marker-icon',
 					'map-marker',
 				],
+				[__('Marker style', 'maxi-blocks')]: {
+					groupAttributes: 'svg',
+				},
 				[__('Marker fill colour', 'maxi-blocks')]: {
 					props: 'svg-fill',
 					isPalette: true,

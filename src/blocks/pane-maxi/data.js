@@ -12,14 +12,60 @@ import transitionDefault from '@extensions/styles/transitions/transitionDefault'
 const headerPrefix = 'header-';
 const contentPrefix = 'content-';
 
+const paneSectionCopyPasteMapping = prefix => ({
+	[__('Background', 'maxi-blocks')]: {
+		template: 'background',
+		prefix,
+	},
+	[__('Active background', 'maxi-blocks')]: {
+		template: 'backgroundActive',
+		prefix,
+	},
+	[__('Border', 'maxi-blocks')]: {
+		template: 'border',
+		prefix,
+	},
+	[__('Active border', 'maxi-blocks')]: {
+		template: 'borderActive',
+		prefix,
+	},
+	[__('Box shadow', 'maxi-blocks')]: {
+		template: 'boxShadow',
+		prefix,
+	},
+	[__('Active box shadow', 'maxi-blocks')]: {
+		template: 'boxShadowActive',
+		prefix,
+	},
+	[__('Size', 'maxi-blocks')]: {
+		template: 'size',
+		prefix,
+	},
+	[__('Margin', 'maxi-blocks')]: {
+		groupAttributes: 'margin',
+		prefix,
+	},
+	[__('Padding', 'maxi-blocks')]: {
+		groupAttributes: 'padding',
+		prefix,
+	},
+});
+
 /**
  * Data object
  */
 const name = 'pane-maxi';
 const copyPasteMapping = {
+	_exclude: ['accordionLayout', 'accordionUniqueId', 'title', 'titleLevel'],
 	settings: {
 		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
+		},
+		[__('Header', 'maxi-blocks')]: {
+			group: paneSectionCopyPasteMapping(headerPrefix),
+		},
+		[__('Content', 'maxi-blocks')]: {
+			group: paneSectionCopyPasteMapping(contentPrefix),
 		},
 		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
@@ -53,6 +99,9 @@ const copyPasteMapping = {
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 	},
 };
 

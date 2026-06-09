@@ -30,6 +30,9 @@ const copyPasteMapping = {
 	settings: {
 		[__('Video', 'maxi-blocks')]: {
 			group: {
+				[__('Video settings', 'maxi-blocks')]: {
+					groupAttributes: 'video',
+				},
 				[__('Url', 'maxi-blocks')]: ['url', 'embedUrl', 'videoType'],
 				[__('Video type', 'maxi-blocks')]: 'playerType',
 				[__('Start time', 'maxi-blocks')]: 'startTime',
@@ -54,11 +57,14 @@ const copyPasteMapping = {
 		},
 		[__('Video overlay', 'maxi-blocks')]: {
 			group: {
+				[__('Overlay settings', 'maxi-blocks')]: {
+					groupAttributes: 'videoOverlay',
+				},
 				[__('Overlay background colour', 'maxi-blocks')]: {
 					groupAttributes: ['background', 'backgroundColor'],
 				},
 				[__('Play button', 'maxi-blocks')]: {
-					groupAttributes: 'icon',
+					groupAttributes: ['icon', 'iconHover'],
 					prefix: 'play-',
 				},
 			},
@@ -66,37 +72,68 @@ const copyPasteMapping = {
 		[__('Popup settings', 'maxi-blocks')]: {
 			group: {
 				[__('Lightbox background', 'maxi-blocks')]: {
-					groupAttributes: ['background', 'backgroundColor'],
-					prefix: 'lightbox-',
+					groupAttributes: 'videoPopup',
 				},
 				[__('Close button', 'maxi-blocks')]: {
-					groupAttributes: 'icon',
+					groupAttributes: ['icon', 'iconHover'],
 					prefix: 'close-',
 				},
-				[__('Pop animation', 'maxi-blocks')]: 'popAnimation',
+				[__('Pop animation', 'maxi-blocks')]: [
+					'popAnimation',
+					'popupAnimationDuration',
+					'popupAnimationDurationUnit',
+				],
 			},
 		},
 		[__('Image', 'maxi-blocks')]: {
 			group: {
 				[__('Hide image(icon only)', 'maxi-blocks')]: 'hideImage',
 				[__('Overlay background', 'maxi-blocks')]: {
-					groupAttributes: ['background', 'backgroundColor'],
-					prefix: 'overlay-',
+					groupAttributes: 'videoOverlay',
 				},
 				[__('Image source', 'maxi-blocks')]: 'overlay-mediaURL',
 			},
 		},
-		[__('Border', 'maxi-blocks')]: {
-			template: 'border',
-			prefix: 'overlay-',
+		[__('Size', 'maxi-blocks')]: {
+			template: 'size',
 		},
 		[__('Box shadow', 'maxi-blocks')]: {
 			template: 'boxShadow',
-			prefix: 'overlay-',
+		},
+		[__('Border', 'maxi-blocks')]: {
+			template: 'border',
 		},
 		[__('Margin/Padding', 'maxi-blocks')]: {
 			template: 'marginPadding',
+		},
+		[__('Video size', 'maxi-blocks')]: {
+			template: 'size',
+			prefix: 'video-',
+		},
+		[__('Video box shadow', 'maxi-blocks')]: {
+			template: 'boxShadow',
+			prefix: 'video-',
+		},
+		[__('Video overlay media', 'maxi-blocks')]: {
+			template: 'size',
+			prefix: 'overlay-media-',
+		},
+		[__('Video border', 'maxi-blocks')]: {
+			template: 'border',
+			prefix: 'video-',
+		},
+		[__('Video margin/padding', 'maxi-blocks')]: {
+			template: 'marginPadding',
+			prefix: 'video-',
+		},
+		[__('Video overlay style', 'maxi-blocks')]: {
+			template: 'boxShadow',
 			prefix: 'overlay-',
+		},
+	},
+	canvas: {
+		[__('Background', 'maxi-blocks')]: {
+			template: 'blockBackground',
 		},
 	},
 	advanced: {

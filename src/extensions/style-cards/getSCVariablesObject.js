@@ -80,6 +80,7 @@ const getSCVariablesObject = (
 		'divider',
 		'link',
 		'navigation',
+		'number-counter',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const settings = [
@@ -101,6 +102,9 @@ const getSCVariablesObject = (
 		'padding-left',
 		'padding-right',
 	];
+	const numberCounterSettings = ['font-family', 'font-size', 'font-weight'];
+	const getElementSettings = element =>
+		element === 'number-counter' ? numberCounterSettings : settings;
 
 	const mergeStyleCards = (defaultStyleCard, styleCard) =>
 		merge(
@@ -129,9 +133,12 @@ const getSCVariablesObject = (
 
 	styles.forEach(style => {
 		elements.forEach(element => {
-			const obj = getParsedObj(SC[style][element]);
+			const obj = getParsedObj(SC[style][element] || {});
+
+			if (isEmpty(obj)) return;
+
 			if (!elementsForColor.includes(element))
-				settings.forEach(setting => {
+				getElementSettings(element).forEach(setting => {
 					const isFontFamily = setting === 'font-family';
 
 					breakpoints.forEach(breakpoint => {
@@ -360,6 +367,22 @@ const getSCVariablesObject = (
 					if (obj['menu-mobile-bg-color-global'])
 						response[`--maxi-${style}-menu-mobile-bg`] =
 							getColorString(obj, 'menu-mobile-bg', style);
+
+					break;
+
+				case 'number-counter':
+					if (obj['color-global'])
+						response[`--maxi-${style}-${element}-color`] =
+							getColorString(obj, null, style);
+
+					if (obj['circle-background-color-global'])
+						response[
+							`--maxi-${style}-${element}-circle-background`
+						] = getColorString(obj, 'circle-background', style);
+
+					if (obj['circle-bar-color-global'])
+						response[`--maxi-${style}-${element}-circle-bar`] =
+							getColorString(obj, 'circle-bar', style);
 
 					break;
 

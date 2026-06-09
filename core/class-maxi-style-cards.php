@@ -69,6 +69,7 @@ class MaxiBlocks_StyleCards
         // Run the migrations once
         add_action('admin_init', [$this, 'run_link_palette_migration']);
         add_action('admin_init', [$this, 'run_text_wrap_migration']);
+        add_action('admin_init', [$this, 'run_number_counter_migration']);
 
         // Clear cache when style cards are updated
         add_action('maxi_blocks_style_card_updated', [__CLASS__, 'clear_cache']);
@@ -1164,6 +1165,165 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Default Number Counter style card values injected into saved SCs
+     * that predate the Number Counter style-card wiring.
+     */
+    private static $number_counter_defaults = [
+        'color-global'                        => false,
+        'palette-status'                      => true,
+        'palette-color'                       => 4,
+        'palette-opacity'                     => 1,
+        'color'                               => '',
+        'circle-background-color-global'      => false,
+        'circle-background-palette-status'    => true,
+        'circle-background-palette-color'     => 2,
+        'circle-background-palette-opacity'   => 1,
+        'circle-background-color'             => '',
+        'circle-bar-color-global'             => false,
+        'circle-bar-palette-status'           => true,
+        'circle-bar-palette-color'            => 4,
+        'circle-bar-palette-opacity'          => 1,
+        'circle-bar-color'                    => '',
+        'font-family-general'                 => 'Roboto',
+        'font-size-general'                   => 40,
+        'font-size-unit-general'              => 'px',
+        'font-weight-general'                 => 400,
+    ];
+
+    /**
+     * Migrate style cards to add number-counter element and update the
+     * pre-generated CSS strings so the frontend picks up NC variables
+     * without the user needing to open the SC editor first.
+     *
+     * @return bool True if migration was performed
+     */
+    public static function migrate_style_cards_number_counter()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        if (!is_array($style_cards)) {
+            return false;
+        }
+
+        $updated = false;
+        $modes = ['dark', 'light'];
+
+        // Step 1: inject number-counter defaults into style_cards_current JSON
+        foreach ($style_cards as $key => $sc) {
+            foreach ($modes as $mode) {
+                if (!isset($sc[$mode]['defaultStyleCard'])) {
+                    continue;
+                }
+
+                if (!isset($sc[$mode]['defaultStyleCard']['number-counter'])) {
+                    $style_cards[$key][$mode]['defaultStyleCard']['number-counter'] =
+                        self::$number_counter_defaults;
+                    $updated = true;
+                }
+            }
+        }
+
+        if ($updated) {
+            $wpdb->update(
+                $wpdb->prefix . 'maxi_blocks_general',
+                ['object' => json_encode($style_cards)],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        // Step 2: inject NC CSS variables and rules into sc_string
+        $sc_string_raw = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT object FROM {$wpdb->prefix}maxi_blocks_general WHERE id = %s",
+                'sc_string'
+            )
+        );
+
+        if (!$sc_string_raw) {
+            return $updated;
+        }
+
+        $sc_string = maybe_unserialize($sc_string_raw);
+        if (!is_array($sc_string)) {
+            return $updated;
+        }
+
+        $css_updated = false;
+
+        // NC CSS variables to inject into :root{...}
+        $nc_vars =
+            '--maxi-light-number-counter-font-family-general:"Roboto";'
+            . '--maxi-light-number-counter-font-size-general:40px;'
+            . '--maxi-light-number-counter-font-weight-general:400;'
+            . '--maxi-dark-number-counter-font-family-general:"Roboto";'
+            . '--maxi-dark-number-counter-font-size-general:40px;'
+            . '--maxi-dark-number-counter-font-weight-general:400;';
+
+        // NC CSS rules for typography
+        $nc_style_light =
+            'body.maxi-blocks--active .maxi-light.maxi-number-counter-block .maxi-number-counter__box__text '
+            . '{font-family: var(--maxi-light-number-counter-font-family-general); font-size: var(--maxi-light-number-counter-font-size-general); font-weight: var(--maxi-light-number-counter-font-weight-general);}'
+            . 'body.maxi-blocks--active .maxi-light .maxi-number-counter-block .maxi-number-counter__box__text '
+            . '{font-family: var(--maxi-light-number-counter-font-family-general); font-size: var(--maxi-light-number-counter-font-size-general); font-weight: var(--maxi-light-number-counter-font-weight-general);}';
+
+        $nc_style_dark =
+            'body.maxi-blocks--active .maxi-dark.maxi-number-counter-block .maxi-number-counter__box__text '
+            . '{font-family: var(--maxi-dark-number-counter-font-family-general); font-size: var(--maxi-dark-number-counter-font-size-general); font-weight: var(--maxi-dark-number-counter-font-weight-general);}'
+            . 'body.maxi-blocks--active .maxi-dark .maxi-number-counter-block .maxi-number-counter__box__text '
+            . '{font-family: var(--maxi-dark-number-counter-font-family-general); font-size: var(--maxi-dark-number-counter-font-size-general); font-weight: var(--maxi-dark-number-counter-font-weight-general);}';
+
+        $nc_styles = $nc_style_light . $nc_style_dark;
+
+        $var_keys   = ['_maxi_blocks_style_card', '_maxi_blocks_style_card_preview'];
+        $style_keys = ['_maxi_blocks_style_card_styles', '_maxi_blocks_style_card_styles_preview'];
+
+        foreach ($var_keys as $vk) {
+            if (!empty($sc_string[$vk]) && strpos($sc_string[$vk], 'number-counter') === false) {
+                $closing = strrpos($sc_string[$vk], '}');
+                if ($closing !== false) {
+                    $sc_string[$vk] = substr_replace($sc_string[$vk], $nc_vars, $closing, 0);
+                    $css_updated = true;
+                }
+            }
+        }
+
+        foreach ($style_keys as $sk) {
+            if (isset($sc_string[$sk]) && strpos($sc_string[$sk], 'number-counter') === false) {
+                $sc_string[$sk] .= $nc_styles;
+                $css_updated = true;
+            }
+        }
+
+        if ($css_updated) {
+            $wpdb->update(
+                $wpdb->prefix . 'maxi_blocks_general',
+                ['object' => serialize($sc_string)],
+                ['id' => 'sc_string']
+            );
+            $updated = true;
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Run the number-counter style card migration once.
+     */
+    public function run_number_counter_migration()
+    {
+        if (get_option('maxi_blocks_number_counter_sc_migrated') !== 'yes') {
+            self::migrate_style_cards_number_counter();
+            update_option('maxi_blocks_number_counter_sc_migrated', 'yes');
+        }
+    }
+
+    /**
      * Helper function to get WP native styles
      */
     private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
@@ -1546,7 +1706,7 @@ class MaxiBlocks_StyleCards
 
         $organized_values = [];
         $styles = ['light', 'dark'];
-        $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation'];
+        $elements = ['button', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'icon', 'divider', 'link', 'navigation', 'number-counter'];
         $breakpoints_keys = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
         $settings = [
             'font-family',
@@ -1777,7 +1937,7 @@ class MaxiBlocks_StyleCards
         $is_backend = $args['is_backend'] ?? false;
 
         $response = '';
-        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation', 'button'];
+        $levels = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'navigation', 'button', 'number-counter'];
 
         $add_styles_by_breakpoint = function ($breakpoint, $second_prefix = '') use (
             $organized_values,
@@ -1796,8 +1956,8 @@ class MaxiBlocks_StyleCards
 
             // Process each level's sentences
             foreach ($breakpoint_level_sentences as $level => $sentences) {
-                if ($level === 'navigation' || $level === 'button') {
-                    continue; // Skip navigation and button here as we'll handle them separately
+                if ($level === 'navigation' || $level === 'button' || $level === 'number-counter') {
+                    continue;
                 }
 
                 // Remove margin-bottom sentences
@@ -1872,6 +2032,29 @@ class MaxiBlocks_StyleCards
                     }
 
                     $added_response .= "}";
+                }
+            }
+
+            // Number Counter Maxi
+            if (isset($breakpoint_level_sentences['number-counter']) && !empty($breakpoint_level_sentences['number-counter'])) {
+                $nc_sentences = $breakpoint_level_sentences['number-counter'];
+
+                foreach ($nc_sentences as $key => $sentence) {
+                    if (strpos($sentence, 'margin-bottom') !== false) {
+                        unset($nc_sentences[$key]);
+                    }
+                }
+
+                if (!empty($nc_sentences)) {
+                    $nc_styles_str = implode(' ', $nc_sentences);
+                    $nc_selectors = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-number-counter-block .maxi-number-counter__box__text",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-number-counter-block .maxi-number-counter__box__text",
+                    ];
+
+                    foreach ($nc_selectors as $nc_selector) {
+                        $added_response .= "{$nc_selector} {{$nc_styles_str}}";
+                    }
                 }
             }
 

@@ -345,6 +345,8 @@ const TypographyControl = props => {
 		disablePalette = false,
 		disableFontFamily = false,
 		disableResponsiveTabs = false,
+		hideLineHeight = false,
+		hideAdvancedTextOptions = false,
 		clientId,
 		styleCardPrefix,
 		allowLink = false,
@@ -879,7 +881,7 @@ const TypographyControl = props => {
 						</div>
 
 						<div className='maxi-typography-control__spacing-controls'>
-							<AdvancedNumberControl
+							{!hideLineHeight && <AdvancedNumberControl
 								className='maxi-typography-control__line-height'
 								label={__('Line height', 'maxi-blocks')}
 								enableUnit
@@ -933,7 +935,7 @@ const TypographyControl = props => {
 									'%',
 									'-',
 								]}
-							/>
+							/>}
 							{showBottomGap && (
 								<AdvancedNumberControl
 									className='maxi-typography-control__bottom-gap'
@@ -1339,6 +1341,8 @@ const TypographyControl = props => {
 								<hr className='maxi-typography-control__separator' />
 							)}
 
+						{!hideAdvancedTextOptions && (
+						<>
 						{/* Toggle button for advanced text options */}
 						<div className='maxi-typography-control__advanced-toggle'>
 							<Button
@@ -1996,6 +2000,8 @@ const TypographyControl = props => {
 									</>
 								)}
 							</div>
+						)}
+						</>
 						)}
 					</>
 				)}

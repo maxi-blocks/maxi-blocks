@@ -48,7 +48,6 @@ describe('getNumberCounterStyles', () => {
 			'number-counter-circle-bar-palette-status-general': true,
 			'number-counter-circle-bar-palette-color-general': 4,
 			'number-counter-title-font-size-general': 40,
-			'font-family-general': 'Roboto',
 		};
 		const target = '.maxi-number-counter__box';
 		const blockStyle = 'light';
@@ -56,5 +55,96 @@ describe('getNumberCounterStyles', () => {
 		const result = getNumberCounterStyles({ obj, target, blockStyle });
 
 		expect(result).toMatchSnapshot();
+	});
+
+	it('Uses Style Card variables for connected Number Counter colours', () => {
+		const obj = {
+			'number-counter-text-palette-status-general': true,
+			'number-counter-text-palette-sc-status-general': false,
+			'number-counter-text-palette-color-general': 4,
+			'number-counter-text-palette-opacity-general': 0.8,
+			'number-counter-circle-background-palette-status': true,
+			'number-counter-circle-background-palette-sc-status': false,
+			'number-counter-circle-background-palette-color': 2,
+			'number-counter-circle-background-palette-opacity': 0.7,
+			'number-counter-circle-bar-palette-status-general': true,
+			'number-counter-circle-bar-palette-sc-status-general': false,
+			'number-counter-circle-bar-palette-color-general': 6,
+			'number-counter-circle-bar-palette-opacity-general': 0.6,
+		};
+
+		const result = getNumberCounterStyles({
+			obj,
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general.color
+		).toBe(
+			'var(--maxi-light-number-counter-color,rgba(var(--maxi-light-color-4,255,74,23),0.8))'
+		);
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__background'
+			].numberCounterBackground.general.stroke
+		).toBe(
+			'var(--maxi-light-number-counter-circle-background,rgba(var(--maxi-light-color-2,242,249,253),0.7))'
+		);
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__circle'
+			].numberCounterCircleBar.general.stroke
+		).toBe(
+			'var(--maxi-light-number-counter-circle-bar,rgba(var(--maxi-light-color-6,201,52,10),0.6))'
+		);
+	});
+
+	it('Does not emit a block font override when no font family is set', () => {
+		const result = getNumberCounterStyles({
+			obj: {},
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general['font-family']
+		).toBeUndefined();
+	});
+
+	it('Keeps explicit Roboto font family overrides', () => {
+		const result = getNumberCounterStyles({
+			obj: {
+				'font-family-general': 'Roboto',
+			},
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general['font-family']
+		).toBe('Roboto');
+	});
+
+	it('Keeps explicit Number Counter font family overrides', () => {
+		const result = getNumberCounterStyles({
+			obj: {
+				'font-family-general': 'Poppins',
+			},
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general['font-family']
+		).toBe('Poppins');
 	});
 });

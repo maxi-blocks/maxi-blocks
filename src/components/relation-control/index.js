@@ -17,17 +17,30 @@ import TextControl from '@components/text-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
 import BlockSelectControl from './BlockSelectControl';
+import {
+	getRelationsForDisplay,
+	getRelationsWithChangedTarget,
+	getUnresolvedTargetRelations,
+} from './utils';
 import { createTransitionObj, getGroupAttributes } from '@extensions/styles';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
 import { getSiteEditorIframeBody } from '@extensions/fse';
 import { goThroughMaxiBlocks } from '@extensions/maxi-block';
 import getCleanResponseIBAttributes from '@extensions/relations/getCleanResponseIBAttributes';
 import getIBOptionsFromBlockData from '@extensions/relations/getIBOptionsFromBlockData';
-import { getSelectedIBSettings } from '@extensions/relations/utils';
+import {
+	cleanIBStyles,
+	getSelectedIBSettings,
+} from '@extensions/relations/utils';
 import getIBStylesObj from '@extensions/relations/getIBStylesObj';
 import getIBStyles from '@extensions/relations/getIBStyles';
 import getHoverStatus from '@extensions/relations/getHoverStatus';
 import SettingTabsIndicatorContext from '@extensions/indicators/context';
+import {
+	debugIB,
+	summarizeRelation,
+	summarizeRelations,
+} from '@extensions/relations/debug';
 
 /**
  * External dependencies
@@ -63,26 +76,30 @@ const RelationControl = props => {
 
 	// UseRef to prevent infinite loops during attribute updates
 	const isUpdating = useRef(false);
-	const prevRawRelationsRef = useRef(rawRelations);
-
-	useEffect(() => {
-		if (prevRawRelationsRef.current !== rawRelations) {
-			prevRawRelationsRef.current = rawRelations;
-		}
-	}, [rawRelations]);
 
 	// Track highlighted blocks for cleanup
 	const highlightedBlocks = useRef(new Set());
 	const hoveredUniqueIdRef = useRef(null);
-	const onChangeRef = useRef(null);
-	const lastCleanedRef = useRef(null);
 
-	const relations = useMemo(() => {
-		const filtered = (rawRelations || []).filter(
-			r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+	const relations = useMemo(
+		() => getRelationsForDisplay(rawRelations),
+		[rawRelations]
+	);
+
+	useEffect(() => {
+		const unresolvedRelations = getUnresolvedTargetRelations(
+			rawRelations,
+			getClientIdFromUniqueId
 		);
-		return filtered;
-	}, [rawRelations]);
+
+		if (isEmpty(unresolvedRelations)) return;
+
+		debugIB('relation-control.unresolved-targets-preserved', {
+			triggerUniqueID: uniqueID,
+			unresolvedRelations: summarizeRelations(unresolvedRelations),
+			relations: summarizeRelations(relations),
+		});
+	}, [rawRelations, relations, uniqueID]);
 
 	const blockDataByClientId = useSelect(
 		selectFn => {
@@ -137,10 +154,6 @@ const RelationControl = props => {
 		}
 	};
 
-	useEffect(() => {
-		onChangeRef.current = onChange;
-	}, [onChange]);
-
 	// Cleanup on unmount
 	useEffect(() => {
 		return () => {
@@ -153,29 +166,6 @@ const RelationControl = props => {
 			highlightedBlocks.current.clear();
 		};
 	}, []);
-
-	useEffect(() => {
-		if (!rawRelations || !onChangeRef.current) return;
-
-		// Only clean up relations if blocks were actually deleted
-		// Don't trigger on every render or attribute change
-		const hasInvalidRelations = rawRelations.some(
-			r =>
-				r.uniqueID &&
-				!isEmpty(r.uniqueID) &&
-				!getClientIdFromUniqueId(r.uniqueID)
-		);
-
-		if (hasInvalidRelations && rawRelations.length !== relations.length) {
-			// Prevent infinite loop by checking if we've already processed this cleanup
-			if (isEqual(lastCleanedRef.current, relations)) {
-				return;
-			}
-
-			lastCleanedRef.current = cloneDeep(relations);
-			onChangeRef.current({ relations });
-		}
-	}, [rawRelations, relations]);
 
 	useEffect(() => {
 		const currentHovered = hoveredUniqueIdRef.current;
@@ -199,9 +189,29 @@ const RelationControl = props => {
 		rels.length ? Math.max(...rels.map(r => r.id || 0)) + 1 : 1;
 
 	const onChangeRelation = (rels, id, obj) => {
-		const newRels = cloneDeep(rels).map(r =>
-			r.id === id ? { ...r, ...obj } : r
-		);
+		const previousRelation = rels.find(r => r.id === id);
+		const newRels = getRelationsWithChangedTarget(cloneDeep(rels), id, obj);
+		const nextRelation = newRels.find(r => r.id === id);
+		const swappedRelations =
+			obj?.uniqueID && previousRelation?.uniqueID
+				? newRels.filter(
+						r =>
+							r.id !== id &&
+							r.uniqueID === previousRelation.uniqueID
+				  )
+				: [];
+
+		debugIB('relation-control.change-relation', {
+			triggerUniqueID: uniqueID,
+			relationId: id,
+			changeKeys: Object.keys(obj),
+			change: obj,
+			before: summarizeRelation(previousRelation),
+			after: summarizeRelation(nextRelation),
+			swappedRelations: summarizeRelations(swappedRelations),
+			allRelations: summarizeRelations(newRels),
+		});
+
 		onChange({ relations: newRels });
 	};
 
@@ -229,6 +239,13 @@ const RelationControl = props => {
 		}
 
 		// 4. Dispatch the change
+		debugIB('relation-control.remove-relation', {
+			triggerUniqueID: uniqueID,
+			relationId: id,
+			removed: summarizeRelation(removedRelation),
+			nextRelations: summarizeRelations(newRelations),
+		});
+
 		onChange(updateObj);
 	};
 
@@ -294,45 +311,45 @@ const RelationControl = props => {
 							selectedSettings?.prefix || ''
 						),
 						attributes: attributesWithId,
-					blockAttributes: currentActualAttributes,
-					onChange: async newValues => {
-						if (isUpdating.current) {
-							return;
-						}
-
-						const { isReset, meta, ...cleanValues } =
-							newValues || {};
-
-						// USE DEEP EQUALITY: Prevents false positives with nested objects
-						const hasChanged = Object.keys(cleanValues).some(
-							key =>
-								!isEqual(
-									cleanValues[key],
-									currentActualAttributes[key]
-								)
-						);
-
-						if (hasChanged) {
-							try {
-								isUpdating.current = true;
-								await Promise.resolve(
-									updateBlockAttributes(
-										targetClientId,
-										cleanValues
-									)
-								);
-							} catch (error) {
-								// eslint-disable-next-line no-console
-								console.error(
-									'Failed to update relation block attributes:',
-									error
-								);
-							} finally {
-								// Release lock after async work completes
-								isUpdating.current = false;
+						blockAttributes: currentActualAttributes,
+						onChange: async newValues => {
+							if (isUpdating.current) {
+								return;
 							}
-						}
-					},
+
+							const { isReset, meta, ...cleanValues } =
+								newValues || {};
+
+							// USE DEEP EQUALITY: Prevents false positives with nested objects
+							const hasChanged = Object.keys(cleanValues).some(
+								key =>
+									!isEqual(
+										cleanValues[key],
+										currentActualAttributes[key]
+									)
+							);
+
+							if (hasChanged) {
+								try {
+									isUpdating.current = true;
+									await Promise.resolve(
+										updateBlockAttributes(
+											targetClientId,
+											cleanValues
+										)
+									);
+								} catch (error) {
+									// eslint-disable-next-line no-console
+									console.error(
+										'Failed to update relation block attributes:',
+										error
+									);
+								} finally {
+									// Release lock after async work completes
+									isUpdating.current = false;
+								}
+							}
+						},
 						prefix: selectedSettings?.prefix || '',
 						breakpoint: deviceType,
 						clientId: targetClientId,
@@ -343,22 +360,29 @@ const RelationControl = props => {
 	};
 
 	const onAddRelation = () => {
+		const newRelations = [
+			...relations,
+			{
+				id: getRelationId(relations),
+				title: '',
+				uniqueID: '',
+				target: '',
+				action: '',
+				sid: '',
+				attributes: {},
+				css: {},
+				effects: createTransitionObj(),
+				isButton,
+			},
+		];
+
+		debugIB('relation-control.add-relation', {
+			triggerUniqueID: uniqueID,
+			nextRelations: summarizeRelations(newRelations),
+		});
+
 		onChange({
-			relations: [
-				...relations,
-				{
-					id: getRelationId(relations),
-					title: '',
-					uniqueID: '',
-					target: '',
-					action: '',
-					sid: '',
-					attributes: {},
-					css: {},
-					effects: createTransitionObj(),
-					isButton,
-				},
-			],
+			relations: newRelations,
 		});
 	};
 
@@ -456,20 +480,13 @@ const RelationControl = props => {
 								blockAttributes,
 								breakpoint: deviceType,
 							});
-							const styles = getIBStyles({
-								stylesObj,
-								blockAttributes,
-								isFirst: true,
-							});
-							// Remove empty/default border styles from XXL
-							if (styles.xxl?.styles?.border === 'none') {
-								delete styles.xxl.styles.border;
-								if (
-									Object.keys(styles.xxl.styles).length === 0
-								) {
-									delete styles.xxl;
-								}
-							}
+							const styles = cleanIBStyles(
+								getIBStyles({
+									stylesObj,
+									blockAttributes,
+									isFirst: true,
+								})
+							);
 							const newAttributes = omitBy(
 								{
 									...item.attributes,

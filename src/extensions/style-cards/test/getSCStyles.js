@@ -435,4 +435,22 @@ describe('getSCStyles', () => {
 
 		expect(cleanSCStyles).toMatchSnapshot();
 	});
+
+	it('Should apply Number Counter typography from style cards', async () => {
+		const result = await getSCStyles({
+			'--maxi-light-number-counter-font-family-general': '"Poppins"',
+			'--maxi-light-number-counter-font-size-general': '44px',
+			'--maxi-light-number-counter-font-weight-general': 700,
+			'--maxi-dark-number-counter-font-family-general': '"Inter"',
+			'--maxi-dark-number-counter-font-size-general': '42px',
+			'--maxi-dark-number-counter-font-weight-general': 600,
+		});
+
+		expect(result).toContain(
+			'body.maxi-blocks--active .maxi-light.maxi-number-counter-block .maxi-number-counter__box__text {font-family: var(--maxi-light-number-counter-font-family-general); font-size: var(--maxi-light-number-counter-font-size-general); font-weight: var(--maxi-light-number-counter-font-weight-general);}'
+		);
+		expect(result).toContain(
+			'body.maxi-blocks--active .maxi-dark.maxi-number-counter-block .maxi-number-counter__box__text {font-family: var(--maxi-dark-number-counter-font-family-general); font-size: var(--maxi-dark-number-counter-font-size-general); font-weight: var(--maxi-dark-number-counter-font-weight-general);}'
+		);
+	});
 });

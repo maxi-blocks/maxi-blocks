@@ -35,7 +35,11 @@ import { getMaxiBlockAttributes } from '@components/maxi-block';
 import { MaxiBlockComponent, withMaxiProps } from '@extensions/maxi-block';
 import { injectImgSVG } from '@extensions/svg';
 import { copyPasteMapping } from './data';
-import { getImageResizerClassName } from './utils';
+import {
+	getImageResizerClassName,
+	getResponsiveImageFallback,
+	getResetResponsiveImageSizeAttributes,
+} from './utils';
 import { TextContext, onChangeRichText } from '@extensions/text/formats';
 import { getDCValues, withMaxiContextLoopContext } from '@extensions/DC';
 import withMaxiDC from '@extensions/DC/withMaxiDC';
@@ -162,12 +166,9 @@ class edit extends MaxiBlockComponent {
 			mediaAlt,
 			altSelector,
 			useInitSize,
-			mediaHeight,
 			mediaID,
-			mediaURL,
 			isImageUrl,
 			isImageUrlInvalid,
-			mediaWidth,
 			SVGElement,
 			uniqueID,
 			captionPosition,
@@ -178,6 +179,31 @@ class edit extends MaxiBlockComponent {
 			breakpoint: deviceType || 'general',
 			attributes,
 		});
+		const imageFallback = getResponsiveImageFallback(attributes);
+		const imageResponsiveAttributes = {
+			...attributes,
+			'mediaURL-general': imageFallback.mediaURL,
+			'mediaWidth-general': imageFallback.mediaWidth,
+			'mediaHeight-general': imageFallback.mediaHeight,
+		};
+		const currentMediaURL =
+			getLastBreakpointAttribute({
+				target: 'mediaURL',
+				breakpoint: deviceType || 'general',
+				attributes: imageResponsiveAttributes,
+			}) ?? imageFallback.mediaURL;
+		const currentMediaWidth =
+			getLastBreakpointAttribute({
+				target: 'mediaWidth',
+				breakpoint: deviceType || 'general',
+				attributes: imageResponsiveAttributes,
+			}) ?? imageFallback.mediaWidth;
+		const currentMediaHeight =
+			getLastBreakpointAttribute({
+				target: 'mediaHeight',
+				breakpoint: deviceType || 'general',
+				attributes: imageResponsiveAttributes,
+			}) ?? imageFallback.mediaHeight;
 		const {
 			status: dcStatus,
 			mediaId: dcMediaId,
@@ -251,7 +277,7 @@ class edit extends MaxiBlockComponent {
 					return '100%';
 				}
 
-				return `${mediaWidth}px`;
+				return `${currentMediaWidth}px`;
 			}
 
 			const maxWidthUnit = getLastBreakpointAttribute({
@@ -262,7 +288,7 @@ class edit extends MaxiBlockComponent {
 
 			if (
 				(!useInitSize && maxWidth) ||
-				(useInitSize && maxWidth > mediaWidth)
+				(useInitSize && maxWidth > currentMediaWidth)
 			)
 				return `${maxWidth}${maxWidthUnit}`;
 
@@ -289,9 +315,9 @@ class edit extends MaxiBlockComponent {
 			!isEmpty(attributes.SVGElement);
 
 		const showImage =
-			(mediaURL &&
+			(currentMediaURL &&
 				((isImageUrl && !isImageUrlInvalid) ||
-					(!isNil(mediaID) && mediaURL))) ||
+					(!isNil(mediaID) && currentMediaURL))) ||
 			(dcStatus && (dcMediaId || dcMediaUrl));
 
 		const handleOnResizeStop = (event, direction, elt) => {
@@ -358,9 +384,15 @@ class edit extends MaxiBlockComponent {
 
 							maxiSetAttributes({
 								mediaID: media.id,
+								imageSize: 'full',
 								mediaURL: media.url,
 								mediaWidth: media.width,
 								mediaHeight: media.height,
+								...getResetResponsiveImageSizeAttributes(),
+								'imageSize-general': 'full',
+								'mediaURL-general': media.url,
+								'mediaWidth-general': media.width,
+								'mediaHeight-general': media.height,
 								isImageUrl: false,
 								...(altSelector === 'wordpress' &&
 									!alt && { altSelector: 'title' }),
@@ -550,10 +582,14 @@ class edit extends MaxiBlockComponent {
 															: mediaID
 												  }`
 										}
-										src={dcStatus ? dcMediaUrl : mediaURL}
+										src={
+											dcStatus
+												? dcMediaUrl
+												: currentMediaURL
+										}
 										{...(dcStatus && {
-											width: mediaWidth,
-											height: mediaHeight,
+											width: currentMediaWidth,
+											height: currentMediaHeight,
 											alt: mediaAlt,
 										})}
 									/>

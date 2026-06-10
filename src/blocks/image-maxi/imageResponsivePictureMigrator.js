@@ -18,9 +18,65 @@ import { getResponsiveImageFallback } from './utils';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 
-/**
- * Save
- */
+const NAME = 'Image responsive picture';
+
+const responsiveImageSourceBreakpoints = ['xs', 's', 'm', 'l', 'xl', 'xxl'];
+
+const getResponsiveImageBreakpoints = attributes => ({
+	xxl: attributes['breakpoints-xl'] || 1920,
+	xl: attributes['breakpoints-xl'] || 1920,
+	l: attributes['breakpoints-l'] || 1366,
+	m: attributes['breakpoints-m'] || 1024,
+	s: attributes['breakpoints-s'] || 767,
+	xs: attributes['breakpoints-xs'] || 480,
+});
+
+const getResponsiveImageMedia = (breakpoint, attributes) => {
+	const breakpoints = getResponsiveImageBreakpoints(attributes);
+
+	if (breakpoint === 'xxl')
+		return `(min-width:${breakpoints.xl + 1}px)`;
+
+	return `(max-width:${breakpoints[breakpoint]}px)`;
+};
+
+const getResponsiveImageSourcesWithOptions = (
+	attributes,
+	{ includeExplicitFallbackSources = false } = {}
+) => {
+	const { mediaURL: fallbackURL } = getResponsiveImageFallback(attributes);
+
+	return responsiveImageSourceBreakpoints
+		.map(breakpoint => {
+			const mediaURL = attributes[`mediaURL-${breakpoint}`];
+			const hasExplicitImageSize =
+				attributes[`imageSize-${breakpoint}`] !== undefined &&
+				attributes[`imageSize-${breakpoint}`] !== null;
+
+			if (
+				!mediaURL ||
+				(mediaURL === fallbackURL &&
+					(!includeExplicitFallbackSources || !hasExplicitImageSize))
+			)
+				return null;
+
+			return {
+				breakpoint,
+				media: getResponsiveImageMedia(breakpoint, attributes),
+				srcSet: mediaURL,
+			};
+		})
+		.filter(Boolean);
+};
+
+export const getResponsiveImageSources = attributes =>
+	getResponsiveImageSourcesWithOptions(attributes);
+
+export const getResponsiveImageSourcesWithExplicitFallbacks = attributes =>
+	getResponsiveImageSourcesWithOptions(attributes, {
+		includeExplicitFallbackSources: true,
+	});
+
 const FigCaption = props => {
 	const { captionType, captionContent, dcStatus } = props;
 
@@ -44,8 +100,10 @@ const FigCaption = props => {
 	);
 };
 
-const save = props => {
+const save = (props, getSources) => {
 	const { attributes } = props;
+	const sourceGetter =
+		typeof getSources === 'function' ? getSources : getResponsiveImageSources;
 	const {
 		uniqueID,
 		captionType,
@@ -97,6 +155,7 @@ const save = props => {
 		mediaWidth: fallbackMediaWidth,
 		mediaHeight: fallbackMediaHeight,
 	} = getResponsiveImageFallback(attributes);
+	const responsiveImageSources = sourceGetter(attributes);
 	const imageClassName = isImageUrl
 		? 'maxi-image-block__image wp-image-external'
 		: `maxi-image-block__image wp-image-${
@@ -114,6 +173,21 @@ const save = props => {
 			})}
 		/>
 	);
+	const responsiveImage =
+		!dcStatus && responsiveImageSources.length ? (
+			<picture>
+				{responsiveImageSources.map(({ breakpoint, media, srcSet }) => (
+					<source
+						key={breakpoint}
+						media={media}
+						srcSet={srcSet}
+					/>
+				))}
+				{image}
+			</picture>
+		) : (
+			image
+		);
 
 	return (
 		<MaxiBlock.save
@@ -139,7 +213,6 @@ const save = props => {
 				>
 					{SVGElement &&
 					(!dcStatus ||
-						// To avoid block validation issue return img tag if SVGElement is old
 						(mediaURL
 							? !SVGElement.includes(mediaURL)
 							: SVGElement.includes('href="'))) ? (
@@ -149,7 +222,7 @@ const save = props => {
 								: SVGElement}
 						</RawHTML>
 					) : (
-						image
+						responsiveImage
 					)}
 				</HoverPreview>
 				{captionPosition === 'bottom' && (
@@ -164,4 +237,16 @@ const save = props => {
 	);
 };
 
-export default save;
+const migrate = attributes => attributes;
+
+export default {
+	name: NAME,
+	migrate,
+	save,
+};
+
+export const imageResponsivePictureExplicitFallbackMigrator = {
+	name: `${NAME} explicit fallback`,
+	migrate,
+	save: props => save(props, getResponsiveImageSourcesWithExplicitFallbacks),
+};

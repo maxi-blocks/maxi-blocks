@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Edit from '@blocks/image-maxi/edit';
-import { RichText } from '@wordpress/block-editor';
+import { MediaUpload, RichText } from '@wordpress/block-editor';
 
 jest.mock('@wordpress/i18n', () => ({
 	__: jest.fn(text => text),
@@ -159,4 +159,95 @@ describe('Image Maxi edit caption handlers', () => {
 			});
 		}
 	);
+
+	it('previews the breakpoint-specific image size source in the editor', () => {
+		const baseProps = getProps('bottom');
+		const props = {
+			...baseProps,
+			attributes: {
+				...baseProps.attributes,
+				'mediaURL-l': 'https://example.com/large.jpg',
+				'mediaWidth-l': 640,
+				'mediaHeight-l': 480,
+			},
+			deviceType: 'l',
+		};
+		const instance = new Edit(props);
+		instance.setState = jest.fn();
+
+		const [tree] = instance.render();
+		const [image] = findElementsByType(tree, 'img');
+
+		expect(image.props.src).toBe('https://example.com/large.jpg');
+	});
+
+	it('previews canonical media when the general responsive mirror is stale', () => {
+		const baseProps = getProps('bottom');
+		const props = {
+			...baseProps,
+			attributes: {
+				...baseProps.attributes,
+				mediaURL: 'https://example.com/new.jpg',
+				mediaWidth: 1200,
+				mediaHeight: 800,
+				'mediaURL-general': 'https://example.com/old.jpg',
+				'mediaWidth-general': 300,
+				'mediaHeight-general': 200,
+			},
+			deviceType: 'general',
+		};
+		const instance = new Edit(props);
+		instance.setState = jest.fn();
+
+		const [tree] = instance.render();
+		const [image] = findElementsByType(tree, 'img');
+
+		expect(image.props.src).toBe('https://example.com/new.jpg');
+	});
+
+	it('clears breakpoint-specific image size sources when replacing the image', () => {
+		const baseProps = getProps('bottom');
+		const props = {
+			...baseProps,
+			attributes: {
+				...baseProps.attributes,
+				'imageSize-l': 'medium',
+				'mediaURL-l': 'https://example.com/old-large.jpg',
+				'mediaWidth-l': 300,
+				'mediaHeight-l': 200,
+				'cropOptions-l': {
+					image: {
+						source_url: 'https://example.com/old-crop.jpg',
+					},
+				},
+			},
+		};
+		const instance = new Edit(props);
+		instance.setState = jest.fn();
+
+		const [tree] = instance.render();
+		const [mediaUpload] = findElementsByType(tree, MediaUpload);
+
+		mediaUpload.props.onSelect({
+			id: 20,
+			url: 'https://example.com/new.jpg',
+			width: 1200,
+			height: 800,
+			title: 'New image',
+			alt: '',
+		});
+
+		expect(props.maxiSetAttributes).toHaveBeenCalledWith(
+			expect.objectContaining({
+				mediaID: 20,
+				mediaURL: 'https://example.com/new.jpg',
+				'mediaURL-general': 'https://example.com/new.jpg',
+				'imageSize-l': undefined,
+				'mediaURL-l': undefined,
+				'mediaWidth-l': undefined,
+				'mediaHeight-l': undefined,
+				'cropOptions-l': undefined,
+			})
+		);
+	});
 });

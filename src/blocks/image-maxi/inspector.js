@@ -56,6 +56,7 @@ const Inspector = props => {
 	const { selectors, categories } = customCss;
 	const dimensionIndicatorProps = [
 		'imageSize',
+		`imageSize-${deviceType}`,
 		'useInitSize',
 		`img-width-${deviceType}`,
 		'imageRatio',
@@ -97,6 +98,11 @@ const Inspector = props => {
 		!transitionFilterEffects.includes(
 			attributes['hover-basic-effect-type']
 		);
+	const isImageFullWidth = getLastBreakpointAttribute({
+		target: 'image-full-width',
+		breakpoint: deviceType,
+		attributes,
+	});
 	const getHoverEffectIncompatibleMessage = setting =>
 		`The selected hover effect type is not compatible with ${setting}. To use this hover effect, please change the hover effect type to one of the compatible types: ${transitionFilterEffects.join(
 			', '
@@ -161,26 +167,28 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-										deviceType === 'general' &&
-											!attributes[
-												'image-full-width-general'
-											] && {
-												label: __(
-													'Dimension',
-													'maxi-blocks'
-												),
-												content: (
-													<DimensionTab
-														{...props}
-														imageData={imageData}
-													/>
-												),
-													extraIndicators: ['imageRatio'],
-													extraIndicatorsResponsive: [
-														'img-width',
-													],
-													indicatorProps: dimensionIndicatorProps,
-												},
+									!isImageFullWidth && {
+										label: __(
+											'Dimension',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<DimensionTab
+													{...props}
+													imageData={imageData}
+												/>
+											</ResponsiveTabsControl>
+										),
+										extraIndicators: ['imageRatio'],
+										extraIndicatorsResponsive: [
+											'imageSize',
+											'img-width',
+										],
+										indicatorProps: dimensionIndicatorProps,
+									},
 										...inspectorTabs.alignment({
 											props,
 											isAlignment: true,

@@ -49,9 +49,7 @@ const filterStylesByStatus = (styles, statusTarget, props) => {
 	if (!styles) return null;
 
 	const filtered = Object.fromEntries(
-		Object.entries(styles).filter(
-			([key]) => !breakpoints.includes(key)
-		)
+		Object.entries(styles).filter(([key]) => !breakpoints.includes(key))
 	);
 
 	breakpoints.forEach(breakpoint => {
@@ -531,6 +529,8 @@ const getHoverImageObject = props => {
 				isHover: true,
 			}),
 		}),
+		...(props['image-filter-status-hover'] &&
+			getImageFilterStyles(props, true)),
 	};
 };
 

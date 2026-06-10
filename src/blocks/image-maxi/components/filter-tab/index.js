@@ -8,14 +8,21 @@ import { __ } from '@wordpress/i18n';
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
 import ColorControl from '@components/color-control';
+import ManageHoverTransitions from '@components/manage-hover-transitions';
+import SettingTabsControl from '@components/setting-tabs-control';
+import ToggleSwitch from '@components/toggle-switch';
 import {
+	getAttributeKey,
 	getDefaultAttribute,
 	getLastBreakpointAttribute,
 } from '@extensions/styles';
 import {
+	IMAGE_FILTER_ATTRIBUTE_KEYS,
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_HOVER_ATTRIBUTE_KEYS,
+	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
 } from './constants';
@@ -38,29 +45,37 @@ const dropShadowLabels = {
 	blur: __('Shadow blur', 'maxi-blocks'),
 };
 
-const FilterTab = props => {
-	const { blockStyle, breakpoint, clientId, onChange } = props;
+const FilterControls = props => {
+	const {
+		blockStyle,
+		breakpoint,
+		clientId,
+		isHover = false,
+		onChange,
+	} = props;
 
 	const getResponsiveValue = target =>
 		getLastBreakpointAttribute({
 			target,
 			breakpoint,
 			attributes: props,
+			isHover,
 		});
 
-	const getAttributeKey = target => `${target}-${breakpoint}`;
+	const getStateAttributeKey = target =>
+		getAttributeKey(target, isHover, false, breakpoint);
 
 	const onChangeNumber = (target, val, meta) =>
 		onChange({
-			[getAttributeKey(target)]:
+			[getStateAttributeKey(target)]:
 				val !== undefined && val !== '' ? val : '',
 			meta,
 		});
 
 	const onReset = target =>
 		onChange({
-			[getAttributeKey(target)]: getDefaultAttribute(
-				getAttributeKey(target)
+			[getStateAttributeKey(target)]: getDefaultAttribute(
+				getStateAttributeKey(target)
 			),
 			isReset: true,
 		});
@@ -70,7 +85,7 @@ const FilterTab = props => {
 			{IMAGE_FILTER_CONTROLS.map(
 				({ key, unit, defaultValue, min, max, step }) => {
 					const target = getFilterAttribute(key);
-					const attributeKey = getAttributeKey(target);
+					const attributeKey = getStateAttributeKey(target);
 
 					return (
 						<AdvancedNumberControl
@@ -94,7 +109,7 @@ const FilterTab = props => {
 			{IMAGE_FILTER_DROP_SHADOW_CONTROLS.map(
 				({ key, defaultValue, min, max, step }) => {
 					const target = getDropShadowAttribute(key);
-					const attributeKey = getAttributeKey(target);
+					const attributeKey = getStateAttributeKey(target);
 
 					return (
 						<AdvancedNumberControl
@@ -129,13 +144,56 @@ const FilterTab = props => {
 				deviceType={breakpoint}
 				onChange={({ color }) =>
 					onChange({
-						[getAttributeKey(getDropShadowAttribute('color'))]:
+						[getStateAttributeKey(getDropShadowAttribute('color'))]:
 							color,
 					})
 				}
 				onReset={() => onReset(getDropShadowAttribute('color'))}
 			/>
 		</div>
+	);
+};
+
+const FilterTab = props => {
+	const { onChange } = props;
+	const hoverStatus = props[IMAGE_FILTER_STATUS_HOVER];
+
+	return (
+		<SettingTabsControl
+			items={[
+				{
+					label: __('Normal', 'maxi-blocks'),
+					indicatorProps: IMAGE_FILTER_ATTRIBUTE_KEYS,
+					content: <FilterControls {...props} />,
+				},
+				{
+					label: __('Hover', 'maxi-blocks'),
+					indicatorProps: hoverStatus
+						? IMAGE_FILTER_HOVER_ATTRIBUTE_KEYS
+						: [],
+					extraIndicators: [IMAGE_FILTER_STATUS_HOVER],
+					content: (
+						<>
+							<ManageHoverTransitions />
+							<ToggleSwitch
+								label={__('Enable filter hover', 'maxi-blocks')}
+								selected={hoverStatus}
+								className='maxi-image-filter-status-hover'
+								onChange={val =>
+									onChange({
+										[IMAGE_FILTER_STATUS_HOVER]: val,
+									})
+								}
+							/>
+							{hoverStatus && (
+								<FilterControls {...props} isHover />
+							)}
+						</>
+					),
+				},
+			]}
+			depth={2}
+		/>
 	);
 };
 

@@ -4,6 +4,7 @@
 import * as attributesData from '@extensions/styles/defaults/index';
 import {
 	breakpointAttributesCreator,
+	hoverAttributesCreator,
 	prefixAttributesCreator,
 	transitionAttributesCreator,
 } from '@extensions/styles';
@@ -12,6 +13,7 @@ import {
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
 } from './components/filter-tab/constants';
@@ -20,6 +22,33 @@ import {
  * Attributes
  */
 const prefix = 'image-';
+const imageFilterAttributes = breakpointAttributesCreator({
+	obj: {
+		...IMAGE_FILTER_CONTROLS.reduce((acc, { key, defaultValue }) => {
+			acc[getFilterAttribute(key)] = {
+				type: 'number',
+				default: defaultValue,
+			};
+
+			return acc;
+		}, {}),
+		...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce(
+			(acc, { key, defaultValue }) => {
+				acc[getDropShadowAttribute(key)] = {
+					type: 'number',
+					default: defaultValue,
+				};
+
+				return acc;
+			},
+			{}
+		),
+		[getDropShadowAttribute('color')]: {
+			type: 'string',
+			default: IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
+		},
+	},
+});
 const attributes = {
 	...attributesData.global,
 
@@ -155,30 +184,13 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
-	...breakpointAttributesCreator({
-		obj: {
-			...IMAGE_FILTER_CONTROLS.reduce((acc, { key, defaultValue }) => {
-				acc[getFilterAttribute(key)] = {
-					type: 'number',
-					default: defaultValue,
-				};
-
-				return acc;
-			}, {}),
-			...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce(
-				(acc, { key, defaultValue }) => {
-					acc[getDropShadowAttribute(key)] = {
-						type: 'number',
-						default: defaultValue,
-					};
-
-					return acc;
-				},
-				{}
-			),
-			[getDropShadowAttribute('color')]: {
-				type: 'string',
-				default: IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
+	...imageFilterAttributes,
+	...hoverAttributesCreator({
+		obj: imageFilterAttributes,
+		newAttr: {
+			[IMAGE_FILTER_STATUS_HOVER]: {
+				type: 'boolean',
+				default: false,
 			},
 		},
 	}),

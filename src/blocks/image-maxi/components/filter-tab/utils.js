@@ -27,44 +27,62 @@ const getNumber = value => {
 	return Number.isNaN(parsed) ? undefined : parsed;
 };
 
-const getFilterNumber = (props, target, breakpoint) =>
+const getFilterNumber = (props, target, breakpoint, isHover = false) =>
 	getNumber(
 		getLastBreakpointAttribute({
 			target,
 			breakpoint,
 			attributes: props,
+			isHover,
 		})
 	);
 
-const hasExplicitBreakpointValue = (props, target, breakpoint) =>
-	hasOwn(props, `${target}-${breakpoint}`) &&
-	!isNil(props[`${target}-${breakpoint}`]) &&
-	props[`${target}-${breakpoint}`] !== '';
+const getStateAttributeKey = (target, breakpoint, isHover = false) =>
+	`${target}-${breakpoint}${isHover ? '-hover' : ''}`;
 
-const hasExplicitFilterValue = (props, breakpoint) =>
+const hasExplicitBreakpointValue = (
+	props,
+	target,
+	breakpoint,
+	isHover = false
+) => {
+	const key = getStateAttributeKey(target, breakpoint, isHover);
+
+	return hasOwn(props, key) && !isNil(props[key]) && props[key] !== '';
+};
+
+const hasExplicitFilterValue = (props, breakpoint, isHover = false) =>
 	IMAGE_FILTER_CONTROLS.some(({ key }) =>
-		hasExplicitBreakpointValue(props, getFilterAttribute(key), breakpoint)
+		hasExplicitBreakpointValue(
+			props,
+			getFilterAttribute(key),
+			breakpoint,
+			isHover
+		)
 	) ||
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS.some(({ key }) =>
 		hasExplicitBreakpointValue(
 			props,
 			getDropShadowAttribute(key),
-			breakpoint
+			breakpoint,
+			isHover
 		)
 	) ||
 	hasExplicitBreakpointValue(
 		props,
 		getDropShadowAttribute('color'),
-		breakpoint
+		breakpoint,
+		isHover
 	);
 
-export const getImageFilterValue = (props, breakpoint) => {
+export const getImageFilterValue = (props, breakpoint, isHover = false) => {
 	const filterFunctions = IMAGE_FILTER_CONTROLS.reduce(
 		(acc, { key, cssFunction, unit, defaultValue }) => {
 			const value = getFilterNumber(
 				props,
 				getFilterAttribute(key),
-				breakpoint
+				breakpoint,
+				isHover
 			);
 
 			if (!isNil(value) && value !== defaultValue) {
@@ -81,7 +99,8 @@ export const getImageFilterValue = (props, breakpoint) => {
 			const value = getFilterNumber(
 				props,
 				getDropShadowAttribute(key),
-				breakpoint
+				breakpoint,
+				isHover
 			);
 
 			acc[key] = isNil(value) ? defaultValue : value;
@@ -100,6 +119,7 @@ export const getImageFilterValue = (props, breakpoint) => {
 				target: getDropShadowAttribute('color'),
 				breakpoint,
 				attributes: props,
+				isHover,
 			}) || IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT;
 
 		filterFunctions.push(
@@ -110,18 +130,25 @@ export const getImageFilterValue = (props, breakpoint) => {
 	return filterFunctions.join(' ');
 };
 
-export const getImageFilterStyles = props => {
+export const getImageFilterStyles = (props, isHover = false) => {
 	const response = {};
 
 	FILTER_BREAKPOINTS.forEach(breakpoint => {
-		const filter = getImageFilterValue(props, breakpoint);
+		const filter = getImageFilterValue(props, breakpoint, isHover);
+		const hasExplicitValue = hasExplicitFilterValue(
+			props,
+			breakpoint,
+			isHover
+		);
 
 		if (breakpoint === 'general') {
-			if (filter) response[breakpoint] = { filter };
+			if (filter || (isHover && hasExplicitValue)) {
+				response[breakpoint] = { filter: filter || 'none' };
+			}
 			return;
 		}
 
-		if (hasExplicitFilterValue(props, breakpoint)) {
+		if (hasExplicitValue) {
 			response[breakpoint] = { filter: filter || 'none' };
 		}
 	});

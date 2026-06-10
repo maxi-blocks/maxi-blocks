@@ -114,6 +114,8 @@ export const getFilterAttribute = key => `image-filter-${key}`;
 
 export const getDropShadowAttribute = key => `image-filter-drop-shadow-${key}`;
 
+export const IMAGE_FILTER_STATUS_HOVER = 'image-filter-status-hover';
+
 export const IMAGE_FILTER_ATTRIBUTE_KEYS = FILTER_BREAKPOINTS.flatMap(
 	breakpoint => [
 		...IMAGE_FILTER_CONTROLS.map(
@@ -125,3 +127,13 @@ export const IMAGE_FILTER_ATTRIBUTE_KEYS = FILTER_BREAKPOINTS.flatMap(
 		`${getDropShadowAttribute('color')}-${breakpoint}`,
 	]
 );
+
+export const IMAGE_FILTER_HOVER_ATTRIBUTE_KEYS = [
+	IMAGE_FILTER_STATUS_HOVER,
+	...IMAGE_FILTER_ATTRIBUTE_KEYS.map(key => `${key}-hover`),
+];
+
+export const IMAGE_FILTER_ALL_ATTRIBUTE_KEYS = [
+	...IMAGE_FILTER_ATTRIBUTE_KEYS,
+	...IMAGE_FILTER_HOVER_ATTRIBUTE_KEYS,
+];

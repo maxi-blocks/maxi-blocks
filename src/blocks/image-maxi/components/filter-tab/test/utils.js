@@ -1,17 +1,32 @@
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
 jest.mock('@extensions/styles', () => ({
-	getLastBreakpointAttribute: jest.fn(({ target, breakpoint, attributes }) => {
-		const breakpointIndex = breakpoints.indexOf(breakpoint);
+	getLastBreakpointAttribute: jest.fn(
+		({ target, breakpoint, attributes, isHover = false }) => {
+			const breakpointIndex = breakpoints.indexOf(breakpoint);
 
-		for (let index = breakpointIndex; index >= 0; index -= 1) {
-			const value = attributes[`${target}-${breakpoints[index]}`];
+			for (let index = breakpointIndex; index >= 0; index -= 1) {
+				const value =
+					attributes[
+						`${target}-${breakpoints[index]}${
+							isHover ? '-hover' : ''
+						}`
+					];
 
-			if (value !== undefined && value !== '') return value;
+				if (value !== undefined && value !== '') return value;
+			}
+
+			if (isHover) {
+				for (let index = breakpointIndex; index >= 0; index -= 1) {
+					const value = attributes[`${target}-${breakpoints[index]}`];
+
+					if (value !== undefined && value !== '') return value;
+				}
+			}
+
+			return attributes[target];
 		}
-
-		return attributes[target];
-	}),
+	),
 }));
 
 import { getImageFilterStyles } from '../utils';
@@ -81,5 +96,32 @@ describe('Image Maxi filter styles', () => {
 		expect(styles.filter.xxl).toEqual({
 			filter: 'blur(4px) brightness(125%)',
 		});
+	});
+
+	it('builds hover filter styles from hover attributes', () => {
+		const styles = getImageFilterStyles(
+			{
+				'image-filter-blur-general': 4,
+				'image-filter-blur-general-hover': 8,
+				'image-filter-brightness-general-hover': 125,
+			},
+			true
+		);
+
+		expect(styles.filter.general).toEqual({
+			filter: 'blur(8px) brightness(125%)',
+		});
+	});
+
+	it('clears an inherited normal filter when hover is explicitly neutral', () => {
+		const styles = getImageFilterStyles(
+			{
+				'image-filter-blur-general': 4,
+				'image-filter-blur-general-hover': 0,
+			},
+			true
+		);
+
+		expect(styles.filter.general).toEqual({ filter: 'none' });
 	});
 });

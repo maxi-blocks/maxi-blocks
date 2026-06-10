@@ -25,6 +25,7 @@ import { getEditorWrapper } from '@extensions/dom';
 import {
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
 } from './components/filter-tab/constants';
@@ -204,6 +205,41 @@ const copyPasteMapping = {
 				[__('Drop shadow colour', 'maxi-blocks')]: {
 					props: getDropShadowAttribute('color'),
 					hasBreakpoints: true,
+				},
+				[__('Filter hover state', 'maxi-blocks')]:
+					IMAGE_FILTER_STATUS_HOVER,
+				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${filterCopyPasteLabels[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getFilterAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${dropShadowCopyPasteLabels[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getDropShadowAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				[__('Drop shadow colour hover', 'maxi-blocks')]: {
+					props: getDropShadowAttribute('color'),
+					hasBreakpoints: true,
+					isHover: true,
 				},
 			},
 		},

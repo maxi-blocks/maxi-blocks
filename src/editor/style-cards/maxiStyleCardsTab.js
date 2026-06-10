@@ -21,6 +21,8 @@ import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
+import FullSizeControl from '@components/full-size-control';
+import MarginControl from '@components/margin-control';
 import PaddingControl from '@components/padding-control';
 import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
@@ -449,6 +451,66 @@ const SCAccordion = props => {
 							)}
 						</>
 					)}
+				</>
+			)}
+		</>
+	);
+};
+
+/**
+ * Container globals section — Height/Width and Margin/Padding.
+ * Follows the same per-tone sync pattern as typography sections: the Dark tab
+ * syncs from Light by default and shows an override toggle to unlock editing.
+ */
+const ContainerSCSection = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+}) => {
+	const groupAttr = 'container';
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showControls = !isDarkTab || isOverridden;
+
+	const containerAttrs = processSCAttributes(SC, '', groupAttr);
+
+	const isBlockFullWidth =
+		processSCAttribute(SC, `full-width-${breakpoint}`, groupAttr) ??
+		processSCAttribute(SC, 'full-width-general', groupAttr) ??
+		false;
+
+	return (
+		<>
+			{isDarkTab && (
+				<ToggleSwitch
+					label={__('Override light tone settings', 'maxi-blocks')}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showControls && (
+				<>
+					<FullSizeControl
+						{...containerAttrs}
+						isBlockFullWidth={isBlockFullWidth}
+						onChange={obj => onChangeValue(obj, groupAttr)}
+						breakpoint={breakpoint}
+						showFullWidth
+					/>
+					<MarginControl
+						{...containerAttrs}
+						onChange={obj => onChangeValue(obj, groupAttr)}
+						breakpoint={breakpoint}
+					/>
+					<PaddingControl
+						{...containerAttrs}
+						onChange={obj => onChangeValue(obj, groupAttr)}
+						breakpoint={breakpoint}
+					/>
 				</>
 			)}
 		</>
@@ -1384,22 +1446,35 @@ const MaxiStyleCardsTab = ({
 								/>
 							),
 						},
-						{
-							label: navigationTabs.label,
-							classNameItem: 'maxi-blocks-sc__type--navigation',
-							content: (
-								<SCAccordion
-									key={`sc-accordion__${navigationTabs.label}`}
-									{...navigationTabs}
-									breakpoint={breakpoint}
-									SC={SC}
-									SCStyle={SCStyle}
-									onChangeValue={onChangeValue}
-									{...typoSyncProps}
-								/>
-							),
-						},
-					].filter(Boolean) // Filter out any false items from conditional rendering
+					{
+						label: navigationTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--navigation',
+						content: (
+							<SCAccordion
+								key={`sc-accordion__${navigationTabs.label}`}
+								{...navigationTabs}
+								breakpoint={breakpoint}
+								SC={SC}
+								SCStyle={SCStyle}
+								onChangeValue={onChangeValue}
+								{...typoSyncProps}
+							/>
+						),
+					},
+					{
+						label: __('Container globals', 'maxi-blocks'),
+						classNameItem: 'maxi-blocks-sc__type--container',
+						content: (
+							<ContainerSCSection
+								SC={SC}
+								SCStyle={SCStyle}
+								breakpoint={breakpoint}
+								onChangeValue={onChangeValue}
+								{...typoSyncProps}
+							/>
+						),
+					},
+				].filter(Boolean) // Filter out any false items from conditional rendering
 				}
 			/>
 		</div>

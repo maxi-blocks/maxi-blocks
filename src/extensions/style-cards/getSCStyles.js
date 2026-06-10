@@ -19,6 +19,21 @@ const elements = [
 	'link',
 	'navigation',
 	'number-counter',
+	'container',
+];
+const containerSettings = [
+	'max-width',
+	'width',
+	'height',
+	'min-height',
+	'margin-top',
+	'margin-right',
+	'margin-bottom',
+	'margin-left',
+	'padding-top',
+	'padding-right',
+	'padding-bottom',
+	'padding-left',
 ];
 const breakpoints = {
 	xxl: 1921,
@@ -78,6 +93,35 @@ const getOrganizedValues = styleCard => {
 						delete styleCard[label];
 					}
 				});
+			});
+		});
+	});
+
+	// Container layout variables
+	styles.forEach(style => {
+		breakpointsKeys.forEach(breakpoint => {
+			containerSettings.forEach(setting => {
+				const label = `--maxi-${style}-container-${setting}-${breakpoint}`;
+
+				if (styleCard[label]) {
+					organizedValues = {
+						...organizedValues,
+						[style]: {
+							...organizedValues?.[style],
+							container: {
+								...organizedValues[style]?.container,
+								[breakpoint]: {
+									...organizedValues?.[style]?.container?.[
+										breakpoint
+									],
+									[setting]: styleCard[label],
+								},
+							},
+						},
+					};
+
+					delete styleCard[label];
+				}
 			});
 		});
 	});
@@ -576,6 +620,10 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			addedResponse += `${target}.current-menu-item { background-color: var(--maxi-${style}-menu-item-sub-bg-current); }`;
 			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
 		});
+
+		// Container Maxi — SC variables are consumed via per-block CSS
+		// variable references (see container-maxi/styles.js applySCVarsToSize),
+		// not via class-based rules, so no direct rules on .maxi-container-block.
 
 		return addedResponse;
 	};

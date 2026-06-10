@@ -171,6 +171,69 @@ const addNumberCounterToStyleCards = styleCard => {
 	});
 };
 
+const containerObject = {
+	container: {
+		'full-width-general': true,
+		'max-width-xxl': '1690',
+		'max-width-xl': '1170',
+		'max-width-l': '90',
+		'max-width-unit-xxl': 'px',
+		'max-width-unit-xl': 'px',
+		'max-width-unit-l': '%',
+		'width-l': '1170',
+		'width-m': '1000',
+		'width-s': '700',
+		'width-xs': '460',
+		'width-unit-l': 'px',
+		'width-unit-m': 'px',
+		'width-unit-s': 'px',
+		'width-unit-xs': 'px',
+		'size-advanced-options': true,
+	},
+};
+
+const containerExists = styleCard => {
+	return (
+		styleCard?.value?.dark?.defaultStyleCard?.container !== undefined &&
+		styleCard?.value?.light?.defaultStyleCard?.container !== undefined
+	);
+};
+
+/**
+ * Injects container defaults into saved style cards that predate the
+ * Container globals wiring. Mirrors the navigation/number-counter pattern.
+ */
+const addContainerToStyleCards = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			!styleValue.defaultStyleCard.container
+		) {
+			const { defaultStyleCard } = styleValue;
+			const keys = Object.keys(defaultStyleCard);
+			const navigationIndex = keys.indexOf('navigation');
+			const insertAfter =
+				navigationIndex !== -1 ? navigationIndex : keys.length - 1;
+			const newKeys = [
+				...keys.slice(0, insertAfter + 1),
+				'container',
+				...keys.slice(insertAfter + 1),
+			];
+			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
+				if (key === 'container') {
+					obj[key] = { ...containerObject.container };
+				} else {
+					obj[key] = defaultStyleCard[key];
+				}
+				return obj;
+			}, {});
+			styleCard.value[style].defaultStyleCard = newDefaultStyleCard;
+		}
+	});
+};
+
 const navigationExists = styleCard => {
 	return styleCard?.value?.dark?.defaultStyleCard?.navigation !== undefined;
 };
@@ -233,6 +296,9 @@ export const receiveMaxiSelectedStyleCard = state => {
 		}
 		if (!numberCounterExists(selectedStyleCard)) {
 			addNumberCounterToStyleCards(selectedStyleCard);
+		}
+		if (!containerExists(selectedStyleCard)) {
+			addContainerToStyleCards(selectedStyleCard);
 		}
 		return selectedStyleCard;
 	}

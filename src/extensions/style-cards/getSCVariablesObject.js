@@ -81,8 +81,23 @@ const getSCVariablesObject = (
 		'link',
 		'navigation',
 		'number-counter',
+		'container',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+	const containerSizeSettings = [
+		'max-width',
+		'width',
+		'height',
+		'min-height',
+		'margin-top',
+		'margin-right',
+		'margin-bottom',
+		'margin-left',
+		'padding-top',
+		'padding-right',
+		'padding-bottom',
+		'padding-left',
+	];
 	const settings = [
 		'font-family',
 		'font-size',
@@ -103,8 +118,11 @@ const getSCVariablesObject = (
 		'padding-right',
 	];
 	const numberCounterSettings = ['font-family', 'font-size', 'font-weight'];
-	const getElementSettings = element =>
-		element === 'number-counter' ? numberCounterSettings : settings;
+	const getElementSettings = element => {
+		if (element === 'number-counter') return numberCounterSettings;
+		if (element === 'container') return [];
+		return settings;
+	};
 
 	const mergeStyleCards = (defaultStyleCard, styleCard) =>
 		merge(
@@ -370,24 +388,59 @@ const getSCVariablesObject = (
 
 					break;
 
-				case 'number-counter':
-					if (obj['color-global'])
-						response[`--maxi-${style}-${element}-color`] =
-							getColorString(obj, null, style);
+			case 'number-counter':
+				if (obj['color-global'])
+					response[`--maxi-${style}-${element}-color`] =
+						getColorString(obj, null, style);
 
-					if (obj['circle-background-color-global'])
-						response[
-							`--maxi-${style}-${element}-circle-background`
-						] = getColorString(obj, 'circle-background', style);
+				if (obj['circle-background-color-global'])
+					response[
+						`--maxi-${style}-${element}-circle-background`
+					] = getColorString(obj, 'circle-background', style);
 
-					if (obj['circle-bar-color-global'])
-						response[`--maxi-${style}-${element}-circle-bar`] =
-							getColorString(obj, 'circle-bar', style);
+				if (obj['circle-bar-color-global'])
+					response[`--maxi-${style}-${element}-circle-bar`] =
+						getColorString(obj, 'circle-bar', style);
 
-					break;
+				break;
 
-				default:
-					break;
+			case 'container':
+				containerSizeSettings.forEach(setting => {
+					breakpoints.forEach(breakpoint => {
+						if (!cleanResponse) {
+							const value = getLastBreakpointAttribute({
+								target: setting,
+								breakpoint,
+								attributes: obj,
+							});
+							if (getIsValid(value, true)) {
+								const unit =
+									getLastBreakpointAttribute({
+										target: `${setting}-unit`,
+										breakpoint,
+										attributes: obj,
+									}) || 'px';
+								response[
+									`--maxi-${style}-container-${setting}-${breakpoint}`
+								] = `${value}${unit}`;
+							}
+						} else {
+							const value = obj[`${setting}-${breakpoint}`];
+							if (getIsValid(value, true)) {
+								const unit =
+									obj[`${setting}-unit-${breakpoint}`] ||
+									'px';
+								response[
+									`--maxi-${style}-container-${setting}-${breakpoint}`
+								] = `${value}${unit}`;
+							}
+						}
+					});
+				});
+				break;
+
+			default:
+				break;
 			}
 		});
 		if (SC[style].color) {

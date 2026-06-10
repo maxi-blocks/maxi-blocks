@@ -5,7 +5,7 @@
 import { getSettings, date } from '@wordpress/date';
 import { Popover } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect, useDispatch, select, dispatch } from '@wordpress/data';
 import { useState, useEffect, useRef, forwardRef } from '@wordpress/element';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
@@ -96,6 +96,43 @@ const getShapedCustomColors = rawColorsArray => {
 		if (shapedItem) shaped.push(shapedItem);
 	});
 	return shaped;
+};
+
+/**
+ * Propagate SC container `full-width-*` changes to every container block
+ * currently in the editor so per-block CSS regenerates immediately.
+ *
+ * @param {Object} changedObj The properties that changed on the SC container group.
+ */
+const syncContainerFullWidthToBlocks = changedObj => {
+	const fullWidthUpdates = {};
+	Object.keys(changedObj).forEach(key => {
+		if (key.startsWith('full-width-')) {
+			fullWidthUpdates[key] = changedObj[key];
+		}
+	});
+	if (Object.keys(fullWidthUpdates).length === 0) return;
+
+	const { getBlocks } = select('core/block-editor');
+	const { updateBlockAttributes } = dispatch('core/block-editor');
+
+	const collectContainerIds = blocks => {
+		const ids = [];
+		blocks.forEach(block => {
+			if (block.name === 'maxi-blocks/container-maxi') {
+				ids.push(block.clientId);
+			}
+			if (block.innerBlocks?.length) {
+				ids.push(...collectContainerIds(block.innerBlocks));
+			}
+		});
+		return ids;
+	};
+
+	const containerIds = collectContainerIds(getBlocks());
+	containerIds.forEach(clientId => {
+		updateBlockAttributes(clientId, fullWidthUpdates);
+	});
 };
 
 const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
@@ -390,6 +427,10 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		};
 		saveMaxiStyleCards(newStyleCards);
 		updateSCOnEditor(newSC, activeSCColour);
+
+		if (type === 'container') {
+			syncContainerFullWidthToBlocks(newObj);
+		}
 	};
 
 	// Toggle the settings override for an element on the Dark tab.

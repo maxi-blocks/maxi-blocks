@@ -70,6 +70,7 @@ class MaxiBlocks_StyleCards
         add_action('admin_init', [$this, 'run_link_palette_migration']);
         add_action('admin_init', [$this, 'run_text_wrap_migration']);
         add_action('admin_init', [$this, 'run_number_counter_migration']);
+        add_action('admin_init', [$this, 'run_container_migration']);
 
         // Clear cache when style cards are updated
         add_action('maxi_blocks_style_card_updated', [__CLASS__, 'clear_cache']);
@@ -1324,6 +1325,87 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Default container globals attributes injected by the migrator.
+     */
+    private static $container_defaults = [
+        'full-width-general'    => true,
+        'max-width-xxl'      => '1690',
+        'max-width-xl'       => '1170',
+        'max-width-l'        => '90',
+        'max-width-unit-xxl' => 'px',
+        'max-width-unit-xl'  => 'px',
+        'max-width-unit-l'   => '%',
+        'width-l'            => '1170',
+        'width-m'            => '1000',
+        'width-s'            => '700',
+        'width-xs'           => '460',
+        'width-unit-l'       => 'px',
+        'width-unit-m'       => 'px',
+        'width-unit-s'       => 'px',
+        'width-unit-xs'      => 'px',
+        'size-advanced-options' => true,
+    ];
+
+    /**
+     * Migrate style cards to add container element defaults.
+     * Follows the same pattern as the number-counter migration.
+     *
+     * @return bool True if migration was performed
+     */
+    public static function migrate_style_cards_container()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        if (!is_array($style_cards)) {
+            return false;
+        }
+
+        $updated = false;
+        $modes = ['dark', 'light'];
+
+        foreach ($style_cards as $key => $sc) {
+            foreach ($modes as $mode) {
+                if (!isset($sc[$mode]['defaultStyleCard'])) {
+                    continue;
+                }
+
+                if (!isset($sc[$mode]['defaultStyleCard']['container'])) {
+                    $style_cards[$key][$mode]['defaultStyleCard']['container'] =
+                        self::$container_defaults;
+                    $updated = true;
+                }
+            }
+        }
+
+        if ($updated) {
+            $wpdb->update(
+                $wpdb->prefix . 'maxi_blocks_general',
+                ['object' => json_encode($style_cards)],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Run the container style card migration once.
+     */
+    public function run_container_migration()
+    {
+        if (get_option('maxi_blocks_container_sc_migrated') !== 'yes') {
+            self::migrate_style_cards_container();
+            update_option('maxi_blocks_container_sc_migrated', 'yes');
+        }
+    }
+
+    /**
      * Helper function to get WP native styles
      */
     private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
@@ -1854,6 +1936,42 @@ class MaxiBlocks_StyleCards
                     ];
                 }
             }
+
+            // Container layout variables
+            if (isset($style_data['container'])) {
+                $container_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+                $container_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+                foreach ($container_size_settings as $setting) {
+                    foreach ($container_breakpoints as $breakpoint) {
+                        $key = "{$setting}-{$breakpoint}";
+
+                        if (isset($style_data['container'][$key])) {
+                            $value = $style_data['container'][$key];
+                            $unit_key = "{$setting}-unit-{$breakpoint}";
+                            $unit = isset($style_data['container'][$unit_key])
+                                ? $style_data['container'][$unit_key] : 'px';
+
+                            if ($unit === null || $unit === '') {
+                                $unit = 'px';
+                            }
+
+                            if (is_numeric($value)) {
+                                $value .= $unit;
+                            }
+
+                            $organized_values[$style]['container'][$breakpoint][$setting] = [
+                                'value' => $value,
+                                'var_name' => "--maxi-{$style}-container-{$setting}-{$breakpoint}"
+                            ];
+                        }
+                    }
+                }
+            }
         }
 
         return $organized_values;
@@ -2307,6 +2425,9 @@ class MaxiBlocks_StyleCards
                 $added_response .= "{$target}.current-menu-item { background-color: var(--maxi-{$style}-menu-item-sub-bg-current); }";
                 $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
             }
+
+            // Container Maxi — SC variables are consumed via per-block CSS
+            // variable references, not via class-based rules on .maxi-container-block.
 
             return $added_response;
         };

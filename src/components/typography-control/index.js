@@ -357,6 +357,7 @@ const TypographyControl = props => {
 		useBlockLevelFallback = false,
 		isRichTextActive = true,
 		setShowLoader,
+		getSCResetValue,
 	} = props;
 	const { formatValue, onChangeTextFormat } =
 		!isStyleCards && !disableCustomFormats ? useContext(TextContext) : {};
@@ -499,6 +500,13 @@ const TypographyControl = props => {
 				!keepBreakpoint &&
 				baseBreakpoint) ||
 			breakpoint;
+
+		// Style card reset override (e.g. Dark tab resets fall back to the
+		// light value instead of the factory default).
+		if (isStyleCards && getSCResetValue) {
+			const overrideDefault = getSCResetValue(prop, currentBreakpoint);
+			if (!isNil(overrideDefault)) return overrideDefault;
+		}
 
 		// Special handling for unit targets
 		if (!isStyleCards && target.includes('-unit')) {
@@ -745,6 +753,11 @@ const TypographyControl = props => {
 							<FontFamilySelector
 								className='maxi-typography-control__font-family'
 								font={getValue('font-family')}
+								defaultValue={
+									getSCResetValue
+										? getDefault('font-family')
+										: undefined
+								}
 								onChange={font => {
 									const currentWeight =
 										getValue('font-weight');

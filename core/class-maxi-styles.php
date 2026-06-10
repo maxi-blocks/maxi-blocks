@@ -827,6 +827,68 @@ class MaxiBlocks_Styles
         return $is_valid;
     }
 
+
+    private function get_font_files($font)
+    {
+        static $fonts = null;
+
+        if ($fonts === null) {
+            $fonts_file = MAXI_PLUGIN_DIR_PATH . 'fonts/fonts.json';
+            $fonts = [];
+
+            if (file_exists($fonts_file)) {
+                $fonts_data = json_decode(file_get_contents($fonts_file), true);
+
+                if (is_array($fonts_data)) {
+                    $fonts = $fonts_data;
+                }
+            }
+        }
+
+        return isset($fonts[$font]['files']) && is_array($fonts[$font]['files'])
+            ? $fonts[$font]['files']
+            : [];
+    }
+
+    private function normalize_remote_font_data($font, $font_data)
+    {
+        $font_files = $this->get_font_files($font);
+
+        if (empty($font_files)) {
+            return $font_data;
+        }
+
+        $requested_weights = isset($font_data['weight']) && $font_data['weight'] !== ''
+            ? explode(',', (string) $font_data['weight'])
+            : ['400'];
+        $available_weights = array_values(array_filter(array_keys($font_files), function ($weight) {
+            return preg_match('/^\\d+$/', (string) $weight);
+        }));
+
+        if (empty($available_weights)) {
+            return $font_data;
+        }
+
+        $normalized_weights = [];
+        foreach ($requested_weights as $weight) {
+            $weight = trim((string) $weight);
+
+            if ($weight !== '' && in_array($weight, $available_weights, true)) {
+                $normalized_weights[] = $weight;
+            }
+        }
+
+        if (empty($normalized_weights)) {
+            $normalized_weights[] = in_array('400', $available_weights, true)
+                ? '400'
+                : $available_weights[0];
+        }
+
+        $font_data['weight'] = implode(',', array_values(array_unique($normalized_weights)));
+
+        return $font_data;
+    }
+
     /**
      * Legacy function
      * Post fonts
@@ -940,10 +1002,10 @@ class MaxiBlocks_Styles
 
             if (!$is_sc_font) {
                 // Create consolidated font data with multiple weights
-                $consolidated_font_data = [
+                $consolidated_font_data = $this->normalize_remote_font_data($font, [
                     'weight' => implode(',', $weights),
                     'style' => implode(',', $styles)
-                ];
+                ]);
 
                 if ($use_local_fonts) {
                     $font_name_sanitized = str_replace(
@@ -979,9 +1041,9 @@ class MaxiBlocks_Styles
                                 'all'
                             );
                         } else {
-                            // Try fallback with weight 400 only
+                            // Try fallback with an available bundled weight
                             $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-                            $fallback_font_data = ['weight' => '400', 'style' => 'normal'];
+                            $fallback_font_data = $this->normalize_remote_font_data($font, ['weight' => '400', 'style' => 'normal']);
                             $fallback_font_url = $local_fonts->generate_font_url(
                                 $font_api_url . "/css2?family=$font:",
                                 $fallback_font_data
@@ -1010,10 +1072,10 @@ class MaxiBlocks_Styles
                 }
             } else {
                 // Handle sc_font case with consolidated weights/styles
-                $consolidated_font_data = [
+                $consolidated_font_data = $this->normalize_remote_font_data($font, [
                     'weight' => implode(',', $weights),
                     'style' => implode(',', $styles)
-                ];
+                ]);
 
                 if ($use_local_fonts) {
                     $font_name_sanitized = str_replace(
@@ -1053,9 +1115,9 @@ class MaxiBlocks_Styles
                                 'all'
                             );
                         } else {
-                            // Try fallback with weight 400 only
+                            // Try fallback with an available bundled weight
                             $local_fonts = MaxiBlocks_Local_Fonts::get_instance();
-                            $fallback_font_data = ['weight' => '400', 'style' => 'normal'];
+                            $fallback_font_data = $this->normalize_remote_font_data($font, ['weight' => '400', 'style' => 'normal']);
                             $fallback_font_url = $local_fonts->generate_font_url(
                                 $font_api_url . "/css2?family=$font:",
                                 $fallback_font_data

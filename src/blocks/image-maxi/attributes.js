@@ -8,6 +8,13 @@ import {
 	transitionAttributesCreator,
 } from '@extensions/styles';
 import { customCss, transition } from './data';
+import {
+	IMAGE_FILTER_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
+	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	getDropShadowAttribute,
+	getFilterAttribute,
+} from './components/filter-tab/constants';
 
 /**
  * Attributes
@@ -148,6 +155,33 @@ const attributes = {
 	...attributesData.hoverMargin,
 	...attributesData.hoverPadding,
 	...attributesData.hoverTitleTypography,
+	...breakpointAttributesCreator({
+		obj: {
+			...IMAGE_FILTER_CONTROLS.reduce((acc, { key, defaultValue }) => {
+				acc[getFilterAttribute(key)] = {
+					type: 'number',
+					default: defaultValue,
+				};
+
+				return acc;
+			}, {}),
+			...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce(
+				(acc, { key, defaultValue }) => {
+					acc[getDropShadowAttribute(key)] = {
+						type: 'number',
+						default: defaultValue,
+					};
+
+					return acc;
+				},
+				{}
+			),
+			[getDropShadowAttribute('color')]: {
+				type: 'string',
+				default: IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
+			},
+		},
+	}),
 	...prefixAttributesCreator({ obj: attributesData.border, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.borderHover, prefix }),
 	...prefixAttributesCreator({ obj: attributesData.borderRadius, prefix }),

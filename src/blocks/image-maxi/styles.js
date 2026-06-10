@@ -35,6 +35,7 @@ import {
 	transitionDurationEffects,
 	transitionFilterEffects,
 } from './components/hover-effect-control/constants';
+import { getImageFilterStyles } from './components/filter-tab/utils';
 import data from './data';
 
 /**
@@ -476,6 +477,7 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'clipPath'),
 			},
 		}),
+		...getImageFilterStyles(props),
 		...(imgWidth &&
 			!fitParentSize &&
 			getImgWidthStyles(

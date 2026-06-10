@@ -24,6 +24,7 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import DimensionTab from './components/dimension-tab';
+import FilterTab from './components/filter-tab';
 import HoverEffectControl from './components/hover-effect-control';
 import InfoBox from '@components/info-box';
 import {
@@ -35,6 +36,7 @@ import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '@extensions/inspector';
 import { transitionFilterEffects } from './components/hover-effect-control/constants';
+import { IMAGE_FILTER_ATTRIBUTE_KEYS } from './components/filter-tab/constants';
 
 /**
  * Inspector
@@ -510,6 +512,21 @@ const Inspector = props => {
 								]}
 							/>
 						),
+					},
+					{
+						label: __('Filters', 'maxi-blocks'),
+						content: (
+							<ResponsiveTabsControl breakpoint={deviceType}>
+								<FilterTab
+									{...attributes}
+									onChange={maxiSetAttributes}
+									breakpoint={deviceType}
+									blockStyle={blockStyle}
+									clientId={clientId}
+								/>
+							</ResponsiveTabsControl>
+						),
+						indicatorProps: IMAGE_FILTER_ATTRIBUTE_KEYS,
 					},
 					{
 						label: __('Canvas', 'maxi-blocks'),

@@ -367,7 +367,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						...sc[SCStyle].styleCard,
 						[type]: {
 							...sc[SCStyle].styleCard[type],
-							[prop]: value,
+							...(!isNil(value) && { [prop]: value }),
 						},
 					},
 				},

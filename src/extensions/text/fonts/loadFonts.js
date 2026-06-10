@@ -189,6 +189,14 @@ const loadFonts = async (
 
 				if (isEmpty(fontFiles)) return;
 
+				const getFallbackWeightFile = fontFilesObj => {
+					if ('400' in fontFilesObj) return '400';
+
+					return Object.keys(fontFilesObj).find(weightFile =>
+						/^\d+$/.test(weightFile)
+					);
+				};
+
 				// Custom font flow: inject @font-face rules via <style>
 				if (fontRecord?.source === 'custom') {
 					const styleVariants =
@@ -207,13 +215,17 @@ const loadFonts = async (
 									let fileUrl = fontFiles?.[variantKey];
 
 									if (!fileUrl) {
-										const fallbackKey = buildVariantKey(
-											'400',
-											styleValue
-										);
-										fileUrl =
-											fontFiles?.[fallbackKey] ??
-											fontFiles?.['400'];
+										const fallbackWeight =
+											getFallbackWeightFile(fontFiles);
+										if (fallbackWeight) {
+											const fallbackKey = buildVariantKey(
+												fallbackWeight,
+												styleValue
+											);
+											fileUrl =
+												fontFiles?.[fallbackKey] ??
+												fontFiles?.[fallbackWeight];
+										}
 									}
 
 									if (!fileUrl) {
@@ -320,14 +332,6 @@ const loadFonts = async (
 					style === 'italic'
 						? `${weight === '400' ? '' : weight}italic`
 						: weight;
-
-				const getFallbackWeightFile = fontFiles => {
-					if ('400' in fontFiles) return '400';
-
-					return Object.keys(fontFiles).find(weightFile =>
-						/^\d+$/.test(weightFile)
-					);
-				};
 
 				/**
 				 * Returns font weight from weightFile

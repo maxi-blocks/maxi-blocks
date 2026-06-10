@@ -2,6 +2,7 @@ import {
 	getIsValid,
 	validateOriginValue,
 	getParallaxLayers,
+	getScrollEffects,
 	splitValueAndUnit,
 	getRelations,
 	getBreakpointFromAttribute,
@@ -100,6 +101,59 @@ describe('utils', () => {
 			};
 
 			expect(getParallaxLayers('test-id', bgLayers)).toEqual(expected);
+		});
+	});
+
+	describe('getScrollEffects', () => {
+		it('Includes scroll effects enabled only on responsive breakpoints', () => {
+			const result = getScrollEffects('test-id', {
+				'scroll-vertical-status-general': false,
+				'scroll-vertical-status-m': true,
+				'scroll-vertical-speed-m': 700,
+				'scroll-vertical-zones-m': {
+					0: -120,
+					100: 120,
+				},
+			});
+
+			expect(result).toEqual({
+				'test-id': {
+					vertical: {
+						'scroll-vertical-status-general': false,
+						'scroll-vertical-status-m': true,
+						'scroll-vertical-speed-m': 700,
+						'scroll-vertical-zones-m': {
+							0: -120,
+							100: 120,
+						},
+					},
+					scroll_effects: true,
+				},
+			});
+		});
+
+		it('Keeps responsive false status overrides for enabled scroll effects', () => {
+			const result = getScrollEffects('test-id', {
+				'scroll-horizontal-status-general': true,
+				'scroll-horizontal-status-s': false,
+				'scroll-horizontal-speed-general': 500,
+				'scroll-horizontal-speed-s': 900,
+			});
+
+			expect(result['test-id'].horizontal).toMatchObject({
+				'scroll-horizontal-status-general': true,
+				'scroll-horizontal-status-s': false,
+			});
+		});
+
+		it('Does not include scroll effects with no enabled status', () => {
+			expect(
+				getScrollEffects('test-id', {
+					'scroll-fade-status-general': false,
+					'scroll-fade-status-m': false,
+					'scroll-fade-speed-m': 300,
+				})
+			).toBeNull();
 		});
 	});
 

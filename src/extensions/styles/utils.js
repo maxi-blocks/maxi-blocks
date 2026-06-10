@@ -105,7 +105,13 @@ export const getHasVideo = (uniqueID, bgLayers) =>
  */
 export const getScrollEffects = (uniqueID, scroll) => {
 	const availableScrollTypes = scrollTypes.filter(type => {
-		return scroll[`scroll-${type}-status-general`];
+		const statusPattern = new RegExp(
+			`^scroll-${type}-status-(${BREAKPOINTS.join('|')})$`
+		);
+
+		return Object.entries(scroll).some(([key, value]) => {
+			return statusPattern.test(key) && value;
+		});
 	});
 
 	const response = {};

@@ -148,6 +148,60 @@ class ScrollEffects {
 		return null;
 	};
 
+	clearTransform = (el, transformNames) => {
+		const currentTransform = el.style.transform || '';
+		const transformParts = currentTransform.match(/(\w+\([^)]+\))/g) || [];
+		const names = Array.isArray(transformNames)
+			? transformNames
+			: [transformNames];
+		const updatedTransform = transformParts
+			.filter(part => !names.some(name => part.startsWith(`${name}(`)))
+			.join(' ');
+
+		el.style.transform = updatedTransform;
+		el.style.WebkitTransform = updatedTransform;
+	};
+
+	clearStyle = (el, type) => {
+		switch (type) {
+			case 'rotate':
+				this.clearTransform(el, 'rotate');
+				break;
+			case 'rotateX':
+				this.clearTransform(el, 'rotateX');
+				break;
+			case 'rotateY':
+				this.clearTransform(el, 'rotateY');
+				break;
+			case 'fade':
+				el.style.opacity = '';
+				break;
+			case 'scale':
+				this.clearTransform(el, ['scale3d', 'scale']);
+				break;
+			case 'scaleX':
+				this.clearTransform(el, 'scaleX');
+				break;
+			case 'scaleY':
+				this.clearTransform(el, 'scaleY');
+				break;
+			case 'blur':
+				el.style.filter = (el.style.filter || '')
+					.replace(/blur\([^)]*\)/g, '')
+					.replace(/\s+/g, ' ')
+					.trim();
+				break;
+			case 'vertical':
+				this.clearTransform(el, 'translateY');
+				break;
+			case 'horizontal':
+				this.clearTransform(el, 'translateX');
+				break;
+			default:
+				break;
+		}
+	};
+
 	static setOpacity = (el, opacity) => {
 		el.style.opacity = opacity;
 	};
@@ -504,7 +558,10 @@ class ScrollEffects {
 				const { status, speedValue, easingValue, delayValue } =
 					this.getScrollSetting(data, type);
 
-				if (!status) return;
+				if (!status) {
+					this.clearStyle(element, type);
+					return;
+				}
 
 				transition += this.constructor.getTransition(
 					type,
@@ -515,11 +572,10 @@ class ScrollEffects {
 
 				this.startingTransform(element, type);
 			});
-			if (transition !== '')
-				element.style.transition = transition.substring(
-					0,
-					transition.length - 2
-				);
+			element.style.transition =
+				transition !== ''
+					? transition.substring(0, transition.length - 2)
+					: '';
 		});
 	}
 }

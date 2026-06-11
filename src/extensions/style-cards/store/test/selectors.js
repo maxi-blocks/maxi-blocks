@@ -417,4 +417,146 @@ describe('style-cards store selectors', () => {
 			).toBe(false);
 		});
 	});
+
+	describe('receiveMaxiSelectedStyleCard - container migration', () => {
+		it('Adds container to style card if missing', () => {
+			const styleCards = {
+				sc_maxi: {
+					name: 'Maxi',
+					value: {
+						dark: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+						light: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+					},
+				},
+			};
+			const state = { styleCards };
+
+			const selectedStyleCard = {
+				value: styleCards.sc_maxi.value,
+				key: 'sc_maxi',
+			};
+
+			getActiveStyleCard.mockReturnValue(selectedStyleCard);
+
+			const result = receiveMaxiSelectedStyleCard(state);
+
+			expect(result.value.dark.defaultStyleCard).toHaveProperty(
+				'container'
+			);
+			expect(result.value.light.defaultStyleCard).toHaveProperty(
+				'container'
+			);
+			expect(
+				result.value.light.defaultStyleCard.container[
+					'override-container-full-width'
+				]
+			).toBe(false);
+			expect(
+				result.value.light.defaultStyleCard.container[
+					'full-width-general'
+				]
+			).toBe(true);
+		});
+	});
+
+	describe('receiveMaxiSelectedStyleCard - row migration', () => {
+		it('Adds row to style card if missing', () => {
+			const styleCards = {
+				sc_maxi: {
+					name: 'Maxi',
+					value: {
+						dark: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+						light: {
+							defaultStyleCard: {
+								divider: {},
+							},
+						},
+					},
+				},
+			};
+			const state = { styleCards };
+
+			const selectedStyleCard = {
+				value: styleCards.sc_maxi.value,
+				key: 'sc_maxi',
+			};
+
+			getActiveStyleCard.mockReturnValue(selectedStyleCard);
+
+			const result = receiveMaxiSelectedStyleCard(state);
+
+			expect(result.value.dark.defaultStyleCard).toHaveProperty('row');
+			expect(result.value.light.defaultStyleCard).toHaveProperty('row');
+			expect(
+				result.value.light.defaultStyleCard.row[
+					'override-row-full-width'
+				]
+			).toBe(false);
+			expect(
+				result.value.light.defaultStyleCard.row['full-width-general']
+			).toBe(false);
+			expect(
+				Number(result.value.light.defaultStyleCard.row['max-width-xxl'])
+			).toBe(1690);
+		});
+
+		it('Does not overwrite existing row data', () => {
+			const existingRow = {
+				'override-row-full-width': true,
+				'full-width-general': true,
+				'max-width-xxl': 1200,
+				'max-width-unit-xxl': 'px',
+			};
+			const styleCards = {
+				sc_maxi: {
+					name: 'Maxi',
+					value: {
+						dark: {
+							defaultStyleCard: {
+								divider: {},
+								row: existingRow,
+							},
+						},
+						light: {
+							defaultStyleCard: {
+								divider: {},
+								row: existingRow,
+							},
+						},
+					},
+				},
+			};
+			const state = { styleCards };
+
+			const selectedStyleCard = {
+				value: styleCards.sc_maxi.value,
+				key: 'sc_maxi',
+			};
+
+			getActiveStyleCard.mockReturnValue(selectedStyleCard);
+
+			const result = receiveMaxiSelectedStyleCard(state);
+
+			expect(
+				result.value.light.defaultStyleCard.row[
+					'override-row-full-width'
+				]
+			).toBe(true);
+			expect(
+				result.value.light.defaultStyleCard.row['max-width-xxl']
+			).toBe(1200);
+		});
+	});
 });

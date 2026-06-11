@@ -21,9 +21,99 @@ import {
 	getPaginationLinksStyles,
 	getPaginationColours,
 } from '@extensions/styles/helpers';
-import data from './data';
+import data, { maxiAttributes as containerDefaults } from './data';
+
+/**
+ * Shipped container size defaults keyed by CSS property + breakpoint.
+ * Built once from data.js maxiAttributes so per-block CSS can reference
+ * SC variables instead of hard values when the attribute is unchanged.
+ */
+const sizeDefaultMap = {};
+['max-width', 'width', 'height', 'min-height'].forEach(prop => {
+	['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(bp => {
+		const key = `${prop}-${bp}`;
+		if (key in containerDefaults) sizeDefaultMap[key] = containerDefaults[key];
+	});
+});
+
+/**
+ * Replace default size values with SC CSS variable references so that SC
+ * container globals flow through the higher-specificity per-block CSS.
+ * Custom (user-modified) values are left as-is.
+ */
+const applySCVarsToSize = (sizeObj, attrs, blockStyle) => {
+	if (!blockStyle) return sizeObj;
+	const result = {};
+
+	Object.entries(sizeObj).forEach(([breakpoint, styles]) => {
+		if (!styles || typeof styles !== 'object') {
+			result[breakpoint] = styles;
+			return;
+		}
+		const newStyles = {};
+		Object.entries(styles).forEach(([cssProp, cssValue]) => {
+			const attrKey = `${cssProp}-${breakpoint}`;
+			if (
+				attrKey in sizeDefaultMap &&
+				String(attrs[attrKey]) === String(sizeDefaultMap[attrKey])
+			) {
+				newStyles[cssProp] =
+					`var(--maxi-${blockStyle}-container-${cssProp}-${breakpoint}, ${cssValue})`;
+			} else {
+				newStyles[cssProp] = cssValue;
+			}
+		});
+		result[breakpoint] = newStyles;
+	});
+	return result;
+};
+
+/**
+ * Shipped container margin/padding defaults (currently none, but future-proof).
+ */
+const spacingDefaultMap = {};
+['margin', 'padding'].forEach(type => {
+	['top', 'right', 'bottom', 'left'].forEach(side => {
+		['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'].forEach(bp => {
+			const key = `${type}-${side}-${bp}`;
+			if (key in containerDefaults) spacingDefaultMap[key] = containerDefaults[key];
+		});
+	});
+});
+
+const applySCVarsToSpacing = (spacingObj, attrs, blockStyle, type) => {
+	if (!blockStyle) return spacingObj;
+	const result = {};
+
+	Object.entries(spacingObj).forEach(([breakpoint, styles]) => {
+		if (!styles || typeof styles !== 'object') {
+			result[breakpoint] = styles;
+			return;
+		}
+		const newStyles = {};
+		Object.entries(styles).forEach(([cssProp, cssValue]) => {
+			const attrKey = `${cssProp}-${breakpoint}`;
+			if (
+				attrKey in spacingDefaultMap &&
+				String(attrs[attrKey]) === String(spacingDefaultMap[attrKey])
+			) {
+				newStyles[cssProp] =
+					`var(--maxi-${blockStyle}-container-${cssProp}-${breakpoint}, ${cssValue})`;
+			} else {
+				newStyles[cssProp] = cssValue;
+			}
+		});
+		result[breakpoint] = newStyles;
+	});
+	return result;
+};
 
 const getNormalObject = props => {
+	const sizeAttrs = getGroupAttributes(props, 'size');
+	const rawSize = getSizeStyles(sizeAttrs);
+	const marginAttrs = getGroupAttributes(props, 'margin');
+	const paddingAttrs = getGroupAttributes(props, 'padding');
+
 	const response = {
 		border: getBorderStyles({
 			obj: {
@@ -35,9 +125,7 @@ const getNormalObject = props => {
 			},
 			blockStyle: props.blockStyle,
 		}),
-		size: getSizeStyles({
-			...getGroupAttributes(props, 'size'),
-		}),
+		size: applySCVarsToSize(rawSize, sizeAttrs, props.blockStyle),
 		boxShadow: getBoxShadowStyles({
 			obj: {
 				...getGroupAttributes(props, 'boxShadow'),
@@ -59,16 +147,18 @@ const getNormalObject = props => {
 		overflow: getOverflowStyles({
 			...getGroupAttributes(props, 'overflow'),
 		}),
-		margin: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'margin'),
-			},
-		}),
-		padding: getMarginPaddingStyles({
-			obj: {
-				...getGroupAttributes(props, 'padding'),
-			},
-		}),
+		margin: applySCVarsToSpacing(
+			getMarginPaddingStyles({ obj: marginAttrs }),
+			marginAttrs,
+			props.blockStyle,
+			'margin'
+		),
+		padding: applySCVarsToSpacing(
+			getMarginPaddingStyles({ obj: paddingAttrs }),
+			paddingAttrs,
+			props.blockStyle,
+			'padding'
+		),
 		flex: getFlexStyles({
 			...getGroupAttributes(props, 'flex'),
 		}),

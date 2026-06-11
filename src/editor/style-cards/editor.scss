@@ -823,6 +823,16 @@ body .maxi-style-cards__popover {
 			.maxi-typography-control__line-height {
 			margin-right: 10px !important;
 		}
+
+		.maxi-dimensions-control__units {
+			min-width: 57px !important;
+		}
+		.maxi-components-button.maxi-reset-button {
+			width: 13px !important;
+		}
+		.maxi-typography-control__weight .maxi-select-control__input {
+			min-width: 119px;
+		}
 	}
 
 	.maxi-toggle-switch {
@@ -855,7 +865,7 @@ body .maxi-style-cards__popover {
 	}
 
 	.maxi-typography-control .maxi-typography-control__weight-size-row {
-		gap: 12px !important;
+		gap: 5px !important;
 
 		&:has(.maxi-typography-control__weight-warning) {
 			width: 100%;

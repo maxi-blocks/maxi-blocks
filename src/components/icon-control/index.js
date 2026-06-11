@@ -13,6 +13,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
+import AlignmentControl from '@components/alignment-control';
 import AxisControl from '@components/axis-control';
 import AxisPositionControl from '@components/axis-position-control';
 import BorderControl from '@components/border-control';
@@ -85,11 +86,15 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disableStrokeWidth = false, // Hide stroke width controls
 		disableHeightFitContent = false, // Disable height fit content
 		disablePositionY = false, // Disable Y-axis positioning
+		enableAlignment = false, // Show icon alignment controls
 		getIconWithColor, // Function to apply colors to icon SVG
 		inlineTarget, // Target selector for inline styles
 		[iconOnlyKey]: iconOnly, // Icon-only mode state
 		[iconInheritKey]: iconInherit, // Inherit from button state
 	} = props;
+	const iconPosition = props[`${prefix}icon-position`];
+	const showAlignmentControl =
+		enableAlignment && !isHover && ['top', 'bottom'].includes(iconPosition);
 
 	const getDefaultIconStyle = () => {
 		if (breakpoint !== 'general') return disableBorder ? 'color' : 'border';
@@ -335,6 +340,26 @@ const IconControlResponsiveSettings = withRTC(props => {
 						/>
 					)}
 				</>
+			)}
+
+			{/* Alignment control: Align the icon wrapper inside the button */}
+			{showAlignmentControl && (
+				<AlignmentControl
+					className='maxi-icon-control__alignment'
+					label={__('Icon', 'maxi-blocks')}
+					{...getGroupAttributes(
+						props,
+						'iconAlignment',
+						false,
+						prefix
+					)}
+					onChange={onChange}
+					breakpoint={breakpoint}
+					prefix={`${prefix}icon-`}
+					defaultValue='center'
+					disableJustify
+					showLabel
+				/>
 			)}
 
 			{/* Icon style tabs: Stroke, Fill, Outline (only show if more than 1 option) */}
@@ -589,6 +614,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 				<>
 					{/* Background type selector tabs */}
 					<SettingTabsControl
+						className='maxi-icon-background-tabs-control'
 						type='buttons'
 						fullWidthMode
 						selected={iconBgActive}

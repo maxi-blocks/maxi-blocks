@@ -162,6 +162,7 @@ const Inspector = props => {
 									},
 									...inspectorTabs.icon({
 										props,
+										enableAlignment: true,
 									}),
 									...inspectorTabs.alignment({
 										props,

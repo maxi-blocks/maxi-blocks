@@ -470,7 +470,7 @@ const SCAccordion = props => {
 const scOnChange = (obj, groupAttr, onChangeValue) => {
 	const cleaned = {};
 	Object.entries(obj).forEach(([key, val]) => {
-		cleaned[key] = val === undefined ? '' : val;
+		cleaned[key] = val == null ? '' : val;
 	});
 	onChangeValue(cleaned, groupAttr);
 };

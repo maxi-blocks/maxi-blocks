@@ -516,7 +516,7 @@ const ContainerSCSection = ({
 				<>
 					<ToggleSwitch
 						label={__(
-							'Override all containers full-width',
+							'Override all containers',
 							'maxi-blocks'
 						)}
 						className='maxi-style-cards-control__toggle-container-override'
@@ -551,11 +551,11 @@ const ContainerSCSection = ({
 					<p className='maxi-style-cards-control__notice'>
 						{overrideFullWidth
 							? __(
-									'Override is active: full-width setting applies to ALL containers on the site, overriding individual container settings. Disable the override to restore each container\'s own settings.',
+									'Override is active: size, margin, and padding settings apply to ALL containers on the site, overriding individual container settings. Disable to restore each container\'s own settings.',
 									'maxi-blocks'
 							  )
 							: __(
-									'Enable "Override all containers full-width" to force full-width on/off for every container on the site. Individual container settings are preserved and will be restored when the override is disabled.',
+									'Enable to apply these size, margin, and padding settings to every container on the site. Individual container settings are preserved and restored when disabled.',
 									'maxi-blocks'
 							  )}
 					</p>
@@ -631,7 +631,7 @@ const RowSCSection = ({
 				<>
 					<ToggleSwitch
 						label={__(
-							'Override all rows full-width',
+							'Override all rows',
 							'maxi-blocks'
 						)}
 						className='maxi-style-cards-control__toggle-row-override'
@@ -659,11 +659,11 @@ const RowSCSection = ({
 					<p className='maxi-style-cards-control__notice'>
 						{overrideFullWidth
 							? __(
-									'Override is active: full-width setting applies to ALL rows on the site, overriding individual row settings. Disable the override to restore each row\'s own settings.',
+									'Override is active: size, margin, and padding settings apply to ALL rows on the site, overriding individual row settings. Disable to restore each row\'s own settings.',
 									'maxi-blocks'
 							  )
 							: __(
-									'Enable "Override all rows full-width" to force full-width on/off for every row on the site. Individual row settings are preserved and will be restored when the override is disabled.',
+									'Enable to apply these size, margin, and padding settings to every row on the site. Individual row settings are preserved and restored when disabled.',
 									'maxi-blocks'
 							  )}
 					</p>

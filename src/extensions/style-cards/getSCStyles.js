@@ -657,57 +657,6 @@ const getMaxiSCStyles = ({
 			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
 		});
 
-		// Container Maxi — default SC rules
-		const containerData = organizedValues?.[style]?.container;
-		if (containerData) {
-			const containerDefaultTargets = [
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block:not(#_)`,
-				`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block:not(#_)`,
-			];
-			const containerDefaultRules = [];
-			const bpOrderDefault = [
-				'general',
-				'xxl',
-				'xl',
-				'l',
-				'm',
-				's',
-				'xs',
-			];
-			const bpIdxDefault = bpOrderDefault.indexOf(breakpoint);
-
-			containerSettings.forEach(setting => {
-				let foundBp = breakpoint;
-				if (
-					!containerData?.[breakpoint]?.[setting] &&
-					breakpoint === 'general'
-				) {
-					for (
-						let i = bpIdxDefault + 1;
-						i < bpOrderDefault.length;
-						i += 1
-					) {
-						if (containerData?.[bpOrderDefault[i]]?.[setting]) {
-							foundBp = bpOrderDefault[i];
-							break;
-						}
-					}
-				}
-				if (containerData?.[foundBp]?.[setting]) {
-					containerDefaultRules.push(
-						`${setting}: var(--maxi-${style}-container-${setting}-${foundBp}) !important;`
-					);
-				}
-			});
-
-			if (containerDefaultRules.length > 0) {
-				const containerDefaultStr = containerDefaultRules.join(' ');
-				containerDefaultTargets.forEach(t => {
-					addedResponse += `${t} {${containerDefaultStr}}`;
-				});
-			}
-		}
-
 		// Container Maxi — full-width override
 		// Note: override/full-width flags live on styleCard (not deleted by getOrganizedValues),
 		// but size variables (max-width, margin, etc.) are moved to organizedValues and deleted
@@ -732,8 +681,52 @@ const getMaxiSCStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block`,
 					`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block`,
 				];
+				const fwSizeRules = ['min-width: 100% !important;'];
+
+				const fwBpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const fwBpIdx = fwBpOrder.indexOf(breakpoint);
+				const fwContainerData =
+					organizedValues?.[style]?.container;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+					if (
+						!fwContainerData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = fwBpIdx + 1;
+							i < fwBpOrder.length;
+							i += 1
+						) {
+							if (
+								fwContainerData?.[fwBpOrder[i]]?.[
+									setting
+								]
+							) {
+								foundBp = fwBpOrder[i];
+								break;
+							}
+						}
+					}
+					if (fwContainerData?.[foundBp]?.[setting]) {
+						fwSizeRules.push(
+							`${setting}: var(--maxi-${style}-container-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const fwRulesStr = fwSizeRules.join(' ');
 				fwTargets.forEach(t => {
-					addedResponse += `${t} {min-width: 100% !important;}`;
+					addedResponse += `${t} {${fwRulesStr}}`;
 				});
 			} else {
 				// Full-width OFF: :not(#_) boosts specificity to ID-level
@@ -793,61 +786,6 @@ const getMaxiSCStyles = ({
 			}
 		}
 
-		// Row Maxi — default SC rules
-		const rowDataDefault = organizedValues?.[style]?.row;
-		if (rowDataDefault) {
-			const rowDefaultTargets = [
-				`${prefix} ${secondPrefix} .maxi-${style}.maxi-row-block:not(#_)`,
-				`${prefix} ${secondPrefix} .maxi-${style} .maxi-row-block:not(#_)`,
-			];
-			const rowDefaultRules = [];
-			const rowBpOrderDefault = [
-				'general',
-				'xxl',
-				'xl',
-				'l',
-				'm',
-				's',
-				'xs',
-			];
-			const rowBpIdxDefault = rowBpOrderDefault.indexOf(breakpoint);
-
-			containerSettings.forEach(setting => {
-				let foundBp = breakpoint;
-				if (
-					!rowDataDefault?.[breakpoint]?.[setting] &&
-					breakpoint === 'general'
-				) {
-					for (
-						let i = rowBpIdxDefault + 1;
-						i < rowBpOrderDefault.length;
-						i += 1
-					) {
-						if (
-							rowDataDefault?.[rowBpOrderDefault[i]]?.[
-								setting
-							]
-						) {
-							foundBp = rowBpOrderDefault[i];
-							break;
-						}
-					}
-				}
-				if (rowDataDefault?.[foundBp]?.[setting]) {
-					rowDefaultRules.push(
-						`${setting}: var(--maxi-${style}-row-${setting}-${foundBp}) !important;`
-					);
-				}
-			});
-
-			if (rowDefaultRules.length > 0) {
-				const rowDefaultStr = rowDefaultRules.join(' ');
-				rowDefaultTargets.forEach(t => {
-					addedResponse += `${t} {${rowDefaultStr}}`;
-				});
-			}
-		}
-
 		// Row Maxi — full-width override (same pattern as container)
 		const overrideRowFullWidth =
 			styleCard?.[
@@ -867,8 +805,49 @@ const getMaxiSCStyles = ({
 					`${prefix} ${secondPrefix} .maxi-${style}.maxi-row-block`,
 					`${prefix} ${secondPrefix} .maxi-${style} .maxi-row-block`,
 				];
+				const rowFwSizeRules = ['min-width: 100% !important;'];
+
+				const rowFwBpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const rowFwBpIdx = rowFwBpOrder.indexOf(breakpoint);
+				const rowFwData = organizedValues?.[style]?.row;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+					if (
+						!rowFwData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = rowFwBpIdx + 1;
+							i < rowFwBpOrder.length;
+							i += 1
+						) {
+							if (
+								rowFwData?.[rowFwBpOrder[i]]?.[setting]
+							) {
+								foundBp = rowFwBpOrder[i];
+								break;
+							}
+						}
+					}
+					if (rowFwData?.[foundBp]?.[setting]) {
+						rowFwSizeRules.push(
+							`${setting}: var(--maxi-${style}-row-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const rowFwRulesStr = rowFwSizeRules.join(' ');
 				rowFwTargets.forEach(t => {
-					addedResponse += `${t} {min-width: 100% !important;}`;
+					addedResponse += `${t} {${rowFwRulesStr}}`;
 				});
 			} else {
 				const rowTargets = [

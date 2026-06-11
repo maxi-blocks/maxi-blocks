@@ -2561,7 +2561,6 @@ class MaxiBlocks_StyleCards
                 $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
             }
 
-            // Container Maxi — default SC rules
             $container_default_size_settings = [
                 'max-width', 'width', 'height', 'min-height',
                 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
@@ -2570,47 +2569,12 @@ class MaxiBlocks_StyleCards
             $default_bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
             $default_bp_idx = array_search($breakpoint, $default_bp_order);
 
-            $container_default_rules = [];
-            foreach ($container_default_size_settings as $c_setting) {
-                $found_bp = $breakpoint;
-                if (!isset($organized_values[$style]['container'][$breakpoint][$c_setting])
-                    && $breakpoint === 'general') {
-                    for ($i = $default_bp_idx + 1; $i < count($default_bp_order); $i++) {
-                        if (isset($organized_values[$style]['container'][$default_bp_order[$i]][$c_setting])) {
-                            $found_bp = $default_bp_order[$i];
-                            break;
-                        }
-                    }
-                }
-                if (isset($organized_values[$style]['container'][$found_bp][$c_setting])) {
-                    $var_name = "--maxi-{$style}-container-{$c_setting}-{$found_bp}";
-                    $container_default_rules[] = "{$c_setting}: var({$var_name}) !important;";
-                }
-            }
-            if (!empty($container_default_rules)) {
-                $container_default_str = implode(' ', $container_default_rules);
-                $container_default_targets = [
-                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block:not(#_)",
-                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block:not(#_)",
-                ];
-                foreach ($container_default_targets as $target) {
-                    $added_response .= "{$target} {{$container_default_str}}";
-                }
-            }
-
             // Container Maxi — full-width override
             $override_fw = !empty($organized_values[$style]['container']['_override_full_width']);
 
             if ($override_fw) {
                 $fw_map = $organized_values[$style]['container']['_full_width'] ?? [];
                 $is_full_width = $fw_map[$breakpoint] ?? $fw_map['general'] ?? true;
-
-                // :not(#_) boosts specificity to ID-level so we beat per-block
-                // #container-maxi-*-u rules that also use !important
-                $container_targets = [
-                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block:not(#_)",
-                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block:not(#_)",
-                ];
 
                 $container_size_settings = [
                     'max-width', 'width', 'height', 'min-height',
@@ -2644,37 +2608,23 @@ class MaxiBlocks_StyleCards
                 }
 
                 $rules_str = implode(' ', $size_rules);
+
+                if ($is_full_width) {
+                    // Class-level selectors so has-global-padding ID rules win
+                    $container_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block",
+                    ];
+                } else {
+                    // :not(#_) boosts specificity to beat per-block ID rules
+                    $container_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block:not(#_)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block:not(#_)",
+                    ];
+                }
+
                 foreach ($container_targets as $target) {
                     $added_response .= "{$target} {{$rules_str}}";
-                }
-            }
-
-            // Row Maxi — default SC rules
-            $row_default_rules = [];
-            foreach ($container_default_size_settings as $r_setting) {
-                $found_bp = $breakpoint;
-                if (!isset($organized_values[$style]['row'][$breakpoint][$r_setting])
-                    && $breakpoint === 'general') {
-                    for ($i = $default_bp_idx + 1; $i < count($default_bp_order); $i++) {
-                        if (isset($organized_values[$style]['row'][$default_bp_order[$i]][$r_setting])) {
-                            $found_bp = $default_bp_order[$i];
-                            break;
-                        }
-                    }
-                }
-                if (isset($organized_values[$style]['row'][$found_bp][$r_setting])) {
-                    $var_name = "--maxi-{$style}-row-{$r_setting}-{$found_bp}";
-                    $row_default_rules[] = "{$r_setting}: var({$var_name}) !important;";
-                }
-            }
-            if (!empty($row_default_rules)) {
-                $row_default_str = implode(' ', $row_default_rules);
-                $row_default_targets = [
-                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-row-block:not(#_)",
-                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-row-block:not(#_)",
-                ];
-                foreach ($row_default_targets as $target) {
-                    $added_response .= "{$target} {{$row_default_str}}";
                 }
             }
 
@@ -2685,52 +2635,55 @@ class MaxiBlocks_StyleCards
                 $row_fw_map = $organized_values[$style]['row']['_full_width'] ?? [];
                 $is_row_full_width = $row_fw_map[$breakpoint] ?? $row_fw_map['general'] ?? false;
 
+                $row_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+                $row_bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                $row_bp_idx = array_search($breakpoint, $row_bp_order);
+
+                $row_size_rules = [$is_row_full_width
+                    ? 'min-width: 100% !important;'
+                    : 'min-width: initial !important;'];
+
+                foreach ($row_size_settings as $r_setting) {
+                    $found_bp = $breakpoint;
+
+                    if (!isset($organized_values[$style]['row'][$breakpoint][$r_setting])
+                        && $breakpoint === 'general') {
+                        for ($i = $row_bp_idx + 1; $i < count($row_bp_order); $i++) {
+                            if (isset($organized_values[$style]['row'][$row_bp_order[$i]][$r_setting])) {
+                                $found_bp = $row_bp_order[$i];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isset($organized_values[$style]['row'][$found_bp][$r_setting])) {
+                        $var_name = "--maxi-{$style}-row-{$r_setting}-{$found_bp}";
+                        $row_size_rules[] = "{$r_setting}: var({$var_name}) !important;";
+                    }
+                }
+
+                $row_rules_str = implode(' ', $row_size_rules);
+
                 if ($is_row_full_width) {
-                    $row_fw_targets = [
+                    // Class-level selectors so has-global-padding ID rules win
+                    $row_targets = [
                         "{$prefix} {$second_prefix} .maxi-{$style}.maxi-row-block",
                         "{$prefix} {$second_prefix} .maxi-{$style} .maxi-row-block",
                     ];
-                    foreach ($row_fw_targets as $target) {
-                        $added_response .= "{$target} {min-width: 100% !important;}";
-                    }
                 } else {
+                    // :not(#_) boosts specificity to beat per-block ID rules
                     $row_targets = [
                         "{$prefix} {$second_prefix} .maxi-{$style}.maxi-row-block:not(#_)",
                         "{$prefix} {$second_prefix} .maxi-{$style} .maxi-row-block:not(#_)",
                     ];
+                }
 
-                    $row_size_settings = [
-                        'max-width', 'width', 'height', 'min-height',
-                        'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
-                        'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
-                    ];
-                    $row_bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-                    $row_bp_idx = array_search($breakpoint, $row_bp_order);
-
-                    $row_size_rules = ['min-width: initial !important;'];
-                    foreach ($row_size_settings as $r_setting) {
-                        $found_bp = $breakpoint;
-
-                        if (!isset($organized_values[$style]['row'][$breakpoint][$r_setting])
-                            && $breakpoint === 'general') {
-                            for ($i = $row_bp_idx + 1; $i < count($row_bp_order); $i++) {
-                                if (isset($organized_values[$style]['row'][$row_bp_order[$i]][$r_setting])) {
-                                    $found_bp = $row_bp_order[$i];
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (isset($organized_values[$style]['row'][$found_bp][$r_setting])) {
-                            $var_name = "--maxi-{$style}-row-{$r_setting}-{$found_bp}";
-                            $row_size_rules[] = "{$r_setting}: var({$var_name}) !important;";
-                        }
-                    }
-
-                    $row_rules_str = implode(' ', $row_size_rules);
-                    foreach ($row_targets as $target) {
-                        $added_response .= "{$target} {{$row_rules_str}}";
-                    }
+                foreach ($row_targets as $target) {
+                    $added_response .= "{$target} {{$row_rules_str}}";
                 }
             }
 

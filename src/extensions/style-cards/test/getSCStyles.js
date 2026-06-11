@@ -454,64 +454,57 @@ describe('getSCStyles', () => {
 		);
 	});
 
-	it('Should generate default container CSS rules with !important and :not(#_) specificity', async () => {
+	it('Should not generate container/row SC rules when override is off (default)', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
 		const result = await getSCStyles(cleanVarSC, true);
 
-		expect(result).toContain(
-			'.maxi-light.maxi-container-block:not(#_)'
-		);
-		expect(result).toContain(
-			'.maxi-light .maxi-container-block:not(#_)'
-		);
-		expect(result).toMatch(
-			/max-width:.*!important/
-		);
+		expect(result).not.toContain('.maxi-container-block:not(#_)');
+		expect(result).not.toContain('.maxi-row-block:not(#_)');
 	});
 
-	it('Should generate container override CSS when override flag is enabled', async () => {
+	it('Should generate container override CSS with full-width ON (class-level selectors)', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		// Enable override
 		cleanVarSC['--maxi-light-container-override-full-width'] = '1';
 		cleanVarSC['--maxi-light-container-full-width-general'] = '1';
 
 		const result = await getSCStyles(cleanVarSC, true);
 
 		expect(result).toContain('min-width: 100% !important;');
+		expect(result).toContain('.maxi-light.maxi-container-block {');
+		expect(result).toContain('max-width: var(--maxi-light-container-max-width-xxl) !important;');
 	});
 
-	it('Should generate container override CSS with initial min-width when full-width is off', async () => {
+	it('Should generate container override CSS with full-width OFF (:not(#_) selectors)', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		// Enable override but disable full-width
 		cleanVarSC['--maxi-light-container-override-full-width'] = '1';
 		cleanVarSC['--maxi-light-container-full-width-general'] = '0';
 
 		const result = await getSCStyles(cleanVarSC, true);
 
 		expect(result).toContain('min-width: initial !important;');
+		expect(result).toContain('.maxi-light.maxi-container-block:not(#_)');
 	});
 
-	it('Should generate default row CSS rules with !important and :not(#_) specificity', async () => {
+	it('Should generate row override CSS with full-width ON (class-level selectors)', async () => {
 		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		const result = await getSCStyles(cleanVarSC, true);
-
-		expect(result).toContain(
-			'.maxi-light.maxi-row-block:not(#_)'
-		);
-		expect(result).toContain(
-			'.maxi-light .maxi-row-block:not(#_)'
-		);
-	});
-
-	it('Should generate row override CSS when override flag is enabled', async () => {
-		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
-		// Enable row override and full-width
 		cleanVarSC['--maxi-light-row-override-full-width'] = '1';
 		cleanVarSC['--maxi-light-row-full-width-general'] = '1';
 
 		const result = await getSCStyles(cleanVarSC, true);
 
 		expect(result).toContain('min-width: 100% !important;');
+		expect(result).toContain('.maxi-light.maxi-row-block {');
+	});
+
+	it('Should generate row override CSS with full-width OFF (:not(#_) selectors)', async () => {
+		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+		cleanVarSC['--maxi-light-row-override-full-width'] = '1';
+		cleanVarSC['--maxi-light-row-full-width-general'] = '0';
+
+		const result = await getSCStyles(cleanVarSC, true);
+
+		expect(result).toContain('min-width: initial !important;');
+		expect(result).toContain('.maxi-light.maxi-row-block:not(#_)');
 	});
 
 	it('Should not produce autopx for auto margin values in container rules', async () => {

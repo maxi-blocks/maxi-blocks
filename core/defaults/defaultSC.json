@@ -620,6 +620,17 @@
 				"width-unit-s": "px",
 				"width-unit-xs": "px",
 				"size-advanced-options": true
+			},
+			"row": {
+				"override-row-full-width": false,
+				"full-width-general": false,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
+				"size-advanced-options": true
 			}
 			}
 		},
@@ -1240,6 +1251,17 @@
 				"width-unit-m": "px",
 				"width-unit-s": "px",
 				"width-unit-xs": "px",
+				"size-advanced-options": true
+			},
+			"row": {
+				"override-row-full-width": false,
+				"full-width-general": false,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
 				"size-advanced-options": true
 			}
 			}

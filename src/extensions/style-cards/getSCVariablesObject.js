@@ -82,6 +82,7 @@ const getSCVariablesObject = (
 		'navigation',
 		'number-counter',
 		'container',
+		'row',
 	];
 	const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 	const containerSizeSettings = [
@@ -121,6 +122,7 @@ const getSCVariablesObject = (
 	const getElementSettings = element => {
 		if (element === 'number-counter') return numberCounterSettings;
 		if (element === 'container') return [];
+		if (element === 'row') return [];
 		return settings;
 	};
 
@@ -473,6 +475,82 @@ const getSCVariablesObject = (
 										] || 'px';
 									response[
 										`--maxi-${style}-container-${setting}-${breakpoint}`
+									] = `${value}${unit}`;
+								}
+							}
+						}
+					});
+				});
+				break;
+
+			case 'row':
+				response[`--maxi-${style}-row-override-full-width`] =
+					obj['override-row-full-width'] ? '1' : '0';
+
+				breakpoints.forEach(bp => {
+					const fw = !cleanResponse
+						? getLastBreakpointAttribute({
+								target: 'full-width',
+								breakpoint: bp,
+								attributes: obj,
+						  })
+						: obj[`full-width-${bp}`];
+					if (fw !== undefined && fw !== null) {
+						response[
+							`--maxi-${style}-row-full-width-${bp}`
+						] = fw ? '1' : '0';
+					}
+				});
+
+				containerSizeSettings.forEach(setting => {
+					breakpoints.forEach(breakpoint => {
+						if (!cleanResponse) {
+							const value = getLastBreakpointAttribute({
+								target: setting,
+								breakpoint,
+								attributes: obj,
+							});
+							if (getIsValid(value, true)) {
+								const isKeyword =
+									typeof value === 'string' &&
+									/^(auto|initial|inherit|none|unset|fit-content|max-content|min-content)$/i.test(
+										value
+									);
+								if (isKeyword) {
+									response[
+										`--maxi-${style}-row-${setting}-${breakpoint}`
+									] = value;
+								} else {
+									const unit =
+										getLastBreakpointAttribute({
+											target: `${setting}-unit`,
+											breakpoint,
+											attributes: obj,
+										}) || 'px';
+									response[
+										`--maxi-${style}-row-${setting}-${breakpoint}`
+									] = `${value}${unit}`;
+								}
+							}
+						} else {
+							const value = obj[`${setting}-${breakpoint}`];
+							if (getIsValid(value, true)) {
+								const isKeyword =
+									typeof value === 'string' &&
+									/^(auto|initial|inherit|none|unset|fit-content|max-content|min-content)$/i.test(
+										value
+									);
+								if (isKeyword) {
+									response[
+										`--maxi-${style}-row-${setting}-${breakpoint}`
+									] = value;
+								} else {
+									const unit =
+										obj[
+											`${setting}-unit-${breakpoint}`
+										] || 'px';
+									response[
+										`--maxi-${style}-row-${setting}-${breakpoint}`
 									] = `${value}${unit}`;
 								}
 							}

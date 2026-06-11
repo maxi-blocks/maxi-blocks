@@ -462,6 +462,19 @@ const SCAccordion = props => {
  * Follows the same per-tone sync pattern as typography sections: the Dark tab
  * syncs from Light by default and shows an override toggle to unlock editing.
  */
+/**
+ * Wraps SC onChange to replace undefined values with empty strings.
+ * Needed because AxisControl's onReset calls getDefaultAttribute which
+ * returns undefined in the SC context (no block attributes exist).
+ */
+const scOnChange = (obj, groupAttr, onChangeValue) => {
+	const cleaned = {};
+	Object.entries(obj).forEach(([key, val]) => {
+		cleaned[key] = val === undefined ? '' : val;
+	});
+	onChangeValue(cleaned, groupAttr);
+};
+
 const ContainerSCSection = ({
 	SC,
 	SCStyle,
@@ -551,17 +564,131 @@ const ContainerSCSection = ({
 						isBlockFullWidth={
 							overrideFullWidth ? isBlockFullWidth : false
 						}
-						onChange={obj => onChangeValue(obj, groupAttr)}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
 						breakpoint={breakpoint}
 					/>
 					<MarginControl
 						{...containerAttrs}
-						onChange={obj => onChangeValue(obj, groupAttr)}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
 						breakpoint={breakpoint}
 					/>
 					<PaddingControl
 						{...containerAttrs}
-						onChange={obj => onChangeValue(obj, groupAttr)}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+				</>
+			)}
+		</>
+	);
+};
+
+/**
+ * Row globals section — Height/Width and Margin/Padding.
+ * Same per-tone sync pattern as Container globals.
+ */
+const RowSCSection = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+}) => {
+	const groupAttr = 'row';
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showControls = !isDarkTab || isOverridden;
+
+	const rowAttrs = processSCAttributes(SC, '', groupAttr);
+
+	const overrideFullWidth =
+		processSCAttribute(SC, 'override-row-full-width', groupAttr) ??
+		false;
+
+	const isBlockFullWidth =
+		processSCAttribute(SC, `full-width-${breakpoint}`, groupAttr) ??
+		processSCAttribute(SC, 'full-width-general', groupAttr) ??
+		false;
+
+	return (
+		<>
+			{isDarkTab && (
+				<ToggleSwitch
+					label={__('Override light tone settings', 'maxi-blocks')}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showControls && (
+				<>
+					<ToggleSwitch
+						label={__(
+							'Override all rows full-width',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-row-override'
+						selected={overrideFullWidth}
+						onChange={val =>
+							onChangeValue(
+								{ 'override-row-full-width': val },
+								groupAttr
+							)
+						}
+					/>
+					{overrideFullWidth && (
+						<ToggleSwitch
+							label={__('Set full-width', 'maxi-blocks')}
+							className='maxi-style-cards-control__toggle-row-full-width'
+							selected={isBlockFullWidth}
+							onChange={val =>
+								onChangeValue(
+									{ [`full-width-${breakpoint}`]: val },
+									groupAttr
+								)
+							}
+						/>
+					)}
+					<p className='maxi-style-cards-control__notice'>
+						{overrideFullWidth
+							? __(
+									'Override is active: full-width setting applies to ALL rows on the site, overriding individual row settings. Disable the override to restore each row\'s own settings.',
+									'maxi-blocks'
+							  )
+							: __(
+									'Enable "Override all rows full-width" to force full-width on/off for every row on the site. Individual row settings are preserved and will be restored when the override is disabled.',
+									'maxi-blocks'
+							  )}
+					</p>
+					<FullSizeControl
+						{...rowAttrs}
+						isBlockFullWidth={
+							overrideFullWidth ? isBlockFullWidth : false
+						}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<MarginControl
+						{...rowAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<PaddingControl
+						{...rowAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
 						breakpoint={breakpoint}
 					/>
 				</>
@@ -1514,20 +1641,33 @@ const MaxiStyleCardsTab = ({
 							/>
 						),
 					},
-					{
-						label: __('Container globals', 'maxi-blocks'),
-						classNameItem: 'maxi-blocks-sc__type--container',
-						content: (
-							<ContainerSCSection
-								SC={SC}
-								SCStyle={SCStyle}
-								breakpoint={breakpoint}
-								onChangeValue={onChangeValue}
-								{...typoSyncProps}
-							/>
-						),
-					},
-				].filter(Boolean) // Filter out any false items from conditional rendering
+				{
+					label: __('Container globals', 'maxi-blocks'),
+					classNameItem: 'maxi-blocks-sc__type--container',
+					content: (
+						<ContainerSCSection
+							SC={SC}
+							SCStyle={SCStyle}
+							breakpoint={breakpoint}
+							onChangeValue={onChangeValue}
+							{...typoSyncProps}
+						/>
+					),
+				},
+				{
+					label: __('Row globals', 'maxi-blocks'),
+					classNameItem: 'maxi-blocks-sc__type--row',
+					content: (
+						<RowSCSection
+							SC={SC}
+							SCStyle={SCStyle}
+							breakpoint={breakpoint}
+							onChangeValue={onChangeValue}
+							{...typoSyncProps}
+						/>
+					),
+				},
+			].filter(Boolean) // Filter out any false items from conditional rendering
 				}
 			/>
 		</div>

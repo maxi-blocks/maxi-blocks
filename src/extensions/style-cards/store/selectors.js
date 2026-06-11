@@ -173,6 +173,7 @@ const addNumberCounterToStyleCards = styleCard => {
 
 const containerObject = {
 	container: {
+		'override-container-full-width': false,
 		'full-width-general': true,
 		'max-width-xxl': '1690',
 		'max-width-xl': '1170',

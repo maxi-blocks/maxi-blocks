@@ -405,6 +405,25 @@ const getSCVariablesObject = (
 				break;
 
 			case 'container':
+				// Override flags — used by getSCStyles to generate !important rules
+				response[`--maxi-${style}-container-override-full-width`] =
+					obj['override-container-full-width'] ? '1' : '0';
+
+				breakpoints.forEach(bp => {
+					const fw = !cleanResponse
+						? getLastBreakpointAttribute({
+								target: 'full-width',
+								breakpoint: bp,
+								attributes: obj,
+						  })
+						: obj[`full-width-${bp}`];
+					if (fw !== undefined && fw !== null) {
+						response[
+							`--maxi-${style}-container-full-width-${bp}`
+						] = fw ? '1' : '0';
+					}
+				});
+
 				containerSizeSettings.forEach(setting => {
 					breakpoints.forEach(breakpoint => {
 						if (!cleanResponse) {
@@ -414,25 +433,48 @@ const getSCVariablesObject = (
 								attributes: obj,
 							});
 							if (getIsValid(value, true)) {
-								const unit =
-									getLastBreakpointAttribute({
-										target: `${setting}-unit`,
-										breakpoint,
-										attributes: obj,
-									}) || 'px';
-								response[
-									`--maxi-${style}-container-${setting}-${breakpoint}`
-								] = `${value}${unit}`;
+								const isKeyword =
+									typeof value === 'string' &&
+									/^(auto|initial|inherit|none|unset|fit-content|max-content|min-content)$/i.test(
+										value
+									);
+								if (isKeyword) {
+									response[
+										`--maxi-${style}-container-${setting}-${breakpoint}`
+									] = value;
+								} else {
+									const unit =
+										getLastBreakpointAttribute({
+											target: `${setting}-unit`,
+											breakpoint,
+											attributes: obj,
+										}) || 'px';
+									response[
+										`--maxi-${style}-container-${setting}-${breakpoint}`
+									] = `${value}${unit}`;
+								}
 							}
 						} else {
 							const value = obj[`${setting}-${breakpoint}`];
 							if (getIsValid(value, true)) {
-								const unit =
-									obj[`${setting}-unit-${breakpoint}`] ||
-									'px';
-								response[
-									`--maxi-${style}-container-${setting}-${breakpoint}`
-								] = `${value}${unit}`;
+								const isKeyword =
+									typeof value === 'string' &&
+									/^(auto|initial|inherit|none|unset|fit-content|max-content|min-content)$/i.test(
+										value
+									);
+								if (isKeyword) {
+									response[
+										`--maxi-${style}-container-${setting}-${breakpoint}`
+									] = value;
+								} else {
+									const unit =
+										obj[
+											`${setting}-unit-${breakpoint}`
+										] || 'px';
+									response[
+										`--maxi-${style}-container-${setting}-${breakpoint}`
+									] = `${value}${unit}`;
+								}
 							}
 						}
 					});

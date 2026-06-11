@@ -477,10 +477,17 @@ const ContainerSCSection = ({
 
 	const containerAttrs = processSCAttributes(SC, '', groupAttr);
 
+	const overrideFullWidth =
+		processSCAttribute(
+			SC,
+			'override-container-full-width',
+			groupAttr
+		) ?? false;
+
 	const isBlockFullWidth =
 		processSCAttribute(SC, `full-width-${breakpoint}`, groupAttr) ??
 		processSCAttribute(SC, 'full-width-general', groupAttr) ??
-		false;
+		true;
 
 	return (
 		<>
@@ -494,12 +501,58 @@ const ContainerSCSection = ({
 			)}
 			{showControls && (
 				<>
+					<ToggleSwitch
+						label={__(
+							'Override all containers full-width',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-container-override'
+						selected={overrideFullWidth}
+						onChange={val =>
+							onChangeValue(
+								{
+									'override-container-full-width': val,
+								},
+								groupAttr
+							)
+						}
+					/>
+					{overrideFullWidth && (
+						<ToggleSwitch
+							label={__(
+								'Set full-width',
+								'maxi-blocks'
+							)}
+							className='maxi-style-cards-control__toggle-container-full-width'
+							selected={isBlockFullWidth}
+							onChange={val =>
+								onChangeValue(
+									{
+										[`full-width-${breakpoint}`]: val,
+									},
+									groupAttr
+								)
+							}
+						/>
+					)}
+					<p className='maxi-style-cards-control__notice'>
+						{overrideFullWidth
+							? __(
+									'Override is active: full-width setting applies to ALL containers on the site, overriding individual container settings. Disable the override to restore each container\'s own settings.',
+									'maxi-blocks'
+							  )
+							: __(
+									'Enable "Override all containers full-width" to force full-width on/off for every container on the site. Individual container settings are preserved and will be restored when the override is disabled.',
+									'maxi-blocks'
+							  )}
+					</p>
 					<FullSizeControl
 						{...containerAttrs}
-						isBlockFullWidth={isBlockFullWidth}
+						isBlockFullWidth={
+							overrideFullWidth ? isBlockFullWidth : false
+						}
 						onChange={obj => onChangeValue(obj, groupAttr)}
 						breakpoint={breakpoint}
-						showFullWidth
 					/>
 					<MarginControl
 						{...containerAttrs}

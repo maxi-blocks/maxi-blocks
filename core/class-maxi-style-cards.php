@@ -1328,6 +1328,7 @@ class MaxiBlocks_StyleCards
      * Default container globals attributes injected by the migrator.
      */
     private static $container_defaults = [
+        'override-container-full-width' => false,
         'full-width-general'    => true,
         'max-width-xxl'      => '1690',
         'max-width-xl'       => '1170',
@@ -1937,14 +1938,26 @@ class MaxiBlocks_StyleCards
                 }
             }
 
-            // Container layout variables
+            // Container layout variables and override flags
             if (isset($style_data['container'])) {
+                $organized_values[$style]['container']['_override_full_width'] =
+                    !empty($style_data['container']['override-container-full-width']);
+
+                $container_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+                foreach ($container_breakpoints as $breakpoint) {
+                    $fw_key = "full-width-{$breakpoint}";
+                    if (isset($style_data['container'][$fw_key])) {
+                        $organized_values[$style]['container']['_full_width'][$breakpoint] =
+                            !empty($style_data['container'][$fw_key]);
+                    }
+                }
+
                 $container_size_settings = [
                     'max-width', 'width', 'height', 'min-height',
                     'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
                     'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
                 ];
-                $container_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
                 foreach ($container_size_settings as $setting) {
                     foreach ($container_breakpoints as $breakpoint) {
@@ -2426,8 +2439,56 @@ class MaxiBlocks_StyleCards
                 $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
             }
 
-            // Container Maxi — SC variables are consumed via per-block CSS
-            // variable references, not via class-based rules on .maxi-container-block.
+            // Container Maxi — full-width override
+            $override_fw = !empty($organized_values[$style]['container']['_override_full_width']);
+
+            if ($override_fw) {
+                $fw_map = $organized_values[$style]['container']['_full_width'] ?? [];
+                $is_full_width = $fw_map[$breakpoint] ?? $fw_map['general'] ?? true;
+
+                // :not(#_) boosts specificity to ID-level so we beat per-block
+                // #container-maxi-*-u rules that also use !important
+                $container_targets = [
+                    "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block:not(#_)",
+                    "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block:not(#_)",
+                ];
+
+                $container_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+                $bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                $bp_idx = array_search($breakpoint, $bp_order);
+
+                $size_rules = [$is_full_width
+                    ? 'min-width: 100% !important;'
+                    : 'min-width: initial !important;'];
+
+                foreach ($container_size_settings as $c_setting) {
+                    $found_bp = $breakpoint;
+
+                    if (!isset($organized_values[$style]['container'][$breakpoint][$c_setting])
+                        && $breakpoint === 'general') {
+                        for ($i = $bp_idx + 1; $i < count($bp_order); $i++) {
+                            if (isset($organized_values[$style]['container'][$bp_order[$i]][$c_setting])) {
+                                $found_bp = $bp_order[$i];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isset($organized_values[$style]['container'][$found_bp][$c_setting])) {
+                        $var_name = "--maxi-{$style}-container-{$c_setting}-{$found_bp}";
+                        $size_rules[] = "{$c_setting}: var({$var_name}) !important;";
+                    }
+                }
+
+                $rules_str = implode(' ', $size_rules);
+                foreach ($container_targets as $target) {
+                    $added_response .= "{$target} {{$rules_str}}";
+                }
+            }
 
             return $added_response;
         };

@@ -239,7 +239,13 @@ const getSentencesByBreakpoint = ({
 	return sentences;
 };
 
-const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
+const getMaxiSCStyles = ({
+	organizedValues,
+	prefix,
+	style,
+	isBackend,
+	styleCard,
+}) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
@@ -621,9 +627,90 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
 		});
 
-		// Container Maxi — SC variables are consumed via per-block CSS
-		// variable references (see container-maxi/styles.js applySCVarsToSize),
-		// not via class-based rules, so no direct rules on .maxi-container-block.
+		// Container Maxi — full-width override
+		// Note: override/full-width flags live on styleCard (not deleted by getOrganizedValues),
+		// but size variables (max-width, margin, etc.) are moved to organizedValues and deleted
+		// from styleCard, so we must read them from organizedValues.
+		const overrideFullWidth =
+			styleCard?.[
+				`--maxi-${style}-container-override-full-width`
+			] === '1';
+
+		if (overrideFullWidth) {
+			const fwKey = `--maxi-${style}-container-full-width-${breakpoint}`;
+			const fwGeneralKey = `--maxi-${style}-container-full-width-general`;
+			const isFullWidth =
+				(styleCard?.[fwKey] ?? styleCard?.[fwGeneralKey] ?? '1') ===
+				'1';
+
+			if (isFullWidth) {
+				// Full-width ON: use class-level specificity only, so per-block
+				// has-global-padding ID rules (negative margins, calc min-width)
+				// still win and correctly compensate for parent padding
+				const fwTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block`,
+				];
+				fwTargets.forEach(t => {
+					addedResponse += `${t} {min-width: 100% !important;}`;
+				});
+			} else {
+				// Full-width OFF: :not(#_) boosts specificity to ID-level
+				// so we beat per-block #container-maxi-*-u rules
+				const containerTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block:not(#_)`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block:not(#_)`,
+				];
+
+				const sizeRules = ['min-width: initial !important;'];
+
+				const bpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const bpIdx = bpOrder.indexOf(breakpoint);
+				const containerData =
+					organizedValues?.[style]?.container;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+
+					if (
+						!containerData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = bpIdx + 1;
+							i < bpOrder.length;
+							i += 1
+						) {
+							if (
+								containerData?.[bpOrder[i]]?.[setting]
+							) {
+								foundBp = bpOrder[i];
+								break;
+							}
+						}
+					}
+
+					if (containerData?.[foundBp]?.[setting]) {
+						sizeRules.push(
+							`${setting}: var(--maxi-${style}-container-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const rulesStr = sizeRules.join(' ');
+				containerTargets.forEach(t => {
+					addedResponse += `${t} {${rulesStr}}`;
+				});
+			}
+		}
 
 		return addedResponse;
 	};
@@ -933,6 +1020,7 @@ const getSCStyles = (
 			prefix,
 			style,
 			isBackend,
+			styleCard,
 		});
 
 		// WP native blocks styles

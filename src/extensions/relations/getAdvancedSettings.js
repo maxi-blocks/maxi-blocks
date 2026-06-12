@@ -68,7 +68,12 @@ const getTransformControl = ({ categories, selectors }) => ({
 	styleAttrs: [
 		'transform-scale',
 		'transform-translate',
+		'transform-skew',
+		'transform-perspective',
+		'transform-translate3d',
+		'transform-scale3d',
 		'transform-rotate',
+		'transform-rotate3d',
 		'transform-origin',
 	],
 });

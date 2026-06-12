@@ -370,6 +370,38 @@ describe('getTransitionStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('generates transform transition styles for skew and 3D hover settings', () => {
+		const object = {
+			'transform-skew-general': {
+				canvas: {
+					'hover-status': true,
+				},
+			},
+			'transform-rotate3d-general': {
+				block: {
+					'hover-status': true,
+				},
+			},
+			transition: {
+				transform: {
+					canvas: repeatedGeneralAttributes,
+					block: repeatedGeneralAttributes,
+					button: repeatedGeneralAttributes,
+				},
+			},
+		};
+
+		const result = getTransitionStyles(object, transformTransitionObj);
+
+		expect(result[''].transition.general.transition).toBe(
+			'transform 0.3s 0s ease'
+		);
+		expect(result[' .block-class'].transition.general.transition).toBe(
+			'transform 0.3s 0s ease'
+		);
+		expect(result[' .button-class']).toBeUndefined();
+	});
+
 	it('Get a correct responsive transform(mixed with others) transition styles', () => {
 		const transitionObj = {
 			...customTransitionObj,

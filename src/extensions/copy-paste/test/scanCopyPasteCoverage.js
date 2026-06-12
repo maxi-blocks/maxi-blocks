@@ -66,6 +66,8 @@ describe('scanCopyPasteCoverage', () => {
 				'palette-test-palette-status',
 				'plain-setting',
 				'fixture-gap-general',
+				'fixture-object-responsive-general',
+				'fixture-object-static',
 				'fixture-width-general',
 			])
 		);

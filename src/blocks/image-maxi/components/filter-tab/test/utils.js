@@ -71,6 +71,25 @@ describe('Image Maxi filter styles', () => {
 		});
 	});
 
+	it('combines filter controls and drop-shadow in declaration order', () => {
+		const styles = getImageFilterStyles({
+			'image-filter-blur-general': 4,
+			'image-filter-brightness-general': 125,
+			'image-filter-drop-shadow-horizontal-general': 2,
+			'image-filter-drop-shadow-vertical-general': 6,
+			'image-filter-drop-shadow-blur-general': 8,
+			'image-filter-drop-shadow-color-general': 'rgba(0,0,0,0.35)',
+		});
+
+		expect(styles).toEqual({
+			filter: {
+				general: {
+					filter: 'blur(4px) brightness(125%) drop-shadow(2px 6px 8px rgba(0,0,0,0.35))',
+				},
+			},
+		});
+	});
+
 	it('does not emit neutral filter values', () => {
 		const styles = getImageFilterStyles({
 			'image-filter-blur-general': 0,

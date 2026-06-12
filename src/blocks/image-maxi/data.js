@@ -206,8 +206,9 @@ const copyPasteMapping = {
 					props: getDropShadowAttribute('color'),
 					hasBreakpoints: true,
 				},
-				[__('Filter hover state', 'maxi-blocks')]:
-					IMAGE_FILTER_STATUS_HOVER,
+				[__('Filter hover state', 'maxi-blocks')]: {
+					props: 'image-filter-status-hover',
+				},
 				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
 					acc[
 						`${filterCopyPasteLabels[key]} ${__(
@@ -334,6 +335,7 @@ const transition = {
 			title: __('Filter', 'maxi-blocks'),
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'filter',
+			hoverProp: IMAGE_FILTER_STATUS_HOVER,
 		},
 	},
 };

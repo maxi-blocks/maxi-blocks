@@ -231,9 +231,14 @@ describe('Image Maxi caption inspector', () => {
 			([{ items = [] }]) =>
 				items.filter(Boolean).some(item => item.label === 'Filters')
 		)?.[0];
+		expect(settingsAccordion).toBeTruthy();
+
 		const labels = settingsAccordion.items
 			.filter(Boolean)
 			.map(item => item.label);
+		expect(labels).toEqual(
+			expect.arrayContaining(['Clip-path', 'Filters', 'Border'])
+		);
 
 		expect(labels.indexOf('Clip-path')).toBeLessThan(
 			labels.indexOf('Filters')

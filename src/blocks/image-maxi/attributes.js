@@ -13,7 +13,6 @@ import {
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
-	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
 } from './components/filter-tab/constants';
@@ -188,7 +187,7 @@ const attributes = {
 	...hoverAttributesCreator({
 		obj: imageFilterAttributes,
 		newAttr: {
-			[IMAGE_FILTER_STATUS_HOVER]: {
+			'image-filter-status-hover': {
 				type: 'boolean',
 				default: false,
 			},

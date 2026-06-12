@@ -5,6 +5,8 @@ import Inspector from '@blocks/image-maxi/inspector';
 import { getGroupAttributes } from '@extensions/styles';
 
 const mockAlignmentControl = jest.fn(() => null);
+const mockAccordionControl = jest.fn();
+const mockFilterTab = jest.fn(() => null);
 const mockTypographyControl = jest.fn(() => null);
 
 global.TextDecoder = TextDecoder;
@@ -54,8 +56,12 @@ jest.mock('../data', () => ({
 jest.mock('@components/accordion-control', () => {
 	const React = require('react');
 
-	return ({ items = [] }) =>
-		React.createElement(
+	return props => {
+		const { items = [] } = props;
+
+		mockAccordionControl(props);
+
+		return React.createElement(
 			React.Fragment,
 			null,
 			items
@@ -68,6 +74,7 @@ jest.mock('@components/accordion-control', () => {
 					)
 				)
 		);
+	};
 });
 
 jest.mock('@components/setting-tabs-control', () => {
@@ -108,6 +115,9 @@ jest.mock('@components/image-alt-control', () => () => null);
 jest.mock('@components/image-shape', () => () => null);
 jest.mock('@components/select-control', () => () => null);
 jest.mock('@blocks/image-maxi/components/dimension-tab', () => () => null);
+jest.mock('@blocks/image-maxi/components/filter-tab', () => props =>
+	mockFilterTab(props)
+);
 jest.mock('@blocks/image-maxi/components/hover-effect-control', () => () => null);
 jest.mock('@components/info-box', () => () => null);
 
@@ -118,9 +128,9 @@ jest.mock('@components/inspector-tabs', () => ({
 	ariaLabel: jest.fn(() => []),
 	blockBackground: jest.fn(() => []),
 	blockSettings: jest.fn(() => null),
-	border: jest.fn(() => []),
+	border: jest.fn(() => [{ label: 'Border', content: null }]),
 	boxShadow: jest.fn(() => []),
-	clipPath: jest.fn(() => []),
+	clipPath: jest.fn(() => [{ label: 'Clip-path', content: null }]),
 	customClasses: jest.fn(() => []),
 	customCss: jest.fn(() => []),
 	dc: jest.fn(() => []),
@@ -200,6 +210,41 @@ describe('Image Maxi caption inspector', () => {
 				textLevel: 'p',
 				useBlockLevelFallback: true,
 			})
+		);
+	});
+
+	it('wires the image filter tab to Image Maxi attributes', () => {
+		const props = getProps();
+
+		renderToStaticMarkup(React.createElement(Inspector, props));
+
+		expect(mockFilterTab).toHaveBeenCalledWith(
+			expect.objectContaining({
+				breakpoint: 'general',
+				blockStyle: 'light',
+				clientId: 'client-id',
+				onChange: props.maxiSetAttributes,
+			})
+		);
+
+		const settingsAccordion = mockAccordionControl.mock.calls.find(
+			([{ items = [] }]) =>
+				items.filter(Boolean).some(item => item.label === 'Filters')
+		)?.[0];
+		expect(settingsAccordion).toBeTruthy();
+
+		const labels = settingsAccordion.items
+			.filter(Boolean)
+			.map(item => item.label);
+		expect(labels).toEqual(
+			expect.arrayContaining(['Clip-path', 'Filters', 'Border'])
+		);
+
+		expect(labels.indexOf('Clip-path')).toBeLessThan(
+			labels.indexOf('Filters')
+		);
+		expect(labels.indexOf('Filters')).toBeLessThan(
+			labels.indexOf('Border')
 		);
 	});
 });

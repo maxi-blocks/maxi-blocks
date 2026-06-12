@@ -22,6 +22,13 @@ import { getGroupAttributes } from '@extensions/styles';
 import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '@extensions/dom';
+import {
+	IMAGE_FILTER_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_STATUS_HOVER,
+	getDropShadowAttribute,
+	getFilterAttribute,
+} from './components/filter-tab/constants';
 
 /**
  * Classnames
@@ -31,6 +38,22 @@ const imageClass = `${blockClass}__image`;
 const imageWrapperClass = `${blockClass}-wrapper`;
 
 const prefix = 'image-';
+const filterCopyPasteLabels = {
+	blur: __('Blur', 'maxi-blocks'),
+	brightness: __('Brightness', 'maxi-blocks'),
+	contrast: __('Contrast', 'maxi-blocks'),
+	grayscale: __('Grayscale', 'maxi-blocks'),
+	'hue-rotate': __('Hue rotate', 'maxi-blocks'),
+	invert: __('Invert', 'maxi-blocks'),
+	opacity: __('Opacity', 'maxi-blocks'),
+	saturate: __('Saturate', 'maxi-blocks'),
+	sepia: __('Sepia', 'maxi-blocks'),
+};
+const dropShadowCopyPasteLabels = {
+	horizontal: __('Drop shadow horizontal', 'maxi-blocks'),
+	vertical: __('Drop shadow vertical', 'maxi-blocks'),
+	blur: __('Drop shadow blur', 'maxi-blocks'),
+};
 
 /**
  * Data object
@@ -161,6 +184,66 @@ const copyPasteMapping = {
 				},
 			},
 		},
+		[__('Filters', 'maxi-blocks')]: {
+			group: {
+				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
+					acc[filterCopyPasteLabels[key]] = {
+						props: getFilterAttribute(key),
+						hasBreakpoints: true,
+					};
+
+					return acc;
+				}, {}),
+				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
+					acc[dropShadowCopyPasteLabels[key]] = {
+						props: getDropShadowAttribute(key),
+						hasBreakpoints: true,
+					};
+
+					return acc;
+				}, {}),
+				[__('Drop shadow colour', 'maxi-blocks')]: {
+					props: getDropShadowAttribute('color'),
+					hasBreakpoints: true,
+				},
+				[__('Filter hover state', 'maxi-blocks')]: {
+					props: 'image-filter-status-hover',
+				},
+				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${filterCopyPasteLabels[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getFilterAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${dropShadowCopyPasteLabels[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getDropShadowAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				[__('Drop shadow colour hover', 'maxi-blocks')]: {
+					props: getDropShadowAttribute('color'),
+					hasBreakpoints: true,
+					isHover: true,
+				},
+			},
+		},
 		[__('Clip path', 'maxi-blocks')]: {
 			groupAttributes: ['clipPath', 'clipPathHover'],
 		},
@@ -247,6 +330,12 @@ const transition = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
+		},
+		filter: {
+			title: __('Filter', 'maxi-blocks'),
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			property: 'filter',
+			hoverProp: IMAGE_FILTER_STATUS_HOVER,
 		},
 	},
 };

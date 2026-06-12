@@ -21,7 +21,11 @@ const copyPasteMapping = {
 		},
 		'Plain': 'plain-setting',
 		'Responsive fixture': {
-			props: 'gap',
+			props: [
+				'gap',
+				{ prop: 'object-responsive' },
+				{ prop: 'object-static', hasBreakpoints: false },
+			],
 			prefix,
 			hasBreakpoints: true,
 		},

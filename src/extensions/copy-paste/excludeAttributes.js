@@ -72,7 +72,30 @@ const DC_GLOBAL_EXCLUDE_EXCEPTIONS = [
 	'dc-limit-by-archive',
 ];
 
-const IMAGE_SIZE_RESPONSE_ATTRIBUTES = ['mediaURL', 'mediaWidth', 'mediaHeight'];
+const IMAGE_SIZE_RESPONSE_ATTRIBUTES = [
+	'mediaURL',
+	'mediaWidth',
+	'mediaHeight',
+	'cropOptions',
+];
+
+const isImageSizeAttribute = prop =>
+	prop === 'imageSize' || prop.startsWith('imageSize-');
+
+const hasImageSizeAttribute = attributes =>
+	Object.keys(attributes || {}).some(
+		prop => isImageSizeAttribute(prop) && !isNil(attributes[prop])
+	);
+
+const isImageSizeResponseAttribute = prop =>
+	IMAGE_SIZE_RESPONSE_ATTRIBUTES.includes(prop) ||
+	/^(media(URL|Width|Height)|cropOptions)-/.test(prop);
+
+const getImageSizeResponseAttributesToExclude = (attributes, blockName) => {
+	if (blockName !== 'maxi-blocks/image-maxi') return [];
+
+	return Object.keys(attributes || {}).filter(isImageSizeResponseAttribute);
+};
 
 const hasMatchingMediaID = (sourceAttributes, targetAttributes) => {
 	const sourceMediaID = sourceAttributes?.mediaID;
@@ -92,7 +115,7 @@ const shouldKeepImageSizeResponseAttribute = (
 	shouldKeepImageSizeResponseAttributes
 ) =>
 	shouldKeepImageSizeResponseAttributes &&
-	IMAGE_SIZE_RESPONSE_ATTRIBUTES.includes(prop);
+	isImageSizeResponseAttribute(prop);
 
 const shouldDeleteKey = (
 	prop,
@@ -186,12 +209,16 @@ const excludeAttributes = (
 	const shouldKeepImageSizeResponseAttributes =
 		isRepeater &&
 		blockName === 'maxi-blocks/image-maxi' &&
-		!isNil(rawAttributesToExclude.imageSize) &&
+		hasImageSizeAttribute(rawAttributesToExclude) &&
 		hasMatchingMediaID(rawAttributesToExclude, attributes);
 
 	const keysToExclude = [
 		...(isRepeater ? REPEATER_GLOBAL_EXCLUDE : GLOBAL_EXCLUDE),
 		...(copyPasteMapping._exclude || []),
+		...getImageSizeResponseAttributesToExclude(
+			attributesToExclude,
+			blockName
+		),
 	];
 
 	keysToExclude.forEach(prop => {

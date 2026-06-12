@@ -252,6 +252,57 @@ describe('excludeAttributes', () => {
 		});
 	});
 
+	it('Keeps responsive image size response fields for matching image blocks in repeater mode', () => {
+		const rawAttributesToExclude = {
+			'imageSize-l': 'medium',
+			mediaID: 123,
+			'mediaURL-l': 'medium.jpg',
+			'mediaWidth-l': 300,
+			'mediaHeight-l': 200,
+			'cropOptions-l': {
+				image: {
+					source_url: 'medium-crop.jpg',
+				},
+			},
+		};
+
+		const attributes = {
+			'imageSize-l': 'full',
+			mediaID: 123,
+			'mediaURL-l': 'full.jpg',
+			'mediaWidth-l': 900,
+			'mediaHeight-l': 600,
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			attributes,
+			{
+				_exclude: [
+					'mediaID',
+					'mediaURL-l',
+					'mediaWidth-l',
+					'mediaHeight-l',
+					'cropOptions-l',
+				],
+			},
+			true,
+			'maxi-blocks/image-maxi'
+		);
+
+		expect(result).toEqual({
+			'imageSize-l': 'medium',
+			'mediaURL-l': 'medium.jpg',
+			'mediaWidth-l': 300,
+			'mediaHeight-l': 200,
+			'cropOptions-l': {
+				image: {
+					source_url: 'medium-crop.jpg',
+				},
+			},
+		});
+	});
+
 	it('Does not copy image size response fields to repeater images with different media IDs', () => {
 		const rawAttributesToExclude = {
 			imageSize: 'medium',
@@ -286,6 +337,49 @@ describe('excludeAttributes', () => {
 
 		expect(result).toEqual({
 			imageSize: 'medium',
+		});
+	});
+
+	it('Does not copy responsive image size response fields to repeater images with different media IDs', () => {
+		const rawAttributesToExclude = {
+			'imageSize-l': 'medium',
+			mediaID: 123,
+			'mediaURL-l': 'source-medium.jpg',
+			'mediaWidth-l': 300,
+			'mediaHeight-l': 200,
+			'cropOptions-l': {
+				image: {
+					source_url: 'source-crop.jpg',
+				},
+			},
+		};
+
+		const attributes = {
+			'imageSize-l': 'full',
+			mediaID: 456,
+			'mediaURL-l': 'target-full.jpg',
+			'mediaWidth-l': 900,
+			'mediaHeight-l': 600,
+		};
+
+		const result = excludeAttributes(
+			rawAttributesToExclude,
+			attributes,
+			{
+				_exclude: [
+					'mediaID',
+					'mediaURL',
+					'mediaWidth',
+					'mediaHeight',
+					'cropOptions',
+				],
+			},
+			true,
+			'maxi-blocks/image-maxi'
+		);
+
+		expect(result).toEqual({
+			'imageSize-l': 'medium',
 		});
 	});
 

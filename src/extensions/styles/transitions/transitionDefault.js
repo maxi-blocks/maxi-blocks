@@ -19,6 +19,7 @@ const transitionDefault = {
 			target: [
 				' > .maxi-background-displayer > div',
 				' > .maxi-background-displayer > div > svg',
+				' > .maxi-background-displayer > div > svg *',
 			],
 			property: false,
 			hoverProp: 'block-background-status-hover',

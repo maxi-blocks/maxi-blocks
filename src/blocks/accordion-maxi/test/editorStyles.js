@@ -9,8 +9,9 @@ describe('Accordion Maxi editor styles', () => {
 
 	it('does not force grey active border or text on icon position tabs', () => {
 		expect(editorStyles).toContain('.maxi-icon-control__position');
+		expect(editorStyles).toContain("&[aria-pressed='true']");
 		expect(editorStyles).toContain(
-			'&[aria-pressed=\'true\'] {\n\t\t\tbackground: var(--maxi-whisper-green) !important;'
+			'background: var(--maxi-whisper-green) !important;'
 		);
 		expect(editorStyles).not.toContain(
 			'border: 1.5px solid var(--maxi-grey-light);'

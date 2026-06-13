@@ -1,0 +1,24 @@
+{
+  "icon-alignment-general": {
+    "type": "string",
+    "default": "center"
+  },
+  "icon-alignment-xxl": {
+    "type": "string"
+  },
+  "icon-alignment-xl": {
+    "type": "string"
+  },
+  "icon-alignment-l": {
+    "type": "string"
+  },
+  "icon-alignment-m": {
+    "type": "string"
+  },
+  "icon-alignment-s": {
+    "type": "string"
+  },
+  "icon-alignment-xs": {
+    "type": "string"
+  }
+}

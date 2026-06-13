@@ -24,6 +24,47 @@ import getAttributeValue from '@extensions/styles/getAttributeValue';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getIconAlignmentStyles = (props, prefix = '') => {
+	if (!['top', 'bottom'].includes(props[`${prefix}icon-position`])) {
+		return false;
+	}
+
+	const response = {
+		label: __('Icon alignment', 'maxi-blocks'),
+	};
+
+	breakpoints.forEach(breakpoint => {
+		const alignment = getLastBreakpointAttribute({
+			target: `${prefix}icon-alignment`,
+			breakpoint,
+			attributes: props,
+		});
+
+		switch (alignment) {
+			case 'left':
+				response[breakpoint] = {
+					'align-self': 'flex-start',
+				};
+				break;
+			case 'center':
+			case 'justify':
+				response[breakpoint] = {
+					'align-self': 'center',
+				};
+				break;
+			case 'right':
+				response[breakpoint] = {
+					'align-self': 'flex-end',
+				};
+				break;
+			default:
+				break;
+		}
+	});
+
+	return Object.keys(response).length > 1 ? response : false;
+};
+
 const getIconObject = (props, target, prefix = '', isIB) => {
 	const response = {
 		background: props[`${prefix}icon-background-active-media-general`] ===
@@ -85,6 +126,10 @@ const getIconObject = (props, target, prefix = '', isIB) => {
 				isIB,
 			}),
 	};
+
+	const alignment = target === 'icon' && getIconAlignmentStyles(props, prefix);
+
+	if (alignment) response.alignment = alignment;
 
 	const responsive = {
 		label: __('Icon responsive', 'maxi-blocks'),

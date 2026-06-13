@@ -53,14 +53,12 @@
 .maxi-icon-control__position {
 	.maxi-tabs-control__button {
 		background: var(--maxi-white);
-		border: 1.5px solid var(--maxi-grey-light);
 		border-radius: 6px !important;
 		padding: 6px 6px;
 		margin-right: 2px !important;
 		min-width: 65px;
 		height: 30px !important;
 		box-shadow: none;
-		color: var(--maxi-grey-dark);
 		transition: all 0.2s ease;
 		text-align: center;
 		justify-content: center;
@@ -71,10 +69,6 @@
 		&:first-child {
 			margin-left: 0px !important;
 		}
-		&:last-child {
-			border: 1.5px solid var(--maxi-grey-light);
-		}
-
 		&:hover {
 			background: var(--maxi-white);
 			box-shadow: none;
@@ -86,9 +80,7 @@
 		&--selected,
 		&[aria-pressed='true'] {
 			background: var(--maxi-whisper-green) !important;
-			border: 1.5px solid var(--maxi-grey-light) !important;
 			box-shadow: none;
-			color: var(--maxi-grey-dark) !important;
 			font-weight: 700;
 		}
 	}

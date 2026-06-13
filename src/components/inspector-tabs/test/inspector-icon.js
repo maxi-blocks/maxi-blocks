@@ -33,6 +33,7 @@ jest.mock('@extensions/styles', () => ({
 			iconBorderWidth: [],
 			iconBorderRadius: [],
 			iconPadding: [],
+			iconAlignment: [`${prefix}icon-alignment-general`],
 		};
 
 		return (Array.isArray(groups) ? groups : [groups]).reduce(
@@ -69,5 +70,29 @@ describe('inspector icon tab', () => {
 		expect(
 			normalTab.content.props['icon-background-active-media-general']
 		).toBe('color');
+	});
+
+	it('passes icon alignment props to IconControl when enabled', () => {
+		const result = icon({
+			enableAlignment: true,
+			props: {
+				attributes: {
+					'icon-content': '<svg />',
+					'icon-alignment-general': 'right',
+				},
+				cleanInlineStyles: jest.fn(),
+				clientId: 'client-id',
+				deviceType: 'general',
+				insertInlineStyles: jest.fn(),
+				maxiSetAttributes: jest.fn(),
+			},
+		});
+
+		const normalTab = result.content.props.items[0];
+
+		expect(normalTab.content.props.enableAlignment).toBe(true);
+		expect(normalTab.content.props['icon-alignment-general']).toBe(
+			'right'
+		);
 	});
 });

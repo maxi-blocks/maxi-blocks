@@ -45,6 +45,7 @@ const AlignmentControl = props => {
 		isHover = false,
 		isToolbar = false,
 		prefix = '',
+		defaultValue: customDefaultValue,
 	} = props;
 	const getOptions = () => {
 		const options = [];
@@ -93,7 +94,7 @@ const AlignmentControl = props => {
 	const target = `${prefix}${type === 'text' ? 'text-' : ''}alignment`;
 
 	// Get the default value (first option)
-	const defaultValue = getOptions()[0]?.value ?? 'left';
+	const defaultValue = customDefaultValue ?? getOptions()[0]?.value ?? 'left';
 
 	const selectedValue =
 		getLastBreakpointAttribute({

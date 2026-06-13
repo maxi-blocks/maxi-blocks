@@ -2,6 +2,50 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+function get_icon_alignment_styles($props, $prefix = '')
+{
+    if (!in_array($props[$prefix . 'icon-position'] ?? null, ['top', 'bottom'], true)) {
+        return null;
+    }
+
+    $response = [
+        'label' => 'Icon alignment',
+    ];
+
+    $breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+    foreach ($breakpoints as $breakpoint) {
+        $alignment = get_last_breakpoint_attribute([
+            'target' => $prefix . 'icon-alignment',
+            'breakpoint' => $breakpoint,
+            'attributes' => $props,
+        ]);
+
+        switch ($alignment) {
+            case 'left':
+                $response[$breakpoint] = [
+                    'align-self' => 'flex-start',
+                ];
+                break;
+            case 'center':
+            case 'justify':
+                $response[$breakpoint] = [
+                    'align-self' => 'center',
+                ];
+                break;
+            case 'right':
+                $response[$breakpoint] = [
+                    'align-self' => 'flex-end',
+                ];
+                break;
+            default:
+                break;
+        }
+    }
+
+    return count($response) > 1 ? $response : null;
+}
+
 function get_icon_object($props, $target, $prefix = '', $is_IB = false)
 {
     $background = isset($props[$prefix . 'icon-background-active-media-general']) && $props[$prefix . 'icon-background-active-media-general'] === 'color' ? get_color_background_object(array_merge(
@@ -56,6 +100,12 @@ function get_icon_object($props, $target, $prefix = '', $is_IB = false)
             'is_IB' => $is_IB
         ]) : null
     ];
+
+    $alignment = $target === 'icon' ? get_icon_alignment_styles($props, $prefix) : null;
+
+    if ($alignment) {
+        $response['alignment'] = $alignment;
+    }
 
     $responsive = [
         'label' => 'Icon responsive',

@@ -2561,14 +2561,6 @@ class MaxiBlocks_StyleCards
                 $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
             }
 
-            $container_default_size_settings = [
-                'max-width', 'width', 'height', 'min-height',
-                'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
-                'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
-            ];
-            $default_bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
-            $default_bp_idx = array_search($breakpoint, $default_bp_order);
-
             // Container Maxi — full-width override
             $override_fw = !empty($organized_values[$style]['container']['_override_full_width']);
 

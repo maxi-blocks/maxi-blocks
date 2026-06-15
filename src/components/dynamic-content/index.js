@@ -604,6 +604,7 @@ const DynamicContent = props => {
 										))}
 									<DynamicContentSelectControl
 										__nextHasNoMarginBottom
+										className='maxi-dc-order'
 										label={__('Order', 'maxi-blocks')}
 										value={order}
 										options={

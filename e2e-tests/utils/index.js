@@ -32,6 +32,7 @@ export { default as openPreviewPage } from './openPreviewPage';
 export { default as openSidebarTab } from './openSidebarTab';
 export { default as removeBackgroundLayers } from './removeBackgroundLayers';
 export { default as resettingAttributes } from './resettingAttributes';
+export { default as selectFromSearchableControl } from './selectFromSearchableControl';
 export { default as setAttributes } from './setAttributes';
 export { default as waitForAttribute } from './waitForAttribute';
 export { default as uniqueIDGenerator } from './uniqueIDGenerator';

@@ -240,6 +240,7 @@ const SearchableSelectControl = ({
 									<li
 										key={`${option.label}-${option.value}-${index}`}
 										role='option'
+										data-value={option.value}
 										aria-selected={option.value === selectedValue}
 										className={classnames(
 											'maxi-searchable-select-control__option',

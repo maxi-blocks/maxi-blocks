@@ -508,7 +508,25 @@ describe('getSCStyles', () => {
 	});
 
 	it('Should not produce autopx for auto margin values in container rules', async () => {
-		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+		// Seed an 'auto' container margin and run it through
+		// getSCVariablesObject so the unit-appending path is exercised
+		// (regression: a keyword value must not get 'px' appended → 'autopx').
+		const scWithAutoMargin = JSON.parse(
+			JSON.stringify(standardSC.sc_maxi)
+		);
+		scWithAutoMargin.light.styleCard.container = {
+			'override-container-full-width': true,
+			'margin-left-general': 'auto',
+			'margin-right-general': 'auto',
+		};
+
+		const cleanVarSC = getSCVariablesObject(scWithAutoMargin, null, true);
+
+		// The variable must carry the keyword as-is, never 'autopx'.
+		expect(cleanVarSC['--maxi-light-container-margin-left-general']).toBe(
+			'auto'
+		);
+
 		const result = await getSCStyles(cleanVarSC, true);
 
 		expect(result).not.toContain('autopx');

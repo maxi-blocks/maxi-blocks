@@ -12,7 +12,7 @@ import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 /**
  * External dependencies
  */
-import { isEmpty, isNil, isEqual, cloneDeep, merge } from 'lodash';
+import { isEmpty, isNil, isEqual, cloneDeep, merge, omit } from 'lodash';
 
 /**
  * Internal dependencies
@@ -355,9 +355,13 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 		const otherSCStyle = currentSCStyle === 'light' ? 'dark' : 'light';
 
 		const writeProp = (SCStyle, sc, prop, value) => {
-			if (isTypography && isNil(value)) {
-				delete selectedSCValue[SCStyle].styleCard?.[type]?.[prop];
-			}
+			const newType =
+				isTypography && isNil(value)
+					? omit(sc[SCStyle].styleCard[type], prop)
+					: {
+							...sc[SCStyle].styleCard[type],
+							...(!isNil(value) && { [prop]: value }),
+					  };
 
 			return {
 				...sc,
@@ -365,10 +369,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 					...sc[SCStyle],
 					styleCard: {
 						...sc[SCStyle].styleCard,
-						[type]: {
-							...sc[SCStyle].styleCard[type],
-							...(!isNil(value) && { [prop]: value }),
-						},
+						[type]: newType,
 					},
 				},
 			};

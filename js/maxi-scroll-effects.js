@@ -20,7 +20,24 @@ class ScrollEffects {
 			Object.entries(rawScrollData).reduce((acc, [uniqueID, json]) => {
 				const scrollData = JSON.parse(json);
 				delete scrollData.scroll_effects;
-				acc[uniqueID] = scrollData;
+
+				// The localized payload carries the block's full custom data
+				// (e.g. bg_video, email_obfuscate, parallax), not just scroll.
+				// Keep only scroll effect entries - objects keyed by
+				// scroll-* settings - so the runtime never iterates a
+				// non-scroll flag as an effect type (boolean flags make
+				// getScrollSetting return null and crash the whole runtime).
+				acc[uniqueID] = Object.fromEntries(
+					Object.entries(scrollData).filter(
+						([, value]) =>
+							value &&
+							typeof value === 'object' &&
+							Object.keys(value).some(key =>
+								key.startsWith('scroll-')
+							)
+					)
+				);
+
 				return acc;
 			}, {});
 

@@ -230,6 +230,14 @@ const SearchableSelectControl = ({
 							value={searchQuery}
 							onChange={event => setSearchQuery(event.target.value)}
 							onKeyDown={handleSearchKeyDown}
+							role='combobox'
+							aria-expanded={isOpen}
+							aria-controls={listboxId}
+							aria-activedescendant={
+								activeIndex >= 0
+									? `${listboxId}-option-${activeIndex}`
+									: undefined
+							}
 						/>
 						<ul
 							id={listboxId}
@@ -241,6 +249,7 @@ const SearchableSelectControl = ({
 								filteredOptions.map((option, index) => (
 									<li
 										key={`${option.label}-${option.value}-${index}`}
+										id={`${listboxId}-option-${index}`}
 										role='option'
 										data-value={option.value}
 										aria-selected={option.value === selectedValue}

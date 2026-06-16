@@ -25,6 +25,8 @@ import { getEditorWrapper } from '@extensions/dom';
 import {
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_LABELS,
+	IMAGE_FILTER_LABELS,
 	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
@@ -38,22 +40,6 @@ const imageClass = `${blockClass}__image`;
 const imageWrapperClass = `${blockClass}-wrapper`;
 
 const prefix = 'image-';
-const filterCopyPasteLabels = {
-	blur: __('Blur', 'maxi-blocks'),
-	brightness: __('Brightness', 'maxi-blocks'),
-	contrast: __('Contrast', 'maxi-blocks'),
-	grayscale: __('Grayscale', 'maxi-blocks'),
-	'hue-rotate': __('Hue rotate', 'maxi-blocks'),
-	invert: __('Invert', 'maxi-blocks'),
-	opacity: __('Opacity', 'maxi-blocks'),
-	saturate: __('Saturate', 'maxi-blocks'),
-	sepia: __('Sepia', 'maxi-blocks'),
-};
-const dropShadowCopyPasteLabels = {
-	horizontal: __('Drop shadow horizontal', 'maxi-blocks'),
-	vertical: __('Drop shadow vertical', 'maxi-blocks'),
-	blur: __('Drop shadow blur', 'maxi-blocks'),
-};
 
 /**
  * Data object
@@ -187,7 +173,7 @@ const copyPasteMapping = {
 		[__('Filters', 'maxi-blocks')]: {
 			group: {
 				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
-					acc[filterCopyPasteLabels[key]] = {
+					acc[IMAGE_FILTER_LABELS[key]] = {
 						props: getFilterAttribute(key),
 						hasBreakpoints: true,
 					};
@@ -195,7 +181,7 @@ const copyPasteMapping = {
 					return acc;
 				}, {}),
 				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
-					acc[dropShadowCopyPasteLabels[key]] = {
+					acc[IMAGE_FILTER_DROP_SHADOW_LABELS[key]] = {
 						props: getDropShadowAttribute(key),
 						hasBreakpoints: true,
 					};
@@ -211,7 +197,7 @@ const copyPasteMapping = {
 				},
 				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
 					acc[
-						`${filterCopyPasteLabels[key]} ${__(
+						`${IMAGE_FILTER_LABELS[key]} ${__(
 							'hover',
 							'maxi-blocks'
 						)}`
@@ -225,7 +211,7 @@ const copyPasteMapping = {
 				}, {}),
 				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
 					acc[
-						`${dropShadowCopyPasteLabels[key]} ${__(
+						`${IMAGE_FILTER_DROP_SHADOW_LABELS[key]} ${__(
 							'hover',
 							'maxi-blocks'
 						)}`

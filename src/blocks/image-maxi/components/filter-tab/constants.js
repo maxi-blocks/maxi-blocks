@@ -1,4 +1,27 @@
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+
 export const FILTER_BREAKPOINTS = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+export const IMAGE_FILTER_LABELS = {
+	blur: __('Blur', 'maxi-blocks'),
+	brightness: __('Brightness', 'maxi-blocks'),
+	contrast: __('Contrast', 'maxi-blocks'),
+	grayscale: __('Grayscale', 'maxi-blocks'),
+	'hue-rotate': __('Hue rotate', 'maxi-blocks'),
+	invert: __('Invert', 'maxi-blocks'),
+	opacity: __('Opacity', 'maxi-blocks'),
+	saturate: __('Saturate', 'maxi-blocks'),
+	sepia: __('Sepia', 'maxi-blocks'),
+};
+
+export const IMAGE_FILTER_DROP_SHADOW_LABELS = {
+	horizontal: __('Horizontal shadow', 'maxi-blocks'),
+	vertical: __('Vertical shadow', 'maxi-blocks'),
+	blur: __('Shadow blur', 'maxi-blocks'),
+};
 
 export const IMAGE_FILTER_CONTROLS = [
 	{

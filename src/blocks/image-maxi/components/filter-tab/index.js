@@ -21,29 +21,13 @@ import {
 	IMAGE_FILTER_CONTROLS,
 	IMAGE_FILTER_DROP_SHADOW_COLOR_DEFAULT,
 	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_LABELS,
 	IMAGE_FILTER_HOVER_ATTRIBUTE_KEYS,
+	IMAGE_FILTER_LABELS,
 	IMAGE_FILTER_STATUS_HOVER,
 	getDropShadowAttribute,
 	getFilterAttribute,
 } from './constants';
-
-const filterLabels = {
-	blur: __('Blur', 'maxi-blocks'),
-	brightness: __('Brightness', 'maxi-blocks'),
-	contrast: __('Contrast', 'maxi-blocks'),
-	grayscale: __('Grayscale', 'maxi-blocks'),
-	'hue-rotate': __('Hue rotate', 'maxi-blocks'),
-	invert: __('Invert', 'maxi-blocks'),
-	opacity: __('Opacity', 'maxi-blocks'),
-	saturate: __('Saturate', 'maxi-blocks'),
-	sepia: __('Sepia', 'maxi-blocks'),
-};
-
-const dropShadowLabels = {
-	horizontal: __('Horizontal shadow', 'maxi-blocks'),
-	vertical: __('Vertical shadow', 'maxi-blocks'),
-	blur: __('Shadow blur', 'maxi-blocks'),
-};
 
 const FilterControls = props => {
 	const {
@@ -90,7 +74,7 @@ const FilterControls = props => {
 					return (
 						<AdvancedNumberControl
 							key={key}
-							label={`${filterLabels[key]} (${unit})`}
+							label={`${IMAGE_FILTER_LABELS[key]} (${unit})`}
 							value={props[attributeKey]}
 							placeholder={getResponsiveValue(target)}
 							onChangeValue={(val, meta) =>
@@ -114,7 +98,7 @@ const FilterControls = props => {
 					return (
 						<AdvancedNumberControl
 							key={key}
-							label={`${dropShadowLabels[key]} (px)`}
+							label={`${IMAGE_FILTER_DROP_SHADOW_LABELS[key]} (px)`}
 							value={props[attributeKey]}
 							placeholder={getResponsiveValue(target)}
 							onChangeValue={(val, meta) =>

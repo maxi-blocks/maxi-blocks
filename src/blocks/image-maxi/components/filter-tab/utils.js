@@ -176,8 +176,15 @@ export const composeImageFilterWithEffect = (
 		const filter = getImageFilterValue(props, breakpoint, isHover);
 
 		// The effect only emits at `general`, so non-general breakpoints only
-		// need composing when the user set a filter override there.
-		if (breakpoint !== 'general' && !filter) return;
+		// need composing when the user explicitly set a filter there. We check
+		// for an explicit value rather than `filter` truthiness so an explicit
+		// reset to defaults (empty filter string) still records the override
+		// and stops the general filter from leaking down to smaller screens.
+		if (
+			breakpoint !== 'general' &&
+			!hasExplicitFilterValue(props, breakpoint, isHover)
+		)
+			return;
 
 		response[breakpoint] = {
 			filter: [filter, effectFilter].filter(Boolean).join(' '),

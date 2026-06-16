@@ -181,6 +181,19 @@ describe('Image Maxi filter composition with hover effects', () => {
 		});
 	});
 
+	it('records an explicit reset so the general filter does not leak down', () => {
+		const filter = composeImageFilterWithEffect(
+			{
+				'image-filter-brightness-general': 125,
+				'image-filter-brightness-s': 100,
+			},
+			'blur(0)'
+		);
+
+		expect(filter.general).toEqual({ filter: 'brightness(125%) blur(0)' });
+		expect(filter.s).toEqual({ filter: 'blur(0)' });
+	});
+
 	it('uses hover filter values when hover is requested', () => {
 		const filter = composeImageFilterWithEffect(
 			{

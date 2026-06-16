@@ -33,14 +33,16 @@ const flattenOptions = options => {
 		return (options || []).filter(option => option !== undefined);
 	}
 
-	return Object.entries(options).flatMap(([groupLabel, groupOptions]) =>
-		groupOptions
+	return Object.entries(options).flatMap(([groupLabel, groupOptions]) => {
+		if (!Array.isArray(groupOptions)) return [];
+
+		return groupOptions
 			.filter(option => option !== undefined)
 			.map(option => ({
 				...option,
 				groupLabel: groupLabel || option.groupLabel,
-			}))
-	);
+			}));
+	});
 };
 
 const getFilteredOptions = (options, searchQuery = '') => {

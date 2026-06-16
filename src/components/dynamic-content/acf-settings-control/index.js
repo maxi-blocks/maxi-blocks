@@ -6,12 +6,16 @@ import { useEffect, useState } from '@wordpress/element';
 /**
  * Internal dependencies
  */
-import SelectControl from '@components/select-control';
+import SearchableSelectControl from '@components/searchable-select-control';
 
 /**
  * External dependencies
  */
 import { getACFOptions } from './utils';
+
+const ACFSelectControl = ({ options = [], ...props }) => {
+	return <SearchableSelectControl options={options} {...props} />;
+};
 
 const ACFSettingsControl = props => {
 	const {
@@ -40,7 +44,7 @@ const ACFSettingsControl = props => {
 
 	return (
 		<>
-			<SelectControl
+			<ACFSelectControl
 				__nextHasNoMarginBottom
 				label='ACF Group'
 				value={group}
@@ -53,7 +57,7 @@ const ACFSettingsControl = props => {
 				}
 			/>
 			{!isCL && (
-				<SelectControl
+				<ACFSelectControl
 					__nextHasNoMarginBottom
 					label='ACF Field'
 					value={field}

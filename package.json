@@ -164,6 +164,8 @@
 		"webpack": "^5.105.1",
 		"basic-ftp": "^5.3.0",
 		"uuid": "^14.0.0",
-		"showdown": "^2.1.0"
+		"showdown": "^2.1.0",
+		"joi": "^17.13.4",
+		"launch-editor": "^2.14.1"
 	}
 }

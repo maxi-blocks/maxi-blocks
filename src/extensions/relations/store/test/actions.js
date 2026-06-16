@@ -46,6 +46,29 @@ describe('relations/actions', () => {
 		});
 	});
 
+	describe('setRelations', () => {
+		it('should return SET_RELATIONS action', () => {
+			const triggerBlock = {
+				clientId: 'trigger-client-id',
+				uniqueID: 'trigger-unique-id',
+			};
+			const targetBlocks = [
+				{
+					clientId: 'target-client-id',
+					uniqueID: 'target-unique-id',
+				},
+			];
+
+			const result = actions.setRelations(triggerBlock, targetBlocks);
+
+			expect(result).toEqual({
+				type: 'SET_RELATIONS',
+				triggerBlock,
+				targetBlocks,
+			});
+		});
+	});
+
 	describe('removeBlockRelation', () => {
 		it('should return REMOVE_BLOCK_RELATION action', () => {
 			const uniqueID = 'block-unique-id';

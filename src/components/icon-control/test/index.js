@@ -4,6 +4,8 @@ import { createRoot } from 'react-dom/client';
 
 import IconControl from '../index';
 
+const mockBorderControl = jest.fn(() => null);
+const mockColorControl = jest.fn(() => null);
 const mockSettingTabsControl = jest.fn(() => null);
 
 jest.mock('@wordpress/i18n', () => ({
@@ -13,8 +15,11 @@ jest.mock('@wordpress/i18n', () => ({
 jest.mock('@components/advanced-number-control', () => () => null);
 jest.mock('@components/axis-control', () => () => null);
 jest.mock('@components/axis-position-control', () => () => null);
-jest.mock('@components/border-control', () => () => null);
-jest.mock('@components/color-control', () => () => null);
+jest.mock(
+	'@components/border-control',
+	() => props => mockBorderControl(props)
+);
+jest.mock('@components/color-control', () => props => mockColorControl(props));
 jest.mock('@components/gradient-control', () => () => null);
 jest.mock('@components/icon', () => () => null);
 jest.mock('@components/info-box', () => () => null);
@@ -32,8 +37,9 @@ jest.mock('@editor/library/util', () => ({
 	svgAttributesReplacer: jest.fn(icon => icon),
 }));
 
-jest.mock('@components/setting-tabs-control', () => props =>
-	mockSettingTabsControl(props)
+jest.mock(
+	'@components/setting-tabs-control',
+	() => props => mockSettingTabsControl(props)
 );
 
 jest.mock('@extensions/styles', () => ({
@@ -76,6 +82,11 @@ describe('IconControl', () => {
 			)
 			.pop();
 
+	const getIconStyleTabsProps = () =>
+		mockSettingTabsControl.mock.calls
+			.map(([props]) => props)
+			.find(props => props.className === 'maxi-icon-styles-control');
+
 	beforeEach(() => {
 		container = document.createElement('div');
 		document.body.appendChild(container);
@@ -114,5 +125,50 @@ describe('IconControl', () => {
 		});
 
 		expect(getBackgroundTabsProps().selected).toBe('color');
+	});
+
+	it('uses prefixed SVG type when rendering icon style controls', () => {
+		act(() => {
+			root.render(
+				<IconControl
+					{...defaultProps}
+					disableBackground
+					disableBorder
+					prefix='play-'
+					{...{
+						'play-icon-content': '<svg />',
+						'play-svgType': 'Shape',
+					}}
+				/>
+			);
+		});
+
+		expect(mockColorControl).toHaveBeenCalledWith(
+			expect.objectContaining({
+				label: 'Icon fill',
+				prefix: 'play-icon-fill-',
+			})
+		);
+		expect(mockColorControl).not.toHaveBeenCalledWith(
+			expect.objectContaining({
+				label: 'Icon stroke',
+			})
+		);
+	});
+
+	it('does not render responsive border controls when border controls are disabled', () => {
+		act(() => {
+			root.render(
+				<IconControl
+					{...defaultProps}
+					breakpoint='xs'
+					disableBackground
+					disableBorder
+				/>
+			);
+		});
+
+		expect(getIconStyleTabsProps()).toBeUndefined();
+		expect(mockBorderControl).not.toHaveBeenCalled();
 	});
 });

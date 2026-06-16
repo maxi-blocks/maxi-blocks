@@ -29,6 +29,38 @@ const copyPasteMapping = {
 			},
 			hasBreakpoints: true,
 		},
+		[__('Carousel', 'maxi-blocks')]: {
+			groupAttributes: ['rowCarousel', 'rowCarouselAlignment'],
+		},
+		[__('Navigation', 'maxi-blocks')]: {
+			groupAttributes: 'navigation',
+		},
+		[__('Arrows', 'maxi-blocks')]: {
+			group: {
+				[__('Arrow icons', 'maxi-blocks')]: {
+					groupAttributes: 'arrowIcon',
+				},
+				[__('Arrow icons - hover', 'maxi-blocks')]: {
+					groupAttributes: 'arrowIconHover',
+				},
+			},
+		},
+		[__('Dots', 'maxi-blocks')]: {
+			group: {
+				[__('Dot icons', 'maxi-blocks')]: {
+					groupAttributes: 'dotIcon',
+				},
+				[__('Dot icons - hover', 'maxi-blocks')]: {
+					groupAttributes: 'dotIconHover',
+				},
+				[__('Dot icons - active', 'maxi-blocks')]: {
+					groupAttributes: 'dotIconActive',
+				},
+			},
+		},
+		[__('Repeater', 'maxi-blocks')]: {
+			groupAttributes: 'repeater',
+		},
 		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
 		},
@@ -47,6 +79,9 @@ const copyPasteMapping = {
 	},
 	advanced: {
 		template: 'advanced',
+		[__('Context loop', 'maxi-blocks')]: {
+			template: 'contextLoop',
+		},
 		[__('Opacity', 'maxi-blocks')]: {
 			template: 'opacity',
 		},

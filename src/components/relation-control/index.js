@@ -17,6 +17,10 @@ import TextControl from '@components/text-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
 import BlockSelectControl from './BlockSelectControl';
+import {
+	getRelationsForDisplay,
+	getUnresolvedTargetRelations,
+} from './utils';
 import { createTransitionObj, getGroupAttributes } from '@extensions/styles';
 import getClientIdFromUniqueId from '@extensions/attributes/getClientIdFromUniqueId';
 import { getSiteEditorIframeBody } from '@extensions/fse';
@@ -46,6 +50,10 @@ import {
 	syncRelationGroupTargets,
 	updateRelationsInGroup,
 } from './utils';
+import {
+	debugIB,
+	summarizeRelations,
+} from '@extensions/relations/debug';
 
 /**
  * External dependencies
@@ -93,15 +101,27 @@ const RelationControl = props => {
 	// Track highlighted blocks for cleanup
 	const highlightedBlocks = useRef(new Set());
 	const hoveredUniqueIdRef = useRef(null);
-	const onChangeRef = useRef(null);
-	const lastCleanedRef = useRef(null);
 
-	const relations = useMemo(() => {
-		const filtered = (rawRelations || []).filter(
-			r => isEmpty(r.uniqueID) || !!getClientIdFromUniqueId(r.uniqueID)
+	const relations = useMemo(
+		() => getRelationsForDisplay(rawRelations),
+		[rawRelations]
+	);
+
+	useEffect(() => {
+		const unresolvedRelations = getUnresolvedTargetRelations(
+			rawRelations,
+			getClientIdFromUniqueId
 		);
-		return filtered;
-	}, [rawRelations]);
+
+		if (isEmpty(unresolvedRelations)) return;
+
+		debugIB('relation-control.unresolved-targets-preserved', {
+			triggerUniqueID: uniqueID,
+			unresolvedRelations: summarizeRelations(unresolvedRelations),
+			relations: summarizeRelations(relations),
+		});
+	}, [rawRelations, relations, uniqueID]);
+
 	const relationGroups = useMemo(
 		() => groupRelations(relations),
 		[relations]
@@ -268,10 +288,6 @@ const RelationControl = props => {
 		setTimeout(() => revealInListView(), 300);
 	};
 
-	useEffect(() => {
-		onChangeRef.current = onChange;
-	}, [onChange]);
-
 	// Cleanup on unmount
 	useEffect(() => {
 		return () => {
@@ -281,29 +297,6 @@ const RelationControl = props => {
 			highlightedBlocks.current.clear();
 		};
 	}, []);
-
-	useEffect(() => {
-		if (!rawRelations || !onChangeRef.current) return;
-
-		// Only clean up relations if blocks were actually deleted
-		// Don't trigger on every render or attribute change
-		const hasInvalidRelations = rawRelations.some(
-			r =>
-				r.uniqueID &&
-				!isEmpty(r.uniqueID) &&
-				!getClientIdFromUniqueId(r.uniqueID)
-		);
-
-		if (hasInvalidRelations && rawRelations.length !== relations.length) {
-			// Prevent infinite loop by checking if we've already processed this cleanup
-			if (isEqual(lastCleanedRef.current, relations)) {
-				return;
-			}
-
-			lastCleanedRef.current = cloneDeep(relations);
-			onChangeRef.current({ relations });
-		}
-	}, [rawRelations, relations]);
 
 	useEffect(() => {
 		const currentHovered = hoveredUniqueIdRef.current;
@@ -452,6 +445,14 @@ const RelationControl = props => {
 			relationGroup,
 			updates
 		);
+
+		debugIB('relation-control.change-relation-group', {
+			triggerUniqueID: uniqueID,
+			groupId: relationGroup.id,
+			relationIds: relationGroup.relationIds,
+			changeKeys: typeof updates === 'function' ? ['(fn)'] : Object.keys(updates),
+		});
+
 		onChange({ relations: newRelations });
 	};
 
@@ -499,6 +500,13 @@ const RelationControl = props => {
 		}
 
 		// 4. Dispatch the change
+		debugIB('relation-control.remove-relation-group', {
+			triggerUniqueID: uniqueID,
+			relationIds: relationGroup.relationIds,
+			removedUniqueIDs: relationGroup.uniqueIDs,
+			nextRelations: summarizeRelations(newRelations),
+		});
+
 		onChange(updateObj);
 	};
 
@@ -695,19 +703,25 @@ const RelationControl = props => {
 
 	const onAddRelation = () => {
 		const id = getRelationId(relations);
+		const newRelations = [
+			...relations,
+			{
+				...createEmptyRelation({
+					id,
+					groupId: `relation-group-${id}`,
+					isButton,
+				}),
+				effects: createTransitionObj(),
+			},
+		];
+
+		debugIB('relation-control.add-relation', {
+			triggerUniqueID: uniqueID,
+			nextRelations: summarizeRelations(newRelations),
+		});
 
 		onChange({
-			relations: [
-				...relations,
-				{
-					...createEmptyRelation({
-						id,
-						groupId: `relation-group-${id}`,
-						isButton,
-					}),
-					effects: createTransitionObj(),
-				},
-			],
+			relations: newRelations,
 		});
 	};
 

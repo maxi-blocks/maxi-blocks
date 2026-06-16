@@ -202,11 +202,12 @@ export const getPageFonts = (onlyBackend = false) => {
 			const prefixes = [''];
 
 			switch (name) {
-				case 'maxi-blocks/number-counter-maxi':
-					typography = {
-						...getGroupAttributes(attributes, 'numberCounter'),
-					};
-					break;
+			case 'maxi-blocks/number-counter-maxi':
+				typography = {
+					...getGroupAttributes(attributes, 'numberCounter'),
+				};
+				textLevel = 'number-counter';
+				break;
 				case 'maxi-blocks/button-maxi':
 					typography = {
 						...getGroupAttributes(attributes, 'typography'),

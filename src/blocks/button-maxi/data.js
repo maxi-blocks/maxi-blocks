@@ -81,7 +81,7 @@ const copyPasteMapping = {
 					],
 				},
 				[__('Icon padding', 'maxi-blocks')]: {
-					groupAttributes: 'Icon padding',
+					groupAttributes: 'iconPadding',
 				},
 			},
 		},

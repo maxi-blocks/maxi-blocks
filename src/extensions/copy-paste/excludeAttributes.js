@@ -20,6 +20,19 @@ const GLOBAL_EXCLUDE = [
 	'cl-grandchild-accumulator',
 	'dc-limit-by-archive',
 	'cl-limit-by-archive',
+	'isFirstOnHierarchy',
+	'maxi-version-current',
+	'maxi-version-origin',
+	'preview',
+	'openFirstTime',
+	'transition-block-selected',
+	'transition-button-selected',
+	'transition-canvas-selected',
+	'transition-content-selected',
+	'transition-header-selected',
+	'transition-input-selected',
+	'transition-pane-selected',
+	'transition-transform-selected',
 ];
 
 const REPEATER_GLOBAL_EXCLUDE = GLOBAL_EXCLUDE.filter(
@@ -43,6 +56,20 @@ const ALL_TIME_EXCLUDE = [
 	'cl-id',
 	'cl-accumulator',
 	'cl-grandchild-accumulator',
+];
+
+const DC_BLOCKS = [
+	'maxi-blocks/text-maxi',
+	'maxi-blocks/button-maxi',
+	'maxi-blocks/image-maxi',
+	'maxi-blocks/divider-maxi',
+];
+
+const DC_GLOBAL_EXCLUDE_EXCEPTIONS = [
+	'dc-status',
+	'dc-id',
+	'dc-accumulator',
+	'dc-limit-by-archive',
 ];
 
 const IMAGE_SIZE_RESPONSE_ATTRIBUTES = ['mediaURL', 'mediaWidth', 'mediaHeight'];
@@ -80,12 +107,16 @@ const shouldDeleteKey = (
 		!isRepeater &&
 		prop === 'dc-status' &&
 		DC_LINK_BLOCKS.includes(blockName);
+	const isDCBlockException =
+		!isRepeater &&
+		DC_BLOCKS.includes(blockName) &&
+		DC_GLOBAL_EXCLUDE_EXCEPTIONS.includes(prop);
 
 	if (isNil(attributesToExclude[prop])) {
 		return false;
 	}
 
-	if (isDCLinkBlocksException) {
+	if (isDCLinkBlocksException || isDCBlockException) {
 		return false;
 	}
 

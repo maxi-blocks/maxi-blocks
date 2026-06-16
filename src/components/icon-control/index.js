@@ -81,6 +81,8 @@ const IconControlResponsiveSettings = withRTC(props => {
 		disablePadding = false, // Hide padding controls
 		disablePosition = false, // Hide position controls
 		disableSpacing = false, // Hide spacing controls
+		disableWidth = false, // Hide width controls
+		disableStrokeWidth = false, // Hide stroke width controls
 		disableHeightFitContent = false, // Disable height fit content
 		disablePositionY = false, // Disable Y-axis positioning
 		getIconWithColor, // Function to apply colors to icon SVG
@@ -89,31 +91,15 @@ const IconControlResponsiveSettings = withRTC(props => {
 		[iconInheritKey]: iconInherit, // Inherit from button state
 	} = props;
 
+	const getDefaultIconStyle = () => {
+		if (breakpoint !== 'general') return disableBorder ? 'color' : 'border';
+		if (svgType === 'Shape') return 'fill';
+
+		return 'color';
+	};
+
 	// State: Current active icon style tab ('color' = stroke, 'fill', or 'border' = outline)
-	const [iconStyle, setIconStyle] = useState('color');
-
-	// Effect: Auto-switch to 'border' tab when not on general breakpoint
-	// (stroke and fill options are only available on general breakpoint)
-	// Only switch if current iconStyle is 'color' or 'fill' which aren't available
-	useEffect(() => {
-		if (
-			breakpoint !== 'general' &&
-			(iconStyle === 'color' || iconStyle === 'fill')
-		) {
-			setIconStyle('border');
-		}
-	}, [breakpoint, iconStyle]);
-
-	// Effect: Handle icon style switching based on SVG type
-	useEffect(() => {
-		if (breakpoint === 'general') {
-			if (svgType === 'Shape' && iconStyle === 'color') {
-				setIconStyle('fill');
-			} else if (svgType === 'Line' && iconStyle === 'fill') {
-				setIconStyle('color');
-			}
-		}
-	}, [svgType, iconStyle, breakpoint]);
+	const [iconStyle, setIconStyle] = useState(getDefaultIconStyle);
 
 	/**
 	 * Build icon style tab options based on SVG type and breakpoint
@@ -153,6 +139,23 @@ const IconControlResponsiveSettings = withRTC(props => {
 
 		return options;
 	};
+
+	const iconStyleOptions = getOptions();
+	const isIconStyleAvailable = iconStyleOptions.some(
+		({ value }) => value === iconStyle
+	);
+	const shouldShowStrokeControl =
+		isIconStyleAvailable && iconStyle === 'color';
+	const shouldShowBorderControl =
+		isIconStyleAvailable && iconStyle === 'border' && !disableBorder;
+	const shouldShowFillControl =
+		isIconStyleAvailable && iconStyle === 'fill' && svgType !== 'Line';
+
+	useEffect(() => {
+		if (!isIconStyleAvailable && iconStyleOptions.length > 0) {
+			setIconStyle(iconStyleOptions[0].value);
+		}
+	}, [breakpoint, disableBorder, iconStyle, isIconStyleAvailable, svgType]);
 
 	/**
 	 * Build background type options
@@ -243,20 +246,22 @@ const IconControlResponsiveSettings = withRTC(props => {
 				/>
 			)}
 
-			{/* Icon width and height controls */}
-			<SvgWidthControl
-				{...getGroupAttributes(props, 'icon', isHover, prefix)}
-				className='maxi-icon-control__width'
-				onChange={onChange}
-				prefix={`${prefix}icon-`}
-				breakpoint={breakpoint}
-				isHover={isHover}
-				disableHeightFitContent={disableHeightFitContent}
-				isIB={isIB}
-			/>
+			{/* Icon width control */}
+			{!disableWidth && (
+				<SvgWidthControl
+					{...getGroupAttributes(props, 'icon', isHover, prefix)}
+					className='maxi-icon-control__width'
+					onChange={onChange}
+					prefix={`${prefix}icon-`}
+					breakpoint={breakpoint}
+					isHover={isHover}
+					disableHeightFitContent={disableHeightFitContent}
+					isIB={isIB}
+				/>
+			)}
 
 			{/* Stroke width control: Always show for non-Shape SVGs */}
-			{svgType !== 'Shape' && (
+			{!disableStrokeWidth && svgType !== 'Shape' && (
 				<SvgStrokeWidthControl
 					{...getGroupAttributes(props, 'icon', isHover, prefix)}
 					{...(isHover && {
@@ -333,19 +338,19 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* Icon style tabs: Stroke, Fill, Outline (only show if more than 1 option) */}
-			{getOptions().length > 1 && (
+			{iconStyleOptions.length > 1 && (
 				<SettingTabsControl
 					className='maxi-icon-styles-control'
 					type='buttons'
 					fullWidthMode
 					selected={iconStyle}
-					items={getOptions()}
+					items={iconStyleOptions}
 					onChange={val => setIconStyle(val)}
 				/>
 			)}
 
 			{/* STROKE TAB CONTENT: Color control for icon stroke */}
-			{iconStyle === 'color' &&
+			{shouldShowStrokeControl &&
 				(!iconInherit || iconOnly || disableIconInherit ? (
 					svgType !== 'Shape' && (
 						<ColorControl
@@ -477,7 +482,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* OUTLINE TAB CONTENT: Border controls for icon outline */}
-			{iconStyle === 'border' && (
+			{shouldShowBorderControl && (
 				<BorderControl
 					{...getGroupAttributes(
 						props,
@@ -495,7 +500,7 @@ const IconControlResponsiveSettings = withRTC(props => {
 			)}
 
 			{/* FILL TAB CONTENT: Color control for icon fill */}
-			{iconStyle === 'fill' && svgType !== 'Line' && (
+			{shouldShowFillControl && (
 				<ColorControl
 					label={__('Icon fill', 'maxi-blocks')}
 					color={getAttributeValue({
@@ -579,7 +584,6 @@ const IconControlResponsiveSettings = withRTC(props => {
 					avoidBreakpointForDefault
 				/>
 			)}
-
 			{/* BACKGROUND CONTROLS: None, Color, or Gradient background for icon */}
 			{!disableBackground && (
 				<>
@@ -899,7 +903,9 @@ const IconControl = props => {
 			)}
 
 			{/* Render all icon styling controls if an icon is selected */}
-			{iconContent && <IconControlResponsiveSettings {...props} />}
+			{iconContent && (
+				<IconControlResponsiveSettings {...props} svgType={svgType} />
+			)}
 		</div>
 	);
 };

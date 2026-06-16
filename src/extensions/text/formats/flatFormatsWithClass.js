@@ -9,6 +9,7 @@ import { removeFormat, toHTMLString } from '@wordpress/rich-text';
 import getMultiFormatObj from './getMultiFormatObj';
 import { styleObjectManipulator } from './updateCustomFormatStyle';
 import getIsFullFormat from './getIsFullFormat';
+import sanitizeLinkFormatValue from './sanitizeLinkFormatValue';
 
 /**
  * External dependencies
@@ -200,11 +201,11 @@ export const removeUnnecessaryFormats = ({
 
 	if (someRemoved)
 		newContent = toHTMLString({
-			value: {
+			value: sanitizeLinkFormatValue({
 				...newFormatValue,
 				start: formatValue.start,
 				end: formatValue.end,
-			},
+			}),
 			multilineTag: isList ? 'li' : null,
 			preserveWhiteSpace: false,
 		});
@@ -286,7 +287,7 @@ const flatFormatsWithClass = ({
 			);
 
 			newContent = toHTMLString({
-				value: preformattedFormatValue,
+				value: sanitizeLinkFormatValue(preformattedFormatValue),
 				multilineTag: isList ? 'li' : null,
 				preserveWhiteSpace: false,
 			});
@@ -331,7 +332,7 @@ const flatFormatsWithClass = ({
 	);
 
 	newContent = toHTMLString({
-		value: newFormatValue,
+		value: sanitizeLinkFormatValue(newFormatValue),
 		multilineTag: isList ? 'li' : null,
 		preserveWhiteSpace: false,
 	});

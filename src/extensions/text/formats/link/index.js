@@ -21,6 +21,7 @@ const link = {
 		target: 'target',
 		rel: 'rel',
 		title: 'title',
+		ariaLabel: 'aria-label',
 	},
 };
 

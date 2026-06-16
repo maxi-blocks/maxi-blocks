@@ -169,6 +169,110 @@ describe('relations/reducer', () => {
 		});
 	});
 
+	describe('SET_RELATIONS', () => {
+		it('should replace stale targets for a trigger block', () => {
+			const initialState = {
+				relations: {
+					'trigger-unique-id': {
+						'old-target-id': 'old-target-client-id',
+						clientId: 'trigger-client-id',
+					},
+					'other-trigger-id': {
+						'old-target-id': 'old-target-client-id',
+						clientId: 'other-trigger-client-id',
+					},
+				},
+			};
+
+			const action = {
+				type: 'SET_RELATIONS',
+				triggerBlock: {
+					clientId: 'trigger-client-id',
+					uniqueID: 'trigger-unique-id',
+				},
+				targetBlocks: [
+					{
+						clientId: 'new-target-client-id',
+						uniqueID: 'new-target-id',
+					},
+				],
+			};
+
+			const newState = reducer(initialState, action);
+
+			expect(newState).toEqual({
+				relations: {
+					'trigger-unique-id': {
+						'new-target-id': 'new-target-client-id',
+						clientId: 'trigger-client-id',
+					},
+					'other-trigger-id': {
+						'old-target-id': 'old-target-client-id',
+						clientId: 'other-trigger-client-id',
+					},
+				},
+			});
+		});
+
+		it('should remove the trigger when no target blocks remain', () => {
+			const initialState = {
+				relations: {
+					'trigger-unique-id': {
+						'target-id': 'target-client-id',
+						clientId: 'trigger-client-id',
+					},
+				},
+			};
+
+			const action = {
+				type: 'SET_RELATIONS',
+				triggerBlock: {
+					clientId: 'trigger-client-id',
+					uniqueID: 'trigger-unique-id',
+				},
+				targetBlocks: [],
+			};
+
+			const newState = reducer(initialState, action);
+
+			expect(newState).toEqual({
+				relations: {},
+			});
+		});
+
+		it('should skip target blocks with missing clientId', () => {
+			const initialState = { relations: {} };
+			const action = {
+				type: 'SET_RELATIONS',
+				triggerBlock: {
+					clientId: 'trigger-client-id',
+					uniqueID: 'trigger-unique-id',
+				},
+				targetBlocks: [
+					{
+						clientId: 'valid-client-id',
+						uniqueID: 'valid-target-id',
+					},
+					{
+						clientId: undefined,
+						uniqueID: 'invalid-target-id',
+					},
+				],
+			};
+
+			const newState = reducer(initialState, action);
+
+			expect(newState).toEqual({
+				relations: {
+					'trigger-unique-id': {
+						'valid-target-id': 'valid-client-id',
+						clientId: 'trigger-client-id',
+					},
+				},
+			});
+		});
+	});
+
 	describe('REMOVE_BLOCK_RELATION', () => {
 		it('should remove all relations for a block uniqueID', () => {
 			const initialState = {

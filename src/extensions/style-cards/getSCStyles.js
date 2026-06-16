@@ -11,7 +11,15 @@ import { times, compact } from 'lodash';
 const styles = ['light', 'dark'];
 const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 const levels = ['p', ...headings];
-const elements = ['button', ...levels, 'icon', 'divider', 'link', 'navigation'];
+const elements = [
+	'button',
+	...levels,
+	'icon',
+	'divider',
+	'link',
+	'navigation',
+	'number-counter',
+];
 const breakpoints = {
 	xxl: 1921,
 	xl: 1920,
@@ -377,6 +385,28 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 
 			if (marginSentence)
 				sentences?.splice(sentences?.indexOf(marginSentence), 1);
+
+			if (sentences?.length > 0) {
+				const styles = sentences?.join(' ').trim();
+				if (styles) {
+					addedResponse += `${target} {${styles}}`;
+				}
+			}
+		});
+
+		// Number Counter Maxi
+		const numberCounterSentences = getSentencesByBreakpoint({
+			organizedValues,
+			style,
+			breakpoint,
+			targets: ['number-counter'],
+		});
+
+		[
+			`${prefix} ${secondPrefix} .maxi-${style}.maxi-number-counter-block .maxi-number-counter__box__text`,
+			`${prefix} ${secondPrefix} .maxi-${style} .maxi-number-counter-block .maxi-number-counter__box__text`,
+		].forEach(target => {
+			const sentences = [...numberCounterSentences['number-counter']];
 
 			if (sentences?.length > 0) {
 				const styles = sentences?.join(' ').trim();

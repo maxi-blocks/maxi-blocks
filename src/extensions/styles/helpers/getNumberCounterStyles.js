@@ -11,6 +11,39 @@ import { __ } from '@wordpress/i18n';
 
 const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
 
+const getSCColourString = ({
+	obj,
+	prefix,
+	breakpoint,
+	blockStyle,
+	scVariable,
+}) => {
+	const { paletteStatus, paletteSCStatus, paletteColor, paletteOpacity, color } =
+		getPaletteAttributes({
+			obj,
+			prefix,
+			breakpoint,
+		});
+
+	if (paletteStatus && paletteColor) {
+		const paletteVariable = `color-${paletteColor}`;
+		const shouldUseStyleCardVariable = !paletteSCStatus;
+
+		return getColorRGBAString({
+			firstVar: shouldUseStyleCardVariable
+				? scVariable
+				: paletteVariable,
+			...(shouldUseStyleCardVariable && {
+				secondVar: paletteVariable,
+			}),
+			opacity: paletteOpacity,
+			blockStyle,
+		});
+	}
+
+	return color || null;
+};
+
 const getCircleBarStyles = (obj, blockStyle) => {
 	const response = {
 		label: __('Number Counter', 'maxi-blocks'),
@@ -18,21 +51,13 @@ const getCircleBarStyles = (obj, blockStyle) => {
 	};
 
 	const getColor = breakpoint => {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj,
-				prefix: 'number-counter-circle-bar-',
-				breakpoint,
-			});
-
-		if (paletteStatus && paletteColor) {
-			return getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
-		}
-		return color || null; // Returns null if color is undefined or not set
+		return getSCColourString({
+			obj,
+			prefix: 'number-counter-circle-bar-',
+			breakpoint,
+			blockStyle,
+			scVariable: 'number-counter-circle-bar',
+		});
 	};
 
 	breakpoints.forEach(breakpoint => {
@@ -48,19 +73,14 @@ const getCircleBackgroundStyles = (obj, blockStyle) => {
 		general: {},
 	};
 
-	const { paletteStatus, paletteColor, paletteOpacity, color } =
-		getPaletteAttributes({
-			obj,
-			prefix: 'number-counter-circle-background-',
-		});
+	const color = getSCColourString({
+		obj,
+		prefix: 'number-counter-circle-background-',
+		blockStyle,
+		scVariable: 'number-counter-circle-background',
+	});
 
-	if (!paletteStatus && !isNil(color)) response.general.stroke = color;
-	else if (paletteStatus && paletteColor)
-		response.general.stroke = getColorRGBAString({
-			firstVar: `color-${paletteColor}`,
-			opacity: paletteOpacity,
-			blockStyle,
-		});
+	if (!isNil(color)) response.general.stroke = color;
 
 	return { numberCounterBackground: response };
 };
@@ -72,30 +92,26 @@ const getTextStyles = (obj, blockStyle) => {
 	};
 
 	const getColor = breakpoint => {
-		const { paletteStatus, paletteColor, paletteOpacity, color } =
-			getPaletteAttributes({
-				obj,
-				prefix: 'number-counter-text-',
-				breakpoint,
-			});
-		if (!paletteStatus && !isNil(color)) return color;
-		if (paletteStatus && paletteColor)
-			return getColorRGBAString({
-				firstVar: `color-${paletteColor}`,
-				opacity: paletteOpacity,
-				blockStyle,
-			});
+		return getSCColourString({
+			obj,
+			prefix: 'number-counter-text-',
+			breakpoint,
+			blockStyle,
+			scVariable: 'number-counter-color',
+		});
 	};
 
 	breakpoints.forEach(breakpoint => {
+		const fontFamily = obj[`font-family-${breakpoint}`];
+
 		response[breakpoint] = {
 			...(!isNil(obj[`number-counter-title-font-size-${breakpoint}`]) && {
 				'font-size': `${
 					obj[`number-counter-title-font-size-${breakpoint}`]
 				}px`,
 			}),
-			...(!isNil(obj[`font-family-${breakpoint}`]) && {
-				'font-family': `${obj[`font-family-${breakpoint}`]}`,
+			...(!isNil(fontFamily) && {
+				'font-family': `${fontFamily}`,
 			}),
 			...(!isNil(obj[`font-weight-${breakpoint}`]) && {
 				'font-weight': `${obj[`font-weight-${breakpoint}`]}`,

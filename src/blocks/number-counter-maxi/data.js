@@ -29,7 +29,15 @@ const copyPasteMapping = {
 			groupAttributes: 'alignment',
 		},
 		[__('Number', 'maxi-blocks')]: {
-			groupAttributes: 'numberCounter',
+			group: {
+				[__('Number settings', 'maxi-blocks')]: {
+					groupAttributes: 'numberCounter',
+				},
+				[__('Number size', 'maxi-blocks')]: {
+					template: 'size',
+					prefix,
+				},
+			},
 		},
 		[__('Border', 'maxi-blocks')]: {
 			template: 'border',
@@ -47,6 +55,7 @@ const copyPasteMapping = {
 	canvas: {
 		[__('Size', 'maxi-blocks')]: {
 			template: 'size',
+			props: ['number-counter-width'],
 		},
 		[__('Background', 'maxi-blocks')]: {
 			template: 'blockBackground',
@@ -114,6 +123,29 @@ const transition = {
 const interactionBuilderSettings = {
 	canvas: getCanvasSettings({ name }),
 	advanced: getAdvancedSettings({ customCss }),
+};
+const scProps = {
+	scElements: [
+		'color-global',
+		'palette-status',
+		'palette-color',
+		'palette-opacity',
+		'color',
+		'circle-background-color-global',
+		'circle-background-palette-status',
+		'circle-background-palette-color',
+		'circle-background-palette-opacity',
+		'circle-background-color',
+		'circle-bar-color-global',
+		'circle-bar-palette-status',
+		'circle-bar-palette-color',
+		'circle-bar-palette-opacity',
+		'circle-bar-color',
+		'font-family-general',
+		'font-size-general',
+		'font-weight-general',
+	],
+	scType: 'number-counter',
 };
 
 const inlineStylesTargets = {
@@ -339,6 +371,7 @@ const data = {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	scProps,
 	attributesToStyles,
 };
 
@@ -347,6 +380,7 @@ export {
 	customCss,
 	transition,
 	interactionBuilderSettings,
+	scProps,
 	ariaLabelsCategories,
 	attributesToStyles,
 };

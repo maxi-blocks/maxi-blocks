@@ -18,7 +18,10 @@ import {
 	excludeAttributes,
 	getOrganizedAttributes,
 } from '@extensions/copy-paste';
-import { loadColumnsTemplate } from '@extensions/column-templates';
+import {
+	loadColumnsTemplate,
+	getTemplateObject,
+} from '@extensions/column-templates';
 import { getUpdatedBGLayersWithNewUniqueID } from '@extensions/attributes';
 import {
 	validateAttributes,
@@ -129,11 +132,21 @@ const CopyPaste = props => {
 		if (blockName === 'maxi-blocks/row-maxi') {
 			Object.entries(copiedAttributes).forEach(([key, style]) => {
 				if (key.includes('row-pattern-') && style !== attributes[key]) {
-					loadColumnsTemplate(
-						style,
-						clientId,
-						key.replace('row-pattern-', '')
-					);
+					const breakpoint = key.replace('row-pattern-', '');
+
+					// "More than 8 columns" patterns are stored as a numeric
+					// string (the column count) rather than a template name,
+					// so map them back to the proper template + column count.
+					const isMoreThanEightColumns =
+						!getTemplateObject(style) && !!Number(style);
+					const templateName = isMoreThanEightColumns
+						? 'more than 8 columns'
+						: style;
+					const numCol = isMoreThanEightColumns
+						? Number(style)
+						: undefined;
+
+					loadColumnsTemplate(templateName, clientId, breakpoint, numCol);
 				}
 			});
 		}
@@ -319,18 +332,36 @@ const CopyPaste = props => {
 		setSpecialPaste(specPaste);
 	};
 
+	const getSpecialPasteAttributes = selectedAttributes => {
+		const { _pasteWith, ...pasteAttributes } = selectedAttributes;
+
+		if (!_pasteWith) return pasteAttributes;
+
+		const pasteWith = isArray(_pasteWith) ? _pasteWith : [_pasteWith];
+
+		return pasteWith.reduce((acc, attrName) => {
+			if (Object.prototype.hasOwnProperty.call(copiedStyles, attrName)) {
+				acc[attrName] = copiedStyles[attrName];
+			}
+
+			return acc;
+		}, pasteAttributes);
+	};
+
 	const onSpecialPaste = () => {
 		let res = {};
 
 		Object.entries(specialPaste).forEach(([tab, keys]) => {
 			keys.forEach(key => {
+				const selectedAttributes = isString(key)
+					? organizedAttributes[tab][key]
+					: organizedAttributes[tab][Object.keys(key)[0]][
+							Object.values(key)[0]
+					  ];
+
 				res = {
 					...res,
-					...(isString(key)
-						? organizedAttributes[tab][key]
-						: organizedAttributes[tab][Object.keys(key)[0]][
-								Object.values(key)[0]
-						  ]),
+					...getSpecialPasteAttributes(selectedAttributes),
 				};
 			});
 		});

@@ -76,6 +76,9 @@ const Inspector = props => {
 														false,
 														'number-counter-'
 													)}
+													blockStyle={
+														attributes.blockStyle
+													}
 													onChangeInline={(
 														obj,
 														target

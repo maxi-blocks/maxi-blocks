@@ -7,10 +7,11 @@ import { select } from '@wordpress/data';
  * Internal dependencies
  */
 import getCleanResponseIBAttributes from './getCleanResponseIBAttributes';
-import { getSelectedIBSettings } from './utils';
+import { cleanIBStyles, getSelectedIBSettings } from './utils';
 import getIBStyles from './getIBStyles';
 import getIBStylesObj from './getIBStylesObj';
 import batchRelationsUpdater from './batchRelationsUpdater';
+import { debugIB, summarizeRelations } from './debug';
 
 /**
  * External dependencies
@@ -52,6 +53,14 @@ const updateRelationsRemotely = ({
 			// eslint-disable-next-line no-continue
 			continue;
 		}
+
+		debugIB('update-relations-remotely.match-target', {
+			blockTriggerClientId,
+			blockTargetClientId,
+			targetUniqueID: uniqueID,
+			relationId: item.id,
+			sid: item.sid,
+		});
 
 		const selectedSettings = getSelectedIBSettings(
 			blockTargetClientId,
@@ -122,11 +131,13 @@ const updateRelationsRemotely = ({
 			breakpoint,
 		});
 
-		const styles = getIBStyles({
-			stylesObj,
-			blockAttributes,
-			isFirst: true,
-		});
+		const styles = cleanIBStyles(
+			getIBStyles({
+				stylesObj,
+				blockAttributes,
+				isFirst: true,
+			})
+		);
 
 		const newItem = {
 			...item,
@@ -149,6 +160,15 @@ const updateRelationsRemotely = ({
 	const hasDiff = !isEmpty(diffResult);
 
 	if (hasDiff) {
+		debugIB('update-relations-remotely.queue-update', {
+			blockTriggerClientId,
+			blockTargetClientId,
+			targetUniqueID: uniqueID,
+			diffResult,
+			previousRelations: summarizeRelations(relations),
+			nextRelations: summarizeRelations(newRelations),
+		});
+
 		// Add to batch queue instead of immediate update
 		batchRelationsUpdater.addUpdate(blockTriggerClientId, newRelations);
 	}

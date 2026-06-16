@@ -47,6 +47,9 @@ const copyPasteMapping = {
 		},
 		[__('Line settings', 'maxi-blocks')]: {
 			group: {
+				[__('Line', 'maxi-blocks')]: {
+					groupAttributes: 'divider',
+				},
 				[__('Line style', 'maxi-blocks')]: 'divider-border-style',
 				[__('Line colour', 'maxi-blocks')]: {
 					props: 'divider-border',

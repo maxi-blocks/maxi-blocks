@@ -1,6 +1,10 @@
 const selectors = {
-	receiveRelations(state) {
-		if (state) return state.relations;
+	receiveRelations(state, uniqueID) {
+		if (state) {
+			if (uniqueID) return state.relations?.[uniqueID] ?? {};
+
+			return state.relations;
+		}
 
 		return false;
 	},

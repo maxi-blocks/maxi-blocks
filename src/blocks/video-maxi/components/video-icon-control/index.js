@@ -7,9 +7,10 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
+import IconControl from '@components/icon-control';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
-import ColorControl from '@components/color-control';
+import SvgStrokeWidthControl from '@components/svg-stroke-width-control';
 import ToggleSwitch from '@components/toggle-switch';
 import ResponsiveTabsControl from '@components/responsive-tabs-control';
 import MaxiModal from '@editor/library/modal';
@@ -32,16 +33,106 @@ import { svgAttributesReplacer } from '@editor/library/util';
  */
 import { isEmpty } from 'lodash';
 
+const getVideoIconWithColor = (props, args = {}, prefix = '') => {
+	const { rawIcon, isHover = false, type: rawType = 'stroke' } = args;
+	const types = Array.isArray(rawType) ? rawType : [rawType];
+	let icon = rawIcon || props[`${prefix}icon-content`];
+
+	if (!icon) return icon;
+
+	types.forEach(type => {
+		let {
+			paletteColor,
+			paletteOpacity,
+			paletteStatus,
+			paletteSCStatus,
+			color,
+		} = args;
+
+		const targetPrefix = `icon-${type}`;
+
+		if (paletteColor === undefined) {
+			paletteColor = getAttributeValue({
+				target: `${targetPrefix}-palette-color`,
+				isHover,
+				prefix,
+				props,
+			});
+		}
+		if (paletteOpacity === undefined) {
+			paletteOpacity = getAttributeValue({
+				target: `${targetPrefix}-palette-opacity`,
+				isHover,
+				prefix,
+				props,
+			});
+		}
+		if (paletteStatus === undefined) {
+			paletteStatus = getAttributeValue({
+				target: `${targetPrefix}-palette-status`,
+				isHover,
+				prefix,
+				props,
+			});
+		}
+		if (paletteSCStatus === undefined) {
+			paletteSCStatus = getAttributeValue({
+				target: `${targetPrefix}-palette-sc-status`,
+				isHover,
+				prefix,
+				props,
+			});
+		}
+		if (color === undefined) {
+			color = getAttributeValue({
+				target: `${targetPrefix}-color`,
+				isHover,
+				prefix,
+				props,
+			});
+		}
+
+		const iconColorStr = getColorRGBAString(
+			paletteSCStatus
+				? {
+						firstVar: `color-${paletteColor}${
+							isHover ? '-hover' : ''
+						}`,
+						opacity: paletteOpacity,
+						blockStyle: props.blockStyle,
+				  }
+				: {
+						firstVar: `${prefix}${targetPrefix}${
+							isHover ? '-hover' : ''
+						}`,
+						secondVar: `color-${paletteColor}${
+							isHover ? '-hover' : ''
+						}`,
+						opacity: paletteOpacity,
+						blockStyle: props.blockStyle,
+				  }
+		);
+
+		icon = isHover
+			? setSVGContentHover(
+					icon,
+					paletteStatus ? iconColorStr : color,
+					type
+			  )
+			: setSVGContent(icon, paletteStatus ? iconColorStr : color, type);
+	});
+
+	return icon;
+};
+
 const IconSettings = props => {
 	const {
 		isHover = false,
 		prefix,
 		onChangeInline,
 		onChange,
-		blockStyle,
-		label,
 		breakpoint,
-		clientId,
+		[`${prefix}svgType`]: svgType,
 		[`${prefix}icon-status-hover`]: iconHoverStatus,
 	} = props;
 
@@ -80,120 +171,26 @@ const IconSettings = props => {
 			)}
 			{showSettings && (
 				<>
-					<ColorControl
+					<IconControl
+						{...props}
 						className='maxi-video-icon-control__icon-colour'
-						label={label}
-						color={getAttributeValue({
-							target: 'icon-fill-color',
-							isHover,
-							prefix,
-							props,
-						})}
-						defaultColor={getDefaultAttribute(
-							getAttributeKey('icon-fill-color', isHover, prefix)
-						)}
-						paletteStatus={getAttributeValue({
-							target: 'icon-fill-palette-status',
-							isHover,
-							prefix,
-							props,
-						})}
-						paletteSCStatus={getAttributeValue({
-							target: 'icon-fill-palette-sc-status',
-							isHover,
-							prefix,
-							props,
-						})}
-						paletteColor={getAttributeValue({
-							target: 'icon-fill-palette-color',
-							isHover,
-							prefix,
-							props,
-						})}
-						paletteOpacity={getAttributeValue({
-							target: 'icon-fill-palette-opacity',
-							isHover,
-							prefix,
-							props,
-						})}
-						onChangeInline={({ color }) => {
-							onChangeInline &&
-								!isHover &&
-								onChangeInline({
-									fill: color,
-								});
-						}}
-						onChange={({
-							paletteColor,
-							paletteStatus,
-							paletteSCStatus,
-							paletteOpacity,
-							color,
-						}) => {
-							const fillColorStr = getColorRGBAString(
-								paletteSCStatus
-									? {
-											firstVar: `color-${paletteColor}`,
-											opacity: paletteOpacity,
-											blockStyle,
-									  }
-									: {
-											firstVar: 'icon-fill',
-											secondVar: `color-${paletteColor}`,
-											opacity: paletteOpacity,
-											blockStyle,
-									  }
-							);
-							const icon = isHover
-								? setSVGContentHover(
-										props[`${prefix}icon-content`],
-										paletteStatus ? fillColorStr : color,
-										'fill'
-								  )
-								: setSVGContent(
-										props[`${prefix}icon-content`],
-										paletteStatus ? fillColorStr : color,
-										'fill'
-								  );
-
-							onChange({
-								[getAttributeKey(
-									'icon-fill-palette-status',
-									isHover,
-									prefix
-								)]: paletteStatus,
-								[getAttributeKey(
-									'icon-fill-palette-sc-status',
-									isHover,
-									prefix
-								)]: paletteSCStatus,
-								[getAttributeKey(
-									'icon-fill-palette-color',
-									isHover,
-									prefix
-								)]: paletteColor,
-								[getAttributeKey(
-									'icon-fill-palette-opacity',
-									isHover,
-									prefix
-								)]: paletteOpacity,
-								[getAttributeKey(
-									'icon-fill-color',
-									isHover,
-									prefix
-								)]: color,
-								...(!isHover && {
-									[`${prefix}icon-content`]: icon,
-								}),
-							});
-						}}
-						disableImage
-						disableVideo
-						disableGradient
+						disableModal
+						disableBackground
+						disableBorder
+						disableIconInherit
+						disableIconOnly
+						disablePadding
+						disablePosition
+						disableSpacing
+						disableWidth
+						disableStrokeWidth
+						disableHeightFitContent
+						getIconWithColor={args =>
+							getVideoIconWithColor(props, args, prefix)
+						}
+						onChangeInline={!isHover ? onChangeInline : null}
+						onChange={onChange}
 						isHover={isHover}
-						deviceType={breakpoint}
-						clientId={clientId}
-						prefix={`${prefix}icon-`}
 					/>
 					{prefix === 'close-' && (
 						<SelectControl
@@ -309,6 +306,18 @@ const IconSettings = props => {
 								minMaxSettings={minMaxSettings}
 								allowedUnits={['px', 'em', 'vw', '%']}
 							/>
+							{svgType !== 'Shape' && (
+								<SvgStrokeWidthControl
+									{...props}
+									className='maxi-video-icon-control__stroke-width'
+									onChange={onChange}
+									prefix={`${prefix}icon-`}
+									breakpoint={breakpoint}
+									isHover={isHover}
+									content={props[`${prefix}icon-content`]}
+									disableContentUpdate
+								/>
+							)}
 							{prefix === 'close-' && (
 								<AdvancedNumberControl
 									label={__('Icon spacing', 'maxi-blocks')}

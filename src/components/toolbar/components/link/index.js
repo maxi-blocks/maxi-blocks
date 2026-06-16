@@ -47,6 +47,17 @@ const DISABLED_BLOCKS = [
 	'maxi-blocks/slider-maxi',
 ];
 
+const getManualLinkTitle = (linkSettings = {}) => {
+	const { title, url } = linkSettings;
+	const normalizedTitle = title?.trim?.();
+	const normalizedUrl = url?.trim?.();
+
+	if (isEmpty(normalizedTitle) || normalizedTitle === normalizedUrl)
+		return null;
+
+	return normalizedTitle;
+};
+
 /**
  * Link
  */
@@ -191,7 +202,9 @@ const Link = props => {
 												? {
 														...linkSettings,
 														url,
-														title: url,
+														title: getManualLinkTitle(
+															linkSettings
+														),
 												  }
 												: {
 														...linkSettings,
@@ -243,7 +256,9 @@ const Link = props => {
 														{
 															...linkSettings,
 															url,
-															title: url,
+															title: getManualLinkTitle(
+																linkSettings
+															),
 														},
 														{
 															'dc-link-target':

@@ -29,7 +29,10 @@ jest.mock('@extensions/styles', () => ({
 	),
 }));
 
-import { getImageFilterStyles } from '../utils';
+import {
+	composeImageFilterWithEffect,
+	getImageFilterStyles,
+} from '../utils';
 
 describe('Image Maxi filter styles', () => {
 	it('builds a combined CSS filter from non-default image filter controls', () => {
@@ -142,5 +145,54 @@ describe('Image Maxi filter styles', () => {
 		);
 
 		expect(styles.filter.general).toEqual({ filter: 'none' });
+	});
+});
+
+describe('Image Maxi filter composition with hover effects', () => {
+	it('appends the blur effect to the user filter at general', () => {
+		const filter = composeImageFilterWithEffect(
+			{ 'image-filter-brightness-general': 125 },
+			'blur(0)'
+		);
+
+		expect(filter.general).toEqual({
+			filter: 'brightness(125%) blur(0)',
+		});
+	});
+
+	it('emits the blur effect alone when no filter is set', () => {
+		const filter = composeImageFilterWithEffect({}, 'blur(5px)');
+
+		expect(filter.general).toEqual({ filter: 'blur(5px)' });
+	});
+
+	it('composes responsive filter overrides with the effect', () => {
+		const filter = composeImageFilterWithEffect(
+			{
+				'image-filter-brightness-general': 125,
+				'image-filter-contrast-s': 80,
+			},
+			'blur(0)'
+		);
+
+		expect(filter.general).toEqual({ filter: 'brightness(125%) blur(0)' });
+		expect(filter.s).toEqual({
+			filter: 'brightness(125%) contrast(80%) blur(0)',
+		});
+	});
+
+	it('uses hover filter values when hover is requested', () => {
+		const filter = composeImageFilterWithEffect(
+			{
+				'image-filter-brightness-general': 125,
+				'image-filter-brightness-general-hover': 150,
+			},
+			'blur(5px)',
+			true
+		);
+
+		expect(filter.general).toEqual({
+			filter: 'brightness(150%) blur(5px)',
+		});
 	});
 });

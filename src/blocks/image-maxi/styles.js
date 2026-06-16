@@ -35,7 +35,10 @@ import {
 	transitionDurationEffects,
 	transitionFilterEffects,
 } from './components/hover-effect-control/constants';
-import { getImageFilterStyles } from './components/filter-tab/utils';
+import {
+	composeImageFilterWithEffect,
+	getImageFilterStyles,
+} from './components/filter-tab/utils';
 import data from './data';
 
 /**
@@ -684,9 +687,10 @@ const getImagePreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: { filter: 'blur(0)' },
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					'blur(0)'
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };
@@ -748,11 +752,11 @@ const getImageHoverPreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: {
-						filter: `blur(${props['hover-basic-blur-value']}px)`,
-					},
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					`blur(${props['hover-basic-blur-value']}px)`,
+					props['image-filter-status-hover']
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };

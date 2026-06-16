@@ -155,3 +155,34 @@ export const getImageFilterStyles = (props, isHover = false) => {
 
 	return Object.keys(response).length ? { filter: response } : {};
 };
+
+/**
+ * Composes the user's image filter with a hover-effect filter declaration
+ * (e.g. the Basic > Blur effect's `blur(0)` / `blur(Npx)`). The hover-effect
+ * selectors are more specific than the wrapper image selector, so the effect's
+ * standalone `filter` would otherwise override the filter controls. Appending
+ * the effect to the user's filter keeps both working together.
+ *
+ * Returns a breakpoint-keyed object ready to assign to a `filter` style entry.
+ */
+export const composeImageFilterWithEffect = (
+	props,
+	effectFilter,
+	isHover = false
+) => {
+	const response = {};
+
+	FILTER_BREAKPOINTS.forEach(breakpoint => {
+		const filter = getImageFilterValue(props, breakpoint, isHover);
+
+		// The effect only emits at `general`, so non-general breakpoints only
+		// need composing when the user set a filter override there.
+		if (breakpoint !== 'general' && !filter) return;
+
+		response[breakpoint] = {
+			filter: [filter, effectFilter].filter(Boolean).join(' '),
+		};
+	});
+
+	return response;
+};

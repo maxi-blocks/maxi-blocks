@@ -20,6 +20,7 @@ import {
 	getEditorFrame,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
+import canonicalizeBlockStyle from '../../utils/canonicalizeBlockStyle';
 
 describe('Background Color Layer', () => {
 	it('Check Background Color layer', async () => {
@@ -58,7 +59,7 @@ describe('Background Color Layer', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer responsive', async () => {
@@ -116,7 +117,7 @@ describe('Background Color Layer', () => {
 			breakpoint: 'm',
 		});
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer hover', async () => {
@@ -172,7 +173,7 @@ describe('Background Color Layer', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background Color layer hover responsive', async () => {
@@ -237,7 +238,7 @@ describe('Background Color Layer', () => {
 			isHover: true,
 		});
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it(

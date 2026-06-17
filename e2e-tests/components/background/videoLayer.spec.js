@@ -19,6 +19,7 @@ import {
 	getEditorFrame,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
+import canonicalizeBlockStyle from '../../utils/canonicalizeBlockStyle';
 
 describe('BackgroundControl', () => {
 	afterEach(async () => {
@@ -74,7 +75,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background video layer responsive', async () => {
@@ -127,7 +128,7 @@ describe('BackgroundControl', () => {
 		await sizeAndPositionChecker({ page, breakpoint: 'm' });
 
 		expect(backgroundOpacityM).toStrictEqual('44');
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
 	});
@@ -170,7 +171,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background video layer hover responsive', async () => {
@@ -224,7 +225,7 @@ describe('BackgroundControl', () => {
 
 		await sizeAndPositionChecker({ page, breakpoint: 'm', isHover: true });
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background video layer display', async () => {

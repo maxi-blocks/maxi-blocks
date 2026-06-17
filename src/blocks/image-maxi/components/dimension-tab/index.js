@@ -144,6 +144,7 @@ const DimensionTab = props => {
 				[`mediaURL-${activeBreakpoint}`]: undefined,
 				[`mediaWidth-${activeBreakpoint}`]: undefined,
 				[`mediaHeight-${activeBreakpoint}`]: undefined,
+				[`cropOptions-${activeBreakpoint}`]: undefined,
 				isReset: true,
 			};
 		}

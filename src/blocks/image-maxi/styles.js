@@ -35,6 +35,10 @@ import {
 	transitionDurationEffects,
 	transitionFilterEffects,
 } from './components/hover-effect-control/constants';
+import {
+	composeImageFilterWithEffect,
+	getImageFilterStyles,
+} from './components/filter-tab/utils';
 import data from './data';
 import {
 	getResponsiveImageFallback,
@@ -52,9 +56,7 @@ const filterStylesByStatus = (styles, statusTarget, props) => {
 	if (!styles) return null;
 
 	const filtered = Object.fromEntries(
-		Object.entries(styles).filter(
-			([key]) => !breakpoints.includes(key)
-		)
+		Object.entries(styles).filter(([key]) => !breakpoints.includes(key))
 	);
 
 	breakpoints.forEach(breakpoint => {
@@ -496,6 +498,7 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'clipPath'),
 			},
 		}),
+		...getImageFilterStyles(props),
 		...(imgWidth &&
 			!fitParentSize &&
 			getImgWidthStyles(
@@ -550,6 +553,8 @@ const getHoverImageObject = props => {
 				isHover: true,
 			}),
 		}),
+		...(props['image-filter-status-hover'] &&
+			getImageFilterStyles(props, true)),
 	};
 };
 
@@ -703,9 +708,10 @@ const getImagePreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: { filter: 'blur(0)' },
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					'blur(0)'
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };
@@ -767,11 +773,11 @@ const getImageHoverPreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: {
-						filter: `blur(${props['hover-basic-blur-value']}px)`,
-					},
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					`blur(${props['hover-basic-blur-value']}px)`,
+					props['image-filter-status-hover']
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };

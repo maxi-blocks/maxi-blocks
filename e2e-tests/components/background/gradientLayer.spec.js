@@ -21,6 +21,7 @@ import {
 	getEditorFrame,
 } from '../../utils';
 import sizeAndPositionChecker from './utils/sizeAndPositionChecker';
+import canonicalizeBlockStyle from '../../utils/canonicalizeBlockStyle';
 
 describe('BackgroundControl', () => {
 	it('Check Background gradient layer', async () => {
@@ -65,7 +66,7 @@ describe('BackgroundControl', () => {
 		// after addResponsiveTest we have m breakpoint
 		await sizeAndPositionChecker({ page, breakpoint: 'm' });
 
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 
 	it('Check Background gradient layer hover', async () => {
@@ -126,7 +127,7 @@ describe('BackgroundControl', () => {
 
 		const layerExpect = await getBlockAttributes();
 		expect(layerExpect['background-layers']).toMatchSnapshot();
-		expect(await getBlockStyle(page)).toMatchSnapshot();
+		expect(canonicalizeBlockStyle(await getBlockStyle(page))).toMatchSnapshot();
 	});
 	it('Check Background Gradient layer display', async () => {
 		const frame = await getEditorFrame(page);

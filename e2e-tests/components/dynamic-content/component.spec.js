@@ -1,5 +1,9 @@
 import { createNewPost } from '@wordpress/e2e-test-utils';
-import { insertMaxiBlock, getEditorFrame } from '../../utils';
+import {
+	insertMaxiBlock,
+	getEditorFrame,
+	selectFromSearchableControl,
+} from '../../utils';
 import {
 	addImageToLibrary,
 	removeUploadedImage,
@@ -120,28 +124,30 @@ describe('Dynamic content component for text blocks', () => {
 
 		// Wait for DC to fully initialize (postIdOptions loaded)
 		await page.waitForSelector(
-			'.maxi-dynamic-content .maxi-dc-id .maxi-select-control__input',
+			'.maxi-dynamic-content .maxi-dc-id .maxi-searchable-select-control__trigger',
 			{ timeout: 15000 }
 		);
 	});
 
 	it('Should work correctly with post settings', async () => {
 		// Select "Post" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'posts'
 		);
-		await selectType.select('posts');
 
 		// Wait for the field selector (already initialized in beforeAll, but
 		// re-selecting the same type may briefly re-render)
 		await page.waitForSelector(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input',
+			'.maxi-dynamic-content .maxi-dc-field .maxi-searchable-select-control__trigger',
 			{ timeout: 10000 }
 		);
-		const selectField = await page.$(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'title'
 		);
-		await selectField.select('title');
 
 		// Will show the latest post (likely "Test Post for DC" from post test)
 		const content = await waitForDCContent(page);
@@ -149,10 +155,11 @@ describe('Dynamic content component for text blocks', () => {
 		expect(content).not.toBe('No content found');
 
 		// Select "Get by date" as relation
-		const selectRelation = await page.$(
-			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-relation',
+			'by-date'
 		);
-		await selectRelation.select('by-date');
 		try {
 			await page.waitForResponse(
 				response => isResponseOk(response, 'posts', 'orderby=date'),
@@ -190,20 +197,20 @@ describe('Dynamic content component for text blocks', () => {
 		const nextPost = await getDCContent(page);
 		expect(nextPost).toBeTruthy(); // Just verify something is shown
 
-		await selectRelation.select('by-id');
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-relation',
+			'by-id'
+		);
 	});
 
 	it('Should work correctly with page settings', async () => {
 		// Select "Page" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'pages'
 		);
-
-		if (!selectType) {
-			throw new Error('Could not find type select');
-		}
-
-		await selectType.select('pages');
 		await page.waitForTimeout(2000);
 
 		// Check if content element exists
@@ -218,20 +225,24 @@ describe('Dynamic content component for text blocks', () => {
 		expect(await getDCContent(page)).toBe('Sample Page');
 
 		// Select "Alphabetical" as relation
-		const selectRelation = await page.$(
-			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-relation',
+			'alphabetical'
 		);
-
-		await selectRelation.select('alphabetical');
 		await page.waitForTimeout(500);
 
-		// Also select Z-A (desc) order in the second select control
-		const selectOrder = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__second-style select'
+		// Also select Z-A (desc) order if the order control is available
+		const orderTrigger = await page.$(
+			'.maxi-dynamic-content .maxi-dc-order .maxi-searchable-select-control__trigger'
 		);
 
-		if (selectOrder) {
-			await selectOrder.select('desc');
+		if (orderTrigger) {
+			await selectFromSearchableControl(
+				page,
+				'.maxi-dynamic-content .maxi-dc-order',
+				'desc'
+			);
 			await page.waitForTimeout(500);
 		}
 
@@ -295,60 +306,80 @@ describe('Dynamic content component for text blocks', () => {
 		expect(contentAfterDecrement).toBeTruthy();
 
 		// Select "Get by id" as relation
-		await selectRelation.select('by-id');
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-relation',
+			'by-id'
+		);
 	});
 
 	it('Should work correctly with author settings', async () => {
 		// Select "Author" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'users'
 		);
-		await selectType.select('users');
 		await page.waitForResponse(response =>
 			isResponseOk(response, 'users', 'users%2F')
 		);
 		await page.waitForTimeout(300);
 
 		// Select "Username" as field
-		const selectField = await page.$(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'username'
 		);
-		await selectField.select('username');
 
 		expect(await getDCContent(page)).toBe('admin');
 
 		// Select "Biographical info" as field
-		await selectField.select('description');
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'description'
+		);
 
 		expect(await getDCContent(page)).toBe('No content found');
 
 		// Select "Website" as field
-		await selectField.select('url');
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'url'
+		);
 
 		expect(await getDCContent(page)).toBe('http://localhost:8889');
 	});
 
 	it('Should work correctly with category settings', async () => {
 		// Select "Category" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'categories'
 		);
-		await selectType.select('categories');
 		await page.waitForResponse(response =>
 			isResponseOk(response, 'categories', 'include=')
 		);
 		await page.waitForTimeout(1000);
 
 		// Select "Name" as field
-		const selectField = await page.$(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'name'
 		);
-		await selectField.select('name');
 
 		expect(await getDCContent(page)).toBe('Uncategorized');
 
 		// Select "Count" as field
-		await selectField.select('count');
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'count'
+		);
 
 		// Wait for content to update from cache
 		await page.waitForTimeout(2000);
@@ -364,10 +395,11 @@ describe('Dynamic content component for text blocks', () => {
 
 	it('Should work correctly with tag settings', async () => {
 		// Select "Tag" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'tags'
 		);
-		await selectType.select('tags');
 		await page.waitForTimeout(3000);
 
 		expect(await getDCContent(page)).toBe('No content found');
@@ -375,19 +407,21 @@ describe('Dynamic content component for text blocks', () => {
 
 	it('Should work correctly with site settings', async () => {
 		// Select "Site" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'settings'
 		);
-		await selectType.select('settings');
 		await page.waitForTimeout(300);
 
 		expect(await getDCContent(page)).toBe('maxi-blocks');
 
 		// Select "Language" as field
-		const selectField = await page.$(
-			'.maxi-dynamic-content .maxi-dc-field .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-field',
+			'language'
 		);
-		await selectField.select('language');
 
 		expect(await getDCContent(page)).toBe('en_US');
 	});
@@ -427,10 +461,11 @@ describe('Dynamic content component for image blocks', () => {
 		);
 
 		// Select "Media" as DC type
-		const selectType = await page.$(
-			'.maxi-dynamic-content .maxi-dc-type .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'media'
 		);
-		await selectType.select('media');
 		await page.waitForResponse(response =>
 			isResponseOk(response, 'media', 'include=')
 		);
@@ -444,10 +479,11 @@ describe('Dynamic content component for image blocks', () => {
 		);
 
 		// Select "Get by date" as relation
-		const selectRelation = await page.$(
-			'.maxi-dynamic-content .maxi-dc-relation .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-relation',
+			'by-date'
 		);
-		await selectRelation.select('by-date');
 		await page.waitForResponse(response =>
 			isResponseOk(response, 'media', 'orderby=date')
 		);

@@ -18,6 +18,10 @@ export default defineConfig({
 		outDir: 'build',
 		assetsDir: '',
 
+		// esbuild >=0.28 cannot lower modern destructuring to the default
+		// browser target, so build for es2022 (modern admin browsers only)
+		target: 'es2022',
+
 		// Increase chunk size warning limit to suppress bundle size warnings
 		chunkSizeWarningLimit: 1000,
 

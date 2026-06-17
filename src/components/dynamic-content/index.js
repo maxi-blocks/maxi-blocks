@@ -22,7 +22,7 @@ import classnames from 'classnames';
  * Internal dependencies
  */
 import AdvancedNumberControl from '@components/advanced-number-control';
-import SelectControl from '@components/select-control';
+import SearchableSelectControl from '@components/searchable-select-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TextControl from '@components/text-control';
 
@@ -65,6 +65,11 @@ const UnlimitedCharacterPopover = ({ message }) => (
 		<p>{message}</p>
 	</Popover>
 );
+
+const DynamicContentSelectControl = ({ options = [], ...props }) => {
+	return <SearchableSelectControl options={options} {...props} />;
+};
+
 const DynamicContent = props => {
 	const {
 		className,
@@ -395,7 +400,7 @@ const DynamicContent = props => {
 							/>
 						)}
 					{sourceOptions.length > 1 && (
-						<SelectControl
+						<DynamicContentSelectControl
 							__nextHasNoMarginBottom
 							label={__('Source', 'maxi-blocks')}
 							value={source}
@@ -432,7 +437,7 @@ const DynamicContent = props => {
 							showStaticOption={showStaticOption(blockName)}
 						/>
 					)}
-					<SelectControl
+					<DynamicContentSelectControl
 						__nextHasNoMarginBottom
 						label={__('Type', 'maxi-blocks')}
 						value={type}
@@ -474,7 +479,7 @@ const DynamicContent = props => {
 							{(relationTypes.includes(type) ||
 								type === 'archive' ||
 								relation.includes('custom-taxonomy')) && (
-								<SelectControl
+								<DynamicContentSelectControl
 									__nextHasNoMarginBottom
 									label={__('Relation', 'maxi-blocks')}
 									value={relation}
@@ -507,7 +512,7 @@ const DynamicContent = props => {
 								/>
 							)}
 							{['users'].includes(type) && relation === 'by-id' && (
-								<SelectControl
+								<DynamicContentSelectControl
 									__nextHasNoMarginBottom
 									label={__('Author id', 'maxi-blocks')}
 									value={author}
@@ -535,7 +540,7 @@ const DynamicContent = props => {
 								(orderByRelations.includes(relation) ||
 									relation === 'by-id')) ||
 								relation.includes('custom-taxonomy')) && (
-								<SelectControl
+								<DynamicContentSelectControl
 									__nextHasNoMarginBottom
 									label={__(
 										`${capitalize(
@@ -573,7 +578,7 @@ const DynamicContent = props => {
 										(relation.includes(
 											'custom-taxonomy'
 										) && (
-											<SelectControl
+											<DynamicContentSelectControl
 												__nextHasNoMarginBottom
 												label={__(
 													'Order by',
@@ -597,8 +602,9 @@ const DynamicContent = props => {
 												}
 											/>
 										))}
-									<SelectControl
+									<DynamicContentSelectControl
 										__nextHasNoMarginBottom
+										className='maxi-dc-order'
 										label={__('Order', 'maxi-blocks')}
 										value={order}
 										options={
@@ -675,7 +681,7 @@ const DynamicContent = props => {
 								currentTemplateType,
 								relation
 							) && (
-								<SelectControl
+								<DynamicContentSelectControl
 									__nextHasNoMarginBottom
 									label={__(
 										'Limit by current archive posts',
@@ -711,7 +717,7 @@ const DynamicContent = props => {
 										'current',
 										...orderRelations,
 									].includes(relation)) && (
-									<SelectControl
+									<DynamicContentSelectControl
 										__nextHasNoMarginBottom
 										label={__('Field', 'maxi-blocks')}
 										value={field}
@@ -733,7 +739,7 @@ const DynamicContent = props => {
 									/>
 								)}
 							{showSubField && (
-								<SelectControl
+								<DynamicContentSelectControl
 									label={__('Author field', 'maxi-blocks')}
 									value={subField}
 									options={currentSubFieldOptions}
@@ -829,7 +835,7 @@ const DynamicContent = props => {
 								isCustomTaxonomyField) &&
 								!error && (
 									<>
-										<SelectControl
+										<DynamicContentSelectControl
 											__nextHasNoMarginBottom
 											label={__(
 												'Delimiter',

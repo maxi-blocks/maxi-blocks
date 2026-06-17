@@ -30,6 +30,13 @@ exports[`getTransitionStyles Get a correct in/out transition styles 1`] = `
       },
     },
   },
+  " > .maxi-background-displayer > div > svg *": {
+    "transition": {
+      "general": {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
   " > .maxi-background-displayer:hover": {
     "transition": {
       "general": {
@@ -337,6 +344,13 @@ exports[`getTransitionStyles Get a correct transition styles 1`] = `
     },
   },
   " > .maxi-background-displayer > div > svg": {
+    "transition": {
+      "general": {
+        "transition": "all 0s 0s",
+      },
+    },
+  },
+  " > .maxi-background-displayer > div > svg *": {
     "transition": {
       "general": {
         "transition": "all 0s 0s",

@@ -10,6 +10,29 @@ import transitionDefault from '@extensions/styles/transitions/transitionDefault'
 import { merge } from 'lodash';
 
 describe('getTransitionStyles', () => {
+	it('adds transition styles to background SVG shape paths', () => {
+		const object = {
+			'block-background-status-hover': true,
+			transition: {
+				canvas: {
+					'background / layer': {
+						'transition-duration-general': 0.45,
+						'transition-delay-general': 0.1,
+						'easing-general': 'ease-in-out',
+						'transition-status-general': true,
+					},
+				},
+			},
+		};
+
+		const result = getTransitionStyles(object);
+
+		expect(
+			result[' > .maxi-background-displayer > div > svg *']
+				.transition.general.transition
+		).toBe('all 0.45s 0.1s ease-in-out');
+	});
+
 	it('Get a correct transition styles', () => {
 		const object = {
 			'border-status-hover': true,

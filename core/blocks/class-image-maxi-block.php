@@ -574,6 +574,21 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 							: $media_width . 'px',
 					],
 				];
+
+				if ($use_init_size) {
+					foreach (['xxl', 'xl', 'l', 'm', 's', 'xs'] as $breakpoint) {
+						$breakpoint_media_width =
+							$props["mediaWidth-$breakpoint"] ?? null;
+
+						if (!$breakpoint_media_width) {
+							continue;
+						}
+
+						$response['imgWidth'][$breakpoint] = [
+							'width' => $breakpoint_media_width . 'px',
+						];
+					}
+				}
 			}
 
 			if (!$is_first_on_hierarchy) {
@@ -582,7 +597,83 @@ if (!class_exists('MaxiBlocks_Image_Maxi_Block')):
 				);
 			}
 
+			$response = array_merge(
+				$response,
+				self::get_responsive_image_replacement_styles($props)
+			);
+
 			return $response;
+		}
+
+		public static function get_responsive_image_replacement_styles($props) {
+			if (!empty($props['dc-status'])) {
+				return [];
+			}
+
+			$fallback_url =
+				$props['mediaURL'] ?? ($props['mediaURL-general'] ?? null);
+			$response = [];
+			$breakpoints = ['xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+			foreach ($breakpoints as $breakpoint) {
+				$media_url = $props["mediaURL-$breakpoint"] ?? null;
+				$has_explicit_image_size =
+					array_key_exists("imageSize-$breakpoint", $props) &&
+					$props["imageSize-$breakpoint"] !== null;
+
+				if (
+					!$media_url ||
+					($media_url === $fallback_url && !$has_explicit_image_size)
+				) {
+					continue;
+				}
+
+				$response[$breakpoint] = [
+					'content' => self::get_css_url($media_url),
+				];
+			}
+
+			return empty($response)
+				? []
+				: [
+					'imageSize' => $response,
+				];
+		}
+
+		public static function escape_css_string($value) {
+			return preg_replace_callback(
+				'/[\x00-\x1F\x7F"\\\\<>&]/',
+				function ($matches) {
+					$char = $matches[0];
+
+					if ($char === '"') {
+						return '\"';
+					}
+
+					if ($char === '\\') {
+						return '\\\\';
+					}
+
+					if ($char === "\n") {
+						return '\\a ';
+					}
+
+					if ($char === "\r") {
+						return '\\d ';
+					}
+
+					if ($char === "\f") {
+						return '\\c ';
+					}
+
+					return '\\' . dechex(ord($char)) . ' ';
+				},
+				(string) $value
+			);
+		}
+
+		public static function get_css_url($value) {
+			return 'url("' . self::escape_css_string($value) . '")';
 		}
 
 		public static function get_hover_image_object($props) {

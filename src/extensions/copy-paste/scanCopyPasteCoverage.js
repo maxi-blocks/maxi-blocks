@@ -1330,6 +1330,44 @@ const expandFromProps = (
 	if (!node) return result;
 
 	const rawValues = new Set();
+	const addExpandedKey = (baseKey, keyContext) => {
+		let expanded = [
+			keyContext.prefix ? `${keyContext.prefix}${baseKey}` : baseKey,
+		];
+		if (keyContext.isPalette) {
+			expanded = expanded.flatMap(p => makePaletteKeys(`${p}-`));
+		}
+		if (keyContext.hasBreakpoints) {
+			expanded = expanded.flatMap(p =>
+				BREAKPOINTS.map(bp => `${p}-${bp}`)
+			);
+		}
+		if (keyContext.isHover) {
+			expanded = expanded.map(p => `${p}-hover`);
+		}
+		for (const key of expanded) {
+			result.add(key);
+		}
+	};
+	const addObjectProp = element => {
+		const entries = getObjectEntries(element, moduleInfo, seen, scope);
+		const propNode = entries.find(entry => entry.key === 'prop')?.value;
+		const prop = resolveLiteralString(propNode, moduleInfo, seen, scope);
+		if (!prop) return;
+
+		const localContext = { ...context };
+		const prefixNode = entries.find(entry => entry.key === 'prefix')?.value;
+		const prefix = resolveLiteralString(prefixNode, moduleInfo, seen, scope);
+		if (prefix !== null) localContext.prefix = prefix;
+
+		for (const key of ['hasBreakpoints', 'isPalette', 'isHover']) {
+			const valueNode = entries.find(entry => entry.key === key)?.value;
+			const value = resolveLiteralBoolean(valueNode, moduleInfo, seen);
+			if (value !== null) localContext[key] = value;
+		}
+
+		addExpandedKey(normalizeKey(prop), localContext);
+	};
 	if (node.type === 'StringLiteral') {
 		rawValues.add(normalizeKey(node.value));
 	} else if (node.type === 'TemplateLiteral') {
@@ -1403,6 +1441,8 @@ const expandFromProps = (
 				)) {
 					rawValues.add(normalizeKey(value));
 				}
+			} else if (element.type === 'ObjectExpression') {
+				addObjectProp(element);
 			}
 		}
 	} else if (node.type === 'CallExpression') {
@@ -1420,19 +1460,7 @@ const expandFromProps = (
 	}
 
 	for (const baseKey of rawValues) {
-		let expanded = [context.prefix ? `${context.prefix}${baseKey}` : baseKey];
-		if (context.isPalette) {
-			expanded = expanded.flatMap(p => makePaletteKeys(`${p}-`));
-		}
-		if (context.hasBreakpoints) {
-			expanded = expanded.flatMap(p => BREAKPOINTS.map(bp => `${p}-${bp}`));
-		}
-		if (context.isHover) {
-			expanded = expanded.map(p => `${p}-hover`);
-		}
-		for (const key of expanded) {
-			result.add(key);
-		}
+		addExpandedKey(baseKey, context);
 	}
 
 	return result;

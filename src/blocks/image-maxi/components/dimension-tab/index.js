@@ -29,10 +29,11 @@ const DimensionTab = props => {
 		maxiSetAttributes,
 		resizableObject,
 		imageData,
-		deviceType,
+		deviceType = 'general',
+		breakpoint,
 	} = props;
+	const activeBreakpoint = breakpoint || deviceType;
 	const {
-		cropOptions,
 		imageRatio,
 		imageRatioCustom,
 		imageSize,
@@ -43,6 +44,17 @@ const DimensionTab = props => {
 		fitParentSize,
 		isFirstOnHierarchy,
 	} = attributes;
+
+	const getResponsiveImageAttribute = target =>
+		getLastBreakpointAttribute({
+			target,
+			breakpoint: activeBreakpoint,
+			attributes,
+		}) || attributes[target];
+
+	const currentImageSize =
+		getResponsiveImageAttribute('imageSize') || imageSize || 'full';
+	const currentCropOptions = getResponsiveImageAttribute('cropOptions');
 
 	const getSizeOptions = () => {
 		const response = [];
@@ -70,12 +82,13 @@ const DimensionTab = props => {
 	};
 
 	const getSizeResponse = imageSize => {
-		if (cropOptions && imageSize === 'custom') {
+		if (currentCropOptions && imageSize === 'custom') {
+			const cropImage = currentCropOptions.image || currentCropOptions;
 			const {
 				source_url: mediaURL,
 				width: mediaWidth,
 				height: mediaHeight,
-			} = cropOptions;
+			} = cropImage;
 			return { mediaURL, mediaWidth, mediaHeight };
 		}
 		if (imageData && imageSize !== 'custom') {
@@ -90,6 +103,58 @@ const DimensionTab = props => {
 		return { mediaURL: null, mediaWidth: null, mediaHeight: null };
 	};
 
+	const getImageSizeAttributes = (imageSize, sizeResponse) => {
+		const { mediaURL, mediaWidth, mediaHeight } =
+			sizeResponse || getSizeResponse(imageSize);
+		const breakpointAttributes = {
+			[`imageSize-${activeBreakpoint}`]: imageSize,
+			[`mediaURL-${activeBreakpoint}`]: mediaURL,
+			[`mediaWidth-${activeBreakpoint}`]: mediaWidth,
+			[`mediaHeight-${activeBreakpoint}`]: mediaHeight,
+		};
+
+		if (activeBreakpoint !== 'general') return breakpointAttributes;
+
+		return {
+			imageSize,
+			mediaURL,
+			mediaWidth,
+			mediaHeight,
+			...breakpointAttributes,
+		};
+	};
+
+	const getCropOptionsAttributes = cropOptions => {
+		const breakpointAttributes = {
+			[`cropOptions-${activeBreakpoint}`]: cropOptions,
+		};
+
+		if (activeBreakpoint !== 'general') return breakpointAttributes;
+
+		return {
+			cropOptions,
+			...breakpointAttributes,
+		};
+	};
+
+	const getResetImageSizeAttributes = () => {
+		if (activeBreakpoint !== 'general') {
+			return {
+				[`imageSize-${activeBreakpoint}`]: undefined,
+				[`mediaURL-${activeBreakpoint}`]: undefined,
+				[`mediaWidth-${activeBreakpoint}`]: undefined,
+				[`mediaHeight-${activeBreakpoint}`]: undefined,
+				[`cropOptions-${activeBreakpoint}`]: undefined,
+				isReset: true,
+			};
+		}
+
+		return {
+			...getImageSizeAttributes(getDefaultAttribute('imageSize')),
+			isReset: true,
+		};
+	};
+
 	return (
 		<>
 			{(!isImageUrl || !SVGElement) && getSizeOptions().length > 1 && (
@@ -98,40 +163,42 @@ const DimensionTab = props => {
 						__nextHasNoMarginBottom
 						label={__('Image size', 'maxi-blocks')}
 						value={
-							imageSize || imageSize === 'custom'
-								? imageSize
+							currentImageSize || currentImageSize === 'custom'
+								? currentImageSize
 								: 'full'
 						} // is still necessary?
 						defaultValue={getDefaultAttribute('imageSize')}
 						onReset={() =>
-							maxiSetAttributes({
-								imageSize: getDefaultAttribute('imageSize'),
-								isReset: true,
-							})
+							maxiSetAttributes(getResetImageSizeAttributes())
 						}
 						options={getSizeOptions()}
 						newStyle
 						onChange={imageSize => {
 							const { mediaURL, mediaWidth, mediaHeight } =
 								getSizeResponse(imageSize);
-							maxiSetAttributes({
-								imageSize,
-								mediaURL,
-								mediaWidth,
-								mediaHeight,
-							});
+							maxiSetAttributes(
+								getImageSizeAttributes(imageSize, {
+									mediaURL,
+									mediaWidth,
+									mediaHeight,
+								})
+							);
 						}}
 					/>
-					{imageSize === 'custom' && (
+					{currentImageSize === 'custom' && (
 						<ImageCropControl
 							mediaID={mediaID}
-							cropOptions={cropOptions}
+							cropOptions={currentCropOptions}
 							onChange={cropOptions => {
+								const cropImage =
+									cropOptions.image || cropOptions;
 								maxiSetAttributes({
-									cropOptions,
-									mediaURL: cropOptions.image.source_url,
-									mediaHeight: cropOptions.image.height,
-									mediaWidth: cropOptions.image.width,
+									...getCropOptionsAttributes(cropOptions),
+									...getImageSizeAttributes('custom', {
+										mediaURL: cropImage.source_url,
+										mediaHeight: cropImage.height,
+										mediaWidth: cropImage.width,
+									}),
 								});
 							}}
 						/>
@@ -156,13 +223,13 @@ const DimensionTab = props => {
 							className='maxi-image-inspector__dimension-width'
 							placeholder={getLastBreakpointAttribute({
 								target: 'img-width',
-								breakpoint: deviceType,
+								breakpoint: activeBreakpoint,
 								attributes,
 							})}
-							value={attributes[`img-width-${deviceType}`]}
+							value={attributes[`img-width-${activeBreakpoint}`]}
 							onChangeValue={val => {
 								maxiSetAttributes({
-									[`img-width-${deviceType}`]: val,
+									[`img-width-${activeBreakpoint}`]: val,
 								});
 
 								resizableObject &&
@@ -172,12 +239,12 @@ const DimensionTab = props => {
 							}}
 							onReset={() => {
 								const defaultAttribute = getDefaultAttribute(
-									`img-width-${deviceType}`,
+									`img-width-${activeBreakpoint}`,
 									clientId
 								);
 
 								maxiSetAttributes({
-									[`img-width-${deviceType}`]:
+									[`img-width-${activeBreakpoint}`]:
 										defaultAttribute,
 									isReset: true,
 								});
@@ -248,21 +315,26 @@ const DimensionTab = props => {
 								className='maxi-image-inspector__image-size'
 								placeholder={getLastBreakpointAttribute({
 									target: 'object-size',
-									breakpoint: deviceType,
+									breakpoint: activeBreakpoint,
 									attributes,
 								})}
-								value={attributes[`object-size-${deviceType}`]}
+								value={
+									attributes[
+										`object-size-${activeBreakpoint}`
+									]
+								}
 								onChangeValue={(val, meta) =>
 									maxiSetAttributes({
-										[`object-size-${deviceType}`]: val,
+										[`object-size-${activeBreakpoint}`]:
+											val,
 										meta,
 									})
 								}
 								onReset={() =>
 									maxiSetAttributes({
-										[`object-size-${deviceType}`]:
+										[`object-size-${activeBreakpoint}`]:
 											getDefaultAttribute(
-												`object-size-${deviceType}`
+												`object-size-${activeBreakpoint}`
 											),
 										isReset: true,
 									})
@@ -280,26 +352,26 @@ const DimensionTab = props => {
 							className='maxi-image-inspector__image-horizontal-position'
 							placeholder={getLastBreakpointAttribute({
 								target: 'object-position-horizontal',
-								breakpoint: deviceType,
+								breakpoint: activeBreakpoint,
 								attributes,
 							})}
 							value={
 								attributes[
-									`object-position-horizontal-${deviceType}`
+									`object-position-horizontal-${activeBreakpoint}`
 								]
 							}
 							onChangeValue={(val, meta) =>
 								maxiSetAttributes({
-									[`object-position-horizontal-${deviceType}`]:
+									[`object-position-horizontal-${activeBreakpoint}`]:
 										val,
 									meta,
 								})
 							}
 							onReset={() =>
 								maxiSetAttributes({
-									[`object-position-horizontal-${deviceType}`]:
+									[`object-position-horizontal-${activeBreakpoint}`]:
 										getDefaultAttribute(
-											`object-position-horizontal-${deviceType}`
+											`object-position-horizontal-${activeBreakpoint}`
 										),
 									isReset: true,
 								})
@@ -312,26 +384,26 @@ const DimensionTab = props => {
 							className='maxi-image-inspector__image-vertical-position'
 							placeholder={getLastBreakpointAttribute({
 								target: 'object-position-vertical',
-								breakpoint: deviceType,
+								breakpoint: activeBreakpoint,
 								attributes,
 							})}
 							value={
 								attributes[
-									`object-position-vertical-${deviceType}`
+									`object-position-vertical-${activeBreakpoint}`
 								]
 							}
 							onChangeValue={(val, meta) =>
 								maxiSetAttributes({
-									[`object-position-vertical-${deviceType}`]:
+									[`object-position-vertical-${activeBreakpoint}`]:
 										val,
 									meta,
 								})
 							}
 							onReset={() =>
 								maxiSetAttributes({
-									[`object-position-vertical-${deviceType}`]:
+									[`object-position-vertical-${activeBreakpoint}`]:
 										getDefaultAttribute(
-											`object-position-vertical-${deviceType}`
+											`object-position-vertical-${activeBreakpoint}`
 										),
 									isReset: true,
 								})

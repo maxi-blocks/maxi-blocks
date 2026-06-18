@@ -10,6 +10,7 @@ import {
 	getAttributes,
 	insertMaxiBlock,
 	openPreviewPage,
+	selectFromSearchableControl,
 	updateAllBlockUniqueIds,
 } from '../../../../utils';
 
@@ -70,11 +71,11 @@ describe('Button link', () => {
 		await page.waitForTimeout(200);
 
 		// Select "Site" as DC type
-		const select = await page.$(
-			'.maxi-dynamic-content .maxi-select-control__input'
+		await selectFromSearchableControl(
+			page,
+			'.maxi-dynamic-content .maxi-dc-type',
+			'settings'
 		);
-		await select.select('settings');
-		await page.waitForTimeout(200);
 
 		// open editor
 		await page.$eval(

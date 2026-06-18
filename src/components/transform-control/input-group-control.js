@@ -4,6 +4,26 @@
 import AdvancedNumberControl from '@components/advanced-number-control';
 
 /**
+ * Builds a minMaxSettings object so unit-enabled fields honour the provided
+ * min/max. AdvancedNumberControl ignores the min/max props while enableUnit is
+ * true and relies on its per-unit minMaxSettings instead, so we map the field's
+ * limits onto every allowed unit (plus the unitless '-' key).
+ */
+const getMinMaxSettings = ({ min, max, allowedUnits }) => {
+	if (min === undefined && max === undefined) return undefined;
+
+	const limits = {
+		...(min !== undefined && { min }),
+		...(max !== undefined && { max }),
+	};
+
+	return [...(allowedUnits ?? []), '-'].reduce((acc, unit) => {
+		acc[unit] = limits;
+		return acc;
+	}, {});
+};
+
+/**
  * Component
  */
 const InputGroupControl = ({ label, fields, values = {}, onChange }) => (
@@ -38,6 +58,11 @@ const InputGroupControl = ({ label, fields, values = {}, onChange }) => (
 					enableUnit={!!unitKey}
 					unit={values[unitKey] ?? defaultUnit}
 					allowedUnits={allowedUnits}
+					minMaxSettings={
+						unitKey
+							? getMinMaxSettings({ min, max, allowedUnits })
+							: undefined
+					}
 					onChangeUnit={unit =>
 						onChange({
 							...values,

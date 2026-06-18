@@ -5,9 +5,15 @@ import Inspector from '@blocks/image-maxi/inspector';
 import { getGroupAttributes } from '@extensions/styles';
 
 const mockAlignmentControl = jest.fn(() => null);
+const mockDimensionTab = jest.fn(() => null);
+const mockResponsiveTabsControl = jest.fn(({ children }) => children);
 const mockAccordionControl = jest.fn();
 const mockFilterTab = jest.fn(() => null);
 const mockTypographyControl = jest.fn(() => null);
+
+function mockDimensionTabComponent(props) {
+	return mockDimensionTab(props);
+}
 
 global.TextDecoder = TextDecoder;
 global.TextEncoder = TextEncoder;
@@ -41,7 +47,9 @@ jest.mock('@extensions/styles', () => ({
 		group,
 	})),
 	getLastBreakpointAttribute: jest.fn(({ attributes, target, breakpoint }) =>
-		attributes[`${target}-${breakpoint}`] ?? attributes[target]
+		attributes[`${target}-${breakpoint}`] ??
+		attributes[`${target}-general`] ??
+		attributes[target]
 	),
 }));
 
@@ -97,9 +105,7 @@ jest.mock('@components/setting-tabs-control', () => {
 });
 
 jest.mock('@components/responsive-tabs-control', () => {
-	const React = require('react');
-
-	return ({ children }) => React.createElement(React.Fragment, null, children);
+	return props => mockResponsiveTabsControl(props);
 });
 
 jest.mock('@components/alignment-control', () => props =>
@@ -114,7 +120,9 @@ jest.mock('@components/advanced-number-control', () => () => null);
 jest.mock('@components/image-alt-control', () => () => null);
 jest.mock('@components/image-shape', () => () => null);
 jest.mock('@components/select-control', () => () => null);
-jest.mock('@blocks/image-maxi/components/dimension-tab', () => () => null);
+jest.mock('@blocks/image-maxi/components/dimension-tab', () =>
+	mockDimensionTabComponent
+);
 jest.mock('@blocks/image-maxi/components/filter-tab', () => props =>
 	mockFilterTab(props)
 );
@@ -211,6 +219,29 @@ describe('Image Maxi caption inspector', () => {
 				useBlockLevelFallback: true,
 			})
 		);
+	});
+
+	it('keeps the Dimension controls available on responsive breakpoints', () => {
+		const props = {
+			...getProps(),
+			deviceType: 'm',
+		};
+
+		renderToStaticMarkup(React.createElement(Inspector, props));
+
+		expect(mockDimensionTab).toHaveBeenCalledWith(
+			expect.objectContaining({
+				deviceType: 'm',
+			})
+		);
+		expect(
+			mockResponsiveTabsControl.mock.calls.some(
+				([responsiveProps]) =>
+					responsiveProps.breakpoint === 'm' &&
+					responsiveProps.children?.type ===
+						mockDimensionTabComponent
+			)
+		).toBe(true);
 	});
 
 	it('wires the image filter tab to Image Maxi attributes', () => {

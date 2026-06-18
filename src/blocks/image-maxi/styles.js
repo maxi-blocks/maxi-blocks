@@ -40,6 +40,10 @@ import {
 	getImageFilterStyles,
 } from './components/filter-tab/utils';
 import data from './data';
+import {
+	getResponsiveImageFallback,
+	getResponsiveImageReplacementStyles,
+} from './utils';
 
 /**
  * External dependencies
@@ -427,6 +431,23 @@ const getImageTransitionObject = props => {
 	};
 };
 
+const getResponsiveMediaWidths = props => {
+	const { mediaWidth: fallbackMediaWidth } = getResponsiveImageFallback(props);
+
+	return breakpoints.reduce((response, breakpoint) => {
+		if (breakpoint === 'general') {
+			response[breakpoint] = fallbackMediaWidth;
+			return response;
+		}
+
+		if (props[`mediaWidth-${breakpoint}`] !== undefined) {
+			response[breakpoint] = props[`mediaWidth-${breakpoint}`];
+		}
+
+		return response;
+	}, {});
+};
+
 const getImageObject = props => {
 	const {
 		fitParentSize,
@@ -434,7 +455,6 @@ const getImageObject = props => {
 		imageRatioCustom,
 		'img-width-general': imgWidth,
 		isFirstOnHierarchy,
-		mediaWidth,
 		useInitSize,
 	} = props;
 
@@ -486,11 +506,12 @@ const getImageObject = props => {
 					...getGroupAttributes(props, 'width', false, 'img-'),
 				},
 				useInitSize,
-				mediaWidth
+				getResponsiveMediaWidths(props)
 			)),
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),
+		...getResponsiveImageReplacementStyles(props),
 		...getImageTransitionObject(props),
 	};
 };
@@ -597,7 +618,7 @@ const getFigcaptionObject = props => {
 					...getGroupAttributes(props, 'width', false, 'img-'),
 				},
 				props.useInitSize,
-				props.mediaWidth
+				getResponsiveMediaWidths(props)
 			)),
 		...(() => {
 			const response = { captionMargin: {} };

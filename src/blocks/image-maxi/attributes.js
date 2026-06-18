@@ -135,6 +135,26 @@ const attributes = {
 	},
 	...breakpointAttributesCreator({
 		obj: {
+			imageSize: {
+				type: 'string',
+				default: 'full',
+			},
+			mediaURL: {
+				type: 'string',
+			},
+			mediaWidth: {
+				type: 'number',
+			},
+			mediaHeight: {
+				type: 'number',
+			},
+			cropOptions: {
+				type: 'object',
+			},
+		},
+	}),
+	...breakpointAttributesCreator({
+		obj: {
 			'img-width': {
 				type: 'number',
 				default: 100,

@@ -43,6 +43,12 @@ const attributes = {
 			'gap-general': {
 				type: 'number',
 			},
+			'object-responsive-general': {
+				type: 'number',
+			},
+			'object-static': {
+				type: 'number',
+			},
 			'width-general': {
 				type: 'number',
 			},

@@ -26,6 +26,9 @@ import { imageBox } from '@maxi-icons';
  * Migrators
  */
 import { blockMigrator } from '@extensions/styles/migrators';
+import imageResponsivePictureMigrator, {
+	imageResponsivePictureExplicitFallbackMigrator,
+} from './imageResponsivePictureMigrator';
 
 /**
  * Block
@@ -46,6 +49,10 @@ registerBlockType(metadata, {
 		save,
 		prefix: 'image-',
 		selectors: customCss.selectors,
+		migrators: [
+			imageResponsivePictureExplicitFallbackMigrator,
+			imageResponsivePictureMigrator,
+		],
 	}),
 	customCss,
 });

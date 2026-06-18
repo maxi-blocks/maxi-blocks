@@ -93,6 +93,54 @@ describe('getImgWidthStyles', () => {
 		});
 	});
 
+	it('should use breakpoint media widths when initial size is enabled', () => {
+		const obj = {
+			'img-width': '100',
+		};
+
+		const result = getImgWidthStyles(obj, true, {
+			general: 1000,
+			l: 640,
+			m: 300,
+		});
+
+		expect(result).toEqual({
+			imgWidth: {
+				general: {
+					width: '1000px',
+				},
+				l: {
+					width: '640px',
+				},
+				m: {
+					width: '300px',
+				},
+			},
+		});
+	});
+
+	it('should not emit fallback widths for unset responsive media widths', () => {
+		const obj = {
+			'img-width': '100',
+		};
+
+		const result = getImgWidthStyles(obj, true, {
+			general: 1000,
+			l: 640,
+		});
+
+		expect(result).toEqual({
+			imgWidth: {
+				general: {
+					width: '1000px',
+				},
+				l: {
+					width: '640px',
+				},
+			},
+		});
+	});
+
 	it('should ignore undefined or null width values', () => {
 		const obj = {
 			'img-width': '100',

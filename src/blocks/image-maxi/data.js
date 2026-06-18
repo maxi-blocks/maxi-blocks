@@ -71,7 +71,20 @@ const copyPasteMapping = {
 		],
 		[__('Dimension', 'maxi-blocks')]: {
 			group: {
-				[__('Image size', 'maxi-blocks')]: 'imageSize',
+				[__('Image size', 'maxi-blocks')]: {
+					props: [
+						{ prop: 'imageSize', hasBreakpoints: false },
+						{ prop: 'mediaURL', hasBreakpoints: false },
+						{ prop: 'mediaWidth', hasBreakpoints: false },
+						{ prop: 'mediaHeight', hasBreakpoints: false },
+						{ prop: 'cropOptions', hasBreakpoints: false },
+						{ prop: 'imageSize', hasBreakpoints: true },
+						{ prop: 'mediaURL', hasBreakpoints: true },
+						{ prop: 'mediaWidth', hasBreakpoints: true },
+						{ prop: 'mediaHeight', hasBreakpoints: true },
+						{ prop: 'cropOptions', hasBreakpoints: true },
+					],
+				},
 				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
 				[__('Fit on wrapper', 'maxi-blocks')]: 'fitParentSize',
 				[__('Adjust size', 'maxi-blocks')]: {

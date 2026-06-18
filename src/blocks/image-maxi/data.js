@@ -22,6 +22,15 @@ import { getGroupAttributes } from '@extensions/styles';
 import { getCanvasSettings, getAdvancedSettings } from '@extensions/relations';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
 import { getEditorWrapper } from '@extensions/dom';
+import {
+	IMAGE_FILTER_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_CONTROLS,
+	IMAGE_FILTER_DROP_SHADOW_LABELS,
+	IMAGE_FILTER_LABELS,
+	IMAGE_FILTER_STATUS_HOVER,
+	getDropShadowAttribute,
+	getFilterAttribute,
+} from './components/filter-tab/constants';
 
 /**
  * Classnames
@@ -62,7 +71,20 @@ const copyPasteMapping = {
 		],
 		[__('Dimension', 'maxi-blocks')]: {
 			group: {
-				[__('Image size', 'maxi-blocks')]: 'imageSize',
+				[__('Image size', 'maxi-blocks')]: {
+					props: [
+						{ prop: 'imageSize', hasBreakpoints: false },
+						{ prop: 'mediaURL', hasBreakpoints: false },
+						{ prop: 'mediaWidth', hasBreakpoints: false },
+						{ prop: 'mediaHeight', hasBreakpoints: false },
+						{ prop: 'cropOptions', hasBreakpoints: false },
+						{ prop: 'imageSize', hasBreakpoints: true },
+						{ prop: 'mediaURL', hasBreakpoints: true },
+						{ prop: 'mediaWidth', hasBreakpoints: true },
+						{ prop: 'mediaHeight', hasBreakpoints: true },
+						{ prop: 'cropOptions', hasBreakpoints: true },
+					],
+				},
 				[__('Use original size', 'maxi-blocks')]: 'useInitSize',
 				[__('Fit on wrapper', 'maxi-blocks')]: 'fitParentSize',
 				[__('Adjust size', 'maxi-blocks')]: {
@@ -161,6 +183,66 @@ const copyPasteMapping = {
 				},
 			},
 		},
+		[__('Filters', 'maxi-blocks')]: {
+			group: {
+				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
+					acc[IMAGE_FILTER_LABELS[key]] = {
+						props: getFilterAttribute(key),
+						hasBreakpoints: true,
+					};
+
+					return acc;
+				}, {}),
+				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
+					acc[IMAGE_FILTER_DROP_SHADOW_LABELS[key]] = {
+						props: getDropShadowAttribute(key),
+						hasBreakpoints: true,
+					};
+
+					return acc;
+				}, {}),
+				[__('Drop shadow colour', 'maxi-blocks')]: {
+					props: getDropShadowAttribute('color'),
+					hasBreakpoints: true,
+				},
+				[__('Filter hover state', 'maxi-blocks')]: {
+					props: 'image-filter-status-hover',
+				},
+				...IMAGE_FILTER_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${IMAGE_FILTER_LABELS[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getFilterAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				...IMAGE_FILTER_DROP_SHADOW_CONTROLS.reduce((acc, { key }) => {
+					acc[
+						`${IMAGE_FILTER_DROP_SHADOW_LABELS[key]} ${__(
+							'hover',
+							'maxi-blocks'
+						)}`
+					] = {
+						props: getDropShadowAttribute(key),
+						hasBreakpoints: true,
+						isHover: true,
+					};
+
+					return acc;
+				}, {}),
+				[__('Drop shadow colour hover', 'maxi-blocks')]: {
+					props: getDropShadowAttribute('color'),
+					hasBreakpoints: true,
+					isHover: true,
+				},
+			},
+		},
 		[__('Clip path', 'maxi-blocks')]: {
 			groupAttributes: ['clipPath', 'clipPathHover'],
 		},
@@ -247,6 +329,12 @@ const transition = {
 			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
 			property: 'clip-path',
 			hoverProp: 'clip-path-status-hover',
+		},
+		filter: {
+			title: __('Filter', 'maxi-blocks'),
+			target: [`${imageWrapperClass} img`, `${imageWrapperClass} svg`],
+			property: 'filter',
+			hoverProp: IMAGE_FILTER_STATUS_HOVER,
 		},
 	},
 };

@@ -24,6 +24,7 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import DimensionTab from './components/dimension-tab';
+import FilterTab from './components/filter-tab';
 import HoverEffectControl from './components/hover-effect-control';
 import InfoBox from '@components/info-box';
 import {
@@ -35,6 +36,7 @@ import * as inspectorTabs from '@components/inspector-tabs';
 import { ariaLabelsCategories, customCss } from './data';
 import { withMaxiInspector } from '@extensions/inspector';
 import { transitionFilterEffects } from './components/hover-effect-control/constants';
+import { IMAGE_FILTER_ALL_ATTRIBUTE_KEYS } from './components/filter-tab/constants';
 
 /**
  * Inspector
@@ -56,6 +58,7 @@ const Inspector = props => {
 	const { selectors, categories } = customCss;
 	const dimensionIndicatorProps = [
 		'imageSize',
+		`imageSize-${deviceType}`,
 		'useInitSize',
 		`img-width-${deviceType}`,
 		'imageRatio',
@@ -97,6 +100,11 @@ const Inspector = props => {
 		!transitionFilterEffects.includes(
 			attributes['hover-basic-effect-type']
 		);
+	const isImageFullWidth = getLastBreakpointAttribute({
+		target: 'image-full-width',
+		breakpoint: deviceType,
+		attributes,
+	});
 	const getHoverEffectIncompatibleMessage = setting =>
 		`The selected hover effect type is not compatible with ${setting}. To use this hover effect, please change the hover effect type to one of the compatible types: ${transitionFilterEffects.join(
 			', '
@@ -161,26 +169,28 @@ const Inspector = props => {
 							<AccordionControl
 								isSecondary
 								items={[
-										deviceType === 'general' &&
-											!attributes[
-												'image-full-width-general'
-											] && {
-												label: __(
-													'Dimension',
-													'maxi-blocks'
-												),
-												content: (
-													<DimensionTab
-														{...props}
-														imageData={imageData}
-													/>
-												),
-													extraIndicators: ['imageRatio'],
-													extraIndicatorsResponsive: [
-														'img-width',
-													],
-													indicatorProps: dimensionIndicatorProps,
-												},
+									!isImageFullWidth && {
+										label: __(
+											'Dimension',
+											'maxi-blocks'
+										),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<DimensionTab
+													{...props}
+													imageData={imageData}
+												/>
+											</ResponsiveTabsControl>
+										),
+										extraIndicators: ['imageRatio'],
+										extraIndicatorsResponsive: [
+											'imageSize',
+											'img-width',
+										],
+										indicatorProps: dimensionIndicatorProps,
+									},
 										...inspectorTabs.alignment({
 											props,
 											isAlignment: true,
@@ -488,6 +498,24 @@ const Inspector = props => {
 										props,
 										selector: '.maxi-image-block__image',
 									}),
+									{
+										label: __('Filters', 'maxi-blocks'),
+										content: (
+											<ResponsiveTabsControl
+												breakpoint={deviceType}
+											>
+												<FilterTab
+													{...attributes}
+													onChange={maxiSetAttributes}
+													breakpoint={deviceType}
+													blockStyle={blockStyle}
+													clientId={clientId}
+												/>
+											</ResponsiveTabsControl>
+										),
+										indicatorProps:
+											IMAGE_FILTER_ALL_ATTRIBUTE_KEYS,
+									},
 									...inspectorTabs.border({
 										props,
 										prefix: 'image-',

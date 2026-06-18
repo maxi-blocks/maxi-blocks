@@ -16,13 +16,34 @@ class ScrollEffects {
 		// eslint-disable-next-line no-undef
 		const rawScrollData = maxiScrollEffects?.[0];
 		const newScrollData =
-			rawScrollData &&
-			Object.entries(rawScrollData).reduce((acc, [uniqueID, json]) => {
-				const scrollData = JSON.parse(json);
-				delete scrollData.scroll_effects;
-				acc[uniqueID] = scrollData;
-				return acc;
-			}, {});
+			(rawScrollData &&
+				Object.entries(rawScrollData).reduce(
+					(acc, [uniqueID, json]) => {
+						const scrollData = JSON.parse(json);
+						delete scrollData.scroll_effects;
+
+						// The localized payload carries the block's full custom data
+						// (e.g. bg_video, email_obfuscate, parallax), not just scroll.
+						// Keep only scroll effect entries - objects keyed by
+						// scroll-* settings - so the runtime never iterates a
+						// non-scroll flag as an effect type (boolean flags make
+						// getScrollSetting return null and crash the whole runtime).
+						acc[uniqueID] = Object.fromEntries(
+							Object.entries(scrollData).filter(
+								([, value]) =>
+									value &&
+									typeof value === 'object' &&
+									Object.keys(value).some(key =>
+										key.startsWith('scroll-')
+									)
+							)
+						);
+
+						return acc;
+					},
+					{}
+				)) ||
+			{};
 
 		this.isOldScroll = Object.values(newScrollData).every(
 			item => Object.keys(item).length === 0
@@ -146,6 +167,60 @@ class ScrollEffects {
 		}
 
 		return null;
+	};
+
+	clearTransform = (el, transformNames) => {
+		const currentTransform = el.style.transform || '';
+		const transformParts = currentTransform.match(/(\w+\([^)]+\))/g) || [];
+		const names = Array.isArray(transformNames)
+			? transformNames
+			: [transformNames];
+		const updatedTransform = transformParts
+			.filter(part => !names.some(name => part.startsWith(`${name}(`)))
+			.join(' ');
+
+		el.style.transform = updatedTransform;
+		el.style.WebkitTransform = updatedTransform;
+	};
+
+	clearStyle = (el, type) => {
+		switch (type) {
+			case 'rotate':
+				this.clearTransform(el, 'rotate');
+				break;
+			case 'rotateX':
+				this.clearTransform(el, 'rotateX');
+				break;
+			case 'rotateY':
+				this.clearTransform(el, 'rotateY');
+				break;
+			case 'fade':
+				el.style.opacity = '';
+				break;
+			case 'scale':
+				this.clearTransform(el, ['scale3d', 'scale']);
+				break;
+			case 'scaleX':
+				this.clearTransform(el, 'scaleX');
+				break;
+			case 'scaleY':
+				this.clearTransform(el, 'scaleY');
+				break;
+			case 'blur':
+				el.style.filter = (el.style.filter || '')
+					.replace(/blur\([^)]*\)/g, '')
+					.replace(/\s+/g, ' ')
+					.trim();
+				break;
+			case 'vertical':
+				this.clearTransform(el, 'translateY');
+				break;
+			case 'horizontal':
+				this.clearTransform(el, 'translateX');
+				break;
+			default:
+				break;
+		}
 	};
 
 	static setOpacity = (el, opacity) => {
@@ -504,7 +579,10 @@ class ScrollEffects {
 				const { status, speedValue, easingValue, delayValue } =
 					this.getScrollSetting(data, type);
 
-				if (!status) return;
+				if (!status) {
+					this.clearStyle(element, type);
+					return;
+				}
 
 				transition += this.constructor.getTransition(
 					type,
@@ -515,11 +593,10 @@ class ScrollEffects {
 
 				this.startingTransform(element, type);
 			});
-			if (transition !== '')
-				element.style.transition = transition.substring(
-					0,
-					transition.length - 2
-				);
+			element.style.transition =
+				transition !== ''
+					? transition.substring(0, transition.length - 2)
+					: '';
 		});
 	}
 }

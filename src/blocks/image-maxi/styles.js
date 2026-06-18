@@ -35,7 +35,15 @@ import {
 	transitionDurationEffects,
 	transitionFilterEffects,
 } from './components/hover-effect-control/constants';
+import {
+	composeImageFilterWithEffect,
+	getImageFilterStyles,
+} from './components/filter-tab/utils';
 import data from './data';
+import {
+	getResponsiveImageFallback,
+	getResponsiveImageReplacementStyles,
+} from './utils';
 
 /**
  * External dependencies
@@ -48,9 +56,7 @@ const filterStylesByStatus = (styles, statusTarget, props) => {
 	if (!styles) return null;
 
 	const filtered = Object.fromEntries(
-		Object.entries(styles).filter(
-			([key]) => !breakpoints.includes(key)
-		)
+		Object.entries(styles).filter(([key]) => !breakpoints.includes(key))
 	);
 
 	breakpoints.forEach(breakpoint => {
@@ -425,6 +431,23 @@ const getImageTransitionObject = props => {
 	};
 };
 
+const getResponsiveMediaWidths = props => {
+	const { mediaWidth: fallbackMediaWidth } = getResponsiveImageFallback(props);
+
+	return breakpoints.reduce((response, breakpoint) => {
+		if (breakpoint === 'general') {
+			response[breakpoint] = fallbackMediaWidth;
+			return response;
+		}
+
+		if (props[`mediaWidth-${breakpoint}`] !== undefined) {
+			response[breakpoint] = props[`mediaWidth-${breakpoint}`];
+		}
+
+		return response;
+	}, {});
+};
+
 const getImageObject = props => {
 	const {
 		fitParentSize,
@@ -432,7 +455,6 @@ const getImageObject = props => {
 		imageRatioCustom,
 		'img-width-general': imgWidth,
 		isFirstOnHierarchy,
-		mediaWidth,
 		useInitSize,
 	} = props;
 
@@ -476,6 +498,7 @@ const getImageObject = props => {
 				...getGroupAttributes(props, 'clipPath'),
 			},
 		}),
+		...getImageFilterStyles(props),
 		...(imgWidth &&
 			!fitParentSize &&
 			getImgWidthStyles(
@@ -483,11 +506,12 @@ const getImageObject = props => {
 					...getGroupAttributes(props, 'width', false, 'img-'),
 				},
 				useInitSize,
-				mediaWidth
+				getResponsiveMediaWidths(props)
 			)),
 		...(!isFirstOnHierarchy && {
 			fitParentSize: getImageFitWrapper(props),
 		}),
+		...getResponsiveImageReplacementStyles(props),
 		...getImageTransitionObject(props),
 	};
 };
@@ -529,6 +553,8 @@ const getHoverImageObject = props => {
 				isHover: true,
 			}),
 		}),
+		...(props['image-filter-status-hover'] &&
+			getImageFilterStyles(props, true)),
 	};
 };
 
@@ -592,7 +618,7 @@ const getFigcaptionObject = props => {
 					...getGroupAttributes(props, 'width', false, 'img-'),
 				},
 				props.useInitSize,
-				props.mediaWidth
+				getResponsiveMediaWidths(props)
 			)),
 		...(() => {
 			const response = { captionMargin: {} };
@@ -682,9 +708,10 @@ const getImagePreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: { filter: 'blur(0)' },
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					'blur(0)'
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };
@@ -746,11 +773,11 @@ const getImageHoverPreviewObject = props => {
 				};
 				break;
 			case 'blur':
-				response.filter = {
-					general: {
-						filter: `blur(${props['hover-basic-blur-value']}px)`,
-					},
-				};
+				response.filter = composeImageFilterWithEffect(
+					props,
+					`blur(${props['hover-basic-blur-value']}px)`,
+					props['image-filter-status-hover']
+				);
 				break;
 			default:
 				response.transform = { general: { transform: '' } };

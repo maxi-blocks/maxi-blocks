@@ -25,6 +25,7 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		isUniqueIDInCache,
 		getLastInsertedBlocks,
 		getUniqueIDCount,
+		getUniqueIDClientIds,
 	} = select('maxiBlocks/blocks');
 
 	// If cache is loaded, use O(1) lookup for site-wide check
@@ -43,7 +44,22 @@ const getIsIDTrulyUnique = (id, repeatCount = 1, clientId = null) => {
 		const lastChangedBlocks = getLastInsertedBlocks() || [];
 		const isNewInsertion = clientId && lastChangedBlocks.includes(clientId);
 
-		let isUnique = currentEditorCount <= repeatCount;
+		// A freshly inserted/copied block registers its own uniqueID into the
+		// store asynchronously (batchBlockDispatcher), so at this point it is
+		// NOT yet reflected in `currentEditorCount`. If we don't account for
+		// it, a copy that collides with exactly one existing block reads
+		// count=1 and is wrongly considered unique (it keeps the duplicate ID).
+		// Count the block itself as an extra occupant when it's a new insertion
+		// that isn't registered yet, matching the tree-traversal fallback which
+		// already includes the block in its count.
+		const registeredClientIds =
+			(clientId && getUniqueIDClientIds?.(id)) || [];
+		const isSelfRegistered =
+			clientId && registeredClientIds.includes(clientId);
+		const pendingSelf = isNewInsertion && !isSelfRegistered ? 1 : 0;
+		const effectiveCount = currentEditorCount + pendingSelf;
+
+		let isUnique = effectiveCount <= repeatCount;
 
 		if (existsInDB && currentEditorCount === 0) {
 			// ID exists in DB but not in current editor

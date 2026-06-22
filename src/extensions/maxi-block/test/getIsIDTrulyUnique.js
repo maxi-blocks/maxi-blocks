@@ -787,10 +787,11 @@ describe('getIsIDTrulyUnique', () => {
 			// First check: original ID exists in editor
 			expect(getIsIDTrulyUnique(originalId)).toBe(true);
 
-			// Second check: when copy tries to use same ID
-			// It's in current editor (count=1) but also being inserted
-			// Should still pass the editorCount check since count<=1
-			expect(getIsIDTrulyUnique(originalId, 1, newClientId)).toBe(true);
+			// Second check: when a copy tries to reuse the same ID.
+			// The original already occupies the ID (count=1) and the copy's own
+			// registration is still pending (batched), so the copy must be
+			// counted as an extra occupant → NOT unique → regenerate.
+			expect(getIsIDTrulyUnique(originalId, 1, newClientId)).toBe(false);
 		});
 
 		it('Scenario: User pastes block from another page into dirty post', () => {

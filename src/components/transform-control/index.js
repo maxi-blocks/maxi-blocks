@@ -11,6 +11,10 @@ import { select } from '@wordpress/data';
 import Icon from '@components/icon';
 import InputGroupControl from './input-group-control';
 import RotateControl from './rotate-control';
+import {
+	TRANSLATE3D_UNIT_RANGES,
+	PERSPECTIVE_UNIT_RANGES,
+} from './constants';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SquareControl from './square-control';
@@ -853,6 +857,8 @@ const TransformControl = props => {
 														'vw',
 														'vh',
 													],
+													unitRanges:
+														PERSPECTIVE_UNIT_RANGES,
 													placeholder: '0',
 												},
 											],
@@ -878,6 +884,8 @@ const TransformControl = props => {
 														'vh',
 														'%',
 													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
 													placeholder: '0',
 												},
 												{
@@ -897,6 +905,8 @@ const TransformControl = props => {
 														'vh',
 														'%',
 													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
 													placeholder: '0',
 												},
 												{
@@ -915,6 +925,8 @@ const TransformControl = props => {
 														'vw',
 														'vh',
 													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
 													placeholder: '0',
 												},
 											],

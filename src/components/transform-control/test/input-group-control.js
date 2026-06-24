@@ -49,7 +49,9 @@ describe('InputGroupControl', () => {
 		[...allowedUnits, '-'].forEach(unit => {
 			expect(props.minMaxSettings[unit]).toEqual({
 				min: -5000,
+				minRange: -5000,
 				max: 5000,
+				maxRange: 5000,
 			});
 		});
 	});
@@ -70,6 +72,50 @@ describe('InputGroupControl', () => {
 		expect(props.minMaxSettings).toBeUndefined();
 		expect(props.min).toBe(-10);
 		expect(props.max).toBe(10);
+		// The range slider must stay enabled so the field matches the other
+		// transform controls and supports keyboard/drag interaction.
+		expect(props.disableRange).toBeFalsy();
+	});
+
+	it('gives each unit its own range via unitRanges and falls back for the rest', () => {
+		const allowedUnits = ['px', 'em', '%'];
+		const [props] = renderGroup({
+			fields: [
+				{
+					key: 'x',
+					unitKey: 'x-unit',
+					label: 'X',
+					min: -5000,
+					max: 5000,
+					allowedUnits,
+					unitRanges: {
+						px: { min: -5000, max: 5000 },
+						'%': { min: -100, max: 100 },
+					},
+				},
+			],
+		});
+
+		// Units listed in unitRanges use their own bounds...
+		expect(props.minMaxSettings.px).toEqual({
+			min: -5000,
+			minRange: -5000,
+			max: 5000,
+			maxRange: 5000,
+		});
+		expect(props.minMaxSettings['%']).toEqual({
+			min: -100,
+			minRange: -100,
+			max: 100,
+			maxRange: 100,
+		});
+		// ...while units missing from the map fall back to the flat min/max.
+		expect(props.minMaxSettings.em).toEqual({
+			min: -5000,
+			minRange: -5000,
+			max: 5000,
+			maxRange: 5000,
+		});
 	});
 
 	it('builds minMaxSettings even when a field omits allowedUnits', () => {
@@ -85,6 +131,8 @@ describe('InputGroupControl', () => {
 			],
 		});
 
-		expect(props.minMaxSettings).toEqual({ '-': { min: 0, max: 5000 } });
+		expect(props.minMaxSettings).toEqual({
+			'-': { min: 0, minRange: 0, max: 5000, maxRange: 5000 },
+		});
 	});
 });

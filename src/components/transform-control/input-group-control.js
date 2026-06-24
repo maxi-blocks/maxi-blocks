@@ -4,21 +4,34 @@
 import AdvancedNumberControl from '@components/advanced-number-control';
 
 /**
- * Builds a minMaxSettings object so unit-enabled fields honour the provided
- * min/max. AdvancedNumberControl ignores the min/max props while enableUnit is
- * true and relies on its per-unit minMaxSettings instead, so we map the field's
- * limits onto every allowed unit (plus the unitless '-' key).
+ * Maps a {min, max} pair onto the per-unit shape AdvancedNumberControl expects.
+ * minRange/maxRange are mirrored from min/max so the range slider spans the full
+ * configured range instead of the component's narrower defaults.
  */
-const getMinMaxSettings = ({ min, max, allowedUnits }) => {
-	if (min === undefined && max === undefined) return undefined;
+const toLimits = ({ min, max }) => ({
+	...(min !== undefined && { min, minRange: min }),
+	...(max !== undefined && { max, maxRange: max }),
+});
 
-	const limits = {
-		...(min !== undefined && { min }),
-		...(max !== undefined && { max }),
-	};
+/**
+ * Builds a minMaxSettings object so unit-enabled fields honour the provided
+ * limits. AdvancedNumberControl ignores the min/max props while enableUnit is
+ * true and relies on its per-unit minMaxSettings instead, so we map limits onto
+ * every allowed unit (plus the unitless '-' key).
+ *
+ * A field may pass `unitRanges` to give each unit its own min/max — e.g.
+ * translate may allow ±5000px but only ±100% — and any unit missing from that
+ * map falls back to the flat min/max.
+ */
+const getMinMaxSettings = ({ min, max, allowedUnits, unitRanges }) => {
+	if (min === undefined && max === undefined && !unitRanges) return undefined;
+
+	const fallback = toLimits({ min, max });
 
 	return [...(allowedUnits ?? []), '-'].reduce((acc, unit) => {
-		acc[unit] = limits;
+		acc[unit] = unitRanges?.[unit]
+			? toLimits(unitRanges[unit])
+			: fallback;
 		return acc;
 	}, {});
 };
@@ -40,6 +53,7 @@ const InputGroupControl = ({ label, fields, values = {}, onChange }) => (
 				label,
 				defaultUnit = 'px',
 				allowedUnits,
+				unitRanges,
 				min,
 				max,
 				step = 1,
@@ -54,13 +68,17 @@ const InputGroupControl = ({ label, fields, values = {}, onChange }) => (
 					min={min}
 					max={max}
 					step={step}
-					disableRange
 					enableUnit={!!unitKey}
 					unit={values[unitKey] ?? defaultUnit}
 					allowedUnits={allowedUnits}
 					minMaxSettings={
 						unitKey
-							? getMinMaxSettings({ min, max, allowedUnits })
+							? getMinMaxSettings({
+									min,
+									max,
+									allowedUnits,
+									unitRanges,
+							  })
 							: undefined
 					}
 					onChangeUnit={unit =>

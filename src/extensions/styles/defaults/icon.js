@@ -70,6 +70,15 @@ export const icon = {
 	...paletteAttributesCreator({ prefix: `${prefix}fill-`, palette: 4 }),
 };
 
+export const iconAlignment = breakpointAttributesCreator({
+	obj: {
+		'icon-alignment': {
+			type: 'string',
+			default: 'center',
+		},
+	},
+});
+
 export const iconBackground = prefixAttributesCreator({
 	obj: background,
 	prefix,

@@ -224,9 +224,64 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
             return $response;
         }
 
+        /**
+         * Shipped container size defaults — used to detect unchanged attributes
+         * so we can output SC CSS variable references instead of hard values.
+         */
+        private static $size_defaults = [
+            'max-width-xxl' => '1690',
+            'max-width-xl'  => '1170',
+            'max-width-l'   => '90',
+            'max-width-unit-xxl' => 'px',
+            'max-width-unit-xl'  => 'px',
+            'max-width-unit-l'   => '%',
+            'width-l'  => '1170',
+            'width-m'  => '1000',
+            'width-s'  => '700',
+            'width-xs' => '460',
+            'width-unit-l' => 'px',
+        ];
+
+        /**
+         * Replace default size/spacing CSS values with SC variable references.
+         * When the attribute matches the shipped default, output
+         * var(--maxi-{style}-container-{prop}-{bp}, {fallback}) so SC globals
+         * flow through the higher-specificity per-block CSS.
+         *
+         * @param array  $style_obj  Breakpoint-keyed style array from get_size_styles / get_margin_padding_styles.
+         * @param array  $attrs      Raw block attributes for this style group.
+         * @param string $block_style  'light' or 'dark'.
+         * @param array  $defaults   Shipped defaults to compare against.
+         * @return array Modified style array.
+         */
+        private static function apply_sc_vars($style_obj, $attrs, $block_style, $defaults) {
+            if (empty($block_style) || empty($defaults)) {
+                return $style_obj;
+            }
+            foreach ($style_obj as $breakpoint => &$styles) {
+                if (!is_array($styles)) {
+                    continue;
+                }
+                foreach ($styles as $css_prop => &$css_value) {
+                    $attr_key = "{$css_prop}-{$breakpoint}";
+                    if (
+                        isset($defaults[$attr_key]) &&
+                        isset($attrs[$attr_key]) &&
+                        (string) $attrs[$attr_key] === (string) $defaults[$attr_key]
+                    ) {
+                        $css_value = "var(--maxi-{$block_style}-container-{$css_prop}-{$breakpoint}, {$css_value})";
+                    }
+                }
+            }
+            return $style_obj;
+        }
+
         public static function get_normal_object($props)
         {
             $block_style = $props['blockStyle'];
+            $size_attrs = get_group_attributes($props, 'size');
+            $margin_attrs = get_group_attributes($props, 'margin');
+            $padding_attrs = get_group_attributes($props, 'padding');
 
             $response =
                 [
@@ -238,7 +293,12 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                         ))),
                         'block_style' => $block_style,
                     )),
-                    'size' => get_size_styles(array_merge(get_group_attributes($props, 'size'))),
+                    'size' => self::apply_sc_vars(
+                        get_size_styles(array_merge($size_attrs)),
+                        $size_attrs,
+                        $block_style,
+                        self::$size_defaults
+                    ),
                     'boxShadow' => get_box_shadow_styles(array(
                         'obj' => array_merge(get_group_attributes($props, 'boxShadow')),
                         'block_style' => $block_style,
@@ -248,12 +308,18 @@ if (!class_exists('MaxiBlocks_Container_Maxi_Block')):
                     'position' => get_position_styles(array_merge(get_group_attributes($props, 'position'))),
                     'display' => get_display_styles(array_merge(get_group_attributes($props, 'display'))),
                     'overflow' => get_overflow_styles(array_merge(get_group_attributes($props, 'overflow'))),
-                    'margin' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'margin'),
-                    ]),
-                    'padding' => get_margin_padding_styles([
-                        'obj' => get_group_attributes($props, 'padding'),
-                    ]),
+                    'margin' => self::apply_sc_vars(
+                        get_margin_padding_styles(['obj' => $margin_attrs]),
+                        $margin_attrs,
+                        $block_style,
+                        self::$size_defaults
+                    ),
+                    'padding' => self::apply_sc_vars(
+                        get_margin_padding_styles(['obj' => $padding_attrs]),
+                        $padding_attrs,
+                        $block_style,
+                        self::$size_defaults
+                    ),
                     'flex' => get_flex_styles(array_merge(get_group_attributes($props, 'flex'))),
                 ];
 

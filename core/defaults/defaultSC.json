@@ -601,7 +601,37 @@
 					"padding-right-unit-xl": "px",
 					"padding-bottom-unit-xl": "px",
 					"padding-left-unit-xl": "px"
-				}
+				},
+			"container": {
+				"override-container-full-width": false,
+				"full-width-general": true,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
+				"width-l": "1170",
+				"width-m": "1000",
+				"width-s": "700",
+				"width-xs": "460",
+				"width-unit-l": "px",
+				"width-unit-m": "px",
+				"width-unit-s": "px",
+				"width-unit-xs": "px",
+				"size-advanced-options": true
+			},
+			"row": {
+				"override-row-full-width": false,
+				"full-width-general": false,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
+				"size-advanced-options": true
+			}
 			}
 		},
 		"light": {
@@ -1203,7 +1233,37 @@
 					"padding-right-unit-xl": "px",
 					"padding-bottom-unit-xl": "px",
 					"padding-left-unit-xl": "px"
-				}
+				},
+			"container": {
+				"override-container-full-width": false,
+				"full-width-general": true,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
+				"width-l": "1170",
+				"width-m": "1000",
+				"width-s": "700",
+				"width-xs": "460",
+				"width-unit-l": "px",
+				"width-unit-m": "px",
+				"width-unit-s": "px",
+				"width-unit-xs": "px",
+				"size-advanced-options": true
+			},
+			"row": {
+				"override-row-full-width": false,
+				"full-width-general": false,
+				"max-width-xxl": "1690",
+				"max-width-xl": "1170",
+				"max-width-l": "90",
+				"max-width-unit-xxl": "px",
+				"max-width-unit-xl": "px",
+				"max-width-unit-l": "%",
+				"size-advanced-options": true
+			}
 			}
 		},
 		"gutenberg_blocks_status": true

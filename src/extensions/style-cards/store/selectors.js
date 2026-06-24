@@ -171,6 +171,126 @@ const addNumberCounterToStyleCards = styleCard => {
 	});
 };
 
+const containerObject = {
+	container: {
+		'override-container-full-width': false,
+		'full-width-general': true,
+		'max-width-xxl': '1690',
+		'max-width-xl': '1170',
+		'max-width-l': '90',
+		'max-width-unit-xxl': 'px',
+		'max-width-unit-xl': 'px',
+		'max-width-unit-l': '%',
+		'width-l': '1170',
+		'width-m': '1000',
+		'width-s': '700',
+		'width-xs': '460',
+		'width-unit-l': 'px',
+		'width-unit-m': 'px',
+		'width-unit-s': 'px',
+		'width-unit-xs': 'px',
+		'size-advanced-options': true,
+	},
+};
+
+const containerExists = styleCard => {
+	return (
+		styleCard?.value?.dark?.defaultStyleCard?.container !== undefined &&
+		styleCard?.value?.light?.defaultStyleCard?.container !== undefined
+	);
+};
+
+/**
+ * Injects container defaults into saved style cards that predate the
+ * Container globals wiring. Mirrors the navigation/number-counter pattern.
+ */
+const addContainerToStyleCards = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			!styleValue.defaultStyleCard.container
+		) {
+			const { defaultStyleCard } = styleValue;
+			const keys = Object.keys(defaultStyleCard);
+			const navigationIndex = keys.indexOf('navigation');
+			const insertAfter =
+				navigationIndex !== -1 ? navigationIndex : keys.length - 1;
+			const newKeys = [
+				...keys.slice(0, insertAfter + 1),
+				'container',
+				...keys.slice(insertAfter + 1),
+			];
+			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
+				if (key === 'container') {
+					obj[key] = { ...containerObject.container };
+				} else {
+					obj[key] = defaultStyleCard[key];
+				}
+				return obj;
+			}, {});
+			styleCard.value[style].defaultStyleCard = newDefaultStyleCard;
+		}
+	});
+};
+
+const rowObject = {
+	row: {
+		'override-row-full-width': false,
+		'full-width-general': false,
+		'max-width-xxl': '1690',
+		'max-width-xl': '1170',
+		'max-width-l': '90',
+		'max-width-unit-xxl': 'px',
+		'max-width-unit-xl': 'px',
+		'max-width-unit-l': '%',
+		'size-advanced-options': true,
+	},
+};
+
+const rowExists = styleCard => {
+	return (
+		styleCard?.value?.dark?.defaultStyleCard?.row !== undefined &&
+		styleCard?.value?.light?.defaultStyleCard?.row !== undefined
+	);
+};
+
+/**
+ * Injects row defaults into saved style cards that predate the
+ * Row globals wiring. Mirrors the container pattern.
+ */
+const addRowToStyleCards = styleCard => {
+	['dark', 'light'].forEach(style => {
+		const styleValue = styleCard?.value?.[style];
+		if (
+			styleValue &&
+			styleValue.defaultStyleCard &&
+			!styleValue.defaultStyleCard.row
+		) {
+			const { defaultStyleCard } = styleValue;
+			const keys = Object.keys(defaultStyleCard);
+			const containerIndex = keys.indexOf('container');
+			const insertAfter =
+				containerIndex !== -1 ? containerIndex : keys.length - 1;
+			const newKeys = [
+				...keys.slice(0, insertAfter + 1),
+				'row',
+				...keys.slice(insertAfter + 1),
+			];
+			const newDefaultStyleCard = newKeys.reduce((obj, key) => {
+				if (key === 'row') {
+					obj[key] = { ...rowObject.row };
+				} else {
+					obj[key] = defaultStyleCard[key];
+				}
+				return obj;
+			}, {});
+			styleCard.value[style].defaultStyleCard = newDefaultStyleCard;
+		}
+	});
+};
+
 const navigationExists = styleCard => {
 	return styleCard?.value?.dark?.defaultStyleCard?.navigation !== undefined;
 };
@@ -233,6 +353,12 @@ export const receiveMaxiSelectedStyleCard = state => {
 		}
 		if (!numberCounterExists(selectedStyleCard)) {
 			addNumberCounterToStyleCards(selectedStyleCard);
+		}
+		if (!containerExists(selectedStyleCard)) {
+			addContainerToStyleCards(selectedStyleCard);
+		}
+		if (!rowExists(selectedStyleCard)) {
+			addRowToStyleCards(selectedStyleCard);
 		}
 		return selectedStyleCard;
 	}

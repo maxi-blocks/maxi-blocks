@@ -21,6 +21,8 @@ import SettingTabsControl from '@components/setting-tabs-control';
 import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
+import FullSizeControl from '@components/full-size-control';
+import MarginControl from '@components/margin-control';
 import PaddingControl from '@components/padding-control';
 import { getStandardPaletteColorLabel } from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
@@ -236,6 +238,9 @@ const SCAccordion = props => {
 		disableResponsiveTabs = false,
 		hideLineHeight = false,
 		hideAdvancedTextOptions = false,
+		isElementOverridden = () => false,
+		onToggleTypoSync = () => {},
+		getDarkResetValue = () => undefined,
 	} = props;
 
 	const ifParagraphOrHeading = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'].some(
@@ -243,6 +248,23 @@ const SCAccordion = props => {
 	);
 
 	const ifNavigationTab = ['navigation'].some(tag => groupAttr === tag);
+
+	// On the Dark tab, syncable settings (typography, plus navigation padding)
+	// can be synced from Light. When synced the override toggle is OFF and those
+	// controls are hidden. Colors and global nav options are handled separately.
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showSyncableSettings =
+		!disableTypography && (!isDarkTab || isOverridden);
+	const overrideLabel = ifNavigationTab
+		? __('Override light tone settings', 'maxi-blocks')
+		: __('Override light tone typography', 'maxi-blocks');
+
+	// On the Dark tab, resetting a typography setting falls back to the light
+	// value instead of the factory default.
+	const getSCResetValue = isDarkTab
+		? (target, bp) => getDarkResetValue(groupAttr, target, bp)
+		: undefined;
 
 	const overwriteMobile = ifNavigationTab
 		? processSCAttribute(SC, 'overwrite-mobile', groupAttr)
@@ -262,7 +284,15 @@ const SCAccordion = props => {
 
 	return (
 		<>
-			{!disableTypography && (
+			{isDarkTab && !disableTypography && (
+				<ToggleSwitch
+					label={overrideLabel}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showSyncableSettings && (
 				<TypographyControl
 					typography={getTypographyFromSC(SC, groupAttr)}
 					className={`maxi-style-cards-control__sc__${groupAttr}-typography`}
@@ -283,6 +313,18 @@ const SCAccordion = props => {
 					disableResponsiveTabs={disableResponsiveTabs}
 					hideLineHeight={hideLineHeight}
 					hideAdvancedTextOptions={hideAdvancedTextOptions}
+					getSCResetValue={getSCResetValue}
+				/>
+			)}
+			{/* Item padding is per-tone: synced with Light and hidden on
+			    Dark until overridden (same as typography). */}
+			{ifNavigationTab && showSyncableSettings && (
+				<PaddingControl
+					{...processSCAttributes(SC, 'padding', groupAttr)}
+					label={__('Item padding', 'maxi-blocks')}
+					onChange={obj => onChangeValue(obj, groupAttr)}
+					breakpoint={breakpoint}
+					disableAuto
 				/>
 			)}
 			{breakpoint === 'general' &&
@@ -314,15 +356,10 @@ const SCAccordion = props => {
 						/>
 					)
 				)}
-			{ifNavigationTab && (
+			{ifNavigationTab && !isDarkTab && (
 				<>
-					<PaddingControl
-						{...processSCAttributes(SC, 'padding', groupAttr)}
-						label={__('Item padding', 'maxi-blocks')}
-						onChange={obj => onChangeValue(obj, groupAttr)}
-						breakpoint={breakpoint}
-						disableAuto
-					/>
+					{/* The options below are applied globally (no light/dark
+					    separation), so they live on the Light tab only. */}
 					<ToggleSwitch
 						// eslint-disable-next-line @wordpress/i18n-no-collapsible-whitespace
 						label={__(
@@ -420,8 +457,263 @@ const SCAccordion = props => {
 	);
 };
 
-const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
+/**
+ * Container globals section — Height/Width and Margin/Padding.
+ * Follows the same per-tone sync pattern as typography sections: the Dark tab
+ * syncs from Light by default and shows an override toggle to unlock editing.
+ */
+/**
+ * Wraps SC onChange to replace undefined values with empty strings.
+ * Needed because AxisControl's onReset calls getDefaultAttribute which
+ * returns undefined in the SC context (no block attributes exist).
+ */
+const scOnChange = (obj, groupAttr, onChangeValue) => {
+	const cleaned = {};
+	Object.entries(obj).forEach(([key, val]) => {
+		cleaned[key] = val == null ? '' : val;
+	});
+	onChangeValue(cleaned, groupAttr);
+};
+
+const ContainerSCSection = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+}) => {
+	const groupAttr = 'container';
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showControls = !isDarkTab || isOverridden;
+
+	const containerAttrs = processSCAttributes(SC, '', groupAttr);
+
+	const overrideFullWidth =
+		processSCAttribute(
+			SC,
+			'override-container-full-width',
+			groupAttr
+		) ?? false;
+
+	const isBlockFullWidth =
+		processSCAttribute(SC, `full-width-${breakpoint}`, groupAttr) ??
+		processSCAttribute(SC, 'full-width-general', groupAttr) ??
+		true;
+
+	return (
+		<>
+			{isDarkTab && (
+				<ToggleSwitch
+					label={__('Override light tone settings', 'maxi-blocks')}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showControls && (
+				<>
+					<ToggleSwitch
+						label={__(
+							'Override all containers',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-container-override'
+						selected={overrideFullWidth}
+						onChange={val =>
+							onChangeValue(
+								{
+									'override-container-full-width': val,
+								},
+								groupAttr
+							)
+						}
+					/>
+					{overrideFullWidth && (
+						<ToggleSwitch
+							label={__(
+								'Set full-width',
+								'maxi-blocks'
+							)}
+							className='maxi-style-cards-control__toggle-container-full-width'
+							selected={isBlockFullWidth}
+							onChange={val =>
+								onChangeValue(
+									{
+										[`full-width-${breakpoint}`]: val,
+									},
+									groupAttr
+								)
+							}
+						/>
+					)}
+					<p className='maxi-style-cards-control__notice'>
+						{overrideFullWidth
+							? __(
+									'Override is active: size, margin, and padding settings apply to ALL containers on the site, overriding individual container settings. Disable to restore each container\'s own settings.',
+									'maxi-blocks'
+							  )
+							: __(
+									'Enable to apply these size, margin, and padding settings to every container on the site. Individual container settings are preserved and restored when disabled.',
+									'maxi-blocks'
+							  )}
+					</p>
+					<FullSizeControl
+						{...containerAttrs}
+						isBlockFullWidth={
+							overrideFullWidth ? isBlockFullWidth : false
+						}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<MarginControl
+						{...containerAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<PaddingControl
+						{...containerAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+				</>
+			)}
+		</>
+	);
+};
+
+/**
+ * Row globals section — Height/Width and Margin/Padding.
+ * Same per-tone sync pattern as Container globals.
+ */
+const RowSCSection = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+}) => {
+	const groupAttr = 'row';
+	const isDarkTab = SCStyle === 'dark';
+	const isOverridden = isDarkTab && isElementOverridden(groupAttr);
+	const showControls = !isDarkTab || isOverridden;
+
+	const rowAttrs = processSCAttributes(SC, '', groupAttr);
+
+	const overrideFullWidth =
+		processSCAttribute(SC, 'override-row-full-width', groupAttr) ??
+		false;
+
+	const isBlockFullWidth =
+		processSCAttribute(SC, `full-width-${breakpoint}`, groupAttr) ??
+		processSCAttribute(SC, 'full-width-general', groupAttr) ??
+		false;
+
+	return (
+		<>
+			{isDarkTab && (
+				<ToggleSwitch
+					label={__('Override light tone settings', 'maxi-blocks')}
+					className='maxi-style-cards-control__toggle-typography-sync'
+					selected={isOverridden}
+					onChange={val => onToggleTypoSync(groupAttr, val)}
+				/>
+			)}
+			{showControls && (
+				<>
+					<ToggleSwitch
+						label={__(
+							'Override all rows',
+							'maxi-blocks'
+						)}
+						className='maxi-style-cards-control__toggle-row-override'
+						selected={overrideFullWidth}
+						onChange={val =>
+							onChangeValue(
+								{ 'override-row-full-width': val },
+								groupAttr
+							)
+						}
+					/>
+					{overrideFullWidth && (
+						<ToggleSwitch
+							label={__('Set full-width', 'maxi-blocks')}
+							className='maxi-style-cards-control__toggle-row-full-width'
+							selected={isBlockFullWidth}
+							onChange={val =>
+								onChangeValue(
+									{ [`full-width-${breakpoint}`]: val },
+									groupAttr
+								)
+							}
+						/>
+					)}
+					<p className='maxi-style-cards-control__notice'>
+						{overrideFullWidth
+							? __(
+									'Override is active: size, margin, and padding settings apply to ALL rows on the site, overriding individual row settings. Disable to restore each row\'s own settings.',
+									'maxi-blocks'
+							  )
+							: __(
+									'Enable to apply these size, margin, and padding settings to every row on the site. Individual row settings are preserved and restored when disabled.',
+									'maxi-blocks'
+							  )}
+					</p>
+					<FullSizeControl
+						{...rowAttrs}
+						isBlockFullWidth={
+							overrideFullWidth ? isBlockFullWidth : false
+						}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<MarginControl
+						{...rowAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+					<PaddingControl
+						{...rowAttrs}
+						onChange={obj =>
+							scOnChange(obj, groupAttr, onChangeValue)
+						}
+						breakpoint={breakpoint}
+					/>
+				</>
+			)}
+		</>
+	);
+};
+
+const MaxiStyleCardsTab = ({
+	SC,
+	SCStyle,
+	breakpoint,
+	onChangeValue,
+	isElementOverridden = () => false,
+	onToggleTypoSync = () => {},
+	getDarkResetValue = () => undefined,
+}) => {
 	const [quickColorPreset, setQuickColorPreset] = useState(1);
+
+	// Typography sync state/handlers forwarded to each typography-bearing accordion.
+	const typoSyncProps = {
+		isElementOverridden,
+		onToggleTypoSync,
+		getDarkResetValue,
+	};
 
 	const getAvailableCustomColors = (styleCard, style) => {
 		if (!styleCard) {
@@ -573,6 +865,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 						SCStyle={SCStyle}
 						onChangeValue={onChangeValue}
 						disableResponsiveTabs
+						{...typoSyncProps}
 					/>
 				),
 				classNameItem: `maxi-blocks-sc__type--h${item}`,
@@ -1239,6 +1532,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
@@ -1253,6 +1547,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
@@ -1277,7 +1572,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<ResponsiveTabsControl breakpoint={breakpoint}>
 									<SettingTabsControl
-										className="maxi-style-cards-headings-tabs"
+										className='maxi-style-cards-headings-tabs'
 										hasBorder
 										items={headingItems()}
 									/>
@@ -1327,24 +1622,52 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 									SC={SC}
 									SCStyle={SCStyle}
 									onChangeValue={onChangeValue}
+									{...typoSyncProps}
 								/>
 							),
 						},
-						{
-							label: navigationTabs.label,
-							classNameItem: 'maxi-blocks-sc__type--navigation',
-							content: (
-								<SCAccordion
-									key={`sc-accordion__${navigationTabs.label}`}
-									{...navigationTabs}
-									breakpoint={breakpoint}
-									SC={SC}
-									SCStyle={SCStyle}
-									onChangeValue={onChangeValue}
-								/>
-							),
-						},
-					].filter(Boolean) // Filter out any false items from conditional rendering
+					{
+						label: navigationTabs.label,
+						classNameItem: 'maxi-blocks-sc__type--navigation',
+						content: (
+							<SCAccordion
+								key={`sc-accordion__${navigationTabs.label}`}
+								{...navigationTabs}
+								breakpoint={breakpoint}
+								SC={SC}
+								SCStyle={SCStyle}
+								onChangeValue={onChangeValue}
+								{...typoSyncProps}
+							/>
+						),
+					},
+				{
+					label: __('Container globals', 'maxi-blocks'),
+					classNameItem: 'maxi-blocks-sc__type--container',
+					content: (
+						<ContainerSCSection
+							SC={SC}
+							SCStyle={SCStyle}
+							breakpoint={breakpoint}
+							onChangeValue={onChangeValue}
+							{...typoSyncProps}
+						/>
+					),
+				},
+				{
+					label: __('Row globals', 'maxi-blocks'),
+					classNameItem: 'maxi-blocks-sc__type--row',
+					content: (
+						<RowSCSection
+							SC={SC}
+							SCStyle={SCStyle}
+							breakpoint={breakpoint}
+							onChangeValue={onChangeValue}
+							{...typoSyncProps}
+						/>
+					),
+				},
+			].filter(Boolean) // Filter out any false items from conditional rendering
 				}
 			/>
 		</div>

@@ -19,6 +19,22 @@ const elements = [
 	'link',
 	'navigation',
 	'number-counter',
+	'container',
+	'row',
+];
+const containerSettings = [
+	'max-width',
+	'width',
+	'height',
+	'min-height',
+	'margin-top',
+	'margin-right',
+	'margin-bottom',
+	'margin-left',
+	'padding-top',
+	'padding-right',
+	'padding-bottom',
+	'padding-left',
 ];
 const breakpoints = {
 	xxl: 1921,
@@ -78,6 +94,64 @@ const getOrganizedValues = styleCard => {
 						delete styleCard[label];
 					}
 				});
+			});
+		});
+	});
+
+	// Container layout variables
+	styles.forEach(style => {
+		breakpointsKeys.forEach(breakpoint => {
+			containerSettings.forEach(setting => {
+				const label = `--maxi-${style}-container-${setting}-${breakpoint}`;
+
+				if (styleCard[label]) {
+					organizedValues = {
+						...organizedValues,
+						[style]: {
+							...organizedValues?.[style],
+							container: {
+								...organizedValues[style]?.container,
+								[breakpoint]: {
+									...organizedValues?.[style]?.container?.[
+										breakpoint
+									],
+									[setting]: styleCard[label],
+								},
+							},
+						},
+					};
+
+					delete styleCard[label];
+				}
+			});
+		});
+	});
+
+	// Row layout variables
+	styles.forEach(style => {
+		breakpointsKeys.forEach(breakpoint => {
+			containerSettings.forEach(setting => {
+				const label = `--maxi-${style}-row-${setting}-${breakpoint}`;
+
+				if (styleCard[label]) {
+					organizedValues = {
+						...organizedValues,
+						[style]: {
+							...organizedValues?.[style],
+							row: {
+								...organizedValues[style]?.row,
+								[breakpoint]: {
+									...organizedValues?.[style]?.row?.[
+										breakpoint
+									],
+									[setting]: styleCard[label],
+								},
+							},
+						},
+					};
+
+					delete styleCard[label];
+				}
 			});
 		});
 	});
@@ -195,7 +269,13 @@ const getSentencesByBreakpoint = ({
 	return sentences;
 };
 
-const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
+const getMaxiSCStyles = ({
+	organizedValues,
+	prefix,
+	style,
+	isBackend,
+	styleCard,
+}) => {
 	let response = '';
 
 	const addStylesByBreakpoint = (breakpoint, secondPrefix = '') => {
@@ -577,6 +657,251 @@ const getMaxiSCStyles = ({ organizedValues, prefix, style, isBackend }) => {
 			addedResponse += `${target}.current-menu-item:hover { background-color: var(--maxi-${style}-menu-item-sub-bg-hover); }`;
 		});
 
+		// Container Maxi — full-width override
+		// Note: override/full-width flags live on styleCard (not deleted by getOrganizedValues),
+		// but size variables (max-width, margin, etc.) are moved to organizedValues and deleted
+		// from styleCard, so we must read them from organizedValues.
+		const overrideFullWidth =
+			styleCard?.[
+				`--maxi-${style}-container-override-full-width`
+			] === '1';
+
+		if (overrideFullWidth) {
+			const fwKey = `--maxi-${style}-container-full-width-${breakpoint}`;
+			const fwGeneralKey = `--maxi-${style}-container-full-width-general`;
+			const isFullWidth =
+				(styleCard?.[fwKey] ?? styleCard?.[fwGeneralKey] ?? '1') ===
+				'1';
+
+			if (isFullWidth) {
+				// Full-width ON: use class-level specificity only, so per-block
+				// has-global-padding ID rules (negative margins, calc min-width)
+				// still win and correctly compensate for parent padding
+				const fwTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block`,
+				];
+				const fwSizeRules = ['min-width: 100% !important;'];
+
+				const fwBpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const fwBpIdx = fwBpOrder.indexOf(breakpoint);
+				const fwContainerData =
+					organizedValues?.[style]?.container;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+					if (
+						!fwContainerData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = fwBpIdx + 1;
+							i < fwBpOrder.length;
+							i += 1
+						) {
+							if (
+								fwContainerData?.[fwBpOrder[i]]?.[
+									setting
+								]
+							) {
+								foundBp = fwBpOrder[i];
+								break;
+							}
+						}
+					}
+					if (fwContainerData?.[foundBp]?.[setting]) {
+						fwSizeRules.push(
+							`${setting}: var(--maxi-${style}-container-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const fwRulesStr = fwSizeRules.join(' ');
+				fwTargets.forEach(t => {
+					addedResponse += `${t} {${fwRulesStr}}`;
+				});
+			} else {
+				// Full-width OFF: :not(#_) boosts specificity to ID-level
+				// so we beat per-block #container-maxi-*-u rules
+				const containerTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-container-block:not(#_)`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-container-block:not(#_)`,
+				];
+
+				const sizeRules = ['min-width: initial !important;'];
+
+				const bpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const bpIdx = bpOrder.indexOf(breakpoint);
+				const containerData =
+					organizedValues?.[style]?.container;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+
+					if (
+						!containerData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = bpIdx + 1;
+							i < bpOrder.length;
+							i += 1
+						) {
+							if (
+								containerData?.[bpOrder[i]]?.[setting]
+							) {
+								foundBp = bpOrder[i];
+								break;
+							}
+						}
+					}
+
+					if (containerData?.[foundBp]?.[setting]) {
+						sizeRules.push(
+							`${setting}: var(--maxi-${style}-container-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const rulesStr = sizeRules.join(' ');
+				containerTargets.forEach(t => {
+					addedResponse += `${t} {${rulesStr}}`;
+				});
+			}
+		}
+
+		// Row Maxi — full-width override (same pattern as container)
+		const overrideRowFullWidth =
+			styleCard?.[
+				`--maxi-${style}-row-override-full-width`
+			] === '1';
+
+		if (overrideRowFullWidth) {
+			const rowFwKey = `--maxi-${style}-row-full-width-${breakpoint}`;
+			const rowFwGeneralKey = `--maxi-${style}-row-full-width-general`;
+			const isRowFullWidth =
+				(styleCard?.[rowFwKey] ??
+					styleCard?.[rowFwGeneralKey] ??
+					'0') === '1';
+
+			if (isRowFullWidth) {
+				const rowFwTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-row-block`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-row-block`,
+				];
+				const rowFwSizeRules = ['min-width: 100% !important;'];
+
+				const rowFwBpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const rowFwBpIdx = rowFwBpOrder.indexOf(breakpoint);
+				const rowFwData = organizedValues?.[style]?.row;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+					if (
+						!rowFwData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = rowFwBpIdx + 1;
+							i < rowFwBpOrder.length;
+							i += 1
+						) {
+							if (
+								rowFwData?.[rowFwBpOrder[i]]?.[setting]
+							) {
+								foundBp = rowFwBpOrder[i];
+								break;
+							}
+						}
+					}
+					if (rowFwData?.[foundBp]?.[setting]) {
+						rowFwSizeRules.push(
+							`${setting}: var(--maxi-${style}-row-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const rowFwRulesStr = rowFwSizeRules.join(' ');
+				rowFwTargets.forEach(t => {
+					addedResponse += `${t} {${rowFwRulesStr}}`;
+				});
+			} else {
+				const rowTargets = [
+					`${prefix} ${secondPrefix} .maxi-${style}.maxi-row-block:not(#_)`,
+					`${prefix} ${secondPrefix} .maxi-${style} .maxi-row-block:not(#_)`,
+				];
+
+				const rowSizeRules = ['min-width: initial !important;'];
+
+				const rowBpOrder = [
+					'general',
+					'xxl',
+					'xl',
+					'l',
+					'm',
+					's',
+					'xs',
+				];
+				const rowBpIdx = rowBpOrder.indexOf(breakpoint);
+				const rowData = organizedValues?.[style]?.row;
+
+				containerSettings.forEach(setting => {
+					let foundBp = breakpoint;
+
+					if (
+						!rowData?.[breakpoint]?.[setting] &&
+						breakpoint === 'general'
+					) {
+						for (
+							let i = rowBpIdx + 1;
+							i < rowBpOrder.length;
+							i += 1
+						) {
+							if (rowData?.[rowBpOrder[i]]?.[setting]) {
+								foundBp = rowBpOrder[i];
+								break;
+							}
+						}
+					}
+
+					if (rowData?.[foundBp]?.[setting]) {
+						rowSizeRules.push(
+							`${setting}: var(--maxi-${style}-row-${setting}-${foundBp}) !important;`
+						);
+					}
+				});
+
+				const rowRulesStr = rowSizeRules.join(' ');
+				rowTargets.forEach(t => {
+					addedResponse += `${t} {${rowRulesStr}}`;
+				});
+			}
+		}
+
 		return addedResponse;
 	};
 
@@ -885,6 +1210,7 @@ const getSCStyles = (
 			prefix,
 			style,
 			isBackend,
+			styleCard,
 		});
 
 		// WP native blocks styles

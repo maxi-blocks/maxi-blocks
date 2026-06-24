@@ -1093,4 +1093,47 @@ describe('getSCVariablesObject', () => {
 
 		expect(cleanVarSC).toMatchSnapshot();
 	});
+
+	it('Includes Container globals variables from default SC', () => {
+		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+
+		expect(cleanVarSC).toEqual(
+			expect.objectContaining({
+				'--maxi-light-container-override-full-width': '0',
+				'--maxi-light-container-full-width-general': '1',
+				'--maxi-light-container-max-width-xxl': '1690px',
+				'--maxi-light-container-max-width-xl': '1170px',
+				'--maxi-light-container-max-width-l': '90%',
+				'--maxi-dark-container-override-full-width': '0',
+				'--maxi-dark-container-full-width-general': '1',
+			})
+		);
+	});
+
+	it('Includes Row globals variables from default SC', () => {
+		const cleanVarSC = getSCVariablesObject(standardSC.sc_maxi, null, true);
+
+		expect(cleanVarSC).toEqual(
+			expect.objectContaining({
+				'--maxi-light-row-override-full-width': '0',
+				'--maxi-light-row-full-width-general': '0',
+				'--maxi-light-row-max-width-xxl': '1690px',
+				'--maxi-light-row-max-width-xl': '1170px',
+				'--maxi-light-row-max-width-l': '90%',
+				'--maxi-dark-row-override-full-width': '0',
+				'--maxi-dark-row-full-width-general': '0',
+			})
+		);
+	});
+
+	it('Handles auto keyword values without appending unit', () => {
+		const styleCard = JSON.parse(JSON.stringify(standardSC.sc_maxi));
+		styleCard.light.defaultStyleCard.container['margin-top-general'] = 'auto';
+		styleCard.light.defaultStyleCard.container['margin-right-general'] = 'auto';
+
+		const cleanVarSC = getSCVariablesObject(styleCard, null, true);
+
+		expect(cleanVarSC['--maxi-light-container-margin-top-general']).toBe('auto');
+		expect(cleanVarSC['--maxi-light-container-margin-right-general']).toBe('auto');
+	});
 });

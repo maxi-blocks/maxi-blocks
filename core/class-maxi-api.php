@@ -654,6 +654,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'has_openai_api_key' => !empty(
                         get_option('openai_api_key_option')
                     ),
+                    'maxi_ai_provider' => get_option('maxi_ai_provider', 'openai'),
+                    'has_ai_key' => get_option('maxi_ai_provider', 'openai') === 'openai'
+                        ? !empty(get_option('openai_api_key_option'))
+                        : !empty(get_option('maxi_ai_api_key')),
                     'model' => get_option('maxi_ai_model'),
                     'language' => get_option('maxi_ai_language'),
                     'tone' => get_option('maxi_ai_tone'),
@@ -665,6 +669,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'services' => get_option('maxi_ai_services'),
                     'business_name' => get_option('maxi_ai_business_name'),
                     'business_info' => get_option('maxi_ai_business_info'),
+                    'has_ai_panel_key' => !empty(get_option('maxi_ai_panel_api_key')),
+                    'ai_panel_use_shared' => (bool) get_option('maxi_ai_panel_use_shared', true),
+                    'ai_panel_provider' => get_option('maxi_ai_panel_provider', 'openai'),
+                    'ai_panel_model' => get_option('maxi_ai_panel_model', 'gpt-4o-mini'),
                 ],
                 'bunny_fonts' => get_option('bunny_fonts'),
                 'core' => [
@@ -3159,30 +3167,101 @@ if (!class_exists('MaxiBlocks_API')):
         }
 
         /**
-         * Proxy AI chat requests to OpenAI API
-         * This keeps the API key secure on the backend
+         * Proxy AI chat requests to the configured AI provider.
+         * This keeps the API key secure on the backend.
          */
         public function proxy_ai_chat($request)
         {
-            $openai_api_key = get_option('openai_api_key_option');
+            // ── Rate limiting ──────────────────────────────────────────────
+            $user_id        = get_current_user_id();
+            $transient_key  = 'maxi_ai_rate_' . $user_id;
+            $max_requests   = (int) apply_filters('maxi_ai_rate_limit', 30);
+            $window_seconds = (int) apply_filters('maxi_ai_rate_window', 60);
+            $current_count  = (int) get_transient($transient_key);
 
-            if (!$openai_api_key) {
+            if ($current_count >= $max_requests) {
+                return new WP_Error(
+                    'rate_limit_exceeded',
+                    sprintf(
+                        'Rate limit exceeded. Maximum %d requests per %d seconds.',
+                        $max_requests,
+                        $window_seconds
+                    ),
+                    ['status' => 429],
+                );
+            }
+
+            set_transient($transient_key, $current_count + 1, $window_seconds);
+
+            // Determine effective provider / key / model
+            $use_shared = (bool) get_option('maxi_ai_panel_use_shared', true);
+
+            $default_model_shared     = 'gpt-3.5-turbo';
+            $default_model_dedicated  = 'gpt-4o-mini';
+
+            if ($use_shared) {
+                $provider = get_option('maxi_ai_provider', 'openai');
+                $api_key  = $provider === 'openai'
+                    ? get_option('openai_api_key_option')
+                    : get_option('maxi_ai_api_key');
+                $model    = get_option('maxi_ai_model', $default_model_shared);
+            } else {
+                $provider = get_option('maxi_ai_panel_provider', 'openai');
+                $api_key  = get_option('maxi_ai_panel_api_key');
+                $model    = get_option('maxi_ai_panel_model', $default_model_dedicated);
+            }
+
+            // get_option() returns '' if the option was saved empty — defaults above are not applied then.
+            if (!is_string($model) || $model === '') {
+                $model = $use_shared ? $default_model_shared : $default_model_dedicated;
+            }
+
+            // Only accept a client-side model override when it is compatible
+            // with the active provider. Prevents sending e.g. "gpt-5.4" to
+            // the Anthropic API when the user switched providers but the
+            // stored model name was not updated.
+            $request_model = $request->get_param('model');
+            if (is_string($request_model) && $request_model !== '') {
+                $request_model = sanitize_text_field(trim($request_model));
+                $model_matches_provider = match ($provider) {
+                    'anthropic' => str_starts_with($request_model, 'claude'),
+                    'openai'    => !str_starts_with($request_model, 'claude') && !str_starts_with($request_model, 'gemini'),
+                    'gemini'    => str_starts_with($request_model, 'gemini'),
+                    default     => true,
+                };
+                if ($model_matches_provider) {
+                    $model = $request_model;
+                }
+            }
+
+            if (!$api_key) {
                 return new WP_Error(
                     'no_api_key',
-                    'OpenAI API key not configured',
+                    'AI API key not configured',
                     ['status' => 500],
                 );
             }
 
-            // Get parameters from request
-            $messages = $request->get_param('messages');
-            $model = $request->get_param('model') ?: 'gpt-3.5-turbo';
+            // Get common parameters from request
+            $messages    = $request->get_param('messages');
             $temperature = $request->get_param('temperature');
-            $streaming = $request->get_param('streaming') ?: false;
+            $streaming   = $request->get_param('streaming') ?: false;
+
+            // Clamp temperature to valid range (0.0 – 2.0).
+            if ($temperature !== null) {
+                $temperature = max(0.0, min(2.0, (float) $temperature));
+            }
 
             // Convert messages to OpenAI format if needed
             if (is_string($messages)) {
-                $messages = json_decode($messages, true);
+                $messages = json_decode($messages, true, 32);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return new WP_Error(
+                        'invalid_json',
+                        'Messages JSON is malformed',
+                        ['status' => 400],
+                    );
+                }
             }
 
             // Validate message format
@@ -3194,48 +3273,91 @@ if (!class_exists('MaxiBlocks_API')):
                 );
             }
 
+            // ── Message cap + validation ───────────────────────────────────
+            $max_messages  = (int) apply_filters('maxi_ai_max_messages', 30);
+            $max_bytes     = (int) apply_filters('maxi_ai_max_payload_bytes', 128_000);
+            $allowed_roles = ['system', 'user', 'assistant'];
+
+            if (count($messages) > $max_messages) {
+                return new WP_Error(
+                    'too_many_messages',
+                    sprintf('Too many messages (max %d).', $max_messages),
+                    ['status' => 400],
+                );
+            }
+
             // Convert LangChain format to OpenAI format
             $converted_messages = [];
+            $total_bytes        = 0;
             foreach ($messages as $message) {
                 if (isset($message['id']) && is_array($message['id'])) {
                     // This is a LangChain message format
                     $message_type = end($message['id']); // Get last element (SystemMessage, HumanMessage, etc.)
                     $content = $message['kwargs']['content'] ?? '';
 
-                    switch ($message_type) {
-                        case 'SystemMessage':
-                            $converted_messages[] = [
-                                'role' => 'system',
-                                'content' => $content,
-                            ];
-                            break;
-                        case 'HumanMessage':
-                            $converted_messages[] = [
-                                'role' => 'user',
-                                'content' => $content,
-                            ];
-                            break;
-                        case 'AIMessage':
-                            $converted_messages[] = [
-                                'role' => 'assistant',
-                                'content' => $content,
-                            ];
-                            break;
-                        default:
-                            // Fallback to user role for unknown types
-                            $converted_messages[] = [
-                                'role' => 'user',
-                                'content' => $content,
-                            ];
-                    }
+                    $role = match ($message_type) {
+                        'SystemMessage' => 'system',
+                        'HumanMessage'  => 'user',
+                        'AIMessage'     => 'assistant',
+                        default         => 'user',
+                    };
+
+                    $converted_messages[] = [
+                        'role'    => $role,
+                        'content' => $content,
+                    ];
+                    $total_bytes += strlen($content);
                 } else {
-                    // Already in OpenAI format, use as-is
-                    $converted_messages[] = $message;
+                    // Already in OpenAI format — strip to role + content only.
+                    $role    = $message['role'] ?? 'user';
+                    $content = $message['content'] ?? '';
+
+                    if (!in_array($role, $allowed_roles, true)) {
+                        $role = 'user';
+                    }
+
+                    // Ensure content is a string (some providers accept arrays).
+                    if (!is_string($content)) {
+                        $content = wp_json_encode($content);
+                    }
+
+                    $converted_messages[] = [
+                        'role'    => $role,
+                        'content' => $content,
+                    ];
+                    $total_bytes += strlen($content);
+                }
+
+                if ($total_bytes > $max_bytes) {
+                    return new WP_Error(
+                        'payload_too_large',
+                        sprintf('Message payload exceeds %d bytes.', $max_bytes),
+                        ['status' => 413],
+                    );
                 }
             }
 
             $messages = $converted_messages;
 
+            // Route to the appropriate provider
+            switch ($provider) {
+                case 'anthropic':
+                    return $this->proxy_ai_chat_anthropic($api_key, $model, $messages);
+
+                // case 'gemini':
+                //     return $this->proxy_ai_chat_gemini($api_key, $model, $messages);
+
+                case 'openai':
+                default:
+                    return $this->proxy_ai_chat_openai($api_key, $model, $messages, $temperature, $streaming);
+            }
+        }
+
+        /**
+         * Send a chat request to OpenAI and return the raw response data.
+         */
+        private function proxy_ai_chat_openai($api_key, $model, $messages, $temperature, $streaming)
+        {
             // Build OpenAI API request
             $body = [
                 'model' => $model,
@@ -3263,7 +3385,7 @@ if (!class_exists('MaxiBlocks_API')):
                 [
                     'timeout' => 30,
                     'headers' => [
-                        'Authorization' => 'Bearer ' . $openai_api_key,
+                        'Authorization' => 'Bearer ' . $api_key,
                         'Content-Type' => 'application/json',
                     ],
                     'body' => wp_json_encode($body),
@@ -3271,10 +3393,11 @@ if (!class_exists('MaxiBlocks_API')):
             );
 
             if (is_wp_error($response)) {
+                error_log('[Maxi AI] OpenAI request failed: ' . $response->get_error_message());
                 return new WP_Error(
                     'openai_request_failed',
-                    $response->get_error_message(),
-                    ['status' => 500],
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
                 );
             }
 
@@ -3282,14 +3405,14 @@ if (!class_exists('MaxiBlocks_API')):
             $response_body = wp_remote_retrieve_body($response);
 
             if ($response_code !== 200) {
+                error_log('[Maxi AI] OpenAI API error (HTTP ' . $response_code . '): ' . $response_body);
                 return new WP_Error(
                     'openai_api_error',
-                    'OpenAI API returned error: ' . $response_body,
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
                     ['status' => $response_code],
                 );
             }
 
-            // Parse and return response
             $data = json_decode($response_body, true);
 
             if (!$data) {
@@ -3301,6 +3424,175 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return rest_ensure_response($data);
+        }
+
+        /**
+         * Send a chat request to Anthropic and normalize to OpenAI response shape.
+         */
+        private function proxy_ai_chat_anthropic($api_key, $model, $messages)
+        {
+            // Separate system messages from conversation messages
+            $system_parts = [];
+            $chat_messages = [];
+            foreach ($messages as $msg) {
+                if (($msg['role'] ?? '') === 'system') {
+                    $system_parts[] = $msg['content'];
+                } else {
+                    $chat_messages[] = [
+                        'role'    => $msg['role'] === 'assistant' ? 'assistant' : 'user',
+                        'content' => $msg['content'],
+                    ];
+                }
+            }
+
+            $body = [
+                'model'      => $model,
+                'max_tokens' => 4096,
+                'messages'   => $chat_messages,
+            ];
+
+            if (!empty($system_parts)) {
+                $body['system'] = implode("\n\n", $system_parts);
+            }
+
+            $response = wp_remote_post(
+                'https://api.anthropic.com/v1/messages',
+                [
+                    'timeout' => 60,
+                    'headers' => [
+                        'x-api-key'         => $api_key,
+                        'anthropic-version' => '2023-06-01',
+                        'Content-Type'      => 'application/json',
+                    ],
+                    'body' => wp_json_encode($body),
+                ],
+            );
+
+            if (is_wp_error($response)) {
+                error_log('[Maxi AI] Anthropic request failed: ' . $response->get_error_message());
+                return new WP_Error(
+                    'anthropic_request_failed',
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
+                );
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_body = wp_remote_retrieve_body($response);
+
+            if ($response_code !== 200) {
+                error_log('[Maxi AI] Anthropic API error (HTTP ' . $response_code . '): ' . $response_body);
+                return new WP_Error(
+                    'anthropic_api_error',
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
+                    ['status' => $response_code],
+                );
+            }
+
+            $data = json_decode($response_body, true);
+
+            if (!$data) {
+                return new WP_Error(
+                    'invalid_response',
+                    'Invalid response from Anthropic API',
+                    ['status' => 500],
+                );
+            }
+
+            // Normalize to OpenAI response shape
+            $text = $data['content'][0]['text'] ?? '';
+            return rest_ensure_response([
+                'choices' => [
+                    [
+                        'message' => [
+                            'role'    => 'assistant',
+                            'content' => $text,
+                        ],
+                    ],
+                ],
+            ]);
+        }
+
+        /**
+         * Send a chat request to Google Gemini and normalize to OpenAI response shape.
+         */
+        private function proxy_ai_chat_gemini($api_key, $model, $messages)
+        {
+            // Separate system messages from conversation messages
+            $system_parts = [];
+            $contents     = [];
+            foreach ($messages as $msg) {
+                if (($msg['role'] ?? '') === 'system') {
+                    $system_parts[] = ['text' => $msg['content']];
+                } else {
+                    $contents[] = [
+                        'role'  => $msg['role'] === 'assistant' ? 'model' : 'user',
+                        'parts' => [['text' => $msg['content']]],
+                    ];
+                }
+            }
+
+            $body = ['contents' => $contents];
+
+            if (!empty($system_parts)) {
+                $body['system_instruction'] = ['parts' => $system_parts];
+            }
+
+            $url = 'https://generativelanguage.googleapis.com/v1beta/models/' .
+                   rawurlencode($model) . ':generateContent?key=' . rawurlencode($api_key);
+
+            $response = wp_remote_post(
+                $url,
+                [
+                    'timeout' => 60,
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'body'    => wp_json_encode($body),
+                ],
+            );
+
+            if (is_wp_error($response)) {
+                error_log('[Maxi AI] Gemini request failed: ' . $response->get_error_message());
+                return new WP_Error(
+                    'gemini_request_failed',
+                    __('The AI provider is currently unreachable. Please try again later.', 'maxi-blocks'),
+                    ['status' => 502],
+                );
+            }
+
+            $response_code = wp_remote_retrieve_response_code($response);
+            $response_body = wp_remote_retrieve_body($response);
+
+            if ($response_code !== 200) {
+                error_log('[Maxi AI] Gemini API error (HTTP ' . $response_code . '): ' . $response_body);
+                return new WP_Error(
+                    'gemini_api_error',
+                    __('The AI provider returned an error. Check your API key, model, or quota.', 'maxi-blocks'),
+                    ['status' => $response_code],
+                );
+            }
+
+            $data = json_decode($response_body, true);
+
+            if (!$data) {
+                return new WP_Error(
+                    'invalid_response',
+                    'Invalid response from Gemini API',
+                    ['status' => 500],
+                );
+            }
+
+            // Normalize to OpenAI response shape
+            $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? '';
+            return rest_ensure_response([
+                'choices' => [
+                    [
+                        'message' => [
+                            'role'    => 'assistant',
+                            'content' => $text,
+                        ],
+                    ],
+                ],
+            ]);
         }
     }
 endif;

@@ -170,7 +170,7 @@
 		"showdown": "^2.1.0",
 		"joi": "^17.13.4",
 		"launch-editor": "^2.14.1",
-		"fast-uri": "^3.1.4",
+		"fast-uri": "^3.1.5",
 		"immutable": "^4.3.9",
 		"linkify-it": "^5.0.2",
 		"postcss": "^8.5.23",

@@ -1,6 +1,13 @@
 {
 	"core": "WordPress/WordPress#6.4.3",
 	"plugins": ["."],
+	"mappings": {
+		"wp-content/mu-plugins/maxi-blocks-wp-env-loopback.php": "./.wp-env/maxi-blocks-wp-env-loopback.php"
+	},
+	"config": {
+		"AUTOMATIC_UPDATER_DISABLED": true,
+		"WP_AUTO_UPDATE_CORE": false
+	},
 	"env": {
 		"tests": {
 			"config": {

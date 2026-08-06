@@ -125,12 +125,12 @@ const openPreviewPage = async page => {
 		});
 	}
 
-	// Wait for the preview page to finish navigating before returning,
-	// so that subsequent waitForSelector calls measure from page-ready,
-	// not from when the tab was opened.
-	await previewPage
-		.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 30000 })
-		.catch(() => {});
+	// The tab may finish navigating before browser.pages() returns it, so an
+	// event-based wait can miss the navigation and consume the full timeout.
+	await previewPage.waitForFunction(
+		() => ['interactive', 'complete'].includes(document.readyState),
+		{ timeout: 30000 }
+	);
 
 	return previewPage;
 };

@@ -32,11 +32,41 @@ const waitForDCContent = async page => {
 	return getDCContent(page);
 };
 
+const waitForDCContentValue = async (page, expected) => {
+	const selector = '.maxi-text-block .maxi-text-block__content';
+	const frame = await getEditorFrame(page);
+	await frame.waitForFunction(
+		(selector, value) =>
+			document.querySelector(selector)?.textContent.trim() === value,
+		{ timeout: 10000 },
+		selector,
+		expected
+	);
+};
+
 const getDCImageContent = async page => {
 	const frame = await getEditorFrame(page);
 	return frame.$eval(
 		'.maxi-image-block .maxi-image-block__image',
 		el => el.src
+	);
+};
+
+const waitForDCImageContent = async page => {
+	const selector = '.maxi-image-block .maxi-image-block__image';
+	const frame = await getEditorFrame(page);
+	await frame.waitForFunction(
+		selector => {
+			const src = document.querySelector(selector)?.src;
+			return (
+				src &&
+				/\/wp-content\/uploads\/\d{4}\/\d{2}\/foo(?:-\d+)?\.webp$/.test(
+					src
+				)
+			);
+		},
+		{ timeout: 10000 },
+		selector
 	);
 };
 
@@ -320,10 +350,6 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type',
 			'users'
 		);
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'users', 'users%2F')
-		);
-		await page.waitForTimeout(300);
 
 		// Select "Username" as field
 		await selectFromSearchableControl(
@@ -332,6 +358,7 @@ describe('Dynamic content component for text blocks', () => {
 			'username'
 		);
 
+		await waitForDCContentValue(page, 'admin');
 		expect(await getDCContent(page)).toBe('admin');
 
 		// Select "Biographical info" as field
@@ -360,10 +387,6 @@ describe('Dynamic content component for text blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type',
 			'categories'
 		);
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'categories', 'include=')
-		);
-		await page.waitForTimeout(1000);
 
 		// Select "Name" as field
 		await selectFromSearchableControl(
@@ -372,6 +395,7 @@ describe('Dynamic content component for text blocks', () => {
 			'name'
 		);
 
+		await waitForDCContentValue(page, 'Uncategorized');
 		expect(await getDCContent(page)).toBe('Uncategorized');
 
 		// Select "Count" as field
@@ -466,10 +490,7 @@ describe('Dynamic content component for image blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-type',
 			'media'
 		);
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'media', 'include=')
-		);
-		await page.waitForTimeout(300);
+		await waitForDCImageContent(page);
 
 		const imageUrl = await getDCImageContent(page);
 		const url = new URL(imageUrl);
@@ -484,10 +505,7 @@ describe('Dynamic content component for image blocks', () => {
 			'.maxi-dynamic-content .maxi-dc-relation',
 			'by-date'
 		);
-		await page.waitForResponse(response =>
-			isResponseOk(response, 'media', 'orderby=date')
-		);
-		await page.waitForTimeout(300);
+		await waitForDCImageContent(page);
 
 		const imageUrl1 = await getDCImageContent(page);
 		const url1 = new URL(imageUrl1);

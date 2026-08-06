@@ -128,6 +128,15 @@ const openPreviewPage = async page => {
 	// The tab may finish navigating before browser.pages() returns it, so an
 	// event-based wait can miss the navigation and consume the full timeout.
 	await previewPage.waitForFunction(
+		expectedHref =>
+			expectedHref
+				? window.location.href === expectedHref
+				: window.location.href !== 'about:blank',
+		{ timeout: 30000 },
+		previewHref
+	);
+
+	await previewPage.waitForFunction(
 		() => ['interactive', 'complete'].includes(document.readyState),
 		{ timeout: 30000 }
 	);

@@ -55,6 +55,7 @@ jobs:
                   chmod -R 767 ./
                   npm run wp-env -- start --update
                   npm run wp-env -- run tests-cli wp core version
+                  npm run wp-env -- run tests-cli 'test "$(wp core version)" = "6.4.3"'
                   npm run wp-env -- run tests-cli wp core verify-checksums
             - name: Setup WordPress debug log
               run: |

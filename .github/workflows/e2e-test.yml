@@ -7,8 +7,6 @@ on:
 jobs:
     e2e-js:
         runs-on: ubuntu-latest
-        env:
-            WP_ENV_CORE: ${{ runner.temp }}/wordpress-6.4.3/wordpress
         steps:
             - uses: actions/checkout@v4
               with:
@@ -52,6 +50,8 @@ jobs:
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Install WordPress
+              env:
+                  WP_ENV_CORE: ${{ runner.temp }}/wordpress-6.4.3/wordpress
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./

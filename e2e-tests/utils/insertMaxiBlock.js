@@ -2,6 +2,12 @@ import { insertBlock } from '@wordpress/e2e-test-utils';
 import getEditorFrame from './getEditorFrame';
 
 const insertMaxiBlock = async (page, blockName) => {
+	const inserterSelector = [
+		'.edit-post-header [aria-label="Add block"]',
+		'.edit-post-header [aria-label="Toggle block inserter"]',
+	].join(',');
+
+	await page.waitForSelector(inserterSelector, { visible: true });
 	await insertBlock(blockName);
 
 	const blockClass = `.maxi-${blockName

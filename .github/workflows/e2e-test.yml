@@ -36,7 +36,7 @@ jobs:
               run: |
                   safe-chain setup
                   source ~/.bashrc || source ~/.zshrc || true
-                  npm install --legacy-peer-deps
+                  npm ci --legacy-peer-deps
             - name: Create .env file
               run: |
                   touch .env
@@ -53,7 +53,9 @@ jobs:
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
-                  npm run wp-env start
+                  npm run wp-env -- start --update
+                  npm run wp-env -- run tests-cli wp core version
+                  npm run wp-env -- run tests-cli wp core verify-checksums
             - name: Setup WordPress debug log
               run: |
                   WP_PATH="$(npm run wp-env install-path --silent)"

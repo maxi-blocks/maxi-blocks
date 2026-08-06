@@ -36,7 +36,7 @@ jobs:
               run: |
                   safe-chain setup
                   source ~/.bashrc || source ~/.zshrc || true
-                  npm install --legacy-peer-deps
+                  npm ci --legacy-peer-deps
             - name: Install Playwright browsers
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
@@ -56,7 +56,9 @@ jobs:
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
-                  npm run wp-env start
+                  npm run wp-env -- start --update
+                  npm run wp-env -- run tests-cli wp core version
+                  npm run wp-env -- run tests-cli wp core verify-checksums
             - name: Running the tests
               run: |
                   source ~/.bashrc || source ~/.zshrc || true

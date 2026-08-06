@@ -93,9 +93,9 @@ const ButtonInserter = memo(props => {
 				>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
-						viewBox='0 0 24 24'
-						width='24'
-						height='24'
+						viewBox='0 0 26 26'
+						width='16'
+						height='16'
 						role='img'
 						aria-hidden='true'
 						focusable='false'
@@ -108,117 +108,122 @@ const ButtonInserter = memo(props => {
 	);
 });
 
-const WrapperBlockInserter = memo(forwardRef((props, ref) => {
-	const { clientId, isSelected, hasSelectedChild } = props;
+const WrapperBlockInserter = memo(
+	forwardRef((props, ref) => {
+		const { clientId, isSelected, hasSelectedChild } = props;
 
-	const { getBlockName, getBlockParents } = select('core/block-editor');
+		const { getBlockName, getBlockParents } = select('core/block-editor');
 
-	const blockHierarchy = {};
-	const blockOrder = [...getBlockParents(clientId), clientId];
-	blockOrder.forEach(blockClientId => {
-		if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
-			blockHierarchy[blockClientId] = getBlockName(blockClientId);
-	});
+		const blockHierarchy = {};
+		const blockOrder = [...getBlockParents(clientId), clientId];
+		blockOrder.forEach(blockClientId => {
+			if (WRAPPER_BLOCKS.includes(getBlockName(blockClientId)))
+				blockHierarchy[blockClientId] = getBlockName(blockClientId);
+		});
 
-	const shouldRemain = useRef(false);
-	const setShouldRemain = val => {
-		shouldRemain.current = val;
-	};
+		const shouldRemain = useRef(false);
+		const setShouldRemain = val => {
+			shouldRemain.current = val;
+		};
 
-	if (!ref?.current) return null;
+		if (!ref?.current) return null;
 
-	const { width } = ref.current.getBoundingClientRect();
+		const { width } = ref.current.getBoundingClientRect();
 
-	const style = {
-		'--maxi-inter-blocks-inserter-width': `${width}px`,
-	};
+		const style = {
+			'--maxi-inter-blocks-inserter-width': `${width}px`,
+		};
 
-	if (isSelected || hasSelectedChild || shouldRemain.current)
-		return (
-			<Popover
-				key={`maxi-wrapper-block-inserter__${clientId}`}
-				anchor={ref.current}
-				className='maxi-wrapper-block-inserter'
-				noArrow
-				animate={false}
-				focusOnMount={false}
-				style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
-				__unstableSlotName='block-toolbar'
-				useAnimationFrame
-				observeBlockPosition={clientId}
-				dataclientid={clientId}
-				position='bottom center'
-				placement='bottom'
-			>
-				{Object.keys(blockHierarchy).length > 1 && (
-					<Dropdown
-						className='maxi-block-inserter__dropdown'
-						contentClassName='maxi-block-inserter__dropdown-content'
-						position='bottom center'
-						renderToggle={({ onToggle }) => (
-							<ButtonInserter
-								onToggle={onToggle}
-								setShouldRemain={setShouldRemain}
-								style={style}
-							/>
-						)}
-						renderContent={({ onToggle }) => (
-							<div className='maxi-block-inserter__content'>
-								{Object.entries(blockHierarchy).map(
-									([blockClientId, blockName]) => (
-										<Inserter
-											key={`maxi-wrapper-block-inserter__content-${blockClientId}`}
-											rootClientId={blockClientId}
-											position='bottom center'
-											isAppender
-											__experimentalIsQuick
-											onSelectOrClose={() =>
-												setShouldRemain(false)
-											}
-											renderToggle={({
-												onToggle: onToggleInserter,
-											}) => (
-												<Button
-													key={`maxi-wrapper-block-inserter__content-item-${blockClientId}`}
-													className='maxi-wrapper-block-inserter__content-item'
-													onClick={() => {
-														onToggleInserter();
-													}}
-												>
-													Add{' '}
-													{blockName
-														.replace(
-															'maxi-blocks/',
-															''
-														)
-														.replace('-', ' ')}
-												</Button>
-											)}
-										/>
-									)
-								)}
-							</div>
-						)}
-					/>
-				)}
-				{Object.keys(blockHierarchy).length <= 1 && (
-					<Inserter
-						key={`maxi-wrapper-block-inserter__content-${clientId}`}
-						rootClientId={clientId}
-						position='bottom center'
-						isAppender
-						__experimentalIsQuick
-						onSelectOrClose={() => setShouldRemain(false)}
-						renderToggle={({ onToggle }) => (
-							<ButtonInserter onToggle={onToggle} style={style} />
-						)}
-					/>
-				)}
-			</Popover>
-		);
+		if (isSelected || hasSelectedChild || shouldRemain.current)
+			return (
+				<Popover
+					key={`maxi-wrapper-block-inserter__${clientId}`}
+					anchor={ref.current}
+					className='maxi-wrapper-block-inserter'
+					noArrow
+					animate={false}
+					focusOnMount={false}
+					style={{ zIndex: Object.keys(blockHierarchy).length + 1 }}
+					__unstableSlotName='block-toolbar'
+					useAnimationFrame
+					observeBlockPosition={clientId}
+					dataclientid={clientId}
+					position='bottom center'
+					placement='bottom'
+				>
+					{Object.keys(blockHierarchy).length > 1 && (
+						<Dropdown
+							className='maxi-block-inserter__dropdown'
+							contentClassName='maxi-block-inserter__dropdown-content'
+							position='bottom center'
+							renderToggle={({ onToggle }) => (
+								<ButtonInserter
+									onToggle={onToggle}
+									setShouldRemain={setShouldRemain}
+									style={style}
+								/>
+							)}
+							renderContent={({ onToggle }) => (
+								<div className='maxi-block-inserter__content'>
+									{Object.entries(blockHierarchy).map(
+										([blockClientId, blockName]) => (
+											<Inserter
+												key={`maxi-wrapper-block-inserter__content-${blockClientId}`}
+												rootClientId={blockClientId}
+												position='bottom center'
+												isAppender
+												__experimentalIsQuick
+												onSelectOrClose={() =>
+													setShouldRemain(false)
+												}
+												renderToggle={({
+													onToggle: onToggleInserter,
+												}) => (
+													<Button
+														key={`maxi-wrapper-block-inserter__content-item-${blockClientId}`}
+														className='maxi-wrapper-block-inserter__content-item'
+														onClick={() => {
+															onToggleInserter();
+														}}
+													>
+														Add{' '}
+														{blockName
+															.replace(
+																'maxi-blocks/',
+																''
+															)
+															.replace('-', ' ')}
+													</Button>
+												)}
+											/>
+										)
+									)}
+								</div>
+							)}
+						/>
+					)}
+					{Object.keys(blockHierarchy).length <= 1 && (
+						<Inserter
+							key={`maxi-wrapper-block-inserter__content-${clientId}`}
+							rootClientId={clientId}
+							position='bottom center'
+							isAppender
+							__experimentalIsQuick
+							onSelectOrClose={() => setShouldRemain(false)}
+							renderToggle={({ onToggle }) => (
+								<ButtonInserter
+									onToggle={onToggle}
+									style={style}
+								/>
+							)}
+						/>
+					)}
+				</Popover>
+			);
 
-	return null;
-}));
+		return null;
+	})
+);
 
 const InterBlockToggle = memo(props => {
 	countProfile('InterBlockToggle render');
@@ -263,9 +268,9 @@ const InterBlockToggle = memo(props => {
 			>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 24 24'
-					width='24'
-					height='24'
+					viewBox='0 0 26 26'
+					width='16'
+					height='16'
 					role='img'
 					aria-hidden='true'
 					focusable='false'
@@ -303,70 +308,73 @@ const InterBlockToggle = memo(props => {
 	);
 });
 
-const InterBlockInserter = memo(forwardRef((props, ref) => {
-	countProfile('InterBlockInserter render');
+const InterBlockInserter = memo(
+	forwardRef((props, ref) => {
+		countProfile('InterBlockInserter render');
 
-	const { clientId } = props;
-	const blockRef = ref?.current?.blockRef?.current;
+		const { clientId } = props;
+		const blockRef = ref?.current?.blockRef?.current;
 
-	const popoverRef = useRef(null);
+		const popoverRef = useRef(null);
 
-	const { nextClientId, isNextMaxiBlock } = useSelect(select => {
-		const { getBlockOrder, getBlockRootClientId, getBlockName } =
-			select('core/block-editor');
+		const { nextClientId, isNextMaxiBlock } = useSelect(select => {
+			const { getBlockOrder, getBlockRootClientId, getBlockName } =
+				select('core/block-editor');
 
-		const rootClientId = getBlockRootClientId(clientId);
-		const blockOrder = getBlockOrder(rootClientId);
+			const rootClientId = getBlockRootClientId(clientId);
+			const blockOrder = getBlockOrder(rootClientId);
 
-		const index = blockOrder.indexOf(clientId);
+			const index = blockOrder.indexOf(clientId);
 
-		const nextClientId = blockOrder[index + 1];
+			const nextClientId = blockOrder[index + 1];
 
-		const isNextMaxiBlock =
-			nextClientId && getBlockName(nextClientId).includes('maxi-blocks/');
+			const isNextMaxiBlock =
+				nextClientId &&
+				getBlockName(nextClientId).includes('maxi-blocks/');
 
-		return {
-			nextClientId,
-			isNextMaxiBlock,
-		};
-	}, []);
+			return {
+				nextClientId,
+				isNextMaxiBlock,
+			};
+		}, []);
 
-	if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+		if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
 
-	return (
-		<Popover
-			ref={popoverRef}
-			anchor={blockRef}
-			key={`maxi-inter-blocks-inserter__${clientId}`}
-			className='maxi-inter-blocks-inserter'
-			noArrow
-			animate={false}
-			position='bottom center'
-			focusOnMount={false}
-			__unstableSlotName='block-toolbar'
-			observeBlockPosition={clientId}
-			dataclientid={clientId}
-			useAnimationFrame
-			useHide
-			strategy='fixed'
-		>
-			<Inserter
-				key={`maxi-inter-blocks-inserter__content-${clientId}`}
-				clientId={nextClientId}
+		return (
+			<Popover
+				ref={popoverRef}
+				anchor={blockRef}
+				key={`maxi-inter-blocks-inserter__${clientId}`}
+				className='maxi-inter-blocks-inserter'
+				noArrow
+				animate={false}
 				position='bottom center'
-				__experimentalIsQuick
-				renderToggle={({ onToggle: onToggleInserter, isOpen }) => (
-					<InterBlockToggle
-						onToggleInserter={onToggleInserter}
-						isOpen={isOpen}
-						clientId={clientId}
-						blockRef={blockRef}
-					/>
-				)}
-			/>
-		</Popover>
-	);
-}));
+				focusOnMount={false}
+				__unstableSlotName='block-toolbar'
+				observeBlockPosition={clientId}
+				dataclientid={clientId}
+				useAnimationFrame
+				useHide
+				strategy='fixed'
+			>
+				<Inserter
+					key={`maxi-inter-blocks-inserter__content-${clientId}`}
+					clientId={nextClientId}
+					position='bottom center'
+					__experimentalIsQuick
+					renderToggle={({ onToggle: onToggleInserter, isOpen }) => (
+						<InterBlockToggle
+							onToggleInserter={onToggleInserter}
+							isOpen={isOpen}
+							clientId={clientId}
+							blockRef={blockRef}
+						/>
+					)}
+				/>
+			</Popover>
+		);
+	})
+);
 
 BlockInserter.WrapperInserter = WrapperBlockInserter;
 BlockInserter.InterBlockInserter = InterBlockInserter;

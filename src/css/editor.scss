@@ -442,8 +442,8 @@ svg path#styleCardBoat_b,
 		border: 2px solid var(--maxi-light-blue-alt);
 		border-radius: 0;
 		box-shadow: none !important;
+		display: none;
 		opacity: 0;
-		visibility: hidden;
 	}
 
 	&.maxi-block--repeater::after {
@@ -469,16 +469,16 @@ svg path#styleCardBoat_b,
 				content: '';
 				position: absolute;
 				pointer-events: none;
+				display: block;
 				opacity: 1;
-				visibility: visible;
 			}
 		}
 	}
 
 	&.is-selected {
 		&::after {
+			display: block;
 			opacity: 1;
-			visibility: visible;
 
 			&:not(.maxi-block--is-repeater) {
 				border-color: var(--maxi-primary-color);

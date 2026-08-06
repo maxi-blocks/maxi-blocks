@@ -1,5 +1,5 @@
 {
-	"core": "https://wordpress.org/wordpress-6.4.3.zip",
+	"core": "https://downloads.wordpress.org/release/wordpress-6.4.3.zip",
 	"plugins": ["."],
 	"mappings": {
 		"wp-content/mu-plugins/maxi-blocks-wp-env-loopback.php": "./.wp-env/maxi-blocks-wp-env-loopback.php"

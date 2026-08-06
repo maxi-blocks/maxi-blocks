@@ -7,6 +7,8 @@ on:
 jobs:
     e2e-js-playwright:
         runs-on: ubuntu-latest
+        env:
+            WP_ENV_CORE: ${{ runner.temp }}/wordpress-6.4.3/wordpress
         steps:
             - uses: actions/checkout@v4
               with:
@@ -56,8 +58,9 @@ jobs:
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
-                  npm run wp-env -- destroy || true
-                  npm run wp-env -- start --update
+                  curl --fail --location --output "${RUNNER_TEMP}/wordpress-6.4.3.zip" https://downloads.wordpress.org/release/wordpress-6.4.3.zip
+                  unzip -q "${RUNNER_TEMP}/wordpress-6.4.3.zip" -d "${RUNNER_TEMP}/wordpress-6.4.3"
+                  npm run wp-env -- start
                   npm run wp-env -- run tests-cli wp core version
                   npm run wp-env -- run tests-cli sh -c 'test "$(wp core version)" = "6.4.3"'
                   npm run wp-env -- run tests-cli wp core verify-checksums

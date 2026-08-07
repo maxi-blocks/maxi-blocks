@@ -9,6 +9,7 @@ for (const environment of ['cli', 'tests-cli']) {
 		execFileSync(wpEnv, ['run', environment, 'wp', ...args], {
 			encoding: 'utf8',
 			stdio: ['ignore', 'pipe', 'inherit'],
+			timeout: 120_000,
 		}).trim();
 
 	const installedVersion = run('core', 'version');

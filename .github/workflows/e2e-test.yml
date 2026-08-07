@@ -82,4 +82,4 @@ jobs:
             - name: Running the tests
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
-                  npm run test:e2e
+                  npm run test:e2e -- --runInBand

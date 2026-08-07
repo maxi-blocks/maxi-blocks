@@ -137,6 +137,14 @@ function observeConsoleLogging() {
 			return;
 		}
 
+		if (
+			text.startsWith(
+				'[RECEIVE_STYLE_CARDS] Cache validation failed (non-fatal), fetching fresh data:'
+			) && text.includes('"code":"rest_no_route"')
+		) {
+			return;
+		}
+
 		// Network errors are ignored only if we are intentionally testing
 		// offline mode.
 		if (

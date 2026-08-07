@@ -93,7 +93,7 @@ const ButtonInserter = memo(props => {
 				>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
-						viewBox='0 0 26 26'
+						viewBox='0 0 27 27'
 						width='16'
 						height='16'
 						role='img'
@@ -268,7 +268,7 @@ const InterBlockToggle = memo(props => {
 			>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 26 26'
+					viewBox='0 0 27 27'
 					width='16'
 					height='16'
 					role='img'

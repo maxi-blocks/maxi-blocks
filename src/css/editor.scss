@@ -655,6 +655,13 @@ html body.maxi-blocks--active.editor-styles-wrapper {
 	padding: 0;
 }
 
+/** Keep hover controls from creating a second horizontal scrollbar inside the
+ * WP 7+ editor iframe. Responsive previews wider than the editor remain
+ * scrollable through .interface-interface-skeleton__content. */
+html.block-editor-iframe__html {
+	overflow-x: hidden;
+}
+
 body.maxi-blocks--active .editor-styles-wrapper .has-global-padding,
 body.maxi-blocks--active
 	.is-root-container.is-desktop-preview.has-global-padding {

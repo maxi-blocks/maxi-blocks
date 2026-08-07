@@ -4,6 +4,9 @@
 	"mappings": {
 		"wp-content/mu-plugins/maxi-blocks-wp-env-loopback.php": "./.wp-env/maxi-blocks-wp-env-loopback.php"
 	},
+	"lifecycleScripts": {
+		"afterStart": "node ./.wp-env/ensure-wordpress-version.js"
+	},
 	"config": {
 		"AUTOMATIC_UPDATER_DISABLED": true,
 		"WP_AUTO_UPDATE_CORE": false
@@ -14,7 +17,9 @@
 				"ALLOW_UNFILTERED_UPLOADS": true,
 				"WP_DEBUG": true,
 				"WP_DEBUG_LOG": true,
-				"WP_DEBUG_DISPLAY": false
+				"WP_DEBUG_DISPLAY": false,
+				"AUTOMATIC_UPDATER_DISABLED": true,
+				"WP_AUTO_UPDATE_CORE": false
 			}
 		}
 	}

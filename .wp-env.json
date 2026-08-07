@@ -1,6 +1,7 @@
 {
 	"core": "https://downloads.wordpress.org/release/wordpress-6.4.3.zip",
 	"plugins": ["."],
+	"themes": ["https://downloads.wordpress.org/theme/twentytwentyone.2.0.zip"],
 	"mappings": {
 		"wp-content/mu-plugins/maxi-blocks-wp-env-loopback.php": "./.wp-env/maxi-blocks-wp-env-loopback.php"
 	},

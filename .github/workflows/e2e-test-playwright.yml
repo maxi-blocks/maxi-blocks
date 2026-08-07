@@ -61,6 +61,7 @@ jobs:
                   curl --fail --location --output "${RUNNER_TEMP}/wordpress-6.4.3.zip" https://downloads.wordpress.org/release/wordpress-6.4.3.zip
                   unzip -q "${RUNNER_TEMP}/wordpress-6.4.3.zip" -d "${RUNNER_TEMP}/wordpress-6.4.3"
                   npm run wp-env -- start
+                  npm run wp-env -- run tests-cli wp theme install twentytwentyone -- --version=2.0
                   npm run wp-env -- run tests-cli wp core version
                   npm run wp-env -- run tests-cli sh -c 'test "$(wp core version)" = "6.4.3"'
                   npm run wp-env -- run tests-cli wp core verify-checksums -- --exclude=wp-config-sample.php,wp-cli.yml

@@ -2,7 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { ButtonBlockAppender, Inserter } from '@wordpress/block-editor';
+import { Inserter } from '@wordpress/block-editor';
 import { select, useDispatch, useSelect } from '@wordpress/data';
 import {
 	forwardRef,
@@ -11,7 +11,7 @@ import {
 	useRef,
 	useState,
 } from '@wordpress/element';
-import { Tooltip } from '@wordpress/components';
+import { Button as WordPressButton, Tooltip } from '@wordpress/components';
 
 /**
  * External dependencies
@@ -40,6 +40,42 @@ const WRAPPER_BLOCKS = [
 	'maxi-blocks/slide-maxi',
 ];
 
+const MaxiBlockAppender = ({ rootClientId, className }) => (
+	<Inserter
+		position='bottom center'
+		rootClientId={rootClientId}
+		__experimentalIsQuick
+		isAppender
+		renderToggle={({ onToggle, disabled, isOpen, hasSingleBlockType }) => (
+			<WordPressButton
+				__next40pxDefaultSize
+				className={classnames(
+					className,
+					'block-editor-button-block-appender'
+				)}
+				onClick={onToggle}
+				aria-haspopup={!hasSingleBlockType ? 'true' : undefined}
+				aria-expanded={!hasSingleBlockType ? isOpen : undefined}
+				disabled={disabled}
+				label={__('Add block', 'maxi-blocks')}
+				showTooltip
+			>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					viewBox='0 0 27 27'
+					fill='currentColor'
+					width='24'
+					height='24'
+					aria-hidden='true'
+					focusable='false'
+				>
+					<path d='M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z' />
+				</svg>
+			</WordPressButton>
+		)}
+	/>
+);
+
 const BlockInserter = memo(props => {
 	const { className, clientId } = props;
 
@@ -57,7 +93,7 @@ const BlockInserter = memo(props => {
 					selectBlock(clientId);
 			}}
 		>
-			<ButtonBlockAppender
+			<MaxiBlockAppender
 				rootClientId={clientId}
 				className={classnames(
 					'maxi-components-button',

@@ -1019,22 +1019,27 @@ body.maxi-blocks--active
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
-	width: 9px !important;
-	height: 31px !important;
+	width: 13px !important;
+	height: 30px !important;
 	padding: 0 !important;
 	margin-left: 4px !important;
 	margin-right: 4px !important;
 	border-radius: 5px !important;
+	color: #fff !important;
 
 	svg {
 		width: 10px !important;
 		height: 10px !important;
 		fill: var(--maxi-grey) !important;
+		&:hover {
+			fill: var(--maxi-secondary-color) !important;
+		}
 	}
 
 	&:hover {
-		border-color: var(--maxi-grey-dark) !important;
-		svg {
+		border: none !important;
+		svg,
+		path {
 			fill: var(--maxi-secondary-color) !important;
 		}
 	}

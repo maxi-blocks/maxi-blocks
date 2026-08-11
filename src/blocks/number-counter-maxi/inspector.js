@@ -79,6 +79,7 @@ const Inspector = props => {
 													blockStyle={
 														attributes.blockStyle
 													}
+													clientId={props.clientId}
 													onChangeInline={(
 														obj,
 														target

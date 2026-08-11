@@ -102,6 +102,45 @@ describe('getNumberCounterStyles', () => {
 		);
 	});
 
+	it('Uses block palette variables when Style Card colours are overridden', () => {
+		const obj = {
+			'number-counter-text-palette-status-general': true,
+			'number-counter-text-palette-sc-status-general': true,
+			'number-counter-text-palette-color-general': 3,
+			'number-counter-text-palette-opacity-general': 0.8,
+			'number-counter-circle-background-palette-status': true,
+			'number-counter-circle-background-palette-sc-status': true,
+			'number-counter-circle-background-palette-color': 5,
+			'number-counter-circle-background-palette-opacity': 0.7,
+			'number-counter-circle-bar-palette-status-general': true,
+			'number-counter-circle-bar-palette-sc-status-general': true,
+			'number-counter-circle-bar-palette-color-general': 6,
+			'number-counter-circle-bar-palette-opacity-general': 0.6,
+		};
+
+		const result = getNumberCounterStyles({
+			obj,
+			target: '.maxi-number-counter__box',
+			blockStyle: 'light',
+		});
+
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__text'
+			].numberCounterText.general.color
+		).toBe('rgba(var(--maxi-light-color-3,155,155,155),0.8)');
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__background'
+			].numberCounterBackground.general.stroke
+		).toBe('rgba(var(--maxi-light-color-5,0,0,0),0.7)');
+		expect(
+			result[
+				' .maxi-number-counter__box .maxi-number-counter__box__circle'
+			].numberCounterCircleBar.general.stroke
+		).toBe('rgba(var(--maxi-light-color-6,201,52,10),0.6)');
+	});
+
 	it('Does not emit a block font override when no font family is set', () => {
 		const result = getNumberCounterStyles({
 			obj: {},

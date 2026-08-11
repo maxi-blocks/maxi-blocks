@@ -442,7 +442,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 						const colorSpan = item.querySelector(
 							'.maxi-style-cards__custom-color-presets__box__item'
 						);
-						const colorName = item.getAttribute('title') || '';
+						const colorName = item.dataset.colorName || '';
 						// Use data-color-id attribute we added to the component
 						const colorId = item.dataset.colorId
 							? Number(item.dataset.colorId)
@@ -453,10 +453,7 @@ const MaxiStyleCardsEditor = forwardRef(({ styleCards, setIsVisible }, ref) => {
 							value: colorSpan
 								? colorSpan.style.background
 								: 'transparent',
-							name:
-								colorName === __('Custom Colour', 'maxi-blocks')
-									? ''
-									: colorName,
+							name: colorName,
 						};
 					});
 

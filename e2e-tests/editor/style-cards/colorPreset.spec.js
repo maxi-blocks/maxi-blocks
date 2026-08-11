@@ -18,6 +18,34 @@ describe('StyleCards ColorPresets', () => {
 		});
 		await copySCToEdit(page, `copy - ${Date.now()}`);
 
+		await page.$eval(
+			'.maxi-blocks-sc__type--custom-color-presets .maxi-accordion-control__item__button',
+			button => button.click()
+		);
+		await page.$eval(
+			'.maxi-style-cards__custom-color-presets__add-button',
+			button => button.click()
+		);
+
+		const customColorLabels = await page.$eval(
+			'.maxi-style-cards__custom-color-presets__box',
+			color => ({
+				swatch: color.title,
+				remove: color.querySelector(
+					'.maxi-style-cards__custom-color-presets__remove-button'
+				).title,
+			})
+		);
+
+		expect(customColorLabels.swatch).toMatch(/^#[0-9A-F]{6}$/);
+		expect(customColorLabels.remove).toStrictEqual(
+			`Remove ${customColorLabels.swatch}`
+		);
+		await page.$eval(
+			'.maxi-style-cards__custom-color-presets__remove-button',
+			button => button.click()
+		);
+
 		// ColorControl check palette-color
 		await page.$$eval(
 			'.maxi-accordion-control__item__panel .maxi-style-cards__quick-color-presets .maxi-style-cards__quick-color-presets__box',

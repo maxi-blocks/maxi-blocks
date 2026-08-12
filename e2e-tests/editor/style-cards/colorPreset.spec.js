@@ -47,6 +47,10 @@ describe('StyleCards ColorPresets', () => {
 		);
 
 		// ColorControl check palette-color
+		await page.$eval(
+			'.maxi-blocks-sc__type--color:not(.maxi-blocks-sc__type--custom-color-presets) .maxi-accordion-control__item__button',
+			button => button.click()
+		);
 		await page.$$eval(
 			'.maxi-accordion-control__item__panel .maxi-style-cards__quick-color-presets .maxi-style-cards__quick-color-presets__box',
 			buttons => buttons[3].click()

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-10T10:40:23+00:00\n"
+"POT-Creation-Date: 2026-08-12T10:58:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -136,7 +136,7 @@ msgid "Deactivating…"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:358
-#: src/editor/style-cards/maxiStyleCardsEditor.js:839
+#: src/editor/style-cards/maxiStyleCardsEditor.js:836
 msgid "Activate"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:1403
 #: core/admin/class-maxi-dashboard.php:1479
 #: core/admin/class-maxi-dashboard.php:1691
-#: src/editor/style-cards/maxiStyleCardsEditor.js:830
+#: src/editor/style-cards/maxiStyleCardsEditor.js:827
 msgid "Save changes"
 msgstr ""
 
@@ -762,7 +762,7 @@ msgstr ""
 #: src/components/background-control/imageLayer.js:304
 #: src/components/dynamic-content/index.js:182
 #: src/components/image-alt-control/index.js:60
-#: src/editor/style-cards/maxiStyleCardsTab.js:1148
+#: src/editor/style-cards/maxiStyleCardsTab.js:1135
 msgid "Custom"
 msgstr ""
 
@@ -1196,7 +1196,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:760
 #: core/admin/quick-start/class-maxi-quick-start.php:801
 #: src/components/media-uploader-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:1049
+#: src/editor/style-cards/maxiStyleCardsTab.js:1047
 msgid "Remove"
 msgstr ""
 
@@ -2451,7 +2451,7 @@ msgstr ""
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:963
 #: core/admin/starter-sites/src/library/modal.js:162
 #: src/components/prompt-control/components/history-buttons/index.js:70
-#: src/editor/style-cards/maxiStyleCardsEditor.js:722
+#: src/editor/style-cards/maxiStyleCardsEditor.js:719
 msgid "Import"
 msgstr ""
 
@@ -2891,7 +2891,7 @@ msgstr ""
 #: src/blocks/video-maxi/data.js:135
 #: src/components/background-control/colorLayer.js:192
 #: src/components/background-control/index.js:121
-#: src/editor/style-cards/maxiStyleCardsTab.js:604
+#: src/editor/style-cards/maxiStyleCardsTab.js:607
 #: src/extensions/indicators/listViewObserver.js:72
 msgid "Background"
 msgstr ""
@@ -2938,7 +2938,7 @@ msgstr ""
 #: src/components/icon-control/index.js:135
 #: src/components/inspector-tabs/inspector-border.js:63
 #: src/components/toolbar/components/border/index.js:69
-#: src/editor/style-cards/maxiStyleCardsTab.js:621
+#: src/editor/style-cards/maxiStyleCardsTab.js:624
 #: src/extensions/relations/getCanvasSettings.js:141
 #: src/extensions/styles/transitions/transitionDefault.js:6
 msgid "Border"
@@ -3459,7 +3459,7 @@ msgstr ""
 #: src/blocks/image-maxi/inspector.js:571
 #: src/blocks/list-item-maxi/inspector.js:86
 #: src/blocks/map-maxi/inspector.js:205
-#: src/blocks/number-counter-maxi/inspector.js:151
+#: src/blocks/number-counter-maxi/inspector.js:152
 #: src/blocks/pane-maxi/inspector.js:149
 #: src/blocks/row-maxi/inspector.js:198
 #: src/blocks/search-maxi/inspector.js:409
@@ -3578,10 +3578,10 @@ msgid "Button"
 msgstr ""
 
 #: src/blocks/button-maxi/inspector.js:91
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:431
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:432
 #: src/blocks/search-maxi/components/button-control/index.js:33
 #: src/blocks/text-maxi/components/list-options-control/index.js:263
-#: src/editor/style-cards/maxiStyleCardsTab.js:587
+#: src/editor/style-cards/maxiStyleCardsTab.js:590
 msgid "Text"
 msgstr ""
 
@@ -3592,7 +3592,7 @@ msgstr ""
 #: src/blocks/button-maxi/inspector.js:253
 #: src/blocks/divider-maxi/inspector.js:282
 #: src/blocks/image-maxi/inspector.js:543
-#: src/blocks/number-counter-maxi/inspector.js:125
+#: src/blocks/number-counter-maxi/inspector.js:126
 #: src/blocks/svg-icon-maxi/inspector.js:307
 #: src/blocks/video-maxi/inspector.js:236
 msgid "Canvas"
@@ -3710,7 +3710,7 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:294
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:514
 #: src/components/divider-control/index.js:325
-#: src/editor/style-cards/maxiStyleCardsTab.js:737
+#: src/editor/style-cards/maxiStyleCardsTab.js:740
 msgid "Divider"
 msgstr ""
 
@@ -3798,7 +3798,7 @@ msgstr ""
 
 #: src/blocks/divider-maxi/data.js:50
 #: src/editor/library/container.js:230
-#: src/editor/style-cards/maxiStyleCardsTab.js:697
+#: src/editor/style-cards/maxiStyleCardsTab.js:700
 msgid "Line"
 msgstr ""
 
@@ -3849,7 +3849,7 @@ msgid "Use original size"
 msgstr ""
 
 #: src/blocks/image-maxi/components/dimension-tab/index.js:222
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:100
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:101
 #: src/components/background-control/sizeAndPositionLayerControl.js:116
 #: src/components/full-size-control/index.js:135
 #: src/components/toolbar/components/size/index.js:78
@@ -4568,11 +4568,11 @@ msgstr ""
 msgid "Marker pop-up"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:89
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:90
 msgid "Auto width"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:145
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:146
 #: src/components/inspector-tabs/inspector-carousel-slider.js:118
 #: src/editor/library/MasonryItem.js:143
 #: src/editor/library/modal.js:435
@@ -4580,88 +4580,88 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:155
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:156
 msgid "Start animation"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:161
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:162
 msgid "Page Load"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:165
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:166
 msgid "View On Scroll"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:175
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:176
 msgid "Offset"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:200
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:201
 msgid "Start Number "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:201
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:202
 msgid "can not be grater than "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:202
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:203
 msgid "End Number "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:207
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:208
 msgid "Start number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:227
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:228
 msgid "End number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:248
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:249
 msgid "End Number can't be grater than 100 when circle is enabled"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:256
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:257
 msgid "Duration"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:276
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:277
 #: src/components/icon-control/index.js:120
 msgid "Stroke"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:349
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:350
 msgid "Title font size"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:376
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:377
 msgid "Show percentage sign"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:387
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:388
 msgid "Centre percentage sign"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:401
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:402
 msgid "Hide circle"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:420
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:421
 msgid "Rounded bar"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:489
-#: src/editor/style-cards/maxiStyleCardsTab.js:761
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:492
+#: src/editor/style-cards/maxiStyleCardsTab.js:764
 msgid "Circle background"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:544
-#: src/editor/style-cards/maxiStyleCardsTab.js:769
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:552
+#: src/editor/style-cards/maxiStyleCardsTab.js:772
 msgid "Circle bar"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/data.js:31
 #: src/blocks/number-counter-maxi/inspector.js:63
-#: src/editor/style-cards/maxiStyleCardsTab.js:753
+#: src/editor/style-cards/maxiStyleCardsTab.js:756
 msgid "Number"
 msgstr ""
 
@@ -5764,7 +5764,7 @@ msgstr ""
 #: src/components/icon-control/index.js:127
 #: src/components/image-shape/index.js:172
 #: src/components/svg-fill-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:714
+#: src/editor/style-cards/maxiStyleCardsTab.js:717
 msgid "Fill"
 msgstr ""
 
@@ -5926,7 +5926,8 @@ msgstr ""
 msgid "Background fallback"
 msgstr ""
 
-#: src/components/block-inserter/index.js:78
+#: src/components/block-inserter/index.js:60
+#: src/components/block-inserter/index.js:114
 msgid "Add block"
 msgstr ""
 
@@ -6091,18 +6092,18 @@ msgstr ""
 #. translators: %s: color number
 #. translators: %s: color number.
 #: src/components/color-control/paletteControl.js:107
-#: src/editor/style-cards/maxiStyleCardsTab.js:878
+#: src/editor/style-cards/maxiStyleCardsTab.js:881
 #, js-format
 msgid "Colour %s"
 msgstr ""
 
 #: src/components/color-control/paletteControl.js:145
-#: src/editor/style-cards/maxiStyleCardsTab.js:1002
+#: src/editor/style-cards/maxiStyleCardsTab.js:1005
 msgid "Custom colours (both tones)"
 msgstr ""
 
 #. translators: Generic label for a custom color if no name is provided.
-#: src/components/color-control/paletteControl.js:154
+#: src/components/color-control/paletteControl.js:153
 #, js-format
 msgid "Custom Colour %d"
 msgstr ""
@@ -6268,7 +6269,7 @@ msgstr ""
 #: src/components/dialog-box/index.js:85
 #: src/components/image-url/index.js:106
 #: src/editor/export/MaxiExportPopUp.js:328
-#: src/editor/style-cards/maxiStyleCardsEditor.js:678
+#: src/editor/style-cards/maxiStyleCardsEditor.js:675
 msgid "Close"
 msgstr ""
 
@@ -8064,7 +8065,7 @@ msgstr ""
 #: src/editor/export/index.js:28
 #: src/editor/export/index.js:32
 #: src/editor/export/MaxiExportPopUp.js:318
-#: src/editor/style-cards/maxiStyleCardsEditor.js:743
+#: src/editor/style-cards/maxiStyleCardsEditor.js:740
 msgid "Export"
 msgstr ""
 
@@ -8075,9 +8076,9 @@ msgstr ""
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:311
 #: src/components/repeater/index.js:117
-#: src/editor/style-cards/maxiStyleCardsEditor.js:796
-#: src/editor/style-cards/maxiStyleCardsEditor.js:838
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1017
+#: src/editor/style-cards/maxiStyleCardsEditor.js:793
+#: src/editor/style-cards/maxiStyleCardsEditor.js:835
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1014
 msgid "Cancel"
 msgstr ""
 
@@ -8119,8 +8120,8 @@ msgstr ""
 #: src/components/prompt-control/components/result-card/index.js:312
 #: src/components/prompt-control/components/result-card/index.js:318
 #: src/components/toolbar/components/delete/index.js:49
-#: src/editor/style-cards/maxiStyleCardsEditor.js:797
-#: src/editor/style-cards/maxiStyleCardsEditor.js:806
+#: src/editor/style-cards/maxiStyleCardsEditor.js:794
+#: src/editor/style-cards/maxiStyleCardsEditor.js:803
 msgid "Delete"
 msgstr ""
 
@@ -9393,157 +9394,155 @@ msgstr ""
 msgid "Style cards"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:457
-#: src/editor/style-cards/maxiStyleCardsTab.js:1028
-#: src/editor/style-cards/maxiStyleCardsTab.js:1054
-msgid "Custom Colour"
-msgstr ""
-
-#: src/editor/style-cards/maxiStyleCardsEditor.js:562
+#: src/editor/style-cards/maxiStyleCardsEditor.js:559
 msgid "Template"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:667
+#: src/editor/style-cards/maxiStyleCardsEditor.js:664
 msgid "Active style card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:749
+#: src/editor/style-cards/maxiStyleCardsEditor.js:746
 msgid "Style card editor"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:751
+#: src/editor/style-cards/maxiStyleCardsEditor.js:748
 msgid "Preview, edit or activate style card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:760
+#: src/editor/style-cards/maxiStyleCardsEditor.js:757
 msgid "Imported card already exists."
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:774
+#: src/editor/style-cards/maxiStyleCardsEditor.js:771
 msgid "Type to search…"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:821
+#: src/editor/style-cards/maxiStyleCardsEditor.js:818
 msgid "Customise card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:822
+#: src/editor/style-cards/maxiStyleCardsEditor.js:819
 msgid "Copy card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:849
+#: src/editor/style-cards/maxiStyleCardsEditor.js:846
 msgid "Activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:852
+#: src/editor/style-cards/maxiStyleCardsEditor.js:849
 msgid "Save and activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:862
+#: src/editor/style-cards/maxiStyleCardsEditor.js:859
 msgid "Style core blocks within Maxi containers"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:878
+#: src/editor/style-cards/maxiStyleCardsEditor.js:875
 msgid "Create new style from"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:886
+#: src/editor/style-cards/maxiStyleCardsEditor.js:883
 msgid "Short memorable name*"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1012
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1009
 msgid "Create"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1044
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1041
 msgid "Light tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1060
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1057
 msgid "Dark tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:321
+#: src/editor/style-cards/maxiStyleCardsTab.js:324
 msgid "Item padding"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:328
+#: src/editor/style-cards/maxiStyleCardsTab.js:331
 msgid "Remove item underline on hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:346
+#: src/editor/style-cards/maxiStyleCardsTab.js:349
 msgid "Overwrite mobile navigation breakpoint"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:367
+#: src/editor/style-cards/maxiStyleCardsTab.js:370
 msgid "Show mobile menu for all screen sizes"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:387
+#: src/editor/style-cards/maxiStyleCardsTab.js:390
 msgid "Show mobile menu for screen sizes down from (px)"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:583
+#: src/editor/style-cards/maxiStyleCardsTab.js:586
 msgid "Button globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:595
+#: src/editor/style-cards/maxiStyleCardsTab.js:598
 msgid "Text hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:612
+#: src/editor/style-cards/maxiStyleCardsTab.js:615
 msgid "Background hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:629
+#: src/editor/style-cards/maxiStyleCardsTab.js:632
 msgid "Border hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:640
+#: src/editor/style-cards/maxiStyleCardsTab.js:643
 msgid "Paragraph globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:644
+#: src/editor/style-cards/maxiStyleCardsTab.js:647
 msgid "Paragraph"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:654
+#: src/editor/style-cards/maxiStyleCardsTab.js:657
 msgid "Link globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:693
+#: src/editor/style-cards/maxiStyleCardsTab.js:696
 msgid "Icon globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:705
+#: src/editor/style-cards/maxiStyleCardsTab.js:708
 msgid "Line hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:722
+#: src/editor/style-cards/maxiStyleCardsTab.js:725
 msgid "Fill hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:733
+#: src/editor/style-cards/maxiStyleCardsTab.js:736
 msgid "Divider globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:747
+#: src/editor/style-cards/maxiStyleCardsTab.js:750
 msgid "Number Counter globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:779
+#: src/editor/style-cards/maxiStyleCardsTab.js:782
 msgid "Navigation menu globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:866
+#: src/editor/style-cards/maxiStyleCardsTab.js:869
 msgid "Colour palette"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:1197
+#: src/editor/style-cards/maxiStyleCardsTab.js:1017
+msgid "Custom Colour"
+msgstr ""
+
+#: src/editor/style-cards/maxiStyleCardsTab.js:1184
 msgid "Enter colour name"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:1275
+#: src/editor/style-cards/maxiStyleCardsTab.js:1262
 msgid "Headings globals"
 msgstr ""
 

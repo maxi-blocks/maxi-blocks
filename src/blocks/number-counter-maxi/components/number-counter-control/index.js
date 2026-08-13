@@ -40,6 +40,7 @@ const NumberCounterControl = props => {
 		onChange,
 		setShowLoader,
 		blockStyle = 'light',
+		clientId,
 	} = props;
 
 	const scTypography = useSelect(select => {
@@ -455,6 +456,8 @@ const NumberCounterControl = props => {
 					attributes: props,
 				})}
 				prefix='number-counter-text-'
+				globalProps={{ target: '', type: 'number-counter' }}
+				clientId={clientId}
 				deviceType={breakpoint}
 				onChangeInline={({ color }) =>
 					onChangeInline({ color }, '.maxi-number-counter__box__text')
@@ -509,6 +512,11 @@ const NumberCounterControl = props => {
 						}
 						color={props['number-counter-circle-background-color']}
 						prefix='number-counter-circle-background-'
+						globalProps={{
+							target: 'circle-background',
+							type: 'number-counter',
+						}}
+						clientId={clientId}
 						onChangeInline={({ color }) =>
 							onChangeInline(
 								{ color },
@@ -527,7 +535,7 @@ const NumberCounterControl = props => {
 									'number-counter-circle-background-palette-status':
 										paletteStatus,
 									'number-counter-circle-background-palette-sc-status':
-										paletteStatus,
+										paletteSCStatus,
 									'number-counter-circle-background-palette-color':
 										paletteColor,
 									'number-counter-circle-background-palette-opacity':
@@ -568,6 +576,11 @@ const NumberCounterControl = props => {
 							attributes: props,
 						})}
 						prefix='number-counter-circle-bar-'
+						globalProps={{
+							target: 'circle-bar',
+							type: 'number-counter',
+						}}
+						clientId={clientId}
 						onChangeInline={({ color }) =>
 							onChangeInline(
 								{ stroke: color },

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.2.0\n"
+"Project-Id-Version: MaxiBlocks 2.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-20T11:04:06+00:00\n"
+"POT-Creation-Date: 2026-08-12T11:26:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -136,7 +136,7 @@ msgid "Deactivating…"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:358
-#: src/editor/style-cards/maxiStyleCardsEditor.js:839
+#: src/editor/style-cards/maxiStyleCardsEditor.js:836
 msgid "Activate"
 msgstr ""
 
@@ -220,18 +220,18 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:1310
 #: plugin.php:91
 #: src/blocks/accordion-maxi/inspector.js:89
-#: src/blocks/button-maxi/inspector.js:212
+#: src/blocks/button-maxi/inspector.js:146
 #: src/blocks/column-maxi/inspector.js:40
 #: src/blocks/container-maxi/inspector.js:63
 #: src/blocks/divider-maxi/inspector.js:51
 #: src/blocks/group-maxi/inspector.js:37
-#: src/blocks/image-maxi/inspector.js:158
+#: src/blocks/image-maxi/inspector.js:167
 #: src/blocks/list-item-maxi/inspector.js:37
 #: src/blocks/map-maxi/inspector.js:59
 #: src/blocks/number-counter-maxi/inspector.js:46
 #: src/blocks/pane-maxi/inspector.js:72
 #: src/blocks/row-maxi/inspector.js:108
-#: src/blocks/search-maxi/inspector.js:141
+#: src/blocks/search-maxi/inspector.js:134
 #: src/blocks/slide-maxi/inspector.js:36
 #: src/blocks/slider-maxi/inspector.js:68
 #: src/blocks/svg-icon-maxi/inspector.js:150
@@ -239,7 +239,7 @@ msgstr ""
 #: src/blocks/video-maxi/inspector.js:57
 #: src/components/background-control/imageLayer.js:790
 #: src/components/inspector-tabs/inspector-transition.js:140
-#: src/components/relation-control/index.js:665
+#: src/components/relation-control/index.js:682
 msgid "Settings"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 #: core/admin/class-maxi-dashboard.php:1403
 #: core/admin/class-maxi-dashboard.php:1479
 #: core/admin/class-maxi-dashboard.php:1691
-#: src/editor/style-cards/maxiStyleCardsEditor.js:830
+#: src/editor/style-cards/maxiStyleCardsEditor.js:827
 msgid "Save changes"
 msgstr ""
 
@@ -733,9 +733,9 @@ msgid "Font family"
 msgstr ""
 
 #: core/admin/class-maxi-dashboard.php:1721
-#: src/blocks/text-maxi/components/list-options-control/index.js:834
+#: src/blocks/text-maxi/components/list-options-control/index.js:257
 #: src/components/context-loop/index.js:379
-#: src/components/dynamic-content/index.js:400
+#: src/components/dynamic-content/index.js:405
 msgid "Source"
 msgstr ""
 
@@ -760,9 +760,9 @@ msgstr ""
 #: src/components/aspect-ratio-control/index.js:53
 #: src/components/background-control/imageLayer.js:110
 #: src/components/background-control/imageLayer.js:304
-#: src/components/dynamic-content/index.js:177
+#: src/components/dynamic-content/index.js:182
 #: src/components/image-alt-control/index.js:60
-#: src/editor/style-cards/maxiStyleCardsTab.js:1088
+#: src/editor/style-cards/maxiStyleCardsTab.js:1135
 msgid "Custom"
 msgstr ""
 
@@ -1149,7 +1149,7 @@ msgid "Status"
 msgstr ""
 
 #: core/admin/quick-start/class-maxi-quick-start.php:97
-#: src/editor/library/container.js:1558
+#: src/editor/library/container.js:1569
 msgid "Theme"
 msgstr ""
 
@@ -1196,7 +1196,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:760
 #: core/admin/quick-start/class-maxi-quick-start.php:801
 #: src/components/media-uploader-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:989
+#: src/editor/style-cards/maxiStyleCardsTab.js:1047
 msgid "Remove"
 msgstr ""
 
@@ -1266,7 +1266,7 @@ msgstr ""
 #: core/admin/quick-start/class-maxi-quick-start.php:267
 #: core/admin/quick-start/class-maxi-quick-start.php:706
 #: core/admin/quick-start/class-maxi-quick-start.php:957
-#: src/components/repeater/index.js:125
+#: src/components/repeater/index.js:118
 msgid "Continue"
 msgstr ""
 
@@ -1382,7 +1382,7 @@ msgstr ""
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:110
 #: src/components/inspector-tabs/inspector-border.js:142
 #: src/components/inspector-tabs/inspector-box-shadow.js:114
-#: src/components/typography-control/index.js:116
+#: src/components/typography-control/index.js:117
 msgid "Active"
 msgstr ""
 
@@ -1644,10 +1644,10 @@ msgstr ""
 #: src/components/background-control/index.js:80
 #: src/components/border-control/index.js:419
 #: src/components/divider-control/index.js:254
-#: src/components/dynamic-content/index.js:174
+#: src/components/dynamic-content/index.js:179
 #: src/components/image-alt-control/index.js:53
 #: src/components/image-alt-control/index.js:64
-#: src/components/typography-control/index.js:1799
+#: src/components/typography-control/index.js:1817
 msgid "None"
 msgstr ""
 
@@ -2275,6 +2275,7 @@ msgid "Maxi scripts/styles"
 msgstr ""
 
 #: core/class-maxi-custom-scripts.php:379
+#: src/blocks/pane-maxi/data.js:64
 #: src/blocks/pane-maxi/inspector.js:89
 msgid "Header"
 msgstr ""
@@ -2299,16 +2300,16 @@ msgstr ""
 msgid "Error in render_pagination for uniqueID "
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1209
-#: core/class-maxi-dynamic-content.php:2333
+#: core/class-maxi-dynamic-content.php:1211
+#: core/class-maxi-dynamic-content.php:2367
 msgid "author"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:1211
+#: core/class-maxi-dynamic-content.php:1213
 msgid "date"
 msgstr ""
 
-#: core/class-maxi-dynamic-content.php:2766
+#: core/class-maxi-dynamic-content.php:2800
 msgid "Failed to create DateTime object: "
 msgstr ""
 
@@ -2355,7 +2356,7 @@ msgid "Unable to parse the uploaded font file."
 msgstr ""
 
 #. translators: %s: Name of the imported style card
-#: core/class-maxi-style-cards.php:1516
+#: core/class-maxi-style-cards.php:1676
 #, php-format
 msgid "Style Card imported successfully as \"%s\""
 msgstr ""
@@ -2450,7 +2451,7 @@ msgstr ""
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:963
 #: core/admin/starter-sites/src/library/modal.js:162
 #: src/components/prompt-control/components/history-buttons/index.js:70
-#: src/editor/style-cards/maxiStyleCardsEditor.js:722
+#: src/editor/style-cards/maxiStyleCardsEditor.js:719
 msgid "Import"
 msgstr ""
 
@@ -2459,8 +2460,8 @@ msgstr ""
 #: core/admin/starter-sites/src/library/container.js:72
 #: core/admin/starter-sites/src/library/container.js:112
 #: core/admin/starter-sites/src/library/MasonryItem.js:94
-#: src/editor/library/container.js:135
-#: src/editor/library/container.js:173
+#: src/editor/library/container.js:136
+#: src/editor/library/container.js:184
 #: src/editor/library/MasonryItem.js:150
 msgid "Free"
 msgstr ""
@@ -2470,8 +2471,8 @@ msgstr ""
 #: core/admin/starter-sites/src/library/container.js:66
 #: core/admin/starter-sites/src/library/container.js:95
 #: core/admin/starter-sites/src/library/MasonryItem.js:99
-#: src/editor/library/container.js:129
-#: src/editor/library/container.js:190
+#: src/editor/library/container.js:130
+#: src/editor/library/container.js:201
 #: src/editor/library/MasonryItem.js:155
 #: src/editor/library/toolbar.js:146
 #: src/editor/library/toolbar.js:619
@@ -2592,7 +2593,7 @@ msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:126
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:791
-#: src/editor/library/container.js:1546
+#: src/editor/library/container.js:1557
 #: src/editor/library/toolbar.js:234
 msgid "Pages"
 msgstr ""
@@ -2604,7 +2605,7 @@ msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:126
 #: core/admin/starter-sites/src/library/maxiImportPopUp.js:824
-#: src/editor/library/container.js:1530
+#: src/editor/library/container.js:1541
 msgid "Patterns"
 msgstr ""
 
@@ -2666,33 +2667,33 @@ msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:148
 #: core/admin/starter-sites/src/library/container.js:47
-#: src/editor/library/container.js:71
+#: src/editor/library/container.js:72
 msgid "Returned"
 msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:148
 #: core/admin/starter-sites/src/library/container.js:51
-#: src/editor/library/container.js:75
+#: src/editor/library/container.js:76
 msgid "result"
 msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:148
 #: core/admin/starter-sites/src/library/container.js:52
-#: src/editor/library/container.js:76
+#: src/editor/library/container.js:77
 msgid "results"
 msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:148
 #: core/admin/starter-sites/src/library/container.js:127
-#: src/editor/library/container.js:156
-#: src/editor/library/container.js:258
+#: src/editor/library/container.js:167
+#: src/editor/library/container.js:269
 msgid "All"
 msgstr ""
 
 #: core/admin/starter-sites/build/js/main.js:148
 #: core/admin/starter-sites/src/library/container.js:204
-#: src/editor/library/container.js:394
-#: src/editor/library/container.js:1657
+#: src/editor/library/container.js:405
+#: src/editor/library/container.js:1668
 msgid "Clear filters"
 msgstr ""
 
@@ -2722,13 +2723,13 @@ msgid "Live preview"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:40
-#: src/blocks/accordion-maxi/data.js:41
+#: src/blocks/accordion-maxi/data.js:42
 #: src/blocks/button-maxi/data.js:58
 #: src/blocks/button-maxi/data.js:60
 #: src/blocks/button-maxi/utils.js:7
 #: src/blocks/search-maxi/components/button-control/index.js:29
 #: src/blocks/search-maxi/data.js:60
-#: src/blocks/text-maxi/components/list-options-control/index.js:848
+#: src/blocks/text-maxi/components/list-options-control/index.js:271
 #: src/components/inspector-tabs/inspector-icon.js:22
 msgid "Icon"
 msgstr ""
@@ -2736,29 +2737,31 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:74
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:70
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:150
+#: src/blocks/image-maxi/components/filter-tab/index.js:149
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:47
 #: src/components/inspector-tabs/inspector-background.js:79
 #: src/components/inspector-tabs/inspector-border.js:68
 #: src/components/inspector-tabs/inspector-box-shadow.js:45
-#: src/components/typography-control/index.js:1907
+#: src/components/typography-control/index.js:1925
 msgid "Normal"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:88
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:78
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:160
-#: src/blocks/image-maxi/data.js:117
-#: src/blocks/search-maxi/components/skin-control/index.js:115
+#: src/blocks/image-maxi/components/filter-tab/index.js:154
+#: src/blocks/image-maxi/data.js:151
+#: src/blocks/search-maxi/components/skin-control/index.js:117
 #: src/blocks/slider-maxi/components/navigation-control/navigation-control.js:77
 #: src/components/inspector-tabs/inspector-background.js:103
 #: src/components/inspector-tabs/inspector-border.js:96
 #: src/components/inspector-tabs/inspector-box-shadow.js:73
-#: src/components/typography-control/index.js:106
+#: src/components/typography-control/index.js:107
 msgid "Hover"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-icon-control/index.js:92
-#: src/components/inspector-tabs/inspector-icon.js:142
+#: src/components/inspector-tabs/inspector-icon.js:143
 msgid "Enable Icon Hover"
 msgstr ""
 
@@ -2771,7 +2774,7 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:38
 #: src/blocks/divider-maxi/inspector.js:190
 #: src/components/arrow-control/index.js:53
-#: src/components/axis-position-control/index.js:54
+#: src/components/axis-position-control/index.js:55
 #: src/components/clip-path-control/index.js:131
 #: src/components/clip-path-control/index.js:143
 msgid "Left"
@@ -2781,7 +2784,7 @@ msgstr ""
 #: src/blocks/column-maxi/components/column-size-control/index.js:106
 #: src/blocks/divider-maxi/inspector.js:140
 #: src/blocks/divider-maxi/inspector.js:197
-#: src/components/axis-position-control/index.js:59
+#: src/components/axis-position-control/index.js:60
 #: src/components/clip-path-control/index.js:129
 #: src/components/toolbar/components/divider-alignment/index.js:53
 #: src/components/toolbar/components/vertical-align/index.js:57
@@ -2791,14 +2794,14 @@ msgstr ""
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:46
 #: src/blocks/divider-maxi/inspector.js:204
 #: src/components/arrow-control/index.js:52
-#: src/components/axis-position-control/index.js:64
+#: src/components/axis-position-control/index.js:65
 #: src/components/clip-path-control/index.js:139
 msgid "Right"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-line-control/index.js:83
 #: src/blocks/accordion-maxi/components/accordion-title-control/index.js:165
-#: src/blocks/video-maxi/components/video-overlay-control/index.js:340
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:413
 #: src/components/inspector-tabs/inspector-clip-path.js:50
 #: src/components/transform-control/index.js:307
 msgid "Enable hover"
@@ -2825,7 +2828,7 @@ msgid "Pane closes when another opens"
 msgstr ""
 
 #: src/blocks/accordion-maxi/components/accordion-settings-control/index.js:90
-#: src/components/icon-control/index.js:283
+#: src/components/icon-control/index.js:292
 #: src/components/toolbar/components/icon-size/index.js:51
 msgid "Spacing"
 msgstr ""
@@ -2860,118 +2863,122 @@ msgstr ""
 msgid "Accordion title"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:42
+#: src/blocks/accordion-maxi/data.js:43
 #: src/blocks/accordion-maxi/inspector.js:154
 msgid "Active icon"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:46
+#: src/blocks/accordion-maxi/data.js:47
 #: src/blocks/button-maxi/data.js:126
 #: src/blocks/column-maxi/data.js:36
-#: src/blocks/container-maxi/data.js:72
-#: src/blocks/divider-maxi/data.js:77
-#: src/blocks/group-maxi/data.js:27
-#: src/blocks/image-maxi/data.js:177
+#: src/blocks/container-maxi/data.js:82
+#: src/blocks/divider-maxi/data.js:80
+#: src/blocks/group-maxi/data.js:28
+#: src/blocks/image-maxi/data.js:275
 #: src/blocks/list-item-maxi/data.js:40
-#: src/blocks/map-maxi/data.js:71
-#: src/blocks/number-counter-maxi/data.js:51
-#: src/blocks/pane-maxi/data.js:38
-#: src/blocks/pane-maxi/data.js:421
-#: src/blocks/pane-maxi/data.js:450
-#: src/blocks/row-maxi/data.js:32
+#: src/blocks/map-maxi/data.js:78
+#: src/blocks/number-counter-maxi/data.js:60
+#: src/blocks/pane-maxi/data.js:16
+#: src/blocks/pane-maxi/data.js:84
+#: src/blocks/pane-maxi/data.js:470
+#: src/blocks/pane-maxi/data.js:499
+#: src/blocks/row-maxi/data.js:64
 #: src/blocks/slide-maxi/data.js:18
-#: src/blocks/slider-maxi/data.js:71
+#: src/blocks/slider-maxi/data.js:72
 #: src/blocks/svg-icon-maxi/data.js:115
 #: src/blocks/svg-icon-maxi/data.js:175
-#: src/blocks/text-maxi/data.js:109
+#: src/blocks/text-maxi/data.js:130
+#: src/blocks/video-maxi/data.js:135
 #: src/components/background-control/colorLayer.js:192
 #: src/components/background-control/index.js:121
-#: src/editor/style-cards/maxiStyleCardsTab.js:599
+#: src/editor/style-cards/maxiStyleCardsTab.js:607
 #: src/extensions/indicators/listViewObserver.js:72
 msgid "Background"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:49
+#: src/blocks/accordion-maxi/data.js:50
 #: src/blocks/button-maxi/data.js:105
 #: src/blocks/button-maxi/data.js:129
 #: src/blocks/button-maxi/data.js:198
 #: src/blocks/column-maxi/data.js:39
-#: src/blocks/container-maxi/data.js:75
-#: src/blocks/divider-maxi/data.js:80
-#: src/blocks/group-maxi/data.js:30
-#: src/blocks/image-maxi/data.js:155
-#: src/blocks/image-maxi/data.js:180
-#: src/blocks/image-maxi/data.js:218
+#: src/blocks/container-maxi/data.js:85
+#: src/blocks/divider-maxi/data.js:83
+#: src/blocks/group-maxi/data.js:31
+#: src/blocks/image-maxi/data.js:252
+#: src/blocks/image-maxi/data.js:278
 #: src/blocks/image-maxi/data.js:316
+#: src/blocks/image-maxi/data.js:420
 #: src/blocks/list-item-maxi/data.js:43
-#: src/blocks/map-maxi/data.js:81
-#: src/blocks/number-counter-maxi/data.js:34
-#: src/blocks/number-counter-maxi/data.js:54
-#: src/blocks/pane-maxi/data.js:21
-#: src/blocks/pane-maxi/data.js:41
-#: src/blocks/pane-maxi/data.js:403
-#: src/blocks/pane-maxi/data.js:432
-#: src/blocks/row-maxi/data.js:35
+#: src/blocks/map-maxi/data.js:88
+#: src/blocks/number-counter-maxi/data.js:42
+#: src/blocks/number-counter-maxi/data.js:63
+#: src/blocks/pane-maxi/data.js:24
+#: src/blocks/pane-maxi/data.js:61
+#: src/blocks/pane-maxi/data.js:87
+#: src/blocks/pane-maxi/data.js:452
+#: src/blocks/pane-maxi/data.js:481
+#: src/blocks/row-maxi/data.js:67
 #: src/blocks/search-maxi/data.js:38
 #: src/blocks/search-maxi/data.js:75
 #: src/blocks/search-maxi/data.js:97
-#: src/blocks/search-maxi/data.js:228
-#: src/blocks/search-maxi/data.js:268
-#: src/blocks/search-maxi/data.js:288
+#: src/blocks/search-maxi/data.js:232
+#: src/blocks/search-maxi/data.js:272
+#: src/blocks/search-maxi/data.js:292
 #: src/blocks/slide-maxi/data.js:21
-#: src/blocks/slider-maxi/data.js:74
+#: src/blocks/slider-maxi/data.js:75
 #: src/blocks/svg-icon-maxi/data.js:94
 #: src/blocks/svg-icon-maxi/data.js:118
 #: src/blocks/svg-icon-maxi/data.js:156
-#: src/blocks/text-maxi/data.js:112
-#: src/blocks/video-maxi/data.js:89
-#: src/blocks/video-maxi/data.js:136
+#: src/blocks/text-maxi/data.js:133
+#: src/blocks/video-maxi/data.js:103
+#: src/blocks/video-maxi/data.js:173
 #: src/components/background-control/imageLayer.js:537
 #: src/components/background-control/imageLayer.js:584
 #: src/components/border-control/index.js:78
-#: src/components/icon-control/index.js:149
+#: src/components/icon-control/index.js:135
 #: src/components/inspector-tabs/inspector-border.js:63
 #: src/components/toolbar/components/border/index.js:69
-#: src/editor/style-cards/maxiStyleCardsTab.js:616
+#: src/editor/style-cards/maxiStyleCardsTab.js:624
 #: src/extensions/relations/getCanvasSettings.js:141
 #: src/extensions/styles/transitions/transitionDefault.js:6
 msgid "Border"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:52
+#: src/blocks/accordion-maxi/data.js:53
 #: src/blocks/button-maxi/data.js:109
 #: src/blocks/button-maxi/data.js:132
 #: src/blocks/column-maxi/data.js:42
-#: src/blocks/container-maxi/data.js:78
-#: src/blocks/divider-maxi/data.js:68
-#: src/blocks/divider-maxi/data.js:83
-#: src/blocks/divider-maxi/data.js:120
-#: src/blocks/group-maxi/data.js:33
-#: src/blocks/image-maxi/data.js:159
-#: src/blocks/image-maxi/data.js:183
-#: src/blocks/image-maxi/data.js:224
+#: src/blocks/container-maxi/data.js:88
+#: src/blocks/divider-maxi/data.js:71
+#: src/blocks/divider-maxi/data.js:86
+#: src/blocks/divider-maxi/data.js:123
+#: src/blocks/group-maxi/data.js:34
+#: src/blocks/image-maxi/data.js:256
+#: src/blocks/image-maxi/data.js:281
+#: src/blocks/image-maxi/data.js:322
 #: src/blocks/list-item-maxi/data.js:46
 #: src/blocks/map-maxi/components/map-popup-control/index.js:37
-#: src/blocks/map-maxi/data.js:75
-#: src/blocks/map-maxi/data.js:84
-#: src/blocks/number-counter-maxi/data.js:38
-#: src/blocks/number-counter-maxi/data.js:57
-#: src/blocks/number-counter-maxi/data.js:107
-#: src/blocks/pane-maxi/data.js:24
-#: src/blocks/pane-maxi/data.js:44
-#: src/blocks/pane-maxi/data.js:412
-#: src/blocks/pane-maxi/data.js:441
-#: src/blocks/row-maxi/data.js:38
+#: src/blocks/map-maxi/data.js:82
+#: src/blocks/map-maxi/data.js:91
+#: src/blocks/number-counter-maxi/data.js:46
+#: src/blocks/number-counter-maxi/data.js:66
+#: src/blocks/number-counter-maxi/data.js:116
+#: src/blocks/pane-maxi/data.js:32
+#: src/blocks/pane-maxi/data.js:70
+#: src/blocks/pane-maxi/data.js:90
+#: src/blocks/pane-maxi/data.js:461
+#: src/blocks/pane-maxi/data.js:490
+#: src/blocks/row-maxi/data.js:70
 #: src/blocks/search-maxi/data.js:41
-#: src/blocks/search-maxi/data.js:234
+#: src/blocks/search-maxi/data.js:238
 #: src/blocks/slide-maxi/data.js:24
-#: src/blocks/slider-maxi/data.js:77
+#: src/blocks/slider-maxi/data.js:78
 #: src/blocks/svg-icon-maxi/data.js:98
 #: src/blocks/svg-icon-maxi/data.js:121
 #: src/blocks/svg-icon-maxi/data.js:162
-#: src/blocks/text-maxi/data.js:115
-#: src/blocks/video-maxi/data.js:93
-#: src/blocks/video-maxi/data.js:142
+#: src/blocks/text-maxi/data.js:136
+#: src/blocks/video-maxi/data.js:100
+#: src/blocks/video-maxi/data.js:179
 #: src/components/box-shadow-control/index.js:151
 #: src/components/inspector-tabs/inspector-box-shadow.js:40
 #: src/components/toolbar/components/box-shadow/index.js:66
@@ -2980,405 +2987,448 @@ msgstr ""
 msgid "Box shadow"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:55
+#: src/blocks/accordion-maxi/data.js:56
 #: src/blocks/button-maxi/data.js:113
 #: src/blocks/button-maxi/data.js:123
 #: src/blocks/column-maxi/data.js:45
-#: src/blocks/container-maxi/data.js:81
-#: src/blocks/divider-maxi/data.js:74
-#: src/blocks/group-maxi/data.js:36
-#: src/blocks/image-maxi/data.js:163
-#: src/blocks/image-maxi/data.js:173
+#: src/blocks/container-maxi/data.js:91
+#: src/blocks/divider-maxi/data.js:77
+#: src/blocks/group-maxi/data.js:37
+#: src/blocks/image-maxi/data.js:260
+#: src/blocks/image-maxi/data.js:271
 #: src/blocks/list-item-maxi/data.js:49
-#: src/blocks/map-maxi/data.js:87
-#: src/blocks/number-counter-maxi/data.js:48
-#: src/blocks/pane-maxi/data.js:27
-#: src/blocks/pane-maxi/data.js:35
-#: src/blocks/row-maxi/data.js:41
+#: src/blocks/map-maxi/data.js:94
+#: src/blocks/number-counter-maxi/data.js:56
+#: src/blocks/pane-maxi/data.js:40
+#: src/blocks/pane-maxi/data.js:73
+#: src/blocks/pane-maxi/data.js:81
+#: src/blocks/row-maxi/data.js:73
 #: src/blocks/search-maxi/data.js:44
 #: src/blocks/slide-maxi/data.js:27
-#: src/blocks/slider-maxi/data.js:80
+#: src/blocks/slider-maxi/data.js:81
 #: src/blocks/svg-icon-maxi/data.js:102
 #: src/blocks/svg-icon-maxi/data.js:112
-#: src/blocks/text-maxi/data.js:118
+#: src/blocks/text-maxi/data.js:139
+#: src/blocks/video-maxi/data.js:97
 #: src/components/toolbar/components/divider-line/index.js:208
 #: src/components/toolbar/components/size/index.js:56
 msgid "Size"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:58
+#: src/blocks/accordion-maxi/data.js:59
+#: src/blocks/button-maxi/data.js:135
+#: src/blocks/column-maxi/data.js:48
+#: src/blocks/container-maxi/data.js:94
+#: src/blocks/divider-maxi/data.js:89
+#: src/blocks/group-maxi/data.js:49
+#: src/blocks/image-maxi/components/filter-tab/constants.js:15
+#: src/blocks/image-maxi/data.js:284
+#: src/blocks/list-item-maxi/data.js:58
+#: src/blocks/map-maxi/data.js:113
+#: src/blocks/number-counter-maxi/data.js:69
+#: src/blocks/pane-maxi/data.js:93
+#: src/blocks/row-maxi/data.js:85
+#: src/blocks/search-maxi/data.js:116
+#: src/blocks/search-maxi/data.js:244
+#: src/blocks/slide-maxi/data.js:30
+#: src/blocks/slider-maxi/data.js:84
+#: src/blocks/svg-icon-maxi/data.js:124
+#: src/blocks/text-maxi/data.js:148
+#: src/blocks/video-maxi/data.js:141
+#: src/components/inspector-tabs/inspector-opacity.js:36
+#: src/components/opacity-control/index.js:56
+#: src/extensions/relations/getAdvancedSettings.js:79
+#: src/extensions/styles/transitions/transitionDefault.js:28
+msgid "Opacity"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:62
 #: src/blocks/button-maxi/data.js:117
 #: src/blocks/button-maxi/data.js:138
-#: src/blocks/column-maxi/data.js:48
-#: src/blocks/container-maxi/data.js:84
-#: src/blocks/divider-maxi/data.js:89
-#: src/blocks/group-maxi/data.js:39
-#: src/blocks/image-maxi/data.js:167
-#: src/blocks/image-maxi/data.js:189
+#: src/blocks/column-maxi/data.js:51
+#: src/blocks/container-maxi/data.js:97
+#: src/blocks/divider-maxi/data.js:92
+#: src/blocks/group-maxi/data.js:40
+#: src/blocks/image-maxi/data.js:264
+#: src/blocks/image-maxi/data.js:287
 #: src/blocks/list-item-maxi/data.js:52
-#: src/blocks/map-maxi/data.js:90
-#: src/blocks/number-counter-maxi/data.js:42
-#: src/blocks/number-counter-maxi/data.js:63
-#: src/blocks/pane-maxi/data.js:30
-#: src/blocks/pane-maxi/data.js:50
-#: src/blocks/row-maxi/data.js:44
+#: src/blocks/map-maxi/data.js:97
+#: src/blocks/number-counter-maxi/data.js:50
+#: src/blocks/number-counter-maxi/data.js:72
+#: src/blocks/pane-maxi/data.js:76
+#: src/blocks/pane-maxi/data.js:96
+#: src/blocks/row-maxi/data.js:76
 #: src/blocks/search-maxi/data.js:47
 #: src/blocks/search-maxi/data.js:79
-#: src/blocks/slide-maxi/data.js:30
-#: src/blocks/slider-maxi/data.js:83
+#: src/blocks/search-maxi/data.js:105
+#: src/blocks/slide-maxi/data.js:33
+#: src/blocks/slider-maxi/data.js:87
 #: src/blocks/svg-icon-maxi/data.js:106
 #: src/blocks/svg-icon-maxi/data.js:127
-#: src/blocks/text-maxi/data.js:121
-#: src/blocks/video-maxi/data.js:97
+#: src/blocks/text-maxi/data.js:142
+#: src/blocks/video-maxi/data.js:106
 msgid "Margin/Padding"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:76
+#: src/blocks/accordion-maxi/data.js:68
+#: src/blocks/column-maxi/data.js:57
+#: src/blocks/container-maxi/data.js:103
+#: src/blocks/group-maxi/data.js:46
+#: src/blocks/pane-maxi/data.js:102
+#: src/blocks/row-maxi/data.js:82
+#: src/blocks/slide-maxi/data.js:39
+#: src/blocks/slider-maxi/data.js:93
+#: src/components/inspector-tabs/inspector-context-loop.js:19
+#: src/components/toolbar/components/context-loop/index.js:52
+msgid "Context loop"
+msgstr ""
+
+#: src/blocks/accordion-maxi/data.js:83
 msgid "before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:80
+#: src/blocks/accordion-maxi/data.js:87
 msgid "::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:86
+#: src/blocks/accordion-maxi/data.js:93
 msgid "after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:90
+#: src/blocks/accordion-maxi/data.js:97
 msgid "::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:96
-#: src/blocks/pane-maxi/data.js:71
+#: src/blocks/accordion-maxi/data.js:103
+#: src/blocks/pane-maxi/data.js:120
 msgid "pane"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:100
-#: src/blocks/pane-maxi/data.js:75
+#: src/blocks/accordion-maxi/data.js:107
+#: src/blocks/pane-maxi/data.js:124
 msgid "pane on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:104
-#: src/blocks/pane-maxi/data.js:79
+#: src/blocks/accordion-maxi/data.js:111
+#: src/blocks/pane-maxi/data.js:128
 msgid "pane on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:110
-#: src/blocks/pane-maxi/data.js:85
+#: src/blocks/accordion-maxi/data.js:117
+#: src/blocks/pane-maxi/data.js:134
 msgid "pane ::before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:114
-#: src/blocks/pane-maxi/data.js:89
+#: src/blocks/accordion-maxi/data.js:121
+#: src/blocks/pane-maxi/data.js:138
 msgid "pane ::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:118
-#: src/blocks/pane-maxi/data.js:93
+#: src/blocks/accordion-maxi/data.js:125
+#: src/blocks/pane-maxi/data.js:142
 msgid "pane ::before on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:124
-#: src/blocks/pane-maxi/data.js:99
+#: src/blocks/accordion-maxi/data.js:131
+#: src/blocks/pane-maxi/data.js:148
 msgid "pane ::after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:128
-#: src/blocks/pane-maxi/data.js:103
+#: src/blocks/accordion-maxi/data.js:135
+#: src/blocks/pane-maxi/data.js:152
 msgid "pane ::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:132
-#: src/blocks/pane-maxi/data.js:107
+#: src/blocks/accordion-maxi/data.js:139
+#: src/blocks/pane-maxi/data.js:156
 msgid "pane ::after on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:138
-#: src/blocks/pane-maxi/data.js:113
+#: src/blocks/accordion-maxi/data.js:145
+#: src/blocks/pane-maxi/data.js:162
 msgid "pane header"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:142
-#: src/blocks/pane-maxi/data.js:117
+#: src/blocks/accordion-maxi/data.js:149
+#: src/blocks/pane-maxi/data.js:166
 msgid "pane header on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:146
-#: src/blocks/pane-maxi/data.js:121
+#: src/blocks/accordion-maxi/data.js:153
+#: src/blocks/pane-maxi/data.js:170
 msgid "pane header on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:152
-#: src/blocks/pane-maxi/data.js:127
+#: src/blocks/accordion-maxi/data.js:159
+#: src/blocks/pane-maxi/data.js:176
 msgid "pane header ::before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:156
-#: src/blocks/pane-maxi/data.js:131
+#: src/blocks/accordion-maxi/data.js:163
+#: src/blocks/pane-maxi/data.js:180
 msgid "pane header ::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:160
-#: src/blocks/pane-maxi/data.js:135
+#: src/blocks/accordion-maxi/data.js:167
+#: src/blocks/pane-maxi/data.js:184
 msgid "pane header ::before on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:169
-#: src/blocks/pane-maxi/data.js:144
+#: src/blocks/accordion-maxi/data.js:176
+#: src/blocks/pane-maxi/data.js:193
 msgid "pane header ::after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:173
-#: src/blocks/pane-maxi/data.js:148
+#: src/blocks/accordion-maxi/data.js:180
+#: src/blocks/pane-maxi/data.js:197
 msgid "pane header ::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:177
-#: src/blocks/pane-maxi/data.js:152
+#: src/blocks/accordion-maxi/data.js:184
+#: src/blocks/pane-maxi/data.js:201
 msgid "pane header ::after on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:183
+#: src/blocks/accordion-maxi/data.js:190
 msgid "pane header content::before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:187
+#: src/blocks/accordion-maxi/data.js:194
 msgid "pane header content::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:194
+#: src/blocks/accordion-maxi/data.js:201
 msgid "pane header content::before on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:203
+#: src/blocks/accordion-maxi/data.js:210
 msgid "pane header content::after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:207
-#: src/blocks/pane-maxi/data.js:230
+#: src/blocks/accordion-maxi/data.js:214
+#: src/blocks/pane-maxi/data.js:279
 msgid "pane header content::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:211
-#: src/blocks/pane-maxi/data.js:234
+#: src/blocks/accordion-maxi/data.js:218
+#: src/blocks/pane-maxi/data.js:283
 msgid "pane header content::after on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:220
-#: src/blocks/pane-maxi/data.js:243
-#: src/blocks/search-maxi/data.js:136
-#: src/blocks/search-maxi/data.js:173
+#: src/blocks/accordion-maxi/data.js:227
+#: src/blocks/pane-maxi/data.js:292
+#: src/blocks/search-maxi/data.js:140
+#: src/blocks/search-maxi/data.js:177
 msgid "icon"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:224
-#: src/blocks/pane-maxi/data.js:247
-#: src/blocks/search-maxi/data.js:140
-#: src/blocks/search-maxi/data.js:177
+#: src/blocks/accordion-maxi/data.js:231
+#: src/blocks/pane-maxi/data.js:296
+#: src/blocks/search-maxi/data.js:144
+#: src/blocks/search-maxi/data.js:181
 msgid "icon's svg"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:228
-#: src/blocks/pane-maxi/data.js:251
-#: src/blocks/search-maxi/data.js:144
-#: src/blocks/search-maxi/data.js:181
+#: src/blocks/accordion-maxi/data.js:235
+#: src/blocks/pane-maxi/data.js:300
+#: src/blocks/search-maxi/data.js:148
+#: src/blocks/search-maxi/data.js:185
 #: src/extensions/styles/custom-css/createIconSelectors.js:30
 msgid "everything inside svg (svg > *)"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:232
-#: src/blocks/pane-maxi/data.js:255
-#: src/blocks/search-maxi/data.js:148
-#: src/blocks/search-maxi/data.js:185
+#: src/blocks/accordion-maxi/data.js:239
+#: src/blocks/pane-maxi/data.js:304
+#: src/blocks/search-maxi/data.js:152
+#: src/blocks/search-maxi/data.js:189
 #: src/extensions/styles/custom-css/createIconSelectors.js:48
 msgid "svg's path"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:236
-#: src/blocks/pane-maxi/data.js:259
-#: src/blocks/search-maxi/data.js:152
-#: src/blocks/search-maxi/data.js:189
+#: src/blocks/accordion-maxi/data.js:243
+#: src/blocks/pane-maxi/data.js:308
+#: src/blocks/search-maxi/data.js:156
+#: src/blocks/search-maxi/data.js:193
 msgid "icon on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:240
-#: src/blocks/pane-maxi/data.js:263
-#: src/blocks/search-maxi/data.js:156
-#: src/blocks/search-maxi/data.js:193
+#: src/blocks/accordion-maxi/data.js:247
+#: src/blocks/pane-maxi/data.js:312
+#: src/blocks/search-maxi/data.js:160
+#: src/blocks/search-maxi/data.js:197
 msgid "icon's svg on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:244
-#: src/blocks/pane-maxi/data.js:267
-#: src/blocks/search-maxi/data.js:160
-#: src/blocks/search-maxi/data.js:197
+#: src/blocks/accordion-maxi/data.js:251
+#: src/blocks/pane-maxi/data.js:316
+#: src/blocks/search-maxi/data.js:164
+#: src/blocks/search-maxi/data.js:201
 #: src/extensions/styles/custom-css/createIconSelectors.js:34
 msgid "everything inside svg on hover (:hover svg > *)"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:251
-#: src/blocks/pane-maxi/data.js:274
-#: src/blocks/search-maxi/data.js:167
-#: src/blocks/search-maxi/data.js:204
+#: src/blocks/accordion-maxi/data.js:258
+#: src/blocks/pane-maxi/data.js:323
+#: src/blocks/search-maxi/data.js:171
+#: src/blocks/search-maxi/data.js:208
 #: src/extensions/styles/custom-css/createIconSelectors.js:52
 msgid "svg's path on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:255
-#: src/blocks/pane-maxi/data.js:278
+#: src/blocks/accordion-maxi/data.js:262
+#: src/blocks/pane-maxi/data.js:327
 msgid "active icon"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:259
-#: src/blocks/pane-maxi/data.js:282
+#: src/blocks/accordion-maxi/data.js:266
+#: src/blocks/pane-maxi/data.js:331
 msgid "active icon's svg"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:263
-#: src/blocks/pane-maxi/data.js:286
+#: src/blocks/accordion-maxi/data.js:270
+#: src/blocks/pane-maxi/data.js:335
 msgid "everything inside active svg (svg > *)"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:270
-#: src/blocks/pane-maxi/data.js:293
+#: src/blocks/accordion-maxi/data.js:277
+#: src/blocks/pane-maxi/data.js:342
 msgid "active svg's path"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:276
-#: src/blocks/pane-maxi/data.js:299
+#: src/blocks/accordion-maxi/data.js:283
+#: src/blocks/pane-maxi/data.js:348
 msgid "icon ::before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:280
-#: src/blocks/pane-maxi/data.js:303
+#: src/blocks/accordion-maxi/data.js:287
+#: src/blocks/pane-maxi/data.js:352
 msgid "icon ::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:284
-#: src/blocks/pane-maxi/data.js:307
+#: src/blocks/accordion-maxi/data.js:291
+#: src/blocks/pane-maxi/data.js:356
 msgid "icon ::before on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:290
-#: src/blocks/pane-maxi/data.js:313
+#: src/blocks/accordion-maxi/data.js:297
+#: src/blocks/pane-maxi/data.js:362
 msgid "icon ::after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:294
-#: src/blocks/pane-maxi/data.js:317
+#: src/blocks/accordion-maxi/data.js:301
+#: src/blocks/pane-maxi/data.js:366
 msgid "icon ::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:298
-#: src/blocks/pane-maxi/data.js:321
+#: src/blocks/accordion-maxi/data.js:305
+#: src/blocks/pane-maxi/data.js:370
 msgid "icon ::after on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:304
-#: src/blocks/pane-maxi/data.js:327
+#: src/blocks/accordion-maxi/data.js:311
+#: src/blocks/pane-maxi/data.js:376
 msgid "pane content"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:308
-#: src/blocks/pane-maxi/data.js:331
+#: src/blocks/accordion-maxi/data.js:315
+#: src/blocks/pane-maxi/data.js:380
 msgid "pane content on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:312
+#: src/blocks/accordion-maxi/data.js:319
 msgid "pane content active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:318
-#: src/blocks/pane-maxi/data.js:341
+#: src/blocks/accordion-maxi/data.js:325
+#: src/blocks/pane-maxi/data.js:390
 msgid "pane content ::before"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:322
-#: src/blocks/pane-maxi/data.js:345
+#: src/blocks/accordion-maxi/data.js:329
+#: src/blocks/pane-maxi/data.js:394
 msgid "pane content ::before on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:326
-#: src/blocks/pane-maxi/data.js:349
+#: src/blocks/accordion-maxi/data.js:333
+#: src/blocks/pane-maxi/data.js:398
 msgid "pane content ::before on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:335
-#: src/blocks/pane-maxi/data.js:358
+#: src/blocks/accordion-maxi/data.js:342
+#: src/blocks/pane-maxi/data.js:407
 msgid "pane content ::after"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:339
-#: src/blocks/pane-maxi/data.js:362
+#: src/blocks/accordion-maxi/data.js:346
+#: src/blocks/pane-maxi/data.js:411
 msgid "pane content ::after on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:343
-#: src/blocks/pane-maxi/data.js:366
+#: src/blocks/accordion-maxi/data.js:350
+#: src/blocks/pane-maxi/data.js:415
 msgid "pane content ::after on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:352
-#: src/blocks/pane-maxi/data.js:158
+#: src/blocks/accordion-maxi/data.js:359
+#: src/blocks/pane-maxi/data.js:207
 msgid "header content"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:356
-#: src/blocks/pane-maxi/data.js:162
+#: src/blocks/accordion-maxi/data.js:363
+#: src/blocks/pane-maxi/data.js:211
 msgid "header content on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:360
-#: src/blocks/pane-maxi/data.js:166
+#: src/blocks/accordion-maxi/data.js:367
+#: src/blocks/pane-maxi/data.js:215
 msgid "header content on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:366
-#: src/blocks/pane-maxi/data.js:172
+#: src/blocks/accordion-maxi/data.js:373
+#: src/blocks/pane-maxi/data.js:221
 msgid "header line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:370
-#: src/blocks/pane-maxi/data.js:176
+#: src/blocks/accordion-maxi/data.js:377
+#: src/blocks/pane-maxi/data.js:225
 msgid "header line on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:374
-#: src/blocks/pane-maxi/data.js:180
+#: src/blocks/accordion-maxi/data.js:381
+#: src/blocks/pane-maxi/data.js:229
 msgid "header line on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:380
-#: src/blocks/pane-maxi/data.js:186
+#: src/blocks/accordion-maxi/data.js:387
+#: src/blocks/pane-maxi/data.js:235
 msgid "content line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:384
-#: src/blocks/pane-maxi/data.js:190
+#: src/blocks/accordion-maxi/data.js:391
+#: src/blocks/pane-maxi/data.js:239
 msgid "content line on hover"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:388
-#: src/blocks/pane-maxi/data.js:194
+#: src/blocks/accordion-maxi/data.js:395
+#: src/blocks/pane-maxi/data.js:243
 msgid "content line on active state"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:423
+#: src/blocks/accordion-maxi/data.js:430
 #: src/blocks/accordion-maxi/inspector.js:173
 msgid "Header line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:429
+#: src/blocks/accordion-maxi/data.js:436
 #: src/blocks/accordion-maxi/inspector.js:185
 msgid "Content line"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:435
+#: src/blocks/accordion-maxi/data.js:442
 msgid "Pane title"
 msgstr ""
 
-#: src/blocks/accordion-maxi/data.js:444
+#: src/blocks/accordion-maxi/data.js:451
 msgid "Pane title background"
 msgstr ""
 
@@ -3386,6 +3436,7 @@ msgstr ""
 #: src/blocks/map-maxi/components/map-popup-text-control/index.js:39
 #: src/blocks/map-maxi/components/markers/index.js:100
 #: src/blocks/pane-maxi/edit.js:248
+#: src/components/link-control/index.js:86
 #: src/extensions/DC/constants.js:127
 #: src/extensions/DC/constants.js:151
 #: src/extensions/DC/constants.js:159
@@ -3394,24 +3445,24 @@ msgstr ""
 
 #: src/blocks/accordion-maxi/inspector.js:161
 #: src/blocks/divider-maxi/data.js:48
-#: src/blocks/divider-maxi/data.js:165
+#: src/blocks/divider-maxi/data.js:168
 #: src/blocks/divider-maxi/inspector.js:238
 msgid "Line settings"
 msgstr ""
 
 #: src/blocks/accordion-maxi/inspector.js:226
-#: src/blocks/button-maxi/inspector.js:345
+#: src/blocks/button-maxi/inspector.js:279
 #: src/blocks/column-maxi/inspector.js:98
 #: src/blocks/container-maxi/inspector.js:122
 #: src/blocks/divider-maxi/inspector.js:309
 #: src/blocks/group-maxi/inspector.js:70
-#: src/blocks/image-maxi/inspector.js:517
+#: src/blocks/image-maxi/inspector.js:571
 #: src/blocks/list-item-maxi/inspector.js:86
 #: src/blocks/map-maxi/inspector.js:205
-#: src/blocks/number-counter-maxi/inspector.js:148
+#: src/blocks/number-counter-maxi/inspector.js:152
 #: src/blocks/pane-maxi/inspector.js:149
 #: src/blocks/row-maxi/inspector.js:198
-#: src/blocks/search-maxi/inspector.js:412
+#: src/blocks/search-maxi/inspector.js:409
 #: src/blocks/slide-maxi/inspector.js:69
 #: src/blocks/slider-maxi/inspector.js:197
 #: src/blocks/svg-icon-maxi/inspector.js:337
@@ -3439,14 +3490,14 @@ msgstr ""
 #: src/blocks/button-maxi/data.js:73
 #: src/blocks/svg-icon-maxi/data.js:74
 #: src/blocks/svg-icon-maxi/data.js:221
-#: src/components/icon-control/index.js:605
+#: src/components/icon-control/index.js:613
 #: src/components/toolbar/components/icon-background/index.js:67
-#: src/extensions/styles/helpers/getBackgroundStyles.js:695
+#: src/extensions/styles/helpers/getBackgroundStyles.js:809
 msgid "Icon background"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:83
-#: src/components/icon-control/index.js:743
+#: src/components/icon-control/index.js:751
 msgid "Icon padding"
 msgstr ""
 
@@ -3454,36 +3505,36 @@ msgstr ""
 #: src/blocks/button-maxi/data.js:90
 #: src/blocks/divider-maxi/data.js:39
 #: src/blocks/divider-maxi/inspector.js:57
-#: src/blocks/image-maxi/data.js:86
-#: src/blocks/image-maxi/data.js:241
+#: src/blocks/image-maxi/data.js:120
+#: src/blocks/image-maxi/data.js:345
 #: src/blocks/list-item-maxi/data.js:107
 #: src/blocks/number-counter-maxi/data.js:28
 #: src/blocks/svg-icon-maxi/data.js:38
-#: src/blocks/text-maxi/data.js:180
+#: src/blocks/text-maxi/data.js:201
 #: src/components/inspector-tabs/inspector-alignment.js:92
-#: src/components/inspector-tabs/inspector-carousel-slider.js:167
+#: src/components/inspector-tabs/inspector-carousel-slider.js:168
 msgid "Alignment"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:93
-#: src/blocks/image-maxi/data.js:109
+#: src/blocks/image-maxi/data.js:143
 #: src/blocks/list-item-maxi/data.js:34
-#: src/blocks/text-maxi/data.js:100
+#: src/blocks/text-maxi/data.js:121
 msgid "Text alignment"
 msgstr ""
 
 #: src/blocks/button-maxi/data.js:98
 #: src/blocks/button-maxi/data.js:181
-#: src/blocks/image-maxi/data.js:106
+#: src/blocks/image-maxi/data.js:140
 #: src/blocks/list-item-maxi/data.js:37
 #: src/blocks/list-item-maxi/data.js:115
 #: src/blocks/search-maxi/data.js:67
 #: src/blocks/search-maxi/data.js:85
-#: src/blocks/search-maxi/data.js:262
-#: src/blocks/search-maxi/data.js:282
-#: src/blocks/text-maxi/data.js:103
-#: src/blocks/text-maxi/data.js:164
-#: src/blocks/text-maxi/data.js:188
+#: src/blocks/search-maxi/data.js:266
+#: src/blocks/search-maxi/data.js:286
+#: src/blocks/text-maxi/data.js:124
+#: src/blocks/text-maxi/data.js:185
+#: src/blocks/text-maxi/data.js:209
 #: src/components/inspector-tabs/inspector-typography.js:90
 msgid "Typography"
 msgstr ""
@@ -3495,29 +3546,8 @@ msgstr ""
 msgid "Button background"
 msgstr ""
 
-#: src/blocks/button-maxi/data.js:135
-#: src/blocks/divider-maxi/data.js:86
-#: src/blocks/group-maxi/data.js:45
-#: src/blocks/image-maxi/data.js:186
-#: src/blocks/list-item-maxi/data.js:58
-#: src/blocks/map-maxi/data.js:106
-#: src/blocks/number-counter-maxi/data.js:60
-#: src/blocks/pane-maxi/data.js:47
-#: src/blocks/row-maxi/data.js:50
-#: src/blocks/search-maxi/data.js:112
-#: src/blocks/search-maxi/data.js:240
-#: src/blocks/svg-icon-maxi/data.js:124
-#: src/blocks/text-maxi/data.js:127
-#: src/blocks/video-maxi/data.js:104
-#: src/components/inspector-tabs/inspector-opacity.js:36
-#: src/components/opacity-control/index.js:56
-#: src/extensions/relations/getAdvancedSettings.js:79
-#: src/extensions/styles/transitions/transitionDefault.js:27
-msgid "Opacity"
-msgstr ""
-
 #: src/blocks/button-maxi/data.js:187
-#: src/blocks/button-maxi/inspector.js:259
+#: src/blocks/button-maxi/inspector.js:193
 msgid "Text link"
 msgstr ""
 
@@ -3541,28 +3571,28 @@ msgstr ""
 msgid "Button margin/padding"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:156
+#: src/blocks/button-maxi/inspector.js:90
 #: src/blocks/search-maxi/data.js:53
-#: src/blocks/search-maxi/inspector.js:171
+#: src/blocks/search-maxi/inspector.js:166
 msgid "Button"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:157
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:399
+#: src/blocks/button-maxi/inspector.js:91
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:432
 #: src/blocks/search-maxi/components/button-control/index.js:33
-#: src/blocks/text-maxi/components/list-options-control/index.js:840
-#: src/editor/style-cards/maxiStyleCardsTab.js:582
+#: src/blocks/text-maxi/components/list-options-control/index.js:263
+#: src/editor/style-cards/maxiStyleCardsTab.js:590
 msgid "Text"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:218
+#: src/blocks/button-maxi/inspector.js:152
 msgid "Quick styles"
 msgstr ""
 
-#: src/blocks/button-maxi/inspector.js:319
+#: src/blocks/button-maxi/inspector.js:253
 #: src/blocks/divider-maxi/inspector.js:282
-#: src/blocks/image-maxi/inspector.js:489
-#: src/blocks/number-counter-maxi/inspector.js:122
+#: src/blocks/image-maxi/inspector.js:543
+#: src/blocks/number-counter-maxi/inspector.js:126
 #: src/blocks/svg-icon-maxi/inspector.js:307
 #: src/blocks/video-maxi/inspector.js:236
 msgid "Canvas"
@@ -3612,10 +3642,10 @@ msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:102
 #: src/blocks/divider-maxi/inspector.js:133
-#: src/blocks/image-maxi/inspector.js:248
-#: src/blocks/text-maxi/components/list-options-control/index.js:700
+#: src/blocks/image-maxi/inspector.js:260
+#: src/blocks/text-maxi/components/list-options-control/index.js:746
 #: src/components/arrow-control/index.js:46
-#: src/components/axis-position-control/index.js:43
+#: src/components/axis-position-control/index.js:44
 #: src/components/clip-path-control/index.js:132
 #: src/components/clip-path-control/index.js:137
 #: src/components/toolbar/components/divider-alignment/index.js:52
@@ -3625,10 +3655,10 @@ msgstr ""
 
 #: src/blocks/column-maxi/components/column-size-control/index.js:110
 #: src/blocks/divider-maxi/inspector.js:147
-#: src/blocks/image-maxi/inspector.js:255
-#: src/blocks/text-maxi/components/list-options-control/index.js:710
+#: src/blocks/image-maxi/inspector.js:267
+#: src/blocks/text-maxi/components/list-options-control/index.js:756
 #: src/components/arrow-control/index.js:47
-#: src/components/axis-position-control/index.js:48
+#: src/components/axis-position-control/index.js:49
 #: src/components/clip-path-control/index.js:141
 #: src/components/toolbar/components/divider-alignment/index.js:54
 #: src/components/toolbar/components/vertical-align/index.js:61
@@ -3646,7 +3676,7 @@ msgid "Space around"
 msgstr ""
 
 #: src/blocks/column-maxi/data.js:28
-#: src/blocks/column-maxi/data.js:73
+#: src/blocks/column-maxi/data.js:79
 #: src/blocks/column-maxi/inspector.js:46
 msgid "Column settings"
 msgstr ""
@@ -3673,20 +3703,20 @@ msgstr ""
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:497
 #: src/components/color-control/customColorControl.js:81
 #: src/components/color-control/customColorControl.js:123
-#: src/components/color-control/paletteControl.js:203
+#: src/components/color-control/paletteControl.js:213
 msgid "Colour opacity"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:294
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:514
 #: src/components/divider-control/index.js:325
-#: src/editor/style-cards/maxiStyleCardsTab.js:732
+#: src/editor/style-cards/maxiStyleCardsTab.js:740
 msgid "Divider"
 msgstr ""
 
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:355
 #: src/blocks/container-maxi/components/shape-divider-control/index.js:575
-#: src/blocks/container-maxi/data.js:38
+#: src/blocks/container-maxi/data.js:41
 msgid "Divider height"
 msgstr ""
 
@@ -3711,42 +3741,42 @@ msgstr ""
 msgid "Divider opacity"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:33
+#: src/blocks/container-maxi/data.js:36
 msgid "Divider color"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:42
+#: src/blocks/container-maxi/data.js:48
 msgid "Divider height unit"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:46
+#: src/blocks/container-maxi/data.js:55
 msgid "Divider scroll effect"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:61
-#: src/blocks/group-maxi/data.js:18
+#: src/blocks/container-maxi/data.js:71
+#: src/blocks/group-maxi/data.js:19
 #: src/components/inspector-tabs/inspector-callout-arrow.js:29
 msgid "Callout arrow"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:63
-#: src/blocks/group-maxi/data.js:20
+#: src/blocks/container-maxi/data.js:73
+#: src/blocks/group-maxi/data.js:21
 msgid "Show arrow"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:64
-#: src/blocks/group-maxi/data.js:21
+#: src/blocks/container-maxi/data.js:74
+#: src/blocks/group-maxi/data.js:22
 msgid "Arrow side"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:65
-#: src/blocks/group-maxi/data.js:22
+#: src/blocks/container-maxi/data.js:75
+#: src/blocks/group-maxi/data.js:23
 #: src/blocks/slider-maxi/components/navigation-control/index.js:64
 msgid "Arrow position"
 msgstr ""
 
-#: src/blocks/container-maxi/data.js:66
-#: src/blocks/group-maxi/data.js:23
+#: src/blocks/container-maxi/data.js:76
+#: src/blocks/group-maxi/data.js:24
 #: src/components/arrow-control/index.js:177
 msgid "Arrow size"
 msgstr ""
@@ -3767,28 +3797,34 @@ msgid "Line vertical position"
 msgstr ""
 
 #: src/blocks/divider-maxi/data.js:50
+#: src/editor/library/container.js:230
+#: src/editor/style-cards/maxiStyleCardsTab.js:700
+msgid "Line"
+msgstr ""
+
+#: src/blocks/divider-maxi/data.js:53
 msgid "Line style"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:51
+#: src/blocks/divider-maxi/data.js:54
 #: src/blocks/svg-icon-maxi/data.js:54
 msgid "Line colour"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:55
+#: src/blocks/divider-maxi/data.js:58
 #: src/components/divider-control/index.js:412
 #: src/components/divider-control/index.js:488
 #: src/components/toolbar/components/divider-line/index.js:132
 msgid "Line size"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:59
+#: src/blocks/divider-maxi/data.js:62
 #: src/components/divider-control/index.js:471
 #: src/components/divider-control/index.js:529
 msgid "Line weight"
 msgstr ""
 
-#: src/blocks/divider-maxi/data.js:131
+#: src/blocks/divider-maxi/data.js:134
 msgid "Divider box shadow"
 msgstr ""
 
@@ -3802,52 +3838,110 @@ msgstr ""
 msgid "Vertical"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:99
-#: src/blocks/image-maxi/data.js:60
+#: src/blocks/image-maxi/components/dimension-tab/index.js:164
+#: src/blocks/image-maxi/data.js:74
 msgid "Image size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:144
-#: src/blocks/image-maxi/data.js:61
+#: src/blocks/image-maxi/components/dimension-tab/index.js:211
+#: src/blocks/image-maxi/data.js:88
 msgid "Use original size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:155
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:76
+#: src/blocks/image-maxi/components/dimension-tab/index.js:222
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:101
 #: src/components/background-control/sizeAndPositionLayerControl.js:116
 #: src/components/full-size-control/index.js:135
 #: src/components/toolbar/components/size/index.js:78
 msgid "Width"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:196
-#: src/blocks/image-maxi/data.js:76
+#: src/blocks/image-maxi/components/dimension-tab/index.js:263
+#: src/blocks/image-maxi/data.js:107
 #: src/components/image-shape/index.js:164
 msgid "Image ratio"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:201
+#: src/blocks/image-maxi/components/dimension-tab/index.js:268
 msgid "Original size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:234
-#: src/blocks/image-maxi/data.js:62
+#: src/blocks/image-maxi/components/dimension-tab/index.js:301
+#: src/blocks/image-maxi/data.js:89
 msgid "Fit on wrapper"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:247
-#: src/blocks/image-maxi/data.js:63
+#: src/blocks/image-maxi/components/dimension-tab/index.js:314
+#: src/blocks/image-maxi/data.js:90
 msgid "Adjust size"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:276
-#: src/blocks/image-maxi/data.js:67
+#: src/blocks/image-maxi/components/dimension-tab/index.js:348
+#: src/blocks/image-maxi/data.js:94
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:313
 msgid "Image horizontal position"
 msgstr ""
 
-#: src/blocks/image-maxi/components/dimension-tab/index.js:311
-#: src/blocks/image-maxi/data.js:71
+#: src/blocks/image-maxi/components/dimension-tab/index.js:383
+#: src/blocks/image-maxi/data.js:98
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:351
 msgid "Image vertical position"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:9
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:323
+#: src/components/text-shadow-control/index.js:299
+msgid "Blur"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:10
+msgid "Brightness"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:11
+msgid "Contrast"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:12
+msgid "Grayscale"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:13
+msgid "Hue rotate"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:14
+msgid "Invert"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:16
+msgid "Saturate"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:17
+#: src/blocks/image-maxi/components/hover-effect-control/index.js:325
+msgid "Sepia"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:21
+msgid "Horizontal shadow"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:22
+msgid "Vertical shadow"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/constants.js:23
+msgid "Shadow blur"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/index.js:117
+#: src/blocks/image-maxi/data.js:204
+msgid "Drop shadow colour"
+msgstr ""
+
+#: src/blocks/image-maxi/components/filter-tab/index.js:163
+msgid "Enable filter hover"
 msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:122
@@ -3930,15 +4024,6 @@ msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:320
 msgid "Flashing"
-msgstr ""
-
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:323
-#: src/components/text-shadow-control/index.js:299
-msgid "Blur"
-msgstr ""
-
-#: src/blocks/image-maxi/components/hover-effect-control/index.js:325
-msgid "Sepia"
 msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:329
@@ -4036,8 +4121,9 @@ msgid "Custom padding"
 msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:666
-#: src/blocks/search-maxi/data.js:105
-#: src/blocks/search-maxi/inspector.js:379
+#: src/blocks/pane-maxi/data.js:48
+#: src/blocks/search-maxi/data.js:109
+#: src/blocks/search-maxi/inspector.js:376
 #: src/blocks/video-maxi/inspector.js:225
 #: src/components/background-control/imageLayer.js:533
 #: src/components/background-control/imageLayer.js:588
@@ -4050,13 +4136,14 @@ msgid "Custom margin"
 msgstr ""
 
 #: src/blocks/image-maxi/components/hover-effect-control/index.js:693
+#: src/blocks/pane-maxi/data.js:44
 #: src/components/margin-control/index.js:19
 #: src/components/toolbar/components/text-margin/index.js:59
 msgid "Margin"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:50
-#: src/blocks/video-maxi/data.js:79
+#: src/blocks/image-maxi/data.js:64
+#: src/blocks/video-maxi/data.js:88
 #: src/blocks/video-maxi/inspector.js:176
 #: src/components/media-uploader-control/index.js:114
 #: src/components/media-uploader-control/index.js:155
@@ -4064,56 +4151,59 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:58
-#: src/blocks/image-maxi/inspector.js:167
+#: src/blocks/image-maxi/data.js:72
+#: src/blocks/image-maxi/inspector.js:173
 msgid "Dimension"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:75
+#: src/blocks/image-maxi/data.js:102
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:222
 msgid "Image width"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:89
-#: src/blocks/image-maxi/inspector.js:190
+#: src/blocks/image-maxi/data.js:103
+msgid "Responsive image width"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:123
+#: src/blocks/image-maxi/inspector.js:201
 msgid "Alt tag"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:93
-#: src/blocks/image-maxi/inspector.js:204
+#: src/blocks/image-maxi/data.js:127
+#: src/blocks/image-maxi/inspector.js:215
 #: src/components/toolbar/components/more-settings/index.js:122
 #: src/extensions/DC/constants.js:160
 msgid "Caption"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:95
+#: src/blocks/image-maxi/data.js:129
 msgid "Caption type"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:96
+#: src/blocks/image-maxi/data.js:130
 msgid "Caption content"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:97
-#: src/blocks/image-maxi/inspector.js:238
+#: src/blocks/image-maxi/data.js:131
+#: src/blocks/image-maxi/inspector.js:250
 msgid "Caption position"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:98
-#: src/blocks/image-maxi/inspector.js:271
+#: src/blocks/image-maxi/data.js:132
+#: src/blocks/image-maxi/inspector.js:283
 msgid "Caption gap"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:102
+#: src/blocks/image-maxi/data.js:136
 msgid "Caption gap unit"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:112
-#: src/blocks/text-maxi/data.js:170
-#: src/components/inspector-tabs/inspector-link-settings.js:38
-#: src/components/toolbar/components/link/index.js:128
-#: src/components/toolbar/components/text-link/index.js:293
-#: src/components/typography-control/index.js:96
+#: src/blocks/image-maxi/data.js:146
+#: src/blocks/text-maxi/data.js:191
+#: src/components/toolbar/components/link/index.js:169
+#: src/components/toolbar/components/text-link/index.js:292
+#: src/components/typography-control/index.js:97
 #: src/extensions/DC/constants.js:163
 #: src/extensions/DC/constants.js:178
 #: src/extensions/DC/constants.js:189
@@ -4121,87 +4211,115 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:115
+#: src/blocks/image-maxi/data.js:149
 msgid "Hover effects"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:120
+#: src/blocks/image-maxi/data.js:154
 msgid "Hover background"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:123
+#: src/blocks/image-maxi/data.js:157
 msgid "Hover background color"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:126
+#: src/blocks/image-maxi/data.js:160
 msgid "Hover background gradient"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:129
+#: src/blocks/image-maxi/data.js:163
 msgid "Hover border"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:132
+#: src/blocks/image-maxi/data.js:166
 msgid "Hover border radius"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:135
+#: src/blocks/image-maxi/data.js:169
 msgid "Hover border width"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:138
+#: src/blocks/image-maxi/data.js:172
 msgid "Hover content typography"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:141
+#: src/blocks/image-maxi/data.js:175
 msgid "Hover margin"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:144
+#: src/blocks/image-maxi/data.js:178
 msgid "Hover padding"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:147
+#: src/blocks/image-maxi/data.js:181
 msgid "Hover title typography"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:152
-#: src/blocks/image-maxi/data.js:230
+#: src/blocks/image-maxi/data.js:186
+#: src/blocks/image-maxi/inspector.js:502
+msgid "Filters"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:208
+msgid "Filter hover state"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:213
+#: src/blocks/image-maxi/data.js:227
+#: src/components/color-control/utils.js:9
+msgid "hover"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:239
+msgid "Drop shadow colour hover"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:246
+#: src/blocks/image-maxi/data.js:328
 msgid "Clip path"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:250
-#: src/blocks/image-maxi/inspector.js:439
+#: src/blocks/image-maxi/data.js:249
+#: src/editor/library/container.js:229
+msgid "Shape"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:334
+msgid "Filter"
+msgstr ""
+
+#: src/blocks/image-maxi/data.js:354
+#: src/blocks/image-maxi/inspector.js:475
 msgid "Shape mask"
 msgstr ""
 
-#: src/blocks/image-maxi/data.js:290
+#: src/blocks/image-maxi/data.js:394
 #: src/components/inspector-tabs/inspector-clip-path.js:32
 msgid "Clip-path"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:397
+#: src/blocks/image-maxi/edit.js:445
 #: src/blocks/video-maxi/edit.js:255
 msgid "Insert from Media Library"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:465
-#: src/blocks/image-maxi/edit.js:551
-#: src/blocks/image-maxi/edit.js:606
+#: src/blocks/image-maxi/edit.js:513
+#: src/blocks/image-maxi/edit.js:605
+#: src/blocks/image-maxi/edit.js:662
 #: src/extensions/DC/utils.js:199
 msgid "No content found"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:477
-#: src/blocks/image-maxi/edit.js:563
+#: src/blocks/image-maxi/edit.js:527
+#: src/blocks/image-maxi/edit.js:619
 msgid "Set your Image Maxi caption here…"
 msgstr ""
 
-#: src/blocks/image-maxi/edit.js:607
+#: src/blocks/image-maxi/edit.js:663
 msgid "Placeholder image"
 msgstr ""
 
-#: src/blocks/image-maxi/inspector.js:401
+#: src/blocks/image-maxi/inspector.js:437
 msgid "Hover effect"
 msgstr ""
 
@@ -4279,21 +4397,22 @@ msgid "Google Maps Api"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-control/index.js:162
+#: src/blocks/map-maxi/data.js:31
 msgid "Map type"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-control/index.js:170
-#: src/blocks/map-maxi/data.js:31
+#: src/blocks/map-maxi/data.js:35
 msgid "Minimum zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-control/index.js:188
-#: src/blocks/map-maxi/data.js:32
+#: src/blocks/map-maxi/data.js:36
 msgid "Maximum zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-interaction-control/index.js:14
-#: src/blocks/map-maxi/data.js:95
+#: src/blocks/map-maxi/data.js:102
 msgid "Map dragging"
 msgstr ""
 
@@ -4310,9 +4429,9 @@ msgid "Scroll wheel zoom"
 msgstr ""
 
 #: src/blocks/map-maxi/components/map-markers-control/index.js:31
-#: src/blocks/map-maxi/data.js:50
-#: src/blocks/text-maxi/components/list-options-control/index.js:359
-#: src/blocks/text-maxi/data.js:61
+#: src/blocks/map-maxi/data.js:57
+#: src/blocks/text-maxi/components/list-options-control/index.js:418
+#: src/blocks/text-maxi/data.js:62
 msgid "Marker size"
 msgstr ""
 
@@ -4367,61 +4486,77 @@ msgstr ""
 msgid "Map provider"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:35
+#: src/blocks/map-maxi/data.js:32
+msgid "Latitude"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:33
+msgid "Longitude"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:34
+msgid "Zoom"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:39
 #: src/blocks/map-maxi/inspector.js:96
 msgid "Map marker"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:37
+#: src/blocks/map-maxi/data.js:41
 msgid "Markers"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:38
+#: src/blocks/map-maxi/data.js:42
 msgid "Marker icon"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:42
+#: src/blocks/map-maxi/data.js:46
+msgid "Marker style"
+msgstr ""
+
+#: src/blocks/map-maxi/data.js:49
 msgid "Marker fill colour"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:46
+#: src/blocks/map-maxi/data.js:53
 msgid "Marker line colour"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:56
+#: src/blocks/map-maxi/data.js:63
 msgid "Map popup text"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:58
+#: src/blocks/map-maxi/data.js:65
 msgid "Title text level"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:60
+#: src/blocks/map-maxi/data.js:67
 msgid "Title typography"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:63
+#: src/blocks/map-maxi/data.js:70
 msgid "Description typography"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:69
+#: src/blocks/map-maxi/data.js:76
 msgid "Map popup"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:93
+#: src/blocks/map-maxi/data.js:100
 #: src/blocks/map-maxi/inspector.js:186
 msgid "Map interaction"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:96
+#: src/blocks/map-maxi/data.js:103
 msgid "Map touch zoom"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:97
+#: src/blocks/map-maxi/data.js:104
 msgid "Map double click zoom"
 msgstr ""
 
-#: src/blocks/map-maxi/data.js:99
+#: src/blocks/map-maxi/data.js:106
 msgid "Map scroll wheel zoom"
 msgstr ""
 
@@ -4433,11 +4568,11 @@ msgstr ""
 msgid "Marker pop-up"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:65
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:90
 msgid "Auto width"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:121
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:146
 #: src/components/inspector-tabs/inspector-carousel-slider.js:118
 #: src/editor/library/MasonryItem.js:143
 #: src/editor/library/modal.js:435
@@ -4445,121 +4580,145 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:131
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:156
 msgid "Start animation"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:137
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:162
 msgid "Page Load"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:141
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:166
 msgid "View On Scroll"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:151
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:176
 msgid "Offset"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:176
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:201
 msgid "Start Number "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:177
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:202
 msgid "can not be grater than "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:178
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:203
 msgid "End Number "
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:183
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:208
 msgid "Start number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:203
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:228
 msgid "End number"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:224
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:249
 msgid "End Number can't be grater than 100 when circle is enabled"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:232
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:257
 msgid "Duration"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:252
-#: src/components/icon-control/index.js:134
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:277
+#: src/components/icon-control/index.js:120
 msgid "Stroke"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:316
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:350
 msgid "Title font size"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:344
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:377
 msgid "Show percentage sign"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:355
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:388
 msgid "Centre percentage sign"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:369
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:402
 msgid "Hide circle"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:388
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:421
 msgid "Rounded bar"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:457
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:492
+#: src/editor/style-cards/maxiStyleCardsTab.js:764
 msgid "Circle background"
 msgstr ""
 
-#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:512
+#: src/blocks/number-counter-maxi/components/number-counter-control/index.js:552
+#: src/editor/style-cards/maxiStyleCardsTab.js:772
 msgid "Circle bar"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/data.js:31
 #: src/blocks/number-counter-maxi/inspector.js:63
+#: src/editor/style-cards/maxiStyleCardsTab.js:756
 msgid "Number"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/data.js:33
+msgid "Number settings"
+msgstr ""
+
+#: src/blocks/number-counter-maxi/data.js:36
+msgid "Number size"
 msgstr ""
 
 #: src/blocks/number-counter-maxi/inspector.js:56
 msgid "Counter"
 msgstr ""
 
-#: src/blocks/pane-maxi/data.js:200
-msgid "accordion pane header content::before"
+#: src/blocks/pane-maxi/data.js:20
+msgid "Active background"
 msgstr ""
 
-#: src/blocks/pane-maxi/data.js:207
-msgid "accordion pane header content::before on hover"
+#: src/blocks/pane-maxi/data.js:28
+msgid "Active border"
 msgstr ""
 
-#: src/blocks/pane-maxi/data.js:214
-msgid "accordion pane header content::before on active state"
+#: src/blocks/pane-maxi/data.js:36
+msgid "Active box shadow"
 msgstr ""
 
-#: src/blocks/pane-maxi/data.js:223
-msgid "accordion pane header content::after"
-msgstr ""
-
-#: src/blocks/pane-maxi/data.js:335
-msgid "pane content on active state"
-msgstr ""
-
-#: src/blocks/pane-maxi/inspector.js:77
-msgid "Pane settings"
-msgstr ""
-
+#: src/blocks/pane-maxi/data.js:67
 #: src/blocks/pane-maxi/inspector.js:105
 #: src/components/background-control/imageLayer.js:541
 #: src/components/background-control/imageLayer.js:592
 #: src/extensions/DC/constants.js:131
 msgid "Content"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:249
+msgid "accordion pane header content::before"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:256
+msgid "accordion pane header content::before on hover"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:263
+msgid "accordion pane header content::before on active state"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:272
+msgid "accordion pane header content::after"
+msgstr ""
+
+#: src/blocks/pane-maxi/data.js:384
+msgid "pane content on active state"
+msgstr ""
+
+#: src/blocks/pane-maxi/inspector.js:77
+msgid "Pane settings"
 msgstr ""
 
 #: src/blocks/row-maxi/components/column-pattern/index.js:177
@@ -4597,38 +4756,89 @@ msgstr ""
 msgid "Flex wrap"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:71
-#: src/blocks/slider-maxi/data.js:107
+#: src/blocks/row-maxi/data.js:32
+#: src/blocks/row-maxi/inspector.js:173
+msgid "Carousel"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:35
+#: src/blocks/slider-maxi/data.js:38
+#: src/blocks/slider-maxi/inspector.js:93
+msgid "Navigation"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:38
+#: src/blocks/slider-maxi/data.js:49
+#: src/blocks/slider-maxi/inspector.js:109
+#: src/components/inspector-tabs/inspector-carousel-arrows.js:48
+msgid "Arrows"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:40
+#: src/blocks/slider-maxi/data.js:51
+msgid "Arrow icons"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:43
+#: src/blocks/slider-maxi/data.js:54
+msgid "Arrow icons - hover"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:48
+#: src/blocks/slider-maxi/data.js:59
+#: src/blocks/slider-maxi/inspector.js:139
+#: src/components/inspector-tabs/inspector-carousel-dots.js:44
+msgid "Dots"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:50
+#: src/blocks/slider-maxi/data.js:61
+msgid "Dot icons"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:53
+#: src/blocks/slider-maxi/data.js:64
+msgid "Dot icons - hover"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:56
+#: src/blocks/slider-maxi/data.js:67
+msgid "Dot icons - active"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:61
+#: src/components/inspector-tabs/inspector-repeater.js:18
+msgid "Repeater"
+msgstr ""
+
+#: src/blocks/row-maxi/data.js:106
+#: src/blocks/slider-maxi/data.js:114
 msgid "first arrow icon"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:75
-#: src/blocks/slider-maxi/data.js:111
+#: src/blocks/row-maxi/data.js:110
+#: src/blocks/slider-maxi/data.js:118
 msgid "first arrow icon on hover"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:81
-#: src/blocks/slider-maxi/data.js:117
+#: src/blocks/row-maxi/data.js:116
+#: src/blocks/slider-maxi/data.js:124
 msgid "second arrow icon"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:85
-#: src/blocks/slider-maxi/data.js:121
+#: src/blocks/row-maxi/data.js:120
+#: src/blocks/slider-maxi/data.js:128
 msgid "second arrow icon on hover"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:91
-#: src/blocks/slider-maxi/data.js:127
+#: src/blocks/row-maxi/data.js:126
+#: src/blocks/slider-maxi/data.js:134
 msgid "Each dot icon"
 msgstr ""
 
-#: src/blocks/row-maxi/data.js:95
-#: src/blocks/slider-maxi/data.js:131
+#: src/blocks/row-maxi/data.js:130
+#: src/blocks/slider-maxi/data.js:138
 msgid "Each dot icon on hover"
-msgstr ""
-
-#: src/blocks/row-maxi/inspector.js:173
-msgid "Carousel"
 msgstr ""
 
 #: src/blocks/row-maxi/styles.js:303
@@ -4642,7 +4852,7 @@ msgstr ""
 #: src/blocks/search-maxi/components/button-control/index.js:24
 #: src/blocks/search-maxi/data.js:52
 #: src/blocks/search-maxi/data.js:55
-#: src/blocks/search-maxi/inspector.js:147
+#: src/blocks/search-maxi/inspector.js:140
 msgid "Skin"
 msgstr ""
 
@@ -4656,15 +4866,15 @@ msgid "Placeholder text"
 msgstr ""
 
 #: src/blocks/search-maxi/components/placeholder-color-control/index.js:35
-#: src/components/typography-control/index.js:140
-#: src/components/typography-control/index.js:183
-#: src/components/typography-control/index.js:228
-#: src/components/typography-control/index.js:276
-#: src/components/typography-control/index.js:1258
+#: src/components/typography-control/index.js:141
+#: src/components/typography-control/index.js:184
+#: src/components/typography-control/index.js:229
+#: src/components/typography-control/index.js:277
+#: src/components/typography-control/index.js:1274
 msgid "Font"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:46
+#: src/blocks/search-maxi/components/skin-control/index.js:48
 #: src/components/flex-settings-control/utils.js:14
 #: src/components/scroll-effects-control/options.js:144
 #: src/components/scroll-effects-control/options.js:275
@@ -4677,23 +4887,23 @@ msgstr ""
 msgid "Choose"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:51
+#: src/blocks/search-maxi/components/skin-control/index.js:53
 msgid "Boxed"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:55
+#: src/blocks/search-maxi/components/skin-control/index.js:57
 msgid "Classic"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:59
+#: src/blocks/search-maxi/components/skin-control/index.js:61
 msgid "Icon reveal"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:106
+#: src/blocks/search-maxi/components/skin-control/index.js:108
 msgid "Reveal action"
 msgstr ""
 
-#: src/blocks/search-maxi/components/skin-control/index.js:111
+#: src/blocks/search-maxi/components/skin-control/index.js:113
 msgid "Click"
 msgstr ""
 
@@ -4702,12 +4912,12 @@ msgid "Button text close"
 msgstr ""
 
 #: src/blocks/search-maxi/data.js:63
-#: src/blocks/search-maxi/inspector.js:231
+#: src/blocks/search-maxi/inspector.js:226
 msgid "Close icon"
 msgstr ""
 
 #: src/blocks/search-maxi/data.js:89
-#: src/blocks/search-maxi/inspector.js:326
+#: src/blocks/search-maxi/inspector.js:323
 msgid "Placeholder"
 msgstr ""
 
@@ -4716,36 +4926,36 @@ msgid "Placeholder colour"
 msgstr ""
 
 #: src/blocks/search-maxi/data.js:101
-#: src/blocks/search-maxi/data.js:294
+#: src/blocks/search-maxi/data.js:298
 msgid "Input background"
 msgstr ""
 
-#: src/blocks/search-maxi/data.js:126
+#: src/blocks/search-maxi/data.js:130
 msgid "input ::placeholder"
 msgstr ""
 
-#: src/blocks/search-maxi/data.js:130
+#: src/blocks/search-maxi/data.js:134
 msgid "input ::placeholder on hover"
 msgstr ""
 
-#: src/blocks/search-maxi/data.js:274
+#: src/blocks/search-maxi/data.js:278
 msgid "button background"
 msgstr ""
 
-#: src/blocks/search-maxi/data.js:300
+#: src/blocks/search-maxi/data.js:304
 msgid "Icon reveal appear"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:159
+#: src/blocks/search-maxi/inspector.js:152
 msgid "Search settings"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:180
+#: src/blocks/search-maxi/inspector.js:175
 msgid "Shortcut"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:242
-#: src/blocks/video-maxi/components/video-icon-control/index.js:201
+#: src/blocks/search-maxi/inspector.js:236
+#: src/blocks/video-maxi/components/video-icon-control/index.js:198
 #: src/components/arrow-control/index.js:148
 #: src/components/background-control/sizeAndPositionLayerControl.js:258
 #: src/components/inspector-tabs/inspector-position.js:19
@@ -4755,36 +4965,36 @@ msgstr ""
 msgid "Position"
 msgstr ""
 
-#: src/blocks/search-maxi/inspector.js:306
+#: src/blocks/search-maxi/inspector.js:303
 msgid "Input"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:46
-#: src/blocks/slider-maxi/data.js:39
+#: src/blocks/slider-maxi/data.js:40
 #: src/components/inspector-tabs/inspector-carousel-arrows.js:52
 msgid "Enable arrows"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:55
-#: src/blocks/slider-maxi/data.js:41
+#: src/blocks/slider-maxi/data.js:42
 #: src/components/inspector-tabs/inspector-carousel-dots.js:48
 msgid "Enable dots"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:68
 #: src/blocks/slider-maxi/components/navigation-control/index.js:102
-#: src/blocks/text-maxi/components/list-options-control/index.js:163
+#: src/blocks/text-maxi/components/list-options-control/index.js:543
 msgid "Inside"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:72
 #: src/blocks/slider-maxi/components/navigation-control/index.js:106
-#: src/blocks/text-maxi/components/list-options-control/index.js:167
+#: src/blocks/text-maxi/components/list-options-control/index.js:547
 msgid "Outside"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/navigation-control/index.js:98
-#: src/blocks/slider-maxi/data.js:44
+#: src/blocks/slider-maxi/data.js:45
 msgid "Dots position"
 msgstr ""
 
@@ -4813,29 +5023,29 @@ msgid "Spacing between dots"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:36
-#: src/blocks/slider-maxi/data.js:25
+#: src/blocks/slider-maxi/data.js:26
 msgid "Edit view"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:43
-#: src/blocks/slider-maxi/data.js:27
+#: src/blocks/slider-maxi/data.js:28
 #: src/blocks/video-maxi/components/video-options-control/index.js:30
-#: src/blocks/video-maxi/data.js:42
-#: src/components/inspector-tabs/inspector-carousel-slider.js:239
+#: src/blocks/video-maxi/data.js:45
+#: src/components/inspector-tabs/inspector-carousel-slider.js:240
 #: src/components/toolbar/components/slider-settings/index.js:46
 msgid "Autoplay"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:52
-#: src/blocks/slider-maxi/data.js:28
-#: src/components/inspector-tabs/inspector-carousel-slider.js:263
+#: src/blocks/slider-maxi/data.js:29
+#: src/components/inspector-tabs/inspector-carousel-slider.js:264
 #: src/components/toolbar/components/slider-settings/index.js:55
 msgid "Pause on hover"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:59
-#: src/blocks/slider-maxi/data.js:29
-#: src/components/inspector-tabs/inspector-carousel-slider.js:273
+#: src/blocks/slider-maxi/data.js:30
+#: src/components/inspector-tabs/inspector-carousel-slider.js:274
 #: src/components/toolbar/components/slider-settings/index.js:62
 msgid "Pause on interaction"
 msgstr ""
@@ -4846,7 +5056,7 @@ msgid "Autoplay speed (ms)"
 msgstr ""
 
 #: src/blocks/slider-maxi/components/slider-control/index.js:89
-#: src/components/inspector-tabs/inspector-carousel-slider.js:310
+#: src/components/inspector-tabs/inspector-carousel-slider.js:311
 #: src/components/toolbar/components/slider-settings/index.js:95
 msgid "Infinite loop"
 msgstr ""
@@ -4861,70 +5071,33 @@ msgstr ""
 msgid "Transition speed (ms)"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:23
+#: src/blocks/slider-maxi/data.js:24
 #: src/blocks/slider-maxi/inspector.js:74
 #: src/components/toolbar/components/slider-settings/index.js:40
 msgid "Slider settings"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:26
+#: src/blocks/slider-maxi/data.js:27
 #: src/blocks/video-maxi/components/video-options-control/index.js:51
-#: src/blocks/video-maxi/data.js:44
+#: src/blocks/video-maxi/data.js:47
 #: src/components/background-control/videoLayer.js:240
 msgid "Loop"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:31
+#: src/blocks/slider-maxi/data.js:32
 msgid "Autoplay speed"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:32
+#: src/blocks/slider-maxi/data.js:33
 msgid "Transition type"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:33
+#: src/blocks/slider-maxi/data.js:34
 msgid "Transition speed"
 msgstr ""
 
-#: src/blocks/slider-maxi/data.js:37
-#: src/blocks/slider-maxi/inspector.js:93
-msgid "Navigation"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:42
+#: src/blocks/slider-maxi/data.js:43
 msgid "Arrows position"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:48
-#: src/blocks/slider-maxi/inspector.js:109
-#: src/components/inspector-tabs/inspector-carousel-arrows.js:48
-msgid "Arrows"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:50
-msgid "Arrow icons"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:53
-msgid "Arrow icons - hover"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:58
-#: src/blocks/slider-maxi/inspector.js:139
-#: src/components/inspector-tabs/inspector-carousel-dots.js:44
-msgid "Dots"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:60
-msgid "Dot icons"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:63
-msgid "Dot icons - hover"
-msgstr ""
-
-#: src/blocks/slider-maxi/data.js:66
-msgid "Dot icons - active"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-alt-control/index.js:16
@@ -4938,7 +5111,7 @@ msgid "Alt description"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:51
-#: src/components/icon-control/index.js:496
+#: src/components/icon-control/index.js:505
 #: src/components/toolbar/components/icon-color/index.js:132
 msgid "Icon fill"
 msgstr ""
@@ -4948,11 +5121,11 @@ msgid "Icon line"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:72
-#: src/blocks/video-maxi/components/video-icon-control/index.js:426
-#: src/blocks/video-maxi/components/video-overlay-control/index.js:332
+#: src/blocks/video-maxi/components/video-icon-control/index.js:435
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:405
 #: src/components/inspector-tabs/inspector-block-background.js:46
 #: src/components/inspector-tabs/inspector-clip-path.js:37
-#: src/components/inspector-tabs/inspector-icon.js:99
+#: src/components/inspector-tabs/inspector-icon.js:100
 #: src/components/inspector-tabs/inspector-opacity.js:42
 #: src/components/inspector-tabs/inspector-typography.js:142
 #: src/components/transform-control/index.js:290
@@ -4960,11 +5133,11 @@ msgid "Normal state"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/components/svg-color-control/index.js:86
-#: src/blocks/video-maxi/components/video-icon-control/index.js:430
-#: src/blocks/video-maxi/components/video-overlay-control/index.js:336
-#: src/components/inspector-tabs/inspector-block-background.js:74
+#: src/blocks/video-maxi/components/video-icon-control/index.js:439
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:409
+#: src/components/inspector-tabs/inspector-block-background.js:75
 #: src/components/inspector-tabs/inspector-clip-path.js:46
-#: src/components/inspector-tabs/inspector-icon.js:130
+#: src/components/inspector-tabs/inspector-icon.js:131
 #: src/components/inspector-tabs/inspector-opacity.js:53
 #: src/components/inspector-tabs/inspector-typography.js:184
 #: src/components/transform-control/index.js:297
@@ -5021,8 +5194,8 @@ msgstr ""
 
 #: src/blocks/svg-icon-maxi/data.js:76
 #: src/components/arrow-control/index.js:96
-#: src/components/background-control/backgroundLayersControl.js:346
-#: src/components/background-control/backgroundLayersControl.js:613
+#: src/components/background-control/backgroundLayersControl.js:347
+#: src/components/background-control/backgroundLayersControl.js:619
 #: src/components/toolbar/components/background-color/background-color.js:63
 #: src/components/toolbar/components/background-color/block-background-color.js:77
 msgid "Background colour"
@@ -5033,10 +5206,10 @@ msgid "Background color hover"
 msgstr ""
 
 #: src/blocks/svg-icon-maxi/data.js:82
-#: src/components/background-control/backgroundLayersControl.js:352
-#: src/components/background-control/backgroundLayersControl.js:625
+#: src/components/background-control/backgroundLayersControl.js:353
+#: src/components/background-control/backgroundLayersControl.js:631
 #: src/components/background-control/gradientLayer.js:42
-#: src/extensions/styles/helpers/getBackgroundStyles.js:218
+#: src/extensions/styles/helpers/getBackgroundStyles.js:252
 msgid "Background gradient"
 msgstr ""
 
@@ -5050,107 +5223,109 @@ msgstr ""
 msgid "Height / Width"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:142
-msgid "List style position"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:178
-#: src/components/typography-control/index.js:1353
-msgid "Text indent"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:234
-#: src/blocks/text-maxi/data.js:45
-msgid "List gap"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:294
-msgid "Paragraph spacing"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:358
-msgid "Marker width"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:419
-msgid "Marker height"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:461
-msgid "Marker line-height"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:502
-msgid "Marker vertical offset"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:560
-msgid "Marker indent"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:620
-msgid "Marker"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:671
-msgid "Text position"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:692
-msgid "Baseline"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:695
-msgid "Sub"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:697
-msgid "Super"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:702
-msgid "Text-top"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:706
-msgid "Middle"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:714
-msgid "Text-bottom"
-msgstr ""
-
-#: src/blocks/text-maxi/components/list-options-control/index.js:727
+#: src/blocks/text-maxi/components/list-options-control/index.js:150
 msgid "Type of list"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:742
+#: src/blocks/text-maxi/components/list-options-control/index.js:165
 msgid "Unordered"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:746
+#: src/blocks/text-maxi/components/list-options-control/index.js:169
 msgid "Ordered"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:762
-#: src/components/typography-control/index.js:1647
+#: src/blocks/text-maxi/components/list-options-control/index.js:185
+#: src/components/typography-control/index.js:1665
 msgid "Style"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:792
+#: src/blocks/text-maxi/components/list-options-control/index.js:215
 msgid "Start from"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:819
+#: src/blocks/text-maxi/components/list-options-control/index.js:242
 msgid "Reverse order"
 msgstr ""
 
-#: src/blocks/text-maxi/components/list-options-control/index.js:844
+#: src/blocks/text-maxi/components/list-options-control/index.js:267
 #: src/blocks/video-maxi/components/video-control/index.js:72
 #: src/components/image-url-upload/index.js:37
 #: src/components/toolbar/components/video-url/index.js:41
 #: src/extensions/DC/constants.js:164
 msgid "URL"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:365
+msgid "Marker"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:417
+msgid "Marker width"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:478
+#: src/blocks/text-maxi/data.js:70
+msgid "Marker height"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:522
+#: src/blocks/text-maxi/data.js:106
+msgid "List style position"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:558
+msgid "Marker indent"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:617
+msgid "Marker vertical offset"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:675
+msgid "Marker line-height"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:717
+msgid "Text position"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:738
+msgid "Baseline"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:741
+msgid "Sub"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:743
+msgid "Super"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:748
+msgid "Text-top"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:752
+msgid "Middle"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:760
+msgid "Text-bottom"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:772
+#: src/components/typography-control/index.js:1371
+msgid "Text indent"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:828
+#: src/blocks/text-maxi/data.js:46
+msgid "List gap"
+msgstr ""
+
+#: src/blocks/text-maxi/components/list-options-control/index.js:888
+msgid "Paragraph spacing"
 msgstr ""
 
 #: src/blocks/text-maxi/data.js:34
@@ -5163,79 +5338,95 @@ msgid "List options"
 msgstr ""
 
 #: src/blocks/text-maxi/data.js:37
+msgid "List mode"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:38
 msgid "List indent"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:41
+#: src/blocks/text-maxi/data.js:42
 msgid "List indent unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:49
+#: src/blocks/text-maxi/data.js:50
 msgid "List gap unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:53
+#: src/blocks/text-maxi/data.js:54
 msgid "List paragraph spacing"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:57
+#: src/blocks/text-maxi/data.js:58
 msgid "List paragraph spacing unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:65
+#: src/blocks/text-maxi/data.js:66
 msgid "Marker size unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:69
+#: src/blocks/text-maxi/data.js:74
+msgid "Marker height unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:78
 msgid "List marker indent"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:73
+#: src/blocks/text-maxi/data.js:82
 msgid "List marker indent unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:77
+#: src/blocks/text-maxi/data.js:86
 msgid "List marker line height"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:81
+#: src/blocks/text-maxi/data.js:90
 msgid "List marker line height unit"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:85
+#: src/blocks/text-maxi/data.js:94
+msgid "List marker vertical offset"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:98
+msgid "List marker vertical offset unit"
+msgstr ""
+
+#: src/blocks/text-maxi/data.js:102
 msgid "List colour"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:89
+#: src/blocks/text-maxi/data.js:110
 msgid "List text position"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:93
+#: src/blocks/text-maxi/data.js:114
 msgid "List type"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:94
+#: src/blocks/text-maxi/data.js:115
 msgid "List style"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:95
+#: src/blocks/text-maxi/data.js:116
 msgid "List style custom"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:96
+#: src/blocks/text-maxi/data.js:117
 msgid "List start"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:97
+#: src/blocks/text-maxi/data.js:118
 msgid "List reversed"
 msgstr ""
 
-#: src/blocks/text-maxi/data.js:106
+#: src/blocks/text-maxi/data.js:127
 msgid "Text links"
 msgstr ""
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:37
-#: src/blocks/video-maxi/data.js:68
+#: src/blocks/video-maxi/data.js:74
 msgid "Lightbox background"
 msgstr ""
 
@@ -5244,7 +5435,7 @@ msgid "Video aspect ratio"
 msgstr ""
 
 #: src/blocks/video-maxi/components/popup-settings-control/index.js:126
-#: src/blocks/video-maxi/data.js:76
+#: src/blocks/video-maxi/data.js:81
 msgid "Pop animation"
 msgstr ""
 
@@ -5284,43 +5475,43 @@ msgid "End time (s)"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-control/index.js:183
-#: src/blocks/video-maxi/data.js:37
+#: src/blocks/video-maxi/data.js:40
 msgid "Aspect ratio"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-icon-control/index.js:74
+#: src/blocks/video-maxi/components/video-icon-control/index.js:165
 msgid "Enable icon hover"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-icon-control/index.js:218
+#: src/blocks/video-maxi/components/video-icon-control/index.js:215
 msgid "Top screen right"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-icon-control/index.js:225
+#: src/blocks/video-maxi/components/video-icon-control/index.js:222
 msgid "Top right above video"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-icon-control/index.js:314
+#: src/blocks/video-maxi/components/video-icon-control/index.js:323
 msgid "Icon spacing"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-options-control/index.js:41
-#: src/blocks/video-maxi/data.js:43
+#: src/blocks/video-maxi/data.js:46
 msgid "Mute"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-options-control/index.js:61
-#: src/blocks/video-maxi/data.js:45
+#: src/blocks/video-maxi/data.js:48
 msgid "Player controls"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:36
-#: src/blocks/video-maxi/data.js:82
+#: src/blocks/video-maxi/data.js:91
 msgid "Overlay background"
 msgstr ""
 
 #: src/blocks/video-maxi/components/video-overlay-control/index.js:185
-#: src/blocks/video-maxi/data.js:81
+#: src/blocks/video-maxi/data.js:90
 msgid "Hide image(icon only)"
 msgstr ""
 
@@ -5332,66 +5523,98 @@ msgstr ""
 msgid "Image height"
 msgstr ""
 
-#: src/blocks/video-maxi/components/video-overlay-control/index.js:313
+#: src/blocks/video-maxi/components/video-overlay-control/index.js:386
 msgid "Image opacity"
 msgstr ""
 
 #: src/blocks/video-maxi/data.js:33
-msgid "Url"
-msgstr ""
-
-#: src/blocks/video-maxi/data.js:34
-msgid "Video type"
-msgstr ""
-
-#: src/blocks/video-maxi/data.js:35
-msgid "Start time"
+msgid "Video settings"
 msgstr ""
 
 #: src/blocks/video-maxi/data.js:36
+msgid "Url"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:37
+msgid "Video type"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:38
+msgid "Start time"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:39
 msgid "End time"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:40
+#: src/blocks/video-maxi/data.js:43
 #: src/blocks/video-maxi/inspector.js:77
 msgid "Video options"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:46
+#: src/blocks/video-maxi/data.js:49
 #: src/components/background-control/videoLayer.js:265
 msgid "Reduce black borders"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:47
+#: src/blocks/video-maxi/data.js:50
 msgid "Lightbox background colour"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:55
+#: src/blocks/video-maxi/data.js:58
 msgid "Video overlay"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:57
+#: src/blocks/video-maxi/data.js:60
+msgid "Overlay settings"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:63
 msgid "Overlay background colour"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:60
+#: src/blocks/video-maxi/data.js:66
 msgid "Play button"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:66
+#: src/blocks/video-maxi/data.js:72
 #: src/blocks/video-maxi/inspector.js:107
 msgid "Popup settings"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:72
+#: src/blocks/video-maxi/data.js:77
 msgid "Close button"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:86
+#: src/blocks/video-maxi/data.js:94
 msgid "Image source"
 msgstr ""
 
-#: src/blocks/video-maxi/data.js:148
+#: src/blocks/video-maxi/data.js:109
+msgid "Video size"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:113
+msgid "Video box shadow"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:117
+msgid "Video overlay media"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:121
+msgid "Video border"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:125
+msgid "Video margin/padding"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:129
+msgid "Video overlay style"
+msgstr ""
+
+#: src/blocks/video-maxi/data.js:185
 msgid "Overlay colour"
 msgstr ""
 
@@ -5403,17 +5626,17 @@ msgstr ""
 msgid "Play icon"
 msgstr ""
 
-#: src/components/advanced-css-control/index.js:55
+#: src/components/advanced-css-control/index.js:32
 msgid "Affects only current block, you can add selectors for inner elements."
 msgstr ""
 
-#: src/components/advanced-number-control/index.js:273
+#: src/components/advanced-number-control/index.js:317
 #: src/components/background-control/imageLayer.js:96
 msgid "Auto"
 msgstr ""
 
-#: src/components/advanced-number-control/index.js:389
-#: src/components/advanced-number-control/index.js:390
+#: src/components/advanced-number-control/index.js:434
+#: src/components/advanced-number-control/index.js:435
 msgid "Increase value"
 msgstr ""
 
@@ -5501,23 +5724,23 @@ msgstr ""
 msgid "Unit"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:348
-#: src/components/background-control/backgroundLayersControl.js:617
+#: src/components/background-control/backgroundLayersControl.js:349
+#: src/components/background-control/backgroundLayersControl.js:623
 #: src/components/media-uploader-control/index.js:81
 msgid "Background image"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:350
-#: src/components/background-control/backgroundLayersControl.js:621
+#: src/components/background-control/backgroundLayersControl.js:351
+#: src/components/background-control/backgroundLayersControl.js:627
 msgid "Background video"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:354
-#: src/components/background-control/backgroundLayersControl.js:629
+#: src/components/background-control/backgroundLayersControl.js:355
+#: src/components/background-control/backgroundLayersControl.js:635
 msgid "Background shape"
 msgstr ""
 
-#: src/components/background-control/backgroundLayersControl.js:609
+#: src/components/background-control/backgroundLayersControl.js:615
 msgid "Add new layer"
 msgstr ""
 
@@ -5538,10 +5761,10 @@ msgid "Contain"
 msgstr ""
 
 #: src/components/background-control/imageLayer.js:118
-#: src/components/icon-control/index.js:141
+#: src/components/icon-control/index.js:127
 #: src/components/image-shape/index.js:172
 #: src/components/svg-fill-control/index.js:43
-#: src/editor/style-cards/maxiStyleCardsTab.js:709
+#: src/editor/style-cards/maxiStyleCardsTab.js:717
 msgid "Fill"
 msgstr ""
 
@@ -5703,17 +5926,18 @@ msgstr ""
 msgid "Background fallback"
 msgstr ""
 
-#: src/components/block-inserter/index.js:78
+#: src/components/block-inserter/index.js:60
+#: src/components/block-inserter/index.js:114
 msgid "Add block"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:39
-#: src/editor/library/container.js:1604
+#: src/editor/library/container.js:1615
 msgid "Dark"
 msgstr ""
 
 #: src/components/block-styles-control/index.js:40
-#: src/editor/library/container.js:1598
+#: src/editor/library/container.js:1609
 msgid "Light"
 msgstr ""
 
@@ -5805,7 +6029,7 @@ msgstr ""
 
 #: src/components/clip-path-control/index.js:466
 #: src/components/context-loop/index.js:414
-#: src/components/dynamic-content/index.js:437
+#: src/components/dynamic-content/index.js:442
 msgid "Type"
 msgstr ""
 
@@ -5866,20 +6090,56 @@ msgid "Set custom colour"
 msgstr ""
 
 #. translators: %s: color number
+#. translators: %s: color number.
 #: src/components/color-control/paletteControl.js:107
+#: src/editor/style-cards/maxiStyleCardsTab.js:881
 #, js-format
-msgid "Pallet box colour %s"
+msgid "Colour %s"
 msgstr ""
 
-#: src/components/color-control/paletteControl.js:135
-#: src/editor/style-cards/maxiStyleCardsTab.js:942
+#: src/components/color-control/paletteControl.js:145
+#: src/editor/style-cards/maxiStyleCardsTab.js:1005
 msgid "Custom colours (both tones)"
 msgstr ""
 
 #. translators: Generic label for a custom color if no name is provided.
-#: src/components/color-control/paletteControl.js:144
+#: src/components/color-control/paletteControl.js:153
 #, js-format
 msgid "Custom Colour %d"
+msgstr ""
+
+#: src/components/color-control/utils.js:4
+msgid "backgrounds"
+msgstr ""
+
+#: src/components/color-control/utils.js:5
+msgid "backgrounds, borders"
+msgstr ""
+
+#: src/components/color-control/utils.js:6
+msgid "text, buttons"
+msgstr ""
+
+#: src/components/color-control/utils.js:7
+msgid "links, highlights"
+msgstr ""
+
+#: src/components/color-control/utils.js:8
+msgid "headings"
+msgstr ""
+
+#: src/components/color-control/utils.js:10
+msgid "icon line"
+msgstr ""
+
+#: src/components/color-control/utils.js:11
+msgid "shadows"
+msgstr ""
+
+#. translators: 1: palette color label, 2: short usage description.
+#: src/components/color-control/utils.js:21
+#, js-format
+msgid "%1$s: %2$s"
 msgstr ""
 
 #: src/components/context-loop/index.js:337
@@ -5891,35 +6151,35 @@ msgid "Stop accumulator inheritance"
 msgstr ""
 
 #: src/components/context-loop/index.js:446
-#: src/components/dynamic-content/index.js:471
+#: src/components/dynamic-content/index.js:476
 msgid "This type is empty"
 msgstr ""
 
 #: src/components/context-loop/index.js:452
-#: src/components/dynamic-content/index.js:479
+#: src/components/dynamic-content/index.js:484
 msgid "Relation"
 msgstr ""
 
 #: src/components/context-loop/index.js:476
-#: src/components/dynamic-content/index.js:512
+#: src/components/dynamic-content/index.js:517
 msgid "Author id"
 msgstr ""
 
 #: src/components/context-loop/index.js:547
-#: src/components/dynamic-content/index.js:578
+#: src/components/dynamic-content/index.js:583
 msgid "Order by"
 msgstr ""
 
 #: src/components/context-loop/index.js:571
-#: src/components/dynamic-content/index.js:602
+#: src/components/dynamic-content/index.js:608
 #: src/components/flex-settings-control/index.js:115
 msgid "Order"
 msgstr ""
 
 #: src/components/context-loop/index.js:601
 #: src/components/context-loop/index.js:943
-#: src/components/dynamic-content/index.js:632
-#: src/components/dynamic-content/index.js:654
+#: src/components/dynamic-content/index.js:638
+#: src/components/dynamic-content/index.js:660
 msgid "Accumulator"
 msgstr ""
 
@@ -5928,7 +6188,7 @@ msgid "Enable for grandchildren blocks"
 msgstr ""
 
 #: src/components/context-loop/index.js:647
-#: src/components/dynamic-content/index.js:680
+#: src/components/dynamic-content/index.js:686
 msgid "Limit by current archive posts"
 msgstr ""
 
@@ -5969,7 +6229,7 @@ msgid "Pagination current"
 msgstr ""
 
 #: src/components/context-loop/index.js:968
-#: src/components/dynamic-content/index.js:938
+#: src/components/dynamic-content/index.js:944
 msgid "Character limit (backend)"
 msgstr ""
 
@@ -6006,10 +6266,10 @@ msgstr ""
 msgid "Give a name…"
 msgstr ""
 
-#: src/components/dialog-box/index.js:79
+#: src/components/dialog-box/index.js:85
 #: src/components/image-url/index.js:106
 #: src/editor/export/MaxiExportPopUp.js:328
-#: src/editor/style-cards/maxiStyleCardsEditor.js:678
+#: src/editor/style-cards/maxiStyleCardsEditor.js:675
 msgid "Close"
 msgstr ""
 
@@ -7246,51 +7506,51 @@ msgstr ""
 msgid "d.m.Y t"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:175
+#: src/components/dynamic-content/index.js:180
 msgid "Comma"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:176
+#: src/components/dynamic-content/index.js:181
 msgid "Semicolon"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:367
+#: src/components/dynamic-content/index.js:372
 msgid "Use dynamic content"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:387
+#: src/components/dynamic-content/index.js:392
 msgid "Hide if no content found on frontend"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:716
+#: src/components/dynamic-content/index.js:722
 msgid "Field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:737
+#: src/components/dynamic-content/index.js:743
 msgid "Author field"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:764
+#: src/components/dynamic-content/index.js:770
 msgid "Character limit"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:805
+#: src/components/dynamic-content/index.js:811
 msgid "Display as plain text"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:834
+#: src/components/dynamic-content/index.js:840
 msgid "Delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:862
+#: src/components/dynamic-content/index.js:868
 msgid "Custom delimiter"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:879
+#: src/components/dynamic-content/index.js:885
 msgid "Image accumulator"
 msgstr ""
 
-#: src/components/dynamic-content/index.js:905
+#: src/components/dynamic-content/index.js:911
 msgid "Size (px)"
 msgstr ""
 
@@ -7424,36 +7684,36 @@ msgstr ""
 msgid "Gradient opacity"
 msgstr ""
 
-#: src/components/icon-control/index.js:224
+#: src/components/icon-control/index.js:231
 msgid "Icon only (remove text)"
 msgstr ""
 
-#: src/components/icon-control/index.js:348
+#: src/components/icon-control/index.js:357
 #: src/components/toolbar/components/icon-color/index.js:61
 msgid "Icon stroke"
 msgstr ""
 
-#: src/components/icon-control/index.js:438
+#: src/components/icon-control/index.js:447
 msgid "Icon stroke colour is inherited from button "
 msgstr ""
 
-#: src/components/icon-control/index.js:444
+#: src/components/icon-control/index.js:453
 msgid "Button colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:454
+#: src/components/icon-control/index.js:463
 msgid "Inherit stroke colour/background from button"
 msgstr ""
 
-#: src/components/icon-control/index.js:700
+#: src/components/icon-control/index.js:708
 msgid "Icon background is inherited from button "
 msgstr ""
 
-#: src/components/icon-control/index.js:706
+#: src/components/icon-control/index.js:714
 msgid "Button Background colour"
 msgstr ""
 
-#: src/components/icon-control/index.js:725
+#: src/components/icon-control/index.js:733
 msgid "Icon background gradient"
 msgstr ""
 
@@ -7544,11 +7804,12 @@ msgid "Allowed chars: 0-9, A-Z, a-z, _ , -"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-aria-label.js:23
+#: src/components/link-control/index.js:148
 msgid "Aria label"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-background.js:108
-#: src/components/inspector-tabs/inspector-block-background.js:79
+#: src/components/inspector-tabs/inspector-block-background.js:80
 msgid "Enable background hover"
 msgstr ""
 
@@ -7594,29 +7855,24 @@ msgstr ""
 msgid "Columns per slide"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-carousel-slider.js:179
+#: src/components/inspector-tabs/inspector-carousel-slider.js:180
 msgid "Gap between columns (px)"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-carousel-slider.js:201
+#: src/components/inspector-tabs/inspector-carousel-slider.js:202
 msgid "Peek offset (px)"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-carousel-slider.js:220
+#: src/components/inspector-tabs/inspector-carousel-slider.js:221
 msgid "Height offset (px)"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-carousel-slider.js:286
+#: src/components/inspector-tabs/inspector-carousel-slider.js:287
 msgid "Autoplay speed (s)"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-carousel-slider.js:338
+#: src/components/inspector-tabs/inspector-carousel-slider.js:339
 msgid "Transition speed (s)"
-msgstr ""
-
-#: src/components/inspector-tabs/inspector-context-loop.js:19
-#: src/components/toolbar/components/context-loop/index.js:52
-msgid "Context loop"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-custom-classes.js:19
@@ -7648,9 +7904,17 @@ msgstr ""
 msgid "Flexbox"
 msgstr ""
 
-#: src/components/inspector-tabs/inspector-icon.js:156
+#: src/components/inspector-tabs/inspector-icon.js:157
 #: src/components/transform-control/index.js:366
 msgid "Switch hover target to canvas"
+msgstr ""
+
+#: src/components/inspector-tabs/inspector-link-settings.js:79
+msgid "Link styles"
+msgstr ""
+
+#: src/components/inspector-tabs/inspector-link-settings.js:91
+msgid "Overwrite style cards"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-margin-padding.js:65
@@ -7672,10 +7936,6 @@ msgstr ""
 
 #: src/components/inspector-tabs/inspector-relation.js:42
 msgid "Interaction builder"
-msgstr ""
-
-#: src/components/inspector-tabs/inspector-repeater.js:18
-msgid "Repeater"
 msgstr ""
 
 #: src/components/inspector-tabs/inspector-responsive-info-box.js:23
@@ -7729,27 +7989,31 @@ msgstr ""
 msgid "Change setting"
 msgstr ""
 
-#: src/components/link-control/index.js:59
+#: src/components/link-control/index.js:77
 msgid "Search or type URL"
 msgstr ""
 
-#: src/components/link-control/index.js:71
+#: src/components/link-control/index.js:100
 msgid "Open in new tab"
 msgstr ""
 
-#: src/components/link-control/index.js:76
+#: src/components/link-control/index.js:105
 msgid "\"nofollow\""
 msgstr ""
 
-#: src/components/link-control/index.js:82
+#: src/components/link-control/index.js:111
 msgid "\"sponsored\""
 msgstr ""
 
-#: src/components/link-control/index.js:86
+#: src/components/link-control/index.js:115
 msgid "\"UGC\""
 msgstr ""
 
-#: src/components/link-control/index.js:118
+#: src/components/link-control/index.js:145
+msgid "Accessibility"
+msgstr ""
+
+#: src/components/link-control/index.js:170
 msgid "Remove link"
 msgstr ""
 
@@ -7801,7 +8065,7 @@ msgstr ""
 #: src/editor/export/index.js:28
 #: src/editor/export/index.js:32
 #: src/editor/export/MaxiExportPopUp.js:318
-#: src/editor/style-cards/maxiStyleCardsEditor.js:743
+#: src/editor/style-cards/maxiStyleCardsEditor.js:740
 msgid "Export"
 msgstr ""
 
@@ -7811,10 +8075,10 @@ msgstr ""
 
 #: src/components/prompt-control/components/history-buttons/index.js:84
 #: src/components/prompt-control/components/result-card/index.js:311
-#: src/components/repeater/index.js:124
-#: src/editor/style-cards/maxiStyleCardsEditor.js:796
-#: src/editor/style-cards/maxiStyleCardsEditor.js:838
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1017
+#: src/components/repeater/index.js:117
+#: src/editor/style-cards/maxiStyleCardsEditor.js:793
+#: src/editor/style-cards/maxiStyleCardsEditor.js:835
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1014
 msgid "Cancel"
 msgstr ""
 
@@ -7856,8 +8120,8 @@ msgstr ""
 #: src/components/prompt-control/components/result-card/index.js:312
 #: src/components/prompt-control/components/result-card/index.js:318
 #: src/components/toolbar/components/delete/index.js:49
-#: src/editor/style-cards/maxiStyleCardsEditor.js:797
-#: src/editor/style-cards/maxiStyleCardsEditor.js:806
+#: src/editor/style-cards/maxiStyleCardsEditor.js:794
+#: src/editor/style-cards/maxiStyleCardsEditor.js:803
 msgid "Delete"
 msgstr ""
 
@@ -7973,7 +8237,7 @@ msgid "Site Details:"
 msgstr ""
 
 #: src/components/relation-control/BlockSelectControl.js:127
-#: src/components/relation-control/index.js:608
+#: src/components/relation-control/index.js:625
 msgid "Select block…"
 msgstr ""
 
@@ -7986,96 +8250,96 @@ msgstr ""
 msgid "No blocks found"
 msgstr ""
 
-#: src/components/relation-control/index.js:516
+#: src/components/relation-control/index.js:533
 msgid "Choose settings"
 msgstr ""
 
-#: src/components/relation-control/index.js:547
+#: src/components/relation-control/index.js:564
 msgid "Preview all interactions"
 msgstr ""
 
-#: src/components/relation-control/index.js:560
+#: src/components/relation-control/index.js:577
 msgid "Add new interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:571
+#: src/components/relation-control/index.js:588
 msgid "Untitled interaction"
 msgstr ""
 
-#: src/components/relation-control/index.js:584
+#: src/components/relation-control/index.js:601
 #: src/extensions/DC/constants.js:171
 #: src/extensions/DC/constants.js:184
 #: src/extensions/DC/constants.js:277
 msgid "Name"
 msgstr ""
 
-#: src/components/relation-control/index.js:586
+#: src/components/relation-control/index.js:603
 msgid "Give memorable name…"
 msgstr ""
 
-#: src/components/relation-control/index.js:601
+#: src/components/relation-control/index.js:618
 msgid "Block to affect"
 msgstr ""
 
-#: src/components/relation-control/index.js:628
+#: src/components/relation-control/index.js:645
 msgid "Action"
 msgstr ""
 
-#: src/components/relation-control/index.js:632
+#: src/components/relation-control/index.js:649
 msgid "Choose action"
 msgstr ""
 
-#: src/components/relation-control/index.js:639
+#: src/components/relation-control/index.js:656
 msgid "On click"
 msgstr ""
 
-#: src/components/relation-control/index.js:646
+#: src/components/relation-control/index.js:663
 msgid "On hover"
 msgstr ""
 
-#: src/components/relation-control/index.js:733
+#: src/components/relation-control/index.js:750
 msgid "Start"
 msgstr ""
 
-#: src/components/relation-control/index.js:743
+#: src/components/relation-control/index.js:760
 msgid "End"
 msgstr ""
 
-#: src/components/relation-control/index.js:753
+#: src/components/relation-control/index.js:770
 msgid "Effects"
 msgstr ""
 
-#: src/components/repeater/index.js:21
+#: src/components/repeater/index.js:19
 msgid "Accordion"
 msgstr ""
 
-#: src/components/repeater/index.js:22
+#: src/components/repeater/index.js:20
 msgid "Slider"
 msgstr ""
 
-#: src/components/repeater/index.js:23
+#: src/components/repeater/index.js:21
 msgid "Map"
 msgstr ""
 
-#: src/components/repeater/index.js:24
+#: src/components/repeater/index.js:22
 msgid "Search"
 msgstr ""
 
-#: src/components/repeater/index.js:70
+#: src/components/repeater/index.js:75
 msgid "Enable repeater"
 msgstr ""
 
 #. translators: %s: Comma-separated list of unsupported block names
-#: src/components/repeater/index.js:111
+#: src/components/repeater/index.js:104
 #, js-format
 msgid "Repeater cannot be enabled because this row contains blocks that are not supported: %s. Remove them to enable repeater."
 msgstr ""
 
-#: src/components/repeater/index.js:120
+#: src/components/repeater/index.js:113
 msgid "Columns are not uniformly structured. To standardize, all columns will be updated to match the first one."
 msgstr ""
 
-#: src/components/repeater/index.js:137
+#: src/components/repeater/index.js:126
 msgid "Inherited from parent row. To edit, please disable higher level repeater."
 msgstr ""
 
@@ -8374,6 +8638,18 @@ msgstr ""
 msgid "Units"
 msgstr ""
 
+#: src/components/searchable-select-control/index.js:73
+msgid "Search options..."
+msgstr ""
+
+#: src/components/searchable-select-control/index.js:215
+msgid "Select..."
+msgstr ""
+
+#: src/components/searchable-select-control/index.js:283
+msgid "No matching options"
+msgstr ""
+
 #: src/components/svg-fill-control/index.js:202
 msgid "Use background image"
 msgstr ""
@@ -8436,27 +8712,27 @@ msgstr ""
 msgid "Columns Handlers"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:429
+#: src/components/toolbar/components/copy-paste/index.js:460
 msgid "Copy styles - all"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:436
+#: src/components/toolbar/components/copy-paste/index.js:467
 msgid "Paste styles - all"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:449
+#: src/components/toolbar/components/copy-paste/index.js:480
 msgid "Paste special - select"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:463
+#: src/components/toolbar/components/copy-paste/index.js:494
 msgid "Paste special style"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:474
+#: src/components/toolbar/components/copy-paste/index.js:505
 msgid "Copy nested blocks"
 msgstr ""
 
-#: src/components/toolbar/components/copy-paste/index.js:483
+#: src/components/toolbar/components/copy-paste/index.js:514
 msgid "Paste nested blocks"
 msgstr ""
 
@@ -8509,20 +8785,20 @@ msgstr ""
 msgid "Icon Size/Spacing"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:141
+#: src/components/toolbar/components/link/index.js:182
 msgid "Use dynamic content link"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:188
+#: src/components/toolbar/components/link/index.js:231
 msgid "Link target"
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:229
+#: src/components/toolbar/components/link/index.js:274
 msgid "Warning: To protect your privacy, we obfuscate email addresses to make them harder for bots to scrape and use for spam. However, advanced bots may still retrieve them. For better security, use contact forms or CAPTCHA to avoid publicly displaying your email."
 msgstr ""
 
-#: src/components/toolbar/components/link/index.js:241
-msgid "Apply link on"
+#: src/components/toolbar/components/link/index.js:299
+msgid "Add link to Canvas"
 msgstr ""
 
 #: src/components/toolbar/components/media-upload/index.js:33
@@ -8606,7 +8882,7 @@ msgid "Bold"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-overline/index.js:111
-#: src/components/typography-control/index.js:1694
+#: src/components/typography-control/index.js:1712
 msgid "Overline"
 msgstr ""
 
@@ -8623,7 +8899,7 @@ msgid "Superscript"
 msgstr ""
 
 #: src/components/toolbar/components/text-format-underline/index.js:77
-#: src/components/typography-control/index.js:1708
+#: src/components/typography-control/index.js:1726
 msgid "Underline"
 msgstr ""
 
@@ -8643,8 +8919,16 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: src/components/toolbar/components/text-indentation-options/index.js:80
+msgid "Outdent"
+msgstr ""
+
+#: src/components/toolbar/components/text-indentation-options/index.js:89
+msgid "Indent"
+msgstr ""
+
 #: src/components/toolbar/components/text-italic/index.js:57
-#: src/components/typography-control/index.js:1658
+#: src/components/typography-control/index.js:1676
 msgid "Italic"
 msgstr ""
 
@@ -8704,174 +8988,174 @@ msgstr ""
 msgid "Transition delay"
 msgstr ""
 
-#: src/components/typography-control/index.js:126
+#: src/components/typography-control/index.js:127
 msgid "Visited"
 msgstr ""
 
-#: src/components/typography-control/index.js:809
+#: src/components/typography-control/index.js:825
 msgid "Text size"
 msgstr ""
 
-#: src/components/typography-control/index.js:870
+#: src/components/typography-control/index.js:886
 msgid "Line height"
 msgstr ""
 
-#: src/components/typography-control/index.js:926
+#: src/components/typography-control/index.js:942
 msgid "Bottom gap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1072
+#: src/components/typography-control/index.js:1088
 msgid "Remove bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:1073
+#: src/components/typography-control/index.js:1089
 msgid "Apply bold"
 msgstr ""
 
-#: src/components/typography-control/index.js:1109
+#: src/components/typography-control/index.js:1125
 msgid "Remove italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1110
+#: src/components/typography-control/index.js:1126
 msgid "Apply italic"
 msgstr ""
 
-#: src/components/typography-control/index.js:1140
+#: src/components/typography-control/index.js:1156
 msgid "Remove underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1144
+#: src/components/typography-control/index.js:1160
 msgid "Apply underline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1177
+#: src/components/typography-control/index.js:1193
 msgid "Remove strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1181
+#: src/components/typography-control/index.js:1197
 msgid "Apply strikethrough"
 msgstr ""
 
-#: src/components/typography-control/index.js:1336
+#: src/components/typography-control/index.js:1354
 msgid "Show more text options"
 msgstr ""
 
-#: src/components/typography-control/index.js:1444
+#: src/components/typography-control/index.js:1462
 msgid "Word Spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1537
+#: src/components/typography-control/index.js:1555
 msgid "Letter spacing"
 msgstr ""
 
-#: src/components/typography-control/index.js:1596
+#: src/components/typography-control/index.js:1614
 msgid "Text transform"
 msgstr ""
 
-#: src/components/typography-control/index.js:1603
-#: src/components/typography-control/index.js:1654
-#: src/components/typography-control/index.js:1690
+#: src/components/typography-control/index.js:1621
+#: src/components/typography-control/index.js:1672
+#: src/components/typography-control/index.js:1708
 msgid "Default"
 msgstr ""
 
-#: src/components/typography-control/index.js:1607
+#: src/components/typography-control/index.js:1625
 msgid "Capitalize"
 msgstr ""
 
-#: src/components/typography-control/index.js:1614
+#: src/components/typography-control/index.js:1632
 msgid "Uppercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:1621
+#: src/components/typography-control/index.js:1639
 msgid "Lowercase"
 msgstr ""
 
-#: src/components/typography-control/index.js:1662
+#: src/components/typography-control/index.js:1680
 msgid "Oblique"
 msgstr ""
 
-#: src/components/typography-control/index.js:1683
+#: src/components/typography-control/index.js:1701
 msgid "Text decoration"
 msgstr ""
 
-#: src/components/typography-control/index.js:1701
+#: src/components/typography-control/index.js:1719
 msgid "Line through"
 msgstr ""
 
-#: src/components/typography-control/index.js:1715
+#: src/components/typography-control/index.js:1733
 msgid "Underline overline"
 msgstr ""
 
-#: src/components/typography-control/index.js:1741
+#: src/components/typography-control/index.js:1759
 msgid "Text wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1748
+#: src/components/typography-control/index.js:1766
 msgid "Wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1752
-#: src/components/typography-control/index.js:1911
+#: src/components/typography-control/index.js:1770
+#: src/components/typography-control/index.js:1929
 msgid "No wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1756
+#: src/components/typography-control/index.js:1774
 msgid "Balance"
 msgstr ""
 
-#: src/components/typography-control/index.js:1760
+#: src/components/typography-control/index.js:1778
 msgid "Pretty"
 msgstr ""
 
-#: src/components/typography-control/index.js:1764
+#: src/components/typography-control/index.js:1782
 msgid "Stable"
 msgstr ""
 
-#: src/components/typography-control/index.js:1787
+#: src/components/typography-control/index.js:1805
 msgid "Text orientation"
 msgstr ""
 
-#: src/components/typography-control/index.js:1806
+#: src/components/typography-control/index.js:1824
 msgid "Mixed"
 msgstr ""
 
-#: src/components/typography-control/index.js:1813
+#: src/components/typography-control/index.js:1831
 msgid "Upright"
 msgstr ""
 
-#: src/components/typography-control/index.js:1820
+#: src/components/typography-control/index.js:1838
 msgid "Sideways"
 msgstr ""
 
-#: src/components/typography-control/index.js:1852
+#: src/components/typography-control/index.js:1870
 msgid "Text direction"
 msgstr ""
 
-#: src/components/typography-control/index.js:1864
+#: src/components/typography-control/index.js:1882
 msgid "Left to right"
 msgstr ""
 
-#: src/components/typography-control/index.js:1871
+#: src/components/typography-control/index.js:1889
 msgid "Right to left"
 msgstr ""
 
-#: src/components/typography-control/index.js:1900
+#: src/components/typography-control/index.js:1918
 msgid "White space"
 msgstr ""
 
-#: src/components/typography-control/index.js:1915
+#: src/components/typography-control/index.js:1933
 msgid "Pre"
 msgstr ""
 
-#: src/components/typography-control/index.js:1919
+#: src/components/typography-control/index.js:1937
 msgid "Pre line"
 msgstr ""
 
-#: src/components/typography-control/index.js:1926
+#: src/components/typography-control/index.js:1944
 msgid "Pre wrap"
 msgstr ""
 
-#: src/components/typography-control/index.js:1933
+#: src/components/typography-control/index.js:1951
 msgid "Break spaces"
 msgstr ""
 
@@ -8945,65 +9229,56 @@ msgstr ""
 msgid "Download as JSON"
 msgstr ""
 
-#: src/editor/library/container.js:217
+#: src/editor/library/container.js:228
 msgid "Filled"
 msgstr ""
 
-#: src/editor/library/container.js:218
-msgid "Shape"
-msgstr ""
-
-#: src/editor/library/container.js:219
-#: src/editor/style-cards/maxiStyleCardsTab.js:692
-msgid "Line"
-msgstr ""
-
-#: src/editor/library/container.js:1196
+#: src/editor/library/container.js:1207
 msgid "Swap stock images for placeholders to save disk space"
 msgstr ""
 
-#: src/editor/library/container.js:1215
+#: src/editor/library/container.js:1226
 msgid "Use Style Card defaults instead of custom block styles"
 msgstr ""
 
-#: src/editor/library/container.js:1243
+#: src/editor/library/container.js:1254
 msgid "Tablet / iPad simulator | Viewport 768px x 1024px"
 msgstr ""
 
-#: src/editor/library/container.js:1252
+#: src/editor/library/container.js:1263
 msgid "Mobile / iPhone simulator | Viewport 390px x 844px"
 msgstr ""
 
-#: src/editor/library/container.js:1296
-#: src/editor/library/container.js:1415
-#: src/editor/library/container.js:1433
+#: src/editor/library/container.js:1307
+#: src/editor/library/container.js:1426
+#: src/editor/library/container.js:1444
 msgid "All icons"
 msgstr ""
 
-#: src/editor/library/container.js:1306
-#: src/editor/library/container.js:1340
+#: src/editor/library/container.js:1317
 #: src/editor/library/container.js:1351
-#: src/editor/library/container.js:1360
-#: src/editor/library/container.js:1444
+#: src/editor/library/container.js:1362
+#: src/editor/library/container.js:1371
 #: src/editor/library/container.js:1455
+#: src/editor/library/container.js:1466
 msgid "Find"
 msgstr ""
 
-#: src/editor/library/container.js:1311
-#: src/editor/library/container.js:1345
-#: src/editor/library/container.js:1449
-#: src/editor/library/container.js:1463
-#: src/editor/library/container.js:1615
-#: src/editor/library/container.js:1681
+#: src/editor/library/container.js:1322
+#: src/editor/library/container.js:1356
+#: src/editor/library/container.js:1460
+#: src/editor/library/container.js:1474
+#: src/editor/library/container.js:1626
+#: src/editor/library/container.js:1692
 msgid "Clear"
 msgstr ""
 
-#: src/editor/library/container.js:1540
+#: src/editor/library/container.js:1551
 #: src/editor/library/toolbar.js:237
 msgid "Blocks"
 msgstr ""
 
-#: src/editor/library/container.js:1552
+#: src/editor/library/container.js:1563
 msgid "Playground"
 msgstr ""
 
@@ -9119,153 +9394,155 @@ msgstr ""
 msgid "Style cards"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:457
-#: src/editor/style-cards/maxiStyleCardsTab.js:968
-#: src/editor/style-cards/maxiStyleCardsTab.js:994
-msgid "Custom Colour"
-msgstr ""
-
-#: src/editor/style-cards/maxiStyleCardsEditor.js:562
+#: src/editor/style-cards/maxiStyleCardsEditor.js:559
 msgid "Template"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:667
+#: src/editor/style-cards/maxiStyleCardsEditor.js:664
 msgid "Active style card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:749
+#: src/editor/style-cards/maxiStyleCardsEditor.js:746
 msgid "Style card editor"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:751
+#: src/editor/style-cards/maxiStyleCardsEditor.js:748
 msgid "Preview, edit or activate style card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:760
+#: src/editor/style-cards/maxiStyleCardsEditor.js:757
 msgid "Imported card already exists."
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:774
+#: src/editor/style-cards/maxiStyleCardsEditor.js:771
 msgid "Type to search…"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:821
+#: src/editor/style-cards/maxiStyleCardsEditor.js:818
 msgid "Customise card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:822
+#: src/editor/style-cards/maxiStyleCardsEditor.js:819
 msgid "Copy card"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:849
+#: src/editor/style-cards/maxiStyleCardsEditor.js:846
 msgid "Activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:852
+#: src/editor/style-cards/maxiStyleCardsEditor.js:849
 msgid "Save and activate now"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:862
+#: src/editor/style-cards/maxiStyleCardsEditor.js:859
 msgid "Style core blocks within Maxi containers"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:878
+#: src/editor/style-cards/maxiStyleCardsEditor.js:875
 msgid "Create new style from"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:886
+#: src/editor/style-cards/maxiStyleCardsEditor.js:883
 msgid "Short memorable name*"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1012
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1009
 msgid "Create"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1044
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1041
 msgid "Light tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsEditor.js:1060
+#: src/editor/style-cards/maxiStyleCardsEditor.js:1057
 msgid "Dark tone globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:316
+#: src/editor/style-cards/maxiStyleCardsTab.js:324
 msgid "Item padding"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:323
+#: src/editor/style-cards/maxiStyleCardsTab.js:331
 msgid "Remove item underline on hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:341
+#: src/editor/style-cards/maxiStyleCardsTab.js:349
 msgid "Overwrite mobile navigation breakpoint"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:362
+#: src/editor/style-cards/maxiStyleCardsTab.js:370
 msgid "Show mobile menu for all screen sizes"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:382
+#: src/editor/style-cards/maxiStyleCardsTab.js:390
 msgid "Show mobile menu for screen sizes down from (px)"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:578
+#: src/editor/style-cards/maxiStyleCardsTab.js:586
 msgid "Button globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:590
+#: src/editor/style-cards/maxiStyleCardsTab.js:598
 msgid "Text hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:607
+#: src/editor/style-cards/maxiStyleCardsTab.js:615
 msgid "Background hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:624
+#: src/editor/style-cards/maxiStyleCardsTab.js:632
 msgid "Border hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:635
+#: src/editor/style-cards/maxiStyleCardsTab.js:643
 msgid "Paragraph globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:639
+#: src/editor/style-cards/maxiStyleCardsTab.js:647
 msgid "Paragraph"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:649
+#: src/editor/style-cards/maxiStyleCardsTab.js:657
 msgid "Link globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:688
+#: src/editor/style-cards/maxiStyleCardsTab.js:696
 msgid "Icon globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:700
+#: src/editor/style-cards/maxiStyleCardsTab.js:708
 msgid "Line hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:717
+#: src/editor/style-cards/maxiStyleCardsTab.js:725
 msgid "Fill hover"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:728
+#: src/editor/style-cards/maxiStyleCardsTab.js:736
 msgid "Divider globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:742
+#: src/editor/style-cards/maxiStyleCardsTab.js:750
+msgid "Number Counter globals"
+msgstr ""
+
+#: src/editor/style-cards/maxiStyleCardsTab.js:782
 msgid "Navigation menu globals"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:829
+#: src/editor/style-cards/maxiStyleCardsTab.js:869
 msgid "Colour palette"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:1137
+#: src/editor/style-cards/maxiStyleCardsTab.js:1017
+msgid "Custom Colour"
+msgstr ""
+
+#: src/editor/style-cards/maxiStyleCardsTab.js:1184
 msgid "Enter colour name"
 msgstr ""
 
-#: src/editor/style-cards/maxiStyleCardsTab.js:1215
+#: src/editor/style-cards/maxiStyleCardsTab.js:1262
 msgid "Headings globals"
 msgstr ""
 
@@ -9670,7 +9947,7 @@ msgstr ""
 msgid "Background layer"
 msgstr ""
 
-#: src/extensions/maxi-block/maxiBlockComponent.js:1400
+#: src/extensions/maxi-block/maxiBlockComponent.js:1482
 msgid "Preview for pattern with MaxiBlocks"
 msgstr ""
 
@@ -9701,19 +9978,19 @@ msgstr ""
 msgid "Add your Hover Title here"
 msgstr ""
 
-#: src/extensions/styles/helpers/getArrowStyles.js:85
+#: src/extensions/styles/helpers/getArrowStyles.js:87
 msgid "Arrow Border"
 msgstr ""
 
-#: src/extensions/styles/helpers/getArrowStyles.js:124
+#: src/extensions/styles/helpers/getArrowStyles.js:126
 msgid "Arrow Color"
 msgstr ""
 
-#: src/extensions/styles/helpers/getBackgroundStyles.js:67
+#: src/extensions/styles/helpers/getBackgroundStyles.js:92
 msgid "Background Color"
 msgstr ""
 
-#: src/extensions/styles/helpers/getBackgroundStyles.js:345
+#: src/extensions/styles/helpers/getBackgroundStyles.js:388
 msgid "Background Image"
 msgstr ""
 
@@ -9721,10 +9998,10 @@ msgstr ""
 msgid "Icon path"
 msgstr ""
 
-#: src/extensions/styles/helpers/getNumberCounterStyles.js:16
-#: src/extensions/styles/helpers/getNumberCounterStyles.js:47
-#: src/extensions/styles/helpers/getNumberCounterStyles.js:70
-#: src/extensions/styles/helpers/getNumberCounterStyles.js:112
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:49
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:72
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:90
+#: src/extensions/styles/helpers/getNumberCounterStyles.js:128
 msgid "Number Counter"
 msgstr ""
 

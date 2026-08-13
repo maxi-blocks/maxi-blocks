@@ -4,6 +4,7 @@ exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 1`] = `
 {
   "color": {
     "4": "16,109,60",
+    "customColors": [],
   },
 }
 `;
@@ -12,6 +13,7 @@ exports[`StyleCards ColorPresets Check Quick Pick Colour Presets 2`] = `
 {
   "color": {
     "4": "255,74,23",
+    "customColors": [],
   },
 }
 `;

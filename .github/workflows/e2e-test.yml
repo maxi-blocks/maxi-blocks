@@ -36,7 +36,7 @@ jobs:
               run: |
                   safe-chain setup
                   source ~/.bashrc || source ~/.zshrc || true
-                  npm install --legacy-peer-deps
+                  npm ci --legacy-peer-deps
             - name: Create .env file
               run: |
                   touch .env
@@ -50,10 +50,22 @@ jobs:
             - name: reset package-lock.json
               run: git checkout package-lock.json
             - name: Install WordPress
+              env:
+                  WP_ENV_CORE: ${{ runner.temp }}/wordpress-6.4.3/wordpress
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
                   chmod -R 767 ./
-                  npm run wp-env start
+                  curl --fail --location --output "${RUNNER_TEMP}/wordpress-6.4.3.zip" https://downloads.wordpress.org/release/wordpress-6.4.3.zip
+                  unzip -q "${RUNNER_TEMP}/wordpress-6.4.3.zip" -d "${RUNNER_TEMP}/wordpress-6.4.3"
+                  npm run wp-env -- start
+                  npm run wp-env -- run tests-cli wp user update admin -- --user_pass=password
+                  npm run wp-env -- run tests-cli wp eval 'exit(wp_check_password("password", get_user_by("login", "admin")->user_pass, 1) ? 0 : 1);'
+                  npm run wp-env -- run tests-cli wp theme install twentytwentyone -- --version=2.0 --force
+                  npm run wp-env -- run tests-cli wp theme activate twentytwentyone
+                  npm run wp-env -- run tests-cli wp theme status twentytwentyone
+                  npm run wp-env -- run tests-cli wp core version
+                  npm run wp-env -- run tests-cli sh -c 'test "$(wp core version)" = "6.4.3"'
+                  npm run wp-env -- run tests-cli wp core verify-checksums -- --exclude=wp-config-sample.php,wp-cli.yml
             - name: Setup WordPress debug log
               run: |
                   WP_PATH="$(npm run wp-env install-path --silent)"
@@ -74,4 +86,4 @@ jobs:
             - name: Running the tests
               run: |
                   source ~/.bashrc || source ~/.zshrc || true
-                  npm run test:e2e
+                  npm run test:e2e -- --runInBand

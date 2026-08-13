@@ -10,7 +10,7 @@ import { useSelect } from '@wordpress/data';
 import BaseControl from '@components/base-control';
 import OpacityControl from '@components/opacity-control';
 import ResetButton from '@components/reset-control';
-import { getStandardPaletteColorLabel } from './utils';
+import { getCustomColorLabel, getStandardPaletteColorLabel } from './utils';
 /**
  * External dependencies
  */
@@ -146,14 +146,14 @@ const ColorPaletteControl = props => {
 						</div>
 						<div className='maxi-color-control__palette-container'>
 							{customColors.map((color, index) => {
-								// Memoize the label generation to avoid repeated calculations
-								const colorLabel =
-									color.name ||
+								const colorLabel = getCustomColorLabel(
+									color,
 									sprintf(
 										// translators: Generic label for a custom color if no name is provided.
 										__('Custom Colour %d', 'maxi-blocks'),
 										index + 1 // Use the current index instead of findIndex
-									);
+									)
+								);
 
 								return (
 									<button

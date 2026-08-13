@@ -22,7 +22,10 @@ import TypographyControl from '@components/typography-control';
 import ToggleSwitch from '@components/toggle-switch';
 import AdvancedNumberControl from '@components/advanced-number-control';
 import PaddingControl from '@components/padding-control';
-import { getStandardPaletteColorLabel } from '@components/color-control/utils';
+import {
+	getCustomColorLabel,
+	getStandardPaletteColorLabel,
+} from '@components/color-control/utils';
 import handleDeletedCustomColor from '@extensions/style-cards/customColorsUtils';
 import {
 	processSCAttribute,
@@ -1008,10 +1011,17 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 							content: (
 								<>
 									<div className='maxi-style-cards__custom-color-presets'>
-										{customColors.map(colorObj => (
+										{customColors.map(colorObj => {
+							const colorLabel = getCustomColorLabel(
+								colorObj,
+								__('Custom Colour', 'maxi-blocks')
+							);
+
+											return (
 											<div
 												key={`maxi-style-cards__custom-color-presets__box-${colorObj.id}`}
 												data-color-id={colorObj.id}
+												data-color-name={colorObj.name || ''}
 												className={classnames(
 													'maxi-style-cards__custom-color-presets__box',
 													selectedCustomColorId ===
@@ -1023,19 +1033,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 														colorObj.id
 													);
 												}}
-												title={
-													colorObj.name ||
-													`${__(
-														'Custom Colour',
-														'maxi-blocks'
-													)} ${
-														customColors.findIndex(
-															c =>
-																c.id ===
-																colorObj.id
-														) + 1
-													}`
-												}
+												title={colorLabel}
 											>
 												<span
 													className='maxi-style-cards__custom-color-presets__box__item'
@@ -1049,19 +1047,7 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													title={`${__(
 														'Remove',
 														'maxi-blocks'
-													)} ${
-														colorObj.name ||
-														`${__(
-															'Custom Colour',
-															'maxi-blocks'
-														)} ${
-															customColors.findIndex(
-																c =>
-																	c.id ===
-																	colorObj.id
-															) + 1
-														}`
-													}`}
+													)} ${colorLabel}`}
 													onClick={e => {
 														e.stopPropagation();
 														const newCustomColors =
@@ -1098,7 +1084,8 @@ const MaxiStyleCardsTab = ({ SC, SCStyle, breakpoint, onChangeValue }) => {
 													-
 												</Button>
 											</div>
-										))}
+											);
+										})}
 										<Button
 											className='maxi-style-cards__custom-color-presets__add-button'
 											onClick={() => {

@@ -14,6 +14,27 @@ import {
 import { postCodeEditor } from './content';
 import { openPreviewPage, getEditorFrame } from '../../utils';
 
+const waitForMatchingContent = async (
+	targetPage,
+	selector,
+	expected,
+	deadline = Date.now() + 15000
+) => {
+	const matches = await targetPage.$$eval(
+		selector,
+		(elements, value) => elements.some(el => el.innerText === value),
+		expected
+	);
+
+	if (matches) return;
+	if (Date.now() >= deadline) {
+		throw new Error(`Frontend DC content did not become ${expected}`);
+	}
+
+	await targetPage.waitForTimeout(250);
+	await waitForMatchingContent(targetPage, selector, expected, deadline);
+};
+
 describe('Dynamic content', () => {
 	let helloWorldPostId;
 
@@ -142,9 +163,6 @@ describe('Dynamic content', () => {
 
 		// Check frontend
 		const previewPage = await openPreviewPage(page);
-		await previewPage
-			.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 })
-			.catch(() => {});
 		await previewPage.waitForSelector(
 			'.text-dc-title-1.maxi-text-block .maxi-text-block__content',
 			{
@@ -153,17 +171,10 @@ describe('Dynamic content', () => {
 			}
 		);
 
-		// Wait until at least one title block contains the expected DC text,
-		// polling instead of a fixed timeout to handle slow environments.
-		await previewPage.waitForFunction(
-			expected => {
-				const el = document.querySelector(
-					'.text-dc-title-1.maxi-text-block .maxi-text-block__content,' +
-						'.text-dc-title-2.maxi-text-block .maxi-text-block__content'
-				);
-				return el && el.innerText === expected;
-			},
-			{ timeout: 30000 },
+		await waitForMatchingContent(
+			previewPage,
+			'.text-dc-title-1.maxi-text-block .maxi-text-block__content,' +
+				'.text-dc-title-2.maxi-text-block .maxi-text-block__content',
 			expectedResults.title
 		);
 

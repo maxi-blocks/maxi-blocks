@@ -1,6 +1,7 @@
 const DEBUG_STATE_KEY = '__maxiIBDebug';
 const DEBUG_FLAG_KEY = '__MAXI_IB_DEBUG__';
 const DEBUG_STORAGE_KEY = 'maxiBlocks-ib-debug';
+const DEBUG_ENABLED = false;
 const MAX_EVENTS = 200;
 
 const getRoot = () => {
@@ -30,6 +31,8 @@ const getIsLocalHost = root => {
 };
 
 export const getIsIBDebugEnabled = () => {
+	if (!DEBUG_ENABLED) return false;
+
 	const root = getRoot();
 	if (!root) return false;
 

@@ -23,3 +23,43 @@ export const getStandardPaletteColorLabel = (color, fallbackLabel) => {
 		description
 	);
 };
+
+export const colorToHex = color => {
+	if (typeof color !== 'string') return '';
+
+	const hexMatch = color
+		.trim()
+		.match(/^#([\da-f]{3}|[\da-f]{6})(?:[\da-f]{2})?$/i);
+
+	if (hexMatch) {
+		const hex = hexMatch[1];
+
+		return `#${
+			hex.length === 3
+				? hex
+						.split('')
+						.map(character => character.repeat(2))
+						.join('')
+				: hex
+		}`.toUpperCase();
+	}
+
+	const rgbMatch = color
+		.trim()
+		.match(
+			/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*[\d.]+)?\s*\)$/i
+		);
+
+	if (!rgbMatch) return '';
+
+	const channels = rgbMatch.slice(1, 4).map(Number);
+
+	if (channels.some(channel => channel > 255)) return '';
+
+	return `#${channels
+		.map(channel => channel.toString(16).padStart(2, '0'))
+		.join('')}`.toUpperCase();
+};
+
+export const getCustomColorLabel = (color, fallbackLabel) =>
+	color?.name || colorToHex(color?.value) || fallbackLabel;

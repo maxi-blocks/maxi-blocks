@@ -1,5 +1,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import {
+	colorToHex,
+	getCustomColorLabel,
 	getStandardPaletteColorLabel,
 	STANDARD_PALETTE_COLOR_DESCRIPTIONS,
 } from '../utils';
@@ -63,5 +65,48 @@ describe('color control utils', () => {
 		expect(
 			getStandardPaletteColorLabel(9, 'Pallet box colour 9')
 		).toBe('Pallet box colour 9');
+	});
+
+	it('converts RGB and RGBA colours to uppercase hex labels', () => {
+		expect(colorToHex('rgb(15, 160, 255)')).toBe('#0FA0FF');
+		expect(colorToHex('rgba(120, 45, 80, 0.5)')).toBe('#782D50');
+	});
+
+	it('normalizes existing hex colours and ignores their alpha channel', () => {
+		expect(colorToHex('#abc')).toBe('#AABBCC');
+		expect(colorToHex('#12ab34cc')).toBe('#12AB34');
+	});
+
+	it('returns an empty label for invalid colours', () => {
+		expect(colorToHex('transparent')).toBe('');
+		expect(colorToHex('rgb(256, 0, 0)')).toBe('');
+		expect(colorToHex()).toBe('');
+	});
+
+	it('uses the custom colour name before its generated hex label', () => {
+		expect(
+			getCustomColorLabel(
+				{ name: 'Brand colour', value: 'rgb(15, 160, 255)' },
+				'Custom Colour'
+			)
+		).toBe('Brand colour');
+	});
+
+	it('uses a hex label for an unnamed custom colour', () => {
+		expect(
+			getCustomColorLabel(
+				{ name: '', value: 'rgba(120, 45, 80, 1)' },
+				'Custom Colour'
+			)
+		).toBe('#782D50');
+	});
+
+	it('uses the fallback label when the custom colour cannot be converted', () => {
+		expect(
+			getCustomColorLabel(
+				{ name: '', value: 'transparent' },
+				'Custom Colour'
+			)
+		).toBe('Custom Colour');
 	});
 });

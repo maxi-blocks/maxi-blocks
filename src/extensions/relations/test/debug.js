@@ -8,6 +8,25 @@ import {
 	summarizeRelations,
 } from '@extensions/relations/debug';
 
+/**
+ * `debug.js` has a compile-time master switch that disables every debug path,
+ * runtime flag included. Probe it with the runtime flag on so the logging tests
+ * only run when the switch is on, and the kill-switch test only when it's off.
+ */
+const getIsDebugMasterEnabled = () => {
+	const previousFlag = window.__MAXI_IB_DEBUG__;
+
+	window.__MAXI_IB_DEBUG__ = true;
+	const isEnabled = getIsIBDebugEnabled();
+	window.__MAXI_IB_DEBUG__ = previousFlag;
+
+	return isEnabled;
+};
+
+const isDebugMasterEnabled = getIsDebugMasterEnabled();
+const itWithDebug = isDebugMasterEnabled ? it : it.skip;
+const itWithoutDebug = isDebugMasterEnabled ? it.skip : it;
+
 describe('relations/debug', () => {
 	beforeEach(() => {
 		window.__MAXI_IB_DEBUG__ = true;
@@ -21,7 +40,14 @@ describe('relations/debug', () => {
 		window.console.debug.mockRestore();
 	});
 
-	it('records debug events in a browser-readable buffer', () => {
+	itWithoutDebug('is fully disabled by the master debug switch', () => {
+		expect(getIsIBDebugEnabled()).toBe(false);
+		expect(debugIB('master-disabled-event', { id: 1 })).toBe(null);
+		expect(window.__maxiIBDebug).toBeUndefined();
+		expect(window.console.debug).not.toHaveBeenCalled();
+	});
+
+	itWithDebug('records debug events in a browser-readable buffer', () => {
 		const result = debugIB('test-event', { id: 1 });
 
 		expect(result).toEqual(

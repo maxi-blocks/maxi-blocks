@@ -442,6 +442,7 @@ svg path#styleCardBoat_b,
 		border: 2px solid var(--maxi-light-blue-alt);
 		border-radius: 0;
 		box-shadow: none !important;
+		display: none;
 		opacity: 0;
 	}
 
@@ -468,6 +469,7 @@ svg path#styleCardBoat_b,
 				content: '';
 				position: absolute;
 				pointer-events: none;
+				display: block;
 				opacity: 1;
 			}
 		}
@@ -475,6 +477,7 @@ svg path#styleCardBoat_b,
 
 	&.is-selected {
 		&::after {
+			display: block;
 			opacity: 1;
 
 			&:not(.maxi-block--is-repeater) {
@@ -652,6 +655,13 @@ html body.maxi-blocks--active.editor-styles-wrapper {
 	padding: 0;
 }
 
+/** Keep hover controls from creating a second horizontal scrollbar inside the
+ * WP 7+ editor iframe. Responsive previews wider than the editor remain
+ * scrollable through .interface-interface-skeleton__content. */
+html.block-editor-iframe__html {
+	overflow-x: hidden;
+}
+
 body.maxi-blocks--active .editor-styles-wrapper .has-global-padding,
 body.maxi-blocks--active
 	.is-root-container.is-desktop-preview.has-global-padding {
@@ -697,6 +707,10 @@ body.maxi-blocks--active .interface-interface-skeleton__content {
 	@media (prefers-reduced-motion: reduce) {
 		scroll-behavior: auto; /* Respect user's reduced motion preference */
 	}
+}
+
+body.maxi-blocks--active.branch-7-1 .interface-interface-skeleton__content {
+	overflow-y: hidden;
 }
 
 body.maxi-blocks--active
@@ -1005,22 +1019,27 @@ body.maxi-blocks--active
 // Reset button
 .maxi-components-button.maxi-reset-button {
 	transition: all 0.3s ease;
-	width: 9px !important;
-	height: 31px !important;
+	width: 13px !important;
+	height: 30px !important;
 	padding: 0 !important;
 	margin-left: 4px !important;
 	margin-right: 4px !important;
 	border-radius: 5px !important;
+	color: #fff !important;
 
 	svg {
 		width: 10px !important;
 		height: 10px !important;
 		fill: var(--maxi-grey) !important;
+		&:hover {
+			fill: var(--maxi-secondary-color) !important;
+		}
 	}
 
 	&:hover {
-		border-color: var(--maxi-grey-dark) !important;
-		svg {
+		border: none !important;
+		svg,
+		path {
 			fill: var(--maxi-secondary-color) !important;
 		}
 	}

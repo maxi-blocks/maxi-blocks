@@ -275,7 +275,9 @@ describe('TextMaxi', () => {
 			.waitForSelector('a.components-external-link')
 			.catch(async () => {
 				const editorFrame = await getEditorFrame(page);
-				const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
+				const selectMaxiTextDiv = await editorFrame.$(
+					'.maxi-text-block'
+				);
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);
@@ -320,7 +322,9 @@ describe('TextMaxi', () => {
 			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const editorFrame2 = await getEditorFrame(page);
-				const selectMaxiTextDiv = await editorFrame2.$('.maxi-text-block');
+				const selectMaxiTextDiv = await editorFrame2.$(
+					'.maxi-text-block'
+				);
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);
@@ -482,7 +486,9 @@ describe('TextMaxi', () => {
 			.waitForSelector('.maxi-link-control__link-destroyer')
 			.catch(async () => {
 				const editorFrame = await getEditorFrame(page);
-				const selectMaxiTextDiv = await editorFrame.$('.maxi-text-block');
+				const selectMaxiTextDiv = await editorFrame.$(
+					'.maxi-text-block'
+				);
 				const selectMaxiTextP = await selectMaxiTextDiv.$(
 					'.block-editor-rich-text__editable'
 				);

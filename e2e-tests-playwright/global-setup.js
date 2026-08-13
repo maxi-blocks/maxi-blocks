@@ -20,13 +20,22 @@ async function globalSetup(config) {
 	const requestUtils = new RequestUtils(requestContext, {
 		storageStatePath,
 	});
+	const login = requestUtils.login;
+	requestUtils.login = async (...args) => {
+		const nonce = (await login(...args)).trim();
+
+		if (!/^[a-f0-9]{10}$/i.test(nonce)) {
+			throw new Error('WordPress returned an invalid REST API nonce.');
+		}
+
+		return nonce;
+	};
 
 	// Authenticate and save the storageState to disk.
 	await requestUtils.setupRest();
 
 	// Reset the test environment before running the tests.
 	await Promise.all([
-		requestUtils.activateTheme('twentytwentyone'),
 		requestUtils.activatePlugin('maxiblocks'),
 		requestUtils.deleteAllPosts(),
 		requestUtils.deleteAllBlocks(),

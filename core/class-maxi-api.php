@@ -456,7 +456,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'permission_callback' => function () {
                     // Check if user is logged in and has correct capabilities
                     return is_user_logged_in() &&
-                        current_user_can('edit_posts');
+                        current_user_can('manage_options');
                 },
             ]);
             register_rest_route(

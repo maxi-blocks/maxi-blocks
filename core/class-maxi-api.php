@@ -2196,6 +2196,17 @@ if (!class_exists('MaxiBlocks_API')):
                         'data' => $page_result,
                     ];
                 }
+                if (isset($import_result['blog_page'])) {
+                    $results['pages'][] = [
+                        'name' => 'blog_page',
+                        'success' => !empty(
+                            $import_result['blog_page']['success']
+                        ),
+                        'data' => [
+                            'blog_page' => $import_result['blog_page'],
+                        ],
+                    ];
+                }
             }
 
             // Process patterns
@@ -2213,44 +2224,66 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
-            foreach (['templates', 'pages', 'patterns'] as $section) {
-                foreach ($results[$section] ?? [] as $item_result) {
-                    if (empty($item_result['success'])) {
-                        return new WP_Error(
-                            'maxi_import_item_failed',
-                            __(
-                                'One or more starter-site items could not be imported.',
-                                'maxi-blocks',
-                            ),
-                            ['status' => 500, 'results' => $results],
-                        );
-                    }
-                }
-            }
-
             // Process Style Card
             if ($sc_content !== null) {
-                $sc_result = MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
-                if (!$sc_result) {
+                if (!class_exists('MaxiBlocks_StyleCards')) {
                     return new WP_Error(
-                        'maxi_import_style_card_failed',
+                        'maxi_import_style_card_unavailable',
                         __(
-                            'The style card could not be imported.',
+                            'The style-card importer is unavailable.',
                             'maxi-blocks',
                         ),
                         ['status' => 500],
                     );
                 }
-                $results['sc'] = $sc_result;
+
+                $sc_result = MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
+                if (!$sc_result) {
+                    $results['sc'] = [
+                        'success' => false,
+                        'message' => __(
+                            'The style card could not be imported.',
+                            'maxi-blocks',
+                        ),
+                    ];
+                } else {
+                    $results['sc'] = $sc_result;
+                }
             }
 
             // Process XML content
             if ($xml_content !== null) {
                 $xml_result = $this->maxi_import_xml($xml_content);
                 if (is_wp_error($xml_result)) {
-                    return $xml_result;
+                    $results['contentXML'] = [
+                        'success' => false,
+                        'message' => $xml_result->get_error_message(),
+                    ];
+                } else {
+                    $results['contentXML'] = $xml_result;
                 }
-                $results['contentXML'] = $xml_result;
+            }
+
+            $has_import_failures = false;
+            foreach (['templates', 'pages', 'patterns'] as $section) {
+                foreach ($results[$section] ?? [] as $item_result) {
+                    if (empty($item_result['success'])) {
+                        $has_import_failures = true;
+                        break 2;
+                    }
+                }
+            }
+            if (
+                isset($results['sc']['success']) &&
+                !$results['sc']['success']
+            ) {
+                $has_import_failures = true;
+            }
+            if (
+                isset($results['contentXML']['success']) &&
+                !$results['contentXML']['success']
+            ) {
+                $has_import_failures = true;
             }
 
             // Save current starter site name
@@ -2262,7 +2295,7 @@ if (!class_exists('MaxiBlocks_API')):
             }
 
             return rest_ensure_response([
-                'success' => true,
+                'success' => !$has_import_failures,
                 'message' => 'Import data processed',
                 'data' => $results,
                 'warnings' => $this->import_warnings,
@@ -2302,7 +2335,17 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_name' => $entity_slug,
                 ];
 
-                $post_id = wp_insert_post($post_data, true);
+                $existing_page = get_page_by_path(
+                    $entity_slug,
+                    OBJECT,
+                    $entity_type,
+                );
+                if ($existing_page) {
+                    $post_data['ID'] = $existing_page->ID;
+                    $post_id = wp_update_post($post_data, true);
+                } else {
+                    $post_id = wp_insert_post($post_data, true);
+                }
 
                 if (!$post_id || is_wp_error($post_id)) {
                     $results[$page_name] = [
@@ -2372,6 +2415,16 @@ if (!class_exists('MaxiBlocks_API')):
                             'success' => true,
                             'post_id' => $blog_page_id,
                             'message' => __('Created Blog page', 'maxi-blocks'),
+                        ];
+                    } else {
+                        $results['blog_page'] = [
+                            'success' => false,
+                            'message' => is_wp_error($blog_page_id)
+                                ? $blog_page_id->get_error_message()
+                                : __(
+                                    'Failed to create the Blog page.',
+                                    'maxi-blocks',
+                                ),
                         ];
                     }
                 }
@@ -3207,42 +3260,58 @@ if (!class_exists('MaxiBlocks_API')):
                     wp_parse_url($url, PHP_URL_PATH),
                 );
 
+                $response = wp_safe_remote_head($url, [
+                    'timeout' => 15,
+                    'redirection' => 3,
+                    'reject_unsafe_urls' => true,
+                ]);
+                $headers = [];
+                if (!is_wp_error($response)) {
+                    $headers = wp_remote_retrieve_headers($response);
+                    $content_length = wp_remote_retrieve_header(
+                        $response,
+                        'content-length',
+                    );
+                    if (
+                        is_numeric($content_length) &&
+                        (int) $content_length > 10 * MB_IN_BYTES
+                    ) {
+                        $this->import_warnings[] = [
+                            'code' => 'maxi_import_image_too_large',
+                            'url' => esc_url_raw($url),
+                        ];
+                        return false;
+                    }
+                }
+
                 // Check file type
                 $wp_filetype = wp_check_filetype($file_array['name']);
                 if (!$wp_filetype['type']) {
                     // Try to get type from remote file
-                    $response = wp_safe_remote_head($url, [
-                        'timeout' => 15,
-                        'redirection' => 3,
-                        'reject_unsafe_urls' => true,
-                    ]);
-                    if (!is_wp_error($response)) {
-                        $headers = wp_remote_retrieve_headers($response);
-                        if (isset($headers['content-type'])) {
-                            $mime_type = $headers['content-type'];
-                            // Map common MIME types to extensions
-                            $mime_to_ext = [
-                                'image/jpeg' => 'jpg',
-                                'image/jpg' => 'jpg',
-                                'image/png' => 'png',
-                                'image/gif' => 'gif',
-                                'image/webp' => 'webp',
-                                'image/svg+xml' => 'svg',
-                            ];
+                    if (isset($headers['content-type'])) {
+                        $mime_type = $headers['content-type'];
+                        // Map common MIME types to extensions
+                        $mime_to_ext = [
+                            'image/jpeg' => 'jpg',
+                            'image/jpg' => 'jpg',
+                            'image/png' => 'png',
+                            'image/gif' => 'gif',
+                            'image/webp' => 'webp',
+                            'image/svg+xml' => 'svg',
+                        ];
 
-                            if (isset($mime_to_ext[$mime_type])) {
-                                $wp_filetype['type'] = $mime_type;
-                                $wp_filetype['ext'] = $mime_to_ext[$mime_type];
-                                // Update filename with correct extension
-                                $file_array['name'] = sanitize_file_name(
-                                    pathinfo(
-                                        $file_array['name'],
-                                        PATHINFO_FILENAME,
-                                    ) .
-                                        '.' .
-                                        $wp_filetype['ext'],
-                                );
-                            }
+                        if (isset($mime_to_ext[$mime_type])) {
+                            $wp_filetype['type'] = $mime_type;
+                            $wp_filetype['ext'] = $mime_to_ext[$mime_type];
+                            // Update filename with correct extension
+                            $file_array['name'] = sanitize_file_name(
+                                pathinfo(
+                                    $file_array['name'],
+                                    PATHINFO_FILENAME,
+                                ) .
+                                    '.' .
+                                    $wp_filetype['ext'],
+                            );
                         }
                     }
                 }

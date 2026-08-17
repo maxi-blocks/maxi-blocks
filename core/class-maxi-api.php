@@ -44,6 +44,7 @@ if (!class_exists('MaxiBlocks_API')):
          */
         private $version;
         private $namespace;
+        private $import_warnings = [];
 
         /**
          * Constructor.
@@ -1793,167 +1794,463 @@ if (!class_exists('MaxiBlocks_API')):
             }
         }
 
-        public function maxi_import_starter_site($request)
+        /**
+         * Fetch an import resource without allowing requests to local or private hosts.
+         *
+         * @param string $url Remote HTTPS URL.
+         * @param int    $max_bytes Maximum response size.
+         * @return string|WP_Error
+         */
+        private function maxi_fetch_import_resource($url, $max_bytes)
         {
-            $import_data = json_decode($request->get_body(), true);
-            $results = [];
+            if (
+                !is_string($url) ||
+                wp_parse_url($url, PHP_URL_SCHEME) !== 'https' ||
+                !wp_http_validate_url($url)
+            ) {
+                return new WP_Error(
+                    'maxi_import_unsafe_url',
+                    __(
+                        'Import URLs must use public HTTPS addresses.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
 
-            // Helper function to fetch remote content
-            $fetch_remote_content = function ($url) {
-                $response = wp_remote_get($url);
-                if (is_wp_error($response)) {
-                    return false;
-                }
-                return wp_remote_retrieve_body($response);
-            };
+            $response = wp_safe_remote_get($url, [
+                'timeout' => 15,
+                'redirection' => 3,
+                'reject_unsafe_urls' => true,
+                'limit_response_size' => $max_bytes + 1,
+            ]);
 
-            // Process templates
-            if (!empty($import_data['templates'])) {
-                $results['templates'] = [];
+            if (is_wp_error($response)) {
+                return new WP_Error(
+                    'maxi_import_fetch_failed',
+                    $response->get_error_message(),
+                    ['status' => 502],
+                );
+            }
 
-                foreach ($import_data['templates'] as $template) {
-                    // Fetch template content from URL
-                    $template_content = $fetch_remote_content(
-                        $template['content'],
-                    );
-                    if (!$template_content) {
-                        $results['templates'][] = [
-                            'name' => $template['name'],
-                            'success' => false,
-                            /* translators: %s: URL of the template content */
-                            'message' => sprintf(__('Failed to fetch template content from %s', 'maxi-blocks'), $template['content'])
-                        ];
-                        continue;
-                    }
+            if (wp_remote_retrieve_response_code($response) !== 200) {
+                return new WP_Error(
+                    'maxi_import_bad_status',
+                    __(
+                        'The remote import resource did not return HTTP 200.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 502],
+                );
+            }
 
-                    // Parse the fetched content
-                    $template_data = json_decode($template_content, true);
-                    if (!$template_data) {
-                        $results['templates'][] = [
-                            'name' => $template['name'],
-                            'success' => false,
-                            'message' => __(
-                                'Invalid template JSON content',
+            $body = wp_remote_retrieve_body($response);
+            if (strlen($body) > $max_bytes) {
+                return new WP_Error(
+                    'maxi_import_resource_too_large',
+                    __(
+                        'The remote import resource exceeds the allowed size.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 413],
+                );
+            }
+
+            return $body;
+        }
+
+        /**
+         * Validate a list of named remote import resources.
+         *
+         * @param mixed  $items Request value.
+         * @param string $section Section name.
+         * @return true|WP_Error
+         */
+        private function maxi_validate_import_items($items, $section)
+        {
+            if (!is_array($items) || count($items) > 100) {
+                return new WP_Error(
+                    'maxi_import_invalid_' . $section,
+                    sprintf(
+                        __(
+                            'The %s import list must be an array of at most 100 items.',
+                            'maxi-blocks',
+                        ),
+                        $section,
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            $names = [];
+            foreach ($items as $item) {
+                if (
+                    !is_array($item) ||
+                    array_diff(array_keys($item), ['name', 'content']) ||
+                    !isset($item['name'], $item['content']) ||
+                    !is_string($item['name']) ||
+                    $item['name'] === '' ||
+                    strlen($item['name']) > 200 ||
+                    !is_string($item['content'])
+                ) {
+                    return new WP_Error(
+                        'maxi_import_invalid_' . $section . '_item',
+                        sprintf(
+                            __(
+                                'Each %s item must contain only a bounded name and content URL.',
                                 'maxi-blocks',
                             ),
-                        ];
-                        continue;
-                    }
+                            $section,
+                        ),
+                        ['status' => 400],
+                    );
+                }
 
-                    // Import the template
+                if (isset($names[$item['name']])) {
+                    return new WP_Error(
+                        'maxi_import_duplicate_name',
+                        __(
+                            'Import item names must be unique within each section.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 400],
+                    );
+                }
+                $names[$item['name']] = true;
+            }
+
+            return true;
+        }
+
+        /**
+         * Validate a decoded entity before it reaches an import routine.
+         *
+         * @param mixed  $entity Decoded remote JSON.
+         * @param string $section Import section.
+         * @return true|WP_Error
+         */
+        private function maxi_validate_import_entity($entity, $section)
+        {
+            if (!is_array($entity)) {
+                return new WP_Error(
+                    'maxi_import_invalid_entity',
+                    __(
+                        'Remote import JSON must decode to an object.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            foreach (['content', 'entityTitle', 'entitySlug'] as $field) {
+                if (isset($entity[$field]) && !is_string($entity[$field])) {
+                    return new WP_Error(
+                        'maxi_import_invalid_entity',
+                        __(
+                            'Remote import entity fields have invalid types.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 400],
+                    );
+                }
+            }
+
+            foreach (['styles', 'customData', 'fonts'] as $field) {
+                if (isset($entity[$field]) && !is_array($entity[$field])) {
+                    return new WP_Error(
+                        'maxi_import_invalid_entity',
+                        __(
+                            'Remote import data collections must be objects or arrays.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 400],
+                    );
+                }
+            }
+
+            $entity_type = $entity['entityType'] ?? null;
+            if ($section === 'pages' && $entity_type !== 'page') {
+                return new WP_Error(
+                    'maxi_import_invalid_entity_type',
+                    __(
+                        'Page imports must use the page entity type.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+            if (
+                $section === 'templates' &&
+                !in_array($entity_type, ['template', 'template-part'], true)
+            ) {
+                return new WP_Error(
+                    'maxi_import_invalid_entity_type',
+                    __(
+                        'Template imports must use the template or template-part entity type.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+            if (
+                $section === 'patterns' &&
+                $entity_type &&
+                $entity_type !== 'pattern'
+            ) {
+                return new WP_Error(
+                    'maxi_import_invalid_entity_type',
+                    __(
+                        'Pattern imports must use the pattern entity type.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            return true;
+        }
+
+        public function maxi_import_starter_site($request)
+        {
+            $this->import_warnings = [];
+            $import_data = json_decode($request->get_body(), true);
+            if (
+                !is_array($import_data) ||
+                json_last_error() !== JSON_ERROR_NONE
+            ) {
+                return new WP_Error(
+                    'maxi_import_invalid_json',
+                    __(
+                        'The import request must contain valid JSON.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            $allowed_keys = [
+                'title',
+                'templates',
+                'pages',
+                'patterns',
+                'sc',
+                'contentXML',
+            ];
+            if (array_diff(array_keys($import_data), $allowed_keys)) {
+                return new WP_Error(
+                    'maxi_import_unknown_field',
+                    __(
+                        'The import request contains unsupported fields.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            if (
+                empty(
+                    array_intersect(
+                        ['templates', 'pages', 'patterns', 'sc', 'contentXML'],
+                        array_keys($import_data),
+                    )
+                )
+            ) {
+                return new WP_Error(
+                    'maxi_import_empty',
+                    __(
+                        'Select at least one resource to import.',
+                        'maxi-blocks',
+                    ),
+                    ['status' => 400],
+                );
+            }
+
+            if (
+                isset($import_data['title']) &&
+                (!is_string($import_data['title']) ||
+                    strlen($import_data['title']) > 200)
+            ) {
+                return new WP_Error(
+                    'maxi_import_invalid_title',
+                    __('The starter-site title is invalid.', 'maxi-blocks'),
+                    ['status' => 400],
+                );
+            }
+
+            $decoded_items = [];
+            foreach (['templates', 'pages', 'patterns'] as $section) {
+                if (!isset($import_data[$section])) {
+                    continue;
+                }
+                $validation = $this->maxi_validate_import_items(
+                    $import_data[$section],
+                    $section,
+                );
+                if (is_wp_error($validation)) {
+                    return $validation;
+                }
+                foreach ($import_data[$section] as $item) {
+                    $body = $this->maxi_fetch_import_resource(
+                        $item['content'],
+                        5 * MB_IN_BYTES,
+                    );
+                    if (is_wp_error($body)) {
+                        return $body;
+                    }
+                    $entity = json_decode($body, true);
+                    $validation = $this->maxi_validate_import_entity(
+                        $entity,
+                        $section,
+                    );
+                    if (is_wp_error($validation)) {
+                        return $validation;
+                    }
+                    $decoded_items[$section][$item['name']] = $entity;
+                }
+            }
+
+            $sc_content = null;
+            if (isset($import_data['sc'])) {
+                $sc_content = $this->maxi_fetch_import_resource(
+                    $import_data['sc'],
+                    5 * MB_IN_BYTES,
+                );
+                if (is_wp_error($sc_content)) {
+                    return $sc_content;
+                }
+                $decoded_sc = json_decode($sc_content, true);
+                if (is_string($decoded_sc)) {
+                    $decoded_sc = json_decode($decoded_sc, true);
+                }
+                if (!is_array($decoded_sc)) {
+                    return new WP_Error(
+                        'maxi_import_invalid_style_card',
+                        __(
+                            'The remote style card is not valid JSON.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 400],
+                    );
+                }
+            }
+
+            $xml_content = null;
+            if (isset($import_data['contentXML'])) {
+                $xml_content = $this->maxi_fetch_import_resource(
+                    $import_data['contentXML'],
+                    20 * MB_IN_BYTES,
+                );
+                if (is_wp_error($xml_content)) {
+                    return $xml_content;
+                }
+                if (
+                    stripos(ltrim($xml_content), '<?xml') !== 0 &&
+                    stripos($xml_content, '<rss') === false
+                ) {
+                    return new WP_Error(
+                        'maxi_import_invalid_xml',
+                        __(
+                            'The remote XML resource is not valid import XML.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 400],
+                    );
+                }
+            }
+
+            $results = [];
+
+            // Process templates
+            if (!empty($decoded_items['templates'])) {
+                $results['templates'] = [];
+                foreach (
+                    $decoded_items['templates']
+                    as $name => $template_data
+                ) {
                     $import_result = $this->maxi_import_template_parts([
-                        $template_data,
+                        $name => $template_data,
                     ]);
                     $results['templates'][] = [
-                        'name' => $template['name'],
-                        'success' => true,
+                        'name' => $name,
+                        'success' => !empty($import_result[$name]['success']),
                         'data' => $import_result,
                     ];
                 }
             }
 
             // Process pages
-            if (!empty($import_data['pages'])) {
+            if (!empty($decoded_items['pages'])) {
                 $results['pages'] = [];
-
-                foreach ($import_data['pages'] as $page) {
-                    // Fetch page content from URL
-                    $page_content = $fetch_remote_content($page['content']);
-                    if (!$page_content) {
-                        $results['pages'][] = [
-                            'name' => $page['name'],
-                            'success' => false,
-                            /* translators: %s: URL of the page content */
-                            'message' => sprintf(__('Failed to fetch page content from %s', 'maxi-blocks'), $page['content'])
-                        ];
-                        continue;
+                $import_result = $this->maxi_import_pages(
+                    $decoded_items['pages'],
+                );
+                foreach ($decoded_items['pages'] as $name => $page_data) {
+                    $page_result = [$name => $import_result[$name]];
+                    if (isset($import_result['reading_settings'])) {
+                        $page_result['reading_settings'] =
+                            $import_result['reading_settings'];
                     }
-
-                    // Parse the fetched content
-                    $page_data = json_decode($page_content, true);
-                    if (!$page_data) {
-                        $results['pages'][] = [
-                            'name' => $page['name'],
-                            'success' => false,
-                            'message' => __(
-                                'Invalid page JSON content',
-                                'maxi-blocks',
-                            ),
-                        ];
-                        continue;
-                    }
-
-                    // Import the page
-                    $import_result = $this->maxi_import_pages([$page_data]);
                     $results['pages'][] = [
-                        'name' => $page['name'],
-                        'success' => true,
-                        'data' => $import_result,
+                        'name' => $name,
+                        'success' => !empty($import_result[$name]['success']),
+                        'data' => $page_result,
                     ];
                 }
             }
 
             // Process patterns
-            if (!empty($import_data['patterns'])) {
+            if (!empty($decoded_items['patterns'])) {
                 $results['patterns'] = [];
-
-                foreach ($import_data['patterns'] as $pattern) {
-                    // Fetch pattern content from URL
-                    $pattern_content = $fetch_remote_content(
-                        $pattern['content'],
-                    );
-                    if (!$pattern_content) {
-                        $results['patterns'][] = [
-                            'name' => $pattern['name'],
-                            'success' => false,
-                            /* translators: %s: URL of the pattern content */
-                            'message' => sprintf(__('Failed to fetch pattern content from %s', 'maxi-blocks'), $pattern['content'])
-                        ];
-                        continue;
-                    }
-
-                    // Parse the fetched content
-                    $pattern_data = json_decode($pattern_content, true);
-                    if (!$pattern_data) {
-                        $results['patterns'][] = [
-                            'name' => $pattern['name'],
-                            'success' => false,
-                            'message' => __(
-                                'Invalid pattern JSON content',
-                                'maxi-blocks',
-                            ),
-                        ];
-                        continue;
-                    }
-
-                    // Import the pattern
+                foreach ($decoded_items['patterns'] as $name => $pattern_data) {
                     $import_result = $this->maxi_import_patterns([
-                        $pattern_data,
+                        $name => $pattern_data,
                     ]);
                     $results['patterns'][] = [
-                        'name' => $pattern['name'],
-                        'success' => true,
+                        'name' => $name,
+                        'success' => !empty($import_result[$name]['success']),
                         'data' => $import_result,
                     ];
                 }
             }
 
-            // Process Style Card
-            if (!empty($import_data['sc'])) {
-                $sc_content = $fetch_remote_content($import_data['sc']);
-                if ($sc_content) {
-                    MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
+            foreach (['templates', 'pages', 'patterns'] as $section) {
+                foreach ($results[$section] ?? [] as $item_result) {
+                    if (empty($item_result['success'])) {
+                        return new WP_Error(
+                            'maxi_import_item_failed',
+                            __(
+                                'One or more starter-site items could not be imported.',
+                                'maxi-blocks',
+                            ),
+                            ['status' => 500, 'results' => $results],
+                        );
+                    }
                 }
             }
 
-            // Process XML content
-            if (!empty($import_data['contentXML'])) {
-                $xml_content = $fetch_remote_content(
-                    $import_data['contentXML'],
-                );
-                if ($xml_content) {
-                    $this->maxi_import_xml($xml_content);
+            // Process Style Card
+            if ($sc_content !== null) {
+                $sc_result = MaxiBlocks_StyleCards::maxi_import_sc($sc_content);
+                if (!$sc_result) {
+                    return new WP_Error(
+                        'maxi_import_style_card_failed',
+                        __(
+                            'The style card could not be imported.',
+                            'maxi-blocks',
+                        ),
+                        ['status' => 500],
+                    );
                 }
+                $results['sc'] = $sc_result;
+            }
+
+            // Process XML content
+            if ($xml_content !== null) {
+                $xml_result = $this->maxi_import_xml($xml_content);
+                if (is_wp_error($xml_result)) {
+                    return $xml_result;
+                }
+                $results['contentXML'] = $xml_result;
             }
 
             // Save current starter site name
@@ -1968,6 +2265,7 @@ if (!class_exists('MaxiBlocks_API')):
                 'success' => true,
                 'message' => 'Import data processed',
                 'data' => $results,
+                'warnings' => $this->import_warnings,
                 'currentStarterSite' => $import_data['title'] ?? '',
             ]);
         }
@@ -1978,9 +2276,7 @@ if (!class_exists('MaxiBlocks_API')):
             $home_page_id = null;
             $blog_page_id = null;
             $has_home_page = false;
-            $has_blog_template = false;
 
-            // First pass - import pages and identify home/blog pages
             foreach ($pages_data as $page_name => $page_data) {
                 // Parse the page data
                 $content = $page_data['content'] ?? '';
@@ -1988,9 +2284,12 @@ if (!class_exists('MaxiBlocks_API')):
 
                 $styles = $page_data['styles'] ?? [];
                 $entity_type = $page_data['entityType'] ?? 'page';
-                $entity_title = $page_data['entityTitle'] ?? $page_name;
-                $entity_slug =
-                    $page_data['entitySlug'] ?? sanitize_title($entity_title);
+                $entity_title = sanitize_text_field(
+                    $page_data['entityTitle'] ?? $page_name,
+                );
+                $entity_slug = sanitize_title(
+                    $page_data['entitySlug'] ?? $entity_title,
+                );
                 $custom_data = $page_data['customData'] ?? [];
                 $fonts = $page_data['fonts'] ?? [];
 
@@ -2003,17 +2302,21 @@ if (!class_exists('MaxiBlocks_API')):
                     'post_name' => $entity_slug,
                 ];
 
-                $post_id = wp_insert_post($post_data);
+                $post_id = wp_insert_post($post_data, true);
 
-                if (is_wp_error($post_id)) {
+                if (!$post_id || is_wp_error($post_id)) {
                     $results[$page_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message(),
+                        'message' => is_wp_error($post_id)
+                            ? $post_id->get_error_message()
+                            : __(
+                                'Failed to create imported page.',
+                                'maxi-blocks',
+                            ),
                     ];
                     continue;
                 }
 
-                // Check if this is a home or blog page
                 if (
                     stripos($entity_title, 'home') !== false ||
                     stripos($entity_slug, 'home') !== false
@@ -2040,35 +2343,31 @@ if (!class_exists('MaxiBlocks_API')):
                     'success' => true,
                     'post_id' => $post_id,
                     /* translators: %s: Title of the imported entity */
-                    'message' => sprintf(__('Successfully imported %s', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
-            // Check if we have a blog template
-            $blog_template = get_block_template(
-                get_stylesheet() . '//blog',
-                'wp_template',
-            );
-            $has_blog_template = !empty($blog_template);
-
-            // Create blog page if it doesn't exist
             if (!$blog_page_id) {
-                // Check if a page with slug 'blog' already exists
                 $existing_blog = get_page_by_path('blog');
 
                 if ($existing_blog) {
                     $blog_page_id = $existing_blog->ID;
                 } else {
-                    $blog_page = [
-                        'post_title' => 'Blog',
-                        'post_content' => '',
-                        'post_status' => 'publish',
-                        'post_type' => 'page',
-                        'post_name' => 'blog',
-                    ];
-                    $blog_page_id = wp_insert_post($blog_page);
+                    $blog_page_id = wp_insert_post(
+                        [
+                            'post_title' => 'Blog',
+                            'post_content' => '',
+                            'post_status' => 'publish',
+                            'post_type' => 'page',
+                            'post_name' => 'blog',
+                        ],
+                        true,
+                    );
 
-                    if (!is_wp_error($blog_page_id)) {
+                    if ($blog_page_id && !is_wp_error($blog_page_id)) {
                         $results['blog_page'] = [
                             'success' => true,
                             'post_id' => $blog_page_id,
@@ -2078,18 +2377,15 @@ if (!class_exists('MaxiBlocks_API')):
                 }
             }
 
-            // Update reading settings
             if ($has_home_page) {
                 update_option('show_on_front', 'page');
                 update_option('page_on_front', $home_page_id);
             }
 
-            // Always set the blog page if we have one
             if ($blog_page_id && !is_wp_error($blog_page_id)) {
                 update_option('page_for_posts', $blog_page_id);
             }
 
-            // Add reading settings to results
             $results['reading_settings'] = [
                 'show_on_front' => get_option('show_on_front'),
                 'page_on_front' => get_option('page_on_front'),
@@ -2117,14 +2413,19 @@ if (!class_exists('MaxiBlocks_API')):
             foreach ($template_data as $template_name => $template_part_data) {
                 // Check entity type and route to appropriate function
                 if ($template_part_data['entityType'] === 'template') {
-                    return $this->maxi_import_templates([$template_part_data]);
+                    return $this->maxi_import_templates([
+                        $template_name => $template_part_data,
+                    ]);
                 }
 
                 if ($template_part_data['entityType'] !== 'template-part') {
                     $results[$template_name] = [
                         'success' => false,
                         /* translators: %s: The invalid entity type */
-                        'message' => sprintf(__('Invalid entity type: %s', 'maxi-blocks'), $template_part_data['entityType'])
+                        'message' => sprintf(
+                            __('Invalid entity type: %s', 'maxi-blocks'),
+                            $template_part_data['entityType'],
+                        ),
                     ];
                     continue;
                 }
@@ -2136,11 +2437,12 @@ if (!class_exists('MaxiBlocks_API')):
                 $content = $this->process_content_images($content);
 
                 $styles = $template_part_data['styles'] ?? [];
-                $entity_title =
-                    $template_part_data['entityTitle'] ?? $template_name;
-                $entity_slug =
-                    $template_part_data['entitySlug'] ??
-                    sanitize_title($entity_title);
+                $entity_title = sanitize_text_field(
+                    $template_part_data['entityTitle'] ?? $template_name,
+                );
+                $entity_slug = sanitize_title(
+                    $template_part_data['entitySlug'] ?? $entity_title,
+                );
                 $custom_data = $template_part_data['customData'] ?? [];
                 $fonts = $template_part_data['fonts'] ?? [];
 
@@ -2169,8 +2471,8 @@ if (!class_exists('MaxiBlocks_API')):
                         WHERE post_type = 'wp_template_part'
                         AND post_name = %s
                         AND post_status != 'trash'",
-                        $entity_slug
-                    )
+                        $entity_slug,
+                    ),
                 );
 
                 // Clean up any duplicate posts with incremented slugs (e.g., header-2, footer-2)
@@ -2184,8 +2486,8 @@ if (!class_exists('MaxiBlocks_API')):
                             AND post_name != %s
                             AND post_status != 'trash'",
                             $entity_slug . '-%',
-                            $entity_slug
-                        )
+                            $entity_slug,
+                        ),
                     );
 
                     foreach ($duplicate_posts as $duplicate) {
@@ -2193,7 +2495,7 @@ if (!class_exists('MaxiBlocks_API')):
                     }
                 }
 
-                $template_content = array(
+                $template_content = [
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),
@@ -2209,15 +2511,15 @@ if (!class_exists('MaxiBlocks_API')):
                         'theme' => $theme_slug,
                         'area' => $area,
                         'is_custom' => true,
-                    ]
-                );
+                    ],
+                ];
 
                 if ($existing_template) {
                     if ($existing_post) {
                         $template_content['ID'] = $existing_post->ID;
-                        $post_id = wp_update_post($template_content);
+                        $post_id = wp_update_post($template_content, true);
                     } else {
-                        $post_id = wp_insert_post($template_content);
+                        $post_id = wp_insert_post($template_content, true);
 
                         if ($post_id && !is_wp_error($post_id)) {
                             wp_set_object_terms(
@@ -2233,7 +2535,7 @@ if (!class_exists('MaxiBlocks_API')):
                         }
                     }
                 } else {
-                    $post_id = wp_insert_post($template_content);
+                    $post_id = wp_insert_post($template_content, true);
 
                     if ($post_id && !is_wp_error($post_id)) {
                         wp_set_object_terms(
@@ -2245,10 +2547,15 @@ if (!class_exists('MaxiBlocks_API')):
                     }
                 }
 
-                if (is_wp_error($post_id)) {
+                if (!$post_id || is_wp_error($post_id)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message(),
+                        'message' => is_wp_error($post_id)
+                            ? $post_id->get_error_message()
+                            : __(
+                                'Failed to import template part.',
+                                'maxi-blocks',
+                            ),
                     ];
                     continue;
                 }
@@ -2270,7 +2577,13 @@ if (!class_exists('MaxiBlocks_API')):
                     'success' => true,
                     'post_id' => $post_id,
                     /* translators: %s: Title of the template part */
-                    'message' => sprintf(__('Successfully imported %s template part', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __(
+                            'Successfully imported %s template part',
+                            'maxi-blocks',
+                        ),
+                        $entity_title,
+                    ),
                 ];
             }
 
@@ -2330,10 +2643,12 @@ if (!class_exists('MaxiBlocks_API')):
 
                 $styles = $template_data['styles'] ?? [];
                 $entity_type = $template_data['entityType'] ?? '';
-                $entity_title = $template_data['entityTitle'] ?? $template_name;
-                $entity_slug =
-                    $template_data['entitySlug'] ??
-                    sanitize_title($entity_title);
+                $entity_title = sanitize_text_field(
+                    $template_data['entityTitle'] ?? $template_name,
+                );
+                $entity_slug = sanitize_title(
+                    $template_data['entitySlug'] ?? $entity_title,
+                );
                 $custom_data = $template_data['customData'] ?? [];
                 $fonts = $template_data['fonts'] ?? [];
 
@@ -2342,7 +2657,10 @@ if (!class_exists('MaxiBlocks_API')):
                     $results[$template_name] = [
                         'success' => false,
                         /* translators: %s: The invalid template slug */
-                        'message' => sprintf(__('Invalid template slug: %s', 'maxi-blocks'), $entity_slug)
+                        'message' => sprintf(
+                            __('Invalid template slug: %s', 'maxi-blocks'),
+                            $entity_slug,
+                        ),
                     ];
                     continue;
                 }
@@ -2360,8 +2678,8 @@ if (!class_exists('MaxiBlocks_API')):
                         WHERE post_type = 'wp_template'
                         AND post_name = %s
                         AND post_status != 'trash'",
-                        $entity_slug
-                    )
+                        $entity_slug,
+                    ),
                 );
 
                 // Clean up any duplicate posts with incremented slugs (e.g., home-2, archive-2)
@@ -2375,8 +2693,8 @@ if (!class_exists('MaxiBlocks_API')):
                             AND post_name != %s
                             AND post_status != 'trash'",
                             $entity_slug . '-%',
-                            $entity_slug
-                        )
+                            $entity_slug,
+                        ),
                     );
 
                     foreach ($duplicate_posts as $duplicate) {
@@ -2384,7 +2702,7 @@ if (!class_exists('MaxiBlocks_API')):
                     }
                 }
 
-                $template_content = array(
+                $template_content = [
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),
@@ -2400,14 +2718,14 @@ if (!class_exists('MaxiBlocks_API')):
                         'is_custom' => true,
                         'type' => $entity_type,
                     ],
-                );
+                ];
 
                 if ($existing_template) {
                     if ($existing_post) {
                         $template_content['ID'] = $existing_post->ID;
-                        $post_id = wp_update_post($template_content);
+                        $post_id = wp_update_post($template_content, true);
                     } else {
-                        $post_id = wp_insert_post($template_content);
+                        $post_id = wp_insert_post($template_content, true);
 
                         if ($post_id && !is_wp_error($post_id)) {
                             wp_set_object_terms(
@@ -2418,17 +2736,19 @@ if (!class_exists('MaxiBlocks_API')):
                         }
                     }
                 } else {
-                    $post_id = wp_insert_post($template_content);
+                    $post_id = wp_insert_post($template_content, true);
 
                     if ($post_id && !is_wp_error($post_id)) {
                         wp_set_object_terms($post_id, $theme_slug, 'wp_theme');
                     }
                 }
 
-                if (is_wp_error($post_id)) {
+                if (!$post_id || is_wp_error($post_id)) {
                     $results[$template_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message(),
+                        'message' => is_wp_error($post_id)
+                            ? $post_id->get_error_message()
+                            : __('Failed to import template.', 'maxi-blocks'),
                     ];
                     continue;
                 }
@@ -2449,7 +2769,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'success' => true,
                     'post_id' => $post_id,
                     /* translators: %s: Title of the template */
-                    'message' => sprintf(__('Successfully imported %s template', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s template', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
@@ -2501,13 +2824,18 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Load the php-toolkit which includes WPURL and other required classes
             if (!class_exists('WordPress\XML\XMLProcessor')) {
-                require_once WP_PLUGIN_DIR . '/wordpress-importer/php-toolkit/load.php';
+                require_once WP_PLUGIN_DIR .
+                    '/wordpress-importer/php-toolkit/load.php';
             }
 
-            require_once WP_PLUGIN_DIR . '/wordpress-importer/class-wp-import.php';
-            require_once WP_PLUGIN_DIR . '/wordpress-importer/wordpress-importer.php';
-            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser.php';
-            require_once WP_PLUGIN_DIR . '/wordpress-importer/parsers/class-wxr-parser-simplexml.php';
+            require_once WP_PLUGIN_DIR .
+                '/wordpress-importer/class-wp-import.php';
+            require_once WP_PLUGIN_DIR .
+                '/wordpress-importer/wordpress-importer.php';
+            require_once WP_PLUGIN_DIR .
+                '/wordpress-importer/parsers/class-wxr-parser.php';
+            require_once WP_PLUGIN_DIR .
+                '/wordpress-importer/parsers/class-wxr-parser-simplexml.php';
 
             // Run the importer
             try {
@@ -2745,10 +3073,12 @@ if (!class_exists('MaxiBlocks_API')):
                 $content = $this->process_content_images($content);
 
                 $styles = $pattern_data['styles'] ?? [];
-                $entity_title = $pattern_data['entityTitle'] ?? $pattern_name;
-                $entity_slug =
-                    $pattern_data['entitySlug'] ??
-                    sanitize_title($entity_title);
+                $entity_title = sanitize_text_field(
+                    $pattern_data['entityTitle'] ?? $pattern_name,
+                );
+                $entity_slug = sanitize_title(
+                    $pattern_data['entitySlug'] ?? $entity_title,
+                );
                 $custom_data = $pattern_data['customData'] ?? [];
                 $fonts = $pattern_data['fonts'] ?? [];
                 $wp_pattern_sync_status =
@@ -2761,8 +3091,8 @@ if (!class_exists('MaxiBlocks_API')):
                         WHERE post_type = 'wp_block'
                         AND post_name = %s
                         AND post_status != 'trash'",
-                        $entity_slug
-                    )
+                        $entity_slug,
+                    ),
                 );
 
                 // Clean up any duplicate posts with incremented slugs
@@ -2776,8 +3106,8 @@ if (!class_exists('MaxiBlocks_API')):
                             AND post_name != %s
                             AND post_status != 'trash'",
                             $entity_slug . '-%',
-                            $entity_slug
-                        )
+                            $entity_slug,
+                        ),
                     );
 
                     foreach ($duplicate_posts as $duplicate) {
@@ -2785,7 +3115,7 @@ if (!class_exists('MaxiBlocks_API')):
                     }
                 }
 
-                $pattern_content = array(
+                $pattern_content = [
                     'post_name' => $entity_slug,
                     'post_title' => $entity_title,
                     'post_content' => wp_slash($content),
@@ -2795,19 +3125,21 @@ if (!class_exists('MaxiBlocks_API')):
                     'meta_input' => [
                         'wp_pattern_sync_status' => $wp_pattern_sync_status,
                     ],
-                );
+                ];
 
                 if ($existing_post) {
                     $pattern_content['ID'] = $existing_post->ID;
-                    $post_id = wp_update_post($pattern_content);
+                    $post_id = wp_update_post($pattern_content, true);
                 } else {
-                    $post_id = wp_insert_post($pattern_content);
+                    $post_id = wp_insert_post($pattern_content, true);
                 }
 
-                if (is_wp_error($post_id)) {
+                if (!$post_id || is_wp_error($post_id)) {
                     $results[$pattern_name] = [
                         'success' => false,
-                        'message' => $post_id->get_error_message(),
+                        'message' => is_wp_error($post_id)
+                            ? $post_id->get_error_message()
+                            : __('Failed to import pattern.', 'maxi-blocks'),
                     ];
                     continue;
                 }
@@ -2825,7 +3157,10 @@ if (!class_exists('MaxiBlocks_API')):
                     'success' => true,
                     'post_id' => $post_id,
                     /* translators: %s: Title of the pattern */
-                    'message' => sprintf(__('Successfully imported %s pattern', 'maxi-blocks'), $entity_title)
+                    'message' => sprintf(
+                        __('Successfully imported %s pattern', 'maxi-blocks'),
+                        $entity_title,
+                    ),
                 ];
             }
 
@@ -2849,8 +3184,15 @@ if (!class_exists('MaxiBlocks_API')):
 
             // Helper function to download and upload image
             $import_image = function ($url) {
-                // Skip if not a valid URL
-                if (!filter_var($url, FILTER_VALIDATE_URL)) {
+                if (
+                    !is_string($url) ||
+                    wp_parse_url($url, PHP_URL_SCHEME) !== 'https' ||
+                    !wp_http_validate_url($url)
+                ) {
+                    $this->import_warnings[] = [
+                        'code' => 'maxi_import_unsafe_image_url',
+                        'url' => esc_url_raw($url),
+                    ];
                     return false;
                 }
 
@@ -2861,13 +3203,19 @@ if (!class_exists('MaxiBlocks_API')):
 
                 // Get file info
                 $file_array = [];
-                $file_array['name'] = basename(wp_parse_url($url, PHP_URL_PATH));
+                $file_array['name'] = basename(
+                    wp_parse_url($url, PHP_URL_PATH),
+                );
 
                 // Check file type
                 $wp_filetype = wp_check_filetype($file_array['name']);
                 if (!$wp_filetype['type']) {
                     // Try to get type from remote file
-                    $response = wp_remote_head($url);
+                    $response = wp_safe_remote_head($url, [
+                        'timeout' => 15,
+                        'redirection' => 3,
+                        'reject_unsafe_urls' => true,
+                    ]);
                     if (!is_wp_error($response)) {
                         $headers = wp_remote_retrieve_headers($response);
                         if (isset($headers['content-type'])) {
@@ -2908,8 +3256,21 @@ if (!class_exists('MaxiBlocks_API')):
                 }
 
                 // Download file to temp dir
-                $temp_file = download_url($url);
+                $temp_file = download_url($url, 15);
                 if (is_wp_error($temp_file)) {
+                    $this->import_warnings[] = [
+                        'code' => 'maxi_import_image_download_failed',
+                        'url' => esc_url_raw($url),
+                    ];
+                    return false;
+                }
+
+                if (filesize($temp_file) > 10 * MB_IN_BYTES) {
+                    wp_delete_file($temp_file);
+                    $this->import_warnings[] = [
+                        'code' => 'maxi_import_image_too_large',
+                        'url' => esc_url_raw($url),
+                    ];
                     return false;
                 }
 

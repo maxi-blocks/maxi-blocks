@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.2.1\n"
+"Project-Id-Version: MaxiBlocks 2.2.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-12T11:26:15+00:00\n"
+"POT-Creation-Date: 2026-08-18T12:04:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -2080,102 +2080,168 @@ msgstr ""
 msgid "Debug log too large to display. Download it manually."
 msgstr ""
 
-#: core/class-maxi-api.php:550
+#: core/class-maxi-api.php:551
 #: core/class-maxi-custom-fonts.php:153
 msgid "Font family is required."
 msgstr ""
 
-#: core/class-maxi-api.php:558
+#: core/class-maxi-api.php:559
 msgid "A valid font file attachment ID is required."
 msgstr ""
 
-#: core/class-maxi-api.php:577
+#: core/class-maxi-api.php:578
 msgid "Unable to retrieve attachment URL."
 msgstr ""
 
-#: core/class-maxi-api.php:612
+#: core/class-maxi-api.php:613
 msgid "Font ID is required."
 msgstr ""
 
-#: core/class-maxi-api.php:722
+#: core/class-maxi-api.php:723
 msgid "User not found."
 msgstr ""
 
-#. translators: %s: URL of the template content
-#: core/class-maxi-api.php:1824
+#: core/class-maxi-api.php:1813
+msgid "Import URLs must use public HTTPS addresses."
+msgstr ""
+
+#: core/class-maxi-api.php:1839
+msgid "The remote import resource did not return HTTP 200."
+msgstr ""
+
+#: core/class-maxi-api.php:1851
+msgid "The remote import resource exceeds the allowed size."
+msgstr ""
+
+#: core/class-maxi-api.php:1875
 #, php-format
-msgid "Failed to fetch template content from %s"
+msgid "The %s import list must be an array of at most 100 items."
 msgstr ""
 
-#: core/class-maxi-api.php:1835
-msgid "Invalid template JSON content"
-msgstr ""
-
-#. translators: %s: URL of the page content
-#: core/class-maxi-api.php:1867
+#: core/class-maxi-api.php:1899
 #, php-format
-msgid "Failed to fetch page content from %s"
+msgid "Each %s item must contain only a bounded name and content URL."
 msgstr ""
 
-#: core/class-maxi-api.php:1878
-msgid "Invalid page JSON content"
+#: core/class-maxi-api.php:1912
+msgid "Import item names must be unique within each section."
 msgstr ""
 
-#. translators: %s: URL of the pattern content
-#: core/class-maxi-api.php:1910
-#, php-format
-msgid "Failed to fetch pattern content from %s"
+#: core/class-maxi-api.php:1937
+msgid "Remote import JSON must decode to an object."
 msgstr ""
 
-#: core/class-maxi-api.php:1921
-msgid "Invalid pattern JSON content"
+#: core/class-maxi-api.php:1949
+msgid "Remote import entity fields have invalid types."
 msgstr ""
 
-#. translators: %s: Title of the imported entity
-#: core/class-maxi-api.php:2043
+#: core/class-maxi-api.php:1962
+msgid "Remote import data collections must be objects or arrays."
+msgstr ""
+
+#: core/class-maxi-api.php:1975
+msgid "Page imports must use the page entity type."
+msgstr ""
+
+#: core/class-maxi-api.php:1988
+msgid "Template imports must use the template or template-part entity type."
+msgstr ""
+
+#: core/class-maxi-api.php:2002
+msgid "Pattern imports must use the pattern entity type."
+msgstr ""
+
+#: core/class-maxi-api.php:2023
+msgid "The import request must contain valid JSON."
+msgstr ""
+
+#: core/class-maxi-api.php:2042
+msgid "The import request contains unsupported fields."
+msgstr ""
+
+#: core/class-maxi-api.php:2060
+msgid "Select at least one resource to import."
+msgstr ""
+
+#: core/class-maxi-api.php:2075
+msgid "The starter-site title is invalid."
+msgstr ""
+
+#: core/class-maxi-api.php:2128
+msgid "The remote style card is not valid JSON."
+msgstr ""
+
+#: core/class-maxi-api.php:2152
+msgid "The remote XML resource is not valid import XML."
+msgstr ""
+
+#: core/class-maxi-api.php:2232
+msgid "The style-card importer is unavailable."
+msgstr ""
+
+#: core/class-maxi-api.php:2244
+msgid "The style card could not be imported."
+msgstr ""
+
+#: core/class-maxi-api.php:2355
+msgid "Failed to create imported page."
+msgstr ""
+
+#: core/class-maxi-api.php:2390
 #, php-format
 msgid "Successfully imported %s"
 msgstr ""
 
-#: core/class-maxi-api.php:2075
+#: core/class-maxi-api.php:2417
 msgid "Created Blog page"
 msgstr ""
 
-#. translators: %s: The invalid entity type
-#: core/class-maxi-api.php:2127
+#: core/class-maxi-api.php:2424
+msgid "Failed to create the Blog page."
+msgstr ""
+
+#: core/class-maxi-api.php:2479
 #, php-format
 msgid "Invalid entity type: %s"
 msgstr ""
 
-#. translators: %s: Title of the template part
-#: core/class-maxi-api.php:2273
+#: core/class-maxi-api.php:2608
+msgid "Failed to import template part."
+msgstr ""
+
+#: core/class-maxi-api.php:2634
 #, php-format
 msgid "Successfully imported %s template part"
 msgstr ""
 
-#. translators: %s: The invalid template slug
-#: core/class-maxi-api.php:2345
+#: core/class-maxi-api.php:2714
 #, php-format
 msgid "Invalid template slug: %s"
 msgstr ""
 
-#. translators: %s: Title of the template
-#: core/class-maxi-api.php:2452
+#: core/class-maxi-api.php:2804
+msgid "Failed to import template."
+msgstr ""
+
+#: core/class-maxi-api.php:2826
 #, php-format
 msgid "Successfully imported %s template"
 msgstr ""
 
-#. translators: %s: Title of the pattern
-#: core/class-maxi-api.php:2828
+#: core/class-maxi-api.php:3195
+msgid "Failed to import pattern."
+msgstr ""
+
+#: core/class-maxi-api.php:3214
 #, php-format
 msgid "Successfully imported %s pattern"
 msgstr ""
 
-#: core/class-maxi-api.php:3094
+#: core/class-maxi-api.php:3524
 msgid "MaxiBlocks Go theme has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-api.php:3153
+#: core/class-maxi-api.php:3583
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 

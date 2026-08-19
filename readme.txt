@@ -327,6 +327,15 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 19 Aug 2026_
+MaxiBlocks v2.2.2
+* Update: Added secure Starter Sites imports from accessible HTTPS resources.
+* Update: Added validation for import data, HTTP response status, file sizes, and supported content types.
+* Update: Added detailed warnings for failed or skipped content and image imports.
+* Fix: Improved handling of malformed import requests and unsupported content.
+* Fix: Added safer image importing with a file size limit.
+* Fix: Improved error reporting when imported content cannot be created or updated.
+
 _Updates 13 Aug 2026_
 MaxiBlocks v2.2.1
 * Update: Added WordPress 7.1 compatibility with comprehensive fixes, ensuring stable plugin performance across all features.

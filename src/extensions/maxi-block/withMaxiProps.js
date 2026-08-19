@@ -60,7 +60,11 @@ const InterBlockInserterSlot = memo(
 		if (isTyping || DISABLED_BLOCKS.includes(name)) return null;
 
 		return (
-			<BlockInserter.InterBlockInserter ref={ref} clientId={clientId} />
+			<BlockInserter.InterBlockInserter
+				ref={ref}
+				clientId={clientId}
+				name={name}
+			/>
 		);
 	}),
 	(oldProps, newProps) =>
@@ -197,7 +201,6 @@ const withMaxiProps = createHigherOrderComponent(
 			}, [blockIndex, blockRootClientId, parentColumnClientId]);
 
 			const ref = useRef(null);
-			const interBlockInserterRef = useRef(null);
 			const styleObjKeys = useRef([]);
 
 			const insertInlineStyles = useCallback(
@@ -674,7 +677,7 @@ const withMaxiProps = createHigherOrderComponent(
 						}
 					/>
 					<InterBlockInserterSlot
-						ref={interBlockInserterRef}
+						ref={ref}
 						clientId={clientId}
 						name={name}
 					/>

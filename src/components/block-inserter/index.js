@@ -348,33 +348,41 @@ const InterBlockInserter = memo(
 	forwardRef((props, ref) => {
 		countProfile('InterBlockInserter render');
 
-		const { clientId } = props;
+		const { clientId, name } = props;
 		const blockRef = ref?.current?.blockRef?.current;
 
 		const popoverRef = useRef(null);
 
-		const { nextClientId, isNextMaxiBlock } = useSelect(select => {
-			const { getBlockOrder, getBlockRootClientId, getBlockName } =
-				select('core/block-editor');
+		const { nextClientId, isNextMaxiBlock, rootClientId } = useSelect(
+			select => {
+				const { getBlockOrder, getBlockRootClientId, getBlockName } =
+					select('core/block-editor');
 
-			const rootClientId = getBlockRootClientId(clientId);
-			const blockOrder = getBlockOrder(rootClientId);
+				const currentRootClientId = getBlockRootClientId(clientId);
+				const blockOrder = getBlockOrder(currentRootClientId);
 
-			const index = blockOrder.indexOf(clientId);
+				const index = blockOrder.indexOf(clientId);
 
-			const nextClientId = blockOrder[index + 1];
+				const nextClientId = blockOrder[index + 1];
 
-			const isNextMaxiBlock =
-				nextClientId &&
-				getBlockName(nextClientId).includes('maxi-blocks/');
+				const isNextMaxiBlock =
+					nextClientId &&
+					getBlockName(nextClientId).includes('maxi-blocks/');
 
-			return {
-				nextClientId,
-				isNextMaxiBlock,
-			};
-		}, []);
+				return {
+					nextClientId,
+					isNextMaxiBlock,
+					rootClientId: currentRootClientId,
+				};
+			},
+			[clientId]
+		);
 
-		if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+		const isLastBlock = !nextClientId;
+		const canAppendLastBlock =
+			isLastBlock && name === 'maxi-blocks/container-maxi';
+
+		if (!blockRef || (!canAppendLastBlock && !isNextMaxiBlock)) return null;
 
 		return (
 			<Popover
@@ -395,7 +403,9 @@ const InterBlockInserter = memo(
 			>
 				<Inserter
 					key={`maxi-inter-blocks-inserter__content-${clientId}`}
-					clientId={nextClientId}
+					{...(canAppendLastBlock
+						? { rootClientId, isAppender: true }
+						: { clientId: nextClientId })}
 					position='bottom center'
 					__experimentalIsQuick
 					renderToggle={({ onToggle: onToggleInserter, isOpen }) => (

@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -326,6 +326,16 @@ For the best experience, also install the MaxiBlocks Go Theme:
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 20 Aug 2026_
+MaxiBlocks v2.2.2
+* Update: Added further WordPress 7.1 compatibility fixes, primarily addressing UI issues.
+* Update: Added secure Starter Sites imports from accessible HTTPS resources.
+* Update: Added validation for import data, HTTP response status, file sizes, and supported content types.
+* Update: Added detailed warnings for failed or skipped content and image imports.
+* Fix: Improved handling of malformed import requests and unsupported content.
+* Fix: Added safer image importing with a file size limit.
+* Fix: Improved error reporting when imported content cannot be created or updated.
 
 _Updates 13 Aug 2026_
 MaxiBlocks v2.2.1

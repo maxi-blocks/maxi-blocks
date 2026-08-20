@@ -348,6 +348,10 @@ body .toolbar-item__popover .maxi-link-control {
 			box-sizing: border-box;
 		}
 	}
+	&__section-title {
+		color: var(--maxi-black);
+		font-weight: normal;
+	}
 }
 
 .maxi-toolbar__popover

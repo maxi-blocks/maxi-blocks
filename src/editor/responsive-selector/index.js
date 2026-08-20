@@ -289,16 +289,24 @@ const ResponsiveSelector = props => {
 	const addCloudLibrary = () => {
 		let rootClientId;
 		const isFSE = getIsSiteEditor();
+		const editorSelect = select('core/editor');
+		const editSiteSelect = select('core/edit-site');
+		const currentPostId =
+			editorSelect?.getCurrentPostId?.() ??
+			editSiteSelect?.getEditedPostId?.();
+		const currentPostType =
+			editorSelect?.getCurrentPostType?.() ??
+			editSiteSelect?.getEditedPostType?.();
 
 		// Check if we're in "Show Template" mode in post editor
 		// This happens when the template editing is enabled in regular post editor
 		const isTemplateMode =
 			!isFSE &&
-			select('core/editor')?.getRenderingMode?.() === 'template-locked';
+			editorSelect?.getRenderingMode?.() === 'template-locked';
 
 		if (isFSE) {
-			const postId = select('core/editor').getCurrentPostId();
-			const postType = select('core/editor').getCurrentPostType();
+			const postId = currentPostId;
+			const postType = currentPostType;
 
 			if (
 				postType === 'wp_template' ||

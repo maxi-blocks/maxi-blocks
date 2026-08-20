@@ -62,14 +62,14 @@ const MaxiBlockAppender = ({ rootClientId, className }) => (
 			>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 27 27'
+					viewBox='0 0 24 24'
 					fill='currentColor'
-					width='24'
-					height='24'
+					width='16'
+					height='16'
 					aria-hidden='true'
 					focusable='false'
 				>
-					<path d='M11 12.5V17.5H12.5V12.5H17.5V11H12.5V6H11V11H6V12.5H11Z' />
+					<path d='M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z' />
 				</svg>
 			</WordPressButton>
 		)}
@@ -129,7 +129,7 @@ const ButtonInserter = memo(props => {
 				>
 					<svg
 						xmlns='http://www.w3.org/2000/svg'
-						viewBox='0 0 27 27'
+						viewBox='0 0 24 24'
 						width='16'
 						height='16'
 						role='img'
@@ -304,9 +304,9 @@ const InterBlockToggle = memo(props => {
 			>
 				<svg
 					xmlns='http://www.w3.org/2000/svg'
-					viewBox='0 0 27 27'
-					width='16'
-					height='16'
+					viewBox='0 0 24 24'
+					width='20'
+					height='20'
 					role='img'
 					aria-hidden='true'
 					focusable='false'
@@ -348,33 +348,41 @@ const InterBlockInserter = memo(
 	forwardRef((props, ref) => {
 		countProfile('InterBlockInserter render');
 
-		const { clientId } = props;
+		const { clientId, name } = props;
 		const blockRef = ref?.current?.blockRef?.current;
 
 		const popoverRef = useRef(null);
 
-		const { nextClientId, isNextMaxiBlock } = useSelect(select => {
-			const { getBlockOrder, getBlockRootClientId, getBlockName } =
-				select('core/block-editor');
+		const { nextClientId, isNextMaxiBlock, rootClientId } = useSelect(
+			select => {
+				const { getBlockOrder, getBlockRootClientId, getBlockName } =
+					select('core/block-editor');
 
-			const rootClientId = getBlockRootClientId(clientId);
-			const blockOrder = getBlockOrder(rootClientId);
+				const currentRootClientId = getBlockRootClientId(clientId);
+				const blockOrder = getBlockOrder(currentRootClientId);
 
-			const index = blockOrder.indexOf(clientId);
+				const index = blockOrder.indexOf(clientId);
 
-			const nextClientId = blockOrder[index + 1];
+				const nextClientId = blockOrder[index + 1];
 
-			const isNextMaxiBlock =
-				nextClientId &&
-				getBlockName(nextClientId).includes('maxi-blocks/');
+				const isNextMaxiBlock =
+					nextClientId &&
+					getBlockName(nextClientId).includes('maxi-blocks/');
 
-			return {
-				nextClientId,
-				isNextMaxiBlock,
-			};
-		}, []);
+				return {
+					nextClientId,
+					isNextMaxiBlock,
+					rootClientId: currentRootClientId,
+				};
+			},
+			[clientId]
+		);
 
-		if (!blockRef || !nextClientId || !isNextMaxiBlock) return null;
+		const isLastBlock = !nextClientId;
+		const canAppendLastBlock =
+			isLastBlock && name === 'maxi-blocks/container-maxi';
+
+		if (!blockRef || (!canAppendLastBlock && !isNextMaxiBlock)) return null;
 
 		return (
 			<Popover
@@ -395,7 +403,9 @@ const InterBlockInserter = memo(
 			>
 				<Inserter
 					key={`maxi-inter-blocks-inserter__content-${clientId}`}
-					clientId={nextClientId}
+					{...(canAppendLastBlock
+						? { rootClientId, isAppender: true }
+						: { clientId: nextClientId })}
 					position='bottom center'
 					__experimentalIsQuick
 					renderToggle={({ onToggle: onToggleInserter, isOpen }) => (

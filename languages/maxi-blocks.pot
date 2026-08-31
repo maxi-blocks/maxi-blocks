@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MaxiBlocks 2.2.2\n"
+"Project-Id-Version: MaxiBlocks 2.2.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/maxi-blocks\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-19T15:09:08+00:00\n"
+"POT-Creation-Date: 2026-08-31T12:02:33+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: maxi-blocks\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #. Author of the plugin
 #: plugin.php
-#: core/class-maxi-blocks.php:429
+#: core/class-maxi-blocks.php:466
 msgid "MaxiBlocks"
 msgstr ""
 
@@ -2245,40 +2245,51 @@ msgstr ""
 msgid "WordPress Importer has been installed and activated successfully."
 msgstr ""
 
-#: core/class-maxi-blocks.php:376
-msgid "Maxi Images"
+#: core/class-maxi-blocks.php:354
+#: src/blocks/cloud-maxi/index.js:25
+#: src/editor/library/index.js:109
+msgid "Cloud library Maxi"
 msgstr ""
 
-#: core/class-maxi-blocks.php:378
-msgid "Search Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:379
-msgid "All Maxi Images"
-msgstr ""
-
-#: core/class-maxi-blocks.php:380
-msgid "Edit Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:381
-msgid "Update Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:382
-msgid "Add New Maxi Image"
-msgstr ""
-
-#: core/class-maxi-blocks.php:383
-msgid "New Maxi Image Name"
-msgstr ""
-
-#: core/class-maxi-blocks.php:407
-#: core/class-maxi-blocks.php:410
-msgid "Maxi Image"
+#: core/class-maxi-blocks.php:355
+#: src/blocks/cloud-maxi/index.js:26
+msgid "Find templates or patterns"
 msgstr ""
 
 #: core/class-maxi-blocks.php:413
+msgid "Maxi Images"
+msgstr ""
+
+#: core/class-maxi-blocks.php:415
+msgid "Search Maxi Images"
+msgstr ""
+
+#: core/class-maxi-blocks.php:416
+msgid "All Maxi Images"
+msgstr ""
+
+#: core/class-maxi-blocks.php:417
+msgid "Edit Maxi Image"
+msgstr ""
+
+#: core/class-maxi-blocks.php:418
+msgid "Update Maxi Image"
+msgstr ""
+
+#: core/class-maxi-blocks.php:419
+msgid "Add New Maxi Image"
+msgstr ""
+
+#: core/class-maxi-blocks.php:420
+msgid "New Maxi Image Name"
+msgstr ""
+
+#: core/class-maxi-blocks.php:444
+#: core/class-maxi-blocks.php:447
+msgid "Maxi Image"
+msgstr ""
+
+#: core/class-maxi-blocks.php:450
 msgid "Images added by MaxiBlocks plugin"
 msgstr ""
 
@@ -2380,20 +2391,20 @@ msgid "Failed to create DateTime object: "
 msgstr ""
 
 #: core/class-maxi-image-crop.php:49
-#: core/class-maxi-image-crop.php:84
-#: core/class-maxi-image-crop.php:129
+#: core/class-maxi-image-crop.php:80
+#: core/class-maxi-image-crop.php:125
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: core/class-maxi-image-crop.php:61
+#: core/class-maxi-image-crop.php:57
 msgid "You do not have permission to crop this file."
 msgstr ""
 
-#: core/class-maxi-image-crop.php:90
+#: core/class-maxi-image-crop.php:86
 msgid "Delete old file: invalid file path"
 msgstr ""
 
-#: core/class-maxi-image-crop.php:180
+#: core/class-maxi-image-crop.php:176
 msgid "You do not have permission to delete this file."
 msgstr ""
 
@@ -3670,15 +3681,6 @@ msgstr ""
 
 #: src/blocks/cloud-maxi/edit.js:122
 msgid "Cloud library block preview"
-msgstr ""
-
-#: src/blocks/cloud-maxi/index.js:25
-#: src/editor/library/index.js:109
-msgid "Cloud library Maxi"
-msgstr ""
-
-#: src/blocks/cloud-maxi/index.js:26
-msgid "Find templates or patterns"
 msgstr ""
 
 #: src/blocks/cloud-maxi/index.js:38

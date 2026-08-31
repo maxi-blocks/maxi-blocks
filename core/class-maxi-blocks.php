@@ -345,6 +345,43 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'editor_style' => 'maxi-blocks-block-editor',
             ]);
 
+            // Register the Cloud Library block on the server so block
+            // allowlists built from the server registry include it.
+            register_block_type(
+                'maxi-blocks/maxi-cloud',
+                [
+                    'api_version' => 3,
+                    'title' => __('Cloud library Maxi', 'maxi-blocks'),
+                    'description' => __(
+                        'Find templates or patterns',
+                        'maxi-blocks',
+                    ),
+                    'category' => 'maxi-blocks',
+                    'attributes' => [
+                        'className' => [
+                            'type' => 'string',
+                            'default' => 'maxi-block maxi-block-library',
+                        ],
+                        'content' => [
+                            'type' => 'string',
+                            'default' => '',
+                        ],
+                        'openFirstTime' => [
+                            'type' => 'boolean',
+                            'default' => true,
+                        ],
+                        'preview' => [
+                            'type' => 'boolean',
+                            'default' => false,
+                        ],
+                    ],
+                    'supports' => [
+                        '__experimentalToolbar' => false,
+                    ],
+                    'editor_script' => 'maxi-blocks-block-editor',
+                ],
+            );
+
             $style_css = 'build/style-index.min.css';
             wp_register_style(
                 'maxi-blocks-block',

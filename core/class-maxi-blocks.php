@@ -438,6 +438,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
             $block,
             $instance
         ) {
+            // The WooCommerce Email Editor (used by MailPoet) renders core
+            // blocks through the regular render_block filter and then
+            // converts their markup to email-safe tables. Changing that
+            // intermediate markup can prevent its block renderers from
+            // recognizing the content, resulting in empty email blocks.
+            if (did_action('woocommerce_email_editor_render_start')) {
+                return $block_content;
+            }
+
             if (
                 str_contains($block['blockName'] ?? '', 'core/') &&
                 isset($block_content) &&

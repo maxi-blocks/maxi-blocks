@@ -356,7 +356,11 @@ class MaxiBlocks_QuickStart
 					<div class="maxi-quick-start-main">
 						<div class="maxi-quick-start-content">
 							<?php if (isset($this->steps[$current_step]['view'])) {
-							    call_user_func($this->steps[$current_step]['view']);
+							    $view_callback = $this->steps[$current_step]['view'];
+							    if (is_array($view_callback) && ($view_callback[0] ?? null) === $this && method_exists($this, $view_callback[1])) {
+							        $view_method = $view_callback[1];
+							        $this->$view_method();
+							    }
 							} ?>
 						</div>
 					</div>

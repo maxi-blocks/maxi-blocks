@@ -6,7 +6,7 @@ Donate link: https://ko-fi.com/maxiblocks
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -326,6 +326,10 @@ For the best experience, also install the MaxiBlocks Go Theme:
 12. Load an icon from the editing experience: Simplify your design process with our easy-to-follow method for loading icons directly from your editing experience.
 
 == Changelog ==
+
+_Updates 2 Sep 2026_
+MaxiBlocks v2.2.3
+* Update: Compatibility with "MailPoet - Newsletters, Email Marketing, and Automation" plugin.
 
 _Updates 20 Aug 2026_
 MaxiBlocks v2.2.2

@@ -345,6 +345,43 @@ if (!class_exists('MaxiBlocks_Blocks')):
                 'editor_style' => 'maxi-blocks-block-editor',
             ]);
 
+            // Register the Cloud Library block on the server so block
+            // allowlists built from the server registry include it.
+            register_block_type(
+                'maxi-blocks/maxi-cloud',
+                [
+                    'api_version' => 3,
+                    'title' => __('Cloud library Maxi', 'maxi-blocks'),
+                    'description' => __(
+                        'Find templates or patterns',
+                        'maxi-blocks',
+                    ),
+                    'category' => 'maxi-blocks',
+                    'attributes' => [
+                        'className' => [
+                            'type' => 'string',
+                            'default' => 'maxi-block maxi-block-library',
+                        ],
+                        'content' => [
+                            'type' => 'string',
+                            'default' => '',
+                        ],
+                        'openFirstTime' => [
+                            'type' => 'boolean',
+                            'default' => true,
+                        ],
+                        'preview' => [
+                            'type' => 'boolean',
+                            'default' => false,
+                        ],
+                    ],
+                    'supports' => [
+                        '__experimentalToolbar' => false,
+                    ],
+                    'editor_script' => 'maxi-blocks-block-editor',
+                ],
+            );
+
             $style_css = 'build/style-index.min.css';
             wp_register_style(
                 'maxi-blocks-block',
@@ -438,6 +475,15 @@ if (!class_exists('MaxiBlocks_Blocks')):
             $block,
             $instance
         ) {
+            // The WooCommerce Email Editor (used by MailPoet) renders core
+            // blocks through the regular render_block filter and then
+            // converts their markup to email-safe tables. Changing that
+            // intermediate markup can prevent its block renderers from
+            // recognizing the content, resulting in empty email blocks.
+            if (did_action('woocommerce_email_editor_render_start')) {
+                return $block_content;
+            }
+
             if (
                 str_contains($block['blockName'] ?? '', 'core/') &&
                 isset($block_content) &&

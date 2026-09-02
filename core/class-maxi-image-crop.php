@@ -49,10 +49,6 @@ class MaxiBlocks_ImageCrop
             wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'maxi-blocks'));
         }
 
-        if (isset($_POST['old_media_src'])) {//phpcs:ignore
-            $this->validate_and_delete_old_file($_POST['old_media_src']);//phpcs:ignore
-        }
-
         if (isset($_POST['src'], $_POST['src_x'], $_POST['src_y'], $_POST['src_w'], $_POST['src_h'], $_POST['dst_w'], $_POST['dst_h'])) {//phpcs:ignore
             $src_id = absint($_POST['src']);//phpcs:ignore
             $attachment = get_post($src_id);

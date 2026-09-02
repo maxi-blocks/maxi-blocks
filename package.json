@@ -172,7 +172,7 @@
 		"showdown": "^2.1.0",
 		"joi": "^17.13.4",
 		"launch-editor": "^2.14.1",
-		"fast-uri": "^3.1.5",
+		"fast-uri": "^3.1.7",
 		"ip-address": "^10.4.0",
 		"immutable": "^4.3.9",
 		"linkify-it": "^5.0.2",

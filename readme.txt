@@ -327,6 +327,10 @@ For the best experience, also install the MaxiBlocks Go Theme:
 
 == Changelog ==
 
+_Updates 2 Sep 2026_
+MaxiBlocks v2.2.3
+* Update: Compatibility with "MailPoet - Newsletters, Email Marketing, and Automation" plugin.
+
 _Updates 20 Aug 2026_
 MaxiBlocks v2.2.2
 * Update: Added further WordPress 7.1 compatibility fixes, primarily addressing UI issues.

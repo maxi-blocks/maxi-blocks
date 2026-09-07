@@ -70,6 +70,8 @@ class MaxiBlocks_StyleCards
         add_action('admin_init', [$this, 'run_link_palette_migration']);
         add_action('admin_init', [$this, 'run_text_wrap_migration']);
         add_action('admin_init', [$this, 'run_number_counter_migration']);
+        add_action('admin_init', [$this, 'run_container_migration']);
+        add_action('admin_init', [$this, 'run_row_migration']);
 
         // Clear cache when style cards are updated
         add_action('maxi_blocks_style_card_updated', [__CLASS__, 'clear_cache']);
@@ -1324,6 +1326,161 @@ class MaxiBlocks_StyleCards
     }
 
     /**
+     * Default container globals attributes injected by the migrator.
+     */
+    private static $container_defaults = [
+        'override-container-full-width' => false,
+        'full-width-general'    => true,
+        'max-width-xxl'      => '1690',
+        'max-width-xl'       => '1170',
+        'max-width-l'        => '90',
+        'max-width-unit-xxl' => 'px',
+        'max-width-unit-xl'  => 'px',
+        'max-width-unit-l'   => '%',
+        'width-l'            => '1170',
+        'width-m'            => '1000',
+        'width-s'            => '700',
+        'width-xs'           => '460',
+        'width-unit-l'       => 'px',
+        'width-unit-m'       => 'px',
+        'width-unit-s'       => 'px',
+        'width-unit-xs'      => 'px',
+        'size-advanced-options' => true,
+    ];
+
+    /**
+     * Default row globals attributes injected by the migrator.
+     */
+    private static $row_defaults = [
+        'override-row-full-width' => false,
+        'full-width-general'    => false,
+        'max-width-xxl'      => '1690',
+        'max-width-xl'       => '1170',
+        'max-width-l'        => '90',
+        'max-width-unit-xxl' => 'px',
+        'max-width-unit-xl'  => 'px',
+        'max-width-unit-l'   => '%',
+        'size-advanced-options' => true,
+    ];
+
+    /**
+     * Migrate style cards to add container element defaults.
+     * Follows the same pattern as the number-counter migration.
+     *
+     * @return bool True if migration was performed
+     */
+    public static function migrate_style_cards_container()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        if (!is_array($style_cards)) {
+            return false;
+        }
+
+        $updated = false;
+        $modes = ['dark', 'light'];
+
+        foreach ($style_cards as $key => $sc) {
+            foreach ($modes as $mode) {
+                if (!isset($sc[$mode]['defaultStyleCard'])) {
+                    continue;
+                }
+
+                if (!isset($sc[$mode]['defaultStyleCard']['container'])) {
+                    $style_cards[$key][$mode]['defaultStyleCard']['container'] =
+                        self::$container_defaults;
+                    $updated = true;
+                }
+            }
+        }
+
+        if ($updated) {
+            $wpdb->update(
+                $wpdb->prefix . 'maxi_blocks_general',
+                ['object' => json_encode($style_cards)],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Run the container style card migration once.
+     */
+    public function run_container_migration()
+    {
+        if (get_option('maxi_blocks_container_sc_migrated') !== 'yes') {
+            self::migrate_style_cards_container();
+            update_option('maxi_blocks_container_sc_migrated', 'yes');
+        }
+    }
+
+    /**
+     * Migrate style cards to add row element defaults.
+     *
+     * @return bool True if migration was performed
+     */
+    public static function migrate_style_cards_row()
+    {
+        global $wpdb;
+
+        $maxi_blocks_style_cards_current = self::get_maxi_blocks_current_style_cards();
+        if (!$maxi_blocks_style_cards_current) {
+            return false;
+        }
+
+        $style_cards = json_decode($maxi_blocks_style_cards_current, true);
+        if (!is_array($style_cards)) {
+            return false;
+        }
+
+        $updated = false;
+        $modes = ['dark', 'light'];
+
+        foreach ($style_cards as $key => $sc) {
+            foreach ($modes as $mode) {
+                if (!isset($sc[$mode]['defaultStyleCard'])) {
+                    continue;
+                }
+
+                if (!isset($sc[$mode]['defaultStyleCard']['row'])) {
+                    $style_cards[$key][$mode]['defaultStyleCard']['row'] =
+                        self::$row_defaults;
+                    $updated = true;
+                }
+            }
+        }
+
+        if ($updated) {
+            $wpdb->update(
+                $wpdb->prefix . 'maxi_blocks_general',
+                ['object' => json_encode($style_cards)],
+                ['id' => 'style_cards_current']
+            );
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Run the row style card migration once.
+     */
+    public function run_row_migration()
+    {
+        if (get_option('maxi_blocks_row_sc_migrated') !== 'yes') {
+            self::migrate_style_cards_row();
+            update_option('maxi_blocks_row_sc_migrated', 'yes');
+        }
+    }
+
+    /**
      * Helper function to get WP native styles
      */
     private static function get_wp_native_styles($organized_values, $style_card, $prefix, $style, $is_backend = false)
@@ -1854,6 +2011,102 @@ class MaxiBlocks_StyleCards
                     ];
                 }
             }
+
+            // Container layout variables and override flags
+            if (isset($style_data['container'])) {
+                $organized_values[$style]['container']['_override_full_width'] =
+                    !empty($style_data['container']['override-container-full-width']);
+
+                $container_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+                foreach ($container_breakpoints as $breakpoint) {
+                    $fw_key = "full-width-{$breakpoint}";
+                    if (isset($style_data['container'][$fw_key])) {
+                        $organized_values[$style]['container']['_full_width'][$breakpoint] =
+                            !empty($style_data['container'][$fw_key]);
+                    }
+                }
+
+                $container_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+
+                foreach ($container_size_settings as $setting) {
+                    foreach ($container_breakpoints as $breakpoint) {
+                        $key = "{$setting}-{$breakpoint}";
+
+                        if (isset($style_data['container'][$key])) {
+                            $value = $style_data['container'][$key];
+                            $unit_key = "{$setting}-unit-{$breakpoint}";
+                            $unit = isset($style_data['container'][$unit_key])
+                                ? $style_data['container'][$unit_key] : 'px';
+
+                            if ($unit === null || $unit === '') {
+                                $unit = 'px';
+                            }
+
+                            if (is_numeric($value)) {
+                                $value .= $unit;
+                            }
+
+                            $organized_values[$style]['container'][$breakpoint][$setting] = [
+                                'value' => $value,
+                                'var_name' => "--maxi-{$style}-container-{$setting}-{$breakpoint}"
+                            ];
+                        }
+                    }
+                }
+            }
+
+            // Row layout variables and override flags
+            if (isset($style_data['row'])) {
+                $organized_values[$style]['row']['_override_full_width'] =
+                    !empty($style_data['row']['override-row-full-width']);
+
+                $row_breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+
+                foreach ($row_breakpoints as $breakpoint) {
+                    $fw_key = "full-width-{$breakpoint}";
+                    if (isset($style_data['row'][$fw_key])) {
+                        $organized_values[$style]['row']['_full_width'][$breakpoint] =
+                            !empty($style_data['row'][$fw_key]);
+                    }
+                }
+
+                $row_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+
+                foreach ($row_size_settings as $setting) {
+                    foreach ($row_breakpoints as $breakpoint) {
+                        $key = "{$setting}-{$breakpoint}";
+
+                        if (isset($style_data['row'][$key])) {
+                            $value = $style_data['row'][$key];
+                            $unit_key = "{$setting}-unit-{$breakpoint}";
+                            $unit = isset($style_data['row'][$unit_key])
+                                ? $style_data['row'][$unit_key] : 'px';
+
+                            if ($unit === null || $unit === '') {
+                                $unit = 'px';
+                            }
+
+                            if (is_numeric($value)) {
+                                $value .= $unit;
+                            }
+
+                            $organized_values[$style]['row'][$breakpoint][$setting] = [
+                                'value' => $value,
+                                'var_name' => "--maxi-{$style}-row-{$setting}-{$breakpoint}"
+                            ];
+                        }
+                    }
+                }
+            }
         }
 
         return $organized_values;
@@ -2306,6 +2559,124 @@ class MaxiBlocks_StyleCards
             foreach ([$sub_menu_target, $sub_menu_target_editor] as $target) {
                 $added_response .= "{$target}.current-menu-item { background-color: var(--maxi-{$style}-menu-item-sub-bg-current); }";
                 $added_response .= "{$target}.current-menu-item:hover { background-color: var(--maxi-{$style}-menu-item-sub-bg-hover); }";
+            }
+
+            // Container Maxi — full-width override
+            $override_fw = !empty($organized_values[$style]['container']['_override_full_width']);
+
+            if ($override_fw) {
+                $fw_map = $organized_values[$style]['container']['_full_width'] ?? [];
+                $is_full_width = $fw_map[$breakpoint] ?? $fw_map['general'] ?? true;
+
+                $container_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+                $bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                $bp_idx = array_search($breakpoint, $bp_order);
+
+                $size_rules = [$is_full_width
+                    ? 'min-width: 100% !important;'
+                    : 'min-width: initial !important;'];
+
+                foreach ($container_size_settings as $c_setting) {
+                    $found_bp = $breakpoint;
+
+                    if (!isset($organized_values[$style]['container'][$breakpoint][$c_setting])
+                        && $breakpoint === 'general') {
+                        for ($i = $bp_idx + 1; $i < count($bp_order); $i++) {
+                            if (isset($organized_values[$style]['container'][$bp_order[$i]][$c_setting])) {
+                                $found_bp = $bp_order[$i];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isset($organized_values[$style]['container'][$found_bp][$c_setting])) {
+                        $var_name = "--maxi-{$style}-container-{$c_setting}-{$found_bp}";
+                        $size_rules[] = "{$c_setting}: var({$var_name}) !important;";
+                    }
+                }
+
+                $rules_str = implode(' ', $size_rules);
+
+                if ($is_full_width) {
+                    // Class-level selectors so has-global-padding ID rules win
+                    $container_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block",
+                    ];
+                } else {
+                    // :not(#_) boosts specificity to beat per-block ID rules
+                    $container_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-container-block:not(#_)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-container-block:not(#_)",
+                    ];
+                }
+
+                foreach ($container_targets as $target) {
+                    $added_response .= "{$target} {{$rules_str}}";
+                }
+            }
+
+            // Row Maxi — full-width override (same pattern as container)
+            $override_row_fw = !empty($organized_values[$style]['row']['_override_full_width']);
+
+            if ($override_row_fw) {
+                $row_fw_map = $organized_values[$style]['row']['_full_width'] ?? [];
+                $is_row_full_width = $row_fw_map[$breakpoint] ?? $row_fw_map['general'] ?? false;
+
+                $row_size_settings = [
+                    'max-width', 'width', 'height', 'min-height',
+                    'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+                    'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                ];
+                $row_bp_order = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
+                $row_bp_idx = array_search($breakpoint, $row_bp_order);
+
+                $row_size_rules = [$is_row_full_width
+                    ? 'min-width: 100% !important;'
+                    : 'min-width: initial !important;'];
+
+                foreach ($row_size_settings as $r_setting) {
+                    $found_bp = $breakpoint;
+
+                    if (!isset($organized_values[$style]['row'][$breakpoint][$r_setting])
+                        && $breakpoint === 'general') {
+                        for ($i = $row_bp_idx + 1; $i < count($row_bp_order); $i++) {
+                            if (isset($organized_values[$style]['row'][$row_bp_order[$i]][$r_setting])) {
+                                $found_bp = $row_bp_order[$i];
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isset($organized_values[$style]['row'][$found_bp][$r_setting])) {
+                        $var_name = "--maxi-{$style}-row-{$r_setting}-{$found_bp}";
+                        $row_size_rules[] = "{$r_setting}: var({$var_name}) !important;";
+                    }
+                }
+
+                $row_rules_str = implode(' ', $row_size_rules);
+
+                if ($is_row_full_width) {
+                    // Class-level selectors so has-global-padding ID rules win
+                    $row_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-row-block",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-row-block",
+                    ];
+                } else {
+                    // :not(#_) boosts specificity to beat per-block ID rules
+                    $row_targets = [
+                        "{$prefix} {$second_prefix} .maxi-{$style}.maxi-row-block:not(#_)",
+                        "{$prefix} {$second_prefix} .maxi-{$style} .maxi-row-block:not(#_)",
+                    ];
+                }
+
+                foreach ($row_targets as $target) {
+                    $added_response .= "{$target} {{$row_rules_str}}";
+                }
             }
 
             return $added_response;

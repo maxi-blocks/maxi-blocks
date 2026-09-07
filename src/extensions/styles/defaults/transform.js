@@ -7,7 +7,22 @@ const rawTransform = {
 	'transform-translate': {
 		type: 'object',
 	},
+	'transform-skew': {
+		type: 'object',
+	},
+	'transform-perspective': {
+		type: 'object',
+	},
+	'transform-translate3d': {
+		type: 'object',
+	},
+	'transform-scale3d': {
+		type: 'object',
+	},
 	'transform-rotate': {
+		type: 'object',
+	},
+	'transform-rotate3d': {
 		type: 'object',
 	},
 	'transform-origin': {

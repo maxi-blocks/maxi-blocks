@@ -12,6 +12,7 @@ import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import ToggleSwitch from '@components/toggle-switch';
 import TransitionControl from '@components/transition-control';
+import { TRANSFORM_TRANSITION_TYPES } from '@components/transform-control/constants';
 import {
 	createTransitionObj,
 	getDefaultAttribute,
@@ -225,7 +226,7 @@ const transition = ({
 
 			if (
 				isTransform &&
-				['scale', 'rotate', 'translate', 'origin'].every(
+				TRANSFORM_TRANSITION_TYPES.every(
 					prop =>
 						!getLastBreakpointAttribute({
 							target: `transform-${prop}`,

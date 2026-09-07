@@ -319,6 +319,30 @@
 		}
 	}
 
+	&__input-group {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin-bottom: 10px;
+
+		&__label {
+			font-weight: 700;
+			color: var(--maxi-grey-dark);
+		}
+
+		&__item {
+			.maxi-base-control__field {
+				align-items: center;
+				margin-bottom: 0;
+			}
+
+			.maxi-base-control__label {
+				min-width: 80px;
+				margin-right: 8px;
+			}
+		}
+	}
+
 	.maxi-transform-control__rotate-control__item__input {
 		width: 64px;
 	}
@@ -372,6 +396,43 @@
 			&--selected {
 				font-weight: 700;
 				color: var(--maxi-secondary-color) !important;
+			}
+		}
+	}
+
+	&__mode-tabs {
+		.maxi-tabs-control__button {
+			flex: 1 1 0;
+			align-items: center;
+			justify-content: center;
+			height: 34px;
+			min-width: 0;
+			padding: 5px;
+			background-color: var(--maxi-white) !important;
+			color: var(--maxi-grey-dark);
+			transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+
+			&.maxi-tabs-control__button--selected,
+			&[aria-pressed='true'] {
+				background-color: var(--maxi-white) !important;
+				border-color: var(--maxi-secondary-color) !important;
+				box-shadow: inset 0 0 0 1px var(--maxi-secondary-color);
+				color: var(--maxi-secondary-color) !important;
+			}
+
+			svg {
+				width: 20px;
+				height: 20px;
+			}
+
+			svg path,
+			svg circle {
+				fill: none !important;
+				stroke: currentColor;
+			}
+
+			svg circle {
+				stroke-width: 1.8;
 			}
 		}
 	}

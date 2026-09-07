@@ -86,6 +86,34 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		return scaleString;
 	};
 
+	const getPerspectiveString = index => {
+		let perspectiveString = '';
+
+		if (shouldSkipTransform('transform-perspective')) return '';
+
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-perspective',
+				keys: [category, 'hover-status'],
+			})
+		)
+			return getPerspectiveString('normal');
+
+		const [value, unit] = ['value', 'unit'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-perspective',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if (isNumber(value))
+			perspectiveString += `perspective(${value}${unit ?? 'px'}) `;
+
+		return perspectiveString;
+	};
+
 	const getTranslateString = index => {
 		let translateString = '';
 
@@ -109,6 +137,45 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		);
 		if (isNumber(x)) translateString += `translateX(${x}${xUnit ?? '%'}) `;
 		if (isNumber(y)) translateString += `translateY(${y}${yUnit ?? '%'}) `;
+
+		return translateString;
+	};
+
+	const getTranslate3dString = index => {
+		let translateString = '';
+
+		if (shouldSkipTransform('transform-translate3d')) return '';
+
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-translate3d',
+				keys: [category, 'hover-status'],
+			})
+		)
+			return getTranslate3dString('normal');
+
+		const [x, y, z, xUnit, yUnit, zUnit] = [
+			'x',
+			'y',
+			'z',
+			'x-unit',
+			'y-unit',
+			'z-unit',
+		].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-translate3d',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if ([x, y, z].some(isNumber))
+			translateString += `translate3d(${isNumber(x) ? x : 0}${
+				xUnit ?? 'px'
+			}, ${isNumber(y) ? y : 0}${yUnit ?? 'px'}, ${
+				isNumber(z) ? z : 0
+			}${zUnit ?? 'px'}) `;
 
 		return translateString;
 	};
@@ -140,6 +207,94 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 		if (isNumber(z)) rotateString += `rotateZ(${z}deg) `;
 
 		return rotateString;
+	};
+
+	const getScale3dString = index => {
+		let scaleString = '';
+
+		if (shouldSkipTransform('transform-scale3d')) return '';
+
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-scale3d',
+				keys: [category, 'hover-status'],
+			})
+		)
+			return getScale3dString('normal');
+
+		const [x, y, z] = ['x', 'y', 'z'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-scale3d',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if ([x, y, z].some(isNumber))
+			scaleString += `scale3d(${isNumber(x) ? x : 1}, ${
+				isNumber(y) ? y : 1
+			}, ${isNumber(z) ? z : 1}) `;
+
+		return scaleString;
+	};
+
+	const getRotate3dString = index => {
+		let rotateString = '';
+
+		if (shouldSkipTransform('transform-rotate3d')) return '';
+
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-rotate3d',
+				keys: [category, 'hover-status'],
+			})
+		)
+			return getRotate3dString('normal');
+
+		const [x, y, z, angle] = ['x', 'y', 'z', 'angle'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-rotate3d',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if (isNumber(angle))
+			rotateString += `rotate3d(${isNumber(x) ? x : 0}, ${
+				isNumber(y) ? y : 0
+			}, ${isNumber(z) ? z : 1}, ${angle}deg) `;
+
+		return rotateString;
+	};
+
+	const getSkewString = index => {
+		let skewString = '';
+
+		if (shouldSkipTransform('transform-skew')) return '';
+
+		if (
+			index === 'hover' &&
+			!getLastBreakpointTransformAttribute({
+				target: 'transform-skew',
+				keys: [category, 'hover-status'],
+			})
+		)
+			return getSkewString('normal');
+
+		const [x, y] = ['x', 'y'].map(key =>
+			getLastBreakpointTransformAttribute({
+				target: 'transform-skew',
+				key,
+				hoverSelected: index,
+			})
+		);
+
+		if (isNumber(x)) skewString += `skewX(${x}deg) `;
+		if (isNumber(y)) skewString += `skewY(${y}deg) `;
+
+		return skewString;
 	};
 
 	const getOriginString = index => {
@@ -178,9 +333,14 @@ const getTransformStrings = (category, breakpoint, index, obj) => {
 	};
 
 	const transformString =
+		getPerspectiveString(index) +
 		getScaleString(index) +
 		getTranslateString(index) +
-		getRotateString(index);
+		getTranslate3dString(index) +
+		getScale3dString(index) +
+		getRotateString(index) +
+		getRotate3dString(index) +
+		getSkewString(index);
 	const transformOriginString = getOriginString(index);
 
 	return [transformString, transformOriginString];

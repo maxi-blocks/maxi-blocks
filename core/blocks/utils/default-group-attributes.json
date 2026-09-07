@@ -45167,6 +45167,90 @@
 		"transform-translate-xs": {
 			"type": "object"
 		},
+		"transform-skew-general": {
+			"type": "object"
+		},
+		"transform-skew-xxl": {
+			"type": "object"
+		},
+		"transform-skew-xl": {
+			"type": "object"
+		},
+		"transform-skew-l": {
+			"type": "object"
+		},
+		"transform-skew-m": {
+			"type": "object"
+		},
+		"transform-skew-s": {
+			"type": "object"
+		},
+		"transform-skew-xs": {
+			"type": "object"
+		},
+		"transform-perspective-general": {
+			"type": "object"
+		},
+		"transform-perspective-xxl": {
+			"type": "object"
+		},
+		"transform-perspective-xl": {
+			"type": "object"
+		},
+		"transform-perspective-l": {
+			"type": "object"
+		},
+		"transform-perspective-m": {
+			"type": "object"
+		},
+		"transform-perspective-s": {
+			"type": "object"
+		},
+		"transform-perspective-xs": {
+			"type": "object"
+		},
+		"transform-translate3d-general": {
+			"type": "object"
+		},
+		"transform-translate3d-xxl": {
+			"type": "object"
+		},
+		"transform-translate3d-xl": {
+			"type": "object"
+		},
+		"transform-translate3d-l": {
+			"type": "object"
+		},
+		"transform-translate3d-m": {
+			"type": "object"
+		},
+		"transform-translate3d-s": {
+			"type": "object"
+		},
+		"transform-translate3d-xs": {
+			"type": "object"
+		},
+		"transform-scale3d-general": {
+			"type": "object"
+		},
+		"transform-scale3d-xxl": {
+			"type": "object"
+		},
+		"transform-scale3d-xl": {
+			"type": "object"
+		},
+		"transform-scale3d-l": {
+			"type": "object"
+		},
+		"transform-scale3d-m": {
+			"type": "object"
+		},
+		"transform-scale3d-s": {
+			"type": "object"
+		},
+		"transform-scale3d-xs": {
+			"type": "object"
+		},
 		"transform-rotate-general": {
 			"type": "object"
 		},
@@ -45186,6 +45270,27 @@
 			"type": "object"
 		},
 		"transform-rotate-xs": {
+			"type": "object"
+		},
+		"transform-rotate3d-general": {
+			"type": "object"
+		},
+		"transform-rotate3d-xxl": {
+			"type": "object"
+		},
+		"transform-rotate3d-xl": {
+			"type": "object"
+		},
+		"transform-rotate3d-l": {
+			"type": "object"
+		},
+		"transform-rotate3d-m": {
+			"type": "object"
+		},
+		"transform-rotate3d-s": {
+			"type": "object"
+		},
+		"transform-rotate3d-xs": {
 			"type": "object"
 		},
 		"transform-origin-general": {

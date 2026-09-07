@@ -179,6 +179,8 @@ const SettingTabsControl = props => {
 							!isEmpty(item.label) || isNumber(item.label)
 								? item.label
 								: item.value;
+						const tooltipLabel =
+							item.tooltip || item.label || item.value;
 						const buttonLabelSlug =
 							String(buttonLabel).toLowerCase();
 						const itemsIndicators = !isEmpty(item.content)
@@ -219,7 +221,7 @@ const SettingTabsControl = props => {
 						const showButton = (
 							<Button
 								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}`}
-								label={item.value}
+								label={tooltipLabel}
 								className={classnames(
 									'maxi-tabs-control__button',
 									`maxi-tabs-control__button-${buttonLabelSlug}`,
@@ -280,7 +282,7 @@ const SettingTabsControl = props => {
 							<Tooltip
 								// eslint-disable-next-line react/no-array-index-key
 								key={`maxi-tabs-control__button-${buttonLabelSlug}-${i}__tooltip`}
-								text={item.label || item.value}
+								text={tooltipLabel}
 								placement='top'
 							>
 								{showButton}

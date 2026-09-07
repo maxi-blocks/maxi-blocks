@@ -8,6 +8,7 @@ const breakpoints = ['general', 'xxl', 'xl', 'l', 'm', 's', 'xs'];
  */
 import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttribute';
 import transitionDefault from '@extensions/styles/transitions/transitionDefault';
+import { TRANSFORM_TRANSITION_TYPES } from '@components/transform-control/constants';
 
 /**
  * External dependencies
@@ -57,7 +58,7 @@ const getTransitionStyles = (props, transitionObj = transitionDefault) => {
 					 */
 					if (
 						isTransform &&
-						['scale', 'rotate', 'translate', 'origin'].every(
+						TRANSFORM_TRANSITION_TYPES.every(
 							prop =>
 								!getLastBreakpointAttribute({
 									target: `transform-${prop}`,

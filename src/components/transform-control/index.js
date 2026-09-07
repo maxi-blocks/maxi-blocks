@@ -8,7 +8,13 @@ import { select } from '@wordpress/data';
 /**
  * Internal dependencies
  */
+import Icon from '@components/icon';
+import InputGroupControl from './input-group-control';
 import RotateControl from './rotate-control';
+import {
+	TRANSLATE3D_UNIT_RANGES,
+	PERSPECTIVE_UNIT_RANGES,
+} from './constants';
 import SelectControl from '@components/select-control';
 import SettingTabsControl from '@components/setting-tabs-control';
 import SquareControl from './square-control';
@@ -32,6 +38,138 @@ import { capitalize, isBoolean, isEmpty, isNil, toLower } from 'lodash';
  * Styles and icons
  */
 import './editor.scss';
+
+const createTransformIcon = (children, viewBox = '0 0 24 24') => (
+	<svg
+		xmlns='http://www.w3.org/2000/svg'
+		viewBox={viewBox}
+		aria-hidden='true'
+		focusable='false'
+	>
+		{children}
+	</svg>
+);
+
+const transformScaleIcon = createTransformIcon(
+	<>
+		<path d='M4 9V4h5' fill='none' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M20 15v5h-5'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+		/>
+		<path d='M8 8l8 8' fill='none' stroke='currentColor' strokeWidth='2' />
+		<path
+			d='M4 20h8V12H4z'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.7'
+		/>
+	</>
+);
+
+const transformTranslateIcon = createTransformIcon(
+	<>
+		<path
+			d='M12 3v18M3 12h18'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+		/>
+		<path
+			d='M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+	</>
+);
+
+const transformRotateIcon = createTransformIcon(
+	<>
+		<path
+			d='M6.5 8A7 7 0 1 1 5 13'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		<path
+			d='M6.5 8H3V4.5'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='2'
+			strokeLinecap='round'
+			strokeLinejoin='round'
+		/>
+	</>
+);
+
+const transformOriginIcon = createTransformIcon(
+	<>
+		<path
+			d='M5 5h14v14H5z'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.7'
+		/>
+		<path
+			d='M12 3v18M3 12h18'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.4'
+			strokeDasharray='2 2'
+		/>
+		<circle
+			cx='12'
+			cy='12'
+			r='2.5'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.8'
+		/>
+	</>
+);
+
+const transformSkewIcon = createTransformIcon(
+	<>
+		<path
+			d='M7 6h12l-2 12H5z'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.8'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M4 20h16'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.8'
+			strokeLinecap='round'
+		/>
+	</>
+);
+
+const transform3dIcon = createTransformIcon(
+	<>
+		<path
+			d='M6 8l6-4 6 4v8l-6 4-6-4z'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.8'
+			strokeLinejoin='round'
+		/>
+		<path
+			d='M6 8l6 4 6-4M12 12v8'
+			fill='none'
+			stroke='currentColor'
+			strokeWidth='1.8'
+			strokeLinejoin='round'
+		/>
+	</>
+);
 
 /**
  * Component
@@ -130,6 +268,123 @@ const TransformControl = props => {
 
 	const getInlineTargetAndPseudoElement = target => target.split('::');
 
+	const getTransformStatusLabel = () => {
+		switch (transformStatus) {
+			case 'transform3d':
+				return '3D';
+			default:
+				return capitalize(transformStatus);
+		}
+	};
+
+	const getTransformControlValues = (target, keys) =>
+		keys.reduce(
+			(acc, key) => ({
+				...acc,
+				[key]: getLastBreakpointTransformAttribute({
+					target,
+					key,
+				}),
+			}),
+			{}
+		);
+
+	const onChangeTransformControlValues = (target, values) => {
+		onChangeTransform({
+			[target]: {
+				[`${latestTarget.current.transformTarget}`]: {
+					[`${latestTarget.current.hoverSelected}`]: values,
+				},
+			},
+		});
+		onChange(
+			{
+				[`${target}-${breakpoint}`]: {
+					...transformOptions[`${target}-${breakpoint}`],
+				},
+			},
+			...getInlineTargetAndPseudoElement(
+				latestTarget.current.targetSelector
+			)
+		);
+	};
+
+	const renderInputGroupControl = (target, fields, label) => (
+		<InputGroupControl
+			label={label}
+			fields={fields}
+			values={getTransformControlValues(
+				target,
+				fields.flatMap(({ key, unitKey }) =>
+					unitKey ? [key, unitKey] : [key]
+				)
+			)}
+			onChange={values => onChangeTransformControlValues(target, values)}
+		/>
+	);
+
+	const getCurrentTransformTargets = () =>
+		transformStatus === 'transform3d'
+			? [
+					'transform-perspective',
+					'transform-translate3d',
+					'transform-scale3d',
+					'transform-rotate3d',
+			  ]
+			: [`transform-${transformStatus}`];
+
+	const getCurrentTransformHoverStatus = () =>
+		getCurrentTransformTargets().some(target =>
+			getLastBreakpointTransformAttribute({
+				target,
+				keys: [transformTarget, 'hover-status'],
+			})
+		);
+
+	const getCurrentTransformHoverTargetUsesCanvas = () =>
+		getCurrentTransformTargets().every(
+			target =>
+				!getLastBreakpointTransformAttribute({
+					target,
+					keys: [transformTarget, 'hover-target'],
+				})
+		);
+
+	const getCurrentBreakpointTransformOptions = () =>
+		getCurrentTransformTargets().reduce(
+			(acc, target) => ({
+				...acc,
+				[`${target}-${breakpoint}`]: {
+					...transformOptions[`${target}-${breakpoint}`],
+				},
+			}),
+			{}
+		);
+
+	const getCurrentTransformHoverUpdate = values =>
+		getCurrentTransformTargets().reduce((acc, target) => {
+			const transformTargetOptions =
+				transformOptions[`${target}-${breakpoint}`]?.[transformTarget];
+
+			return {
+				...acc,
+				[target]: {
+					[`${latestTarget.current.transformTarget}`]: {
+						...values,
+						...(transformTargetOptions &&
+						isEmpty(transformTargetOptions.hover) &&
+						!isEmpty(transformTargetOptions.normal)
+							? {
+									hover: {
+										...transformTargetOptions.normal,
+									},
+							  }
+							: {}),
+					},
+				},
+			};
+		}, {});
+
 	const insertInlineStyles = () => {
 		if (!onChangeInline) return;
 
@@ -183,16 +438,17 @@ const TransformControl = props => {
 		];
 
 		const isUsed = category => {
-			const typeObj =
-				transformOptions[`transform-${transformStatus}-${breakpoint}`];
+			return getCurrentTransformTargets().some(target => {
+				const typeObj = transformOptions[`${target}-${breakpoint}`];
 
-			const isCategoryEmpty = () => {
-				return Object.values(typeObj[category] ?? {}).every(val => {
-					return Object.values(val).every(axis => isNil(axis));
-				});
-			};
+				const isCategoryEmpty = () => {
+					return Object.values(typeObj[category] ?? {}).every(val => {
+						return Object.values(val).every(axis => isNil(axis));
+					});
+				};
 
-			return !isNil(typeObj) && !isCategoryEmpty();
+				return !isNil(typeObj) && !isCategoryEmpty();
+			});
 		};
 
 		categories?.forEach(category => {
@@ -229,30 +485,53 @@ const TransformControl = props => {
 			<SettingTabsControl
 				label=''
 				type='buttons'
+				className='maxi-transform-control__mode-tabs'
 				selected={transformStatus}
 				fullWidthMode
+				showTooltip
 				hasBorder
 				items={[
 					{
-						label: __('Scale', 'maxi-blocks'),
+						icon: <Icon icon={transformScaleIcon} />,
+						tooltip: __('Scale', 'maxi-blocks'),
 						value: 'scale',
 						extraIndicatorsResponsive: ['transform-scale'],
 					},
 					{
-						label: __('Translate', 'maxi-blocks'),
+						icon: <Icon icon={transformTranslateIcon} />,
+						tooltip: __('Translate', 'maxi-blocks'),
 						value: 'translate',
 						extraIndicatorsResponsive: ['transform-translate'],
 					},
 					{
-						label: __('Rotate', 'maxi-blocks'),
+						icon: <Icon icon={transformRotateIcon} />,
+						tooltip: __('Rotate', 'maxi-blocks'),
 						value: 'rotate',
 						extraIndicatorsResponsive: ['transform-rotate'],
 					},
 					{
-						label: __('Origin', 'maxi-blocks'),
+						icon: <Icon icon={transformOriginIcon} />,
+						tooltip: __('Origin', 'maxi-blocks'),
 						value: 'origin',
 						hidden: !isTransformed(),
 						extraIndicatorsResponsive: ['transform-origin'],
+					},
+					{
+						icon: <Icon icon={transformSkewIcon} />,
+						tooltip: __('Skew', 'maxi-blocks'),
+						value: 'skew',
+						extraIndicatorsResponsive: ['transform-skew'],
+					},
+					{
+						icon: <Icon icon={transform3dIcon} />,
+						tooltip: __('3D Transform', 'maxi-blocks'),
+						value: 'transform3d',
+						extraIndicatorsResponsive: [
+							'transform-perspective',
+							'transform-translate3d',
+							'transform-scale3d',
+							'transform-rotate3d',
+						],
 					},
 				]}
 				onChange={val => setTransformStatus(val)}
@@ -262,10 +541,7 @@ const TransformControl = props => {
 				__nextHasNoMarginBottom
 				className='maxi-transform-control__target-select'
 				newStyle
-				label={__(
-					`${capitalize(transformStatus)} target`,
-					'maxi-blocks'
-				)}
+				label={__(`${getTransformStatusLabel()} target`, 'maxi-blocks')}
 				value={transformTarget ?? 'none'}
 				onChange={val => {
 					onChange({ 'transform-target': val });
@@ -305,46 +581,16 @@ const TransformControl = props => {
 						{!disableHover && hoverSelected === 'hover' && (
 							<ToggleSwitch
 								label={__('Enable hover', 'maxi-blocks')}
-								selected={getLastBreakpointTransformAttribute({
-									target: `transform-${transformStatus}`,
-									keys: [transformTarget, 'hover-status'],
-								})}
+								selected={getCurrentTransformHoverStatus()}
 								newStyle
 								onChange={val => {
-									const transformTargetOptions =
-										transformOptions[
-											`transform-${transformStatus}-${breakpoint}`
-										]?.[transformTarget];
-									onChangeTransform({
-										[`transform-${transformStatus}`]: {
-											[`${latestTarget.current.transformTarget}`]:
-												{
-													'hover-status': val,
-													...(transformTargetOptions &&
-													isEmpty(
-														transformTargetOptions.hover
-													) &&
-													!isEmpty(
-														transformTargetOptions.normal
-													)
-														? {
-																hover: {
-																	...transformTargetOptions.normal,
-																},
-														  }
-														: {}),
-												},
-										},
-									});
+									onChangeTransform(
+										getCurrentTransformHoverUpdate({
+											'hover-status': val,
+										})
+									);
 									onChange(
-										{
-											[`transform-${transformStatus}-${breakpoint}`]:
-												{
-													...transformOptions[
-														`transform-${transformStatus}-${breakpoint}`
-													],
-												},
-										},
+										getCurrentBreakpointTransformOptions(),
 										...getInlineTargetAndPseudoElement(
 											latestTarget.current.targetSelector
 										)
@@ -353,10 +599,7 @@ const TransformControl = props => {
 							/>
 						)}
 						{(hoverSelected === 'normal' ||
-							getLastBreakpointTransformAttribute({
-								target: `transform-${transformStatus}`,
-								keys: [transformTarget, 'hover-status'],
-							})) && (
+							getCurrentTransformHoverStatus()) && (
 							<>
 								{breakpoint === 'general' &&
 									selectors?.[transformTarget]?.[
@@ -367,38 +610,19 @@ const TransformControl = props => {
 												'Switch hover target to canvas',
 												'maxi-blocks'
 											)}
-											selected={
-												!getLastBreakpointTransformAttribute(
-													{
-														target: `transform-${transformStatus}`,
-														keys: [
-															transformTarget,
-															'hover-target',
-														],
-													}
-												)
-											}
+											selected={getCurrentTransformHoverTargetUsesCanvas()}
 											newStyle
 											onChange={val => {
-												onChangeTransform({
-													[`transform-${transformStatus}`]:
+												onChangeTransform(
+													getCurrentTransformHoverUpdate(
 														{
-															[`${latestTarget.current.transformTarget}`]:
-																{
-																	'hover-target':
-																		!val,
-																},
-														},
-												});
+															'hover-target':
+																!val,
+														}
+													)
+												);
 												onChange(
-													{
-														[`transform-${transformStatus}-${breakpoint}`]:
-															{
-																...transformOptions[
-																	`transform-${transformStatus}-${breakpoint}`
-																],
-															},
-													},
+													getCurrentBreakpointTransformOptions(),
 													...getInlineTargetAndPseudoElement(
 														latestTarget.current
 															.targetSelector
@@ -550,6 +774,23 @@ const TransformControl = props => {
 										}}
 									/>
 								)}
+								{transformStatus === 'skew' &&
+									renderInputGroupControl('transform-skew', [
+										{
+											key: 'x',
+											label: __('X', 'maxi-blocks'),
+											min: -360,
+											max: 360,
+											placeholder: '0deg',
+										},
+										{
+											key: 'y',
+											label: __('Y', 'maxi-blocks'),
+											min: -360,
+											max: 360,
+											placeholder: '0deg',
+										},
+									])}
 								{transformStatus === 'rotate' && (
 									<RotateControl
 										x={getLastBreakpointTransformAttribute({
@@ -594,6 +835,192 @@ const TransformControl = props => {
 											);
 										}}
 									/>
+								)}
+								{transformStatus === 'transform3d' && (
+									<>
+										{renderInputGroupControl(
+											'transform-perspective',
+											[
+												{
+													key: 'value',
+													unitKey: 'unit',
+													label: __(
+														'Value',
+														'maxi-blocks'
+													),
+													min: 0,
+													max: 5000,
+													allowedUnits: [
+														'px',
+														'em',
+														'rem',
+														'vw',
+														'vh',
+													],
+													unitRanges:
+														PERSPECTIVE_UNIT_RANGES,
+													placeholder: '0',
+												},
+											],
+											__('Perspective', 'maxi-blocks')
+										)}
+										{renderInputGroupControl(
+											'transform-translate3d',
+											[
+												{
+													key: 'x',
+													unitKey: 'x-unit',
+													label: __(
+														'X',
+														'maxi-blocks'
+													),
+													min: -5000,
+													max: 5000,
+													allowedUnits: [
+														'px',
+														'em',
+														'rem',
+														'vw',
+														'vh',
+														'%',
+													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
+													placeholder: '0',
+												},
+												{
+													key: 'y',
+													unitKey: 'y-unit',
+													label: __(
+														'Y',
+														'maxi-blocks'
+													),
+													min: -5000,
+													max: 5000,
+													allowedUnits: [
+														'px',
+														'em',
+														'rem',
+														'vw',
+														'vh',
+														'%',
+													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
+													placeholder: '0',
+												},
+												{
+													key: 'z',
+													unitKey: 'z-unit',
+													label: __(
+														'Z',
+														'maxi-blocks'
+													),
+													min: -5000,
+													max: 5000,
+													allowedUnits: [
+														'px',
+														'em',
+														'rem',
+														'vw',
+														'vh',
+													],
+													unitRanges:
+														TRANSLATE3D_UNIT_RANGES,
+													placeholder: '0',
+												},
+											],
+											__('Translate3D', 'maxi-blocks')
+										)}
+										{renderInputGroupControl(
+											'transform-scale3d',
+											[
+												{
+													key: 'x',
+													label: __(
+														'X',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '1',
+												},
+												{
+													key: 'y',
+													label: __(
+														'Y',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '1',
+												},
+												{
+													key: 'z',
+													label: __(
+														'Z',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '1',
+												},
+											],
+											__('Scale3D', 'maxi-blocks')
+										)}
+										{renderInputGroupControl(
+											'transform-rotate3d',
+											[
+												{
+													key: 'x',
+													label: __(
+														'X',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '0',
+												},
+												{
+													key: 'y',
+													label: __(
+														'Y',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '0',
+												},
+												{
+													key: 'z',
+													label: __(
+														'Z',
+														'maxi-blocks'
+													),
+													min: -10,
+													max: 10,
+													step: 0.1,
+													placeholder: '1',
+												},
+												{
+													key: 'angle',
+													label: __(
+														'Angle',
+														'maxi-blocks'
+													),
+													min: -360,
+													max: 360,
+													placeholder: '0deg',
+												},
+											],
+											__('Rotate3D', 'maxi-blocks')
+										)}
+									</>
 								)}
 								{transformStatus === 'origin' && (
 									<SquareControl

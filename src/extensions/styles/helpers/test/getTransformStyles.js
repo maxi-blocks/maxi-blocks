@@ -107,4 +107,62 @@ describe('getTransformStyles', () => {
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('Get correct skew and 3D transform styles', () => {
+		const object = {
+			'transform-perspective-general': {
+				canvas: {
+					normal: {
+						value: 20,
+						unit: 'px',
+					},
+				},
+			},
+			'transform-translate3d-general': {
+				canvas: {
+					normal: {
+						x: 42,
+						y: -62,
+						z: -155,
+						'x-unit': 'px',
+						'y-unit': 'px',
+						'z-unit': 'px',
+					},
+				},
+			},
+			'transform-scale3d-general': {
+				canvas: {
+					normal: {
+						x: 1,
+						y: 2,
+						z: 5,
+					},
+				},
+			},
+			'transform-rotate3d-general': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 1,
+						z: 1,
+						angle: 45,
+					},
+				},
+			},
+			'transform-skew-general': {
+				canvas: {
+					normal: {
+						x: 12,
+						y: -6,
+					},
+				},
+			},
+		};
+
+		const result = getTransformStyles(object, selectors);
+
+		expect(result[''].transform.general.transform).toBe(
+			'perspective(20px) translate3d(42px, -62px, -155px) scale3d(1, 2, 5) rotate3d(0, 1, 1, 45deg) skewX(12deg) skewY(-6deg) '
+		);
+	});
 });

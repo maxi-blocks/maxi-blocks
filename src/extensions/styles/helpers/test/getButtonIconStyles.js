@@ -196,6 +196,68 @@ describe('getButtonIconStyles', () => {
 		expect(result).toMatchSnapshot();
 	});
 
+	it('Should return icon alignment styles', () => {
+		const result = getButtonIconStyles({
+			obj: {
+				'icon-inherit': true,
+				'icon-content':
+					'<svg class="skull-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M12 2"></path></svg>',
+				'icon-only': false,
+				'icon-position': 'top',
+				'icon-spacing-general': 5,
+				'icon-alignment-general': 'left',
+				'icon-alignment-xl': 'justify',
+				'icon-alignment-m': 'right',
+				'icon-background-active-media-general': 'none',
+				'icon-status-hover': false,
+				svgType: 'Line',
+			},
+			blockStyle: 'light',
+			iconWidthHeightRatio: 1,
+			target: '.maxi-button-block__icon',
+			wrapperTarget: '.maxi-button-block__button',
+		});
+
+		const iconStyles =
+			result[' .maxi-button-block__button .maxi-button-block__icon'];
+
+		expect(iconStyles.alignment.general).toEqual({
+			'align-self': 'flex-start',
+		});
+		expect(iconStyles.alignment.xl).toEqual({
+			'align-self': 'center',
+		});
+		expect(iconStyles.alignment.m).toEqual({
+			'align-self': 'flex-end',
+		});
+	});
+
+	it('Should not return icon alignment styles for horizontal icon positions', () => {
+		const result = getButtonIconStyles({
+			obj: {
+				'icon-inherit': true,
+				'icon-content':
+					'<svg class="skull-2-line-maxi-svg" width="64px" height="64px" viewBox="0 0 24 24"><path d="M12 2"></path></svg>',
+				'icon-only': false,
+				'icon-position': 'left',
+				'icon-spacing-general': 5,
+				'icon-alignment-general': 'right',
+				'icon-background-active-media-general': 'none',
+				'icon-status-hover': false,
+				svgType: 'Line',
+			},
+			blockStyle: 'light',
+			iconWidthHeightRatio: 1,
+			target: '.maxi-button-block__icon',
+			wrapperTarget: '.maxi-button-block__button',
+		});
+
+		const iconStyles =
+			result[' .maxi-button-block__button .maxi-button-block__icon'];
+
+		expect(iconStyles.alignment).toBeUndefined();
+	});
+
 	it('Should work on hover', () => {
 		const result = getButtonIconStyles({
 			obj: {

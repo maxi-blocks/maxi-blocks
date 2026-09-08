@@ -31,6 +31,7 @@ const icon = ({
 	disableSpacing = false,
 	disableHeightFitContent = false,
 	disablePositionY = false,
+	enableAlignment = false,
 	inlineTarget = '.maxi-button-block__icon',
 	prefix = '',
 	ignoreIndicator = [],
@@ -67,6 +68,7 @@ const icon = ({
 		disableSpacing,
 		disableHeightFitContent,
 		disablePositionY,
+		enableAlignment,
 		type,
 		prefix,
 		getIconWithColor: args => getIconWithColor(attributes, args, prefix),
@@ -82,6 +84,7 @@ const icon = ({
 		'iconBorderWidth',
 		'iconBorderRadius',
 		'iconPadding',
+		...(enableAlignment ? ['iconAlignment'] : []),
 	];
 	const normalIndicatorProps = Object.keys(
 		getGroupAttributes(attributes, groupAttributes, false, prefix)

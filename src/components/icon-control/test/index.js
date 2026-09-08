@@ -6,6 +6,7 @@ import IconControl from '../index';
 
 const mockBorderControl = jest.fn(() => null);
 const mockColorControl = jest.fn(() => null);
+const mockAlignmentControl = jest.fn(() => null);
 const mockSettingTabsControl = jest.fn(() => null);
 
 jest.mock('@wordpress/i18n', () => ({
@@ -13,6 +14,9 @@ jest.mock('@wordpress/i18n', () => ({
 }));
 
 jest.mock('@components/advanced-number-control', () => () => null);
+jest.mock('@components/alignment-control', () => props =>
+	mockAlignmentControl(props)
+);
 jest.mock('@components/axis-control', () => () => null);
 jest.mock('@components/axis-position-control', () => () => null);
 jest.mock(
@@ -113,6 +117,9 @@ describe('IconControl', () => {
 		});
 
 		expect(getBackgroundTabsProps().selected).toBe('none');
+		expect(getBackgroundTabsProps().className).toBe(
+			'maxi-icon-background-tabs-control'
+		);
 
 		act(() => {
 			root.render(
@@ -170,5 +177,45 @@ describe('IconControl', () => {
 
 		expect(getIconStyleTabsProps()).toBeUndefined();
 		expect(mockBorderControl).not.toHaveBeenCalled();
+	});
+
+	it('renders icon alignment controls when enabled', () => {
+		act(() => {
+			root.render(
+				<IconControl
+					{...defaultProps}
+					disableBackground
+					disableBorder
+					enableAlignment
+					icon-position='top'
+				/>
+			);
+		});
+
+		expect(mockAlignmentControl).toHaveBeenCalledWith(
+			expect.objectContaining({
+				label: 'Icon',
+				prefix: 'icon-',
+				defaultValue: 'center',
+				disableJustify: true,
+				showLabel: true,
+			})
+		);
+	});
+
+	it('hides icon alignment controls for left and right icon positions', () => {
+		act(() => {
+			root.render(
+				<IconControl
+					{...defaultProps}
+					disableBackground
+					disableBorder
+					enableAlignment
+					icon-position='left'
+				/>
+			);
+		});
+
+		expect(mockAlignmentControl).not.toHaveBeenCalled();
 	});
 });

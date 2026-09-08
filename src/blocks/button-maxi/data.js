@@ -60,6 +60,9 @@ const copyPasteMapping = {
 				[__('Icon', 'maxi-blocks')]: {
 					groupAttributes: ['icon', 'iconHover'],
 				},
+				[__('Icon alignment', 'maxi-blocks')]: {
+					groupAttributes: 'iconAlignment',
+				},
 				[__('Icon border', 'maxi-blocks')]: {
 					groupAttributes: [
 						'iconBorder',
@@ -234,6 +237,7 @@ const interactionBuilderSettings = {
 				'iconBorderWidth',
 				'iconBorderRadius',
 				'iconPadding',
+				'iconAlignment',
 				'typography',
 			],
 			component: props => {

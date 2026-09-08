@@ -22,6 +22,7 @@ const attributes = {
 		type: 'string',
 	},
 	...attributesData.icon,
+	...attributesData.iconAlignment,
 	...attributesData.iconBackground,
 	...attributesData.iconHover,
 	...attributesData.iconBackgroundHover,

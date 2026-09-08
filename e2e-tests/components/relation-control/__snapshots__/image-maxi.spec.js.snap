@@ -24,6 +24,7 @@ exports[`Image Maxi hover simple actions Alignment 1`] = `
       "transition-duration-general": 0.3,
       "transition-status-general": true,
     },
+    "groupId": "relation-group-1",
     "id": 1,
     "isButton": true,
     "sid": "a",

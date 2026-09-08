@@ -107,4 +107,66 @@ describe('getTransformStyles', () => {
 		const result = getTransformStyles(object, selectors);
 		expect(result).toMatchSnapshot();
 	});
+
+	it('keeps zero scale values for IB transform settings', () => {
+		const object = {
+			'transform-scale-general': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+					},
+				},
+			},
+		};
+
+		const result = getTransformStyles(object, selectors);
+
+		expect(result[''].transform.general.transform).toBe(
+			'scaleX(0) scaleY(0) '
+		);
+	});
+
+	it('keeps zero translate, rotate, and origin values for IB transform settings', () => {
+		const object = {
+			'transform-translate-general': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+						'x-unit': 'px',
+						'y-unit': '%',
+					},
+				},
+			},
+			'transform-rotate-general': {
+				canvas: {
+					normal: {
+						x: 0,
+						y: 0,
+						z: 0,
+					},
+				},
+			},
+			'transform-origin-general': {
+				canvas: {
+					normal: {
+						x: '0',
+						y: '0',
+						'x-unit': 'px',
+						'y-unit': '%',
+					},
+				},
+			},
+		};
+
+		const result = getTransformStyles(object, selectors);
+
+		expect(result[''].transform.general.transform).toBe(
+			'translateX(0px) translateY(0%) rotateX(0deg) rotateY(0deg) rotateZ(0deg) '
+		);
+		expect(result[''].transform.general['transform-origin']).toBe(
+			'0px 0% '
+		);
+	});
 });

@@ -31,6 +31,7 @@ describe('processRelations', () => {
 		const relations = [
 			{
 				id: 'rel-1',
+				groupId: 'relation-group-1',
 				uniqueID: 'unique-1',
 				action: 'click',
 				trigger: 'div',
@@ -45,6 +46,7 @@ describe('processRelations', () => {
 		// Verify Relation constructor was called with transformed data
 		expect(Relation).toHaveBeenCalledWith({
 			id: 'rel-1', // Should remain as is
+			groupId: 'relation-group-1', // Should remain as is
 			uniqueID: 'unique-1', // Should remain as is
 			action: 'click', // Should remain as is
 			trigger: 'div', // Should remain as is

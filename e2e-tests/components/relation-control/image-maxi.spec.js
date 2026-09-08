@@ -78,6 +78,10 @@ describe('Image Maxi hover simple actions', () => {
 		);
 		await page.waitForTimeout(200);
 
+		// Close the multi-select dropdown
+		await page.click('.maxi-block-select-control__trigger');
+		await page.waitForTimeout(200);
+
 		// Add action
 		let selectControls = await page.$$('.maxi-select-control__input');
 		await selectControls[1].select('hover');

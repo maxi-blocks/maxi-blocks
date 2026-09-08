@@ -12,7 +12,14 @@ export default function processRelations(
 		Object.keys(relation).forEach(key => {
 			// Exclude specific keys from being converted to arrays
 			if (
-				['action', 'uniqueID', 'trigger', 'target', 'id'].includes(key)
+				[
+					'action',
+					'groupId',
+					'uniqueID',
+					'trigger',
+					'target',
+					'id',
+				].includes(key)
 			) {
 				modifiedRelation[key] = relation[key];
 			} else {

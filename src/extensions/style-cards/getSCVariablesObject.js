@@ -260,7 +260,7 @@ const getSCVariablesObject = (
 					style
 				);
 			switch (element) {
-				case 'button':
+				case 'button': {
 					if (obj['background-color-global'])
 						response[
 							`--maxi-${style}-${element}-background-color`
@@ -282,7 +282,22 @@ const getSCVariablesObject = (
 							`--maxi-${style}-${element}-border-color-hover`
 						] = getColorString(obj, 'hover-border', style);
 
+					const borderRadiusValue = obj['border-radius-general'];
+
+					if (getIsValid(borderRadiusValue, true)) {
+						response[
+							`--maxi-${style}-${element}-border-radius-general`
+						] = `${borderRadiusValue}px`;
+					}
+
+					if (obj['border-radius-global']) {
+						response[
+							`--maxi-${style}-${element}-border-radius-global`
+						] = 1;
+					}
+
 					break;
+				}
 
 				case 'icon':
 					if (obj['line-color-global'])

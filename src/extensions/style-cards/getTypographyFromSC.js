@@ -14,9 +14,9 @@ import getLastBreakpointAttribute from '@extensions/styles/getLastBreakpointAttr
 import { isEmpty, isNil, merge, omit } from 'lodash';
 
 const getTypographyFromSC = (styleCard, type) => {
-	const { receiveMaxiSelectedStyleCard } = select('maxiBlocks/style-cards');
-
-	const selectedSC = styleCard || receiveMaxiSelectedStyleCard().value;
+	const selectedSC =
+		styleCard ||
+		select('maxiBlocks/style-cards')?.receiveMaxiSelectedStyleCard?.().value;
 
 	if (isNil(selectedSC) || isEmpty(selectedSC)) return {};
 
@@ -44,9 +44,7 @@ const getTypographyFromSC = (styleCard, type) => {
 
 	if (type !== 'button') return SC;
 
-	const { receiveMaxiDeviceType } = select('maxiBlocks');
-
-	const breakpoint = receiveMaxiDeviceType();
+	const breakpoint = select('maxiBlocks')?.receiveMaxiDeviceType?.() || 'general';
 
 	if (!isEmpty(SC[`font-family-${breakpoint}`])) return SC;
 

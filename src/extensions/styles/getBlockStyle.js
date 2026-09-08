@@ -4,13 +4,16 @@
 import { select } from '@wordpress/data';
 
 const getBlockStyle = clientId => {
+	const blockEditorStore = select('core/block-editor');
+	if (!blockEditorStore) return 'light';
+
 	const {
 		getBlockHierarchyRootClientId,
 		getBlockAttributes,
 		getSelectedBlockClientId,
 		getFirstMultiSelectedBlockClientId,
 		getBlockParents,
-	} = select('core/block-editor');
+	} = blockEditorStore;
 
 	const id =
 		clientId ||

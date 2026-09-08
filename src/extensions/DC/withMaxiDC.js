@@ -37,9 +37,9 @@ const withMaxiDC = createHigherOrderComponent(
 			}
 			const { attributes, name, setAttributes, clientId } = ownProps;
 			const {
-				'background-layers': backgroundLayers,
-				'background-layers-hover': backgroundLayersHover,
-			} = attributes;
+				'background-layers': backgroundLayers = [],
+				'background-layers-hover': backgroundLayersHover = [],
+			} = attributes || {};
 
 			const isDCBlock = useMemo(() => DCBlocks.includes(name), [name]);
 			const contextLoop = useContext(LoopContext)?.contextLoop;

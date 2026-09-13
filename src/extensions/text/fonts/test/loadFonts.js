@@ -178,6 +178,33 @@ describe('loadFonts', () => {
 		expect(appendChildSpy).toHaveBeenCalled();
 	});
 
+	it('Should load the available weight when 400 is missing', async () => {
+		const font = {
+			UnifrakturCook: {
+				weight: '400',
+			},
+		};
+
+		mockGetFont.mockReturnValue({
+			files: {
+				700: 'bold',
+			},
+		});
+
+		buildFontUrl.mockResolvedValue(
+			'https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap'
+		);
+
+		await loadFonts(font);
+
+		expect(buildFontUrl).toHaveBeenCalledWith('UnifrakturCook', {
+			weight: '700',
+			style: 'normal',
+		});
+		expect(createElementSpy).toHaveBeenCalledWith('link');
+		expect(appendChildSpy).toHaveBeenCalled();
+	});
+
 	it('Should load font with multiple weights', async () => {
 		const font = {
 			Roboto: {

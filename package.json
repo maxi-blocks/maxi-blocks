@@ -173,7 +173,7 @@
 		"joi": "^17.13.4",
 		"launch-editor": "^2.14.1",
 		"fast-uri": "^3.1.5",
-		"ip-address": "^10.4.0",
+		"ip-address": "^10.7.2",
 		"immutable": "^4.3.9",
 		"linkify-it": "^5.0.2",
 		"postcss": "^8.5.23",

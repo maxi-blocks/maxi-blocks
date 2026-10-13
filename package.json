@@ -177,7 +177,7 @@
 		"immutable": "^4.3.9",
 		"linkify-it": "^5.0.2",
 		"postcss": "^8.5.23",
-		"shell-quote": "^1.10.0",
+		"shell-quote": "^1.12.0",
 		"websocket-driver": "^0.7.5",
 		"@svgr/plugin-svgo": {
 			"svgo": "^3.3.4"
